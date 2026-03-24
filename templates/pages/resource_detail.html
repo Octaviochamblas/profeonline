@@ -8,10 +8,30 @@
 
     <h1>{{ resource.title }}</h1>
 
+    {% if resource.subject %}
+        <p><strong>Asignatura:</strong> {{ resource.subject.name }}</p>
+    {% endif %}
+
+    <p><strong>Tipo:</strong> {{ resource.get_resource_type_display }}</p>
+
     {% if resource.description %}
-        <p>{{ resource.description }}</p>
-    {% else %}
-        <p>Este recurso no tiene descripción.</p>
+        <p><strong>Descripción:</strong> {{ resource.description }}</p>
+    {% endif %}
+
+    {% if resource.content_body %}
+        <div>
+            <strong>Contenido:</strong>
+            <p>{{ resource.content_body|linebreaks }}</p>
+        </div>
+    {% endif %}
+
+    {% if resource.external_url %}
+        <p>
+            <strong>Enlace externo:</strong>
+            <a href="{{ resource.external_url }}" target="_blank" rel="noopener noreferrer">
+                Abrir recurso
+            </a>
+        </p>
     {% endif %}
 
     <p>

@@ -1,5 +1,5 @@
 from django.views.generic import ListView
-from apps.content.models import Resource
+from apps.content.models import Resource, Subject
 from apps.content.selectors import get_published_resources
 
 
@@ -9,4 +9,11 @@ class ResourceListView(ListView):
     context_object_name = "resources"
 
     def get_queryset(self):
-        return get_published_resources()
+        subject_slug = self.request.GET.get("subject")
+        return get_published_resources(subject_slug=subject_slug)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["subjects"] = Subject.objects.filter(is_active=True)
+        context["selected_subject"] = self.request.GET.get("subject", "")
+        return context

@@ -10,6 +10,19 @@
         <a href="{% url 'content:resource_create' %}">Crear nuevo recurso</a>
     </p>
 
+    <form method="get">
+        <label for="subject">Filtrar por asignatura:</label>
+        <select name="subject" id="subject">
+            <option value="">Todas</option>
+            {% for subject in subjects %}
+                <option value="{{ subject.slug }}" {% if selected_subject == subject.slug %}selected{% endif %}>
+                    {{ subject.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+
     {% if resources %}
         <ul>
             {% for resource in resources %}
@@ -19,14 +32,22 @@
                             {{ resource.title }}
                         </a>
                     </strong><br>
+
+                    {% if resource.subject %}
+                        <small>Asignatura: {{ resource.subject.name }}</small><br>
+                    {% endif %}
+
+                    <small>Tipo: {{ resource.get_resource_type_display }}</small><br>
+
                     {{ resource.description|default:"Sin descripción" }}<br>
+
                     <a href="{% url 'content:resource_update' resource.pk %}">Editar</a> |
                     <a href="{% url 'content:resource_delete' resource.pk %}">Eliminar</a>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>Aún no hay recursos publicados.</p>
+        <p>No hay recursos para el filtro seleccionado.</p>
     {% endif %}
 </section>
 {% endblock %}
