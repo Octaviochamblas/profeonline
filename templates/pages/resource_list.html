@@ -23,6 +23,16 @@
         <button type="submit">Filtrar</button>
     </form>
 
+    <label for="topic">Filtrar por tema:</label>
+        <select name="topic" id="topic">
+            <option value="">Todos</option>
+            {% for topic in topics %}
+                <option value="{{ topic.slug }}" {% if selected_topic == topic.slug %}selected{% endif %}>
+                    {{ topic.subject.name }} - {{ topic.name }}
+                </option>
+            {% endfor %}
+        </select>
+
     {% if resources %}
         <ul>
             {% for resource in resources %}
@@ -35,6 +45,10 @@
 
                     {% if resource.subject %}
                         <small>Asignatura: {{ resource.subject.name }}</small><br>
+                    {% endif %}
+
+                    {% if resource.topic %}
+                        <small>Tema: {{ resource.topic.name }}</small><br>
                     {% endif %}
 
                     <small>Tipo: {{ resource.get_resource_type_display }}</small><br>

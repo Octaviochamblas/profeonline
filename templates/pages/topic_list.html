@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Temas | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <h1>Temas</h1>
+
+    <p>
+        <a href="{% url 'content:topic_create' %}">Crear nuevo tema</a>
+    </p>
+
+    {% if topics %}
+        <ul>
+            {% for topic in topics %}
+                <li>
+                    <strong>{{ topic.name }}</strong> — {{ topic.subject.name }}<br>
+                    {{ topic.description|default:"Sin descripción" }}<br>
+                    <a href="{% url 'content:topic_update' topic.pk %}">Editar</a> |
+                    <a href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aún no hay temas registrados.</p>
+    {% endif %}
+</section>
+{% endblock %}

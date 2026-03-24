@@ -10,6 +10,8 @@ class Resource(models.Model):
         ("link", "Enlace"),
     ]
 
+    
+
     title = models.CharField(max_length=200)
     subject = models.ForeignKey(
         "content.Subject",
@@ -18,7 +20,17 @@ class Resource(models.Model):
         blank=True,
         related_name="resources",
         verbose_name="asignatura",
-    )    
+    )
+
+    topic = models.ForeignKey(
+        "content.Topic",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="resources",
+        verbose_name="tema",
+    )
+
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)
     content_body = models.TextField(blank=True)

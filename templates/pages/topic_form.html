@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Formulario de tema | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <h1>
+        {% if form.instance.pk %}
+            Editar tema
+        {% else %}
+            Crear tema
+        {% endif %}
+    </h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+
+    <p>
+        <a href="{% url 'content:topic_list' %}">Volver a temas</a>
+    </p>
+</section>
+{% endblock %}

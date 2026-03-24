@@ -7,3 +7,7 @@ from .subject_list import SubjectListView
 from .subject_create import SubjectCreateView
 from .subject_update import SubjectUpdateView
 from .subject_delete import SubjectDeleteView
+from .topic_list import TopicListView
+from .topic_create import TopicCreateView
+from .topic_update import TopicUpdateView
+from .topic_delete import TopicDeleteView
