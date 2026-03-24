@@ -8,4 +8,5 @@ urlpatterns = [
     *resource_urlpatterns,
     *subject_urlpatterns,
     *topic_urlpatterns,
+    
 ]

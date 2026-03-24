@@ -11,3 +11,4 @@ from .topic_list import TopicListView
 from .topic_create import TopicCreateView
 from .topic_update import TopicUpdateView
 from .topic_delete import TopicDeleteView
+from .topic_options import topic_options_by_subject

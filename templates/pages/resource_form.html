@@ -27,4 +27,58 @@
         <a href="{% url 'content:resource_list' %}">Volver a recursos</a>
     </p>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const subjectSelect = document.getElementById("id_subject");
+    const topicSelect = document.getElementById("id_topic");
+
+    if (!subjectSelect || !topicSelect) {
+        return;
+    }
+
+    async function loadTopics(subjectId, selectedTopicId = "") {
+        topicSelect.innerHTML = "";
+
+        const emptyOption = document.createElement("option");
+        emptyOption.value = "";
+        emptyOption.textContent = "---------";
+        topicSelect.appendChild(emptyOption);
+
+        if (!subjectId) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/content/topics/options/?subject_id=${subjectId}`);
+            const data = await response.json();
+
+            data.topics.forEach((topic) => {
+                const option = document.createElement("option");
+                option.value = topic.id;
+                option.textContent = topic.name;
+
+                if (String(topic.id) === String(selectedTopicId)) {
+                    option.selected = true;
+                }
+
+                topicSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error loading topics:", error);
+        }
+    }
+
+    const initialSubjectId = subjectSelect.value;
+    const initialTopicId = topicSelect.value;
+
+    if (initialSubjectId) {
+        loadTopics(initialSubjectId, initialTopicId);
+    }
+
+    subjectSelect.addEventListener("change", function () {
+        loadTopics(this.value);
+    });
+});
+</script>
 {% endblock %}
