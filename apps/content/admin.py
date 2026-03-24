@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.content.models import Level, Resource, Subject, Topic
+from apps.content.models import Level, Module, Resource, Subject, Topic
 
 
 @admin.register(Subject)
@@ -34,3 +34,11 @@ class ResourceAdmin(admin.ModelAdmin):
     list_filter = ("subject", "topic", "resource_type", "is_published")
     prepopulated_fields = {"slug": ("title",)}
     filter_horizontal = ("levels",)
+
+@admin.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ("title", "subject", "topic", "order", "is_published", "created_at")
+    search_fields = ("title", "objective", "description")
+    list_filter = ("subject", "topic", "is_published")
+    prepopulated_fields = {"slug": ("title",)}
+    filter_horizontal = ("levels", "resources")

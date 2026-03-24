@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Módulos | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <h1>Módulos</h1>
+
+    <p>
+        <a href="{% url 'content:module_create' %}">Crear nuevo módulo</a>
+    </p>
+
+    {% if modules %}
+        <ul>
+            {% for module in modules %}
+                <li>
+                    <strong>{{ module.title }}</strong><br>
+
+                    <small>Asignatura: {{ module.subject.name }}</small><br>
+
+                    {% if module.topic %}
+                        <small>Tema: {{ module.topic.name }}</small><br>
+                    {% endif %}
+
+                    {% if module.levels.all %}
+                        <small>
+                            Niveles:
+                            {% for level in module.levels.all %}
+                                {{ level.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </small><br>
+                    {% endif %}
+
+                    {% if module.objective %}
+                        <strong>Objetivo:</strong> {{ module.objective }}<br>
+                    {% endif %}
+
+                    {% if module.resources.all %}
+                        <small>
+                            Recursos asociados:
+                            {% for resource in module.resources.all %}
+                                {{ resource.title }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </small><br>
+                    {% endif %}
+
+                    <a href="{% url 'content:module_update' module.pk %}">Editar</a> |
+                    <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aún no hay módulos registrados.</p>
+    {% endif %}
+</section>
+{% endblock %}

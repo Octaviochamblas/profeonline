@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Formulario de módulo | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <h1>
+        {% if form.instance.pk %}
+            Editar módulo
+        {% else %}
+            Crear módulo
+        {% endif %}
+    </h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+
+    <p>
+        <a href="{% url 'content:module_list' %}">Volver a módulos</a>
+    </p>
+</section>
+{% endblock %}

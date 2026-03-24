@@ -16,3 +16,7 @@ from .level_list import LevelListView
 from .level_create import LevelCreateView
 from .level_update import LevelUpdateView
 from .level_delete import LevelDeleteView
+from .module_list import ModuleListView
+from .module_create import ModuleCreateView
+from .module_update import ModuleUpdateView
+from .module_delete import ModuleDeleteView
