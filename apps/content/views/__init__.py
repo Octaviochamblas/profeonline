@@ -12,3 +12,7 @@ from .topic_create import TopicCreateView
 from .topic_update import TopicUpdateView
 from .topic_delete import TopicDeleteView
 from .topic_options import topic_options_by_subject
+from .level_list import LevelListView
+from .level_create import LevelCreateView
+from .level_update import LevelUpdateView
+from .level_delete import LevelDeleteView

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Formulario de nivel | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <h1>
+        {% if form.instance.pk %}
+            Editar nivel
+        {% else %}
+            Crear nivel
+        {% endif %}
+    </h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+
+    <p>
+        <a href="{% url 'content:level_list' %}">Volver a niveles</a>
+    </p>
+</section>
+{% endblock %}

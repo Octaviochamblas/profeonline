@@ -1,5 +1,5 @@
 from django import forms
-from apps.content.models import Resource, Topic
+from apps.content.models import Level, Resource, Topic
 
 
 class ResourceForm(forms.ModelForm):
@@ -9,17 +9,22 @@ class ResourceForm(forms.ModelForm):
             "title",
             "subject",
             "topic",
+            "levels",
             "description",
             "content_body",
             "resource_type",
             "external_url",
             "is_published",
         ]
+        widgets = {
+            "levels": forms.CheckboxSelectMultiple,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields["topic"].queryset = Topic.objects.none()
+        self.fields["levels"].queryset = Level.objects.filter(is_active=True).order_by("order", "name")
 
         if "subject" in self.data:
             try:

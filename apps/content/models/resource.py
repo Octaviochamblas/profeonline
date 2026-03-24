@@ -31,6 +31,13 @@ class Resource(models.Model):
         verbose_name="tema",
     )
 
+    levels = models.ManyToManyField(
+        "content.Level",
+        blank=True,
+        related_name="resources",
+        verbose_name="niveles",
+    )
+
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)
     content_body = models.TextField(blank=True)
