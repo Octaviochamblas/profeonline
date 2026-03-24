@@ -1,0 +1,1 @@
+from .resource_service import resource_service_placeholder

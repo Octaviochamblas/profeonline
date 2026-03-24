@@ -1,1 +1,0 @@
-from .home_urls import urlpatterns, app_name

@@ -1,0 +1,16 @@
+from django.db import models
+
+
+class Resource(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    is_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["title"]
+        verbose_name = "recurso"
+        verbose_name_plural = "recursos"
+
+    def __str__(self) -> str:
+        return self.title
