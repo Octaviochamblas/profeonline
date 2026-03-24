@@ -3,3 +3,7 @@ from .resource_detail import ResourceDetailView
 from .resource_create import ResourceCreateView
 from .resource_update import ResourceUpdateView
 from .resource_delete import ResourceDeleteView
+from .subject_list import SubjectListView
+from .subject_create import SubjectCreateView
+from .subject_update import SubjectUpdateView
+from .subject_delete import SubjectDeleteView

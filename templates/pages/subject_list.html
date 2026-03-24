@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Asignaturas | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <h1>Asignaturas</h1>
+
+    <p>
+        <a href="{% url 'content:subject_create' %}">Crear nueva asignatura</a>
+    </p>
+
+    {% if subjects %}
+        <ul>
+            {% for subject in subjects %}
+                <li>
+                    <strong>{{ subject.name }}</strong><br>
+                    {{ subject.description|default:"Sin descripción" }}<br>
+                    <a href="{% url 'content:subject_update' subject.pk %}">Editar</a> |
+                    <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aún no hay asignaturas registradas.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,3 +1,9 @@
-from .resource_urls import urlpatterns
+from .resource_urls import urlpatterns as resource_urlpatterns
+from .subject_urls import urlpatterns as subject_urlpatterns
 
 app_name = "content"
+
+urlpatterns = [
+    *resource_urlpatterns,
+    *subject_urlpatterns,
+]
