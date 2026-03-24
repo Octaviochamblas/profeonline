@@ -1,1 +1,2 @@
 from .resource_list import ResourceListView
+from .resource_detail import ResourceDetailView

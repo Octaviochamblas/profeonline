@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="c-hero">
+    <p><a href="{% url 'content:resource_list' %}">← Volver a recursos</a></p>
+
+    <h1>{{ resource.title }}</h1>
+
+    {% if resource.description %}
+        <p>{{ resource.description }}</p>
+    {% else %}
+        <p>Este recurso no tiene descripción.</p>
+    {% endif %}
+
+    <p>
+        Estado:
+        {% if resource.is_published %}
+            Publicado
+        {% else %}
+            Borrador
+        {% endif %}
+    </p>
+
+    <p>Creado: {{ resource.created_at }}</p>
+</section>
+{% endblock %}
