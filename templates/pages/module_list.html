@@ -7,7 +7,9 @@
     <h1>Módulos</h1>
 
     <p>
-        <a href="{% url 'content:module_create' %}">Crear nuevo módulo</a>
+        {% if user.is_superuser %}
+            <a href="{% url 'content:module_create' %}">Crear nuevo módulo</a>
+        {% endif %}
     </p>
 
     {% if modules %}
@@ -34,9 +36,10 @@
                     {% if module.objective %}
                         <strong>Objetivo:</strong> {{ module.objective }}<br>
                     {% endif %}
-
-                    <a href="{% url 'content:module_update' module.pk %}">Editar</a> |
-                    <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'content:module_update' module.pk %}">Editar</a> |
+                        <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

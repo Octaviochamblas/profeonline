@@ -6,9 +6,13 @@
 <section class="c-hero">
     <h1>Asignaturas</h1>
 
-    <p>
-        <a href="{% url 'content:subject_create' %}">Crear nueva asignatura</a>
-    </p>
+    {% if user.is_superuser %}
+        <p>
+            {% if user.is_superuser %}
+                <a href="{% url 'content:subject_create' %}">Crear nueva asignatura</a>
+            {% endif %}
+        </p>
+    {% endif %}
 
     {% if subjects %}
         <ul>
@@ -16,8 +20,11 @@
                 <li>
                     <strong>{{ subject.name }}</strong><br>
                     {{ subject.description|default:"Sin descripción" }}<br>
-                    <a href="{% url 'content:subject_update' subject.pk %}">Editar</a> |
-                    <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
+
+                    {% if user.is_superuser %}
+                        <a href="{% url 'content:subject_update' subject.pk %}">Editar</a> |
+                        <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

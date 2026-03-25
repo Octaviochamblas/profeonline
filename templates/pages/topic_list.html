@@ -7,7 +7,9 @@
     <h1>Temas</h1>
 
     <p>
-        <a href="{% url 'content:topic_create' %}">Crear nuevo tema</a>
+        {% if user.is_superuser %}
+            <a href="{% url 'content:topic_create' %}">Crear nuevo tema</a>
+        {% endif %}
     </p>
 
     {% if topics %}
@@ -16,8 +18,10 @@
                 <li>
                     <strong>{{ topic.name }}</strong> — {{ topic.subject.name }}<br>
                     {{ topic.description|default:"Sin descripción" }}<br>
-                    <a href="{% url 'content:topic_update' topic.pk %}">Editar</a> |
-                    <a href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'content:topic_update' topic.pk %}">Editar</a> |
+                        <a href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
