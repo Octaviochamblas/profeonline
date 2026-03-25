@@ -1,9 +1,16 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from apps.content.models import Module, ModuleResource, Resource
 
 
+
+def is_admin(user):
+    return user.is_authenticated and user.is_superuser
+
+
+@user_passes_test(is_admin)
 @require_POST
 def module_resource_add(request, module_id):
     resource_id = request.POST.get("resource_id")
