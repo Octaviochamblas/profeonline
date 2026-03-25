@@ -13,5 +13,4 @@ class ModuleListView(ListView):
             "topic",
         ).prefetch_related(
             "levels",
-            "resources",
         )

@@ -35,11 +35,37 @@
             {{ form.levels }}
         </p>
 
+        <p>
+            {{ form.objective.label_tag }}<br>
+            {{ form.objective }}
+        </p>
+
+        <p>
+            {{ form.description.label_tag }}<br>
+            {{ form.description }}
+        </p>
+
+        <p>
+            {{ form.order.label_tag }}<br>
+            {{ form.order }}
+        </p>
+
+        <p>
+            {{ form.is_published.label_tag }}
+            {{ form.is_published }}
+        </p>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    {% if not form.instance.pk %}
+        <hr>
+        <p>Primero guarda el módulo para luego agregar recursos y construir la ruta.</p>
+    {% else %}
         <hr>
 
-        <h3>Panel de recursos</h3>
-
-        <p>Se mostrarán hasta 30 recursos a la vez. Puedes filtrar por asignatura, tema y nivel.</p>
+        <h3>Constructor de ruta</h3>
+        <p>Puedes filtrar recursos, agregarlos al módulo y quitarlos en cualquier momento.</p>
 
         <div>
             <label for="resource_filter_subject">Filtrar por asignatura:</label>
@@ -71,130 +97,252 @@
             </select>
         </div>
 
-        <div id="resource-panel" style="margin-top: 1rem;">
-            <p>Cargando recursos...</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+            <div>
+                <h4>Recursos disponibles</h4>
+                <div id="available-resources-panel">
+                    <p>Cargando recursos...</p>
+                </div>
+            </div>
+
+            <div>
+                <h4>Recursos del módulo</h4>
+                <div id="selected-resources-panel">
+                    <p>Cargando recursos seleccionados...</p>
+                </div>
+            </div>
         </div>
 
-        <hr>
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const moduleId = "{{ module_id|default:'' }}";
+            const availablePanel = document.getElementById("available-resources-panel");
+            const selectedPanel = document.getElementById("selected-resources-panel");
 
-        <p>
-            {{ form.objective.label_tag }}<br>
-            {{ form.objective }}
-        </p>
+            
 
-        <p>
-            {{ form.description.label_tag }}<br>
-            {{ form.description }}
-        </p>
+            const subjectFilter = document.getElementById("resource_filter_subject");
+            const topicFilter = document.getElementById("resource_filter_topic");
+            const levelFilter = document.getElementById("resource_filter_level");
 
-        <p>
-            {{ form.order.label_tag }}<br>
-            {{ form.order }}
-        </p>
+            async function updateTopicFilterOptions() {
+                topicFilter.innerHTML = '<option value="">Todos</option>';
 
-        <p>
-            {{ form.is_published.label_tag }}
-            {{ form.is_published }}
-        </p>
+                if (!subjectFilter.value) {
+                    return;
+                }
 
-        <button type="submit">Guardar</button>
-    </form>
+                try {
+                    const response = await fetch(`/content/topics/options/?subject_id=${subjectFilter.value}`);
+                    const data = await response.json();
+
+                    data.topics.forEach((topic) => {
+                        const option = document.createElement("option");
+                        option.value = topic.id;
+                        option.textContent = topic.name;
+                        topicFilter.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Error al cargar temas filtrados:", error);
+                }
+            }
+
+            if (!moduleId) {
+                return;
+            }
+
+            function getCsrfToken() {
+                const cookieValue = document.cookie
+                    .split("; ")
+                    .find(row => row.startsWith("csrftoken="));
+                return cookieValue ? cookieValue.split("=")[1] : "";
+            }
+
+            async function loadSelectedResources() {
+                selectedPanel.innerHTML = "<p>Cargando recursos seleccionados...</p>";
+
+                try {
+                    const response = await fetch(`/content/modules/${moduleId}/resources/`);
+                    const data = await response.json();
+
+                    if (!data.resources.length) {
+                        selectedPanel.innerHTML = "<p>Aún no has agregado recursos a este módulo.</p>";
+                        return;
+                    }
+
+                    let html = `
+                        <table border="1" cellpadding="6" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Orden</th>
+                                    <th>Nombre</th>
+                                    <th>Asignatura</th>
+                                    <th>Tema</th>
+                                    <th>Niveles</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    data.resources.forEach((resource) => {
+                        html += `
+                            <tr>
+                                <td>${resource.order}</td>
+                                <td>${resource.title}</td>
+                                <td>${resource.subject || "-"}</td>
+                                <td>${resource.topic || "-"}</td>
+                                <td>${resource.levels.length ? resource.levels.join(", ") : "-"}</td>
+                                <td>
+                                    <button type="button" class="remove-resource-btn" data-resource-id="${resource.id}">
+                                        Quitar
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    html += "</tbody></table>";
+                    selectedPanel.innerHTML = html;
+
+                    document.querySelectorAll(".remove-resource-btn").forEach((button) => {
+                        button.addEventListener("click", async function () {
+                            const resourceId = this.dataset.resourceId;
+
+                            await fetch(`/content/modules/${moduleId}/resources/remove/`, {
+                                method: "POST",
+                                headers: {
+                                    "X-CSRFToken": getCsrfToken(),
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: new URLSearchParams({ resource_id: resourceId }),
+                            });
+
+                            await loadSelectedResources();
+                            await loadAvailableResources();
+                        });
+                    });
+
+                } catch (error) {
+                    selectedPanel.innerHTML = "<p>Error al cargar recursos seleccionados.</p>";
+                    console.error(error);
+                }
+            }
+
+            async function loadAvailableResources() {
+                availablePanel.innerHTML = "<p>Cargando recursos...</p>";
+
+                const selectedResponse = await fetch(`/content/modules/${moduleId}/resources/`);
+                const selectedData = await selectedResponse.json();
+                const selectedIds = selectedData.resources.map(item => item.id);
+
+                const params = new URLSearchParams();
+
+                if (subjectFilter.value) {
+                    params.append("subject_id", subjectFilter.value);
+                }
+
+                if (topicFilter.value) {
+                    params.append("topic_id", topicFilter.value);
+                }
+
+                if (levelFilter.value) {
+                    params.append("level_id", levelFilter.value);
+                }
+
+                selectedIds.forEach((id) => {
+                    params.append("selected_ids", id);
+                });
+
+                try {
+                    const response = await fetch(`/content/resources/options/?${params.toString()}`);
+                    const data = await response.json();
+
+                    if (!data.resources.length) {
+                        availablePanel.innerHTML = "<p>No hay recursos para ese filtro.</p>";
+                        return;
+                    }
+
+                    let html = `
+                        <table border="1" cellpadding="6" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Acción</th>
+                                    <th>Nombre</th>
+                                    <th>Asignatura</th>
+                                    <th>Tema</th>
+                                    <th>Niveles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    data.resources.forEach((resource) => {
+                        const alreadySelected = selectedIds.includes(resource.id);
+
+                        html += `
+                            <tr>
+                                <td>
+                                    ${
+                                        alreadySelected
+                                            ? "<span>Ya agregado</span>"
+                                            : `<button type="button" class="add-resource-btn" data-resource-id="${resource.id}">Agregar</button>`
+                                    }
+                                </td>
+                                <td>${resource.title}</td>
+                                <td>${resource.subject || "-"}</td>
+                                <td>${resource.topic || "-"}</td>
+                                <td>${resource.levels.length ? resource.levels.join(", ") : "-"}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += "</tbody></table>";
+                    availablePanel.innerHTML = html;
+
+                    document.querySelectorAll(".add-resource-btn").forEach((button) => {
+                        button.addEventListener("click", async function () {
+                            const resourceId = this.dataset.resourceId;
+
+                            await fetch(`/content/modules/${moduleId}/resources/add/`, {
+                                method: "POST",
+                                headers: {
+                                    "X-CSRFToken": getCsrfToken(),
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                                body: new URLSearchParams({ resource_id: resourceId }),
+                            });
+
+                            await loadSelectedResources();
+                            await loadAvailableResources();
+                        });
+                    });
+
+                } catch (error) {
+                    availablePanel.innerHTML = "<p>Error al cargar recursos disponibles.</p>";
+                    console.error(error);
+                }
+            }
+
+            subjectFilter.addEventListener("change", async function () {
+                await updateTopicFilterOptions();
+                topicFilter.value = "";
+                await loadAvailableResources();
+            });
+
+            topicFilter.addEventListener("change", loadAvailableResources);
+            levelFilter.addEventListener("change", loadAvailableResources);
+
+            updateTopicFilterOptions().then(() => {
+                loadSelectedResources();
+                loadAvailableResources();
+            });
+            });
+        </script>
+    {% endif %}
 
     <p>
         <a href="{% url 'content:module_list' %}">Volver a módulos</a>
     </p>
 </section>
-
-{{ selected_resource_ids|json_script:"selected-resource-ids" }}
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const panel = document.getElementById("resource-panel");
-    const subjectFilter = document.getElementById("resource_filter_subject");
-    const topicFilter = document.getElementById("resource_filter_topic");
-    const levelFilter = document.getElementById("resource_filter_level");
-
-    const selectedResourceIds = JSON.parse(
-        document.getElementById("selected-resource-ids").textContent
-    );
-
-    async function loadResources() {
-        const params = new URLSearchParams();
-
-        if (subjectFilter.value) {
-            params.append("subject_id", subjectFilter.value);
-        }
-
-        if (topicFilter.value) {
-            params.append("topic_id", topicFilter.value);
-        }
-
-        if (levelFilter.value) {
-            params.append("level_id", levelFilter.value);
-        }
-
-        selectedResourceIds.forEach((id) => {
-            params.append("selected_ids", id);
-        });
-
-        panel.innerHTML = "<p>Cargando recursos...</p>";
-
-        try {
-            const response = await fetch(`/content/resources/options/?${params.toString()}`);
-            const data = await response.json();
-
-            if (!data.resources.length) {
-                panel.innerHTML = "<p>No hay recursos para ese filtro.</p>";
-                return;
-            }
-
-            let html = "<div>";
-
-            data.resources.forEach((resource) => {
-                const checked = selectedResourceIds.includes(resource.id) || resource.checked ? "checked" : "";
-
-                html += `
-                    <label style="display:block; margin-bottom:0.75rem;">
-                        <input type="checkbox" name="resources" value="${resource.id}" ${checked}>
-                        <strong>${resource.title}</strong><br>
-                        <small>Asignatura: ${resource.subject || "-"}</small><br>
-                        <small>Tema: ${resource.topic || "-"}</small><br>
-                        <small>Niveles: ${resource.levels.join(", ") || "-"}</small>
-                    </label>
-                `;
-            });
-
-            html += "</div>";
-            panel.innerHTML = html;
-
-            panel.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-                checkbox.addEventListener("change", function () {
-                    const id = Number(this.value);
-
-                    if (this.checked) {
-                        if (!selectedResourceIds.includes(id)) {
-                            selectedResourceIds.push(id);
-                        }
-                    } else {
-                        const index = selectedResourceIds.indexOf(id);
-                        if (index > -1) {
-                            selectedResourceIds.splice(index, 1);
-                        }
-                    }
-                });
-            });
-
-        } catch (error) {
-            panel.innerHTML = "<p>Error al cargar recursos.</p>";
-            console.error(error);
-        }
-    }
-
-    subjectFilter.addEventListener("change", loadResources);
-    topicFilter.addEventListener("change", loadResources);
-    levelFilter.addEventListener("change", loadResources);
-
-    loadResources();
-});
-</script>
 {% endblock %}

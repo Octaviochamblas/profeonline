@@ -21,3 +21,6 @@ from .module_create import ModuleCreateView
 from .module_update import ModuleUpdateView
 from .module_delete import ModuleDeleteView
 from .resource_options import resource_options
+from .module_resource_add import module_resource_add
+from .module_resource_remove import module_resource_remove
+from .module_resource_list import module_resource_list

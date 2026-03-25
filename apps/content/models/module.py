@@ -26,13 +26,13 @@ class Module(models.Model):
         verbose_name="niveles",
     )
     
-    #resources = models.ManyToManyField(
-     #   "content.Resource",
-      #  through="content.ModuleResource",
-       # related_name="modules",
-        #blank=True,
-        #verbose_name="recursos",
-    #)
+    resources = models.ManyToManyField(
+        "content.Resource",
+        through="content.ModuleResource",
+        related_name="modules",
+        blank=True,
+        verbose_name="recursos",
+    )
     objective = models.TextField(blank=True, verbose_name="objetivo de aprendizaje")
     description = models.TextField(blank=True)
     order = models.PositiveIntegerField(default=0)
