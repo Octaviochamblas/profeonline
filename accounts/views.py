@@ -3,6 +3,8 @@ from django.shortcuts import redirect, render
 
 from .forms import CustomUserCreationForm
 from .models import Profile
+from django.contrib.auth.decorators import login_required
+
 
 
 def register_view(request):
@@ -30,3 +32,12 @@ def register_view(request):
         form = CustomUserCreationForm()
 
     return render(request, "accounts/register.html", {"form": form})
+
+
+@login_required
+def profile_view(request):
+    profile, created = Profile.objects.get_or_create(
+        user=request.user,
+        defaults={"role": "alumno"},
+    )
+    return render(request, "accounts/profile.html", {"profile": profile})
