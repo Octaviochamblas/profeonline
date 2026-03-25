@@ -15,75 +15,165 @@
         <select name="subject" id="subject">
             <option value="">Todas</option>
             {% for subject in subjects %}
-                <option value="{{ subject.slug }}" {% if selected_subject == subject.slug %}selected{% endif %}>
+                <option value="{{ subject.id }}" {% if selected_subject == subject.id|stringformat:"s" %}selected{% endif %}>
                     {{ subject.name }}
                 </option>
             {% endfor %}
         </select>
-        <button type="submit">Filtrar</button>
-    </form>
 
-    <label for="topic">Filtrar por tema:</label>
+        <label for="topic">Filtrar por tema:</label>
         <select name="topic" id="topic">
             <option value="">Todos</option>
             {% for topic in topics %}
-                <option value="{{ topic.slug }}" {% if selected_topic == topic.slug %}selected{% endif %}>
+                <option value="{{ topic.id }}" {% if selected_topic == topic.id|stringformat:"s" %}selected{% endif %}>
                     {{ topic.subject.name }} - {{ topic.name }}
                 </option>
             {% endfor %}
         </select>
 
-    <label for="level">Filtrar por nivel:</label>
+        <label for="level">Filtrar por nivel:</label>
         <select name="level" id="level">
             <option value="">Todos</option>
             {% for level in levels %}
-                <option value="{{ level.slug }}" {% if selected_level == level.slug %}selected{% endif %}>
+                <option value="{{ level.id }}" {% if selected_level == level.id|stringformat:"s" %}selected{% endif %}>
                     {{ level.name }}
                 </option>
             {% endfor %}
         </select>
 
-    
+        <button type="submit">Filtrar</button>
+    </form>
 
     {% if resources %}
-        <ul>
-            {% for resource in resources %}
-                <li>
-                    <strong>
-                        <a href="{% url 'content:resource_detail' resource.pk %}">
-                            {{ resource.title }}
-                        </a>
-                    </strong><br>
+        <table border="1" cellpadding="8" cellspacing="0" style="margin-top: 1rem; border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th>Nombre del recurso</th>
+                    <th>Asignatura</th>
+                    <th>Tema</th>
+                    <th>Niveles</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in resources %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'content:resource_detail' resource.pk %}">
+                                {{ resource.title }}
+                            </a>
+                        </td>
+                        <td>
+                            {% if resource.subject %}
+                                {{ resource.subject.name }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if resource.topic %}
+                                {{ resource.topic.name }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if resource.levels.all %}
+                                {% for level in resource.levels.all %}
+                                    {{ level.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'content:resource_update' resource.pk %}">Editar</a> |
+                            <a href="{% url 'content:resource_delete' resource.pk %}">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-                    {% if resource.subject %}
-                        <small>Asignatura: {{ resource.subject.name }}</small><br>
-                    {% endif %}
+        {% if is_paginated %}
+            <div style="margin-top: 1rem;">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                        Primera
+                    </a>
 
-                    {% if resource.topic %}
-                        <small>Tema: {{ resource.topic.name }}</small><br>
-                    {% endif %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                        Anterior
+                    </a>
+                {% endif %}
 
-                    {% if resource.levels.all %}
-                        <small>
-                            Niveles:
-                            {% for level in resource.levels.all %}
-                                {{ level.name }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </small><br>
-                    {% endif %}
+                <span>
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                        Siguiente
+                    </a>
+
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                        Última
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
 
 
-                    <small>Tipo: {{ resource.get_resource_type_display }}</small><br>
-
-                    {{ resource.description|default:"Sin descripción" }}<br>
-
-                    <a href="{% url 'content:resource_update' resource.pk %}">Editar</a> |
-                    <a href="{% url 'content:resource_delete' resource.pk %}">Eliminar</a>
-                </li>
-            {% endfor %}
-        </ul>
     {% else %}
         <p>No hay recursos para el filtro seleccionado.</p>
     {% endif %}
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const subjectSelect = document.getElementById("subject");
+    const topicSelect = document.getElementById("topic");
+
+    if (!subjectSelect || !topicSelect) {
+        return;
+    }
+
+    async function updateTopicOptions() {
+        const currentTopic = topicSelect.value;
+        topicSelect.innerHTML = '<option value="">Todos</option>';
+
+        if (!subjectSelect.value) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/content/topics/options/?subject_id=${subjectSelect.value}`);
+            const data = await response.json();
+
+            data.topics.forEach((topic) => {
+                const option = document.createElement("option");
+                option.value = topic.id;
+                option.textContent = topic.name;
+
+                if (String(topic.id) === String(currentTopic)) {
+                    option.selected = true;
+                }
+
+                topicSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error al cargar temas filtrados:", error);
+        }
+    }
+
+    subjectSelect.addEventListener("change", async function () {
+        topicSelect.value = "";
+        await updateTopicOptions();
+    });
+
+    if (subjectSelect.value) {
+        updateTopicOptions();
+    }
+});
+</script>
 {% endblock %}
