@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib.auth.decorators import login_required
 
@@ -41,3 +41,25 @@ def profile_view(request):
         defaults={"role": "alumno"},
     )
     return render(request, "accounts/profile.html", {"profile": profile})
+
+@login_required
+def profile_update_view(request):
+    profile, created = Profile.objects.get_or_create(
+        user=request.user,
+        defaults={"role": "alumno"},
+    )
+
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=profile, user=request.user)
+        if form.is_valid():
+            request.user.first_name = form.cleaned_data["first_name"]
+            request.user.last_name = form.cleaned_data["last_name"]
+            request.user.email = form.cleaned_data["email"]
+            request.user.save()
+
+            form.save()
+            return redirect("profile")
+    else:
+        form = ProfileUpdateForm(instance=profile, user=request.user)
+
+    return render(request, "accounts/profile_form.html", {"form": form})
