@@ -41,4 +41,4 @@ class ModuleAdmin(admin.ModelAdmin):
     search_fields = ("title", "objective", "description")
     list_filter = ("subject", "topic", "is_published")
     prepopulated_fields = {"slug": ("title",)}
-    filter_horizontal = ("levels", "resources")
+    filter_horizontal = ("levels",)

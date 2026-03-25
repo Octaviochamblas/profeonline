@@ -8,4 +8,10 @@ class ModuleListView(ListView):
     context_object_name = "modules"
 
     def get_queryset(self):
-        return Module.objects.filter(is_published=True).select_related("subject", "topic").prefetch_related("levels", "resources")
+        return Module.objects.filter(is_published=True).select_related(
+            "subject",
+            "topic",
+        ).prefetch_related(
+            "levels",
+            "resources",
+        )

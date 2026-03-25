@@ -20,3 +20,4 @@ from .module_list import ModuleListView
 from .module_create import ModuleCreateView
 from .module_update import ModuleUpdateView
 from .module_delete import ModuleDeleteView
+from .resource_options import resource_options

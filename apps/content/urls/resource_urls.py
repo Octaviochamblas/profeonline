@@ -5,6 +5,7 @@ from apps.content.views import (
     ResourceDetailView,
     ResourceListView,
     ResourceUpdateView,
+    resource_options,
 )
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     path("resources/<int:pk>/", ResourceDetailView.as_view(), name="resource_detail"),
     path("resources/<int:pk>/edit/", ResourceUpdateView.as_view(), name="resource_update"),
     path("resources/<int:pk>/delete/", ResourceDeleteView.as_view(), name="resource_delete"),
+    path("resources/options/", resource_options, name="resource_options"),
 ]

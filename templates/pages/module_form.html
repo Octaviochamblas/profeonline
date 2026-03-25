@@ -14,7 +14,89 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <p>
+            {{ form.title.label_tag }}<br>
+            {{ form.title }}
+        </p>
+
+        <p>
+            {{ form.subject.label_tag }}<br>
+            {{ form.subject }}
+        </p>
+
+        <p>
+            {{ form.topic.label_tag }}<br>
+            {{ form.topic }}
+        </p>
+
+        <p>
+            {{ form.levels.label_tag }}<br>
+            {{ form.levels }}
+        </p>
+
+        <hr>
+
+        <h3>Panel de recursos</h3>
+
+        <p>Se mostrarán hasta 30 recursos a la vez. Puedes filtrar por asignatura, tema y nivel.</p>
+
+        <div>
+            <label for="resource_filter_subject">Filtrar por asignatura:</label>
+            <select id="resource_filter_subject">
+                <option value="">Todas</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="resource_filter_topic">Filtrar por tema:</label>
+            <select id="resource_filter_topic">
+                <option value="">Todos</option>
+                {% for topic in topics %}
+                    <option value="{{ topic.id }}">{{ topic.subject.name }} - {{ topic.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="resource_filter_level">Filtrar por nivel:</label>
+            <select id="resource_filter_level">
+                <option value="">Todos</option>
+                {% for level in levels_filter %}
+                    <option value="{{ level.id }}">{{ level.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="resource-panel" style="margin-top: 1rem;">
+            <p>Cargando recursos...</p>
+        </div>
+
+        <hr>
+
+        <p>
+            {{ form.objective.label_tag }}<br>
+            {{ form.objective }}
+        </p>
+
+        <p>
+            {{ form.description.label_tag }}<br>
+            {{ form.description }}
+        </p>
+
+        <p>
+            {{ form.order.label_tag }}<br>
+            {{ form.order }}
+        </p>
+
+        <p>
+            {{ form.is_published.label_tag }}
+            {{ form.is_published }}
+        </p>
+
         <button type="submit">Guardar</button>
     </form>
 
@@ -22,4 +104,97 @@
         <a href="{% url 'content:module_list' %}">Volver a módulos</a>
     </p>
 </section>
+
+{{ selected_resource_ids|json_script:"selected-resource-ids" }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const panel = document.getElementById("resource-panel");
+    const subjectFilter = document.getElementById("resource_filter_subject");
+    const topicFilter = document.getElementById("resource_filter_topic");
+    const levelFilter = document.getElementById("resource_filter_level");
+
+    const selectedResourceIds = JSON.parse(
+        document.getElementById("selected-resource-ids").textContent
+    );
+
+    async function loadResources() {
+        const params = new URLSearchParams();
+
+        if (subjectFilter.value) {
+            params.append("subject_id", subjectFilter.value);
+        }
+
+        if (topicFilter.value) {
+            params.append("topic_id", topicFilter.value);
+        }
+
+        if (levelFilter.value) {
+            params.append("level_id", levelFilter.value);
+        }
+
+        selectedResourceIds.forEach((id) => {
+            params.append("selected_ids", id);
+        });
+
+        panel.innerHTML = "<p>Cargando recursos...</p>";
+
+        try {
+            const response = await fetch(`/content/resources/options/?${params.toString()}`);
+            const data = await response.json();
+
+            if (!data.resources.length) {
+                panel.innerHTML = "<p>No hay recursos para ese filtro.</p>";
+                return;
+            }
+
+            let html = "<div>";
+
+            data.resources.forEach((resource) => {
+                const checked = selectedResourceIds.includes(resource.id) || resource.checked ? "checked" : "";
+
+                html += `
+                    <label style="display:block; margin-bottom:0.75rem;">
+                        <input type="checkbox" name="resources" value="${resource.id}" ${checked}>
+                        <strong>${resource.title}</strong><br>
+                        <small>Asignatura: ${resource.subject || "-"}</small><br>
+                        <small>Tema: ${resource.topic || "-"}</small><br>
+                        <small>Niveles: ${resource.levels.join(", ") || "-"}</small>
+                    </label>
+                `;
+            });
+
+            html += "</div>";
+            panel.innerHTML = html;
+
+            panel.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+                checkbox.addEventListener("change", function () {
+                    const id = Number(this.value);
+
+                    if (this.checked) {
+                        if (!selectedResourceIds.includes(id)) {
+                            selectedResourceIds.push(id);
+                        }
+                    } else {
+                        const index = selectedResourceIds.indexOf(id);
+                        if (index > -1) {
+                            selectedResourceIds.splice(index, 1);
+                        }
+                    }
+                });
+            });
+
+        } catch (error) {
+            panel.innerHTML = "<p>Error al cargar recursos.</p>";
+            console.error(error);
+        }
+    }
+
+    subjectFilter.addEventListener("change", loadResources);
+    topicFilter.addEventListener("change", loadResources);
+    levelFilter.addEventListener("change", loadResources);
+
+    loadResources();
+});
+</script>
 {% endblock %}

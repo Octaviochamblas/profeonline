@@ -1,19 +1,18 @@
 from django import forms
-from apps.content.models import Level, Resource, Topic
+from apps.content.models import Level, Module, Topic
 
 
-class ResourceForm(forms.ModelForm):
+class ModuleForm(forms.ModelForm):
     class Meta:
-        model = Resource
+        model = Module
         fields = [
             "title",
             "subject",
             "topic",
             "levels",
+            "objective",
             "description",
-            "content_body",
-            "resource_type",
-            "external_url",
+            "order",
             "is_published",
         ]
         widgets = {
