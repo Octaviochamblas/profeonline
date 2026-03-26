@@ -29,9 +29,9 @@ class LevelAdmin(admin.ModelAdmin):
 
 @admin.register(Resource)
 class ResourceAdmin(admin.ModelAdmin):
-    list_display = ("title", "subject", "topic", "resource_type", "is_published", "created_at")
-    search_fields = ("title", "description", "content_body")
-    list_filter = ("subject", "topic", "resource_type", "is_published")
+    list_display = ("title", "subject", "topic", "is_published", "created_at")
+    search_fields = ("title", "description", "content")
+    list_filter = ("subject", "topic", "is_published")
     prepopulated_fields = {"slug": ("title",)}
     filter_horizontal = ("levels",)
 

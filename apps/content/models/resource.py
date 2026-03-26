@@ -3,15 +3,6 @@ from django.utils.text import slugify
 
 
 class Resource(models.Model):
-    RESOURCE_TYPE_CHOICES = [
-        ("text", "Texto"),
-        ("video", "Video"),
-        ("document", "Documento"),
-        ("link", "Enlace"),
-    ]
-
-    
-
     title = models.CharField(max_length=200)
     subject = models.ForeignKey(
         "content.Subject",
@@ -39,14 +30,8 @@ class Resource(models.Model):
     )
 
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True)
-    description = models.TextField(blank=True)
-    content_body = models.TextField(blank=True)
-    resource_type = models.CharField(
-        max_length=20,
-        choices=RESOURCE_TYPE_CHOICES,
-        default="text",
-    )
-    external_url = models.URLField(blank=True)
+    description = models.TextField("Descripción breve", blank=True)
+    content = models.TextField("Contenido", blank=True)
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

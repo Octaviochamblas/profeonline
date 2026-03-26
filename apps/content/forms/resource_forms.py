@@ -11,12 +11,17 @@ class ResourceForm(forms.ModelForm):
             "topic",
             "levels",
             "description",
-            "content_body",
-            "resource_type",
-            "external_url",
+            "content",
             "is_published",
         ]
+        labels = {
+            "description": "Descripción breve",
+            "content": "Contenido del recurso",
+            "is_published": "Publicado",
+        }
         widgets = {
+            "description": forms.Textarea(attrs={"rows": 3}),
+            "content": forms.Textarea(attrs={"rows": 10}),
             "levels": forms.CheckboxSelectMultiple,
         }
 
