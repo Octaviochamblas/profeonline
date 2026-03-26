@@ -8,7 +8,7 @@
 
     <p>
         {% if user.is_superuser %}
-            <a href="{% url 'content:resource_create' %}">Crear nuevo recurso</a>
+            <a href="{% url 'content:resource_create' %}" class="btn btn-secondary">Crear nuevo recurso</a>
         {% endif %}
     </p>
 
@@ -43,7 +43,7 @@
             {% endfor %}
         </select>
 
-        <button type="submit">Filtrar</button>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
 
     {% if resources %}
@@ -92,9 +92,10 @@
                         </td>
                         {% if user.is_superuser %}
                             <td>
-                                <a href="{% url 'content:resource_update' resource.pk %}">Editar</a>
-                                
-                                <a href="{% url 'content:resource_delete' resource.pk %}">Eliminar</a>
+                                <div class="table-actions">
+                                    <a class="action-edit" href="{% url 'content:resource_update' resource.pk %}">Editar</a>
+                                    <a class="action-delete" href="{% url 'content:resource_delete' resource.pk %}">Eliminar</a>
+                                </div>
                             </td>
                         {% endif %}
                     </tr>
@@ -184,3 +185,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 {% endblock %}
+

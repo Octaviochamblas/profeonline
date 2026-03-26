@@ -6,25 +6,33 @@
 <section class="c-hero">
     <h1>Temas</h1>
 
-    <p>
-        {% if user.is_superuser %}
-            <a href="{% url 'content:topic_create' %}">Crear nuevo tema</a>
-        {% endif %}
-    </p>
+    {% if user.is_superuser %}
+        <p>
+            <a href="{% url 'content:topic_create' %}" class="btn btn-secondary">Crear nuevo tema</a>
+        </p>
+    {% endif %}
 
     {% if topics %}
-        <ul>
+        <div class="card-grid">
             {% for topic in topics %}
-                <li>
-                    <strong>{{ topic.name }}</strong> — {{ topic.subject.name }}<br>
-                    {{ topic.description|default:"Sin descripción" }}<br>
-                    {% if user.is_superuser %}
-                        <a href="{% url 'content:topic_update' topic.pk %}">Editar</a> |
-                        <a href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                <article class="content-card">
+                    <h3>{{ topic.name }}</h3>
+
+                    {% if topic.subject %}
+                        <p><strong>Asignatura:</strong> {{ topic.subject.name }}</p>
                     {% endif %}
-                </li>
+
+                    <p>{{ topic.description|default:"Sin descripción" }}</p>
+
+                    {% if user.is_superuser %}
+                        <div class="card-actions">
+                            <a href="{% url 'content:topic_update' topic.pk %}">Editar</a>
+                            <a href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </article>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Aún no hay temas registrados.</p>
     {% endif %}

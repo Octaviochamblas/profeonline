@@ -8,26 +8,27 @@
 
     {% if user.is_superuser %}
         <p>
-            {% if user.is_superuser %}
-                <a href="{% url 'content:subject_create' %}">Crear nueva asignatura</a>
-            {% endif %}
+            <a href="{% url 'content:subject_create' %}" class="btn btn-secondary">Crear nueva asignatura</a>
         </p>
     {% endif %}
 
     {% if subjects %}
-        <ul>
+        <div class="card-grid">
             {% for subject in subjects %}
-                <li>
-                    <strong>{{ subject.name }}</strong><br>
-                    {{ subject.description|default:"Sin descripción" }}<br>
+                <article class="content-card">
+                    <h3>{{ subject.name }}</h3>
+
+                    <p>{{ subject.description|default:"Sin descripción" }}</p>
 
                     {% if user.is_superuser %}
-                        <a href="{% url 'content:subject_update' subject.pk %}">Editar</a> |
-                        <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
+                        <div class="card-actions">
+                            <a href="{% url 'content:subject_update' subject.pk %}">Editar</a>
+                            <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
+                        </div>
                     {% endif %}
-                </li>
+                </article>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Aún no hay asignaturas registradas.</p>
     {% endif %}

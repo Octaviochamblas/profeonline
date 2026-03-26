@@ -6,26 +6,33 @@
 <section class="c-hero">
     <h1>Niveles</h1>
 
-    <p>
-        {% if user.is_superuser %}
-            <a href="{% url 'content:level_create' %}">Crear nuevo nivel</a>
-        {% endif %}
-    </p>
+    {% if user.is_superuser %}
+        <p>
+            <a href="{% url 'content:level_create' %}" class="btn btn-secondary">Crear nuevo nivel</a>
+        </p>
+    {% endif %}
 
     {% if levels %}
-        <ul>
+        <div class="card-grid">
             {% for level in levels %}
-                <li>
-                    <strong>{{ level.name }}</strong><br>
-                    {{ level.description|default:"Sin descripción" }}<br>
-                    Orden: {{ level.order }}<br>
-                    {% if user.is_superuser %}
-                        <a href="{% url 'content:level_update' level.pk %}">Editar</a> |
-                        <a href="{% url 'content:level_delete' level.pk %}">Eliminar</a>
+                <article class="content-card">
+                    <h3>{{ level.name }}</h3>
+
+                    <p>{{ level.description|default:"Sin descripción" }}</p>
+
+                    {% if level.order %}
+                        <p><strong>Orden:</strong> {{ level.order }}</p>
                     {% endif %}
-                </li>
+
+                    {% if user.is_superuser %}
+                        <div class="card-actions">
+                            <a href="{% url 'content:level_update' level.pk %}">Editar</a>
+                            <a href="{% url 'content:level_delete' level.pk %}">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </article>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Aún no hay niveles registrados.</p>
     {% endif %}

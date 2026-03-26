@@ -6,43 +6,48 @@
 <section class="c-hero">
     <h1>Módulos</h1>
 
-    <p>
-        {% if user.is_superuser %}
-            <a href="{% url 'content:module_create' %}">Crear nuevo módulo</a>
-        {% endif %}
-    </p>
+    {% if user.is_superuser %}
+        <p>
+            <a href="{% url 'content:module_create' %}" class="btn btn-secondary">Crear nuevo módulo</a>
+        </p>
+    {% endif %}
 
     {% if modules %}
-        <ul>
+        <div class="card-grid">
             {% for module in modules %}
-                <li>
-                    <strong>{{ module.title }}</strong><br>
+                <article class="content-card">
+                    <h3>{{ module.name }}</h3>
 
-                    <small>Asignatura: {{ module.subject.name }}</small><br>
+                    {% if module.subject %}
+                        <p><strong>Asignatura:</strong> {{ module.subject.name }}</p>
+                    {% endif %}
 
                     {% if module.topic %}
-                        <small>Tema: {{ module.topic.name }}</small><br>
+                        <p><strong>Tema:</strong> {{ module.topic.name }}</p>
                     {% endif %}
 
                     {% if module.levels.all %}
-                        <small>
-                            Niveles:
+                        <p>
+                            <strong>Niveles:</strong>
                             {% for level in module.levels.all %}
                                 {{ level.name }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
-                        </small><br>
+                        </p>
                     {% endif %}
 
                     {% if module.objective %}
-                        <strong>Objetivo:</strong> {{ module.objective }}<br>
+                        <p><strong>Objetivo:</strong> {{ module.objective }}</p>
                     {% endif %}
+
                     {% if user.is_superuser %}
-                        <a href="{% url 'content:module_update' module.pk %}">Editar</a> |
-                        <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                        <div class="card-actions">
+                            <a href="{% url 'content:module_update' module.pk %}">Editar</a>
+                            <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                        </div>
                     {% endif %}
-                </li>
+                </article>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>Aún no hay módulos registrados.</p>
     {% endif %}
