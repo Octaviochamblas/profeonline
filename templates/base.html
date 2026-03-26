@@ -5,33 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ProfeOnline{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="{% url 'core:home' %}">ProfeOnline</a>
-            <a href="{% url 'content:resource_list' %}">Recursos</a>
-            <a href="{% url 'content:subject_list' %}">Asignaturas</a>
-            <a href="{% url 'content:topic_list' %}">Temas</a>
-            <a href="{% url 'content:level_list' %}">Niveles</a>
-            <a href="{% url 'content:module_list' %}">Módulos</a>
-            {% if user.is_authenticated %}
-                <span>Hola, {{ user.username }}</span>
-                <a href="{% url 'profile' %}">Mi perfil</a>
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <a class="brand" href="{% url 'core:home' %}">ProfeOnline</a>
 
-                <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">Cerrar sesión</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}">Iniciar sesión</a>
-                <a href="{% url 'register' %}">Registrarse</a>
-            {% endif %}
-        </nav>
+                    <div class="nav-links">
+                        <a href="{% url 'content:resource_list' %}">Recursos</a>
+                        <a href="{% url 'content:subject_list' %}">Asignaturas</a>
+                        <a href="{% url 'content:topic_list' %}">Temas</a>
+                        <a href="{% url 'content:level_list' %}">Niveles</a>
+                        <a href="{% url 'content:module_list' %}">Módulos</a>
+                    </div>
+                </div>
+
+                <div class="navbar-right">
+                    {% if user.is_authenticated %}
+                        <span class="user-greeting">
+                            Hola,
+                            {% if user.first_name %}
+                                {{ user.first_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </span>
+
+                        <a class="btn btn-secondary" href="{% url 'profile' %}">Mi perfil</a>
+
+                        <form method="post" action="{% url 'logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+                        </form>
+                    {% else %}
+                        <a class="btn btn-secondary" href="{% url 'login' %}">Iniciar sesión</a>
+                        <a class="btn btn-primary" href="{% url 'register' %}">Registrarse</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        {% block content %}{% endblock %}
+    <main class="site-main">
+        <div class="container content-wrapper">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 </body>
 </html>
