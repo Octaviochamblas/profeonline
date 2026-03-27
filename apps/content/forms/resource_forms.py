@@ -17,7 +17,7 @@ class ResourceForm(forms.ModelForm):
         labels = {
             "description": "Descripción breve",
             "content": "Contenido del recurso",
-            "is_published": "Publicado",
+            "is_published": "Disponible",
         }
         widgets = {
             "description": forms.Textarea(attrs={"rows": 3}),
