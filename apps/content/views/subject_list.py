@@ -8,4 +8,8 @@ class SubjectListView(ListView):
     context_object_name = "subjects"
 
     def get_queryset(self):
-        return Subject.objects.filter(is_active=True)
+        queryset = Subject.objects.filter(is_active=True)
+        area_id = self.request.GET.get("area")
+        if area_id:
+            queryset = queryset.filter(area_id=area_id)
+        return queryset

@@ -3,6 +3,14 @@ from django.utils.text import slugify
 
 
 class Subject(models.Model):
+    area = models.ForeignKey(
+        "content.Area",
+        on_delete=models.CASCADE,
+        related_name="subjects",
+        verbose_name="área",
+        null=True,
+        blank=True
+    )
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=120, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)

@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
 
+from apps.content.models import Level
+
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=150, required=False, label="Nombre")
     last_name = forms.CharField(max_length=150, required=False, label="Apellido")
@@ -16,7 +18,9 @@ class CustomUserCreationForm(UserCreationForm):
     phone = forms.CharField(max_length=30, required=False, label="Teléfono")
     city = forms.CharField(max_length=100, required=False, label="Ciudad")
     institution = forms.CharField(max_length=150, required=False, label="Institución")
-    education_level = forms.CharField(max_length=100, required=False, label="Nivel educativo")
+    education_level = forms.ModelChoiceField(
+        queryset=Level.objects.all(), required=False, label="Nivel educativo"
+    )
 
     class Meta:
         model = User

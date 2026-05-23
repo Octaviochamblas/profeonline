@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Inicio | ProfeOnline{% endblock %}
+{% block title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}
+
+{% block meta_description %}Únete a ProfeOnline para recibir clases particulares online, acceder a recursos educativos de primera y potenciar tus habilidades académicas.{% endblock %}
+{% block og_description %}Únete a ProfeOnline para recibir clases particulares online, acceder a recursos educativos de primera y potenciar tus habilidades académicas.{% endblock %}
 
 {% block content %}
-<section class="c-hero">
-    <h1>Bienvenido a ProfeOnline</h1>
-    <p>
-        Plataforma educativa pensada para organizar contenidos, acompañar el aprendizaje
-        y mostrar avances de estudiantes de forma clara y estructurada.
+<section class="c-hero" style="text-align: center; padding: 4rem 1rem;">
+    <h1 style="font-size: 2.5rem; color: #333; margin-bottom: 1rem;">Clases Particulares Online en ProfeOnline</h1>
+    <p style="font-size: 1.2rem; color: #555; max-width: 700px; margin: 0 auto 2rem auto; line-height: 1.6;">
+        Somos tu plataforma educativa integral pensada para organizar contenidos, acompañar tu aprendizaje
+        y potenciar tus habilidades. Encuentra el apoyo escolar exacto que necesitas.
     </p>
+    {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1.1rem; border-radius: 4px; text-decoration: none;">Comienza tus clases hoy</a>
+    {% else %}
+        <a href="{% url 'content:resource_list' %}" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1.1rem; border-radius: 4px; text-decoration: none;">Ver mis cursos y recursos</a>
+    {% endif %}
 </section>
 {% endblock %}

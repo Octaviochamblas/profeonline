@@ -14,7 +14,13 @@ class Profile(models.Model):
     phone = models.CharField(max_length=30, blank=True)
     city = models.CharField(max_length=100, blank=True)
     institution = models.CharField(max_length=150, blank=True)
-    education_level = models.CharField(max_length=100, blank=True)
+    education_level = models.ForeignKey(
+        "content.Level",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="nivel educativo",
+    )
 
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"

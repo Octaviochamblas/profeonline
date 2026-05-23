@@ -3,98 +3,122 @@
 {% block title %}Recursos | ProfeOnline{% endblock %}
 
 {% block content %}
+<div id="resource-list-container" class="fade-in">
 <section class="c-hero">
     <h1>Recursos</h1>
 
     <p>
         {% if user.is_superuser %}
-            <a href="{% url 'content:resource_create' %}" class="btn btn-secondary">Crear nuevo recurso</a>
+            <a href="{% url 'content:resource_create' %}" class="btn btn-secondary fade-in">Crear nuevo recurso</a>
         {% endif %}
     </p>
 
-    <form method="get">
-        <label for="subject">Filtrar por asignatura:</label>
-        <select name="subject" id="subject">
-            <option value="">Todas</option>
-            {% for subject in subjects %}
-                <option value="{{ subject.id }}" {% if selected_subject == subject.id|stringformat:"s" %}selected{% endif %}>
-                    {{ subject.name }}
-                </option>
-            {% endfor %}
-        </select>
+    <!-- Indicador de carga HTMX -->
+    <div id="loading-indicator" class="htmx-indicator skeleton" style="height: 4px; width: 100%; margin-bottom: 1rem;"></div>
 
-        <label for="topic">Filtrar por tema:</label>
-        <select name="topic" id="topic">
-            <option value="">Todos</option>
-            {% for topic in topics %}
-                <option value="{{ topic.id }}" {% if selected_topic == topic.id|stringformat:"s" %}selected{% endif %}>
-                    {{ topic.subject.name }} - {{ topic.name }}
-                </option>
-            {% endfor %}
-        </select>
+    <form method="get" class="glass-panel slide-up" style="padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;" 
+          hx-get="{% url 'content:resource_list' %}" 
+          hx-target="#resource-list-container" 
+          hx-select="#resource-list-container" 
+          hx-trigger="change, submit" 
+          hx-push-url="true" 
+          hx-indicator="#loading-indicator">
+        
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+            <div style="flex: 1; min-width: 200px;">
+                <label for="subject" style="display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Asignatura</label>
+                <select name="subject" id="subject" class="js-custom-select">
+                    <option value="">Todas</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}" {% if selected_subject == subject.id|stringformat:"s" %}selected{% endif %}>
+                            {{ subject.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label for="level">Filtrar por nivel:</label>
-        <select name="level" id="level">
-            <option value="">Todos</option>
-            {% for level in levels %}
-                <option value="{{ level.id }}" {% if selected_level == level.id|stringformat:"s" %}selected{% endif %}>
-                    {{ level.name }}
-                </option>
-            {% endfor %}
-        </select>
+            <div style="flex: 1; min-width: 200px;">
+                <label for="topic" style="display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Tema</label>
+                <select name="topic" id="topic" class="js-custom-select">
+                    <option value="">Todos</option>
+                    {% for topic in topics %}
+                        <option value="{{ topic.id }}" {% if selected_topic == topic.id|stringformat:"s" %}selected{% endif %}>
+                            {{ topic.subject.name }} - {{ topic.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+            <div style="flex: 1; min-width: 200px;">
+                <label for="level" style="display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Nivel</label>
+                <select name="level" id="level" class="js-custom-select">
+                    <option value="">Todos</option>
+                    {% for level in levels %}
+                        <option value="{{ level.id }}" {% if selected_level == level.id|stringformat:"s" %}selected{% endif %}>
+                            {{ level.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <noscript>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </noscript>
+        </div>
     </form>
 
+    <div class="slide-up" style="animation-delay: 0.1s;">
     {% if resources %}
-        <table border="1" cellpadding="8" cellspacing="0" style="margin-top: 1rem; border-collapse: collapse; width: 100%;">
+        <table class="table-modern" style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
             <thead>
                 <tr>
-                    <th>Nombre del recurso</th>
-                    <th>Asignatura</th>
-                    <th>Tema</th>
-                    <th>Niveles</th>
+                    <th style="padding: 1rem; text-align: left; background: var(--surface-soft); color: var(--muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 2px solid var(--border);">Nombre del recurso</th>
+                    <th style="padding: 1rem; text-align: left; background: var(--surface-soft); color: var(--muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 2px solid var(--border);">Asignatura</th>
+                    <th style="padding: 1rem; text-align: left; background: var(--surface-soft); color: var(--muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 2px solid var(--border);">Tema</th>
+                    <th style="padding: 1rem; text-align: left; background: var(--surface-soft); color: var(--muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 2px solid var(--border);">Niveles</th>
                     {% if user.is_superuser %}
-                        <th>Acciones</th>
+                        <th style="padding: 1rem; text-align: left; background: var(--surface-soft); color: var(--muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 2px solid var(--border);">Acciones</th>
                     {% endif %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="border-top: none;">
                 {% for resource in resources %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'content:resource_detail' resource.pk %}">
+                    <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
+                        <td style="padding: 1rem;">
+                            <a href="{% url 'content:resource_detail' resource.pk %}" style="font-weight: 600; color: var(--text);">
                                 {{ resource.title }}
                             </a>
                         </td>
-                        <td>
+                        <td style="padding: 1rem; color: var(--muted);">
                             {% if resource.subject %}
                                 {{ resource.subject.name }}
                             {% else %}
                                 -
                             {% endif %}
                         </td>
-                        <td>
+                        <td style="padding: 1rem; color: var(--muted);">
                             {% if resource.topic %}
                                 {{ resource.topic.name }}
                             {% else %}
                                 -
                             {% endif %}
                         </td>
-                        <td>
+                        <td style="padding: 1rem;">
                             {% if resource.levels.all %}
                                 {% for level in resource.levels.all %}
-                                    {{ level.name }}{% if not forloop.last %}, {% endif %}
+                                    <span style="display: inline-block; background: var(--secondary); color: var(--text); padding: 0.25rem 0.6rem; border-radius: 8px; font-size: 0.8rem; margin-right: 0.3rem; font-weight: 500;">
+                                        {{ level.name }}
+                                    </span>
                                 {% endfor %}
                             {% else %}
-                                -
+                                <span style="color: var(--muted);">-</span>
                             {% endif %}
                         </td>
                         {% if user.is_superuser %}
-                            <td>
-                                <div class="table-actions">
-                                    <a class="action-edit" href="{% url 'content:resource_update' resource.pk %}">Editar</a>
-                                    <a class="action-delete" href="{% url 'content:resource_delete' resource.pk %}">Eliminar</a>
+                            <td style="padding: 1rem;">
+                                <div class="table-actions" style="display: flex; gap: 0.8rem;">
+                                    <a class="action-edit" href="{% url 'content:resource_update' resource.pk %}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">Editar</a>
+                                    <a class="action-delete" href="{% url 'content:resource_delete' resource.pk %}" style="color: #ef4444; text-decoration: none; font-size: 0.9rem;">Eliminar</a>
                                 </div>
                             </td>
                         {% endif %}
@@ -104,85 +128,111 @@
         </table>
 
         {% if is_paginated %}
-            <div style="margin-top: 1rem;">
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; align-items: center; justify-content: center;" class="fade-in">
                 {% if page_obj.has_previous %}
-                    <a href="?page=1{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                    <a class="btn btn-secondary" href="?page=1{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
                         Primera
                     </a>
 
-                    <a href="?page={{ page_obj.previous_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                    <a class="btn btn-secondary" href="?page={{ page_obj.previous_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
                         Anterior
                     </a>
                 {% endif %}
 
-                <span>
+                <span style="color: var(--muted); font-weight: bold; margin: 0 1rem;">
                     Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
                 </span>
 
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                    <a class="btn btn-secondary" href="?page={{ page_obj.next_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
                         Siguiente
                     </a>
 
-                    <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
+                    <a class="btn btn-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">
                         Última
                     </a>
                 {% endif %}
             </div>
         {% endif %}
 
-
     {% else %}
-        <p>No hay recursos para el filtro seleccionado.</p>
+        <div class="empty-state">
+            <p>No hay recursos para el filtro seleccionado.</p>
+        </div>
     {% endif %}
+    </div>
 </section>
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const subjectSelect = document.getElementById("subject");
-    const topicSelect = document.getElementById("topic");
-
-    if (!subjectSelect || !topicSelect) {
-        return;
-    }
-
-    async function updateTopicOptions() {
-        const currentTopic = topicSelect.value;
-        topicSelect.innerHTML = '<option value="">Todos</option>';
-
-        if (!subjectSelect.value) {
-            return;
-        }
-
-        try {
-            const response = await fetch(`/content/topics/options/?subject_id=${subjectSelect.value}`);
-            const data = await response.json();
-
-            data.topics.forEach((topic) => {
-                const option = document.createElement("option");
-                option.value = topic.id;
-                option.textContent = topic.name;
-
-                if (String(topic.id) === String(currentTopic)) {
-                    option.selected = true;
-                }
-
-                topicSelect.appendChild(option);
+function initCustomSelects() {
+    document.querySelectorAll('.js-custom-select').forEach(selectEl => {
+        if (selectEl.dataset.initialized) return;
+        selectEl.dataset.initialized = 'true';
+        
+        selectEl.style.display = 'none';
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+        selectEl.parentNode.insertBefore(wrapper, selectEl);
+        wrapper.appendChild(selectEl);
+        
+        const customSelect = document.createElement('div');
+        customSelect.className = 'custom-select';
+        
+        const trigger = document.createElement('span');
+        trigger.className = 'custom-select-trigger';
+        trigger.textContent = selectEl.options[selectEl.selectedIndex]?.text || 'Seleccionar...';
+        
+        const arrow = document.createElement('span');
+        arrow.className = 'custom-select-arrow';
+        arrow.innerHTML = '▼'; 
+        arrow.style.fontSize = '0.65rem';
+        
+        customSelect.appendChild(trigger);
+        customSelect.appendChild(arrow);
+        wrapper.appendChild(customSelect);
+        
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'custom-options';
+        
+        Array.from(selectEl.options).forEach(option => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'custom-option';
+            if (option.selected) optDiv.classList.add('selected');
+            optDiv.dataset.value = option.value;
+            optDiv.textContent = option.text;
+            
+            optDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectEl.value = option.value;
+                trigger.textContent = option.text;
+                optionsContainer.querySelectorAll('.custom-option').forEach(el => el.classList.remove('selected'));
+                optDiv.classList.add('selected');
+                customSelect.classList.remove('open');
+                
+                selectEl.dispatchEvent(new Event('change', { bubbles: true }));
             });
-        } catch (error) {
-            console.error("Error al cargar temas filtrados:", error);
-        }
-    }
-
-    subjectSelect.addEventListener("change", async function () {
-        topicSelect.value = "";
-        await updateTopicOptions();
+            
+            optionsContainer.appendChild(optDiv);
+        });
+        
+        wrapper.appendChild(optionsContainer);
+        
+        customSelect.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.custom-select').forEach(el => {
+                if(el !== customSelect) el.classList.remove('open');
+            });
+            customSelect.classList.toggle('open');
+        });
     });
+}
 
-    if (subjectSelect.value) {
-        updateTopicOptions();
-    }
+document.addEventListener("DOMContentLoaded", initCustomSelects);
+document.body.addEventListener("htmx:load", initCustomSelects);
+document.addEventListener("click", () => {
+    document.querySelectorAll('.custom-select').forEach(el => el.classList.remove('open'));
 });
 </script>
 {% endblock %}
-

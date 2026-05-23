@@ -1,12 +1,21 @@
 from django.contrib import admin
-from apps.content.models import Level, Module, Resource, Subject, Topic
+from apps.content.models import Area, Level, Module, Resource, Subject, Topic
+
+
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    list_display = ("name", "order", "is_active")
+    search_fields = ("name", "description")
+    list_filter = ("is_active",)
+    prepopulated_fields = {"slug": ("name",)}
+    ordering = ("order", "name")
 
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_active")
+    list_display = ("name", "area", "is_active")
     search_fields = ("name",)
-    list_filter = ("is_active",)
+    list_filter = ("area", "is_active")
     prepopulated_fields = {"slug": ("name",)}
 
 
