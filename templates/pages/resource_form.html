@@ -12,20 +12,70 @@
         {% endif %}
     </h1>
 
-    <p>
+    <p style="margin-bottom: 2rem;">
         ¿No ves la asignatura que necesitas?
-        <a href="{% url 'content:subject_create' %}" class="btn btn-secondary">Crear nueva asignatura</a>
+        <a href="{% url 'content:subject_create' %}" class="btn btn-secondary" style="margin-left: 10px;">Crear nueva asignatura</a>
     </p>
 
-    <form method="post">
+    <form method="post" class="resource-form" style="max-width: 800px; text-align: left; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar</button>
-    </form>
+        
+        {% if form.non_field_errors %}
+            <div class="form-errors" style="color: red; margin-bottom: 1rem;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
 
-    <p>
-        <a href="{% url 'content:resource_list' %}">Volver a recursos</a>
-    </p>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="{{ form.title.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">{{ form.title.label }}</label>
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="flex: 1;">
+                <label for="{{ form.subject.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">{{ form.subject.label }}</label>
+                {{ form.subject }}
+                {{ form.subject.errors }}
+            </div>
+            <div style="flex: 1;">
+                <label for="{{ form.topic.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">{{ form.topic.label }}</label>
+                {{ form.topic }}
+                {{ form.topic.errors }}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="{{ form.levels.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">{{ form.levels.label }}</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; padding: 0.5rem; background: #f9f9f9; border-radius: 4px; border: 1px solid #ccc;">
+                {{ form.levels }}
+            </div>
+            {{ form.levels.errors }}
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="{{ form.description.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">{{ form.description.label }}</label>
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="{{ form.content.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 0.5rem;">{{ form.content.label }}</label>
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+            {{ form.is_published }}
+            <label for="{{ form.is_published.id_for_label }}" style="font-weight: bold; cursor: pointer;">{{ form.is_published.label }}</label>
+            {{ form.is_published.errors }}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'content:resource_list' %}" style="color: #666; text-decoration: none;">Cancelar y volver</a>
+            <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1.1rem; border: none; border-radius: 4px; background: #007bff; color: white; cursor: pointer;">Guardar Recurso</button>
+        </div>
+    </form>
 </section>
 
 <script>
