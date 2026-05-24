@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.core.cache import cache
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from apps.content.models import Level, Module, ModuleResource, Resource, Subject, Topic
@@ -330,6 +331,7 @@ from django.core.exceptions import ValidationError
 
 class YouTubeWebhookSecurityTests(TestCase):
     def setUp(self):
+        cache.clear()
         self.url = reverse("content:api_create_resource_from_video")
 
     @patch.dict(os.environ, {}, clear=True)
@@ -381,6 +383,50 @@ class YouTubeWebhookSecurityTests(TestCase):
         resource = Resource.objects.get(pk=response.json()["resource_id"])
         self.assertEqual(resource.title, "Test Webhook Video")
         self.assertFalse(resource.is_published)
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_logs_failed_authentication_without_secret(self):
+        with self.assertLogs("apps.content.views.api_video", level="WARNING") as logs:
+            response = self.client.post(
+                self.url,
+                data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}',
+                content_type="application/json",
+                HTTP_X_API_TOKEN="wrong-token",
+            )
+
+        self.assertEqual(response.status_code, 401)
+        self.assertTrue(
+            any("Rejected video webhook request" in message for message in logs.output)
+        )
+        self.assertFalse(any("my-secret-token" in message for message in logs.output))
+        self.assertFalse(any("wrong-token" in message for message in logs.output))
+
+    @override_settings(
+        VIDEO_WEBHOOK_RATE_LIMIT_ATTEMPTS=2,
+        VIDEO_WEBHOOK_RATE_LIMIT_WINDOW=60,
+    )
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_rate_limits_repeated_failed_attempts(self):
+        payload = '{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}'
+
+        for _index in range(2):
+            response = self.client.post(
+                self.url,
+                data=payload,
+                content_type="application/json",
+                HTTP_X_API_TOKEN="wrong-token",
+            )
+            self.assertEqual(response.status_code, 401)
+
+        response = self.client.post(
+            self.url,
+            data=payload,
+            content_type="application/json",
+            HTTP_X_API_TOKEN="wrong-token",
+        )
+
+        self.assertEqual(response.status_code, 429)
+        self.assertEqual(response.json()["error"], "Demasiados intentos")
 
 
 class ResourceModelFileValidationTests(TestCase):

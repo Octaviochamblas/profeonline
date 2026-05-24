@@ -111,5 +111,15 @@ class MarkdownSecurityFilterTests(TestCase):
         # Test case: markdown javascript link is neutralized
         rendered = template_to_test.render(Context({"content": "[XSS](javascript:alert(1))"}))
         self.assertNotIn("href=\"javascript:", rendered)
-        self.assertIn('href="#invalid-scheme-alert(1)"', rendered)
+        self.assertIn("<a>XSS</a>", rendered)
+
+    def test_markdown_filter_keeps_safe_links(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context({"content": "[Guia](https://example.com/guia)"})
+        )
+
+        self.assertIn('<a href="https://example.com/guia">Guia</a>', rendered)
 

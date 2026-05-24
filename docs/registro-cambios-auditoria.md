@@ -2,7 +2,7 @@
 
 Fecha: 2026-05-24  
 Estado del proyecto: **Validado y listo para pruebas de integración**  
-Tests totales: **38 exitosos (100% OK)**
+Tests totales: **41 exitosos (100% OK)**
 
 Este documento contiene la explicación detallada de todos los cambios técnicos realizados para subsanar los hallazgos descritos en el reporte `docs/auditoria-seo-uiux-seguridad.md`.
 
@@ -106,3 +106,17 @@ Este documento contiene la explicación detallada de todos los cambios técnicos
 ### 6.1. Exclusión de Static Files Compilados
 *   **Archivo modificado**: [.gitignore](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/.gitignore)
 *   **Solución**: Se agregó la línea `staticfiles/` a la lista de archivos ignorados para evitar que los archivos estáticos colectados localmente para pruebas de despliegue en producción se suban por error al repositorio.
+
+---
+
+## 7. Endurecimiento Residual Antes de Producción
+
+### 7.1. Sanitización Markdown con Allowlist
+*   **Archivos modificados**: [markdown_tags.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/templatetags/markdown_tags.py) y [requirements.txt](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/requirements.txt).
+*   **Mejora aplicada**: La sanitización por expresiones regulares se reemplazó por `bleach==6.2.0`, usando una lista explícita de etiquetas, atributos y protocolos permitidos. Esto mantiene Markdown útil (`strong`, listas, tablas, código y enlaces seguros) y neutraliza HTML crudo o enlaces `javascript:` con una estrategia más robusta.
+*   **Tests agregados**: Se añadió una prueba para confirmar que los enlaces HTTPS válidos siguen funcionando después del endurecimiento.
+
+### 7.2. Rate Limiting y Logging del Webhook
+*   **Archivo modificado**: [api_video.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/content/views/api_video.py).
+*   **Mejora aplicada**: El webhook ahora registra intentos rechazados sin exponer tokens y aplica un límite básico de intentos fallidos por IP usando cache de Django. El límite se puede ajustar con `VIDEO_WEBHOOK_RATE_LIMIT_ATTEMPTS` y `VIDEO_WEBHOOK_RATE_LIMIT_WINDOW`.
+*   **Tests agregados**: Se añadieron pruebas para verificar logs sin secretos y bloqueo `429` tras intentos fallidos repetidos.
