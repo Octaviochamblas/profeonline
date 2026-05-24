@@ -46,3 +46,41 @@ class AccountFormTests(TestCase):
 
         self.assertIn("form-control", form.fields["username"].widget.attrs["class"])
         self.assertIn("form-control", form.fields["password"].widget.attrs["class"])
+
+    def test_custom_user_creation_form_unique_email_case_insensitive(self):
+        form = CustomUserCreationForm(data={
+            "username": "new_user",
+            "email": "ANA@example.com",
+            "first_name": "New",
+            "last_name": "User",
+            "role": "alumno",
+            "password1": "testpass12345",
+            "password2": "testpass12345",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("email", form.errors)
+        self.assertEqual(form.errors["email"][0], "Este correo electrónico ya está en uso.")
+
+    def test_profile_update_form_unique_email_case_insensitive(self):
+        other_user = User.objects.create_user(
+            username="other_profesor",
+            password="testpass123",
+            email="other@example.com",
+        )
+        form = ProfileUpdateForm(
+            data={
+                "first_name": "Ana",
+                "last_name": "Perez",
+                "email": "OTHER@example.com",
+                "phone": "+56 9 1111 2222",
+                "city": "Santiago",
+                "institution": "Colegio ProfeOnline",
+                "education_level": self.level.pk,
+            },
+            instance=self.profile,
+            user=self.user
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("email", form.errors)
+        self.assertEqual(form.errors["email"][0], "Este correo electrónico ya está registrado por otro usuario.")
+

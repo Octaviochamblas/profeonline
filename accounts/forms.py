@@ -41,9 +41,12 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if email and User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Este correo electrónico ya está en uso.")
+        if email:
+            email = email.lower().strip()
+            if User.objects.filter(email__iexact=email).exists():
+                raise forms.ValidationError("Este correo electrónico ya está en uso.")
         return email
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,12 +88,14 @@ class ProfileUpdateForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         if email:
-            qs = User.objects.filter(email=email)
+            email = email.lower().strip()
+            qs = User.objects.filter(email__iexact=email)
             if self.user:
                 qs = qs.exclude(pk=self.user.pk)
             if qs.exists():
                 raise forms.ValidationError("Este correo electrónico ya está registrado por otro usuario.")
         return email
+
 
 
 class StyledAuthenticationForm(AuthenticationForm):

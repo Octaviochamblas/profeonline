@@ -321,3 +321,81 @@ class SpanishUrlTests(TestCase):
         self.assertEqual(level_response.status_code, 200)
         self.assertContains(subject_response, self.resource.title)
         self.assertContains(level_response, self.resource.title)
+
+
+import os
+from unittest.mock import patch
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.exceptions import ValidationError
+
+class YouTubeWebhookSecurityTests(TestCase):
+    def setUp(self):
+        self.url = reverse("content:api_create_resource_from_video")
+
+    @patch.dict(os.environ, {}, clear=True)
+    def test_webhook_fails_closed_if_secret_token_missing(self):
+        response = self.client.post(
+            self.url,
+            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}',
+            content_type="application/json",
+            HTTP_X_API_TOKEN="some_token"
+        )
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()["ok"], False)
+        self.assertIn("Token de seguridad no configurado", response.json()["error"])
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "default_secret_token_change_me"})
+    def test_webhook_fails_closed_if_secret_token_is_default(self):
+        response = self.client.post(
+            self.url,
+            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}',
+            content_type="application/json",
+            HTTP_X_API_TOKEN="default_secret_token_change_me"
+        )
+        self.assertEqual(response.status_code, 500)
+        self.assertIn("Token de seguridad no configurado", response.json()["error"])
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_fails_if_token_in_body(self):
+        # We only accept tokens in headers now
+        response = self.client.post(
+            self.url,
+            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123", "token": "my-secret-token"}',
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 401)
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_success_with_header_token_and_defaults_to_draft(self):
+        response = self.client.post(
+            self.url,
+            data='{"title": "Test Webhook Video", "video_url": "https://youtube.com/watch?v=999"}',
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token"
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.json()["ok"])
+        self.assertTrue(response.json()["created"])
+        
+        # Verify the created resource is draft (is_published = False) by default
+        resource = Resource.objects.get(pk=response.json()["resource_id"])
+        self.assertEqual(resource.title, "Test Webhook Video")
+        self.assertFalse(resource.is_published)
+
+
+class ResourceModelFileValidationTests(TestCase):
+    def test_file_size_validation(self):
+        from apps.content.models.resource import validate_file_size
+        
+        # 10MB limit is 10485760 bytes. Test with 11MB file.
+        large_file = SimpleUploadedFile("test.pdf", b"x" * (11 * 1024 * 1024))
+        with self.assertRaises(ValidationError):
+            validate_file_size(large_file)
+            
+        # Test with 5MB file (should not raise error)
+        small_file = SimpleUploadedFile("test.pdf", b"x" * (5 * 1024 * 1024))
+        try:
+            validate_file_size(small_file)
+        except ValidationError:
+            self.fail("validate_file_size raised ValidationError unexpectedly!")
+

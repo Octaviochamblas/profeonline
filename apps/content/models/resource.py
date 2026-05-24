@@ -1,5 +1,14 @@
 from django.db import models
 from django.utils.text import slugify
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
+
+
+def validate_file_size(value):
+    # Límite de 10MB
+    limit_mb = 10
+    if value.size > limit_mb * 1024 * 1024:
+        raise ValidationError(f"El archivo no puede pesar más de {limit_mb}MB.")
 
 
 class Resource(models.Model):
@@ -37,12 +46,17 @@ class Resource(models.Model):
         blank=True,
         null=True,
         verbose_name="archivo descargable",
+        validators=[
+            FileExtensionValidator(allowed_extensions=["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "png", "jpg", "jpeg", "zip"]),
+            validate_file_size
+        ]
     )
     video_url = models.URLField(
         "URL del video de YouTube",
         blank=True,
         null=True,
     )
+
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

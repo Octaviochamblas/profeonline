@@ -44,15 +44,19 @@ SECURE_SSL_REDIRECT = get_env_bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
 SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_SECURE_HSTS_SECONDS", "31536000"))
 SECURE_HSTS_INCLUDE_SUBDOMAINS = get_env_bool(
     "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
-    default=True,
+    default=False,
 )
-SECURE_HSTS_PRELOAD = get_env_bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
+SECURE_HSTS_PRELOAD = get_env_bool("DJANGO_SECURE_HSTS_PRELOAD", default=False)
 
 if get_env_bool("DJANGO_USE_X_FORWARDED_PROTO", default=False):
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Referrer Policy
 SECURE_REFERRER_POLICY = "same-origin"
+
+# Canonical base URL for SEO
+CANONICAL_BASE_URL = os.environ.get("CANONICAL_BASE_URL", "https://www.profeonline.cl")
+
 
 # Database Configuration (PostgreSQL/SQLite hybrid)
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -70,7 +74,7 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-}
+
 
 STORAGES = {
     "default": {

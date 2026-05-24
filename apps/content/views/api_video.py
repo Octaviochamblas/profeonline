@@ -1,5 +1,6 @@
 import json
 import os
+import secrets
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -11,23 +12,22 @@ from apps.content.models import Resource, Subject, Level
 @require_POST
 def create_resource_from_video(request):
     # Verify Token
-    expected_token = os.environ.get("API_SECRET_TOKEN", "default_secret_token_change_me")
+    expected_token = os.environ.get("API_SECRET_TOKEN")
+    if not expected_token or expected_token == "default_secret_token_change_me":
+        return JsonResponse({"ok": False, "error": "Token de seguridad no configurado en el servidor"}, status=500)
     
-    # Check token in headers or post body
+    # Check token only in headers
     token = request.headers.get("X-Api-Token") or request.headers.get("Authorization")
     if token and token.startswith("Bearer "):
         token = token[7:]
+        
+    if not token or not secrets.compare_digest(token, expected_token):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
         
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
         return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
-        
-    if not token:
-        token = data.get("token")
-        
-    if not token or token != expected_token:
-        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
         
     title = data.get("title")
     video_url = data.get("video_url")
@@ -35,7 +35,8 @@ def create_resource_from_video(request):
     content = data.get("content", "")
     subject_slug = data.get("subject_slug")
     level_slugs = data.get("level_slugs", [])
-    is_published = data.get("is_published", True)
+    is_published = data.get("is_published", False)
+
     
     if not title or not video_url:
         return JsonResponse({"ok": False, "error": "Faltan parámetros requeridos: title y video_url"}, status=400)

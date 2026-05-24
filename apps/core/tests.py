@@ -83,3 +83,33 @@ class SeoTechnicalViewTests(TestCase):
         self.assertNotContains(response, self.inactive_subject.slug)
         self.assertNotContains(response, self.inactive_level.slug)
         self.assertNotContains(response, self.inactive_resource.slug)
+
+
+class MarkdownSecurityFilterTests(TestCase):
+    def test_markdown_filter_escapes_dangerous_html(self):
+        from django.template import Template, Context
+        
+        # Test case: normal markdown formatting works
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+        rendered = template_to_test.render(Context({"content": "This is **bold** text."}))
+        self.assertIn("<strong>bold</strong>", rendered)
+        
+        # Test case: raw <script> tag is escaped
+        rendered = template_to_test.render(Context({"content": "Hello <script>alert(1)</script> World"}))
+        self.assertNotIn("<script>", rendered)
+        self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", rendered)
+        
+        # Test case: raw <iframe> is escaped
+        rendered = template_to_test.render(Context({"content": '<iframe src="http://malicious.com"></iframe>'}))
+        self.assertNotIn("<iframe", rendered)
+        self.assertIn("&lt;iframe src=\"http://malicious.com\"&gt;&lt;/iframe&gt;", rendered)
+
+    def test_markdown_filter_neutralizes_javascript_links(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+        
+        # Test case: markdown javascript link is neutralized
+        rendered = template_to_test.render(Context({"content": "[XSS](javascript:alert(1))"}))
+        self.assertNotIn("href=\"javascript:", rendered)
+        self.assertIn('href="#invalid-scheme-alert(1)"', rendered)
+

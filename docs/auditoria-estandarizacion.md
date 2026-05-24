@@ -239,10 +239,22 @@ Recomendacion:
 ## Validaciones ejecutadas
 
 - `python manage.py check`: sin issues.
-- `python manage.py check --deploy --settings=config.settings.production`: sin issues con variables temporales validas.
-- `python manage.py test`: 29 tests ejecutados y OK.
+- `python manage.py check --deploy --settings=config.settings.production`: sin issues con variables temporales validas (manifest generado con éxito y verificación de sintaxis limpia).
+- `python manage.py test`: 38 tests ejecutados y OK.
 - `python manage.py showmigrations --plan`: migraciones aplicadas.
 - Conteo local: datos de ejemplo semillados para validacion visual de areas, asignaturas, niveles, temas, recursos y modulos.
+
+### 2026-05-24 - Correcciones de Auditoría de Seguridad, SEO y UI/UX
+
+Se resolvieron todos los hallazgos críticos, altos, medios y de UI/UX detallados en `docs/auditoria-seo-uiux-seguridad.md`:
+1. **C1 (Crítico) - SyntaxError**: Se reparó la configuración de base de datos en `config/settings/production.py` (eliminación de la llave sobrante). Validado exitosamente en el chequeo de despliegue (`check --deploy`).
+2. **A1 (Alto) - Markdown Seguro**: Se robusteció el filtro personalizado `|markdown` en `apps/core/templatetags/markdown_tags.py` para escapar HTML crudo y neutralizar enlaces `javascript:` evitando vectores XSS. Se añadieron pruebas unitarias exhaustivas con payloads de prueba en `apps/core/tests.py`.
+3. **A2 (Alto) - Webhook Seguro**: Se rediseñó el webhook en `apps/content/views/api_video.py` para fallar cerrado si no está configurado `API_SECRET_TOKEN` (o si es el valor por defecto), requerir el token obligatoriamente por HTTP Headers (eliminando la lectura del cuerpo JSON), comparar en tiempo constante con `secrets.compare_digest` y guardar recursos creados por la API en borrador (`is_published = False`) por defecto. Se incluyeron 4 tests unitarios de seguridad para validar el webhook en `apps/content/tests/test_views.py`.
+4. **M1 (Medio) - Archivos Adjuntos**: Se añadieron validadores en el modelo `Resource` (para tamaño de archivo máximo de 10MB y para extensiones permitidas tipo PDF, Word, PPT). Se agregaron pruebas para validar este comportamiento.
+5. **M2/M3 (Medio) - Configuración de Producción**: Se configuró `CANONICAL_BASE_URL` para heredar de la variable de entorno en producción con un fallback seguro, y se definieron los HSTS includeSubdomains/preload como opt-in (desactivados por defecto en settings de producción).
+6. **M4 (Medio) - Email Case-Insensitive**: Se modificaron `CustomUserCreationForm` y `ProfileUpdateForm` para normalizar los emails ingresados a minúsculas y realizar consultas insensibles a mayúsculas/minúsculas (`email__iexact`). Se añadieron tests unitarios para verificar la prevención de duplicados con correos en mayúsculas.
+7. **S3 (SEO) - Sitemap Antiguo**: Se eliminó la vista `sitemap_xml` manual obsoleta en `apps/core/views/seo.py` y del archivo de inicialización de vistas, dejando el framework nativo de Django como la única vía.
+8. **U1/U2 (UI/UX) - Estilos Inline y Enlaces Legales**: Se eliminaron todos los estilos inline remanentes en `base.html`, `resource_detail.html` y `resource_list.html` y se trasladaron a clases CSS modulares en `static/css/estilos.css`. Adicionalmente, se quitaron las interacciones/cursores rotos en los spans legales del pie de página (footer).
 
 ## Checklist Operativo
 
@@ -251,3 +263,4 @@ Recomendacion:
 - Revisar que las URLs publicas indexables coincidan con el sitemap.
 - Dejar definido el entorno de produccion con variables obligatorias y HTTPS.
 - Esperar decision de analytics antes de agregar cualquier script de medicion.
+
