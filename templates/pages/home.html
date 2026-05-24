@@ -22,7 +22,7 @@
     <p class="page-hero__kicker">ProfeOnline</p>
     <h1 class="page-hero__title">Clases Particulares Online en ProfeOnline</h1>
     <p class="page-hero__text">
-        Somos una plataforma para ordenar clases particulares, apoyo escolar y recursos educativos por
+        Somos una plataforma para organizar clases particulares, apoyo escolar y recursos educativos por
         asignatura, nivel y tema. Empieza por donde más te urge y sigue desde ahí.
     </p>
     <div class="page-actions">
@@ -34,6 +34,13 @@
         <a href="{% url 'content:subject_list' %}" class="btn btn-secondary">Explorar asignaturas</a>
         <a href="{% url 'content:level_list' %}" class="btn btn-secondary">Explorar niveles</a>
     </div>
+    {% if featured_subjects %}
+        <div class="page-actions page-actions--compact">
+            {% for subject in featured_subjects %}
+                <a class="badge badge--neutral" href="{% url 'content:subject_detail' subject.slug %}">{{ subject.name }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
 </section>
 
 <section class="stack stack--lg">

@@ -21,7 +21,13 @@
             <div>
                 <p class="page-hero__kicker">Asignatura</p>
                 <h1>{{ subject.name }}</h1>
-                <p class="page-hero__text">{% if subject.description %}{{ subject.description }}{% else %}Recursos, temas y materiales de apoyo escolar para esta asignatura.{% endif %}</p>
+                <p class="page-hero__text">
+                    {% if subject.description %}
+                        {{ subject.description }}
+                    {% else %}
+                        Esta página reúne temas activos, niveles relacionados y recursos publicados para {{ subject.name }}.
+                    {% endif %}
+                </p>
             </div>
             <a class="btn btn-secondary" href="{% url 'content:resource_list' %}?subject={{ subject.id }}">Ver recursos</a>
         </div>
@@ -35,6 +41,13 @@
                     <a class="badge badge--info" href="{% url 'content:level_detail' level.slug %}">{{ level.name }}</a>
                 {% endfor %}
             {% endif %}
+        </div>
+
+        <div class="panel panel--spacious">
+            <p class="form-help">
+                Si buscas clases particulares de {{ subject.name }}, este es el punto de entrada para revisar qué
+                niveles están cubiertos y qué materiales ya están listos para usar.
+            </p>
         </div>
     </div>
 

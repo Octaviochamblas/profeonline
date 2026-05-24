@@ -72,7 +72,7 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Se agregaron JSON-LD `BreadcrumbList` y `Article` en los recursos, ademas de `BreadcrumbList` en asignaturas y niveles.
 - El sitemap incluye ahora paginas publicas de asignaturas, niveles y recursos publicados.
 - Se agrego favicon y se limpio CSS legacy no usado de la base visual.
-- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 25 tests y variables de entorno temporales validas.
+- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 29 tests y variables de entorno temporales validas.
 
 ### 2026-05-24 - Contenido semilla y redirecciones legacy
 
@@ -80,7 +80,14 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Las rutas legacy bajo `/content/...` ahora redirigen a las URLs canonicas en espanol, incluyendo detalles antiguos por ID hacia slugs publicos.
 - Home, asignaturas, niveles, recursos y modulos ya muestran contenido real en la base local tras ejecutar la semilla.
 - Se corrigio la plantilla de modulos para mostrar `module.title` y no dejar oculto el contenido semillado.
-- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 25 tests y variables de entorno temporales validas.
+- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 29 tests y variables de entorno temporales validas.
+
+### 2026-05-24 - UX de filtros de recursos
+
+- `ResourceListView` normaliza `subject`, `topic` y `level` antes de consultar recursos publicados.
+- La vista de recursos ahora muestra filtros activos con etiquetas legibles y un enlace `Limpiar filtros`.
+- La paginacion conserva solo los filtros normalizados y evita arrastrar combinaciones invalidas.
+- Se agregaron tests para el enlace de limpieza y para la paginacion con filtros normalizados.
 
 ## Hallazgos prioritarios
 
@@ -170,7 +177,7 @@ Recomendacion:
 
 ### P3 - Tests son placeholders
 
-Estado: resuelto. Ahora `manage.py test` ejecuta 25 tests reales que cubren seguridad, SEO tecnico, URLs en espanol, landings de asignatura/nivel, contenido semilla y recursos publicados/borradores.
+Estado: resuelto. Ahora `manage.py test` ejecuta 29 tests reales que cubren seguridad, SEO tecnico, URLs en espanol, landings de asignatura/nivel, contenido semilla, recursos publicados/borradores y filtros normalizados.
 
 Recomendacion:
 - Seguir aumentando cobertura cuando agreguemos nuevas landings o flujos de edicion.
@@ -210,10 +217,20 @@ Recomendacion:
    - CTAs por etapa: explorar recursos, crear cuenta, contactar/profesor.
    - Copys por asignatura/nivel.
 
+6. Medicion SEO:
+   - Documentar alta y verificacion en Google Search Console.
+   - Mantener sitemap y robots alineados con las URLs publicas activas.
+   - Verificar dominio real antes de abrir indexacion completa.
+
+7. Preparacion de despliegue:
+   - Definir `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS` y `DJANGO_CSRF_TRUSTED_ORIGINS` en el entorno final.
+   - Revisar HTTPS, static files, cookies secure, sitemap, robots y cache en produccion.
+   - No guardar secretos, IDs ni tokens reales dentro del repositorio.
+
 ## Validaciones ejecutadas
 
 - `python manage.py check`: sin issues.
 - `python manage.py check --deploy --settings=config.settings.production`: sin issues con variables temporales validas.
-- `python manage.py test`: 25 tests ejecutados y OK.
+- `python manage.py test`: 29 tests ejecutados y OK.
 - `python manage.py showmigrations --plan`: migraciones aplicadas.
 - Conteo local: datos de ejemplo semillados para validacion visual de areas, asignaturas, niveles, temas, recursos y modulos.

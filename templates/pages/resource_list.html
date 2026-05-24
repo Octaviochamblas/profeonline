@@ -65,6 +65,22 @@
         </div>
     </form>
 
+    {% if has_active_filters %}
+        <div class="panel panel--spacious">
+            <div class="page-toolbar">
+                <div class="stack">
+                    <p class="page-hero__kicker">Filtros activos</p>
+                    <div class="detail-meta">
+                        {% for active_filter in active_filters %}
+                            <span class="badge badge--info">{{ active_filter.label }}: {{ active_filter.value }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a class="btn btn-secondary" href="{% url 'content:resource_list' %}">Limpiar filtros</a>
+            </div>
+        </div>
+    {% endif %}
+
     {% if resources %}
         <div class="table-shell">
             <table class="data-table">
@@ -127,15 +143,15 @@
         {% if is_paginated %}
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a class="btn btn-secondary" href="?page=1{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">Primera</a>
-                    <a class="btn btn-secondary" href="?page={{ page_obj.previous_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">Anterior</a>
+                    <a class="btn btn-secondary" href="?page=1{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Primera</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.previous_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Anterior</a>
                 {% endif %}
 
                 <span class="pagination__status">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
                 {% if page_obj.has_next %}
-                    <a class="btn btn-secondary" href="?page={{ page_obj.next_page_number }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">Siguiente</a>
-                    <a class="btn btn-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}{% if selected_topic %}&topic={{ selected_topic }}{% endif %}{% if selected_level %}&level={{ selected_level }}{% endif %}">Última</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.next_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Siguiente</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Última</a>
                 {% endif %}
             </div>
         {% endif %}

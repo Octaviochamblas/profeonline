@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from django.views.generic import ListView
 from apps.content.models import Level, Resource, Subject, Topic
 from apps.content.selectors import get_published_resources
@@ -20,6 +22,12 @@ class ResourceListView(ListView):
         subject_id = self._clean_id("subject")
         topic_id = self._clean_id("topic")
         level_id = self._clean_id("level")
+
+        if subject_id and not Subject.objects.filter(pk=subject_id, is_active=True).exists():
+            subject_id = ""
+
+        if level_id and not Level.objects.filter(pk=level_id, is_active=True).exists():
+            level_id = ""
 
         if topic_id:
             topics = Topic.objects.filter(pk=topic_id, is_active=True)
@@ -49,6 +57,45 @@ class ResourceListView(ListView):
 
         selected_filters = self.get_selected_filters()
         selected_subject = selected_filters["subject"]
+        selected_topic = selected_filters["topic"]
+        selected_level = selected_filters["level"]
+
+        selected_subject_obj = (
+            Subject.objects.filter(pk=selected_subject, is_active=True).first()
+            if selected_subject
+            else None
+        )
+        selected_topic_obj = (
+            Topic.objects.select_related("subject")
+            .filter(pk=selected_topic, is_active=True)
+            .first()
+            if selected_topic
+            else None
+        )
+        selected_level_obj = (
+            Level.objects.filter(pk=selected_level, is_active=True).first()
+            if selected_level
+            else None
+        )
+
+        active_filters = []
+        if selected_subject_obj:
+            active_filters.append(
+                {"label": "Asignatura", "value": selected_subject_obj.name}
+            )
+        if selected_topic_obj:
+            active_filters.append(
+                {
+                    "label": "Tema",
+                    "value": f"{selected_topic_obj.subject.name} - {selected_topic_obj.name}",
+                }
+            )
+        if selected_level_obj:
+            active_filters.append({"label": "Nivel", "value": selected_level_obj.name})
+
+        filter_querystring = urlencode(
+            {key: value for key, value in selected_filters.items() if value}
+        )
 
         context["subjects"] = Subject.objects.filter(is_active=True)
 
@@ -64,6 +111,9 @@ class ResourceListView(ListView):
 
         context["levels"] = Level.objects.filter(is_active=True).order_by("order", "name")
         context["selected_subject"] = selected_subject
-        context["selected_topic"] = selected_filters["topic"]
-        context["selected_level"] = selected_filters["level"]
+        context["selected_topic"] = selected_topic
+        context["selected_level"] = selected_level
+        context["active_filters"] = active_filters
+        context["has_active_filters"] = bool(active_filters)
+        context["filter_querystring"] = filter_querystring
         return context

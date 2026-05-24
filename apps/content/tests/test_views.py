@@ -176,6 +176,26 @@ class ResourceListFilterTests(TestCase):
             is_published=True,
         )
 
+    def test_clear_filters_link_is_visible_only_when_filters_are_active(self):
+        response = self.client.get(reverse("content:resource_list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Limpiar filtros")
+
+        response = self.client.get(
+            reverse("content:resource_list"),
+            {
+                "subject": self.math.pk,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Limpiar filtros")
+        self.assertContains(response, reverse("content:resource_list"))
+        self.assertContains(response, "Asignatura: Matematica")
+        self.assertTrue(response.context["has_active_filters"])
+        self.assertEqual(response.context["filter_querystring"], f"subject={self.math.pk}")
+
     def test_invalid_topic_for_selected_subject_is_ignored(self):
         response = self.client.get(
             reverse("content:resource_list"),
@@ -202,6 +222,31 @@ class ResourceListFilterTests(TestCase):
 
         self.assertContains(response, "Matematica - Ecuaciones lineales")
         self.assertNotContains(response, "Fisica - Movimiento rectilineo")
+
+    def test_pagination_keeps_normalized_filters(self):
+        for index in range(20):
+            Resource.objects.create(
+                title=f"Ejercicio extra {index + 1}",
+                subject=self.math,
+                topic=self.math_topic,
+                is_published=True,
+            )
+
+        response = self.client.get(
+            reverse("content:resource_list"),
+            {
+                "subject": self.math.pk,
+                "topic": self.physics_topic.pk,
+                "page": 2,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["selected_topic"], "")
+        self.assertEqual(response.context["filter_querystring"], f"subject={self.math.pk}")
+        self.assertEqual(response.context["page_obj"].number, 2)
+        self.assertContains(response, f"?page=1&subject={self.math.pk}")
+        self.assertNotContains(response, f"topic={self.physics_topic.pk}")
 
 
 class SpanishUrlTests(TestCase):
