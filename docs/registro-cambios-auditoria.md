@@ -3,7 +3,7 @@
 Fecha de consolidacion: 2026-05-24
 Rama actual: `main`
 Estado: validado y listo para pruebas de integracion/despliegue
-Tests actuales: 41 exitosos
+Tests actuales: 42 exitosos
 
 Este documento consolida la informacion que antes estaba repartida en:
 
@@ -78,7 +78,10 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
 - Se movieron estilos inline remanentes a clases CSS.
 - Footer legal dejo de simular enlaces si aun no hay paginas reales.
 - HTMX se sirve localmente desde `static/js/htmx.min.js`.
-- Dropdowns custom tienen soporte de teclado basico.
+- Dropdowns custom tienen soporte de accesibilidad completo (`aria-controls`, vinculación ID, y cierre automático con Tab).
+- Anillo de foco `:focus-visible` visible y consistente en todos los botones, campos de entrada, enlaces y comboboxes.
+- Atributo `title` en el iframe de YouTube en detalles de recursos.
+- Inyección automatizada de `aria-required="true"` en todos los campos obligatorios de formularios Django.
 
 ### Integraciones y despliegue
 
@@ -118,7 +121,8 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
 - Integraciones: Supabase/PostgreSQL, WhiteNoise, allauth Google, HTMX local, archivos, videos, webhook, Markdown y sitemap nativo.
 - Auditoria completa de SEO, UI/UX y seguridad.
 - Correccion de hallazgos criticos/altos/medios.
-- Endurecimiento residual con Bleach, logging y rate limiting en webhook.
+- Endurecimiento de webhook con Bleach, logging y rate limiting.
+- Auditoría y resolución de hallazgos de accesibilidad WCAG (estilos de foco, iframe de YouTube, comportamiento Tab y aria-required en formularios).
 
 ## Hallazgos resueltos
 
@@ -198,7 +202,7 @@ Estado: resuelto.
 Ultima validacion conocida:
 
 - `.venv\Scripts\python.exe manage.py check`: OK.
-- `.venv\Scripts\python.exe manage.py test`: OK, 41 tests.
+- `.venv\Scripts\python.exe manage.py test`: OK, 42 tests.
 - `.venv\Scripts\python.exe manage.py check --deploy --settings=config.settings.production`: OK con variables temporales validas.
 - `.venv\Scripts\python.exe manage.py collectstatic --noinput --settings=config.settings.production`: OK.
 - `git diff --check`: OK.
