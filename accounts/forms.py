@@ -39,6 +39,12 @@ class CustomUserCreationForm(UserCreationForm):
             "password2",
         ]
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email and User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este correo electrónico ya está en uso.")
+        return email
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         apply_form_classes(self)
@@ -67,14 +73,24 @@ class ProfileUpdateForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", None)
+        self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
 
-        if user:
-            self.fields["first_name"].initial = user.first_name
-            self.fields["last_name"].initial = user.last_name
-            self.fields["email"].initial = user.email
+        if self.user:
+            self.fields["first_name"].initial = self.user.first_name
+            self.fields["last_name"].initial = self.user.last_name
+            self.fields["email"].initial = self.user.email
         apply_form_classes(self)
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email:
+            qs = User.objects.filter(email=email)
+            if self.user:
+                qs = qs.exclude(pk=self.user.pk)
+            if qs.exists():
+                raise forms.ValidationError("Este correo electrónico ya está registrado por otro usuario.")
+        return email
 
 
 class StyledAuthenticationForm(AuthenticationForm):

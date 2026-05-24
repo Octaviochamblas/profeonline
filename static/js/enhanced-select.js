@@ -150,15 +150,41 @@
             button.setAttribute("aria-expanded", (!isOpen).toString());
         });
 
-        button.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                button.click();
-            }
+        wrapper.addEventListener("keydown", (event) => {
+            const isOpen = button.classList.contains("open");
+            const options = Array.from(optionsList.querySelectorAll(".custom-option"));
+            const activeElement = document.activeElement;
+            const activeIndex = options.indexOf(activeElement);
 
-            if (event.key === "Escape") {
-                button.classList.remove("open");
-                button.setAttribute("aria-expanded", "false");
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                if (!isOpen) {
+                    button.classList.add("open");
+                    button.setAttribute("aria-expanded", "true");
+                    setTimeout(() => {
+                        const selectedOpt = optionsList.querySelector(".custom-option.selected") || options[0];
+                        if (selectedOpt) selectedOpt.focus();
+                    }, 50);
+                } else {
+                    const nextIndex = activeIndex < 0 ? 0 : (activeIndex + 1) % options.length;
+                    options[nextIndex].focus();
+                }
+            } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                if (isOpen) {
+                    if (activeIndex <= 0) {
+                        button.focus();
+                    } else {
+                        options[activeIndex - 1].focus();
+                    }
+                }
+            } else if (event.key === "Escape") {
+                if (isOpen) {
+                    event.preventDefault();
+                    button.classList.remove("open");
+                    button.setAttribute("aria-expanded", "false");
+                    button.focus();
+                }
             }
         });
 

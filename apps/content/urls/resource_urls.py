@@ -6,6 +6,7 @@ from apps.content.views import (
     ResourceListView,
     ResourceUpdateView,
     resource_options,
+    create_resource_from_video,
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path("recursos/<slug:slug>/", ResourceDetailView.as_view(), name="resource_detail"),
     path("recursos/<int:pk>/editar/", ResourceUpdateView.as_view(), name="resource_update"),
     path("recursos/<int:pk>/eliminar/", ResourceDeleteView.as_view(), name="resource_delete"),
+    path("api/recursos/crear-video/", create_resource_from_video, name="api_create_resource_from_video"),
 ]

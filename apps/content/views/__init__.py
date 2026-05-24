@@ -27,3 +27,5 @@ from .resource_options import resource_options
 from .module_resource_add import module_resource_add
 from .module_resource_remove import module_resource_remove
 from .module_resource_list import module_resource_list
+from .api_video import create_resource_from_video
+

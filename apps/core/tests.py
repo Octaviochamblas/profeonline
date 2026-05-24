@@ -6,6 +6,8 @@ from apps.content.models import Level, Resource, Subject
 
 class SeoTechnicalViewTests(TestCase):
     def setUp(self):
+        from django.contrib.sites.models import Site
+        Site.objects.filter(pk=1).update(domain="testserver", name="testserver")
         self.subject = Subject.objects.create(name="Matematica", is_active=True)
         self.inactive_subject = Subject.objects.create(name="Historia", is_active=False)
         self.level = Level.objects.create(name="Primaria", is_active=True)

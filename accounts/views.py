@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 
@@ -27,6 +28,7 @@ def register_view(request):
             )
 
             login(request, user)
+            messages.success(request, "¡Registro completado con éxito! Bienvenido a ProfeOnline.")
             return redirect("core:home")
     else:
         form = CustomUserCreationForm()
@@ -58,6 +60,7 @@ def profile_update_view(request):
             request.user.save()
 
             form.save()
+            messages.success(request, "¡Tu perfil ha sido actualizado con éxito!")
             return redirect("profile")
     else:
         form = ProfileUpdateForm(instance=profile, user=request.user)

@@ -32,6 +32,17 @@ class Resource(models.Model):
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True)
     description = models.TextField("Descripción breve", blank=True)
     content = models.TextField("Contenido", blank=True)
+    file = models.FileField(
+        upload_to="resources/files/",
+        blank=True,
+        null=True,
+        verbose_name="archivo descargable",
+    )
+    video_url = models.URLField(
+        "URL del video de YouTube",
+        blank=True,
+        null=True,
+    )
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

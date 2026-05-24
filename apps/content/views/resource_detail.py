@@ -1,8 +1,17 @@
+import re
 from django.db.models import Q
 from django.views.generic import DetailView
 
 from apps.content.models import Resource
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
+
+
+def get_youtube_id(url):
+    if not url:
+        return None
+    regex = r'(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})'
+    match = re.search(regex, url)
+    return match.group(1) if match else None
 
 
 class ResourceDetailView(DetailView):
@@ -26,6 +35,7 @@ class ResourceDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         resource = self.object
+        context["youtube_id"] = get_youtube_id(resource.video_url)
         breadcrumb_items = [
             ("Recursos", "content:resource_list", None),
         ]

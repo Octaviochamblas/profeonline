@@ -28,10 +28,22 @@
         hx-get="{% url 'content:resource_list' %}"
         hx-target="#resource-list-container"
         hx-select="#resource-list-container"
-        hx-trigger="change, submit"
+        hx-trigger="change, submit, keyup delay:500ms from:#search-input"
         hx-push-url="true"
         hx-indicator="#loading-indicator"
     >
+        <div class="form-field" style="margin-bottom: 0.5rem;">
+            <label class="form-label" for="search-input">Buscar recurso</label>
+            <input 
+                type="search" 
+                name="q" 
+                id="search-input" 
+                value="{{ selected_q|default:'' }}" 
+                placeholder="Escribe el título o palabras clave del recurso..."
+                autocomplete="off"
+            >
+        </div>
+
         <div class="form-grid form-grid--3">
             <div class="form-field">
                 <label class="form-label" for="subject">Asignatura</label>
@@ -143,15 +155,35 @@
         {% if is_paginated %}
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a class="btn btn-secondary" href="?page=1{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Primera</a>
-                    <a class="btn btn-secondary" href="?page={{ page_obj.previous_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Anterior</a>
+                    <a class="btn btn-secondary" href="?page=1{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page=1{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#resource-list-container"
+                       hx-select="#resource-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Primera</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.previous_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page={{ page_obj.previous_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#resource-list-container"
+                       hx-select="#resource-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Anterior</a>
                 {% endif %}
 
                 <span class="pagination__status">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
                 {% if page_obj.has_next %}
-                    <a class="btn btn-secondary" href="?page={{ page_obj.next_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Siguiente</a>
-                    <a class="btn btn-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}">Última</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.next_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page={{ page_obj.next_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#resource-list-container"
+                       hx-select="#resource-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Siguiente</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page={{ page_obj.paginator.num_pages }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#resource-list-container"
+                       hx-select="#resource-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Última</a>
                 {% endif %}
             </div>
         {% endif %}

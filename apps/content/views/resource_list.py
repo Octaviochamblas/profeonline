@@ -37,10 +37,13 @@ class ResourceListView(ListView):
             if not topics.exists():
                 topic_id = ""
 
+        q = self.request.GET.get("q", "").strip()
+
         self._selected_filters = {
             "subject": subject_id,
             "topic": topic_id,
             "level": level_id,
+            "q": q,
         }
         return self._selected_filters
 
@@ -50,6 +53,7 @@ class ResourceListView(ListView):
             subject_id=selected_filters["subject"] or None,
             topic_id=selected_filters["topic"] or None,
             level_id=selected_filters["level"] or None,
+            q=selected_filters["q"] or None,
         )
 
     def get_context_data(self, **kwargs):
@@ -59,6 +63,7 @@ class ResourceListView(ListView):
         selected_subject = selected_filters["subject"]
         selected_topic = selected_filters["topic"]
         selected_level = selected_filters["level"]
+        selected_q = selected_filters["q"]
 
         selected_subject_obj = (
             Subject.objects.filter(pk=selected_subject, is_active=True).first()
@@ -79,6 +84,8 @@ class ResourceListView(ListView):
         )
 
         active_filters = []
+        if selected_q:
+            active_filters.append({"label": "Búsqueda", "value": selected_q})
         if selected_subject_obj:
             active_filters.append(
                 {"label": "Asignatura", "value": selected_subject_obj.name}
@@ -113,6 +120,7 @@ class ResourceListView(ListView):
         context["selected_subject"] = selected_subject
         context["selected_topic"] = selected_topic
         context["selected_level"] = selected_level
+        context["selected_q"] = selected_q
         context["active_filters"] = active_filters
         context["has_active_filters"] = bool(active_filters)
         context["filter_querystring"] = filter_querystring

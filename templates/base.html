@@ -7,11 +7,11 @@
     <title>{% block title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, tema y nivel en ProfeOnline.{% endblock %}">
     <meta name="robots" content="{% block robots %}index,follow{% endblock %}">
-    <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
+    <link rel="canonical" href="{% block canonical_url %}{{ CANONICAL_BASE_URL }}{{ request.path }}{% endblock %}">
     <meta property="og:title" content="{% block og_title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, tema y nivel en ProfeOnline.{% endblock %}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ CANONICAL_BASE_URL }}{{ request.path }}{% endblock %}">
     {% block og_image %}
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-default.svg' %}">
     <meta property="og:image:alt" content="ProfeOnline">
@@ -19,8 +19,11 @@
     {% endblock %}
     <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
     <link rel="apple-touch-icon" href="{% static 'img/favicon.svg' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <script src="{% static 'js/htmx.min.js' %}"></script>
     <script defer src="{% static 'js/enhanced-select.js' %}"></script>
     {% block structured_data %}{% endblock %}
 </head>
@@ -69,8 +72,47 @@
 
     <main class="site-main">
         <div class="container content-wrapper">
+            {% if messages %}
+                <div class="messages-container" style="display: grid; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    {% for message in messages %}
+                        <div class="badge {% if 'error' in message.tags %}badge--danger{% elif 'success' in message.tags %}badge--success{% else %}badge--info{% endif %}" style="padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); font-size: 0.95rem; display: flex; align-items: center; font-weight: 500;">
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% block content %}{% endblock %}
         </div>
     </main>
+
+    <footer class="site-footer" style="background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 0; margin-top: 4rem; color: var(--muted); font-size: 0.95rem;">
+        <div class="container" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: var(--text); margin: 0 0 1rem; font-weight: 700; font-size: 1.25rem;">ProfeOnline</h3>
+                <p style="line-height: 1.6; margin: 0;">Plataforma de clases particulares, apoyo escolar y recursos educativos organizados para potenciar tu aprendizaje paso a paso.</p>
+            </div>
+            <div style="display: flex; gap: 3rem; flex-wrap: wrap;">
+                <div>
+                    <h4 style="color: var(--text); margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">Navegación</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem;">
+                        <li><a href="{% url 'content:resource_list' %}" style="color: var(--muted); text-decoration: none;">Recursos</a></li>
+                        <li><a href="{% url 'content:subject_list' %}" style="color: var(--muted); text-decoration: none;">Asignaturas</a></li>
+                        <li><a href="{% url 'content:level_list' %}" style="color: var(--muted); text-decoration: none;">Niveles</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: var(--text); margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">Legal</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem;">
+                        <li><span style="color: var(--muted); cursor: pointer;">Términos de uso</span></li>
+                        <li><span style="color: var(--muted); cursor: pointer;">Privacidad</span></li>
+                        <li><span style="color: var(--muted); cursor: pointer;">Contacto</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="border-top: 1px solid var(--border); margin-top: 2rem; padding-top: 1.5rem; text-align: center; font-size: 0.88rem;">
+            <p style="margin: 0;">&copy; {% now "Y" %} ProfeOnline. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -49,3 +50,34 @@ SECURE_HSTS_PRELOAD = get_env_bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
 
 if get_env_bool("DJANGO_USE_X_FORWARDED_PROTO", default=False):
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Referrer Policy
+SECURE_REFERRER_POLICY = "same-origin"
+
+# Database Configuration (PostgreSQL/SQLite hybrid)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    }
+    # Supabase generally requires SSL. We check if the provider is postgresql to apply SSL.
+    if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
+        DATABASES["default"]["OPTIONS"] = {"sslmode": "require"}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+}
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+

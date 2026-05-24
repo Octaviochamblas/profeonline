@@ -13,6 +13,8 @@ class ResourceForm(forms.ModelForm):
             "levels",
             "description",
             "content",
+            "file",
+            "video_url",
             "is_published",
         ]
         labels = {
