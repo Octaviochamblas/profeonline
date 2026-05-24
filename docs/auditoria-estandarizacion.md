@@ -27,6 +27,15 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Login, registro y perfil usan `noindex,nofollow` para no gastar crawl budget en flujos de cuenta.
 - Se reinicio el servidor local y `/content/topics/` muestra `Temas para Clases Particulares | ProfeOnline`.
 
+### 2026-05-23 - Configuracion segura de produccion
+
+- `production.py` carga `DJANGO_SECRET_KEY` y `DJANGO_ALLOWED_HOSTS` desde variables de entorno obligatorias.
+- `CSRF_TRUSTED_ORIGINS` se puede configurar con `DJANGO_CSRF_TRUSTED_ORIGINS`.
+- Cookies de sesion y CSRF quedan marcadas como secure en produccion.
+- `SECURE_SSL_REDIRECT` y HSTS quedan activos por defecto, con overrides por entorno.
+- `SECURE_PROXY_SSL_HEADER` solo se activa si `DJANGO_USE_X_FORWARDED_PROTO` esta habilitado.
+- `python manage.py check --deploy --settings=config.settings.production` pasa sin issues usando variables temporales de validacion.
+
 ## Hallazgos prioritarios
 
 ### P1 - Borradores accesibles por URL directa
@@ -58,6 +67,8 @@ Recomendacion:
 ### P1 - Produccion no esta lista para despliegue seguro
 
 `manage.py check --deploy --settings=config.settings.production` devuelve 6 warnings: HSTS no configurado, SSL redirect no configurado, `SECRET_KEY` insegura, cookies de sesion/CSRF no secure y `ALLOWED_HOSTS` vacio.
+
+Estado: resuelto en `production.py`; falta definir los valores reales en el entorno de despliegue.
 
 Evidencia:
 - `config/settings/base.py`: `SECRET_KEY` hardcodeada con prefijo `django-insecure-`
