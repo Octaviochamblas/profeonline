@@ -89,6 +89,14 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - La paginacion conserva solo los filtros normalizados y evita arrastrar combinaciones invalidas.
 - Se agregaron tests para el enlace de limpieza y para la paginacion con filtros normalizados.
 
+### 2026-05-24 - Medicion SEO y despliegue
+
+- La base SEO tecnica ya esta lista para medicion: `robots.txt` y `sitemap.xml` cubren las paginas publicas activas.
+- El siguiente paso operativo es dar de alta y verificar el dominio en Google Search Console.
+- No se agregan scripts de analytics hasta decidir la herramienta concreta.
+- La preparacion de despliegue queda documentada con variables de entorno, HTTPS, static files, cookies secure, sitemap, robots, cache y dominio.
+- No se deben guardar secretos, tokens ni IDs reales dentro del repositorio.
+
 ## Hallazgos prioritarios
 
 ### P1 - Borradores accesibles por URL directa
@@ -221,6 +229,7 @@ Recomendacion:
    - Documentar alta y verificacion en Google Search Console.
    - Mantener sitemap y robots alineados con las URLs publicas activas.
    - Verificar dominio real antes de abrir indexacion completa.
+   - No agregar analytics hasta definir la herramienta.
 
 7. Preparacion de despliegue:
    - Definir `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS` y `DJANGO_CSRF_TRUSTED_ORIGINS` en el entorno final.
@@ -234,3 +243,11 @@ Recomendacion:
 - `python manage.py test`: 29 tests ejecutados y OK.
 - `python manage.py showmigrations --plan`: migraciones aplicadas.
 - Conteo local: datos de ejemplo semillados para validacion visual de areas, asignaturas, niveles, temas, recursos y modulos.
+
+## Checklist Operativo
+
+- Verificar en el navegador `robots.txt` y `sitemap.xml`.
+- Confirmar que Search Console acepta el dominio real.
+- Revisar que las URLs publicas indexables coincidan con el sitemap.
+- Dejar definido el entorno de produccion con variables obligatorias y HTTPS.
+- Esperar decision de analytics antes de agregar cualquier script de medicion.
