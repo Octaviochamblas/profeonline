@@ -46,6 +46,16 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Se agregaron tests para canonical/OG URL/JSON-LD, robots y sitemap.
 - Se reinicio el servidor local y `/robots.txt` y `/sitemap.xml` responden 200.
 
+### 2026-05-23 - URLs publicas en espanol y slugs
+
+- Las rutas nombradas de contenido ahora resuelven a URLs publicas en espanol: `/recursos/`, `/asignaturas/`, `/temas/`, `/niveles/`, `/modulos/` y `/areas/`.
+- El detalle publico de recurso usa slug: `/recursos/<slug>/`.
+- Las URLs antiguas bajo `/content/...` se mantienen como compatibilidad temporal.
+- Los enlaces de recursos en templates usan `resource.slug`.
+- El sitemap pasa a listar las URLs canonicas en espanol.
+- Se agregaron tests para reverses en espanol, detalle por slug y compatibilidad legacy.
+- `python manage.py test` ejecuta 14 tests y pasa correctamente.
+
 ## Hallazgos prioritarios
 
 ### P1 - Borradores accesibles por URL directa
@@ -108,6 +118,8 @@ Recomendacion:
 ### P2 - URLs publicas no aprovechan slugs
 
 Los modelos tienen `slug`, pero las URLs publicas y enlaces usan IDs numericos.
+
+Estado: parcialmente resuelto para recursos. El detalle publico de recurso usa slug y las listas principales resuelven a URLs en espanol. Falta crear landings de detalle por slug para asignaturas, niveles, temas, areas y modulos si se decide exponerlas individualmente.
 
 Evidencia:
 - `Resource.slug`, `Subject.slug`, `Level.slug`, `Area.slug`, `Topic.slug`, `Module.slug`

@@ -23,7 +23,7 @@ class ResourceDetailViewTests(TestCase):
 
     def test_anonymous_user_can_see_published_resource(self):
         response = self.client.get(
-            reverse("content:resource_detail", args=[self.published_resource.pk])
+            reverse("content:resource_detail", args=[self.published_resource.slug])
         )
 
         self.assertEqual(response.status_code, 200)
@@ -31,7 +31,7 @@ class ResourceDetailViewTests(TestCase):
 
     def test_anonymous_user_cannot_see_draft_resource(self):
         response = self.client.get(
-            reverse("content:resource_detail", args=[self.draft_resource.pk])
+            reverse("content:resource_detail", args=[self.draft_resource.slug])
         )
 
         self.assertEqual(response.status_code, 404)
@@ -40,7 +40,7 @@ class ResourceDetailViewTests(TestCase):
         self.client.force_login(self.admin)
 
         response = self.client.get(
-            reverse("content:resource_detail", args=[self.draft_resource.pk])
+            reverse("content:resource_detail", args=[self.draft_resource.slug])
         )
 
         self.assertEqual(response.status_code, 200)
@@ -115,3 +115,34 @@ class ModuleResourceEndpointTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["resources"][0]["title"], self.resource.title)
+
+
+class SpanishUrlTests(TestCase):
+    def setUp(self):
+        self.resource = Resource.objects.create(
+            title="Guia de funciones",
+            is_published=True,
+        )
+
+    def test_public_content_urls_reverse_to_spanish_paths(self):
+        self.assertEqual(reverse("content:resource_list"), "/recursos/")
+        self.assertEqual(reverse("content:area_list"), "/areas/")
+        self.assertEqual(reverse("content:subject_list"), "/asignaturas/")
+        self.assertEqual(reverse("content:topic_list"), "/temas/")
+        self.assertEqual(reverse("content:level_list"), "/niveles/")
+        self.assertEqual(reverse("content:module_list"), "/modulos/")
+
+    def test_resource_detail_uses_slug_url(self):
+        self.assertEqual(
+            reverse("content:resource_detail", args=[self.resource.slug]),
+            f"/recursos/{self.resource.slug}/",
+        )
+
+    def test_legacy_content_urls_still_work(self):
+        response = self.client.get("/content/resources/")
+
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(f"/content/resources/{self.resource.pk}/")
+
+        self.assertEqual(response.status_code, 200)

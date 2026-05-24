@@ -10,11 +10,11 @@ from apps.content.views import (
 )
 
 urlpatterns = [
-    path("modules/", ModuleListView.as_view(), name="module_list"),
-    path("modules/create/", ModuleCreateView.as_view(), name="module_create"),
-    path("modules/<int:pk>/edit/", ModuleUpdateView.as_view(), name="module_update"),
-    path("modules/<int:pk>/delete/", ModuleDeleteView.as_view(), name="module_delete"),
-    path("modules/<int:module_id>/resources/", module_resource_list, name="module_resource_list"),
-    path("modules/<int:module_id>/resources/add/", module_resource_add, name="module_resource_add"),
-    path("modules/<int:module_id>/resources/remove/", module_resource_remove, name="module_resource_remove"),
+    path("modulos/", ModuleListView.as_view(), name="module_list"),
+    path("modulos/crear/", ModuleCreateView.as_view(), name="module_create"),
+    path("modulos/<int:pk>/editar/", ModuleUpdateView.as_view(), name="module_update"),
+    path("modulos/<int:pk>/eliminar/", ModuleDeleteView.as_view(), name="module_delete"),
+    path("modulos/<int:module_id>/recursos/", module_resource_list, name="module_resource_list"),
+    path("modulos/<int:module_id>/recursos/agregar/", module_resource_add, name="module_resource_add"),
+    path("modulos/<int:module_id>/recursos/quitar/", module_resource_remove, name="module_resource_remove"),
 ]
