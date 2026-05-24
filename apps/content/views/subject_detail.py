@@ -1,7 +1,7 @@
 from django.db.models import Prefetch
 from django.views.generic import DetailView
 
-from apps.content.models import Resource, Subject, Topic
+from apps.content.models import Level, Resource, Subject, Topic
 from apps.content.views._seo import breadcrumb_schema, build_breadcrumbs
 
 
@@ -46,5 +46,10 @@ class SubjectDetailView(DetailView):
         context["breadcrumbs"] = breadcrumbs
         context["resources"] = getattr(subject, "published_resources", [])
         context["topics"] = getattr(subject, "active_topics", [])
+        context["levels"] = Level.objects.filter(
+            is_active=True,
+            resources__subject=subject,
+            resources__is_published=True,
+        ).distinct().order_by("order", "name")
         context["structured_data_json_list"] = [breadcrumb_schema(breadcrumbs)]
         return context

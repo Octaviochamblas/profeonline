@@ -68,6 +68,33 @@
         {% endif %}
     </article>
 
+    <section class="stack">
+        <div class="section-header">
+            <div>
+                <h2>Recursos relacionados</h2>
+                <p class="page-hero__text">Materiales cercanos por asignatura, tema o nivel para seguir avanzando sin perder contexto.</p>
+            </div>
+        </div>
+
+        {% if related_resources %}
+            <div class="card-grid">
+                {% for related in related_resources %}
+                    <article class="content-card">
+                        <h3><a href="{% url 'content:resource_detail' related.slug %}">{{ related.title }}</a></h3>
+                        <p>{{ related.description|default:"Recurso relacionado para seguir practicando." }}</p>
+                        {% if related.subject %}
+                            <p><strong>Asignatura:</strong> {{ related.subject.name }}</p>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aún no hay recursos relacionados disponibles.</p>
+            </div>
+        {% endif %}
+    </section>
+
     <footer class="auth-meta">
         Publicado el {{ resource.created_at|date:"d de F de Y" }}
     </footer>

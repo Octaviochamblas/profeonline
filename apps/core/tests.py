@@ -7,12 +7,20 @@ from apps.content.models import Level, Resource, Subject
 class SeoTechnicalViewTests(TestCase):
     def setUp(self):
         self.subject = Subject.objects.create(name="Matematica", is_active=True)
+        self.inactive_subject = Subject.objects.create(name="Historia", is_active=False)
         self.level = Level.objects.create(name="Primaria", is_active=True)
+        self.inactive_level = Level.objects.create(name="Secundaria", is_active=False)
         self.resource = Resource.objects.create(
             title="Guia de funciones",
             subject=self.subject,
             is_published=True,
         )
+        self.inactive_resource = Resource.objects.create(
+            title="Guia de historia",
+            subject=self.inactive_subject,
+            is_published=False,
+        )
+        self.inactive_resource.levels.add(self.inactive_level)
 
     def test_home_includes_canonical_og_url_and_structured_data(self):
         response = self.client.get(reverse("core:home"))
@@ -22,6 +30,16 @@ class SeoTechnicalViewTests(TestCase):
         self.assertContains(response, '<meta property="og:url" content="http://testserver/">')
         self.assertContains(response, 'type="application/ld+json"')
         self.assertContains(response, '"@type": "WebSite"')
+
+    def test_home_highlights_public_content(self):
+        response = self.client.get(reverse("core:home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.subject.name)
+        self.assertContains(response, self.level.name)
+        self.assertContains(response, self.resource.title)
+        self.assertNotContains(response, self.inactive_subject.name)
+        self.assertNotContains(response, self.inactive_resource.title)
 
     def test_robots_txt_points_to_sitemap_and_blocks_private_paths(self):
         response = self.client.get(reverse("core:robots"))
@@ -60,3 +78,6 @@ class SeoTechnicalViewTests(TestCase):
         )
         self.assertNotContains(response, "/cuentas/")
         self.assertNotContains(response, "/admin/")
+        self.assertNotContains(response, self.inactive_subject.slug)
+        self.assertNotContains(response, self.inactive_level.slug)
+        self.assertNotContains(response, self.inactive_resource.slug)

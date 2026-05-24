@@ -9,17 +9,32 @@ class ResourceDetailViewTests(TestCase):
     def setUp(self):
         self.subject = Subject.objects.create(name="Matematica", is_active=True)
         self.level = Level.objects.create(name="Primaria", is_active=True)
+        self.other_subject = Subject.objects.create(name="Lenguaje", is_active=True)
+        self.other_level = Level.objects.create(name="Secundaria", is_active=True)
+        self.related_public_resource = Resource.objects.create(
+            title="Guia de geometria",
+            subject=self.subject,
+            is_published=True,
+        )
+        self.related_public_resource.levels.add(self.level)
         self.published_resource = Resource.objects.create(
             title="Guia de algebra",
             subject=self.subject,
             is_published=True,
         )
         self.published_resource.levels.add(self.level)
+        self.published_resource.levels.add(self.other_level)
         self.draft_resource = Resource.objects.create(
             title="Borrador de algebra",
             subject=self.subject,
             is_published=False,
         )
+        self.draft_related_resource = Resource.objects.create(
+            title="Borrador de lectura",
+            subject=self.other_subject,
+            is_published=False,
+        )
+        self.draft_related_resource.levels.add(self.level)
         self.admin = User.objects.create_superuser(
             username="admin",
             email="admin@example.com",
@@ -35,6 +50,8 @@ class ResourceDetailViewTests(TestCase):
         self.assertContains(response, self.published_resource.title)
         self.assertContains(response, "BreadcrumbList")
         self.assertContains(response, "Article")
+        self.assertContains(response, self.related_public_resource.title)
+        self.assertNotContains(response, self.draft_related_resource.title)
         self.assertContains(
             response,
             reverse("content:subject_detail", args=[self.subject.slug]),
@@ -174,11 +191,23 @@ class SpanishUrlTests(TestCase):
     def test_legacy_content_urls_still_work(self):
         response = self.client.get("/content/resources/")
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response["Location"], "/recursos/")
 
         response = self.client.get(f"/content/resources/{self.resource.pk}/")
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response["Location"], f"/recursos/{self.resource.slug}/")
+
+        response = self.client.get(f"/content/subjects/{self.subject.pk}/")
+
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response["Location"], f"/asignaturas/{self.subject.slug}/")
+
+        response = self.client.get(f"/content/levels/{self.level.pk}/")
+
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response["Location"], f"/niveles/{self.level.slug}/")
 
     def test_subject_and_level_detail_pages_render(self):
         subject_response = self.client.get(

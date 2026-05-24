@@ -72,7 +72,15 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Se agregaron JSON-LD `BreadcrumbList` y `Article` en los recursos, ademas de `BreadcrumbList` en asignaturas y niveles.
 - El sitemap incluye ahora paginas publicas de asignaturas, niveles y recursos publicados.
 - Se agrego favicon y se limpio CSS legacy no usado de la base visual.
-- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 16 tests y variables de entorno temporales validas.
+- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 25 tests y variables de entorno temporales validas.
+
+### 2026-05-24 - Contenido semilla y redirecciones legacy
+
+- Se agrego el comando `seed_content` para poblar areas, asignaturas, niveles, temas, recursos y modulos con contenido real reutilizable.
+- Las rutas legacy bajo `/content/...` ahora redirigen a las URLs canonicas en espanol, incluyendo detalles antiguos por ID hacia slugs publicos.
+- Home, asignaturas, niveles, recursos y modulos ya muestran contenido real en la base local tras ejecutar la semilla.
+- Se corrigio la plantilla de modulos para mostrar `module.title` y no dejar oculto el contenido semillado.
+- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 25 tests y variables de entorno temporales validas.
 
 ## Hallazgos prioritarios
 
@@ -162,7 +170,7 @@ Recomendacion:
 
 ### P3 - Tests son placeholders
 
-Estado: resuelto. Ahora `manage.py test` ejecuta 16 tests reales que cubren seguridad, SEO tecnico, URLs en espanol, landings de asignatura/nivel y recursos publicados/borradores.
+Estado: resuelto. Ahora `manage.py test` ejecuta 25 tests reales que cubren seguridad, SEO tecnico, URLs en espanol, landings de asignatura/nivel, contenido semilla y recursos publicados/borradores.
 
 Recomendacion:
 - Seguir aumentando cobertura cuando agreguemos nuevas landings o flujos de edicion.
@@ -206,6 +214,6 @@ Recomendacion:
 
 - `python manage.py check`: sin issues.
 - `python manage.py check --deploy --settings=config.settings.production`: sin issues con variables temporales validas.
-- `python manage.py test`: 16 tests ejecutados y OK.
+- `python manage.py test`: 25 tests ejecutados y OK.
 - `python manage.py showmigrations --plan`: migraciones aplicadas.
-- Conteo local: datos de ejemplo semillados para validacion visual de asignaturas, niveles y recursos.
+- Conteo local: datos de ejemplo semillados para validacion visual de areas, asignaturas, niveles, temas, recursos y modulos.

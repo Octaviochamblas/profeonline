@@ -27,9 +27,36 @@
         </div>
     </div>
 
-    <div class="stack">
+    <section class="stack">
         <div class="section-header">
-            <h2>Recursos relacionados</h2>
+            <div>
+                <h2>Asignaturas relacionadas</h2>
+                <p class="page-hero__text">Estas son las asignaturas activas que ya tienen recursos para este nivel.</p>
+            </div>
+        </div>
+
+        {% if subjects %}
+            <div class="card-grid">
+                {% for subject in subjects %}
+                    <article class="content-card">
+                        <h3><a href="{% url 'content:subject_detail' subject.slug %}">{{ subject.name }}</a></h3>
+                        <p>{{ subject.description|default:"Asignatura con recursos publicados para este nivel." }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aún no hay asignaturas activas relacionadas con este nivel.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="stack">
+        <div class="section-header">
+            <div>
+                <h2>Recursos publicados</h2>
+                <p class="page-hero__text">Material visible para repasar, ordenar rutinas de estudio o preparar clases.</p>
+            </div>
         </div>
 
         {% if resources %}
@@ -38,6 +65,9 @@
                     <article class="content-card">
                         <h3><a href="{% url 'content:resource_detail' resource.slug %}">{{ resource.title }}</a></h3>
                         <p>{{ resource.description|default:"Sin descripción" }}</p>
+                        {% if resource.subject %}
+                            <p><strong>Asignatura:</strong> {{ resource.subject.name }}</p>
+                        {% endif %}
                     </article>
                 {% endfor %}
             </div>
@@ -46,6 +76,6 @@
                 <p>Aún no hay recursos publicados para este nivel.</p>
             </div>
         {% endif %}
-    </div>
+    </section>
 </section>
 {% endblock %}

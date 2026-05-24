@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}
-
-{% block meta_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, tema y nivel para avanzar con un plan claro.{% endblock %}
+{% block meta_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, nivel y tema para avanzar con un plan claro.{% endblock %}
 {% block og_title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}
-{% block og_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, tema y nivel para avanzar con un plan claro.{% endblock %}
+{% block og_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, nivel y tema para avanzar con un plan claro.{% endblock %}
 {% block structured_data %}
 <script type="application/ld+json">
 {
@@ -23,16 +22,163 @@
     <p class="page-hero__kicker">ProfeOnline</p>
     <h1 class="page-hero__title">Clases Particulares Online en ProfeOnline</h1>
     <p class="page-hero__text">
-        Somos tu plataforma educativa integral pensada para organizar contenidos, acompañar tu aprendizaje
-        y potenciar tus habilidades. Encuentra el apoyo escolar exacto que necesitas.
+        Somos una plataforma para ordenar clases particulares, apoyo escolar y recursos educativos por
+        asignatura, nivel y tema. Empieza por donde más te urge y sigue desde ahí.
     </p>
     <div class="page-actions">
-    {% if not user.is_authenticated %}
-        <a href="{% url 'register' %}" class="btn btn-primary">Comienza tus clases hoy</a>
-    {% else %}
-        <a href="{% url 'content:resource_list' %}" class="btn btn-primary">Ver recursos</a>
-    {% endif %}
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-primary">Comienza tus clases hoy</a>
+        {% else %}
+            <a href="{% url 'content:resource_list' %}" class="btn btn-primary">Ver recursos</a>
+        {% endif %}
         <a href="{% url 'content:subject_list' %}" class="btn btn-secondary">Explorar asignaturas</a>
+        <a href="{% url 'content:level_list' %}" class="btn btn-secondary">Explorar niveles</a>
     </div>
+</section>
+
+<section class="stack stack--lg">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Punto de partida</p>
+            <h2>Empieza por aquí</h2>
+            <p class="page-hero__text">Cuatro accesos rápidos para llegar al contenido que más te sirve sin dar vueltas.</p>
+        </div>
+    </div>
+
+    <div class="card-grid">
+        <article class="content-card">
+            <h3><a href="{% url 'content:resource_list' %}">Recursos</a></h3>
+            <p>Guías, ejercicios y materiales publicados para estudiar con orden.</p>
+        </article>
+        <article class="content-card">
+            <h3><a href="{% url 'content:subject_list' %}">Asignaturas</a></h3>
+            <p>Encuentra materias concretas y entra a sus temas y recursos relacionados.</p>
+        </article>
+        <article class="content-card">
+            <h3><a href="{% url 'content:level_list' %}">Niveles</a></h3>
+            <p>Explora primaria, secundaria y otros niveles según la etapa de aprendizaje.</p>
+        </article>
+    </div>
+</section>
+
+<section class="stack stack--lg">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Áreas</p>
+            <h2>Áreas destacadas</h2>
+            <p class="page-hero__text">Puntos de entrada para llegar a las asignaturas que tienen más sentido según el contenido disponible.</p>
+        </div>
+        <a class="btn btn-secondary" href="{% url 'content:area_list' %}">Ver todas</a>
+    </div>
+
+    {% if featured_areas %}
+        <div class="card-grid">
+            {% for area in featured_areas %}
+                <article class="content-card">
+                    <h3><a href="{% url 'content:subject_list' %}?area={{ area.id }}">{{ area.name }}</a></h3>
+                    <p>{{ area.description|default:"Agrupa asignaturas y recursos relacionados." }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aún no hay áreas destacadas.</p>
+        </div>
+    {% endif %}
+</section>
+
+<section class="stack stack--lg">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Asignaturas</p>
+            <h2>Asignaturas destacadas</h2>
+            <p class="page-hero__text">Las materias que ya tienen contenido público y pueden servir como puerta de entrada al sitio.</p>
+        </div>
+        <a class="btn btn-secondary" href="{% url 'content:subject_list' %}">Ver todas</a>
+    </div>
+
+    {% if featured_subjects %}
+        <div class="card-grid">
+            {% for subject in featured_subjects %}
+                <article class="content-card">
+                    <h3><a href="{% url 'content:subject_detail' subject.slug %}">{{ subject.name }}</a></h3>
+                    {% if subject.area %}
+                        <p><strong>Área:</strong> {{ subject.area.name }}</p>
+                    {% endif %}
+                    <p>{{ subject.description|default:"Contenido, temas y recursos relacionados." }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aún no hay asignaturas destacadas.</p>
+        </div>
+    {% endif %}
+</section>
+
+<section class="stack stack--lg">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Niveles</p>
+            <h2>Niveles destacados</h2>
+            <p class="page-hero__text">Las etapas educativas que ya tienen recursos y ayudan a orientar el aprendizaje.</p>
+        </div>
+        <a class="btn btn-secondary" href="{% url 'content:level_list' %}">Ver todos</a>
+    </div>
+
+    {% if featured_levels %}
+        <div class="card-grid">
+            {% for level in featured_levels %}
+                <article class="content-card">
+                    <h3><a href="{% url 'content:level_detail' level.slug %}">{{ level.name }}</a></h3>
+                    {% if level.order %}
+                        <p><strong>Orden:</strong> {{ level.order }}</p>
+                    {% endif %}
+                    <p>{{ level.description|default:"Recursos y material de apoyo para esta etapa." }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aún no hay niveles destacados.</p>
+        </div>
+    {% endif %}
+</section>
+
+<section class="stack stack--lg">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Recientes</p>
+            <h2>Recursos publicados</h2>
+            <p class="page-hero__text">Material reciente que puedes abrir de inmediato para estudiar o preparar clases.</p>
+        </div>
+        <a class="btn btn-secondary" href="{% url 'content:resource_list' %}">Ver recursos</a>
+    </div>
+
+    {% if featured_resources %}
+        <div class="card-grid">
+            {% for resource in featured_resources %}
+                <article class="content-card">
+                    <h3><a href="{% url 'content:resource_detail' resource.slug %}">{{ resource.title }}</a></h3>
+                    {% if resource.subject %}
+                        <p><strong>Asignatura:</strong> {{ resource.subject.name }}</p>
+                    {% endif %}
+                    {% if resource.levels.all %}
+                        <p>
+                            <strong>Niveles:</strong>
+                            {% for level in resource.levels.all %}
+                                {{ level.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                    <p>{{ resource.description|default:"Recurso educativo listo para consultar." }}</p>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aún no hay recursos publicados.</p>
+        </div>
+    {% endif %}
 </section>
 {% endblock %}
