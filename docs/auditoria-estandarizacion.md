@@ -20,6 +20,13 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Se agregaron 8 tests de vistas para recursos publicados/borradores y endpoints JSON administrativos.
 - `python manage.py test` ejecuta 8 tests y pasa correctamente.
 
+### 2026-05-23 - SEO de titulos y robots
+
+- `base.html` ahora usa `lang="es-CL"` y define un bloque `robots`.
+- Las paginas publicas principales incluyen titulos de navegador y Open Graph orientados a "clases particulares", "apoyo escolar" y recursos educativos.
+- Login, registro y perfil usan `noindex,nofollow` para no gastar crawl budget en flujos de cuenta.
+- Se reinicio el servidor local y `/content/topics/` muestra `Temas para Clases Particulares | ProfeOnline`.
+
 ## Hallazgos prioritarios
 
 ### P1 - Borradores accesibles por URL directa
