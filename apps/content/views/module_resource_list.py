@@ -1,7 +1,10 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from apps.content.models import ModuleResource
+from .permissions import is_admin
 
 
+@user_passes_test(is_admin)
 def module_resource_list(request, module_id):
     items = ModuleResource.objects.filter(
         module_id=module_id

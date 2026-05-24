@@ -3,10 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from apps.content.models import ModuleResource
-
-
-def is_admin(user):
-    return user.is_authenticated and user.is_superuser
+from .permissions import is_admin
 
 
 @user_passes_test(is_admin)

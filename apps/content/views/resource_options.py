@@ -1,8 +1,11 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from apps.content.models import Resource
 from apps.content.selectors import get_module_resource_options
+from .permissions import is_admin
 
 
+@user_passes_test(is_admin)
 def resource_options(request):
     subject_id = request.GET.get("subject_id")
     topic_id = request.GET.get("topic_id")
