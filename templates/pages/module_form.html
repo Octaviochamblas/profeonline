@@ -3,104 +3,124 @@
 {% block title %}Formulario de módulo | ProfeOnline{% endblock %}
 
 {% block content %}
-<section class="c-hero">
-    <h1>
-        {% if form.instance.pk %}
-            Editar módulo
-        {% else %}
-            Crear módulo
-        {% endif %}
-    </h1>
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Editor</p>
+            <h1>{% if form.instance.pk %}Editar módulo{% else %}Crear módulo{% endif %}</h1>
+            <p class="page-hero__text">Configura el módulo y, cuando quede guardado, arma la ruta agregando recursos relacionados.</p>
+        </div>
+    </div>
+</section>
 
-    <form method="post">
-        {% csrf_token %}
+<form method="post" class="form-panel">
+    {% csrf_token %}
 
-        <p>
-            {{ form.title.label_tag }}<br>
+    <div class="form-grid form-grid--2">
+        <div class="form-field form-field--full">
+            <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
             {{ form.title }}
-        </p>
+        </div>
 
-        <p>
-            {{ form.subject.label_tag }}<br>
+        <div class="form-field">
+            <label class="form-label" for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
             {{ form.subject }}
-        </p>
+        </div>
 
-        <p>
-            {{ form.objective.label_tag }}<br>
-            {{ form.objective }}
-        </p>
-
-        <p>
-            {{ form.description.label_tag }}<br>
-            {{ form.description }}
-        </p>
-
-        <p>
-            {{ form.order.label_tag }}<br>
+        <div class="form-field">
+            <label class="form-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
             {{ form.order }}
-        </p>
+        </div>
 
-        <p>
-            {{ form.is_published.label_tag }}
-            {{ form.is_published }}
-        </p>
+        <div class="form-field form-field--full">
+            <label class="form-label" for="{{ form.objective.id_for_label }}">{{ form.objective.label }}</label>
+            {{ form.objective }}
+        </div>
 
-        <button type="submit">Guardar</button>
-    </form>
+        <div class="form-field form-field--full">
+            <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            {{ form.description }}
+        </div>
 
-    {% if not form.instance.pk %}
-        <hr>
+        <div class="form-field form-field--full">
+            <label class="form-label" for="{{ form.is_published.id_for_label }}">{{ form.is_published.label }}</label>
+            <div class="page-actions page-actions--compact">
+                {{ form.is_published }}
+                <span class="form-help">Publicar este módulo lo deja visible en el catálogo.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Guardar módulo</button>
+    </div>
+</form>
+
+{% if not form.instance.pk %}
+    <div class="empty-state empty-state--spacious mt-1">
         <p>Primero guarda el módulo para luego agregar recursos y construir la ruta.</p>
-    {% else %}
-        <hr>
-
-        <h3>Constructor de ruta</h3>
-        <p>Puedes filtrar recursos, agregarlos al módulo y quitarlos en cualquier momento.</p>
-
-        <div>
-            <label for="resource_filter_subject">Filtrar por asignatura:</label>
-            <select id="resource_filter_subject">
-                <option value="">Todas</option>
-                {% for subject in subjects %}
-                    <option value="{{ subject.id }}">{{ subject.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div>
-            <label for="resource_filter_topic">Filtrar por tema:</label>
-            <select id="resource_filter_topic">
-                <option value="">Todos</option>
-                {% for topic in topics %}
-                    <option value="{{ topic.id }}">{{ topic.subject.name }} - {{ topic.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div>
-            <label for="resource_filter_level">Filtrar por nivel:</label>
-            <select id="resource_filter_level">
-                <option value="">Todos</option>
-                {% for level in levels_filter %}
-                    <option value="{{ level.id }}">{{ level.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+    </div>
+{% else %}
+    <section class="stack stack--lg">
+        <div class="section-header">
             <div>
-                <h4>Recursos disponibles</h4>
-                <div id="available-resources-panel">
-                    <p>Cargando recursos...</p>
+                <h2>Constructor de ruta</h2>
+                <p class="page-hero__text">Filtra recursos, agrégalos al módulo y quítalos cuando quieras.</p>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <div class="form-grid form-grid--3">
+                <div class="form-field">
+                    <label class="form-label" for="resource_filter_subject">Filtrar por asignatura</label>
+                    <select id="resource_filter_subject">
+                        <option value="">Todas</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.id }}">{{ subject.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" for="resource_filter_topic">Filtrar por tema</label>
+                    <select id="resource_filter_topic">
+                        <option value="">Todos</option>
+                        {% for topic in topics %}
+                            <option value="{{ topic.id }}">{{ topic.subject.name }} - {{ topic.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label" for="resource_filter_level">Filtrar por nivel</label>
+                    <select id="resource_filter_level">
+                        <option value="">Todos</option>
+                        {% for level in levels_filter %}
+                            <option value="{{ level.id }}">{{ level.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
+        </div>
 
-            <div>
-                <h4>Recursos del módulo</h4>
-                <div id="selected-resources-panel">
-                    <p>Cargando recursos seleccionados...</p>
+        <div class="split-layout">
+            <section class="panel stack">
+                <div class="section-header">
+                    <h3>Recursos disponibles</h3>
                 </div>
-            </div>
+                <div id="available-resources-panel" class="stack">
+                    <div class="empty-state">Cargando recursos...</div>
+                </div>
+            </section>
+
+            <section class="panel stack">
+                <div class="section-header">
+                    <h3>Recursos del módulo</h3>
+                </div>
+                <div id="selected-resources-panel" class="stack">
+                    <div class="empty-state">Cargando recursos seleccionados...</div>
+                </div>
+            </section>
         </div>
 
         <script>
@@ -108,12 +128,14 @@
             const moduleId = "{{ module_id|default:'' }}";
             const availablePanel = document.getElementById("available-resources-panel");
             const selectedPanel = document.getElementById("selected-resources-panel");
-
-            
-
             const subjectFilter = document.getElementById("resource_filter_subject");
             const topicFilter = document.getElementById("resource_filter_topic");
             const levelFilter = document.getElementById("resource_filter_level");
+            const topicOptionsUrl = "{% url 'content:topic_options' %}";
+            const moduleResourcesUrl = moduleId ? `/modulos/${moduleId}/recursos/` : "";
+            const resourceOptionsUrl = "{% url 'content:resource_options' %}";
+            const addResourceUrl = moduleId ? `/modulos/${moduleId}/recursos/agregar/` : "";
+            const removeResourceUrl = moduleId ? `/modulos/${moduleId}/recursos/quitar/` : "";
 
             async function updateTopicFilterOptions() {
                 topicFilter.innerHTML = '<option value="">Todos</option>';
@@ -123,7 +145,7 @@
                 }
 
                 try {
-                    const response = await fetch(`/content/topics/options/?subject_id=${subjectFilter.value}`);
+                    const response = await fetch(`${topicOptionsUrl}?subject_id=${subjectFilter.value}`);
                     const data = await response.json();
 
                     data.topics.forEach((topic) => {
@@ -144,35 +166,36 @@
             function getCsrfToken() {
                 const cookieValue = document.cookie
                     .split("; ")
-                    .find(row => row.startsWith("csrftoken="));
+                    .find((row) => row.startsWith("csrftoken="));
                 return cookieValue ? cookieValue.split("=")[1] : "";
             }
 
             async function loadSelectedResources() {
-                selectedPanel.innerHTML = "<p>Cargando recursos seleccionados...</p>";
+                selectedPanel.innerHTML = '<div class="empty-state">Cargando recursos seleccionados...</div>';
 
                 try {
-                    const response = await fetch(`/content/modules/${moduleId}/resources/`);
+                    const response = await fetch(moduleResourcesUrl);
                     const data = await response.json();
 
                     if (!data.resources.length) {
-                        selectedPanel.innerHTML = "<p>Aún no has agregado recursos a este módulo.</p>";
+                        selectedPanel.innerHTML = '<div class="empty-state">Aún no has agregado recursos a este módulo.</div>';
                         return;
                     }
 
                     let html = `
-                        <table border="1" cellpadding="6" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Orden</th>
-                                    <th>Nombre</th>
-                                    <th>Asignatura</th>
-                                    <th>Tema</th>
-                                    <th>Niveles</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="table-shell">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Orden</th>
+                                        <th>Nombre</th>
+                                        <th>Asignatura</th>
+                                        <th>Tema</th>
+                                        <th>Niveles</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                     `;
 
                     data.resources.forEach((resource) => {
@@ -183,23 +206,19 @@
                                 <td>${resource.subject || "-"}</td>
                                 <td>${resource.topic || "-"}</td>
                                 <td>${resource.levels.length ? resource.levels.join(", ") : "-"}</td>
-                                <td>
-                                    <button type="button" class="remove-resource-btn" data-resource-id="${resource.id}">
-                                        Quitar
-                                    </button>
-                                </td>
+                                <td><button type="button" class="btn btn-secondary remove-resource-btn" data-resource-id="${resource.id}">Quitar</button></td>
                             </tr>
                         `;
                     });
 
-                    html += "</tbody></table>";
+                    html += "</tbody></table></div>";
                     selectedPanel.innerHTML = html;
 
                     document.querySelectorAll(".remove-resource-btn").forEach((button) => {
                         button.addEventListener("click", async function () {
                             const resourceId = this.dataset.resourceId;
 
-                            await fetch(`/content/modules/${moduleId}/resources/remove/`, {
+                            await fetch(removeResourceUrl, {
                                 method: "POST",
                                 headers: {
                                     "X-CSRFToken": getCsrfToken(),
@@ -212,19 +231,18 @@
                             await loadAvailableResources();
                         });
                     });
-
                 } catch (error) {
-                    selectedPanel.innerHTML = "<p>Error al cargar recursos seleccionados.</p>";
+                    selectedPanel.innerHTML = '<div class="empty-state">Error al cargar recursos seleccionados.</div>';
                     console.error(error);
                 }
             }
 
             async function loadAvailableResources() {
-                availablePanel.innerHTML = "<p>Cargando recursos...</p>";
+                availablePanel.innerHTML = '<div class="empty-state">Cargando recursos...</div>';
 
-                const selectedResponse = await fetch(`/content/modules/${moduleId}/resources/`);
+                const selectedResponse = await fetch(moduleResourcesUrl);
                 const selectedData = await selectedResponse.json();
-                const selectedIds = selectedData.resources.map(item => item.id);
+                const selectedIds = selectedData.resources.map((item) => item.id);
 
                 const params = new URLSearchParams();
 
@@ -245,26 +263,27 @@
                 });
 
                 try {
-                    const response = await fetch(`/content/resources/options/?${params.toString()}`);
+                    const response = await fetch(`${resourceOptionsUrl}?${params.toString()}`);
                     const data = await response.json();
 
                     if (!data.resources.length) {
-                        availablePanel.innerHTML = "<p>No hay recursos para ese filtro.</p>";
+                        availablePanel.innerHTML = '<div class="empty-state">No hay recursos para ese filtro.</div>';
                         return;
                     }
 
                     let html = `
-                        <table border="1" cellpadding="6" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Acción</th>
-                                    <th>Nombre</th>
-                                    <th>Asignatura</th>
-                                    <th>Tema</th>
-                                    <th>Niveles</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="table-shell">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Acción</th>
+                                        <th>Nombre</th>
+                                        <th>Asignatura</th>
+                                        <th>Tema</th>
+                                        <th>Niveles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                     `;
 
                     data.resources.forEach((resource) => {
@@ -275,8 +294,8 @@
                                 <td>
                                     ${
                                         alreadySelected
-                                            ? "<span>Ya agregado</span>"
-                                            : `<button type="button" class="add-resource-btn" data-resource-id="${resource.id}">Agregar</button>`
+                                            ? '<span class="badge badge--neutral">Ya agregado</span>'
+                                            : `<button type="button" class="btn btn-primary add-resource-btn" data-resource-id="${resource.id}">Agregar</button>`
                                     }
                                 </td>
                                 <td>${resource.title}</td>
@@ -287,14 +306,14 @@
                         `;
                     });
 
-                    html += "</tbody></table>";
+                    html += "</tbody></table></div>";
                     availablePanel.innerHTML = html;
 
                     document.querySelectorAll(".add-resource-btn").forEach((button) => {
                         button.addEventListener("click", async function () {
                             const resourceId = this.dataset.resourceId;
 
-                            await fetch(`/content/modules/${moduleId}/resources/add/`, {
+                            await fetch(addResourceUrl, {
                                 method: "POST",
                                 headers: {
                                     "X-CSRFToken": getCsrfToken(),
@@ -307,9 +326,8 @@
                             await loadAvailableResources();
                         });
                     });
-
                 } catch (error) {
-                    availablePanel.innerHTML = "<p>Error al cargar recursos disponibles.</p>";
+                    availablePanel.innerHTML = '<div class="empty-state">Error al cargar recursos disponibles.</div>';
                     console.error(error);
                 }
             }
@@ -327,12 +345,12 @@
                 loadSelectedResources();
                 loadAvailableResources();
             });
-            });
+        });
         </script>
     {% endif %}
 
-    <p>
-        <a href="{% url 'content:module_list' %}">Volver a módulos</a>
-    </p>
+    <div class="page-actions">
+        <a href="{% url 'content:module_list' %}" class="btn btn-secondary">Volver a módulos</a>
+    </div>
 </section>
 {% endblock %}

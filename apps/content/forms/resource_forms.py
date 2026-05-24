@@ -1,4 +1,5 @@
 from django import forms
+from apps.core.forms import apply_form_classes
 from apps.content.models import Level, Resource, Topic
 
 
@@ -47,3 +48,5 @@ class ResourceForm(forms.ModelForm):
                 subject=self.instance.subject,
                 is_active=True,
             ).order_by("name")
+
+        apply_form_classes(self)

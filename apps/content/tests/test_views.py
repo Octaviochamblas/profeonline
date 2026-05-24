@@ -2,17 +2,22 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Module, ModuleResource, Resource, Subject
+from apps.content.models import Level, Module, ModuleResource, Resource, Subject
 
 
 class ResourceDetailViewTests(TestCase):
     def setUp(self):
+        self.subject = Subject.objects.create(name="Matematica", is_active=True)
+        self.level = Level.objects.create(name="Primaria", is_active=True)
         self.published_resource = Resource.objects.create(
             title="Guia de algebra",
+            subject=self.subject,
             is_published=True,
         )
+        self.published_resource.levels.add(self.level)
         self.draft_resource = Resource.objects.create(
             title="Borrador de algebra",
+            subject=self.subject,
             is_published=False,
         )
         self.admin = User.objects.create_superuser(
@@ -28,6 +33,16 @@ class ResourceDetailViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.published_resource.title)
+        self.assertContains(response, "BreadcrumbList")
+        self.assertContains(response, "Article")
+        self.assertContains(
+            response,
+            reverse("content:subject_detail", args=[self.subject.slug]),
+        )
+        self.assertContains(
+            response,
+            reverse("content:level_detail", args=[self.level.slug]),
+        )
 
     def test_anonymous_user_cannot_see_draft_resource(self):
         response = self.client.get(
@@ -119,10 +134,20 @@ class ModuleResourceEndpointTests(TestCase):
 
 class SpanishUrlTests(TestCase):
     def setUp(self):
+        self.subject = Subject.objects.create(
+            name="Matematica",
+            is_active=True,
+        )
+        self.level = Level.objects.create(
+            name="Primaria",
+            is_active=True,
+        )
         self.resource = Resource.objects.create(
             title="Guia de funciones",
+            subject=self.subject,
             is_published=True,
         )
+        self.resource.levels.add(self.level)
 
     def test_public_content_urls_reverse_to_spanish_paths(self):
         self.assertEqual(reverse("content:resource_list"), "/recursos/")
@@ -131,6 +156,14 @@ class SpanishUrlTests(TestCase):
         self.assertEqual(reverse("content:topic_list"), "/temas/")
         self.assertEqual(reverse("content:level_list"), "/niveles/")
         self.assertEqual(reverse("content:module_list"), "/modulos/")
+        self.assertEqual(
+            reverse("content:subject_detail", args=[self.subject.slug]),
+            f"/asignaturas/{self.subject.slug}/",
+        )
+        self.assertEqual(
+            reverse("content:level_detail", args=[self.level.slug]),
+            f"/niveles/{self.level.slug}/",
+        )
 
     def test_resource_detail_uses_slug_url(self):
         self.assertEqual(
@@ -146,3 +179,16 @@ class SpanishUrlTests(TestCase):
         response = self.client.get(f"/content/resources/{self.resource.pk}/")
 
         self.assertEqual(response.status_code, 200)
+
+    def test_subject_and_level_detail_pages_render(self):
+        subject_response = self.client.get(
+            reverse("content:subject_detail", args=[self.subject.slug])
+        )
+        level_response = self.client.get(
+            reverse("content:level_detail", args=[self.level.slug])
+        )
+
+        self.assertEqual(subject_response.status_code, 200)
+        self.assertEqual(level_response.status_code, 200)
+        self.assertContains(subject_response, self.resource.title)
+        self.assertContains(level_response, self.resource.title)

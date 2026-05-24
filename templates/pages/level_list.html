@@ -6,38 +6,41 @@
 {% block og_description %}Explora niveles educativos para apoyo escolar y clases particulares online, con recursos organizados para cada etapa de aprendizaje.{% endblock %}
 
 {% block content %}
-<section class="c-hero">
-    <h1>Niveles</h1>
-
-    {% if user.is_superuser %}
-        <p>
-            <a href="{% url 'content:level_create' %}" class="btn btn-secondary">Crear nuevo nivel</a>
-        </p>
-    {% endif %}
-
-    {% if levels %}
-        <div class="card-grid">
-            {% for level in levels %}
-                <article class="content-card">
-                    <h3>{{ level.name }}</h3>
-
-                    <p>{{ level.description|default:"Sin descripción" }}</p>
-
-                    {% if level.order %}
-                        <p><strong>Orden:</strong> {{ level.order }}</p>
-                    {% endif %}
-
-                    {% if user.is_superuser %}
-                        <div class="card-actions">
-                            <a href="{% url 'content:level_update' level.pk %}">Editar</a>
-                            <a href="{% url 'content:level_delete' level.pk %}">Eliminar</a>
-                        </div>
-                    {% endif %}
-                </article>
-            {% endfor %}
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Catálogo público</p>
+            <h1>Niveles</h1>
+            <p class="page-hero__text">Explora niveles educativos para apoyo escolar y clases particulares online, con recursos organizados para cada etapa de aprendizaje.</p>
         </div>
-    {% else %}
-        <p>Aún no hay niveles registrados.</p>
-    {% endif %}
+        {% if user.is_superuser %}
+            <a href="{% url 'content:level_create' %}" class="btn btn-secondary">Crear nuevo nivel</a>
+        {% endif %}
+    </div>
 </section>
+
+{% if levels %}
+    <div class="card-grid">
+        {% for level in levels %}
+            <article class="content-card">
+                <h3>{{ level.name }}</h3>
+                <p>{{ level.description|default:"Sin descripción" }}</p>
+                {% if level.order %}
+                    <p><strong>Orden:</strong> {{ level.order }}</p>
+                {% endif %}
+                <p><a href="{% url 'content:level_detail' level.slug %}">Ver recursos</a></p>
+                {% if user.is_superuser %}
+                    <div class="card-actions">
+                        <a href="{% url 'content:level_update' level.pk %}">Editar</a>
+                        <a href="{% url 'content:level_delete' level.pk %}">Eliminar</a>
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>Aún no hay niveles registrados.</p>
+    </div>
+{% endif %}
 {% endblock %}

@@ -6,34 +6,38 @@
 {% block og_description %}Revisa asignaturas disponibles para clases particulares online y encuentra contenidos, temas y recursos de apoyo escolar por materia.{% endblock %}
 
 {% block content %}
-<section class="c-hero">
-    <h1>Asignaturas</h1>
-
-    {% if user.is_superuser %}
-        <p>
-            <a href="{% url 'content:subject_create' %}" class="btn btn-secondary">Crear nueva asignatura</a>
-        </p>
-    {% endif %}
-
-    {% if subjects %}
-        <div class="card-grid">
-            {% for subject in subjects %}
-                <article class="content-card">
-                    <h3>{{ subject.name }}</h3>
-
-                    <p>{{ subject.description|default:"Sin descripción" }}</p>
-
-                    {% if user.is_superuser %}
-                        <div class="card-actions">
-                            <a href="{% url 'content:subject_update' subject.pk %}">Editar</a>
-                            <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
-                        </div>
-                    {% endif %}
-                </article>
-            {% endfor %}
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Catálogo público</p>
+            <h1>Asignaturas</h1>
+            <p class="page-hero__text">Revisa asignaturas disponibles para clases particulares online y encuentra contenidos, temas y recursos de apoyo escolar por materia.</p>
         </div>
-    {% else %}
-        <p>Aún no hay asignaturas registradas.</p>
-    {% endif %}
+        {% if user.is_superuser %}
+            <a href="{% url 'content:subject_create' %}" class="btn btn-secondary">Crear nueva asignatura</a>
+        {% endif %}
+    </div>
 </section>
+
+{% if subjects %}
+    <div class="card-grid">
+        {% for subject in subjects %}
+            <article class="content-card">
+                <h3>{{ subject.name }}</h3>
+                <p>{{ subject.description|default:"Sin descripción" }}</p>
+                <p><a href="{% url 'content:subject_detail' subject.slug %}">Ver recursos y temas</a></p>
+                {% if user.is_superuser %}
+                    <div class="card-actions">
+                        <a href="{% url 'content:subject_update' subject.pk %}">Editar</a>
+                        <a href="{% url 'content:subject_delete' subject.pk %}">Eliminar</a>
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>Aún no hay asignaturas registradas.</p>
+    </div>
+{% endif %}
 {% endblock %}

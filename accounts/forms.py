@@ -1,11 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from .models import Profile
 
 
 from apps.content.models import Level
+from apps.core.forms import apply_form_classes
 
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=150, required=False, label="Nombre")
@@ -38,6 +39,10 @@ class CustomUserCreationForm(UserCreationForm):
             "password2",
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_form_classes(self)
+
 class ProfileUpdateForm(forms.ModelForm):
     first_name = forms.CharField(max_length=150, required=False, label="Nombre")
     last_name = forms.CharField(max_length=150, required=False, label="Apellido")
@@ -69,3 +74,10 @@ class ProfileUpdateForm(forms.ModelForm):
             self.fields["first_name"].initial = user.first_name
             self.fields["last_name"].initial = user.last_name
             self.fields["email"].initial = user.email
+        apply_form_classes(self)
+
+
+class StyledAuthenticationForm(AuthenticationForm):
+    def __init__(self, request=None, *args, **kwargs):
+        super().__init__(request, *args, **kwargs)
+        apply_form_classes(self)

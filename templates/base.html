@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Etiquetas SEO dinámicas -->
     <title>{% block title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, tema y nivel en ProfeOnline.{% endblock %}">
     <meta name="robots" content="{% block robots %}index,follow{% endblock %}">
     <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
-    
-    <!-- Etiquetas Open Graph (WhatsApp, Facebook, LinkedIn) -->
     <meta property="og:title" content="{% block og_title %}Clases Particulares Online y Apoyo Escolar | ProfeOnline{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Encuentra clases particulares online, apoyo escolar y recursos educativos organizados por asignatura, tema y nivel en ProfeOnline.{% endblock %}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
-    {% block og_image %}{% endblock %}
-
+    {% block og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-default.svg' %}">
+    <meta property="og:image:alt" content="ProfeOnline">
+    <meta property="og:image:type" content="image/svg+xml">
+    {% endblock %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/favicon.svg' %}">
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    
-    <!-- HTMX para interactividad sin recargar la página -->
     <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <script defer src="{% static 'js/enhanced-select.js' %}"></script>
     {% block structured_data %}{% endblock %}
 </head>
 <body>

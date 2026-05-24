@@ -5,6 +5,7 @@ from .resource_create import ResourceCreateView
 from .resource_update import ResourceUpdateView
 from .resource_delete import ResourceDeleteView
 from .subject_list import SubjectListView
+from .subject_detail import SubjectDetailView
 from .subject_create import SubjectCreateView
 from .subject_update import SubjectUpdateView
 from .subject_delete import SubjectDeleteView
@@ -14,6 +15,7 @@ from .topic_update import TopicUpdateView
 from .topic_delete import TopicDeleteView
 from .topic_options import topic_options_by_subject
 from .level_list import LevelListView
+from .level_detail import LevelDetailView
 from .level_create import LevelCreateView
 from .level_update import LevelUpdateView
 from .level_delete import LevelDeleteView

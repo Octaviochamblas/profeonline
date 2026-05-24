@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.urls import reverse
 
+from apps.content.models import Level, Resource, Subject
+
 
 SITEMAP_URL_NAMES = [
     "core:home",
@@ -32,6 +34,36 @@ def sitemap_xml(request):
 
     for url_name in SITEMAP_URL_NAMES:
         location = request.build_absolute_uri(reverse(url_name))
+        urls.append(
+            "  <url>\n"
+            f"    <loc>{location}</loc>\n"
+            "    <changefreq>weekly</changefreq>\n"
+            "    <priority>0.7</priority>\n"
+            "  </url>"
+        )
+
+    for subject in Subject.objects.filter(is_active=True).exclude(slug__isnull=True).exclude(slug=""):
+        location = request.build_absolute_uri(reverse("content:subject_detail", kwargs={"slug": subject.slug}))
+        urls.append(
+            "  <url>\n"
+            f"    <loc>{location}</loc>\n"
+            "    <changefreq>weekly</changefreq>\n"
+            "    <priority>0.6</priority>\n"
+            "  </url>"
+        )
+
+    for level in Level.objects.filter(is_active=True).exclude(slug__isnull=True).exclude(slug=""):
+        location = request.build_absolute_uri(reverse("content:level_detail", kwargs={"slug": level.slug}))
+        urls.append(
+            "  <url>\n"
+            f"    <loc>{location}</loc>\n"
+            "    <changefreq>weekly</changefreq>\n"
+            "    <priority>0.6</priority>\n"
+            "  </url>"
+        )
+
+    for resource in Resource.objects.filter(is_published=True).exclude(slug__isnull=True).exclude(slug=""):
+        location = request.build_absolute_uri(reverse("content:resource_detail", kwargs={"slug": resource.slug}))
         urls.append(
             "  <url>\n"
             f"    <loc>{location}</loc>\n"

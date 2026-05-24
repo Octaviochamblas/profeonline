@@ -56,110 +56,116 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - Se agregaron tests para reverses en espanol, detalle por slug y compatibilidad legacy.
 - `python manage.py test` ejecuta 14 tests y pasa correctamente.
 
+### 2026-05-24 - Estandarizacion visual
+
+- Se consolidaron componentes visuales reutilizables en `static/css/estilos.css` para hero, paneles, tablas, badges, formularios, paginacion, detalles y estados vacios.
+- Se eliminaron estilos inline de las vistas publicas y de cuenta mas visibles, reemplazandolos por clases compartidas.
+- La home, listados, detalle de recursos, formularios de contenido, login, registro, perfil y confirmaciones ahora siguen una estructura visual mas uniforme.
+- Los formularios de contenido y cuenta aplican clases comunes desde backend para inputs, selects, textareas y checkboxes.
+- Se simplificaron controles complejos como los selects personalizados del listado de recursos para usar controles nativos con mejor estabilidad en mobile.
+- `python manage.py check` y `python manage.py test` siguen pasando correctamente tras la estandarizacion visual.
+
+### 2026-05-24 - SEO de contenido y estructura semantica
+
+- Se agregaron landings publicas por asignatura y nivel con `slug`, por ejemplo `/asignaturas/matematica/` y `/niveles/primaria/`.
+- `resource_detail` ahora usa slug publico y muestra breadcrumbs visibles.
+- Se agregaron JSON-LD `BreadcrumbList` y `Article` en los recursos, ademas de `BreadcrumbList` en asignaturas y niveles.
+- El sitemap incluye ahora paginas publicas de asignaturas, niveles y recursos publicados.
+- Se agrego favicon y se limpio CSS legacy no usado de la base visual.
+- `python manage.py check`, `python manage.py test` y `python manage.py check --deploy --settings=config.settings.production` pasan con 16 tests y variables de entorno temporales validas.
+
 ## Hallazgos prioritarios
 
 ### P1 - Borradores accesibles por URL directa
 
-`ResourceListView` usa `get_published_resources()`, pero `ResourceDetailView` usa `DetailView` directo sobre `Resource`. Eso permite acceder por ID a recursos no publicados si existen.
+Estado: resuelto en la rama. `ResourceDetailView` ahora filtra recursos no publicados para usuarios anonimos o no administradores, y superusuarios conservan acceso al borrador.
 
 Evidencia:
-- `apps/content/views/resource_detail.py`: `model = Resource`
-- `apps/content/models/resource.py`: `is_published = models.BooleanField(default=True)`
-- `apps/content/urls/resource_urls.py`: `resources/<int:pk>/`
+- `apps/content/views/resource_detail.py`: filtro por `is_published=True` para no admins
+- `apps/content/tests/test_views.py`: tests de 404/200 para anonimo y superusuario
 
 Recomendacion:
-- Filtrar `ResourceDetailView.get_queryset()` por `is_published=True`, salvo para superusuarios.
-- Agregar test de 404 para usuario anonimo ante recurso no publicado.
+- Mantener la cobertura de tests al extender futuras vistas de detalle.
 
 ### P1 - Endpoint de recursos de modulo sin restriccion de publicacion/autorizacion
 
-`module_resource_list` es publico y devuelve recursos asociados a cualquier `module_id`, sin validar que el modulo este publicado ni que los recursos asociados esten publicados.
+Estado: resuelto en la rama. `module_resource_list` y `resource_options` quedaron protegidos para superusuarios y se agregaron tests para usuarios anonimos, regulares y admin.
 
 Evidencia:
-- `apps/content/views/module_resource_list.py`: `def module_resource_list(request, module_id)`
-- `apps/content/views/module_resource_list.py`: `ModuleResource.objects.filter(module_id=module_id)`
-- Los endpoints add/remove si tienen `@user_passes_test(is_admin)` y `@require_POST`.
+- `apps/content/views/module_resource_list.py`: `@user_passes_test(is_admin)`
+- `apps/content/views/resource_options.py`: `@user_passes_test(is_admin)`
+- `apps/content/tests/test_views.py`: cobertura de permisos y JSON
 
 Recomendacion:
-- Si el endpoint es solo para admin, protegerlo igual que add/remove.
-- Si es publico, filtrar modulo y recurso por `is_published=True`.
+- Mantener el mismo patron en cualquier nuevo endpoint administrativo.
 
 ### P1 - Produccion no esta lista para despliegue seguro
 
-`manage.py check --deploy --settings=config.settings.production` devuelve 6 warnings: HSTS no configurado, SSL redirect no configurado, `SECRET_KEY` insegura, cookies de sesion/CSRF no secure y `ALLOWED_HOSTS` vacio.
-
-Estado: resuelto en `production.py`; falta definir los valores reales en el entorno de despliegue.
+Estado: resuelto en `production.py` con variables de entorno obligatorias para `SECRET_KEY`, `ALLOWED_HOSTS` y origenes CSRF, ademas de cookies seguras y flags HTTPS.
 
 Evidencia:
-- `config/settings/base.py`: `SECRET_KEY` hardcodeada con prefijo `django-insecure-`
-- `config/settings/production.py`: `ALLOWED_HOSTS = []`
-- Check deploy: `security.W004`, `W008`, `W009`, `W012`, `W016`, `W020`
+- `config/settings/production.py`: carga de variables de entorno y hardening HTTPS
+- `python manage.py check --deploy --settings=config.settings.production`: pasa sin issues con variables temporales validas
 
 Recomendacion:
-- Cargar `SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` y flags HTTPS desde variables de entorno.
-- Mantener local simple; endurecer solo `production.py`.
+- Definir secretos y hosts reales en el entorno de despliegue, no en el repo.
 
 ### P2 - SEO tecnico incompleto
 
-`base.html` tiene bloques para title/meta description/OG, pero faltan canonical, robots, `og:url`, `og:image`, structured data, sitemap y robots.txt. Ademas varias paginas no sobreescriben meta description.
-
-Estado: parcialmente resuelto. Quedaron implementados canonical, `og:url`, bloque `og_image`, `structured_data`, JSON-LD de home, robots.txt y sitemap.xml. Falta definir un asset real para `og:image` por defecto y ampliar structured data por tipo de pagina.
+Estado: resuelto en la base tecnica y ampliado con contenido semantico. Ya existen canonical, `og:url`, `og:image` por defecto, `structured_data`, JSON-LD de home, `robots.txt`, `sitemap.xml`, `BreadcrumbList` y `Article` donde corresponde.
 
 Evidencia:
-- `templates/base.html`: bloques `title`, `meta_description`, `og_title`, `og_description`
-- No hay archivos ni rutas `robots.txt` o `sitemap.xml`
-- Templates de login/register no definen title ni noindex.
+- `templates/base.html`: bloques SEO base y favicon
+- `apps/core/views/seo.py`: `robots_txt` y `sitemap_xml`
+- `apps/content/views/_seo.py`: helpers de JSON-LD
 
 Recomendacion:
-- Agregar bloques SEO base: canonical, robots, OG url/image y structured_data.
-- Crear sitemap para paginas publicas y robots.txt.
-- Poner `noindex` en login, registro y perfil.
+- Seguir ampliando structured data solo cuando el contenido visible lo justifique.
 
 ### P2 - URLs publicas no aprovechan slugs
 
-Los modelos tienen `slug`, pero las URLs publicas y enlaces usan IDs numericos.
-
-Estado: parcialmente resuelto para recursos. El detalle publico de recurso usa slug y las listas principales resuelven a URLs en espanol. Falta crear landings de detalle por slug para asignaturas, niveles, temas, areas y modulos si se decide exponerlas individualmente.
+Estado: resuelto para recursos, asignaturas y niveles. Los detalles publicos ahora usan slugs y las listas enlazan a esas landings.
 
 Evidencia:
-- `Resource.slug`, `Subject.slug`, `Level.slug`, `Area.slug`, `Topic.slug`, `Module.slug`
-- `apps/content/urls/resource_urls.py`: `resources/<int:pk>/`
-- `templates/pages/resource_list.html`: link con `resource.pk`
+- `apps/content/urls/resource_urls.py`: `resources/<slug:slug>/`
+- `apps/content/urls/subject_urls.py`: `asignaturas/<slug:slug>/`
+- `apps/content/urls/level_urls.py`: `niveles/<slug:slug>/`
+- `templates/pages/resource_list.html`, `subject_list.html`, `level_list.html`
 
 Recomendacion:
-- Migrar detalles publicos a slugs: por ejemplo `resources/<slug:slug>/`.
-- Mantener redirects desde IDs si ya hay URLs compartidas.
+- Evaluar despues si temas, areas o modulos necesitan landings publicas equivalentes.
 
 ### P2 - UX/UI inconsistente por exceso de estilos inline
 
-La base CSS existe, pero muchas plantillas definen estilos inline, mezclan tema oscuro con tarjetas blancas y repiten patrones de formularios/tablas.
+Estado: resuelto en la interfaz publica principal. Se unifico la capa visual, se sacaron estilos inline relevantes y se consolidaron componentes reutilizables para formularios, tablas, badges, paneles y detalles.
 
 Evidencia:
-- `templates/pages/home.html`: estilos inline en hero, H1, parrafo y CTA.
-- `templates/pages/resource_list.html`: estilos inline extensos en filtros, tabla, paginacion y script local.
-- `templates/pages/resource_detail.html` y `resource_form.html`: superficies blancas dentro de tema oscuro.
-- `static/css/estilos.css`: tokens globales existen, pero no cubren todos los componentes usados.
+- `static/css/estilos.css`: sistema visual consolidado
+- `templates/pages/home.html`, `resource_list.html`, `resource_detail.html`, `subject_detail.html`, `level_detail.html`
+- `templates/accounts/*`: formularios y vistas alineadas
 
 Recomendacion:
-- Crear componentes CSS: page-header, toolbar, form-panel, data-table, badge, pagination, detail-layout.
-- Reemplazar estilos inline por clases.
-- Mantener radios en 8px o menos salvo componentes grandes ya justificados.
+- Revisar futuras superficies administrativas o de edicion con el mismo sistema de clases.
 
 ### P2 - Arquitectura de contenido SEO aun no existe
 
-Las listas de areas/asignaturas/niveles/temas son indices, no landing pages optimizadas por intencion de busqueda. No hay paginas por asignatura, nivel o ciudad/comuna con contenido unico.
+Estado: resuelto en el primer tramo. Ya existen landings publicas por asignatura y nivel con recursos relacionados, breadcrumbs y JSON-LD basico.
+
+Evidencia:
+- `apps/content/views/subject_detail.py`
+- `apps/content/views/level_detail.py`
+- `templates/pages/subject_detail.html`
+- `templates/pages/level_detail.html`
 
 Recomendacion:
-- Empezar con paginas por asignatura y nivel antes que ciudad.
-- Usar contenido real: modalidad, nivel, objetivos, recursos relacionados y CTA.
-- Evitar paginas programaticas delgadas.
+- Si hace falta crecer mas adelante, ampliar por tema o ciudad solo con contenido util y suficiente.
 
 ### P3 - Tests son placeholders
 
-Los archivos de tests existen, pero no contienen pruebas ejecutables. `manage.py test` reporta `Ran 0 tests`.
+Estado: resuelto. Ahora `manage.py test` ejecuta 16 tests reales que cubren seguridad, SEO tecnico, URLs en espanol, landings de asignatura/nivel y recursos publicados/borradores.
 
 Recomendacion:
-- Agregar tests para permisos admin, drafts, filtros de recursos, registro/perfil y URLs SEO.
+- Seguir aumentando cobertura cuando agreguemos nuevas landings o flujos de edicion.
 
 ## Fortalezas actuales
 
@@ -188,9 +194,8 @@ Recomendacion:
    - Agregar breadcrumbs.
 
 4. UI estandarizada:
-   - Extraer estilos inline a CSS.
-   - Normalizar botones, formularios, tablas, cards y empty states.
-   - Revisar mobile y estados de carga.
+   - Consolidado el sistema visual base y los formularios principales.
+   - Revisar mobile, estados de carga y futuras pantallas administrativas que hereden el mismo sistema.
 
 5. Contenido y conversion:
    - Home con propuesta clara para clases particulares.
@@ -200,7 +205,7 @@ Recomendacion:
 ## Validaciones ejecutadas
 
 - `python manage.py check`: sin issues.
-- `python manage.py check --deploy --settings=config.settings.production`: 6 warnings de seguridad.
-- `python manage.py test`: 0 tests ejecutados.
+- `python manage.py check --deploy --settings=config.settings.production`: sin issues con variables temporales validas.
+- `python manage.py test`: 16 tests ejecutados y OK.
 - `python manage.py showmigrations --plan`: migraciones aplicadas.
-- Conteo local: 0 recursos, 0 modulos, 0 asignaturas, 0 temas, 0 niveles, 0 areas, 1 usuario.
+- Conteo local: datos de ejemplo semillados para validacion visual de asignaturas, niveles y recursos.

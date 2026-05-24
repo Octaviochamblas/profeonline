@@ -6,53 +6,53 @@
 {% block og_description %}Revisa módulos de aprendizaje para clases particulares online, con rutas de estudio, objetivos y recursos educativos relacionados.{% endblock %}
 
 {% block content %}
-<section class="c-hero">
-    <h1>Módulos</h1>
-
-    {% if user.is_superuser %}
-        <p>
-            <a href="{% url 'content:module_create' %}" class="btn btn-secondary">Crear nuevo módulo</a>
-        </p>
-    {% endif %}
-
-    {% if modules %}
-        <div class="card-grid">
-            {% for module in modules %}
-                <article class="content-card">
-                    <h3>{{ module.name }}</h3>
-
-                    {% if module.subject %}
-                        <p><strong>Asignatura:</strong> {{ module.subject.name }}</p>
-                    {% endif %}
-
-                    {% if module.topic %}
-                        <p><strong>Tema:</strong> {{ module.topic.name }}</p>
-                    {% endif %}
-
-                    {% if module.levels.all %}
-                        <p>
-                            <strong>Niveles:</strong>
-                            {% for level in module.levels.all %}
-                                {{ level.name }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </p>
-                    {% endif %}
-
-                    {% if module.objective %}
-                        <p><strong>Objetivo:</strong> {{ module.objective }}</p>
-                    {% endif %}
-
-                    {% if user.is_superuser %}
-                        <div class="card-actions">
-                            <a href="{% url 'content:module_update' module.pk %}">Editar</a>
-                            <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
-                        </div>
-                    {% endif %}
-                </article>
-            {% endfor %}
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Catálogo público</p>
+            <h1>Módulos</h1>
+            <p class="page-hero__text">Revisa módulos de aprendizaje para clases particulares online, con rutas de estudio, objetivos y recursos educativos relacionados.</p>
         </div>
-    {% else %}
-        <p>Aún no hay módulos registrados.</p>
-    {% endif %}
+        {% if user.is_superuser %}
+            <a href="{% url 'content:module_create' %}" class="btn btn-secondary">Crear nuevo módulo</a>
+        {% endif %}
+    </div>
 </section>
+
+{% if modules %}
+    <div class="card-grid">
+        {% for module in modules %}
+            <article class="content-card">
+                <h3>{{ module.name }}</h3>
+                {% if module.subject %}
+                    <p><strong>Asignatura:</strong> {{ module.subject.name }}</p>
+                {% endif %}
+                {% if module.topic %}
+                    <p><strong>Tema:</strong> {{ module.topic.name }}</p>
+                {% endif %}
+                {% if module.levels.all %}
+                    <p>
+                        <strong>Niveles:</strong>
+                        {% for level in module.levels.all %}
+                            {{ level.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                {% if module.objective %}
+                    <p><strong>Objetivo:</strong> {{ module.objective }}</p>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <div class="card-actions">
+                        <a href="{% url 'content:module_update' module.pk %}">Editar</a>
+                        <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>Aún no hay módulos registrados.</p>
+    </div>
+{% endif %}
 {% endblock %}

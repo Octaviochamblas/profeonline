@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ level.name }} para Clases Particulares | ProfeOnline{% endblock %}
+{% block meta_description %}{% if level.description %}{{ level.description }}{% else %}Recursos y materiales de apoyo escolar para {{ level.name }} en ProfeOnline.{% endif %}{% endblock %}
+{% block og_title %}{{ level.name }} para Clases Particulares | ProfeOnline{% endblock %}
+{% block og_description %}{% if level.description %}{{ level.description }}{% else %}Recursos y materiales de apoyo escolar para {{ level.name }} en ProfeOnline.{% endif %}{% endblock %}
+{% block structured_data %}
+{% for schema in structured_data_json_list %}
+<script type="application/ld+json">
+{{ schema|safe }}
+</script>
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<section class="stack">
+    {% include "includes/breadcrumbs.html" %}
+
+    <div class="detail-card stack">
+        <div class="section-header">
+            <div>
+                <p class="page-hero__kicker">Nivel</p>
+                <h1>{{ level.name }}</h1>
+                <p class="page-hero__text">{% if level.description %}{{ level.description }}{% else %}Recursos y materiales de apoyo escolar para este nivel.{% endif %}</p>
+            </div>
+            <a class="btn btn-secondary" href="{% url 'content:resource_list' %}?level={{ level.id }}">Ver recursos</a>
+        </div>
+    </div>
+
+    <div class="stack">
+        <div class="section-header">
+            <h2>Recursos relacionados</h2>
+        </div>
+
+        {% if resources %}
+            <div class="card-grid">
+                {% for resource in resources %}
+                    <article class="content-card">
+                        <h3><a href="{% url 'content:resource_detail' resource.slug %}">{{ resource.title }}</a></h3>
+                        <p>{{ resource.description|default:"Sin descripción" }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aún no hay recursos publicados para este nivel.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

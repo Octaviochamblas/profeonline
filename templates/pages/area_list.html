@@ -6,40 +6,28 @@
 {% block og_description %}Explora áreas de estudio para clases particulares y encuentra asignaturas, temas y recursos educativos organizados para apoyar tu aprendizaje.{% endblock %}
 
 {% block content %}
-<div class="fade-in">
-    <section class="c-hero">
-        <h1>Áreas de Estudio</h1>
-        <p>Explora nuestras áreas principales y descubre todos los ramos asociados.</p>
-    </section>
+<section class="page-hero">
+    <p class="page-hero__kicker">Índices educativos</p>
+    <h1 class="page-hero__title">Áreas de Estudio</h1>
+    <p class="page-hero__text">Explora nuestras áreas principales y descubre todos los ramos asociados.</p>
+</section>
 
-    <div class="slide-up" style="animation-delay: 0.1s; margin-top: 2rem;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-            {% for area in areas %}
-                <a href="{% url 'content:subject_list' %}?area={{ area.id }}" class="glass-panel" style="display: block; padding: 2rem; border-radius: 16px; text-decoration: none; color: var(--text); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; border: 1px solid var(--border);">
-                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">{{ area.name }}</h2>
-                    {% if area.description %}
-                        <p style="color: var(--muted); font-size: 0.95rem;">{{ area.description }}</p>
-                    {% endif %}
-                    
-                    <div style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: var(--text); font-weight: 600;">
-                        <span>Ver asignaturas</span>
-                        <span style="color: var(--primary);">→</span>
-                    </div>
-                </a>
-            {% empty %}
-                <div class="empty-state" style="grid-column: 1 / -1;">
-                    <p>No hay áreas configuradas todavía.</p>
-                </div>
-            {% endfor %}
+<div class="panel-grid panel-grid--3">
+    {% for area in areas %}
+        <a href="{% url 'content:subject_list' %}?area={{ area.id }}" class="panel panel--spacious area-card">
+            <h2>{{ area.name }}</h2>
+            {% if area.description %}
+                <p class="form-help">{{ area.description }}</p>
+            {% endif %}
+            <div class="area-card__footer">
+                <span class="auth-meta">Ver asignaturas</span>
+                <span class="auth-meta">→</span>
+            </div>
+        </a>
+    {% empty %}
+        <div class="empty-state empty-state--center empty-state--spacious panel-grid__span-full">
+            <p>No hay áreas configuradas todavía.</p>
         </div>
-    </div>
+    {% endfor %}
 </div>
-
-<style>
-.glass-panel:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    border-color: var(--primary);
-}
-</style>
 {% endblock %}

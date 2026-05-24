@@ -3,18 +3,21 @@
 {% block title %}Eliminar asignatura | ProfeOnline{% endblock %}
 
 {% block content %}
-<section class="c-hero">
-    <h1>Eliminar asignatura</h1>
-
-    <p>¿Estás segura de que deseas eliminar la asignatura <strong>{{ subject.name }}</strong>?</p>
-
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Sí, eliminar</button>
-    </form>
-
-    <p>
-        <a href="{% url 'content:subject_list' %}">Cancelar</a>
-    </p>
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Confirmación</p>
+            <h1>Eliminar asignatura</h1>
+        </div>
+    </div>
 </section>
+
+<form method="post" class="form-panel">
+    {% csrf_token %}
+    <p>¿Estás segura de que deseas eliminar la asignatura <strong>{{ subject.name }}</strong>?</p>
+    <div class="form-actions">
+        <a href="{% url 'content:subject_list' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    </div>
+</form>
 {% endblock %}
