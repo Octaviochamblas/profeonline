@@ -1,122 +1,308 @@
-# Registro de Cambios: Auditoría de Seguridad, SEO y UI/UX
+# Auditoria Consolidada: Seguridad, SEO, UI/UX e Integraciones
 
-Fecha: 2026-05-24  
-Estado del proyecto: **Validado y listo para pruebas de integración**  
-Tests totales: **41 exitosos (100% OK)**
+Fecha de consolidacion: 2026-05-24
+Rama actual: `main`
+Estado: validado y listo para pruebas de integracion/despliegue
+Tests actuales: 41 exitosos
 
-Este documento contiene la explicación detallada de todos los cambios técnicos realizados para subsanar los hallazgos descritos en el reporte `docs/auditoria-seo-uiux-seguridad.md`.
+Este documento consolida la informacion que antes estaba repartida en:
 
----
+- `docs/auditoria-estandarizacion.md`
+- `docs/actualizacion-auditoria-integraciones.md`
+- `docs/auditoria-seo-uiux-seguridad.md`
+- `docs/registro-cambios-auditoria.md`
 
-## 1. Infraestructura y Configuración de Producción
+## Resumen ejecutivo
 
-### 1.1. Corrección del Bloqueo de Base de Datos (C1)
-*   **Archivo modificado**: [production.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/config/settings/production.py)
-*   **Problema anterior**: Había una llave de cierre sobrante (`}`) en la línea 73 dentro del bloque `else` de base de datos que provocaba un `SyntaxError` al intentar cargar la configuración de producción.
-*   **Solución**: Se eliminó la llave de cierre incorrecta. Tras esto, la app corre de manera limpia y pasa el comando de validación `collectstatic` y `check --deploy` sin errores.
+ProfeOnline paso de una base Django funcional, pero con deuda de SEO, UI y produccion, a una plataforma bastante mas publicable: URLs en espanol, slugs publicos, landings por asignatura/nivel, sitemap nativo, robots.txt, canonical, datos estructurados, contenido semilla, UI oscura estandarizada, filtros de recursos corregidos, seguridad de borradores, settings de produccion, WhiteNoise, PostgreSQL/Supabase, HTMX local, Google allauth y webhook de videos endurecido.
 
-### 1.2. HSTS como Opt-In (M3)
-*   **Archivo modificado**: [production.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/config/settings/production.py)
-*   **Problema anterior**: Las opciones de `SECURE_HSTS_INCLUDE_SUBDOMAINS` y `SECURE_HSTS_PRELOAD` estaban activas por defecto. Esto representaba un riesgo operativo ya que podía bloquear el acceso a subdominios del sitio que no estuviesen aún listos con HTTPS.
-*   **Solución**: Se definieron ambas variables en `False` por defecto, permitiendo activarlas opcionalmente (opt-in) mediante las variables de entorno `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS` y `DJANGO_SECURE_HSTS_PRELOAD` respectivamente una vez configurado el dominio final.
+Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El proyecto ahora pasa `check`, `test`, `check --deploy` y `collectstatic` con variables temporales validas.
 
-### 1.3. Canonical URL Dinámica en Producción (M2)
-*   **Archivo modificado**: [production.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/config/settings/production.py)
-*   **Problema anterior**: La URL canónica estaba fija únicamente en los archivos base.
-*   **Solución**: Se expuso la constante `CANONICAL_BASE_URL` para que intente leer la variable de entorno `CANONICAL_BASE_URL` en producción. Si no está configurada, realiza un fallback seguro a `"https://www.profeonline.cl"` en lugar de romper el sistema.
+## Estado actual por area
 
----
+### Seguridad
 
-## 2. Endurecimiento de Seguridad (XSS y API)
+- Los recursos en borrador no son visibles para usuarios anonimos/no administradores.
+- Los endpoints administrativos de recursos/modulos estan restringidos a superusuarios.
+- `production.py` usa variables obligatorias para `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS` y `DJANGO_CSRF_TRUSTED_ORIGINS`.
+- Cookies de sesion y CSRF quedan seguras en produccion.
+- `SECURE_SSL_REDIRECT` queda activo por defecto.
+- HSTS `includeSubDomains` y `preload` quedaron como opt-in para evitar riesgos antes de validar dominio/subdominios.
+- `SECURE_REFERRER_POLICY = "same-origin"`.
+- Validacion de emails case-insensitive en registro y perfil.
+- Archivos adjuntos limitados por extension y tamano maximo de 10 MB.
+- Markdown se renderiza con `bleach==6.2.0`, usando allowlist de etiquetas, atributos y protocolos.
+- Webhook `/api/recursos/crear-video/`:
+  - falla cerrado si falta `API_SECRET_TOKEN` o si usa el valor por defecto debil;
+  - acepta token solo por header;
+  - usa `secrets.compare_digest`;
+  - crea recursos en borrador por defecto;
+  - registra intentos rechazados sin exponer tokens;
+  - aplica rate limiting basico por IP con cache de Django.
 
-### 2.1. Sanitización de Renderizado Markdown contra XSS (A1)
-*   **Archivo modificado**: [markdown_tags.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/templatetags/markdown_tags.py)
-*   **Problema anterior**: El filtro personalizado de plantilla `|markdown` marcaba la salida directamente como segura (`mark_safe`) sin realizar ninguna limpieza. Si un recurso de estudio o un payload inyectado por la API de videos contenía etiquetas HTML crudas (como `<script>`), el navegador las ejecutaba (vulnerabilidad XSS).
-*   **Solución**: 
-    1.  Se insertó un preprocesador regex que identifica cualquier etiqueta HTML cruda (caracteres `<` seguidos de letras, barra invertida o signos de admiración/interrogación) y los escapa convirtiéndolos en entidades HTML seguras (`&lt;` y `&gt;`).
-    2.  Se añadió un filtro regex para interceptar y neutralizar enlaces en formato Markdown con esquemas de protocolos maliciosos `javascript:` (como `[click](javascript:alert(1))`), transformándolos en enlaces inocuos `#invalid-scheme-`.
-*   **Tests agregados**: En [tests.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/tests.py) se creó `MarkdownSecurityFilterTests` para validar el escapado seguro de `<script>`, `<iframe>` y protocolos `javascript:`.
+### SEO
 
-### 2.2. Robustecimiento del Webhook de Videos de YouTube (A2)
-*   **Archivo modificado**: [api_video.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/content/views/api_video.py)
-*   **Problema anterior**: El webhook permitía un token por defecto si la variable de entorno no estaba configurada, leía el token desde el cuerpo del JSON, realizaba una comparación vulnerable a ataques de temporización e inicializaba recursos automáticos como publicados por defecto.
-*   **Solución**:
-    1.  **Fallo Cerrado**: La aplicación devuelve HTTP 500 si la variable de entorno `API_SECRET_TOKEN` no está configurada en el servidor o contiene el valor predeterminado débil.
-    2.  **Cabeceras Obligatorias**: Se eliminó la lectura de token desde el cuerpo JSON. Ahora solo se admite la verificación a través de los headers `X-Api-Token` o `Authorization: Bearer <token>`.
-    3.  **Comparación Segura**: Se reemplazó el comparador de igualdad normal por `secrets.compare_digest` para evitar ataques de temporización en la verificación del secreto.
-    4.  **Borradores por Defecto**: Todos los recursos creados a través de este webhook se guardan con `is_published = False` (Borrador), forzando a que un administrador valide el material antes de indexarse públicamente.
-*   **Tests agregados**: En [test_views.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/content/tests/test_views.py) se creó `YouTubeWebhookSecurityTests` para validar de forma automatizada los rechazos de token inválidos, la ausencia de variables y el estado borrador inicial.
+- `base.html` usa `lang="es-CL"`.
+- Titulos y metadescripciones se orientaron a "clases particulares", apoyo escolar y recursos educativos.
+- Se agregaron canonical, `og:url`, `og:image` por defecto y bloque `structured_data`.
+- Login, registro y perfil quedaron fuera del foco SEO.
+- Existen `/robots.txt` y `/sitemap.xml`.
+- El sitemap usa el framework nativo de Django e incluye:
+  - home;
+  - listas publicas principales;
+  - asignaturas activas;
+  - niveles activos;
+  - recursos publicados.
+- Las URLs publicas quedaron en espanol:
+  - `/recursos/`
+  - `/asignaturas/`
+  - `/temas/`
+  - `/niveles/`
+  - `/modulos/`
+  - `/areas/`
+- Recursos, asignaturas y niveles tienen detalle publico por slug.
+- Las rutas legacy bajo `/content/...` redirigen a las URLs canonicas en espanol.
+- Hay breadcrumbs visibles y JSON-LD `BreadcrumbList`.
+- Los recursos publicos tienen JSON-LD `Article` cuando corresponde.
+- `CANONICAL_BASE_URL` puede configurarse por entorno en produccion, con fallback a `https://www.profeonline.cl`.
 
----
+### UI/UX
 
-## 3. Validaciones de Datos en Formularios y Modelos
+- Se consolido una capa visual reutilizable en `static/css/estilos.css`.
+- La home, listados, detalle de recursos, formularios, login, registro, perfil y confirmaciones quedaron bajo una estructura visual comun.
+- Se normalizaron formularios desde backend con clases compartidas.
+- Se agregaron estados vacios, badges, tablas, paneles, paginacion y bloques de accion consistentes.
+- Se corrigieron los selects/filtros dependientes de recursos.
+- `/recursos/` muestra filtros activos y accion `Limpiar filtros`.
+- La paginacion conserva solo filtros normalizados.
+- Se movieron estilos inline remanentes a clases CSS.
+- Footer legal dejo de simular enlaces si aun no hay paginas reales.
+- HTMX se sirve localmente desde `static/js/htmx.min.js`.
+- Dropdowns custom tienen soporte de teclado basico.
 
-### 3.1. Validación de Extensiones y Tamaño de Archivos Adjuntos (M1)
-*   **Archivo modificado**: [resource.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/content/models/resource.py)
-*   **Problema anterior**: El editor administrativo de recursos permitía adjuntar cualquier tipo de archivo sin control de peso ni tipo.
-*   **Solución**:
-    1.  Se agregó el validador `FileExtensionValidator` para limitar las subidas únicamente a formatos educativos estándar: `pdf, doc, docx, xls, xlsx, ppt, pptx, png, jpg, jpeg, zip`.
-    2.  Se programó el método validador `validate_file_size` para limitar el tamaño de subida a un máximo de **10MB**.
-*   **Tests agregados**: En [test_views.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/content/tests/test_views.py) se creó `ResourceModelFileValidationTests` para verificar que el sistema rechace la subida de archivos que excedan el límite de tamaño.
+### Integraciones y despliegue
 
-### 3.2. Unicidad Case-Insensitive en Correos de Usuarios (M4)
-*   **Archivo modificado**: [forms.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/accounts/forms.py)
-*   **Problema anterior**: Las validaciones de correo de Django en el formulario de registro y perfil eran sensibles a mayúsculas/minúsculas. Esto permitía crear cuentas separadas con correos lógicamente idénticos (ej. `Ana@example.com` y `ana@example.com`).
-*   **Solución**: Se normalizaron los métodos `clean_email()` de `CustomUserCreationForm` y `ProfileUpdateForm` para pasar a minúsculas los correos ingresados (`.lower().strip()`) y realizar la consulta de exclusión usando el modificador insensible a mayúsculas `email__iexact`.
-*   **Tests agregados**: En [tests.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/accounts/tests.py) se crearon pruebas para validar que el sistema rechace la creación y actualización de perfiles con variaciones de mayúsculas de correos existentes.
+- Soporte hibrido SQLite local / PostgreSQL-Supabase por `DATABASE_URL`.
+- Si `DATABASE_URL` usa PostgreSQL, se aplica `sslmode=require`.
+- WhiteNoise queda configurado para servir estaticos en produccion.
+- `STATIC_ROOT = BASE_DIR / "staticfiles"`.
+- `staticfiles/` queda ignorado por Git.
+- Google social auth con `django-allauth` en `/accounts/`.
+- Soporte de videos YouTube en recursos.
+- Soporte de archivos descargables en recursos.
+- Buscador de texto en recursos por titulo/descripcion.
+- Alertas flash para acciones de cuenta.
 
----
+## Cronologia resumida
 
-## 4. UI/UX y Estilos CSS (U1, U2)
+### 2026-05-23
 
-### 4.1. Limpieza de Estilos Inline
-*   **Archivos modificados**: 
-    *   [base.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/base.html) (Footer y notificaciones)
-    *   [resource_detail.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/pages/resource_detail.html) (Contenedor de video y panel de descarga de materiales)
-    *   [resource_list.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/pages/resource_list.html) (Barra de búsqueda)
-    *   [estilos.css](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/static/css/estilos.css)
-*   **Problema anterior**: Había múltiples bloques de atributos `style="..."` directamente en los templates HTML, dificultando la consistencia del tema visual y el diseño responsivo.
-*   **Solución**: Se removieron todos los estilos inline y se modularizaron bajo nuevas clases reutilizables añadidas al final de la hoja de estilos:
-    *   `.messages-container` y `.messages-container .badge` (Alertas)
-    *   `.site-footer`, `.site-footer__content`, `.site-footer__links`, etc. (Footer)
-    *   `.video-container` y `.video-container iframe` (YouTube Responsivo)
-    *   `.resource-material-panel`, `.resource-material-stack`, etc. (Materiales)
-    *   `.search-field-wrapper` (Campo de búsqueda)
+- Auditoria inicial de estandarizacion.
+- Proteccion de borradores y endpoints administrativos.
+- Base de titulos, robots y metadatos SEO.
+- Settings de produccion con variables de entorno.
+- Canonical, Open Graph, JSON-LD base, robots y sitemap inicial.
+- URLs publicas en espanol y detalle de recursos por slug.
+- Primeras pruebas reales de vistas y SEO.
 
-### 4.2. Corrección del Footer Legal
-*   **Archivo modificado**: [base.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/base.html)
-*   **Problema anterior**: Los enlaces legales de "Términos de uso", "Privacidad" y "Contacto" se mostraban como spans con `cursor: pointer;`, simulando ser enlaces clickeables interactivos sin tener un destino real.
-*   **Solución**: Se eliminó la interactividad visual (removiendo `cursor: pointer` y hover de links) y se les aplicó la clase de texto plano `.site-footer__text-muted` para que se rendericen como texto informativo y no rompan la experiencia de navegación del usuario.
+### 2026-05-24
 
----
+- Estandarizacion visual completa de las superficies principales.
+- Landings publicas por asignatura y nivel.
+- Breadcrumbs y structured data para recursos/asignaturas/niveles.
+- Contenido semilla con `seed_content`.
+- Redirecciones legacy `/content/...`.
+- Correccion de filtros dependientes en recursos.
+- UX de filtros activos, limpiar filtros y paginacion normalizada.
+- Documentacion de medicion SEO y despliegue.
+- Integraciones: Supabase/PostgreSQL, WhiteNoise, allauth Google, HTMX local, archivos, videos, webhook, Markdown y sitemap nativo.
+- Auditoria completa de SEO, UI/UX y seguridad.
+- Correccion de hallazgos criticos/altos/medios.
+- Endurecimiento residual con Bleach, logging y rate limiting en webhook.
 
-## 5. Limpieza de Código Muerto (S3)
+## Hallazgos resueltos
 
-### 5.1. Remoción del Sitemap XML Manual
-*   **Archivos modificados**:
-    *   [seo.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/views/seo.py)
-    *   [__init__.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/views/__init__.py)
-*   **Problema anterior**: A pesar de que el sitemap se sirve a través del framework nativo oficial de Django en `sitemap.xml`, persistía en el código la función síncrona manual antigua `sitemap_xml` que no se utilizaba.
-*   **Solución**: Se eliminó por completo la función `sitemap_xml` del archivo de vistas del core y se removió de su importación para evitar confusiones y código duplicado en el futuro.
+### C1. Produccion no iniciaba por SyntaxError
 
----
+Estado: resuelto.
 
-## 6. Git e Ignorados
+- Se elimino una llave sobrante en `config/settings/production.py`.
+- `check --deploy` vuelve a ejecutarse correctamente.
+- `collectstatic` funciona con settings de produccion.
 
-### 6.1. Exclusión de Static Files Compilados
-*   **Archivo modificado**: [.gitignore](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/.gitignore)
-*   **Solución**: Se agregó la línea `staticfiles/` a la lista de archivos ignorados para evitar que los archivos estáticos colectados localmente para pruebas de despliegue en producción se suban por error al repositorio.
+### A1. Markdown podia renderizar HTML peligroso
 
----
+Estado: resuelto y endurecido.
 
-## 7. Endurecimiento Residual Antes de Producción
+- Antes: Markdown se marcaba como seguro con `mark_safe` sin sanitizacion robusta.
+- Despues: `bleach==6.2.0` limpia la salida con allowlist.
+- Se mantienen etiquetas utiles como enlaces seguros, listas, tablas, codigo y enfasis.
+- Se neutralizan HTML crudo y protocolos peligrosos como `javascript:`.
 
-### 7.1. Sanitización Markdown con Allowlist
-*   **Archivos modificados**: [markdown_tags.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/templatetags/markdown_tags.py) y [requirements.txt](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/requirements.txt).
-*   **Mejora aplicada**: La sanitización por expresiones regulares se reemplazó por `bleach==6.2.0`, usando una lista explícita de etiquetas, atributos y protocolos permitidos. Esto mantiene Markdown útil (`strong`, listas, tablas, código y enlaces seguros) y neutraliza HTML crudo o enlaces `javascript:` con una estrategia más robusta.
-*   **Tests agregados**: Se añadió una prueba para confirmar que los enlaces HTTPS válidos siguen funcionando después del endurecimiento.
+### A2. Webhook tenia token por defecto y publicaba por defecto
 
-### 7.2. Rate Limiting y Logging del Webhook
-*   **Archivo modificado**: [api_video.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/content/views/api_video.py).
-*   **Mejora aplicada**: El webhook ahora registra intentos rechazados sin exponer tokens y aplica un límite básico de intentos fallidos por IP usando cache de Django. El límite se puede ajustar con `VIDEO_WEBHOOK_RATE_LIMIT_ATTEMPTS` y `VIDEO_WEBHOOK_RATE_LIMIT_WINDOW`.
-*   **Tests agregados**: Se añadieron pruebas para verificar logs sin secretos y bloqueo `429` tras intentos fallidos repetidos.
+Estado: resuelto y endurecido.
+
+- Se elimino el token por defecto aceptado.
+- Token solo por header.
+- Comparacion en tiempo constante.
+- Recursos creados como borrador por defecto.
+- Logging de rechazos sin secretos.
+- Rate limiting basico por IP.
+
+### M1. Archivos sin control
+
+Estado: resuelto parcialmente suficiente para produccion inicial.
+
+- Se agrego `FileExtensionValidator`.
+- Se agrego limite de 10 MB.
+- Pendiente opcional futuro: validar MIME real y estrategia de almacenamiento privado si los archivos dejan de ser publicos.
+
+### M2. Canonical fijo
+
+Estado: resuelto.
+
+- `CANONICAL_BASE_URL` puede leerse desde variable de entorno en produccion.
+- Debe alinearse con dominio, redirects, `ALLOWED_HOSTS`, sitemap y Search Console.
+
+### M3. HSTS preload/includeSubDomains activos por defecto
+
+Estado: resuelto.
+
+- `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS` y `DJANGO_SECURE_HSTS_PRELOAD` quedaron en `False` por defecto.
+- Se activan solo cuando el dominio y subdominios esten listos.
+
+### M4. Email unico case-sensitive
+
+Estado: resuelto.
+
+- Registro y edicion de perfil normalizan email con `lower().strip()`.
+- La validacion usa `email__iexact`.
+
+### S3. Sitemap manual obsoleto
+
+Estado: resuelto.
+
+- Se elimino `sitemap_xml` manual antiguo.
+- El sitemap queda servido por el framework nativo de Django.
+
+### U1/U2. Estilos inline y footer legal
+
+Estado: resuelto.
+
+- Se movieron estilos inline remanentes a CSS.
+- El footer legal dejo de verse como enlaces sin destino.
+
+## Validaciones ejecutadas
+
+Ultima validacion conocida:
+
+- `.venv\Scripts\python.exe manage.py check`: OK.
+- `.venv\Scripts\python.exe manage.py test`: OK, 41 tests.
+- `.venv\Scripts\python.exe manage.py check --deploy --settings=config.settings.production`: OK con variables temporales validas.
+- `.venv\Scripts\python.exe manage.py collectstatic --noinput --settings=config.settings.production`: OK.
+- `git diff --check`: OK.
+
+Notas:
+
+- Para `check --deploy`, si no se activan `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=true` y `DJANGO_SECURE_HSTS_PRELOAD=true`, Django puede mostrar warnings. Eso es esperado porque esas opciones quedaron deliberadamente como opt-in.
+- `collectstatic` genera `staticfiles/`, que no debe subirse al repositorio.
+
+## Variables de entorno de produccion
+
+Obligatorias:
+
+- `DJANGO_SECRET_KEY`
+- `DJANGO_ALLOWED_HOSTS`
+- `DJANGO_CSRF_TRUSTED_ORIGINS`
+
+Recomendadas/segun entorno:
+
+- `DATABASE_URL`
+- `CANONICAL_BASE_URL`
+- `API_SECRET_TOKEN`
+- `DJANGO_SECURE_SSL_REDIRECT`
+- `DJANGO_USE_X_FORWARDED_PROTO`
+- `DJANGO_SECURE_HSTS_SECONDS`
+- `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS`
+- `DJANGO_SECURE_HSTS_PRELOAD`
+
+Configurables para webhook:
+
+- `VIDEO_WEBHOOK_RATE_LIMIT_ATTEMPTS`
+- `VIDEO_WEBHOOK_RATE_LIMIT_WINDOW`
+
+Regla de seguridad: no guardar secretos, tokens, IDs reales ni credenciales dentro del repositorio.
+
+## Checklist operativo antes de publicar
+
+- Configurar dominio real y decidir www/no-www.
+- Confirmar `CANONICAL_BASE_URL` con el dominio final.
+- Configurar `ALLOWED_HOSTS` y `CSRF_TRUSTED_ORIGINS`.
+- Configurar `API_SECRET_TOKEN` fuerte.
+- Confirmar HTTPS y proxy headers si aplica.
+- Ejecutar `collectstatic`.
+- Verificar `/robots.txt`.
+- Verificar `/sitemap.xml`.
+- Dar de alta dominio en Google Search Console.
+- Enviar sitemap a Search Console.
+- No agregar analytics hasta elegir herramienta.
+- Definir backups y restauracion de base de datos.
+- Definir logs/monitoreo para errores y webhook.
+
+## Pendientes recomendados
+
+### Corto plazo
+
+- QA manual en navegador desktop/mobile:
+  - `/`
+  - `/recursos/`
+  - `/asignaturas/`
+  - `/niveles/`
+  - detalle de recurso
+  - login/registro/perfil
+  - formularios de creacion/edicion/eliminacion
+- Revisar accesibilidad real de dropdowns custom con teclado y lector de pantalla.
+- Crear paginas reales de terminos, privacidad y contacto si el sitio va a publicar usuarios reales.
+- Revisar que el dominio final redirija consistentemente a la version canonica.
+
+### Mediano plazo
+
+- Fortalecer copy de landings por asignatura y nivel con contenido mas especifico.
+- Agregar FAQs cuando exista contenido visible que lo justifique.
+- Evaluar landings por tema solo si hay contenido suficiente.
+- Evitar paginas por ciudad/comuna hasta tener contenido local real.
+- Agregar analytics solo tras decidir herramienta.
+
+## Auditorias adicionales recomendadas
+
+- Accesibilidad WCAG: teclado, foco, contraste, lector de pantalla, formularios, dropdowns y estados de error.
+- Rendimiento/Core Web Vitals: CSS/JS, fuentes, cache, LCP, CLS, imagenes y respuesta del servidor.
+- Contenido/conversion: claridad de oferta, CTAs, confianza, proceso de clases, contacto y FAQs.
+- Threat model de integraciones: webhook, agente YouTube, Markdown, archivos, roles admin y publicacion.
+- Legal/privacidad: terminos, politica de privacidad, cookies, datos de estudiantes/menores y consentimiento.
+- Operaciones/despliegue: backups, restauracion, logs, alertas, rotacion de secretos, rollback y monitoreo.
+- Dependencias: vulnerabilidades conocidas, pinning, licencias y plan de actualizacion.
+
+## Archivos clave
+
+- `config/settings/base.py`
+- `config/settings/production.py`
+- `templates/base.html`
+- `static/css/estilos.css`
+- `static/js/enhanced-select.js`
+- `apps/core/sitemaps.py`
+- `apps/core/views/seo.py`
+- `apps/core/templatetags/markdown_tags.py`
+- `apps/content/views/api_video.py`
+- `apps/content/views/resource_list.py`
+- `apps/content/views/resource_detail.py`
+- `apps/content/views/subject_detail.py`
+- `apps/content/views/level_detail.py`
+- `apps/content/models/resource.py`
+- `accounts/forms.py`
+- `requirements.txt`
+
+## Estado final
+
+El proyecto queda con una base tecnica consistente para avanzar hacia publicacion: seguridad razonable para una primera salida, SEO tecnico y semantico preparado, UI unificada, integraciones documentadas y pruebas reales. El siguiente esfuerzo deberia concentrarse en QA responsive/accesibilidad, dominio real, Search Console, contenido de conversion y operacion de produccion.
