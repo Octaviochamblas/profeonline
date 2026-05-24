@@ -69,12 +69,16 @@
         const wrapper = document.createElement("div");
         wrapper.className = "custom-select-wrapper";
 
+        const selectId = select.id || `select-${Math.random().toString(36).substring(2, 9)}`;
+        const listboxId = `listbox-${selectId}`;
+
         const button = document.createElement("button");
         button.type = "button";
         button.className = "custom-select";
         button.setAttribute("role", "combobox");
         button.setAttribute("aria-haspopup", "listbox");
         button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-controls", listboxId);
 
         const trigger = document.createElement("span");
         trigger.className = "custom-select-trigger";
@@ -85,6 +89,7 @@
 
         const optionsList = document.createElement("div");
         optionsList.className = "custom-options";
+        optionsList.id = listboxId;
         optionsList.setAttribute("role", "listbox");
 
         Array.from(select.options).forEach((option) => {
@@ -156,7 +161,12 @@
             const activeElement = document.activeElement;
             const activeIndex = options.indexOf(activeElement);
 
-            if (event.key === "ArrowDown") {
+            if (event.key === "Tab") {
+                if (isOpen) {
+                    button.classList.remove("open");
+                    button.setAttribute("aria-expanded", "false");
+                }
+            } else if (event.key === "ArrowDown") {
                 event.preventDefault();
                 if (!isOpen) {
                     button.classList.add("open");

@@ -33,6 +33,14 @@ class AccountFormTests(TestCase):
         self.assertIn("form-control", form.fields["email"].widget.attrs["class"])
         self.assertIn("form-control", form.fields["education_level"].widget.attrs["class"])
 
+    def test_form_fields_accessibility_attributes(self):
+        form = CustomUserCreationForm()
+        # Required fields must have aria-required="true"
+        self.assertEqual(form.fields["username"].widget.attrs.get("aria-required"), "true")
+        self.assertEqual(form.fields["email"].widget.attrs.get("aria-required"), "true")
+        # Optional fields must not have aria-required
+        self.assertNotIn("aria-required", form.fields["first_name"].widget.attrs)
+
     def test_profile_update_form_prefills_user_data_and_styles_fields(self):
         form = ProfileUpdateForm(instance=self.profile, user=self.user)
 

@@ -19,3 +19,8 @@ def apply_form_classes(form):
                 classes.append(value)
 
         widget.attrs["class"] = " ".join(classes)
+
+        # Agregar atributos de accesibilidad
+        if field.required:
+            widget.attrs["aria-required"] = "true"
+
