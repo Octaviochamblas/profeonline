@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Level, Module, ModuleResource, Resource, Subject
+from apps.content.models import Level, Module, ModuleResource, Resource, Subject, Topic
 
 
 class ResourceDetailViewTests(TestCase):
@@ -147,6 +147,61 @@ class ModuleResourceEndpointTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["resources"][0]["title"], self.resource.title)
+
+
+class ResourceListFilterTests(TestCase):
+    def setUp(self):
+        self.math = Subject.objects.create(name="Matematica", is_active=True)
+        self.physics = Subject.objects.create(name="Fisica", is_active=True)
+        self.math_topic = Topic.objects.create(
+            subject=self.math,
+            name="Ecuaciones lineales",
+            is_active=True,
+        )
+        self.physics_topic = Topic.objects.create(
+            subject=self.physics,
+            name="Movimiento rectilineo",
+            is_active=True,
+        )
+        self.math_resource = Resource.objects.create(
+            title="Ejercicios de ecuaciones lineales",
+            subject=self.math,
+            topic=self.math_topic,
+            is_published=True,
+        )
+        self.physics_resource = Resource.objects.create(
+            title="Resumen de movimiento rectilineo",
+            subject=self.physics,
+            topic=self.physics_topic,
+            is_published=True,
+        )
+
+    def test_invalid_topic_for_selected_subject_is_ignored(self):
+        response = self.client.get(
+            reverse("content:resource_list"),
+            {
+                "subject": self.math.pk,
+                "topic": self.physics_topic.pk,
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.math_resource.title)
+        self.assertNotContains(response, self.physics_resource.title)
+        self.assertEqual(response.context["selected_subject"], str(self.math.pk))
+        self.assertEqual(response.context["selected_topic"], "")
+
+    def test_topic_select_excludes_topics_from_other_subjects(self):
+        response = self.client.get(
+            reverse("content:resource_list"),
+            {
+                "subject": self.math.pk,
+                "topic": self.physics_topic.pk,
+            },
+        )
+
+        self.assertContains(response, "Matematica - Ecuaciones lineales")
+        self.assertNotContains(response, "Fisica - Movimiento rectilineo")
 
 
 class SpanishUrlTests(TestCase):

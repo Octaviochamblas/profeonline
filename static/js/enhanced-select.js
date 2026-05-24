@@ -23,6 +23,34 @@
         });
     }
 
+    function syncExistingSelect(select) {
+        const wrapper = select.closest(".custom-select-wrapper");
+        if (!wrapper) {
+            return;
+        }
+
+        const button = wrapper.querySelector(".custom-select");
+        const optionsList = wrapper.querySelector(".custom-options");
+        if (button && optionsList) {
+            syncButton(select, button, optionsList);
+        }
+    }
+
+    function resetTopicWhenSubjectChanges(select) {
+        if (select.name !== "subject") {
+            return;
+        }
+
+        const form = select.closest("form");
+        const topicSelect = form ? form.querySelector('select[name="topic"]') : null;
+        if (!topicSelect || topicSelect.value === "") {
+            return;
+        }
+
+        topicSelect.value = "";
+        syncExistingSelect(topicSelect);
+    }
+
     function buildEnhancedSelect(select) {
         if (
             select.hasAttribute(readyAttr) ||
@@ -36,6 +64,7 @@
         select.classList.add(enhancedClass);
         select.setAttribute("aria-hidden", "true");
         select.tabIndex = -1;
+        select.style.display = "none";
 
         const wrapper = document.createElement("div");
         wrapper.className = "custom-select-wrapper";
@@ -69,6 +98,7 @@
 
             optionButton.addEventListener("click", () => {
                 select.value = option.value;
+                resetTopicWhenSubjectChanges(select);
                 select.dispatchEvent(new Event("change", { bubbles: true }));
                 syncButton(select, button, optionsList);
                 button.classList.remove("open");
