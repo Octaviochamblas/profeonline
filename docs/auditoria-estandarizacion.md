@@ -36,6 +36,16 @@ La prioridad recomendada es corregir primero filtrado de contenido publicado y c
 - `SECURE_PROXY_SSL_HEADER` solo se activa si `DJANGO_USE_X_FORWARDED_PROTO` esta habilitado.
 - `python manage.py check --deploy --settings=config.settings.production` pasa sin issues usando variables temporales de validacion.
 
+### 2026-05-23 - Base SEO tecnica
+
+- `base.html` incluye canonical sin querystring, `og:url`, bloque `og_image` y bloque `structured_data`.
+- La home declara JSON-LD `WebSite` con idioma `es-CL`.
+- Se agregaron `/robots.txt` y `/sitemap.xml` desde vistas de `apps.core`.
+- `robots.txt` bloquea `/admin/` y `/cuentas/`, y apunta al sitemap.
+- `sitemap.xml` lista las paginas publicas principales: home, recursos, areas, asignaturas, temas, niveles y modulos.
+- Se agregaron tests para canonical/OG URL/JSON-LD, robots y sitemap.
+- Se reinicio el servidor local y `/robots.txt` y `/sitemap.xml` responden 200.
+
 ## Hallazgos prioritarios
 
 ### P1 - Borradores accesibles por URL directa
@@ -82,6 +92,8 @@ Recomendacion:
 ### P2 - SEO tecnico incompleto
 
 `base.html` tiene bloques para title/meta description/OG, pero faltan canonical, robots, `og:url`, `og:image`, structured data, sitemap y robots.txt. Ademas varias paginas no sobreescriben meta description.
+
+Estado: parcialmente resuelto. Quedaron implementados canonical, `og:url`, bloque `og_image`, `structured_data`, JSON-LD de home, robots.txt y sitemap.xml. Falta definir un asset real para `og:image` por defecto y ampliar structured data por tipo de pagina.
 
 Evidencia:
 - `templates/base.html`: bloques `title`, `meta_description`, `og_title`, `og_description`
