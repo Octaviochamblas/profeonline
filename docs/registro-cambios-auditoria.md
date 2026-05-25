@@ -141,6 +141,8 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
   - Corrección del bug que impedía seleccionar o ver los temas asignados a un recurso en las pantallas de creación y edición al cambiar la asignatura o cargar datos existentes.
 - **Rediseño Estético de Selección de Niveles (Filtros/Formularios):**
   - Rediseño de las opciones múltiples de Niveles (`forms.CheckboxSelectMultiple` bajo la clase `.checkbox-list`) mediante CSS `:has`. Las casillas de verificación básicas y poco amigables se convirtieron en tarjetas interactivas que cambian de color (borde, fondo y texto) al ser seleccionadas, mejorando significativamente la usabilidad y estética.
+- **Resolución de Error 153 en Reproductor de YouTube:**
+  - Se añadió la propiedad `referrerpolicy="strict-origin-when-cross-origin"` al `<iframe>` de YouTube en [resource_detail.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/pages/resource_detail.html). Esto anula localmente la política global restrictiva de cabeceras HTTP (`Referrer-Policy: same-origin`) permitiendo que el navegador envíe solo el origen a los servidores de YouTube (`youtube-nocookie.com`) para validar el origen del dominio, lo cual resuelve el fallo de carga del reproductor de video.
 
 
 ## Hallazgos resueltos
