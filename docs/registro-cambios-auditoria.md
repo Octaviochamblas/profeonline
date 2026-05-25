@@ -3,7 +3,7 @@
 Fecha de consolidacion: 2026-05-24
 Rama actual: `main`
 Estado: validado y listo para pruebas de integracion/despliegue
-Tests actuales: 42 exitosos
+Tests actuales: 46 exitosos
 
 Este documento consolida la informacion que antes estaba repartida en:
 
@@ -133,6 +133,12 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
   - Integración de CI/CD via GitHub Actions para ejecución automatizada de pruebas y comprobación de despliegue.
   - Configuración e instalación de Git hooks locales mediante pre-commit para automatizar chequeos de estilo, calidad y pruebas unitarias a nivel de commit.
 
+### 2026-05-25
+
+- **Corrección de selector dinámico de Temas:**
+  - Implementación de un `MutationObserver` en `enhanced-select.js` para detectar cuándo cambian las opciones de un selector nativo (por ejemplo, mediante fetch AJAX o DOM scripting en cascada) y reconstruir automáticamente la lista de botones de opciones en el selector personalizado.
+  - Corrección del bug que impedía seleccionar o ver los temas asignados a un recurso en las pantallas de creación y edición al cambiar la asignatura o cargar datos existentes.
+
 
 ## Hallazgos resueltos
 
@@ -212,7 +218,7 @@ Estado: resuelto.
 Ultima validacion conocida:
 
 - `.venv\Scripts\python.exe manage.py check`: OK.
-- `.venv\Scripts\python.exe manage.py test`: OK, 42 tests.
+- `.venv\Scripts\python.exe manage.py test`: OK, 46 tests.
 - `.venv\Scripts\python.exe manage.py check --deploy --settings=config.settings.production`: OK con variables temporales validas.
 - `.venv\Scripts\python.exe manage.py collectstatic --noinput --settings=config.settings.production`: OK.
 - `git diff --check`: OK.

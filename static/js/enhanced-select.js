@@ -51,6 +51,32 @@
         syncExistingSelect(topicSelect);
     }
 
+    function rebuildOptions(select, button, optionsList) {
+        optionsList.innerHTML = "";
+        Array.from(select.options).forEach((option) => {
+            const optionButton = document.createElement("button");
+            optionButton.type = "button";
+            optionButton.className = "custom-option";
+            optionButton.textContent = option.textContent;
+            optionButton.dataset.value = option.value;
+            optionButton.setAttribute("role", "option");
+            optionButton.setAttribute("aria-selected", option.selected ? "true" : "false");
+
+            optionButton.addEventListener("click", () => {
+                select.value = option.value;
+                resetTopicWhenSubjectChanges(select);
+                select.dispatchEvent(new Event("change", { bubbles: true }));
+                syncButton(select, button, optionsList);
+                button.classList.remove("open");
+                button.setAttribute("aria-expanded", "false");
+                button.focus();
+            });
+
+            optionsList.appendChild(optionButton);
+        });
+        syncButton(select, button, optionsList);
+    }
+
     function buildEnhancedSelect(select) {
         if (
             select.hasAttribute(readyAttr) ||
@@ -92,26 +118,7 @@
         optionsList.id = listboxId;
         optionsList.setAttribute("role", "listbox");
 
-        Array.from(select.options).forEach((option) => {
-            const optionButton = document.createElement("button");
-            optionButton.type = "button";
-            optionButton.className = "custom-option";
-            optionButton.textContent = option.textContent;
-            optionButton.dataset.value = option.value;
-            optionButton.setAttribute("role", "option");
-            optionButton.setAttribute("aria-selected", option.selected ? "true" : "false");
-
-            optionButton.addEventListener("click", () => {
-                select.value = option.value;
-                resetTopicWhenSubjectChanges(select);
-                select.dispatchEvent(new Event("change", { bubbles: true }));
-                syncButton(select, button, optionsList);
-                button.classList.remove("open");
-                button.setAttribute("aria-expanded", "false");
-            });
-
-            optionsList.appendChild(optionButton);
-        });
+        rebuildOptions(select, button, optionsList);
 
         button.appendChild(trigger);
         button.appendChild(arrow);
@@ -121,6 +128,12 @@
 
         select.parentNode.insertBefore(wrapper, select);
         wrapper.appendChild(select);
+
+        const observer = new MutationObserver(() => {
+            rebuildOptions(select, button, optionsList);
+        });
+        observer.observe(select, { childList: true });
+        select._enhancedSelectObserver = observer;
 
         if (select.id) {
             const labelText = Array.from(document.querySelectorAll(`label[for="${select.id}"]`))
