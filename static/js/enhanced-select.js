@@ -113,15 +113,15 @@
         arrow.className = "custom-select-arrow";
         arrow.setAttribute("aria-hidden", "true");
 
+        button.appendChild(trigger);
+        button.appendChild(arrow);
+
         const optionsList = document.createElement("div");
         optionsList.className = "custom-options";
         optionsList.id = listboxId;
         optionsList.setAttribute("role", "listbox");
 
         rebuildOptions(select, button, optionsList);
-
-        button.appendChild(trigger);
-        button.appendChild(arrow);
 
         wrapper.appendChild(button);
         wrapper.appendChild(optionsList);
