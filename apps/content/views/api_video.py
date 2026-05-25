@@ -112,6 +112,15 @@ def create_resource_from_video(request):
             status=400,
         )
 
+    from apps.content.views.resource_detail import get_youtube_id
+    youtube_id = get_youtube_id(video_url)
+    if not youtube_id:
+        return JsonResponse(
+            {"ok": False, "error": "La URL del video debe ser un enlace valido de YouTube"},
+            status=400,
+        )
+
+
     subject = None
     if subject_slug:
         subject = Subject.objects.filter(slug=subject_slug, is_active=True).first()

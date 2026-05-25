@@ -338,7 +338,7 @@ class YouTubeWebhookSecurityTests(TestCase):
     def test_webhook_fails_closed_if_secret_token_missing(self):
         response = self.client.post(
             self.url,
-            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}',
+            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ"}',
             content_type="application/json",
             HTTP_X_API_TOKEN="some_token"
         )
@@ -350,7 +350,7 @@ class YouTubeWebhookSecurityTests(TestCase):
     def test_webhook_fails_closed_if_secret_token_is_default(self):
         response = self.client.post(
             self.url,
-            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}',
+            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ"}',
             content_type="application/json",
             HTTP_X_API_TOKEN="default_secret_token_change_me"
         )
@@ -362,7 +362,7 @@ class YouTubeWebhookSecurityTests(TestCase):
         # We only accept tokens in headers now
         response = self.client.post(
             self.url,
-            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123", "token": "my-secret-token"}',
+            data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ", "token": "my-secret-token"}',
             content_type="application/json"
         )
         self.assertEqual(response.status_code, 401)
@@ -371,7 +371,7 @@ class YouTubeWebhookSecurityTests(TestCase):
     def test_webhook_success_with_header_token_and_defaults_to_draft(self):
         response = self.client.post(
             self.url,
-            data='{"title": "Test Webhook Video", "video_url": "https://youtube.com/watch?v=999"}',
+            data='{"title": "Test Webhook Video", "video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ"}',
             content_type="application/json",
             HTTP_X_API_TOKEN="my-secret-token"
         )
@@ -385,11 +385,23 @@ class YouTubeWebhookSecurityTests(TestCase):
         self.assertFalse(resource.is_published)
 
     @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_fails_if_video_url_is_invalid(self):
+        response = self.client.post(
+            self.url,
+            data='{"title": "Test Video", "video_url": "https://google.com/watch?v=dQw4w9WgXcQ"}',
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["ok"])
+        self.assertEqual(response.json()["error"], "La URL del video debe ser un enlace valido de YouTube")
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
     def test_webhook_logs_failed_authentication_without_secret(self):
         with self.assertLogs("apps.content.views.api_video", level="WARNING") as logs:
             response = self.client.post(
                 self.url,
-                data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}',
+                data='{"title": "Test Video", "video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ"}',
                 content_type="application/json",
                 HTTP_X_API_TOKEN="wrong-token",
             )
@@ -407,7 +419,7 @@ class YouTubeWebhookSecurityTests(TestCase):
     )
     @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
     def test_webhook_rate_limits_repeated_failed_attempts(self):
-        payload = '{"title": "Test Video", "video_url": "https://youtube.com/watch?v=123"}'
+        payload = '{"title": "Test Video", "video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ"}'
 
         for _index in range(2):
             response = self.client.post(
@@ -427,6 +439,8 @@ class YouTubeWebhookSecurityTests(TestCase):
 
         self.assertEqual(response.status_code, 429)
         self.assertEqual(response.json()["error"], "Demasiados intentos")
+
+
 
 
 class ResourceModelFileValidationTests(TestCase):

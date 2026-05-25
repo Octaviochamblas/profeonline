@@ -52,3 +52,15 @@ class ResourceForm(forms.ModelForm):
             ).order_by("name")
 
         apply_form_classes(self)
+
+    def clean_video_url(self):
+        video_url = self.cleaned_data.get("video_url")
+        if video_url:
+            from apps.content.views.resource_detail import get_youtube_id
+            youtube_id = get_youtube_id(video_url)
+            if not youtube_id:
+                raise forms.ValidationError(
+                    "La URL debe ser un enlace válido de YouTube (ej: https://www.youtube.com/watch?v=...) o youtu.be."
+                )
+        return video_url
+

@@ -50,3 +50,26 @@ class ContentFormTests(TestCase):
         self.assertEqual(topic_names, ["Ecuaciones lineales"])
         self.assertEqual(level_names, ["Primaria", "Secundaria"])
         self.assertIn("checkbox-list", form.fields["levels"].widget.attrs["class"])
+
+    def test_resource_form_validates_youtube_video_url(self):
+        # Valid youtube URL
+        form = ResourceForm(data={
+            "title": "Un Recurso",
+            "subject": self.active_subject.pk,
+            "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        })
+        self.assertTrue(form.is_valid())
+
+        # Invalid youtube URL
+        form_invalid = ResourceForm(data={
+            "title": "Un Recurso",
+            "subject": self.active_subject.pk,
+            "video_url": "https://www.google.com/watch?v=dQw4w9WgXcQ"
+        })
+        self.assertFalse(form_invalid.is_valid())
+        self.assertIn("video_url", form_invalid.errors)
+        self.assertEqual(
+            form_invalid.errors["video_url"][0],
+            "La URL debe ser un enlace válido de YouTube (ej: https://www.youtube.com/watch?v=...) o youtu.be."
+        )
+
