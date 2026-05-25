@@ -1,7 +1,30 @@
+import mimetypes
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
+
+
+def validate_file_mime(value):
+    mime_type, _ = mimetypes.guess_type(value.name)
+    allowed_mimes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "image/png",
+        "image/jpeg",
+        "application/zip",
+        "application/x-zip-compressed",
+    ]
+    if not mime_type or mime_type not in allowed_mimes:
+        raise ValidationError("El tipo de archivo (MIME) no está permitido o no es válido.")
+
+
+
 
 
 def validate_file_size(value):
@@ -48,7 +71,8 @@ class Resource(models.Model):
         verbose_name="archivo descargable",
         validators=[
             FileExtensionValidator(allowed_extensions=["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "png", "jpg", "jpeg", "zip"]),
-            validate_file_size
+            validate_file_size,
+            validate_file_mime,
         ]
     )
     video_url = models.URLField(

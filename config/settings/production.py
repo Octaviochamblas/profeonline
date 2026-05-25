@@ -85,3 +85,14 @@ STORAGES = {
     },
 }
 
+# Redis Cache Configuration (For shared cache, rate limiting, and performance PEND-009)
+REDIS_URL = os.environ.get("REDIS_URL")
+if REDIS_URL:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": REDIS_URL,
+        }
+    }
+
+
