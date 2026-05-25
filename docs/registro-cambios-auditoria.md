@@ -130,6 +130,9 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
   - Activación de enlaces reales en el footer del sitio en lugar de textos estáticos.
   - Uso de iframe con `youtube-nocookie.com` y `loading="lazy"` para videos en el detalle de recursos para mitigar tracking y mejorar rendimiento.
   - Optimización de copy de propuesta de valor en H1 y párrafo introductorio de la Home para mejorar conversión.
+  - Integración de CI/CD via GitHub Actions para ejecución automatizada de pruebas y comprobación de despliegue.
+  - Configuración e instalación de Git hooks locales mediante pre-commit para automatizar chequeos de estilo, calidad y pruebas unitarias a nivel de commit.
+
 
 ## Hallazgos resueltos
 

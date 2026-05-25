@@ -123,3 +123,5 @@ Documentos de auditoria encontrados:
 | 2026-05-24 | PEND-010 | Validación de tipos MIME en descargas de recursos para evitar extensiones falsas | Tests unitarios de validación MIME (46 tests en total) | |
 | 2026-05-24 | PEND-012 | Implementación de Content Security Policy (CSP) gradual vía middleware personalizado | Registro del middleware en la stack y pruebas de carga | |
 | 2026-05-24 | PEND-013 | Configuración gradual de verificación de email opcional y console backend local | Registro de credenciales en `base.py` y tests de login | |
+| 2026-05-24 | PEND-003 / CI | Configuración de CI/CD automatizada vía GitHub Actions (tests y check deploy) | Archivo django_ci.yml y validaciones en pull requests | |
+| 2026-05-24 | Local Git Hooks | Instalación y configuración de pre-commit hooks locales (formateo y pruebas) | Ejecución de git hooks en commit y pre-commit run | |
