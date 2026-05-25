@@ -23,4 +23,3 @@ def apply_form_classes(form):
         # Agregar atributos de accesibilidad
         if field.required:
             widget.attrs["aria-required"] = "true"
-

@@ -10,4 +10,3 @@ class TopicUpdateView(AdminRequiredMixin, UpdateView):
     form_class = TopicForm
     template_name = "pages/topic_form.html"
     success_url = reverse_lazy("content:topic_list")
-    

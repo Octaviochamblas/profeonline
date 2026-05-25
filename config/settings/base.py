@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    
+
     # allauth
     'allauth',
     'allauth.account',
@@ -175,4 +175,3 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 CANONICAL_BASE_URL = "https://www.profeonline.cl"
-

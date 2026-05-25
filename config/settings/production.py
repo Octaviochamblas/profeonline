@@ -94,5 +94,3 @@ if REDIS_URL:
             "LOCATION": REDIS_URL,
         }
     }
-
-

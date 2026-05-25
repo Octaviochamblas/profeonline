@@ -378,7 +378,7 @@ class YouTubeWebhookSecurityTests(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.json()["ok"])
         self.assertTrue(response.json()["created"])
-        
+
         # Verify the created resource is draft (is_published = False) by default
         resource = Resource.objects.get(pk=response.json()["resource_id"])
         self.assertEqual(resource.title, "Test Webhook Video")
@@ -446,12 +446,12 @@ class YouTubeWebhookSecurityTests(TestCase):
 class ResourceModelFileValidationTests(TestCase):
     def test_file_size_validation(self):
         from apps.content.models.resource import validate_file_size
-        
+
         # 10MB limit is 10485760 bytes. Test with 11MB file.
         large_file = SimpleUploadedFile("test.pdf", b"x" * (11 * 1024 * 1024))
         with self.assertRaises(ValidationError):
             validate_file_size(large_file)
-            
+
         # Test with 5MB file (should not raise error)
         small_file = SimpleUploadedFile("test.pdf", b"x" * (5 * 1024 * 1024))
         try:
@@ -461,7 +461,7 @@ class ResourceModelFileValidationTests(TestCase):
 
     def test_file_mime_validation(self):
         from apps.content.models.resource import validate_file_mime
-        
+
         # Valid PDF file (pdf mime type is application/pdf)
         valid_pdf = SimpleUploadedFile("test.pdf", b"x" * 100, content_type="application/pdf")
         try:
@@ -473,5 +473,3 @@ class ResourceModelFileValidationTests(TestCase):
         invalid_exe = SimpleUploadedFile("test.exe", b"x" * 100, content_type="application/octet-stream")
         with self.assertRaises(ValidationError):
             validate_file_mime(invalid_exe)
-
-

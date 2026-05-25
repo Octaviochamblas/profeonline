@@ -4,7 +4,7 @@ class ContentSecurityPolicyMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        
+
         # Gradual Content Security Policy allowing local assets, Google Fonts, and YouTube embeds
         csp_policies = [
             "default-src 'self'",
@@ -15,6 +15,6 @@ class ContentSecurityPolicyMiddleware:
             "img-src 'self' data: https:",
             "connect-src 'self'",
         ]
-        
+
         response["Content-Security-Policy"] = "; ".join(csp_policies)
         return response

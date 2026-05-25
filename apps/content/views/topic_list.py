@@ -9,4 +9,3 @@ class TopicListView(ListView):
 
     def get_queryset(self):
         return Topic.objects.filter(is_active=True).select_related("subject")
-    

@@ -72,4 +72,3 @@ class ContentFormTests(TestCase):
             form_invalid.errors["video_url"][0],
             "La URL debe ser un enlace válido de YouTube (ej: https://www.youtube.com/watch?v=...) o youtu.be."
         )
-

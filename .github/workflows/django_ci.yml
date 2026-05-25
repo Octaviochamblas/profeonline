@@ -16,21 +16,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        
+
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        
+
     - name: Run Django System Check
       run: |
         python manage.py check
-        
+
     - name: Run Production Deployment Check
       env:
         DJANGO_SECRET_KEY: "ci-test-secret-key-must-be-long-and-secure-in-production-check"

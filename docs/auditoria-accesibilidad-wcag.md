@@ -101,4 +101,3 @@ Objetivo: detectar y corregir barreras de acceso para usuarios que navegan con t
 | 2026-05-24 | aria-controls y Tab key en dropdowns | `enhanced-select.js` | Test de navegación con teclado | |
 | 2026-05-24 | aria-required="true" dinámico en forms | `apps/core/forms.py` | Test unitario automatizado | |
 | 2026-05-24 | Estilos globales focus-visible | `estilos.css` | Inspección visual de foco | |
-

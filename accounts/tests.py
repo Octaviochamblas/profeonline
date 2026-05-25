@@ -91,4 +91,3 @@ class AccountFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("email", form.errors)
         self.assertEqual(form.errors["email"][0], "Este correo electrónico ya está registrado por otro usuario.")
-

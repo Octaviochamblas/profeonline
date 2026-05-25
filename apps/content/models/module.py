@@ -25,7 +25,7 @@ class Module(models.Model):
         related_name="modules",
         verbose_name="niveles",
     )
-    
+
     resources = models.ManyToManyField(
         "content.Resource",
         through="content.ModuleResource",

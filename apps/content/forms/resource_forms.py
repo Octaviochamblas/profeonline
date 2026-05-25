@@ -63,4 +63,3 @@ class ResourceForm(forms.ModelForm):
                     "La URL debe ser un enlace válido de YouTube (ej: https://www.youtube.com/watch?v=...) o youtu.be."
                 )
         return video_url
-
