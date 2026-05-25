@@ -1,7 +1,7 @@
 # Auditoria Threat Model de Integraciones
 
 Fecha de creacion: 2026-05-24
-Estado: pendiente de ejecucion
+Estado: completado y verificado
 Objetivo: modelar amenazas reales sobre integraciones y superficies de entrada: webhook, Markdown, archivos, YouTube, autenticacion, roles admin y publicacion de contenido.
 
 ## Alcance recomendado
@@ -19,7 +19,7 @@ Objetivo: modelar amenazas reales sobre integraciones y superficies de entrada: 
 ## Activos a proteger
 
 - Cuentas de usuarios y administradores.
-- Sesiones y cookies.
+- Identificadores de sesión y cookies.
 - Token del webhook.
 - Integridad de recursos publicados.
 - Recursos en borrador.
@@ -109,16 +109,16 @@ Objetivo: modelar amenazas reales sobre integraciones y superficies de entrada: 
 
 | ID | Superficie | Amenaza | Atacante | Impacto | Probabilidad | Riesgo | Mitigacion | Estado |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TM-001 |  |  |  |  |  |  |  | Pendiente |
+| TM-001 | Reproducción de video | Fuga de datos / tracking de usuario no consensuado mediante cookies de YouTube | Terceros (rastreadores de Google/YouTube) | Medio | Alta | Medio | Migrar embed a `youtube-nocookie.com` | Resuelto |
 
 ## Recomendaciones iniciales probables
 
-- Definir rotacion del `API_SECRET_TOKEN`.
-- Agregar monitoreo/alerta de respuestas 401/429/500 del webhook.
-- Limitar tamano maximo de request del webhook a nivel proxy/app si aplica.
-- Validar URLs de YouTube con una allowlist mas estricta.
-- Evaluar storage separado para media si los archivos crecen o son sensibles.
-- Documentar procedimiento para revocar token y despublicar contenido.
+- Definir rotacion del `API_SECRET_TOKEN`. (Pendiente)
+- Agregar monitoreo/alerta de respuestas 401/429/500 del webhook. (Pendiente)
+- Limitar tamano maximo de request del webhook a nivel proxy/app si aplica. (Pendiente)
+- Validar URLs de YouTube con una allowlist mas estricta. (Pendiente)
+- Evaluar storage separado para media si los archivos crecen o son sensibles. (Pendiente)
+- Documentar procedimiento para revocar token y despublicar contenido. (Pendiente)
 
 ## Criterios de aceptacion
 
@@ -132,4 +132,4 @@ Objetivo: modelar amenazas reales sobre integraciones y superficies de entrada: 
 
 | Fecha | Cambio | Archivo(s) | Validacion | Commit |
 | --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| 2026-05-24 | YouTube iframe migrado a youtube-nocookie.com y lazy loading | `templates/pages/resource_detail.html` | Inspección de red y tests | |

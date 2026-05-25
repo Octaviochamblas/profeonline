@@ -78,11 +78,26 @@ class SeoTechnicalViewTests(TestCase):
             response,
             f"<loc>http://testserver/recursos/{self.resource.slug}/</loc>",
         )
+        self.assertContains(response, "<loc>http://testserver/terminos/</loc>")
+        self.assertContains(response, "<loc>http://testserver/privacidad/</loc>")
+        self.assertContains(response, "<loc>http://testserver/contacto/</loc>")
         self.assertNotContains(response, "/cuentas/")
         self.assertNotContains(response, "/admin/")
         self.assertNotContains(response, self.inactive_subject.slug)
         self.assertNotContains(response, self.inactive_level.slug)
         self.assertNotContains(response, self.inactive_resource.slug)
+
+    def test_static_pages_render_correctly(self):
+        terminos_res = self.client.get(reverse("core:terminos"))
+        privacidad_res = self.client.get(reverse("core:privacidad"))
+        contacto_res = self.client.get(reverse("core:contacto"))
+
+        self.assertEqual(terminos_res.status_code, 200)
+        self.assertEqual(privacidad_res.status_code, 200)
+        self.assertEqual(contacto_res.status_code, 200)
+        self.assertContains(terminos_res, "Términos de Uso")
+        self.assertContains(privacidad_res, "Política de Privacidad")
+        self.assertContains(contacto_res, "Contacto")
 
 
 class MarkdownSecurityFilterTests(TestCase):

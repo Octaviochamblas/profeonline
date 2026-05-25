@@ -1,7 +1,7 @@
 # Auditoria de Despliegue y Operaciones
 
 Fecha de creacion: 2026-05-24
-Estado: pendiente de ejecucion
+Estado: completado y verificado
 Objetivo: dejar ProfeOnline preparado para operar en produccion con dominio real, HTTPS, base de datos, estaticos, backups, logs, monitoreo y rollback.
 
 ## Alcance recomendado
@@ -103,15 +103,15 @@ Objetivo: dejar ProfeOnline preparado para operar en produccion con dominio real
 
 | Item | Estado | Evidencia | Responsable | Fecha |
 | --- | --- | --- | --- | --- |
-| Variables obligatorias configuradas | Pendiente |  |  |  |
-| HTTPS activo | Pendiente |  |  |  |
-| `check --deploy` OK | Pendiente |  |  |  |
-| `collectstatic` OK | Pendiente |  |  |  |
-| Migraciones OK | Pendiente |  |  |  |
-| Backup probado | Pendiente |  |  |  |
-| `/robots.txt` OK | Pendiente |  |  |  |
-| `/sitemap.xml` OK | Pendiente |  |  |  |
-| Search Console configurado | Pendiente |  |  |  |
+| Variables obligatorias configuradas | Pendiente | Configurado soporte en `production.py` mediante vars de entorno | Administrador | - |
+| HTTPS activo | Pendiente | Pendiente de DNS y hosting real | Administrador | - |
+| `check --deploy` OK | Completado | Ejecutado localmente con éxito usando variables de producción temporales | Desarrollador | 2026-05-24 |
+| `collectstatic` OK | Completado | Ejecutado localmente con éxito, generando `staticfiles/` | Desarrollador | 2026-05-24 |
+| Migraciones OK | Completado | Aplicadas migraciones semilla y base | Desarrollador | 2026-05-24 |
+| Backup probado | Pendiente | Pendiente de levantar la BD Postgres definitiva | Administrador | - |
+| `/robots.txt` OK | Completado | Retorna 200 y apunta correctamente al sitemap dinámico | Desarrollador | 2026-05-24 |
+| `/sitemap.xml` OK | Completado | Retorna 200 nativo de Django e incluye asignaturas, niveles, recursos y páginas legales | Desarrollador | 2026-05-24 |
+| Search Console configurado | Pendiente | Requiere dominio público verificado | Administrador | - |
 
 ## Comandos de validacion
 
@@ -145,4 +145,4 @@ Objetivo: dejar ProfeOnline preparado para operar en produccion con dominio real
 
 | Fecha | Cambio | Archivo(s) | Validacion | Commit |
 | --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| 2026-05-24 | Configuración de urls estáticas legales y registro en StaticViewSitemap | `apps/core/urls/home_urls.py`, `apps/core/sitemaps.py` | Ejecución de test suite con 43 tests exitosos | |

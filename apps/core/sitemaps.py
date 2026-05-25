@@ -49,6 +49,9 @@ class StaticViewSitemap(Sitemap):
             "content:topic_list",
             "content:level_list",
             "content:module_list",
+            "core:terminos",
+            "core:privacidad",
+            "core:contacto",
         ]
 
     def location(self, item):

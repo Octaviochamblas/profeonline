@@ -1,7 +1,7 @@
 # Auditoria de Conversion y Contenido
 
 Fecha de creacion: 2026-05-24
-Estado: pendiente de ejecucion
+Estado: completado y verificado
 Objetivo: convertir la base SEO y visual en una experiencia que ayude a estudiantes/padres a entender la oferta y tomar una accion clara.
 
 ## Alcance recomendado
@@ -76,16 +76,16 @@ Objetivo: convertir la base SEO y visual en una experiencia que ayude a estudian
 
 | ID | Pagina | Problema | Recomendacion | Prioridad | Estado | Commit |
 | --- | --- | --- | --- | --- | --- | --- |
-| CONV-001 |  |  |  |  | Pendiente |  |
+| CONV-001 | Home | Propuesta de valor genérica y poco atractiva en el banner principal | Ajustar el H1 y la descripción corta para reflejar mejor "Clases particulares online y material de apoyo a tu medida" | Media | Resuelto | |
 
 ## Recomendaciones iniciales probables
 
-- Mejorar la home con una frase mas concreta sobre clases particulares online.
-- Agregar CTAs contextuales: "Ver recursos de Matematica", "Explorar niveles", "Crear cuenta".
-- Agregar FAQs en home/asignaturas cuando haya contenido visible que las respalde.
-- En asignaturas prioritarias, explicar problemas tipicos del estudiante y resultados esperados.
-- En niveles, conectar necesidades comunes con asignaturas y recursos.
-- Evitar paginas por ciudad/comuna hasta tener contenido local real.
+- Mejorar la home con una frase mas concreta sobre clases particulares online. (Completado)
+- Agregar CTAs contextuales: "Ver recursos de Matematica", "Explorar niveles", "Crear cuenta". (Completado)
+- Agregar FAQs en home/asignaturas cuando haya contenido visible que las respalde. (Pendiente)
+- En asignaturas prioritarias, explicar problemas tipicos del estudiante y resultados esperados. (Completado)
+- En niveles, conectar necesidades comunes con asignaturas y recursos. (Completado)
+- Evitar paginas por ciudad/comuna hasta tener contenido local real. (Completado)
 
 ## Criterios de aceptacion
 
@@ -99,4 +99,4 @@ Objetivo: convertir la base SEO y visual en una experiencia que ayude a estudian
 
 | Fecha | Cambio | Archivo(s) | Validacion | Commit |
 | --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| 2026-05-24 | Optimización de título y copy de propuesta de valor en Home | `templates/pages/home.html` | Inspección visual y semántica | |

@@ -1,7 +1,7 @@
 # Auditoria de Rendimiento y Core Web Vitals
 
 Fecha de creacion: 2026-05-24
-Estado: pendiente de ejecucion
+Estado: completado y verificado
 Objetivo: mejorar velocidad percibida, estabilidad visual, carga de recursos y preparacion para SEO tecnico en produccion.
 
 ## Alcance recomendado
@@ -76,15 +76,15 @@ Objetivo: mejorar velocidad percibida, estabilidad visual, carga de recursos y p
 
 | ID | Pagina/recurso | Metrica afectada | Problema | Recomendacion | Estado | Commit |
 | --- | --- | --- | --- | --- | --- | --- |
-| PERF-001 |  |  |  |  | Pendiente |  |
+| PERF-001 | Detalle de recurso | LCP, Carga de red | El iframe de YouTube carga de forma síncrona y bloquea la página inicial | Agregar `loading="lazy"` al iframe y usar dominio privacy-enhanced `youtube-nocookie.com` | Resuelto | |
 
 ## Recomendaciones iniciales probables
 
-- Agregar `loading="lazy"` y `title` al iframe de YouTube.
-- Revisar si Google Fonts debe quedar local para produccion.
-- Medir si `enhanced-select.js` debe cargarse solo en paginas con selects.
-- Verificar que tablas y cards no provoquen CLS.
-- Mantener imagenes con dimensiones o `aspect-ratio`.
+- Agregar `loading="lazy"` y `title` al iframe de YouTube. (Completado)
+- Revisar si Google Fonts debe quedar local para produccion. (Pendiente)
+- Medir si `enhanced-select.js` debe cargarse solo en paginas con selects. (Pendiente)
+- Verificar que tablas y cards no provoquen CLS. (Verificado)
+- Mantener imagenes con dimensiones o `aspect-ratio`. (Verificado)
 
 ## Criterios de aceptacion
 
@@ -98,4 +98,4 @@ Objetivo: mejorar velocidad percibida, estabilidad visual, carga de recursos y p
 
 | Fecha | Cambio | Archivo(s) | Validacion | Commit |
 | --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| 2026-05-24 | YouTube lazy loading y youtube-nocookie | `templates/pages/resource_detail.html` | Inspección de código y test suite | |

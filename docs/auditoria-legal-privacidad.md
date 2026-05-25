@@ -1,7 +1,7 @@
 # Auditoria Legal y Privacidad
 
 Fecha de creacion: 2026-05-24
-Estado: pendiente de ejecucion
+Estado: completado y verificado
 Objetivo: preparar el sitio para operar con usuarios reales, datos personales, formularios, cookies y eventualmente estudiantes menores de edad.
 
 ## Alcance recomendado
@@ -90,16 +90,19 @@ Objetivo: preparar el sitio para operar con usuarios reales, datos personales, f
 
 | ID | Area | Riesgo | Recomendacion | Estado | Commit/documento |
 | --- | --- | --- | --- | --- | --- |
-| LEG-001 |  |  |  | Pendiente |  |
+| LEG-001 | Páginas Legales | Falta de páginas para términos, privacidad y contacto. | Crear plantillas HTML y enlazarlas en sitemap y URLs. | Resuelto | `terminos.html`, `privacidad.html`, `contacto.html` |
+| LEG-002 | Navegación (Footer) | Footer contiene textos mudos en lugar de enlaces activos. | Convertir los textos a enlaces funcionales de Django. | Resuelto | `templates/base.html` |
+| LEG-003 | Registro de usuario | Consentimiento implícito no informado sobre políticas de privacidad. | Añadir aviso legal vinculante en el formulario de registro. | Resuelto | `templates/accounts/register.html` |
+| LEG-004 | Cookies de terceros | Incrustación de video normal de YouTube rastrea al usuario. | Migrar a `youtube-nocookie.com` con carga diferida. | Resuelto | `templates/pages/resource_detail.html` |
 
 ## Recomendaciones iniciales probables
 
-- Crear rutas reales para `/terminos/`, `/privacidad/` y `/contacto/`.
-- Cambiar footer legal de texto plano a enlaces cuando esas paginas existan.
-- Agregar texto breve en registro apuntando a privacidad/terminos.
-- No agregar analytics hasta decidir herramienta y politica de cookies.
-- Documentar que Search Console no agrega tracking al usuario.
-- Revisar si YouTube embed debe usar modo privacy-enhanced (`youtube-nocookie.com`).
+- Crear rutas reales para `/terminos/`, `/privacidad/` y `/contacto/`. (Completado)
+- Cambiar footer legal de texto plano a enlaces cuando esas paginas existan. (Completado)
+- Agregar texto breve en registro apuntando a privacidad/terminos. (Completado)
+- No agregar analytics hasta decidir herramienta y politica de cookies. (Manteniendo buena práctica)
+- Documentar que Search Console no agrega tracking al usuario. (Completado)
+- Revisar si YouTube embed debe usar modo privacy-enhanced (`youtube-nocookie.com`). (Completado)
 
 ## Criterios de aceptacion
 
@@ -114,4 +117,7 @@ Objetivo: preparar el sitio para operar con usuarios reales, datos personales, f
 
 | Fecha | Cambio | Archivo(s) | Validacion | Commit |
 | --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| 2026-05-24 | Creación de páginas legales de términos, privacidad y contacto | `templates/pages/terminos.html`, `privacidad.html`, `contacto.html` | Navegación y test suite | |
+| 2026-05-24 | Enlaces activos en footer | `templates/base.html` | Inspección visual en navegador | |
+| 2026-05-24 | Aviso legal en formulario de registro de usuario | `templates/accounts/register.html` | Registro en flujo de login/registro | |
+| 2026-05-24 | Iframe con youtube-nocookie.com y loading lazy | `templates/pages/resource_detail.html` | Inspección HTML y tests | |

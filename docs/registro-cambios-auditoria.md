@@ -123,6 +123,13 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
 - Correccion de hallazgos criticos/altos/medios.
 - Endurecimiento de webhook con Bleach, logging y rate limiting.
 - Auditoría y resolución de hallazgos de accesibilidad WCAG (estilos de foco, iframe de YouTube, comportamiento Tab y aria-required en formularios).
+- Implementación de sugerencias de las auditorías de Privacidad/Legal, Rendimiento y Conversión de Contenido:
+  - Creación de páginas estáticas legales de Términos de Uso, Política de Privacidad y Contacto.
+  - Registro de las rutas de páginas legales y su inclusión en el sitemap dinámico de Django (`StaticViewSitemap`).
+  - Aviso legal de aceptación de términos y privacidad en el formulario de registro de usuario.
+  - Activación de enlaces reales en el footer del sitio en lugar de textos estáticos.
+  - Uso de iframe con `youtube-nocookie.com` y `loading="lazy"` para videos en el detalle de recursos para mitigar tracking y mejorar rendimiento.
+  - Optimización de copy de propuesta de valor en H1 y párrafo introductorio de la Home para mejorar conversión.
 
 ## Hallazgos resueltos
 
