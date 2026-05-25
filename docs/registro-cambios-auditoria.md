@@ -135,9 +135,12 @@ Los hallazgos criticos y altos detectados en la auditoria quedaron resueltos. El
 
 ### 2026-05-25
 
-- **Corrección de selector dinámico de Temas:**
+- **Corrección de selector dinámico de Temas y Asignaturas:**
   - Implementación de un `MutationObserver` en `enhanced-select.js` para detectar cuándo cambian las opciones de un selector nativo (por ejemplo, mediante fetch AJAX o DOM scripting en cascada) y reconstruir automáticamente la lista de botones de opciones en el selector personalizado.
+  - Corrección de un error de orden de inicialización en `buildEnhancedSelect` en `enhanced-select.js` que provocaba un fallo de ejecución en cascada (dejando el selector de Asignatura en blanco e impidiendo que los demás selectores se convirtieran a dropdowns personalizados).
   - Corrección del bug que impedía seleccionar o ver los temas asignados a un recurso en las pantallas de creación y edición al cambiar la asignatura o cargar datos existentes.
+- **Rediseño Estético de Selección de Niveles (Filtros/Formularios):**
+  - Rediseño de las opciones múltiples de Niveles (`forms.CheckboxSelectMultiple` bajo la clase `.checkbox-list`) mediante CSS `:has`. Las casillas de verificación básicas y poco amigables se convirtieron en tarjetas interactivas que cambian de color (borde, fondo y texto) al ser seleccionadas, mejorando significativamente la usabilidad y estética.
 
 
 ## Hallazgos resueltos
