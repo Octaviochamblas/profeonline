@@ -10,7 +10,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["featured_areas"] = Area.objects.filter(is_active=True).order_by("order", "name")[:3]
-        priority_subjects = ["Matemática", "Física", "Química", "Lenguaje", "Inglés"]
+        priority_subjects = ["Matemática", "Física", "Química"]
         context["featured_subjects"] = (
             Subject.objects.filter(is_active=True)
             .select_related("area")

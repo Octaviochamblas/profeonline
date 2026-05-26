@@ -19,11 +19,6 @@ class Command(BaseCommand):
             "description": "Material de apoyo para física y química con foco en comprensión y práctica.",
             "order": 2,
         },
-        {
-            "name": "Lenguaje e idiomas",
-            "description": "Lectura, escritura y vocabulario para reforzamiento escolar.",
-            "order": 3,
-        },
     ]
 
     levels = [
@@ -90,36 +85,6 @@ class Command(BaseCommand):
                 },
             ],
         },
-        {
-            "name": "Lenguaje",
-            "area": "Lenguaje e idiomas",
-            "description": "Comprensión lectora, escritura y análisis de textos para apoyo escolar.",
-            "topics": [
-                {
-                    "name": "Comprensión lectora",
-                    "description": "Ideas principales, inferencias y estrategias para leer con sentido.",
-                },
-                {
-                    "name": "Redacción",
-                    "description": "Estructura de textos, coherencia y corrección básica de escritura.",
-                },
-            ],
-        },
-        {
-            "name": "Inglés",
-            "area": "Lenguaje e idiomas",
-            "description": "Vocabulario y gramática práctica para avanzar con seguridad en inglés.",
-            "topics": [
-                {
-                    "name": "Present simple",
-                    "description": "Uso del presente simple en afirmaciones, preguntas y negaciones.",
-                },
-                {
-                    "name": "Vocabulary basics",
-                    "description": "Vocabulario cotidiano para clases particulares y refuerzo escolar.",
-                },
-            ],
-        },
     ]
 
     resources = [
@@ -167,28 +132,6 @@ class Command(BaseCommand):
                 "Presenta la estructura de la tabla periódica y la relación con los enlaces químicos más comunes."
             ),
         },
-        {
-            "title": "Comprensión lectora y redacción",
-            "subject": "Lenguaje",
-            "topic": "Comprensión lectora",
-            "levels": ["Primaria", "Secundaria"],
-            "description": "Material para leer mejor, identificar ideas principales y escribir con más claridad.",
-            "content": (
-                "Este recurso reúne estrategias sencillas para comprender textos y mejorar la escritura.\n\n"
-                "Incluye pautas para subrayar ideas clave, resumir y organizar respuestas breves."
-            ),
-        },
-        {
-            "title": "Present simple y vocabulary basics",
-            "subject": "Inglés",
-            "topic": "Present simple",
-            "levels": ["Secundaria"],
-            "description": "Recurso introductorio para gramática básica y vocabulario cotidiano en inglés.",
-            "content": (
-                "La guía reúne estructura, ejemplos y vocabulario útil para clases particulares de inglés.\n\n"
-                "Está pensada para practicar en casa con ejercicios cortos y claros."
-            ),
-        },
     ]
 
     modules = [
@@ -211,16 +154,6 @@ class Command(BaseCommand):
             "description": "Secuencia de estudio para ganar soltura con ecuaciones lineales.",
             "order": 2,
             "resource": "Ejercicios de ecuaciones lineales",
-        },
-        {
-            "title": "Ruta de comprensión lectora",
-            "subject": "Lenguaje",
-            "topic": "Comprensión lectora",
-            "levels": ["Primaria", "Secundaria"],
-            "objective": "Leer con mejor foco, identificar ideas centrales y responder con precisión.",
-            "description": "Ruta práctica para acompañar clases de lenguaje y reforzamiento.",
-            "order": 3,
-            "resource": "Comprensión lectora y redacción",
         },
     ]
 
