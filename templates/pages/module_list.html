@@ -20,34 +20,40 @@
 </section>
 
 {% if modules %}
-    <div class="card-grid">
+    <div class="home-card-grid">
         {% for module in modules %}
-            <article class="content-card">
-                <h3>{{ module.title }}</h3>
-                {% if module.subject %}
-                    <p><strong>Asignatura:</strong> {{ module.subject.name }}</p>
-                {% endif %}
-                {% if module.topic %}
-                    <p><strong>Tema:</strong> {{ module.topic.name }}</p>
-                {% endif %}
-                {% if module.levels.all %}
-                    <p>
-                        <strong>Niveles:</strong>
+            <div class="home-link-card">
+                <span class="home-link-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </span>
+                <span class="home-link-card__body">
+                    <span class="home-link-card__title">{{ module.title }}</span>
+                    {% if module.objective %}
+                        <span class="home-link-card__text"><strong>Objetivo:</strong> {{ module.objective }}</span>
+                    {% endif %}
+                    <span class="home-link-card__meta">
+                        {% if module.subject %}
+                            <span class="home-link-card__meta-badge">{{ module.subject.name }}</span>
+                        {% endif %}
+                        {% if module.topic %}
+                            <span class="home-link-card__meta-badge">{{ module.topic.name }}</span>
+                        {% endif %}
                         {% for level in module.levels.all %}
-                            {{ level.name }}{% if not forloop.last %}, {% endif %}
+                            <span class="home-link-card__meta-badge">{{ level.name }}</span>
                         {% endfor %}
-                    </p>
-                {% endif %}
-                {% if module.objective %}
-                    <p><strong>Objetivo:</strong> {{ module.objective }}</p>
-                {% endif %}
-                {% if user.is_superuser %}
-                    <div class="card-actions">
-                        <a href="{% url 'content:module_update' module.pk %}">Editar</a>
-                        <a href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
-                    </div>
-                {% endif %}
-            </article>
+                    </span>
+                    {% if user.is_superuser %}
+                        <div class="card-actions">
+                            <a class="action-edit" href="{% url 'content:module_update' module.pk %}">Editar</a>
+                            <a class="action-delete" href="{% url 'content:module_delete' module.pk %}">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </span>
+            </div>
         {% endfor %}
     </div>
 {% else %}

@@ -12,17 +12,35 @@
     <p class="page-hero__text">Explora nuestras áreas principales y descubre todos los ramos asociados.</p>
 </section>
 
-<div class="panel-grid panel-grid--3">
+<div class="home-card-grid">
     {% for area in areas %}
-        <a href="{% url 'content:subject_list' %}?area={{ area.id }}" class="panel panel--spacious area-card">
-            <h2>{{ area.name }}</h2>
-            {% if area.description %}
-                <p class="form-help">{{ area.description }}</p>
-            {% endif %}
-            <div class="area-card__footer">
-                <span class="auth-meta">Ver asignaturas</span>
-                <span class="auth-meta">→</span>
-            </div>
+        <a href="{% url 'content:subject_list' %}?area={{ area.id }}" class="home-link-card">
+            <span class="home-link-card__icon" aria-hidden="true">
+                {% if area.name == "Matemáticas" %}
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="6" y1="6" x2="12" y2="6"></line>
+                        <line x1="9" y1="3" x2="9" y2="9"></line>
+                        <line x1="15" y1="6" x2="21" y2="6"></line>
+                        <line x1="5" y1="15" x2="11" y2="21"></line>
+                        <line x1="11" y1="15" x2="5" y2="21"></line>
+                        <line x1="15" y1="16" x2="21" y2="16"></line>
+                        <line x1="15" y1="20" x2="21" y2="20"></line>
+                    </svg>
+                {% elif area.name == "Ciencias" %}
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 3h6M10 9h4M10 3v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V3"></path>
+                    </svg>
+                {% else %}
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                    </svg>
+                {% endif %}
+            </span>
+            <span class="home-link-card__body">
+                <span class="home-link-card__title">{{ area.name }}</span>
+                <span class="home-link-card__text">{{ area.description|default:"Agrupa asignaturas y recursos relacionados." }}</span>
+            </span>
         </a>
     {% empty %}
         <div class="empty-state empty-state--center empty-state--spacious panel-grid__span-full">

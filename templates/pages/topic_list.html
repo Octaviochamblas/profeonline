@@ -20,21 +20,33 @@
 </section>
 
 {% if topics %}
-    <div class="card-grid">
+    <div class="home-card-grid">
         {% for topic in topics %}
-            <article class="content-card">
-                <h3>{{ topic.name }}</h3>
-                {% if topic.subject %}
-                    <p><strong>Asignatura:</strong> {{ topic.subject.name }}</p>
-                {% endif %}
-                <p>{{ topic.description|default:"Sin descripción" }}</p>
-                {% if user.is_superuser %}
-                    <div class="card-actions">
-                        <a href="{% url 'content:topic_update' topic.pk %}">Editar</a>
-                        <a href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
-                    </div>
-                {% endif %}
-            </article>
+            <div class="home-link-card">
+                <span class="home-link-card__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 20c4-4 0-8 6-10s2-4 10-6"></path>
+                        <circle cx="4" cy="20" r="3" fill="currentColor"></circle>
+                        <circle cx="10" cy="10" r="3" fill="currentColor"></circle>
+                        <circle cx="20" cy="4" r="3" fill="currentColor"></circle>
+                    </svg>
+                </span>
+                <span class="home-link-card__body">
+                    <span class="home-link-card__title">{{ topic.name }}</span>
+                    <span class="home-link-card__text">{{ topic.description|default:"Sin descripción" }}</span>
+                    <span class="home-link-card__meta">
+                        {% if topic.subject %}
+                            <span class="home-link-card__meta-badge">{{ topic.subject.name }}</span>
+                        {% endif %}
+                    </span>
+                    {% if user.is_superuser %}
+                        <div class="card-actions">
+                            <a class="action-edit" href="{% url 'content:topic_update' topic.pk %}">Editar</a>
+                            <a class="action-delete" href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </span>
+            </div>
         {% endfor %}
     </div>
 {% else %}
