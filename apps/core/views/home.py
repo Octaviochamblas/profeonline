@@ -24,13 +24,13 @@ class HomeView(TemplateView):
                     output_field=IntegerField(),
                 ),
                 "name",
-            )[:5]
+            )[:3]
         )
-        context["featured_levels"] = Level.objects.filter(is_active=True).order_by("order", "name")[:4]
+        context["featured_levels"] = Level.objects.filter(is_active=True).order_by("order", "name")[:3]
         context["featured_resources"] = Resource.objects.filter(is_published=True).select_related(
             "subject",
             "topic",
         ).prefetch_related(
             "levels",
-        ).order_by("-created_at", "title")[:4]
+        ).order_by("-created_at", "title")[:3]
         return context
