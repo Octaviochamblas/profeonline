@@ -4,54 +4,115 @@
 {% block meta_description %}Encuentra temas de estudio para clases particulares y apoyo escolar, organizados por asignatura para reforzar contenidos específicos.{% endblock %}
 {% block og_title %}Temas para Clases Particulares | ProfeOnline{% endblock %}
 {% block og_description %}Encuentra temas de estudio para clases particulares y apoyo escolar, organizados por asignatura para reforzar contenidos específicos.{% endblock %}
-
 {% block content %}
-<section class="page-hero">
-    <div class="section-header">
-        <div>
-            <p class="page-hero__kicker">Catálogo público</p>
-            <h1>Temas</h1>
-            <p class="page-hero__text">Encuentra temas de estudio para clases particulares y apoyo escolar, organizados por asignatura para reforzar contenidos específicos.</p>
+<div id="topic-list-container" class="stack">
+    <section class="page-hero">
+        <div class="section-header">
+            <div>
+                <p class="page-hero__kicker">Catálogo público</p>
+                <h1>Temas</h1>
+                <p class="page-hero__text">Encuentra temas de estudio para clases particulares y apoyo escolar, organizados por asignatura para reforzar contenidos específicos.</p>
+            </div>
+            {% if user.is_superuser %}
+                <a href="{% url 'content:topic_create' %}" class="btn btn-secondary">Crear nuevo tema</a>
+            {% endif %}
         </div>
-        {% if user.is_superuser %}
-            <a href="{% url 'content:topic_create' %}" class="btn btn-secondary">Crear nuevo tema</a>
-        {% endif %}
-    </div>
-</section>
+    </section>
 
-{% if topics %}
-    <div class="home-card-grid">
-        {% for topic in topics %}
-            <div class="home-link-card">
-                <span class="home-link-card__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 20c4-4 0-8 6-10s2-4 10-6"></path>
-                        <circle cx="4" cy="20" r="3" fill="currentColor"></circle>
-                        <circle cx="10" cy="10" r="3" fill="currentColor"></circle>
-                        <circle cx="20" cy="4" r="3" fill="currentColor"></circle>
-                    </svg>
-                </span>
-                <span class="home-link-card__body">
-                    <span class="home-link-card__title">{{ topic.name }}</span>
-                    <span class="home-link-card__text">{{ topic.description|default:"Sin descripción" }}</span>
-                    <span class="home-link-card__meta">
-                        {% if topic.subject %}
-                            <span class="home-link-card__meta-badge">{{ topic.subject.name }}</span>
+    <div id="loading-indicator" class="htmx-indicator skeleton loading-bar"></div>
+
+    <form
+        method="get"
+        class="form-panel"
+        hx-get="{% url 'content:topic_list' %}"
+        hx-target="#topic-list-container"
+        hx-select="#topic-list-container"
+        hx-trigger="change, submit, keyup delay:500ms from:#search-input"
+        hx-push-url="true"
+        hx-indicator="#loading-indicator"
+    >
+        <div class="form-grid form-grid--2">
+            <div class="form-field search-field-wrapper">
+                <label class="form-label" for="search-input">Buscar tema</label>
+                <input
+                    type="search"
+                    name="q"
+                    id="search-input"
+                    value="{{ selected_q|default:'' }}"
+                    placeholder="Escribe el nombre o palabras clave del tema..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="subject">Asignatura</label>
+                <select name="subject" id="subject">
+                    <option value="">Todas</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}" {% if selected_subject == subject.id %}selected{% endif %}>{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+
+    {% if has_active_filters %}
+        <div class="panel panel--spacious">
+            <div class="page-toolbar">
+                <div class="stack">
+                    <p class="page-hero__kicker">Filtros activos</p>
+                    <div class="detail-meta">
+                        {% if selected_q %}
+                            <span class="badge badge--info">Búsqueda: {{ selected_q }}</span>
+                        {% endif %}
+                        {% if selected_subject %}
+                            {% for subject in subjects %}
+                                {% if subject.id == selected_subject %}
+                                    <span class="badge badge--info">Asignatura: {{ subject.name }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <a class="btn btn-secondary" href="{% url 'content:topic_list' %}">Limpiar filtros</a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if topics %}
+        <div class="home-card-grid">
+            {% for topic in topics %}
+                <div class="home-link-card">
+                    <span class="home-link-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 20c4-4 0-8 6-10s2-4 10-6"></path>
+                            <circle cx="4" cy="20" r="3" fill="currentColor"></circle>
+                            <circle cx="10" cy="10" r="3" fill="currentColor"></circle>
+                            <circle cx="20" cy="4" r="3" fill="currentColor"></circle>
+                        </svg>
+                    </span>
+                    <span class="home-link-card__body">
+                        <span class="home-link-card__title">{{ topic.name }}</span>
+                        <span class="home-link-card__text">{{ topic.description|default:"Sin descripción" }}</span>
+                        <span class="home-link-card__meta">
+                            {% if topic.subject %}
+                                <span class="home-link-card__meta-badge">{{ topic.subject.name }}</span>
+                            {% endif %}
+                        </span>
+                        {% if user.is_superuser %}
+                            <div class="card-actions">
+                                <a class="action-edit" href="{% url 'content:topic_update' topic.pk %}">Editar</a>
+                                <a class="action-delete" href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                            </div>
                         {% endif %}
                     </span>
-                    {% if user.is_superuser %}
-                        <div class="card-actions">
-                            <a class="action-edit" href="{% url 'content:topic_update' topic.pk %}">Editar</a>
-                            <a class="action-delete" href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
-                        </div>
-                    {% endif %}
-                </span>
-            </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <div class="empty-state">
-        <p>Aún no hay temas registrados.</p>
-    </div>
-{% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aún no hay temas registrados o no coinciden con la búsqueda.</p>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
