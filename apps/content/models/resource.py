@@ -24,9 +24,6 @@ def validate_file_mime(value):
         raise ValidationError("El tipo de archivo (MIME) no está permitido o no es válido.")
 
 
-
-
-
 def validate_file_size(value):
     # Límite de 10MB
     limit_mb = 10
@@ -83,6 +80,7 @@ class Resource(models.Model):
 
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    order = models.IntegerField(default=0, blank=True, verbose_name="orden manual")
 
     class Meta:
         ordering = ["title"]

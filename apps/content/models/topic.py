@@ -12,6 +12,18 @@ class Topic(models.Model):
     name = models.CharField(max_length=120)
     slug = models.SlugField(max_length=140, blank=True, null=True)
     description = models.TextField(blank=True)
+    resource_ordering_method = models.CharField(
+        max_length=20,
+        choices=[
+            ("level", "Nivel educativo (básico a avanzado)"),
+            ("alphabetical", "Alfabético-numérico por título"),
+            ("created_asc", "Fecha de creación (antiguo primero)"),
+            ("created_desc", "Fecha de creación (reciente primero)"),
+            ("manual", "Orden manual (por índice de orden)"),
+        ],
+        default="level",
+        verbose_name="método de ordenación de recursos",
+    )
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -27,6 +39,27 @@ class Topic(models.Model):
 
     def __str__(self) -> str:
         return f"{self.subject.name} - {self.name}"
+
+    def get_ordered_resources(self):
+        from django.db.models import Min, Value
+        from django.db.models.functions import Coalesce
+
+        queryset = self.resources.filter(is_published=True).prefetch_related("levels")
+
+        if self.resource_ordering_method == "level":
+            return queryset.annotate(
+                min_level_order=Coalesce(Min("levels__order"), Value(9999))
+            ).order_by("min_level_order", "title")
+        elif self.resource_ordering_method == "alphabetical":
+            return queryset.order_by("title")
+        elif self.resource_ordering_method == "created_asc":
+            return queryset.order_by("created_at", "title")
+        elif self.resource_ordering_method == "created_desc":
+            return queryset.order_by("-created_at", "title")
+        elif self.resource_ordering_method == "manual":
+            return queryset.order_by("order", "title")
+
+        return queryset.order_by("title")
 
     def save(self, *args, **kwargs):
         if not self.slug:

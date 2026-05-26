@@ -24,9 +24,10 @@ class SubjectForm(forms.ModelForm):
 class TopicForm(forms.ModelForm):
     class Meta:
         model = Topic
-        fields = ["subject", "name", "description", "is_active"]
+        fields = ["subject", "name", "description", "resource_ordering_method", "is_active"]
         labels = {
             "description": "Descripción",
+            "resource_ordering_method": "Método de ordenación de recursos",
             "is_active": "Activo",
         }
         widgets = {

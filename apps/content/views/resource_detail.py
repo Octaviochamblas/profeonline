@@ -1,5 +1,4 @@
 import re
-from django.db.models import Q
 from django.views.generic import DetailView
 
 from apps.content.models import Resource
@@ -51,33 +50,26 @@ class ResourceDetailView(DetailView):
         breadcrumbs = build_breadcrumbs(self.request, *breadcrumb_items)
 
         context["breadcrumbs"] = breadcrumbs
-        related_resources = Resource.objects.filter(is_published=True).exclude(pk=resource.pk)
 
-        related_filters = Q()
-        has_related_filters = False
-        if resource.subject_id:
-            related_filters |= Q(subject=resource.subject)
-            has_related_filters = True
-        if resource.topic_id:
-            related_filters |= Q(topic=resource.topic)
-            has_related_filters = True
+        # Determine previous and next resources correlative to the topic's ordering
+        previous_resource = None
+        next_resource = None
+        topic = resource.topic
+        if topic:
+            ordered_resources = list(topic.get_ordered_resources())
+            try:
+                current_index = ordered_resources.index(resource)
+                if current_index > 0:
+                    previous_resource = ordered_resources[current_index - 1]
+                if current_index < len(ordered_resources) - 1:
+                    next_resource = ordered_resources[current_index + 1]
+            except ValueError:
+                # If current resource is draft and not in public ordered list
+                pass
 
-        level_ids = list(resource.levels.values_list("id", flat=True))
-        if level_ids:
-            related_filters |= Q(levels__in=level_ids)
-            has_related_filters = True
+        context["previous_resource"] = previous_resource
+        context["next_resource"] = next_resource
 
-        if has_related_filters:
-            related_resources = related_resources.filter(related_filters)
-        else:
-            related_resources = related_resources.none()
-
-        context["related_resources"] = related_resources.select_related(
-            "subject",
-            "topic",
-        ).prefetch_related(
-            "levels",
-        ).distinct().order_by("-created_at", "title")[:6]
         context["structured_data_json_list"] = [
             breadcrumb_schema(breadcrumbs),
             article_schema(

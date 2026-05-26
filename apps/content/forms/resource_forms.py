@@ -15,11 +15,13 @@ class ResourceForm(forms.ModelForm):
             "content",
             "file",
             "video_url",
+            "order",
             "is_published",
         ]
         labels = {
             "description": "Descripción breve",
             "content": "Contenido del recurso",
+            "order": "Orden manual",
             "is_published": "Disponible",
         }
         widgets = {

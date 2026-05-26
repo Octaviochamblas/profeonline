@@ -51,8 +51,6 @@ class ResourceDetailViewTests(TestCase):
         self.assertContains(response, self.published_resource.title)
         self.assertContains(response, "BreadcrumbList")
         self.assertContains(response, "Article")
-        self.assertContains(response, self.related_public_resource.title)
-        self.assertNotContains(response, self.draft_related_resource.title)
         self.assertContains(
             response,
             reverse("content:subject_detail", args=[self.subject.slug]),
@@ -473,3 +471,169 @@ class ResourceModelFileValidationTests(TestCase):
         invalid_exe = SimpleUploadedFile("test.exe", b"x" * 100, content_type="application/octet-stream")
         with self.assertRaises(ValidationError):
             validate_file_mime(invalid_exe)
+
+
+class TopicDetailViewTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Matematica", is_active=True)
+        self.topic = Topic.objects.create(name="Algebra", subject=self.subject, is_active=True)
+        self.inactive_topic = Topic.objects.create(name="Geometria", subject=self.subject, is_active=False)
+
+        # Levels with different order values
+        self.level_basic = Level.objects.create(name="Primaria", order=1, is_active=True)
+        self.level_advanced = Level.objects.create(name="Preuniversitario", order=3, is_active=True)
+
+        # Resources associated with the active topic
+        # Basic resource (Primaria order=1)
+        self.basic_resource = Resource.objects.create(
+            title="Suma Basica",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=True,
+        )
+        self.basic_resource.levels.add(self.level_basic)
+
+        # Advanced resource (Preuniversitario order=3)
+        self.advanced_resource = Resource.objects.create(
+            title="Ecuaciones Complejas",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=True,
+        )
+        self.advanced_resource.levels.add(self.level_advanced)
+
+        # Resource with no level assigned (should be coalesced to order 9999 and come last)
+        self.no_level_resource = Resource.objects.create(
+            title="Teoria General",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=True,
+        )
+
+        # Draft resource (should not be visible to anonymous user)
+        self.draft_resource = Resource.objects.create(
+            title="Borrador de Algebra",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=False,
+        )
+
+    def test_anonymous_user_can_view_active_topic_detail_with_ordered_resources(self):
+        response = self.client.get(
+            reverse("content:topic_detail", args=[self.topic.slug])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.topic.name)
+        self.assertContains(response, "BreadcrumbList")
+
+        # Verify resources are listed in order: basic_resource -> advanced_resource -> no_level_resource
+        resources = list(response.context["resources"])
+        self.assertEqual(len(resources), 3)
+        self.assertEqual(resources[0], self.basic_resource)
+        self.assertEqual(resources[1], self.advanced_resource)
+        self.assertEqual(resources[2], self.no_level_resource)
+
+        # Draft resource should not be in the context
+        self.assertNotIn(self.draft_resource, resources)
+
+    def test_anonymous_user_cannot_view_inactive_topic(self):
+        response = self.client.get(
+            reverse("content:topic_detail", args=[self.inactive_topic.slug])
+        )
+        self.assertEqual(response.status_code, 404)
+
+
+class TopicListViewPaginationTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Matematica", is_active=True)
+        # Create 25 topics to trigger pagination (since paginate_by = 20)
+        self.topics = [
+            Topic.objects.create(name=f"Tema {i:02d}", subject=self.subject, is_active=True)
+            for i in range(1, 26)
+        ]
+
+    def test_topic_list_pagination(self):
+        response = self.client.get(reverse("content:topic_list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["is_paginated"])
+        self.assertEqual(len(response.context["topics"]), 20) # Page 1 should contain 20 items
+
+        # Page 2
+        response_page2 = self.client.get(reverse("content:topic_list"), {"page": 2})
+        self.assertEqual(response_page2.status_code, 200)
+        self.assertEqual(len(response_page2.context["topics"]), 5) # Remaining 5 items
+        self.assertContains(response_page2, "Página 2 de 2")
+
+
+class TopicResourceOrderingAndNavigationTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Fisica", is_active=True)
+        self.topic = Topic.objects.create(name="Termodinamica", subject=self.subject, is_active=True)
+
+        self.r1 = Resource.objects.create(
+            title="B: Ecuacion de estado",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=True,
+            order=2,
+        )
+        self.r2 = Resource.objects.create(
+            title="A: Calorimetria",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=True,
+            order=1,
+        )
+        self.r3 = Resource.objects.create(
+            title="C: Leyes termicas",
+            topic=self.topic,
+            subject=self.subject,
+            is_published=True,
+            order=3,
+        )
+
+    def test_default_ordering_level_fallback_alphabetical(self):
+        # Default resource_ordering_method is level. No levels are assigned here.
+        # Fallback should sort them by title: A: Calorimetria (r2) -> B: Ecuacion (r1) -> C: Leyes (r3)
+        response = self.client.get(
+            reverse("content:resource_detail", args=[self.r1.slug])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["previous_resource"], self.r2)
+        self.assertEqual(response.context["next_resource"], self.r3)
+
+    def test_ordering_method_alphabetical(self):
+        self.topic.resource_ordering_method = "alphabetical"
+        self.topic.save()
+
+        # Sorted by title: A: Calorimetria (r2) -> B: Ecuacion (r1) -> C: Leyes (r3)
+        response = self.client.get(
+            reverse("content:resource_detail", args=[self.r2.slug])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context["previous_resource"])
+        self.assertEqual(response.context["next_resource"], self.r1)
+
+    def test_ordering_method_manual(self):
+        self.topic.resource_ordering_method = "manual"
+        self.topic.save()
+
+        # Ordered by order field: r2 (order 1) -> r1 (order 2) -> r3 (order 3)
+        # Let's verify details on r1
+        response = self.client.get(
+            reverse("content:resource_detail", args=[self.r1.slug])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["previous_resource"], self.r2)
+        self.assertEqual(response.context["next_resource"], self.r3)
+
+        # Change r3 order to 0 (should move to start: r3 -> r2 -> r1)
+        self.r3.order = 0
+        self.r3.save()
+
+        response2 = self.client.get(
+            reverse("content:resource_detail", args=[self.r1.slug])
+        )
+        self.assertEqual(response2.status_code, 200)
+        self.assertEqual(response2.context["previous_resource"], self.r2)
+        self.assertIsNone(response2.context["next_resource"])

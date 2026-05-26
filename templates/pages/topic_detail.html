@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic.name }} | Temas para Clases Particulares | ProfeOnline{% endblock %}
+{% block meta_description %}{% if topic.description %}{{ topic.description }}{% else %}Explora la ruta de aprendizaje guiado para {{ topic.name }} en ProfeOnline, con recursos y materiales ordenados de básico a avanzado.{% endif %}{% endblock %}
+{% block og_title %}{{ topic.name }} | Temas para Clases Particulares | ProfeOnline{% endblock %}
+{% block og_description %}{% if topic.description %}{{ topic.description }}{% else %}Explora la ruta de aprendizaje guiado para {{ topic.name }} en ProfeOnline, con recursos y materiales ordenados de básico a avanzado.{% endif %}{% endblock %}
+{% block structured_data %}
+{% for schema in structured_data_json_list %}
+<script type="application/ld+json">
+{{ schema|safe }}
+</script>
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<section class="stack">
+    {% include "includes/breadcrumbs.html" %}
+
+    <div class="detail-card stack">
+        <div class="section-header">
+            <div>
+                <p class="page-hero__kicker">Ruta de aprendizaje</p>
+                <h1>{{ topic.name }}</h1>
+                <p class="page-hero__text">
+                    {% if topic.description %}
+                        {{ topic.description }}
+                    {% else %}
+                        Esta ruta reúne los recursos educativos para dominar el tema de {{ topic.name }}, ordenados desde los niveles más básicos a los avanzados.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="page-actions">
+                <a class="btn btn-secondary" href="{% url 'content:topic_list' %}">← Volver a temas</a>
+            </div>
+        </div>
+
+        <div class="detail-meta">
+            {% if topic.subject %}
+                {% if topic.subject.is_active or user.is_superuser %}
+                    <a class="badge badge--neutral" href="{% url 'content:subject_detail' topic.subject.slug %}">{{ topic.subject.name }}</a>
+                {% else %}
+                    <span class="badge badge--neutral">{{ topic.subject.name }}</span>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <section class="stack">
+        <div class="section-header">
+            <div>
+                <h2>Recursos en esta ruta</h2>
+                <p class="page-hero__text">Comienza por el primer recurso (básico) y avanza secuencialmente hacia los temas avanzados.</p>
+            </div>
+        </div>
+
+        {% if resources %}
+            <div class="home-card-grid">
+                {% for resource in resources %}
+                    <a class="home-link-card" href="{% url 'content:resource_detail' resource.slug %}">
+                        <span class="home-link-card__icon" aria-hidden="true">
+                            <span style="font-weight: 800; font-size: 1.15rem;">{{ forloop.counter }}</span>
+                        </span>
+                        <span class="home-link-card__body">
+                            <span class="home-link-card__title">{{ resource.title }}</span>
+                            <span class="home-link-card__text">{{ resource.description|default:"Recurso educativo listo para consultar." }}</span>
+                            <span class="home-link-card__meta">
+                                <span class="home-link-card__meta-badge" style="border-color: var(--primary); color: var(--primary);">Paso {{ forloop.counter }}</span>
+                                {% if resource.subject %}
+                                    <span class="home-link-card__meta-badge">{{ resource.subject.name }}</span>
+                                {% endif %}
+                                {% for level in resource.levels.all %}
+                                    <span class="home-link-card__meta-badge">{{ level.name }}</span>
+                                {% endfor %}
+                            </span>
+                        </span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aún no hay recursos publicados en esta ruta de aprendizaje.</p>
+            </div>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}

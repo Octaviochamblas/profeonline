@@ -92,7 +92,7 @@
                         </svg>
                     </span>
                     <span class="home-link-card__body">
-                        <span class="home-link-card__title">{{ topic.name }}</span>
+                        <a class="home-link-card__title" href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }}</a>
                         <span class="home-link-card__text">{{ topic.description|default:"Sin descripción" }}</span>
                         <span class="home-link-card__meta">
                             {% if topic.subject %}
@@ -109,6 +109,42 @@
                 </div>
             {% endfor %}
         </div>
+
+        {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-secondary" href="?page=1{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page=1{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#topic-list-container"
+                       hx-select="#topic-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Primera</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.previous_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page={{ page_obj.previous_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#topic-list-container"
+                       hx-select="#topic-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Anterior</a>
+                {% endif %}
+
+                <span class="pagination__status">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+                {% if page_obj.has_next %}
+                    <a class="btn btn-secondary" href="?page={{ page_obj.next_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page={{ page_obj.next_page_number }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#topic-list-container"
+                       hx-select="#topic-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Siguiente</a>
+                    <a class="btn btn-secondary" href="?page={{ page_obj.paginator.num_pages }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-get="?page={{ page_obj.paginator.num_pages }}{% if filter_querystring %}&{{ filter_querystring }}{% endif %}"
+                       hx-target="#topic-list-container"
+                       hx-select="#topic-list-container"
+                       hx-push-url="true"
+                       hx-indicator="#loading-indicator">Última</a>
+                {% endif %}
+            </div>
+        {% endif %}
     {% else %}
         <div class="empty-state">
             <p>Aún no hay temas registrados o no coinciden con la búsqueda.</p>
