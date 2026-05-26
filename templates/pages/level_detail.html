@@ -19,76 +19,97 @@
     <div class="detail-card stack">
         <div class="section-header">
             <div>
-                <p class="page-hero__kicker">Nivel</p>
                 <h1>{{ level.name }}</h1>
                 <p class="page-hero__text">
                     {% if level.description %}
                         {{ level.description }}
                     {% else %}
-                        Esta página organiza recursos pensados para {{ level.name }} y las asignaturas más relevantes de esta etapa.
+                        Asignaturas con material publicado para {{ level.name }}.
                     {% endif %}
                 </p>
             </div>
-            <a class="btn btn-secondary" href="{% url 'content:resource_list' %}?level={{ level.id }}">Ver recursos</a>
-        </div>
-
-        <div class="panel panel--spacious">
-            <p class="form-help">
-                Aquí puedes revisar qué asignaturas ya tienen material publicado para {{ level.name }} y acceder
-                rápido a los recursos más útiles.
-            </p>
         </div>
     </div>
 
     <section class="stack">
-        <div class="section-header">
-            <div>
-                <h2>Asignaturas relacionadas</h2>
-                <p class="page-hero__text">Estas son las asignaturas activas que ya tienen recursos para este nivel.</p>
-            </div>
-        </div>
-
         {% if subjects %}
-            <div class="card-grid">
+            <div class="home-card-grid">
                 {% for subject in subjects %}
-                    <article class="content-card">
-                        <h3><a href="{% url 'content:subject_detail' subject.slug %}">{{ subject.name }}</a></h3>
-                        <p>{{ subject.description|default:"Asignatura con recursos publicados para este nivel." }}</p>
-                    </article>
+                    <a class="home-link-card" href="{% url 'content:subject_detail' subject.slug %}">
+                        <span class="home-link-card__icon" aria-hidden="true">
+                            {% if subject.name == "Matemática" %}
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="6" y1="6" x2="12" y2="6"></line><line x1="9" y1="3" x2="9" y2="9"></line>
+                                    <line x1="15" y1="6" x2="21" y2="6"></line>
+                                    <line x1="5" y1="15" x2="11" y2="21"></line><line x1="11" y1="15" x2="5" y2="21"></line>
+                                    <line x1="15" y1="16" x2="21" y2="16"></line><line x1="15" y1="20" x2="21" y2="20"></line>
+                                </svg>
+                            {% elif subject.name == "Física" %}
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 9.75c0 4.4-4 8.25-4 8.25s-4-3.85-4-8.25A15.3 15.3 0 0 1 12 2z"></path>
+                                    <path d="M2 12a15.3 15.3 0 0 1 9.75 4c4.4 0 8.25-4 8.25-4s-3.85-4-8.25-4A15.3 15.3 0 0 1 2 12z"></path>
+                                </svg>
+                            {% elif subject.name == "Química" %}
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 3h6M10 9h4M10 3v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V3"></path>
+                                </svg>
+                            {% else %}
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                                </svg>
+                            {% endif %}
+                        </span>
+                        <span class="home-link-card__body">
+                            <span class="home-link-card__title">{{ subject.name }}</span>
+                            <span class="home-link-card__text">{{ subject.description|default:"Recursos y material publicado para este nivel." }}</span>
+                        </span>
+                    </a>
                 {% endfor %}
             </div>
         {% else %}
             <div class="empty-state">
-                <p>Aún no hay asignaturas activas relacionadas con este nivel.</p>
+                <p>Aún no hay asignaturas con recursos publicados para este nivel.</p>
             </div>
         {% endif %}
     </section>
 
-    <section class="stack">
-        <div class="section-header">
-            <div>
-                <h2>Recursos publicados</h2>
-                <p class="page-hero__text">Material visible para repasar, ordenar rutinas de estudio o preparar clases.</p>
+    {% if resources %}
+        <section class="detail-card stack subject-detail-panel">
+            <div class="section-header">
+                <div>
+                    <h2>Recursos</h2>
+                    <p class="page-hero__text">Material publicado para estudiar o preparar clases de {{ level.name }}.</p>
+                </div>
             </div>
-        </div>
-
-        {% if resources %}
-            <div class="card-grid">
+            <div class="topic-resource-list">
                 {% for resource in resources %}
-                    <article class="content-card">
-                        <h3><a href="{% url 'content:resource_detail' resource.slug %}">{{ resource.title }}</a></h3>
-                        <p>{{ resource.description|default:"Sin descripción" }}</p>
-                        {% if resource.subject %}
-                            <p><strong>Asignatura:</strong> {{ resource.subject.name }}</p>
-                        {% endif %}
-                    </article>
+                    <a class="topic-resource-card" href="{% url 'content:resource_detail' resource.slug %}">
+                        <span class="topic-resource-card__step" aria-hidden="true">{{ forloop.counter }}</span>
+                        <span class="topic-resource-card__content">
+                            <span class="topic-resource-card__header">
+                                <span class="topic-resource-card__title">{{ resource.title }}</span>
+                                <span class="topic-resource-card__meta">
+                                    {% if resource.subject %}
+                                        <span class="topic-resource-card__badge">{{ resource.subject.name }}</span>
+                                    {% endif %}
+                                    {% if resource.topic %}
+                                        <span class="topic-resource-card__badge">{{ resource.topic.name }}</span>
+                                    {% endif %}
+                                </span>
+                            </span>
+                            {% if resource.description %}
+                                <span class="topic-resource-card__description">{{ resource.description }}</span>
+                            {% endif %}
+                        </span>
+                        <span class="topic-resource-card__arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </span>
+                    </a>
                 {% endfor %}
             </div>
-        {% else %}
-            <div class="empty-state">
-                <p>Aún no hay recursos publicados para este nivel.</p>
-            </div>
-        {% endif %}
-    </section>
+        </section>
+    {% endif %}
 </section>
 {% endblock %}
