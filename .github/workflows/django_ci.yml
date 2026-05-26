@@ -39,19 +39,7 @@ jobs:
         DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS: "true"
         DJANGO_SECURE_HSTS_PRELOAD: "true"
       run: |
-        python manage.py check --deploy --fail-level ERROR --settings=config.settings.production > deploy-check.log 2>&1 || {
-          status=$?
-          python - <<'PY'
-        from pathlib import Path
-
-        message = Path("deploy-check.log").read_text(errors="replace")[-3500:]
-        message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-        print(f"::error file=.github/workflows/django_ci.yml,line=42,title=Production deploy check failed::{message[:8000]}")
-        PY
-          cat deploy-check.log
-          exit "$status"
-        }
-        cat deploy-check.log
+        python manage.py check --deploy --fail-level ERROR --settings=config.settings.production
 
     - name: Run Tests
       env:
