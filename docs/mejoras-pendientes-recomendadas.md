@@ -48,6 +48,7 @@ Documentos de auditoria encontrados:
 - `docs/auditoria-legal-privacidad.md`
 - `docs/auditoria-rendimiento-core-web-vitals.md`
 - `docs/auditoria-threat-model-integraciones.md`
+- `docs/ci-github-actions-mantenimiento.md`
 - `docs/registro-cambios-auditoria.md`
 
 ## Cambios sugeridos que si estan aplicados
