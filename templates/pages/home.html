@@ -51,19 +51,52 @@
         </div>
     </div>
 
-    <div class="card-grid">
-        <article class="content-card">
-            <h3><a href="{% url 'content:resource_list' %}">Recursos</a></h3>
-            <p>Guías, ejercicios y materiales publicados para estudiar con orden.</p>
-        </article>
-        <article class="content-card">
-            <h3><a href="{% url 'content:subject_list' %}">Asignaturas</a></h3>
-            <p>Encuentra materias concretas y entra a sus temas y recursos relacionados.</p>
-        </article>
-        <article class="content-card">
-            <h3><a href="{% url 'content:level_list' %}">Niveles</a></h3>
-            <p>Explora primaria, secundaria y otros niveles según la etapa de aprendizaje.</p>
-        </article>
+    <div class="home-card-grid">
+        <a class="home-link-card" href="{% url 'content:resource_list' %}">
+            <span class="home-link-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            </span>
+            <span class="home-link-card__body">
+                <span class="home-link-card__title">Recursos</span>
+                <span class="home-link-card__text">Guías, ejercicios y materiales publicados para estudiar con orden.</span>
+                <span class="home-link-card__cta">Ver recursos</span>
+            </span>
+            <span class="home-link-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="home-link-card" href="{% url 'content:subject_list' %}">
+            <span class="home-link-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </span>
+            <span class="home-link-card__body">
+                <span class="home-link-card__title">Asignaturas</span>
+                <span class="home-link-card__text">Encuentra materias concretas y entra a sus temas y recursos relacionados.</span>
+                <span class="home-link-card__cta">Explorar asignaturas</span>
+            </span>
+            <span class="home-link-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="home-link-card" href="{% url 'content:level_list' %}">
+            <span class="home-link-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12.5V16a6 6 0 0 0 12 0v-3.5"></path>
+                </svg>
+            </span>
+            <span class="home-link-card__body">
+                <span class="home-link-card__title">Niveles</span>
+                <span class="home-link-card__text">Explora primaria, secundaria y otros niveles según la etapa de aprendizaje.</span>
+                <span class="home-link-card__cta">Ver niveles</span>
+            </span>
+            <span class="home-link-card__arrow" aria-hidden="true">→</span>
+        </a>
     </div>
 </section>
 
@@ -78,12 +111,46 @@
     </div>
 
     {% if featured_areas %}
-        <div class="card-grid">
+        <div class="home-card-grid">
             {% for area in featured_areas %}
-                <article class="content-card">
-                    <h3><a href="{% url 'content:subject_list' %}?area={{ area.id }}">{{ area.name }}</a></h3>
-                    <p>{{ area.description|default:"Agrupa asignaturas y recursos relacionados." }}</p>
-                </article>
+                <a class="home-link-card" href="{% url 'content:subject_list' %}?area={{ area.id }}">
+                    <span class="home-link-card__icon" aria-hidden="true">
+                        {% if area.name == "Matemáticas" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                                <line x1="8" y1="6" x2="16" y2="6"></line>
+                                <line x1="16" y1="14" x2="16" y2="18"></line>
+                                <line x1="8" y1="10" x2="8" y2="10.01"></line>
+                                <line x1="12" y1="10" x2="12" y2="10.01"></line>
+                                <line x1="16" y1="10" x2="16" y2="10.01"></line>
+                                <line x1="8" y1="14" x2="8" y2="14.01"></line>
+                                <line x1="12" y1="14" x2="12" y2="14.01"></line>
+                                <line x1="8" y1="18" x2="8" y2="18.01"></line>
+                                <line x1="12" y1="18" x2="12" y2="18.01"></line>
+                            </svg>
+                        {% elif area.name == "Ciencias" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 3h6M10 9h4M10 3v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V3"></path>
+                            </svg>
+                        {% elif area.name == "Lenguaje e idiomas" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                <path d="M8 7h8M8 11h6"></path>
+                            </svg>
+                        {% else %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                            </svg>
+                        {% endif %}
+                    </span>
+                    <span class="home-link-card__body">
+                        <span class="home-link-card__title">{{ area.name }}</span>
+                        <span class="home-link-card__text">{{ area.description|default:"Agrupa asignaturas y recursos relacionados." }}</span>
+                        <span class="home-link-card__cta">Ver materias</span>
+                    </span>
+                    <span class="home-link-card__arrow" aria-hidden="true">→</span>
+                </a>
             {% endfor %}
         </div>
     {% else %}
@@ -104,15 +171,63 @@
     </div>
 
     {% if featured_subjects %}
-        <div class="card-grid">
+        <div class="home-card-grid">
             {% for subject in featured_subjects %}
-                <article class="content-card">
-                    <h3><a href="{% url 'content:subject_detail' subject.slug %}">{{ subject.name }}</a></h3>
-                    {% if subject.area %}
-                        <p><strong>Área:</strong> {{ subject.area.name }}</p>
-                    {% endif %}
-                    <p>{{ subject.description|default:"Contenido, temas y recursos relacionados." }}</p>
-                </article>
+                <a class="home-link-card" href="{% url 'content:subject_detail' subject.slug %}">
+                    <span class="home-link-card__icon" aria-hidden="true">
+                        {% if subject.name == "Matemática" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                                <line x1="8" y1="6" x2="16" y2="6"></line>
+                                <line x1="16" y1="14" x2="16" y2="18"></line>
+                                <line x1="8" y1="10" x2="8" y2="10.01"></line>
+                                <line x1="12" y1="10" x2="12" y2="10.01"></line>
+                                <line x1="16" y1="10" x2="16" y2="10.01"></line>
+                                <line x1="8" y1="14" x2="8" y2="14.01"></line>
+                                <line x1="12" y1="14" x2="12" y2="14.01"></line>
+                                <line x1="8" y1="18" x2="8" y2="18.01"></line>
+                                <line x1="12" y1="18" x2="12" y2="18.01"></line>
+                            </svg>
+                        {% elif subject.name == "Física" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="2"></circle>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 9.75c0 4.4-4 8.25-4 8.25s-4-3.85-4-8.25A15.3 15.3 0 0 1 12 2z"></path>
+                                <path d="M2 12a15.3 15.3 0 0 1 9.75 4c4.4 0 8.25-4 8.25-4s-3.85-4-8.25-4A15.3 15.3 0 0 1 2 12z"></path>
+                            </svg>
+                        {% elif subject.name == "Química" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 3h6M10 9h4M10 3v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V3"></path>
+                            </svg>
+                        {% elif subject.name == "Lenguaje" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        {% elif subject.name == "Inglés" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        {% else %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                            </svg>
+                        {% endif %}
+                    </span>
+                    <span class="home-link-card__body">
+                        <span class="home-link-card__title">{{ subject.name }}</span>
+                        <span class="home-link-card__text">{{ subject.description|default:"Contenido, temas y recursos relacionados." }}</span>
+                        {% if subject.area %}
+                            <span class="home-link-card__meta">
+                                <span class="home-link-card__meta-badge">{{ subject.area.name }}</span>
+                            </span>
+                        {% endif %}
+                        <span class="home-link-card__cta">Explorar</span>
+                    </span>
+                    <span class="home-link-card__arrow" aria-hidden="true">→</span>
+                </a>
             {% endfor %}
         </div>
     {% else %}
@@ -133,15 +248,38 @@
     </div>
 
     {% if featured_levels %}
-        <div class="card-grid">
+        <div class="home-card-grid">
             {% for level in featured_levels %}
-                <article class="content-card">
-                    <h3><a href="{% url 'content:level_detail' level.slug %}">{{ level.name }}</a></h3>
-                    {% if level.order %}
-                        <p><strong>Orden:</strong> {{ level.order }}</p>
-                    {% endif %}
-                    <p>{{ level.description|default:"Recursos y material de apoyo para esta etapa." }}</p>
-                </article>
+                <a class="home-link-card" href="{% url 'content:level_detail' level.slug %}">
+                    <span class="home-link-card__icon" aria-hidden="true">
+                        {% if level.name == "Primaria" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        {% elif level.name == "Secundaria" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12.5V16a6 6 0 0 0 12 0v-3.5"></path>
+                            </svg>
+                        {% elif level.name == "Preuniversitario" %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        {% else %}
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                            </svg>
+                        {% endif %}
+                    </span>
+                    <span class="home-link-card__body">
+                        <span class="home-link-card__title">{{ level.name }}</span>
+                        <span class="home-link-card__text">{{ level.description|default:"Recursos y material de apoyo para esta etapa." }}</span>
+                        <span class="home-link-card__cta">Explorar nivel</span>
+                    </span>
+                    <span class="home-link-card__arrow" aria-hidden="true">→</span>
+                </a>
             {% endfor %}
         </div>
     {% else %}
@@ -162,23 +300,33 @@
     </div>
 
     {% if featured_resources %}
-        <div class="card-grid">
+        <div class="home-card-grid">
             {% for resource in featured_resources %}
-                <article class="content-card">
-                    <h3><a href="{% url 'content:resource_detail' resource.slug %}">{{ resource.title }}</a></h3>
-                    {% if resource.subject %}
-                        <p><strong>Asignatura:</strong> {{ resource.subject.name }}</p>
-                    {% endif %}
-                    {% if resource.levels.all %}
-                        <p>
-                            <strong>Niveles:</strong>
+                <a class="home-link-card" href="{% url 'content:resource_detail' resource.slug %}">
+                    <span class="home-link-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </span>
+                    <span class="home-link-card__body">
+                        <span class="home-link-card__title">{{ resource.title }}</span>
+                        <span class="home-link-card__text">{{ resource.description|default:"Recurso educativo listo para consultar." }}</span>
+                        <span class="home-link-card__meta">
+                            {% if resource.subject %}
+                                <span class="home-link-card__meta-badge">{{ resource.subject.name }}</span>
+                            {% endif %}
                             {% for level in resource.levels.all %}
-                                {{ level.name }}{% if not forloop.last %}, {% endif %}
+                                <span class="home-link-card__meta-badge">{{ level.name }}</span>
                             {% endfor %}
-                        </p>
-                    {% endif %}
-                    <p>{{ resource.description|default:"Recurso educativo listo para consultar." }}</p>
-                </article>
+                        </span>
+                        <span class="home-link-card__cta">Abrir recurso</span>
+                    </span>
+                    <span class="home-link-card__arrow" aria-hidden="true">→</span>
+                </a>
             {% endfor %}
         </div>
     {% else %}

@@ -49,6 +49,7 @@ Documentos de auditoria encontrados:
 - `docs/auditoria-rendimiento-core-web-vitals.md`
 - `docs/auditoria-threat-model-integraciones.md`
 - `docs/ci-github-actions-mantenimiento.md`
+- `docs/mejora-visual-tarjetas/README.md`
 - `docs/registro-cambios-auditoria.md`
 
 ## Cambios sugeridos que si estan aplicados
@@ -126,3 +127,4 @@ Documentos de auditoria encontrados:
 | 2026-05-24 | PEND-013 | Configuración gradual de verificación de email opcional y console backend local | Registro de credenciales en `base.py` y tests de login | |
 | 2026-05-24 | PEND-003 / CI | Configuración de CI/CD automatizada vía GitHub Actions (tests y check deploy) | Archivo django_ci.yml y validaciones en pull requests | |
 | 2026-05-24 | Local Git Hooks | Instalación y configuración de pre-commit hooks locales (formateo y pruebas) | Ejecución de git hooks en commit y pre-commit run | |
+| 2026-05-25 | Mejora Visual Tarjetas | Implementar tarjetas de navegación tipo action card en Home con inline SVGs y layouts de 3 columnas | Pruebas de integración, verificación de pre-commit y tests de Django (46/46 exitosos) | |
