@@ -22,6 +22,7 @@ class ResourceDetailView(DetailView):
         queryset = super().get_queryset().select_related(
             "subject",
             "topic",
+            "topic__subject",
         ).prefetch_related(
             "levels",
         )
@@ -35,16 +36,16 @@ class ResourceDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         resource = self.object
         context["youtube_id"] = get_youtube_id(resource.video_url)
-        breadcrumb_items = [
-            ("Recursos", "content:resource_list", None),
-        ]
-        if resource.subject and (resource.subject.is_active or self.request.user.is_superuser):
+        breadcrumb_items = []
+        subject = resource.subject
+        topic = resource.topic
+        if subject and (subject.is_active or self.request.user.is_superuser):
             breadcrumb_items.append(
-                (
-                    resource.subject.name,
-                    "content:subject_detail",
-                    {"slug": resource.subject.slug},
-                )
+                (subject.name, "content:subject_detail", {"slug": subject.slug})
+            )
+        if topic and (topic.is_active or self.request.user.is_superuser):
+            breadcrumb_items.append(
+                (topic.name, "content:topic_detail", {"slug": topic.slug})
             )
         breadcrumb_items.append((resource.title, None, None))
         breadcrumbs = build_breadcrumbs(self.request, *breadcrumb_items)

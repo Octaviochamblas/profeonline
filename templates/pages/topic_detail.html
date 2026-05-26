@@ -54,24 +54,28 @@
         </div>
 
         {% if resources %}
-            <div class="home-card-grid">
+            <div class="topic-resource-list">
                 {% for resource in resources %}
-                    <a class="home-link-card" href="{% url 'content:resource_detail' resource.slug %}">
-                        <span class="home-link-card__icon" aria-hidden="true">
-                            <span style="font-weight: 800; font-size: 1.15rem;">{{ forloop.counter }}</span>
-                        </span>
-                        <span class="home-link-card__body">
-                            <span class="home-link-card__title">{{ resource.title }}</span>
-                            <span class="home-link-card__text">{{ resource.description|default:"Recurso educativo listo para consultar." }}</span>
-                            <span class="home-link-card__meta">
-                                <span class="home-link-card__meta-badge" style="border-color: var(--primary); color: var(--primary);">Paso {{ forloop.counter }}</span>
-                                {% if resource.subject %}
-                                    <span class="home-link-card__meta-badge">{{ resource.subject.name }}</span>
-                                {% endif %}
-                                {% for level in resource.levels.all %}
-                                    <span class="home-link-card__meta-badge">{{ level.name }}</span>
-                                {% endfor %}
+                    <a class="topic-resource-card" href="{% url 'content:resource_detail' resource.slug %}">
+                        <span class="topic-resource-card__step" aria-hidden="true">{{ forloop.counter }}</span>
+                        <span class="topic-resource-card__content">
+                            <span class="topic-resource-card__header">
+                                <span class="topic-resource-card__title">{{ resource.title }}</span>
+                                <span class="topic-resource-card__meta">
+                                    {% if resource.subject %}
+                                        <span class="topic-resource-card__badge">{{ resource.subject.name }}</span>
+                                    {% endif %}
+                                    {% for level in resource.levels.all %}
+                                        <span class="topic-resource-card__badge">{{ level.name }}</span>
+                                    {% endfor %}
+                                </span>
                             </span>
+                            {% if resource.description %}
+                                <span class="topic-resource-card__description">{{ resource.description }}</span>
+                            {% endif %}
+                        </span>
+                        <span class="topic-resource-card__arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         </span>
                     </a>
                 {% endfor %}

@@ -19,11 +19,14 @@ class TopicDetailView(DetailView):
         topic = self.object
 
         # Breadcrumbs and structured data for SEO
-        breadcrumbs = build_breadcrumbs(
-            self.request,
-            ("Temas", "content:topic_list", None),
-            (topic.name, None, None),
-        )
+        breadcrumb_items = []
+        subject = topic.subject
+        if subject and (subject.is_active or self.request.user.is_superuser):
+            breadcrumb_items.append(
+                (subject.name, "content:subject_detail", {"slug": subject.slug})
+            )
+        breadcrumb_items.append((topic.name, None, None))
+        breadcrumbs = build_breadcrumbs(self.request, *breadcrumb_items)
         context["breadcrumbs"] = breadcrumbs
         context["structured_data_json_list"] = [breadcrumb_schema(breadcrumbs)]
 
