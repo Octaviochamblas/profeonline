@@ -42,7 +42,18 @@ class ResourceDetailViewTests(TestCase):
             password="testpass123",
         )
 
-    def test_anonymous_user_can_see_published_resource(self):
+    def test_anonymous_user_cannot_see_published_resource(self):
+        response = self.client.get(
+            reverse("content:resource_detail", args=[self.published_resource.slug])
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/cuentas/login/", response["Location"])
+
+    def test_authenticated_user_can_see_published_resource(self):
+        user = User.objects.create_user(username="student2", password="testpass123")
+        self.client.force_login(user)
+
         response = self.client.get(
             reverse("content:resource_detail", args=[self.published_resource.slug])
         )
@@ -60,7 +71,9 @@ class ResourceDetailViewTests(TestCase):
             reverse("content:level_detail", args=[self.level.slug]),
         )
 
-    def test_anonymous_user_cannot_see_draft_resource(self):
+    def test_authenticated_non_superuser_cannot_see_draft_resource(self):
+        user = User.objects.create_user(username="student_draft", password="testpass123")
+        self.client.force_login(user)
         response = self.client.get(
             reverse("content:resource_detail", args=[self.draft_resource.slug])
         )
@@ -579,6 +592,8 @@ class TopicResourceOrderingAndNavigationTests(TestCase):
     def setUp(self):
         self.subject = Subject.objects.create(name="Fisica", is_active=True)
         self.topic = Topic.objects.create(name="Termodinamica", subject=self.subject, is_active=True)
+        self.user = User.objects.create_user(username="student_ordering", password="testpass123")
+        self.client.force_login(self.user)
 
         self.r1 = Resource.objects.create(
             title="B: Ecuacion de estado",
