@@ -24,19 +24,20 @@
         {% for level in levels %}
             <div class="home-link-card">
                 <span class="home-link-card__icon" aria-hidden="true">
-                    {% if level.name == "Primaria" %}
+                    {% if level.name == "Escolar" %}
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
-                    {% elif level.name == "Secundaria" %}
+                    {% elif level.name == "Media/Preuniversitario" %}
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                             <path d="M6 12.5V16a6 6 0 0 0 12 0v-3.5"></path>
                         </svg>
-                    {% elif level.name == "Preuniversitario" %}
+                    {% elif level.name == "Universitario" %}
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                         </svg>
                     {% else %}
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -48,11 +49,6 @@
                 <span class="home-link-card__body">
                     <a class="home-link-card__title" href="{% url 'content:level_detail' level.slug %}">{{ level.name }}</a>
                     <span class="home-link-card__text">{{ level.description|default:"Recursos y material de apoyo para esta etapa." }}</span>
-                    <span class="home-link-card__meta">
-                        {% if level.order %}
-                            <span class="home-link-card__meta-badge">Orden: {{ level.order }}</span>
-                        {% endif %}
-                    </span>
                     {% if user.is_superuser %}
                         <div class="card-actions">
                             <a class="action-edit" href="{% url 'content:level_update' level.pk %}">Editar</a>

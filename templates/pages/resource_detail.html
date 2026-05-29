@@ -82,15 +82,17 @@
     {% endif %}
 
 
-    <article class="stack">
-        {% if resource.content %}
+    {% if resource.content %}
+        <article class="stack">
             {{ resource.content|markdown }}
-        {% else %}
+        </article>
+    {% elif not youtube_id %}
+        <article class="stack">
             <div class="empty-state">
                 <p>Este recurso aún no tiene contenido publicado.</p>
             </div>
-        {% endif %}
-    </article>
+        </article>
+    {% endif %}
 
     {% if previous_resource or next_resource %}
         <nav class="resource-navigation" aria-label="Navegación de recurso dentro del tema">

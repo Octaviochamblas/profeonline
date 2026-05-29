@@ -545,12 +545,22 @@ class TopicDetailViewTests(TestCase):
 
 class TopicListViewPaginationTests(TestCase):
     def setUp(self):
+        from apps.content.models import Level, Resource
+        self.level = Level.objects.create(name="Escolar", order=1, is_active=True)
         self.subject = Subject.objects.create(name="Matematica", is_active=True)
         # Create 25 topics to trigger pagination (since paginate_by = 20)
-        self.topics = [
-            Topic.objects.create(name=f"Tema {i:02d}", subject=self.subject, is_active=True)
-            for i in range(1, 26)
-        ]
+        self.topics = []
+        for i in range(1, 26):
+            t = Topic.objects.create(name=f"Tema {i:02d}", subject=self.subject, is_active=True)
+            self.topics.append(t)
+            # Create a mock resource for each to bind it to Level
+            r = Resource.objects.create(
+                title=f"Recurso {i}",
+                subject=self.subject,
+                topic=t,
+                is_published=True
+            )
+            r.levels.set([self.level])
 
     def test_topic_list_pagination(self):
         response = self.client.get(reverse("content:topic_list"))

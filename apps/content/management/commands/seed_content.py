@@ -1,159 +1,307 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.text import slugify
+import json
+import os
 
 from apps.content.models import Area, Level, Module, ModuleResource, Resource, Subject, Topic
 
 
 class Command(BaseCommand):
-    help = "Crea contenido semilla para ProfeOnline."
+    help = "Crea contenido semilla para ProfeOnline con videos reales de YouTube y descripciones SEO estructuradas editorialmente."
 
     areas = [
         {
-            "name": "Matemáticas",
-            "description": "Conceptos, ejercicios y rutas de apoyo para el razonamiento numérico.",
+            "name": "Matemática",
+            "description": "Conceptos, ejercicios y rutas de apoyo para el razonamiento numérico y resolución de problemas.",
             "order": 1,
         },
         {
-            "name": "Ciencias",
-            "description": "Material de apoyo para física y química con foco en comprensión y práctica.",
+            "name": "Física",
+            "description": "Material de apoyo para interpretar fenómenos físicos, fórmulas y ejercicios resueltos.",
             "order": 2,
+        },
+        {
+            "name": "Química",
+            "description": "Guías y ejercicios para comprender estructura de la materia, enlaces y termodinámica.",
+            "order": 3,
         },
     ]
 
     levels = [
         {
-            "name": "Primaria",
-            "description": "Bases de lectura, cálculo y hábitos de estudio para estudiantes de primaria.",
+            "name": "Escolar",
+            "description": "Bases y material de apoyo para estudiantes de enseñanza básica.",
             "order": 1,
         },
         {
-            "name": "Secundaria",
-            "description": "Contenidos y ejercicios para fortalecer el avance en secundaria.",
+            "name": "Media/Preuniversitario",
+            "description": "Contenidos clave para enseñanza media y preparación de exámenes de admisión.",
             "order": 2,
         },
         {
-            "name": "Preuniversitario",
-            "description": "Apoyo para preparar evaluaciones de ingreso y reforzar contenidos clave.",
+            "name": "Universitario",
+            "description": "Apoyo académico y materias avanzadas para educación superior.",
             "order": 3,
         },
     ]
 
     subjects = [
+        # Matemática
         {
-            "name": "Matemática",
-            "area": "Matemáticas",
-            "description": "Clases particulares y recursos para operaciones, álgebra y resolución de problemas.",
+            "name": "Matemática Escolar",
+            "area": "Matemática",
+            "description": "Bases y operaciones fundamentales de matemáticas para nivel escolar básico.",
             "topics": [
                 {
-                    "name": "Fracciones y decimales",
-                    "description": "Repaso de equivalencias, operaciones y problemas aplicados.",
+                    "name": "Números y operaciones básicas",
+                    "description": "Conceptos iniciales, fracciones, decimales y operaciones fundamentales.",
                 },
                 {
-                    "name": "Ecuaciones lineales",
-                    "description": "Procedimientos paso a paso para resolver ecuaciones de primer grado.",
+                    "name": "Proporcionalidad directa e inversa",
+                    "description": "Conceptos y ejercicios prácticos de proporcionalidad.",
                 },
             ],
         },
         {
-            "name": "Física",
-            "area": "Ciencias",
-            "description": "Material de apoyo para interpretar fenómenos, fórmulas y ejercicios de física.",
+            "name": "Matemática Media",
+            "area": "Matemática",
+            "description": "Contenidos de matemáticas para enseñanza media y preparación para el ingreso universitario.",
             "topics": [
                 {
-                    "name": "Movimiento rectilíneo",
-                    "description": "Velocidad, desplazamiento y lectura de gráficos básicos.",
+                    "name": "Lenguaje y expresiones algebraicas",
+                    "description": "Polinomios, factorización y operaciones algebraicas.",
                 },
                 {
-                    "name": "Fuerza y energía",
-                    "description": "Conceptos introductorios para comprender interacción, trabajo y energía.",
+                    "name": "Preparación PAES",
+                    "description": "Repaso de contenidos y resolución de ejercicios tipo PAES.",
                 },
             ],
         },
         {
-            "name": "Química",
-            "area": "Ciencias",
-            "description": "Guías y ejercicios para comprender estructura de la materia y enlaces.",
+            "name": "Cálculo I",
+            "area": "Matemática",
+            "description": "Cálculo diferencial universitario.",
             "topics": [
                 {
-                    "name": "Tabla periódica",
-                    "description": "Organización de elementos y lectura de tendencias periódicas.",
+                    "name": "Límites y Continuidad",
+                    "description": "Cálculo de límites algebraicos y análisis de continuidad.",
                 },
                 {
-                    "name": "Enlaces químicos",
-                    "description": "Unión entre átomos, tipos de enlace y ejemplos de aplicación.",
+                    "name": "Derivadas y Optimización",
+                    "description": "Reglas de derivación, rectas tangentes y problemas de optimización.",
                 },
             ],
         },
-    ]
-
-    resources = [
         {
-            "title": "Guía de fracciones y decimales",
-            "subject": "Matemática",
-            "topic": "Fracciones y decimales",
-            "levels": ["Primaria", "Secundaria"],
-            "description": "Repaso guiado para convertir, comparar y operar con fracciones y decimales.",
-            "content": (
-                "Este recurso resume procedimientos básicos para trabajar con fracciones y decimales.\n\n"
-                "Incluye ejemplos de suma, resta y conversión para reforzar el aprendizaje con práctica breve."
-            ),
+            "name": "Cálculo II",
+            "area": "Matemática",
+            "description": "Cálculo integral universitario.",
+            "topics": [
+                {
+                    "name": "Integrales y técnicas de integración",
+                    "description": "Integrales definidas, indefinidas, sustitución e integración por partes.",
+                },
+            ],
         },
         {
-            "title": "Ejercicios de ecuaciones lineales",
-            "subject": "Matemática",
-            "topic": "Ecuaciones lineales",
-            "levels": ["Secundaria", "Preuniversitario"],
-            "description": "Serie de ejercicios para practicar despeje y resolución paso a paso.",
-            "content": (
-                "Material de práctica centrado en ecuaciones de primer grado.\n\n"
-                "El objetivo es ordenar el procedimiento y reconocer errores comunes al despejar incógnitas."
-            ),
+            "name": "Cálculo III",
+            "area": "Matemática",
+            "description": "Cálculo multivariable y funciones vectoriales.",
+            "topics": [
+                {
+                    "name": "Funciones de varias variables y optimización",
+                    "description": "Derivadas parciales, gradiente y multiplicadores de Lagrange.",
+                },
+                {
+                    "name": "Integrales Múltiples",
+                    "description": "Integrales dobles e iteradas, cálculo de áreas y volúmenes.",
+                },
+            ],
         },
         {
-            "title": "Resumen de movimiento rectilíneo",
-            "subject": "Física",
-            "topic": "Movimiento rectilíneo",
-            "levels": ["Secundaria"],
-            "description": "Resumen visual para interpretar velocidad, posición y desplazamiento.",
-            "content": (
-                "Este resumen explica los conceptos esenciales del movimiento rectilíneo.\n\n"
-                "Sirve para repasar definiciones, fórmulas y lectura de gráficos antes de una evaluación."
-            ),
+            "name": "Álgebra",
+            "area": "Matemática",
+            "description": "Álgebra universitaria y lógica matemática.",
+            "topics": [
+                {
+                    "name": "Lógica matemática y proposicional",
+                    "description": "Tablas de verdad, conectivos lógicos y razonamiento proposicional.",
+                },
+                {
+                    "name": "Fundamentos de álgebra universitaria",
+                    "description": "Ecuaciones, polinomios complejos y estructuras básicas.",
+                },
+            ],
         },
         {
-            "title": "Tabla periódica y enlaces químicos",
-            "subject": "Química",
-            "topic": "Tabla periódica",
-            "levels": ["Secundaria", "Preuniversitario"],
-            "description": "Guía de apoyo para reconocer elementos, grupos y enlaces básicos.",
-            "content": (
-                "La guía ordena los conceptos clave de química general.\n\n"
-                "Presenta la estructura de la tabla periódica y la relación con los enlaces químicos más comunes."
-            ),
+            "name": "Álgebra Lineal",
+            "area": "Matemática",
+            "description": "Matrices, determinantes y espacios vectoriales.",
+            "topics": [
+                {
+                    "name": "Matrices, vectores y sistemas lineales",
+                    "description": "Operaciones con matrices, cálculo de determinantes y sistemas lineales.",
+                },
+            ],
+        },
+        {
+            "name": "EDO",
+            "area": "Matemática",
+            "description": "Ecuaciones Diferenciales Ordinarias.",
+            "topics": [
+                {
+                    "name": "Ecuaciones Diferenciales Ordinarias",
+                    "description": "Métodos de resolución de EDOs de primer y segundo orden.",
+                },
+            ],
+        },
+        {
+            "name": "Estadística",
+            "area": "Matemática",
+            "description": "Teoría de probabilidades y estadística descriptiva.",
+            "topics": [
+                {
+                    "name": "Probabilidad y Estadística descriptiva",
+                    "description": "Cálculo de probabilidades, variables aleatorias y gráficos estadísticos.",
+                },
+            ],
+        },
+        # Física
+        {
+            "name": "Física Escolar",
+            "area": "Física",
+            "description": "Conceptos introductorios y física básica para nivel escolar.",
+            "topics": [
+                {
+                    "name": "Introducción a la física escolar",
+                    "description": "Unidades de medida, vectores y conceptos básicos.",
+                },
+            ],
+        },
+        {
+            "name": "Física I",
+            "area": "Física",
+            "description": "Física mecánica universitaria - Cinemática.",
+            "topics": [
+                {
+                    "name": "Cinemática y análisis del movimiento",
+                    "description": "Movimiento rectilíneo, aceleración y gráficos de movimiento.",
+                },
+            ],
+        },
+        {
+            "name": "Física II",
+            "area": "Física",
+            "description": "Física de fluidos y ondas.",
+            "topics": [
+                {
+                    "name": "Mecánica de Fluidos y continuidad",
+                    "description": "Principio de Bernoulli, hidrostática y dinámica de fluidos.",
+                },
+            ],
+        },
+        {
+            "name": "Electromagnetismo",
+            "area": "Física",
+            "description": "Teoría electromagnética, campos y potencial.",
+            "topics": [
+                {
+                    "name": "Campo eléctrico y potencial",
+                    "description": "Ley de Coulomb, campo eléctrico y potencial eléctrico.",
+                },
+            ],
+        },
+        {
+            "name": "Mecánica",
+            "area": "Física",
+            "description": "Dinámica clásica de sistemas de partículas.",
+            "topics": [
+                {
+                    "name": "Dinámica de partículas y energía",
+                    "description": "Leyes de Newton, trabajo, energía y colisiones.",
+                },
+            ],
+        },
+        {
+            "name": "Estática",
+            "area": "Física",
+            "description": "Estudio del equilibrio de cuerpos rígidos.",
+            "topics": [
+                {
+                    "name": "Equilibrio de cuerpos rígidos y fuerzas",
+                    "description": "Torque, centro de gravedad y condiciones de equilibrio.",
+                },
+            ],
+        },
+        # Química
+        {
+            "name": "Química Universitaria",
+            "area": "Química",
+            "description": "Fundamentos y conceptos introductorios de química.",
+            "topics": [
+                {
+                    "name": "Estructura de la materia y enlaces",
+                    "description": "Modelos atómicos, tabla periódica y enlaces químicos.",
+                },
+            ],
+        },
+        {
+            "name": "Termodinámica",
+            "area": "Química",
+            "description": "Principios termodinámicos, estados y ciclos.",
+            "topics": [
+                {
+                    "name": "Ciclos, líquidos y vapores",
+                    "description": "Leyes de la termodinámica, trabajo térmico y ciclos.",
+                },
+            ],
+        },
+        {
+            "name": "Química I",
+            "area": "Química",
+            "description": "Química general I universitaria.",
+            "topics": [
+                {
+                    "name": "Estequiometría y soluciones",
+                    "description": "Cálculos estequiométricos, reacciones y disoluciones químicas.",
+                },
+            ],
+        },
+        {
+            "name": "Química II",
+            "area": "Química",
+            "description": "Química física y termoquímica universitaria.",
+            "topics": [
+                {
+                    "name": "Físico-Química, entalpía y equilibrio",
+                    "description": "Entalpía, entropía, energía libre de Gibbs y constante de equilibrio.",
+                },
+            ],
+        },
+        {
+            "name": "Química Analítica",
+            "area": "Química",
+            "description": "Métodos químicos de análisis cuantitativo.",
+            "topics": [
+                {
+                    "name": "Métodos de análisis y equilibrio químico",
+                    "description": "Equilibrio ácido-base, volumetría y gravimetría.",
+                },
+            ],
         },
     ]
 
     modules = [
         {
             "title": "Ruta de fracciones y decimales",
-            "subject": "Matemática",
-            "topic": "Fracciones y decimales",
-            "levels": ["Primaria", "Secundaria"],
+            "subject": "Matemática Escolar",
+            "topic": "Números y operaciones básicas",
+            "levels": ["Escolar", "Media/Preuniversitario"],
             "objective": "Fortalecer el cálculo básico y la equivalencia entre fracciones y decimales.",
             "description": "Ruta de apoyo con recursos graduales para reforzar cálculo y práctica.",
             "order": 1,
             "resource": "Guía de fracciones y decimales",
-        },
-        {
-            "title": "Ruta de ecuaciones",
-            "subject": "Matemática",
-            "topic": "Ecuaciones lineales",
-            "levels": ["Secundaria", "Preuniversitario"],
-            "objective": "Practicar despeje de incógnitas y resolución ordenada de ecuaciones.",
-            "description": "Secuencia de estudio para ganar soltura con ecuaciones lineales.",
-            "order": 2,
-            "resource": "Ejercicios de ecuaciones lineales",
         },
     ]
 
@@ -208,8 +356,14 @@ class Command(BaseCommand):
                 )
                 topic_by_subject[subject.name][topic.name] = topic
 
+        # Load resources from JSON file to prevent python escape string character corruption
+        current_dir = os.path.dirname(__file__)
+        json_path = os.path.join(current_dir, "seed_resources.json")
+        with open(json_path, "r", encoding="utf-8") as f:
+            resources = json.load(f)
+
         resource_by_title = {}
-        for item in self.resources:
+        for item in resources:
             resource_slug = slugify(item["title"])
             resource, _ = Resource.objects.update_or_create(
                 slug=resource_slug,
@@ -219,6 +373,7 @@ class Command(BaseCommand):
                     "topic": topic_by_subject[item["subject"]][item["topic"]],
                     "description": item["description"],
                     "content": item["content"],
+                    "video_url": item.get("video_url"),
                     "is_published": True,
                 },
             )
@@ -227,6 +382,15 @@ class Command(BaseCommand):
 
         for item in self.modules:
             module_slug = slugify(item["title"])
+            # Ensure referenced resource exists before creating module
+            ref_resource = resource_by_title.get(item["resource"])
+            if not ref_resource:
+                fallback_resources = Resource.objects.filter(topic=topic_by_subject[item["subject"]][item["topic"]])
+                if fallback_resources.exists():
+                    ref_resource = fallback_resources.first()
+                else:
+                    continue
+
             module, _ = Module.objects.update_or_create(
                 slug=module_slug,
                 defaults={
@@ -242,7 +406,7 @@ class Command(BaseCommand):
             module.levels.set([level_by_name[name] for name in item["levels"]])
             ModuleResource.objects.update_or_create(
                 module=module,
-                resource=resource_by_title[item["resource"]],
+                resource=ref_resource,
                 defaults={
                     "order": 1,
                     "is_required": True,
@@ -254,6 +418,6 @@ class Command(BaseCommand):
             self.style.SUCCESS(
                 "Contenido semilla listo: "
                 f"{len(self.areas)} areas, {len(self.subjects)} asignaturas, "
-                f"{len(self.levels)} niveles, {len(self.resources)} recursos y {len(self.modules)} modulos."
+                f"{len(self.levels)} niveles, {len(resources)} recursos y {len(self.modules)} modulos."
             )
         )

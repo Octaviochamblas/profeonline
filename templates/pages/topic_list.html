@@ -79,33 +79,39 @@
         </div>
     {% endif %}
 
-    {% if topics %}
-        <div class="home-card-grid">
-            {% for topic in topics %}
-                <div class="home-link-card">
-                    <span class="home-link-card__icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 20c4-4 0-8 6-10s2-4 10-6"></path>
-                            <circle cx="4" cy="20" r="3" fill="currentColor"></circle>
-                            <circle cx="10" cy="10" r="3" fill="currentColor"></circle>
-                            <circle cx="20" cy="4" r="3" fill="currentColor"></circle>
-                        </svg>
-                    </span>
-                    <span class="home-link-card__body">
-                        <a class="home-link-card__title" href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }}</a>
-                        <span class="home-link-card__text">{{ topic.description|default:"Sin descripción" }}</span>
-                        <span class="home-link-card__meta">
-                            {% if topic.subject %}
-                                <span class="home-link-card__meta-badge">{{ topic.subject.name }}</span>
-                            {% endif %}
-                        </span>
-                        {% if user.is_superuser %}
-                            <div class="card-actions">
-                                <a class="action-edit" href="{% url 'content:topic_update' topic.pk %}">Editar</a>
-                                <a class="action-delete" href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+    {% if subjects_data %}
+        <div class="stack stack--lg" style="gap: 2.5rem;">
+            {% for group in subjects_data %}
+                <div class="subject-group-section">
+                    <div style="border-left: 4px solid var(--primary); padding-left: 0.75rem; margin-bottom: 1rem;">
+                        <h2 style="margin: 0; font-size: 1.6rem; color: #ffffff;">{{ group.subject.name }}</h2>
+                        <p style="color: var(--muted); margin: 0.25rem 0 0 0; font-size: 0.95rem;">{{ group.subject.description }}</p>
+                    </div>
+
+                    <div class="home-card-grid">
+                        {% for topic in group.topics %}
+                            <div class="home-link-card">
+                                <span class="home-link-card__icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 20c4-4 0-8 6-10s2-4 10-6"></path>
+                                        <circle cx="4" cy="20" r="3" fill="currentColor"></circle>
+                                        <circle cx="10" cy="10" r="3" fill="currentColor"></circle>
+                                        <circle cx="20" cy="4" r="3" fill="currentColor"></circle>
+                                    </svg>
+                                </span>
+                                <span class="home-link-card__body">
+                                    <a class="home-link-card__title" href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }}</a>
+                                    <span class="home-link-card__text">{{ topic.description|default:"Sin descripción" }}</span>
+                                    {% if user.is_superuser %}
+                                        <div class="card-actions">
+                                            <a class="action-edit" href="{% url 'content:topic_update' topic.pk %}">Editar</a>
+                                            <a class="action-delete" href="{% url 'content:topic_delete' topic.pk %}">Eliminar</a>
+                                        </div>
+                                    {% endif %}
+                                </span>
                             </div>
-                        {% endif %}
-                    </span>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>

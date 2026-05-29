@@ -1,9 +1,15 @@
+import unicodedata
 from urllib.parse import urlencode
 
 from django.db.models import Q
 from django.views.generic import ListView
 
-from apps.content.models import Subject, Topic
+from apps.content.models import Subject, Topic, Level
+
+
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
 
 class TopicListView(ListView):
@@ -15,16 +21,18 @@ class TopicListView(ListView):
     def get_queryset(self):
         queryset = Topic.objects.filter(is_active=True).select_related("subject").order_by("name")
 
-        # Search keyword query
         q = self.request.GET.get("q", "").strip()
         if q:
-            queryset = queryset.filter(
-                Q(name__icontains=q) |
-                Q(description__icontains=q) |
-                Q(subject__name__icontains=q)
-            )
+            normalized_q = remove_accents(q).lower()
+            matched_ids = []
+            for t in queryset:
+                name_norm = remove_accents(t.name).lower()
+                desc_norm = remove_accents(t.description or "").lower()
+                subj_norm = remove_accents(t.subject.name if t.subject else "").lower()
+                if normalized_q in name_norm or normalized_q in desc_norm or normalized_q in subj_norm:
+                    matched_ids.append(t.id)
+            queryset = queryset.filter(id__in=matched_ids)
 
-        # Subject filter query
         subject_id = self.request.GET.get("subject", "").strip()
         if subject_id and subject_id.isdigit():
             queryset = queryset.filter(subject_id=subject_id)
@@ -49,4 +57,38 @@ class TopicListView(ListView):
             filters["subject"] = selected_subject
         context["filter_querystring"] = urlencode(filters)
 
+        # Group filtered topics by subject, sorted by Level order (Escolar -> Media/Preuni -> Universitario)
+        filtered_topics = self.get_queryset()
+        subjects_data = []
+
+        # We query levels ordered by 'order'
+        levels = Level.objects.filter(is_active=True).order_by("order")
+
+        # Keep track of subjects already added to avoid duplication (e.g. if a subject spans levels, though ours are mapped 1-to-1)
+        added_subject_ids = set()
+
+        for lvl in levels:
+            # Get subjects matching selected_subject if filtered, otherwise all subjects under this level
+            level_subjects = Subject.objects.filter(
+                is_active=True,
+                resources__levels=lvl
+            ).distinct().order_by("name")
+
+            if selected_subject:
+                level_subjects = level_subjects.filter(id=selected_subject)
+
+            for subj in level_subjects:
+                if subj.id in added_subject_ids:
+                    continue
+
+                subj_topics = filtered_topics.filter(subject=subj)
+                if subj_topics.exists():
+                    subjects_data.append({
+                        "subject": subj,
+                        "topics": subj_topics,
+                        "level": lvl
+                    })
+                    added_subject_ids.add(subj.id)
+
+        context["subjects_data"] = subjects_data
         return context
