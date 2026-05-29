@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import CustomUserCreationForm, ProfileUpdateForm
 from .models import Profile
@@ -8,7 +9,20 @@ from django.contrib.auth.decorators import login_required
 
 
 
+def _safe_next_url(request):
+    next_url = request.POST.get("next") or request.GET.get("next")
+    if next_url and url_has_allowed_host_and_scheme(
+        next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return next_url
+    return None
+
+
 def register_view(request):
+    next_url = _safe_next_url(request)
+
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -29,11 +43,13 @@ def register_view(request):
 
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, "¡Registro completado con éxito! Bienvenido a ProfeOnline.")
+            if next_url:
+                return redirect(next_url)
             return redirect("core:home")
     else:
         form = CustomUserCreationForm()
 
-    return render(request, "accounts/register.html", {"form": form})
+    return render(request, "accounts/register.html", {"form": form, "next_url": next_url})
 
 
 @login_required

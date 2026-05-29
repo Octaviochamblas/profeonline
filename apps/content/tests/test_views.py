@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -9,18 +10,29 @@ from apps.content.models import Level, Module, ModuleResource, Resource, Subject
 class ResourceDetailViewTests(TestCase):
     def setUp(self):
         self.subject = Subject.objects.create(name="Matematica", is_active=True)
+        self.topic = Topic.objects.create(
+            name="Algebra",
+            subject=self.subject,
+            is_active=True,
+        )
         self.level = Level.objects.create(name="Primaria", is_active=True)
         self.other_subject = Subject.objects.create(name="Lenguaje", is_active=True)
         self.other_level = Level.objects.create(name="Secundaria", is_active=True)
         self.related_public_resource = Resource.objects.create(
             title="Guia de geometria",
             subject=self.subject,
+            topic=self.topic,
             is_published=True,
         )
         self.related_public_resource.levels.add(self.level)
         self.published_resource = Resource.objects.create(
             title="Guia de algebra",
             subject=self.subject,
+            topic=self.topic,
+            description="Ficha publica de algebra escolar.",
+            content="Contenido completo privado de algebra.",
+            file="resources/files/guia.pdf",
+            video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
             is_published=True,
         )
         self.published_resource.levels.add(self.level)
@@ -28,6 +40,9 @@ class ResourceDetailViewTests(TestCase):
         self.draft_resource = Resource.objects.create(
             title="Borrador de algebra",
             subject=self.subject,
+            topic=self.topic,
+            content="Contenido completo del borrador.",
+            video_url="https://www.youtube.com/watch?v=9bZkp7q19f0",
             is_published=False,
         )
         self.draft_related_resource = Resource.objects.create(
@@ -42,13 +57,24 @@ class ResourceDetailViewTests(TestCase):
             password="testpass123",
         )
 
-    def test_anonymous_user_cannot_see_published_resource(self):
+    def test_anonymous_user_sees_public_resource_preview_only(self):
         response = self.client.get(
             reverse("content:resource_detail", args=[self.published_resource.slug])
         )
 
-        self.assertEqual(response.status_code, 302)
-        self.assertIn("/cuentas/login/", response["Location"])
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.published_resource.title)
+        self.assertContains(response, self.published_resource.description)
+        self.assertContains(response, "Para ver videos y el contenido completo")
+        self.assertContains(response, reverse("content:subject_detail", args=[self.subject.slug]))
+        self.assertContains(response, reverse("content:topic_detail", args=[self.topic.slug]))
+        self.assertContains(response, reverse("content:level_detail", args=[self.level.slug]))
+        self.assertContains(response, reverse("login"))
+        self.assertContains(response, reverse("register"))
+        self.assertNotContains(response, "youtube-nocookie.com")
+        self.assertNotContains(response, "Descargar recurso")
+        self.assertNotContains(response, self.published_resource.content)
+        self.assertNotContains(response, "Siguiente Recurso")
 
     def test_authenticated_user_can_see_published_resource(self):
         user = User.objects.create_user(username="student2", password="testpass123")
@@ -62,6 +88,10 @@ class ResourceDetailViewTests(TestCase):
         self.assertContains(response, self.published_resource.title)
         self.assertContains(response, "BreadcrumbList")
         self.assertContains(response, "Article")
+        self.assertContains(response, "youtube-nocookie.com")
+        self.assertContains(response, "Descargar recurso")
+        self.assertContains(response, self.published_resource.content)
+        self.assertContains(response, "Siguiente Recurso")
         self.assertContains(
             response,
             reverse("content:subject_detail", args=[self.subject.slug]),
@@ -80,6 +110,13 @@ class ResourceDetailViewTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_anonymous_user_cannot_see_draft_resource(self):
+        response = self.client.get(
+            reverse("content:resource_detail", args=[self.draft_resource.slug])
+        )
+
+        self.assertEqual(response.status_code, 404)
+
     def test_superuser_can_see_draft_resource(self):
         self.client.force_login(self.admin)
 
@@ -89,6 +126,45 @@ class ResourceDetailViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.draft_resource.title)
+        self.assertContains(response, self.draft_resource.content)
+        self.assertContains(response, "youtube-nocookie.com")
+
+    def test_login_from_resource_preview_returns_to_resource(self):
+        resource_url = reverse("content:resource_detail", args=[self.published_resource.slug])
+        user = User.objects.create_user(username="student_login", password="testpass123")
+
+        response = self.client.post(
+            f"{reverse('login')}?next={resource_url}",
+            {
+                "username": user.username,
+                "password": "testpass123",
+            },
+        )
+
+        self.assertRedirects(response, resource_url)
+
+    def test_register_from_resource_preview_returns_to_resource(self):
+        resource_url = reverse("content:resource_detail", args=[self.published_resource.slug])
+
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "new_student",
+                "first_name": "New",
+                "last_name": "Student",
+                "email": "new_student@example.com",
+                "role": "alumno",
+                "phone": "",
+                "city": "",
+                "institution": "",
+                "education_level": "",
+                "password1": "StrongPass123!",
+                "password2": "StrongPass123!",
+                "next": resource_url,
+            },
+        )
+
+        self.assertRedirects(response, resource_url)
 
 
 class ModuleResourceEndpointTests(TestCase):
@@ -337,7 +413,6 @@ class SpanishUrlTests(TestCase):
 
 import os
 from unittest.mock import patch
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 
 class YouTubeWebhookSecurityTests(TestCase):

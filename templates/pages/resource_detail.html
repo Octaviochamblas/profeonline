@@ -63,6 +63,7 @@
         </div>
     </header>
 
+    {% if user.is_authenticated %}
     {% if youtube_id %}
         <div class="video-container">
             <iframe src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}" referrerpolicy="strict-origin-when-cross-origin" title="Reproductor de video de YouTube: {{ resource.title }}" loading="lazy" allowfullscreen></iframe>
@@ -109,6 +110,21 @@
                 </a>
             {% endif %}
         </nav>
+    {% endif %}
+    {% else %}
+        <section class="resource-access-panel" aria-labelledby="resource-access-title">
+            <div class="resource-access-panel__content">
+                <p class="page-hero__kicker resource-access-panel__kicker">Acceso gratuito</p>
+                <h2 id="resource-access-title">Inicia sesi&oacute;n para continuar</h2>
+                <p class="page-hero__text resource-access-panel__text">
+                    Para ver videos y el contenido completo de este recurso, debes iniciar sesi&oacute;n o crear una cuenta gratuita.
+                </p>
+            </div>
+            <div class="resource-access-panel__actions">
+                <a class="btn btn-primary" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Iniciar sesi&oacute;n</a>
+                <a class="btn btn-secondary" href="{% url 'register' %}?next={{ request.get_full_path|urlencode }}">Crear cuenta</a>
+            </div>
+        </section>
     {% endif %}
 
 
