@@ -59,17 +59,27 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    flex-wrap: wrap;
     padding: 0.9rem 0;
 }
 
-.navbar-left,
+.navbar-menu {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
 .navbar-right {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 0.75rem;
     flex-wrap: nowrap;
+}
+
+.navbar-toggle {
+    display: none;
 }
 
 .user-greeting {
@@ -118,6 +128,21 @@ a:hover {
     background: var(--surface-soft);
     color: var(--text);
     text-decoration: none;
+}
+
+/* Hamburguer animations */
+.navbar-toggle svg line {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+}
+.navbar-toggle.active .line-middle {
+    opacity: 0;
+}
+.navbar-toggle.active .line-top {
+    transform: translateY(6px) rotate(45deg);
+}
+.navbar-toggle.active .line-bottom {
+    transform: translateY(-6px) rotate(-45deg);
 }
 
 .site-main {
@@ -896,12 +921,77 @@ form ul,
 
 @media (max-width: 900px) {
     .navbar {
-        align-items: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
-    .navbar-left,
+    .navbar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: var(--text);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+    }
+
+    .navbar-toggle:hover {
+        background-color: var(--surface-soft);
+    }
+
+    .navbar-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        margin-top: 0.5rem;
+    }
+
+    .navbar-menu.active {
+        display: flex;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 0.75rem 1rem;
+        background: var(--surface-soft);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        text-align: center;
+    }
+
     .navbar-right {
         width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .navbar-right .user-greeting {
+        text-align: center;
+        margin-bottom: 0.25rem;
+    }
+
+    .navbar-right .btn,
+    .navbar-right .logout-form,
+    .navbar-right .logout-form button {
+        width: 100%;
+        justify-content: center;
     }
 
     .content-wrapper {
