@@ -119,11 +119,10 @@ Aprende a aplicar las reglas matemáticas correctas con esta guía práctica enf
 - **Aplicación de reglas:** Uso de fórmulas, signos y simplificaciones necesarias para llegar a la respuesta correcta.
 - **Consejos clave:** Cómo evitar los errores comunes que suelen cometer los estudiantes en evaluaciones.
 
-### 🚀 Optimización SEO y Académica:
+### 📋 Detalles de la Clase:
 * **Asignatura:** {subject.name}
 * **Tema Principal:** {topic.name}
 * **Nivel Recomendado:** Educación Escolar y Preparación de Exámenes.
-* **Palabras Clave:** resolución de ejercicios, {topic.name.lower()}, práctica de matemáticas, apoyo escolar.
 
 ### 🔗 Ver Recurso Completo:
 * [Ver clase y resolución de ejercicios en YouTube]({url})"""
@@ -137,11 +136,10 @@ Explicación detallada y paso a paso para comprender los fundamentos teóricos d
 - **Fundamentación:** Fórmulas principales, propiedades y reglas que rigen este contenido.
 - **Conexión Temática:** Cómo se relaciona este tema con contenidos previos y futuros en tu plan de estudio.
 
-### 🚀 Optimización SEO y Académica:
+### 📋 Detalles de la Clase:
 * **Asignatura:** {subject.name}
 * **Tema Principal:** {topic.name}
 * **Nivel Recomendado:** Educación Escolar y Nivelación Académica.
-* **Palabras Clave:** clase teórica, {topic.name.lower()}, aprender matemáticas, conceptos de matemáticas.
 
 ### 🔗 Ver Recurso Completo:
 * [Ver explicación de la clase en YouTube]({url})"""
