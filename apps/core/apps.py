@@ -25,6 +25,11 @@ class CoreConfig(AppConfig):
             updated = User.objects.filter(username__iexact='qimico').update(is_superuser=True, is_staff=True)
             if updated:
                 print(f"--- Startup: Promoted {updated} user(s) matching 'qimico' ---")
+
+            # Seed math resources automatically on startup
+            from django.core.management import call_command
+            call_command('seed_math_resources')
+            print("--- Startup: seed_math_resources completed successfully ---")
         except Exception as e:
             # Silent fallback during migrations or database creation
-            print(f"--- Startup: Skipping superuser setup because: {e} ---")
+            print(f"--- Startup: Skipping superuser and math resources setup because: {e} ---")
