@@ -61,7 +61,11 @@
                             </svg>
                         </span>
                         <span class="home-link-card__body">
-                            <a class="home-link-card__title" href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }}</a>
+                            {% if topic.slug %}
+                                <a class="home-link-card__title" href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }}</a>
+                            {% else %}
+                                <span class="home-link-card__title">{{ topic.name }}</span>
+                            {% endif %}
                             <span class="home-link-card__text">{{ topic.description|default:"Ruta de aprendizaje guiado para esta asignatura." }}</span>
                             {% if user.is_superuser %}
                                 <div class="card-actions">

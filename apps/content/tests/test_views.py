@@ -631,6 +631,41 @@ class TopicDetailViewTests(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class TopicSlugFallbackTemplateTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Matematica Escolar", is_active=True)
+        self.level = Level.objects.create(name="Escolar", is_active=True)
+        self.topic = Topic.objects.create(
+            name="Numeros Enteros",
+            subject=self.subject,
+            is_active=True,
+        )
+        self.resource = Resource.objects.create(
+            title="Clase de numeros enteros",
+            subject=self.subject,
+            topic=self.topic,
+            is_published=True,
+        )
+        self.resource.levels.add(self.level)
+        Topic.objects.filter(pk=self.topic.pk).update(slug=None)
+
+    def test_topic_list_does_not_render_none_topic_links(self):
+        response = self.client.get(reverse("content:topic_list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.topic.name)
+        self.assertNotContains(response, "/temas/None/")
+
+    def test_subject_detail_does_not_render_none_topic_links(self):
+        response = self.client.get(
+            reverse("content:subject_detail", args=[self.subject.slug])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.topic.name)
+        self.assertNotContains(response, "/temas/None/")
+
+
 class TopicListViewPaginationTests(TestCase):
     def setUp(self):
         from apps.content.models import Level, Resource

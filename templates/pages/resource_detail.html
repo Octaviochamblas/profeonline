@@ -40,8 +40,12 @@
                 {% endif %}
             {% endif %}
             {% if resource.topic %}
-                {% if resource.topic.is_active or user.is_superuser %}
-                    <a class="badge badge--neutral" href="{% url 'content:topic_detail' resource.topic.slug %}">{{ resource.topic.name }}</a>
+                {% if resource.topic.slug %}
+                    {% if resource.topic.is_active or user.is_superuser %}
+                        <a class="badge badge--neutral" href="{% url 'content:topic_detail' resource.topic.slug %}">{{ resource.topic.name }}</a>
+                    {% else %}
+                        <span class="badge badge--neutral">{{ resource.topic.name }}</span>
+                    {% endif %}
                 {% else %}
                     <span class="badge badge--neutral">{{ resource.topic.name }}</span>
                 {% endif %}
