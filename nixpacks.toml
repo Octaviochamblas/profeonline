@@ -4,4 +4,4 @@
 cmds = ["pip install -r requirements.txt", "python manage.py collectstatic --no-input"]
 
 [start]
-cmd = "python manage.py migrate && python manage.py shell -c \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@profeonline.cl', 'ProfeOnline2026!'); u = User.objects.get(username='admin'); u.set_password('ProfeOnline2026!'); u.is_superuser = True; u.is_staff = True; u.save()\" && gunicorn config.wsgi:application"
+cmd = "python manage.py migrate && gunicorn config.wsgi:application"
