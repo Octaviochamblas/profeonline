@@ -1,0 +1,7 @@
+# Nixpacks configuration for Django on Railway
+
+[phases.build]
+cmds = ["pip install -r requirements.txt", "python manage.py collectstatic --no-input"]
+
+[start]
+cmd = "python manage.py migrate && gunicorn config.wsgi:application"
