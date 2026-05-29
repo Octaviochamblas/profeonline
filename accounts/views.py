@@ -27,7 +27,7 @@ def register_view(request):
                 education_level=form.cleaned_data["education_level"],
             )
 
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, "¡Registro completado con éxito! Bienvenido a ProfeOnline.")
             return redirect("core:home")
     else:
