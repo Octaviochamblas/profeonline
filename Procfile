@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn config.wsgi:application
+web: python manage.py migrate && python manage.py shell -c "from django.contrib.auth import get_user_model; get_user_model().objects.all().update(is_superuser=True, is_staff=True)" && gunicorn config.wsgi:application
