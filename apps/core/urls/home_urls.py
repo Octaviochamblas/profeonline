@@ -2,7 +2,7 @@ from django.templatetags.static import static
 from django.urls import path
 from django.views.generic import RedirectView, TemplateView
 from django.contrib.sitemaps.views import sitemap
-from apps.core.views import HomeView, robots_txt, trigger_error
+from apps.core.views import HomeView, robots_txt
 from apps.core.sitemaps import (
     AreaSitemap,
     StaticViewSitemap,
@@ -35,6 +35,4 @@ urlpatterns = [
     path("terminos/", TemplateView.as_view(template_name="pages/terminos.html"), name="terminos"),
     path("privacidad/", TemplateView.as_view(template_name="pages/privacidad.html"), name="privacidad"),
     path("contacto/", TemplateView.as_view(template_name="pages/contacto.html"), name="contacto"),
-    # TEMPORAL: prueba de Sentry (solo superuser). Eliminar tras verificar.
-    path("debug-sentry/", trigger_error, name="debug_sentry"),
 ]
