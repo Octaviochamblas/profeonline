@@ -11,3 +11,7 @@ def canonical_settings(request):
     return {
         "CANONICAL_BASE_URL": base_url
     }
+
+
+def csp_nonce(request):
+    return {"csp_nonce": getattr(request, "csp_nonce", "")}

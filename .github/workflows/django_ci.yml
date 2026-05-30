@@ -38,6 +38,9 @@ jobs:
         DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost,http://127.0.0.1,http://testserver"
         DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS: "true"
         DJANGO_SECURE_HSTS_PRELOAD: "true"
+        # Dummy URL: solo se parsea, no se conecta. DATABASE_URL es obligatorio
+        # en producción desde que se eliminó el fallback a SQLite.
+        DATABASE_URL: "postgres://user:pass@localhost:5432/ci_dummy"
       run: |
         python manage.py check --deploy --fail-level ERROR --settings=config.settings.production
 

@@ -153,6 +153,31 @@ class EnsureAdminCommandTests(TestCase):
         self.assertFalse(User.objects.filter(username="ghost").exists())
 
 
+class ContentSecurityPolicyTests(TestCase):
+    def test_script_src_uses_nonce_without_unsafe_directives(self):
+        response = self.client.get(reverse("core:home"))
+        csp = response.headers["Content-Security-Policy"]
+
+        self.assertIn("script-src 'self' 'nonce-", csp)
+        # The script portion must not rely on unsafe-inline / unsafe-eval.
+        script_portion = csp.split("style-src")[0]
+        self.assertNotIn("unsafe-inline", script_portion)
+        self.assertNotIn("unsafe-eval", csp)
+
+    def test_inline_scripts_carry_the_request_nonce(self):
+        import re
+
+        response = self.client.get(reverse("core:home"))
+        csp = response.headers["Content-Security-Policy"]
+        content = response.content.decode()
+
+        match = re.search(r"'nonce-([^']+)'", csp)
+        self.assertIsNotNone(match)
+        nonce = match.group(1)
+        # The inline JSON-LD block on the home page must carry the same nonce.
+        self.assertIn(f'nonce="{nonce}"', content)
+
+
 class MarkdownSecurityFilterTests(TestCase):
     def test_markdown_filter_escapes_dangerous_html(self):
         from django.template import Template, Context

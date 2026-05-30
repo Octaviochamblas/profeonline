@@ -58,22 +58,22 @@ SECURE_REFERRER_POLICY = "same-origin"
 CANONICAL_BASE_URL = os.environ.get("CANONICAL_BASE_URL", "https://www.profeonline.cl")
 
 
-# Database Configuration (PostgreSQL/SQLite hybrid)
+# Database Configuration
+# DATABASE_URL es obligatorio en producción: el fallback silencioso a SQLite
+# en hosts efímeros (Railway/nixpacks) provoca pérdida de datos en cada deploy.
 DATABASE_URL = os.environ.get("DATABASE_URL")
-if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-    }
-    # Supabase generally requires SSL. We check if the provider is postgresql to apply SSL.
-    if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
-        DATABASES["default"]["OPTIONS"] = {"sslmode": "require"}
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+if not DATABASE_URL:
+    raise ImproperlyConfigured(
+        "DATABASE_URL es obligatorio en producción. "
+        "Sin él la app caería en una base SQLite efímera que se pierde en cada deploy."
+    )
+
+DATABASES = {
+    "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+}
+# Supabase generally requires SSL. We check if the provider is postgresql to apply SSL.
+if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
+    DATABASES["default"]["OPTIONS"] = {"sslmode": "require"}
 
 
 STORAGES = {
@@ -84,6 +84,25 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# Email Configuration
+# Si EMAIL_HOST está definido se usa SMTP real (necesario para reset de
+# contraseña y verificación de email). Si no, se mantiene el backend de
+# consola heredado de base.py para no romper el arranque, pero los correos
+# NO se entregan.
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_TLS = get_env_bool("EMAIL_USE_TLS", default=True)
+    EMAIL_USE_SSL = get_env_bool("EMAIL_USE_SSL", default=False)
+    DEFAULT_FROM_EMAIL = os.environ.get(
+        "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no-reply@profeonline.cl"
+    )
+    SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 
 # Redis Cache Configuration (For shared cache, rate limiting, and performance PEND-009)
 REDIS_URL = os.environ.get("REDIS_URL")
