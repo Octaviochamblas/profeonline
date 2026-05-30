@@ -27,7 +27,10 @@ class ContentSecurityPolicyMiddleware:
             "connect-src 'self'",
             "object-src 'none'",
             "base-uri 'self'",
-            "form-action 'self'",
+            # accounts.google.com: permite el redirect del login con Google
+            # tras el POST del formulario (form-action evalúa también el destino
+            # de la redirección).
+            "form-action 'self' https://accounts.google.com",
         ]
 
         response["Content-Security-Policy"] = "; ".join(csp_policies)
