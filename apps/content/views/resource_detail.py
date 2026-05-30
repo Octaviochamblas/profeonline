@@ -71,6 +71,14 @@ class ResourceDetailView(DetailView):
         context["previous_resource"] = previous_resource
         context["next_resource"] = next_resource
 
+        # Estado de "completado" para el usuario autenticado
+        if self.request.user.is_authenticated:
+            context["completed"] = resource.completions.filter(
+                user=self.request.user
+            ).exists()
+        else:
+            context["completed"] = False
+
         context["structured_data_json_list"] = [
             breadcrumb_schema(breadcrumbs),
             article_schema(

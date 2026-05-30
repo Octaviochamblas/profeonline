@@ -2,7 +2,7 @@ from django.db.models import Min, Value
 from django.db.models.functions import Coalesce
 from django.views.generic import DetailView
 
-from apps.content.models import Topic
+from apps.content.models import ResourceCompletion, Topic
 from apps.content.views._seo import breadcrumb_schema, build_breadcrumbs
 
 
@@ -31,5 +31,23 @@ class TopicDetailView(DetailView):
         context["structured_data_json_list"] = [breadcrumb_schema(breadcrumbs)]
 
         # Order resources based on the topic's selected ordering method
-        context["resources"] = topic.get_ordered_resources()
+        resources = list(topic.get_ordered_resources())
+        context["resources"] = resources
+
+        # Progreso del usuario autenticado dentro de la ruta
+        total = len(resources)
+        completed_ids = set()
+        if self.request.user.is_authenticated and total:
+            completed_ids = set(
+                ResourceCompletion.objects.filter(
+                    user=self.request.user,
+                    resource__in=resources,
+                ).values_list("resource_id", flat=True)
+            )
+        context["completed_ids"] = completed_ids
+        context["completed_count"] = len(completed_ids)
+        context["total_count"] = total
+        context["progress_percent"] = (
+            int(len(completed_ids) / total * 100) if total else 0
+        )
         return context
