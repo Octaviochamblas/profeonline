@@ -1,6 +1,17 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from apps.content.models import Subject, Level, Resource
+from apps.content.models import Area, Subject, Level, Resource, Topic
+
+
+class AreaSitemap(Sitemap):
+    changefreq = "weekly"
+    priority = 0.6
+
+    def items(self):
+        return Area.objects.filter(is_active=True).exclude(slug__isnull=True).exclude(slug="")
+
+    def location(self, item):
+        return reverse("content:area_detail", kwargs={"slug": item.slug})
 
 
 class SubjectSitemap(Sitemap):
@@ -34,6 +45,17 @@ class ResourceSitemap(Sitemap):
 
     def location(self, item):
         return reverse("content:resource_detail", kwargs={"slug": item.slug})
+
+
+class TopicSitemap(Sitemap):
+    changefreq = "weekly"
+    priority = 0.6
+
+    def items(self):
+        return Topic.objects.filter(is_active=True).exclude(slug__isnull=True).exclude(slug="")
+
+    def location(self, item):
+        return reverse("content:topic_detail", kwargs={"slug": item.slug})
 
 
 class StaticViewSitemap(Sitemap):

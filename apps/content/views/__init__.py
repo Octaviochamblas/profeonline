@@ -1,4 +1,5 @@
 from .area_list import AreaListView
+from .area_detail import AreaDetailView
 from .resource_list import ResourceListView
 from .resource_detail import ResourceDetailView
 from .resource_create import ResourceCreateView

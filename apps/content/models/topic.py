@@ -10,7 +10,7 @@ class Topic(models.Model):
         verbose_name="asignatura",
     )
     name = models.CharField(max_length=120)
-    slug = models.SlugField(max_length=140, blank=True, null=True)
+    slug = models.SlugField(max_length=140, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)
     resource_ordering_method = models.CharField(
         max_length=20,
@@ -67,7 +67,7 @@ class Topic(models.Model):
             slug = base_slug
             counter = 1
 
-            while Topic.objects.filter(subject=self.subject, slug=slug).exclude(pk=self.pk).exists():
+            while Topic.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
 

@@ -101,3 +101,49 @@ payload = {
 response = requests.post(webhook_url, json=payload, headers=headers)
 print(response.json())
 ```
+
+---
+
+## Importacion directa de playlists de YouTube
+
+Para crear paginas agrupadas por area, asignatura y tema desde una playlist, usa el comando de management:
+
+```bash
+python manage.py import_youtube_resources \
+  --playlist-url "https://www.youtube.com/playlist?list=PLAYLIST_ID" \
+  --area "Matematica" \
+  --subject "Matematica Escolar" \
+  --topic "Numeros Enteros"
+```
+
+Requisitos:
+
+- Configurar `YOUTUBE_API_KEY` en Railway o pasar `--youtube-api-key`.
+- El comando crea el area, la asignatura y el tema si no existen.
+- Cada entidad queda con slug y pagina publica:
+  - `/areas/<slug>/`
+  - `/asignaturas/<slug>/`
+  - `/temas/<slug>/`
+  - `/recursos/<slug>/`
+
+Opciones utiles:
+
+```bash
+python manage.py import_youtube_resources \
+  --playlist-id "PLAYLIST_ID" \
+  --area "Matematica" \
+  --subject "Matematica Escolar" \
+  --topic "Numeros Enteros" \
+  --level "Escolar" \
+  --limit 10
+```
+
+Para importar videos sueltos:
+
+```bash
+python manage.py import_youtube_resources \
+  --video-url "https://www.youtube.com/watch?v=VIDEO_ID" \
+  --area "Fisica" \
+  --subject "Fisica I" \
+  --topic "Cinematica"
+```

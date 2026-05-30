@@ -3,11 +3,20 @@ from django.urls import path
 from django.views.generic import RedirectView, TemplateView
 from django.contrib.sitemaps.views import sitemap
 from apps.core.views import HomeView, robots_txt
-from apps.core.sitemaps import StaticViewSitemap, SubjectSitemap, LevelSitemap, ResourceSitemap
+from apps.core.sitemaps import (
+    AreaSitemap,
+    StaticViewSitemap,
+    SubjectSitemap,
+    LevelSitemap,
+    ResourceSitemap,
+    TopicSitemap,
+)
 
 sitemaps = {
     "static": StaticViewSitemap,
+    "areas": AreaSitemap,
     "subjects": SubjectSitemap,
+    "topics": TopicSitemap,
     "levels": LevelSitemap,
     "resources": ResourceSitemap,
 }

@@ -1,7 +1,7 @@
 import unicodedata
 from django.db.models import Q
 from django.views.generic import ListView
-from apps.content.models import Subject, Level
+from apps.content.models import Area, Subject, Level
 
 
 def remove_accents(input_str):
@@ -17,7 +17,10 @@ class SubjectListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         search_query = self.request.GET.get("q", "").strip()
+        area_id = self.request.GET.get("area", "").strip()
         context["search_query"] = search_query
+        context["selected_area"] = area_id if area_id.isdigit() else ""
+        context["areas"] = Area.objects.filter(is_active=True).order_by("order", "name")
 
         # Fetch levels ordered by 'order'
         levels = Level.objects.filter(is_active=True).order_by("order")
@@ -31,6 +34,8 @@ class SubjectListView(ListView):
                 is_active=True,
                 resources__levels=level
             ).distinct()
+            if context["selected_area"]:
+                level_subjects = level_subjects.filter(area_id=context["selected_area"])
 
             if normalized_query:
                 # Filter in Python to bypass database collation limitations (especially SQLite accent-insensitivity)
@@ -53,6 +58,9 @@ class SubjectListView(ListView):
 
     def get_queryset(self):
         queryset = Subject.objects.filter(is_active=True)
+        area_id = self.request.GET.get("area", "").strip()
+        if area_id.isdigit():
+            queryset = queryset.filter(area_id=area_id)
         search_query = self.request.GET.get("q", "").strip()
         if search_query:
             normalized_query = remove_accents(search_query).lower()

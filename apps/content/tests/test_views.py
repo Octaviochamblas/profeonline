@@ -4,7 +4,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from apps.content.models import Level, Module, ModuleResource, Resource, Subject, Topic
+from apps.content.models import Area, Level, Module, ModuleResource, Resource, Subject, Topic
 
 
 class ResourceDetailViewTests(TestCase):
@@ -339,8 +339,13 @@ class ResourceListFilterTests(TestCase):
 
 class SpanishUrlTests(TestCase):
     def setUp(self):
-        self.subject = Subject.objects.create(
+        self.area = Area.objects.create(
             name="Matematica",
+            is_active=True,
+        )
+        self.subject = Subject.objects.create(
+            name="Matematica Escolar",
+            area=self.area,
             is_active=True,
         )
         self.level = Level.objects.create(
@@ -361,6 +366,10 @@ class SpanishUrlTests(TestCase):
         self.assertEqual(reverse("content:topic_list"), "/temas/")
         self.assertEqual(reverse("content:level_list"), "/niveles/")
         self.assertEqual(reverse("content:module_list"), "/modulos/")
+        self.assertEqual(
+            reverse("content:area_detail", args=[self.area.slug]),
+            f"/areas/{self.area.slug}/",
+        )
         self.assertEqual(
             reverse("content:subject_detail", args=[self.subject.slug]),
             f"/asignaturas/{self.subject.slug}/",
@@ -398,6 +407,9 @@ class SpanishUrlTests(TestCase):
         self.assertEqual(response["Location"], f"/niveles/{self.level.slug}/")
 
     def test_subject_and_level_detail_pages_render(self):
+        area_response = self.client.get(
+            reverse("content:area_detail", args=[self.area.slug])
+        )
         subject_response = self.client.get(
             reverse("content:subject_detail", args=[self.subject.slug])
         )
@@ -405,8 +417,11 @@ class SpanishUrlTests(TestCase):
             reverse("content:level_detail", args=[self.level.slug])
         )
 
+        self.assertEqual(area_response.status_code, 200)
         self.assertEqual(subject_response.status_code, 200)
         self.assertEqual(level_response.status_code, 200)
+        self.assertContains(area_response, self.subject.name)
+        self.assertContains(area_response, self.resource.title)
         self.assertContains(subject_response, self.resource.title)
         self.assertContains(level_response, self.resource.title)
 

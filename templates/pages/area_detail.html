@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}{{ area.name }} para Clases Particulares | ProfeOnline{% endblock %}
+{% block meta_description %}{% if area.description %}{{ area.description }}{% else %}Asignaturas, temas y recursos educativos de {{ area.name }} para clases particulares online y apoyo escolar en ProfeOnline.{% endif %}{% endblock %}
+{% block og_title %}{{ area.name }} para Clases Particulares | ProfeOnline{% endblock %}
+{% block og_description %}{% if area.description %}{{ area.description }}{% else %}Asignaturas, temas y recursos educativos de {{ area.name }} para clases particulares online y apoyo escolar en ProfeOnline.{% endif %}{% endblock %}
+{% block structured_data %}
+{% for schema in structured_data_json_list %}
+<script type="application/ld+json">
+{{ schema|safe }}
+</script>
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<section class="stack">
+    {% include "includes/breadcrumbs.html" %}
+
+    <div class="page-hero">
+        <p class="page-hero__kicker">Area de estudio</p>
+        <h1 class="page-hero__title">{{ area.name }}</h1>
+        <p class="page-hero__text">
+            {% if area.description %}
+                {{ area.description }}
+            {% else %}
+                Explora asignaturas, temas y recursos publicados de {{ area.name }}.
+            {% endif %}
+        </p>
+    </div>
+
+    <section class="detail-card stack">
+        <div class="section-header">
+            <div>
+                <h2>Asignaturas</h2>
+                <p class="page-hero__text">Ramos y rutas principales dentro de {{ area.name }}.</p>
+            </div>
+        </div>
+
+        {% if subjects %}
+            <div class="home-card-grid">
+                {% for subject in subjects %}
+                    <a class="home-link-card" href="{% url 'content:subject_detail' subject.slug %}">
+                        <span class="home-link-card__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 12h8M12 8v8"></path>
+                            </svg>
+                        </span>
+                        <span class="home-link-card__body">
+                            <span class="home-link-card__title">{{ subject.name }}</span>
+                            <span class="home-link-card__text">{{ subject.description|default:"Temas y recursos organizados para esta asignatura." }}</span>
+                        </span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aun no hay asignaturas publicadas en esta area.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="detail-card stack">
+        <div class="section-header">
+            <div>
+                <h2>Temas</h2>
+                <p class="page-hero__text">Contenidos agrupados por asignatura para estudiar paso a paso.</p>
+            </div>
+        </div>
+
+        {% if topics %}
+            <div class="home-card-grid">
+                {% for topic in topics %}
+                    <div class="home-link-card">
+                        <span class="home-link-card__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 20c4-4 0-8 6-10s2-4 10-6"></path>
+                                <circle cx="4" cy="20" r="3" fill="currentColor"></circle>
+                                <circle cx="10" cy="10" r="3" fill="currentColor"></circle>
+                                <circle cx="20" cy="4" r="3" fill="currentColor"></circle>
+                            </svg>
+                        </span>
+                        <span class="home-link-card__body">
+                            {% if topic.slug %}
+                                <a class="home-link-card__title" href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }}</a>
+                            {% else %}
+                                <span class="home-link-card__title">{{ topic.name }}</span>
+                            {% endif %}
+                            <span class="home-link-card__text">{{ topic.description|default:"Ruta de aprendizaje guiado para este tema." }}</span>
+                            <span class="home-link-card__meta">
+                                <span class="home-link-card__meta-badge">{{ topic.subject.name }}</span>
+                            </span>
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aun no hay temas publicados en esta area.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="detail-card stack">
+        <div class="section-header">
+            <div>
+                <h2>Recursos</h2>
+                <p class="page-hero__text">Clases, guias y materiales publicados para esta area.</p>
+            </div>
+        </div>
+
+        {% if resources %}
+            <div class="topic-resource-list">
+                {% for resource in resources %}
+                    <a class="topic-resource-card" href="{% url 'content:resource_detail' resource.slug %}">
+                        <span class="topic-resource-card__step" aria-hidden="true">{{ forloop.counter }}</span>
+                        <span class="topic-resource-card__content">
+                            <span class="topic-resource-card__header">
+                                <span class="topic-resource-card__title">{{ resource.title }}</span>
+                                <span class="topic-resource-card__meta">
+                                    {% if resource.subject %}
+                                        <span class="topic-resource-card__badge">{{ resource.subject.name }}</span>
+                                    {% endif %}
+                                    {% if resource.topic %}
+                                        <span class="topic-resource-card__badge">{{ resource.topic.name }}</span>
+                                    {% endif %}
+                                </span>
+                            </span>
+                            {% if resource.description %}
+                                <span class="topic-resource-card__description">{{ resource.description }}</span>
+                            {% endif %}
+                        </span>
+                        <span class="topic-resource-card__arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Aun no hay recursos publicados en esta area.</p>
+            </div>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}
