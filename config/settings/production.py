@@ -104,6 +104,44 @@ if EMAIL_HOST:
     SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 
+# Logging
+# Con DEBUG=False, Django no imprime los tracebacks por defecto (los enruta a
+# 'mail_admins'). Enviamos errores y registros a stdout para que queden
+# visibles en los logs del proveedor (Railway).
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
+
+
 # Redis Cache Configuration (For shared cache, rate limiting, and performance PEND-009)
 REDIS_URL = os.environ.get("REDIS_URL")
 if REDIS_URL:
