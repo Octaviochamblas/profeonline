@@ -58,6 +58,24 @@ SECURE_REFERRER_POLICY = "same-origin"
 CANONICAL_BASE_URL = os.environ.get("CANONICAL_BASE_URL", "https://www.profeonline.cl")
 
 
+# Error Monitoring (Sentry)
+# Solo se activa si SENTRY_DSN está definido. Sin la variable no hace nada
+# (no rompe el arranque ni envía datos). La integración con Django se
+# autodetecta en sentry-sdk 2.x.
+SENTRY_DSN = os.environ.get("SENTRY_DSN")
+if SENTRY_DSN:
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=os.environ.get("SENTRY_ENVIRONMENT", "production"),
+        # No enviar datos personales de usuarios (alumnos, posibles menores).
+        send_default_pii=False,
+        # Solo captura de errores; performance tracing desactivado por defecto.
+        traces_sample_rate=float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", "0")),
+    )
+
+
 # Database Configuration
 # DATABASE_URL es obligatorio en producción: el fallback silencioso a SQLite
 # en hosts efímeros (Railway/nixpacks) provoca pérdida de datos en cada deploy.
