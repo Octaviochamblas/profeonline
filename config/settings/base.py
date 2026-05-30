@@ -168,10 +168,11 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ACCOUNT_EMAIL_REQUIRED = True
+# allauth 65.x: nueva API de settings (reemplaza ACCOUNT_AUTHENTICATION_METHOD,
+# ACCOUNT_EMAIL_REQUIRED y ACCOUNT_USERNAME_REQUIRED, ya deprecados).
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
