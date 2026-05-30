@@ -15,3 +15,11 @@ def canonical_settings(request):
 
 def csp_nonce(request):
     return {"csp_nonce": getattr(request, "csp_nonce", "")}
+
+
+def google_login(request):
+    enabled = bool(
+        getattr(settings, "GOOGLE_CLIENT_ID", "")
+        and getattr(settings, "GOOGLE_CLIENT_SECRET", "")
+    )
+    return {"GOOGLE_LOGIN_ENABLED": enabled}

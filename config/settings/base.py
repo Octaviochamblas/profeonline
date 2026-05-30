@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'apps.core.context_processors.canonical_settings',
                 'apps.core.context_processors.csp_nonce',
+                'apps.core.context_processors.google_login',
             ],
         },
     },
