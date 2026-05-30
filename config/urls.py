@@ -16,9 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # Redirige las páginas de recuperación de contraseña de allauth (sin
+    # estilo) al flujo propio con el diseño del sitio. Debe ir ANTES del
+    # include de allauth para tener prioridad.
+    path(
+        "accounts/password/reset/",
+        RedirectView.as_view(pattern_name="password_reset", permanent=False),
+    ),
+    path(
+        "accounts/password/reset/done/",
+        RedirectView.as_view(pattern_name="password_reset_done", permanent=False),
+    ),
     path("accounts/", include("allauth.urls")),
     path("", include("apps.core.urls")),
     path("", include("apps.content.urls")),

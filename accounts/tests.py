@@ -127,3 +127,8 @@ class PasswordResetFlowTests(TestCase):
             "Restablece tu contraseña en ProfeOnline", mail.outbox[0].subject
         )
         self.assertIn("/cuentas/password-reset/confirmar/", mail.outbox[0].body)
+
+    def test_allauth_reset_url_redirects_to_styled_flow(self):
+        response = self.client.get("/accounts/password/reset/")
+
+        self.assertRedirects(response, reverse("password_reset"))
