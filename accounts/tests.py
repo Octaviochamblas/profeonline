@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+from django.core import mail
 from django.test import TestCase
+from django.urls import reverse
 
 from apps.content.models import Level
 
@@ -91,3 +93,37 @@ class AccountFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("email", form.errors)
         self.assertEqual(form.errors["email"][0], "Este correo electrónico ya está registrado por otro usuario.")
+
+
+class PasswordResetFlowTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="estudiante",
+            email="estudiante@example.com",
+            password="OldPass123!",
+        )
+
+    def test_reset_page_uses_project_templates(self):
+        response = self.client.get(reverse("password_reset"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "accounts/password_reset.html")
+        self.assertTemplateUsed(response, "base.html")
+        self.assertContains(response, "Recuperar contraseña")
+
+    def test_login_page_links_to_password_reset(self):
+        response = self.client.get(reverse("login"))
+
+        self.assertContains(response, reverse("password_reset"))
+
+    def test_reset_sends_email_with_confirm_link(self):
+        response = self.client.post(
+            reverse("password_reset"), {"email": "estudiante@example.com"}
+        )
+
+        self.assertRedirects(response, reverse("password_reset_done"))
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(
+            "Restablece tu contraseña en ProfeOnline", mail.outbox[0].subject
+        )
+        self.assertIn("/cuentas/password-reset/confirmar/", mail.outbox[0].body)

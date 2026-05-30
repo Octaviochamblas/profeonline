@@ -1,8 +1,9 @@
 from unittest import mock
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from apps.content.models import Level, Resource, Subject
@@ -151,6 +152,18 @@ class EnsureAdminCommandTests(TestCase):
             call_command("ensure_admin")
 
         self.assertFalse(User.objects.filter(username="ghost").exists())
+
+
+class EnsureSiteCommandTests(TestCase):
+    @override_settings(CANONICAL_BASE_URL="https://www.profeonline.cl")
+    def test_sets_domain_from_canonical_base_url(self):
+        from django.contrib.sites.models import Site
+
+        call_command("ensure_site")
+
+        site = Site.objects.get(pk=settings.SITE_ID)
+        self.assertEqual(site.domain, "www.profeonline.cl")
+        self.assertEqual(site.name, "ProfeOnline")
 
 
 class ContentSecurityPolicyTests(TestCase):

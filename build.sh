@@ -14,5 +14,8 @@ python manage.py migrate
 # Ensure the admin superuser exists (idempotent; reads DJANGO_ADMIN_* env vars)
 python manage.py ensure_admin
 
+# Sync the Sites framework domain with CANONICAL_BASE_URL (email links)
+python manage.py ensure_site
+
 # Seed/refresh math resources
 python manage.py seed_math_resources
