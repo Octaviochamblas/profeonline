@@ -86,22 +86,27 @@ STORAGES = {
 }
 
 # Email Configuration
-# Si EMAIL_HOST está definido se usa SMTP real (necesario para reset de
-# contraseña y verificación de email). Si no, se mantiene el backend de
-# consola heredado de base.py para no romper el arranque, pero los correos
-# NO se entregan.
+# Orden de preferencia:
+#   1) BREVO_API_KEY -> API HTTP de Brevo (HTTPS/443). Recomendado en hosts
+#      como Railway que bloquean los puertos SMTP salientes.
+#   2) EMAIL_HOST     -> SMTP clásico (puede fallar si el host bloquea SMTP).
+#   3) Si no hay nada, queda el backend de consola heredado de base.py
+#      (no entrega correos reales, pero no rompe el arranque).
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
-if EMAIL_HOST:
+EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "10"))
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "no-reply@profeonline.cl")
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+if BREVO_API_KEY:
+    EMAIL_BACKEND = "apps.core.email_backends.BrevoApiEmailBackend"
+elif EMAIL_HOST:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
     EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
     EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
     EMAIL_USE_TLS = get_env_bool("EMAIL_USE_TLS", default=True)
     EMAIL_USE_SSL = get_env_bool("EMAIL_USE_SSL", default=False)
-    DEFAULT_FROM_EMAIL = os.environ.get(
-        "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no-reply@profeonline.cl"
-    )
-    SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 
 # Logging

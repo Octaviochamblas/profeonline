@@ -1,3 +1,4 @@
+import json
 from unittest import mock
 
 from django.conf import settings
@@ -164,6 +165,86 @@ class EnsureSiteCommandTests(TestCase):
         site = Site.objects.get(pk=settings.SITE_ID)
         self.assertEqual(site.domain, "www.profeonline.cl")
         self.assertEqual(site.name, "ProfeOnline")
+
+
+class BrevoApiEmailBackendTests(TestCase):
+    def _backend(self, **kwargs):
+        from apps.core.email_backends import BrevoApiEmailBackend
+
+        return BrevoApiEmailBackend(**kwargs)
+
+    @override_settings(
+        BREVO_API_KEY="test-key",
+        DEFAULT_FROM_EMAIL="no-reply@profeonline.cl",
+    )
+    def test_build_payload_maps_message_fields(self):
+        from django.core.mail import EmailMultiAlternatives
+
+        msg = EmailMultiAlternatives(
+            subject="Hola",
+            body="Texto plano",
+            from_email="ProfeOnline <no-reply@profeonline.cl>",
+            to=["dest@example.com"],
+        )
+        msg.attach_alternative("<p>HTML</p>", "text/html")
+
+        payload = self._backend()._build_payload(msg)
+
+        self.assertEqual(payload["sender"]["email"], "no-reply@profeonline.cl")
+        self.assertEqual(payload["sender"]["name"], "ProfeOnline")
+        self.assertEqual(payload["to"], [{"email": "dest@example.com"}])
+        self.assertEqual(payload["subject"], "Hola")
+        self.assertEqual(payload["textContent"], "Texto plano")
+        self.assertEqual(payload["htmlContent"], "<p>HTML</p>")
+
+    @override_settings(BREVO_API_KEY="")
+    def test_send_without_api_key_raises(self):
+        from django.core.mail import EmailMessage
+
+        backend = self._backend(fail_silently=False)
+        with self.assertRaises(ValueError):
+            backend.send_messages(
+                [EmailMessage(subject="x", body="y", to=["a@b.com"])]
+            )
+
+    @override_settings(BREVO_API_KEY="test-key")
+    def test_send_messages_posts_to_brevo_api(self):
+        from django.core.mail import EmailMessage
+
+        backend = self._backend()
+        captured = {}
+
+        class FakeResponse:
+            status = 201
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+        def fake_urlopen(request, timeout=None):
+            captured["url"] = request.full_url
+            captured["api_key"] = request.headers.get("Api-key")
+            captured["body"] = json.loads(request.data.decode("utf-8"))
+            return FakeResponse()
+
+        with mock.patch("urllib.request.urlopen", fake_urlopen):
+            sent = backend.send_messages(
+                [
+                    EmailMessage(
+                        subject="Asunto",
+                        body="Cuerpo",
+                        from_email="no-reply@profeonline.cl",
+                        to=["dest@example.com"],
+                    )
+                ]
+            )
+
+        self.assertEqual(sent, 1)
+        self.assertEqual(captured["url"], "https://api.brevo.com/v3/smtp/email")
+        self.assertEqual(captured["api_key"], "test-key")
+        self.assertEqual(captured["body"]["subject"], "Asunto")
 
 
 class ContentSecurityPolicyTests(TestCase):
