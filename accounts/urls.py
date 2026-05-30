@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+from django.conf import settings
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
 
@@ -7,6 +10,16 @@ from .forms import (
     StyledSetPasswordForm,
 )
 from .views import register_view, profile_view, profile_update_view
+
+# Construye el enlace del correo de reset desde CANONICAL_BASE_URL en vez de
+# depender del dominio del framework Sites (que por defecto es example.com).
+# extra_email_context sobreescribe 'domain' y 'protocol' en la plantilla.
+_canonical = urlparse(getattr(settings, "CANONICAL_BASE_URL", "https://www.profeonline.cl"))
+PASSWORD_RESET_EMAIL_CONTEXT = {
+    "domain": _canonical.netloc or "www.profeonline.cl",
+    "site_name": "ProfeOnline",
+    "protocol": _canonical.scheme or "https",
+}
 
 urlpatterns = [
     path("registro/", register_view, name="register"),
@@ -31,6 +44,7 @@ urlpatterns = [
             subject_template_name="accounts/password_reset_subject.txt",
             form_class=StyledPasswordResetForm,
             success_url=reverse_lazy("password_reset_done"),
+            extra_email_context=PASSWORD_RESET_EMAIL_CONTEXT,
         ),
         name="password_reset",
     ),

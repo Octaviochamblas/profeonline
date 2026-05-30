@@ -57,6 +57,23 @@ class AccountFormTests(TestCase):
         self.assertIn("form-control", form.fields["username"].widget.attrs["class"])
         self.assertIn("form-control", form.fields["password"].widget.attrs["class"])
 
+    def test_email_is_required_in_registration(self):
+        # El campo de email debe estar marcado como obligatorio.
+        form = CustomUserCreationForm()
+        self.assertTrue(form.fields["email"].required)
+
+        # Y enviar el formulario sin email debe ser inválido.
+        form = CustomUserCreationForm(data={
+            "username": "sin_email",
+            "first_name": "Sin",
+            "last_name": "Email",
+            "role": "alumno",
+            "password1": "testpass12345",
+            "password2": "testpass12345",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("email", form.errors)
+
     def test_custom_user_creation_form_unique_email_case_insensitive(self):
         form = CustomUserCreationForm(data={
             "username": "new_user",
@@ -127,6 +144,15 @@ class PasswordResetFlowTests(TestCase):
             "Restablece tu contraseña en ProfeOnline", mail.outbox[0].subject
         )
         self.assertIn("/cuentas/password-reset/confirmar/", mail.outbox[0].body)
+
+    def test_reset_email_link_uses_canonical_domain_not_example_com(self):
+        self.client.post(
+            reverse("password_reset"), {"email": "estudiante@example.com"}
+        )
+
+        body = mail.outbox[0].body
+        self.assertIn("https://www.profeonline.cl/cuentas/password-reset/confirmar/", body)
+        self.assertNotIn("example.com", body)
 
     def test_allauth_reset_url_redirects_to_styled_flow(self):
         response = self.client.get("/accounts/password/reset/")
