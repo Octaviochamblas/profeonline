@@ -1,3 +1,7 @@
+from unittest import mock
+
+from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
 
@@ -98,6 +102,55 @@ class SeoTechnicalViewTests(TestCase):
         self.assertContains(terminos_res, "Términos de Uso")
         self.assertContains(privacidad_res, "Política de Privacidad")
         self.assertContains(contacto_res, "Contacto")
+
+
+class EnsureAdminCommandTests(TestCase):
+    def test_creates_superuser_from_env(self):
+        User = get_user_model()
+        env = {
+            "DJANGO_ADMIN_USERNAME": "root",
+            "DJANGO_ADMIN_EMAIL": "root@example.com",
+            "DJANGO_ADMIN_PASSWORD": "Sup3rS3cret!",
+        }
+        with mock.patch.dict("os.environ", env, clear=False):
+            call_command("ensure_admin")
+
+        user = User.objects.get(username="root")
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)
+        self.assertTrue(user.check_password("Sup3rS3cret!"))
+
+    def test_does_not_reset_existing_password(self):
+        User = get_user_model()
+        user = User.objects.create_superuser("admin", "admin@example.com", "OriginalPass1!")
+
+        env = {"DJANGO_ADMIN_USERNAME": "admin", "DJANGO_ADMIN_PASSWORD": "AttemptedReset1!"}
+        with mock.patch.dict("os.environ", env, clear=False):
+            call_command("ensure_admin")
+
+        user.refresh_from_db()
+        self.assertTrue(user.check_password("OriginalPass1!"))
+        self.assertFalse(user.check_password("AttemptedReset1!"))
+
+    def test_restores_privileges_for_existing_user(self):
+        User = get_user_model()
+        user = User.objects.create_user("admin", "admin@example.com", "OriginalPass1!")
+        self.assertFalse(user.is_superuser)
+
+        with mock.patch.dict("os.environ", {"DJANGO_ADMIN_USERNAME": "admin"}, clear=False):
+            call_command("ensure_admin")
+
+        user.refresh_from_db()
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)
+
+    def test_does_not_create_user_without_password(self):
+        User = get_user_model()
+        # clear=True guarantees DJANGO_ADMIN_PASSWORD is absent for this block.
+        with mock.patch.dict("os.environ", {"DJANGO_ADMIN_USERNAME": "ghost"}, clear=True):
+            call_command("ensure_admin")
+
+        self.assertFalse(User.objects.filter(username="ghost").exists())
 
 
 class MarkdownSecurityFilterTests(TestCase):
