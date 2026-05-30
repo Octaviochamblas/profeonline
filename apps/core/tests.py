@@ -1,4 +1,3 @@
-import json
 from unittest import mock
 
 from django.conf import settings
@@ -207,7 +206,7 @@ class BrevoApiEmailBackendTests(TestCase):
                 [EmailMessage(subject="x", body="y", to=["a@b.com"])]
             )
 
-    @override_settings(BREVO_API_KEY="test-key")
+    @override_settings(BREVO_API_KEY=" test-key ")
     def test_send_messages_posts_to_brevo_api(self):
         from django.core.mail import EmailMessage
 
@@ -215,21 +214,16 @@ class BrevoApiEmailBackendTests(TestCase):
         captured = {}
 
         class FakeResponse:
-            status = 201
+            status_code = 201
+            text = "{}"
 
-            def __enter__(self):
-                return self
-
-            def __exit__(self, *args):
-                return False
-
-        def fake_urlopen(request, timeout=None):
-            captured["url"] = request.full_url
-            captured["api_key"] = request.headers.get("Api-key")
-            captured["body"] = json.loads(request.data.decode("utf-8"))
+        def fake_post(url, json=None, headers=None, timeout=None):
+            captured["url"] = url
+            captured["headers"] = headers
+            captured["json"] = json
             return FakeResponse()
 
-        with mock.patch("urllib.request.urlopen", fake_urlopen):
+        with mock.patch("apps.core.email_backends.requests.post", fake_post):
             sent = backend.send_messages(
                 [
                     EmailMessage(
@@ -243,8 +237,31 @@ class BrevoApiEmailBackendTests(TestCase):
 
         self.assertEqual(sent, 1)
         self.assertEqual(captured["url"], "https://api.brevo.com/v3/smtp/email")
-        self.assertEqual(captured["api_key"], "test-key")
-        self.assertEqual(captured["body"]["subject"], "Asunto")
+        # El header debe ir en minúsculas y la clave recortada (sin espacios).
+        self.assertEqual(captured["headers"]["api-key"], "test-key")
+        self.assertEqual(captured["json"]["subject"], "Asunto")
+
+    @override_settings(BREVO_API_KEY="bad-key")
+    def test_send_raises_with_brevo_error_body(self):
+        from django.core.mail import EmailMessage
+
+        backend = self._backend(fail_silently=False)
+
+        class FakeResponse:
+            status_code = 401
+            text = '{"code":"unauthorized","message":"Key not found"}'
+
+        with mock.patch(
+            "apps.core.email_backends.requests.post",
+            lambda *a, **k: FakeResponse(),
+        ):
+            with self.assertRaises(RuntimeError) as ctx:
+                backend.send_messages(
+                    [EmailMessage(subject="x", body="y", to=["a@b.com"])]
+                )
+
+        self.assertIn("401", str(ctx.exception))
+        self.assertIn("Key not found", str(ctx.exception))
 
 
 class ContentSecurityPolicyTests(TestCase):
