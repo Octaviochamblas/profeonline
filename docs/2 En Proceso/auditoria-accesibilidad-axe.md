@@ -66,9 +66,9 @@ de pantalla y contraste.
 
 | ID | Componente | Criterio WCAG | Problema | Recomendación | Estado |
 | --- | --- | --- | --- | --- | --- |
-| A11Y-A | enhanced-select | 2.1.1, 4.1.2 | Posible falta de soporte teclado/ARIA | Implementar patrón listbox accesible o volver a `<select>` estilizado | Pendiente |
-| A11Y-B | Paleta | 1.4.3 | `--muted` y amarillo-texto cerca del límite | Ajustar tokens de color | Pendiente |
-| A11Y-C | Menú móvil | 4.1.2 | Falta `aria-expanded`/`aria-controls` dinámico | Sincronizar atributo en el toggle JS | Pendiente |
+| A11Y-A | enhanced-select | 2.1.1, 4.1.2 | Posible falta de soporte teclado/ARIA | Implementar patrón listbox accesible o volver a `<select>` estilizado | Hecho: vuelta a `<select>` nativo estilizado |
+| A11Y-B | Paleta | 1.4.3 | `--muted` y amarillo-texto cerca del límite | Ajustar tokens de color | Hecho: tema claro + WhatsApp AA |
+| A11Y-C | Menú móvil | 4.1.2 | Falta `aria-expanded`/`aria-controls` dinámico | Sincronizar atributo en el toggle JS | Hecho |
 
 ## Criterios de aceptación
 
@@ -116,3 +116,17 @@ fases manuales** del documento, que son las que de verdad importan aquí:
 Fase de escaneo automatizado **completa y documentada**. Las fases manuales (teclado, lector,
 select custom) quedan pendientes — requieren prueba interactiva. Los dos fixes A11Y-1 y A11Y-2
 son rápidos y se pueden agrupar con `sistema-diseno-pulido-css.md`.
+
+### Verificacion posterior de Bloque C (2026-05-31)
+
+Se contrasto el handoff de Antigravity con el codigo actual:
+- El selector custom ya no esta activo: no existe `static/js/enhanced-select.js` y las
+  plantillas revisadas usan `<select>` nativo.
+- Se elimino el CSS muerto que podia volver a ocultar selects con `.enhanced-select-native` o
+  `.custom-select-wrapper > select`.
+- El toggle movil en `templates/base.html` tiene `aria-expanded="false"` y
+  `aria-controls="navbarMenu"`; el script inline alterna `aria-expanded`.
+- Las tarjetas "Ver mas" del home ya no tienen mismatch de nombre accesible.
+
+Pendiente real: prueba manual con teclado/NVDA por parte del usuario en Windows para validar
+la experiencia anunciada por lector de pantalla.

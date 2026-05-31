@@ -1,6 +1,6 @@
 # Auditoría de Implementación: Bloques A, B y C (Rendimiento, Diseño y Accesibilidad)
 
-Este documento contiene el registro de todo lo solicitado para los bloques A, B y C de la auditoría y los detalles de las implementaciones realizadas por Antigravity. Se encuentra en la carpeta `2 En Proceso` para facilitar el proceso de revisión y auditoría visual por parte del usuario, antes de ser archivado en `3 Finalizados`.
+Este documento contiene el registro de todo lo solicitado para los bloques A, B y C de la auditoría y los detalles de las implementaciones realizadas por Antigravity. Queda archivado en `3 Finalizados` tras la verificación posterior de Codex.
 
 ---
 
@@ -10,6 +10,8 @@ Este documento contiene el registro de todo lo solicitado para los bloques A, B 
   - Rama `refactor/css-design-system` (Bloque B)
   - Rama `a11y/keyboard-screenreader` (Bloque C)
 - **Integridad local:** 87/87 pruebas unitarias pasadas con éxito (`OK`).
+- **Verificacion Codex posterior:** cambios contrastados contra el codigo actual. Queda como
+  registro cerrado; los remanentes reales se documentaron en las tarjetas originales.
 
 ---
 
@@ -80,3 +82,41 @@ Este documento contiene el registro de todo lo solicitado para los bloques A, B 
    - Usa las flechas de dirección (`↑` / `↓`) para cambiar de asignatura. Verifica que el filtro se aplique y el selector de temas se resetee a "Todos".
 3. **Revisión del Menú Móvil:**
    - En vista responsive, valida que el menú hamburguesa abra y cierre. Con el inspector de elementos, verifica que el botón cambie a `aria-expanded="true"` al abrirse, y a `false` al cerrarse.
+
+---
+
+## Cierre Codex (2026-05-31)
+
+### Que se hizo por tarea
+
+**Bloque A - rendimiento**
+- Verificado en codigo: fuente Outfit reducida a `400;500;700;800`.
+- Verificado en codigo: `og:image` usa `static/img/og-default.png` con metadatos PNG
+  1200x630.
+- Verificado en codigo: home precarga `static/img/logo.png`, manteniendo el logo amarillo
+  sobre fondo oscuro aprobado visualmente.
+- Verificado en codigo: no existe carga global de `enhanced-select.js`.
+
+**Bloque B - sistema de diseno**
+- Verificado en codigo: existen tokens `--shadow-sm`, `--shadow-md`, escala de radios,
+  `--space-*` y `--text-*`.
+- Verificado en codigo: `.auth-card` no esta duplicado.
+- Verificado en codigo: el boton WhatsApp ya no usa `!important`.
+- Corregido por Codex: se elimino el CSS muerto del antiguo select custom
+  (`.enhanced-select-native`, `.custom-select*`, `.custom-options`, `.custom-option`), que
+  conservaba dos `display: none !important` aunque el widget ya no existia.
+- Corregido por Codex: cache buster de `estilos.css` actualizado a `?v=10`.
+
+**Bloque C - accesibilidad**
+- Verificado en codigo: los filtros/formularios revisados usan `<select>` nativo estilizado.
+- Verificado en codigo: el menu movil tiene `aria-expanded="false"`, `aria-controls` y el
+  script inline sincroniza `aria-expanded`.
+- Verificado en codigo: no quedan referencias activas a `enhanced-select` ni `custom-select`.
+
+### Pendientes trasladados
+
+- `auditoria-rendimiento-seo-lighthouse.md`: re-medicion Lighthouse/PageSpeed en produccion
+  para confirmar LCP, compresion y cache.
+- `auditoria-accesibilidad-axe.md`: prueba manual con teclado/NVDA en Windows.
+- `sistema-diseno-pulido-css.md`: normalizaciones menores opcionales de sombras/radios
+  literales.

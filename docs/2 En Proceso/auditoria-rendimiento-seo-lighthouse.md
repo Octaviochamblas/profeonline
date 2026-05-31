@@ -63,9 +63,9 @@ Basado en la revisión del código actual:
 
 | ID | Página | Métrica | Problema | Recomendación | Esfuerzo | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
-| PERF-A | (todas) | LCP/peso | 6 pesos de Google Fonts externos | Self-host o reducir a 3 pesos + `font-display: swap` | M | Pendiente |
-| PERF-B | (todas) | Best Practices/SEO | `og:image` en SVG no renderiza en redes | Generar PNG 1200×630 | S | Pendiente |
-| PERF-C | (todas) | TBT | `enhanced-select.js` global | Cargar solo en páginas con `<select>` | S | Pendiente |
+| PERF-A | (todas) | LCP/peso | 6 pesos de Google Fonts externos | Self-host o reducir a 3 pesos + `font-display: swap` | M | Hecho parcial: reducido a 4 pesos (`400;500;700;800`) |
+| PERF-B | (todas) | Best Practices/SEO | `og:image` en SVG no renderiza en redes | Generar PNG 1200×630 | S | Hecho: `static/img/og-default.png` + metadatos PNG |
+| PERF-C | (todas) | TBT | `enhanced-select.js` global | Cargar solo en páginas con `<select>` | S | Hecho: script eliminado; selects nativos |
 | PERF-D | (todas) | LCP | CSS monolítico de ~2.2k líneas | Confirmar gzip/brotli + cache; evaluar critical CSS | M | Pendiente |
 
 ## Criterios de aceptación
@@ -130,3 +130,16 @@ mobile; el umbral "good" es <2.5 s). Como FCP ≈ LCP ≈ Speed Index, el cuello
 Medición + documentación **completas** (alcance acordado: "solo medir y documentar"). Los
 fixes quedan como fase siguiente / posibles tarjetas nuevas. Reportes JSON guardados en
 `%TEMP%\lh-profe\` (no versionados).
+
+### Verificacion posterior de quick wins (2026-05-31)
+
+Se contrasto el handoff de Antigravity con el codigo actual:
+- `templates/base.html` carga Outfit con `400;500;700;800` y mantiene `display=swap`.
+- `og:image` apunta a `static/img/og-default.png` e incluye `type`, `width` y `height`.
+- `templates/pages/home.html` agrega `preload` de `static/img/logo.png`, respetando el logo
+  amarillo sobre fondo oscuro aprobado visualmente.
+- No existe `static/js/enhanced-select.js`; las plantillas con filtros/formularios usan
+  `<select>` nativo estilizado.
+
+Pendiente real: re-medir Lighthouse/PageSpeed contra produccion para comparar LCP despues de
+los quick wins y confirmar compresion/cache de WhiteNoise.

@@ -110,25 +110,25 @@ de "completado" oscurecidos para AA.
 
 Cache CSS `?v=6` → `?v=7`.
 
-### Variante del logo para fondo claro (2026-05-31, sesión 3) — ✅ HECHO
+### Logo del hero (2026-05-31, verificacion posterior)
 
-El wordmark original (`static/img/logo.png`) es amarillo `#FFD100` plano sobre transparente;
-sobre el hero claro perdía contraste (parche provisional `drop-shadow`). Se generó una
-variante **slate `#0f172a`** (≈17:1 contra el fondo, el mismo `--text`), recoloreando la
-máscara alfa del PNG con `scripts/recolor_logo.py` (Pillow, herramienta local; no va a
-`requirements.txt`). Resultado: `static/img/logo-dark.png`.
+Se mantiene el tratamiento visual aprobado por el usuario: `templates/pages/home.html` usa
+`static/img/logo.png` y `.page-hero__logo` conserva fondo oscuro, radio y padding. Ese bloque
+da contraste correcto al wordmark amarillo y no debe reemplazarse por una variante slate sin
+una nueva decision visual.
 
-- `templates/pages/home.html` ahora usa `img/logo-dark.png` en el hero.
-- Eliminado el `drop-shadow` provisional de `.page-hero__logo` en `estilos.css`.
-- El amarillo queda reservado a los CTAs (filosofía del tema).
-- Cache CSS `?v=7` → `?v=8`.
+### Verificacion de Bloques B/C de Antigravity (2026-05-31)
 
-### Pendiente en esta tarjeta (Fases 3-4, NO hechas) — sigue en `2 En Proceso/`
-- **Fase 3 (profundidad/radios):** unificar radios sueltos (`12px`/`14px`/`999px`) a escala;
-  sombras en dos niveles `--shadow-sm`/`--shadow-md`.
-- **Fase 4 (limpieza):** escala de espaciado `--space-*` y tipográfica `--text-*`;
-  **dedup de `.auth-card`** (definido 2 veces); reducir `!important`; **reducir Outfit de 6→3
-  pesos** (también ataca el render-blocking de la auditoría de rendimiento).
+Antigravity implemento los pendientes principales de las fases 3-4 y quedaron verificados en
+codigo:
+- `:root` ya tiene `--shadow-sm`, `--shadow-md`, escala de radios, `--space-*` y `--text-*`.
+- `.auth-card` esta definido una sola vez.
+- El boton WhatsApp ya no depende de `!important`.
+- Se elimino CSS muerto del antiguo select custom, incluyendo los `display: none !important`
+  que ocultaban selects nativos si esas clases reaparecian.
+- Cache CSS quedo en `?v=10` tras la limpieza.
 
-> Se mantiene en **En Proceso**: el grueso (tema + contraste + a11y) está en vivo, pero las
-> fases de sistema de diseño/limpieza siguen pendientes.
+### Pendiente real en esta tarjeta
+- Quedan algunos valores intencionales/literales menores (`16px`, `4px`, `50%`) y sombras
+  hardcodeadas en hovers. No bloquean el cierre visual, pero se pueden normalizar en una
+  limpieza futura si se quiere dejar el CSS mas purista.
