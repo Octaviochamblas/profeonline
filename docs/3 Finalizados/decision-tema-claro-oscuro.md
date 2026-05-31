@@ -67,4 +67,40 @@ mantener el oscuro pulido. Esta es una decisión de negocio, no técnica.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+**Decisión (2026-05-31): se migra a TEMA CLARO.** El amarillo de marca se reserva para
+CTAs/acentos y se usa azul para títulos/enlaces.
+
+### Cómo se decidió
+Se generó un prototipo real del **home** (no una maqueta aparte) redefiniendo los tokens del
+`:root` mediante un CSS de preview temporal, y se compararon capturas oscuro vs claro
+(guardadas en `Desktop\tema-profeonline\`: `1-oscuro-actual.png`, `2-claro.png`).
+
+### Por qué claro
+- Lee más profesional/confiable y académico (clave para apoderados).
+- Los **CTAs amarillos resaltan más sobre blanco** que sobre oscuro → mejor conversión.
+- Mejor legibilidad para contenido educativo largo.
+- Reservar amarillo solo para CTAs + azul como acento da jerarquía mucho más clara.
+
+### Paleta clara acordada (punto de partida para la implementación)
+```
+--bg: #f8fafc;  --surface: #ffffff;  --surface-soft: #f1f5f9;  --border: #e2e8f0;
+--text: #0f172a;  --muted: #475569;  --primary: #FFD100 (CTAs);  acento azul: #1d4ed8;
+--shadow: 0 10px 30px rgba(2,6,23,0.08);
+```
+
+### Lo que la implementación deberá resolver (se canaliza por `sistema-diseno-pulido-css.md`)
+1. Redefinir tokens del `:root` a la paleta clara.
+2. **Retargetear el amarillo-como-texto** (links, `.home-link-card__title`,
+   `.topic-resource-card__title`, `.area-card h2`, `.resource-navigation__title`,
+   `.legal-article h3`, etc.) a azul `#1d4ed8`.
+3. Encabezados hardcodeados en blanco (`h1,h2,h3`, `.page-hero__kicker`,
+   `.bottom-contact-cta__title`) → color oscuro.
+4. Chips/badges oscuros (`.badge--neutral`, meta-badges) → claros.
+5. Header y burbujas de icono a versión clara.
+6. **Variante del logo** para fondo claro (el actual amarillo pierde contraste en blanco).
+7. De paso resuelve **A11Y-1** (contraste botón WhatsApp) y se revisa el resto del contraste.
+
+### Estado
+Decisión **cerrada**. La implementación del tema claro es la fase siguiente (tarjeta
+`sistema-diseno-pulido-css.md`), idealmente antes del rediseño del home.
