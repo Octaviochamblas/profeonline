@@ -34,4 +34,4 @@ Las ideas y tareas del proyecto se gestionan con carpetas numeradas en `docs/`:
 - **Errores:** Sentry (`SENTRY_DSN`) — proyecto `python-django` en org `particular-lw`.
 - **Login con Google:** allauth, credenciales en `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
 - **CSP:** con nonce por petición (`apps/core/middleware.py`).
-- **Auditorías antiguas:** archivadas en `docs/Auditorías-2026-05-30/`.
+- **Auditorías antiguas:** archivadas en `docs/3 Finalizados/Auditorías-2026-05-30/`.
