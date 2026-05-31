@@ -44,7 +44,7 @@
             <nav class="navbar">
                 <a class="brand" href="{% url 'core:home' %}">ProfeOnline.cl</a>
 
-                <button class="navbar-toggle" aria-label="Abrir menú" id="navbarToggle">
+                <button class="navbar-toggle" aria-label="Abrir menú" id="navbarToggle" aria-expanded="false" aria-controls="navbarMenu">
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12" class="line-middle"></line>
                         <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
@@ -158,8 +158,9 @@
     </footer>
     <script nonce="{{ csp_nonce }}">
         document.getElementById('navbarToggle').addEventListener('click', function() {
-            this.classList.toggle('active');
+            const isActive = this.classList.toggle('active');
             document.getElementById('navbarMenu').classList.toggle('active');
+            this.setAttribute('aria-expanded', isActive ? 'true' : 'false');
         });
     </script>
     {% block extra_js %}{% endblock %}
