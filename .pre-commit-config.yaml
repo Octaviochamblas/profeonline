@@ -16,9 +16,15 @@ repos:
         pass_filenames: false
         always_run: true
 
-      - id: django-tests
-        name: Django Unit Tests
-        entry: .venv\\Scripts\\python.exe manage.py test
+      - id: django-migrations-check
+        name: Django Missing Migrations Check
+        entry: .venv\\Scripts\\python.exe manage.py makemigrations --check --dry-run
         language: system
         pass_filenames: false
         always_run: true
+
+# NOTA: La suite completa de tests (manage.py test) y el check --deploy de
+# producción son la barrera real en CI (.github/workflows/django_ci.yml).
+# Railway debe estar configurado con "Wait for CI" para no desplegar si CI falla.
+# El pre-commit se mantiene rápido a propósito (check + migraciones) para no
+# desincentivar commits frecuentes.
