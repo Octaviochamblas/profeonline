@@ -2,6 +2,7 @@ from django.db.models import Case, IntegerField, Value, When
 from django.views.generic import TemplateView
 
 from apps.content.models import Area, Level, Resource, Subject
+from apps.content.selectors import get_resume_resource
 
 
 class HomeView(TemplateView):
@@ -9,6 +10,11 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # "Continuar donde quedaste" para usuarios autenticados
+        last_resource, last_resource_completed = get_resume_resource(self.request.user)
+        context["last_resource"] = last_resource
+        context["last_resource_completed"] = last_resource_completed
         context["featured_areas"] = Area.objects.filter(is_active=True).order_by("order", "name")[:3]
         priority_subjects = ["Matemática", "Física", "Química"]
         context["featured_subjects"] = (

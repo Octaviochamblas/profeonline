@@ -1,1 +1,5 @@
-from .resource_selectors import get_published_resources, get_module_resource_options
+from .resource_selectors import (
+    get_published_resources,
+    get_module_resource_options,
+    get_resume_resource,
+)

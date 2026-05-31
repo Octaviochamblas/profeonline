@@ -54,26 +54,14 @@ def register_view(request):
 
 @login_required
 def profile_view(request):
-    from apps.content.models import ResourceCompletion, ResourceView
+    from apps.content.selectors import get_resume_resource
 
     profile, created = Profile.objects.get_or_create(
         user=request.user,
         defaults={"role": "alumno"},
     )
 
-    last_view = (
-        ResourceView.objects.filter(user=request.user, resource__is_published=True)
-        .select_related("resource", "resource__subject", "resource__topic")
-        .order_by("-viewed_at")
-        .first()
-    )
-    last_resource = last_view.resource if last_view else None
-    last_resource_completed = bool(
-        last_resource
-        and ResourceCompletion.objects.filter(
-            user=request.user, resource=last_resource
-        ).exists()
-    )
+    last_resource, last_resource_completed = get_resume_resource(request.user)
 
     return render(
         request,

@@ -51,6 +51,20 @@ class ResumeWhereLeftOffTests(TestCase):
         self.assertIsNone(response.context["last_resource"])
         self.assertNotContains(response, "Continuar donde quedaste")
 
+    def test_home_shows_resume_card_for_logged_in_user(self):
+        self.client.force_login(self.user)
+        ResourceView.objects.create(user=self.user, resource=self.resource)
+
+        response = self.client.get(reverse("core:home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["last_resource"], self.resource)
+        self.assertContains(response, "Continuar donde quedaste")
+
+    def test_home_has_no_resume_card_for_anonymous(self):
+        response = self.client.get(reverse("core:home"))
+        self.assertNotContains(response, "Continuar donde quedaste")
+
     def test_resume_card_marks_completed(self):
         self.client.force_login(self.user)
         ResourceView.objects.create(user=self.user, resource=self.resource)

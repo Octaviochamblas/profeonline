@@ -1,5 +1,27 @@
 from django.db.models import Q
-from apps.content.models import Resource
+from apps.content.models import Resource, ResourceCompletion, ResourceView
+
+
+def get_resume_resource(user):
+    """Devuelve (resource, completed) del último recurso publicado que el
+    usuario abrió, o (None, False) si no hay ninguno."""
+    if not getattr(user, "is_authenticated", False):
+        return None, False
+
+    view = (
+        ResourceView.objects.filter(user=user, resource__is_published=True)
+        .select_related("resource", "resource__subject", "resource__topic")
+        .order_by("-viewed_at")
+        .first()
+    )
+    if not view:
+        return None, False
+
+    resource = view.resource
+    completed = ResourceCompletion.objects.filter(
+        user=user, resource=resource
+    ).exists()
+    return resource, completed
 
 
 def get_published_resources(subject_id=None, topic_id=None, level_id=None, q=None):
