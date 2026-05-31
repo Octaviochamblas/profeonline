@@ -38,3 +38,22 @@ Las ideas y tareas del proyecto se gestionan con carpetas numeradas en `docs/`:
 - **Login con Google:** allauth, credenciales en `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
 - **CSP:** con nonce por petición (`apps/core/middleware.py`).
 - **Auditorías antiguas:** archivadas en `docs/3 Finalizados/Auditorías-2026-05-30/`.
+
+## 💸 Economía de tokens (seguir SIEMPRE)
+
+El consumo de tokens es una prioridad. Reglas para no dispararlo:
+
+1. **Nunca usar llamadas "de relleno"** (`echo q1`, `echo flush`, etc.) para forzar/ordenar
+   la salida de otras herramientas. Si los resultados llegan desordenados, esperar; no
+   spamear comandos vacíos. Cada llamada cuesta tokens.
+2. **Búsquedas acotadas:** Grep/Glob con `path`, `glob` y `head_limit` reducidos; pedir
+   contexto (`-C`) solo cuando hace falta. Evitar barridos de todo el repo.
+3. **Leer antes de editar** el fragmento exacto para que el `Edit` no falle y no haya que
+   re-leer y reintentar. No re-leer archivos ya leídos sin cambios.
+4. **Avisar ANTES de operaciones caras** (suites largas, builds, lectura de archivos
+   grandes, muchas capturas, agentes/subagentes) y proponer una alternativa más barata para
+   que el usuario decida.
+5. **Si una sola tarea empieza a inflarse** (muchos reintentos o llamadas), detenerse, avisar
+   al usuario el gasto aproximado y barajar un enfoque más económico antes de continuar.
+6. **Previsualizar visualmente con URL local** (levantar runserver y pasar el link) en vez de
+   capturas, salvo que el usuario pida una imagen.
