@@ -4,16 +4,18 @@
 - **Creado:** 2026-05-31
 - **Área:** Producto (pedagógico)
 - **Prioridad:** 🟡 Media-alta (gran diferenciador de aprendizaje)
+- **Depende de:** `sistema-evaluacion-gamificada.md`
 
 ## Problema / Objetivo
 
 Hoy un recurso es "consumir y marcar como completado" (`ResourceCompletion`). No hay forma de
-que el estudiante **compruebe si entendió**. Un mini-quiz de autochequeo al final de cada
-recurso convierte la plataforma de "lista de videos/guías" en una herramienta de aprendizaje
-activo (modelo Khan Academy, en línea con el trabajo previo de recursos completados).
+que el estudiante **compruebe si entendió**. Esta tarjeta queda como el **MVP inicial** de la
+épica `sistema-evaluacion-gamificada.md`: empezar por evaluación de recurso con selección
+múltiple y feedback, antes de implementar todo el sistema de XP, skills, preparación y
+evaluación final de tema.
 
-Objetivo: añadir preguntas de autochequeo (opción múltiple) al final de un recurso, con
-feedback inmediato, sin necesariamente calificar ni guardar nota.
+Objetivo: añadir preguntas de autochequeo/evaluación al final de un recurso, con feedback
+inmediato, persistencia de intentos y estado visual de dominio.
 
 ## Diagnóstico / contexto técnico
 
@@ -24,35 +26,39 @@ feedback inmediato, sin necesariamente calificar ni guardar nota.
 - El detalle vive en `templates/pages/resource_detail.html` y
   `apps/content/views/resource_detail.py`.
 
-## Decisiones de diseño abiertas
+## Decisiones de diseño tomadas desde la épica
 
-- **¿Se guarda el resultado?** Mínimo viable: autochequeo efímero (no persiste). Evolución:
-  guardar intento/acierto para alimentar el progreso.
-- **Tipos de pregunta:** empezar solo con **opción múltiple** (1 correcta). Más adelante:
-  verdadero/falso, múltiples correctas, respuesta numérica.
-- **Quién crea las preguntas:** el staff, desde el admin o el formulario de recurso.
+- **Sí se guarda el resultado.** Los intentos alimentan progreso, estrellas y bloqueo.
+- **Tipo de pregunta inicial:** selección múltiple con 1 correcta.
+- **Aprobación:** 5/5 correctas.
+- **Intentos:** 3 intentos por nivel; si falla, debe practicar con 80% para recuperar 1 intento.
+- **Reportes:** cada pregunta debe permitir reportar error; se guarda en admin y se envía email.
+- **Autoría:** staff desde admin; preguntas generadas por IA quedan como borrador.
 
 ## Ruta de trabajo
 
-### Fase 1 — Modelado de datos
-- Modelo `QuizQuestion` (FK a `Resource`, enunciado, orden, explicación opcional).
-- Modelo `QuizChoice` (FK a `QuizQuestion`, texto, `is_correct`).
-- (Opcional) `QuizAttempt` si se decide persistir resultados.
-- Migraciones + registro en admin con inlines (pregunta → opciones).
+### Fase 1 — Modelado de datos mínimo
+- Modelo de pregunta/alternativa para recurso, con nivel 1/2/3, modo y estado.
+- Modelo de intento con usuario, recurso, nivel, puntaje, aprobado, número de intento y fecha.
+- Modelo de reporte de error por pregunta.
+- Mantener compatibilidad con `ResourceView` y `ResourceCompletion`.
 
 ### Fase 2 — Autoría (staff)
 - Inline en el admin para crear preguntas/opciones por recurso.
 - (Opcional) integración en el formulario de recurso existente.
 
 ### Fase 3 — Render y validación (estudiante)
-- Sección "Pon a prueba lo aprendido" al final de `resource_detail.html`.
+- Sección "Demuestra lo aprendido" al final de `resource_detail.html`.
 - Envío de respuestas vía HTMX → vista que valida y responde con feedback inline
   (correcto/incorrecto + explicación), reusando patrón del botón de completado.
 - Estilos coherentes con los tokens del sitio (verde acierto, rojo error, ya existen).
 
 ### Fase 4 — Integración con progreso
-- Al aprobar el quiz, sugerir/auto-marcar `ResourceCompletion`.
-- Mostrar estado del quiz en la tarjeta de recurso si aplica.
+- Al aprobar nivel 1/2/3, actualizar estrellas y estado visual del recurso.
+- Mostrar badge amarillo "Visto" si solo existe `ResourceView`.
+- Mostrar verde + estrellas si existe evaluación aprobada.
+- Bloquear evaluación tras 3 intentos fallidos.
+- Conectar recuperación de intento a práctica con 80% correcto.
 
 ### Fase 5 — Tests
 - Tests de modelos, validación de respuestas y vista HTMX (siguiendo `apps/content/tests/`).
@@ -61,12 +67,16 @@ feedback inmediato, sin necesariamente calificar ni guardar nota.
 
 - El staff puede crear preguntas de opción múltiple por recurso desde el admin.
 - El estudiante responde y recibe feedback inmediato sin recargar (HTMX).
-- Aprobar el quiz se refleja en el progreso del tema.
+- Aprobar el quiz se refleja en el estado visual del recurso.
+- La evaluación exige 5/5 para aprobar.
+- Tras 3 fallos, la evaluación se bloquea hasta practicar con 80%.
+- Cada pregunta permite reportar errores.
 - Suite de tests cubre creación, validación y casos límite; todo verde.
 
 ## Notas / Consideraciones
 
-- Mantener el MVP simple: opción múltiple + feedback. No construir un motor de exámenes.
+- Mantener el MVP simple: opción múltiple + feedback + persistencia de intentos.
+- La épica completa vive en `sistema-evaluacion-gamificada.md`.
 - Accesibilidad: las preguntas deben ser navegables por teclado y anunciadas por lector
   (coordinar con `auditoria-accesibilidad-axe.md`).
 
