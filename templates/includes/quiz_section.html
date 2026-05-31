@@ -1,0 +1,82 @@
+{% load static %}
+
+<section class="quiz-section" id="quiz-section" aria-labelledby="quiz-section-title">
+    <div class="quiz-section__header">
+        <h2 class="quiz-section__title" id="quiz-section-title">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Demuestra lo aprendido
+        </h2>
+        {% if mastery.stars > 0 %}
+        <div class="quiz-stars quiz-stars--{{ mastery.stars }}" aria-label="{{ mastery.stars }} de 3 estrellas">
+            {% for i in "123" %}
+                {% if forloop.counter <= mastery.stars %}
+                <svg class="quiz-star quiz-star--filled" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+                {% else %}
+                <svg class="quiz-star quiz-star--empty" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="quiz-levels">
+        {% for level_num, level_label in levels %}
+        <div class="quiz-level" id="quiz-level-{{ level_num }}">
+            <div class="quiz-level__header">
+                <h3 class="quiz-level__title">
+                    Nivel {{ level_num }}
+                    <span class="quiz-level__label">{{ level_label }}</span>
+                </h3>
+                {% with linfo=mastery.levels_info %}
+                {% if linfo %}
+                    {% if level_num == 1 and linfo.1.passed or level_num == 2 and linfo.2.passed or level_num == 3 and linfo.3.passed %}
+                    <span class="badge badge--success quiz-level__badge">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                        Aprobado
+                    </span>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            {% if level_num == 1 and has_questions.1 or level_num == 2 and has_questions.2 or level_num == 3 and has_questions.3 %}
+            <div class="quiz-level__actions">
+                <button class="btn btn-secondary quiz-btn"
+                        hx-get="{% url 'content:quiz_start' resource.slug level_num 'preparacion' %}"
+                        hx-target="#quiz-area-{{ level_num }}"
+                        hx-swap="innerHTML"
+                        aria-label="Practicar nivel {{ level_num }}">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    Practicar
+                </button>
+                {% with linfo=mastery.levels_info %}
+                {% if linfo %}
+                    {% if level_num == 1 and not linfo.1.passed or level_num == 2 and not linfo.2.passed or level_num == 3 and not linfo.3.passed %}
+                    <button class="btn btn-primary quiz-btn"
+                            hx-get="{% url 'content:quiz_start' resource.slug level_num 'evaluacion' %}"
+                            hx-target="#quiz-area-{{ level_num }}"
+                            hx-swap="innerHTML"
+                            aria-label="Evaluación nivel {{ level_num }}">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Evaluación
+                        {% if level_num == 1 and linfo.1.used > 0 %}
+                            ({{ linfo.1.remaining }} intento{{ linfo.1.remaining|pluralize:"s" }})
+                        {% elif level_num == 2 and linfo.2.used > 0 %}
+                            ({{ linfo.2.remaining }} intento{{ linfo.2.remaining|pluralize:"s" }})
+                        {% elif level_num == 3 and linfo.3.used > 0 %}
+                            ({{ linfo.3.remaining }} intento{{ linfo.3.remaining|pluralize:"s" }})
+                        {% endif %}
+                    </button>
+                    {% endif %}
+                {% endif %}
+                {% endwith %}
+            </div>
+            {% else %}
+            <p class="quiz-level__coming-soon">Próximamente</p>
+            {% endif %}
+
+            <div id="quiz-area-{{ level_num }}" class="quiz-area"></div>
+        </div>
+        {% endfor %}
+    </div>
+</section>

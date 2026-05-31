@@ -1,0 +1,29 @@
+<div class="quiz-blocked" role="alert">
+    <div class="quiz-blocked__icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 class="quiz-blocked__title">Evaluación bloqueada</h3>
+    <p class="quiz-blocked__text">
+        Has agotado tus 3 intentos de evaluación en el nivel {{ level }}.
+        Para recuperar un intento, completa una sesión de práctica con al menos <strong>80% de aciertos</strong>.
+    </p>
+    <div class="quiz-blocked__actions">
+        <button class="btn btn-primary quiz-btn"
+                hx-get="{% url 'content:quiz_start' resource.slug level 'preparacion' %}"
+                hx-target="#quiz-area-{{ level }}"
+                hx-swap="innerHTML">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Ir a Preparación
+        </button>
+        {% if info.can_recover %}
+        <form hx-post="{% url 'content:quiz_recover' resource.slug level %}"
+              hx-target="#quiz-section"
+              hx-swap="outerHTML">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary quiz-btn">
+                Recuperar intento
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>

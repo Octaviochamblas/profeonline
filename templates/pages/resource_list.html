@@ -101,6 +101,7 @@
                 <thead>
                     <tr>
                         <th>Nombre del recurso</th>
+                        <th>Estado</th>
                         <th>Asignatura</th>
                         <th>Tema</th>
                         <th>Niveles</th>
@@ -113,6 +114,22 @@
                     {% for resource in resources %}
                         <tr>
                             <td><a href="{% url 'content:resource_detail' resource.slug %}">{{ resource.title }}</a></td>
+                            <td>
+                                {% if resource.quiz_progress.max_level %}
+                                    <span class="badge quiz-badge quiz-badge--approved quiz-badge--stars-{{ resource.quiz_progress.stars }}" aria-label="Aprobado con {{ resource.quiz_progress.stars }} de 3 estrellas">
+                                        Aprobado
+                                        <span class="quiz-badge__stars" aria-hidden="true">
+                                            {% for i in "123" %}
+                                                {% if forloop.counter <= resource.quiz_progress.stars %}★{% else %}☆{% endif %}
+                                            {% endfor %}
+                                        </span>
+                                    </span>
+                                {% elif resource.quiz_progress.viewed %}
+                                    <span class="badge quiz-badge quiz-badge--viewed">Visto</span>
+                                {% else %}
+                                    <span class="auth-meta">-</span>
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if resource.subject %}
                                     {% if resource.subject.is_active or user.is_superuser %}

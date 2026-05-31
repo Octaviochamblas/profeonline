@@ -1,0 +1,84 @@
+<div class="quiz-form-container" id="quiz-form-{{ level }}">
+    <div class="quiz-form__header">
+        <h3 class="quiz-form__title">
+            {% if mode == "preparacion" %}
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Preparación — Nivel {{ level }}: {{ level_label }}
+            {% else %}
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Evaluación — Nivel {{ level }}: {{ level_label }}
+            {% endif %}
+        </h3>
+        <span class="quiz-form__count">{{ questions|length }} pregunta{{ questions|length|pluralize:"s" }}</span>
+    </div>
+
+    <form hx-post="{% url 'content:quiz_submit' resource.slug level mode %}"
+          hx-target="#quiz-area-{{ level }}"
+          hx-swap="innerHTML"
+          class="quiz-form"
+          id="quiz-form-el-{{ level }}">
+        {% csrf_token %}
+
+        {% for question in questions %}
+        <fieldset class="quiz-question" id="quiz-question-{{ question.pk }}">
+            <legend class="quiz-question__text">
+                <span class="quiz-question__number">{{ forloop.counter }}.</span>
+                {{ question.text }}
+            </legend>
+
+            <div class="quiz-choices" role="radiogroup" aria-label="Alternativas para pregunta {{ forloop.counter }}">
+                {% for choice in question.choices.all %}
+                <label class="quiz-choice" for="choice_{{ choice.pk }}">
+                    <input type="radio"
+                           id="choice_{{ choice.pk }}"
+                           name="question_{{ question.pk }}"
+                           value="{{ choice.pk }}"
+                           class="quiz-choice__input"
+                           required>
+                    <span class="quiz-choice__text">{{ choice.text }}</span>
+                </label>
+                {% endfor %}
+            </div>
+
+            <button type="button"
+                    class="quiz-report-btn"
+                    hx-get="#"
+                    onclick="this.nextElementSibling.classList.toggle('quiz-report--visible')"
+                    aria-label="Reportar error en esta pregunta">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                Reportar error
+            </button>
+
+            <div class="quiz-report" id="report-{{ question.pk }}">
+                <div class="quiz-report__form"
+                     hx-post="{% url 'content:quiz_report_error' question.pk %}"
+                     hx-target="#report-{{ question.pk }}"
+                     hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <select name="reason" class="quiz-report__select" required aria-label="Motivo del reporte">
+                        <option value="">Selecciona el motivo…</option>
+                        <option value="respuesta_incorrecta">Respuesta correcta equivocada</option>
+                        <option value="enunciado_confuso">Enunciado confuso</option>
+                        <option value="alternativas_ambiguas">Alternativas ambiguas</option>
+                        <option value="error_redaccion">Error de redacción/formato</option>
+                        <option value="explicacion_insuficiente">Explicación insuficiente</option>
+                    </select>
+                    <textarea name="comment" class="quiz-report__comment" placeholder="Comentario adicional (opcional)" rows="2" aria-label="Comentario adicional"></textarea>
+                    <button type="submit" class="btn btn-secondary quiz-report__submit">Enviar reporte</button>
+                </div>
+            </div>
+        </fieldset>
+        {% endfor %}
+
+        <div class="quiz-form__footer">
+            <button type="submit" class="btn btn-primary quiz-submit-btn" id="quiz-submit-{{ level }}">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Enviar respuestas
+            </button>
+            <button type="button" class="btn btn-secondary"
+                    onclick="document.getElementById('quiz-area-{{ level }}').innerHTML = ''">
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>

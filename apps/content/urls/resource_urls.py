@@ -8,6 +8,11 @@ from apps.content.views import (
     resource_options,
     create_resource_from_video,
     toggle_resource_completion,
+    quiz_start,
+    quiz_submit,
+    quiz_status,
+    quiz_recover,
+    report_error,
 )
 
 urlpatterns = [
@@ -19,4 +24,10 @@ urlpatterns = [
     path("recursos/<int:pk>/editar/", ResourceUpdateView.as_view(), name="resource_update"),
     path("recursos/<int:pk>/eliminar/", ResourceDeleteView.as_view(), name="resource_delete"),
     path("api/recursos/crear-video/", create_resource_from_video, name="api_create_resource_from_video"),
+    # Evaluación gamificada
+    path("recursos/<slug:slug>/quiz/<int:level>/<str:mode>/", quiz_start, name="quiz_start"),
+    path("recursos/<slug:slug>/quiz/<int:level>/<str:mode>/enviar/", quiz_submit, name="quiz_submit"),
+    path("recursos/<slug:slug>/quiz/estado/", quiz_status, name="quiz_status"),
+    path("recursos/<slug:slug>/quiz/<int:level>/recuperar/", quiz_recover, name="quiz_recover"),
+    path("recursos/quiz/reportar/<int:question_id>/", report_error, name="quiz_report_error"),
 ]

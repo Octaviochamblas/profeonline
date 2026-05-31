@@ -1,5 +1,18 @@
 from django.contrib import admin
-from apps.content.models import Area, Level, Module, Resource, Subject, Topic
+from django.utils.html import format_html
+
+from apps.content.models import (
+    Area,
+    Choice,
+    Level,
+    Module,
+    Question,
+    QuestionErrorReport,
+    QuizAttempt,
+    Resource,
+    Subject,
+    Topic,
+)
 
 
 @admin.register(Area)
@@ -44,6 +57,7 @@ class ResourceAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     filter_horizontal = ("levels",)
 
+
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ("title", "subject", "topic", "order", "is_published", "created_at")
@@ -51,3 +65,94 @@ class ModuleAdmin(admin.ModelAdmin):
     list_filter = ("subject", "topic", "is_published")
     prepopulated_fields = {"slug": ("title",)}
     filter_horizontal = ("levels",)
+
+
+# ---------------------------------------------------------------------------
+# Evaluación gamificada
+# ---------------------------------------------------------------------------
+
+
+class ChoiceInline(admin.TabularInline):
+    model = Choice
+    extra = 4
+    min_num = 2
+    fields = ("text", "is_correct", "order")
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ("short_text", "resource", "level", "mode", "status", "choices_count")
+    list_filter = ("level", "mode", "status", "resource__subject")
+    search_fields = ("text", "resource__title")
+    list_editable = ("status",)
+    inlines = [ChoiceInline]
+    raw_id_fields = ("resource",)
+    ordering = ("resource", "level", "order")
+
+    @admin.display(description="Enunciado")
+    def short_text(self, obj):
+        return obj.text[:100] + "…" if len(obj.text) > 100 else obj.text
+
+    @admin.display(description="Alternativas")
+    def choices_count(self, obj):
+        return obj.choices.count()
+
+
+@admin.register(QuizAttempt)
+class QuizAttemptAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "resource",
+        "level",
+        "mode",
+        "score_display",
+        "passed",
+        "attempt_number",
+        "created_at",
+    )
+    list_filter = ("passed", "level", "mode")
+    search_fields = ("user__username", "resource__title")
+    readonly_fields = (
+        "user",
+        "resource",
+        "level",
+        "mode",
+        "score",
+        "total",
+        "passed",
+        "attempt_number",
+        "created_at",
+    )
+    ordering = ("-created_at",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description="Puntaje")
+    def score_display(self, obj):
+        return f"{obj.score}/{obj.total}"
+
+
+@admin.register(QuestionErrorReport)
+class QuestionErrorReportAdmin(admin.ModelAdmin):
+    list_display = (
+        "short_question",
+        "user",
+        "reason",
+        "status",
+        "created_at",
+    )
+    list_filter = ("status", "reason")
+    list_editable = ("status",)
+    search_fields = ("question__text", "user__username", "comment")
+    raw_id_fields = ("question", "user", "attempt")
+    readonly_fields = ("created_at",)
+    ordering = ("-created_at",)
+
+    @admin.display(description="Pregunta")
+    def short_question(self, obj):
+        text = obj.question.text
+        return text[:80] + "…" if len(text) > 80 else text
