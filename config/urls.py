@@ -31,6 +31,16 @@ urlpatterns = [
         "accounts/password/reset/done/",
         RedirectView.as_view(pattern_name="password_reset_done", permanent=False),
     ),
+    # Las páginas de login/registro de allauth (sin estilo) también se
+    # redirigen al flujo propio con el diseño del sitio.
+    path(
+        "accounts/login/",
+        RedirectView.as_view(pattern_name="login", permanent=False),
+    ),
+    path(
+        "accounts/signup/",
+        RedirectView.as_view(pattern_name="register", permanent=False),
+    ),
     path("accounts/", include("allauth.urls")),
     path("", include("apps.core.urls")),
     path("", include("apps.content.urls")),
