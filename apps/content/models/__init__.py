@@ -5,4 +5,4 @@ from .topic import Topic
 from .level import Level
 from .module import Module
 from .module_resource import ModuleResource
-from .completion import ResourceCompletion
+from .completion import ResourceCompletion, ResourceView

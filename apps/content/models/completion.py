@@ -30,3 +30,35 @@ class ResourceCompletion(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} → {self.resource}"
+
+
+class ResourceView(models.Model):
+    """Registra la última vez que un usuario abrió un recurso (un registro por
+    par usuario-recurso, actualizado en cada visita). Sirve para "continuar
+    donde quedaste"."""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="resource_views",
+    )
+    resource = models.ForeignKey(
+        "content.Resource",
+        on_delete=models.CASCADE,
+        related_name="views",
+    )
+    viewed_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "resource"],
+                name="unique_user_resource_view",
+            )
+        ]
+        ordering = ["-viewed_at"]
+        verbose_name = "recurso visto"
+        verbose_name_plural = "recursos vistos"
+
+    def __str__(self) -> str:
+        return f"{self.user} vio {self.resource}"

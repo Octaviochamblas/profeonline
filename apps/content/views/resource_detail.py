@@ -1,7 +1,7 @@
 import re
 from django.views.generic import DetailView
 
-from apps.content.models import Resource
+from apps.content.models import Resource, ResourceView
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
 
 
@@ -71,11 +71,15 @@ class ResourceDetailView(DetailView):
         context["previous_resource"] = previous_resource
         context["next_resource"] = next_resource
 
-        # Estado de "completado" para el usuario autenticado
+        # Estado de "completado" para el usuario autenticado y registro de la
+        # visita (para "continuar donde quedaste").
         if self.request.user.is_authenticated:
             context["completed"] = resource.completions.filter(
                 user=self.request.user
             ).exists()
+            ResourceView.objects.update_or_create(
+                user=self.request.user, resource=resource
+            )
         else:
             context["completed"] = False
 
