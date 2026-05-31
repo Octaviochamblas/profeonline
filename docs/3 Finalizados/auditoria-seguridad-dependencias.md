@@ -66,4 +66,25 @@ dependencias.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+Cerrado el 2026-05-31.
+
+- **Rotación de secretos (Fase 1):** se generó una nueva `BREVO_API_KEY` y se revocó la
+  antigua (`xkeysib-…`); también se revocó la clave SMTP vieja de Brevo (`xsmtpsib-…`), que
+  estaba expuesta en capturas aunque ya no se usa (la app usa la API HTTP). Se actualizó la
+  variable en Railway y se verificó el envío de email con el flujo de recuperación de
+  contraseña (prueba E2E correcta).
+- **Limpieza de Sentry (Fase 2):** se verificó vía API que la organización `particular-lw`
+  tiene **un solo proyecto, `python-django`** — el duplicado `4511480748638208` ya no existe,
+  no había nada que borrar. El proyecto recibe eventos, confirmando que `SENTRY_DSN` apunta
+  al proyecto correcto.
+- **Auditoría de dependencias (Fase 3):** `pip-audit` sobre `requirements.txt` → **sin
+  vulnerabilidades conocidas**. Se integró como paso permanente de CI
+  (`Audit Dependencies (pip-audit)` en `.github/workflows/django_ci.yml`), que falla si
+  aparece una vulnerabilidad (con `--ignore-vuln` como escape para riesgos aceptados).
+- **Verificación de headers (Fase 4):** `manage.py check --deploy` corre en verde en CI.
+
+### Pendiente menor (opcional, no bloqueante)
+- Escaneo externo de headers de seguridad (CSP/HSTS/Referrer-Policy) con una herramienta como
+  securityheaders.com una vez que el dominio público esté estable. No es bloqueante porque la
+  CSP con nonce y HSTS ya están configuradas y `check --deploy` no reporta problemas.
