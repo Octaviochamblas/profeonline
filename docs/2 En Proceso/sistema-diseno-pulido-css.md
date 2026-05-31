@@ -110,13 +110,25 @@ de "completado" oscurecidos para AA.
 
 Cache CSS `?v=6` → `?v=7`.
 
+### Variante del logo para fondo claro (2026-05-31, sesión 3) — ✅ HECHO
+
+El wordmark original (`static/img/logo.png`) es amarillo `#FFD100` plano sobre transparente;
+sobre el hero claro perdía contraste (parche provisional `drop-shadow`). Se generó una
+variante **slate `#0f172a`** (≈17:1 contra el fondo, el mismo `--text`), recoloreando la
+máscara alfa del PNG con `scripts/recolor_logo.py` (Pillow, herramienta local; no va a
+`requirements.txt`). Resultado: `static/img/logo-dark.png`.
+
+- `templates/pages/home.html` ahora usa `img/logo-dark.png` en el hero.
+- Eliminado el `drop-shadow` provisional de `.page-hero__logo` en `estilos.css`.
+- El amarillo queda reservado a los CTAs (filosofía del tema).
+- Cache CSS `?v=7` → `?v=8`.
+
 ### Pendiente en esta tarjeta (Fases 3-4, NO hechas) — sigue en `2 En Proceso/`
 - **Fase 3 (profundidad/radios):** unificar radios sueltos (`12px`/`14px`/`999px`) a escala;
   sombras en dos niveles `--shadow-sm`/`--shadow-md`.
 - **Fase 4 (limpieza):** escala de espaciado `--space-*` y tipográfica `--text-*`;
   **dedup de `.auth-card`** (definido 2 veces); reducir `!important`; **reducir Outfit de 6→3
   pesos** (también ataca el render-blocking de la auditoría de rendimiento).
-- **Variante oscura del logo** para fondo claro (asset de diseño).
 
 > Se mantiene en **En Proceso**: el grueso (tema + contraste + a11y) está en vivo, pero las
 > fases de sistema de diseño/limpieza siguen pendientes.
