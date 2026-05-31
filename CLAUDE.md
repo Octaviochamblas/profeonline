@@ -26,8 +26,11 @@ Las ideas y tareas del proyecto se gestionan con carpetas numeradas en `docs/`:
 
 - **Settings:** `config.settings.local` (dev, por defecto en `manage.py`) /
   `config.settings.production` (producción en Railway).
-- **Tests:** `python manage.py test` deben pasar antes de commitear
-  (hay pre-commit hook que corre `check` + tests). El entry usa `.venv\\Scripts\\python.exe`.
+- **Tests:** La suite completa (`python manage.py test`) + `check --deploy` son la
+  **barrera real en CI** (`.github/workflows/django_ci.yml`); Railway está configurado con
+  *Wait for CI* para no desplegar si CI falla. El **pre-commit** se mantiene rápido a
+  propósito: solo corre `check` + `makemigrations --check` (el entry usa
+  `.venv\\Scripts\\python.exe`). Aun así, corre los tests localmente antes de pushear.
 - **Despliegue:** push a `main` → Railway despliega. El *Custom Start Command*
   corre `migrate && ensure_admin && ensure_site && seed_math_resources && gunicorn`.
 - **Email:** API HTTP de Brevo (`BREVO_API_KEY`); Railway bloquea puertos SMTP.
