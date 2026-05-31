@@ -1,7 +1,9 @@
 # Sistema de evaluacion gamificada por recurso y tema
 
-- **Estado:** Por iniciar
+- **Estado:** Finalizado como MVP (Fases 1-6). Fases 7-9 separadas a tarjetas propias en
+  `1 Por iniciar/` (`evaluacion-fase7-...`, `evaluacion-fase8-...`, `evaluacion-fase9-...`).
 - **Creado:** 2026-05-31
+- **Cerrado:** 2026-05-31 (MVP entregado a `main`)
 - **Area:** Producto pedagogico / Gamificacion
 - **Prioridad:** Alta (convierte recursos vistos en aprendizaje demostrado)
 
@@ -349,10 +351,18 @@ brillo debe aumentar por nivel, sin volver la interfaz ruidosa.
 - `.venv\Scripts\python.exe manage.py check`: sin issues.
 - `.venv\Scripts\python.exe manage.py makemigrations --check --dry-run`: sin cambios.
 
-### Pendiente fuera del MVP
+### Pendiente fuera del MVP (separado a tarjetas propias)
 
-- Fase 7: evaluacion final por tema.
-- Fase 8: XP, skills, rangos y rachas.
-- Fase 9: generacion asistida de preguntas por IA.
+Al cerrar el MVP, las fases restantes se movieron a `1 Por iniciar/` como tarjetas
+independientes (la epica advierte: "implementar por fases", no construir el motor completo de
+una vez):
+
+- Fase 7 -> `docs/1 Por iniciar/evaluacion-fase7-evaluacion-final-tema.md`.
+- Fase 8 -> `docs/1 Por iniciar/evaluacion-fase8-xp-skills-rangos.md`.
+- Fase 9 -> `docs/1 Por iniciar/evaluacion-fase9-generacion-ia-preguntas.md`.
+
+### Pendiente del MVP que requiere al usuario (no bloquea el cierre)
+
 - Verificacion manual en navegador: flujo alumno/staff, teclado, lector de pantalla y revision
-  visual fina de badges/estrellas.
+  visual fina de badges/estrellas. No se pudo automatizar (sin herramienta de navegador en la
+  sesion de cierre); queda como QA del usuario sobre lo ya desplegado.
