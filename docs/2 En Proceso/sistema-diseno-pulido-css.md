@@ -73,4 +73,50 @@ y aplicar pulido fino que se note de inmediato.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+### Migración a TEMA CLARO — paleta C endurecida (2026-05-31, sesión 2) — ✅ EN VIVO
+
+Se implementó y desplegó el tema claro (PR #9, squash `17936e1`, mergeado a `main`;
+Railway desplegó tras CI verde). Cubre **Fase 1 (tokens)** y **Fase 2 (refactor de color)**
+del documento, más los fixes de accesibilidad.
+
+**Decisión de color (sobre el feedback del prototipo C):** el usuario eligió la paleta C
+(teal + ámbar) pero marcó dos fallos de contraste (botones oscuros con texto verde, y texto
+del header). Se diagnosticó que **no eran del teal**, sino restos del tema oscuro que el
+prototipo (override solo de `:root`) no podía tocar. Paleta final:
+- Neutros: `--bg #f8fafc`, `--surface #fff`, `--surface-soft #f1f5f9`, `--border #e2e8f0`,
+  `--text #0f172a` (17:1), `--muted #475569` (7.5:1).
+- **`--primary` → teal `#0f766e`** (5.5:1): reusa todos los `var(--primary)` existentes
+  (enlaces, títulos, bordes, foco) → el amarillo-como-texto desapareció solo.
+- **Nuevo `--cta` ámbar `#f59e0b`** + `--cta-contrast #422006` (6.8:1), solo en `.btn-primary`.
+- Sombras de negro duro → slate suave (`rgba(2,6,23,…)`).
+
+**Colores hardcodeados arreglados** (no heredaban de `:root`): header a blanco frosted;
+encabezados blancos (`h1-h3`, `.page-hero__kicker`, `.bottom-contact-cta__title`, hover de
+navegación, 2 `h2` inline en `subject_list`/`topic_list`) → oscuro; badges/chips oscuros,
+zebra de tablas, hovers y skeleton → claros; tints amarillos → teal; rojos de error y verdes
+de "completado" oscurecidos para AA.
+
+**Accesibilidad (cierra hallazgos de `auditoria-accesibilidad-axe.md`):**
+- **A11Y-1**: verde WhatsApp `#25d366` → `#15803d` (blanco 5:1, AA).
+- **A11Y-2**: aria-labels "Ver más" ahora incluyen el texto visible.
+
+**Extra (hallazgos de la revisión visual):**
+- Logo del hero: `drop-shadow` **provisional** para que el wordmark amarillo se separe del
+  fondo blanco (pendiente la variante de asset definitiva).
+- `/accounts/login/` y `/accounts/signup/` de allauth salían **sin estilo** → se redirigen al
+  flujo propio estilizado (`/cuentas/login/`, `/cuentas/registro/`), mismo patrón que el
+  reset de contraseña. Verificado con curl (302) y 87 tests OK.
+
+Cache CSS `?v=6` → `?v=7`.
+
+### Pendiente en esta tarjeta (Fases 3-4, NO hechas) — sigue en `2 En Proceso/`
+- **Fase 3 (profundidad/radios):** unificar radios sueltos (`12px`/`14px`/`999px`) a escala;
+  sombras en dos niveles `--shadow-sm`/`--shadow-md`.
+- **Fase 4 (limpieza):** escala de espaciado `--space-*` y tipográfica `--text-*`;
+  **dedup de `.auth-card`** (definido 2 veces); reducir `!important`; **reducir Outfit de 6→3
+  pesos** (también ataca el render-blocking de la auditoría de rendimiento).
+- **Variante oscura del logo** para fondo claro (asset de diseño).
+
+> Se mantiene en **En Proceso**: el grueso (tema + contraste + a11y) está en vivo, pero las
+> fases de sistema de diseño/limpieza siguen pendientes.
