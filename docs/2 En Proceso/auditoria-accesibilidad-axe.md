@@ -86,4 +86,33 @@ de pantalla y contraste.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+### Escaneo automatizado realizado (2026-05-31, axe-core vía Lighthouse, mobile)
+
+Puntaje de accesibilidad **95–96/100** en las 4 páginas auditadas (home, recursos, detalle
+de recurso, detalle de asignatura). Dos hallazgos concretos:
+
+| ID | Audit (WCAG) | Elemento exacto | Diagnóstico | Fix propuesto |
+| --- | --- | --- | --- | --- |
+| A11Y-1 | `color-contrast` (1.4.3) | Botón **WhatsApp** `<a class="btn btn-primary btn-whatsapp">` (texto blanco sobre `#25d366`) — aparece en todas las páginas vía `base.html` | Blanco sobre verde `#25d366` no llega a 4.5:1 | Oscurecer el verde o usar texto oscuro; ajustar `.btn-whatsapp` en `estilos.css` |
+| A11Y-2 | `label-content-name-mismatch` (2.5.3) | Tarjetas "Ver más" en home: `<a class="home-more-card" aria-label="Ver todas las asignaturas">` (texto visible "Ver más") | El nombre accesible (aria-label) no contiene el texto visible "Ver más" | Que el `aria-label` incluya "Ver más" (p. ej. "Ver más: asignaturas") o quitarlo |
+
+> **Hallazgo notable:** el problema de contraste **no** era el gris `--muted` ni el amarillo
+> que sospechábamos en el diagnóstico inicial (esos pasan AA). El único contraste que falla
+> es el **botón verde de WhatsApp**. Buen recordatorio de medir antes de asumir.
+
+### Lo que ESTE escaneo NO cubre (sigue pendiente)
+
+axe automatizado detecta ~30–40% de los problemas de accesibilidad. **Quedan por hacer las
+fases manuales** del documento, que son las que de verdad importan aquí:
+
+- **Navegación por teclado** completa (Tab/flechas/Enter/Esc), con foco en el **select custom**
+  (`enhanced-select.js`) y el menú móvil. *Lighthouse no lo prueba.*
+- **Lector de pantalla** (NVDA): confirmar que el select custom anuncia label/estado/opción.
+- **`aria-expanded`/`aria-controls`** en el toggle del menú móvil (no lo flaggeó axe, pero es
+  del diagnóstico).
+
+### Estado
+Fase de escaneo automatizado **completa y documentada**. Las fases manuales (teclado, lector,
+select custom) quedan pendientes — requieren prueba interactiva. Los dos fixes A11Y-1 y A11Y-2
+son rápidos y se pueden agrupar con `sistema-diseno-pulido-css.md`.

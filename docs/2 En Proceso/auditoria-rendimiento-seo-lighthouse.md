@@ -84,4 +84,49 @@ Basado en la revisión del código actual:
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+### Medición realizada (2026-05-31, servidor local, Lighthouse 12.8.2, mobile)
+
+Auditadas 4 páginas con `manage.py runserver` + Lighthouse headless:
+
+| Página | Perf | A11y | Best Pr. | SEO | LCP | CLS | TBT | FCP |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home (`/`) | 90 | 95 | 100 | 100 | 2.9 s | 0 | 0 ms | 2.9 s |
+| Recursos (`/recursos/`) | 93 | 96 | 100 | 100 | 2.6 s | 0 | 0 ms | 2.5 s |
+| Detalle recurso | 93 | 95 | 100 | 100 | 2.6 s | 0 | 0 ms | 2.5 s |
+| Detalle asignatura | 93 | 95 | 100 | 100 | 2.6 s | 0 | 0 ms | 2.5 s |
+
+**Lectura:** base muy buena. CLS 0 y TBT 0 ms (excelente: nada de layout shift ni JS
+bloqueante). El **único flanco real es el LCP/FCP ~2.6–2.9 s** (zona "needs improvement" en
+mobile; el umbral "good" es <2.5 s). Como FCP ≈ LCP ≈ Speed Index, el cuello es el
+**render-blocking** de la primera pintura, no el JS ni imágenes pesadas.
+
+### Hallazgos de rendimiento (oportunidades de Lighthouse)
+
+| ID | Hallazgo | Ahorro estimado | Real o artefacto local | Fix |
+| --- | --- | --- | --- | --- |
+| PERF-1 | **Recursos render-blocking** (Google Fonts + CSS) | ~1.380–1.440 ms | **Real** | Self-host fuentes / reducir pesos / `font-display: swap`; preload CSS crítico |
+| PERF-2 | CSS sin usar (`unused-css-rules`) | ~31–33 KiB | **Real** | CSS monolítico; evaluar critical CSS o split |
+| PERF-3 | CSS sin minificar (`unminified-css`) | ~10 KiB | **Real** | Minificar `estilos.css` en build/deploy |
+| PERF-4 | LCP = `logo.png` en home | — | **Real** | Optimizar logo (WebP/tamaño) + `preload`; o usar texto |
+| PERF-5 | Imágenes: responsive + formatos modernos | ~30 + 24 KiB | **Real** | WebP/AVIF y tamaños responsive para el logo |
+| PERF-6 | Sin compresión de texto (`uses-text-compression`) | ~83–96 KiB | **Artefacto local** | WhiteNoise comprime en prod; **verificar contra producción/PageSpeed** |
+| PERF-7 | Cache TTL corto (`uses-long-cache-ttl`) | 3–4 recursos | **Artefacto local** | Igual que arriba: confirmar headers en prod |
+
+> ⚠️ **Caveat importante:** la medición fue en `runserver`, que **no** comprime ni cachea
+> estáticos como WhiteNoise en producción. PERF-6 y PERF-7 son muy probablemente artefactos
+> del entorno local; hay que **re-medir contra producción (o PageSpeed Insights)** para
+> confirmarlos. Los demás (render-blocking, CSS, imágenes) son reales en cualquier entorno.
+
+### Quick wins priorizados (para la fase de fixes — fuera del alcance de esta medición)
+1. **Fuentes Outfit**: self-host o reducir de 6 a 3 pesos + `font-display: swap` → ataca
+   directamente el render-blocking (~1.4 s) y el LCP.
+2. **Optimizar el logo** (WebP + tamaño correcto + `preload`) → mejora el LCP del home.
+3. **Minificar CSS** en el deploy.
+4. **`og:image` en PNG 1200×630** (del diagnóstico inicial; SVG no renderiza en redes).
+5. Re-medir PERF-6/7 contra producción antes de tocar nada de compresión/cache.
+
+### Estado
+Medición + documentación **completas** (alcance acordado: "solo medir y documentar"). Los
+fixes quedan como fase siguiente / posibles tarjetas nuevas. Reportes JSON guardados en
+`%TEMP%\lh-profe\` (no versionados).
