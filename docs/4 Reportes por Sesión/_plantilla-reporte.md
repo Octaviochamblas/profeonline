@@ -1,0 +1,13 @@
+# Reporte de sesión — AAAA-MM-DD
+
+## Avances desde el último reporte
+- ...
+
+## Decisiones importantes
+- ...
+
+## Estado del proyecto / notas
+- ...
+
+## Pendientes / Próximos pasos
+- ...
