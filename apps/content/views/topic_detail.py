@@ -3,6 +3,7 @@ from django.db.models.functions import Coalesce
 from django.views.generic import DetailView
 
 from apps.content.models import ResourceCompletion, Topic
+from apps.content.selectors.evaluation_selectors import get_resource_progress_map
 from apps.content.views._seo import breadcrumb_schema, build_breadcrumbs
 
 
@@ -33,6 +34,15 @@ class TopicDetailView(DetailView):
         # Order resources based on the topic's selected ordering method
         resources = list(topic.get_ordered_resources())
         context["resources"] = resources
+        progress_map = get_resource_progress_map(
+            self.request.user,
+            [resource.id for resource in resources],
+        )
+        for resource in resources:
+            resource.quiz_progress = progress_map.get(
+                resource.id,
+                {"viewed": False, "max_level": 0, "stars": 0},
+            )
 
         # Progreso del usuario autenticado dentro de la ruta
         total = len(resources)
@@ -46,6 +56,12 @@ class TopicDetailView(DetailView):
             )
         context["completed_ids"] = completed_ids
         context["completed_count"] = len(completed_ids)
+        context["approved_count"] = sum(
+            1 for progress in progress_map.values() if progress["max_level"] > 0
+        )
+        context["stars_count"] = sum(
+            progress["stars"] for progress in progress_map.values()
+        )
         context["total_count"] = total
         context["progress_percent"] = (
             int(len(completed_ids) / total * 100) if total else 0

@@ -57,7 +57,9 @@
             <div class="topic-progress">
                 <div class="topic-progress__header">
                     <span class="topic-progress__label">Tu progreso</span>
-                    <span class="topic-progress__count">{{ completed_count }} de {{ total_count }} completados</span>
+                    <span class="topic-progress__count">
+                        {{ completed_count }} de {{ total_count }} completados · {{ approved_count }} aprobados · {{ stars_count }} estrella{{ stars_count|pluralize:"s" }}
+                    </span>
                 </div>
                 <div class="topic-progress__bar" role="progressbar" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de la ruta">
                     <div class="topic-progress__fill" style="width: {{ progress_percent }}%"></div>
@@ -68,9 +70,11 @@
         {% if resources %}
             <div class="topic-resource-list">
                 {% for resource in resources %}
-                    <a class="topic-resource-card{% if resource.id in completed_ids %} topic-resource-card--done{% endif %}" href="{% url 'content:resource_detail' resource.slug %}">
+                    <a class="topic-resource-card{% if resource.id in completed_ids %} topic-resource-card--done{% endif %}{% if resource.quiz_progress.max_level %} topic-resource-card--mastery topic-resource-card--mastery-{{ resource.quiz_progress.stars }}{% endif %}" href="{% url 'content:resource_detail' resource.slug %}">
                         <span class="topic-resource-card__step" aria-hidden="true">
-                            {% if resource.id in completed_ids %}
+                            {% if resource.quiz_progress.max_level %}
+                                ★
+                            {% elif resource.id in completed_ids %}
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                             {% else %}
                                 {{ forloop.counter }}
@@ -82,6 +86,18 @@
                                 <span class="topic-resource-card__meta">
                                     {% if resource.id in completed_ids %}
                                         <span class="topic-resource-card__badge topic-resource-card__badge--done">✓ Completado</span>
+                                    {% endif %}
+                                    {% if resource.quiz_progress.max_level %}
+                                        <span class="topic-resource-card__badge topic-resource-card__badge--approved">
+                                            Aprobado
+                                            <span aria-hidden="true">
+                                                {% for i in "123" %}
+                                                    {% if forloop.counter <= resource.quiz_progress.stars %}★{% else %}☆{% endif %}
+                                                {% endfor %}
+                                            </span>
+                                        </span>
+                                    {% elif resource.quiz_progress.viewed %}
+                                        <span class="topic-resource-card__badge topic-resource-card__badge--viewed">Visto</span>
                                     {% endif %}
                                     {% if resource.subject %}
                                         <span class="topic-resource-card__badge">{{ resource.subject.name }}</span>

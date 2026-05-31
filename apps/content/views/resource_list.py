@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 
 from django.views.generic import ListView
 from apps.content.models import Level, Resource, Subject, Topic
+from apps.content.selectors.evaluation_selectors import get_resource_progress_map
 from apps.content.selectors import get_published_resources
 
 
@@ -58,6 +59,16 @@ class ResourceListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        resources = list(context["resources"])
+        progress_map = get_resource_progress_map(
+            self.request.user,
+            [resource.id for resource in resources],
+        )
+        for resource in resources:
+            resource.quiz_progress = progress_map.get(
+                resource.id,
+                {"viewed": False, "max_level": 0, "stars": 0},
+            )
 
         selected_filters = self.get_selected_filters()
         selected_subject = selected_filters["subject"]

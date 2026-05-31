@@ -1,7 +1,8 @@
 import re
 from django.views.generic import DetailView
 
-from apps.content.models import Resource, ResourceView
+from apps.content.models import Resource, ResourceView, Question
+from apps.content.services.evaluation_service import get_resource_mastery
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
 
 
@@ -80,8 +81,28 @@ class ResourceDetailView(DetailView):
             ResourceView.objects.update_or_create(
                 user=self.request.user, resource=resource
             )
+
+            # --- Evaluación gamificada ---
+            mastery = get_resource_mastery(self.request.user, resource)
+            context["mastery"] = mastery
+
+            has_questions = {}
+            for lvl in (1, 2, 3):
+                has_questions[lvl] = Question.objects.filter(
+                    resource=resource,
+                    level=lvl,
+                    status="publicada",
+                ).exists()
+            context["has_questions"] = has_questions
+            context["quiz_available"] = any(has_questions.values())
+            context["quiz_levels"] = [
+                (1, "Definición"),
+                (2, "Ejercicios simples"),
+                (3, "Problemas de aplicación"),
+            ]
         else:
             context["completed"] = False
+            context["quiz_available"] = False
 
         context["structured_data_json_list"] = [
             breadcrumb_schema(breadcrumbs),

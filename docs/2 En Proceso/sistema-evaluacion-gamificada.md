@@ -314,4 +314,45 @@ brillo debe aumentar por nivel, sin volver la interfaz ruidosa.
 ---
 
 ## Que se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+### MVP Fases 1-6 implementado en rama `feat/evaluacion-gamificada-mvp` (2026-05-31)
+
+- Se movio la epica desde `docs/1 Por iniciar/` a `docs/2 En Proceso/`.
+- Se agregaron modelos para preguntas, alternativas, intentos, respuestas y reportes de error:
+  `Question`, `Choice`, `QuizAttempt`, `QuizAttemptAnswer`, `QuestionErrorReport`.
+- Se genero la migracion `0017_evaluacion_gamificada`.
+- Se agrego logica de negocio para seleccionar preguntas, enviar intentos, bloquear tras 3
+  fallos, recuperar intento con practica >= 80% y calcular dominio/estrellas.
+- Se agregaron selectores de progreso para renderizar visto/aprobado/estrellas en listados y
+  detalle de tema.
+- Se agrego admin para preguntas con alternativas inline, intentos read-only y reportes de
+  error gestionables por estado.
+- Se agregaron vistas HTMX para iniciar quiz, enviar respuestas, refrescar estado, recuperar
+  intento y reportar error.
+- Se agregaron templates de seccion/formulario/resultados/bloqueos/errores/confirmacion.
+- Se integro la seccion "Demuestra lo aprendido" en el detalle de recurso.
+- Se integro estado visual en `resource_list` y `topic_detail`: visto amarillo, aprobado verde
+  y 1/2/3 estrellas con brillo progresivo.
+- Se agregaron estilos CSS para quiz, opciones, resultados, bloqueos, badges y estrellas.
+- Se actualizo el cache buster de `estilos.css` a `?v=11`.
+- Se corrigio una validacion de seguridad: una alternativa de otra pregunta ya no puede contar
+  como correcta si se manipula el POST.
+- Se corrigio el envio con preguntas sin responder: quedan registradas como incorrectas y se
+  muestran como "Sin responder".
+- Se corrigio el refresco de nivel ya aprobado para usar `quiz_section.html` existente.
+
+### Verificacion
+
+- `apps.content.tests.test_evaluation`: 37/37 OK.
+- `apps.content.tests.test_completion` + `apps.content.tests.test_evaluation`: 41/41 OK.
+- Suite completa: 124/124 OK.
+- `.venv\Scripts\python.exe manage.py check`: sin issues.
+- `.venv\Scripts\python.exe manage.py makemigrations --check --dry-run`: sin cambios.
+
+### Pendiente fuera del MVP
+
+- Fase 7: evaluacion final por tema.
+- Fase 8: XP, skills, rangos y rachas.
+- Fase 9: generacion asistida de preguntas por IA.
+- Verificacion manual en navegador: flujo alumno/staff, teclado, lector de pantalla y revision
+  visual fina de badges/estrellas.
