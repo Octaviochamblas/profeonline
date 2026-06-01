@@ -8,7 +8,7 @@
 ## Problema / Objetivo
 
 Las auditorías de **accesibilidad (axe)** y **rendimiento (Lighthouse)** se cerraron
-(`3 Finalizados/auditoria-accesibilidad-axe.md`, `...-rendimiento-seo-lighthouse.md`) **antes**
+(`backlog/3-finalizados/auditoria-accesibilidad-axe.md`, `...-rendimiento-seo-lighthouse.md`) **antes**
 de construir toda la UI de evaluación gamificada. Esa UI nueva **nunca pasó por QA manual de
 teclado/lector de pantalla** ni por una re-medición de rendimiento contra producción.
 
