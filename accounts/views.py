@@ -55,6 +55,7 @@ def register_view(request):
 @login_required
 def profile_view(request):
     from apps.content.selectors import get_resume_resource
+    from apps.content.services.gamification_service import get_gamification_summary
 
     profile, created = Profile.objects.get_or_create(
         user=request.user,
@@ -70,6 +71,7 @@ def profile_view(request):
             "profile": profile,
             "last_resource": last_resource,
             "last_resource_completed": last_resource_completed,
+            "gamification": get_gamification_summary(request.user),
         },
     )
 

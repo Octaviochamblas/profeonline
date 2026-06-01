@@ -9,3 +9,4 @@ from .completion import ResourceCompletion, ResourceView
 from .question import Question, Choice
 from .evaluation import QuizAttempt, QuizAttemptAnswer, TopicEvaluationAttempt
 from .error_report import QuestionErrorReport
+from .gamification import XPEvent, UserSkill, UserStreak

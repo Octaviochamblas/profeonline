@@ -9,6 +9,10 @@ from apps.content.models import (
     QuizAttemptAnswer,
     TopicEvaluationAttempt,
 )
+from apps.content.services.gamification_service import (
+    award_quiz_attempt_xp,
+    award_topic_exam_xp_and_skill,
+)
 
 # Preguntas por nivel: N1 y N2 = 5, N3 = 3
 QUESTIONS_PER_LEVEL = {1: 5, 2: 5, 3: 3}
@@ -223,6 +227,7 @@ def submit_quiz(user, resource, level, mode, answers_dict):
     for answer in answer_objects:
         answer.attempt = attempt
     QuizAttemptAnswer.objects.bulk_create(answer_objects)
+    award_quiz_attempt_xp(attempt)
 
     return attempt
 
@@ -384,4 +389,5 @@ def submit_topic_exam(user, topic, answers_dict):
         passed=passed,
         attempt_number=get_next_topic_attempt_number(user, topic),
     )
+    award_topic_exam_xp_and_skill(attempt)
     return attempt, results

@@ -19,6 +19,37 @@
 
     {% include "includes/resume_card.html" %}
 
+    <section class="gamification-summary" aria-labelledby="gamification-summary-title">
+        <div class="gamification-summary__header">
+            <div>
+                <p class="form-help">Progreso gamificado</p>
+                <h2 id="gamification-summary-title">{{ gamification.rank.name }}</h2>
+            </div>
+            <span class="quiz-badge quiz-badge--approved">{{ gamification.total_xp }} XP</span>
+        </div>
+        <div class="gamification-summary__stats">
+            <div>
+                <p class="form-help">Skills</p>
+                <strong>{{ gamification.skill_count }}</strong>
+            </div>
+            <div>
+                <p class="form-help">Racha actual</p>
+                <strong>{{ gamification.streak.current_count }} dia{{ gamification.streak.current_count|pluralize }}</strong>
+            </div>
+            <div>
+                <p class="form-help">Mejor racha</p>
+                <strong>{{ gamification.streak.longest_count }} dia{{ gamification.streak.longest_count|pluralize }}</strong>
+            </div>
+        </div>
+        {% if gamification.skills %}
+            <div class="gamification-summary__skills" aria-label="Skills desbloqueadas">
+                {% for skill in gamification.skills %}
+                    <span class="gamification-skill">{{ skill.name }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+
     <div class="panel-grid panel-grid--2">
         <div class="panel">
             <p class="form-help">Nombre de usuario</p>

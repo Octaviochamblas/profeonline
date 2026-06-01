@@ -1,6 +1,6 @@
 # Evaluación gamificada · Fase 8 — XP, skills, rangos y rachas
 
-- **Estado:** Por iniciar
+- **Estado:** Finalizado
 - **Creado:** 2026-05-31
 - **Área:** Producto pedagógico / Gamificación
 - **Origen:** Fase 8 de la épica `sistema-evaluacion-gamificada` (MVP Fases 1–6 ya entregado y
@@ -40,4 +40,30 @@ y rachas, mostrados en el perfil del alumno.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+- Se crearon los modelos `XPEvent`, `UserSkill` y `UserStreak` en `apps/content` con migracion
+  `0019_userstreak_xpevent_userskill`.
+- Se agrego un ledger de XP idempotente mediante `event_key` para evitar duplicados por refrescos
+  o reenvios HTMX.
+- Se implementaron recompensas iniciales:
+  - practica: 5 XP;
+  - practica con 80% o mas: 15 XP;
+  - repeticion de la misma seccion desde el cuarto intento: XP reducido anti-farmeo;
+  - aprobar nivel 1/2/3: 25/40/60 XP una sola vez;
+  - aprobar evaluacion final de tema: 100 XP una sola vez;
+  - desbloquear skill de tema: bonus 50 XP una sola vez;
+  - continuar racha diaria: bonus 10 XP.
+- Se conecto la gamificacion a `submit_quiz()` y `submit_topic_exam()` para emitir XP, rachas y
+  skills desde los flujos reales de evaluacion.
+- Se agregaron rangos calculados por XP + skills: Explorador, Aprendiz, Practico, Avanzado y
+  Experto.
+- Se agrego resumen gamificado al perfil: XP total, rango, skills, racha actual y mejor racha.
+- Se agrego administracion read-only para eventos XP, skills y rachas.
+- Se agregaron tests para XP por practica, anti-farmeo, idempotencia, skill por tema, rango,
+  racha y visualizacion en perfil.
+
+## Verificacion
+
+- `python manage.py test apps.content.tests.test_evaluation`: 60/60 OK.
+- `python manage.py test`: 147/147 OK.
+- `python manage.py check`: OK.
+- `python manage.py makemigrations --check --dry-run`: sin cambios pendientes.
