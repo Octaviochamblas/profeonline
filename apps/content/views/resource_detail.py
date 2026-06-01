@@ -87,16 +87,23 @@ class ResourceDetailView(DetailView):
             context["mastery"] = mastery
 
             has_questions = {}
+            draft_questions = {}
             for lvl in (1, 2, 3):
                 has_questions[lvl] = Question.objects.filter(
                     resource=resource,
                     level=lvl,
                     status="publicada",
                 ).exists()
+                draft_questions[lvl] = Question.objects.filter(
+                    resource=resource,
+                    level=lvl,
+                    status="borrador",
+                ).count()
             context["has_questions"] = has_questions
+            context["draft_questions"] = draft_questions
             context["quiz_available"] = any(has_questions.values())
             context["quiz_levels"] = [
-                (1, "Definición"),
+                (1, "Conceptos"),
                 (2, "Ejercicios simples"),
                 (3, "Problemas de aplicación"),
             ]

@@ -60,13 +60,47 @@ class TopicDetailView(DetailView):
         context["approved_count"] = sum(
             1 for progress in progress_map.values() if progress["max_level"] > 0
         )
-        context["stars_count"] = sum(
-            progress["stars"] for progress in progress_map.values()
-        )
         context["total_count"] = total
-        context["progress_percent"] = (
+
+        # Estrellas alcanzables = niveles con preguntas publicadas por recurso.
+        from collections import defaultdict
+        from apps.content.models import Question
+
+        published_levels_data = (
+            Question.objects.filter(resource__in=resources, status="publicada")
+            .values("resource_id", "level")
+            .distinct()
+        )
+        published_levels_by_resource = defaultdict(set)
+        for item in published_levels_data:
+            published_levels_by_resource[item["resource_id"]].add(item["level"])
+
+        achievable_by_resource = {
+            r.id: len(published_levels_by_resource[r.id]) for r in resources
+        }
+        stars_total = sum(achievable_by_resource.values())
+
+        # Estrellas obtenidas, topadas al máximo alcanzable de cada recurso para que el
+        # numerador nunca supere al denominador (evita "3/1" y porcentajes > 100% cuando
+        # un nivel aprobado dejó de tener preguntas publicadas).
+        stars_count = sum(
+            min(progress.get("stars", 0), achievable_by_resource.get(rid, 0))
+            for rid, progress in progress_map.items()
+        )
+        context["stars_count"] = stars_count
+        context["stars_total"] = stars_total
+
+        # Porcentajes para las barras de progreso
+        context["completed_percent"] = (
             int(len(completed_ids) / total * 100) if total else 0
         )
+        context["approved_percent"] = (
+            int(context["approved_count"] / total * 100) if total else 0
+        )
+        context["stars_percent"] = (
+            int(stars_count / stars_total * 100) if stars_total else 0
+        )
+        context["progress_percent"] = context["stars_percent"]
 
         # Evaluación final del tema (Fase 7)
         context["topic_exam_info"] = get_topic_exam_info(self.request.user, topic)

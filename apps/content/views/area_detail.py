@@ -30,10 +30,22 @@ class AreaDetailView(DetailView):
 
         subjects = Subject.objects.filter(area=area, is_active=True).order_by("name")
         context["subjects"] = subjects
-        context["topics"] = Topic.objects.filter(
+        topics = list(Topic.objects.filter(
             subject__area=area,
             is_active=True,
-        ).select_related("subject").order_by("subject__name", "name")
+        ).select_related("subject").order_by("subject__name", "name"))
+
+        # Batch query progress for all topics to avoid N+1
+        topic_ids = [t.id for t in topics]
+        from apps.content.selectors.evaluation_selectors import get_topics_progress_map
+        progress_map = get_topics_progress_map(self.request.user, topic_ids)
+
+        for t in topics:
+            t.progress = progress_map.get(t.id, {
+                "total": 0, "viewed": 0, "approved": 0, "stars": 0, "completed": 0, "percentage": 0
+            })
+
+        context["topics"] = topics
         context["resources"] = Resource.objects.filter(
             subject__area=area,
             is_published=True,
