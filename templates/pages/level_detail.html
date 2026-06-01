@@ -32,6 +32,9 @@
     </div>
 
     <section class="stack">
+        <div class="section-header">
+            <h2>Asignaturas</h2>
+        </div>
         {% if subjects %}
             <div class="home-card-grid">
                 {% for subject in subjects %}
@@ -75,41 +78,56 @@
         {% endif %}
     </section>
 
-    {% if resources %}
-        <section class="detail-card stack subject-detail-panel">
-            <div class="section-header">
-                <div>
-                    <h2>Recursos</h2>
-                    <p class="page-hero__text">Material publicado para estudiar o preparar clases de {{ level.name }}.</p>
-                </div>
+    <section class="detail-card stack subject-detail-panel">
+        <div class="level-header-flex">
+            <div>
+                <h2>Temas</h2>
+                <p class="page-hero__text">Material de estudio organizado por asignatura y tema.</p>
             </div>
-            <div class="topic-resource-list">
-                {% for resource in resources %}
-                    <a class="topic-resource-card" href="{% url 'content:resource_detail' resource.slug %}">
-                        <span class="topic-resource-card__step" aria-hidden="true">{{ forloop.counter }}</span>
-                        <span class="topic-resource-card__content">
-                            <span class="topic-resource-card__header">
-                                <span class="topic-resource-card__title">{{ resource.title }}</span>
-                                <span class="topic-resource-card__meta">
-                                    {% if resource.subject %}
-                                        <span class="topic-resource-card__badge">{{ resource.subject.name }}</span>
-                                    {% endif %}
-                                    {% if resource.topic %}
-                                        <span class="topic-resource-card__badge">{{ resource.topic.name }}</span>
-                                    {% endif %}
-                                </span>
-                            </span>
-                            {% if resource.description %}
-                                <span class="topic-resource-card__description">{{ resource.description }}</span>
-                            {% endif %}
-                        </span>
-                        <span class="topic-resource-card__arrow" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                        </span>
-                    </a>
+
+            <form method="get" action="" class="level-search-form">
+                <div class="level-search-input-wrapper">
+                    <input type="text"
+                           name="q"
+                           value="{{ q }}"
+                           placeholder="Buscar temas..."
+                           aria-label="Buscar temas por nombre"
+                           class="level-search-input">
+                    {% if q %}
+                        <a href="?" class="level-search-clear" aria-label="Limpiar búsqueda">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </a>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+        </div>
+
+        {% if topics %}
+            {% regroup topics by subject as topics_by_subject %}
+            <div class="level-topics-container">
+                {% for group in topics_by_subject %}
+                    <div class="level-subject-group">
+                        <h3 class="level-subject-title">
+                            {{ group.grouper.name }}
+                        </h3>
+                        <div class="level-topic-grid">
+                            {% for topic in group.list %}
+                                {% include "pages/_topic_card.html" with topic=topic show_subject_badge=False %}
+                            {% endfor %}
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
-        </section>
-    {% endif %}
+        {% else %}
+            <div class="empty-state">
+                {% if q %}
+                    <p>No se encontraron temas que coincidan con "{{ q }}". <a href="?">Mostrar todos</a></p>
+                {% else %}
+                    <p>Aún no hay temas publicados para este nivel.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </section>
 </section>
 {% endblock %}

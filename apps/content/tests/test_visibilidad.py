@@ -135,9 +135,11 @@ class TopicDetailProgressTests(TestCase):
         url = reverse("content:resource_detail", kwargs={"slug": self.r1.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        # It shouldn't render quiz section because there are no published questions
+        # It shouldn't render draft question text
         self.assertNotContains(response, "Draft Question Text")
-        self.assertNotContains(response, "quiz-section")
+        # It should render quiz section and the empty state message
+        self.assertContains(response, "quiz-section")
+        self.assertContains(response, "Aún no hay ejercicios publicados para este nivel")
 
     def test_draft_questions_hint_visible_to_staff(self):
         self.user.is_staff = True

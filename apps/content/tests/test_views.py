@@ -423,7 +423,7 @@ class SpanishUrlTests(TestCase):
         self.assertContains(area_response, self.subject.name)
         self.assertContains(area_response, self.resource.title)
         self.assertContains(subject_response, self.resource.title)
-        self.assertContains(level_response, self.resource.title)
+        self.assertContains(level_response, self.subject.name)
 
 
 import os
@@ -787,3 +787,42 @@ class TopicResourceOrderingAndNavigationTests(TestCase):
         self.assertEqual(response2.status_code, 200)
         self.assertEqual(response2.context["previous_resource"], self.r2)
         self.assertIsNone(response2.context["next_resource"])
+
+
+class LevelDetailViewTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Matematica", is_active=True)
+        self.level = Level.objects.create(name="Primaria", is_active=True)
+        self.topic1 = Topic.objects.create(name="Algebra", subject=self.subject, is_active=True)
+        self.topic2 = Topic.objects.create(name="Geometria", subject=self.subject, is_active=True)
+
+        self.res1 = Resource.objects.create(title="Ficha 1", subject=self.subject, topic=self.topic1, is_published=True)
+        self.res1.levels.add(self.level)
+
+        self.res2 = Resource.objects.create(title="Ficha 2", subject=self.subject, topic=self.topic2, is_published=True)
+        self.res2.levels.add(self.level)
+
+    def test_level_detail_context_and_regrouping(self):
+        url = reverse("content:level_detail", args=[self.level.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("topics", response.context)
+        # Topics should be regrouped and shown
+        self.assertContains(response, "Matematica")
+        self.assertContains(response, "Algebra")
+        self.assertContains(response, "Geometria")
+
+    def test_level_detail_search_filter(self):
+        url = reverse("content:level_detail", args=[self.level.slug])
+        # Search matching Algebra
+        response = self.client.get(url, {"q": "Alge"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Algebra")
+        self.assertNotContains(response, "Geometria")
+
+        # Search matching none
+        response = self.client.get(url, {"q": "Inexistente"})
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Algebra")
+        self.assertNotContains(response, "Geometria")
+        self.assertContains(response, "No se encontraron temas que coincidan con")

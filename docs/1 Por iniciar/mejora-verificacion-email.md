@@ -58,8 +58,8 @@ coherente con el diseño del sitio.
 ## Notas / Consideraciones
 
 - Verificar límites/cuota de envío de Brevo para no toparse con el plan gratuito.
-- Coordinar con `auditoria-seguridad-dependencias.md` (rotación de `BREVO_API_KEY` antes de
-  generar más envíos).
+- La rotación de `BREVO_API_KEY` (que pedía `auditoria-seguridad-dependencias.md`) **ya está
+  hecha** (finalizada en Sesión 1) → este bloqueo ya no aplica; se puede enviar sin riesgo.
 
 ---
 

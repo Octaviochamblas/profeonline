@@ -33,17 +33,21 @@ páginas legales y la CSP por nonce) y definir los eventos de conversión clave.
 - **Plausible / Umami (recomendado):** sin cookies, ligero, sin banner de consentimiento,
   alineado con educación y privacidad de menores.
 - **GA4:** más potente pero pesado, requiere banner de cookies y consentimiento.
-- **Solo métricas internas:** aprovechar `ResourceView`/`ResourceCompletion` para un mini
-  dashboard propio (sin terceros). Más trabajo, cero dependencias externas.
+- **Solo métricas internas (hoy mucho más viable):** ya existe un ledger rico —
+  `ResourceView`, `ResourceCompletion`, `QuizAttempt`, `TopicEvaluationAttempt`, `XPEvent`,
+  `UserSkill`, `UserStreak` — para un mini dashboard propio (sin terceros). Cero dependencias
+  externas y sin temas de privacidad; falta solo la vista/panel. Buena opción de bajo costo.
 
 ## Ruta de trabajo
 
 ### Fase 1 — Definir qué medir (antes de instalar nada)
-- Lista de eventos de conversión:
+- Lista de eventos de conversión (actualizada — el quiz y la gamificación **ya existen**):
   - `signup` (registro completado), `login_google`.
   - `whatsapp_click`, `phone_click`.
   - `resource_view`, `video_play`, `attachment_download`.
-  - `resource_completed`, `quiz_passed` (cuando exista el quiz).
+  - `resource_comprendido` (antes "completado"; `ResourceCompletion`).
+  - **Evaluación/gamificación (ya implementado):** `quiz_passed` (nivel de recurso aprobado),
+    `topic_exam_passed` (evaluación final de tema), `skill_unlocked`, hitos de XP/rango y racha.
 - Definir 1–2 "métricas norte" (ej.: registros/semana, clics a WhatsApp).
 
 ### Fase 2 — Elegir e instalar la herramienta
