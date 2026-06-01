@@ -69,7 +69,9 @@ Lo que falta:
 
 ## Notas / Consideraciones
 
-- **Depende de `decision-tema-claro-oscuro.md`**: definir el tema antes de maquetar.
+- ~~Depende de `decision-tema-claro-oscuro.md`~~ **Desbloqueado:** el tema claro ya está
+  decidido e **implementado en producción** (tokens `:root` en `estilos.css`). Maquetar
+  directamente con esos tokens.
 - El cuello de botella real es el **contenido** (foto, bio, testimonios), no el código.
 - No romper lo que ya funciona: `resume_card`, badges de asignaturas, accesos rápidos.
 
