@@ -1,0 +1,54 @@
+{% extends "admin/base_site.html" %}
+{% load i18n l10n admin_urls %}
+
+{% block content %}
+<div id="content-main">
+    <h2>Generar Preguntas con IA</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div>
+            <p>Se generarán preguntas en estado <strong>Borrador</strong> para los siguientes recursos:</p>
+            <ul style="margin-left: 20px; list-style-type: disc; margin-bottom: 20px;">
+                {% for obj in queryset %}
+                <li><strong>{{ obj.title }}</strong> (Asignatura: {{ obj.subject.name|default:"-" }}, Tema: {{ obj.topic.name|default:"-" }})</li>
+                <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk }}" />
+                {% endfor %}
+            </ul>
+
+            <fieldset class="module aligned">
+                <div class="form-row">
+                    <label for="id_level" class="required">Nivel pedagógico:</label>
+                    <select name="level" id="id_level">
+                        <option value="1">Nivel 1 — Definición</option>
+                        <option value="2">Nivel 2 — Ejercicios simples</option>
+                        <option value="3">Nivel 3 — Problemas de aplicación</option>
+                    </select>
+                    <div class="help">Define la complejidad y tipo de problemas a generar.</div>
+                </div>
+                <div class="form-row">
+                    <label for="id_mode" class="required">Modo de evaluación:</label>
+                    <select name="mode" id="id_mode">
+                        <option value="ambas">Ambas (Preparación y Evaluación)</option>
+                        <option value="preparacion">Solo Preparación</option>
+                        <option value="evaluacion">Solo Evaluación</option>
+                    </select>
+                    <div class="help">Determina en qué flujo del estudiante aparecerán estas preguntas.</div>
+                </div>
+                <div class="form-row">
+                    <label for="id_count" class="required">Cantidad de preguntas:</label>
+                    <input type="number" name="count" id="id_count" value="3" min="1" max="10" style="width: 60px;" />
+                    <div class="help">Número de preguntas a generar por cada recurso seleccionado.</div>
+                </div>
+            </fieldset>
+
+            <input type="hidden" name="action" value="generar_preguntas_ia_action" />
+            <input type="hidden" name="apply" value="yes" />
+
+            <div class="submit-row">
+                <input type="submit" value="Generar Preguntas" class="default" style="float: left; margin-right: 10px;" />
+                <a href="#" onclick="window.history.back(); return false;" class="button cancel-link" style="display: inline-block; padding: 10px 15px; background: #ccc; color: #333; text-decoration: none; border-radius: 4px;">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django.contrib import messages
+from django.template.response import TemplateResponse
 from django.utils.html import format_html
 
+from apps.content.services.ai_generation_service import generate_questions_for_resource
 from apps.content.models import (
     Area,
     Choice,
@@ -60,6 +63,58 @@ class ResourceAdmin(admin.ModelAdmin):
     list_filter = ("subject", "topic", "is_published")
     prepopulated_fields = {"slug": ("title",)}
     filter_horizontal = ("levels",)
+    actions = ["generar_preguntas_ia_action"]
+
+    @admin.action(description="Generar preguntas con IA")
+    def generar_preguntas_ia_action(self, request, queryset):
+        # Si se envió la confirmación del formulario intermedio
+        if "apply" in request.POST:
+            try:
+                level = int(request.POST.get("level", 1))
+                mode = request.POST.get("mode", "ambas")
+                count = int(request.POST.get("count", 3))
+            except (ValueError, TypeError):
+                level = 1
+                mode = "ambas"
+                count = 3
+
+            success_count = 0
+            for resource in queryset:
+                try:
+                    generate_questions_for_resource(
+                        resource=resource,
+                        level=level,
+                        mode=mode,
+                        count=count,
+                    )
+                    success_count += 1
+                except Exception as e:
+                    self.message_user(
+                        request,
+                        f"Error al generar preguntas para '{resource.title}': {e}",
+                        level=messages.ERROR,
+                    )
+
+            if success_count > 0:
+                self.message_user(
+                    request,
+                    f"Se generaron exitosamente preguntas en borrador para {success_count} recurso(s).",
+                    level=messages.SUCCESS,
+                )
+            return None
+
+        # Si no se ha enviado el formulario, renderizar la página intermedia
+        context = {
+            **self.admin_site.each_context(request),
+            "queryset": queryset,
+            "action_checkbox_name": admin.helpers.ACTION_CHECKBOX_NAME,
+            "title": "Generar preguntas con IA",
+        }
+        return TemplateResponse(
+            request,
+            "admin/content/resource/generate_ai_questions_confirm.html",
+            context,
+        )
 
 
 @admin.register(Module)

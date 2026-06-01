@@ -37,4 +37,17 @@ respuesta correcta y explicación breve, **siempre con revisión humana antes de
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+- **Configuración de credenciales**: Se agregaron las variables de entorno `GEMINI_API_KEY` y `OPENAI_API_KEY` en `config/settings/base.py`.
+- **Servicio de generación de IA (`ai_generation_service.py`)**:
+  - Implementación de la función `generate_questions_for_resource` que genera borradores de preguntas (`Question` + `Choice`) para un recurso y un nivel pedagógico seleccionados.
+  - Soporte integrado para las APIs de Gemini (Gemini 1.5 Flash) y OpenAI (GPT-4o-mini).
+  - Mecanismo de **fallback a preguntas simuladas (mock)** si no hay llaves configuradas y se ejecuta en modo de desarrollo (`DEBUG = True` o entorno de pruebas/tests). Esto permite que el sistema funcione out-of-the-box localmente y en la integración continua (CI) sin costes.
+- **Comando de management (`generate_ai_questions`)**: Permite la ejecución de la generación asistida a través de la terminal indicando el recurso, nivel, modo y cantidad.
+- **Acción e interfaz en Django Admin**:
+  - Se agregó una acción personalizada "Generar preguntas con IA" en la vista de lista de `Resource` de Django Admin.
+  - Implementación de un **formulario intermedio** premium e integrado en el diseño del admin para configurar el nivel, modo y cantidad de preguntas antes de disparar la generación por IA.
+- **Tests unitarios e integración (`test_ai_generation.py`)**:
+  - Cobertura de tests para la generación simulada/mock (matemáticas y ciencias).
+  - Pruebas del servicio con llamadas HTTP mockeadas a Gemini y OpenAI.
+  - Validación del comando de management y de la acción con formulario intermedio de Django Admin.
