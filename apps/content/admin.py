@@ -13,6 +13,9 @@ from apps.content.models import (
     Subject,
     Topic,
     TopicEvaluationAttempt,
+    UserSkill,
+    UserStreak,
+    XPEvent,
 )
 
 
@@ -193,3 +196,64 @@ class QuestionErrorReportAdmin(admin.ModelAdmin):
     def short_question(self, obj):
         text = obj.question.text
         return text[:80] + "…" if len(text) > 80 else text
+
+
+@admin.register(XPEvent)
+class XPEventAdmin(admin.ModelAdmin):
+    list_display = ("user", "event_type", "amount", "resource", "topic", "created_at")
+    list_filter = ("event_type", "created_at")
+    search_fields = ("user__username", "event_key", "resource__title", "topic__name")
+    readonly_fields = (
+        "user",
+        "event_type",
+        "amount",
+        "event_key",
+        "resource",
+        "topic",
+        "quiz_attempt",
+        "topic_attempt",
+        "metadata",
+        "created_at",
+    )
+    ordering = ("-created_at",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(UserSkill)
+class UserSkillAdmin(admin.ModelAdmin):
+    list_display = ("user", "name", "topic", "created_at")
+    list_filter = ("topic__subject", "created_at")
+    search_fields = ("user__username", "name", "topic__name")
+    readonly_fields = ("user", "topic", "name", "unlocked_by_attempt", "created_at")
+    ordering = ("-created_at",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(UserStreak)
+class UserStreakAdmin(admin.ModelAdmin):
+    list_display = ("user", "current_count", "longest_count", "last_activity_date")
+    search_fields = ("user__username",)
+    readonly_fields = (
+        "user",
+        "current_count",
+        "longest_count",
+        "last_activity_date",
+        "updated_at",
+    )
+    ordering = ("-current_count",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

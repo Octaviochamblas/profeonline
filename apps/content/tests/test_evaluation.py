@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from apps.content.models import (
     Choice,
@@ -15,6 +16,15 @@ from apps.content.models import (
     Subject,
     Topic,
     TopicEvaluationAttempt,
+    UserSkill,
+    UserStreak,
+    XPEvent,
+)
+from apps.content.services.gamification_service import (
+    award_quiz_attempt_xp,
+    award_xp,
+    get_gamification_summary,
+    get_user_rank,
 )
 from apps.content.services.evaluation_service import (
     MAX_EVAL_ATTEMPTS,
@@ -727,3 +737,136 @@ class TopicExamViewTests(TestCase):
             reverse("content:topic_detail", args=[self.topic.slug])
         )
         self.assertContains(resp, "Tema dominado")
+
+
+class GamificationTests(TestCase):
+    """Tests para XP, skills, rangos y rachas (Fase 8)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user("alumno", password="test1234")
+        self.subject = Subject.objects.create(name="Fisica", slug="fisica")
+        self.topic = Topic.objects.create(
+            name="Cinematica", slug="cinematica", subject=self.subject
+        )
+        self.resource = Resource.objects.create(
+            title="MRU", slug="mru", subject=self.subject,
+            topic=self.topic, is_published=True,
+        )
+
+    def _add_questions(self, count=5, level=1, mode="evaluacion"):
+        questions = []
+        for i in range(count):
+            q = Question.objects.create(
+                resource=self.resource,
+                level=level,
+                mode=mode,
+                text=f"Pregunta {i + 1}",
+                explanation="Explicacion",
+                status="publicada",
+                order=i,
+            )
+            Choice.objects.create(question=q, text="Correcta", is_correct=True, order=0)
+            Choice.objects.create(question=q, text="Incorrecta", order=1)
+            questions.append(q)
+        return questions
+
+    def _correct_answers(self, questions):
+        return {q.pk: q.choices.get(is_correct=True).pk for q in questions}
+
+    def test_practice_awards_xp_and_reduces_repeated_section(self):
+        questions = self._add_questions(count=5, level=1, mode="preparacion")
+
+        for _ in range(4):
+            submit_quiz(
+                self.user,
+                self.resource,
+                1,
+                "preparacion",
+                self._correct_answers(questions),
+            )
+
+        amounts = list(
+            XPEvent.objects.filter(user=self.user, event_type="practice")
+            .order_by("created_at")
+            .values_list("amount", flat=True)
+        )
+        self.assertEqual(amounts, [15, 15, 15, 5])
+
+    def test_resource_level_pass_xp_is_idempotent(self):
+        questions = self._add_questions(count=5, level=1, mode="evaluacion")
+        answers = self._correct_answers(questions)
+
+        attempt = submit_quiz(self.user, self.resource, 1, "evaluacion", answers)
+        award_quiz_attempt_xp(attempt)
+
+        events = XPEvent.objects.filter(
+            user=self.user,
+            event_type="resource_level_pass",
+            resource=self.resource,
+        )
+        self.assertEqual(events.count(), 1)
+        self.assertEqual(events.get().amount, 25)
+
+    def test_topic_exam_pass_unlocks_skill_and_xp_once(self):
+        questions = self._add_questions(count=10, level=1, mode="evaluacion")
+        answers = self._correct_answers(questions)
+
+        submit_topic_exam(self.user, self.topic, answers)
+        submit_topic_exam(self.user, self.topic, answers)
+
+        self.assertEqual(UserSkill.objects.filter(user=self.user, topic=self.topic).count(), 1)
+        self.assertEqual(
+            XPEvent.objects.filter(user=self.user, event_type="topic_exam_pass").count(),
+            1,
+        )
+        self.assertEqual(
+            XPEvent.objects.filter(user=self.user, event_type="skill_unlock").count(),
+            1,
+        )
+        summary = get_gamification_summary(self.user)
+        self.assertEqual(summary["total_xp"], 150)
+        self.assertEqual(summary["skill_count"], 1)
+
+    def test_rank_uses_xp_and_skills(self):
+        rank = get_user_rank(total_xp=450, skill_count=2)
+        self.assertEqual(rank["name"], "Practico")
+        gated_rank = get_user_rank(total_xp=450, skill_count=0)
+        self.assertEqual(gated_rank["name"], "Explorador")
+
+    def test_streak_continues_and_awards_bonus(self):
+        yesterday = timezone.localdate() - timezone.timedelta(days=1)
+        UserStreak.objects.create(
+            user=self.user,
+            current_count=2,
+            longest_count=2,
+            last_activity_date=yesterday,
+        )
+
+        award_xp(
+            user=self.user,
+            amount=5,
+            event_type="practice",
+            event_key="manual-practice",
+        )
+
+        streak = UserStreak.objects.get(user=self.user)
+        self.assertEqual(streak.current_count, 3)
+        self.assertEqual(streak.longest_count, 3)
+        self.assertTrue(
+            XPEvent.objects.filter(user=self.user, event_type="streak_bonus").exists()
+        )
+
+    def test_profile_shows_gamification_summary(self):
+        award_xp(
+            user=self.user,
+            amount=25,
+            event_type="resource_level_pass",
+            event_key="manual-pass",
+            resource=self.resource,
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("profile"))
+
+        self.assertContains(response, "Progreso gamificado")
+        self.assertContains(response, "25 XP")
