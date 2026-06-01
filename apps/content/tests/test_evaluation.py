@@ -493,6 +493,14 @@ class EvaluationViewTests(TestCase):
 
     def test_topic_detail_shows_evaluation_summary(self):
         ResourceView.objects.create(user=self.user, resource=self.resource)
+        # Publicar preguntas en niveles 2 y 3 para que el recurso ofrezca 3 niveles
+        # alcanzables (el setUp ya publica nivel 1); así la racha de 3 estrellas es real.
+        for lvl in (2, 3):
+            Question.objects.create(
+                resource=self.resource, level=lvl, mode="ambas",
+                text=f"¿Pregunta N{lvl}?", explanation="x",
+                status="publicada", order=lvl,
+            )
         QuizAttempt.objects.create(
             user=self.user,
             resource=self.resource,
@@ -508,8 +516,8 @@ class EvaluationViewTests(TestCase):
         resp = self.client.get(reverse("content:topic_detail", args=[self.topic.slug]))
 
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "1 aprobados")
-        self.assertContains(resp, "3 estrellas")
+        self.assertContains(resp, "1/1 aprobados")
+        self.assertContains(resp, "3/3 estrellas")
         self.assertContains(resp, "topic-resource-card--mastery-3")
 
 
