@@ -15,11 +15,11 @@
 {% block content %}
 <section class="stack">
     {% include "includes/breadcrumbs.html" %}
+    <p class="page-hero__kicker">Ruta de aprendizaje</p>
 
     <div class="detail-card stack">
         <div class="section-header">
             <div>
-                <p class="page-hero__kicker">Ruta de aprendizaje</p>
                 <h1>{{ topic.name }}</h1>
                 <p class="page-hero__text">
                     {% if topic.description %}
@@ -60,45 +60,45 @@
         </div>
 
         {% if user.is_authenticated and total_count %}
-            <div class="topic-progress stack" style="gap: 0.75rem; background: var(--surface-soft); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 1.5rem;">
-                <div class="topic-progress__header" style="margin-bottom: 0.25rem; display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem;">
-                    <span class="topic-progress__label" style="font-weight: 700; font-size: 1.05rem; display: flex; align-items: center; gap: 0.35rem; color: var(--primary);">
+            <div class="topic-progress topic-progress--panel stack">
+                <div class="topic-progress__header">
+                    <span class="topic-progress__label">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                         Progreso del tema
                     </span>
-                    <span class="topic-progress__count" style="font-weight: 600; font-size: 0.9rem; color: var(--text);">
+                    <span class="topic-progress__count">
                         {{ completed_count }}/{{ total_count }} comprendidos · {{ approved_count }}/{{ total_count }} aprobados · {{ stars_count }}/{{ stars_total }} estrellas
                     </span>
                 </div>
 
                 <div class="topic-progress__main-bar">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem; font-weight: 600; color: var(--muted);">
+                    <div class="topic-progress__bar-label">
                         <span>Estrellas obtenidas</span>
                         <span>{{ stars_percent }}%</span>
                     </div>
-                    <div class="topic-progress__bar" role="progressbar" aria-valuenow="{{ stars_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de estrellas" style="height: 10px; border-radius: var(--radius-pill); background-color: var(--border); overflow: hidden; width: 100%;">
-                        <div class="topic-progress__fill" style="width: {{ stars_percent }}%; height: 100%; background-color: #16a34a; border-radius: var(--radius-pill); transition: width 0.3s ease;"></div>
+                    <div class="topic-progress__bar" role="progressbar" aria-valuenow="{{ stars_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de estrellas">
+                        <div class="topic-progress__fill" style="width: {{ stars_percent }}%;"></div>
                     </div>
                 </div>
 
-                <div class="topic-progress__secondary-bars" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 0.25rem;">
+                <div class="topic-progress__secondary-bars">
                     <div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem; font-weight: 600; color: var(--muted);">
+                        <div class="topic-progress__bar-label">
                             <span>Aprobados</span>
                             <span>{{ approved_percent }}%</span>
                         </div>
-                        <div class="topic-progress__bar" role="progressbar" aria-valuenow="{{ approved_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de recursos aprobados" style="height: 6px; border-radius: var(--radius-pill); background-color: var(--border); overflow: hidden; width: 100%;">
-                            <div class="topic-progress__fill" style="width: {{ approved_percent }}%; height: 100%; background-color: #16a34a; border-radius: var(--radius-pill); transition: width 0.3s ease; opacity: 0.8;"></div>
+                        <div class="topic-progress__bar topic-progress__bar--secondary" role="progressbar" aria-valuenow="{{ approved_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de recursos aprobados">
+                            <div class="topic-progress__fill topic-progress__fill--opacity-8" style="width: {{ approved_percent }}%;"></div>
                         </div>
                     </div>
 
                     <div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem; font-weight: 600; color: var(--muted);">
+                        <div class="topic-progress__bar-label">
                             <span>Comprendidos</span>
                             <span>{{ completed_percent }}%</span>
                         </div>
-                        <div class="topic-progress__bar" role="progressbar" aria-valuenow="{{ completed_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de recursos comprendidos" style="height: 6px; border-radius: var(--radius-pill); background-color: var(--border); overflow: hidden; width: 100%;">
-                            <div class="topic-progress__fill" style="width: {{ completed_percent }}%; height: 100%; background-color: var(--primary); border-radius: var(--radius-pill); transition: width 0.3s ease;"></div>
+                        <div class="topic-progress__bar topic-progress__bar--secondary" role="progressbar" aria-valuenow="{{ completed_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de recursos comprendidos">
+                            <div class="topic-progress__fill topic-progress__fill--primary-color" style="width: {{ completed_percent }}%;"></div>
                         </div>
                     </div>
                 </div>

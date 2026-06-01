@@ -450,12 +450,13 @@ class EvaluationViewTests(TestCase):
         self.assertContains(resp, "Demuestra lo aprendido")
 
     def test_resource_detail_no_quiz_without_questions(self):
-        """Sin preguntas publicadas no debe aparecer la sección."""
+        """Sin preguntas publicadas debe mostrar el estado vacío en la sección de quiz."""
         Question.objects.all().delete()
         self.client.force_login(self.user)
         url = reverse("content:resource_detail", args=[self.resource.slug])
         resp = self.client.get(url)
-        self.assertNotContains(resp, "Demuestra lo aprendido")
+        self.assertContains(resp, "Demuestra lo aprendido")
+        self.assertContains(resp, "Aún no hay ejercicios publicados para este nivel")
 
     def test_resource_detail_anonymous_no_quiz(self):
         url = reverse("content:resource_detail", args=[self.resource.slug])

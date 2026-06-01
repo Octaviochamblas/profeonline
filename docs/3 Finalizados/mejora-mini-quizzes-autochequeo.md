@@ -1,6 +1,6 @@
 # Mini-quizzes de autochequeo al final de cada recurso
 
-- **Estado:** Por iniciar
+- **Estado:** Finalizado (entregado por la épica de evaluación gamificada, no como tarjeta propia)
 - **Creado:** 2026-05-31
 - **Área:** Producto (pedagógico)
 - **Prioridad:** 🟡 Media-alta (gran diferenciador de aprendizaje)
@@ -83,4 +83,21 @@ inmediato, persistencia de intentos y estado visual de dominio.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a "3 Finalizados".)_
+
+Esta tarjeta era el **MVP inicial** de la épica `sistema-evaluacion-gamificada.md`, y quedó
+**100% cubierta por la implementación de esa épica** (no se ejecutó como tarjeta independiente).
+Todos sus criterios de aceptación están entregados y en producción:
+
+- Staff crea preguntas de opción múltiple por recurso desde el admin (`QuestionAdmin`,
+  `ChoiceInline`).
+- El estudiante responde con feedback inmediato por HTMX (`quiz_section.html`, `submit_quiz`).
+- Aprobar se refleja en el estado visual del recurso (badges Visto/Comprendido/Aprobado +
+  estrellas).
+- Umbral 5/5 para aprobar; 3 intentos por nivel; recuperación con práctica ≥80%.
+- Reporte de errores por pregunta (`QuestionErrorReport`) hacia admin + email.
+- Preguntas IA nacen como `borrador` (Fase 9), nunca auto-publicadas.
+- Cobertura de tests: `test_evaluation.py`, `test_completion.py`, `test_visibilidad.py` (verdes).
+
+**Referencias:** `3 Finalizados/sistema-evaluacion-gamificada.md` (MVP Fases 1–6),
+`evaluacion-fase7/8/9-*.md` y `visibilidad-ejercitacion-evaluacion-progreso.md`. Se cierra y
+archiva por trazabilidad; **no requiere trabajo adicional**.
