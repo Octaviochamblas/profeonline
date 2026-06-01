@@ -12,6 +12,7 @@ from apps.content.models import (
     Resource,
     Subject,
     Topic,
+    TopicEvaluationAttempt,
 )
 
 
@@ -119,6 +120,42 @@ class QuizAttemptAdmin(admin.ModelAdmin):
         "mode",
         "score",
         "total",
+        "passed",
+        "attempt_number",
+        "created_at",
+    )
+    ordering = ("-created_at",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description="Puntaje")
+    def score_display(self, obj):
+        return f"{obj.score}/{obj.total}"
+
+
+@admin.register(TopicEvaluationAttempt)
+class TopicEvaluationAttemptAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "topic",
+        "score_display",
+        "percentage",
+        "passed",
+        "attempt_number",
+        "created_at",
+    )
+    list_filter = ("passed", "topic__subject")
+    search_fields = ("user__username", "topic__name")
+    readonly_fields = (
+        "user",
+        "topic",
+        "score",
+        "total",
+        "percentage",
         "passed",
         "attempt_number",
         "created_at",

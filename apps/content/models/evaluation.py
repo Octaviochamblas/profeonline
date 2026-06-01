@@ -62,6 +62,56 @@ class QuizAttempt(models.Model):
         )
 
 
+class TopicEvaluationAttempt(models.Model):
+    """Intento de la evaluación final de un tema.
+
+    Compila preguntas de los recursos del tema. A diferencia de QuizAttempt
+    (5/5 por nivel de recurso), aquí se aprueba con un umbral porcentual.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="topic_eval_attempts",
+    )
+    topic = models.ForeignKey(
+        "content.Topic",
+        on_delete=models.CASCADE,
+        related_name="eval_attempts",
+    )
+    score = models.PositiveSmallIntegerField(
+        verbose_name="aciertos",
+        help_text="Número de respuestas correctas.",
+    )
+    total = models.PositiveSmallIntegerField(
+        verbose_name="total de preguntas",
+    )
+    percentage = models.PositiveSmallIntegerField(
+        verbose_name="porcentaje",
+        help_text="Porcentaje de acierto (0-100).",
+    )
+    passed = models.BooleanField(verbose_name="aprobado")
+    attempt_number = models.PositiveSmallIntegerField(
+        verbose_name="nº de intento",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "topic", "attempt_number"],
+                name="unique_topic_eval_attempt",
+            )
+        ]
+        ordering = ["-created_at"]
+        verbose_name = "intento de evaluación de tema"
+        verbose_name_plural = "intentos de evaluación de tema"
+
+    def __str__(self) -> str:
+        result = "✓" if self.passed else "✗"
+        return f"{result} {self.user} — {self.topic} {self.percentage}%"
+
+
 class QuizAttemptAnswer(models.Model):
     """Respuesta individual dentro de un intento de evaluación."""
 

@@ -7,6 +7,7 @@ from apps.content.models import (
     Question,
     QuizAttempt,
     QuizAttemptAnswer,
+    TopicEvaluationAttempt,
 )
 
 # Preguntas por nivel: N1 y N2 = 5, N3 = 3
@@ -17,6 +18,10 @@ MAX_EVAL_ATTEMPTS = 3
 
 # Porcentaje mínimo de preparación para recuperar un intento
 PRACTICE_RECOVERY_THRESHOLD = 0.8  # 80%
+
+# Evaluación final de tema: nº máximo de preguntas y umbral de aprobación
+TOPIC_EXAM_QUESTION_COUNT = 10
+TOPIC_PASS_THRESHOLD = 0.8  # 80%
 
 
 def get_questions_for_quiz(resource, level, mode, count=None):
@@ -242,3 +247,141 @@ def get_resource_mastery(user, resource):
         "stars": max_level_passed,  # 1 star per level passed
         "levels_info": levels_info,
     }
+
+
+# ---------------------------------------------------------------------------
+# Evaluación final por tema (Fase 7)
+# ---------------------------------------------------------------------------
+
+
+def _topic_exam_question_qs(topic):
+    """Preguntas publicadas de evaluación de los recursos publicados del tema."""
+    return (
+        Question.objects.filter(
+            resource__topic=topic,
+            resource__is_published=True,
+            status="publicada",
+        )
+        .filter(Q(mode="evaluacion") | Q(mode="ambas"))
+    )
+
+
+def get_topic_exam_question_count(topic):
+    """Número de preguntas disponibles para la evaluación final del tema."""
+    return _topic_exam_question_qs(topic).count()
+
+
+def get_topic_exam_questions(topic, count=None):
+    """Selecciona preguntas aleatorias para la evaluación final del tema."""
+    if count is None:
+        count = TOPIC_EXAM_QUESTION_COUNT
+    qs = _topic_exam_question_qs(topic).prefetch_related("choices")
+    return list(qs.order_by("?")[:count])
+
+
+def _topic_brilliance(percentage):
+    """Nivel de brillo del tema aprobado según la mejor nota (0-3)."""
+    if percentage >= 100:
+        return 3
+    if percentage >= 90:
+        return 2
+    if percentage >= int(TOPIC_PASS_THRESHOLD * 100):
+        return 1
+    return 0
+
+
+def get_next_topic_attempt_number(user, topic):
+    """Siguiente número de intento de la evaluación final del tema."""
+    result = TopicEvaluationAttempt.objects.filter(
+        user=user, topic=topic
+    ).aggregate(max_num=Max("attempt_number"))
+    return (result["max_num"] or 0) + 1
+
+
+def get_topic_exam_info(user, topic):
+    """Estado de la evaluación final de un tema para un usuario.
+
+    Returns:
+        dict con: available_questions, has_exam, used, passed,
+        best_percentage, brilliance, threshold.
+    """
+    available = get_topic_exam_question_count(topic)
+    info = {
+        "available_questions": available,
+        "has_exam": available > 0,
+        "used": 0,
+        "passed": False,
+        "best_percentage": 0,
+        "brilliance": 0,
+        "threshold": int(TOPIC_PASS_THRESHOLD * 100),
+    }
+    if not user.is_authenticated:
+        return info
+
+    attempts = TopicEvaluationAttempt.objects.filter(user=user, topic=topic)
+    info["used"] = attempts.count()
+    info["passed"] = attempts.filter(passed=True).exists()
+    best = attempts.order_by("-percentage").first()
+    info["best_percentage"] = best.percentage if best else 0
+    info["brilliance"] = _topic_brilliance(info["best_percentage"]) if info["passed"] else 0
+    return info
+
+
+def submit_topic_exam(user, topic, answers_dict):
+    """Califica y registra un intento de evaluación final del tema.
+
+    Args:
+        answers_dict: dict {question_id: choice_id|None}
+
+    Returns:
+        (TopicEvaluationAttempt, results) donde results es una lista de dicts
+        {question, selected, correct_choice, is_correct, explanation}.
+    """
+    question_ids = list(answers_dict.keys())
+    questions = {
+        question.pk: question
+        for question in Question.objects.filter(
+            pk__in=question_ids,
+            resource__topic=topic,
+        ).prefetch_related("choices")
+    }
+
+    score = 0
+    results = []
+    for question_id, choice_id in answers_dict.items():
+        question = questions.get(question_id)
+        if not question:
+            continue
+
+        choices = list(question.choices.all())
+        correct_choice = next((c for c in choices if c.is_correct), None)
+        # selected solo es válido si la alternativa pertenece a la pregunta
+        selected = None
+        if choice_id is not None:
+            selected = next((c for c in choices if c.pk == choice_id), None)
+        is_correct = bool(selected and selected.is_correct)
+        if is_correct:
+            score += 1
+
+        results.append({
+            "question": question,
+            "selected": selected,
+            "correct_choice": correct_choice,
+            "is_correct": is_correct,
+            "explanation": question.explanation,
+        })
+
+    total = len(results)
+    passed = total > 0 and (score / total) >= TOPIC_PASS_THRESHOLD
+    percentage = round(score / total * 100) if total else 0
+
+    attempt = TopicEvaluationAttempt.objects.create(
+        user=user,
+        topic=topic,
+        score=score,
+        total=total,
+        percentage=percentage,
+        passed=passed,
+        attempt_number=get_next_topic_attempt_number(user, topic),
+    )
+    return attempt, results

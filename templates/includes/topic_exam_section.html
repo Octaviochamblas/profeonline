@@ -1,0 +1,47 @@
+{% load static %}
+
+<section class="topic-exam{% if topic_exam_info.passed %} topic-exam--passed topic-exam--brilliance-{{ topic_exam_info.brilliance }}{% endif %}" id="topic-exam" aria-labelledby="topic-exam-title">
+    <div class="topic-exam__header">
+        <h2 class="topic-exam__title" id="topic-exam-title">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Evaluación final del tema
+        </h2>
+        {% if topic_exam_info.passed %}
+        <span class="badge badge--success topic-exam__badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Aprobado · {{ topic_exam_info.best_percentage }}%
+        </span>
+        {% endif %}
+    </div>
+
+    {% if topic_exam_info.has_exam %}
+        <p class="topic-exam__intro">
+            Demuestra que dominas <strong>{{ topic.name }}</strong> completo. Esta evaluación reúne
+            preguntas de los recursos del tema; necesitas <strong>{{ topic_exam_info.threshold }}%</strong> para aprobarlo.
+        </p>
+
+        {% if topic_exam_info.passed %}
+        <p class="topic-exam__state topic-exam__state--passed">
+            🌟 ¡Tema dominado! Tu mejor nota es <strong>{{ topic_exam_info.best_percentage }}%</strong>.
+        </p>
+        {% elif topic_exam_info.used > 0 %}
+        <p class="topic-exam__state">
+            Mejor nota hasta ahora: <strong>{{ topic_exam_info.best_percentage }}%</strong> · necesitas {{ topic_exam_info.threshold }}% para aprobar.
+        </p>
+        {% endif %}
+
+        <div class="topic-exam__actions">
+            <button class="btn btn-primary"
+                    hx-get="{% url 'content:topic_exam_start' topic.slug %}"
+                    hx-target="#topic-exam-area"
+                    hx-swap="innerHTML">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                {% if topic_exam_info.passed %}Repetir evaluación{% elif topic_exam_info.used > 0 %}Reintentar evaluación{% else %}Rendir evaluación final{% endif %}
+            </button>
+        </div>
+
+        <div id="topic-exam-area" class="topic-exam__area"></div>
+    {% else %}
+        <p class="topic-exam__coming-soon">Aún no hay preguntas para la evaluación final de este tema. Próximamente.</p>
+    {% endif %}
+</section>

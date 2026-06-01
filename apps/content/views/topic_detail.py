@@ -4,6 +4,7 @@ from django.views.generic import DetailView
 
 from apps.content.models import ResourceCompletion, Topic
 from apps.content.selectors.evaluation_selectors import get_resource_progress_map
+from apps.content.services.evaluation_service import get_topic_exam_info
 from apps.content.views._seo import breadcrumb_schema, build_breadcrumbs
 
 
@@ -66,4 +67,7 @@ class TopicDetailView(DetailView):
         context["progress_percent"] = (
             int(len(completed_ids) / total * 100) if total else 0
         )
+
+        # Evaluación final del tema (Fase 7)
+        context["topic_exam_info"] = get_topic_exam_info(self.request.user, topic)
         return context

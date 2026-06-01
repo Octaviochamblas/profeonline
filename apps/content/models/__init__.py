@@ -7,5 +7,5 @@ from .module import Module
 from .module_resource import ModuleResource
 from .completion import ResourceCompletion, ResourceView
 from .question import Question, Choice
-from .evaluation import QuizAttempt, QuizAttemptAnswer
+from .evaluation import QuizAttempt, QuizAttemptAnswer, TopicEvaluationAttempt
 from .error_report import QuestionErrorReport
