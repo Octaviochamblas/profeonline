@@ -14,15 +14,20 @@ from apps.content.models import (
     ResourceView,
     Subject,
     Topic,
+    TopicEvaluationAttempt,
 )
 from apps.content.services.evaluation_service import (
     MAX_EVAL_ATTEMPTS,
     QUESTIONS_PER_LEVEL,
+    TOPIC_EXAM_QUESTION_COUNT,
     get_attempts_info,
     get_questions_for_quiz,
     get_resource_mastery,
+    get_topic_exam_info,
+    get_topic_exam_questions,
     recover_attempt,
     submit_quiz,
+    submit_topic_exam,
 )
 
 
@@ -496,3 +501,229 @@ class EvaluationViewTests(TestCase):
         self.assertContains(resp, "1 aprobados")
         self.assertContains(resp, "3 estrellas")
         self.assertContains(resp, "topic-resource-card--mastery-3")
+
+
+class TopicExamServiceTests(TestCase):
+    """Tests para la evaluación final por tema (Fase 7)."""
+
+    def setUp(self):
+        self.user = User.objects.create_user("alumno", password="test1234")
+        self.subject = Subject.objects.create(name="Física", slug="fisica")
+        self.topic = Topic.objects.create(
+            name="Cinemática", slug="cinematica", subject=self.subject
+        )
+        self.other_topic = Topic.objects.create(
+            name="Dinámica", slug="dinamica", subject=self.subject
+        )
+
+    def _make_resource(self, slug, topic=None, is_published=True):
+        return Resource.objects.create(
+            title=slug.upper(), slug=slug, subject=self.subject,
+            topic=topic or self.topic, is_published=is_published,
+        )
+
+    def _add_questions(self, resource, count, level=1, mode="evaluacion",
+                       status="publicada"):
+        questions = []
+        for i in range(count):
+            q = Question.objects.create(
+                resource=resource, level=level, mode=mode,
+                text=f"{resource.slug} P{i+1}", explanation=f"Exp {i+1}",
+                status=status, order=i,
+            )
+            Choice.objects.create(question=q, text="Correcta", is_correct=True, order=0)
+            Choice.objects.create(question=q, text="Mala 1", order=1)
+            Choice.objects.create(question=q, text="Mala 2", order=2)
+            questions.append(q)
+        return questions
+
+    def test_exam_questions_compiled_from_topic_resources(self):
+        r1 = self._make_resource("mru")
+        r2 = self._make_resource("mruv")
+        self._add_questions(r1, 5)
+        self._add_questions(r2, 5)
+        questions = get_topic_exam_questions(self.topic)
+        self.assertEqual(len(questions), 10)
+
+    def test_exam_caps_at_question_count(self):
+        r1 = self._make_resource("mru")
+        self._add_questions(r1, TOPIC_EXAM_QUESTION_COUNT + 5)
+        questions = get_topic_exam_questions(self.topic)
+        self.assertEqual(len(questions), TOPIC_EXAM_QUESTION_COUNT)
+
+    def test_exam_excludes_drafts_and_prep_only_and_other_topics(self):
+        r1 = self._make_resource("mru")
+        self._add_questions(r1, 3)  # válidas
+        self._add_questions(r1, 2, status="borrador")
+        self._add_questions(r1, 2, mode="preparacion")
+        other = self._make_resource("calor", topic=self.other_topic)
+        self._add_questions(other, 4)
+        questions = get_topic_exam_questions(self.topic)
+        self.assertEqual(len(questions), 3)
+
+    def test_submit_passes_at_threshold(self):
+        r1 = self._make_resource("mru")
+        questions = self._add_questions(r1, 10)
+        answers = {q.pk: q.choices.get(is_correct=True).pk for q in questions[:8]}
+        answers.update({q.pk: q.choices.filter(is_correct=False).first().pk
+                        for q in questions[8:]})
+        attempt, results = submit_topic_exam(self.user, self.topic, answers)
+        self.assertEqual(attempt.score, 8)
+        self.assertEqual(attempt.total, 10)
+        self.assertEqual(attempt.percentage, 80)
+        self.assertTrue(attempt.passed)
+        self.assertEqual(len(results), 10)
+
+    def test_submit_fails_below_threshold(self):
+        r1 = self._make_resource("mru")
+        questions = self._add_questions(r1, 10)
+        answers = {q.pk: q.choices.get(is_correct=True).pk for q in questions[:7]}
+        answers.update({q.pk: None for q in questions[7:]})
+        attempt, _ = submit_topic_exam(self.user, self.topic, answers)
+        self.assertEqual(attempt.score, 7)
+        self.assertEqual(attempt.percentage, 70)
+        self.assertFalse(attempt.passed)
+
+    def test_submit_rejects_choice_from_another_question(self):
+        r1 = self._make_resource("mru")
+        questions = self._add_questions(r1, 10)
+        answers = {q.pk: q.choices.get(is_correct=True).pk for q in questions}
+        # Inyectar una alternativa de otra pregunta en la primera
+        answers[questions[0].pk] = questions[1].choices.get(is_correct=True).pk
+        attempt, results = submit_topic_exam(self.user, self.topic, answers)
+        self.assertEqual(attempt.score, 9)
+        first = next(r for r in results if r["question"].pk == questions[0].pk)
+        self.assertIsNone(first["selected"])
+        self.assertFalse(first["is_correct"])
+
+    def test_info_tracks_best_and_brilliance(self):
+        r1 = self._make_resource("mru")
+        questions = self._add_questions(r1, 10)
+        # Intento 1: 80% (aprueba, brillo 1)
+        a1 = {q.pk: q.choices.get(is_correct=True).pk for q in questions[:8]}
+        a1.update({q.pk: None for q in questions[8:]})
+        submit_topic_exam(self.user, self.topic, a1)
+        # Intento 2: 100% (brillo 3)
+        a2 = {q.pk: q.choices.get(is_correct=True).pk for q in questions}
+        submit_topic_exam(self.user, self.topic, a2)
+
+        info = get_topic_exam_info(self.user, self.topic)
+        self.assertTrue(info["passed"])
+        self.assertEqual(info["used"], 2)
+        self.assertEqual(info["best_percentage"], 100)
+        self.assertEqual(info["brilliance"], 3)
+        self.assertEqual(info["threshold"], 80)
+
+    def test_attempt_number_increments(self):
+        r1 = self._make_resource("mru")
+        questions = self._add_questions(r1, 10)
+        answers = {q.pk: q.choices.get(is_correct=True).pk for q in questions}
+        a1, _ = submit_topic_exam(self.user, self.topic, answers)
+        a2, _ = submit_topic_exam(self.user, self.topic, answers)
+        self.assertEqual(a1.attempt_number, 1)
+        self.assertEqual(a2.attempt_number, 2)
+
+    def test_info_no_exam_without_questions(self):
+        info = get_topic_exam_info(self.user, self.topic)
+        self.assertFalse(info["has_exam"])
+        self.assertEqual(info["available_questions"], 0)
+
+
+class TopicExamViewTests(TestCase):
+    """Tests para las vistas HTMX de la evaluación final por tema."""
+
+    def setUp(self):
+        self.user = User.objects.create_user("alumno", password="test1234")
+        self.subject = Subject.objects.create(name="Física", slug="fisica")
+        self.topic = Topic.objects.create(
+            name="Cinemática", slug="cinematica", subject=self.subject
+        )
+        self.resource = Resource.objects.create(
+            title="MRU", slug="mru", subject=self.subject,
+            topic=self.topic, is_published=True,
+        )
+        self.questions = []
+        for i in range(6):
+            q = Question.objects.create(
+                resource=self.resource, level=1, mode="evaluacion",
+                text=f"¿Pregunta {i+1}?", explanation=f"Explica {i+1}",
+                status="publicada", order=i,
+            )
+            Choice.objects.create(question=q, text="Sí (correcta)", is_correct=True, order=0)
+            Choice.objects.create(question=q, text="No", order=1)
+            self.questions.append(q)
+
+    def test_exam_start_requires_login(self):
+        url = reverse("content:topic_exam_start", args=[self.topic.slug])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn("login", resp.url)
+
+    def test_exam_start_returns_form(self):
+        self.client.force_login(self.user)
+        url = reverse("content:topic_exam_start", args=[self.topic.slug])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Enviar evaluación")
+
+    def test_exam_start_empty_without_questions(self):
+        Question.objects.all().delete()
+        self.client.force_login(self.user)
+        url = reverse("content:topic_exam_start", args=[self.topic.slug])
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Aún no hay preguntas")
+
+    def test_exam_submit_creates_attempt_and_passes(self):
+        self.client.force_login(self.user)
+        start_url = reverse("content:topic_exam_start", args=[self.topic.slug])
+        self.client.get(start_url)
+
+        session = self.client.session
+        question_ids = session[f"topic_exam_{self.topic.pk}"]
+        post_data = {
+            f"question_{q_id}": str(
+                Question.objects.get(pk=q_id).choices.get(is_correct=True).pk
+            )
+            for q_id in question_ids
+        }
+
+        submit_url = reverse("content:topic_exam_submit", args=[self.topic.slug])
+        resp = self.client.post(submit_url, post_data, HTTP_HX_REQUEST="true")
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Tema aprobado")
+        self.assertTrue(
+            TopicEvaluationAttempt.objects.filter(
+                user=self.user, topic=self.topic, passed=True
+            ).exists()
+        )
+
+    def test_exam_submit_without_active_session(self):
+        self.client.force_login(self.user)
+        submit_url = reverse("content:topic_exam_submit", args=[self.topic.slug])
+        resp = self.client.post(submit_url, {}, HTTP_HX_REQUEST="true")
+        self.assertEqual(resp.status_code, 400)
+
+    def test_topic_detail_shows_exam_section(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("content:topic_detail", args=[self.topic.slug])
+        )
+        self.assertContains(resp, "Evaluación final del tema")
+
+    def test_topic_detail_anonymous_no_exam_section(self):
+        resp = self.client.get(
+            reverse("content:topic_detail", args=[self.topic.slug])
+        )
+        self.assertNotContains(resp, "Evaluación final del tema")
+
+    def test_topic_detail_shows_mastery_badge_when_passed(self):
+        TopicEvaluationAttempt.objects.create(
+            user=self.user, topic=self.topic, score=6, total=6,
+            percentage=100, passed=True, attempt_number=1,
+        )
+        self.client.force_login(self.user)
+        resp = self.client.get(
+            reverse("content:topic_detail", args=[self.topic.slug])
+        )
+        self.assertContains(resp, "Tema dominado")

@@ -9,14 +9,17 @@ from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
 
-from apps.content.models import Question, QuestionErrorReport, Resource
+from apps.content.models import Question, QuestionErrorReport, Resource, Topic
 from apps.content.services.evaluation_service import (
     QUESTIONS_PER_LEVEL,
     get_attempts_info,
     get_questions_for_quiz,
     get_resource_mastery,
+    get_topic_exam_info,
+    get_topic_exam_questions,
     recover_attempt,
     submit_quiz,
+    submit_topic_exam,
 )
 
 QUIZ_LEVELS = [
@@ -252,4 +255,68 @@ def report_error(request, question_id):
         request,
         "includes/report_confirmation.html",
         {"question": question},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Evaluación final por tema (Fase 7)
+# ---------------------------------------------------------------------------
+
+
+def _get_active_topic(slug):
+    return get_object_or_404(Topic, slug=slug, is_active=True)
+
+
+@login_required
+def topic_exam_start(request, slug):
+    """GET (HTMX) — Renderiza el formulario de la evaluación final del tema."""
+    topic = _get_active_topic(slug)
+
+    questions = get_topic_exam_questions(topic)
+    if not questions:
+        return TemplateResponse(
+            request,
+            "includes/topic_exam_empty.html",
+            {"topic": topic},
+        )
+
+    request.session[f"topic_exam_{topic.pk}"] = [q.pk for q in questions]
+
+    return TemplateResponse(
+        request,
+        "includes/topic_exam_form.html",
+        {"topic": topic, "questions": questions},
+    )
+
+
+@login_required
+@require_POST
+def topic_exam_submit(request, slug):
+    """POST (HTMX) — Califica la evaluación final del tema y muestra resultados."""
+    topic = _get_active_topic(slug)
+
+    session_key = f"topic_exam_{topic.pk}"
+    question_ids = request.session.get(session_key, [])
+    if not question_ids:
+        return HttpResponseBadRequest("No hay evaluación activa para enviar.")
+
+    answers_dict = {}
+    for q_id in question_ids:
+        choice_id = request.POST.get(f"question_{q_id}")
+        answers_dict[int(q_id)] = int(choice_id) if choice_id else None
+
+    attempt, results = submit_topic_exam(request.user, topic, answers_dict)
+    request.session.pop(session_key, None)
+
+    info = get_topic_exam_info(request.user, topic)
+
+    return TemplateResponse(
+        request,
+        "includes/topic_exam_results.html",
+        {
+            "topic": topic,
+            "attempt": attempt,
+            "results": results,
+            "info": info,
+        },
     )

@@ -42,6 +42,12 @@
                     <span class="badge badge--neutral">{{ topic.subject.name }}</span>
                 {% endif %}
             {% endif %}
+            {% if topic_exam_info.passed %}
+                <span class="badge badge--success topic-mastery-badge topic-mastery-badge--brilliance-{{ topic_exam_info.brilliance }}">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    Tema dominado · {{ topic_exam_info.best_percentage }}%
+                </span>
+            {% endif %}
         </div>
     </div>
 
@@ -123,5 +129,9 @@
             </div>
         {% endif %}
     </section>
+
+    {% if user.is_authenticated and topic_exam_info.has_exam %}
+        {% include "includes/topic_exam_section.html" %}
+    {% endif %}
 </section>
 {% endblock %}

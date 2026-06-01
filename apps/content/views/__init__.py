@@ -37,4 +37,6 @@ from .evaluation_views import (
     quiz_status,
     quiz_recover,
     report_error,
+    topic_exam_start,
+    topic_exam_submit,
 )
