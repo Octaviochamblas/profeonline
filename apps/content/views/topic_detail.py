@@ -64,9 +64,33 @@ class TopicDetailView(DetailView):
             progress["stars"] for progress in progress_map.values()
         )
         context["total_count"] = total
-        context["progress_percent"] = (
+
+        # Calcular el total de estrellas realmente alcanzables (según niveles publicados por recurso)
+        from apps.content.models import Question
+        published_levels_data = Question.objects.filter(
+            resource__in=resources,
+            status="publicada"
+        ).values("resource_id", "level").distinct()
+
+        from collections import defaultdict
+        published_levels_by_resource = defaultdict(set)
+        for item in published_levels_data:
+            published_levels_by_resource[item["resource_id"]].add(item["level"])
+
+        stars_total = sum(len(published_levels_by_resource[r.id]) for r in resources)
+        context["stars_total"] = stars_total
+
+        # Porcentajes para las barras de progreso
+        context["completed_percent"] = (
             int(len(completed_ids) / total * 100) if total else 0
         )
+        context["approved_percent"] = (
+            int(context["approved_count"] / total * 100) if total else 0
+        )
+        context["stars_percent"] = (
+            int(context["stars_count"] / stars_total * 100) if stars_total else 0
+        )
+        context["progress_percent"] = context["stars_percent"]
 
         # Evaluación final del tema (Fase 7)
         context["topic_exam_info"] = get_topic_exam_info(self.request.user, topic)

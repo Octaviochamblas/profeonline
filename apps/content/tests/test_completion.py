@@ -53,7 +53,7 @@ class ResourceCompletionTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "includes/completion_button.html")
-        self.assertContains(response, "Completado")
+        self.assertContains(response, "Comprendido")
 
     def test_topic_detail_reports_progress(self):
         self.client.force_login(self.user)
@@ -66,5 +66,5 @@ class ResourceCompletionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["completed_count"], 1)
         self.assertEqual(response.context["total_count"], 1)
-        self.assertEqual(response.context["progress_percent"], 100)
-        self.assertContains(response, "1 de 1 completados")
+        self.assertEqual(response.context["completed_percent"], 100)
+        self.assertContains(response, "1/1 comprendidos")

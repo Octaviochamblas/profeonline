@@ -64,7 +64,7 @@ class TopicListView(ListView):
         # We query levels ordered by 'order'
         levels = Level.objects.filter(is_active=True).order_by("order")
 
-        # Keep track of subjects already added to avoid duplication (e.g. if a subject spans levels, though ours are mapped 1-to-1)
+        # Keep track of subjects already added to avoid duplication
         added_subject_ids = set()
 
         for lvl in levels:
@@ -89,6 +89,20 @@ class TopicListView(ListView):
                         "level": lvl
                     })
                     added_subject_ids.add(subj.id)
+
+        # Batch query progress for all topics to avoid N+1
+        topic_ids = [t.id for t in filtered_topics]
+        from apps.content.selectors.evaluation_selectors import get_topics_progress_map
+        progress_map = get_topics_progress_map(self.request.user, topic_ids)
+
+        for group in subjects_data:
+            decorated = []
+            for t in group["topics"]:
+                t.progress = progress_map.get(t.id, {
+                    "total": 0, "viewed": 0, "approved": 0, "stars": 0, "completed": 0, "percentage": 0
+                })
+                decorated.append(t)
+            group["topics"] = decorated
 
         context["subjects_data"] = subjects_data
         return context
