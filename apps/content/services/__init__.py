@@ -1,1 +1,2 @@
 from .resource_service import resource_service_placeholder
+from .ai_generation_service import generate_questions_for_resource
