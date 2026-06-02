@@ -90,3 +90,70 @@ class ImportYouTubeResourcesCommandTests(TestCase):
         self.assertContains(subject_response, topic.name)
         self.assertContains(topic_response, resource.title)
         fetch_mock.assert_called_once()
+
+
+class SeedMathResourcesCommandTests(TestCase):
+    def test_seed_math_resources_command_is_idempotent(self):
+        stdout = StringIO()
+
+        # 1. Run command the first time to seed resources
+        call_command("seed_math_resources", stdout=stdout)
+        self.assertEqual(Resource.objects.count(), 27)
+
+        resource = Resource.objects.first()
+        initial_description = resource.description
+        initial_content = resource.content
+        initial_title = resource.title
+        initial_order = resource.order
+
+        # 2. Simulate custom edits by staff
+        resource.is_published = False
+        resource.content = "Contenido curado a mano por el staff"
+        resource.title = "Título modificado a mano"
+        resource.order = 999
+        resource.save()
+
+        # 3. Re-run command without flags
+        stdout_second = StringIO()
+        call_command("seed_math_resources", stdout=stdout_second)
+
+        # 4. Verify that staff edits were not overwritten
+        resource.refresh_from_db()
+        self.assertFalse(resource.is_published)
+        self.assertEqual(resource.content, "Contenido curado a mano por el staff")
+        self.assertEqual(resource.title, "Título modificado a mano")
+        self.assertEqual(resource.order, 999)
+        self.assertIn("Se crearon 0 recursos y se actualizaron 0", stdout_second.getvalue())
+
+    def test_seed_math_resources_refrescar_seo_flag(self):
+        stdout = StringIO()
+
+        # 1. Run command the first time to seed resources
+        call_command("seed_math_resources", stdout=stdout)
+
+        resource = Resource.objects.first()
+        initial_seo_desc = resource.description
+        initial_seo_content = resource.content
+        initial_title = resource.title
+        initial_order = resource.order
+
+        # 2. Manually modify resource fields
+        resource.is_published = False
+        resource.description = "SEO Viejo"
+        resource.content = "Contenido curado"
+        resource.title = "Título editado"
+        resource.order = 888
+        resource.save()
+
+        # 3. Run command with --refrescar-seo
+        stdout_third = StringIO()
+        call_command("seed_math_resources", "--refrescar-seo", stdout=stdout_third)
+
+        # 4. Verify that description and content were restored, but is_published, title, and order remained unchanged
+        resource.refresh_from_db()
+        self.assertFalse(resource.is_published)
+        self.assertEqual(resource.title, "Título editado")
+        self.assertEqual(resource.order, 888)
+        self.assertEqual(resource.description, initial_seo_desc)
+        self.assertEqual(resource.content, initial_seo_content)
+        self.assertIn("Se crearon 0 recursos y se actualizaron 27", stdout_third.getvalue())

@@ -1,6 +1,7 @@
 # C1 — Seed idempotente (no pisar contenido curado)
 
-- **Estado:** Ready (handoff de arquitectura)
+- **Estado:** Done (lista para auditar)
+- **Implementado por:** 🔨 Antigravity (2026-06-02)
 - **Creado:** 2026-06-02
 - **Prioridad:** P0 · **Cartera:** continuidad operacional
 - **Tipo:** infraestructura / datos
@@ -42,12 +43,12 @@ arranque** de Railway y hoy pisa el contenido curado por staff.
 | `Procfile` · `nixpacks.toml` | Quitar `seed_math_resources` del start command |
 
 ## Criterios de aceptación (verificables)
-- [ ] Barrera verde: `test` · `check` · `makemigrations --check --dry-run` (sin migraciones nuevas).
-- [ ] Test nuevo en `apps/content/tests/` que pruebe: correr el comando 2 veces **no** cambia un
+- [x] Barrera verde: `test` · `check` · `makemigrations --check --dry-run` (sin migraciones nuevas).
+- [x] Test nuevo en `apps/content/tests/` que pruebe: correr el comando 2 veces **no** cambia un
       recurso cuyo `is_published` se puso en `False` ni su `content` editado (idempotencia real).
-- [ ] Test: con `--refrescar-seo` sí se actualiza `description`/`content`.
-- [ ] `git grep -n seed_math_resources Procfile nixpacks.toml` → ya **no** aparece en el start.
-- [ ] Correr el comando local dos veces seguidas: la 2ª reporta `0 creados` y no altera datos.
+- [x] Test: con `--refrescar-seo` sí se actualiza `description`/`content`.
+- [x] `git grep -n seed_math_resources Procfile nixpacks.toml` → ya **no** aparece en el start.
+- [x] Correr el comando local dos veces seguidas: la 2ª reporta `0 creados` y no altera datos.
 
 ## Plan de pruebas
 1. `python manage.py seed_math_resources` (crea), editar a mano un recurso (`is_published=False`),
@@ -58,6 +59,13 @@ arranque** de Railway y hoy pisa el contenido curado por staff.
 ## Riesgos / rollback
 - Riesgo: que el primer deploy tras el cambio ya no siembre (porque se sacó del boot). Mitigación:
   documentar que el usuario corra el seed una vez post-merge. Rollback: revertir el PR (1 commit).
+
+## Qué se hizo (Implementación)
+- Modificado `seed_math_resources.py` para usar `get_or_create`, aplicar `levels` en la creación, y añadir el flag `--refrescar-seo`.
+- El flag `--refrescar-seo` actualiza selectivamente `description` y `content`, sin alterar `is_published`, `title` ni `order`.
+- Se removió la llamada a `seed_math_resources` de `Procfile` y `nixpacks.toml`.
+- Se agregaron las pruebas automatizadas en `apps/content/tests/test_management_commands.py` cubriendo la idempotencia y el flag `--refrescar-seo` (167 tests en verde).
+- Se retiró la modificación de `seed_content.py` del PR por consistencia y para ser analizado en una tarea posterior (c1b).
 
 ## Checklist 🧩 Codex (auditoría)
 - [ ] Diff = solo lo del alcance. Sin migraciones. Sin tocar SEO.

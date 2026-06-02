@@ -31,6 +31,7 @@
 
 ## Últimas entregas
 
+- 2026-06-02 — 🔨 Antigravity: seed idempotente (C1) implementado en `fix/seed-idempotente`. Tests unitarios agregados (167 OK). Listo para que Codex audite.
 - 2026-06-02 — 🏛️ Claude: handoffs P0 *Ready* + brief de arranque (`ARRANQUE-P0.md`). Listo para
   que Antigravity y Codex ejecuten.
 - 2026-06-02 — 🏛️ Claude: automatización del flujo mergeada (PR #20): auto-merge + gate IA + CI +

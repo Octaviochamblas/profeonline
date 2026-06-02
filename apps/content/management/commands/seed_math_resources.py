@@ -6,6 +6,13 @@ from apps.content.models import Area, Subject, Topic, Resource, Level
 class Command(BaseCommand):
     help = "Crea y actualiza los recursos de Matemáticas con descripciones SEO ultra personalizadas para cada video."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--refrescar-seo",
+            action="store_true",
+            help="Actualiza la descripción y contenido de los recursos existentes para refrescar el SEO.",
+        )
+
     videos = [
         {"id": "rFwyRipjDOY", "title": "1.1 Qué son los Números"},
         {"id": "yfUsZZrL7PA", "title": "1.2 Conjuntos Numéricos"},
@@ -203,6 +210,7 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        refrescar_seo = options.get("refrescar_seo", False)
         # 1. Ensure Area exists (Matemáticas)
         area, _ = Area.objects.get_or_create(
             name="Matemáticas",
@@ -316,7 +324,7 @@ class Command(BaseCommand):
 ### 🔗 Ver Recurso Completo:
 * [Ver explicación de la clase en YouTube]({url})"""
 
-            resource, created = Resource.objects.update_or_create(
+            resource, created = Resource.objects.get_or_create(
                 slug=slug,
                 defaults={
                     "title": title,
@@ -329,12 +337,16 @@ class Command(BaseCommand):
                     "order": idx + 1
                 }
             )
-            resource.levels.set([level])
 
             if created:
+                resource.levels.set([level])
                 created_count += 1
             else:
-                updated_count += 1
+                if refrescar_seo:
+                    resource.description = seo_desc
+                    resource.content = seo_content
+                    resource.save(update_fields=["description", "content"])
+                    updated_count += 1
 
         self.stdout.write(
             self.style.SUCCESS(
