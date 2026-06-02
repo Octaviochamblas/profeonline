@@ -66,6 +66,9 @@ Las variables del servicio web de staging deben dividirse y configurarse de la s
     *   *Ejemplo:* `staging-profeonline.up.railway.app`
 *   `DJANGO_CSRF_TRUSTED_ORIGINS`: El dominio de staging con el esquema correspondiente.
     *   *Ejemplo:* `https://staging-profeonline.up.railway.app`
+*   `DJANGO_USE_X_FORWARDED_PROTO`: **`true`** — **obligatoria detrás del proxy de Railway.** Sin
+    ella, Django (con `SECURE_SSL_REDIRECT`) no reconoce el `X-Forwarded-Proto: https` y entra en
+    **loop de redirección 301 infinito**. (Ver hallazgo §8.1.)
 
 ### B. Recomendadas
 *   `SENTRY_ENVIRONMENT`: Establécelo explícitamente en `staging` para agrupar reportes en Sentry.
@@ -123,5 +126,39 @@ Para validar de forma fehaciente que el entorno de Staging **NO** está apuntand
 ## 📊 7. Estado del Entorno
 
 *   **Preparación Documental y de Configuración:** `COMPLETADA`.
-*   **Creación Real del Servicio Staging en Railway:** `PENDIENTE DE ACCIÓN DEL USUARIO`.
-*   **Cierre de A1:** La tarjeta A1 no se considerará cerrada hasta que el usuario haya creado el servicio staging real con su base de datos aislada y se valide su funcionamiento completo en pre-producción.
+*   **Creación Real del Servicio Staging en Railway:** ✅ `COMPLETADA (2026-06-02)`.
+    *   Servicios: `Web-staging` (deploy desde `main`) + `Postgres-Staging` (DB aislada, host propio `postgres-staging.railway.internal`).
+    *   Dominio: `https://web-staging-production-0dfc.up.railway.app` → **200** en `/` y `/admin/`.
+    *   `check_environment` confirma: `DEBUG=False`, entorno **STAGING**, DB host de staging (no prod).
+*   **Cierre de A1:** ✅ `CERRADO 🟢`.
+
+---
+
+## 🩺 8. Hallazgos del primer despliegue real (2026-06-02)
+
+Al crear staging por primera vez aparecieron **dos diferencias con producción** que no estaban
+documentadas. Ambas se deben a que un **servicio nuevo en Railway** no hereda ni la configuración del
+servicio de prod ni (según el builder) la fase de build. Dejar esto resuelto evita repetir el dolor.
+
+### 8.1 — Loop de redirección 301 (HTTPS) → falta `DJANGO_USE_X_FORWARDED_PROTO`
+*   **Síntoma:** `/` y `/admin/` devuelven `301` a sí mismos en bucle (sitio inaccesible).
+*   **Causa:** `production.py` solo activa `SECURE_PROXY_SSL_HEADER` si `DJANGO_USE_X_FORWARDED_PROTO=true`.
+    Sin esa var, Django (detrás del proxy TLS de Railway) cree que la request es HTTP y `SECURE_SSL_REDIRECT`
+    redirige a HTTPS infinitamente.
+*   **Fix:** agregar la variable `DJANGO_USE_X_FORWARDED_PROTO=true` (ya en la lista de obligatorias §4.A).
+
+### 8.2 — `500` en todas las páginas → `collectstatic` no corrió (builder)
+*   **Síntoma:** tras arreglar 8.1, `/` y `/admin/` devuelven `500`; en consola: `UserWarning: No directory at: /app/staticfiles/`.
+*   **Causa:** `production.py` usa `CompressedManifestStaticFilesStorage` (manifest), que **exige**
+    `collectstatic`. Ese comando solo está en la **fase build** de `nixpacks.toml`. Un servicio nuevo
+    puede usar otro builder (Railpack) que **no ejecuta esa fase**, dejando `staticfiles/` sin generar.
+*   **Fix aplicado:** definir un **Custom Start Command** en el servicio de staging que colecte al
+    arrancar (robusto ante el builder):
+    ```
+    python manage.py collectstatic --no-input && python manage.py migrate && python manage.py ensure_admin && python manage.py ensure_site && gunicorn config.wsgi:application
+    ```
+*   **Alternativa:** forzar el builder a **Nixpacks** en *Settings → Build* (replica exactamente prod).
+
+### 8.3 — Cache (no bloqueante)
+*   `check_environment` muestra `core.W001` (LocMemCache) porque staging no tiene `REDIS_URL`. Es
+    **opcional** en staging; agregar un Redis de staging solo si se quiere probar el rate-limit del webhook.

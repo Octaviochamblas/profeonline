@@ -19,7 +19,7 @@
 
 | ID | Riesgo | Impacto | Mitigación | Dueño | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **A1** | No hay staging; se audita/QA contra producción | Riesgo de romper prod; QA tardío | **Código+runbook en main** (PR #30): `check_environment` + guía Railway + guardrails anti-prod. **Falta:** que el 🧑 Usuario cree el servicio staging + DB propia → 🟢 | 🧑+🔨 | 🟡 |
+| **A1** | No hay staging; se audita/QA contra producción | Riesgo de romper prod; QA tardío | **Staging operativo (2026-06-02):** servicio `Web-staging` + `Postgres-Staging` aislada (host propio), 200 en `/` y `/admin/`, `check_environment` confirma entorno staging. Variables clave documentadas en runbook §8. | 🧑+🔨 | 🟢 |
 | **A2** | Cobertura de tests sin medir | Regresiones silenciosas | `coverage` en CI + umbral mínimo | 🔨 | 🔴 |
 | **A3** | Cero tests de frontend/JS (`enhanced-select.js`, HTMX del quiz) | Lo más frágil (a11y, estados) solo se valida a ojo | Smoke E2E con Playwright en CI | 🔨 | 🔴 |
 | **A4** | Sin render LaTeX/KaTeX en sitio STEM | Techo en calidad pedagógica | Integrar KaTeX en `content` y explicaciones de `Question` | 🔨 | 🔴 |
