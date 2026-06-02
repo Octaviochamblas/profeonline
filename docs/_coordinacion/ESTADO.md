@@ -32,6 +32,7 @@
 
 ## Últimas entregas
 
+- 2026-06-02 — 🔨 Antigravity: automatización de router seguro de agentes y digest diario mejorado en `feat/agent-router-automation`. Listo para auditoría de Codex.
 - 2026-06-02 — 🔨 Antigravity: system check de cache (C3) implementado en `feat/redis-cache-check`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
 - 2026-06-02 — 🏛️🔨🧩 **C1 mergeado (PR #24)** por el flujo completo: Antigravity construyó,
   Codex auditó (detectó fuera-de-alcance + `build.sh` + docs), Claude cerró. Lock liberado.

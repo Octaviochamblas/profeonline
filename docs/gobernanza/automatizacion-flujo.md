@@ -92,6 +92,29 @@ gh api repos/Octaviochamblas/profeonline/branches/main/protection -X DELETE
 
 ## 8. Qué falta para el lazo 100% sin ti
 
-Que **Codex y Antigravity** se disparen solos al ver su etiqueta (Codex Cloud por tarea de GitHub;
-Antigravity con sub-agentes programados). Con eso, `audit:aprobado` y la construcción ocurren sin
-intervención. Hoy ya corre solo: CI, auto-merge, etiquetado, digest y el gate.
+Que **Codex y Antigravity** se disparen solos al ver su etiqueta (Codex Cloud por tarea de GitHub; Antigravity con sub-agentes programados). Con eso, `audit:aprobado` y la construcción ocurren sin intervención. Hoy ya corre solo: CI, auto-merge, etiquetado, digest y el gate.
+
+## 9. Fase Actual y Límite Seguro de Automatización
+
+### Fase actual: router seguro (Mecánico)
+
+En esta fase se implementa el ruteo mecánico de PRs y tareas mediante GitHub Actions, garantizando que el flujo siga siendo seguro y no consuma tokens de IA en eventos automáticos de GitHub.
+
+- **Qué queda automático ya:**
+  - **Labels**: Creación y actualización idempotente de las etiquetas del flujo.
+  - **Ruteo**: Etiquetado automático de PRs hacia Codex (`etapa:auditoria`, `agente:codex`) si tocan código, o hacia Claude (`seguridad:requiere-claude`, `etapa:cierre`, `agente:claude`) si tocan superficies sensibles.
+  - **Digest**: Estado del día consolidado, agrupando por decisiones requeridas, tareas para Codex, tareas para Claude, bloqueos, conteo de Kanban y lock activo.
+  - **Cola Claude**: Registro centralizado diferido en `docs/_coordinacion/cola-claude.md`.
+  - **Auto-merge**: Squash-merge y limpieza automática de ramas al pasar CI y obtener `audit:aprobado`.
+
+- **Qué NO queda automático todavía (Fuera de alcance en esta fase):**
+  - **Despertar Antigravity**: El builder no tiene disparadores automáticos externos para comenzar código a partir de un issue.
+  - **Despertar Codex**: No se lanza el runner automático de Codex para auditar código tras el ruteo de PRs.
+  - **Despertar Claude**: Claude no lee ni actúa de forma asíncrona sobre la cola.
+  - **Ejecución de IA desde GitHub**: No se realizan llamadas a modelos de lenguaje (LLM) ni se consumen API keys desde GitHub Actions.
+
+### Siguiente fase de automatización
+
+1. **Conectar Codex Auditor**: Permitir que el runner de Codex lea de manera automática PRs con `agente:codex` y emita el dictamen de auditoría y/o agregue `audit:aprobado` si pasa, operando con permisos mínimos.
+2. **Conectar Antigravity Builder**: Configurar disparadores o APIs para que Antigravity tome tareas etiquetadas con `agente:antigravity`.
+3. **Claude por Lotes**: Mantener el cierre final y la validación de seguridad de Claude agrupados de forma diferida en lotes a través de la Cola Claude.
