@@ -1,3 +1,4 @@
+import os
 from unittest import mock
 
 from django.conf import settings
@@ -370,3 +371,66 @@ class CacheBackendCheckTests(TestCase):
         from apps.core.checks import cache_backend_check
         warnings = cache_backend_check(None)
         self.assertEqual(len(warnings), 0)
+
+
+class CheckEnvironmentCommandTests(TestCase):
+    @override_settings(DEBUG=True)
+    def test_check_environment_development(self):
+        from io import StringIO
+        from django.core.management import call_command
+
+        stdout = StringIO()
+        call_command("check_environment", stdout=stdout)
+
+        output = stdout.getvalue()
+        self.assertIn("=== Diagnóstico del Entorno ===", output)
+        self.assertIn("Entorno detectado: DESARROLLO (DEBUG=True)", output)
+        self.assertIn("DEBUG: True", output)
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "staging_db",
+                "HOST": "staging-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    @mock.patch.dict(os.environ, {"SENTRY_ENVIRONMENT": "staging"})
+    def test_check_environment_staging(self):
+        from io import StringIO
+        from django.core.management import call_command
+
+        stdout = StringIO()
+        call_command("check_environment", stdout=stdout)
+
+        output = stdout.getvalue()
+        self.assertIn("Entorno detectado: STAGING (DEBUG=False, indicios de staging)", output)
+        self.assertIn("DEBUG: False", output)
+        self.assertIn("SENTRY_ENVIRONMENT: staging", output)
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "prod_db",
+                "HOST": "production-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    @mock.patch.dict(os.environ, {"SENTRY_ENVIRONMENT": "production"})
+    def test_check_environment_production(self):
+        from io import StringIO
+        from django.core.management import call_command
+
+        stdout = StringIO()
+        call_command("check_environment", stdout=stdout)
+
+        output = stdout.getvalue()
+        self.assertIn("Entorno detectado: PRODUCCIÓN (DEBUG=False, DB remota)", output)

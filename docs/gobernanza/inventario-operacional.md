@@ -7,8 +7,10 @@
 
 | Servicio | Para qué | Notas |
 | --- | --- | --- |
-| **Railway** | Hosting de la app (gunicorn) y deploy | Push a `main` → deploy con *Wait for CI*. Bloquea puertos SMTP salientes. |
-| **PostgreSQL** (Railway/Supabase) | Base de datos | `DATABASE_URL` **obligatorio** (sin fallback a SQLite). SSL `require`. Confirmar pooler antes de escalar (riesgo A6). |
+| **Railway (Producción)** | Hosting de la app y deploy | Push a `main` → deploy con *Wait for CI*. Bloquea puertos SMTP salientes. |
+| **PostgreSQL (Producción)** (Railway/Supabase) | Base de datos principal | `DATABASE_URL` **obligatorio** (sin fallback a SQLite). SSL `require`. Confirmar pooler antes de escalar. |
+| **Railway (Staging)** | Entorno de pruebas y QA visual | Pendiente creación por usuario (A1). Apunta a su propia DB PostgreSQL aislada. |
+| **PostgreSQL (Staging)** | Base de datos de Staging | Base de datos PostgreSQL aislada, exclusiva para el servicio web de staging. |
 | **Brevo** | Envío de email vía **API HTTP** (443) | Backend `apps.core.email_backends.BrevoApiEmailBackend`. |
 | **Sentry** | Monitoreo de errores | Proyecto `python-django`, org `particular-lw`. `send_default_pii=False`, tracing off por defecto. |
 | **Google (allauth)** | Login social | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`. |
@@ -44,7 +46,10 @@ python manage.py test
 python manage.py check
 python manage.py makemigrations --check --dry-run
 
-# Deploy check de producción (como en CI):
+# Diagnóstico del entorno (desarrollo, staging o producción):
+python manage.py check_environment
+
+# Deploy check de producción o staging (como en CI):
 python manage.py check --deploy --fail-level ERROR --settings=config.settings.production
 
 # Arranque en Railway (Procfile / nixpacks.toml):
