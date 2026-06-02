@@ -31,9 +31,11 @@
 - `backlog/4-auditoria/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
 
 ## Últimas entregas
-
-- 2026-06-02 — 🔨 Antigravity: `seed_content` idempotente (C1b) en `fix/seed-content-idempotente`
-  (PR #27), auditado por Codex (`audit:aprobado`). Cierre por 🏛️ Claude.
+- 2026-06-02 — 🔨 Antigravity: comandos `backup_db`/`restore_db` (C2) + runbook en
+  `feat/backups-restore-drill`; drill local exitoso. Auditado por 🏛️ Claude (`restore_db` con guardas
+  anti-prod), en cierre.
+- 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **C1b mergeado (PR #27)** — `seed_content` idempotente
+  (auditado por Codex, conflicto resuelto y cerrado por Claude).
 - 2026-06-02 — 🏛️ Claude: **C3 cerrado en 🟢** — código en `main` (PR #26) + `REDIS_URL` en Railway;
   tarjeta en `6-finalizados`, matriz 🟢 (PR #31).
 - 2026-06-02 — 🏛️🔨🧩 **C1 mergeado (PR #24)** por el flujo completo: Antigravity construyó,
