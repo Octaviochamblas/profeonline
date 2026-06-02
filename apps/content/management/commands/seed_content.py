@@ -10,6 +10,13 @@ from apps.content.models import Area, Level, Module, ModuleResource, Resource, S
 class Command(BaseCommand):
     help = "Crea contenido semilla para ProfeOnline con videos reales de YouTube y descripciones SEO estructuradas editorialmente."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--refrescar-seo",
+            action="store_true",
+            help="Actualiza la descripción y contenido de los recursos existentes para refrescar el SEO.",
+        )
+
     areas = [
         {
             "name": "Matemática",
@@ -307,9 +314,10 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        refrescar_seo = options.get("refrescar_seo", False)
         area_by_name = {}
         for item in self.areas:
-            area, _ = Area.objects.update_or_create(
+            area, _ = Area.objects.get_or_create(
                 name=item["name"],
                 defaults={
                     "description": item["description"],
@@ -321,7 +329,7 @@ class Command(BaseCommand):
 
         level_by_name = {}
         for item in self.levels:
-            level, _ = Level.objects.update_or_create(
+            level, _ = Level.objects.get_or_create(
                 name=item["name"],
                 defaults={
                     "description": item["description"],
@@ -334,7 +342,7 @@ class Command(BaseCommand):
         subject_by_name = {}
         topic_by_subject = {}
         for item in self.subjects:
-            subject, _ = Subject.objects.update_or_create(
+            subject, _ = Subject.objects.get_or_create(
                 name=item["name"],
                 defaults={
                     "area": area_by_name[item["area"]],
@@ -346,7 +354,7 @@ class Command(BaseCommand):
             topic_by_subject[subject.name] = {}
 
             for topic_item in item["topics"]:
-                topic, _ = Topic.objects.update_or_create(
+                topic, _ = Topic.objects.get_or_create(
                     subject=subject,
                     name=topic_item["name"],
                     defaults={
@@ -365,7 +373,7 @@ class Command(BaseCommand):
         resource_by_title = {}
         for item in resources:
             resource_slug = slugify(item["title"])
-            resource, _ = Resource.objects.update_or_create(
+            resource, created = Resource.objects.get_or_create(
                 slug=resource_slug,
                 defaults={
                     "title": item["title"],
@@ -377,7 +385,13 @@ class Command(BaseCommand):
                     "is_published": True,
                 },
             )
-            resource.levels.set([level_by_name[name] for name in item["levels"]])
+            if created:
+                resource.levels.set([level_by_name[name] for name in item["levels"]])
+            else:
+                if refrescar_seo:
+                    resource.description = item["description"]
+                    resource.content = item["content"]
+                    resource.save(update_fields=["description", "content"])
             resource_by_title[resource.title] = resource
 
         for item in self.modules:
@@ -391,7 +405,7 @@ class Command(BaseCommand):
                 else:
                     continue
 
-            module, _ = Module.objects.update_or_create(
+            module, created = Module.objects.get_or_create(
                 slug=module_slug,
                 defaults={
                     "title": item["title"],
@@ -403,8 +417,10 @@ class Command(BaseCommand):
                     "is_published": True,
                 },
             )
-            module.levels.set([level_by_name[name] for name in item["levels"]])
-            ModuleResource.objects.update_or_create(
+            if created:
+                module.levels.set([level_by_name[name] for name in item["levels"]])
+
+            ModuleResource.objects.get_or_create(
                 module=module,
                 resource=ref_resource,
                 defaults={
