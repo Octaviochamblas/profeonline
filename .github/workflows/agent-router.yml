@@ -1,0 +1,145 @@
+name: Agent Router
+
+# Router mecánico para PRs/tareas del flujo multiagente.
+# Asegura labels, detecta superficie sensible y rutea a Codex/Claude.
+# No ejecuta IA, no usa secretos, no mergea.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+  issues:
+    types: [opened, edited, labeled, unlabeled]
+  workflow_dispatch:
+  schedule:
+    - cron: "*/45 * * * *"
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Asegurar Labels Idempotente
+        run: |
+          echo "Creando/Actualizando labels del flujo..."
+          # Formato: Nombre -> Color|Descripcion
+          declare -A labels=(
+            ["agente:antigravity"]="fb923c|Tareas para Antigravity builder"
+            ["agente:codex"]="60a5fa|Tareas para Codex auditor"
+            ["agente:claude"]="a78bfa|Tareas para Claude arquitecto"
+            ["etapa:construccion"]="f97316|Fase de construccion"
+            ["etapa:auditoria"]="3b82f6|Fase de auditoria"
+            ["etapa:cierre"]="8b5cf6|Fase de cierre"
+            ["audit:aprobado"]="22c55e|Auditoria aprobada por 2a IA"
+            ["necesita:usuario"]="ef4444|Requiere atencion del usuario"
+            ["seguridad:requiere-claude"]="dc2626|Toca superficie sensible"
+            ["bloqueado"]="7f1d1d|PR o tarea bloqueada"
+          )
+          for name in "${!labels[@]}"; do
+            IFS='|' read -r color desc <<< "${labels[$name]}"
+            gh label create "$name" --color "$color" --description "$desc" 2>/dev/null \
+              || gh label edit "$name" --color "$color" --description "$desc" || true
+          done
+
+      - name: Router de PRs
+        run: |
+          route_pr() {
+            local pr="$1"
+            echo "::group::Procesando PR #$pr"
+
+            # Obtener info en JSON
+            local pr_info
+            pr_info=$(gh pr view "$pr" --json author,isDraft,labels)
+
+            local author
+            author=$(echo "$pr_info" | jq -r '.author.login')
+
+            local is_draft
+            is_draft=$(echo "$pr_info" | jq -r '.isDraft')
+
+            if [ "$is_draft" = "true" ]; then
+              echo "PR es un borrador. Ignorando."
+              echo "::endgroup::"
+              return
+            fi
+
+            # Cambios
+            local files
+            files=$(gh pr diff "$pr" --name-only || true)
+
+            # Solo documentacion?
+            local solo_docs=false
+            if [ -n "$files" ] && ! echo "$files" | grep -qvE '^docs/'; then
+              solo_docs=true
+            fi
+
+            # Dependabot?
+            local is_dependabot=false
+            if [ "$author" = "dependabot[bot]" ]; then
+              is_dependabot=true
+            fi
+
+            # Auditoria previa?
+            local labels_list
+            labels_list=$(echo "$pr_info" | jq -r '.labels[].name' 2>/dev/null || true)
+
+            local has_audit_aprobado=false
+            if echo "$labels_list" | grep -qx 'audit:aprobado'; then
+              has_audit_aprobado=true
+            fi
+
+            # Ruteo a Codex
+            local needs_codex=false
+            if [ "$solo_docs" = "false" ] && [ "$is_dependabot" = "false" ] && [ "$has_audit_aprobado" = "false" ]; then
+              needs_codex=true
+            fi
+
+            # Superficie sensible?
+            local is_sensible=false
+            if echo "$files" | grep -qE 'config/settings/|apps/core/middleware|allauth|permission|webhook|api_video|auth|secrets|Procfile|nixpacks.toml|\.github/workflows/'; then
+              is_sensible=true
+            fi
+
+            local labels_to_add=()
+
+            if [ "$needs_codex" = "true" ]; then
+              labels_to_add+=("etapa:auditoria")
+              labels_to_add+=("agente:codex")
+            fi
+
+            if [ "$is_sensible" = "true" ]; then
+              labels_to_add+=("seguridad:requiere-claude")
+              labels_to_add+=("etapa:cierre")
+              labels_to_add+=("agente:claude")
+            fi
+
+            if [ ${#labels_to_add[@]} -gt 0 ]; then
+              local joined_labels
+              joined_labels=$(IFS=,; echo "${labels_to_add[*]}")
+              echo "Agregando labels: $joined_labels"
+              gh pr edit "$pr" --add-label "$joined_labels" || true
+            else
+              echo "No se agregaron labels."
+            fi
+            echo "::endgroup::"
+          }
+
+          # Determinar si procesamos un PR del evento o todos
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            route_pr "${{ github.event.pull_request.number }}"
+          else
+            echo "Buscando todos los PRs abiertos..."
+            open_prs=$(gh pr list --state open --json number --jq '.[] | .number' || true)
+            for pr in $open_prs; do
+              route_pr "$pr"
+            done
+          fi

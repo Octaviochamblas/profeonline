@@ -1,8 +1,13 @@
 name: Digest diario
 
-# Mantiene un único Issue "Estado del día (multiagente)" con: PRs abiertos + estado de
-# checks, lo que necesita decisión del usuario, y el tamaño del backlog. Corre sin IA
-# (solo GitHub Actions), así que no consume tokens. Ejecutable a mano con workflow_dispatch.
+# Mantiene un único Issue "Estado del dia (multiagente)" con:
+# - Acción humana requerida
+# - PRs listos para Codex
+# - PRs pendientes de Claude
+# - PRs bloqueados
+# - Kanban count
+# - Lock vivo de docs/_coordinacion/ESTADO.md
+# Corre sin IA, no consume tokens.
 
 on:
   schedule:
@@ -22,19 +27,126 @@ jobs:
       GH_REPO: ${{ github.repository }}
       TITLE: "Estado del dia (multiagente)"
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Construir y publicar el digest
         run: |
           fecha=$(date +%F)
-          prs=$(gh pr list --state open --json number,title,url,isDraft,labels,statusCheckRollup --jq '.[] | "- #\(.number) \(.title) — checks: [\((.statusCheckRollup // []) | map(.conclusion // .state // "?") | join(","))] — labels: \(.labels | map(.name) | join(", ")) — \(.url)"' || true)
-          needs=$(gh pr list --state open --label 'seguridad:requiere-claude' --json number,title,url --jq '.[] | "- #\(.number) \(.title) — \(.url)"' || true)
-          ideas=$(gh api "repos/$GH_REPO/contents/docs/backlog/1-por-iniciar" --jq '[.[] | select(.name | endswith(".md")) | select(.name | startswith("_") | not)] | length' 2>/dev/null || echo "?")
+
+          # Obtener todos los PRs abiertos en JSON
+          prs_json=$(gh pr list --state open --json number,title,url,labels,statusCheckRollup,author || true)
+
+          # 1. Acción humana requerida
+          human_required=$(echo "$prs_json" | jq -r '
+            [.[] | select(.labels[].name as $n | ($n == "necesita:usuario" or $n == "seguridad:requiere-claude"))]
+            | unique_by(.number)
+            | .[]
+            | "- #\(.number) \(.title) — \(.url)"
+          ' 2>/dev/null || true)
+
+          if [ -z "$human_required" ] || [ "$human_required" = "null" ]; then
+            human_required="No tienes que hacer nada."
+          fi
+
+          # 2. PRs listos para Codex
+          codex_ready=$(echo "$prs_json" | jq -r '
+            [.[] | select(
+              (.labels[].name as $n | ($n == "agente:codex" or $n == "etapa:auditoria"))
+              or
+              ((.labels | map(.name) | contains(["audit:aprobado"]) | not) and (.author.login != "dependabot[bot]"))
+            )]
+            | unique_by(.number)
+            | .[]
+            | "- #\(.number) \(.title) — \(.url)"
+          ' 2>/dev/null || true)
+
+          if [ -z "$codex_ready" ] || [ "$codex_ready" = "null" ]; then
+            codex_ready="_(ninguno)_"
+          fi
+
+          # 3. PRs pendientes de Claude
+          claude_pending=$(echo "$prs_json" | jq -r '
+            [.[] | select(.labels[].name as $n | ($n == "agente:claude" or $n == "etapa:cierre" or $n == "seguridad:requiere-claude"))]
+            | unique_by(.number)
+            | .[]
+            | "- #\(.number) \(.title) — \(.url)"
+          ' 2>/dev/null || true)
+
+          if [ -z "$claude_pending" ] || [ "$claude_pending" = "null" ]; then
+            claude_pending="_(ninguno)_"
+          fi
+
+          # 4. PRs bloqueados (con label "bloqueado" o checks fallados)
+          blocked_prs=$(echo "$prs_json" | jq -r '
+            [.[] | select(
+              (.labels[].name as $n | ($n == "bloqueado"))
+              or
+              (.statusCheckRollup // [] | map(.conclusion) | contains(["failure"]))
+            )]
+            | unique_by(.number)
+            | .[]
+            | "- #\(.number) \(.title) — \(.url)"
+          ' 2>/dev/null || true)
+
+          if [ -z "$blocked_prs" ] || [ "$blocked_prs" = "null" ]; then
+            blocked_prs="_(ninguno)_"
+          fi
+
+          # 5. Kanban - Conteo de archivos .md por carpeta
+          count_md() {
+            local dir="$1"
+            if [ -d "$dir" ]; then
+              find "$dir" -maxdepth 1 -name "*.md" ! -name "_*" | wc -l | xargs
+            else
+              echo "0"
+            fi
+          }
+
+          iniciar=$(count_md "docs/backlog/1-por-iniciar")
+          arquitectura=$(count_md "docs/backlog/2-arquitectura")
+          construccion=$(count_md "docs/backlog/3-construccion")
+          auditoria=$(count_md "docs/backlog/4-auditoria")
+          cierre=$(count_md "docs/backlog/5-cierre")
+          finalizados=$(count_md "docs/backlog/6-finalizados")
+
+          # 6. Lock vivo
+          lock_info="No hay información de lock disponible."
+          if [ -f "docs/_coordinacion/ESTADO.md" ]; then
+            lock_info=$(sed -n '/## Lock del working tree/,/##/p' docs/_coordinacion/ESTADO.md | head -n -1)
+          fi
+
+          # Ensamblar digest
           {
             printf '## %s — %s\n\n' "$TITLE" "$fecha"
-            printf '### PRs abiertos\n%s\n\n' "${prs:-_(ninguno)_}"
-            printf '### Necesita tu decision (seguridad / producto)\n%s\n\n' "${needs:-_(nada pendiente)_}"
-            printf '### Backlog 1-por-iniciar: %s ideas\n\n' "$ideas"
-            printf -- '---\n_Generado automaticamente por .github/workflows/digest.yml (sin IA). Se reescribe cada dia._\n'
+
+            printf '### Acción humana requerida\n'
+            printf '%s\n\n' "$human_required"
+
+            printf '### PRs listos para Codex\n'
+            printf '%s\n\n' "$codex_ready"
+
+            printf '### PRs pendientes de Claude\n'
+            printf '%s\n\n' "$claude_pending"
+
+            printf '### PRs bloqueados\n'
+            printf '%s\n\n' "$blocked_prs"
+
+            printf '### Kanban\n'
+            printf '- **1-por-iniciar**: %s tareas\n' "$iniciar"
+            printf '- **2-arquitectura**: %s tareas\n' "$arquitectura"
+            printf '- **3-construccion**: %s tareas\n' "$construccion"
+            printf '- **4-auditoria**: %s tareas\n' "$auditoria"
+            printf '- **5-cierre**: %s tareas\n' "$cierre"
+            printf '- **6-finalizados**: %s tareas\n\n' "$finalizados"
+
+            printf '### Lock vivo\n'
+            printf '%s\n\n' "$lock_info"
+
+            printf -- '---\n_Generado automáticamente por GitHub Actions (sin IA). Se reescribe cada día._\n'
           } > digest_body.md
+
+          # Buscar si el issue ya existe
           num=$(gh issue list --search "$TITLE in:title" --state open --json number --jq '.[0].number' || true)
           if [ -n "$num" ] && [ "$num" != "null" ]; then
             gh issue edit "$num" --body-file digest_body.md
