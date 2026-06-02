@@ -24,6 +24,96 @@ class SeedContentCommandTests(TestCase):
         self.assertGreater(ModuleResource.objects.count(), 0)
         self.assertIn("Contenido semilla listo", stdout.getvalue())
 
+    def test_seed_content_does_not_overwrite_manually_edited_objects(self):
+        stdout = StringIO()
+
+        # 1. Run seed_content first time
+        call_command("seed_content", stdout=stdout)
+
+        resource = Resource.objects.first()
+        topic = Topic.objects.first()
+        subject = Subject.objects.first()
+
+        # 2. Modify manually
+        resource.is_published = False
+        resource.content = "Contenido editado a mano por staff"
+        resource.title = "Título modificado"
+        resource.save()
+
+        topic.description = "Descripción de tema modificada"
+        topic.save()
+
+        subject.description = "Descripción de asignatura modificada"
+        subject.save()
+
+        # 3. Run seed_content again without flags
+        call_command("seed_content", stdout=stdout)
+
+        # 4. Verify no clobber
+        resource.refresh_from_db()
+        topic.refresh_from_db()
+        subject.refresh_from_db()
+
+        self.assertFalse(resource.is_published)
+        self.assertEqual(resource.content, "Contenido editado a mano por staff")
+        self.assertEqual(resource.title, "Título modificado")
+        self.assertEqual(topic.description, "Descripción de tema modificada")
+        self.assertEqual(subject.description, "Descripción de asignatura modificada")
+
+    def test_seed_content_refrescar_seo_flag(self):
+        stdout = StringIO()
+
+        # 1. Run seed_content first time
+        call_command("seed_content", stdout=stdout)
+
+        resource = Resource.objects.first()
+        initial_description = resource.description
+        initial_content = resource.content
+
+        # 2. Manually modify fields
+        resource.is_published = False
+        resource.title = "Título editado"
+        resource.description = "SEO Viejo"
+        resource.content = "Contenido viejo"
+        resource.save()
+
+        # 3. Run seed_content with --refrescar-seo
+        call_command("seed_content", "--refrescar-seo", stdout=stdout)
+
+        # 4. Verify description and content are restored, but title and is_published are untouched
+        resource.refresh_from_db()
+        self.assertFalse(resource.is_published)
+        self.assertEqual(resource.title, "Título editado")
+        self.assertEqual(resource.description, initial_description)
+        self.assertEqual(resource.content, initial_content)
+
+    def test_seed_content_preserves_manually_assigned_levels(self):
+        stdout = StringIO()
+
+        # 1. Run seed_content first time
+        call_command("seed_content", stdout=stdout)
+
+        resource = Resource.objects.first()
+        module = Module.objects.first()
+
+        # Get another level to assign
+        new_level = Level.objects.create(name="Postgrado", order=4)
+
+        # 2. Manually assign levels
+        resource.levels.set([new_level])
+        module.levels.set([new_level])
+
+        # 3. Run seed_content again without flags
+        call_command("seed_content", stdout=stdout)
+
+        # 4. Verify levels are preserved and not reset to defaults
+        resource.refresh_from_db()
+        module.refresh_from_db()
+
+        self.assertEqual(list(resource.levels.all()), [new_level])
+        self.assertEqual(list(module.levels.all()), [new_level])
+
+
 
 class ImportYouTubeResourcesCommandTests(TestCase):
     @patch(
