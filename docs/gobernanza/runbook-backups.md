@@ -6,10 +6,10 @@ Este runbook describe los procedimientos de respaldo, restauración y pruebas de
 
 ## 💾 1. Respaldos Automáticos del Proveedor (Railway/Supabase)
 
-*   **Estado actual:** Pendiente.
-*   **Motivo:** Railway muestra que los backups del volumen solo están disponibles para clientes del plan Pro.
-*   **Decisión temporal:** No se activa backup automático del proveedor todavía porque la base no contiene contenido real crítico. El cierre definitivo de C2 queda pendiente hasta contratar/activar backups del proveedor o configurar una alternativa externa.
-*   **Criterio de cierre futuro:** Registrar frecuencia, retención, ubicación del historial y un restore probado desde un backup real del proveedor.
+*   **Estado actual:** Pendiente (diferido a propósito).
+*   **Motivo:** Confirmado el 2026-06-02 — Railway exige el **plan Pro (~$20/mes)** para backups nativos del volumen (en Hobby la pestaña "Backups" responde *"Backups are only available for customers on the Pro plan"*).
+*   **Decisión temporal:** No se activa Pro todavía porque la base **no contiene contenido real crítico** (drill 2026-06-02: 4 usuarios, 28 recursos, sin preguntas). En su lugar se hizo un **backup manual offsite real + restore drill verificado** (ver sección 4.B). Se evaluará Pro al lanzar con alumnos reales.
+*   **Criterio de cierre futuro (🟢):** Backups **automáticos/programados** con retención registrada (Pro o cron externo) + restore probado desde ese backup automático.
 
 ---
 
@@ -91,8 +91,48 @@ Un respaldo solo es válido si ha sido probado. A continuación se detalla el dr
     Se intentó ejecutar `restore_db` configurando de manera ficticia una base de datos remota en `settings.py` sin los flags de confirmación.
     *   *Resultado:* El comando abortó de manera segura lanzando el mensaje: *"Operación abortada por seguridad. Para restaurar sobre una base de datos remota o de producción, debe proveer obligatoriamente los flags..."*.
 
-### Conclusión del Drill:
+### Conclusión del Drill (4.A):
 El procedimiento manual y el drill local son exitosos. Las guardas anti-producción funcionan de forma
 correcta y el proceso restaura la integridad de los datos taxonómicos y pedagógicos del sitio en un
-destino de prueba. El riesgo C2 no debe marcarse como completamente cerrado hasta activar backups
-automáticos del proveedor o una alternativa externa y ejecutar un restore desde ese backup real.
+destino de prueba.
+
+---
+
+## 🧪 4.B Drill de Restauración desde **PRODUCCIÓN real** (2026-06-02, 🏛️ Claude)
+
+A diferencia del 4.A (SQLite local), este drill usó un **dump real de la base PostgreSQL de
+producción** en Railway y se restauró en un clúster Postgres local descartable.
+
+*   **Fecha:** 2026-06-02
+*   **Origen:** PostgreSQL **18.4** de producción (Railway, vía proxy público `*.proxy.rlwy.net`).
+*   **Herramienta:** binarios portables `pg_dump`/`pg_restore` **18.4** (la versión 17.x falla: el
+    servidor es 18.4 y `pg_dump` debe ser ≥ versión del servidor).
+*   **Backup:** `pg_dump -F c -b` → `backups/prod_backup_2026-06-02.dump` (~140 KB, 38 tablas con
+    datos). Carpeta `backups/` está en `.gitignore`.
+*   **Restore:** clúster local efímero (`initdb` + `pg_ctl` en puerto 5433) → `pg_restore --no-owner
+    --no-privileges` → **sin errores**.
+*   **Verificación de integridad (filas restauradas desde prod):**
+
+    | Tabla | Filas |
+    | --- | --- |
+    | `content_area` | 2 |
+    | `content_level` | 2 |
+    | `content_topic` | 3 |
+    | `content_resource` | 28 |
+    | `content_question` | 0 |
+    | `auth_user` | 4 |
+
+### Conclusión del Drill (4.B):
+Existe un **backup real de producción verificado y restaurable**. Esto sube C2 de 🔴 a **🟡 alto**:
+el riesgo de "no hay backup probado" queda cubierto. El paso restante para 🟢 es **automatizar** el
+backup (Pro o cron externo) con retención, en lugar de depender de una corrida manual.
+
+> ⚠️ **Nota de seguridad:** durante este drill la `DATABASE_PUBLIC_URL` de producción quedó expuesta;
+> se debe **rotar la contraseña del Postgres en Railway** tras el procedimiento.
+
+### Cómo repetirlo (resumen):
+```powershell
+# 1) Backup de prod (usar la URL PÚBLICA de Railway; pg_dump 18.x)
+& "C:\Users\PC\pgtools\pg18\pgsql\bin\pg_dump.exe" -F c -b -f backups\prod_<fecha>.dump "<DATABASE_PUBLIC_URL>?sslmode=require"
+# 2) Restore drill en clúster local efímero: initdb -> pg_ctl start -> createdb -> pg_restore --no-owner --no-privileges
+```
