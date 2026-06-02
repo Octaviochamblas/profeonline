@@ -15,8 +15,10 @@
 ## En curso ahora
 
 - **C1 cerrado y mergeado** (PR #24): seed idempotente, fuera del start command, docs alineadas.
-- **Siguiente disponible:** `c1b` (seed_content idempotente) y la parte de código de C3
-  (system check de cache). Ver `ARRANQUE-P0.md`.
+- **C3 cerrado y mitigado** (PR #26 + `REDIS_URL` en Railway 2026-06-02): rate-limit del webhook ya
+  es compartido entre workers. Tarjeta en `6-finalizados`, matriz **🟢**.
+- **C1b en cierre** (PR #27): `seed_content` idempotente, `audit:aprobado`; Claude resolvió el
+  conflicto y lo deja para auto-merge. Ver `ARRANQUE-P0.md`.
 
 ## Bloqueos / esperando
 
@@ -25,15 +27,16 @@
 
 ## Handoffs abiertos (Ready para construir)
 
-- `backlog/2-arquitectura/c1b-seed-content-idempotente.md` — 🔨 Antigravity (sigue a C1)
-- `backlog/2-arquitectura/c3-redis-rate-limit.md` — 🔨 Antigravity + 🧑 Usuario
 - `backlog/2-arquitectura/c2-backups-restore-drill.md` — 🔨 Antigravity + 🧑 Usuario
-- `backlog/2-arquitectura/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
+- `backlog/4-auditoria/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
 
 ## Últimas entregas
-
-- 2026-06-02 — 🔨 Antigravity: preparación de entorno staging (A1) y comando check_environment en `feat/staging-preview`. Listo para auditoría de Codex.
-- 2026-06-02 — 🔨 Antigravity: system check de cache (C3) implementado en `feat/redis-cache-check`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
+- 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **A1 mergeado (PR #30)** — `check_environment` + runbook
+  staging. Riesgo A1 queda 🟡 hasta que el 🧑 Usuario cree el servicio staging + DB propia en Railway.
+- 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **C2 mergeado (PR #28)** — `backup_db`/`restore_db` con
+  guardas anti-prod + runbook. Riesgo C2 queda 🟡 hasta backups automáticos del proveedor.
+- 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **C1b mergeado (PR #27)** — `seed_content` idempotente.
+- 2026-06-02 — 🏛️ Claude: **C3 cerrado en 🟢** — código en `main` (PR #26) + `REDIS_URL` en Railway (PR #31).
 - 2026-06-02 — 🏛️🔨🧩 **C1 mergeado (PR #24)** por el flujo completo: Antigravity construyó,
   Codex auditó (detectó fuera-de-alcance + `build.sh` + docs), Claude cerró. Lock liberado.
 - 2026-06-02 — 🏛️ Claude: handoffs P0 *Ready* + `ARRANQUE-P0.md`.

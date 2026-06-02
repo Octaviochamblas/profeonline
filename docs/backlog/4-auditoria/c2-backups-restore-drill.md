@@ -37,11 +37,13 @@ funciona** (un backup sin restore probado no es un backup).
 | `docs/gobernanza/runbook-backups.md` (nuevo) | procedimiento + evidencia del drill |
 
 ## Criterios de aceptación
-- [ ] Barrera verde.
-- [ ] `backup_db` genera un dump válido desde `DATABASE_URL` local.
-- [ ] `restore_db` **rechaza** restaurar sobre la URL de prod sin `--confirmar` + destino explícito.
-- [ ] Runbook con el drill ejecutado y su evidencia (filas restauradas == origen).
-- [ ] Backups automáticos del provider confirmados por el usuario (anotado en el runbook).
+- [x] Barrera verde.
+- [x] `backup_db` genera un dump válido desde `DATABASE_URL` local.
+- [x] `restore_db` **rechaza** restaurar sobre la URL de prod sin `--confirmar` + destino explícito.
+- [x] Runbook con el drill ejecutado y su evidencia (filas restauradas == origen).
+- [ ] Backups automáticos del provider confirmados por el usuario (pendiente: Railway indica que los
+  backups del volumen requieren plan Pro; mantener como cierre posterior cuando exista contenido real
+  o se contrate/active un mecanismo externo).
 
 ## Plan de pruebas
 1. `backup_db` local → archivo. 2. Crear DB scratch, `restore_db` ahí, comparar conteos.
@@ -52,8 +54,8 @@ funciona** (un backup sin restore probado no es un backup).
   dry-run por defecto). Rollback: comandos nuevos, sin efecto en la app; revertir PR.
 
 ## Checklist 🧩 Codex
-- [ ] `restore_db` no puede tocar prod por accidente (revisar guardas a fondo).
-- [ ] No se loguea `DATABASE_URL` ni credenciales.
+- [x] `restore_db` no puede tocar prod por accidente (revisar guardas a fondo).
+- [x] No se loguea `DATABASE_URL` ni credenciales.
 - [ ] Label `audit:aprobado` si ok.
 
 ## Checklist 🏛️ Claude (cierre)

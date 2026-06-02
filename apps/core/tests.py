@@ -1,9 +1,11 @@
+from io import StringIO
 import os
+import tempfile
 from unittest import mock
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.management import call_command
+from django.core.management import call_command, CommandError
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -373,12 +375,141 @@ class CacheBackendCheckTests(TestCase):
         self.assertEqual(len(warnings), 0)
 
 
+class BackupRestoreCommandTests(TestCase):
+    def setUp(self):
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.backup_file = os.path.join(self.temp_dir.name, "test_backup.sqlite3")
+
+    def tearDown(self):
+        self.temp_dir.cleanup()
+
+    def test_backup_db_creates_file(self):
+        stdout = StringIO()
+        call_command("backup_db", "--file", self.backup_file, stdout=stdout)
+
+        self.assertTrue(os.path.exists(self.backup_file))
+        self.assertGreater(os.path.getsize(self.backup_file), 0)
+        self.assertIn("Respaldo SQLite exitoso", stdout.getvalue())
+
+    def test_restore_db_restores_data(self):
+        stdout_backup = StringIO()
+        call_command("backup_db", "--file", self.backup_file, stdout=stdout_backup)
+
+        stdout_restore = StringIO()
+        db_name = settings.DATABASES["default"]["NAME"]
+        call_command(
+            "restore_db",
+            "--file", self.backup_file,
+            "--confirmar",
+            "--destino", db_name,
+            stdout=stdout_restore
+        )
+        self.assertIn("Restauración SQLite exitosa", stdout_restore.getvalue())
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "prod_db",
+                "HOST": "production-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    def test_restore_db_aborts_on_production_without_confirmation(self):
+        dummy_file = os.path.join(self.temp_dir.name, "dummy.dump")
+        with open(dummy_file, "w") as f:
+            f.write("dummy")
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("restore_db", "--file", dummy_file)
+
+        self.assertIn("Operación abortada por seguridad", str(ctx.exception))
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "prod_db",
+                "HOST": "production-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    def test_restore_db_aborts_on_production_with_wrong_destination(self):
+        dummy_file = os.path.join(self.temp_dir.name, "dummy.dump")
+        with open(dummy_file, "w") as f:
+            f.write("dummy")
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("restore_db", "--file", dummy_file, "--confirmar", "--destino", "wrong_db")
+
+        self.assertIn("Operación abortada por seguridad", str(ctx.exception))
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "prod_db",
+                "HOST": "production-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    def test_restore_db_aborts_on_production_without_explicit_remote_permission(self):
+        dummy_file = os.path.join(self.temp_dir.name, "dummy.dump")
+        with open(dummy_file, "w") as f:
+            f.write("dummy")
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("restore_db", "--file", dummy_file, "--confirmar", "--destino", "prod_db")
+
+        self.assertIn("Operación abortada por seguridad", str(ctx.exception))
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "prod_db",
+                "HOST": "production-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    def test_restore_db_succeeds_mocked_on_production_with_all_safety_flags(self):
+        dummy_file = os.path.join(self.temp_dir.name, "dummy.dump")
+        with open(dummy_file, "w") as f:
+            f.write("dummy")
+
+        import subprocess
+        from unittest.mock import patch
+
+        with patch("subprocess.run") as mock_run:
+            mock_run.return_value = subprocess.CompletedProcess(args=[], returncode=0)
+            stdout = StringIO()
+            call_command(
+                "restore_db",
+                "--file", dummy_file,
+                "--confirmar",
+                "--destino", "prod_db",
+                "--permitir-remoto",
+                stdout=stdout
+            )
+            self.assertIn("Restauración PostgreSQL exitosa", stdout.getvalue())
+            mock_run.assert_called_once()
+
+
 class CheckEnvironmentCommandTests(TestCase):
     @override_settings(DEBUG=True)
     def test_check_environment_development(self):
-        from io import StringIO
-        from django.core.management import call_command
-
         stdout = StringIO()
         call_command("check_environment", stdout=stdout)
 
@@ -401,9 +532,6 @@ class CheckEnvironmentCommandTests(TestCase):
     )
     @mock.patch.dict(os.environ, {"SENTRY_ENVIRONMENT": "staging"})
     def test_check_environment_staging(self):
-        from io import StringIO
-        from django.core.management import call_command
-
         stdout = StringIO()
         call_command("check_environment", stdout=stdout)
 
@@ -426,9 +554,6 @@ class CheckEnvironmentCommandTests(TestCase):
     )
     @mock.patch.dict(os.environ, {"SENTRY_ENVIRONMENT": "production"})
     def test_check_environment_production(self):
-        from io import StringIO
-        from django.core.management import call_command
-
         stdout = StringIO()
         call_command("check_environment", stdout=stdout)
 

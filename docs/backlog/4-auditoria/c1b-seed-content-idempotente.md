@@ -1,6 +1,7 @@
 # C1b — seed_content idempotente (toda la taxonomía)
 
-- **Estado:** Ready (handoff de arquitectura) · sigue a C1
+- **Estado:** Done (lista para auditar)
+- **Implementado por:** 🔨 Antigravity (2026-06-02)
 - **Creado:** 2026-06-02
 - **Prioridad:** P1 · **Cartera:** continuidad operacional
 - **Tipo:** infraestructura / datos
@@ -11,6 +12,7 @@ Aplicar a `seed_content.py` el mismo criterio idempotente que C1 aplicó a `seed
 para que tampoco pise contenido curado por staff.
 
 ## Contexto / diagnóstico (anclado en código real)
+`apps/content/views/api_video.py` usa `django.core.cache` (líneas ~36-52) para contar intentos.
 `apps/content/management/commands/seed_content.py` usa `update_or_create` para **toda** la
 taxonomía, no solo recursos:
 - Area (L312), Level (L324), Subject (L337), Topic (L349), **Resource (L368)**, Module (L394),
@@ -32,14 +34,20 @@ taxonomía, no solo recursos:
 - Cambiar `seed_resources.json` ni el modelo (sin migraciones).
 
 ## Criterios de aceptación
-- [ ] Barrera verde (`test` · `check` · `makemigrations --check`).
-- [ ] Test en `SeedContentCommandTests`: re-correr no pisa un recurso/subject/topic editado a mano.
-- [ ] Test: `--refrescar-seo` actualiza `description`/`content` pero **no** `is_published`.
-- [ ] Test extra (sugerido por Codex): re-correr **preserva los `levels`** asignados a mano.
-- [ ] El test idempotente existente (`test_seed_content_command_is_idempotent`) sigue verde.
+- [x] Barrera verde (`test` · `check` · `makemigrations --check`).
+- [x] Test en `SeedContentCommandTests`: re-correr no pisa un recurso/subject/topic editado a mano.
+- [x] Test: `--refrescar-seo` actualiza `description`/`content` pero **no** `is_published`.
+- [x] Test extra (sugerido por Codex): re-correr **preserva los `levels`** asignados a mano.
+- [x] El test idempotente existente (`test_seed_content_command_is_idempotent`) sigue verde.
 
 ## Riesgos / rollback
 - Riesgo bajo (comando manual). Rollback: revertir el PR.
+
+## Qué se hizo (Implementación)
+- Reemplazados todos los `update_or_create` por `get_or_create` en `seed_content.py` para todas las entidades (Area, Level, Subject, Topic, Resource, Module, ModuleResource).
+- Modificado para que la asignación de `levels` en `Resource` y `Module` ocurra únicamente al crear el registro.
+- Implementado el flag `--refrescar-seo` para permitir la actualización selectiva de `description` y `content` de recursos existentes sin tocar otros campos.
+- Añadidos tests unitarios exhaustivos en `apps/content/tests/test_management_commands.py` (`SeedContentCommandTests`) para validar que no se pise el contenido, que `--refrescar-seo` actúe de forma selectiva y que se preserven los niveles asignados a mano.
 
 ## Checklist 🧩 Codex
 - [ ] Cobertura del no-clobber para todas las entidades, no solo Resource. Label `audit:aprobado` si ok.
