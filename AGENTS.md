@@ -1,23 +1,31 @@
 # Guía para Codex — ProfeOnline
 
-## 📋 Flujo de trabajo de tareas (Kanban en `docs/`)
+## 📋 Documentación y flujo de tareas
 
-Las ideas y tareas del proyecto se gestionan con carpetas numeradas en `docs/`:
+> **Lee primero `docs/README.md`** — es el índice maestro: da el contexto del proyecto y el mapa
+> de qué leer según tu tarea. Las reglas de trabajo vigentes están en `docs/gobernanza/`.
 
-- **`1 Por iniciar/`** — ideas y tareas pendientes (backlog). Cada idea es un `.md` propio (usar `_plantilla.md`).
-- **`2 En Proceso/`** — tareas en las que se está trabajando ahora.
-- **`3 Finalizados/`** — tareas terminadas.
-- **`4 Reportes por Sesión/`** — un reporte por sesión (`AAAA-MM-DD.md`).
+El trabajo se gestiona con un **Kanban-pipeline** en `docs/backlog/` (cada etapa = dueño activo;
+la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
+
+- **`backlog/1-por-iniciar/`** — backlog de ideas. Cada idea es un `.md` propio (usar `_plantilla.md`).
+- **`backlog/2-arquitectura/`** — 🏛️ Claude redacta handoff + criterios (🧩 Codex hace preflight).
+- **`backlog/3-construccion/`** — 🔨 Antigravity implementa en una rama.
+- **`backlog/4-auditoria/`** — 🧩 Codex audita el diff (tests, N+1, migraciones).
+- **`backlog/5-cierre/`** — 🏛️ Claude auditoría final + `squash-merge`.
+- **`backlog/6-finalizados/`** — terminadas.
+- **`reportes-sesion/`** — un reporte por sesión (`AAAA-MM-DD.md`).
 
 ### Reglas (seguir siempre)
 
-1. **Al INICIAR una sesión:** leer el reporte más reciente de `4 Reportes por Sesión/`
-   para recuperar el contexto (Codex no recuerda sesiones anteriores).
-2. **Idea nueva** → crear un `.md` en `1 Por iniciar/` basado en `_plantilla.md`.
-3. **Al empezar a trabajar una idea** → moverla con `git mv` a `2 En Proceso/`.
-4. **Al terminar** → completar la sección **"Qué se hizo"** del documento y moverlo
-   con `git mv` a `3 Finalizados/`.
-5. **Al FINALIZAR una sesión:** escribir `4 Reportes por Sesión/AAAA-MM-DD.md`
+1. **Al INICIAR una sesión:** seguir el *protocolo barato de lectura* de `docs/README.md`:
+   `docs/_coordinacion/ESTADO.md` + el reporte más reciente de `reportes-sesion/` + la tarjeta
+   activa (Codex no recuerda sesiones anteriores). **No "leer todo".**
+2. **Idea nueva** → crear un `.md` en `backlog/1-por-iniciar/` basado en `_plantilla.md`.
+3. **Cada IA, al pasar su gate, mueve la tarjeta** con `git mv` a la siguiente etapa
+   (detalle del pipeline en `docs/gobernanza/proceso-multiagente.md`).
+4. **Al cerrar (merge)** → completar **"Qué se hizo"** y mover con `git mv` a `backlog/6-finalizados/`.
+5. **Al FINALIZAR una sesión:** escribir `reportes-sesion/AAAA-MM-DD.md`
    (usar `_plantilla-reporte.md`) con todo lo avanzado **desde el reporte anterior**.
 
 > Mover archivos siempre con `git mv` para conservar el historial.
@@ -37,7 +45,7 @@ Las ideas y tareas del proyecto se gestionan con carpetas numeradas en `docs/`:
 - **Errores:** Sentry (`SENTRY_DSN`) — proyecto `python-django` en org `particular-lw`.
 - **Login con Google:** allauth, credenciales en `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
 - **CSP:** con nonce por petición (`apps/core/middleware.py`).
-- **Auditorías antiguas:** archivadas en `docs/3 Finalizados/Auditorías-2026-05-30/`.
+- **Auditorías:** vigentes en `docs/auditorias/`; las antiguas en `docs/auditorias/_archivo-2026-05-30/`.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
