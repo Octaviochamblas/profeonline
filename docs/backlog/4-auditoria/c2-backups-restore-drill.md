@@ -37,11 +37,11 @@ funciona** (un backup sin restore probado no es un backup).
 | `docs/gobernanza/runbook-backups.md` (nuevo) | procedimiento + evidencia del drill |
 
 ## Criterios de aceptación
-- [ ] Barrera verde.
-- [ ] `backup_db` genera un dump válido desde `DATABASE_URL` local.
-- [ ] `restore_db` **rechaza** restaurar sobre la URL de prod sin `--confirmar` + destino explícito.
-- [ ] Runbook con el drill ejecutado y su evidencia (filas restauradas == origen).
-- [ ] Backups automáticos del provider confirmados por el usuario (anotado en el runbook).
+- [x] Barrera verde.
+- [x] `backup_db` genera un dump válido desde `DATABASE_URL` local.
+- [x] `restore_db` **rechaza** restaurar sobre la URL de prod sin `--confirmar` + destino explícito.
+- [x] Runbook con el drill ejecutado y su evidencia (filas restauradas == origen).
+- [x] Backups automáticos del provider confirmados por el usuario (anotado en el runbook).
 
 ## Plan de pruebas
 1. `backup_db` local → archivo. 2. Crear DB scratch, `restore_db` ahí, comparar conteos.

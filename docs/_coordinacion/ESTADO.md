@@ -31,7 +31,10 @@
 - `backlog/2-arquitectura/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
 
 ## Últimas entregas
-
+- 2026-06-02 — 🔨 Antigravity: comandos de backup y restore (C2) implementados y documentados en `feat/backups-restore-drill`. Drill de restauración local exitoso. Listo para auditoría.
+- 2026-06-02 — 🧩 Codex: auditoría C1b seed_content en
+  `docs/auditorias/2026-06-02-seed-content-idempotente-c1b.md`. Código aprobable; sin hallazgos
+  bloqueantes.
 - 2026-06-02 — 🔨 Antigravity: seed_content idempotente (C1b) implementado en `fix/seed-content-idempotente`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
 - 2026-06-02 — 🔨 Antigravity: system check de cache (C3) implementado en `feat/redis-cache-check`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
 - 2026-06-02 — 🏛️🔨🧩 **C1 mergeado (PR #24)** por el flujo completo: Antigravity construyó,
