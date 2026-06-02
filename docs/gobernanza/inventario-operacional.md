@@ -48,11 +48,12 @@ python manage.py makemigrations --check --dry-run
 python manage.py check --deploy --fail-level ERROR --settings=config.settings.production
 
 # Arranque en Railway (Procfile / nixpacks.toml):
-migrate && ensure_admin && ensure_site && seed_math_resources && gunicorn config.wsgi:application
+migrate && ensure_admin && ensure_site && gunicorn config.wsgi:application
 ```
 
 - `ensure_admin` lee `DJANGO_ADMIN_*` y **nunca** reescribe contraseñas existentes.
-- `seed_math_resources` corre en **cada** arranque → su idempotencia es el riesgo **C1**.
+- `seed_math_resources` **ya no** corre en el arranque (C1 mitigado): es idempotente (`get_or_create`,
+  no pisa ediciones del staff) y se corre **a demanda**; usar `--refrescar-seo` para refrescar SEO.
 
 ## 5. Cadencia de auditorías recurrentes
 

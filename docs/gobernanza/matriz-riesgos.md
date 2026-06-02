@@ -11,7 +11,7 @@
 
 | ID | Riesgo | Impacto | Mitigación | Dueño | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **C1** | `migrate` + `seed_math_resources` corren en **cada arranque** sin gate ni backup previo | Migración mala se aplica sola; seed puede pisar contenido curado | Verificar idempotencia del seed (`get_or_create`/`update_or_create`); gate de migraciones + backup previo; documentar rollback | 🏛️+🔨 | 🔴 |
+| **C1** | `migrate` corre en cada arranque sin gate/backup previo (el **seed** ya no pisa) | Migración mala se aplica sola | **Seed mitigado** (PR `fix/seed-idempotente`): `get_or_create` + fuera del start command (`Procfile`/`nixpacks`/`build.sh`). **Falta:** gate/backup antes de migrar → ligado a **C2** | 🔨+🏛️ | 🟡 |
 | **C2** | Sin backup verificado / sin drill de restauración | Pérdida de contenido y progreso de alumnos | Confirmar backup diario en DB gestionada + **probar restore** + documentar | 🧑+🏛️ | 🔴 |
 | **C3** | Rate-limit del webhook es **por-worker** si no hay Redis (`base.py` no define `CACHES` → `LocMemCache`) | Límite efectivo = 10 × nº workers; se pierde en cada redeploy | Definir `REDIS_URL` en prod y documentarlo como requisito del webhook | 🧑 | 🔴 |
 

@@ -17,7 +17,7 @@ tema, XP, rachas y destrezas. Producción en **Railway**, dominio `profeonline.c
 | Settings | `config.settings.local` (dev, default) · `config.settings.production` (prod) |
 | Apps | `apps/content` (modelos/vistas/lógica) · `apps/core` (middleware, email, CSP) |
 | Base de datos | PostgreSQL (`DATABASE_URL` obligatorio; sin fallback a SQLite) |
-| Deploy | push a `main` → Railway (con *Wait for CI*). Arranque: `migrate && ensure_admin && ensure_site && seed_math_resources && gunicorn` |
+| Deploy | push a `main` → Railway (con *Wait for CI*). Arranque: `migrate && ensure_admin && ensure_site && gunicorn` (el seed ya **no** corre en cada boot, C1) |
 | Barrera CI | `pip-audit` + `check` + `check --deploy` + suite completa (~165 tests) |
 | Email | API HTTP de Brevo · Errores | Sentry · Login | allauth + Google · CSP con nonce |
 
