@@ -326,3 +326,47 @@ class MarkdownSecurityFilterTests(TestCase):
         )
 
         self.assertIn('<a href="https://example.com/guia">Guia</a>', rendered)
+
+
+class CacheBackendCheckTests(TestCase):
+    @override_settings(
+        DEBUG=False,
+        CACHES={
+            "default": {
+                "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            }
+        }
+    )
+    def test_warning_when_locmem_and_not_debug(self):
+        from apps.core.checks import cache_backend_check
+        warnings = cache_backend_check(None)
+        self.assertEqual(len(warnings), 1)
+        self.assertEqual(warnings[0].id, "core.W001")
+        self.assertIn("Producción sin cache compartida", warnings[0].msg)
+
+    @override_settings(
+        DEBUG=False,
+        CACHES={
+            "default": {
+                "BACKEND": "django.core.cache.backends.redis.RedisCache",
+                "LOCATION": "redis://127.0.0.1:6379/1",
+            }
+        }
+    )
+    def test_no_warning_when_redis_and_not_debug(self):
+        from apps.core.checks import cache_backend_check
+        warnings = cache_backend_check(None)
+        self.assertEqual(len(warnings), 0)
+
+    @override_settings(
+        DEBUG=True,
+        CACHES={
+            "default": {
+                "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            }
+        }
+    )
+    def test_no_warning_when_locmem_and_debug_true(self):
+        from apps.core.checks import cache_backend_check
+        warnings = cache_backend_check(None)
+        self.assertEqual(len(warnings), 0)

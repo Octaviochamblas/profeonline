@@ -1,6 +1,7 @@
 # C3 — Redis para rate-limit real del webhook
 
-- **Estado:** Ready (handoff de arquitectura)
+- **Estado:** Done (lista para auditar)
+- **Implementado por:** 🔨 Antigravity (2026-06-02)
 - **Creado:** 2026-06-02
 - **Prioridad:** P0 · **Cartera:** continuidad operacional
 - **Tipo:** infraestructura / seguridad
@@ -38,11 +39,11 @@ por-proceso (hoy da una falsa sensación de protección).
 | `docs/gobernanza/inventario-operacional.md` | `REDIS_URL` como requisito del webhook |
 
 ## Criterios de aceptación
-- [ ] Barrera verde (`test` · `check` · `makemigrations --check`).
-- [ ] Con settings de prod **sin** `REDIS_URL`, `manage.py check` muestra el Warning (no Error).
-- [ ] Con `REDIS_URL` definido, el Warning desaparece.
-- [ ] Test que verifica que el check se dispara con `LocMemCache` + `DEBUG=False`.
-- [ ] `check --deploy --fail-level ERROR` sigue dando **exit 0** (el Warning no rompe CI).
+- [x] Barrera verde (`test` · `check` · `makemigrations --check`).
+- [x] Con settings de prod **sin** `REDIS_URL`, `manage.py check` muestra el Warning (no Error).
+- [x] Con `REDIS_URL` definido, el Warning desaparece.
+- [x] Test que verifica que el check se dispara con `LocMemCache` + `DEBUG=False`.
+- [x] `check --deploy --fail-level ERROR` sigue dando **exit 0** (el Warning no rompe CI).
 
 ## Plan de pruebas
 1. `DJANGO settings=production` sin `REDIS_URL` → `check` lista el Warning.
@@ -52,6 +53,13 @@ por-proceso (hoy da una falsa sensación de protección).
 ## Riesgos / rollback
 - Riesgo bajo: un check mal escrito podría romper el arranque. Mitigación: que sea `Warning` y
   cubierto por test. Rollback: revertir el PR.
+
+## Qué se hizo (Implementación)
+- Creado `apps/core/checks.py` con el system check `cache_backend_check`.
+- Registrado el check importándolo en `ready()` en `apps/core/apps.py` sin causar importaciones circulares.
+- Añadidos tests unitarios en `apps/core/tests.py` (`CacheBackendCheckTests`) que comprueban que el Warning se activa únicamente con `DEBUG=False` y LocMemCache, y no molesta en desarrollo ni cuando se usa RedisCache.
+- Documentado en `docs/gobernanza/inventario-operacional.md` que `REDIS_URL` es requisito del webhook.
+- Probado exitosamente de forma local que `check --deploy --settings=config.settings.production` retorna `exit 0` con el Warning presente.
 
 ## Checklist 🧩 Codex
 - [ ] El check es Warning (no Error) y no afecta `check --deploy` del CI.
