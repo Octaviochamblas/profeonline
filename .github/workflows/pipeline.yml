@@ -1,0 +1,59 @@
+name: Pipeline
+
+# Gate de auditoría IA + etiquetado automático de PRs sensibles.
+# - audit-gate: check REQUERIDO. Pasa si el PR es solo docs / Dependabot, o si una IA
+#   distinta a la que construyó añadió el label `audit:aprobado`.
+# - etiquetas: marca PRs que tocan superficie sensible con `seguridad:requiere-claude`.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  audit-gate:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+      AUTHOR: ${{ github.event.pull_request.user.login }}
+    steps:
+      - name: Evaluar gate de auditoría IA
+        run: |
+          files=$(gh pr diff "$PR" --name-only)
+          echo "Archivos cambiados:"; echo "$files"
+          if [ -n "$files" ] && ! echo "$files" | grep -qvE '^docs/'; then
+            echo "::notice::PR solo de documentación → gate auto-aprobado."; exit 0
+          fi
+          if [ "$AUTHOR" = "dependabot[bot]" ]; then
+            echo "::notice::PR de Dependabot → gate auto-aprobado."; exit 0
+          fi
+          labels=$(gh pr view "$PR" --json labels --jq '.labels[].name')
+          if echo "$labels" | grep -qx 'audit:aprobado'; then
+            echo "::notice::Auditoría IA aprobada (label audit:aprobado)."; exit 0
+          fi
+          echo "::error::Falta auditoría de una IA distinta a la que construyó."
+          echo "Codex/Claude debe revisar y añadir el label 'audit:aprobado' (o el usuario, 1 clic)."
+          exit 1
+
+  etiquetas-sensibles:
+    if: github.event.action == 'opened' || github.event.action == 'synchronize' || github.event.action == 'reopened'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Etiquetar PRs que tocan superficie sensible
+        run: |
+          files=$(gh pr diff "$PR" --name-only)
+          if echo "$files" | grep -qE 'api_video|config/settings/|core/middleware|permission|allauth'; then
+            gh pr edit "$PR" --add-label 'seguridad:requiere-claude' || true
+            echo "Etiquetado: seguridad:requiere-claude"
+          else
+            echo "Sin superficie sensible detectada."
+          fi

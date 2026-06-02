@@ -1,0 +1,45 @@
+name: Digest diario
+
+# Mantiene un único Issue "Estado del día (multiagente)" con: PRs abiertos + estado de
+# checks, lo que necesita decisión del usuario, y el tamaño del backlog. Corre sin IA
+# (solo GitHub Actions), así que no consume tokens. Ejecutable a mano con workflow_dispatch.
+
+on:
+  schedule:
+    - cron: "0 13 * * *"   # ~09:00 Chile
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TITLE: "Estado del dia (multiagente)"
+    steps:
+      - name: Construir y publicar el digest
+        run: |
+          fecha=$(date +%F)
+          prs=$(gh pr list --state open --json number,title,url,isDraft,labels,statusCheckRollup --jq '.[] | "- #\(.number) \(.title) — checks: [\((.statusCheckRollup // []) | map(.conclusion // .state // "?") | join(","))] — labels: \(.labels | map(.name) | join(", ")) — \(.url)"' || true)
+          needs=$(gh pr list --state open --label 'seguridad:requiere-claude' --json number,title,url --jq '.[] | "- #\(.number) \(.title) — \(.url)"' || true)
+          ideas=$(gh api "repos/$GH_REPO/contents/docs/backlog/1-por-iniciar" --jq '[.[] | select(.name | endswith(".md")) | select(.name | startswith("_") | not)] | length' 2>/dev/null || echo "?")
+          {
+            printf '## %s — %s\n\n' "$TITLE" "$fecha"
+            printf '### PRs abiertos\n%s\n\n' "${prs:-_(ninguno)_}"
+            printf '### Necesita tu decision (seguridad / producto)\n%s\n\n' "${needs:-_(nada pendiente)_}"
+            printf '### Backlog 1-por-iniciar: %s ideas\n\n' "$ideas"
+            printf -- '---\n_Generado automaticamente por .github/workflows/digest.yml (sin IA). Se reescribe cada dia._\n'
+          } > digest_body.md
+          num=$(gh issue list --search "$TITLE in:title" --state open --json number --jq '.[0].number' || true)
+          if [ -n "$num" ] && [ "$num" != "null" ]; then
+            gh issue edit "$num" --body-file digest_body.md
+            echo "Digest actualizado en issue #$num"
+          else
+            gh issue create --title "$TITLE" --body-file digest_body.md
+            echo "Digest creado"
+          fi

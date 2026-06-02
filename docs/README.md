@@ -48,6 +48,7 @@ tarea lo exige**. Cada capa apunta a la siguiente.
 | **Saber qué construir y con qué prioridad** | `gobernanza/roadmap-priorizado.md` |
 | **Conocer riesgos técnicos y su mitigación** | `gobernanza/matriz-riesgos.md` |
 | **Operar/desplegar/rotar secretos** | `gobernanza/inventario-operacional.md` |
+| **Entender la automatización (CI, auto-merge, gate IA)** | `gobernanza/automatizacion-flujo.md` |
 | **Construir una feature (builder)** | el handoff en `_coordinacion/handoffs/` + la tarjeta en `backlog/3-construccion/` |
 | **Auditar un cambio** | el handoff de la tarea + `gobernanza/matriz-riesgos.md` |
 | **Tomar/registrar una decisión de arquitectura** | `gobernanza/decisiones/` (ADRs) |
