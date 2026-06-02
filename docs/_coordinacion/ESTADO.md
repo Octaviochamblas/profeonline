@@ -14,21 +14,19 @@
 
 ## En curso ahora
 
-- **C1 cerrado y mergeado** (PR #24): seed idempotente, fuera del start command, docs alineadas.
-- **C3 cerrado y mitigado** (PR #26 + `REDIS_URL` en Railway 2026-06-02): rate-limit del webhook ya
-  es compartido entre workers. Tarjeta en `6-finalizados`, matriz **🟢**.
-- **C1b en cierre** (PR #27): `seed_content` idempotente, `audit:aprobado`; Claude resolvió el
-  conflicto y lo deja para auto-merge. Ver `ARRANQUE-P0.md`.
+- **Sprint P0 cerrado:** C1, C1b, C2, C3, A1 y el Router del flujo están **mergeados** y sus tarjetas
+  en `6-finalizados`. Backlog de construcción/auditoría vacío.
+- **Matriz de riesgos:** C1 🟡 · C3 🟢 · C2 🟡 · A1 🟡 (las 🟡 esperan solo acción del 🧑 Usuario en Railway).
 
 ## Bloqueos / esperando
 
-- **C3 / C2 / A1** dependen de acciones del 🧑 Usuario en Railway (`REDIS_URL`, backups diarios,
-  servicio staging con DB propia).
+- **C2 y A1** quedan 🟡 a la espera de acciones del 🧑 Usuario en Railway:
+  - **C2:** activar backups automáticos del proveedor + ejecutar un restore desde backup real → 🟢.
+  - **A1:** crear el servicio staging web + DB PostgreSQL propia; validar 200 con DB separada → 🟢.
 
 ## Handoffs abiertos (Ready para construir)
 
-- `backlog/2-arquitectura/c2-backups-restore-drill.md` — 🔨 Antigravity + 🧑 Usuario
-- `backlog/4-auditoria/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
+- _(ninguno)_ — backlog de ideas en `backlog/1-por-iniciar/` disponible para el próximo sprint.
 
 ## Últimas entregas
 - 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **Router mergeado (PR #29)** — workflow mecánico de

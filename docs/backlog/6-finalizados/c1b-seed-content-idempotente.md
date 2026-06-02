@@ -1,6 +1,9 @@
 # C1b — seed_content idempotente (toda la taxonomía)
 
-- **Estado:** Done (lista para auditar)
+> ✅ **Cerrado (2026-06-02, 🏛️ Claude):** mergeado (PR #27). Auditado por Codex (`audit:aprobado`);
+> Claude resolvió el conflicto de docs con main y cerró.
+
+- **Estado:** Finalizado
 - **Implementado por:** 🔨 Antigravity (2026-06-02)
 - **Creado:** 2026-06-02
 - **Prioridad:** P1 · **Cartera:** continuidad operacional

@@ -1,6 +1,9 @@
 # A1 — Entorno de staging / preview deploys
 
-- **Estado:** Auditoría
+> ✅ **Cerrado (2026-06-02, 🏛️ Claude):** código mergeado (PR #30: `check_environment` + runbook).
+> Riesgo A1 en matriz queda **🟡** hasta que el 🧑 Usuario cree el servicio staging + DB propia en Railway.
+
+- **Estado:** Finalizado (código) · 🟡 pendiente acción Railway del usuario
 - **Creado:** 2026-06-02
 - **Prioridad:** P1 · **Cartera:** continuidad operacional (habilitador de QA)
 - **Tipo:** infraestructura

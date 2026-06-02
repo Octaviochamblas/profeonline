@@ -1,6 +1,9 @@
 # Automatización del flujo multiagente (Fase 1: Router seguro)
 
-- **Estado:** Auditoría
+> ✅ **Cerrado (2026-06-02, 🏛️ Claude):** mergeado (PR #29). Revisión de seguridad de Claude OK
+> (workflow sin `contents: write`, sin secretos, no mergea ni añade `audit:aprobado`).
+
+- **Estado:** Finalizado
 - **Creado:** 2026-06-02
 - **Prioridad:** P0  ·  **Cartera:** continuidad operacional / ingeniería
 - **Tipo:** infraestructura

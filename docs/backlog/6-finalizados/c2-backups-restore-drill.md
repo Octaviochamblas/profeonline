@@ -1,6 +1,10 @@
 # C2 — Backups verificados + drill de restauración
 
-- **Estado:** Ready (handoff de arquitectura)
+> ✅ **Cerrado (2026-06-02, 🏛️ Claude):** código mergeado (PR #28: `backup_db`/`restore_db` con
+> guardas anti-prod + runbook + drill local). Riesgo C2 en matriz queda **🟡** hasta que el 🧑 Usuario
+> active backups automáticos del proveedor y ejecute un restore desde backup real.
+
+- **Estado:** Finalizado (tooling + drill local) · 🟡 pendiente backups automáticos del proveedor
 - **Creado:** 2026-06-02
 - **Prioridad:** P0 · **Cartera:** continuidad operacional
 - **Tipo:** infraestructura
