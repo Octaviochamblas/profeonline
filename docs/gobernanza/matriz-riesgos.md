@@ -12,7 +12,7 @@
 | ID | Riesgo | Impacto | Mitigación | Dueño | Estado |
 | --- | --- | --- | --- | --- | --- |
 | **C1** | `migrate` corre en cada arranque sin gate/backup previo (el **seed** ya no pisa) | Migración mala se aplica sola | **Seed mitigado** (PR `fix/seed-idempotente`): `get_or_create` + fuera del start command (`Procfile`/`nixpacks`/`build.sh`). **Falta:** gate/backup antes de migrar → ligado a **C2** | 🔨+🏛️ | 🟡 |
-| **C2** | Sin backup verificado / sin drill de restauración | Pérdida de contenido y progreso de alumnos | **Tooling en main** (PR #28): `backup_db`/`restore_db` con guardas anti-prod + runbook + drill local. **Falta:** backups automáticos del proveedor + restore desde backup real → 🟢 | 🧑+🔨 | 🟡 |
+| **C2** | Sin backup verificado / sin drill de restauración | Pérdida de contenido y progreso de alumnos | **Backup real de prod verificado** (2026-06-02): `pg_dump` 18.4 + restore drill OK en clúster local (runbook §4.B). **Falta para 🟢:** automatizar el backup (Pro o cron externo) con retención. | 🧑+🔨 | 🟡 |
 | **C3** | Rate-limit del webhook es **por-worker** si no hay Redis (`base.py` no define `CACHES` → `LocMemCache`) | Límite efectivo = 10 × nº workers; se pierde en cada redeploy | **Mitigado:** `REDIS_URL` definido en Railway (2026-06-02) → cache/rate-limit compartido entre workers; `system check` (PR #26) avisa si alguna vez falta. | 🧑+🔨 | 🟢 |
 
 ## 🟠 Altos (P1)
