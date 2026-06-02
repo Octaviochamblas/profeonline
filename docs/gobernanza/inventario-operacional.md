@@ -13,7 +13,7 @@
 | **Sentry** | Monitoreo de errores | Proyecto `python-django`, org `particular-lw`. `send_default_pii=False`, tracing off por defecto. |
 | **Google (allauth)** | Login social | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`. |
 | **YouTube Data API** | Import de playlists/recursos | `YOUTUBE_API_KEY`. |
-| **Redis** *(pendiente, C3)* | Cache compartida + rate-limit del webhook | Definir `REDIS_URL` en prod. |
+| **Redis** *(activo, C3)* | Cache compartida + rate-limit del webhook | `REDIS_URL` definido en prod (2026-06-02). **Requisito obligatorio** del rate-limit del webhook (evita rate-limit por-worker en producción); el `system check` avisa si falta. |
 
 ## 2. Inventario de secretos (rotación: semestral)
 
@@ -26,7 +26,7 @@
 | `GOOGLE_CLIENT_ID` / `_SECRET` | Login con Google | Railway env | — |
 | `SENTRY_DSN` | Monitoreo de errores | Railway env | — |
 | `YOUTUBE_API_KEY` | Import de playlists | Railway env | — |
-| `REDIS_URL` | Cache/rate-limit compartido (pendiente) | Railway env | — |
+| `REDIS_URL` | Cache/rate-limit compartido | Railway env | 2026-06-02 |
 
 ## 3. Variables de entorno de seguridad (producción)
 

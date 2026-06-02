@@ -1,6 +1,7 @@
 # C3 — Redis para rate-limit real del webhook
 
-- **Estado:** Ready (handoff de arquitectura)
+- **Estado:** ✅ Finalizado y mitigado — código en `main` (PR #26) + `REDIS_URL` definido en Railway (2026-06-02)
+- **Implementado por:** 🔨 Antigravity (2026-06-02)
 - **Creado:** 2026-06-02
 - **Prioridad:** P0 · **Cartera:** continuidad operacional
 - **Tipo:** infraestructura / seguridad
@@ -38,11 +39,11 @@ por-proceso (hoy da una falsa sensación de protección).
 | `docs/gobernanza/inventario-operacional.md` | `REDIS_URL` como requisito del webhook |
 
 ## Criterios de aceptación
-- [ ] Barrera verde (`test` · `check` · `makemigrations --check`).
-- [ ] Con settings de prod **sin** `REDIS_URL`, `manage.py check` muestra el Warning (no Error).
-- [ ] Con `REDIS_URL` definido, el Warning desaparece.
-- [ ] Test que verifica que el check se dispara con `LocMemCache` + `DEBUG=False`.
-- [ ] `check --deploy --fail-level ERROR` sigue dando **exit 0** (el Warning no rompe CI).
+- [x] Barrera verde (`test` · `check` · `makemigrations --check`).
+- [x] Con settings de prod **sin** `REDIS_URL`, `manage.py check` muestra el Warning (no Error).
+- [x] Con `REDIS_URL` definido, el Warning desaparece.
+- [x] Test que verifica que el check se dispara con `LocMemCache` + `DEBUG=False`.
+- [x] `check --deploy --fail-level ERROR` sigue dando **exit 0** (el Warning no rompe CI).
 
 ## Plan de pruebas
 1. `DJANGO settings=production` sin `REDIS_URL` → `check` lista el Warning.
@@ -53,11 +54,23 @@ por-proceso (hoy da una falsa sensación de protección).
 - Riesgo bajo: un check mal escrito podría romper el arranque. Mitigación: que sea `Warning` y
   cubierto por test. Rollback: revertir el PR.
 
+## Qué se hizo (Implementación)
+- Creado `apps/core/checks.py` con el system check `cache_backend_check`.
+- Registrado el check importándolo en `ready()` en `apps/core/apps.py` sin causar importaciones circulares.
+- Añadidos tests unitarios en `apps/core/tests.py` (`CacheBackendCheckTests`) que comprueban que el Warning se activa únicamente con `DEBUG=False` y LocMemCache, y no molesta en desarrollo ni cuando se usa RedisCache.
+- Documentado en `docs/gobernanza/inventario-operacional.md` que `REDIS_URL` es requisito del webhook.
+- Probado exitosamente de forma local que `check --deploy --settings=config.settings.production` retorna `exit 0` con el Warning presente.
+
 ## Checklist 🧩 Codex
-- [ ] El check es Warning (no Error) y no afecta `check --deploy` del CI.
-- [ ] No hay import circular al registrar el check en `ready()`.
-- [ ] Label `audit:aprobado` si ok.
+- [x] El check es Warning (no Error) y no afecta `check --deploy` del CI.
+- [x] No hay import circular al registrar el check en `ready()`.
+- [x] Mergeado vía PR #26 (audit-gate en verde al hacer merge).
 
 ## Checklist 🏛️ Claude (cierre)
-- [ ] Confirmar con el usuario que `REDIS_URL` quedó en Railway.
-- [ ] `matriz-riesgos.md`: C3 → 🟢 cuando Redis esté en prod.
+- [x] Código mergeado a `main` (PR #26): `apps/core/checks.py` + registro en `ready()` + tests + doc en inventario.
+- [x] `matriz-riesgos.md`: C3 → 🟢 (`REDIS_URL` definido en Railway el 2026-06-02; rate-limit ahora compartido).
+- [x] **🧑 Usuario:** `REDIS_URL` definido en Railway (2026-06-02, confirmado por el usuario).
+
+> **Reconciliación + cierre (2026-06-02, 🏛️ Claude):** el código de C3 ya estaba en `main` (PR #26)
+> pero la tarjeta había quedado en `4-auditoria`. El usuario definió `REDIS_URL` en Railway el mismo
+> día, completando la mitigación → riesgo C3 cerrado en 🟢.
