@@ -15,8 +15,10 @@
 ## En curso ahora
 
 - **C1 cerrado y mergeado** (PR #24): seed idempotente, fuera del start command, docs alineadas.
-- **Siguiente disponible:** `c1b` (seed_content idempotente) y la parte de código de C3
-  (system check de cache). Ver `ARRANQUE-P0.md`.
+- **C3 cerrado y mitigado** (PR #26 + `REDIS_URL` en Railway 2026-06-02): rate-limit del webhook ya
+  es compartido entre workers. Tarjeta en `6-finalizados`, matriz **🟢**.
+- **C1b en cierre** (PR #27): `seed_content` idempotente, `audit:aprobado`; Claude resolvió el
+  conflicto y lo deja para auto-merge. Ver `ARRANQUE-P0.md`.
 
 ## Bloqueos / esperando
 
@@ -25,21 +27,17 @@
 
 ## Handoffs abiertos (Ready para construir)
 
-- `backlog/2-arquitectura/c1b-seed-content-idempotente.md` — 🔨 Antigravity (sigue a C1)
-- `backlog/2-arquitectura/c3-redis-rate-limit.md` — 🔨 Antigravity + 🧑 Usuario
 - `backlog/2-arquitectura/c2-backups-restore-drill.md` — 🔨 Antigravity + 🧑 Usuario
-- `backlog/2-arquitectura/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
+- `backlog/4-auditoria/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
 
 ## Últimas entregas
-- 2026-06-02 — 🧩 Codex: auditoría y cura C2 en `feat/backups-restore-drill`. Se endureció
-  `restore_db` con `--permitir-remoto`, se ignoró `backups/` y se corrigió el runbook para dejar
-  backups automáticos como pendiente del proveedor/plan.
-- 2026-06-02 — 🔨 Antigravity: comandos de backup y restore (C2) implementados y documentados en `feat/backups-restore-drill`. Drill de restauración local exitoso. Listo para auditoría.
-- 2026-06-02 — 🧩 Codex: auditoría C1b seed_content en
-  `docs/auditorias/2026-06-02-seed-content-idempotente-c1b.md`. Código aprobable; sin hallazgos
-  bloqueantes.
-- 2026-06-02 — 🔨 Antigravity: seed_content idempotente (C1b) implementado en `fix/seed-content-idempotente`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
-- 2026-06-02 — 🔨 Antigravity: system check de cache (C3) implementado en `feat/redis-cache-check`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
+- 2026-06-02 — 🔨 Antigravity: comandos `backup_db`/`restore_db` (C2) + runbook en
+  `feat/backups-restore-drill`; drill local exitoso. Auditado por 🏛️ Claude (`restore_db` con guardas
+  anti-prod), en cierre.
+- 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **C1b mergeado (PR #27)** — `seed_content` idempotente
+  (auditado por Codex, conflicto resuelto y cerrado por Claude).
+- 2026-06-02 — 🏛️ Claude: **C3 cerrado en 🟢** — código en `main` (PR #26) + `REDIS_URL` en Railway;
+  tarjeta en `6-finalizados`, matriz 🟢 (PR #31).
 - 2026-06-02 — 🏛️🔨🧩 **C1 mergeado (PR #24)** por el flujo completo: Antigravity construyó,
   Codex auditó (detectó fuera-de-alcance + `build.sh` + docs), Claude cerró. Lock liberado.
 - 2026-06-02 — 🏛️ Claude: handoffs P0 *Ready* + `ARRANQUE-P0.md`.
