@@ -15,8 +15,10 @@
 ## En curso ahora
 
 - **C1 cerrado y mergeado** (PR #24): seed idempotente, fuera del start command, docs alineadas.
-- **Siguiente disponible:** `c1b` (seed_content idempotente) y la parte de código de C3
-  (system check de cache). Ver `ARRANQUE-P0.md`.
+- **C3 cerrado y mitigado** (PR #26 + `REDIS_URL` en Railway 2026-06-02): rate-limit del webhook ya
+  es compartido entre workers. Tarjeta en `6-finalizados`, matriz **🟢**.
+- **Siguiente disponible:** `c1b` (PR #27, con `audit:aprobado` pero **en conflicto** con main).
+  Ver `ARRANQUE-P0.md`.
 
 ## Bloqueos / esperando
 
@@ -26,13 +28,14 @@
 ## Handoffs abiertos (Ready para construir)
 
 - `backlog/2-arquitectura/c1b-seed-content-idempotente.md` — 🔨 Antigravity (sigue a C1)
-- `backlog/2-arquitectura/c3-redis-rate-limit.md` — 🔨 Antigravity + 🧑 Usuario
 - `backlog/2-arquitectura/c2-backups-restore-drill.md` — 🔨 Antigravity + 🧑 Usuario
-- `backlog/2-arquitectura/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
+- `backlog/4-auditoria/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
 
 ## Últimas entregas
 
-- 2026-06-02 — 🔨 Antigravity: system check de cache (C3) implementado en `feat/redis-cache-check`. Tests unitarios agregados (170 OK). Listo para que Codex audite.
+- 2026-06-02 — 🏛️ Claude: **reconciliación de C3** — código ya en `main` (PR #26); tarjeta movida a
+  `6-finalizados`, matriz de riesgos C3 → 🟡 (pasa a 🟢 cuando el 🧑 Usuario defina `REDIS_URL`).
+- 2026-06-02 — 🔨 Antigravity: system check de cache (C3) implementado y mergeado (PR #26).
 - 2026-06-02 — 🏛️🔨🧩 **C1 mergeado (PR #24)** por el flujo completo: Antigravity construyó,
   Codex auditó (detectó fuera-de-alcance + `build.sh` + docs), Claude cerró. Lock liberado.
 - 2026-06-02 — 🏛️ Claude: handoffs P0 *Ready* + `ARRANQUE-P0.md`.
