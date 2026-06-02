@@ -17,5 +17,6 @@ python manage.py ensure_admin
 # Sync the Sites framework domain with CANONICAL_BASE_URL (email links)
 python manage.py ensure_site
 
-# Seed/refresh math resources
-python manage.py seed_math_resources
+# NOTA (C1): el seed NO se ejecuta en el deploy para no pisar contenido curado.
+# Para sembrar/refrescar contenido, correr a demanda:
+#   python manage.py seed_math_resources [--refrescar-seo]
