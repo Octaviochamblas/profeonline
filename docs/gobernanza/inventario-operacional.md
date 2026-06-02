@@ -13,7 +13,7 @@
 | **Sentry** | Monitoreo de errores | Proyecto `python-django`, org `particular-lw`. `send_default_pii=False`, tracing off por defecto. |
 | **Google (allauth)** | Login social | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`. |
 | **YouTube Data API** | Import de playlists/recursos | `YOUTUBE_API_KEY`. |
-| **Redis** *(pendiente, C3)* | Cache compartida + rate-limit del webhook | Definir `REDIS_URL` en prod. |
+| **Redis** *(pendiente, C3)* | Cache compartida + rate-limit del webhook | Definir `REDIS_URL` en prod. **Requisito obligatorio** para el rate-limit del webhook (evita rate-limit por-worker en producción). |
 
 ## 2. Inventario de secretos (rotación: semestral)
 
