@@ -31,6 +31,9 @@
 - `backlog/2-arquitectura/a1-staging-preview.md` — 🧑 Usuario + 🔨 Antigravity
 
 ## Últimas entregas
+- 2026-06-02 — 🧩 Codex: auditoría y cura C2 en `feat/backups-restore-drill`. Se endureció
+  `restore_db` con `--permitir-remoto`, se ignoró `backups/` y se corrigió el runbook para dejar
+  backups automáticos como pendiente del proveedor/plan.
 - 2026-06-02 — 🔨 Antigravity: comandos de backup y restore (C2) implementados y documentados en `feat/backups-restore-drill`. Drill de restauración local exitoso. Listo para auditoría.
 - 2026-06-02 — 🧩 Codex: auditoría C1b seed_content en
   `docs/auditorias/2026-06-02-seed-content-idempotente-c1b.md`. Código aprobable; sin hallazgos

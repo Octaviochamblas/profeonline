@@ -26,6 +26,14 @@ class Command(BaseCommand):
             type=str,
             help="Nombre de la base de datos destino para verificar el objetivo de la restauración.",
         )
+        parser.add_argument(
+            "--permitir-remoto",
+            action="store_true",
+            help=(
+                "Permite restaurar contra una base remota/producción. Usar solo en emergencias "
+                "después de apuntar DATABASE_URL al destino correcto."
+            ),
+        )
 
     def handle(self, *args, **options):
         db_config = settings.DATABASES["default"]
@@ -41,8 +49,9 @@ class Command(BaseCommand):
         db_host = db_config.get("HOST", "")
         db_password = db_config.get("PASSWORD", "")
 
-        is_remote = db_host not in ["", "localhost", "127.0.0.1", "db"]
-        is_prod_settings = not settings.DEBUG
+        is_postgresql = engine == "django.db.backends.postgresql"
+        is_remote = is_postgresql and db_host not in ["", "localhost", "127.0.0.1", "db"]
+        is_prod_settings = is_postgresql and not settings.DEBUG
 
         if is_remote or is_prod_settings:
             self.stdout.write(self.style.WARNING(
@@ -51,13 +60,15 @@ class Command(BaseCommand):
 
             confirmar = options.get("confirmar")
             destino = options.get("destino")
+            permitir_remoto = options.get("permitir_remoto")
 
-            if not confirmar or destino != db_name:
+            if not confirmar or destino != db_name or not permitir_remoto:
                 raise CommandError(
                     "Operación abortada por seguridad. Para restaurar sobre una base de datos remota o de producción, "
                     "debe proveer obligatoriamente los flags:\n"
                     "  --confirmar\n"
                     f"  --destino {db_name}\n"
+                    "  --permitir-remoto\n"
                     "Por favor verifique que está apuntando al destino correcto."
                 )
 

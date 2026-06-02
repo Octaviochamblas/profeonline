@@ -462,7 +462,29 @@ class BackupRestoreCommandTests(TestCase):
             }
         }
     )
-    def test_restore_db_succeeds_mocked_on_production_with_confirmation_and_destination(self):
+    def test_restore_db_aborts_on_production_without_explicit_remote_permission(self):
+        dummy_file = os.path.join(self.temp_dir.name, "dummy.dump")
+        with open(dummy_file, "w") as f:
+            f.write("dummy")
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command("restore_db", "--file", dummy_file, "--confirmar", "--destino", "prod_db")
+
+        self.assertIn("Operación abortada por seguridad", str(ctx.exception))
+
+    @override_settings(
+        DEBUG=False,
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "prod_db",
+                "HOST": "production-db.railway.app",
+                "USER": "postgres",
+                "PASSWORD": "password",
+            }
+        }
+    )
+    def test_restore_db_succeeds_mocked_on_production_with_all_safety_flags(self):
         dummy_file = os.path.join(self.temp_dir.name, "dummy.dump")
         with open(dummy_file, "w") as f:
             f.write("dummy")
@@ -478,6 +500,7 @@ class BackupRestoreCommandTests(TestCase):
                 "--file", dummy_file,
                 "--confirmar",
                 "--destino", "prod_db",
+                "--permitir-remoto",
                 stdout=stdout
             )
             self.assertIn("Restauración PostgreSQL exitosa", stdout.getvalue())

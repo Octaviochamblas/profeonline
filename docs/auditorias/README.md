@@ -17,6 +17,7 @@ si procede, se mueve a `_archivo-AAAA-MM-DD/`.
 
 | Fecha | Alcance | Archivo | Estado |
 | --- | --- | --- | --- |
+| 2026-06-02 | Backups verificados + drill de restauración C2 | [`2026-06-02-backups-restore-drill-c2.md`](2026-06-02-backups-restore-drill-c2.md) | vigente |
 | 2026-06-02 | seed_content idempotente C1b | [`2026-06-02-seed-content-idempotente-c1b.md`](2026-06-02-seed-content-idempotente-c1b.md) | vigente |
 | 2026-06-02 | Seed idempotente C1 (`seed_math_resources`) | [`2026-06-02-seed-idempotente-c1.md`](2026-06-02-seed-idempotente-c1.md) | vigente |
 | 2026-06-01 | Gamificación + malla curricular vertebral (vs. Khan/Duolingo) | [`2026-06-01-gamificacion-malla.md`](2026-06-01-gamificacion-malla.md) | vigente |

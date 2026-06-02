@@ -6,9 +6,10 @@ Este runbook describe los procedimientos de respaldo, restauración y pruebas de
 
 ## 💾 1. Respaldos Automáticos del Proveedor (Railway/Supabase)
 
-*   **Frecuencia:** Diaria.
-*   **Retención:** 30 días.
-*   **Confirmación:** Los respaldos automáticos se encuentran activos y configurados directamente en el panel de control de la base de datos (Railway). Su administración e historial son visualizados desde la pestaña "Backups" del servicio PostgreSQL.
+*   **Estado actual:** Pendiente.
+*   **Motivo:** Railway muestra que los backups del volumen solo están disponibles para clientes del plan Pro.
+*   **Decisión temporal:** No se activa backup automático del proveedor todavía porque la base no contiene contenido real crítico. El cierre definitivo de C2 queda pendiente hasta contratar/activar backups del proveedor o configurar una alternativa externa.
+*   **Criterio de cierre futuro:** Registrar frecuencia, retención, ubicación del historial y un restore probado desde un backup real del proveedor.
 
 ---
 
@@ -46,8 +47,12 @@ Si el comando detecta que la base de datos destino es remota (el host no es `loc
 
 ### Uso en Producción o Entorno Remoto (Requiere confirmación):
 ```bash
-.venv/Scripts/python manage.py restore_db --file backups/db_backup_2026-06-02.dump --confirmar --destino [NOMBRE_DB_PROD]
+.venv/Scripts/python manage.py restore_db --file backups/db_backup_2026-06-02.dump --confirmar --destino [NOMBRE_DB] --permitir-remoto
 ```
+
+Nota operacional: el comando restaura sobre la base definida por `DATABASE_URL`/settings en ese
+proceso. El uso recomendado es apuntar `DATABASE_URL` a una base scratch/staging y restaurar ahí. No
+usar contra producción salvo emergencia explícita, con revisión humana y rollback acordado.
 
 ---
 
@@ -87,4 +92,7 @@ Un respaldo solo es válido si ha sido probado. A continuación se detalla el dr
     *   *Resultado:* El comando abortó de manera segura lanzando el mensaje: *"Operación abortada por seguridad. Para restaurar sobre una base de datos remota o de producción, debe proveer obligatoriamente los flags..."*.
 
 ### Conclusión del Drill:
-El procedimiento es **100% exitoso y seguro**. Las guardas anti-producción funcionan de forma correcta y el proceso restaura la integridad completa de los datos taxonómicos y pedagógicos del sitio.
+El procedimiento manual y el drill local son exitosos. Las guardas anti-producción funcionan de forma
+correcta y el proceso restaura la integridad de los datos taxonómicos y pedagógicos del sitio en un
+destino de prueba. El riesgo C2 no debe marcarse como completamente cerrado hasta activar backups
+automáticos del proveedor o una alternativa externa y ejecutar un restore desde ese backup real.
