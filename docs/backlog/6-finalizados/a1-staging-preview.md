@@ -1,9 +1,11 @@
 # A1 — Entorno de staging / preview deploys
 
-> ✅ **Cerrado (2026-06-02, 🏛️ Claude):** código mergeado (PR #30: `check_environment` + runbook).
-> Riesgo A1 en matriz queda **🟡** hasta que el 🧑 Usuario cree el servicio staging + DB propia en Railway.
+> ✅ **Cerrado 🟢 (2026-06-02, 🏛️ Claude + 🧑 Usuario):** código mergeado (PR #30) **y staging operativo
+> en Railway** — `Web-staging` + `Postgres-Staging` aislada, 200 en `/` y `/admin/`. En el primer
+> despliegue se detectaron y resolvieron 2 variables faltantes (`DJANGO_USE_X_FORWARDED_PROTO` y
+> `collectstatic` vía Custom Start Command), documentadas en `runbook-staging.md §8`.
 
-- **Estado:** Finalizado (código) · 🟡 pendiente acción Railway del usuario
+- **Estado:** ✅ Finalizado y operativo (🟢)
 - **Creado:** 2026-06-02
 - **Prioridad:** P1 · **Cartera:** continuidad operacional (habilitador de QA)
 - **Tipo:** infraestructura

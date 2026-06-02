@@ -16,19 +16,26 @@
 
 - **Sprint P0 cerrado:** C1, C1b, C2, C3, A1 y el Router del flujo están **mergeados** y sus tarjetas
   en `6-finalizados`. Backlog de construcción/auditoría vacío.
-- **Matriz de riesgos:** C1 🟡 · C3 🟢 · C2 🟡 · A1 🟡 (las 🟡 esperan solo acción del 🧑 Usuario en Railway).
+- **Matriz de riesgos:** C1 🟡 · C3 🟢 · **C2 🟡** (backup real verificado; falta automatizar) ·
+  **A1 🟢** (staging operativo en Railway).
 
 ## Bloqueos / esperando
 
-- **C2 y A1** quedan 🟡 a la espera de acciones del 🧑 Usuario en Railway:
-  - **C2:** activar backups automáticos del proveedor + ejecutar un restore desde backup real → 🟢.
-  - **A1:** crear el servicio staging web + DB PostgreSQL propia; validar 200 con DB separada → 🟢.
+- **C2** queda 🟡: hay backup real de prod + restore drill verificados (2026-06-02); para 🟢 falta
+  **automatizar** el backup (plan Pro o cron externo) con retención.
+- **C1** queda 🟡: `migrate` corre sin backup/gate previo. Ahora que existe backup probado, es el
+  siguiente candidato (backup automático antes de migrar).
 
 ## Handoffs abiertos (Ready para construir)
 
 - _(ninguno)_ — backlog de ideas en `backlog/1-por-iniciar/` disponible para el próximo sprint.
 
 ## Últimas entregas
+- 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **A1 → 🟢 staging operativo** en Railway (`Web-staging` +
+  `Postgres-Staging` aislada, 200 en `/` y `/admin/`). 2 hallazgos resueltos (`DJANGO_USE_X_FORWARDED_PROTO`,
+  `collectstatic`/Custom Start Command) → `runbook-staging.md §8`.
+- 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **C2 → backup real de prod + restore drill verificados**
+  (`pg_dump` 18.4; runbook §4.B). Riesgo 🟡 (falta automatizar).
 - 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **Router mergeado (PR #29)** — workflow mecánico de
   ruteo/labels (sin `contents: write`, sin secretos, no mergea). Revisado por Claude (`seguridad:requiere-claude`).
 - 2026-06-02 — 🔨 Antigravity + 🏛️ Claude: **A1 mergeado (PR #30)** — `check_environment` + runbook
