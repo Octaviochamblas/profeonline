@@ -136,3 +136,42 @@ backup (Pro o cron externo) con retención, en lugar de depender de una corrida 
 & "C:\Users\PC\pgtools\pg18\pgsql\bin\pg_dump.exe" -F c -b -f backups\prod_<fecha>.dump "<DATABASE_PUBLIC_URL>?sslmode=require"
 # 2) Restore drill en clúster local efímero: initdb -> pg_ctl start -> createdb -> pg_restore --no-owner --no-privileges
 ```
+
+---
+
+## 🔑 5. Rotación de credenciales de la base (Railway)
+
+> Procedimiento aprendido en el incidente del 2026-06-02 (la rotación causó una caída breve de prod
+> por desconocer estos detalles). **Seguir el orden al pie de la letra.**
+
+### ⚠️ Los 3 gotchas de Railway
+1. **Cambiar la variable `POSTGRES_PASSWORD` NO cambia la contraseña real.** La DB ya está
+   inicializada; el volumen persiste y `initdb` no vuelve a correr. Hay que ejecutar `ALTER USER`.
+2. **La variable y la clave real DEBEN coincidir.** Si quedan distintas, el servicio web no conecta.
+3. **Tocar el servicio correcto.** Prod ≠ staging: cada uno tiene su propio Postgres. Cambiar la
+   variable en el servicio equivocado deja ese entorno inconsistente.
+
+### Procedimiento correcto (prod)
+1. **Generar** una contraseña fuerte y **alfanumérica** (sin `@ : / #` para no romper la URL):
+   ```powershell
+   .venv\Scripts\python.exe -c "import secrets,string; a=string.ascii_letters+string.digits; print(''.join(secrets.choice(a) for _ in range(40)))"
+   ```
+2. **Cambiar la clave REAL** con `psql` (binarios PG18), usando la URL pública **con la clave vieja**:
+   ```powershell
+   & "C:\Users\PC\pgtools\pg18\pgsql\bin\psql.exe" "<DATABASE_PUBLIC_URL_VIEJA>?sslmode=require" -c "ALTER USER postgres WITH PASSWORD '<NUEVA>';"
+   # Debe responder: ALTER ROLE
+   ```
+3. **Sincronizar la variable**: en el Postgres de **producción** → *Variables* → `POSTGRES_PASSWORD` =
+   `<NUEVA>`. (Si `DATABASE_URL`/`DATABASE_PUBLIC_URL` son referencias `${{...}}`, se regeneran solas.)
+4. **Redeployar el servicio WEB de prod** (*Deployments → ⋮ → Redeploy*). Es **obligatorio**: la
+   referencia `${{...DATABASE_URL}}` no se propaga a un proceso ya corriendo. Sin este redeploy → **500**.
+5. **Verificar:** `psql` con la clave nueva (auth OK) y el sitio en `200`.
+
+### Si te equivocaste de servicio (revertir)
+La clave **real** de ese entorno **no cambió** (solo la variable). Recuperá el valor original desde el
+contenedor del web (que aún lo tiene en memoria si no redeployó) y devolvé la variable a ese valor:
+```bash
+# En el servicio web -> Console:
+printenv DATABASE_URL    # copiar la contraseña original de la URL
+# Luego: Postgres-<entorno> -> Variables -> POSTGRES_PASSWORD = <original> -> Deploy
+```

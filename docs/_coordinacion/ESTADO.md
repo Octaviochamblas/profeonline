@@ -18,6 +18,8 @@
   en `6-finalizados`. Backlog de construcción/auditoría vacío.
 - **Matriz de riesgos:** C1 🟡 · C3 🟢 · **C2 🟡** (backup real verificado; falta automatizar) ·
   **A1 🟢** (staging operativo en Railway).
+- **Infra viva (2026-06-02):** prod `www.profeonline.cl` 🟢 200 · staging
+  `web-staging-production-0dfc.up.railway.app` 🟢 200 · contraseña de prod **rotada** (la expuesta ya no sirve).
 
 ## Bloqueos / esperando
 
@@ -31,6 +33,9 @@
 - _(ninguno)_ — backlog de ideas en `backlog/1-por-iniciar/` disponible para el próximo sprint.
 
 ## Últimas entregas
+- 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **rotación de credenciales de prod** (la URL quedó expuesta en
+  chat). Causó un 500 breve (web cacheaba la `DATABASE_URL` vieja); recuperado con redeploy. Staging
+  se desincronizó por error y se revirtió. Procedimiento + lecciones en `runbook-backups.md §5`.
 - 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **A1 → 🟢 staging operativo** en Railway (`Web-staging` +
   `Postgres-Staging` aislada, 200 en `/` y `/admin/`). 2 hallazgos resueltos (`DJANGO_USE_X_FORWARDED_PROTO`,
   `collectstatic`/Custom Start Command) → `runbook-staging.md §8`.
