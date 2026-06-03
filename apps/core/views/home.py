@@ -8,6 +8,16 @@ from apps.content.selectors import get_resume_resource
 class HomeView(TemplateView):
     template_name = "pages/home.html"
 
+    def get(self, request, *args, **kwargs):
+        from apps.core.models import AnalyticsEvent
+        AnalyticsEvent.objects.create(
+            name="page_view",
+            path=request.path,
+            user=request.user if request.user.is_authenticated else None,
+            metadata={}
+        )
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

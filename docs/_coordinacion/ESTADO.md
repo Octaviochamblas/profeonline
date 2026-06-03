@@ -14,12 +14,13 @@
 
 ## En curso ahora
 
-- **Sprint P0 cerrado:** C1, C1b, C2, C3, A1 y el Router del flujo están **mergeados** y sus tarjetas
-  en `6-finalizados`. Backlog de construcción/auditoría vacío.
-- **Matriz de riesgos:** C1 🟡 · C3 🟢 · **C2 🟡** (backup real verificado; falta automatizar) ·
-  **A1 🟢** (staging operativo en Railway).
+- **Sprint de producto (valor visible) arrancando (2026-06-02):** orden **Analytics → Home → QA a11y**;
+  verificación-email intercalable; KaTeX condicional a que se escriban fórmulas. Handoffs en `backlog/2-arquitectura/`.
+- **Decisión (2026-06-02, 🧑 Usuario):** **C1 y C2 descartados como trabajo activo** → riesgo
+  **aceptado** mientras la base no tenga datos críticos (detalle en `../gobernanza/matriz-riesgos.md`).
+- **Matriz P0:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 (analítica) 🟡** (en arquitectura).
 - **Infra viva (2026-06-02):** prod `www.profeonline.cl` 🟢 200 · staging
-  `web-staging-production-0dfc.up.railway.app` 🟢 200 · contraseña de prod **rotada** (la expuesta ya no sirve).
+  `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
 ## Bloqueos / esperando
 
@@ -30,9 +31,13 @@
 
 ## Handoffs abiertos (Ready para construir)
 
-- _(ninguno)_ — backlog de ideas en `backlog/1-por-iniciar/` disponible para el próximo sprint.
+- 🔨 **Analytics interno (M5)** — handoff listo en `backlog/2-arquitectura/mejora-analytics-eventos.md`.
+  Panel propio sobre el ledger + eventos de cliente (clics WhatsApp/tel, video, adjuntos). **Ready para Antigravity.**
+- Resto del sprint en `backlog/1-por-iniciar/` (Home, QA a11y, verificación-email, KaTeX); se redactan al iniciar cada uno.
 
 ## Últimas entregas
+- 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **rumbo post-P0 definido.** C1/C2 **aceptados** como riesgo;
+  sprint de valor visible (Analytics → Home → QA a11y). Handoff de **Analytics interno** redactado en `2-arquitectura`.
 - 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **rotación de credenciales de prod** (la URL quedó expuesta en
   chat). Causó un 500 breve (web cacheaba la `DATABASE_URL` vieja); recuperado con redeploy. Staging
   se desincronizó por error y se revirtió. Procedimiento + lecciones en `runbook-backups.md §5`.

@@ -1,4 +1,5 @@
 from io import StringIO
+import json
 import os
 import tempfile
 from unittest import mock
@@ -559,3 +560,116 @@ class CheckEnvironmentCommandTests(TestCase):
 
         output = stdout.getvalue()
         self.assertIn("Entorno detectado: PRODUCCIÓN (DEBUG=False, DB remota)", output)
+
+
+class AnalyticsTests(TestCase):
+    def setUp(self):
+        self.User = get_user_model()
+        self.staff_user = self.User.objects.create_user(
+            username="staff_admin",
+            email="staff@example.com",
+            password="securepassword",
+            is_staff=True
+        )
+        self.regular_user = self.User.objects.create_user(
+            username="student_user",
+            email="student@example.com",
+            password="securepassword",
+            is_staff=False
+        )
+
+    def test_analytics_post_valid_event(self):
+        # El endpoint requiere un token CSRF. En TestCase, el cliente de pruebas
+        # tiene la opción de deshabilitar la verificación CSRF (por defecto para tests)
+        # o podemos pasarla normalmente.
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/recursos/"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        self.assertEqual(AnalyticsEvent.objects.filter(name="whatsapp_click").count(), 1)
+
+    def test_analytics_post_invalid_event(self):
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "invalid_event_not_in_allowlist", "path": "/"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_analytics_post_missing_path(self):
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    @override_settings(ANALYTICS_RATE_LIMIT_ATTEMPTS=3, ANALYTICS_RATE_LIMIT_WINDOW=10)
+    def test_analytics_post_rate_limiting(self):
+        # Limpiar caché para evitar interferencia entre tests
+        from django.core.cache import cache
+        cache.clear()
+
+        # Hacer 3 peticiones (límite configurado a 3)
+        for _ in range(3):
+            response = self.client.post(
+                reverse("core:analytics_post"),
+                data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+                content_type="application/json",
+                HTTP_X_FORWARDED_FOR="192.168.1.100"
+            )
+            self.assertEqual(response.status_code, 204)
+
+        # La 4ta petición de la misma IP debe ser rechazada con 429
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+            content_type="application/json",
+            HTTP_X_FORWARDED_FOR="192.168.1.100"
+        )
+        self.assertEqual(response.status_code, 429)
+
+    def test_login_google_signal_logs_event_for_existing_user(self):
+        from allauth.account.signals import user_logged_in
+        from apps.core.models import AnalyticsEvent
+        from django.test import RequestFactory
+
+        # Simulamos un request de test con RequestFactory
+        factory = RequestFactory()
+        request = factory.get('/')
+
+        class FakeSocialAccount:
+            provider = "google"
+
+        class FakeSocialLogin:
+            account = FakeSocialAccount()
+
+        request.sociallogin = FakeSocialLogin()
+
+        # Emitimos la señal con un usuario existente
+        user_logged_in.send(sender=self.User, request=request, user=self.regular_user)
+
+        # Comprobamos que el evento fue guardado
+        event = AnalyticsEvent.objects.filter(name="login_google", user=self.regular_user).first()
+        self.assertIsNotNone(event)
+        self.assertEqual(event.metadata.get("provider"), "google")
+
+    def test_dashboard_accessible_only_by_staff(self):
+        # 1. Anónimos deben ser redirigidos (staff_member_required -> login)
+        response = self.client.get(reverse("core:analytics_dashboard"))
+        self.assertEqual(response.status_code, 302)
+
+        # 2. Usuarios comunes (no-staff) deben ser redirigidos
+        self.client.force_login(self.regular_user)
+        response = self.client.get(reverse("core:analytics_dashboard"))
+        self.assertEqual(response.status_code, 302)
+
+        # 3. Usuarios staff acceden exitosamente (200)
+        self.client.force_login(self.staff_user)
+        response = self.client.get(reverse("core:analytics_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "core/panel_analitica.html")
