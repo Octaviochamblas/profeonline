@@ -329,6 +329,7 @@ class EmailVerificationFlowTests(TestCase):
         # Simular que existían usuarios antes de correr la migración de datos
         user1 = self.User.objects.create_user(username="existente1", email="existente1@example.com", password="password")
         user2 = self.User.objects.create_user(username="existente2", email="", password="password") # Sin email
+        user3 = self.User.objects.create_user(username="existente3", email="existente1@example.com", password="password") # Email duplicado
 
         # Corremos la lógica de la migración de datos manualmente para probarla
         import importlib
@@ -348,3 +349,66 @@ class EmailVerificationFlowTests(TestCase):
         from allauth.account.models import EmailAddress
         self.assertTrue(EmailAddress.objects.filter(user=user1, email="existente1@example.com", verified=True).exists())
         self.assertFalse(EmailAddress.objects.filter(user=user2).exists())
+        # user3 no debe tener un EmailAddress verificado duplicado creado debido a la restricción única / desduplicación
+        self.assertFalse(EmailAddress.objects.filter(user=user3).exists())
+
+    def test_resend_view_anti_enumeration(self):
+        # 1. Caso: El correo no existe en la base de datos
+        response1 = self.client.post(
+            reverse("email_verification_resend"),
+            data={"email": "noexiste@example.com"}
+        )
+        self.assertRedirects(response1, reverse("account_email_verification_sent"))
+
+        # 2. Caso: El correo existe y está sin verificar
+        user = self.User.objects.create_user(username="unverified_resend", email="unverified@example.com", password="password")
+        from allauth.account.models import EmailAddress
+        EmailAddress.objects.create(user=user, email="unverified@example.com", verified=False, primary=True)
+
+        response2 = self.client.post(
+            reverse("email_verification_resend"),
+            data={"email": "unverified@example.com"}
+        )
+        self.assertRedirects(response2, reverse("account_email_verification_sent"))
+
+        # 3. Caso: El correo existe y ya está verificado
+        user_verified = self.User.objects.create_user(username="verified_resend", email="verified@example.com", password="password")
+        EmailAddress.objects.create(user=user_verified, email="verified@example.com", verified=True, primary=True)
+
+        response3 = self.client.post(
+            reverse("email_verification_resend"),
+            data={"email": "verified@example.com"}
+        )
+        self.assertRedirects(response3, reverse("account_email_verification_sent"))
+
+        # En todos los casos el mensaje en el response (mensajes de django) debe ser el mismo
+        from django.contrib.messages import get_messages
+        messages1 = [m.message for m in get_messages(response1.wsgi_request)]
+        messages2 = [m.message for m in get_messages(response2.wsgi_request)]
+        messages3 = [m.message for m in get_messages(response3.wsgi_request)]
+
+        self.assertEqual(messages1, messages2)
+        self.assertEqual(messages2, messages3)
+
+    def test_login_blocked_if_no_email(self):
+        # Crear un usuario sin email
+        self.User.objects.create_user(
+            username="sin_email",
+            email="",
+            password="testpassword123"
+        )
+
+        response = self.client.post(
+            reverse("login"),
+            data={
+                "username": "sin_email",
+                "password": "testpassword123"
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context['form'],
+            None,
+            "Tu correo electrónico no ha sido verificado. Por favor, revisa tu bandeja de entrada o haz clic en el enlace de reenvío."
+        )

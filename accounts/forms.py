@@ -124,7 +124,7 @@ class StyledAuthenticationForm(AuthenticationForm):
                 User = get_user_model()
                 # Buscamos al usuario por username o por email
                 user = User.objects.filter(Q(username=username) | Q(email=username)).first()
-                if user and user.check_password(password) and not user.is_superuser:
+                if user and user.check_password(password) and not user.is_superuser and not user.is_staff:
                     # El password es correcto, pero no autenticó. ¿Falta verificación?
                     has_verified_email = EmailAddress.objects.filter(user=user, verified=True).exists()
                     if not has_verified_email:
@@ -134,7 +134,7 @@ class StyledAuthenticationForm(AuthenticationForm):
 
                 raise self.get_invalid_login_error()
             else:
-                if self.user_cache.email and not self.user_cache.is_superuser:
+                if not self.user_cache.is_superuser and not self.user_cache.is_staff:
                     from allauth.account.models import EmailAddress
                     has_verified_email = EmailAddress.objects.filter(user=self.user_cache, verified=True).exists()
                     if not has_verified_email:

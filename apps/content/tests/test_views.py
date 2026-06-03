@@ -131,7 +131,9 @@ class ResourceDetailViewTests(TestCase):
 
     def test_login_from_resource_preview_returns_to_resource(self):
         resource_url = reverse("content:resource_detail", args=[self.published_resource.slug])
-        user = User.objects.create_user(username="student_login", password="testpass123")
+        user = User.objects.create_user(username="student_login", email="student@example.com", password="testpass123")
+        from allauth.account.models import EmailAddress
+        EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
 
         response = self.client.post(
             f"{reverse('login')}?next={resource_url}",

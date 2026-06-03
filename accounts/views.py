@@ -143,22 +143,27 @@ def email_verification_resend_view(request):
             if user:
                 from allauth.account.models import EmailAddress
                 email_address = EmailAddress.objects.filter(user=user, email__iexact=email).first()
-                if email_address and email_address.verified:
-                    messages.info(request, "Este correo electrónico ya está verificado. Puedes iniciar sesión normalmente.")
-                    return redirect("login")
 
+                # Creamos el registro de EmailAddress de forma segura si no existe (evitamos setup_user_email)
                 if not email_address:
-                    from allauth.account.utils import setup_user_email
-                    email_address = setup_user_email(request, user, [])
+                    if not EmailAddress.objects.filter(email__iexact=email).exists():
+                        try:
+                            has_primary = EmailAddress.objects.filter(user=user, primary=True).exists()
+                            email_address = EmailAddress.objects.create(
+                                user=user,
+                                email=email,
+                                verified=False,
+                                primary=not has_primary
+                            )
+                        except Exception:
+                            email_address = None
 
-                if email_address:
+                if email_address and not email_address.verified:
                     email_address.send_confirmation(request, signup=False)
-                messages.success(request, "Hemos reenviado el correo de verificación. Por favor, revisa tu bandeja de entrada.")
-                return redirect("account_email_verification_sent")
-            else:
-                # UX segura contra enumeración de usuarios
-                messages.success(request, "Si el correo está registrado, hemos enviado las instrucciones de verificación.")
-                return redirect("account_email_verification_sent")
+
+            # Respuesta uniforme anti-enumeración para todos los casos (existentes, no existentes, verificados y no verificados)
+            messages.success(request, "Si el correo electrónico está registrado, hemos enviado el enlace de verificación. Por favor, revisa tu bandeja de entrada.")
+            return redirect("account_email_verification_sent")
     else:
         form = ResendEmailForm()
 

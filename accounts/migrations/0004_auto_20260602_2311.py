@@ -11,16 +11,32 @@ def verify_existing_users(apps, schema_editor):
         # Si por alguna razón la app de allauth no está cargada (por ejemplo en tests limitados)
         return
 
-    for user in User.objects.all():
+    seen_emails = set()
+    for user in User.objects.all().order_by('id'):
         if user.email:
-            EmailAddress.objects.update_or_create(
-                user=user,
-                email=user.email,
-                defaults={
-                    'verified': True,
-                    'primary': True
-                }
-            )
+            email_lower = user.email.lower().strip()
+            if email_lower in seen_emails:
+                continue
+
+            existing_email = EmailAddress.objects.filter(email__iexact=email_lower).first()
+            if existing_email:
+                if existing_email.user == user:
+                    existing_email.verified = True
+                    existing_email.primary = True
+                    existing_email.save()
+                seen_emails.add(email_lower)
+                continue
+
+            try:
+                EmailAddress.objects.create(
+                    user=user,
+                    email=user.email,
+                    verified=True,
+                    primary=True
+                )
+            except Exception:
+                pass
+            seen_emails.add(email_lower)
 
 class Migration(migrations.Migration):
 
