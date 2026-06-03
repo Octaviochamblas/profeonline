@@ -108,6 +108,43 @@ class StyledAuthenticationForm(AuthenticationForm):
         super().__init__(request, *args, **kwargs)
         apply_form_classes(self)
 
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            from django.contrib.auth import authenticate
+            self.user_cache = authenticate(self.request, username=username, password=password)
+
+            if self.user_cache is None:
+                from django.contrib.auth import get_user_model
+                from allauth.account.models import EmailAddress
+                from django.db.models import Q
+
+                User = get_user_model()
+                # Buscamos al usuario por username o por email
+                user = User.objects.filter(Q(username=username) | Q(email=username)).first()
+                if user and user.check_password(password) and not user.is_superuser:
+                    # El password es correcto, pero no autenticó. ¿Falta verificación?
+                    has_verified_email = EmailAddress.objects.filter(user=user, verified=True).exists()
+                    if not has_verified_email:
+                        raise forms.ValidationError(
+                            "Tu correo electrónico no ha sido verificado. Por favor, revisa tu bandeja de entrada o haz clic en el enlace de reenvío."
+                        )
+
+                raise self.get_invalid_login_error()
+            else:
+                if self.user_cache.email and not self.user_cache.is_superuser:
+                    from allauth.account.models import EmailAddress
+                    has_verified_email = EmailAddress.objects.filter(user=self.user_cache, verified=True).exists()
+                    if not has_verified_email:
+                        raise forms.ValidationError(
+                            "Tu correo electrónico no ha sido verificado. Por favor, revisa tu bandeja de entrada o haz clic en el enlace de reenvío."
+                        )
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
+
 
 class StyledPasswordResetForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar Correo Electrónico | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="auth-card legal-container stack stack--lg" style="max-width: 550px; margin: 2rem auto; text-align: center;">
+    {% if confirmation %}
+        <div class="stack" style="align-items: center; gap: 1rem;">
+            <!-- Icono de chequeado/ok -->
+            <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #059669; margin: 0 auto 0.5rem auto;">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <p class="page-hero__kicker" style="margin: 0;">Activación de Cuenta</p>
+            <h1 style="font-size: 2rem; font-weight: 800; color: #0f172a; margin: 0;">Confirma tu Correo</h1>
+        </div>
+
+        <div class="panel panel--spacious" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; text-align: left; margin: 1.5rem 0;">
+            <p style="margin-top: 0; color: #334155; line-height: 1.6; text-align: center;">
+                Por favor, presiona el botón a continuación para confirmar que la dirección de correo <strong>{{ confirmation.email_address.email }}</strong> te pertenece.
+            </p>
+        </div>
+
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar e Iniciar Sesión</button>
+        </form>
+    {% else %}
+        <div class="stack" style="align-items: center; gap: 1rem;">
+            <!-- Icono de error/alerta -->
+            <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #dc2626; margin: 0 auto 0.5rem auto;">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+            <p class="page-hero__kicker" style="margin: 0; color: #dc2626;">Enlace Inválido</p>
+            <h1 style="font-size: 2rem; font-weight: 800; color: #0f172a; margin: 0;">Error de Verificación</h1>
+        </div>
+
+        <div class="panel panel--spacious" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; text-align: left; margin: 1.5rem 0;">
+            <p style="margin-top: 0; color: #334155; line-height: 1.6; text-align: center;">
+                El enlace de confirmación es inválido, ha expirado o ya fue utilizado previamente.
+            </p>
+            <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 0; line-height: 1.6; text-align: center;">
+                Si necesitas un nuevo enlace, por favor intenta iniciar sesión en la plataforma para solicitar un nuevo reenvío de correo.
+            </p>
+        </div>
+
+        <div class="stack" style="gap: 1rem;">
+            <a href="{% url 'login' %}" class="btn btn-primary" style="display: inline-block; width: 100%;">Ir a Iniciar Sesión</a>
+            <a href="{% url 'core:home' %}" class="btn btn-secondary" style="display: inline-block; width: 100%;">Volver al Inicio</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

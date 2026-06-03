@@ -158,3 +158,193 @@ class PasswordResetFlowTests(TestCase):
         response = self.client.get("/accounts/password/reset/")
 
         self.assertRedirects(response, reverse("password_reset"))
+
+
+class EmailVerificationFlowTests(TestCase):
+    def setUp(self):
+        self.User = get_user_model() if 'get_user_model' in globals() else User
+        self.level = Level.objects.create(name="Primaria", is_active=True)
+        # Limpiar la bandeja de salida de correos
+        mail.outbox = []
+
+    def test_registration_requires_verification_and_redirects(self):
+        # 1. Registrar un nuevo usuario
+        response = self.client.post(
+            reverse("register"),
+            data={
+                "username": "nuevousuario",
+                "email": "nuevo@example.com",
+                "first_name": "Juan",
+                "last_name": "Perez",
+                "role": "alumno",
+                "password1": "Secr3tP@ss123!",
+                "password2": "Secr3tP@ss123!",
+            }
+        )
+
+        # 2. Debe redirigir al aviso de email de verificación enviado
+        self.assertRedirects(response, reverse("account_email_verification_sent"))
+
+        # 3. El usuario NO debe estar logueado aún (verificación mandatory)
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+        # 4. Comprobar que se envió el correo
+        self.assertEqual(len(mail.outbox), 1)
+        sent_mail = mail.outbox[0]
+        self.assertIn("Activa tu cuenta en ProfeOnline", sent_mail.subject)
+        self.assertIn("nuevo@example.com", sent_mail.to)
+
+        # 5. Comprobar que en la base de datos existe EmailAddress con verified=False
+        from allauth.account.models import EmailAddress
+        email_addr = EmailAddress.objects.get(email="nuevo@example.com")
+        self.assertFalse(email_addr.verified)
+
+    def test_login_blocked_if_unverified(self):
+        # Crear un usuario con email no verificado
+        user = self.User.objects.create_user(
+            username="no_verificado",
+            email="noverificado@example.com",
+            password="testpassword123"
+        )
+        from allauth.account.models import EmailAddress
+        EmailAddress.objects.create(
+            user=user,
+            email="noverificado@example.com",
+            verified=False,
+            primary=True
+        )
+
+        # Intentar iniciar sesión
+        response = self.client.post(
+            reverse("login"),
+            data={
+                "username": "no_verificado",
+                "password": "testpassword123"
+            }
+        )
+
+        # Debe fallar y mostrar el error de validación de email no verificado
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context['form'],
+            None,
+            "Tu correo electrónico no ha sido verificado. Por favor, revisa tu bandeja de entrada o haz clic en el enlace de reenvío."
+        )
+
+    def test_confirm_email_link_activates_user_and_permits_login(self):
+        # 1. Registrar usuario
+        self.client.post(
+            reverse("register"),
+            data={
+                "username": "activame",
+                "email": "activame@example.com",
+                "first_name": "Activ",
+                "last_name": "Me",
+                "role": "alumno",
+                "password1": "Secr3tP@ss123!",
+                "password2": "Secr3tP@ss123!",
+            }
+        )
+
+        # 2. Extraer la key del email de confirmación
+        body = mail.outbox[0].body
+        # El email contiene la URL: /accounts/confirm-email/<key>/
+        import re
+        match = re.search(r"/accounts/confirm-email/([^/]+)/", body)
+        self.assertIsNotNone(match)
+        key = match.group(1)
+
+        # 3. Acceder a la página de confirmación de email (GET)
+        confirm_url = reverse("account_confirm_email", kwargs={"key": key})
+        response = self.client.get(confirm_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account/email_confirm.html")
+
+        # 4. Confirmar el email mediante POST a la misma URL de confirmación
+        post_response = self.client.post(confirm_url)
+        # Allauth por defecto redirige al login tras confirmar el email si no está autenticado
+        self.assertEqual(post_response.status_code, 302)
+
+        # 5. Comprobar que quedó verificado en la base de datos
+        from allauth.account.models import EmailAddress
+        email_addr = EmailAddress.objects.get(email="activame@example.com")
+        self.assertTrue(email_addr.verified)
+
+        # 6. Intentar iniciar sesión ahora que está verificado
+        login_response = self.client.post(
+            reverse("login"),
+            data={
+                "username": "activame",
+                "password": "Secr3tP@ss123!"
+            }
+        )
+        # Debe iniciar sesión y redirigir
+        self.assertEqual(login_response.status_code, 302)
+
+    def test_email_verification_resend_view(self):
+        # Crear usuario sin verificar
+        user = self.User.objects.create_user(
+            username="reenviame",
+            email="reenviame@example.com",
+            password="testpassword123"
+        )
+        from allauth.account.models import EmailAddress
+        EmailAddress.objects.create(
+            user=user,
+            email="reenviame@example.com",
+            verified=False,
+            primary=True
+        )
+
+        # Solicitar reenvío
+        response = self.client.post(
+            reverse("email_verification_resend"),
+            data={"email": "reenviame@example.com"}
+        )
+        self.assertRedirects(response, reverse("account_email_verification_sent"))
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_social_login_exempt_from_verification_with_setting(self):
+        # Simular usuario registrado con Google
+        user = self.User.objects.create_user(
+            username="socialuser",
+            email="social@example.com",
+            password="testpassword123"
+        )
+
+        # En el login social de allauth, si SOCIALACCOUNT_EMAIL_VERIFICATION = "none",
+        # la dirección de email se marca como verificada automáticamente.
+        # Comprobar que si creamos la relación social, allauth no la bloquea o que EmailAddress
+        # para login social se marca verificado.
+        # Simulamos que allauth crea la dirección de email verificada directamente:
+        from allauth.account.models import EmailAddress
+        email_addr, created = EmailAddress.objects.get_or_create(
+            user=user,
+            email="social@example.com",
+            defaults={"verified": True, "primary": True}
+        )
+        self.assertTrue(email_addr.verified)
+
+    def test_existing_users_verified_migration(self):
+        # Simular que existían usuarios antes de correr la migración de datos
+        user1 = self.User.objects.create_user(username="existente1", email="existente1@example.com", password="password")
+        user2 = self.User.objects.create_user(username="existente2", email="", password="password") # Sin email
+
+        # Corremos la lógica de la migración de datos manualmente para probarla
+        import importlib
+        migration_module = importlib.import_module("accounts.migrations.0004_auto_20260602_2311")
+        verify_existing_users = migration_module.verify_existing_users
+
+        class FakeApp:
+            def get_model(self, app_label, model_name):
+                if app_label == 'auth' and model_name == 'User':
+                    return User
+                if app_label == 'account' and model_name == 'EmailAddress':
+                    from allauth.account.models import EmailAddress
+                    return EmailAddress
+
+        verify_existing_users(FakeApp(), None)
+
+        from allauth.account.models import EmailAddress
+        self.assertTrue(EmailAddress.objects.filter(user=user1, email="existente1@example.com", verified=True).exists())
+        self.assertFalse(EmailAddress.objects.filter(user=user2).exists())

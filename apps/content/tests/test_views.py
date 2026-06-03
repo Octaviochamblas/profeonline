@@ -143,6 +143,7 @@ class ResourceDetailViewTests(TestCase):
 
         self.assertRedirects(response, resource_url)
 
+    @override_settings(ACCOUNT_EMAIL_VERIFICATION="none")
     def test_register_from_resource_preview_returns_to_resource(self):
         resource_url = reverse("content:resource_detail", args=[self.published_resource.slug])
 

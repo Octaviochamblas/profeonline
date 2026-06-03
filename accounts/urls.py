@@ -9,7 +9,7 @@ from .forms import (
     StyledPasswordResetForm,
     StyledSetPasswordForm,
 )
-from .views import register_view, profile_view, profile_update_view
+from .views import register_view, profile_view, profile_update_view, email_verification_resend_view
 
 # Construye el enlace del correo de reset desde CANONICAL_BASE_URL en vez de
 # depender del dominio del framework Sites (que por defecto es example.com).
@@ -23,6 +23,7 @@ PASSWORD_RESET_EMAIL_CONTEXT = {
 
 urlpatterns = [
     path("registro/", register_view, name="register"),
+    path("verificacion/reenviar/", email_verification_resend_view, name="email_verification_resend"),
     path(
         "login/",
         auth_views.LoginView.as_view(

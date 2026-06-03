@@ -49,11 +49,24 @@ def register_view(request):
                 metadata={"role": form.cleaned_data["role"]}
             )
 
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            messages.success(request, "¡Registro completado con éxito! Bienvenido a ProfeOnline.")
-            if next_url:
-                return redirect(next_url)
-            return redirect("core:home")
+            # Flujo de verificación de email: si es mandatory redirigimos a la página de verificación
+            from allauth.account import app_settings
+            from allauth.account.utils import setup_user_email
+            email_address = setup_user_email(request, user, [])
+
+            if app_settings.EMAIL_VERIFICATION == "mandatory":
+                if email_address:
+                    email_address.send_confirmation(request, signup=True)
+                messages.success(request, "¡Registro inicial exitoso! Te hemos enviado un correo de verificación para activar tu cuenta.")
+                return redirect("account_email_verification_sent")
+            else:
+                if app_settings.EMAIL_VERIFICATION == "optional" and email_address:
+                    email_address.send_confirmation(request, signup=True)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                messages.success(request, "¡Registro completado con éxito! Bienvenido a ProfeOnline.")
+                if next_url:
+                    return redirect(next_url)
+                return redirect("core:home")
     else:
         form = CustomUserCreationForm()
 
@@ -105,3 +118,48 @@ def profile_update_view(request):
         form = ProfileUpdateForm(instance=profile, user=request.user)
 
     return render(request, "accounts/profile_form.html", {"form": form})
+
+
+# Vista y formulario de reenvío de correo de verificación
+from django import forms
+from django.contrib.auth import get_user_model
+from apps.core.forms import apply_form_classes
+
+class ResendEmailForm(forms.Form):
+    email = forms.EmailField(required=True, label="Correo Electrónico")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_form_classes(self)
+
+def email_verification_resend_view(request):
+    if request.method == "POST":
+        form = ResendEmailForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"].lower().strip()
+            User = get_user_model()
+            user = User.objects.filter(email__iexact=email).first()
+
+            if user:
+                from allauth.account.models import EmailAddress
+                email_address = EmailAddress.objects.filter(user=user, email__iexact=email).first()
+                if email_address and email_address.verified:
+                    messages.info(request, "Este correo electrónico ya está verificado. Puedes iniciar sesión normalmente.")
+                    return redirect("login")
+
+                if not email_address:
+                    from allauth.account.utils import setup_user_email
+                    email_address = setup_user_email(request, user, [])
+
+                if email_address:
+                    email_address.send_confirmation(request, signup=False)
+                messages.success(request, "Hemos reenviado el correo de verificación. Por favor, revisa tu bandeja de entrada.")
+                return redirect("account_email_verification_sent")
+            else:
+                # UX segura contra enumeración de usuarios
+                messages.success(request, "Si el correo está registrado, hemos enviado las instrucciones de verificación.")
+                return redirect("account_email_verification_sent")
+    else:
+        form = ResendEmailForm()
+
+    return render(request, "accounts/email_verification_resend.html", {"form": form})

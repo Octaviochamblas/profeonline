@@ -188,7 +188,8 @@ if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
 ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 CANONICAL_BASE_URL = "https://www.profeonline.cl"
