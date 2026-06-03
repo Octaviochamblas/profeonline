@@ -14,28 +14,30 @@
 
 ## En curso ahora
 
-- **Sprint de producto (valor visible) arrancando (2026-06-02):** orden **Analytics → Home → QA a11y**;
-  verificación-email intercalable; KaTeX condicional a que se escriban fórmulas. Handoffs en `backlog/2-arquitectura/`.
-- **Decisión (2026-06-02, 🧑 Usuario):** **C1 y C2 descartados como trabajo activo** → riesgo
-  **aceptado** mientras la base no tenga datos críticos (detalle en `../gobernanza/matriz-riesgos.md`).
-- **Matriz P0:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 (analítica) 🟡** (en arquitectura).
-- **Infra viva (2026-06-02):** prod `www.profeonline.cl` 🟢 200 · staging
-  `web-staging-production-0dfc.up.railway.app` 🟢 200.
+- **M5 (Analítica interna) CERRADA 🟢 (2026-06-03):** mergeada en `main` vía **PR #36** (Antigravity
+  construyó, Codex auditó/curó privacidad, Claude cerró como 3ª IA). Panel `/panel/analitica/` + eventos de cliente.
+- **Sprint de producto (valor visible):** orden **Analytics ✅ → Email → Home → QA a11y**; KaTeX
+  condicional a que se escriban fórmulas. **Siguiente sin bloqueantes: Verificación de email.**
+- **Matriz P0/clave:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 🟢**.
+- **Infra viva:** prod `www.profeonline.cl` 🟢 200 · staging `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
 ## Bloqueos / esperando
 
-- **C2** queda 🟡: hay backup real de prod + restore drill verificados (2026-06-02); para 🟢 falta
-  **automatizar** el backup (plan Pro o cron externo) con retención.
-- **C1** queda 🟡: `migrate` corre sin backup/gate previo. Ahora que existe backup probado, es el
-  siguiente candidato (backup automático antes de migrar).
+- **Home** 🔴 bloqueado por **contenido** del 🧑 (foto/bio/credenciales + 2-3 testimonios) — el código no.
+- **QA a11y** 🔴 bloqueado por Home mergeado (cubre también el home nuevo).
+- **KaTeX** ⏸️ pendiente decisión del 🧑: ¿el contenido llevará fórmulas en notación?
+- **C1/C2** ⚪ aceptados (no son bloqueo; reconsiderar al entrar datos reales).
 
 ## Handoffs abiertos (Ready para construir)
 
-- 🔨 **Analytics interno (M5)** — handoff listo en `backlog/2-arquitectura/mejora-analytics-eventos.md`.
-  Panel propio sobre el ledger + eventos de cliente (clics WhatsApp/tel, video, adjuntos). **Ready para Antigravity.**
-- Resto del sprint en `backlog/1-por-iniciar/` (Home, QA a11y, verificación-email, KaTeX); se redactan al iniciar cada uno.
+- 🔨 **Verificación de email** — handoff en `backlog/2-arquitectura/mejora-verificacion-email.md`.
+  Independiente, **sin bloqueantes**. Ready para Antigravity (rama desde `main`; ⚠️ tocará `register_view`,
+  donde M5 ya añadió el evento `signup`).
+- Home y QA a11y: tarjetas completas en `backlog/1-por-iniciar/` (bloqueadas, ver arriba). KaTeX: ídem (condicional).
 
 ## Últimas entregas
+- 2026-06-03 — 🏛️🔨🧩 **M5 Analítica interna mergeada y CERRADA 🟢 (PR #36).** Antigravity construyó,
+  Codex auditó y curó privacidad, Claude cerró como 3ª IA (superficie sensible). Suite 191 tests. Matriz M5 → 🟢.
 - 2026-06-02 — 🧩 Codex: **cura privacidad M5 en PR #36** — metadata por allowlist de evento,
   `path` sin querystrings, JS sin `href`/texto/`file_url` sensible y regresiones de analitica. Lock liberado.
 - 2026-06-02 — 🏛️ Claude + 🧑 Usuario: **rumbo post-P0 definido.** C1/C2 **aceptados** como riesgo;
