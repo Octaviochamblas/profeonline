@@ -130,3 +130,18 @@ Se contrasto el handoff de Antigravity con el codigo actual:
 
 Pendiente real: prueba manual con teclado/NVDA por parte del usuario en Windows para validar
 la experiencia anunciada por lector de pantalla.
+
+### Reapertura y cierre de A11Y-1 en el Home nuevo (2026-06-03, 🏛️ Claude)
+
+El rediseño del Home (PR #41) **reintrodujo** el contraste insuficiente A11Y-1: nuevos CTAs de
+WhatsApp con verde brillante `#25D366` + texto blanco (~2.0:1, falla AA 4.5:1):
+`.btn-whatsapp-cta` (banner "Cómo funciona") y un botón con color inline en "Quién te enseña".
+
+**Corregido** (rama `fix/a11y-home`): ambos pasan a usar el verde oscuro `#15803d`/`#166534`
+(~5.0:1, **cumple AA**), alineados con `.btn.btn-whatsapp` global que ya estaba arreglado. Se
+eliminó el `style` de color inline. Adicionalmente, se marcaron los **SVG decorativos**
+(WhatsApp, teléfono, credenciales) con `aria-hidden="true" focusable="false"`, y se añadió
+`rel="noopener"` a los enlaces `target="_blank"`. Cache-buster `?v=19`.
+
+Sigue pendiente la **QA manual** (teclado + NVDA) de la UI gamificada —tarjeta
+`qa-accesibilidad-rendimiento-ui-gamificada.md`—, que requiere al 🧑 en Windows.
