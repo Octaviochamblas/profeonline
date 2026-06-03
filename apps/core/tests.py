@@ -41,6 +41,10 @@ class SeoTechnicalViewTests(TestCase):
         self.assertContains(response, '<meta property="og:url" content="http://testserver/">')
         self.assertContains(response, 'type="application/ld+json"')
         self.assertContains(response, '"@type": "WebSite"')
+        self.assertContains(response, '"@type": "LocalBusiness"')
+        self.assertContains(response, '"@type": "Person"')
+        self.assertContains(response, '"name": "Octavio Chamblas Navarrete"')
+        self.assertContains(response, '"addressLocality": "Concepción"')
 
     def test_home_highlights_public_content(self):
         response = self.client.get(reverse("core:home"))

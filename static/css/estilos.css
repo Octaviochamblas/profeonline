@@ -14,8 +14,10 @@
     --cta-hover: #d97706;
     --cta-contrast: #422006;
     --secondary: #e2e8f0;
-    --secondary-hover: #cbd5e1;
     --success: #15803d;
+    --success-soft: #f0fdf4;
+    --success-border: #bbf7d0;
+    --success-text: #166534;
 
     /* Shadows */
     --shadow-sm: 0 1px 3px rgba(2, 6, 23, 0.06), 0 1px 2px rgba(2, 6, 23, 0.04);
@@ -395,8 +397,7 @@ a:hover {
 }
 
 .page-toolbar,
-.form-actions,
-.detail-actions {
+.form-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
@@ -3303,8 +3304,8 @@ a.home-link-card__title:hover {
 
 .steps-help-banner {
     margin-top: var(--space-5);
-    background: #f0fdf4; /* Fondo verde menta suave, fresco y llamativo */
-    border: 1px solid #bbf7d0; /* Borde verde suave para destacar */
+    background: var(--success-soft); /* Fondo verde menta suave, fresco y llamativo */
+    border: 1px solid var(--success-border); /* Borde verde suave para destacar */
     border-radius: var(--radius-md);
     padding: var(--space-4);
     display: flex;
@@ -3321,7 +3322,7 @@ a.home-link-card__title:hover {
 .steps-help-text {
     margin: 0;
     font-size: var(--text-base);
-    color: #166534; /* Texto en verde oscuro para legibilidad y contraste */
+    color: var(--success-text); /* Texto en verde oscuro para legibilidad y contraste */
     font-weight: 600;
 }
 
@@ -3443,4 +3444,49 @@ body.nav-open {
     font-size: var(--text-sm);
     color: var(--muted);
     margin-right: auto;
+}
+
+/* Accesibilidad: Skip Link */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--primary);
+    color: #ffffff !important;
+    padding: var(--space-3) var(--space-4);
+    z-index: 2000;
+    border-radius: 0 0 var(--radius-sm) 0;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 2px solid var(--primary-hover);
+    outline-offset: 2px;
+}
+
+/* Accesibilidad: Reducción de Movimiento */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+    }
+
+    .navbar-menu {
+        transition: none !important;
+    }
+
+    .step-card:hover,
+    .btn-whatsapp-cta:hover,
+    .btn.btn-whatsapp:hover {
+        transform: none !important;
+    }
 }

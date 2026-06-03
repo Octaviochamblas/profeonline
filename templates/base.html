@@ -24,13 +24,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=20">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=21">
     <script src="{% static 'js/htmx.min.js' %}"></script>
     <meta name="csrf-token" content="{{ csrf_token }}">
     {% block extra_head %}{% endblock %}
     {% block structured_data %}{% endblock %}
 </head>
 <body>
+    <a href="#main" class="skip-link">Saltar al contenido principal</a>
     <div class="header-wrapper">
         <header class="site-header">
         <div class="container">
@@ -92,7 +93,7 @@
     </header>
     </div>
 
-    <main class="site-main">
+    <main class="site-main" id="main">
         <div class="container content-wrapper">
             {% if messages %}
                 <div class="messages-container">
@@ -168,20 +169,78 @@
             const menu = document.getElementById('navbarMenu');
             const overlay = document.getElementById('navOverlay');
             const closeBtn = document.getElementById('navClose');
+            let focusedElementBeforeModal = null;
+
+            function getFocusableElements() {
+                const focusableElementsString = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+                return Array.from(menu.querySelectorAll(focusableElementsString)).filter(el => el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0);
+            }
+
             function setOpen(open) {
+                const wasActive = menu.classList.contains('active');
+                if (wasActive === open) return;
+
                 menu.classList.toggle('active', open);
                 toggle.classList.toggle('active', open);
                 toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
                 if (overlay) overlay.hidden = !open;
                 document.body.classList.toggle('nav-open', open);
+
+                if (open) {
+                    focusedElementBeforeModal = document.activeElement;
+                    // Retardo mínimo para esperar que termine de mostrarse y pueda recibir el foco
+                    setTimeout(() => {
+                        const focusables = getFocusableElements();
+                        if (focusables.length > 0) {
+                            focusables[0].focus();
+                        }
+                    }, 50);
+                } else {
+                    if (focusedElementBeforeModal && typeof focusedElementBeforeModal.focus === 'function') {
+                        focusedElementBeforeModal.focus();
+                    } else if (toggle) {
+                        toggle.focus();
+                    }
+                }
             }
-            toggle.addEventListener('click', function () {
-                setOpen(!menu.classList.contains('active'));
-            });
+
+            if (toggle) {
+                toggle.addEventListener('click', function () {
+                    setOpen(!menu.classList.contains('active'));
+                });
+            }
             if (overlay) overlay.addEventListener('click', function () { setOpen(false); });
             if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
+
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && menu.classList.contains('active')) setOpen(false);
+                if (!menu.classList.contains('active')) return;
+
+                if (e.key === 'Escape') {
+                    setOpen(false);
+                    e.preventDefault();
+                    return;
+                }
+
+                if (e.key === 'Tab') {
+                    const focusables = getFocusableElements();
+                    if (focusables.length === 0) return;
+
+                    const firstEl = focusables[0];
+                    const lastEl = focusables[focusables.length - 1];
+                    const activeEl = document.activeElement;
+
+                    if (e.shiftKey) {
+                        if (activeEl === firstEl || !menu.contains(activeEl)) {
+                            lastEl.focus();
+                            e.preventDefault();
+                        }
+                    } else {
+                        if (activeEl === lastEl || !menu.contains(activeEl)) {
+                            firstEl.focus();
+                            e.preventDefault();
+                        }
+                    }
+                }
             });
         })();
     </script>
