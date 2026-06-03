@@ -1,5 +1,10 @@
 # Verificación de email real en el registro
 
+> ✅ **Cerrado 🟢 (2026-06-03, 🏛️ Claude).** Mergeado en `main` vía **PR #38**. Antigravity construyó,
+> Codex auditó (P1 duplicados en migración, P2 anti-enumeración, P3 usuarios sin email), Antigravity
+> corrigió, Claude cerró (superficie sensible). `mandatory` + Google exento; la migración marca como
+> verificados a los usuarios actuales (sin lockout) y prod envía vía Brevo. Suite **202 tests** verde.
+
 > 🏛️ **Handoff de arquitectura (Claude, 2026-06-03).** Es la **siguiente tarea del sprint** y la única
 > sin bloqueantes. Construye 🔨 Antigravity (rama `feat/email-verification` **desde `main`**) → audita
 > 🧩 Codex (toca allauth/settings → también `seguridad:requiere-claude`) → cierra 🏛️ Claude.
@@ -7,7 +12,7 @@
 > (`accounts/views.py`); intégrate ahí sin romperlo. **Decisión a tomar:** ¿`mandatory` para todos los
 > registros por email o solo para nuevos? El detalle de fases/criterios de abajo sigue vigente.
 
-- **Estado:** 🏛️→🔨 Ready para construir
+- **Estado:** ✅ Finalizado y mergeado (🟢) — PR #38
 - **Creado:** 2026-05-31
 - **Área:** Producto / Seguridad
 - **Prioridad:** 🟢 Media
