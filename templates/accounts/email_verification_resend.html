@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Reenviar Correo de Verificación | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="auth-card stack stack--lg" style="max-width: 500px; margin: 2rem auto;">
+    <div style="text-align: center;">
+        <p class="page-hero__kicker">Seguridad</p>
+        <h1 style="font-size: 2rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">Reenviar Verificación</h1>
+        <p class="auth-meta">Ingresa tu dirección de correo electrónico y te enviaremos un nuevo enlace para activar tu cuenta.</p>
+    </div>
+
+    <form method="post" class="auth-form stack">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="badge badge--danger" style="width: 100%; margin-bottom: 1rem;">
+                {% for error in form.non_field_errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group stack">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="form-error" style="color: #dc2626; font-size: 0.8125rem; margin-top: 0.25rem;">
+                        {{ field.errors.0 }}
+                    </span>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Enviar Enlace de Confirmación</button>
+    </form>
+
+    <div class="auth-footer" style="text-align: center; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <p class="auth-meta" style="margin: 0;">¿Recordaste tus datos? <a href="{% url 'login' %}" style="color: #4f46e5; text-decoration: none; font-weight: 600;">Iniciar Sesión</a></p>
+        <p class="auth-meta" style="margin: 0;">¿No tienes cuenta? <a href="{% url 'register' %}" style="color: #4f46e5; text-decoration: none; font-weight: 600;">Registrarse</a></p>
+    </div>
+</section>
+{% endblock %}
