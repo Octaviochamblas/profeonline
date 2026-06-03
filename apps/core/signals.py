@@ -10,10 +10,11 @@ logger = logging.getLogger(__name__)
 def track_google_login(request, user, **kwargs):
     """
     Registra el evento de analítica 'login_google' si el usuario se ha
-    autenticado mediante Google OAuth (detectado a través de request.sociallogin).
+    autenticado mediante Google OAuth (detectado a través de sociallogin en kwargs).
     """
-    if hasattr(request, "sociallogin"):
-        provider = request.sociallogin.account.provider
+    sociallogin = kwargs.get("sociallogin")
+    if sociallogin:
+        provider = sociallogin.account.provider
         AnalyticsEvent.objects.create(
             name="login_google",
             path=request.path,

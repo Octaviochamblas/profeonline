@@ -7,7 +7,7 @@ from unittest import mock
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management import call_command, CommandError
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, Client
 from django.urls import reverse
 
 from apps.content.models import Level, Resource, Subject
@@ -577,6 +577,8 @@ class AnalyticsTests(TestCase):
             password="securepassword",
             is_staff=False
         )
+        # Cliente que valida CSRF estrictamente
+        self.csrf_client = Client(enforce_csrf_checks=True)
 
     def test_analytics_post_valid_event(self):
         # El endpoint requiere un token CSRF. En TestCase, el cliente de pruebas
@@ -607,6 +609,67 @@ class AnalyticsTests(TestCase):
             content_type="application/json"
         )
         self.assertEqual(response.status_code, 400)
+
+    def test_analytics_post_rejects_missing_csrf(self):
+        # Al usar enforce_csrf_checks=True, la petición POST sin token CSRF debe retornar 403.
+        response = self.csrf_client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_analytics_post_accepts_valid_csrf(self):
+        # 1. Hacemos GET para establecer la cookie CSRF
+        self.csrf_client.get(reverse("core:home"))
+        csrf_token = self.csrf_client.cookies.get("csrftoken")
+        self.assertIsNotNone(csrf_token)
+
+        # 2. Hacemos POST con el token en la cabecera HTTP_X_CSRFTOKEN
+        response = self.csrf_client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+            content_type="application/json",
+            HTTP_X_CSRFTOKEN=csrf_token.value
+        )
+        self.assertEqual(response.status_code, 204)
+
+    def test_analytics_post_sanitizes_metadata_and_limits_keys(self):
+        # Enviamos metadata con claves prohibidas (PII) y con más de 5 claves
+        payload = {
+            "name": "whatsapp_click",
+            "path": "/",
+            "metadata": {
+                "safe_key_1": "value1",
+                "safe_key_2": 123,
+                "email": "pii@example.com",  # PII, se omitirá
+                "user_username": "pii_user",  # PII, se omitirá
+                "safe_key_3": True,
+                "safe_key_4": "value4",
+                "safe_key_5": "value5",
+                "safe_key_6": "value6",       # Excede el límite de 5 claves
+            }
+        }
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        event = AnalyticsEvent.objects.filter(name="whatsapp_click").first()
+        self.assertIsNotNone(event)
+
+        # Comprobar que no hay PII
+        self.assertNotIn("email", event.metadata)
+        self.assertNotIn("user_username", event.metadata)
+
+        # Comprobar que el tamaño máximo es <= 5
+        self.assertLessEqual(len(event.metadata), 5)
+        self.assertEqual(event.metadata.get("safe_key_1"), "value1")
+        self.assertEqual(event.metadata.get("safe_key_2"), 123)
+        self.assertEqual(event.metadata.get("safe_key_3"), True)
 
     @override_settings(ANALYTICS_RATE_LIMIT_ATTEMPTS=3, ANALYTICS_RATE_LIMIT_WINDOW=10)
     def test_analytics_post_rate_limiting(self):
@@ -648,10 +711,13 @@ class AnalyticsTests(TestCase):
         class FakeSocialLogin:
             account = FakeSocialAccount()
 
-        request.sociallogin = FakeSocialLogin()
-
-        # Emitimos la señal con un usuario existente
-        user_logged_in.send(sender=self.User, request=request, user=self.regular_user)
+        # Emitimos la señal con un usuario existente y pasamos sociallogin en los kwargs
+        user_logged_in.send(
+            sender=self.User,
+            request=request,
+            user=self.regular_user,
+            sociallogin=FakeSocialLogin()
+        )
 
         # Comprobamos que el evento fue guardado
         event = AnalyticsEvent.objects.filter(name="login_google", user=self.regular_user).first()
@@ -670,6 +736,17 @@ class AnalyticsTests(TestCase):
 
         # 3. Usuarios staff acceden exitosamente (200)
         self.client.force_login(self.staff_user)
+
+        # Crear un ResourceView para que el dashboard rinda sin lanzar errores de datos vacíos
+        from apps.content.models.resource import Resource
+        from apps.content.models.completion import ResourceView
+
+        # Creamos un recurso ficticio para la prueba
+        from apps.content.models import Subject
+        subj = Subject.objects.create(name="Matemática", is_active=True)
+        res = Resource.objects.create(title="Prueba", slug="prueba", subject=subj, is_published=True)
+        ResourceView.objects.create(user=self.staff_user, resource=res)
+
         response = self.client.get(reverse("core:analytics_dashboard"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "core/panel_analitica.html")

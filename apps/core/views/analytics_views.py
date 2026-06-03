@@ -34,6 +34,42 @@ ANALYTICS_ALLOWLIST = {
 }
 
 
+def sanitize_metadata(metadata):
+    """
+    Sanitiza y acota el diccionario de metadata para evitar payloads
+    grandes y fuga accidental de información personal identificable (PII).
+    """
+    if not isinstance(metadata, dict):
+        return {}
+
+    sanitized = {}
+    # Términos sospechosos de contener información personal (PII)
+    PII_KEYWORDS = {
+        "email", "ip", "address", "phone", "password", "token", "name",
+        "username", "first_name", "last_name", "rut", "rut_raw",
+        "identificador", "user_id", "mail", "celular", "telefono"
+    }
+
+    # Limitar a un máximo de 5 campos
+    for key, value in list(metadata.items())[:5]:
+        if not isinstance(key, str) or len(key) > 50:
+            continue
+
+        key_lower = key.lower()
+        # Omitir cualquier clave que coincida con términos PII
+        if any(pii_kw in key_lower for pii_kw in PII_KEYWORDS):
+            continue
+
+        # Aceptar únicamente tipos primitivos planos y acotados
+        if isinstance(value, (int, float, bool)):
+            sanitized[key] = value
+        elif isinstance(value, str):
+            if len(value) <= 150:
+                sanitized[key] = value
+
+    return sanitized
+
+
 class AnalyticsEventPostView(View):
     """
     Endpoint POST para guardar eventos de analítica.
@@ -82,6 +118,9 @@ class AnalyticsEventPostView(View):
 
         if not isinstance(metadata, dict):
             metadata = {}
+
+        # 3.5. Sanitizar y limitar metadata
+        metadata = sanitize_metadata(metadata)
 
         # 4. Creación del evento
         AnalyticsEvent.objects.create(
@@ -140,7 +179,7 @@ class AnalyticsDashboardView(TemplateView):
         # 3. Recursos más vistos de ResourceView (ledger existente)
         top_resources = (
             ResourceView.objects.values(
-                "resource_id", "resource__title", "resource__subject__name"
+                "resource_id", "resource__title", "resource__slug", "resource__subject__name"
             )
             .annotate(views_count=Count("id"))
             .order_by("-views_count")[:10]
