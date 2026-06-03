@@ -16,24 +16,29 @@
 
 - **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
   (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
-- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home → QA a11y**; KaTeX condicional.
-  **No hay tarea activa sin bloqueo:** lo siguiente (Home) depende de insumos del 🧑 (ver Bloqueos).
+- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home (handoff Ready) → QA a11y**; KaTeX condicional.
+  **Home desbloqueado para construir:** el 🧑 decidió avanzar con **placeholders** + contenido
+  **hardcodeado** (sin modelos/admin). Handoff en `backlog/2-arquitectura/rediseno-home-confianza.md`.
 - **Matriz P0/clave:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 🟢**.
 - **Infra viva:** prod `www.profeonline.cl` 🟢 200 · staging `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
 ## Bloqueos / esperando
 
-- **Home** 🔴 bloqueado por **contenido** del 🧑 (foto/bio/credenciales + 2-3 testimonios) — el código no.
+- **Home** 🟢 **desbloqueado** (2026-06-03): se construye con placeholders; el contenido real
+  (foto/bio/credenciales + 2-3 testimonios) lo rellena el 🧑 después, sobre los `TODO` del template.
 - **QA a11y** 🔴 bloqueado por Home mergeado (cubre también el home nuevo).
 - **KaTeX** ⏸️ pendiente decisión del 🧑: ¿el contenido llevará fórmulas en notación?
 - **C1/C2** ⚪ aceptados (no son bloqueo; reconsiderar al entrar datos reales).
 
 ## Handoffs abiertos (Ready para construir)
 
-- _(ninguno Ready ahora)_ — Email ✅ cerrado (PR #38). Lo siguiente está **bloqueado por insumos del 🧑**:
-  Home (contenido), QA a11y (Home mergeado), KaTeX (decisión de fórmulas). Tarjetas en `backlog/1-por-iniciar/`.
+- 🔨 **Rediseño Home (conversión)** — `backlog/2-arquitectura/rediseno-home-confianza.md`.
+  Ready para 🔨 Antigravity: solo `templates/pages/home.html` (+ CSS aditivo `?v=15` + 1 imagen
+  placeholder), sin modelos/migraciones. Pendiente preflight de 🧩 Codex si aplica.
 
 ## Últimas entregas
+- 2026-06-03 — 🏛️ Claude + 🧑 Usuario: **Handoff de Home redactado y Ready.** Decisiones: placeholders
+  + contenido hardcodeado (sin modelos/admin). Tarjeta movida `1-por-iniciar` → `2-arquitectura`.
 - 2026-06-03 — 🏛️🔨🧩 **Verificación de email mergeada y CERRADA 🟢 (PR #38).** Antigravity construyó,
   Codex auditó (P1 duplicados, P2 anti-enumeración, P3 usuarios sin email), Antigravity corrigió, Claude
   cerró (sensible). 202 tests. `mandatory` + Google exento; migración no bloquea a usuarios actuales.
