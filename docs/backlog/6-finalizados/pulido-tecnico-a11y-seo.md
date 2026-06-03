@@ -1,6 +1,6 @@
 # Pulido técnico: a11y + SEO/perf (quick-wins)
 
-- **Estado:** Auditoría (Codex)
+- **Estado:** ✅ Finalizado (auditado y cerrado por 🏛️ Claude el 2026-06-03)
 - **Creado:** 2026-06-03 (🏛️ Claude)
 - **Prioridad:** P2 · **Cartera:** accesibilidad / SEO / calidad
 - **Tipo:** UI · a11y · SEO
@@ -86,3 +86,13 @@ de contenido nuevo del usuario.
 - **CSS Dead Code:** Eliminado el selector muerto `.detail-actions` en [estilos.css](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/static/css/estilos.css) que no se utilizaba en ninguna plantilla del frontend.
 - **Cache Buster:** Bump de la versión de caché a `?v=21` en [base.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/base.html).
 - **Tests unitarios:** Se extendió el test `test_home_includes_canonical_og_url_and_structured_data` en [tests.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/tests.py) para asegurar que valide las propiedades del JSON-LD expandido.
+
+### Auditoría y cierre (🏛️ Claude, 2ª IA — Antigravity construyó)
+- **Diff revisado:** focus-trap (con guard anti re-trigger, retorno de foco y trap Tab/Shift+Tab),
+  skip-link + `<main id="main">`, `prefers-reduced-motion`, tokens `--success-*`, JSON-LD
+  `LocalBusiness`+`Person` con nonce, robots.txt confirmado. Todo correcto.
+- **🐛 Regresión corregida por Claude:** Antigravity eliminó del `:root` el token
+  `--secondary-hover: #cbd5e1`, pero `.btn-secondary:hover` (estilos.css ~705) lo sigue usando →
+  el hover de todos los botones secundarios quedaba sin color. **Token restaurado.**
+- **Barrera:** CI verde (202 tests) sobre la rama; corrección es CSS puro (sin impacto en tests).
+- Cerrado y movido a `6-finalizados`.
