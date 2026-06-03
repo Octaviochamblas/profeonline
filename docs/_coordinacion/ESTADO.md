@@ -16,27 +16,28 @@
 
 - **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
   (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
-- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home (handoff Ready) → QA a11y**; KaTeX condicional.
-  **Home desbloqueado para construir:** el 🧑 decidió avanzar con **placeholders** + contenido
-  **hardcodeado** (sin modelos/admin). Handoff en `backlog/2-arquitectura/rediseno-home-confianza.md`.
+- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home ✅ → QA a11y (próxima)**; KaTeX condicional.
+  **Home CERRADO 🟢 (2026-06-03):** Antigravity construyó, Claude auditó (2ª IA) y cerró. Contenido
+  real del profe; sin testimonios (diferidos). Tarjeta en `backlog/6-finalizados/`.
 - **Matriz P0/clave:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 🟢**.
 - **Infra viva:** prod `www.profeonline.cl` 🟢 200 · staging `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
 ## Bloqueos / esperando
 
-- **Home** 🟢 **desbloqueado** (2026-06-03): se construye con placeholders; el contenido real
-  (foto/bio/credenciales + 2-3 testimonios) lo rellena el 🧑 después, sobre los `TODO` del template.
-- **QA a11y** 🔴 bloqueado por Home mergeado (cubre también el home nuevo).
+- **QA a11y** 🟢 **desbloqueado** por el Home cerrado (cubre también el home nuevo) — tarjeta en `1-por-iniciar/`.
+- **Prueba social (testimonios del Home)** 🔴 bloqueada por contenido real del 🧑 — tarjeta nueva en `1-por-iniciar/`.
 - **KaTeX** ⏸️ pendiente decisión del 🧑: ¿el contenido llevará fórmulas en notación?
 - **C1/C2** ⚪ aceptados (no son bloqueo; reconsiderar al entrar datos reales).
 
 ## Handoffs abiertos (Ready para construir)
 
-- 🔨 **Rediseño Home (conversión)** — `backlog/2-arquitectura/rediseno-home-confianza.md`.
-  Ready para 🔨 Antigravity: solo `templates/pages/home.html` (+ CSS aditivo `?v=15` + 1 imagen
-  placeholder), sin modelos/migraciones. Pendiente preflight de 🧩 Codex si aplica.
+- _(ninguno Ready ahora)_ — Home cerrado. Próximas tarjetas en `1-por-iniciar/` (QA a11y, testimonios, KaTeX).
 
 ## Últimas entregas
+- 2026-06-03 — 🏛️🔨 **Rediseño del Home CERRADO 🟢.** Antigravity construyó (Hero reenfocado, perfil
+  real de Octavio Chamblas, "Cómo funciona" 2 pasos, destacados condensados); Claude auditó como 2ª IA
+  y corrigió (bug CSS `:active`, CSS muerto de testimonios, imagen huérfana). Barrera verde. Prueba
+  social diferida por falta de testimonios reales (tarjeta nueva).
 - 2026-06-03 — 🏛️ Claude + 🧑 Usuario: **Handoff de Home redactado y Ready.** Decisiones: placeholders
   + contenido hardcodeado (sin modelos/admin). Tarjeta movida `1-por-iniciar` → `2-arquitectura`.
 - 2026-06-03 — 🏛️🔨🧩 **Verificación de email mergeada y CERRADA 🟢 (PR #38).** Antigravity construyó,
