@@ -14,10 +14,10 @@
 
 ## En curso ahora
 
-- **M5 (Analítica interna) CERRADA 🟢 (2026-06-03):** mergeada en `main` vía **PR #36** (Antigravity
-  construyó, Codex auditó/curó privacidad, Claude cerró como 3ª IA). Panel `/panel/analitica/` + eventos de cliente.
-- **Sprint de producto (valor visible):** orden **Analytics ✅ → Email → Home → QA a11y**; KaTeX
-  condicional a que se escriban fórmulas. **Siguiente sin bloqueantes: Verificación de email.**
+- **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
+  (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
+- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home → QA a11y**; KaTeX condicional.
+  **No hay tarea activa sin bloqueo:** lo siguiente (Home) depende de insumos del 🧑 (ver Bloqueos).
 - **Matriz P0/clave:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 🟢**.
 - **Infra viva:** prod `www.profeonline.cl` 🟢 200 · staging `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
@@ -30,12 +30,13 @@
 
 ## Handoffs abiertos (Ready para construir)
 
-- 🔨 **Verificación de email** — handoff en `backlog/2-arquitectura/mejora-verificacion-email.md`.
-  Independiente, **sin bloqueantes**. Ready para Antigravity (rama desde `main`; ⚠️ tocará `register_view`,
-  donde M5 ya añadió el evento `signup`).
-- Home y QA a11y: tarjetas completas en `backlog/1-por-iniciar/` (bloqueadas, ver arriba). KaTeX: ídem (condicional).
+- _(ninguno Ready ahora)_ — Email ✅ cerrado (PR #38). Lo siguiente está **bloqueado por insumos del 🧑**:
+  Home (contenido), QA a11y (Home mergeado), KaTeX (decisión de fórmulas). Tarjetas en `backlog/1-por-iniciar/`.
 
 ## Últimas entregas
+- 2026-06-03 — 🏛️🔨🧩 **Verificación de email mergeada y CERRADA 🟢 (PR #38).** Antigravity construyó,
+  Codex auditó (P1 duplicados, P2 anti-enumeración, P3 usuarios sin email), Antigravity corrigió, Claude
+  cerró (sensible). 202 tests. `mandatory` + Google exento; migración no bloquea a usuarios actuales.
 - 2026-06-03 — 🏛️🔨🧩 **M5 Analítica interna mergeada y CERRADA 🟢 (PR #36).** Antigravity construyó,
   Codex auditó y curó privacidad, Claude cerró como 3ª IA (superficie sensible). Suite 191 tests. Matriz M5 → 🟢.
 - 2026-06-02 — 🧩 Codex: **cura privacidad M5 en PR #36** — metadata por allowlist de evento,
