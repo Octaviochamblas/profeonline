@@ -662,14 +662,66 @@ class AnalyticsTests(TestCase):
         self.assertIsNotNone(event)
 
         # Comprobar que no hay PII
-        self.assertNotIn("email", event.metadata)
-        self.assertNotIn("user_username", event.metadata)
+        self.assertEqual(event.metadata, {})
 
-        # Comprobar que el tamaño máximo es <= 5
-        self.assertLessEqual(len(event.metadata), 5)
-        self.assertEqual(event.metadata.get("safe_key_1"), "value1")
-        self.assertEqual(event.metadata.get("safe_key_2"), 123)
-        self.assertEqual(event.metadata.get("safe_key_3"), True)
+        # Eventos sin metadata permitida quedan sin payload persistido.
+        self.assertEqual(len(event.metadata), 0)
+
+    def test_analytics_post_drops_sensitive_client_metadata_and_querystrings(self):
+        payload = {
+            "name": "whatsapp_click",
+            "path": "/?utm_source=ad&email=pii@example.com",
+            "metadata": {
+                "href": "https://wa.me/56911112222?text=hola",
+                "file_url": "/media/private/guia.pdf",
+                "text": "Escribenos a alumno@example.com",
+                "email": "pii@example.com",
+                "phone": "+56911112222",
+            }
+        }
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        event = AnalyticsEvent.objects.filter(name="whatsapp_click").first()
+        self.assertIsNotNone(event)
+        self.assertEqual(event.path, "/")
+        self.assertEqual(event.metadata, {})
+
+    def test_analytics_post_allows_only_valid_video_id_metadata(self):
+        payload = {
+            "name": "video_play",
+            "path": "https://www.profeonline.cl/recursos/demo/?email=pii@example.com",
+            "metadata": {
+                "video_id": "abcDEF_123-",
+                "title": "Titulo con posible PII",
+                "href": "https://youtube-nocookie.com/embed/abcDEF_123-",
+            }
+        }
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        event = AnalyticsEvent.objects.filter(name="video_play").first()
+        self.assertIsNotNone(event)
+        self.assertEqual(event.path, "/recursos/demo/")
+        self.assertEqual(event.metadata, {"video_id": "abcDEF_123-"})
+
+    def test_analytics_post_rejects_non_local_path(self):
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "not-a-path"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
 
     @override_settings(ANALYTICS_RATE_LIMIT_ATTEMPTS=3, ANALYTICS_RATE_LIMIT_WINDOW=10)
     def test_analytics_post_rate_limiting(self):

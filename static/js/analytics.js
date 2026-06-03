@@ -48,24 +48,15 @@
 
         // Clics a WhatsApp
         if (href.includes('wa.me') || href.includes('api.whatsapp.com')) {
-            sendEvent('whatsapp_click', {
-                href: href,
-                text: link.textContent.trim()
-            });
+            sendEvent('whatsapp_click');
         }
         // Clics a Teléfono
         else if (href.startsWith('tel:')) {
-            sendEvent('phone_click', {
-                href: href,
-                text: link.textContent.trim()
-            });
+            sendEvent('phone_click');
         }
         // Clics a Descargas de Recursos
         else if (link.hasAttribute('download') || href.includes('/media/')) {
-            sendEvent('attachment_download', {
-                file_url: href,
-                text: link.textContent.trim()
-            });
+            sendEvent('attachment_download');
         }
     });
 
@@ -80,10 +71,10 @@
             const data = JSON.parse(event.data);
             // YouTube Player API envía eventos onStateChange con info = 1 para PLAYING
             if (data.event === 'onStateChange' && data.info === 1) {
-                sendEvent('video_play', {
-                    video_id: data.id || 'unknown',
-                    title: document.title
-                });
+                const iframe = Array.from(document.querySelectorAll('iframe[src*="youtube-nocookie.com/embed/"]'))
+                    .find(frame => frame.contentWindow === event.source);
+                const videoId = iframe?.src?.split('/embed/')[1]?.split('?')[0] || '';
+                sendEvent('video_play', videoId ? { video_id: videoId } : {});
             }
         } catch (e) {
             // Ignorar mensajes que no sean JSON

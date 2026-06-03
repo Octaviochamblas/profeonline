@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import timedelta
+from urllib.parse import urlsplit
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.admin.views.decorators import staff_member_required
@@ -34,38 +35,47 @@ ANALYTICS_ALLOWLIST = {
 }
 
 
-def sanitize_metadata(metadata):
-    """
-    Sanitiza y acota el diccionario de metadata para evitar payloads
-    grandes y fuga accidental de información personal identificable (PII).
-    """
+ANALYTICS_METADATA_ALLOWLIST = {
+    "whatsapp_click": set(),
+    "phone_click": set(),
+    "attachment_download": set(),
+    "video_play": {"video_id"},
+    "resource_comprendido": set(),
+    "page_view": set(),
+}
+
+
+def sanitize_path(path):
+    """Guarda solo pathnames locales; nunca querystrings ni URLs absolutas."""
+    if not isinstance(path, str):
+        return ""
+    parsed_path = urlsplit(path.strip()).path
+    if not parsed_path.startswith("/"):
+        return ""
+    return parsed_path[:255]
+
+
+def sanitize_event_metadata(event_name, metadata):
+    """Sanitiza metadata con allowlist por evento para evitar PII accidental."""
     if not isinstance(metadata, dict):
         return {}
 
+    allowed_keys = ANALYTICS_METADATA_ALLOWLIST.get(event_name, set())
+    if not allowed_keys:
+        return {}
+
     sanitized = {}
-    # Términos sospechosos de contener información personal (PII)
-    PII_KEYWORDS = {
-        "email", "ip", "address", "phone", "password", "token", "name",
-        "username", "first_name", "last_name", "rut", "rut_raw",
-        "identificador", "user_id", "mail", "celular", "telefono"
-    }
-
-    # Limitar a un máximo de 5 campos
-    for key, value in list(metadata.items())[:5]:
-        if not isinstance(key, str) or len(key) > 50:
+    for key in allowed_keys:
+        value = metadata.get(key)
+        if not isinstance(value, str):
             continue
-
-        key_lower = key.lower()
-        # Omitir cualquier clave que coincida con términos PII
-        if any(pii_kw in key_lower for pii_kw in PII_KEYWORDS):
-            continue
-
-        # Aceptar únicamente tipos primitivos planos y acotados
-        if isinstance(value, (int, float, bool)):
+        value = value.strip()
+        if key == "video_id":
+            if not (1 <= len(value) <= 32):
+                continue
+            if not all(char.isalnum() or char in "_-" for char in value):
+                continue
             sanitized[key] = value
-        elif isinstance(value, str):
-            if len(value) <= 150:
-                sanitized[key] = value
 
     return sanitized
 
@@ -113,6 +123,7 @@ class AnalyticsEventPostView(View):
         # 3. Validación de allowlist y parámetros obligatorios
         if not name or name not in ANALYTICS_ALLOWLIST:
             return HttpResponseBadRequest("Nombre de evento no válido o no permitido.")
+        path = sanitize_path(path)
         if not path:
             return HttpResponseBadRequest("El parámetro path es obligatorio.")
 
@@ -120,7 +131,7 @@ class AnalyticsEventPostView(View):
             metadata = {}
 
         # 3.5. Sanitizar y limitar metadata
-        metadata = sanitize_metadata(metadata)
+        metadata = sanitize_event_metadata(name, metadata)
 
         # 4. Creación del evento
         AnalyticsEvent.objects.create(

@@ -114,3 +114,9 @@ vive en el ledger**; el dashboard la lee de ahí, **no se reinstrumenta**.
 - **Signals Robustas:** Modificada la señal `login_google` en `apps/core/signals.py` para leer `sociallogin` desde `kwargs`, solucionando fallos en logins recurrentes de allauth.
 - **Corrección de Links en Dashboard:** Corregidos los enlaces del top 10 en `panel_analitica.html` para usar `resource.resource__slug` en lugar de `resource.resource_id`.
 - **Tests Reales de CSRF:** Agregadas pruebas específicas en `apps/core/tests.py` que validan el rechazo de peticiones sin token CSRF y la aceptación con token válido usando `Client(enforce_csrf_checks=True)`.
+
+🧩 **Cura adicional Codex (privacidad M5):**
+- **Metadata por allowlist:** El endpoint ahora usa `sanitize_event_metadata` con claves permitidas por evento. Los eventos de contacto/descarga/pageview no guardan metadata arbitraria; `video_play` solo permite `video_id` con caracteres acotados.
+- **Path sin querystrings:** El endpoint normaliza `path` con `sanitize_path` para persistir solo el pathname local y descartar querystrings que puedan contener PII accidental.
+- **JS menos sensible:** `static/js/analytics.js` dejó de enviar `href`, texto visible o `file_url` en clicks de WhatsApp, teléfono y descargas; para video envía solo el id derivado del iframe.
+- **Regresiones cubiertas:** Se agregaron tests para descarte de metadata sensible, limpieza de querystrings, rechazo de paths no locales y preservación exclusiva de `video_id` válido.
