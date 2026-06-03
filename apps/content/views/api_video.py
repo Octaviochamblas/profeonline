@@ -11,15 +11,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from apps.content.models import Level, Resource, Subject
+from apps.core.ratelimit import get_client_ip, is_rate_limited, increment_rate_limit
 
 logger = logging.getLogger(__name__)
-
-
-def _client_identifier(request):
-    forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
-    if forwarded_for:
-        return forwarded_for.split(",")[0].strip() or "unknown"
-    return request.META.get("REMOTE_ADDR", "unknown") or "unknown"
 
 
 def _rate_limit_config():
@@ -29,32 +23,19 @@ def _rate_limit_config():
     )
 
 
-def _rate_limit_key(request):
-    return f"video_webhook_failures:{_client_identifier(request)}"
-
-
 def _is_rate_limited(request):
     max_attempts, _window = _rate_limit_config()
-    return cache.get(_rate_limit_key(request), 0) >= max_attempts
+    return is_rate_limited(request, "video_webhook_failures", max_attempts)
 
 
 def _record_failed_attempt(request, reason):
     max_attempts, window = _rate_limit_config()
-    key = _rate_limit_key(request)
-
-    if cache.add(key, 1, timeout=window):
-        attempts = 1
-    else:
-        try:
-            attempts = cache.incr(key)
-        except ValueError:
-            cache.set(key, 1, timeout=window)
-            attempts = 1
+    attempts = increment_rate_limit(request, "video_webhook_failures", max_attempts, window)
 
     logger.warning(
         "Rejected video webhook request",
         extra={
-            "client": _client_identifier(request),
+            "client": get_client_ip(request),
             "reason": reason,
             "attempts": attempts,
             "max_attempts": max_attempts,
@@ -73,7 +54,7 @@ def create_resource_from_video(request):
     if _is_rate_limited(request):
         logger.warning(
             "Rate limited video webhook request",
-            extra={"client": _client_identifier(request)},
+            extra={"client": get_client_ip(request)},
         )
         return JsonResponse({"ok": False, "error": "Demasiados intentos"}, status=429)
 

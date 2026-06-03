@@ -5,14 +5,15 @@
 > [`_fuentes/auditoria-maestra-claude-2026-06-01.md`](_fuentes/auditoria-maestra-claude-2026-06-01.md).
 > Última revisión: 2026-06-02.
 
-**Leyenda estado:** 🔴 abierto · 🟡 en curso · 🟢 mitigado. Mantener al día al cerrar cada riesgo.
+**Leyenda estado:** 🔴 abierto · 🟡 en curso · 🟢 mitigado · ⚪ aceptado (riesgo asumido, sin trabajo
+activo por ahora). Mantener al día al cerrar cada riesgo.
 
 ## 🔴 Críticos (P0)
 
 | ID | Riesgo | Impacto | Mitigación | Dueño | Estado |
 | --- | --- | --- | --- | --- | --- |
-| **C1** | `migrate` corre en cada arranque sin gate/backup previo (el **seed** ya no pisa) | Migración mala se aplica sola | **Seed mitigado** (PR `fix/seed-idempotente`): `get_or_create` + fuera del start command (`Procfile`/`nixpacks`/`build.sh`). **Falta:** gate/backup antes de migrar → ligado a **C2** | 🔨+🏛️ | 🟡 |
-| **C2** | Sin backup verificado / sin drill de restauración | Pérdida de contenido y progreso de alumnos | **Backup real de prod verificado** (2026-06-02): `pg_dump` 18.4 + restore drill OK en clúster local (runbook §4.B). **Falta para 🟢:** automatizar el backup (Pro o cron externo) con retención. | 🧑+🔨 | 🟡 |
+| **C1** | `migrate` corre en cada arranque sin gate/backup previo (el **seed** ya no pisa) | Migración mala se aplica sola | **Seed mitigado** (`get_or_create` + fuera del start command). Gate/backup pre-migrate **descartado como trabajo activo** (2026-06-02, 🧑 Usuario): riesgo **aceptado** mientras no haya datos críticos. **Reconsiderar** al entrar alumnos/contenido real. | 🔨+🏛️ | ⚪ |
+| **C2** | Sin backup **automático**/retención (drill manual ya verificado) | Pérdida de contenido y progreso de alumnos | **Backup real de prod verificado** (2026-06-02): `pg_dump` 18.4 + restore drill OK (runbook §4.B). Automatizar (Pro/cron) **descartado como trabajo activo** (2026-06-02, 🧑 Usuario): riesgo **aceptado** mientras no haya datos críticos. | 🧑+🔨 | ⚪ |
 | **C3** | Rate-limit del webhook es **por-worker** si no hay Redis (`base.py` no define `CACHES` → `LocMemCache`) | Límite efectivo = 10 × nº workers; se pierde en cada redeploy | **Mitigado:** `REDIS_URL` definido en Railway (2026-06-02) → cache/rate-limit compartido entre workers; `system check` (PR #26) avisa si alguna vez falta. | 🧑+🔨 | 🟢 |
 
 ## 🟠 Altos (P1)
@@ -34,7 +35,7 @@
 | **M2** | Sin linter/formatter en CI | `ruff` en pre-commit y CI | 🔴 |
 | **M3** | Sin tags de release / changelog | Tag por deploy atado al release de Sentry | 🔴 |
 | **M4** | Branch protection no verificada | Exigir CI verde + review + no push directo a `main` | 🔴 |
-| **M5** | Observabilidad parcial (Sentry sin tracing; sin métricas de negocio) | Dashboard interno con `XPEvent`/`QuizAttempt` | 🔴 |
+| **M5** | Observabilidad parcial (Sentry sin tracing; sin métricas de negocio) | **Panel interno** sobre el ledger + eventos de cliente — handoff en `../backlog/2-arquitectura/mejora-analytics-eventos.md` (🔨 en construcción) | 🟡 |
 | **M6** | `requirements.txt` pinneado sin hashes | Lockfile con hashes (endurecer cadena de suministro) | 🔴 |
 
 ## Cómo se usa esta matriz

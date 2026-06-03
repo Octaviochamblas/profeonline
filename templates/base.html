@@ -26,6 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=14">
     <script src="{% static 'js/htmx.min.js' %}"></script>
+    <meta name="csrf-token" content="{{ csrf_token }}">
     {% block extra_head %}{% endblock %}
     {% block structured_data %}{% endblock %}
 </head>
@@ -57,6 +58,7 @@
                         <a href="{% url 'content:resource_list' %}">Recursos</a>
                         {% if user.is_staff %}
                             <a href="{% url 'content:area_list' %}">Áreas</a>
+                            <a href="{% url 'core:analytics_dashboard' %}">Analítica</a>
                         {% endif %}
                         <a href="{% url 'content:subject_list' %}">Asignaturas</a>
                         <a href="{% url 'content:topic_list' %}">Temas</a>
@@ -163,6 +165,7 @@
             this.setAttribute('aria-expanded', isActive ? 'true' : 'false');
         });
     </script>
+    <script nonce="{{ csp_nonce }}" src="{% static 'js/analytics.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

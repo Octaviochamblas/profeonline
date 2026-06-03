@@ -1,4 +1,5 @@
 from io import StringIO
+import json
 import os
 import tempfile
 from unittest import mock
@@ -6,7 +7,7 @@ from unittest import mock
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management import call_command, CommandError
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, Client
 from django.urls import reverse
 
 from apps.content.models import Level, Resource, Subject
@@ -559,3 +560,245 @@ class CheckEnvironmentCommandTests(TestCase):
 
         output = stdout.getvalue()
         self.assertIn("Entorno detectado: PRODUCCIÓN (DEBUG=False, DB remota)", output)
+
+
+class AnalyticsTests(TestCase):
+    def setUp(self):
+        self.User = get_user_model()
+        self.staff_user = self.User.objects.create_user(
+            username="staff_admin",
+            email="staff@example.com",
+            password="securepassword",
+            is_staff=True
+        )
+        self.regular_user = self.User.objects.create_user(
+            username="student_user",
+            email="student@example.com",
+            password="securepassword",
+            is_staff=False
+        )
+        # Cliente que valida CSRF estrictamente
+        self.csrf_client = Client(enforce_csrf_checks=True)
+
+    def test_analytics_post_valid_event(self):
+        # El endpoint requiere un token CSRF. En TestCase, el cliente de pruebas
+        # tiene la opción de deshabilitar la verificación CSRF (por defecto para tests)
+        # o podemos pasarla normalmente.
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/recursos/"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        self.assertEqual(AnalyticsEvent.objects.filter(name="whatsapp_click").count(), 1)
+
+    def test_analytics_post_invalid_event(self):
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "invalid_event_not_in_allowlist", "path": "/"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_analytics_post_missing_path(self):
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_analytics_post_rejects_missing_csrf(self):
+        # Al usar enforce_csrf_checks=True, la petición POST sin token CSRF debe retornar 403.
+        response = self.csrf_client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_analytics_post_accepts_valid_csrf(self):
+        # 1. Hacemos GET para establecer la cookie CSRF
+        self.csrf_client.get(reverse("core:home"))
+        csrf_token = self.csrf_client.cookies.get("csrftoken")
+        self.assertIsNotNone(csrf_token)
+
+        # 2. Hacemos POST con el token en la cabecera HTTP_X_CSRFTOKEN
+        response = self.csrf_client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+            content_type="application/json",
+            HTTP_X_CSRFTOKEN=csrf_token.value
+        )
+        self.assertEqual(response.status_code, 204)
+
+    def test_analytics_post_sanitizes_metadata_and_limits_keys(self):
+        # Enviamos metadata con claves prohibidas (PII) y con más de 5 claves
+        payload = {
+            "name": "whatsapp_click",
+            "path": "/",
+            "metadata": {
+                "safe_key_1": "value1",
+                "safe_key_2": 123,
+                "email": "pii@example.com",  # PII, se omitirá
+                "user_username": "pii_user",  # PII, se omitirá
+                "safe_key_3": True,
+                "safe_key_4": "value4",
+                "safe_key_5": "value5",
+                "safe_key_6": "value6",       # Excede el límite de 5 claves
+            }
+        }
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        event = AnalyticsEvent.objects.filter(name="whatsapp_click").first()
+        self.assertIsNotNone(event)
+
+        # Comprobar que no hay PII
+        self.assertEqual(event.metadata, {})
+
+        # Eventos sin metadata permitida quedan sin payload persistido.
+        self.assertEqual(len(event.metadata), 0)
+
+    def test_analytics_post_drops_sensitive_client_metadata_and_querystrings(self):
+        payload = {
+            "name": "whatsapp_click",
+            "path": "/?utm_source=ad&email=pii@example.com",
+            "metadata": {
+                "href": "https://wa.me/56911112222?text=hola",
+                "file_url": "/media/private/guia.pdf",
+                "text": "Escribenos a alumno@example.com",
+                "email": "pii@example.com",
+                "phone": "+56911112222",
+            }
+        }
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        event = AnalyticsEvent.objects.filter(name="whatsapp_click").first()
+        self.assertIsNotNone(event)
+        self.assertEqual(event.path, "/")
+        self.assertEqual(event.metadata, {})
+
+    def test_analytics_post_allows_only_valid_video_id_metadata(self):
+        payload = {
+            "name": "video_play",
+            "path": "https://www.profeonline.cl/recursos/demo/?email=pii@example.com",
+            "metadata": {
+                "video_id": "abcDEF_123-",
+                "title": "Titulo con posible PII",
+                "href": "https://youtube-nocookie.com/embed/abcDEF_123-",
+            }
+        }
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps(payload),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 204)
+
+        from apps.core.models import AnalyticsEvent
+        event = AnalyticsEvent.objects.filter(name="video_play").first()
+        self.assertIsNotNone(event)
+        self.assertEqual(event.path, "/recursos/demo/")
+        self.assertEqual(event.metadata, {"video_id": "abcDEF_123-"})
+
+    def test_analytics_post_rejects_non_local_path(self):
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "not-a-path"}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    @override_settings(ANALYTICS_RATE_LIMIT_ATTEMPTS=3, ANALYTICS_RATE_LIMIT_WINDOW=10)
+    def test_analytics_post_rate_limiting(self):
+        # Limpiar caché para evitar interferencia entre tests
+        from django.core.cache import cache
+        cache.clear()
+
+        # Hacer 3 peticiones (límite configurado a 3)
+        for _ in range(3):
+            response = self.client.post(
+                reverse("core:analytics_post"),
+                data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+                content_type="application/json",
+                HTTP_X_FORWARDED_FOR="192.168.1.100"
+            )
+            self.assertEqual(response.status_code, 204)
+
+        # La 4ta petición de la misma IP debe ser rechazada con 429
+        response = self.client.post(
+            reverse("core:analytics_post"),
+            data=json.dumps({"name": "whatsapp_click", "path": "/"}),
+            content_type="application/json",
+            HTTP_X_FORWARDED_FOR="192.168.1.100"
+        )
+        self.assertEqual(response.status_code, 429)
+
+    def test_login_google_signal_logs_event_for_existing_user(self):
+        from allauth.account.signals import user_logged_in
+        from apps.core.models import AnalyticsEvent
+        from django.test import RequestFactory
+
+        # Simulamos un request de test con RequestFactory
+        factory = RequestFactory()
+        request = factory.get('/')
+
+        class FakeSocialAccount:
+            provider = "google"
+
+        class FakeSocialLogin:
+            account = FakeSocialAccount()
+
+        # Emitimos la señal con un usuario existente y pasamos sociallogin en los kwargs
+        user_logged_in.send(
+            sender=self.User,
+            request=request,
+            user=self.regular_user,
+            sociallogin=FakeSocialLogin()
+        )
+
+        # Comprobamos que el evento fue guardado
+        event = AnalyticsEvent.objects.filter(name="login_google", user=self.regular_user).first()
+        self.assertIsNotNone(event)
+        self.assertEqual(event.metadata.get("provider"), "google")
+
+    def test_dashboard_accessible_only_by_staff(self):
+        # 1. Anónimos deben ser redirigidos (staff_member_required -> login)
+        response = self.client.get(reverse("core:analytics_dashboard"))
+        self.assertEqual(response.status_code, 302)
+
+        # 2. Usuarios comunes (no-staff) deben ser redirigidos
+        self.client.force_login(self.regular_user)
+        response = self.client.get(reverse("core:analytics_dashboard"))
+        self.assertEqual(response.status_code, 302)
+
+        # 3. Usuarios staff acceden exitosamente (200)
+        self.client.force_login(self.staff_user)
+
+        # Crear un ResourceView para que el dashboard rinda sin lanzar errores de datos vacíos
+        from apps.content.models.resource import Resource
+        from apps.content.models.completion import ResourceView
+
+        # Creamos un recurso ficticio para la prueba
+        from apps.content.models import Subject
+        subj = Subject.objects.create(name="Matemática", is_active=True)
+        res = Resource.objects.create(title="Prueba", slug="prueba", subject=subj, is_published=True)
+        ResourceView.objects.create(user=self.staff_user, resource=res)
+
+        response = self.client.get(reverse("core:analytics_dashboard"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "core/panel_analitica.html")

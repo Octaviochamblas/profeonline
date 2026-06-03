@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Panel de Analítica | ProfeOnline{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Estilos premium para el panel de analítica */
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .metric-card {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.5rem;
+        color: #f8fafc;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .metric-card__title {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-card__value {
+        font-size: 2.25rem;
+        font-weight: 800;
+        background: linear-gradient(to right, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .dashboard-section {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .dashboard-section__title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 0.75rem;
+    }
+
+    /* Funnel styles */
+    .funnel-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .funnel-bar {
+        display: flex;
+        align-items: center;
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border-left: 6px solid #6366f1;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .funnel-bar:hover {
+        transform: scale(1.005);
+        background: #f1f5f9;
+    }
+
+    .funnel-bar__label {
+        font-weight: 600;
+        color: #334155;
+        width: 250px;
+    }
+
+    .funnel-bar__progress-wrapper {
+        flex-grow: 1;
+        background: #e2e8f0;
+        height: 24px;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 0 1.5rem;
+        position: relative;
+    }
+
+    .funnel-bar__progress {
+        height: 100%;
+        background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+        border-radius: 6px;
+        transition: width 1s ease-in-out;
+    }
+
+    .funnel-bar__value {
+        font-weight: 700;
+        color: #0f172a;
+        width: 80px;
+        text-align: right;
+    }
+
+    .funnel-bar__percentage {
+        font-size: 0.875rem;
+        color: #64748b;
+        width: 130px;
+        text-align: right;
+    }
+
+    /* Tables design */
+    .analytics-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .analytics-table th {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        background: #f8fafc;
+        color: #475569;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .analytics-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.9375rem;
+    }
+
+    .analytics-table tr:hover td {
+        background-color: #f8fafc;
+    }
+
+    .weekly-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 1rem;
+    }
+
+    .weekly-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .weekly-card:hover {
+        border-color: #cbd5e1;
+        background: #f1f5f9;
+    }
+
+    .weekly-card__label {
+        font-size: 0.8125rem;
+        color: #64748b;
+        margin-bottom: 0.25rem;
+    }
+
+    .weekly-card__value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="stack stack--lg">
+    <div>
+        <p class="page-hero__kicker">Consola de Administración</p>
+        <h1 class="page-hero__title">Analítica Interna</h1>
+        <p class="page-hero__text">Métricas agregadas sobre el ledger local y eventos clave de conversión en el cliente.</p>
+    </div>
+
+    <!-- Cards de Métricas Principales -->
+    <div class="analytics-grid">
+        <div class="metric-card">
+            <div class="metric-card__title">Clicks a WhatsApp</div>
+            <div class="metric-card__value">{{ whatsapp_clicks }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-card__title">Clicks a Teléfono</div>
+            <div class="metric-card__value">{{ phone_clicks }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-card__title">Videos Reproducidos</div>
+            <div class="metric-card__value">{{ video_plays }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-card__title">Material Descargado</div>
+            <div class="metric-card__value">{{ attachment_downloads }}</div>
+        </div>
+    </div>
+
+    <!-- Funnel de Conversión -->
+    <div class="dashboard-section">
+        <h2 class="dashboard-section__title">Embudo de Conversión (Funnel)</h2>
+        <div class="funnel-container">
+            {% for step in funnel %}
+            <div class="funnel-bar">
+                <div class="funnel-bar__label">{{ step.name }}</div>
+                <div class="funnel-bar__progress-wrapper">
+                    <div class="funnel-bar__progress" style="width: {{ step.pct_initial }}%;"></div>
+                </div>
+                <div class="funnel-bar__value">{{ step.value }}</div>
+                <div class="funnel-bar__percentage" title="Respecto al inicio / Respecto al paso anterior">
+                    {{ step.pct_initial }}% <span style="color: #cbd5e1; margin: 0 4px;">|</span> {{ step.pct_prev }}%
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+        <!-- Recursos más vistos -->
+        <div class="dashboard-section" style="margin-bottom: 0;">
+            <h2 class="dashboard-section__title">Recursos Más Vistos (Top 10)</h2>
+            <div style="overflow-x: auto;">
+                <table class="analytics-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Asignatura</th>
+                            <th style="text-align: right;">Visitas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for resource in top_resources %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'content:resource_detail' resource.resource__slug %}" style="font-weight: 500; text-decoration: none; color: #4f46e5;">
+                                    {{ resource.resource__title }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge badge--neutral">{{ resource.resource__subject__name|default:"Sin Asignatura" }}</span>
+                            </td>
+                            <td style="text-align: right; font-weight: 600;">{{ resource.views_count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #64748b;">No hay visitas registradas aún.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Registro de usuarios por semana -->
+        <div class="dashboard-section" style="margin-bottom: 0;">
+            <h2 class="dashboard-section__title">Nuevos Registros (Últimas 12 Semanas)</h2>
+            <div class="weekly-list">
+                {% for week in weekly_registrations %}
+                <div class="weekly-card">
+                    <div class="weekly-card__label">{{ week.label }}</div>
+                    <div class="weekly-card__value">{{ week.count }}</div>
+                </div>
+                {% empty %}
+                <div style="text-align: center; color: #64748b; width: 100%;">No hay nuevos registros en las últimas semanas.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

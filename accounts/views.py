@@ -41,6 +41,14 @@ def register_view(request):
                 education_level=form.cleaned_data["education_level"],
             )
 
+            from apps.core.models import AnalyticsEvent
+            AnalyticsEvent.objects.create(
+                name="signup",
+                path=request.path,
+                user=user,
+                metadata={"role": form.cleaned_data["role"]}
+            )
+
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, "¡Registro completado con éxito! Bienvenido a ProfeOnline.")
             if next_url:
