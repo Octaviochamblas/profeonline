@@ -17,20 +17,15 @@
 <article class="detail-card stack">
     {% include "includes/breadcrumbs.html" %}
 
-    <div class="detail-actions">
-        <a href="{% url 'content:resource_list' %}" class="btn btn-secondary">← Volver a recursos</a>
-        {% if user.is_superuser %}
-            <div class="page-actions">
-                <span class="badge {% if resource.is_published %}badge--success{% else %}badge--danger{% endif %}">
-                    {% if resource.is_published %}Publicado{% else %}Borrador{% endif %}
-                </span>
-                <a href="{% url 'content:resource_update' resource.pk %}" class="btn btn-secondary">Editar</a>
-                <a href="{% url 'content:resource_delete' resource.pk %}" class="btn btn-danger">Eliminar</a>
-            </div>
-        {% endif %}
-    </div>
+    <a href="{% url 'content:resource_list' %}" class="detail-back-link">← Volver a recursos</a>
 
     <header class="stack">
+        <div class="page-hero">
+            <h1 class="page-hero__title">{{ resource.title }}</h1>
+            {% if resource.description %}
+                <p class="page-hero__text">{{ resource.description }}</p>
+            {% endif %}
+        </div>
         <div class="detail-meta">
             {% if resource.subject %}
                 {% if resource.subject.is_active or user.is_superuser %}
@@ -57,13 +52,6 @@
                     <span class="badge badge--info">{{ level.name }}</span>
                 {% endif %}
             {% endfor %}
-        </div>
-
-        <div class="page-hero">
-            <h1 class="page-hero__title">{{ resource.title }}</h1>
-            {% if resource.description %}
-                <p class="page-hero__text">{{ resource.description }}</p>
-            {% endif %}
         </div>
     </header>
 
@@ -151,6 +139,16 @@
         </section>
     {% endif %}
 
+    {% if user.is_superuser %}
+        <div class="detail-admin-bar" role="group" aria-label="Administración del recurso">
+            <span class="detail-admin-bar__label">Administración</span>
+            <span class="badge {% if resource.is_published %}badge--success{% else %}badge--danger{% endif %}">
+                {% if resource.is_published %}Publicado{% else %}Borrador{% endif %}
+            </span>
+            <a href="{% url 'content:resource_update' resource.pk %}" class="btn btn-secondary">Editar</a>
+            <a href="{% url 'content:resource_delete' resource.pk %}" class="btn btn-danger">Eliminar</a>
+        </div>
+    {% endif %}
 
 </article>
 {% endblock %}
