@@ -1,6 +1,13 @@
 # Verificación de email real en el registro
 
-- **Estado:** Por iniciar
+> 🏛️ **Handoff de arquitectura (Claude, 2026-06-03).** Es la **siguiente tarea del sprint** y la única
+> sin bloqueantes. Construye 🔨 Antigravity (rama `feat/email-verification` **desde `main`**) → audita
+> 🧩 Codex (toca allauth/settings → también `seguridad:requiere-claude`) → cierra 🏛️ Claude.
+> ⚠️ **Colisión a vigilar:** M5 (PR #36) ya añadió el evento `signup` en `register_view`
+> (`accounts/views.py`); intégrate ahí sin romperlo. **Decisión a tomar:** ¿`mandatory` para todos los
+> registros por email o solo para nuevos? El detalle de fases/criterios de abajo sigue vigente.
+
+- **Estado:** 🏛️→🔨 Ready para construir
 - **Creado:** 2026-05-31
 - **Área:** Producto / Seguridad
 - **Prioridad:** 🟢 Media

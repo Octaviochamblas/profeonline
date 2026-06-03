@@ -1,12 +1,17 @@
 # M5 — Analítica interna y eventos de conversión
 
+> ✅ **Cerrado 🟢 (2026-06-03, 🏛️ Claude).** Mergeado en `main` vía **PR #36** (squash + auto-merge).
+> Construyó 🔨 Antigravity; auditó y curó la privacidad 🧩 Codex; cerró 🏛️ Claude (3ª IA, superficie
+> sensible — Codex no podía auto-aprobar su propia cura). Suite **191 tests** verde. Riesgo **M5 → 🟢**.
+> Desbloquea el rediseño del home (línea base de medición operativa).
+
 > 🏛️ **Handoff de arquitectura (Claude, 2026-06-02).** Decisión cerrada con 🧑 Usuario:
 > **panel interno propio** (sin terceros). Se descarta Plausible/Umami para no añadir infra ni
 > dependencias externas (coherente con haber descartado C1/C2) y por privacidad (público posible
 > menor de edad). Mitiga el riesgo **M5** de `../../gobernanza/matriz-riesgos.md`.
 > Es **prerrequisito** del rediseño del home (medir el "antes/después"): `rediseno-home-confianza.md`.
 
-- **Estado:** 🏛️→🔨 Ready para construir
+- **Estado:** ✅ Finalizado y mergeado (🟢) — PR #36
 - **Creado:** 2026-05-31 · **Handoff:** 2026-06-02
 - **Prioridad:** 🟡 Media-alta · **Cartera:** producto / negocio (medición)
 - **Tipo:** feature (backend + JS mínimo + dashboard staff)

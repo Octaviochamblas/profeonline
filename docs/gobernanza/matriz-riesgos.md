@@ -35,7 +35,7 @@ activo por ahora). Mantener al día al cerrar cada riesgo.
 | **M2** | Sin linter/formatter en CI | `ruff` en pre-commit y CI | 🔴 |
 | **M3** | Sin tags de release / changelog | Tag por deploy atado al release de Sentry | 🔴 |
 | **M4** | Branch protection no verificada | Exigir CI verde + review + no push directo a `main` | 🔴 |
-| **M5** | Observabilidad parcial (Sentry sin tracing; sin métricas de negocio) | **Panel interno** sobre el ledger + eventos de cliente — handoff en `../backlog/2-arquitectura/mejora-analytics-eventos.md` (🔨 en construcción) | 🟡 |
+| **M5** | Observabilidad parcial (Sentry sin tracing; sin métricas de negocio) | **Panel interno** sobre el ledger + eventos de cliente (clics, `page_view`, dashboard staff) — **PR #36** mergeado; tarjeta en `../backlog/6-finalizados/mejora-analytics-eventos.md` | 🟢 |
 | **M6** | `requirements.txt` pinneado sin hashes | Lockfile con hashes (endurecer cadena de suministro) | 🔴 |
 
 ## Cómo se usa esta matriz
