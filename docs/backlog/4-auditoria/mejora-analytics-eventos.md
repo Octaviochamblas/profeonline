@@ -107,4 +107,10 @@ vive en el ledger**; el dashboard la lee de ahí, **no se reinstrumenta**.
 - **Script JS de Tracking:** Creado `static/js/analytics.js` con el nonce dinámico del CSP para capturar clicks de WhatsApp (`wa.me` / `api.whatsapp.com`), llamadas (`tel:`), descargas de archivos adjuntos (`download` o `/media/`), y reproducciones de YouTube con validación estricta del origen (`https://www.youtube-nocookie.com`).
 - **Dashboard Staff:** Creado `/panel/analitica/` en `apps/core/views/analytics_views.py` e interfaz visual premium en `templates/core/panel_analitica.html` consumiendo el ledger existente de `ResourceView` (sin duplicaciones), `User.objects` y `AnalyticsEvent`.
 - **Integraciones:** Añadida metaetiqueta CSRF en `base.html`, habilitado el parámetro `enablejsapi=1` en el detalle de recursos, y actualizada la política de privacidad.
-- **Calidad y Verificación:** Aumentada la suite a 188 pruebas en `apps/core/tests.py`, cubriendo endpoint de eventos, límite de tasa configurado por settings override, signals mockeadas con RequestFactory y acceso restringido al dashboard. Suite completa 100% en verde localmente.
+- **Calidad y Verificación:** Aumentada la suite a 191 pruebas en `apps/core/tests.py`, cubriendo endpoint de eventos, límite de tasa configurado por settings override, signals mockeadas con RequestFactory y acceso restringido al dashboard. Suite completa 100% en verde localmente.
+
+🩹 **Cura de Auditoría (Codex):**
+- **Sanitización de Metadata:** Se implementó `sanitize_metadata` en `apps/core/views/analytics_views.py` para descartar claves con datos PII y limitar la metadata a un máximo de 5 claves con strings ≤ 150 caracteres.
+- **Signals Robustas:** Modificada la señal `login_google` en `apps/core/signals.py` para leer `sociallogin` desde `kwargs`, solucionando fallos en logins recurrentes de allauth.
+- **Corrección de Links en Dashboard:** Corregidos los enlaces del top 10 en `panel_analitica.html` para usar `resource.resource__slug` en lugar de `resource.resource_id`.
+- **Tests Reales de CSRF:** Agregadas pruebas específicas en `apps/core/tests.py` que validan el rechazo de peticiones sin token CSRF y la aceptación con token válido usando `Client(enforce_csrf_checks=True)`.
