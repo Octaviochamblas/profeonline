@@ -16,18 +16,20 @@
 
 - **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
   (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
-- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home ✅ → a11y/pulido ✅ → PWA (handoff Ready)**; KaTeX condicional.
-  **Home + a11y + pulido móvil CERRADOS 🟢 (2026-06-03):** PRs #41 (rediseño), #42 (contraste AA),
-  #43 (drawer móvil, WhatsApp flotante, contacto, detalle recurso). Construyó Antigravity/Claude; Claude cerró.
+- **Sprint de producto:** **Home ✅ → a11y/pulido ✅ → pulido técnico ✅ → PWA (handoff Ready)**; KaTeX condicional.
+  **6 PRs cerrados hoy 🟢:** #41 (rediseño Home), #42 (contraste AA), #43 (pulido móvil),
+  #44/#45 (handoffs docs), **#46 (pulido técnico a11y/SEO).** Construyó Antigravity/Claude; Claude cerró.
 - **PWA (handoff Ready):** plan de Antigravity + Plan v2 de Codex, **refinado y corregido por Claude**
   (theme teal `#0f766e`, precache solo offline+iconos, apple-touch PNG). En `backlog/2-arquitectura/`.
+  **Pendiente:** preflight de Codex + construcción de Antigravity (`feat/pwa-basica`).
 - **Matriz P0/clave:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 🟢**.
 - **Infra viva:** prod `www.profeonline.cl` 🟢 200 · staging `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
 ## Bloqueos / esperando
 
-- **QA a11y** 🟢 **desbloqueado** por el Home cerrado (cubre también el home nuevo) — tarjeta en `1-por-iniciar/`.
-- **Prueba social (testimonios del Home)** 🔴 bloqueada por contenido real del 🧑 — tarjeta nueva en `1-por-iniciar/`.
+- **QA a11y manual (teclado + NVDA)** 🔴 requiere al 🧑 en Windows — tarjeta en `1-por-iniciar/`.
+- **Mejoras de conversión** (testimonios, FAQ, precios, "sobre mí", formulario, gancho) 🔴 bloqueadas
+  por contenido/decisión del 🧑 — `1-por-iniciar/mejoras-conversion-contenido.md` (+ testimonios).
 - **KaTeX** ⏸️ pendiente decisión del 🧑: ¿el contenido llevará fórmulas en notación?
 - **C1/C2** ⚪ aceptados (no son bloqueo; reconsiderar al entrar datos reales).
 
@@ -37,6 +39,9 @@
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
 
 ## Últimas entregas
+- 2026-06-03 — 🏛️🔨 **Pulido técnico a11y/SEO CERRADO 🟢 (PR #46).** Antigravity construyó (focus-trap
+  drawer, skip-link, reduced-motion, JSON-LD Person/LocalBusiness, tokens); Claude auditó (2ª IA) y
+  corrigió una regresión (`--secondary-hover` borrado del `:root`). Tarjeta en `6-finalizados/`.
 - 2026-06-03 — 🏛️🧩🔨 **Handoff PWA refinado y Ready.** Claude fusionó el plan de Antigravity + Plan v2
   de Codex y corrigió 4 supuestos contra el código (color teal, apple-touch PNG, precache sin hashing,
   start_url no medible). Decisiones 🧑: theme `#0f766e`, QA iOS opcional. Tarjeta en `2-arquitectura/`.
