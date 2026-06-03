@@ -16,9 +16,11 @@
 
 - **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
   (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
-- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home ✅ → QA a11y (próxima)**; KaTeX condicional.
-  **Home CERRADO 🟢 (2026-06-03):** Antigravity construyó, Claude auditó (2ª IA) y cerró. Contenido
-  real del profe; sin testimonios (diferidos). Tarjeta en `backlog/6-finalizados/`.
+- **Sprint de producto:** **Analytics ✅ → Email ✅ → Home ✅ → a11y/pulido ✅ → PWA (handoff Ready)**; KaTeX condicional.
+  **Home + a11y + pulido móvil CERRADOS 🟢 (2026-06-03):** PRs #41 (rediseño), #42 (contraste AA),
+  #43 (drawer móvil, WhatsApp flotante, contacto, detalle recurso). Construyó Antigravity/Claude; Claude cerró.
+- **PWA (handoff Ready):** plan de Antigravity + Plan v2 de Codex, **refinado y corregido por Claude**
+  (theme teal `#0f766e`, precache solo offline+iconos, apple-touch PNG). En `backlog/2-arquitectura/`.
 - **Matriz P0/clave:** C1 ⚪ aceptado · C2 ⚪ aceptado · C3 🟢 · A1 🟢 · **M5 🟢**.
 - **Infra viva:** prod `www.profeonline.cl` 🟢 200 · staging `web-staging-production-0dfc.up.railway.app` 🟢 200.
 
@@ -31,9 +33,15 @@
 
 ## Handoffs abiertos (Ready para construir)
 
-- _(ninguno Ready ahora)_ — Home cerrado. Próximas tarjetas en `1-por-iniciar/` (QA a11y, testimonios, KaTeX).
+- 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
+  → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
 
 ## Últimas entregas
+- 2026-06-03 — 🏛️🧩🔨 **Handoff PWA refinado y Ready.** Claude fusionó el plan de Antigravity + Plan v2
+  de Codex y corrigió 4 supuestos contra el código (color teal, apple-touch PNG, precache sin hashing,
+  start_url no medible). Decisiones 🧑: theme `#0f766e`, QA iOS opcional. Tarjeta en `2-arquitectura/`.
+- 2026-06-03 — 🏛️🔨 **a11y + pulido móvil CERRADOS 🟢 (PR #42, #43).** Contraste AA de WhatsApp,
+  drawer móvil lateral, WhatsApp flotante, contacto (Concepción, sin mail), detalle de recurso reordenado.
 - 2026-06-03 — 🏛️🔨 **Rediseño del Home CERRADO 🟢.** Antigravity construyó (Hero reenfocado, perfil
   real de Octavio Chamblas, "Cómo funciona" 2 pasos, destacados condensados); Claude auditó como 2ª IA
   y corrigió (bug CSS `:active`, CSS muerto de testimonios, imagen huérfana). Barrera verde. Prueba
