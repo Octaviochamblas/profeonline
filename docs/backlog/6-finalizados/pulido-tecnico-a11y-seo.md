@@ -1,6 +1,6 @@
 # Pulido técnico: a11y + SEO/perf (quick-wins)
 
-- **Estado:** Handoff Ready (arquitectura)
+- **Estado:** ✅ Finalizado (auditado y cerrado por 🏛️ Claude el 2026-06-03)
 - **Creado:** 2026-06-03 (🏛️ Claude)
 - **Prioridad:** P2 · **Cartera:** accesibilidad / SEO / calidad
 - **Tipo:** UI · a11y · SEO
@@ -53,15 +53,15 @@ de contenido nuevo del usuario.
 - ❌ PWA (tiene su propio handoff). ❌ Cambiar la paleta global ni el layout. ❌ Tocar `script-src` de la CSP.
 
 ## Criterios de aceptación (verificables)
-- [ ] Drawer: con teclado, al abrir el foco entra al panel y no se escapa; al cerrar vuelve al toggle.
-- [ ] Con `prefers-reduced-motion: reduce` el drawer y los hovers no animan `transform`.
-- [ ] Existe skip-link funcional (visible al tabular, salta al `<main>`).
-- [ ] Banner: contraste del texto **≥ AA** (documentar ratio).
-- [ ] JSON-LD `Person`/`LocalBusiness` válido (probar en Rich Results Test) y con nonce.
-- [ ] `/robots.txt` responde 200 y referencia el sitemap.
-- [ ] Banner sin colores hex hardcodeados (usa tokens).
-- [ ] Barrera verde: `test` · `check --deploy` · `makemigrations --check --dry-run`.
-- [ ] Si toca CSS → cache-buster `?v=21`.
+- [x] Drawer: con teclado, al abrir el foco entra al panel y no se escapa; al cerrar vuelve al toggle.
+- [x] Con `prefers-reduced-motion: reduce` el drawer y los hovers no animan `transform`.
+- [x] Existe skip-link funcional (visible al tabular, salta al `<main>`).
+- [x] Banner: contraste del texto **≥ AA** (ratio de contraste verificado de **6.87:1**).
+- [x] JSON-LD `Person`/`LocalBusiness` válido (probar en Rich Results Test) y con nonce.
+- [x] `/robots.txt` responde 200 y referencia el sitemap.
+- [x] Banner sin colores hex hardcodeados (usa tokens).
+- [x] Barrera verde: `test` · `check --deploy` · `makemigrations --check --dry-run`.
+- [x] Si toca CSS → cache-buster `?v=21`.
 
 ## Plan de pruebas
 - **Automático:** suite completa; añadir `test_robots_txt` (200 + contiene "Sitemap"). El JSON-LD se
@@ -77,4 +77,22 @@ de contenido nuevo del usuario.
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a `backlog/6-finalizados/`.)_
+- **Focus-trap y retorno de foco:** Implementado un sistema de focus trap completo en el drawer móvil utilizando Vanilla JavaScript en [base.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/base.html), atrapando el ciclo de tabulación (Tab y Shift+Tab) dentro del panel cuando el menú está abierto y devolviendo automáticamente el foco al elemento `#navbarToggle` al cerrarse.
+- **skip-link:** Añadido un enlace de salto de accesibilidad ("Saltar al contenido principal") con la clase `.skip-link` al inicio del body en [base.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/base.html) que apunta directamente al elemento `<main id="main">`.
+- **prefers-reduced-motion:** Añadida una consulta `@media (prefers-reduced-motion: reduce)` en [estilos.css](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/static/css/estilos.css) para deshabilitar las transiciones de transformación en hovers y en la apertura de la barra lateral móvil.
+- **Análisis de contraste:** El ratio de contraste calculado del banner verde menta (`#166534` sobre `#f0fdf4`) es de **6.87:1**, cumpliendo con la especificación de contraste WCAG AA.
+- **Structured Data:** Añadidas las entidades de tipo `LocalBusiness` y `Person` en formato JSON-LD en [home.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/pages/home.html) con la información de Octavio Chamblas, área de servicio Concepción, Chile, materias y enlaces de contacto, inyectadas con su respectivo `nonce`.
+- **Robots.txt:** Confirmado el funcionamiento dinámico del archivo `robots.txt` que incluye la directiva `Sitemap` dinámica apuntando a la ruta absoluta `/sitemap.xml`.
+- **CSS Dead Code:** Eliminado el selector muerto `.detail-actions` en [estilos.css](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/static/css/estilos.css) que no se utilizaba en ninguna plantilla del frontend.
+- **Cache Buster:** Bump de la versión de caché a `?v=21` en [base.html](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/templates/base.html).
+- **Tests unitarios:** Se extendió el test `test_home_includes_canonical_og_url_and_structured_data` en [tests.py](file:///c:/Users/PC/Documents/Proyectos/Web/profeonline/apps/core/tests.py) para asegurar que valide las propiedades del JSON-LD expandido.
+
+### Auditoría y cierre (🏛️ Claude, 2ª IA — Antigravity construyó)
+- **Diff revisado:** focus-trap (con guard anti re-trigger, retorno de foco y trap Tab/Shift+Tab),
+  skip-link + `<main id="main">`, `prefers-reduced-motion`, tokens `--success-*`, JSON-LD
+  `LocalBusiness`+`Person` con nonce, robots.txt confirmado. Todo correcto.
+- **🐛 Regresión corregida por Claude:** Antigravity eliminó del `:root` el token
+  `--secondary-hover: #cbd5e1`, pero `.btn-secondary:hover` (estilos.css ~705) lo sigue usando →
+  el hover de todos los botones secundarios quedaba sin color. **Token restaurado.**
+- **Barrera:** CI verde (202 tests) sobre la rama; corrección es CSS puro (sin impacto en tests).
+- Cerrado y movido a `6-finalizados`.
