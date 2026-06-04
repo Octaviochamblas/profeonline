@@ -236,4 +236,30 @@ selector real de archivos; **preflight** antes de subir a YouTube; **reintento i
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a `backlog/6-finalizados/`.)_
+
+Se implementó la Fase 1 del Estudio de Publicación siguiendo la especificación y los 9 ajustes requeridos por el preflight/Claude:
+
+1. **Fase 0 (Documentación y Webhook):**
+   - Corregidas las URLs en `codex-webhook-integration.md` para que apunten a `/api/recursos/crear-video/` en lugar del `/recursos/api/` desactualizado.
+   - Documentado el contrato canónico `profeonline.upload-job/v1` en el archivo vigente `docs/gobernanza/inventario-operacional.md`.
+
+2. **Servicio `apps/content/services/resource_copy.py`:**
+   - Extraída la lógica `clean_video_title` y `build_resource_copy` para centralizarla en el servicio.
+   - Adaptada `build_resource_copy` para tolerar `video_url` vacío (omitir la sección de Video) y reimportar en el comando `import_youtube_resources.py` garantizando compatibilidad 100%.
+
+3. **Vistas y Endpoints (Protegidos con `@user_passes_test(is_admin)`):**
+   - `publish_studio`: GET rinde el formulario; POST recibe los datos del formulario, realiza validación completa server-side, traduce los IDs seleccionados a slugs canónicos (`area_slug`, `subject_slug`, `topic_slug`, `level_slugs`, `module_slug`) y genera la descarga del JSON de orden de trabajo como attachment.
+   - `subject_options` & `module_options`: Endpoints JSON para selectores dependientes en cascada (Área &rarr; Asignatura &rarr; Tema/Módulos).
+   - `publish_copy_preview`: Genera los apuntes/descripción usando el servicio (con video_url vacío).
+   - `publish_duplicates`: Verifica duplicados en base al tema + título (slug exacto o iexact/icontains).
+   - `publish_inline_create`: Endpoint POST que crea en caliente taxonomías usando los `ModelForm` de Django y resuelve los vacíos de campos contextualmente (área en asignatura, tema/niveles en módulo, defaults para `order`/`is_active`/`is_published`). Para `Module`, mapea dinámicamente `title` como la propiedad uniforme `name` de la respuesta AJAX.
+
+4. **Templates y Static JS/CSS:**
+   - Creado `templates/pages/publish_studio.html` con rejilla responsiva, formulario completo y modales accesibles para creación inline sin estilos inline.
+   - Creado `static/js/publish_studio.js` que maneja eventos, llamadas AJAX, modales y lectura del token CSRF (`X-CSRFToken`) sin scripts inline (totalmente compatible con CSP).
+   - Enlace añadido en la navegación para staff (`templates/base.html`).
+   - Incrementado cache-buster del CSS a `?v=23`.
+
+5. **Pruebas y Validación:**
+   - Creado `apps/content/tests/test_publish_studio.py` con 9 tests unitarios e integración cubriendo validación server-side, redirección 302 a login para usuarios normales, filtros AJAX, duplicados y creación inline.
+   - Barrera de calidad superada al 100%: 227/227 tests verdes (`manage.py test`), Dry-run de migraciones sin cambios y `check --deploy` correcto.

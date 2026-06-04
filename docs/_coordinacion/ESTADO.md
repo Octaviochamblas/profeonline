@@ -8,7 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🔨 Antigravity | feat/estudio-publicacion-fase1 | 2026-06-04 18:30 | 🔴 trabajando |
+| _libre_ | - | - | 🟢 sin lock |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
@@ -37,12 +37,10 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- 🔨 **Estudio de publicación (Fase 1)** — `backlog/2-arquitectura/estudio-publicacion-web.md`.
-  **Preflight 🧩 Codex ✅ (sin objeciones, 3 refinamientos integrados)** → listo para 🔨 Antigravity
-  (rama `feat/estudio-publicacion-fase1`). Página staff que arma
-  la orden de trabajo (`profeonline.upload-job/v1`) y la descarga como `.json`: selects dependientes
-  Área→Asignatura→Tema, creación inline, vista previa de copy, dedupe por título y aviso de incompleto.
-  **Sin migraciones, sin subir archivo, sin IA** (eso es Fase 2). Incluye corregir la URL del webhook en el doc.
+- 🔍 **Estudio de publicación (Fase 1)** — `backlog/4-auditoria/estudio-publicacion-web.md`.
+  **Construcción por 🔨 Antigravity completada (rama `feat/estudio-publicacion-fase1`)** &rarr; listo para auditoría por 🧩 Codex.
+  Página staff que arma la orden de trabajo (`profeonline.upload-job/v1`) y la descarga como `.json` con selectores dependientes, creación inline, vista previa de copy, dedupe y aviso de incompleto.
+  Barrera verde superada (227/227 tests OK, check --deploy OK, makemigrations check OK). Sin migraciones.
 
 ## Últimas entregas
 - 2026-06-04 — 🧩 Codex + 🏛️ Claude: **Preflight de "Estudio de publicación (Fase 1)" OK** (sin objeciones).

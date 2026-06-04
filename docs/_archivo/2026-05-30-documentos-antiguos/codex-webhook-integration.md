@@ -6,8 +6,8 @@ Esta especificación técnica detalla cómo configurar la automatización en **C
 
 ## 🎯 Especificación del EndPoint
 
-*   **URL del Webhook (Desarrollo):** `http://127.0.0.1:8000/recursos/api/recursos/crear-video/`
-*   **URL del Webhook (Producción):** `https://[tudominio]/recursos/api/recursos/crear-video/`
+*   **URL del Webhook (Desarrollo):** `http://127.0.0.1:8000/api/recursos/crear-video/`
+*   **URL del Webhook (Producción):** `https://[tudominio]/api/recursos/crear-video/`
 *   **Método HTTP:** `POST`
 *   **Content-Type:** `application/json`
 
@@ -82,7 +82,7 @@ Puedes entregar este script a Codex para validar la conexión y creación autom�
 ```python
 import requests
 
-webhook_url = "http://127.0.0.1:8000/recursos/api/recursos/crear-video/"
+webhook_url = "http://127.0.0.1:8000/api/recursos/crear-video/"
 headers = {
     "Content-Type": "application/json",
     "X-Api-Token": "tu_token_secreto_aqui"
