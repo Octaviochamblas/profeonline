@@ -437,6 +437,28 @@ class YouTubeWebhookSecurityTests(TestCase):
     def setUp(self):
         cache.clear()
         self.url = reverse("content:api_create_resource_from_video")
+        self.subject = Subject.objects.create(
+            name="Fisica",
+            slug="fisica",
+            is_active=True,
+        )
+        self.topic = Topic.objects.create(
+            name="Dinamica",
+            slug="dinamica",
+            subject=self.subject,
+            is_active=True,
+        )
+        self.other_subject = Subject.objects.create(
+            name="Quimica",
+            slug="quimica",
+            is_active=True,
+        )
+        self.other_topic = Topic.objects.create(
+            name="Estequiometria",
+            slug="estequiometria",
+            subject=self.other_subject,
+            is_active=True,
+        )
 
     @patch.dict(os.environ, {}, clear=True)
     def test_webhook_fails_closed_if_secret_token_missing(self):
@@ -487,6 +509,155 @@ class YouTubeWebhookSecurityTests(TestCase):
         resource = Resource.objects.get(pk=response.json()["resource_id"])
         self.assertEqual(resource.title, "Test Webhook Video")
         self.assertFalse(resource.is_published)
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_assigns_subject_topic_and_levels(self):
+        level = Level.objects.create(
+            name="Universitario",
+            slug="universitario",
+            is_active=True,
+        )
+
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Clase de dinamica", '
+                '"video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ", '
+                '"subject_slug": "fisica", '
+                '"topic_slug": "dinamica", '
+                '"level_slugs": ["universitario"], '
+                '"is_published": true}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 201)
+        resource = Resource.objects.get(pk=response.json()["resource_id"])
+        self.assertEqual(resource.subject, self.subject)
+        self.assertEqual(resource.topic, self.topic)
+        self.assertTrue(resource.is_published)
+        self.assertEqual(list(resource.levels.all()), [level])
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_rejects_topic_from_another_subject(self):
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Clase cruzada", '
+                '"video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ", '
+                '"subject_slug": "fisica", '
+                '"topic_slug": "estequiometria"}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["ok"])
+        self.assertEqual(
+            response.json()["error"],
+            "El tema indicado no existe o no pertenece a la asignatura indicada",
+        )
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_rejects_unknown_subject_slug(self):
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Clase desconocida", '
+                '"video_url": "https://youtube.com/watch?v=dQw4w9WgXcQ", '
+                '"subject_slug": "asignatura-inexistente"}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["ok"])
+        self.assertEqual(response.json()["error"], "La asignatura indicada no existe")
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_updates_existing_resource_topic(self):
+        resource = Resource.objects.create(
+            title="Titulo antiguo",
+            video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            subject=self.other_subject,
+            topic=self.other_topic,
+            is_published=False,
+        )
+
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Titulo nuevo", '
+                '"video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", '
+                '"subject_slug": "fisica", '
+                '"topic_slug": "dinamica", '
+                '"is_published": true}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["created"])
+        resource.refresh_from_db()
+        self.assertEqual(resource.title, "Titulo nuevo")
+        self.assertEqual(resource.subject, self.subject)
+        self.assertEqual(resource.topic, self.topic)
+        self.assertTrue(resource.is_published)
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_dedupes_by_youtube_id_across_url_formats(self):
+        resource = Resource.objects.create(
+            title="Titulo original",
+            video_url="https://youtu.be/dQw4w9WgXcQ",
+            is_published=True,
+        )
+
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Titulo reprocesado", '
+                '"video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", '
+                '"is_published": true}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["created"])
+        self.assertEqual(response.json()["resource_id"], resource.id)
+        self.assertEqual(Resource.objects.count(), 1)
+        resource.refresh_from_db()
+        self.assertEqual(resource.title, "Titulo reprocesado")
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_preserves_published_state_when_flag_omitted(self):
+        resource = Resource.objects.create(
+            title="Titulo publicado",
+            video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            is_published=True,
+        )
+
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Titulo actualizado", '
+                '"video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["created"])
+        resource.refresh_from_db()
+        self.assertEqual(resource.title, "Titulo actualizado")
+        # No se envió is_published: debe conservar el estado publicado previo.
+        self.assertTrue(resource.is_published)
 
     @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
     def test_webhook_fails_if_video_url_is_invalid(self):
