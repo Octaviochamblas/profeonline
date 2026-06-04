@@ -49,4 +49,5 @@ class HomeView(TemplateView):
         ).prefetch_related(
             "levels",
         ).order_by("-created_at", "title")[:3]
+        context["resource_count"] = Resource.objects.filter(is_published=True).count()
         return context

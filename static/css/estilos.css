@@ -251,6 +251,221 @@ a:hover {
     justify-content: flex-start;
 }
 
+/* ============================================================
+   Hero de marca (banda) — Home
+   ============================================================ */
+.hero-band {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    /* Rompe hacia los bordes de .content-wrapper (padding 2rem desktop) */
+    margin: -2rem -2rem 2rem;
+    padding: 3.25rem 2rem 3rem;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background:
+        radial-gradient(120% 120% at 80% -10%, rgba(245, 158, 11, 0.18), transparent 55%),
+        linear-gradient(135deg, var(--primary-hover) 0%, #0b3b37 52%, #0f172a 100%);
+    color: #ffffff;
+    text-align: center;
+}
+
+.hero-band__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.hero-band__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0.55;
+    will-change: transform;
+}
+
+.hero-band__blob--1 {
+    width: 360px;
+    height: 360px;
+    top: -120px;
+    left: -80px;
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.55), transparent 70%);
+    animation: hero-float 19s ease-in-out infinite;
+}
+
+.hero-band__blob--2 {
+    width: 300px;
+    height: 300px;
+    right: -90px;
+    bottom: -110px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.45), transparent 70%);
+    animation: hero-float 23s ease-in-out infinite reverse;
+}
+
+.hero-band__blob--3 {
+    width: 240px;
+    height: 240px;
+    left: 40%;
+    top: 30%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%);
+    animation: hero-float 27s ease-in-out infinite;
+}
+
+.hero-band__inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 1.1rem;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.hero-band__logo-wrapper {
+    display: inline-flex;
+    padding: 0.85rem 1.25rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+}
+
+.hero-band__logo {
+    display: block;
+    height: auto;
+    width: auto;
+    max-height: 96px;
+    max-width: min(100%, 300px);
+    object-fit: contain;
+}
+
+.hero-band__kicker {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--cta);
+}
+
+.hero-band__title {
+    margin: 0;
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    line-height: 1.15;
+    font-weight: 700;
+    color: #ffffff;
+    text-wrap: balance;
+}
+
+.hero-band__text {
+    margin: 0;
+    max-width: 56ch;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: var(--text-lg);
+}
+
+.hero-band__actions {
+    justify-content: center;
+    margin-top: 0.25rem;
+}
+
+/* WhatsApp legible sobre fondo oscuro */
+.hero-band__btn-ghost.btn.btn-whatsapp {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.hero-band__btn-ghost.btn.btn-whatsapp:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+.hero-stats {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 2rem;
+}
+
+.hero-stats__item {
+    display: grid;
+    justify-items: center;
+    gap: 0.15rem;
+    min-width: 90px;
+}
+
+.hero-stats__num {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-stats__label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.hero-band__chips {
+    justify-content: center;
+    margin-top: 0.25rem;
+}
+
+.hero-band__chip {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.hero-band__chip:hover {
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+}
+
+/* Animación de entrada escalonada */
+.hero-band--reveal .hero-band__logo-wrapper,
+.hero-band--reveal .hero-band__kicker,
+.hero-band--reveal .hero-band__title,
+.hero-band--reveal .hero-band__text,
+.hero-band--reveal .hero-band__actions,
+.hero-band--reveal .hero-stats,
+.hero-band--reveal .hero-band__chips {
+    animation: hero-reveal 0.6s ease both;
+}
+
+.hero-band--reveal .hero-band__logo-wrapper { animation-delay: 0.05s; }
+.hero-band--reveal .hero-band__kicker { animation-delay: 0.12s; }
+.hero-band--reveal .hero-band__title { animation-delay: 0.2s; }
+.hero-band--reveal .hero-band__text { animation-delay: 0.3s; }
+.hero-band--reveal .hero-band__actions { animation-delay: 0.4s; }
+.hero-band--reveal .hero-stats { animation-delay: 0.5s; }
+.hero-band--reveal .hero-band__chips { animation-delay: 0.58s; }
+
+@keyframes hero-reveal {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-float {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(24px, -18px) scale(1.08); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@media (max-width: 640px) {
+    .hero-band {
+        margin: -1.25rem -1.25rem 1.5rem;
+        padding: 2.25rem 1.25rem 2.25rem;
+    }
+
+    .hero-stats {
+        gap: 0.5rem 1.25rem;
+    }
+}
+
 .section-header {
     display: flex;
     flex-wrap: wrap;
