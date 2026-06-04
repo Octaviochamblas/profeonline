@@ -86,9 +86,8 @@ a:hover {
 }
 
 .site-header {
-    background: rgba(255, 255, 255, 0.85);
+    background: #ffffff;
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
 }
 
 .navbar {
@@ -857,7 +856,6 @@ form ul,
         gap: 1rem;
         padding: 1rem 1.25rem 2rem;
         margin-top: 0;
-        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
         transform: translateX(100%);
         transition: transform 0.28s ease;
         overflow-y: auto;
@@ -866,6 +864,7 @@ form ul,
 
     .navbar-menu.active {
         transform: translateX(0);
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
     }
 
     .navbar-menu__header {
@@ -3382,6 +3381,18 @@ a.home-link-card__title:hover {
 
 body.nav-open {
     overflow: hidden;
+}
+
+/* Con el menú abierto, el header (que contiene el drawer) debe quedar SOBRE el
+   overlay para que los enlaces del panel sean clicables. */
+body.nav-open .header-wrapper {
+    z-index: 1001;
+}
+
+/* El botón flotante de WhatsApp no debe estorbar mientras el menú está abierto. */
+body.nav-open .whatsapp-float {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* Botón flotante de WhatsApp (global) */
