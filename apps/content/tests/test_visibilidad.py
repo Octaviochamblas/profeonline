@@ -76,6 +76,20 @@ class TopicProgressCardTests(TestCase):
         # The number of queries should remain unchanged (O(1) respect to number of topics)
         self.assertEqual(base_queries, new_queries)
 
+    def test_subject_without_leveled_resources_is_visible(self):
+        # Regression: a subject whose resources have no level (or that has no
+        # resources at all) was dropped from the listing, hiding ALL its topics
+        # even though they exist and are active. Such a subject/topic must still
+        # be listed.
+        fisica = Subject.objects.create(name="Física Escolar", is_active=True)
+        Topic.objects.create(name="Sonido", subject=fisica, is_active=True)
+
+        response = self.client.get(reverse("content:topic_list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Física Escolar")
+        self.assertContains(response, "Sonido")
+
 
 class TopicDetailProgressTests(TestCase):
     def setUp(self):
