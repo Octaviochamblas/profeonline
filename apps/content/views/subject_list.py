@@ -32,7 +32,7 @@ class SubjectListView(ListView):
             # Filter subjects that contain resources belonging to this specific level
             level_subjects = Subject.objects.filter(
                 is_active=True,
-                resources__levels=level
+                levels=level
             ).distinct()
             if context["selected_area"]:
                 level_subjects = level_subjects.filter(area_id=context["selected_area"])
@@ -57,8 +57,7 @@ class SubjectListView(ListView):
         # creada, sin recursos asociados a un nivel todavía) deben verse igual,
         # en un grupo final, para no ocultarlas del listado.
         orphan_subjects = (
-            Subject.objects.filter(is_active=True)
-            .exclude(resources__levels__isnull=False)
+            Subject.objects.filter(is_active=True, levels__isnull=True)
             .distinct()
         )
         if context["selected_area"]:

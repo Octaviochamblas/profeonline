@@ -30,16 +30,14 @@ class LevelDetailView(DetailView):
         context["breadcrumbs"] = breadcrumbs
         context["subjects"] = Subject.objects.filter(
             is_active=True,
-            resources__levels=level,
-            resources__is_published=True,
+            levels=level,
         ).distinct().order_by("name")
 
-        # Query topics that have active/published resources in this level
+        # Temas asociados directamente a este nivel
         q = self.request.GET.get("q", "").strip()
         topics_qs = Topic.objects.filter(
             is_active=True,
-            resources__levels=level,
-            resources__is_published=True,
+            levels=level,
         ).distinct().select_related("subject")
 
         if q:

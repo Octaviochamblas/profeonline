@@ -73,7 +73,7 @@ class TopicListView(ListView):
         subject_level_order = {}
         for lvl in levels:
             for subject_id in (
-                Subject.objects.filter(is_active=True, resources__levels=lvl)
+                Subject.objects.filter(is_active=True, levels=lvl)
                 .values_list("id", flat=True)
                 .distinct()
             ):

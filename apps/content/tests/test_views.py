@@ -361,6 +361,7 @@ class SpanishUrlTests(TestCase):
             is_published=True,
         )
         self.resource.levels.add(self.level)
+        self.subject.levels.add(self.level)
 
     def test_public_content_urls_reverse_to_spanish_paths(self):
         self.assertEqual(reverse("content:resource_list"), "/recursos/")
@@ -975,6 +976,11 @@ class LevelDetailViewTests(TestCase):
 
         self.res2 = Resource.objects.create(title="Ficha 2", subject=self.subject, topic=self.topic2, is_published=True)
         self.res2.levels.add(self.level)
+
+        # El nivel ahora se asigna directamente a la asignatura y los temas.
+        self.subject.levels.add(self.level)
+        self.topic1.levels.add(self.level)
+        self.topic2.levels.add(self.level)
 
     def test_level_detail_context_and_regrouping(self):
         url = reverse("content:level_detail", args=[self.level.slug])
