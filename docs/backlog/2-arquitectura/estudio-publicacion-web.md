@@ -1,6 +1,6 @@
 # Estudio de publicación: página web asistida para preparar subidas de video
 
-- **Estado:** Handoff Ready (arquitectura) — **Fase 0 + Fase 1**
+- **Estado:** Handoff Ready (arquitectura) — **Fase 0 + Fase 1** · **Preflight 🧩 Codex ✅** (sin objeciones bloqueantes, 2026-06-04)
 - **Creado:** 2026-06-04 · **Handoff:** 2026-06-04 (🏛️ Claude)
 - **Prioridad:** P2 · **Cartera:** ingeniería
 - **Tipo:** producto · infraestructura
@@ -31,6 +31,23 @@
 - **CRUD existentes** = `CreateView` + ModelForm con redirect ([subject_create.py](apps/content/views/subject_create.py),
   topic_create, level_create, module_create). Slugs **auto** en `Model.save()` (verificado en
   [area.py:20-32](apps/content/models/area.py); mismo patrón en Subject/Topic/Resource).
+
+## 🟢 Refinamientos del preflight (🧩 Codex, 2026-06-04) — VINCULANTES
+Sin objeciones bloqueantes. **JSON server-side confirmado** (POST → `Content-Disposition: attachment`).
+Tres precisiones que el builder DEBE respetar:
+1. **`SubjectForm` no incluye `area`** ([content_forms.py](apps/content/forms/content_forms.py)): el
+   endpoint inline de **asignatura** debe recibir `area_id` y **setear `subject.area`** desde el área
+   seleccionada antes de `save()` (o usar un form inline propio con `area`).
+2. **`ModuleForm` no incluye `topic` ni `levels`** y `Module.subject` es **obligatorio**
+   ([module.py](apps/content/models/module.py)): el endpoint inline de **módulo** debe setear `subject`
+   (obligatorio) y, si aplica, `topic`/`levels` desde el contexto elegido tras validar el form.
+   `module_slug` sigue siendo **solo organizativo** (no va al webhook) → el módulo es **opcional** en
+   Fase 1; si complica, puede diferirse sin bloquear el resto.
+3. **NO cambiar la firma de `build_resource_copy(video, subject, topic)`** (reemplaza la "firma
+   sugerida" de la sección *Servicio* de más abajo): moverla al servicio **manteniendo la firma** y
+   reimportándola en `import_youtube_resources.py` (wrapper compatible). Para la vista previa sin URL,
+   construir `video = {"title": <titulo>, "video_url": ""}` y que la función **tolere `video_url` vacío**
+   (omite la sección `### Video`). Igual criterio para `clean_video_title`.
 
 ## Objetivo (una frase)
 Página interna (**solo staff**) que arma la orden de trabajo (`profeonline.upload-job/v1`) con

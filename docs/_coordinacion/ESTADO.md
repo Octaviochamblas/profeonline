@@ -37,13 +37,19 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- 🔨 **Estudio de publicación (Fase 1)** — `backlog/2-arquitectura/estudio-publicacion-web.md`. Ready
-  para Codex (preflight) → Antigravity (rama `feat/estudio-publicacion-fase1`). Página staff que arma
+- 🔨 **Estudio de publicación (Fase 1)** — `backlog/2-arquitectura/estudio-publicacion-web.md`.
+  **Preflight 🧩 Codex ✅ (sin objeciones, 3 refinamientos integrados)** → listo para 🔨 Antigravity
+  (rama `feat/estudio-publicacion-fase1`). Página staff que arma
   la orden de trabajo (`profeonline.upload-job/v1`) y la descarga como `.json`: selects dependientes
   Área→Asignatura→Tema, creación inline, vista previa de copy, dedupe por título y aviso de incompleto.
   **Sin migraciones, sin subir archivo, sin IA** (eso es Fase 2). Incluye corregir la URL del webhook en el doc.
 
 ## Últimas entregas
+- 2026-06-04 — 🧩 Codex + 🏛️ Claude: **Preflight de "Estudio de publicación (Fase 1)" OK** (sin objeciones).
+  3 refinamientos integrados al handoff: inline de asignatura setea `Subject.area`; inline de módulo setea
+  `subject` (+topic/levels) y `module_slug` es solo organizativo; mantener firma de `build_resource_copy`
+  (wrapper compatible, tolera `video_url` vacío). JSON server-side. **Listo para Antigravity.**
+- 2026-06-04 — 🏛️ Claude: **Handoff "Estudio de publicación (Fase 1)" mergeado a `main` (PR #54).**
 - 2026-06-04 — 🏛️ Claude + 🧑 Usuario: **Handoff "Estudio de publicación (Fase 1)" Ready.** Idea creada y
   avanzada `1-por-iniciar` → `2-arquitectura`. Planificación 🧑+🤖 refinada por 🧩 Codex (8 acotaciones
   integradas) y verificada contra el código (URL real `/api/recursos/crear-video/`, webhook sin
