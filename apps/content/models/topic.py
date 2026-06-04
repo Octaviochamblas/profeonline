@@ -25,6 +25,12 @@ class Topic(models.Model):
         verbose_name="método de ordenación de recursos",
     )
     is_active = models.BooleanField(default=True)
+    levels = models.ManyToManyField(
+        "content.Level",
+        blank=True,
+        related_name="topics",
+        verbose_name="niveles",
+    )
 
     class Meta:
         ordering = ["subject__name", "name"]

@@ -15,6 +15,12 @@ class Subject(models.Model):
     slug = models.SlugField(max_length=120, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
+    levels = models.ManyToManyField(
+        "content.Level",
+        blank=True,
+        related_name="subjects",
+        verbose_name="niveles",
+    )
 
     class Meta:
         ordering = ["name"]
