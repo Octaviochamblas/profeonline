@@ -49,6 +49,38 @@ Tres precisiones que el builder DEBE respetar:
    construir `video = {"title": <titulo>, "video_url": ""}` y que la función **tolere `video_url` vacío**
    (omite la sección `### Video`). Igual criterio para `clean_video_title`.
 
+## 🟠 Revisión del plan del builder (🏛️ Claude, 2026-06-04) — atender antes/durante construcción
+El plan de implementación de 🔨 Antigravity quedó **aprobado con ajustes**. Incorporar:
+
+**🔴 Corregir sí o sí (errores reales):**
+1. **`Module` usa `title`, no `name`** ([module.py:6](apps/content/models/module.py)): el endpoint inline
+   devuelve `{ok, id, name, slug}` uniforme → reventará para módulo. Resolver con
+   `label = getattr(obj, "name", None) or getattr(obj, "title", None)` (o devolver `title`).
+2. **CSRF en los POST AJAX**: `publish_inline_create` y el POST de `publish_studio` **no** son
+   `csrf_exempt` (a diferencia del webhook). El template necesita `{% csrf_token %}` y
+   `publish_studio.js` debe enviar el header `X-CSRFToken`, o darán **403**.
+3. **Ubicación del contrato `upload-job/v1`**: `codex-webhook-integration.md` vive en
+   `docs/_archivo/…` (carpeta **histórica**). Corregir la URL ahí (donde está el error), pero
+   **documentar el contrato canónico en un lugar vigente** (doc nuevo en `docs/` o
+   `docs/gobernanza/inventario-operacional.md`). No enterrar la fuente de verdad en `_archivo`.
+
+**🟡 Conviene afinar:**
+4. **Validación server-side, no solo JS**: el POST debe **rechazar** un job incompleto (sin
+   asignatura/tema/nivel, o playlist sin `skip_playlist`) también en el servidor. Agregar test
+   `test_publish_post_rejects_incomplete_job`.
+5. **Mapeo IDs→slugs en el POST**: dejar explícito que convierte `area_id`/`subject_id`/`topic_id`/
+   `level_ids` a `area_slug`/`subject_slug`/`topic_slug`/`level_slugs` (justifica el server-side).
+6. **`user_passes_test(is_admin)` redirige (302) a login** para usuario normal (no 403); ajustar la
+   expectativa del test (acepta 302).
+7. **CSS y CSP**: estilos en CSS **externo** (`estilos.css`) con cache-buster `?v=N`; **nada** de
+   `style=""`/`onclick=""` inline en los modales (rompe la CSP con nonce).
+
+**🟢 Menores:**
+8. **Enlace de navegación**: ubicar el archivo real del nav de staff (el plan usa placeholders) y
+   seguir el patrón de los CRUD existentes.
+9. **Consistencia de permisos**: `subject_options` queda `is_admin` pero reusa `topic_options`, hoy
+   **público**. No es fuga (los temas son públicos); anotarlo por si se homogeneíza.
+
 ## Objetivo (una frase)
 Página interna (**solo staff**) que arma la orden de trabajo (`profeonline.upload-job/v1`) con
 selectores dependientes, creación inline de taxonomía, vista previa de copy, detección de
