@@ -53,6 +53,35 @@ class SubjectListView(ListView):
                     "subjects": level_subjects
                 })
 
+        # Asignaturas activas que no aparecen en ningún nivel (p. ej. una recién
+        # creada, sin recursos asociados a un nivel todavía) deben verse igual,
+        # en un grupo final, para no ocultarlas del listado.
+        orphan_subjects = (
+            Subject.objects.filter(is_active=True)
+            .exclude(resources__levels__isnull=False)
+            .distinct()
+        )
+        if context["selected_area"]:
+            orphan_subjects = orphan_subjects.filter(area_id=context["selected_area"])
+        if normalized_query:
+            matched_ids = []
+            for subj in orphan_subjects:
+                name_norm = remove_accents(subj.name).lower()
+                desc_norm = remove_accents(subj.description or "").lower()
+                if normalized_query in name_norm or normalized_query in desc_norm:
+                    matched_ids.append(subj.id)
+            orphan_subjects = orphan_subjects.filter(id__in=matched_ids)
+        orphan_subjects = orphan_subjects.order_by("name")
+
+        if orphan_subjects.exists():
+            levels_data.append({
+                "level": {
+                    "name": "Otras asignaturas",
+                    "description": "Asignaturas sin recursos asociados a un nivel todavía.",
+                },
+                "subjects": orphan_subjects,
+            })
+
         context["levels_data"] = levels_data
         return context
 

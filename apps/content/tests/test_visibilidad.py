@@ -171,3 +171,17 @@ class TopicDetailProgressTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Hay 1 pregunta en borrador")
+
+
+class SubjectListVisibilityTests(TestCase):
+    def test_subject_without_leveled_resources_is_visible(self):
+        # Regresión: una asignatura sin recursos asociados a un nivel quedaba
+        # fuera de todos los grupos por nivel y no se mostraba. Debe aparecer
+        # en el grupo "Otras asignaturas".
+        Subject.objects.create(name="Astronomía Escolar", is_active=True)
+
+        response = self.client.get(reverse("content:subject_list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Astronomía Escolar")
+        self.assertContains(response, "Otras asignaturas")

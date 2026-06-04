@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Formulario de área | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Editor</p>
+            <h1>{% if form.instance.pk %}Editar área{% else %}Crear área{% endif %}</h1>
+        </div>
+    </div>
+</section>
+
+<form method="post" class="form-panel">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-actions">
+        <a href="{% url 'content:area_list' %}" class="btn btn-secondary">Volver a áreas</a>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+{% endblock %}

@@ -12,9 +12,15 @@
     <p class="page-hero__text">Explora nuestras áreas principales y descubre todos los ramos asociados.</p>
 </section>
 
+{% if user.is_superuser %}
+    <div class="form-actions" style="margin-bottom: 1.5rem;">
+        <a href="{% url 'content:area_create' %}" class="btn btn-secondary">Crear nueva área</a>
+    </div>
+{% endif %}
+
 <div class="home-card-grid">
     {% for area in areas %}
-        <a href="{% url 'content:area_detail' area.slug %}" class="home-link-card">
+        <div class="home-link-card">
             <span class="home-link-card__icon" aria-hidden="true">
                 {% if area.name == "Matemáticas" %}
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -26,7 +32,13 @@
                         <line x1="15" y1="16" x2="21" y2="16"></line>
                         <line x1="15" y1="20" x2="21" y2="20"></line>
                     </svg>
-                {% elif area.name == "Ciencias" %}
+                {% elif area.name == "Física" %}
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 9.75c0 4.4-4 8.25-4 8.25s-4-3.85-4-8.25A15.3 15.3 0 0 1 12 2z"></path>
+                        <path d="M2 12a15.3 15.3 0 0 1 9.75 4c4.4 0 8.25-4 8.25-4s-3.85-4-8.25-4A15.3 15.3 0 0 1 2 12z"></path>
+                    </svg>
+                {% elif area.name == "Química" or area.name == "Ciencias" %}
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 3h6M10 9h4M10 3v6l-4 8a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-4-8V3"></path>
                     </svg>
@@ -38,10 +50,16 @@
                 {% endif %}
             </span>
             <span class="home-link-card__body">
-                <span class="home-link-card__title">{{ area.name }}</span>
+                <a class="home-link-card__title" href="{% url 'content:area_detail' area.slug %}">{{ area.name }}</a>
                 <span class="home-link-card__text">{{ area.description|default:"Agrupa asignaturas y recursos relacionados." }}</span>
+                {% if user.is_superuser %}
+                    <div class="card-actions">
+                        <a class="action-edit" href="{% url 'content:area_update' area.pk %}">Editar</a>
+                        <a class="action-delete" href="{% url 'content:area_delete' area.pk %}">Eliminar</a>
+                    </div>
+                {% endif %}
             </span>
-        </a>
+        </div>
     {% empty %}
         <div class="empty-state empty-state--center empty-state--spacious panel-grid__span-full">
             <p>No hay áreas configuradas todavía.</p>

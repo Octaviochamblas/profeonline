@@ -5,7 +5,7 @@ from django.utils.text import slugify
 class Subject(models.Model):
     area = models.ForeignKey(
         "content.Area",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="subjects",
         verbose_name="área",
         null=True,

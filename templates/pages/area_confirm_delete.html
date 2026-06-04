@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar área | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="section-header">
+        <div>
+            <p class="page-hero__kicker">Confirmación</p>
+            <h1>Eliminar área</h1>
+        </div>
+    </div>
+</section>
+
+<form method="post" class="form-panel">
+    {% csrf_token %}
+    <p>¿Estás segura de que deseas eliminar el área <strong>{{ area.name }}</strong>?</p>
+    <p style="color: var(--muted);">Las asignaturas asociadas no se eliminarán: quedarán sin área.</p>
+    <div class="form-actions">
+        <a href="{% url 'content:area_list' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    </div>
+</form>
+{% endblock %}

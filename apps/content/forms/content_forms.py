@@ -1,7 +1,24 @@
 from django import forms
 
 from apps.core.forms import apply_form_classes
-from apps.content.models import Level, Subject, Topic
+from apps.content.models import Area, Level, Subject, Topic
+
+
+class AreaForm(forms.ModelForm):
+    class Meta:
+        model = Area
+        fields = ["name", "description", "order", "is_active"]
+        labels = {
+            "description": "Descripción",
+            "is_active": "Activa",
+        }
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 4}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        apply_form_classes(self)
 
 
 class SubjectForm(forms.ModelForm):
