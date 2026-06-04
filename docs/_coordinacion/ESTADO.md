@@ -37,8 +37,17 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
+- 🔨 **Estudio de publicación (Fase 1)** — `backlog/2-arquitectura/estudio-publicacion-web.md`. Ready
+  para Codex (preflight) → Antigravity (rama `feat/estudio-publicacion-fase1`). Página staff que arma
+  la orden de trabajo (`profeonline.upload-job/v1`) y la descarga como `.json`: selects dependientes
+  Área→Asignatura→Tema, creación inline, vista previa de copy, dedupe por título y aviso de incompleto.
+  **Sin migraciones, sin subir archivo, sin IA** (eso es Fase 2). Incluye corregir la URL del webhook en el doc.
 
 ## Últimas entregas
+- 2026-06-04 — 🏛️ Claude + 🧑 Usuario: **Handoff "Estudio de publicación (Fase 1)" Ready.** Idea creada y
+  avanzada `1-por-iniciar` → `2-arquitectura`. Planificación 🧑+🤖 refinada por 🧩 Codex (8 acotaciones
+  integradas) y verificada contra el código (URL real `/api/recursos/crear-video/`, webhook sin
+  `area_slug`/`module_slug`, `Level` M2M). Acotado a la web que genera el JSON; Fase 2 (cola/agente) aparte.
 - 2026-06-03 — 🏛️🔨 **Pulido técnico a11y/SEO CERRADO 🟢 (PR #46).** Antigravity construyó (focus-trap
   drawer, skip-link, reduced-motion, JSON-LD Person/LocalBusiness, tokens); Claude auditó (2ª IA) y
   corrigió una regresión (`--secondary-hover` borrado del `:root`). Tarjeta en `6-finalizados/`.
