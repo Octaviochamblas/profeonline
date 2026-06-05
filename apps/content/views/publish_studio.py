@@ -133,13 +133,12 @@ def publish_studio(request):
         playlist_title = request.POST.get("playlist_title", "").strip()
 
         playlist_id = ""
-        if playlist_id_raw:
-            playlist_id = extract_playlist_id(playlist_id_raw)
-            if not playlist_id:
-                errors["playlist_id"] = "El ID o URL de la lista de reproduccion no es valido."
-
-        if not skip_playlist and not playlist_id:
-            if "playlist_id" not in errors:
+        if not skip_playlist:
+            if playlist_id_raw:
+                playlist_id = extract_playlist_id(playlist_id_raw)
+                if not playlist_id:
+                    errors["playlist_id"] = "El ID o URL de la lista de reproduccion no es valido."
+            else:
                 errors["playlist_id"] = "Debe ingresar una playlist valida o marcar 'Subir sin playlist'."
 
         # 4. Thumbnail & copy
