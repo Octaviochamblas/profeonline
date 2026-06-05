@@ -263,18 +263,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (warningsBox) {
+            warningsBox.innerHTML = "";
+            const alertDiv = document.createElement("div");
+            const p = document.createElement("p");
+            const strong = document.createElement("strong");
             if (warnings.length > 0) {
-                let html = '<div class="alert alert--info"><p><strong>Orden de Trabajo Incompleta:</strong></p><ul>';
+                alertDiv.className = "alert alert--info";
+                strong.textContent = "Orden de Trabajo Incompleta:";
+                p.appendChild(strong);
+                alertDiv.appendChild(p);
+                const ul = document.createElement("ul");
                 warnings.forEach(w => {
-                    html += `<li>${w}</li>`;
+                    const li = document.createElement("li");
+                    li.textContent = w;
+                    ul.appendChild(li);
                 });
-                html += '</ul></div>';
-                warningsBox.innerHTML = html;
+                alertDiv.appendChild(ul);
                 if (downloadBtn) downloadBtn.disabled = true;
             } else {
-                warningsBox.innerHTML = '<div class="alert alert--success"><p><strong>✓ ¡Orden de trabajo lista para descargar!</strong></p></div>';
+                alertDiv.className = "alert alert--success";
+                strong.textContent = "✓ ¡Orden de trabajo lista para descargar!";
+                p.appendChild(strong);
+                alertDiv.appendChild(p);
                 if (downloadBtn) downloadBtn.disabled = false;
             }
+            warningsBox.appendChild(alertDiv);
         }
     }
 
