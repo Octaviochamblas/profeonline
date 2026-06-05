@@ -37,13 +37,14 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- 🔨 **Estudio de publicación (Fase 1) — SIMPLIFICADO** — `backlog/3-construccion/estudio-publicacion-web.md`.
-  🧑 pidió una versión más simple tras la QA; la tarjeta **vuelve a construcción** (rama `feat/estudio-publicacion-fase1`).
-  Recorte: elegir varios videos (por nombre) + Área/Asignatura/Tema/Módulo + Playlist + indicación → **orden de lote**
-  (`upload-batch/v1`). Quitar copy/duplicados/miniatura/privacidad; mantener selectores + creación inline. Sin migraciones.
-  Ver banner **"🔄 REVISIÓN"** al inicio de la tarjeta.
 
 ## Últimas entregas
+- 2026-06-05 — 🏛️🔨🧩 **"Estudio de publicación (Fase 1)" CERRADO 🟢.** Página staff (`/publicar/estudio/`) que
+  arma una **orden de lote** (`profeonline.upload-batch/v1`): selecciona varios videos (solo por nombre, no sube
+  contenido), Área/Asignatura/Tema/Módulo (con creación inline), playlist (enlace o crear nueva) e indicación libre;
+  Codex sube a YouTube y publica tal cual. Codex auditó (P2/P3 menores), QA del 🧑 detectó un bug al crear tema inline
+  (`resource_ordering_method`) que Claude corrigió + test. Mergeado a `main` (squash). Tarjeta en `6-finalizados/`.
+  **Sin migraciones.** Pendiente aparte: fix del seed `Matemática` (singular) y la Fase 2 (cola/agente).
 - 2026-06-04 — 🏛️ Claude + 🧑 Usuario: **"Estudio de publicación" SIMPLIFICADO (revisión pre-merge).** Tras la QA,
   Octavio pidió algo más simple: lote de videos (por nombre) + Área/Asignatura/Tema/Módulo + playlist + indicación
   libre; Codex hace título/descripción/miniatura/subida tal cual. Se quita copy/duplicados/miniatura/privacidad y se
