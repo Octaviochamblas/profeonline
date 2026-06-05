@@ -8,7 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🔨 Antigravity | feat/estudio-publicacion-fase1 | 2026-06-05 01:20 | 🔴 trabajando |
+| _libre_ | - | - | 🟢 sin lock |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
