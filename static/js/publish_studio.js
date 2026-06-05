@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileNamesInput = document.getElementById("file_names");
     const fileListPreview = document.getElementById("file-list-preview");
     const playlistInput = document.getElementById("playlist_id");
+    const playlistTitleInput = document.getElementById("playlist_title");
+    const createPlaylistCheckbox = document.getElementById("create_playlist");
+    const newPlaylistFields = document.getElementById("new-playlist-fields");
+    const newPlaylistTitleInput = document.getElementById("new_playlist_title");
     const downloadBtn = document.getElementById("btn-download-job");
     const warningsBox = document.getElementById("warnings-box");
 
@@ -94,7 +98,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function syncPlaylistMode() {
+        const shouldCreatePlaylist = createPlaylistCheckbox ? createPlaylistCheckbox.checked : false;
 
+        if (newPlaylistFields) {
+            newPlaylistFields.hidden = !shouldCreatePlaylist;
+        }
+
+        if (playlistInput) {
+            playlistInput.disabled = shouldCreatePlaylist;
+        }
+
+        if (playlistTitleInput) {
+            playlistTitleInput.disabled = shouldCreatePlaylist;
+        }
+    }
 
     // Cascade dropdowns
     if (areaSelect) {
@@ -168,6 +186,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (playlistInput) {
         playlistInput.addEventListener("input", validateForm);
     }
+    if (createPlaylistCheckbox) {
+        createPlaylistCheckbox.addEventListener("change", function () {
+            syncPlaylistMode();
+            validateForm();
+        });
+    }
+    if (newPlaylistTitleInput) {
+        newPlaylistTitleInput.addEventListener("input", validateForm);
+    }
 
     // Form Validation (visual warnings + download block)
     function validateForm() {
@@ -186,7 +213,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const topicId = topicSelect ? topicSelect.value : "";
         if (!topicId) warnings.push("Falta seleccionar el Tema.");
 
-
+        if (createPlaylistCheckbox && createPlaylistCheckbox.checked) {
+            const newPlaylistTitle = newPlaylistTitleInput ? newPlaylistTitleInput.value.trim() : "";
+            if (!newPlaylistTitle) warnings.push("Debes indicar el titulo de la nueva playlist.");
+        }
 
         // Render warnings
         if (warningsBox) {
@@ -321,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Object.keys(errData.errors).forEach(field => {
                         errData.errors[field].forEach(msg => {
                             const li = document.createElement("li");
-                            li.textContent = `${field}: ${msg}`;
+                            li.textContent = field + ": " + msg;
                             ul.appendChild(li);
                         });
                     });
@@ -333,5 +363,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Initial validation call
+    syncPlaylistMode();
     validateForm();
 });

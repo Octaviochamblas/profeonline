@@ -30,8 +30,6 @@ def publish_studio(request):
         if not files:
             errors["file_names"] = "Debe seleccionar al menos un archivo."
 
-        watch_folder = request.POST.get("watch_folder", "default").strip() or "default"
-
         # 2. Taxonomy slugs mapping
         area = None
         area_slug = None
@@ -99,11 +97,17 @@ def publish_studio(request):
                 errors["module_id"] = "Modulo seleccionado invalido."
 
         # 3. YouTube/Playlist
+        create_playlist = request.POST.get("create_playlist") == "true" or request.POST.get("create_playlist") == "on"
         playlist_id_raw = request.POST.get("playlist_id", "").strip()
         playlist_title = request.POST.get("playlist_title", "").strip()
+        new_playlist_title = request.POST.get("new_playlist_title", "").strip()
+        new_playlist_description = request.POST.get("new_playlist_description", "").strip()
 
         playlist_id = ""
-        if playlist_id_raw:
+        if create_playlist:
+            if not new_playlist_title:
+                errors["new_playlist_title"] = "El titulo de la nueva playlist es obligatorio."
+        elif playlist_id_raw:
             playlist_id = extract_playlist_id(playlist_id_raw)
             if not playlist_id:
                 errors["playlist_id"] = "El ID o URL de la lista de reproduccion no es valido."
@@ -122,7 +126,6 @@ def publish_studio(request):
         # Build output batch JSON
         batch_data = {
             "schema": "profeonline.upload-batch/v1",
-            "watch_folder": watch_folder,
             "files": files,
             "taxonomy": {
                 "area_slug": area_slug,
@@ -132,7 +135,12 @@ def publish_studio(request):
             },
             "youtube": {
                 "playlist_id": playlist_id,
-                "playlist_title": playlist_title
+                "playlist_title": "" if create_playlist else playlist_title,
+                "create_playlist": create_playlist,
+                "new_playlist": {
+                    "title": new_playlist_title,
+                    "description": new_playlist_description
+                } if create_playlist else None
             },
             "instructions": instructions
         }

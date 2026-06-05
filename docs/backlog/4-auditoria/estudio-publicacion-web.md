@@ -36,20 +36,20 @@ miniatura (paleta/texto/`class_label`), privacidad, alertas de duplicados y tít
 
 **MODIFICAR `publish_studio.py`:** GET solo con `areas`. POST: recibir `file_names` (lista, campo
 oculto JSON) + slugs de taxonomía (mismas validaciones de pertenencia ya escritas) + playlist
-opcional (`extract_playlist_id`) + `instructions`; validar **≥1 archivo** y **área+asig+tema**;
+existente opcional (`extract_playlist_id`) o solicitud de crear playlist nueva + `instructions`; validar **≥1 archivo** y **área+asig+tema**;
 devolver la **orden de lote** `.json` (attachment).
 
 **JS `publish_studio.js`:** leer `File.name`, listar con DOM API (sin `innerHTML` interpolado),
 poblar campo oculto `file_names`; **no** subir contenido (el `<input type=file>` queda sin `name`/
 fuera del POST). Mantener selects dependientes, modales inline (CSRF), `extract_playlist_id` y el
-bloqueo de descarga si faltan archivos/área/asignatura/tema.
+bloqueo de descarga si faltan archivos/área/asignatura/tema o si falta el título al crear una playlist nueva.
 
 **Contrato nuevo (batch) → documentar en `docs/gobernanza/inventario-operacional.md`** (reemplaza `upload-job/v1`):
 ```json
-{ "schema": "profeonline.upload-batch/v1", "watch_folder": "default",
+{ "schema": "profeonline.upload-batch/v1",
   "files": ["clase1.mp4", "clase2.mp4"],
   "taxonomy": {"area_slug": "...", "subject_slug": "...", "topic_slug": "...", "module_slug": null},
-  "youtube": {"playlist_id": "PLxxx", "playlist_title": "..."},
+  "youtube": {"playlist_id": "PLxxx", "playlist_title": "...", "create_playlist": false, "new_playlist": null},
   "instructions": "texto libre aplicado a todos los videos del lote" }
 ```
 
@@ -62,7 +62,7 @@ y `test_publish_batch_json_has_files_and_slugs`. Mantener permiso staff, `subjec
 1. **Híbrida**: el video NUNCA sube al servidor. La web solo arma la orden de trabajo (JSON).
 2. **MVP por etapas**: esta tarjeta es Fase 1 (sin IA server-side, sin cola, sin subir archivo).
 3. **`copy` (título/descripción/contenido) es la fuente de verdad**; el agente lo respeta en Fase 2.
-4. **Sin tokens/secretos en el JSON.** **Sin rutas absolutas** (solo `watch_folder` + `file_name`).
+4. **Sin tokens/secretos en el JSON.** **Sin rutas absolutas** (solo nombres de archivo en `files`).
 
 ## 🔴 Hechos verificados contra el código (vinculantes)
 - **URL real del webhook = `/api/recursos/crear-video/`** (prod `https://www.profeonline.cl/api/recursos/crear-video/`).
@@ -151,7 +151,7 @@ Documentar el esquema en `codex-webhook-integration.md` (junto con la correcció
 ```json
 {
   "schema": "profeonline.upload-job/v1",
-  "file": { "watch_folder": "default", "file_name": "fisica-sonido.mp4" },
+  "file": { "file_name": "fisica-sonido.mp4" },
   "youtube": { "privacy": "public", "playlist_id": "PLxxxx", "playlist_title": "Física", "skip_playlist": false },
   "taxonomy": { "area_slug": "fisica", "subject_slug": "fisica-escolar", "topic_slug": "sonido",
                 "module_slug": null, "level_slugs": ["mediapreuniversitario"] },
@@ -199,7 +199,7 @@ Documentar el esquema en `codex-webhook-integration.md` (junto con la correcció
 
 ### Template (`templates/pages/publish_studio.html`)
 - Formulario con: **archivo** (`<input type=file>` solo para capturar `file_name`; el archivo **no**
-  se sube) + `watch_folder` (select; en Fase 1 solo `"default"`); **Área→Asignatura→Tema** (selects
+  se sube); **Área→Asignatura→Tema** (selects
   dependientes vía AJAX) + **Módulo** opcional; **Niveles** (checkbox múltiple); **privacidad**;
   **playlist** (campo link/ID + casilla "subir sin playlist") ; **paleta** + **texto miniatura** +
   **class_label** + **ai_panel_instructions**; **copy** (título/descripción/`content_md` editable con
@@ -252,7 +252,7 @@ Documentar el esquema en `codex-webhook-integration.md` (junto con la correcció
 ## Riesgos / rollback
 - **Mover `clean_video_title`/`build_resource_copy`** podría romper el comando → mitigado
   reimportándolas desde el servicio (los tests de `import_youtube_resources` deben seguir verdes).
-- **Límite del navegador** (sin ruta absoluta) → `watch_folder` + `file_name`; el archivo lo resuelve el agente (Fase 2).
+- **Límite del navegador** (sin ruta absoluta) → solo `file_name`; el archivo lo resuelve el agente (Fase 2).
 - **Duplicados imperfectos en Fase 1** (sin estado de archivos) → solo título/slug en el tema; el
   dedupe por archivo y por ID de YouTube llega en Fase 2 + el webhook (red de seguridad final).
 - **Rollback**: Fase 1 es **aditiva** (vistas/rutas/JS/servicio nuevos; sin migraciones). Revertir =
@@ -289,7 +289,7 @@ Se implementó el Estudio de Publicación (Versión Simplificada - Batch) en la 
 1. **Esquema de Lote `profeonline.upload-batch/v1`:**
    - Se removió por completo el esquema complejo individual y se implementó la orden de lote para múltiples videos.
    - El contrato canónico se documentó en `docs/gobernanza/inventario-operacional.md`.
-   - Se agregaron las claves `schema`, `watch_folder`, `files` (lista de nombres), `taxonomy` (slugs mapeados), `youtube` (`playlist_id` y `playlist_title`), e `instructions` en el JSON descargable.
+   - Se agregaron las claves `schema`, `files` (lista de nombres), `taxonomy` (slugs mapeados), `youtube` (`playlist_id`, `playlist_title`, `create_playlist` y `new_playlist`), e `instructions` en el JSON descargable.
 
 2. **Limpieza de Vistas Obsoletas:**
    - Se eliminaron las vistas `publish_copy_preview.py` y `publish_duplicates.py`.
@@ -297,7 +297,7 @@ Se implementó el Estudio de Publicación (Versión Simplificada - Batch) en la 
 
 3. **Vista de Lote y Validaciones en `publish_studio.py`:**
    - El método `POST` implementa un parseo defensivo robusto para `file_names` con try-except atrapando `json.JSONDecodeError`, `TypeError` y `ValueError` retornando un `HttpResponse` de estado 400 en caso de malformación o de no ser una lista de strings.
-   - La propiedad `watch_folder` se normaliza cayendo en el default `"default"` si viene vacía o no es provista.
+   - La orden descargable omite la carpeta vigilada; el agente local resuelve la carpeta base por su propia configuración.
    - Se valida la pertenencia taxonómica (Área activa &rarr; Asignatura activa &rarr; Tema activo) y el estado publicado del módulo opcional.
    - La playlist se valida y normaliza de forma opcional (si viene vacía se asume sin playlist y no genera error).
 
@@ -307,6 +307,6 @@ Se implementó el Estudio de Publicación (Versión Simplificada - Batch) en la 
    - La playlist vacía se trata como "sin playlist" directamente sin checkboxes innecesarios como `skip_playlist`.
 
 5. **Pruebas y Verificaciones:**
-   - Rediseñado `apps/content/tests/test_publish_studio.py` sumando cobertura para el JSON batch (`profeonline.upload-batch/v1`), exclusión de archivos/taxonomía, inconsistencias taxonómicas, entidades inactivas, y las nuevas pruebas de parseo defensivo (`test_publish_post_malformed_filenames_rejected`, `test_publish_post_non_list_filenames_rejected`, `test_publish_post_watch_folder_default_fallback`).
+   - Rediseñado `apps/content/tests/test_publish_studio.py` sumando cobertura para el JSON batch (`profeonline.upload-batch/v1`), exclusión de archivos/taxonomía, inconsistencias taxonómicas, entidades inactivas, parseo defensivo y creación de playlist nueva.
    - Todos los tests pasaron exitosamente (14 en la suite local del estudio, 232/232 en total).
    - Verificados checks estáticos: `makemigrations --check --dry-run` (sin cambios), `check --deploy` (OK) y `node --check static/js/publish_studio.js` (OK).

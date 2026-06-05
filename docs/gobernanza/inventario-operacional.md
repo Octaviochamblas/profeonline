@@ -83,7 +83,6 @@ Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script lo
 ```json
 {
   "schema": "profeonline.upload-batch/v1",
-  "watch_folder": "default",
   "files": [
     "clase1.mp4",
     "clase2.mp4"
@@ -96,12 +95,17 @@ Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script lo
   },
   "youtube": {
     "playlist_id": "PLxxxx",
-    "playlist_title": "Física"
+    "playlist_title": "Fisica",
+    "create_playlist": false,
+    "new_playlist": null
   },
   "instructions": "texto libre aplicado a todos los videos del lote"
 }
 ```
 
 *   `taxonomy.module_slug`: Opcional (puede ser `null`).
-*   `youtube.playlist_id`: Requerido a menos que se configure vacío.
+*   `files`: Nombres de archivos seleccionados localmente. No contiene rutas absolutas ni sube contenido de video al servidor.
+*   `youtube.playlist_id`: ID normalizado de una playlist existente. La UI acepta un enlace completo de YouTube o el ID directo.
+*   `youtube.create_playlist`: Si es `true`, el agente local debe crear una playlist nueva en YouTube antes de agregar los videos.
+*   `youtube.new_playlist`: `null` cuando se usa una playlist existente. Si `create_playlist` es `true`, contiene `title` obligatorio y `description` opcional.
 *   `instructions`: Texto libre opcional.
