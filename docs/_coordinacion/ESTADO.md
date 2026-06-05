@@ -37,12 +37,18 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- 🔍 **Estudio de publicación (Fase 1)** — `backlog/4-auditoria/estudio-publicacion-web.md`.
-  **Construcción por 🔨 Antigravity completada (rama `feat/estudio-publicacion-fase1`)** &rarr; listo para auditoría por 🧩 Codex.
-  Página staff que arma la orden de trabajo (`profeonline.upload-job/v1`) y la descarga como `.json` con selectores dependientes, creación inline, vista previa de copy, dedupe y aviso de incompleto.
-  Barrera verde superada (227/227 tests OK, check --deploy OK, makemigrations check OK). Sin migraciones.
+- 🔨 **Estudio de publicación (Fase 1) — SIMPLIFICADO** — `backlog/3-construccion/estudio-publicacion-web.md`.
+  🧑 pidió una versión más simple tras la QA; la tarjeta **vuelve a construcción** (rama `feat/estudio-publicacion-fase1`).
+  Recorte: elegir varios videos (por nombre) + Área/Asignatura/Tema/Módulo + Playlist + indicación → **orden de lote**
+  (`upload-batch/v1`). Quitar copy/duplicados/miniatura/privacidad; mantener selectores + creación inline. Sin migraciones.
+  Ver banner **"🔄 REVISIÓN"** al inicio de la tarjeta.
 
 ## Últimas entregas
+- 2026-06-04 — 🏛️ Claude + 🧑 Usuario: **"Estudio de publicación" SIMPLIFICADO (revisión pre-merge).** Tras la QA,
+  Octavio pidió algo más simple: lote de videos (por nombre) + Área/Asignatura/Tema/Módulo + playlist + indicación
+  libre; Codex hace título/descripción/miniatura/subida tal cual. Se quita copy/duplicados/miniatura/privacidad y se
+  agrega selección múltiple de archivos. Tarjeta `4-auditoria` → `3-construccion` para recorte por 🔨 Antigravity.
+  Contrato pasa a `upload-batch/v1`.
 - 2026-06-04 — 🧩 Codex + 🏛️ Claude: **Preflight de "Estudio de publicación (Fase 1)" OK** (sin objeciones).
   3 refinamientos integrados al handoff: inline de asignatura setea `Subject.area`; inline de módulo setea
   `subject` (+topic/levels) y `module_slug` es solo organizativo; mantener firma de `build_resource_copy`

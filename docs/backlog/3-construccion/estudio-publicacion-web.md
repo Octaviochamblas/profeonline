@@ -11,7 +11,54 @@
 > (Fase 0) + la **página web que genera el JSON** (Fase 1). **Fase 2** (cola + agente + playlists +
 > preflight server-side + reseña IA) va en una tarjeta separada para mantener el diff acotado.
 
-## Decisiones cerradas (🧑 + 🏛️)
+## 🔄 REVISIÓN 2026-06-04 — SIMPLIFICACIÓN (SUPERSEDE lo de abajo)
+🧑 Octavio pidió una versión **mucho más simple** tras ver la página construida. **Esta sección
+manda**; lo de más abajo (Objetivo/Propuesta/Contrato `upload-job/v1`/criterios) queda **obsoleto**
+salvo lo que se reutilice. La tarjeta vuelve a `3-construccion/` para que 🔨 Antigravity **recorte**
+la implementación en la **misma rama** `feat/estudio-publicacion-fase1`. **Sin migraciones.**
+
+**Idea:** elegir varios videos (por nombre), elegir solo **Área/Asignatura/Tema/Módulo** + **Playlist**
++ una **indicación libre**, y descargar **una orden de lote**. Codex hace el resto tal cual
+(título, descripción, miniatura, subida y publicación por el webhook) por **cada** archivo.
+
+**Decisiones 🧑:** (1) archivos = `<input type=file multiple>` que captura **solo nombres** (no sube
+contenido); (2) **mantener** creación inline `+ Crear`; (3) **misma config para todo el lote**;
+(4) **sin niveles** en la UI (puede heredar de `Topic.levels`); (5) **sin** privacidad, miniatura,
+copy en la web, duplicados ni título por video (lo hace Codex).
+
+**ELIMINAR:** vistas `publish_copy_preview.py` y `publish_duplicates.py` (+ sus rutas en
+`publish_urls.py`, exports en `views/__init__.py` y sus tests); en template/JS: secciones de copy,
+miniatura (paleta/texto/`class_label`), privacidad, alertas de duplicados y título por recurso.
+
+**MANTENER:** `subject_options`/`module_options`, `topic_options`, `publish_inline_create` (con CSRF
++ `name = name or title`), `youtube_utils.extract_playlist_id`, `resource_copy.py` (lo usa el comando
+`import_youtube_resources`), y el enlace de nav en `base.html`.
+
+**MODIFICAR `publish_studio.py`:** GET solo con `areas`. POST: recibir `file_names` (lista, campo
+oculto JSON) + slugs de taxonomía (mismas validaciones de pertenencia ya escritas) + playlist
+opcional (`extract_playlist_id`) + `instructions`; validar **≥1 archivo** y **área+asig+tema**;
+devolver la **orden de lote** `.json` (attachment).
+
+**JS `publish_studio.js`:** leer `File.name`, listar con DOM API (sin `innerHTML` interpolado),
+poblar campo oculto `file_names`; **no** subir contenido (el `<input type=file>` queda sin `name`/
+fuera del POST). Mantener selects dependientes, modales inline (CSRF), `extract_playlist_id` y el
+bloqueo de descarga si faltan archivos/área/asignatura/tema.
+
+**Contrato nuevo (batch) → documentar en `docs/gobernanza/inventario-operacional.md`** (reemplaza `upload-job/v1`):
+```json
+{ "schema": "profeonline.upload-batch/v1", "watch_folder": "default",
+  "files": ["clase1.mp4", "clase2.mp4"],
+  "taxonomy": {"area_slug": "...", "subject_slug": "...", "topic_slug": "...", "module_slug": null},
+  "youtube": {"playlist_id": "PLxxx", "playlist_title": "..."},
+  "instructions": "texto libre aplicado a todos los videos del lote" }
+```
+
+**Tests:** quitar copy-preview y duplicados; agregar `test_publish_batch_requires_files_and_taxonomy`
+y `test_publish_batch_json_has_files_and_slugs`. Mantener permiso staff, `subject_options`, inline-create.
+
+---
+
+## Decisiones cerradas (🧑 + 🏛️)  ·  ⚠️ histórico (versión compleja, ver REVISIÓN arriba)
 1. **Híbrida**: el video NUNCA sube al servidor. La web solo arma la orden de trabajo (JSON).
 2. **MVP por etapas**: esta tarjeta es Fase 1 (sin IA server-side, sin cola, sin subir archivo).
 3. **`copy` (título/descripción/contenido) es la fuente de verdad**; el agente lo respeta en Fase 2.
