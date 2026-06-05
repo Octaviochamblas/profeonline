@@ -76,7 +76,7 @@ Resumen; índice y plantillas en [`../auditorias/README.md`](../auditorias/READM
 | Cobertura de tests | Cada PR | 🤖 |
 | Revisión de migraciones | Cada migración | 🏛️ |
 
-## 6. Contrato de Orden de Trabajo (Upload Job V1)
+## 6. Contrato de Orden de Lote (Upload Batch V1)
 
 Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script local de Codex para procesar e iniciar la publicación de un lote:
 
