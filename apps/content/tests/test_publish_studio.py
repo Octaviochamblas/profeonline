@@ -112,6 +112,26 @@ class PublishStudioTests(TestCase):
         self.assertFalse(data["ok"])
         self.assertIn("name", data["errors"])
 
+    def test_inline_create_topic_injects_default_ordering(self):
+        # El modal de tema no envía resource_ordering_method; el endpoint debe
+        # inyectar el default del modelo ("level") para que no falle la creación.
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_inline_create", args=["topic"])
+
+        response = self.client.post(url, {
+            "subject": self.subject.id,
+            "name": "Ondas y Sonido",
+            "description": "Intro a ondas",
+        })
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertTrue(data["ok"])
+        self.assertEqual(data["slug"], "ondas-y-sonido")
+
+        topic = Topic.objects.get(name="Ondas y Sonido")
+        self.assertEqual(topic.subject, self.subject)
+        self.assertEqual(topic.resource_ordering_method, "level")
+
     def test_inline_create_module_returns_json_with_title_mapped_to_name(self):
         self.client.login(username="admin", password="adminpassword")
         url = reverse("content:publish_inline_create", args=["module"])

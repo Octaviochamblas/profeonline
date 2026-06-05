@@ -16,6 +16,10 @@ def publish_inline_create(request, entity_type):
         post_data["is_active"] = "true"
     if "is_published" not in post_data:
         post_data["is_published"] = "true"
+    # Topic.resource_ordering_method es obligatorio en TopicForm (modelo default="level");
+    # el modal inline no lo pide, así que inyectamos el default del modelo.
+    if "resource_ordering_method" not in post_data or not post_data["resource_ordering_method"]:
+        post_data["resource_ordering_method"] = "level"
 
     if entity_type == "area":
         form = AreaForm(post_data)
