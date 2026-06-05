@@ -88,12 +88,23 @@ def create_resource_from_video(request):
     level_slugs = data.get("level_slugs", [])
     is_published_provided = "is_published" in data
     is_published = data.get("is_published", False)
+    order_provided = "order" in data
+    resource_order = 0
 
     if not title or not video_url:
         return JsonResponse(
             {"ok": False, "error": "Faltan parametros requeridos: title y video_url"},
             status=400,
         )
+
+    if order_provided:
+        try:
+            resource_order = int(data.get("order") or 0)
+        except (TypeError, ValueError):
+            return JsonResponse(
+                {"ok": False, "error": "El orden del recurso debe ser un numero entero"},
+                status=400,
+            )
 
     from apps.content.views.resource_detail import get_youtube_id
     youtube_id = get_youtube_id(video_url)
@@ -155,6 +166,7 @@ def create_resource_from_video(request):
             subject=subject,
             topic=topic,
             is_published=is_published,
+            order=resource_order,
         )
         resource.save()
     else:
@@ -171,6 +183,8 @@ def create_resource_from_video(request):
         # para no despublicar recursos al re-procesar una subida.
         if is_published_provided:
             resource.is_published = is_published
+        if order_provided:
+            resource.order = resource_order
         resource.save()
 
     if level_slugs:

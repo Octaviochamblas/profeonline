@@ -610,6 +610,31 @@ class YouTubeWebhookSecurityTests(TestCase):
         self.assertTrue(resource.is_published)
 
     @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
+    def test_webhook_updates_existing_resource_order(self):
+        resource = Resource.objects.create(
+            title="Titulo antiguo",
+            video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            order=0,
+            is_published=True,
+        )
+
+        response = self.client.post(
+            self.url,
+            data=(
+                '{"title": "Titulo nuevo", '
+                '"video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", '
+                '"order": 3030}'
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="my-secret-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["created"])
+        resource.refresh_from_db()
+        self.assertEqual(resource.order, 3030)
+
+    @patch.dict(os.environ, {"API_SECRET_TOKEN": "my-secret-token"})
     def test_webhook_dedupes_by_youtube_id_across_url_formats(self):
         resource = Resource.objects.create(
             title="Titulo original",
@@ -854,6 +879,45 @@ class TopicSlugFallbackTemplateTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.topic.name)
         self.assertNotContains(response, "/temas/None/")
+
+
+class SubjectDetailResourceOrderingTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Calculo III", is_active=True)
+        self.ordered_late = Resource.objects.create(
+            title="Calculo III 5.1 | Integrales dobles",
+            subject=self.subject,
+            order=50100,
+            is_published=True,
+        )
+        self.ordered_early = Resource.objects.create(
+            title="Calculo III 2.01 | Derivadas parciales",
+            subject=self.subject,
+            order=20100,
+            is_published=True,
+        )
+        self.unordered = Resource.objects.create(
+            title="Calculo III sin numeracion",
+            subject=self.subject,
+            order=0,
+            is_published=True,
+        )
+
+    def test_subject_detail_orders_resources_by_manual_order_before_title(self):
+        response = self.client.get(
+            reverse("content:subject_detail", args=[self.subject.slug])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        resources = list(response.context["resources"])
+        self.assertEqual(
+            [resource.title for resource in resources],
+            [
+                self.ordered_early.title,
+                self.ordered_late.title,
+                self.unordered.title,
+            ],
+        )
 
 
 class TopicListViewPaginationTests(TestCase):

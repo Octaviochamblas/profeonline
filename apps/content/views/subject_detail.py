@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.views.generic import DetailView
 
 from apps.content.models import Level, Resource, Subject, Topic
+from apps.content.services.resource_ordering import order_resources_by_manual_order
 from apps.content.views._seo import breadcrumb_schema, build_breadcrumbs
 
 
@@ -37,12 +38,12 @@ class SubjectDetailView(DetailView):
         resources_qs = Resource.objects.filter(
             subject=subject,
             is_published=True,
-        ).select_related("topic").prefetch_related("levels").order_by("title")
+        ).select_related("topic").prefetch_related("levels")
         if q:
             resources_qs = resources_qs.filter(
                 Q(title__icontains=q) | Q(description__icontains=q)
             )
-        context["resources"] = resources_qs
+        context["resources"] = order_resources_by_manual_order(resources_qs)
 
         # Active topics for this subject
         topics = list(Topic.objects.filter(
