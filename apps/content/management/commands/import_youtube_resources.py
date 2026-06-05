@@ -10,17 +10,11 @@ from django.db import transaction
 from django.urls import reverse
 
 from apps.content.models import Area, Level, Resource, Subject, Topic
+from apps.content.services.youtube_utils import extract_playlist_id
 
 
 YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3"
 
-
-def extract_playlist_id(value):
-    parsed = urlparse(value)
-    query = parse_qs(parsed.query)
-    if query.get("list"):
-        return query["list"][0]
-    return value.strip()
 
 
 def extract_video_id(value):

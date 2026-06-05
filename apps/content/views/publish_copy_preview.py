@@ -14,10 +14,13 @@ def publish_copy_preview(request):
         return HttpResponseBadRequest("Faltan parametros requeridos: title, subject_id, topic_id")
 
     try:
-        subject = Subject.objects.get(id=subject_id)
-        topic = Topic.objects.get(id=topic_id)
+        subject = Subject.objects.get(id=subject_id, is_active=True)
+        topic = Topic.objects.get(id=topic_id, is_active=True)
     except (Subject.DoesNotExist, Topic.DoesNotExist, ValueError):
-        return HttpResponseBadRequest("Asignatura o tema no encontrado")
+        return HttpResponseBadRequest("Asignatura o tema no encontrado o inactivo")
+
+    if topic.subject_id != subject.id:
+        return HttpResponseBadRequest("El tema no pertenece a la asignatura especificada.")
 
     video = {"title": title, "video_url": ""}
     description, content = build_resource_copy(video, subject, topic)

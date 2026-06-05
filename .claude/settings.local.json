@@ -79,48 +79,5 @@
       "Bash(sort -t: -k2)",
       "Bash(uniq -c -f1)"
     ]
-  },
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "shell": "powershell",
-            "timeout": 15,
-            "command": "$out=@(); $out+=\"== ARRANQUE ProfeOnline (protocolo barato de lectura) ==\"; $out+=\"1) Estado:   docs/_coordinacion/ESTADO.md\"; $rep=Get-ChildItem docs/reportes-sesion/*.md -ErrorAction SilentlyContinue | Where-Object { $_.Name -notlike \"_*\" } | Sort-Object Name -Descending | Select-Object -First 1; if($rep){ $out+=\"2) Reporte:  docs/reportes-sesion/$($rep.Name)\" }; $cards=Get-ChildItem docs/backlog/2-arquitectura,docs/backlog/3-construccion,docs/backlog/4-auditoria,docs/backlog/5-cierre -Filter *.md -ErrorAction SilentlyContinue | Where-Object { $_.Name -notlike \"_*\" }; if($cards){ $out+=\"3) Tarjeta(s) activa(s):\"; foreach($c in $cards){ $out+=\"   - $($c.Directory.Name)/$($c.Name)\" } } else { $out+=\"3) Sin tarjetas activas.\" }; $out -join \"`n\""
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "shell": "powershell",
-            "if": "Bash(git push*)",
-            "statusMessage": "guardrail: revisando git push…",
-            "timeout": 15,
-            "command": "$j=[Console]::In.ReadToEnd()|ConvertFrom-Json; $cmd=$j.tool_input.command; if($cmd -match \"git\\s+push\" -and $cmd -match \"\\bmain\\b\"){ [Console]::Error.WriteLine(\"BLOQUEADO: no hagas push directo a main. Usa rama + PR (gobernanza ProfeOnline).\"); exit 2 }"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "shell": "powershell",
-            "statusMessage": "py_compile del archivo editado…",
-            "timeout": 30,
-            "command": "$j=[Console]::In.ReadToEnd()|ConvertFrom-Json; $f=$j.tool_input.file_path; if($f -like \"*.py\"){ & .venv\\Scripts\\python.exe -m py_compile $f; if($LASTEXITCODE -ne 0){ exit 2 } }"
-          }
-        ]
-      }
-    ]
   }
 }

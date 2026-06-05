@@ -255,3 +255,248 @@ class PublishStudioTests(TestCase):
         self.assertEqual(job["taxonomy"]["level_slugs"], [self.level.slug])
         self.assertEqual(job["thumbnail"]["main_text"], "Texto miniatura")
         self.assertEqual(job["copy"]["title"], "Suma de Vectores")
+
+    def test_publish_post_taxonomy_inconsistency_rejected(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
+
+        # Subject of another area, topic of another subject
+        other_area = Area.objects.create(name="Matemática", is_active=True)
+        other_subject = Subject.objects.create(name="Álgebra", area=other_area, is_active=True)
+        other_topic = Topic.objects.create(name="Ecuaciones", subject=other_subject, is_active=True)
+
+        base_payload = {
+            "file_name": "video.mp4",
+            "watch_folder": "default",
+            "area_id": self.area.id,
+            "level_ids": [self.level.id],
+            "privacy": "public",
+            "skip_playlist": "on",
+            "palette": "azul-profeonline",
+            "main_text": "Texto miniatura",
+            "title": "Suma de Vectores",
+            "description": "Aprende a sumar vectores",
+            "content_md": "### Contenido",
+        }
+
+        # Case 1: Subject does not belong to Area
+        payload = base_payload.copy()
+        payload["subject_id"] = other_subject.id
+        payload["topic_id"] = self.topic.id
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("errors", response.context)
+        self.assertIn("subject_id", response.context["errors"])
+        self.assertEqual(
+            response.context["errors"]["subject_id"],
+            "La asignatura no pertenece al area seleccionada."
+        )
+
+        # Case 2: Topic does not belong to Subject
+        payload = base_payload.copy()
+        payload["subject_id"] = self.subject.id
+        payload["topic_id"] = other_topic.id
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("errors", response.context)
+        self.assertIn("topic_id", response.context["errors"])
+        self.assertEqual(
+            response.context["errors"]["topic_id"],
+            "El tema no pertenece a la asignatura seleccionada."
+        )
+
+    def test_publish_post_inactive_entities_rejected(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
+
+        # Inactive Area, Subject, Topic, Level
+        inactive_area = Area.objects.create(name="Área Inactiva", is_active=False)
+        inactive_subject = Subject.objects.create(name="Sub Inactiva", area=self.area, is_active=False)
+        inactive_topic = Topic.objects.create(name="Tema Inactivo", subject=self.subject, is_active=False)
+        inactive_level = Level.objects.create(name="Nivel Inactivo", is_active=False)
+
+        payload = {
+            "file_name": "video.mp4",
+            "area_id": inactive_area.id,
+            "subject_id": inactive_subject.id,
+            "topic_id": inactive_topic.id,
+            "level_ids": [inactive_level.id],
+            "privacy": "public",
+            "skip_playlist": "on",
+            "palette": "azul-profeonline",
+            "main_text": "Texto miniatura",
+            "title": "Suma de Vectores",
+            "description": "Aprende a sumar vectores",
+            "content_md": "### Contenido",
+        }
+
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("errors", response.context)
+        self.assertIn("area_id", response.context["errors"])
+        self.assertIn("subject_id", response.context["errors"])
+        self.assertIn("topic_id", response.context["errors"])
+        self.assertIn("level_ids", response.context["errors"])
+        self.assertEqual(response.context["errors"]["area_id"], "El area seleccionada esta inactiva.")
+        self.assertEqual(response.context["errors"]["subject_id"], "La asignatura seleccionada esta inactiva.")
+        self.assertEqual(response.context["errors"]["topic_id"], "El tema seleccionado esta inactivo.")
+
+    def test_publish_post_invalid_level_rejected(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
+
+        payload = {
+            "file_name": "video.mp4",
+            "area_id": self.area.id,
+            "subject_id": self.subject.id,
+            "topic_id": self.topic.id,
+            "level_ids": [self.level.id, 99999],  # 99999 is invalid!
+            "privacy": "public",
+            "skip_playlist": "on",
+            "palette": "azul-profeonline",
+            "main_text": "Texto miniatura",
+            "title": "Suma de Vectores",
+            "description": "Aprende a sumar vectores",
+            "content_md": "### Contenido",
+        }
+
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("errors", response.context)
+        self.assertIn("level_ids", response.context["errors"])
+        self.assertEqual(
+            response.context["errors"]["level_ids"],
+            "Uno o mas niveles seleccionados son invalidos o estan inactivos."
+        )
+
+    def test_publish_post_module_inconsistency_rejected(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
+
+        # Module of another subject, or not published
+        other_subject = Subject.objects.create(name="Física Universitaria", area=self.area, is_active=True)
+        other_topic = Topic.objects.create(name="Termodinámica", subject=self.subject, is_active=True)
+
+        module_wrong_subject = Module.objects.create(title="Módulo A", subject=other_subject, is_published=True)
+        module_wrong_topic = Module.objects.create(title="Módulo B", subject=self.subject, topic=other_topic, is_published=True)
+        module_unpublished = Module.objects.create(title="Módulo C", subject=self.subject, topic=self.topic, is_published=False)
+
+        base_payload = {
+            "file_name": "video.mp4",
+            "area_id": self.area.id,
+            "subject_id": self.subject.id,
+            "topic_id": self.topic.id,
+            "level_ids": [self.level.id],
+            "privacy": "public",
+            "skip_playlist": "on",
+            "palette": "azul-profeonline",
+            "main_text": "Texto miniatura",
+            "title": "Suma de Vectores",
+            "description": "Aprende a sumar vectores",
+            "content_md": "### Contenido",
+        }
+
+        # Case 1: Wrong subject
+        payload = base_payload.copy()
+        payload["module_id"] = module_wrong_subject.id
+        response = self.client.post(url, payload)
+        self.assertIn("errors", response.context)
+        self.assertIn("module_id", response.context["errors"])
+        self.assertEqual(response.context["errors"]["module_id"], "El modulo no pertenece a la asignatura seleccionada.")
+
+        # Case 2: Wrong topic
+        payload = base_payload.copy()
+        payload["module_id"] = module_wrong_topic.id
+        response = self.client.post(url, payload)
+        self.assertIn("errors", response.context)
+        self.assertIn("module_id", response.context["errors"])
+        self.assertEqual(response.context["errors"]["module_id"], "El modulo no pertenece al tema seleccionado.")
+
+        # Case 3: Unpublished module
+        payload = base_payload.copy()
+        payload["module_id"] = module_unpublished.id
+        response = self.client.post(url, payload)
+        self.assertIn("errors", response.context)
+        self.assertIn("module_id", response.context["errors"])
+        self.assertEqual(response.context["errors"]["module_id"], "El modulo seleccionado no esta publicado.")
+
+    def test_publish_post_playlist_normalization_and_validation(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
+
+        base_payload = {
+            "file_name": "video.mp4",
+            "area_id": self.area.id,
+            "subject_id": self.subject.id,
+            "topic_id": self.topic.id,
+            "level_ids": [self.level.id],
+            "privacy": "public",
+            "skip_playlist": "off",  # skip is off, so we require a valid playlist!
+            "palette": "azul-profeonline",
+            "main_text": "Texto miniatura",
+            "title": "Suma de Vectores",
+            "description": "Aprende a sumar vectores",
+            "content_md": "### Contenido",
+        }
+
+        # Case 1: Valid playlist URL with list param
+        payload = base_payload.copy()
+        payload["playlist_id"] = "https://www.youtube.com/playlist?list=PL12345XYZ"
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/json; charset=utf-8")
+        job = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(job["youtube"]["playlist_id"], "PL12345XYZ")
+
+        # Case 2: Invalid playlist URL (no list parameter)
+        payload = base_payload.copy()
+        payload["playlist_id"] = "https://www.youtube.com/watch?v=123"
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("errors", response.context)
+        self.assertIn("playlist_id", response.context["errors"])
+
+        # Case 3: Plain playlist ID (accepted)
+        payload = base_payload.copy()
+        payload["playlist_id"] = "PL12345XYZ"
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/json; charset=utf-8")
+        job = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(job["youtube"]["playlist_id"], "PL12345XYZ")
+
+    def test_publish_copy_preview_inconsistency_rejected(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_copy_preview")
+
+        other_area = Area.objects.create(name="Matemática II", is_active=True)
+        other_subject = Subject.objects.create(name="Cálculo", area=other_area, is_active=True)
+        other_topic = Topic.objects.create(name="Derivadas", subject=other_subject, is_active=True)
+
+        inactive_subject = Subject.objects.create(name="Física Inactiva", area=self.area, is_active=False)
+        inactive_topic = Topic.objects.create(name="Cinemática Inactiva", subject=self.subject, is_active=False)
+
+        # Incompatible topic & subject
+        response = self.client.get(url, {
+            "title": "Prueba",
+            "subject_id": self.subject.id,
+            "topic_id": other_topic.id
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("El tema no pertenece a la asignatura especificada.", response.content.decode("utf-8"))
+
+        # Inactive subject
+        response = self.client.get(url, {
+            "title": "Prueba",
+            "subject_id": inactive_subject.id,
+            "topic_id": self.topic.id
+        })
+        self.assertEqual(response.status_code, 400)
+
+        # Inactive topic
+        response = self.client.get(url, {
+            "title": "Prueba",
+            "subject_id": self.subject.id,
+            "topic_id": inactive_topic.id
+        })
+        self.assertEqual(response.status_code, 400)

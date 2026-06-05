@@ -23,16 +23,26 @@ document.addEventListener("DOMContentLoaded", function () {
     // Extraction of playlist_id from URL
     if (playlistInput) {
         playlistInput.addEventListener("blur", function () {
-            const value = playlistInput.value.trim();
-            if (value.startsWith("http://") || value.startsWith("https://")) {
-                try {
-                    const url = new URL(value);
-                    const listId = url.searchParams.get("list");
-                    if (listId) {
-                        playlistInput.value = listId;
+            let value = playlistInput.value.trim();
+            if (value) {
+                // If it looks like a URL (contains slashes or protocol)
+                if (value.includes("://") || value.startsWith("www.") || value.includes("/")) {
+                    try {
+                        let urlString = value;
+                        if (!value.includes("://")) {
+                            urlString = "https://" + value;
+                        }
+                        const url = new URL(urlString);
+                        const listId = url.searchParams.get("list");
+                        if (listId) {
+                            playlistInput.value = listId;
+                        } else {
+                            playlistInput.value = "";
+                        }
+                    } catch (e) {
+                        playlistInput.value = "";
+                        console.error("URL de playlist invalida:", e);
                     }
-                } catch (e) {
-                    console.error("URL de playlist invalida:", e);
                 }
             }
             validateForm();
@@ -183,15 +193,29 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.json())
             .then(data => {
                 if (duplicatesBox) {
+                    duplicatesBox.innerHTML = "";
                     if (data.length > 0) {
-                        let html = '<div class="alert alert--warning"><p><strong>¡Posibles Duplicados Detectados!</strong></p><ul>';
+                        const alertDiv = document.createElement("div");
+                        alertDiv.className = "alert alert--warning";
+
+                        const p = document.createElement("p");
+                        const strong = document.createElement("strong");
+                        strong.textContent = "¡Posibles Duplicados Detectados!";
+                        p.appendChild(strong);
+                        alertDiv.appendChild(p);
+
+                        const ul = document.createElement("ul");
                         data.forEach(item => {
-                            html += `<li><a href="${item.url}" target="_blank">${item.title} (ver recurso)</a></li>`;
+                            const li = document.createElement("li");
+                            const a = document.createElement("a");
+                            a.href = item.url;
+                            a.target = "_blank";
+                            a.textContent = `${item.title} (ver recurso)`;
+                            li.appendChild(a);
+                            ul.appendChild(li);
                         });
-                        html += '</ul></div>';
-                        duplicatesBox.innerHTML = html;
-                    } else {
-                        duplicatesBox.innerHTML = "";
+                        alertDiv.appendChild(ul);
+                        duplicatesBox.appendChild(alertDiv);
                     }
                 }
             })
@@ -370,11 +394,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (container) {
                         const wrapper = document.createElement("label");
                         wrapper.className = "checkbox-label";
-                        wrapper.innerHTML = `<input type="checkbox" name="level_ids" value="${data.id}" checked> ${data.name}`;
+
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.name = "level_ids";
+                        checkbox.value = data.id;
+                        checkbox.checked = true;
+
+                        wrapper.appendChild(checkbox);
+                        wrapper.appendChild(document.createTextNode(" " + data.name));
                         container.appendChild(wrapper);
 
                         // wire up event listener for the new checkbox
-                        wrapper.querySelector("input").addEventListener("change", validateForm);
+                        checkbox.addEventListener("change", validateForm);
                     }
                 }
 
