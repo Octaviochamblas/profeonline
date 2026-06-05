@@ -12,27 +12,27 @@
 
 <div class="section-header">
     <h1 class="section-title">Estudio de Publicacion</h1>
-    <p class="section-subtitle">Asistente para preparar y validar cargas de video e importar recursos taxonomicos.</p>
+    <p class="section-subtitle">Asistente para preparar y validar lotes de subidas de video a YouTube.</p>
 </div>
 
 <form id="publish-studio-form" method="post" action="{% url 'content:publish_studio' %}">
     {% csrf_token %}
+    <input type="hidden" name="file_names" id="file_names" value="{{ form_data.file_names|default:'[]' }}">
 
     <div class="publish-studio-layout">
 
         <!-- Form Column -->
         <div class="studio-form-col">
 
-            <!-- Section: Video File -->
+            <!-- Section: Video Files Selection -->
             <div class="form-section-card">
-                <h2 class="form-section-card__title">1. Archivo de Video</h2>
+                <h2 class="form-section-card__title">1. Archivos de Video</h2>
 
                 <div class="form-grid-2col">
                     <div class="form-group">
-                        <label for="file_name">Nombre del archivo de video <span class="text-danger">*</span></label>
-                        <input type="text" id="file_name" name="file_name" class="form-control"
-                               value="{{ form_data.file_name|default:'' }}" placeholder="ej: fisica-ondas-sonido.mp4">
-                        {% if errors.file_name %}<span class="text-danger">{{ errors.file_name }}</span>{% endif %}
+                        <label for="file_input">Seleccionar archivos de video <span class="text-danger">*</span></label>
+                        <input type="file" id="file_input" class="form-control" multiple accept="video/*">
+                        {% if errors.file_names %}<span class="text-danger">{{ errors.file_names }}</span>{% endif %}
                     </div>
 
                     <div class="form-group">
@@ -40,6 +40,14 @@
                         <select id="watch_folder" name="watch_folder" class="form-control">
                             <option value="default" {% if form_data.watch_folder == 'default' %}selected{% endif %}>default</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Archivos seleccionados para el lote:</label>
+                    <div id="file-list-preview" class="file-list-preview text-muted--small-mt">
+                        <!-- Populated via JS -->
+                        <span class="text-muted">Ningun archivo seleccionado.</span>
                     </div>
                 </div>
             </div>
@@ -100,23 +108,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label>Niveles Educativos <span class="text-danger">*</span></label>
-                    <div class="inline-action-wrapper">
-                        <div id="levels-checkboxes-container" class="checkbox-grid">
-                            {% for level in levels %}
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="level_ids" value="{{ level.id }}"
-                                           {% if level.id in selected_levels %}checked{% endif %}>
-                                    {{ level.name }}
-                                </label>
-                            {% endfor %}
-                        </div>
-                        <button type="button" class="btn btn-secondary btn-inline-add" data-open-modal="modal-level" aria-label="Crear nuevo nivel">+</button>
-                    </div>
-                    {% if errors.level_ids %}<span class="text-danger">{{ errors.level_ids }}</span>{% endif %}
-                </div>
             </div>
 
             <!-- Section: YouTube/Playlist -->
@@ -125,117 +116,29 @@
 
                 <div class="form-grid-2col">
                     <div class="form-group">
-                        <label for="privacy">Privacidad de YouTube <span class="text-danger">*</span></label>
-                        <select id="privacy" name="privacy" class="form-control">
-                            {% for val, display in privacy_options %}
-                                <option value="{{ val }}" {% if form_data.privacy == val %}selected{% endif %}>{{ display }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="playlist_id">ID de Playlist en YouTube</label>
                         <input type="text" id="playlist_id" name="playlist_id" class="form-control"
                                value="{{ form_data.playlist_id|default:'' }}" placeholder="ej: PLxxxxxx">
                         {% if errors.playlist_id %}<span class="text-danger">{{ errors.playlist_id }}</span>{% endif %}
                     </div>
-                </div>
 
-                <div class="form-grid-2col">
                     <div class="form-group">
                         <label for="playlist_title">Titulo de la Playlist (Opcional)</label>
                         <input type="text" id="playlist_title" name="playlist_title" class="form-control"
                                value="{{ form_data.playlist_title|default:'' }}" placeholder="ej: Fisica Mecanica">
                     </div>
-
-                    <div class="form-group form-group--centered-mt">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="skip_playlist" name="skip_playlist" value="true"
-                                   {% if form_data.skip_playlist %}checked{% endif %}>
-                            Subir sin playlist (skip_playlist)
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section: Thumbnail info -->
-            <div class="form-section-card">
-                <h2 class="form-section-card__title">4. Diseno de Miniatura</h2>
-
-                <div class="form-grid-2col">
-                    <div class="form-group">
-                        <label for="palette">Paleta de colores <span class="text-danger">*</span></label>
-                        <select id="palette" name="palette" class="form-control">
-                            {% for val, display in palettes %}
-                                <option value="{{ val }}" {% if form_data.palette == val %}selected{% endif %}>{{ display }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="main_text">Texto principal de la miniatura <span class="text-danger">*</span></label>
-                        <input type="text" id="main_text" name="main_text" class="form-control"
-                               value="{{ form_data.main_text|default:'' }}" placeholder="ej: Introduccion a Vectores">
-                        {% if errors.main_text %}<span class="text-danger">{{ errors.main_text }}</span>{% endif %}
-                    </div>
                 </div>
 
-                <div class="form-grid-2col">
-                    <div class="form-group">
-                        <label for="class_label">Etiqueta de clase (Opcional)</label>
-                        <input type="text" id="class_label" name="class_label" class="form-control"
-                               value="{{ form_data.class_label|default:'' }}" placeholder="ej: Clase 1.3">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="ai_panel_instructions">Instrucciones IA para diseno de miniatura (Opcional)</label>
-                        <textarea id="ai_panel_instructions" name="ai_panel_instructions" class="form-control" rows="2"
-                                  placeholder="Indicaciones para generar paneles ilustrativos..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section: Copy content -->
-            <div class="form-section-card">
-                <h2 class="form-section-card__title">5. Copias y Textos Generados</h2>
-
-                <div class="form-group">
-                    <label for="title">Titulo del Recurso <span class="text-danger">*</span></label>
-                    <input type="text" id="title" name="title" class="form-control"
-                           value="{{ form_data.title|default:'' }}" placeholder="ej: Introduccion a Vectores: Suma y Resta">
-                    {% if errors.title %}<span class="text-danger">{{ errors.title }}</span>{% endif %}
-                </div>
-
-                <button type="button" id="btn-generate-copy" class="btn btn-secondary">Generar Copia y Apuntes</button>
-
-                <div class="form-group">
-                    <label for="description">Descripcion (SEO / Resumen)</label>
-                    <textarea id="description" name="description" class="form-control" rows="3"
-                              placeholder="Descripcion resumida que ira al recurso">{{ form_data.description|default:'' }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="content_md">Apuntes y Contenido (Markdown)</label>
-                    <textarea id="content_md" name="content_md" class="form-control" rows="10"
-                              placeholder="Apuntes de la clase que se renderizaran en Markdown">{{ form_data.content_md|default:'' }}</textarea>
-                </div>
             </div>
 
             <!-- Section: Extra parameters -->
             <div class="form-section-card">
-                <h2 class="form-section-card__title">6. Parametros Finales</h2>
+                <h2 class="form-section-card__title">4. Indicaciones del Lote</h2>
 
                 <div class="form-group">
-                    <label for="ai_instructions">Instrucciones Generales IA</label>
-                    <textarea id="ai_instructions" name="ai_instructions" class="form-control" rows="2">{{ form_data.ai_instructions|default:'Tono educativo, SEO de clases particulares.' }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="is_published" name="is_published" value="true"
-                               {% if form_data.is_published|default:True %}checked{% endif %}>
-                        Publicar inmediatamente (is_published)
-                    </label>
+                    <label for="instructions">Indicaciones / Instrucciones Generales para la IA</label>
+                    <textarea id="instructions" name="instructions" class="form-control" rows="4"
+                              placeholder="ej: Tono educativo, enfocado en resolver procedimientos paso a paso y SEO de clases particulares.">{{ form_data.instructions|default:'' }}</textarea>
                 </div>
             </div>
 
@@ -252,18 +155,13 @@
                 </div>
             </div>
 
-            <!-- Duplicates warning box -->
-            <div id="duplicates-box">
-                <!-- Updated dynamically in JS -->
-            </div>
-
             <!-- Download Button -->
             <div class="form-section-card form-section-card--centered">
                 <button type="submit" id="btn-download-job" class="btn btn-primary btn--full-padding" disabled>
-                    Descargar orden de trabajo (.json)
+                    Descargar orden de lote (.json)
                 </button>
                 <p class="text-muted text-muted--small-mt">
-                    Este archivo JSON describe el trabajo de subida y publicacion del video. Es procesado localmente por Codex.
+                    Este archivo JSON describe el lote de videos y su configuracion taxonomica. Es procesado localmente por Codex.
                 </p>
             </div>
 
@@ -357,33 +255,6 @@
     </div>
 </div>
 
-<!-- Modal: Level -->
-<div id="modal-level" class="modal-overlay" hidden>
-    <div class="modal-content-card">
-        <div class="modal-header">
-            <h3 class="modal-title">Crear Nuevo Nivel</h3>
-            <button type="button" class="modal-close-btn" data-close-modal aria-label="Cerrar modal">&times;</button>
-        </div>
-        <form class="modal-form" action="{% url 'content:publish_inline_create' 'level' %}" data-entity-type="level" method="post">
-            <div class="modal-body">
-                <div class="modal-errors"></div>
-                <div class="form-group">
-                    <label for="level-name">Nombre <span class="text-danger">*</span></label>
-                    <input type="text" id="level-name" name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="level-desc">Descripcion</label>
-                    <textarea id="level-desc" name="description" class="form-control" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!-- Modal: Module -->
 <div id="modal-module" class="modal-overlay" hidden>
     <div class="modal-content-card">
@@ -394,7 +265,6 @@
         <form class="modal-form" action="{% url 'content:publish_inline_create' 'module' %}" data-entity-type="module" method="post">
             <input type="hidden" name="subject_id" value="">
             <input type="hidden" name="topic_id" value="">
-            <div class="modal-levels-container"></div>
             <div class="modal-body">
                 <div class="modal-errors"></div>
                 <div class="form-group">

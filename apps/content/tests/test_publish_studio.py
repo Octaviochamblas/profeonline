@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.text import slugify
 
-from apps.content.models import Area, Level, Subject, Topic, Resource, Module
-from apps.content.services.resource_copy import build_resource_copy, clean_video_title
+from apps.content.models import Area, Level, Subject, Topic, Module
 
 User = get_user_model()
 
@@ -23,7 +22,7 @@ class PublishStudioTests(TestCase):
             password="userpassword"
         )
 
-        # Base structure (using get_or_create to avoid unique constraint conflicts with seeds/migrations)
+        # Base structure
         self.area, _ = Area.objects.get_or_create(name="Física Test Studio", defaults={"is_active": True})
         self.subject, _ = Subject.objects.get_or_create(name="Física Escolar Test Studio", defaults={"area": self.area, "is_active": True})
         self.topic, _ = Topic.objects.get_or_create(name="Ondas y Sonido Test Studio", defaults={"subject": self.subject, "is_active": True})
@@ -83,54 +82,6 @@ class PublishStudioTests(TestCase):
         self.assertEqual(len(data["modules"]), 1)
         self.assertEqual(data["modules"][0]["id"], module.id)
 
-    def test_copy_preview_omits_video_section_without_url(self):
-        video_with_url = {"title": "Clase 1: Vectores y Fuerzas", "video_url": "https://youtube.com/watch?v=123"}
-        video_without_url = {"title": "Clase 1: Vectores y Fuerzas", "video_url": ""}
-
-        # Test build_resource_copy behavior
-        desc_w, content_w = build_resource_copy(video_with_url, self.subject, self.topic)
-        desc_wo, content_wo = build_resource_copy(video_without_url, self.subject, self.topic)
-
-        self.assertIn("### Video", content_w)
-        self.assertNotIn("### Video", content_wo)
-
-        # Test AJAX endpoint
-        self.client.login(username="admin", password="adminpassword")
-        url = reverse("content:publish_copy_preview")
-        response = self.client.get(url, {
-            "title": "Clase 1: Vectores y Fuerzas",
-            "subject_id": self.subject.id,
-            "topic_id": self.topic.id
-        })
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertNotIn("### Video", data["content_md"])
-
-    def test_publish_duplicates_flags_same_topic_title(self):
-        resource = Resource.objects.create(
-            title="Leyes de Newton",
-            subject=self.subject,
-            topic=self.topic,
-            video_url="https://youtube.com/watch?v=abc",
-            is_published=True
-        )
-
-        self.client.login(username="admin", password="adminpassword")
-        url = reverse("content:publish_duplicates")
-
-        # Exact match
-        response = self.client.get(url, {"title": "Leyes de Newton", "topic_id": self.topic.id})
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["title"], "Leyes de Newton")
-
-        # Fuzzy match (iexact/icontains/slugify)
-        response = self.client.get(url, {"title": "leyes de newton", "topic_id": self.topic.id})
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertEqual(len(data), 1)
-
     def test_inline_create_subject_returns_json_and_slug(self):
         self.client.login(username="admin", password="adminpassword")
         url = reverse("content:publish_inline_create", args=["subject"])
@@ -169,7 +120,6 @@ class PublishStudioTests(TestCase):
         response = self.client.post(url, {
             "subject_id": self.subject.id,
             "topic_id": self.topic.id,
-            "level_ids": [self.level.id],
             "title": "Módulo 1: Ondas Sonoras",
             "description": "Conceptos de sonido"
         })
@@ -183,78 +133,57 @@ class PublishStudioTests(TestCase):
         module = Module.objects.get(title="Módulo 1: Ondas Sonoras")
         self.assertEqual(module.subject, self.subject)
         self.assertEqual(module.topic, self.topic)
-        self.assertTrue(module.levels.filter(id=self.level.id).exists())
 
-    def test_publish_post_rejects_incomplete_job(self):
+    def test_publish_batch_requires_files_and_taxonomy(self):
         self.client.login(username="admin", password="adminpassword")
         url = reverse("content:publish_studio")
 
-        # Missing levels and topic
+        # Missing files and topic
         payload = {
-            "file_name": "video.mp4",
+            "file_names": "[]",  # empty
             "watch_folder": "default",
             "area_id": self.area.id,
             "subject_id": self.subject.id,
             "topic_id": "", # empty!
-            "privacy": "public",
-            "skip_playlist": "on",
-            "palette": "azul-profeonline",
-            "main_text": "Texto principal",
-            "title": "Título del video",
-            "description": "Una descripción",
-            "content_md": "Contenido"
         }
 
         response = self.client.post(url, payload)
         self.assertEqual(response.status_code, 200) # Re-renders page with error info
         self.assertIn("errors", response.context)
+        self.assertIn("file_names", response.context["errors"])
         self.assertIn("topic_id", response.context["errors"])
-        self.assertIn("level_ids", response.context["errors"])
 
-    def test_publish_post_success_and_json_structure(self):
+    def test_publish_batch_json_has_files_and_slugs(self):
         self.client.login(username="admin", password="adminpassword")
         url = reverse("content:publish_studio")
 
         payload = {
-            "file_name": "video.mp4",
+            "file_names": '["video1.mp4", "video2.mp4"]',
             "watch_folder": "default",
             "area_id": self.area.id,
             "subject_id": self.subject.id,
             "topic_id": self.topic.id,
-            "level_ids": [self.level.id],
-            "privacy": "public",
-            "skip_playlist": "on",
             "playlist_id": "",
             "playlist_title": "",
-            "palette": "azul-profeonline",
-            "main_text": "Texto miniatura",
-            "class_label": "Clase 1",
-            "ai_panel_instructions": "Panel ilustrativo",
-            "title": "Suma de Vectores",
-            "description": "Aprende a sumar vectores",
-            "content_md": "### Contenido",
-            "ai_instructions": "SEO de clases particulares",
-            "is_published": "on"
+            "instructions": "Instrucciones de prueba"
         }
 
         response = self.client.post(url, payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/json; charset=utf-8")
         self.assertIn("attachment", response["Content-Disposition"])
-        self.assertIn("upload-job-suma-de-vectores.json", response["Content-Disposition"])
+        self.assertIn("upload-batch-ondas-y-sonido-test-studio.json", response["Content-Disposition"])
 
         # Decode output
-        job = json.loads(response.content.decode("utf-8"))
-        self.assertEqual(job["schema"], "profeonline.upload-job/v1")
-        self.assertEqual(job["file"]["file_name"], "video.mp4")
-        self.assertEqual(job["youtube"]["privacy"], "public")
-        self.assertTrue(job["youtube"]["skip_playlist"])
-        self.assertEqual(job["taxonomy"]["area_slug"], self.area.slug)
-        self.assertEqual(job["taxonomy"]["subject_slug"], self.subject.slug)
-        self.assertEqual(job["taxonomy"]["topic_slug"], self.topic.slug)
-        self.assertEqual(job["taxonomy"]["level_slugs"], [self.level.slug])
-        self.assertEqual(job["thumbnail"]["main_text"], "Texto miniatura")
-        self.assertEqual(job["copy"]["title"], "Suma de Vectores")
+        batch = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(batch["schema"], "profeonline.upload-batch/v1")
+        self.assertEqual(batch["watch_folder"], "default")
+        self.assertEqual(batch["files"], ["video1.mp4", "video2.mp4"])
+        self.assertEqual(batch["taxonomy"]["area_slug"], self.area.slug)
+        self.assertEqual(batch["taxonomy"]["subject_slug"], self.subject.slug)
+        self.assertEqual(batch["taxonomy"]["topic_slug"], self.topic.slug)
+        self.assertEqual(batch["taxonomy"]["module_slug"], None)
+        self.assertEqual(batch["instructions"], "Instrucciones de prueba")
 
     def test_publish_post_taxonomy_inconsistency_rejected(self):
         self.client.login(username="admin", password="adminpassword")
@@ -266,17 +195,9 @@ class PublishStudioTests(TestCase):
         other_topic = Topic.objects.create(name="Ecuaciones", subject=other_subject, is_active=True)
 
         base_payload = {
-            "file_name": "video.mp4",
+            "file_names": '["video.mp4"]',
             "watch_folder": "default",
             "area_id": self.area.id,
-            "level_ids": [self.level.id],
-            "privacy": "public",
-            "skip_playlist": "on",
-            "palette": "azul-profeonline",
-            "main_text": "Texto miniatura",
-            "title": "Suma de Vectores",
-            "description": "Aprende a sumar vectores",
-            "content_md": "### Contenido",
         }
 
         # Case 1: Subject does not belong to Area
@@ -309,25 +230,16 @@ class PublishStudioTests(TestCase):
         self.client.login(username="admin", password="adminpassword")
         url = reverse("content:publish_studio")
 
-        # Inactive Area, Subject, Topic, Level
+        # Inactive Area, Subject, Topic
         inactive_area = Area.objects.create(name="Área Inactiva", is_active=False)
         inactive_subject = Subject.objects.create(name="Sub Inactiva", area=self.area, is_active=False)
         inactive_topic = Topic.objects.create(name="Tema Inactivo", subject=self.subject, is_active=False)
-        inactive_level = Level.objects.create(name="Nivel Inactivo", is_active=False)
 
         payload = {
-            "file_name": "video.mp4",
+            "file_names": '["video.mp4"]',
             "area_id": inactive_area.id,
             "subject_id": inactive_subject.id,
             "topic_id": inactive_topic.id,
-            "level_ids": [inactive_level.id],
-            "privacy": "public",
-            "skip_playlist": "on",
-            "palette": "azul-profeonline",
-            "main_text": "Texto miniatura",
-            "title": "Suma de Vectores",
-            "description": "Aprende a sumar vectores",
-            "content_md": "### Contenido",
         }
 
         response = self.client.post(url, payload)
@@ -336,38 +248,9 @@ class PublishStudioTests(TestCase):
         self.assertIn("area_id", response.context["errors"])
         self.assertIn("subject_id", response.context["errors"])
         self.assertIn("topic_id", response.context["errors"])
-        self.assertIn("level_ids", response.context["errors"])
         self.assertEqual(response.context["errors"]["area_id"], "El area seleccionada esta inactiva.")
         self.assertEqual(response.context["errors"]["subject_id"], "La asignatura seleccionada esta inactiva.")
         self.assertEqual(response.context["errors"]["topic_id"], "El tema seleccionado esta inactivo.")
-
-    def test_publish_post_invalid_level_rejected(self):
-        self.client.login(username="admin", password="adminpassword")
-        url = reverse("content:publish_studio")
-
-        payload = {
-            "file_name": "video.mp4",
-            "area_id": self.area.id,
-            "subject_id": self.subject.id,
-            "topic_id": self.topic.id,
-            "level_ids": [self.level.id, 99999],  # 99999 is invalid!
-            "privacy": "public",
-            "skip_playlist": "on",
-            "palette": "azul-profeonline",
-            "main_text": "Texto miniatura",
-            "title": "Suma de Vectores",
-            "description": "Aprende a sumar vectores",
-            "content_md": "### Contenido",
-        }
-
-        response = self.client.post(url, payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("errors", response.context)
-        self.assertIn("level_ids", response.context["errors"])
-        self.assertEqual(
-            response.context["errors"]["level_ids"],
-            "Uno o mas niveles seleccionados son invalidos o estan inactivos."
-        )
 
     def test_publish_post_module_inconsistency_rejected(self):
         self.client.login(username="admin", password="adminpassword")
@@ -382,18 +265,10 @@ class PublishStudioTests(TestCase):
         module_unpublished = Module.objects.create(title="Módulo C", subject=self.subject, topic=self.topic, is_published=False)
 
         base_payload = {
-            "file_name": "video.mp4",
+            "file_names": '["video.mp4"]',
             "area_id": self.area.id,
             "subject_id": self.subject.id,
             "topic_id": self.topic.id,
-            "level_ids": [self.level.id],
-            "privacy": "public",
-            "skip_playlist": "on",
-            "palette": "azul-profeonline",
-            "main_text": "Texto miniatura",
-            "title": "Suma de Vectores",
-            "description": "Aprende a sumar vectores",
-            "content_md": "### Contenido",
         }
 
         # Case 1: Wrong subject
@@ -425,18 +300,12 @@ class PublishStudioTests(TestCase):
         url = reverse("content:publish_studio")
 
         base_payload = {
-            "file_name": "video.mp4",
+            "file_names": '["video.mp4"]',
             "area_id": self.area.id,
             "subject_id": self.subject.id,
             "topic_id": self.topic.id,
-            "level_ids": [self.level.id],
-            "privacy": "public",
-            "skip_playlist": "off",  # skip is off, so we require a valid playlist!
-            "palette": "azul-profeonline",
-            "main_text": "Texto miniatura",
-            "title": "Suma de Vectores",
-            "description": "Aprende a sumar vectores",
-            "content_md": "### Contenido",
+            "playlist_id": "",
+            "playlist_title": ""
         }
 
         # Case 1: Valid playlist URL with list param
@@ -445,8 +314,8 @@ class PublishStudioTests(TestCase):
         response = self.client.post(url, payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/json; charset=utf-8")
-        job = json.loads(response.content.decode("utf-8"))
-        self.assertEqual(job["youtube"]["playlist_id"], "PL12345XYZ")
+        batch = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(batch["youtube"]["playlist_id"], "PL12345XYZ")
 
         # Case 2: Invalid playlist URL (no list parameter)
         payload = base_payload.copy()
@@ -462,41 +331,73 @@ class PublishStudioTests(TestCase):
         response = self.client.post(url, payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "application/json; charset=utf-8")
-        job = json.loads(response.content.decode("utf-8"))
-        self.assertEqual(job["youtube"]["playlist_id"], "PL12345XYZ")
+        batch = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(batch["youtube"]["playlist_id"], "PL12345XYZ")
 
-    def test_publish_copy_preview_inconsistency_rejected(self):
+        # Case 4: Empty playlist ID (accepted as optional)
+        payload = base_payload.copy()
+        payload["playlist_id"] = ""
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/json; charset=utf-8")
+        batch = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(batch["youtube"]["playlist_id"], "")
+
+    def test_publish_post_malformed_filenames_rejected(self):
         self.client.login(username="admin", password="adminpassword")
-        url = reverse("content:publish_copy_preview")
+        url = reverse("content:publish_studio")
 
-        other_area = Area.objects.create(name="Matemática II", is_active=True)
-        other_subject = Subject.objects.create(name="Cálculo", area=other_area, is_active=True)
-        other_topic = Topic.objects.create(name="Derivadas", subject=other_subject, is_active=True)
-
-        inactive_subject = Subject.objects.create(name="Física Inactiva", area=self.area, is_active=False)
-        inactive_topic = Topic.objects.create(name="Cinemática Inactiva", subject=self.subject, is_active=False)
-
-        # Incompatible topic & subject
-        response = self.client.get(url, {
-            "title": "Prueba",
+        payload = {
+            "file_names": "{malformed json",
+            "watch_folder": "default",
+            "area_id": self.area.id,
             "subject_id": self.subject.id,
-            "topic_id": other_topic.id
-        })
+            "topic_id": self.topic.id,
+        }
+        response = self.client.post(url, payload)
         self.assertEqual(response.status_code, 400)
-        self.assertIn("El tema no pertenece a la asignatura especificada.", response.content.decode("utf-8"))
+        self.assertIn("formato JSON invalido", response.content.decode("utf-8"))
 
-        # Inactive subject
-        response = self.client.get(url, {
-            "title": "Prueba",
-            "subject_id": inactive_subject.id,
-            "topic_id": self.topic.id
-        })
-        self.assertEqual(response.status_code, 400)
+    def test_publish_post_non_list_filenames_rejected(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
 
-        # Inactive topic
-        response = self.client.get(url, {
-            "title": "Prueba",
+        # Not a list
+        payload = {
+            "file_names": '"just a string"',
+            "watch_folder": "default",
+            "area_id": self.area.id,
             "subject_id": self.subject.id,
-            "topic_id": inactive_topic.id
-        })
+            "topic_id": self.topic.id,
+        }
+        response = self.client.post(url, payload)
         self.assertEqual(response.status_code, 400)
+        self.assertIn("debe ser una lista de nombres de archivos", response.content.decode("utf-8"))
+
+        # List of integers, not strings
+        payload = {
+            "file_names": '[1, 2, 3]',
+            "watch_folder": "default",
+            "area_id": self.area.id,
+            "subject_id": self.subject.id,
+            "topic_id": self.topic.id,
+        }
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("debe ser una lista de nombres de archivos", response.content.decode("utf-8"))
+
+    def test_publish_post_watch_folder_default_fallback(self):
+        self.client.login(username="admin", password="adminpassword")
+        url = reverse("content:publish_studio")
+
+        payload = {
+            "file_names": '["video1.mp4"]',
+            "watch_folder": "   ",  # empty string after strip
+            "area_id": self.area.id,
+            "subject_id": self.subject.id,
+            "topic_id": self.topic.id,
+        }
+        response = self.client.post(url, payload)
+        self.assertEqual(response.status_code, 200)
+        batch = json.loads(response.content.decode("utf-8"))
+        self.assertEqual(batch["watch_folder"], "default")

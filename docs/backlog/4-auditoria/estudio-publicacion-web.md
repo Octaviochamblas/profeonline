@@ -284,29 +284,29 @@ selector real de archivos; **preflight** antes de subir a YouTube; **reintento i
 
 ## Qué se hizo
 
-Se implementó la Fase 1 del Estudio de Publicación siguiendo la especificación y los 9 ajustes requeridos por el preflight/Claude:
+Se implementó el Estudio de Publicación (Versión Simplificada - Batch) en la rama `feat/estudio-publicacion-fase1` resolviendo todos los criterios solicitados y las precisiones de la revisión:
 
-1. **Fase 0 (Documentación y Webhook):**
-   - Corregidas las URLs en `codex-webhook-integration.md` para que apunten a `/api/recursos/crear-video/` en lugar del `/recursos/api/` desactualizado.
-   - Documentado el contrato canónico `profeonline.upload-job/v1` en el archivo vigente `docs/gobernanza/inventario-operacional.md`.
+1. **Esquema de Lote `profeonline.upload-batch/v1`:**
+   - Se removió por completo el esquema complejo individual y se implementó la orden de lote para múltiples videos.
+   - El contrato canónico se documentó en `docs/gobernanza/inventario-operacional.md`.
+   - Se agregaron las claves `schema`, `watch_folder`, `files` (lista de nombres), `taxonomy` (slugs mapeados), `youtube` (`playlist_id` y `playlist_title`), e `instructions` en el JSON descargable.
 
-2. **Servicio `apps/content/services/resource_copy.py`:**
-   - Extraída la lógica `clean_video_title` y `build_resource_copy` para centralizarla en el servicio.
-   - Adaptada `build_resource_copy` para tolerar `video_url` vacío (omitir la sección de Video) y reimportar en el comando `import_youtube_resources.py` garantizando compatibilidad 100%.
+2. **Limpieza de Vistas Obsoletas:**
+   - Se eliminaron las vistas `publish_copy_preview.py` y `publish_duplicates.py`.
+   - Se removieron sus exportaciones en `apps/content/views/__init__.py` y sus rutas asociadas en `apps/content/urls/publish_urls.py`.
 
-3. **Vistas y Endpoints (Protegidos con `@user_passes_test(is_admin)`):**
-   - `publish_studio`: GET rinde el formulario; POST recibe los datos del formulario, realiza validación completa server-side, traduce los IDs seleccionados a slugs canónicos (`area_slug`, `subject_slug`, `topic_slug`, `level_slugs`, `module_slug`) y genera la descarga del JSON de orden de trabajo como attachment.
-   - `subject_options` & `module_options`: Endpoints JSON para selectores dependientes en cascada (Área &rarr; Asignatura &rarr; Tema/Módulos).
-   - `publish_copy_preview`: Genera los apuntes/descripción usando el servicio (con video_url vacío).
-   - `publish_duplicates`: Verifica duplicados en base al tema + título (slug exacto o iexact/icontains).
-   - `publish_inline_create`: Endpoint POST que crea en caliente taxonomías usando los `ModelForm` de Django y resuelve los vacíos de campos contextualmente (área en asignatura, tema/niveles en módulo, defaults para `order`/`is_active`/`is_published`). Para `Module`, mapea dinámicamente `title` como la propiedad uniforme `name` de la respuesta AJAX.
+3. **Vista de Lote y Validaciones en `publish_studio.py`:**
+   - El método `POST` implementa un parseo defensivo robusto para `file_names` con try-except atrapando `json.JSONDecodeError`, `TypeError` y `ValueError` retornando un `HttpResponse` de estado 400 en caso de malformación o de no ser una lista de strings.
+   - La propiedad `watch_folder` se normaliza cayendo en el default `"default"` si viene vacía o no es provista.
+   - Se valida la pertenencia taxonómica (Área activa &rarr; Asignatura activa &rarr; Tema activo) y el estado publicado del módulo opcional.
+   - La playlist se valida y normaliza de forma opcional (si viene vacía se asume sin playlist y no genera error).
 
-4. **Templates y Static JS/CSS:**
-   - Creado `templates/pages/publish_studio.html` con rejilla responsiva, formulario completo y modales accesibles para creación inline sin estilos inline.
-   - Creado `static/js/publish_studio.js` que maneja eventos, llamadas AJAX, modales y lectura del token CSRF (`X-CSRFToken`) sin scripts inline (totalmente compatible con CSP).
-   - Enlace añadido en la navegación para staff (`templates/base.html`).
-   - Incrementado cache-buster del CSS a `?v=23`.
+4. **UI/UX y Scripts con CSP:**
+   - `templates/pages/publish_studio.html`: Se actualizó para tener un `<input type="file" multiple>` que lee solo los nombres de los archivos. No envía el archivo al servidor (sin atributo `name`), poblando el campo oculto JSON.
+   - `static/js/publish_studio.js`: Maneja de forma XSS-safe (DOM API con `createElement` y `textContent`) la previsualización de archivos y el renderizado de la caja de warnings dinámicos sin recurrir a `innerHTML` con interpolación de variables.
+   - La playlist vacía se trata como "sin playlist" directamente sin checkboxes innecesarios como `skip_playlist`.
 
-5. **Pruebas y Validación:**
-   - Creado `apps/content/tests/test_publish_studio.py` con 9 tests unitarios e integración cubriendo validación server-side, redirección 302 a login para usuarios normales, filtros AJAX, duplicados y creación inline.
-   - Barrera de calidad superada al 100%: 227/227 tests verdes (`manage.py test`), Dry-run de migraciones sin cambios y `check --deploy` correcto.
+5. **Pruebas y Verificaciones:**
+   - Rediseñado `apps/content/tests/test_publish_studio.py` sumando cobertura para el JSON batch (`profeonline.upload-batch/v1`), exclusión de archivos/taxonomía, inconsistencias taxonómicas, entidades inactivas, y las nuevas pruebas de parseo defensivo (`test_publish_post_malformed_filenames_rejected`, `test_publish_post_non_list_filenames_rejected`, `test_publish_post_watch_folder_default_fallback`).
+   - Todos los tests pasaron exitosamente (14 en la suite local del estudio, 232/232 en total).
+   - Verificados checks estáticos: `makemigrations --check --dry-run` (sin cambios), `check --deploy` (OK) y `node --check static/js/publish_studio.js` (OK).

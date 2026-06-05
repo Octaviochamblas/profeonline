@@ -78,47 +78,30 @@ Resumen; índice y plantillas en [`../auditorias/README.md`](../auditorias/READM
 
 ## 6. Contrato de Orden de Trabajo (Upload Job V1)
 
-Esquema de datos JSON (`profeonline.upload-job/v1`) utilizado por el script local de Codex para procesar e iniciar la publicación:
+Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script local de Codex para procesar e iniciar la publicación de un lote:
 
 ```json
 {
-  "schema": "profeonline.upload-job/v1",
-  "file": {
-    "watch_folder": "default",
-    "file_name": "fisica-sonido.mp4"
-  },
-  "youtube": {
-    "privacy": "public",
-    "playlist_id": "PLxxxx",
-    "playlist_title": "Física",
-    "skip_playlist": false
-  },
+  "schema": "profeonline.upload-batch/v1",
+  "watch_folder": "default",
+  "files": [
+    "clase1.mp4",
+    "clase2.mp4"
+  ],
   "taxonomy": {
     "area_slug": "fisica",
     "subject_slug": "fisica-escolar",
     "topic_slug": "sonido",
-    "module_slug": null,
-    "level_slugs": ["mediapreuniversitario"]
+    "module_slug": null
   },
-  "thumbnail": {
-    "class_label": "",
-    "main_text": "Sonido y efecto Doppler",
-    "palette": "azul-profeonline",
-    "ai_panel_instructions": "…"
+  "youtube": {
+    "playlist_id": "PLxxxx",
+    "playlist_title": "Física"
   },
-  "copy": {
-    "title": "…",
-    "description": "…",
-    "content_md": "…"
-  },
-  "ai_instructions": "Tono educativo, SEO de clases particulares.",
-  "publish": {
-    "is_published": true
-  }
+  "instructions": "texto libre aplicado a todos los videos del lote"
 }
 ```
 
-*   `youtube.privacy`: Uno de `public`, `unlisted`, `private`.
-*   `youtube.playlist_id`: Requerido a menos que `skip_playlist` sea `true`.
-*   `thumbnail.class_label`: Opcional (ej: "Clase 2.4", o vacío).
 *   `taxonomy.module_slug`: Opcional (puede ser `null`).
+*   `youtube.playlist_id`: Requerido a menos que se configure vacío.
+*   `instructions`: Texto libre opcional.
