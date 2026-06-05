@@ -43,3 +43,6 @@ from .evaluation_views import (
     topic_exam_start,
     topic_exam_submit,
 )
+from .publish_studio import publish_studio
+from .subject_options import subject_options, module_options
+from .publish_inline_create import publish_inline_create

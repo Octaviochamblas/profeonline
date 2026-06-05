@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Estudio de Publicacion | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+    <a href="{% url 'core:home' %}">Inicio</a>
+    <span>&raquo;</span>
+    <span class="current">Estudio de Publicacion</span>
+</div>
+
+<div class="section-header">
+    <h1 class="section-title">Estudio de Publicacion</h1>
+    <p class="section-subtitle">Asistente para preparar y validar lotes de subidas de video a YouTube.</p>
+</div>
+
+<form id="publish-studio-form" method="post" action="{% url 'content:publish_studio' %}">
+    {% csrf_token %}
+    <input type="hidden" name="file_names" id="file_names" value="{{ form_data.file_names|default:'[]' }}">
+
+    <div class="publish-studio-layout">
+
+        <!-- Form Column -->
+        <div class="studio-form-col">
+
+            <!-- Section: Video Files Selection -->
+            <div class="form-section-card">
+                <h2 class="form-section-card__title">1. Archivos de Video</h2>
+
+                <div class="form-group">
+                    <label for="file_input">Seleccionar archivos de video <span class="text-danger">*</span></label>
+                    <input type="file" id="file_input" class="form-control" multiple accept="video/*">
+                    {% if errors.file_names %}<span class="text-danger">{{ errors.file_names }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Archivos seleccionados para el lote:</label>
+                    <div id="file-list-preview" class="file-list-preview text-muted--small-mt">
+                        <!-- Populated via JS -->
+                        <span class="text-muted">Ningun archivo seleccionado.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Taxonomy -->
+            <div class="form-section-card">
+                <h2 class="form-section-card__title">2. Taxonomia y Organizacion</h2>
+
+                <div class="form-grid-2col">
+                    <div class="form-group">
+                        <label for="area_id">Area <span class="text-danger">*</span></label>
+                        <div class="inline-action-wrapper">
+                            <select id="area_id" name="area_id" class="form-control">
+                                <option value="">-- Selecciona Area --</option>
+                                {% for area in areas %}
+                                    <option value="{{ area.id }}" {% if form_data.area_id|add:"0" == area.id %}selected{% endif %}>{{ area.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" class="btn btn-secondary btn-inline-add" data-open-modal="modal-area" aria-label="Crear nueva area">+</button>
+                        </div>
+                        {% if errors.area_id %}<span class="text-danger">{{ errors.area_id }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject_id">Asignatura <span class="text-danger">*</span></label>
+                        <div class="inline-action-wrapper">
+                            <select id="subject_id" name="subject_id" class="form-control">
+                                <option value="">-- Selecciona Asignatura --</option>
+                                <!-- Populated via AJAX -->
+                            </select>
+                            <button type="button" class="btn btn-secondary btn-inline-add" data-open-modal="modal-subject" aria-label="Crear nueva asignatura">+</button>
+                        </div>
+                        {% if errors.subject_id %}<span class="text-danger">{{ errors.subject_id }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="form-grid-2col">
+                    <div class="form-group">
+                        <label for="topic_id">Tema <span class="text-danger">*</span></label>
+                        <div class="inline-action-wrapper">
+                            <select id="topic_id" name="topic_id" class="form-control">
+                                <option value="">-- Selecciona Tema --</option>
+                                <!-- Populated via AJAX -->
+                            </select>
+                            <button type="button" class="btn btn-secondary btn-inline-add" data-open-modal="modal-topic" aria-label="Crear nuevo tema">+</button>
+                        </div>
+                        {% if errors.topic_id %}<span class="text-danger">{{ errors.topic_id }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="module_id">Modulo (Opcional)</label>
+                        <div class="inline-action-wrapper">
+                            <select id="module_id" name="module_id" class="form-control">
+                                <option value="">-- Selecciona Modulo (Opcional) --</option>
+                                <!-- Populated via AJAX -->
+                            </select>
+                            <button type="button" class="btn btn-secondary btn-inline-add" data-open-modal="modal-module" aria-label="Crear nuevo modulo">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: YouTube/Playlist -->
+            <div class="form-section-card">
+                <h2 class="form-section-card__title">3. YouTube e Integracion</h2>
+
+                <div class="form-grid-2col">
+                    <div class="form-group">
+                        <label for="playlist_id">Enlace o ID de playlist existente</label>
+                        <input type="text" id="playlist_id" name="playlist_id" class="form-control"
+                               value="{{ form_data.playlist_id|default:'' }}" placeholder="ej: https://www.youtube.com/playlist?list=PLxxxxxx">
+                        {% if errors.playlist_id %}<span class="text-danger">{{ errors.playlist_id }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="playlist_title">Titulo de la Playlist (Opcional)</label>
+                        <input type="text" id="playlist_title" name="playlist_title" class="form-control"
+                               value="{{ form_data.playlist_title|default:'' }}" placeholder="ej: Fisica Mecanica">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="create_playlist" name="create_playlist" value="true"
+                               {% if form_data.create_playlist %}checked{% endif %}>
+                        Crear una playlist nueva en YouTube
+                    </label>
+                </div>
+
+                <div id="new-playlist-fields" class="form-grid-2col" hidden>
+                    <div class="form-group">
+                        <label for="new_playlist_title">Titulo de la nueva playlist <span class="text-danger">*</span></label>
+                        <input type="text" id="new_playlist_title" name="new_playlist_title" class="form-control"
+                               value="{{ form_data.new_playlist_title|default:'' }}" placeholder="ej: Fisica - Sonido">
+                        {% if errors.new_playlist_title %}<span class="text-danger">{{ errors.new_playlist_title }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_playlist_description">Descripcion de la nueva playlist</label>
+                        <textarea id="new_playlist_description" name="new_playlist_description" class="form-control" rows="2"
+                                  placeholder="Descripcion opcional para YouTube">{{ form_data.new_playlist_description|default:'' }}</textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Section: Extra parameters -->
+            <div class="form-section-card">
+                <h2 class="form-section-card__title">4. Indicaciones del Lote</h2>
+
+                <div class="form-group">
+                    <label for="instructions">Indicaciones / Instrucciones Generales para la IA</label>
+                    <textarea id="instructions" name="instructions" class="form-control" rows="4"
+                              placeholder="ej: Tono educativo, enfocado en resolver procedimientos paso a paso y SEO de clases particulares.">{{ form_data.instructions|default:'' }}</textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar / Preview Column -->
+        <div class="studio-preview-col">
+
+            <!-- Warnings Box -->
+            <div class="form-section-card">
+                <h2 class="form-section-card__title">Estado de Validacion</h2>
+                <div id="warnings-box">
+                    <!-- Updated dynamically in JS -->
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="form-section-card form-section-card--centered">
+                <button type="submit" id="btn-download-job" class="btn btn-primary btn--full-padding" disabled>
+                    Descargar orden de lote (.json)
+                </button>
+                <p class="text-muted text-muted--small-mt">
+                    Este archivo JSON describe el lote de videos y su configuracion taxonomica. Es procesado localmente por Codex.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+<!-- MODAL OVERLAYS (Hidden by default, styled dynamically via CSS classes) -->
+
+<!-- Modal: Area -->
+<div id="modal-area" class="modal-overlay" hidden>
+    <div class="modal-content-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Crear Nueva Area</h3>
+            <button type="button" class="modal-close-btn" data-close-modal aria-label="Cerrar modal">&times;</button>
+        </div>
+        <form class="modal-form" action="{% url 'content:publish_inline_create' 'area' %}" data-entity-type="area" method="post">
+            <div class="modal-body">
+                <div class="modal-errors"></div>
+                <div class="form-group">
+                    <label for="area-name">Nombre <span class="text-danger">*</span></label>
+                    <input type="text" id="area-name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="area-desc">Descripcion</label>
+                    <textarea id="area-desc" name="description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Subject -->
+<div id="modal-subject" class="modal-overlay" hidden>
+    <div class="modal-content-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Crear Nueva Asignatura</h3>
+            <button type="button" class="modal-close-btn" data-close-modal aria-label="Cerrar modal">&times;</button>
+        </div>
+        <form class="modal-form" action="{% url 'content:publish_inline_create' 'subject' %}" data-entity-type="subject" method="post">
+            <input type="hidden" name="area_id" value="">
+            <div class="modal-body">
+                <div class="modal-errors"></div>
+                <div class="form-group">
+                    <label for="subject-name">Nombre <span class="text-danger">*</span></label>
+                    <input type="text" id="subject-name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject-desc">Descripcion</label>
+                    <textarea id="subject-desc" name="description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Topic -->
+<div id="modal-topic" class="modal-overlay" hidden>
+    <div class="modal-content-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Crear Nuevo Tema</h3>
+            <button type="button" class="modal-close-btn" data-close-modal aria-label="Cerrar modal">&times;</button>
+        </div>
+        <form class="modal-form" action="{% url 'content:publish_inline_create' 'topic' %}" data-entity-type="topic" method="post">
+            <input type="hidden" name="subject" value="">
+            <div class="modal-body">
+                <div class="modal-errors"></div>
+                <div class="form-group">
+                    <label for="topic-name">Nombre <span class="text-danger">*</span></label>
+                    <input type="text" id="topic-name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="topic-desc">Descripcion</label>
+                    <textarea id="topic-desc" name="description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Module -->
+<div id="modal-module" class="modal-overlay" hidden>
+    <div class="modal-content-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Crear Nuevo Modulo</h3>
+            <button type="button" class="modal-close-btn" data-close-modal aria-label="Cerrar modal">&times;</button>
+        </div>
+        <form class="modal-form" action="{% url 'content:publish_inline_create' 'module' %}" data-entity-type="module" method="post">
+            <input type="hidden" name="subject_id" value="">
+            <input type="hidden" name="topic_id" value="">
+            <div class="modal-body">
+                <div class="modal-errors"></div>
+                <div class="form-group">
+                    <label for="module-title">Titulo <span class="text-danger">*</span></label>
+                    <input type="text" id="module-title" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="module-objective">Objetivo de Aprendizaje</label>
+                    <textarea id="module-objective" name="objective" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="module-desc">Descripcion</label>
+                    <textarea id="module-desc" name="description" class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script nonce="{{ csp_nonce }}" src="{% static 'js/publish_studio.js' %}"></script>
+{% endblock %}

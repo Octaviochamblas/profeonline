@@ -10,17 +10,11 @@ from django.db import transaction
 from django.urls import reverse
 
 from apps.content.models import Area, Level, Resource, Subject, Topic
+from apps.content.services.youtube_utils import extract_playlist_id
 
 
 YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3"
 
-
-def extract_playlist_id(value):
-    parsed = urlparse(value)
-    query = parse_qs(parsed.query)
-    if query.get("list"):
-        return query["list"][0]
-    return value.strip()
 
 
 def extract_video_id(value):
@@ -114,46 +108,7 @@ def fetch_single_video(video_id, api_key):
     }
 
 
-def clean_video_title(title):
-    clean_title = re.sub(
-        r"^\s*(?:clase\s*)?\d+(?:[.\s_-]\d+)*(?:[a-zA-Z])?[\s).:-]+",
-        "",
-        title,
-        flags=re.IGNORECASE,
-    )
-    clean_title = re.sub(r"\s*(?:-|\|)?\s*@?ProfeOnline(?:\.cl)?\s*$", "", clean_title, flags=re.IGNORECASE)
-    return re.sub(r"\s+", " ", clean_title).strip() or title.strip()
-
-
-def build_resource_copy(video, subject, topic):
-    clean_title = clean_video_title(video["title"])
-    is_exercise = "ejercicio" in clean_title.lower() or "ejercicios" in clean_title.lower()
-
-    if is_exercise:
-        description = (
-            f"Practica {clean_title} dentro del tema {topic.name}. "
-            f"Recurso de {subject.name} enfocado en resolver procedimientos paso a paso."
-        )
-        focus = "ejercicios resueltos y estrategias de desarrollo"
-    else:
-        description = (
-            f"Aprende {clean_title} dentro del tema {topic.name}. "
-            f"Recurso de {subject.name} para comprender conceptos clave antes de avanzar."
-        )
-        focus = "conceptos principales, ejemplos y conexiones con el tema"
-
-    content = f"""### Sobre este recurso
-Este recurso aborda **{clean_title}** como parte del tema **{topic.name}** en la asignatura **{subject.name}**.
-
-### Que encontraras
-- Explicacion centrada en {focus}.
-- Relacion directa con la ruta de aprendizaje de {topic.name}.
-- Material pensado para reforzar el estudio antes o despues de una clase particular.
-
-### Video
-[Ver este recurso en YouTube]({video["video_url"]})
-"""
-    return description, content
+from apps.content.services.resource_copy import build_resource_copy, clean_video_title
 
 
 def get_or_create_area(name, description=""):

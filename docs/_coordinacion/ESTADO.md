@@ -37,14 +37,19 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- 🔨 **Estudio de publicación (Fase 1)** — `backlog/2-arquitectura/estudio-publicacion-web.md`.
-  **Preflight 🧩 Codex ✅ (sin objeciones, 3 refinamientos integrados)** → listo para 🔨 Antigravity
-  (rama `feat/estudio-publicacion-fase1`). Página staff que arma
-  la orden de trabajo (`profeonline.upload-job/v1`) y la descarga como `.json`: selects dependientes
-  Área→Asignatura→Tema, creación inline, vista previa de copy, dedupe por título y aviso de incompleto.
-  **Sin migraciones, sin subir archivo, sin IA** (eso es Fase 2). Incluye corregir la URL del webhook en el doc.
 
 ## Últimas entregas
+- 2026-06-05 — 🏛️🔨🧩 **"Estudio de publicación (Fase 1)" CERRADO 🟢.** Página staff (`/publicar/estudio/`) que
+  arma una **orden de lote** (`profeonline.upload-batch/v1`): selecciona varios videos (solo por nombre, no sube
+  contenido), Área/Asignatura/Tema/Módulo (con creación inline), playlist (enlace o crear nueva) e indicación libre;
+  Codex sube a YouTube y publica tal cual. Codex auditó (P2/P3 menores), QA del 🧑 detectó un bug al crear tema inline
+  (`resource_ordering_method`) que Claude corrigió + test. Mergeado a `main` (squash). Tarjeta en `6-finalizados/`.
+  **Sin migraciones.** Pendiente aparte: fix del seed `Matemática` (singular) y la Fase 2 (cola/agente).
+- 2026-06-04 — 🏛️ Claude + 🧑 Usuario: **"Estudio de publicación" SIMPLIFICADO (revisión pre-merge).** Tras la QA,
+  Octavio pidió algo más simple: lote de videos (por nombre) + Área/Asignatura/Tema/Módulo + playlist + indicación
+  libre; Codex hace título/descripción/miniatura/subida tal cual. Se quita copy/duplicados/miniatura/privacidad y se
+  agrega selección múltiple de archivos. Tarjeta `4-auditoria` → `3-construccion` para recorte por 🔨 Antigravity.
+  Contrato pasa a `upload-batch/v1`.
 - 2026-06-04 — 🧩 Codex + 🏛️ Claude: **Preflight de "Estudio de publicación (Fase 1)" OK** (sin objeciones).
   3 refinamientos integrados al handoff: inline de asignatura setea `Subject.area`; inline de módulo setea
   `subject` (+topic/levels) y `module_slug` es solo organizativo; mantener firma de `build_resource_copy`
