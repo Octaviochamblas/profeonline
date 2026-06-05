@@ -433,17 +433,31 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.error("Error en creacion inline:", err);
                 if (errorContainer && err.errors) {
-                    let errHtml = '<div class="alert alert--danger"><ul>';
+                    const alertDiv = document.createElement("div");
+                    alertDiv.className = "alert alert--danger";
+                    const list = document.createElement("ul");
+
                     for (const field in err.errors) {
                         err.errors[field].forEach(msg => {
-                            errHtml += `<li><strong>${field}:</strong> ${msg}</li>`;
+                            const item = document.createElement("li");
+                            const label = document.createElement("strong");
+                            label.textContent = field + ":";
+                            item.appendChild(label);
+                            item.appendChild(document.createTextNode(" " + msg));
+                            list.appendChild(item);
                         });
                     }
-                    errHtml += '</ul></div>';
-                    errorContainer.innerHTML = errHtml;
+
+                    alertDiv.appendChild(list);
+                    errorContainer.appendChild(alertDiv);
                 } else {
                     if (errorContainer) {
-                        errorContainer.innerHTML = '<div class="alert alert--danger"><p>Ocurrio un error inesperado al guardar.</p></div>';
+                        const alertDiv = document.createElement("div");
+                        alertDiv.className = "alert alert--danger";
+                        const message = document.createElement("p");
+                        message.textContent = "Ocurrio un error inesperado al guardar.";
+                        alertDiv.appendChild(message);
+                        errorContainer.appendChild(alertDiv);
                     }
                 }
             })
