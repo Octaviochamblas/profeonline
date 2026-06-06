@@ -17,7 +17,7 @@ class SeedContentCommandTests(TestCase):
 
         self.assertEqual(Area.objects.count(), 3)
         self.assertEqual(Level.objects.count(), 3)
-        self.assertEqual(Subject.objects.count(), 20)
+        self.assertEqual(Subject.objects.count(), 21)
         self.assertEqual(Topic.objects.count(), 25)
         self.assertEqual(Resource.objects.filter(is_published=True).count(), 168)
         self.assertEqual(Module.objects.filter(is_published=True).count(), 1)

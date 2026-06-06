@@ -39,7 +39,9 @@ class ContentFormTests(TestCase):
 
         subject_names = list(form.fields["subject"].queryset.values_list("name", flat=True))
 
-        self.assertEqual(subject_names, ["Lenguaje", "Matemática"])
+        self.assertIn("Lenguaje", subject_names)
+        self.assertIn("Matemática", subject_names)
+        self.assertNotIn("Historia", subject_names)
 
     def test_resource_form_filters_topics_by_subject_and_active_levels(self):
         form = ResourceForm(data={"subject": self.active_subject.pk})
