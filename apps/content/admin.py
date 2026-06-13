@@ -70,35 +70,43 @@ class ResourceAdmin(admin.ModelAdmin):
         # Si se envió la confirmación del formulario intermedio
         if "apply" in request.POST:
             try:
-                level = int(request.POST.get("level", 1))
+                levels = [int(v) for v in request.POST.getlist("levels") if v in ("1", "2", "3")]
                 mode = request.POST.get("mode", "ambas")
-                count = int(request.POST.get("count", 3))
+                count = int(request.POST.get("count", 20))
             except (ValueError, TypeError):
-                level = 1
+                levels = [1, 2, 3]
                 mode = "ambas"
-                count = 3
+                count = 20
+
+            if not levels:
+                levels = [1, 2, 3]
 
             success_count = 0
             for resource in queryset:
-                try:
-                    generate_questions_for_resource(
-                        resource=resource,
-                        level=level,
-                        mode=mode,
-                        count=count,
-                    )
+                resource_ok = True
+                for level in levels:
+                    try:
+                        generate_questions_for_resource(
+                            resource=resource,
+                            level=level,
+                            mode=mode,
+                            count=count,
+                        )
+                    except Exception as e:
+                        resource_ok = False
+                        self.message_user(
+                            request,
+                            f"Error en '{resource.title}' nivel {level}: {e}",
+                            level=messages.ERROR,
+                        )
+                if resource_ok:
                     success_count += 1
-                except Exception as e:
-                    self.message_user(
-                        request,
-                        f"Error al generar preguntas para '{resource.title}': {e}",
-                        level=messages.ERROR,
-                    )
 
             if success_count > 0:
+                niveles_str = ", ".join(f"N{l}" for l in levels)
                 self.message_user(
                     request,
-                    f"Se generaron exitosamente preguntas en borrador para {success_count} recurso(s).",
+                    f"Se generaron {count} preguntas × {len(levels)} niveles ({niveles_str}) en borrador para {success_count} recurso(s).",
                     level=messages.SUCCESS,
                 )
             return None

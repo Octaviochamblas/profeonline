@@ -46,7 +46,7 @@ class AIGenerationTests(TestCase):
             self.assertEqual(q.resource, self.resource)
             self.assertEqual(q.level, 1)
             self.assertEqual(q.mode, "ambas")
-            self.assertEqual(q.status, "borrador")
+            self.assertEqual(q.status, "publicada")
             self.assertTrue(q.text.startswith("[Simulado N1]"))
             self.assertTrue(len(q.explanation) > 0)
 
@@ -129,7 +129,7 @@ class AIGenerationTests(TestCase):
         q = questions[0]
         self.assertEqual(q.resource, self.resource)
         self.assertEqual(q.text, "De acuerdo con el recurso, ¿cómo se suman fracciones con igual denominador?")
-        self.assertEqual(q.status, "borrador")
+        self.assertEqual(q.status, "publicada")
 
         choices = list(q.choices.all())
         self.assertEqual(len(choices), 4)
@@ -139,7 +139,7 @@ class AIGenerationTests(TestCase):
         # Verificar que el request a Gemini incluyó los parámetros esperados
         mock_post.assert_called_once()
         args, kwargs = mock_post.call_args
-        self.assertTrue("gemini-1.5-flash" in args[0])
+        self.assertTrue("gemini-2.5-flash" in args[0])
         self.assertIn("responseMimeType", kwargs["json"]["generationConfig"])
 
     @patch("requests.post")
@@ -210,7 +210,7 @@ class AIGenerationTests(TestCase):
         final_count = Question.objects.filter(resource=self.resource).count()
         self.assertEqual(final_count, initial_count + 3)
 
-        new_questions = Question.objects.filter(resource=self.resource, level=2, status="borrador")
+        new_questions = Question.objects.filter(resource=self.resource, level=2, status="publicada")
         self.assertEqual(new_questions.count(), 3)
 
     def test_management_command_invalid_resource(self):
@@ -255,7 +255,7 @@ class AIGenerationTests(TestCase):
             {
                 "action": "generar_preguntas_ia_action",
                 "apply": "yes",
-                "level": "2",
+                "levels": ["2"],
                 "mode": "evaluacion",
                 "count": "3",
             }
@@ -280,7 +280,7 @@ class AIGenerationTests(TestCase):
 
         new_questions = Question.objects.filter(resource=self.resource, level=2, mode="evaluacion")
         self.assertEqual(new_questions.count(), 3)
-        self.assertTrue(all(q.status == "borrador" for q in new_questions))
+        self.assertTrue(all(q.status == "publicada" for q in new_questions))
 
 
 def fallback_storage_mock():

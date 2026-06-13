@@ -24,9 +24,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=24">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=27">
     <script src="{% static 'js/htmx.min.js' %}"></script>
     <meta name="csrf-token" content="{{ csrf_token }}">
+    <script nonce="{{ csp_nonce }}">
+      document.addEventListener('htmx:configRequest', function(evt) {
+        var meta = document.querySelector('meta[name="csrf-token"]');
+        if (meta) evt.detail.headers['X-CSRFToken'] = meta.getAttribute('content');
+      });
+      document.addEventListener('htmx:beforeSwap', function(evt) {
+        if (evt.detail.xhr.status >= 400) {
+          evt.detail.shouldSwap = true;
+          evt.detail.isError = false;
+        }
+      });
+      document.addEventListener('click', function(evt) {
+        var cancelBtn = evt.target.closest('[data-quiz-cancel]');
+        if (cancelBtn) {
+          var area = document.getElementById(cancelBtn.getAttribute('data-quiz-cancel'));
+          if (area) {
+            var level = area.closest('.quiz-level');
+            area.innerHTML = '';
+            if (level) level.scrollIntoView({ block: 'start' });
+          }
+          return;
+        }
+        var reportBtn = evt.target.closest('[data-quiz-report-toggle]');
+        if (reportBtn) {
+          var panel = document.getElementById(reportBtn.getAttribute('data-quiz-report-toggle'));
+          if (panel) panel.classList.toggle('quiz-report--visible');
+        }
+      });
+    </script>
     {% block extra_head %}{% endblock %}
     {% block structured_data %}{% endblock %}
 </head>

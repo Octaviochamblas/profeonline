@@ -1,3 +1,4 @@
+{% load markdown_tags %}
 <div class="quiz-results {% if attempt.passed %}quiz-results--passed{% else %}quiz-results--failed{% endif %}" id="quiz-results-{{ level }}">
     <div class="quiz-results__header">
         {% if attempt.passed %}
@@ -52,7 +53,7 @@
             {% if result.explanation %}
             <div class="quiz-result-item__explanation">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                {{ result.explanation }}
+                <span class="quiz-result-item__explanation-text">{{ result.explanation|format_steps }}</span>
             </div>
             {% endif %}
         </div>
@@ -60,51 +61,80 @@
     </div>
 
     <div class="quiz-results__footer">
-        {% if attempt.passed %}
-            {% if mastery.stars < 3 %}
-            <p class="quiz-results__next-hint">
-                ¡Sigue avanzando al siguiente nivel para conseguir más estrellas!
-            </p>
+        {% if mode == "evaluacion" %}
+            {% if attempt.passed %}
+                {% if mastery.stars < 3 %}
+                <p class="quiz-results__next-hint">
+                    ¡Aprobado! Sigue avanzando al siguiente nivel para conseguir más estrellas.
+                </p>
+                {% else %}
+                <p class="quiz-results__next-hint quiz-results__next-hint--complete">
+                    🌟 ¡Dominio completo! Has aprobado los 3 niveles de este recurso.
+                </p>
+                {% endif %}
             {% else %}
-            <p class="quiz-results__next-hint quiz-results__next-hint--complete">
-                🌟 ¡Dominio completo! Has aprobado los 3 niveles de este recurso.
-            </p>
+                {% if info.remaining > 0 %}
+                <p class="quiz-results__retry-hint">
+                    Te quedan <strong>{{ info.remaining }} intento{{ info.remaining|pluralize:"s" }}</strong> de evaluación.
+                </p>
+                {% elif info.can_recover %}
+                <p class="quiz-results__retry-hint">
+                    Has agotado tus intentos. <strong>Practica con al menos 80% de aciertos</strong> para recuperar un intento.
+                </p>
+                {% else %}
+                <p class="quiz-results__retry-hint">
+                    Has agotado tus intentos. Practica para poder recuperar uno.
+                </p>
+                {% endif %}
             {% endif %}
         {% else %}
-            {% if info.remaining > 0 %}
-            <p class="quiz-results__retry-hint">
-                Te quedan <strong>{{ info.remaining }} intento{{ info.remaining|pluralize:"s" }}</strong> de evaluación.
-            </p>
-            {% elif info.can_recover %}
-            <p class="quiz-results__retry-hint">
-                Has agotado tus intentos. <strong>Practica con al menos 80% de aciertos</strong> para recuperar un intento.
+            {% if info.passed %}
+            <p class="quiz-results__next-hint">
+                Ya aprobaste la evaluación de este nivel. ¡Sigue practicando o avanza de nivel!
             </p>
             {% else %}
-            <p class="quiz-results__retry-hint">
-                Has agotado tus intentos. Practica para poder recuperar uno.
+            <p class="quiz-results__next-hint">
+                Practica las veces que necesites. Cuando te sientas listo, pasa a la Evaluación.
             </p>
             {% endif %}
         {% endif %}
 
         <div class="quiz-results__actions">
-            {% if not attempt.passed and mode == "evaluacion" and info.remaining > 0 %}
-            <button class="btn btn-primary quiz-btn"
-                    hx-get="{% url 'content:quiz_start' resource.slug level 'evaluacion' %}"
-                    hx-target="#quiz-area-{{ level }}"
-                    hx-swap="innerHTML">
-                Reintentar evaluación
-            </button>
+            {% if mode == "evaluacion" %}
+                {% if not attempt.passed and info.remaining > 0 %}
+                <button class="btn btn-primary quiz-btn"
+                        hx-get="{% url 'content:quiz_start' resource.slug level 'evaluacion' %}"
+                        hx-target="#quiz-area-{{ level }}"
+                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                    Volver a intentar
+                </button>
+                {% endif %}
+                <button class="btn btn-secondary quiz-btn"
+                        hx-get="{% url 'content:quiz_start' resource.slug level 'preparacion' %}"
+                        hx-target="#quiz-area-{{ level }}"
+                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                    Ir a Práctica
+                </button>
+            {% else %}
+                {% if not info.passed and not info.max_reached or info.can_recover %}
+                <button class="btn btn-primary quiz-btn"
+                        hx-get="{% url 'content:quiz_start' resource.slug level 'evaluacion' %}"
+                        hx-target="#quiz-area-{{ level }}"
+                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                    Ir a Evaluación
+                </button>
+                {% endif %}
+                <button class="btn btn-secondary quiz-btn"
+                        hx-get="{% url 'content:quiz_start' resource.slug level 'preparacion' %}"
+                        hx-target="#quiz-area-{{ level }}"
+                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                    Practicar de nuevo
+                </button>
             {% endif %}
-            <button class="btn btn-secondary quiz-btn"
-                    hx-get="{% url 'content:quiz_start' resource.slug level 'preparacion' %}"
-                    hx-target="#quiz-area-{{ level }}"
-                    hx-swap="innerHTML">
-                Practicar nivel {{ level }}
-            </button>
             <button class="btn btn-secondary"
                     hx-get="{% url 'content:quiz_status' resource.slug %}"
                     hx-target="#quiz-section"
-                    hx-swap="outerHTML">
+                    hx-swap="outerHTML show:#quiz-section:top">
                 Volver a niveles
             </button>
         </div>
