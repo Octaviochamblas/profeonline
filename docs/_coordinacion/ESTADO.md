@@ -37,6 +37,11 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
+- 🔨 **Estudio de banco de preguntas** — `backlog/2-arquitectura/estudio-banco-preguntas.md` (2026-06-13).
+  Estudio solo-admin: generar (IA + imágenes/descripción), configurar por recurso (totales,
+  distribución, cuántas aparecen, política) y editar preguntas/alternativas. Feature **por fases**
+  (F1 config → F2 edición → F3 generación → F4 multimodal [bloqueada por storage externo] → F5 runtime).
+  Ready para preflight de Codex.
 
 ## Últimas entregas
 - 2026-06-05 — 🏛️🔨🧩 **"Estudio de publicación (Fase 1)" CERRADO 🟢.** Página staff (`/publicar/estudio/`) que

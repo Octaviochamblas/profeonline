@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_key=None):
-    """Genera preguntas en estado 'borrador' para un recurso usando Gemini o OpenAI.
+    """Genera preguntas en estado 'publicada' para un recurso usando Gemini o OpenAI.
 
     Si no se provee ni se encuentra una API key en settings/entorno, y settings.DEBUG es True,
     se genera un conjunto de preguntas simuladas (mock) realistas basadas en el recurso.
@@ -67,7 +67,13 @@ DIRECTRICES DE LAS ALTERNATIVAS:
 1. Proporciona exactamente 4 alternativas por pregunta.
 2. Exactamente UNA alternativa debe ser correcta (`is_correct` = true).
 3. Las otras 3 alternativas (distractores) deben ser incorrectas pero plausibles, representando errores típicos de los estudiantes (por ejemplo, error de signo, olvidar un paso, etc.).
-4. Incluye una explicación breve y clara de la respuesta correcta.
+4. Incluye una explicación clara de la respuesta correcta.
+
+DIRECTRICES DE LA EXPLICACIÓN (importante para la legibilidad):
+- Cuando la resolución tenga varios pasos, numéralos ("1. ", "2. ", "3. ...") y separa cada
+  paso con un salto de línea real (carácter \\n en el JSON). NO juntes todos los pasos en un
+  solo párrafo corrido.
+- Cada paso debe ser una idea concreta y corta (un cálculo o una afirmación por línea).
 
 FORMATO DE SALIDA REQUERIDO (JSON):
 Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de objetos con el siguiente formato, sin bloques de código markdown, explicaciones previas o posteriores:
@@ -90,7 +96,7 @@ Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de
 
 def _call_gemini_api(prompt, key):
     """Llama a la API de Gemini 1.5 Flash."""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={key}"
     headers = {"Content-Type": "application/json"}
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -99,7 +105,7 @@ def _call_gemini_api(prompt, key):
         }
     }
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response = requests.post(url, headers=headers, json=payload, timeout=90)
         response.raise_for_status()
         data = response.json()
         text_response = data["candidates"][0]["content"]["parts"][0]["text"]
@@ -122,7 +128,7 @@ def _call_openai_api(prompt, key):
         "response_format": {"type": "json_object"}
     }
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response = requests.post(url, headers=headers, json=payload, timeout=90)
         response.raise_for_status()
         data = response.json()
         text_response = data["choices"][0]["message"]["content"]
@@ -140,7 +146,7 @@ def _call_openai_api(prompt, key):
 
 
 def _save_questions(resource, level, mode, questions_data):
-    """Guarda las preguntas y alternativas en la base de datos como borradores."""
+    """Guarda las preguntas y alternativas en la base de datos como publicadas."""
     created_questions = []
 
     # Asegurar que questions_data sea una lista
@@ -176,7 +182,7 @@ def _save_questions(resource, level, mode, questions_data):
             mode=mode,
             text=text,
             explanation=explanation,
-            status="borrador",
+            status="publicada",
             order=last_order + 1
         )
         last_order += 1

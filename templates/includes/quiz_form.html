@@ -14,7 +14,7 @@
 
     <form hx-post="{% url 'content:quiz_submit' resource.slug level mode %}"
           hx-target="#quiz-area-{{ level }}"
-          hx-swap="innerHTML"
+          hx-swap="innerHTML show:#quiz-level-{{ level }}:top"
           class="quiz-form"
           id="quiz-form-el-{{ level }}">
         {% csrf_token %}
@@ -33,8 +33,7 @@
                            id="choice_{{ choice.pk }}"
                            name="question_{{ question.pk }}"
                            value="{{ choice.pk }}"
-                           class="quiz-choice__input"
-                           required>
+                           class="quiz-choice__input">
                     <span class="quiz-choice__text">{{ choice.text }}</span>
                 </label>
                 {% endfor %}
@@ -42,20 +41,16 @@
 
             <button type="button"
                     class="quiz-report-btn"
-                    hx-get="#"
-                    onclick="this.nextElementSibling.classList.toggle('quiz-report--visible')"
+                    data-quiz-report-toggle="report-{{ question.pk }}"
                     aria-label="Reportar error en esta pregunta">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
                 Reportar error
             </button>
 
             <div class="quiz-report" id="report-{{ question.pk }}">
-                <div class="quiz-report__form"
-                     hx-post="{% url 'content:quiz_report_error' question.pk %}"
-                     hx-target="#report-{{ question.pk }}"
-                     hx-swap="innerHTML">
+                <div class="quiz-report__form">
                     {% csrf_token %}
-                    <select name="reason" class="quiz-report__select" required aria-label="Motivo del reporte">
+                    <select name="reason" class="quiz-report__select" aria-label="Motivo del reporte">
                         <option value="">Selecciona el motivo…</option>
                         <option value="respuesta_incorrecta">Respuesta correcta equivocada</option>
                         <option value="enunciado_confuso">Enunciado confuso</option>
@@ -64,7 +59,11 @@
                         <option value="explicacion_insuficiente">Explicación insuficiente</option>
                     </select>
                     <textarea name="comment" class="quiz-report__comment" placeholder="Comentario adicional (opcional)" rows="2" aria-label="Comentario adicional"></textarea>
-                    <button type="submit" class="btn btn-secondary quiz-report__submit">Enviar reporte</button>
+                    <button type="button" class="btn btn-secondary quiz-report__submit"
+                            hx-post="{% url 'content:quiz_report_error' question.pk %}"
+                            hx-include="closest .quiz-report__form"
+                            hx-target="#report-{{ question.pk }}"
+                            hx-swap="innerHTML">Enviar reporte</button>
                 </div>
             </div>
         </fieldset>
@@ -76,7 +75,7 @@
                 Enviar respuestas
             </button>
             <button type="button" class="btn btn-secondary"
-                    onclick="document.getElementById('quiz-area-{{ level }}').innerHTML = ''">
+                    data-quiz-cancel="quiz-area-{{ level }}">
                 Cancelar
             </button>
         </div>
