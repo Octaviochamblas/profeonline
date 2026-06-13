@@ -33,7 +33,8 @@
         if (meta) evt.detail.headers['X-CSRFToken'] = meta.getAttribute('content');
       });
       document.addEventListener('htmx:beforeSwap', function(evt) {
-        if (evt.detail.xhr.status >= 400) {
+        var status = evt.detail.xhr.status;
+        if (status >= 400 && status < 500) {
           evt.detail.shouldSwap = true;
           evt.detail.isError = false;
         }

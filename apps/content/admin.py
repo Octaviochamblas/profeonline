@@ -106,7 +106,7 @@ class ResourceAdmin(admin.ModelAdmin):
                 niveles_str = ", ".join(f"N{l}" for l in levels)
                 self.message_user(
                     request,
-                    f"Se generaron {count} preguntas × {len(levels)} niveles ({niveles_str}) en borrador para {success_count} recurso(s).",
+                    f"Se publicaron {count} preguntas × {len(levels)} niveles ({niveles_str}) para {success_count} recurso(s).",
                     level=messages.SUCCESS,
                 )
             return None

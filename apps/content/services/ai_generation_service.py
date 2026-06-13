@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_key=None):
-    """Genera preguntas en estado 'borrador' para un recurso usando Gemini o OpenAI.
+    """Genera preguntas en estado 'publicada' para un recurso usando Gemini o OpenAI.
 
     Si no se provee ni se encuentra una API key en settings/entorno, y settings.DEBUG es True,
     se genera un conjunto de preguntas simuladas (mock) realistas basadas en el recurso.
@@ -146,7 +146,7 @@ def _call_openai_api(prompt, key):
 
 
 def _save_questions(resource, level, mode, questions_data):
-    """Guarda las preguntas y alternativas en la base de datos como borradores."""
+    """Guarda las preguntas y alternativas en la base de datos como publicadas."""
     created_questions = []
 
     # Asegurar que questions_data sea una lista

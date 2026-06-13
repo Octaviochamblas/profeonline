@@ -6,7 +6,7 @@ from apps.content.services.ai_generation_service import generate_questions_for_r
 
 
 class Command(BaseCommand):
-    help = "Genera preguntas en estado borrador para un recurso utilizando la IA (Gemini/OpenAI)."
+    help = "Genera preguntas publicadas para un recurso utilizando la IA (Gemini/OpenAI)."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -66,7 +66,7 @@ class Command(BaseCommand):
 
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"¡Éxito! Se han generado y guardado {len(questions)} preguntas en estado 'borrador'."
+                    f"¡Éxito! Se han generado y guardado {len(questions)} preguntas en estado 'publicada'."
                 )
             )
             for idx, q in enumerate(questions, start=1):
