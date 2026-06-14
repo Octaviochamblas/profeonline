@@ -1,0 +1,16 @@
+<div class="alt{% if choice.is_correct %} alt--ok{% endif %}" id="choice-item-{{ choice.id }}">
+    <span class="alt__mark" aria-hidden="true">{% if choice.is_correct %}✓{% else %}○{% endif %}</span>
+    <span class="alt__txt">{{ choice.text }}</span>
+    {% if warning %}<span class="alt__warn">{{ warning }}</span>{% endif %}
+    <span class="alt__actions">
+        <button type="button" class="btn-link-sm"
+                hx-get="{% url 'content:edit_choice_inline' choice.id %}"
+                hx-target="#choice-item-{{ choice.id }}"
+                hx-swap="outerHTML">Editar</button>
+        <button type="button" class="btn-link-sm btn-link-sm--danger"
+                hx-post="{% url 'content:delete_choice' choice.id %}"
+                hx-confirm="¿Eliminar esta alternativa?"
+                hx-target="#choice-item-{{ choice.id }}"
+                hx-swap="outerHTML">✕</button>
+    </span>
+</div>

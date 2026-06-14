@@ -12,53 +12,125 @@ from apps.content.models import Choice, Question
 logger = logging.getLogger(__name__)
 
 
-def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_key=None):
-    """Genera preguntas en estado 'publicada' para un recurso usando Gemini o OpenAI.
+_EDUCATION_DESCRIPTIONS = {
+    "escolar": (
+        "Escolar (hasta 13 años) — usa vocabulario simple y cotidiano, sin álgebra abstracta, "
+        "ejemplos concretos del día a día (objetos, cantidades pequeñas, situaciones familiares)."
+    ),
+    "media": (
+        "Media preuniversitaria (14-17 años) — usa vocabulario técnico básico, álgebra introductoria, "
+        "ejemplos del mundo real y aplicaciones prácticas."
+    ),
+    "universitaria": (
+        "Universitaria (18+) — usa terminología formal, demostraciones rigurosas, "
+        "notación matemática avanzada y referencias a teoremas o definiciones formales."
+    ),
+}
+
+
+def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_key=None, status="publicada", education_level=None, custom_instructions=None, transcript=None, use_transcript=True, reference_guides=None, use_guides=True):
+    """Genera preguntas para un recurso usando Gemini o OpenAI en el estado especificado.
 
     Si no se provee ni se encuentra una API key en settings/entorno, y settings.DEBUG es True,
     se genera un conjunto de preguntas simuladas (mock) realistas basadas en el recurso.
     """
-    gemini_key = api_key or getattr(settings, "GEMINI_API_KEY", "") or os.environ.get("GEMINI_API_KEY", "")
-    openai_key = api_key or getattr(settings, "OPENAI_API_KEY", "") or os.environ.get("OPENAI_API_KEY", "")
+    is_testing = "test" in sys.argv or getattr(settings, "TESTING", False) or "test" in getattr(settings, "SETTINGS_MODULE", "")
+
+    gemini_key = api_key
+    if gemini_key is None:
+        gemini_key = getattr(settings, "GEMINI_API_KEY", None)
+        if is_testing and gemini_key == os.environ.get("GEMINI_API_KEY", ""):
+            gemini_key = ""
+        elif gemini_key is None and not is_testing:
+            gemini_key = os.environ.get("GEMINI_API_KEY", "")
+        elif gemini_key is None:
+            gemini_key = ""
+
+    openai_key = api_key
+    if openai_key is None:
+        openai_key = getattr(settings, "OPENAI_API_KEY", None)
+        if is_testing and openai_key == os.environ.get("OPENAI_API_KEY", ""):
+            openai_key = ""
+        elif openai_key is None and not is_testing:
+            openai_key = os.environ.get("OPENAI_API_KEY", "")
+        elif openai_key is None:
+            openai_key = ""
+
 
     # Si no hay llaves configuradas y estamos en DEBUG o ejecutando tests, usar el generador simulado
     if not gemini_key and not openai_key:
-        is_testing = "test" in sys.argv or getattr(settings, "TESTING", False) or "test" in getattr(settings, "SETTINGS_MODULE", "")
         if settings.DEBUG or is_testing:
-            return _generate_mock_questions(resource, level, mode, count)
+            return _generate_mock_questions(resource, level, mode, count, status)
         raise ValueError("No se configuraron las llaves GEMINI_API_KEY u OPENAI_API_KEY.")
 
-    prompt = _build_prompt(resource, level, mode, count)
+    # Si no se pasó transcript, intentar obtenerlo del video. Esto va DESPUÉS del
+    # camino mock de arriba a propósito: así nunca se hace red durante los tests.
+    if transcript is None and use_transcript and getattr(resource, "video_url", None):
+        from apps.content.services.transcript_service import fetch_transcript
+        transcript = fetch_transcript(resource.video_url, max_chars=8000)
+
+    # Guías de referencia del recurso (estilo a mimetizar + contenido como fuente).
+    if reference_guides is None and use_guides:
+        from apps.content.services.guide_service import build_reference_block
+        reference_guides = build_reference_block(resource)
+
+    prompt = _build_prompt(resource, level, mode, count, education_level, custom_instructions, transcript=transcript, reference_guides=reference_guides)
 
     if gemini_key:
         questions_data = _call_gemini_api(prompt, gemini_key)
     else:
         questions_data = _call_openai_api(prompt, openai_key)
 
-    created_questions = _save_questions(resource, level, mode, questions_data)
+    created_questions = _save_questions(resource, level, mode, questions_data, status)
     return created_questions
 
 
-def _build_prompt(resource, level, mode, count):
+
+def _build_prompt(resource, level, mode, count, education_level=None, custom_instructions=None, transcript=None, reference_guides=None):
     """Construye el prompt pedagógico para la IA."""
     level_name = dict(Question.LEVEL_CHOICES).get(level, f"Nivel {level}")
+    edu_desc = _EDUCATION_DESCRIPTIONS.get(education_level or "", _EDUCATION_DESCRIPTIONS["media"])
+
+    transcript_block = ""
+    if transcript:
+        transcript_block = (
+            "\n- Transcripción real del video (FUENTE PRINCIPAL): basa las preguntas en lo "
+            "que efectivamente se explica y se resuelve aquí —el método, los pasos y los "
+            "ejemplos concretos usados—, no solo en el título o la descripción:\n"
+            f"{transcript[:6000]}\n"
+        )
+
+    guides_block = ""
+    if reference_guides:
+        guides_block = (
+            "\n- GUÍA(S) DE REFERENCIA del profesor (IMITA SU ESTILO): replica el tipo de "
+            "ejercicios, el formato de los enunciados y la forma de evaluar de estas guías, "
+            "y usa su contenido como base de las preguntas. Este estilo tiene prioridad:\n"
+            f"{reference_guides[:5000]}\n"
+        )
 
     prompt = f"""Eres un experto pedagogo en matemáticas y ciencias para la plataforma 'ProfeOnline'.
-Tu tarea es generar exactamente {count} preguntas de opción múltiple de alta calidad pedagógica para el recurso titulado "{resource.title}".
+Tu tarea es generar exactamente {count} preguntas de opción múltiple de alta calidad pedagógica sobre el siguiente contenido educativo.
 
-INFORMACIÓN DEL RECURSO:
-- Título: {resource.title}
+REGLA CRÍTICA: Las preguntas deben evaluar si el estudiante comprendió los conceptos, NO mencionar nunca "el recurso", "la lección", "el texto", "el documento" ni ningún título. Redacta como si el estudiante ya hubiera estudiado el tema y le estuvieras evaluando directamente.
+
+CONTENIDO EDUCATIVO:
 - Tema: {resource.topic.name if resource.topic else "General"}
 - Asignatura: {resource.subject.name if resource.subject else "General"}
 - Descripción: {resource.description}
-- Contenido del recurso:
+- Desarrollo del tema:
 {resource.content[:2000]}
+{transcript_block}
+{guides_block}
 
 DIRECTRICES DEL NIVEL PEDAGÓGICO:
 Nivel solicitado: {level_name} (Nivel {level})
-- Nivel 1 — Definición: Preguntas conceptuales, de términos clave, definiciones o fundamentos teóricos expuestos en el recurso.
+- Nivel 1 — Definición: Preguntas conceptuales sobre términos clave, definiciones o fundamentos teóricos del tema.
 - Nivel 2 — Ejercicios simples: Ejercicios directos, cálculos mecánicos o aplicación simple de fórmulas con números sencillos.
-- Nivel 3 — Problemas de aplicación: Problemas planteados en un contexto o situación real donde el estudiante deba interpretar el enunciado y aplicar el contenido del recurso para resolverlo.
+- Nivel 3 — Problemas de aplicación: Problemas en un contexto o situación real donde el estudiante deba interpretar el enunciado y aplicar los conceptos del tema para resolverlo.
+
+NIVEL EDUCATIVO DEL ESTUDIANTE:
+{edu_desc}
 
 DIRECTRICES DEL MODO DE PREGUNTA:
 Modo solicitado: {mode} (puede usarse para 'preparacion', 'evaluacion' o 'ambas').
@@ -91,6 +163,8 @@ Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de
   }}
 ]
 """
+    if custom_instructions:
+        prompt += f"\n\nINSTRUCCIONES ADICIONALES DEL PROFESOR:\n{custom_instructions}\n"
     return prompt
 
 
@@ -145,8 +219,8 @@ def _call_openai_api(prompt, key):
         raise RuntimeError(f"Error de generación con OpenAI: {str(e)}") from e
 
 
-def _save_questions(resource, level, mode, questions_data):
-    """Guarda las preguntas y alternativas en la base de datos como publicadas."""
+def _save_questions(resource, level, mode, questions_data, status="publicada"):
+    """Guarda las preguntas y alternativas en la base de datos."""
     created_questions = []
 
     # Asegurar que questions_data sea una lista
@@ -182,7 +256,7 @@ def _save_questions(resource, level, mode, questions_data):
             mode=mode,
             text=text,
             explanation=explanation,
-            status="publicada",
+            status=status,
             order=last_order + 1
         )
         last_order += 1
@@ -212,7 +286,7 @@ def _save_questions(resource, level, mode, questions_data):
     return created_questions
 
 
-def _generate_mock_questions(resource, level, mode, count):
+def _generate_mock_questions(resource, level, mode, count, status="publicada"):
     """Genera preguntas simuladas basadas en el tema y título del recurso."""
     title_lower = resource.title.lower()
     subject_name = resource.subject.name if resource.subject else ""
@@ -303,4 +377,4 @@ def _generate_mock_questions(resource, level, mode, count):
             "choices": choices
         })
 
-    return _save_questions(resource, level, mode, questions_data)
+    return _save_questions(resource, level, mode, questions_data, status)

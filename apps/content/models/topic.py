@@ -3,6 +3,12 @@ from django.utils.text import slugify
 
 
 class Topic(models.Model):
+    EDUCATION_LEVEL_CHOICES = [
+        ("escolar", "Escolar (hasta 13 años)"),
+        ("media", "Media preuniversitaria (14-17 años)"),
+        ("universitaria", "Universitaria (18+)"),
+    ]
+
     subject = models.ForeignKey(
         "content.Subject",
         on_delete=models.CASCADE,
@@ -23,6 +29,13 @@ class Topic(models.Model):
         ],
         default="level",
         verbose_name="método de ordenación de recursos",
+    )
+    education_level = models.CharField(
+        max_length=20,
+        choices=EDUCATION_LEVEL_CHOICES,
+        default="",
+        blank=True,
+        verbose_name="nivel educativo",
     )
     is_active = models.BooleanField(default=True)
     levels = models.ManyToManyField(

@@ -1,0 +1,48 @@
+{% load l10n %}
+<!-- Log entry swapped OOB into logs box -->
+<div hx-swap-oob="beforeend:#studio-logs-container" class="log-entry log-entry--{{ log_status }}">
+    [{{ generated_total }}/{{ total_questions }}] {{ log_msg }}
+</div>
+
+<!-- Progress Bar swapped OOB -->
+<div id="studio-progress-bar" hx-swap-oob="true" class="progress-bar-fill" style="width: {{ percentage }}%;"></div>
+<span id="studio-progress-text" hx-swap-oob="true" class="progress-text">{{ percentage }}%</span>
+
+<!-- Main replacement for hx-target="this" -->
+{% if not finished %}
+<form id="chunk-form">
+    {% csrf_token %}
+    {% for rid in next_vals.resource_ids %}
+        <input type="hidden" name="resource_ids[]" value="{{ rid }}">
+    {% endfor %}
+    <input type="hidden" name="current_index" value="{{ next_vals.current_index }}">
+    <input type="hidden" name="level" value="{{ next_vals.level }}">
+    <input type="hidden" name="mode" value="{{ next_vals.mode }}">
+    <input type="hidden" name="batch_offset" value="{{ next_vals.batch_offset }}">
+    <input type="hidden" name="generated_total" value="{{ next_vals.generated_total }}">
+    <input type="hidden" name="autopublish" value="{{ next_vals.autopublish|yesno:"true,false" }}">
+    <input type="hidden" name="max_attempts" value="{{ next_vals.max_attempts }}">
+    <input type="hidden" name="pass_threshold" value="{{ next_vals.pass_threshold|unlocalize }}">
+    <input type="hidden" name="recovery_rule" value="{{ next_vals.recovery_rule }}">
+    <input type="hidden" name="allow_retake_passed" value="{{ next_vals.allow_retake_passed|yesno:"true,false" }}">
+    <input type="hidden" name="counts_data" value="{{ next_vals.counts_data }}">
+    <input type="hidden" name="education_level_override" value="{{ next_vals.education_level_override }}">
+    <input type="hidden" name="custom_instructions_json" value="{{ next_vals.custom_instructions_json }}">
+
+    <div hx-post="{% url 'content:generate_questions_chunk' %}"
+         hx-trigger="load once"
+         hx-target="this"
+         hx-swap="outerHTML"
+         hx-include="#chunk-form"
+         class="log-entry log-entry--info">
+        Preparando siguiente paso pedagógico...
+    </div>
+</form>
+{% else %}
+<div class="alert alert--success mt-3 fade-in">
+    <div>
+        <strong>¡Generación completada!</strong> Se han configurado y generado preguntas para todos los recursos del lote.
+    </div>
+    <a href="{% url 'content:question_studio' %}" class="btn btn-secondary btn-sm ms-3">Volver al Estudio</a>
+</div>
+{% endif %}
