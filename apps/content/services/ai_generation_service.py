@@ -5,6 +5,7 @@ import logging
 import os
 import random
 import sys
+import time
 import requests
 from django.conf import settings
 from apps.content.models import Choice, Question
@@ -168,55 +169,100 @@ Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de
     return prompt
 
 
+# Reintentos ante límite de cuota (429) o saturación temporal (503) de la API.
+_RETRY_STATUSES = (429, 503)
+_MAX_RETRIES = 4
+_BACKOFF_BASE = 2.0  # segundos: 2, 4, 8...
+
+
+def _sanitize_key(text, key):
+    """Evita que la API key quede en mensajes de error o logs."""
+    if key and text:
+        return text.replace(key, "***")
+    return text
+
+
+def _post_json_with_retry(url, headers, payload, key=None):
+    """POST con reintentos exponenciales ante 429/503; nunca expone la API key.
+
+    Devuelve el ``response`` exitoso. Lanza ``RuntimeError`` (con la key saneada)
+    si tras los reintentos la API sigue limitada o responde con error.
+    """
+    for attempt in range(_MAX_RETRIES):
+        response = requests.post(url, headers=headers, json=payload, timeout=90)
+        if response.status_code in _RETRY_STATUSES and attempt < _MAX_RETRIES - 1:
+            wait = _BACKOFF_BASE * (2 ** attempt)
+            retry_after = response.headers.get("Retry-After")
+            if retry_after:
+                try:
+                    wait = max(wait, float(retry_after))
+                except (TypeError, ValueError):
+                    pass
+            logger.warning(
+                "IA saturada (HTTP %s). Reintento %d/%d en %.0fs.",
+                response.status_code, attempt + 1, _MAX_RETRIES - 1, wait,
+            )
+            time.sleep(wait)
+            continue
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            raise RuntimeError(_sanitize_key(str(exc), key)) from None
+        return response
+
+    raise RuntimeError("La IA sigue limitada (429/503) tras varios reintentos.")
+
+
 def _call_gemini_api(prompt, key):
-    """Llama a la API de Gemini 1.5 Flash."""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={key}"
-    headers = {"Content-Type": "application/json"}
+    """Llama a Gemini 2.5 Flash. La key va en header (no en la URL) y con reintentos."""
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    headers = {"Content-Type": "application/json", "x-goog-api-key": key}
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "responseMimeType": "application/json"
-        }
+        "generationConfig": {"responseMimeType": "application/json"},
     }
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=90)
-        response.raise_for_status()
+        response = _post_json_with_retry(url, headers, payload, key=key)
         data = response.json()
         text_response = data["candidates"][0]["content"]["parts"][0]["text"]
         return json.loads(text_response.strip())
+    except RuntimeError:
+        raise
     except Exception as e:
-        logger.error(f"Error llamando a Gemini API: {e}")
-        raise RuntimeError(f"Error de generación con Gemini: {str(e)}") from e
+        msg = _sanitize_key(str(e), key)
+        logger.error("Error llamando a Gemini API: %s", msg)
+        raise RuntimeError(f"Error de generación con Gemini: {msg}") from None
 
 
 def _call_openai_api(prompt, key):
-    """Llama a la API de OpenAI (GPT-4o-mini)."""
+    """Llama a OpenAI (GPT-4o-mini). Key en header Authorization y con reintentos."""
     url = "https://api.openai.com/v1/chat/completions"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {key}"
+        "Authorization": f"Bearer {key}",
     }
     payload = {
         "model": "gpt-4o-mini",
         "messages": [{"role": "user", "content": prompt}],
-        "response_format": {"type": "json_object"}
+        "response_format": {"type": "json_object"},
     }
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=90)
-        response.raise_for_status()
+        response = _post_json_with_retry(url, headers, payload, key=key)
         data = response.json()
         text_response = data["choices"][0]["message"]["content"]
-        # OpenAI devuelve un objeto que podría tener una clave raíz como "questions"
+        # OpenAI puede devolver un objeto con una clave raíz como "questions".
         parsed = json.loads(text_response.strip())
         if isinstance(parsed, dict):
-            # Si el JSON es un diccionario, intentamos extraer la lista
             for value in parsed.values():
                 if isinstance(value, list):
                     return value
         return parsed
+    except RuntimeError:
+        raise
     except Exception as e:
-        logger.error(f"Error llamando a OpenAI API: {e}")
-        raise RuntimeError(f"Error de generación con OpenAI: {str(e)}") from e
+        msg = _sanitize_key(str(e), key)
+        logger.error("Error llamando a OpenAI API: %s", msg)
+        raise RuntimeError(f"Error de generación con OpenAI: {msg}") from None
 
 
 def _save_questions(resource, level, mode, questions_data, status="publicada"):
