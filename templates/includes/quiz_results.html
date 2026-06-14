@@ -1,7 +1,19 @@
 {% load markdown_tags %}
 <div class="quiz-results {% if attempt.passed %}quiz-results--passed{% else %}quiz-results--failed{% endif %}" id="quiz-results-{{ level }}">
     <div class="quiz-results__header">
-        {% if attempt.passed %}
+        {% if mode == "preparacion" %}
+            {% if attempt.score == attempt.total %}
+            <div class="quiz-results__icon quiz-results__icon--success">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h3 class="quiz-results__title quiz-results__title--success">¡Práctica perfecta!</h3>
+            {% else %}
+            <div class="quiz-results__icon quiz-results__icon--practice">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="quiz-results__title quiz-results__title--practice">Práctica completada</h3>
+            {% endif %}
+        {% elif attempt.passed %}
         <div class="quiz-results__icon quiz-results__icon--success">
             <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>

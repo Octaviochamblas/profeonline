@@ -1,0 +1,15 @@
+<form class="alt-edit" id="choice-item-{{ choice.id }}"
+      hx-post="{% url 'content:edit_choice_inline' choice.id %}"
+      hx-target="#choice-item-{{ choice.id }}"
+      hx-swap="outerHTML">
+    {% csrf_token %}
+    <label class="alt-edit__ok">
+        <input type="checkbox" name="is_correct"{% if choice.is_correct %} checked{% endif %}> Correcta
+    </label>
+    <input type="text" name="text" class="alt-edit__input" value="{{ choice.text }}" required placeholder="Texto de la alternativa...">
+    <button type="button" class="btn-link-sm"
+            hx-get="{% url 'content:edit_choice_inline' choice.id %}?cancel=1"
+            hx-target="#choice-item-{{ choice.id }}"
+            hx-swap="outerHTML">Cancelar</button>
+    <button type="submit" class="btn-primary btn-sm">Guardar</button>
+</form>

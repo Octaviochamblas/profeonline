@@ -86,14 +86,26 @@ globales). **Todo el runtime del quiz pasa a leer de aquí** (Fase 5).
 
 ## Arquitectura — las 3 piezas (todas solo-admin, namespace `content`)
 ### A. Estudio de generación — `GET/POST /publicar/preguntas/`
-- Selección de recurso (desplegable agrupado por Asignatura › Tema, server-render).
-- Inputs: **total** + **distribución por nivel** (o cantidades por nivel/modo directas), **cuántas
-  aparecen** (escribe `ResourceQuizConfig.counts`), modo borrador/autopublish.
+- **Dos modos de selección de recursos** (decisión 2026-06-14):
+  1. **Por tema:** selector de Tema → se marcan automáticamente todos sus recursos (checklist);
+     el admin puede desmarcar los que no quiera.
+  2. **Individual:** checkboxes libres agrupados por Asignatura › Tema para seleccionar recursos sueltos.
+  - La config de generación se define **una sola vez** y se aplica a todos los recursos seleccionados.
+  - La IA genera recurso por recurso en secuencia.
+- Inputs: **pool por nivel/modo** (práctica/evaluación por separado), **cuántas aparecen por intento**,
+  modo borrador/autopublish.
 - **Imágenes + descripción** (Fase 4): multipart; se guardan como `ResourceGenerationAsset`.
 - **Generación en tandas:** un endpoint `POST /publicar/preguntas/generar-tanda/` que genera **un
   lote chico** (p. ej. 5 de un (nivel, modo)) y devuelve una fila de progreso; el front encadena
   llamadas HTMX (`hx-trigger="load"` en la fila siguiente) hasta completar la matriz. Cada request
   corto ⇒ a prueba de timeout.
+
+### Puntos de acceso (decisión 2026-06-14)
+- **Navbar** (`base.html`, bloque `{% if user.is_staff %}`): nuevo link "Banco de Preguntas"
+  → `{% url 'content:question_studio' %}` entre "Estudio de Publicación" y "Analítica".
+- **Página de recurso** (`templates/pages/resource_detail.html` o equiv.): botón admin-only
+  "Gestionar preguntas" → `{% url 'content:question_review' resource.slug %}`. Solo visible
+  para `user.is_staff`.
 
 ### B. Página de revisión/edición — `GET /publicar/preguntas/<slug>/`
 - Tabla de `Question` del recurso (filtros nivel/modo/estado).
@@ -170,4 +182,11 @@ F2 edición → F3 generación → (F4 multimodal, si hay storage) → F5 runtim
 ---
 
 ## Qué se hizo
-_(Completar al finalizar, antes de mover a `backlog/6-finalizados/`.)_
+
+- **Modelo de Configuración (`Fase 1`):** Implementamos `ResourceQuizConfig` que mapea mediante una relación `OneToOne` cada recurso a su configuración (JSON con límites por nivel/modo, intentos máximos, umbral de aprobación, regla de recuperación, retoma de aprobados y autopublicación).
+- **Consistencia y Fallbacks:** Creamos el helper `get_quiz_config` que consolida la configuración con los defaults globales idénticos a los del sistema preexistente para evitar regresiones.
+- **Panel de Edición Inline y Acciones en Lote (`Fase 2`):** Construimos la vista de revisión (`question_review`) con endpoints HTMX para crear, actualizar y borrar preguntas y alternativas en la misma página de forma dinámica. Se implementó una barra de acciones en lote (publicar, archivar, eliminar) y scripts con nonces para cumplir con las directrices de seguridad (CSP).
+- **Estudio de Generación por Tandas (`Fase 3`):** Desarrollamos el panel de selección múltiple jerárquico por Tema o de forma individual, y un endpoint de HTMX secuencial que procesa recurso por recurso (tanda por tanda) para eludir los timeouts de red de la IA, mostrando una barra de progreso interactiva en tiempo real y logs en consola.
+- **Generador con IA:** Se extendió `generate_questions_for_resource` para permitir guardar opcionalmente las preguntas en estado `"borrador"` o `"publicada"`.
+- **Runtime de Quiz y Gamificación (`Fase 5`):** Adaptamos `evaluation_service.py` y `gamification_service.py` para usar las configuraciones por recurso en el examen del alumno, obligar la regla de recuperación perfecta (100% de aciertos en práctica) y permitir repetir evaluaciones aprobadas sin duplicación de estrellas o XP.
+- **Tests y Validación:** Escribimos pruebas unitarias robustas que cubren todas las facetas (fallbacks, overrides, validaciones de pool/mostradas, re-tomas y gamificación) y se ejecutó la suite completa (180 tests) resultando en verde.

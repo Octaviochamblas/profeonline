@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Generador de Preguntas IA | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="question-review-container">
+    <!-- Header -->
+    <header class="studio-header">
+        <div class="studio-header__nav">
+            <a href="{% url 'content:resource_list' %}" class="btn-back">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Volver a Recursos
+            </a>
+        </div>
+        <div class="studio-header__main">
+            <div class="studio-header__info">
+                <span class="studio-badge">Estudio Solo-Admin</span>
+                <h1 class="studio-title">Generador de Preguntas IA</h1>
+                <p class="studio-subtitle">Genera bancos de preguntas y configura las políticas de quiz en lote.</p>
+            </div>
+        </div>
+    </header>
+
+    <div id="studio-card-container" class="fade-in">
+        <div class="studio-layout">
+            <!-- Columna Izquierda: Selección de Recursos -->
+            <section class="bg-glass p-4 rounded shadow-sm">
+                <h2 class="h5 mb-3 text-teal">1. Seleccionar Recursos</h2>
+                <p class="text-secondary small mb-3">Marca los recursos para los que deseas generar preguntas. Al marcar un tema se seleccionan todos sus recursos.</p>
+
+                <div class="resource-tree">
+                    {% for area_data in tree %}
+                        <div class="tree-area">
+                            <button type="button" class="tree-toggle tree-toggle--area" aria-expanded="true">
+                                <span class="tree-caret">▾</span>{{ area_data.area.name }}
+                            </button>
+                            <div class="tree-children">
+                                {% for subj in area_data.subjects %}
+                                    <div class="tree-subject subject-node">
+                                        <div class="tree-row">
+                                            <input type="checkbox" class="form-check-input subject-selector" id="sub-{{ subj.subject.id }}" title="Seleccionar toda la asignatura">
+                                            <button type="button" class="tree-toggle tree-toggle--subject" aria-expanded="false">
+                                                <span class="tree-caret">▸</span>{{ subj.subject.name }}
+                                            </button>
+                                        </div>
+                                        <div class="tree-children" hidden>
+                                            {% for t in subj.topics %}
+                                                <div class="tree-topic topic-node">
+                                                    <div class="tree-row">
+                                                        <input type="checkbox" class="form-check-input topic-selector" id="topic-{{ t.topic.id }}" title="Seleccionar todo el tema">
+                                                        <button type="button" class="tree-toggle tree-toggle--topic" aria-expanded="false">
+                                                            <span class="tree-caret">▸</span>{{ t.topic.name }}
+                                                        </button>
+                                                    </div>
+                                                    <div class="tree-children resources-list" hidden>
+                                                        {% for r in t.resources %}
+                                                            <label class="resource-checkbox-item">
+                                                                <input type="checkbox" name="resources" value="{{ r.id }}" class="form-check-input resource-selector" id="res-{{ r.id }}">
+                                                                <span>{{ r.title }}</span>
+                                                            </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                            {% if subj.sin_tema %}
+                                                <div class="tree-topic topic-node">
+                                                    <div class="tree-row">
+                                                        <input type="checkbox" class="form-check-input topic-selector" id="topic-sintema-{{ subj.subject.id }}" title="Seleccionar recursos sin tema">
+                                                        <button type="button" class="tree-toggle tree-toggle--topic" aria-expanded="false">
+                                                            <span class="tree-caret">▸</span><em>Sin tema</em>
+                                                        </button>
+                                                    </div>
+                                                    <div class="tree-children resources-list" hidden>
+                                                        {% for r in subj.sin_tema %}
+                                                            <label class="resource-checkbox-item">
+                                                                <input type="checkbox" name="resources" value="{{ r.id }}" class="form-check-input resource-selector" id="res-{{ r.id }}">
+                                                                <span>{{ r.title }}</span>
+                                                            </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center text-secondary py-4">No hay recursos disponibles.</div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Columna Derecha: Configuración y Matriz -->
+            <section class="bg-glass p-4 rounded shadow-sm">
+                <form hx-post="{% url 'content:question_studio' %}"
+                      hx-target="#studio-card-container"
+                      hx-swap="innerHTML"
+                      class="studio-generation-form">
+                    {% csrf_token %}
+
+                    <!-- Contenedor invisible para los recursos seleccionados, clonados por JS -->
+                    <div id="selected-resources-inputs-container"></div>
+
+                    <h2 class="h5 mb-3 text-teal">2. Configuración del Lote</h2>
+
+                    <!-- Matriz de conteo -->
+                    <div class="levels-config mb-4">
+                        <h3 class="section-subtitle mb-2">Matriz de Preguntas por Nivel</h3>
+
+                        {% for lvl, name in LEVEL_CHOICES %}
+                        <div class="level-box">
+                            <span class="level-box__title">{{ name }}</span>
+                            <div class="row g-2 mt-1">
+                                <div class="col-6">
+                                    <label class="form-label-sm">Práctica Pool (Generar)</label>
+                                    <input type="number" name="practice_pool_{{ lvl }}" class="form-control form-control-sm"
+                                           value="15" min="0">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label-sm">Práctica Muestra (Examen)</label>
+                                    <input type="number" name="practice_shown_{{ lvl }}" class="form-control form-control-sm"
+                                           value="5" min="0">
+                                </div>
+                                <div class="col-6 mt-1">
+                                    <label class="form-label-sm">Eval Pool (Generar)</label>
+                                    <input type="number" name="eval_pool_{{ lvl }}" class="form-control form-control-sm"
+                                           value="10" min="0">
+                                </div>
+                                <div class="col-6 mt-1">
+                                    <label class="form-label-sm">Eval Muestra (Examen)</label>
+                                    <input type="number" name="eval_shown_{{ lvl }}" class="form-control form-control-sm"
+                                           value="3" min="0">
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col-12">
+                                    <label class="form-label-sm">Instrucciones de Práctica (estilo de ejercicios, opcional)</label>
+                                    <textarea name="gen_instructions_{{ lvl }}_practice" class="form-control form-control-sm" rows="2"
+                                              placeholder="Ej. ejercicios de cálculo directo con números simples, al estilo de tu guía."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label-sm">Instrucciones de Evaluación (estilo de ejercicios, opcional)</label>
+                                    <textarea name="gen_instructions_{{ lvl }}_eval" class="form-control form-control-sm" rows="2"
+                                              placeholder="Ej. problemas de aplicación contextualizados, como en la guía."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <hr class="my-3 border-secondary">
+
+                    <!-- Políticas del Lote -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Intentos Máximos de Eval</label>
+                            <input type="number" name="max_attempts" class="form-control" value="3" min="1" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Umbral de Aprobación (%)</label>
+                            <input type="number" name="pass_threshold" class="form-control" value="100" min="1" max="100" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Regla de Recuperación</label>
+                            <select name="recovery_rule" class="form-select">
+                                <option value="practice_5_5" selected>Práctica perfecta 5/5</option>
+                                <option value="none">Ninguna</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="form-check mt-3">
+                                <input type="checkbox" name="allow_retake_passed" id="allow_retake_passed" class="form-check-input" checked>
+                                <label class="form-check-label fw-bold text-secondary" for="allow_retake_passed">Permitir repetir aprobado</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Nivel educativo (fallback para recursos sin tema)</label>
+                            <select name="education_level_override" class="form-select">
+                                <option value="escolar">Escolar (hasta 13 años)</option>
+                                <option value="media" selected>Media preuniversitaria (14-17 años)</option>
+                                <option value="universitaria">Universitaria (18+)</option>
+                            </select>
+                            <small class="form-text text-secondary">Si un recurso tiene tema con nivel definido, ese nivel tiene prioridad sobre este selector.</small>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" name="autopublish" id="autopublish" class="form-check-input">
+                                <label class="form-check-label fw-bold text-secondary" for="autopublish">Autopublicar preguntas generadas directamente (en vez de dejarlas en borrador)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-end mt-4">
+                        <button type="submit" class="btn-primary w-100 py-3" id="btn-generate-ai">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="me-2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            Iniciar Generación Secuencial con IA
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=5">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/question_studio.js' %}?v=5" nonce="{{ csp_nonce }}"></script>
+{% endblock %}

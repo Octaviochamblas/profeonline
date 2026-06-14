@@ -123,6 +123,17 @@ def award_quiz_attempt_xp(attempt):
         )
 
     if attempt.mode == "evaluacion" and attempt.passed:
+        already_passed = attempt.__class__.objects.filter(
+            user=attempt.user,
+            resource=attempt.resource,
+            level=attempt.level,
+            mode="evaluacion",
+            passed=True,
+        ).exclude(pk=attempt.pk).exists()
+
+        if already_passed:
+            return None, False
+
         return award_xp(
             user=attempt.user,
             amount=RESOURCE_LEVEL_PASS_XP.get(attempt.level, 0),

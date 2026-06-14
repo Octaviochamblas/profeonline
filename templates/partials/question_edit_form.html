@@ -1,0 +1,53 @@
+<form class="q-edit"
+      hx-post="{% url 'content:edit_question_inline' question.id %}"
+      hx-target="#question-item-{{ question.id }}"
+      hx-swap="outerHTML">
+    {% csrf_token %}
+
+    <label class="q-edit__label">Enunciado</label>
+    <textarea name="text" rows="2" class="q-edit__input" required>{{ question.text }}</textarea>
+
+    <label class="q-edit__label">Explicación (resolución paso a paso)</label>
+    <textarea name="explanation" rows="3" class="q-edit__input" placeholder="Un paso por línea...">{{ question.explanation }}</textarea>
+
+    <div class="q-edit__row">
+        <div class="q-edit__col">
+            <label class="q-edit__label">Nivel</label>
+            <select name="level" class="q-edit__input">
+                {% for lvl, name in LEVEL_CHOICES %}
+                <option value="{{ lvl }}"{% if question.level == lvl %} selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="q-edit__col">
+            <label class="q-edit__label">Modo</label>
+            <select name="mode" class="q-edit__input">
+                {% for val, name in MODE_CHOICES %}
+                <option value="{{ val }}"{% if question.mode == val %} selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="q-edit__col">
+            <label class="q-edit__label">Estado</label>
+            <select name="status" class="q-edit__input">
+                {% for val, name in STATUS_CHOICES %}
+                <option value="{{ val }}"{% if question.status == val %} selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="q-edit__col">
+            <label class="q-edit__label">Orden</label>
+            <input type="number" name="order" class="q-edit__input" value="{{ question.order }}" min="0">
+        </div>
+    </div>
+
+    <div class="q-edit__actions">
+        <button type="button" class="btn-secondary btn-sm"
+                hx-get="{% url 'content:edit_question_inline' question.id %}?cancel=1"
+                hx-target="#question-body-{{ question.id }}"
+                hx-swap="innerHTML">
+            Cancelar
+        </button>
+        <button type="submit" class="btn-primary btn-sm">Guardar</button>
+    </div>
+</form>

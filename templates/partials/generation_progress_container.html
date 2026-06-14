@@ -1,0 +1,49 @@
+{% load l10n %}
+<div class="studio-progress-card bg-glass p-4 rounded shadow-sm max-width-800 mx-auto">
+    <h2 class="h4 text-teal mb-3">Progreso de la Generación</h2>
+    <p class="text-secondary small mb-3">Procesando {{ resource_count }} recurso{{ resource_count|pluralize:"s" }} · {{ total_questions }} pregunta{{ total_questions|pluralize:"s" }} en lotes pequeños. Por favor, no cierres esta ventana.</p>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container mb-4">
+        <div class="progress-bar-fill" id="studio-progress-bar" style="width: 0%;"></div>
+        <span class="progress-text" id="studio-progress-text">0%</span>
+    </div>
+
+    <!-- Logs Box -->
+    <h3 class="h6 text-secondary mb-2">Consola de Generación:</h3>
+    <div class="generation-logs mb-4" id="studio-logs-container">
+        <div class="log-entry log-entry--info">[Consola inicializada. Esperando primera tanda...]</div>
+    </div>
+
+    <!-- Hidden loop form that executes the sequential chunks -->
+    <div id="chunk-executor-container">
+        <form id="chunk-form">
+            {% csrf_token %}
+            {% for rid in vals.resource_ids %}
+                <input type="hidden" name="resource_ids[]" value="{{ rid }}">
+            {% endfor %}
+            <input type="hidden" name="current_index" value="{{ vals.current_index }}">
+            <input type="hidden" name="level" value="{{ vals.level }}">
+            <input type="hidden" name="mode" value="{{ vals.mode }}">
+            <input type="hidden" name="batch_offset" value="{{ vals.batch_offset }}">
+            <input type="hidden" name="generated_total" value="{{ vals.generated_total }}">
+            <input type="hidden" name="autopublish" value="{{ vals.autopublish|yesno:"true,false" }}">
+            <input type="hidden" name="max_attempts" value="{{ vals.max_attempts }}">
+            <input type="hidden" name="pass_threshold" value="{{ vals.pass_threshold|unlocalize }}">
+            <input type="hidden" name="recovery_rule" value="{{ vals.recovery_rule }}">
+            <input type="hidden" name="allow_retake_passed" value="{{ vals.allow_retake_passed|yesno:"true,false" }}">
+            <input type="hidden" name="counts_data" value="{{ vals.counts_data }}">
+            <input type="hidden" name="education_level_override" value="{{ vals.education_level_override }}">
+            <input type="hidden" name="custom_instructions_json" value="{{ vals.custom_instructions_json }}">
+
+            <div hx-post="{% url 'content:generate_questions_chunk' %}"
+                 hx-trigger="load once"
+                 hx-target="this"
+                 hx-swap="outerHTML"
+                 hx-include="#chunk-form"
+                 class="log-entry log-entry--info">
+                Iniciando generación para primer recurso...
+            </div>
+        </form>
+    </div>
+</div>

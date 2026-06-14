@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gestionar Banco de Preguntas - {{ resource.title }} | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="question-review-container">
+    <!-- Header -->
+    <header class="studio-header">
+        <div class="studio-header__nav">
+            <a href="{% url 'content:resource_list' %}" class="btn-back">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Volver a Recursos
+            </a>
+        </div>
+        <div class="studio-header__main">
+            <div class="studio-header__info">
+                <span class="studio-badge">Banco de Preguntas</span>
+                <h1 class="studio-title">{{ resource.title }}</h1>
+                <p class="studio-subtitle">Asignatura: {{ resource.subject.name|default:"Sin definir" }} &bull; Tema: {{ resource.topic.name|default:"Sin definir" }}</p>
+            </div>
+            <div class="studio-header__actions">
+                <a href="{% url 'content:resource_detail' resource.slug %}" class="btn-secondary" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Visitar recurso
+                </a>
+                <a href="{% url 'content:question_review' resource.slug %}" class="btn-secondary">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    Refrescar
+                </a>
+                <button type="button" class="btn-primary"
+                        hx-post="{% url 'content:question_studio' %}"
+                        hx-include=".config-form"
+                        hx-vals='{"resources": "{{ resource.id }}"}'
+                        hx-target="#generation-panel"
+                        hx-swap="innerHTML"
+                        hx-disabled-elt="this"
+                        title="Genera preguntas con IA para este recurso usando la configuración de la izquierda">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    Generar con IA
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="studio-layout">
+        <!-- Sidebar: Configuración del Recurso -->
+        <aside class="studio-sidebar">
+            <div class="card shadow-sm border-0 bg-glass">
+                <div class="card-header bg-transparent border-bottom py-3">
+                    <h3 class="card-title h5 mb-0 text-teal">Configuración del Quiz</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Formulario de Configuración -->
+                    <form hx-post="{% url 'content:save_resource_quiz_config' resource.id %}"
+                          hx-swap="innerHTML"
+                          hx-target="#config-alert-container"
+                          class="config-form">
+                        {% csrf_token %}
+
+                        <div id="config-alert-container"></div>
+
+                        <!-- 1. Nivel educativo (primero) -->
+                        <div class="mb-3">
+                            <label class="form-label">Nivel educativo (IA)</label>
+                            {% if topic_edu_level %}
+                                <p class="text-secondary small mb-1">Definido por el tema: <strong>{{ topic_edu_label }}</strong></p>
+                                <input type="hidden" name="education_level_override" value="{{ topic_edu_level }}">
+                            {% else %}
+                                <select name="education_level_override" class="form-select form-select-sm">
+                                    {% for val, label in EDUCATION_LEVEL_CHOICES %}
+                                    <option value="{{ val }}" {% if val == "media" %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <small class="form-text">El tema no tiene nivel definido.</small>
+                            {% endif %}
+                        </div>
+
+                        <hr class="my-3 border-secondary">
+
+                        <!-- 2. Generación por Nivel -->
+                        <h4 class="section-subtitle">Generación por Nivel</h4>
+
+                        {% for lvl, name in LEVEL_CHOICES %}
+                        <details class="gen-level" {% if forloop.first %}open{% endif %}>
+                            <summary class="gen-level__sum">
+                                <span class="gen-level__num">{{ lvl }}</span>
+                                <span class="gen-level__name">{{ name }}</span>
+                                <span class="gen-level__chev" aria-hidden="true"></span>
+                            </summary>
+                            <div class="gen-level__body">
+                                <div class="gen-mode-block gen-mode-block--practice">
+                                    <div class="gen-mode-block__head">
+                                        <span class="gen-mode-dot gen-mode-dot--practice"></span>
+                                        <span>Práctica</span>
+                                    </div>
+                                    <div class="gen-counts">
+                                        <label>Pool</label>
+                                        <input type="number" name="practice_pool_{{ lvl }}" class="form-control gen-count-input"
+                                               value="{% if lvl == 1 %}{{ config.counts.1.practice.pool|default:15 }}{% elif lvl == 2 %}{{ config.counts.2.practice.pool|default:15 }}{% else %}{{ config.counts.3.practice.pool|default:15 }}{% endif %}" min="0">
+                                        <label>Muestra</label>
+                                        <input type="number" name="practice_shown_{{ lvl }}" class="form-control gen-count-input"
+                                               value="{% if lvl == 1 %}{{ config.counts.1.practice.shown|default:5 }}{% elif lvl == 2 %}{{ config.counts.2.practice.shown|default:5 }}{% else %}{{ config.counts.3.practice.shown|default:5 }}{% endif %}" min="0">
+                                    </div>
+                                    <textarea name="gen_instructions_{{ lvl }}_practice"
+                                              class="gen-instructions form-control"
+                                              rows="2"
+                                              placeholder="Instrucciones para práctica N{{ lvl }}… (opcional)"></textarea>
+                                </div>
+                                <div class="gen-mode-block gen-mode-block--eval">
+                                    <div class="gen-mode-block__head">
+                                        <span class="gen-mode-dot gen-mode-dot--eval"></span>
+                                        <span>Evaluación</span>
+                                    </div>
+                                    <div class="gen-counts">
+                                        <label>Pool</label>
+                                        <input type="number" name="eval_pool_{{ lvl }}" class="form-control gen-count-input"
+                                               value="{% if lvl == 1 %}{{ config.counts.1.eval.pool|default:10 }}{% elif lvl == 2 %}{{ config.counts.2.eval.pool|default:10 }}{% else %}{{ config.counts.3.eval.pool|default:10 }}{% endif %}" min="0">
+                                        <label>Muestra</label>
+                                        <input type="number" name="eval_shown_{{ lvl }}" class="form-control gen-count-input"
+                                               value="{% if lvl == 1 %}{{ config.counts.1.eval.shown|default:3 }}{% elif lvl == 2 %}{{ config.counts.2.eval.shown|default:3 }}{% else %}{{ config.counts.3.eval.shown|default:3 }}{% endif %}" min="0">
+                                    </div>
+                                    <textarea name="gen_instructions_{{ lvl }}_eval"
+                                              class="gen-instructions form-control"
+                                              rows="2"
+                                              placeholder="Instrucciones para evaluación N{{ lvl }}… (opcional)"></textarea>
+                                    <div class="gen-file-block">
+                                        <label>
+                                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                            Adjuntar guía (próximamente)
+                                        </label>
+                                        <input type="file" disabled class="form-control form-control-sm" accept=".pdf,.docx,.txt">
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                        {% endfor %}
+
+                        <hr class="my-3 border-secondary">
+
+                        <!-- 3. Configuración de evaluación (colapsable) -->
+                        <details class="eval-config-panel">
+                            <summary class="eval-config-panel__sum">
+                                <span>Configuración de Evaluación</span>
+                                <span class="eval-config-panel__chev" aria-hidden="true"></span>
+                            </summary>
+                            <div class="eval-config-panel__body">
+                                <div class="mb-3">
+                                    <label class="form-label">Intentos Máximos de Eval</label>
+                                    <input type="number" name="max_attempts" class="form-control" value="{{ config.max_attempts|default:3 }}" min="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Umbral de Aprobación (%)</label>
+                                    <input type="number" name="pass_threshold" class="form-control"
+                                           value="{% widthratio config.pass_threshold|default:1 1 100 %}" min="1" max="100">
+                                    <small class="form-text">Porcentaje mínimo requerido para aprobar.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Regla de Recuperación</label>
+                                    <select name="recovery_rule" class="form-select">
+                                        {% for val, label in RECOVERY_CHOICES %}
+                                        <option value="{{ val }}" {% if config.recovery_rule == val %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-2 form-check">
+                                    <input type="checkbox" name="allow_retake_passed" id="allow_retake_passed" class="form-check-input" {% if config.allow_retake_passed %}checked{% endif %}>
+                                    <label class="form-check-label" for="allow_retake_passed">Permitir repetir aprobado</label>
+                                </div>
+                                <div class="mb-0 form-check">
+                                    <input type="checkbox" name="autopublish" id="autopublish" class="form-check-input" {% if config.autopublish %}checked{% endif %}>
+                                    <label class="form-check-label" for="autopublish">Autopublicar al generar</label>
+                                </div>
+                            </div>
+                        </details>
+
+                        <button type="submit" class="btn-primary w-100 mt-3">
+                            Guardar Configuración
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area: Acordeón Nivel → Modo → Pregunta → Alternativas -->
+        <main class="studio-main-content">
+            <!-- Panel de generación con IA (se llena al pulsar "Generar con IA") -->
+            <div id="generation-panel" class="mb-4"></div>
+
+            <div class="acc">
+                {% for level in levels_data %}
+                <details class="acc-level"{% if level.num == 1 %} open{% endif %}>
+                    <summary class="acc-level__sum">
+                        <span class="acc-level__num" aria-hidden="true">{{ level.num }}</span>
+                        <span class="acc-level__chev" aria-hidden="true"></span>
+                        <span class="acc-level__name">{{ level.name }}</span>
+                        <span class="acc-count">{{ level.count }} pregunta{{ level.count|pluralize:"s" }}</span>
+                    </summary>
+                    <div class="acc-level__body">
+                        {% for mode in level.modes %}
+                        <details class="acc-mode acc-mode--{{ mode.key }}">
+                            <summary class="acc-mode__sum">
+                                <span class="acc-mode__dot" aria-hidden="true"></span>
+                                <span class="acc-mode__chev" aria-hidden="true"></span>
+                                <span class="acc-mode__name">{{ mode.label }}</span>
+                                <span class="acc-count">{{ mode.count }}</span>
+                            </summary>
+                            <div class="acc-mode__body">
+                                <!-- Barra de acciones en lote (oculta por defecto) -->
+                                <div class="bulk-bar" id="bulk-bar-{{ level.num }}-{{ mode.key }}" hidden>
+                                    <span class="bulk-bar__count">0 seleccionadas</span>
+                                    <div class="bulk-bar__btns">
+                                        <button type="button" class="btn-secondary btn-sm bulk-action-btn"
+                                                data-action="publicar"
+                                                data-qlist="qlist-{{ level.num }}-{{ mode.key }}"
+                                                data-level="{{ level.num }}"
+                                                data-mode="{{ mode.key }}"
+                                                data-url="{% url 'content:bulk_action_questions' resource.id %}">Publicar</button>
+                                        <button type="button" class="btn-secondary btn-sm bulk-action-btn"
+                                                data-action="borrador"
+                                                data-qlist="qlist-{{ level.num }}-{{ mode.key }}"
+                                                data-level="{{ level.num }}"
+                                                data-mode="{{ mode.key }}"
+                                                data-url="{% url 'content:bulk_action_questions' resource.id %}">Borrador</button>
+                                        <button type="button" class="btn-danger btn-sm bulk-action-btn"
+                                                data-action="eliminar"
+                                                data-qlist="qlist-{{ level.num }}-{{ mode.key }}"
+                                                data-level="{{ level.num }}"
+                                                data-mode="{{ mode.key }}"
+                                                data-url="{% url 'content:bulk_action_questions' resource.id %}">Eliminar</button>
+                                    </div>
+                                </div>
+                                <div class="acc-table-head">
+                                    <input type="checkbox" class="q-select-all"
+                                           data-qlist="qlist-{{ level.num }}-{{ mode.key }}"
+                                           aria-label="Seleccionar todas">
+                                    <span>Pregunta</span>
+                                    <span>Estado</span>
+                                    <span></span>
+                                </div>
+                                <div class="acc-qlist" id="qlist-{{ level.num }}-{{ mode.key }}">
+                                    {% for q in mode.questions %}
+                                        {% include "partials/question_item.html" with question=q %}
+                                    {% empty %}
+                                        <p class="acc-empty">Sin preguntas en esta sección todavía.</p>
+                                    {% endfor %}
+                                </div>
+                                <button type="button" class="btn-secondary btn-sm acc-add"
+                                        hx-post="{% url 'content:add_question_inline' resource.id %}"
+                                        hx-vals='{"level": "{{ level.num }}", "mode": "{{ mode.key }}"}'
+                                        hx-target="#qlist-{{ level.num }}-{{ mode.key }}"
+                                        hx-swap="beforeend show:bottom">
+                                    + Añadir pregunta a {{ mode.label }}
+                                </button>
+                            </div>
+                        </details>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=5">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/question_review.js' %}?v=6" nonce="{{ csp_nonce }}"></script>
+{% endblock %}

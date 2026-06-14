@@ -8,6 +8,7 @@ from apps.content.models import (
     QuizAttempt,
     QuizAttemptAnswer,
     TopicEvaluationAttempt,
+    ResourceQuizConfig,
 )
 from apps.content.services.gamification_service import (
     award_quiz_attempt_xp,
@@ -28,13 +29,44 @@ TOPIC_EXAM_QUESTION_COUNT = 10
 TOPIC_PASS_THRESHOLD = 0.8  # 80%
 
 
+def get_quiz_config(resource):
+    """Obtiene la configuración de evaluación/práctica del recurso o usa defaults globales."""
+    try:
+        if hasattr(resource, "quiz_config") and resource.quiz_config is not None:
+            return resource.quiz_config
+    except Exception:
+        pass
+
+    # Crear un objeto de fallback temporal con los defaults globales
+    from apps.content.models.resource_quiz_config import default_quiz_counts
+
+    class DefaultQuizConfig:
+        counts = default_quiz_counts()
+        pass_threshold = 1.0
+        max_attempts = MAX_EVAL_ATTEMPTS
+        recovery_rule = "practice_5_5"
+        # Recursos sin config (legacy) conservan el bloqueo de "ya aprobaste".
+        # La repetición de aprobadas es opt-in: se activa al configurar el
+        # recurso vía el estudio (modelo default=True).
+        allow_retake_passed = False
+        autopublish = False
+
+    return DefaultQuizConfig()
+
+
 def get_questions_for_quiz(resource, level, mode, count=None):
     """Selecciona preguntas aleatorias publicadas para un quiz.
 
     Retorna una lista de Question con choices prefetched.
     """
     if count is None:
-        count = QUESTIONS_PER_LEVEL.get(level, 5)
+        config = get_quiz_config(resource)
+        level_str = str(level)
+        mode_key = "practice" if mode == "preparacion" else "eval"
+        if level_str in config.counts and mode_key in config.counts[level_str]:
+            count = config.counts[level_str][mode_key]["shown"]
+        else:
+            count = QUESTIONS_PER_LEVEL.get(level, 5)
 
     qs = Question.objects.filter(
         resource=resource,
@@ -45,6 +77,7 @@ def get_questions_for_quiz(resource, level, mode, count=None):
     ).prefetch_related("choices")
 
     return list(qs.order_by("?")[:count])
+
 
 
 def get_next_attempt_number(user, resource, level, mode):
@@ -65,6 +98,8 @@ def get_attempts_info(user, resource, level):
         dict con claves: used, remaining, max_reached, passed,
         best_score, can_recover.
     """
+    config = get_quiz_config(resource)
+
     eval_attempts = QuizAttempt.objects.filter(
         user=user,
         resource=resource,
@@ -75,23 +110,35 @@ def get_attempts_info(user, resource, level):
     passed = eval_attempts.filter(passed=True).exists()
     best = eval_attempts.order_by("-score").first()
     best_score = best.score if best else 0
-    total = QUESTIONS_PER_LEVEL.get(level, 5)
+
+    level_str = str(level)
+    if level_str in config.counts and "eval" in config.counts[level_str]:
+        total = config.counts[level_str]["eval"]["shown"]
+    else:
+        total = QUESTIONS_PER_LEVEL.get(level, 5)
+
+    max_att = config.max_attempts
 
     return {
         "used": used,
-        "remaining": max(0, MAX_EVAL_ATTEMPTS - used),
-        "max_reached": used >= MAX_EVAL_ATTEMPTS,
+        "remaining": max(0, max_att - used),
+        "max_reached": used >= max_att,
         "passed": passed,
         "best_score": best_score,
         "total": total,
-        "can_recover": not passed and used >= MAX_EVAL_ATTEMPTS and _can_recover(
+        "can_recover": not passed and used >= max_att and _can_recover(
             user, resource, level
         ),
     }
 
 
 def _can_recover(user, resource, level):
-    """Verifica si la última preparación del nivel alcanza ≥80%."""
+    """Verifica si la última preparación del nivel cumple las reglas de recuperación."""
+    config = get_quiz_config(resource)
+
+    if config.recovery_rule == "none":
+        return False
+
     last_practice = (
         QuizAttempt.objects.filter(
             user=user,
@@ -99,12 +146,17 @@ def _can_recover(user, resource, level):
             level=level,
             mode="preparacion",
         )
-        .order_by("-created_at")
+        .order_by("-created_at", "-id")
         .first()
     )
     if not last_practice or last_practice.total == 0:
         return False
+
+    if config.recovery_rule == "practice_5_5":
+        return last_practice.score == last_practice.total
+
     return (last_practice.score / last_practice.total) >= PRACTICE_RECOVERY_THRESHOLD
+
 
 
 def recover_attempt(user, resource, level):
@@ -125,7 +177,7 @@ def recover_attempt(user, resource, level):
             mode="evaluacion",
             passed=False,
         )
-        .order_by("-created_at")
+        .order_by("-created_at", "-id")
         .first()
     )
     if last_failed:
@@ -146,11 +198,20 @@ def submit_quiz(user, resource, level, mode, answers_dict):
     Raises:
         ValueError: si se exceden los intentos o el quiz está bloqueado.
     """
-    total = QUESTIONS_PER_LEVEL.get(level, 5)
+    config = get_quiz_config(resource)
+    level_str = str(level)
+    if level_str in config.counts:
+        mode_key = "practice" if mode == "preparacion" else "eval"
+        if mode_key in config.counts[level_str]:
+            total = config.counts[level_str][mode_key]["shown"]
+        else:
+            total = QUESTIONS_PER_LEVEL.get(level, 5)
+    else:
+        total = QUESTIONS_PER_LEVEL.get(level, 5)
 
     if mode == "evaluacion":
         info = get_attempts_info(user, resource, level)
-        if info["passed"]:
+        if info["passed"] and not config.allow_retake_passed:
             raise ValueError("Ya aprobaste este nivel.")
         if info["max_reached"] and not info["can_recover"]:
             raise ValueError(
@@ -210,8 +271,8 @@ def submit_quiz(user, resource, level, mode, answers_dict):
             )
         )
 
-    # Para aprobar: todas correctas (5/5 en N1/N2, 3/3 en N3)
-    passed = score == total if mode == "evaluacion" else False
+    # Para aprobar: se calcula en base al pass_threshold (porcentaje mínimo de respuestas correctas)
+    passed = (score / total) >= config.pass_threshold if (mode == "evaluacion" and total > 0) else False
 
     attempt = QuizAttempt.objects.create(
         user=user,
@@ -230,6 +291,7 @@ def submit_quiz(user, resource, level, mode, answers_dict):
     award_quiz_attempt_xp(attempt)
 
     return attempt
+
 
 
 def get_resource_mastery(user, resource):
