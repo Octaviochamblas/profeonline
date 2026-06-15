@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guías de referencia | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="question-review-container">
+    <header class="studio-header">
+        <div class="studio-header__nav">
+            <a href="{% url 'content:question_studio' %}" class="btn-back">&larr; Volver al estudio</a>
+        </div>
+        <div class="studio-header__main">
+            <div class="studio-header__info">
+                <span class="studio-badge">Estudio Solo-Admin</span>
+                <h1 class="studio-title">Guías de referencia</h1>
+                <p class="studio-subtitle">Subí un documento con preguntas de ejemplo; la IA copiará su formato al generar (modo documento).</p>
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert--{% if message.tags == 'error' %}danger{% else %}success{% endif %} mb-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="studio-layout">
+        <!-- Crear guía -->
+        <section class="bg-glass p-4 rounded shadow-sm">
+            <h2 class="h5 mb-3 text-teal">Nueva guía</h2>
+            <form method="post" enctype="multipart/form-data" action="{% url 'content:quiz_guides' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Título</label>
+                    <input type="text" name="title" class="form-control" required placeholder="Ej. Estilo PAES — Álgebra">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Descripción (opcional)</label>
+                    <input type="text" name="description" class="form-control" placeholder="Breve nota para reconocerla">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Documento (PDF, Word o .txt)</label>
+                    <input type="file" name="file" class="form-control" accept=".pdf,.docx,.txt,.md">
+                    <small class="form-text text-secondary">O pegá el contenido abajo si no tenés archivo.</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">…o pegá el texto</label>
+                    <textarea name="text" class="form-control" rows="4" placeholder="Pegá aquí las preguntas de ejemplo / el material"></textarea>
+                </div>
+
+                <hr class="my-3 border-secondary">
+                <p class="text-secondary small mb-2">Vinculá la guía a (podés elegir varios; se aplica a los recursos de lo que elijas):</p>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label-sm">Asignaturas</label>
+                        <select name="subjects" class="form-select" multiple size="6">
+                            {% for s in subjects %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label-sm">Temas</label>
+                        <select name="topics" class="form-select" multiple size="6">
+                            {% for t in topics %}<option value="{{ t.id }}">{{ t.name }} ({{ t.subject.name }})</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label-sm">Recursos puntuales</label>
+                        <select name="resources" class="form-select" multiple size="6">
+                            {% for r in resources %}<option value="{{ r.id }}">{{ r.title }}</option>{% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn-primary w-100 py-3">Guardar guía</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Guías existentes -->
+        <section class="bg-glass p-4 rounded shadow-sm">
+            <h2 class="h5 mb-3 text-teal">Guías guardadas ({{ guides|length }})</h2>
+            {% for g in guides %}
+                <div class="guide-card mb-3 p-3 rounded" style="border:1px solid rgba(15,118,110,0.12);">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>{{ g.title }}</strong>
+                            {% if not g.is_active %}<span class="badge bg-secondary">inactiva</span>{% endif %}
+                            <div class="text-secondary small">{{ g.content_text|length }} caracteres{% if g.source_filename %} · {{ g.source_filename }}{% endif %}</div>
+                            {% if g.description %}<div class="small">{{ g.description }}</div>{% endif %}
+                            <div class="small mt-1 text-secondary">
+                                {% for s in g.subjects.all %}<span class="me-2">📘 {{ s.name }}</span>{% endfor %}
+                                {% for t in g.topics.all %}<span class="me-2">🏷️ {{ t.name }}</span>{% endfor %}
+                                {% for r in g.resources.all %}<span class="me-2">🎬 {{ r.title }}</span>{% endfor %}
+                                {% if not g.subjects.all and not g.topics.all and not g.resources.all %}<em>sin vínculos (no se aplicará a nada)</em>{% endif %}
+                            </div>
+                        </div>
+                        <form method="post" action="{% url 'content:delete_quiz_guide' g.id %}" onsubmit="return confirm('¿Eliminar la guía «{{ g.title|escapejs }}»?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-link text-danger small">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="text-center text-secondary py-4">Todavía no hay guías. Subí la primera con el formulario.</div>
+            {% endfor %}
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=5">
+{% endblock %}
