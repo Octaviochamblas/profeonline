@@ -61,6 +61,13 @@ class Resource(models.Model):
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True)
     description = models.TextField("Descripción breve", blank=True)
     content = models.TextField("Contenido", blank=True)
+    transcript = models.TextField(
+        "Transcripción del video",
+        blank=True,
+        default="",
+        help_text="Texto hablado del video (se baja aparte y se guarda aquí). "
+                  "Lo usa la generación de preguntas; no se muestra al público.",
+    )
     file = models.FileField(
         upload_to="resources/files/",
         blank=True,

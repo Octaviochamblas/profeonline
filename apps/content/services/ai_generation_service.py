@@ -64,11 +64,15 @@ def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_
             return _generate_mock_questions(resource, level, mode, count, status)
         raise ValueError("No se configuraron las llaves GEMINI_API_KEY u OPENAI_API_KEY.")
 
-    # Si no se pasó transcript, intentar obtenerlo del video. Esto va DESPUÉS del
-    # camino mock de arriba a propósito: así nunca se hace red durante los tests.
-    if transcript is None and use_transcript and getattr(resource, "video_url", None):
-        from apps.content.services.transcript_service import fetch_transcript
-        transcript = fetch_transcript(resource.video_url, max_chars=8000)
+    # Transcript: se PREFIERE el guardado en el recurso (bajado aparte desde una IP
+    # residencial y persistido). Solo si no hay guardado se intenta en vivo —que en
+    # la nube suele estar bloqueado por YouTube—. Va DESPUÉS del camino mock para no
+    # hacer red durante los tests.
+    if transcript is None and use_transcript:
+        transcript = (getattr(resource, "transcript", "") or "").strip() or None
+        if not transcript and getattr(resource, "video_url", None):
+            from apps.content.services.transcript_service import fetch_transcript
+            transcript = fetch_transcript(resource.video_url, max_chars=8000)
 
     # Guías de referencia del recurso (estilo a mimetizar + contenido como fuente).
     if reference_guides is None and use_guides:

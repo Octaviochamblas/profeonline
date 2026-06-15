@@ -206,17 +206,19 @@ class Command(BaseCommand):
 
             total_planned += resource_deficit
 
-            # Transcript: se baja UNA vez por recurso y se reutiliza en todas las celdas.
-            transcript = None
-            if resource.video_url:
+            # Transcript: se PREFIERE el guardado en el recurso (bajado aparte desde
+            # una IP residencial). Solo si no hay guardado se intenta en vivo (que en
+            # la nube suele estar bloqueado por YouTube). Se reutiliza en las celdas.
+            transcript = (resource.transcript or "").strip() or None
+            if not transcript and resource.video_url:
                 transcript = fetch_transcript(resource.video_url, max_chars=TRANSCRIPT_MAX_CHARS)
-                if not transcript and not allow_without_transcript:
-                    n_no_transcript += 1
-                    self.stdout.write(
-                        f"  [skip] '{resource.title}': transcript no disponible aun "
-                        f"(deficit {resource_deficit}). Se reintentara en otra corrida."
-                    )
-                    continue
+            if not transcript and not allow_without_transcript:
+                n_no_transcript += 1
+                self.stdout.write(
+                    f"  [skip] '{resource.title}': sin transcript guardado ni disponible "
+                    f"(deficit {resource_deficit}). Se reintentara cuando se cargue."
+                )
+                continue
 
             # Guías de referencia del recurso (estilo + contenido). Se arman una vez.
             reference_guides = build_reference_block(resource)
