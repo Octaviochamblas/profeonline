@@ -98,28 +98,22 @@ def fetch_transcript(video_url_or_id, languages=DEFAULT_LANGUAGES, max_chars=Non
         return None
 
     texto = None
-
-    # --- API nueva (>=1.0): instancia con .list()/.fetch() ---
     try:
         api = YouTubeTranscriptApi()
-        pista = _pick_transcript(api.list(video_id), languages)
+        if hasattr(api, "list"):
+            # API nueva (>=1.0): instancia con .list()/.fetch().
+            pista = _pick_transcript(api.list(video_id), languages)
+        elif hasattr(YouTubeTranscriptApi, "list_transcripts"):
+            # API vieja (<1.0): métodos estáticos.
+            pista = _pick_transcript(YouTubeTranscriptApi.list_transcripts(video_id), languages)
+        else:
+            pista = None
         if pista is not None:
             texto = _segments_to_text(pista.fetch())
-    except AttributeError:
-        # La instancia no tiene .list(): es la API vieja. Se intenta abajo.
-        pass
     except Exception as exc:  # noqa: BLE001 - degradar con elegancia
-        logger.info("transcript(API nueva) falló para %s: %s", video_id, exc)
-
-    # --- API vieja (<1.0): métodos estáticos ---
-    if not texto:
-        try:
-            listado = YouTubeTranscriptApi.list_transcripts(video_id)
-            pista = _pick_transcript(listado, languages)
-            if pista is not None:
-                texto = _segments_to_text(pista.fetch())
-        except Exception as exc:  # noqa: BLE001
-            logger.info("transcript(API vieja) falló para %s: %s", video_id, exc)
+        detalle = str(exc).lower()
+        motivo = "IP bloqueada por YouTube" if ("block" in detalle or "ip" in detalle) else str(exc).splitlines()[0][:120]
+        logger.info("transcript no disponible para %s (%s)", video_id, motivo)
 
     if not texto:
         return None

@@ -83,6 +83,7 @@ def create_resource_from_video(request):
     video_url = data.get("video_url")
     description = data.get("description", "")
     content = data.get("content", "")
+    transcript = data.get("transcript", "")
     subject_slug = data.get("subject_slug")
     topic_slug = data.get("topic_slug")
     level_slugs = data.get("level_slugs", [])
@@ -163,6 +164,7 @@ def create_resource_from_video(request):
             video_url=video_url,
             description=description,
             content=content,
+            transcript=transcript,
             subject=subject,
             topic=topic,
             is_published=is_published,
@@ -175,6 +177,10 @@ def create_resource_from_video(request):
             resource.description = description
         if content:
             resource.content = content
+        # El transcript suele llegar en una llamada posterior (los subtitulos de
+        # YouTube tardan en estar listos). Solo se actualiza si viene con contenido.
+        if transcript:
+            resource.transcript = transcript
         if subject:
             resource.subject = subject
         if topic:
