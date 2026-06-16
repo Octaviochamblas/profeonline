@@ -252,6 +252,26 @@
                                         hx-swap="beforeend show:bottom">
                                     + Añadir pregunta a {{ mode.label }}
                                 </button>
+                                <div class="acc-gen-row">
+                                    <button type="button" class="btn-secondary btn-sm"
+                                            hx-post="{% url 'content:generate_questions_inline' resource.id %}"
+                                            hx-vals='{"level": "{{ level.num }}", "mode": "{{ mode.key }}", "source": "video", "count": "5"}'
+                                            hx-target="#qlist-{{ level.num }}-{{ mode.key }}"
+                                            hx-swap="beforeend show:bottom"
+                                            hx-disabled-elt="this"
+                                            title="Genera 5 preguntas sobre lo que se explica en el video (usa el transcript guardado)">
+                                        🎬 Generar 5 desde el video
+                                    </button>
+                                    <button type="button" class="btn-secondary btn-sm"
+                                            hx-post="{% url 'content:generate_questions_inline' resource.id %}"
+                                            hx-vals='{"level": "{{ level.num }}", "mode": "{{ mode.key }}", "source": "document", "count": "5"}'
+                                            hx-target="#qlist-{{ level.num }}-{{ mode.key }}"
+                                            hx-swap="beforeend show:bottom"
+                                            hx-disabled-elt="this"
+                                            title="Genera 5 preguntas copiando el formato de la guía vinculada (no usa el video)">
+                                        📄 Generar 5 copiando documento
+                                    </button>
+                                </div>
                             </div>
                         </details>
                         {% endfor %}
@@ -265,7 +285,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=5">
+<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=6">
 {% endblock %}
 
 {% block extra_js %}

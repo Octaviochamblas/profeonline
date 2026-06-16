@@ -19,6 +19,7 @@ from apps.content.views.question_review import (
     delete_question,
     delete_choice,
     bulk_action_questions,
+    generate_questions_inline,
 )
 from apps.content.views.quiz_guides import (
     quiz_guides,
@@ -49,4 +50,5 @@ urlpatterns = [
     path("publicar/preguntas/borrar-pregunta/<int:question_id>/", delete_question, name="delete_question"),
     path("publicar/preguntas/borrar-alternativa/<int:choice_id>/", delete_choice, name="delete_choice"),
     path("publicar/preguntas/accion-lote/<int:resource_id>/", bulk_action_questions, name="bulk_action_questions"),
+    path("publicar/preguntas/generar-inline/<int:resource_id>/", generate_questions_inline, name="generate_questions_inline"),
 ]
