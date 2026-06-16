@@ -19,6 +19,11 @@ from apps.content.views.question_review import (
     delete_question,
     delete_choice,
     bulk_action_questions,
+    generate_questions_inline,
+)
+from apps.content.views.quiz_guides import (
+    quiz_guides,
+    delete_quiz_guide,
 )
 
 urlpatterns = [
@@ -31,6 +36,10 @@ urlpatterns = [
     path("publicar/preguntas/", question_studio, name="question_studio"),
     path("publicar/preguntas/generar-tanda/", generate_questions_chunk, name="generate_questions_chunk"),
 
+    # Banco de Preguntas - Biblioteca de guías de referencia
+    path("publicar/guias/", quiz_guides, name="quiz_guides"),
+    path("publicar/guias/borrar/<int:guide_id>/", delete_quiz_guide, name="delete_quiz_guide"),
+
     # Banco de Preguntas - Revisión y Configuración por Recurso
     path("publicar/preguntas/<slug:slug>/", question_review, name="question_review"),
     path("publicar/preguntas/config/<int:resource_id>/", save_resource_quiz_config, name="save_resource_quiz_config"),
@@ -41,4 +50,5 @@ urlpatterns = [
     path("publicar/preguntas/borrar-pregunta/<int:question_id>/", delete_question, name="delete_question"),
     path("publicar/preguntas/borrar-alternativa/<int:choice_id>/", delete_choice, name="delete_choice"),
     path("publicar/preguntas/accion-lote/<int:resource_id>/", bulk_action_questions, name="bulk_action_questions"),
+    path("publicar/preguntas/generar-inline/<int:resource_id>/", generate_questions_inline, name="generate_questions_inline"),
 ]

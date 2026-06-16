@@ -291,3 +291,74 @@ def bulk_action_questions(request, resource_id):
         return HttpResponse("".join(parts))
 
     return redirect("content:question_review", slug=resource.slug)
+
+
+@user_passes_test(is_admin)
+@require_POST
+def generate_questions_inline(request, resource_id):
+    """Genera una tanda de preguntas para una sección (nivel + modo) del recurso.
+
+    `source`:
+      - "video": usa el transcript guardado (lo que se explica en el video).
+      - "document": copia el formato de una guía vinculada, SIN usar el video.
+
+    Devuelve los <details> de las preguntas nuevas para que HTMX las anexe.
+    """
+    from django.utils.html import escape
+
+    from apps.content.services.ai_generation_service import generate_questions_for_resource
+    from apps.content.services.guide_service import build_reference_block
+
+    resource = get_object_or_404(Resource, id=resource_id)
+    try:
+        level = int(request.POST.get("level", 1))
+    except (ValueError, TypeError):
+        level = 1
+    mode = request.POST.get("mode", "preparacion")
+    if mode not in dict(Question.MODE_CHOICES):
+        mode = "preparacion"
+    source = request.POST.get("source", "video")
+    try:
+        count = int(request.POST.get("count", 5))
+    except (ValueError, TypeError):
+        count = 5
+    count = max(1, min(count, 5))  # tope para no chocar el timeout de gunicorn
+
+    def _msg(text):
+        return HttpResponse(f'<p class="acc-empty">{text}</p>')
+
+    # Modo documento: necesita una guía vinculada de donde copiar el formato.
+    if source == "document" and not build_reference_block(resource):
+        return _msg(
+            "No hay guía vinculada a este recurso, tema o asignatura. "
+            "Cargá una en la página de Guías y vinculala."
+        )
+
+    config = getattr(resource, "quiz_config", None)
+    status = "publicada" if (config and config.autopublish) else "borrador"
+    edu_level = (getattr(resource.topic, "education_level", "") or "") or "media"
+
+    try:
+        created = generate_questions_for_resource(
+            resource=resource,
+            level=level,
+            mode=mode,
+            count=count,
+            status=status,
+            education_level=edu_level,
+            use_transcript=(source == "video"),
+            use_guides=True,
+        )
+    except Exception as exc:  # noqa: BLE001 - se reporta al usuario, no se cae
+        return _msg(f"Error al generar: {escape(str(exc))}")
+
+    if not created:
+        if source == "video":
+            return _msg("No se generaron preguntas. ¿El recurso tiene transcript guardado?")
+        return _msg("No se generaron preguntas.")
+
+    html = "".join(
+        render_to_string("partials/question_item.html", {"question": q}, request=request)
+        for q in created
+    )
+    return HttpResponse(html)
