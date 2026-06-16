@@ -71,6 +71,10 @@ def question_studio(request):
         allow_retake_passed = request.POST.get('allow_retake_passed') in ['true', 'on', 'checked']
         autopublish = request.POST.get('autopublish') in ['true', 'on', 'checked']
         education_level_override = request.POST.get('education_level_override', 'media')
+        # Modo de generación: "video" (transcript) o "document" (copia formato de guías).
+        gen_source = request.POST.get('gen_source', 'video')
+        if gen_source not in ('video', 'document'):
+            gen_source = 'video'
 
         # Instrucciones personalizadas por nivel/modo (ej. {"1_practice": "...", "2_eval": "..."})
         custom_instructions = {}
@@ -96,6 +100,7 @@ def question_studio(request):
             "counts_data": json.dumps(counts_data),
             "education_level_override": education_level_override,
             "custom_instructions_json": json.dumps(custom_instructions),
+            "gen_source": gen_source,
         }
 
         # Total a generar, en preguntas (el progreso se mide por preguntas creadas).
@@ -177,6 +182,7 @@ def generate_questions_chunk(request):
     counts_data = json.loads(request.POST.get('counts_data', '{}'))
     education_level_override = request.POST.get('education_level_override', 'media')
     custom_instructions_json = request.POST.get('custom_instructions_json', '{}')
+    gen_source = request.POST.get('gen_source', 'video')  # "video" o "document"
     try:
         custom_instructions_map = json.loads(custom_instructions_json)
     except (json.JSONDecodeError, ValueError):
@@ -229,6 +235,8 @@ def generate_questions_chunk(request):
                 status="publicada" if autopublish else "borrador",
                 education_level=edu_level,
                 custom_instructions=custom_instr,
+                use_transcript=(gen_source == "video"),
+                use_guides=True,
             )
             n_created = len(created)
             generated_total += n_created
@@ -277,6 +285,7 @@ def generate_questions_chunk(request):
             "counts_data": json.dumps(counts_data),
             "education_level_override": education_level_override,
             "custom_instructions_json": custom_instructions_json,
+            "gen_source": gen_source,
         }
 
     context = {
