@@ -57,6 +57,11 @@ class Command(BaseCommand):
             help="Slug de un recurso puntual. Por defecto procesa todos los publicados.",
         )
         parser.add_argument(
+            "--subject",
+            default=None,
+            help="Slug de una asignatura a procesar (ej. matematica-escolar).",
+        )
+        parser.add_argument(
             "--limit",
             type=int,
             default=0,
@@ -175,6 +180,8 @@ class Command(BaseCommand):
             qs = qs.filter(slug=options["resource"])
             if not qs.exists():
                 raise CommandError(f"No existe un recurso publicado con slug '{options['resource']}'.")
+        if options["subject"]:
+            qs = qs.filter(subject__slug=options["subject"])
         if only_videos:
             qs = qs.exclude(video_url__isnull=True).exclude(video_url="")
         qs = qs.order_by("id")
