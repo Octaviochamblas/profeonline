@@ -77,6 +77,77 @@
             </form>
         </section>
 
+        <!-- Importar desde Google Drive -->
+        <section class="bg-glass p-4 rounded shadow-sm">
+            <h2 class="h5 mb-3 text-teal">📂 Desde Google Drive</h2>
+            {% if not drive_configured %}
+                <p class="text-secondary small mb-0">
+                    Drive no está configurado todavía. Para habilitarlo, cargá la variable de entorno
+                    <code>GOOGLE_SERVICE_ACCOUNT_JSON</code> (la clave del service account) y compartí
+                    tu carpeta de Drive con su email (rol <em>Lector</em>).
+                </p>
+            {% else %}
+                <form method="get" action="{% url 'content:quiz_guides' %}" class="mb-3">
+                    <label class="form-label">Carpeta de Drive (enlace o ID)</label>
+                    <div class="d-flex gap-2">
+                        <input type="text" name="drive_folder" class="form-control"
+                               value="{{ drive_folder }}"
+                               placeholder="https://drive.google.com/drive/folders/…">
+                        <button type="submit" class="btn-primary px-4">Listar</button>
+                    </div>
+                </form>
+
+                {% if drive_error %}
+                    <div class="alert alert--danger">{{ drive_error }}</div>
+                {% endif %}
+
+                {% if drive_files is not None %}
+                    {% if drive_files %}
+                        <form method="post" action="{% url 'content:import_drive_guides' %}">
+                            {% csrf_token %}
+                            <p class="text-secondary small mb-2">Elegí los documentos a importar:</p>
+                            <div class="mb-3" style="max-height:220px; overflow:auto; border:1px solid rgba(15,118,110,0.12); border-radius:8px; padding:.5rem .75rem;">
+                                {% for f in drive_files %}
+                                    <div class="form-check">
+                                        <input type="checkbox" name="drive_files" value="{{ f.id }}" id="df-{{ f.id }}" class="form-check-input">
+                                        <label class="form-check-label" for="df-{{ f.id }}">{{ f.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <p class="text-secondary small mb-2">Vinculá lo importado a (opcional):</p>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label-sm">Asignaturas</label>
+                                    <select name="subjects" class="form-select" multiple size="5">
+                                        {% for s in subjects %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label-sm">Temas</label>
+                                    <select name="topics" class="form-select" multiple size="5">
+                                        {% for t in topics %}<option value="{{ t.id }}">{{ t.name }} ({{ t.subject.name }})</option>{% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label-sm">Recursos puntuales</label>
+                                    <select name="resources" class="form-select" multiple size="5">
+                                        {% for r in resources %}<option value="{{ r.id }}">{{ r.title }}</option>{% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="text-end mt-3">
+                                <button type="submit" class="btn-primary px-4 py-2">Importar seleccionados</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <p class="text-secondary small mb-0">No se encontraron documentos soportados en esa carpeta (Google Docs, PDF o texto).</p>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </section>
+
         <!-- Guías existentes -->
         <section class="bg-glass p-4 rounded shadow-sm">
             <h2 class="h5 mb-3 text-teal">Guías guardadas ({{ guides|length }})</h2>

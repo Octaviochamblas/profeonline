@@ -197,3 +197,9 @@ CANONICAL_BASE_URL = "https://www.profeonline.cl"
 # AI Question Generation
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+
+# Biblioteca de guías desde Google Drive (service account, solo lectura).
+# GOOGLE_SERVICE_ACCOUNT_JSON: contenido del JSON de la cuenta de servicio (un único string).
+# GUIDES_DRIVE_FOLDER_ID: ID de carpeta por defecto (no secreto; se puede sobrescribir en el panel).
+GOOGLE_SERVICE_ACCOUNT_JSON = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON", "")
+GUIDES_DRIVE_FOLDER_ID = os.environ.get("GUIDES_DRIVE_FOLDER_ID", "")
