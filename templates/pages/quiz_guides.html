@@ -102,10 +102,24 @@
                 {% endif %}
 
                 {% if drive_files is not None %}
+                    {% if drive_folder_name %}
+                        <p class="small mb-2">📁 <strong>{{ drive_folder_name }}</strong>
+                            <span class="text-secondary">— usá «atrás» del navegador para volver</span></p>
+                    {% endif %}
+
+                    {% if drive_folders %}
+                        <p class="text-secondary small mb-1">Subcarpetas (clic para entrar):</p>
+                        <div class="mb-3 d-flex flex-wrap gap-2">
+                            {% for sub in drive_folders %}
+                                <a class="btn-link" href="?drive_folder={{ sub.id }}">📂 {{ sub.name }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     {% if drive_files %}
                         <form method="post" action="{% url 'content:import_drive_guides' %}">
                             {% csrf_token %}
-                            <p class="text-secondary small mb-2">Elegí los documentos a importar:</p>
+                            <p class="text-secondary small mb-2">Documentos en esta carpeta — elegí los que quieras importar:</p>
                             <div class="mb-3" style="max-height:220px; overflow:auto; border:1px solid rgba(15,118,110,0.12); border-radius:8px; padding:.5rem .75rem;">
                                 {% for f in drive_files %}
                                     <div class="form-check">
@@ -141,8 +155,8 @@
                                 <button type="submit" class="btn-primary px-4 py-2">Importar seleccionados</button>
                             </div>
                         </form>
-                    {% else %}
-                        <p class="text-secondary small mb-0">No se encontraron documentos soportados en esa carpeta (Google Docs, PDF o texto).</p>
+                    {% elif not drive_folders %}
+                        <p class="text-secondary small mb-0">Esta carpeta no tiene documentos soportados ni subcarpetas.</p>
                     {% endif %}
                 {% endif %}
             {% endif %}

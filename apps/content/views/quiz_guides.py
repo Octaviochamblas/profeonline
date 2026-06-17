@@ -87,20 +87,28 @@ def quiz_guides(request):
 
 
 def _drive_context(request):
-    """Estado de Drive y, si se pidió listar una carpeta, sus archivos."""
+    """Estado de Drive y, si corresponde, el contenido de la carpeta actual.
+
+    Se navega por subcarpetas con ``?drive_folder=<id>`` (la biblioteca suele
+    estar anidada). Si hay carpeta por defecto configurada, se lista al entrar.
+    """
     default_folder = getattr(settings, "GUIDES_DRIVE_FOLDER_ID", "")
-    folder = (request.GET.get("drive_folder") or "").strip()
+    folder = (request.GET.get("drive_folder") or "").strip() or default_folder
     ctx = {
         "drive_configured": drive_service.is_configured(),
         "drive_default_folder": default_folder,
-        "drive_folder": folder or default_folder,
+        "drive_folder": folder,
+        "drive_folder_name": None,
+        "drive_folders": None,
         "drive_files": None,
         "drive_error": None,
     }
-    # Solo llamamos a la API si el admin pidió listar (botón "Listar archivos").
     if folder and ctx["drive_configured"]:
         try:
-            ctx["drive_files"] = drive_service.list_folder_files(folder)
+            listing = drive_service.list_folder(folder)
+            ctx["drive_folder_name"] = listing["name"]
+            ctx["drive_folders"] = listing["folders"]
+            ctx["drive_files"] = listing["files"]
         except Exception as exc:  # noqa: BLE001 - mostrar el error, no romper la página
             ctx["drive_error"] = str(exc)
     return ctx

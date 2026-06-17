@@ -112,5 +112,24 @@ para crearlos como `QuizGuide`, sin tener que descargar y resubir cada archivo a
   importación + vínculos, "no configurado" no llama a la API, errores mostrados con gracia. Verde,
   junto a los 16 tests de guías preexistentes. `check` y `makemigrations --check` OK (sin migraciones).
 
-**Falta:** infra del 🧑 (service account + compartir carpeta + `GOOGLE_SERVICE_ACCOUNT_JSON`),
-QA manual end-to-end, auditoría 🧩 Codex y commit/PR.
+### Validación end-to-end (2026-06-16, carpeta real "Material Académico")
+Con el service account `profeonline-guias@…` y la carpeta compartida, se validó contra Drive real
+(credencial leída de archivo local, nunca commiteada). Hallazgos y ajustes:
+
+- **La biblioteca está anidada** (Material Académico → Libros / Matemáticas / … → subcarpetas →
+  documentos). El listado plano del v1 daba 0. **Ajuste:** `list_folder()` ahora devuelve también
+  las **subcarpetas** y la UI permite **navegar (drill-down)** con `?drive_folder=<id>` (volver = atrás
+  del navegador). Auto-lista la carpeta por defecto al entrar.
+- **Tus PDFs propios extraen bien** ("1 Números.pdf" 3577 chars, "Tablas…" 2347). ✅
+- **`.docx` daba 0** por falta de `python-docx`. **Ajuste:** + `python-docx==1.1.2` (arregla también la
+  subida manual de Word, que fallaba en silencio). Revalidado: "1 Números.docx" → 2546 chars. ✅
+- **PDFs escaneados** (libros de "Libros") no extraen texto (son imágenes; pypdf no hace OCR).
+  **Limitación aceptada** (OCR fuera de alcance). El import **descarta** archivos sin texto y avisa
+  cuáles, sin crear guías vacías.
+- Tablas dentro de `.docx` extraen poco (python-docx lee solo párrafos) — menor.
+
+**Estado:** integración validada de punta a punta para el material real del profe. 29 tests verde
+(13 Drive + 16 guías) · `check` OK · sin migraciones.
+
+**Falta:** QA manual del 🧑 desde la UI, cargar las variables en Railway (`GOOGLE_SERVICE_ACCOUNT_JSON`
++ `GUIDES_DRIVE_FOLDER_ID`) antes de mergear a `main`, auditoría 🧩 Codex y push/PR.

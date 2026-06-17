@@ -68,21 +68,26 @@ class DriveGuidesViewTests(TestCase):
 
     # ----------------------------------------------------------- listado
     @override_settings(GOOGLE_SERVICE_ACCOUNT_JSON=_DUMMY_CREDS)
-    @patch("apps.content.services.drive_service.list_folder_files")
-    def test_listing_shows_files_for_admin(self, mock_list):
-        mock_list.return_value = [
-            {"id": "f1", "name": "Guía Álgebra.pdf", "mime": "application/pdf"},
-        ]
+    @patch("apps.content.services.drive_service.list_folder")
+    def test_listing_shows_files_and_subfolders(self, mock_list):
+        mock_list.return_value = {
+            "folder_id": "FOLDER1",
+            "name": "Material Académico",
+            "folders": [{"id": "sub1", "name": "Matemáticas"}],
+            "files": [{"id": "f1", "name": "Guía Álgebra.pdf", "mime": "application/pdf"}],
+        }
         self.client.force_login(self.admin)
         resp = self.client.get(
             reverse("content:quiz_guides"), {"drive_folder": "FOLDER1"}
         )
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Guía Álgebra.pdf")
+        self.assertContains(resp, "Matemáticas")          # subcarpeta listada
+        self.assertContains(resp, "?drive_folder=sub1")    # link de drill-down
         mock_list.assert_called_once()
 
     @override_settings(GOOGLE_SERVICE_ACCOUNT_JSON="")
-    @patch("apps.content.services.drive_service.list_folder_files")
+    @patch("apps.content.services.drive_service.list_folder")
     def test_not_configured_does_not_call_api(self, mock_list):
         self.client.force_login(self.admin)
         resp = self.client.get(
@@ -93,7 +98,7 @@ class DriveGuidesViewTests(TestCase):
         mock_list.assert_not_called()
 
     @override_settings(GOOGLE_SERVICE_ACCOUNT_JSON=_DUMMY_CREDS)
-    @patch("apps.content.services.drive_service.list_folder_files")
+    @patch("apps.content.services.drive_service.list_folder")
     def test_listing_shows_error_gracefully(self, mock_list):
         mock_list.side_effect = RuntimeError("Drive denegó el acceso (403).")
         self.client.force_login(self.admin)

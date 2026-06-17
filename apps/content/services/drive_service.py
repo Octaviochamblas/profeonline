@@ -27,6 +27,8 @@ _FILES_URL = "https://www.googleapis.com/drive/v3/files"
 
 # MIME de un Google Doc nativo: se exporta a texto (no se descarga binario).
 GOOGLE_DOC_MIME = "application/vnd.google-apps.document"
+# MIME de una carpeta: se ofrece para navegar hacia adentro (drill-down).
+FOLDER_MIME = "application/vnd.google-apps.folder"
 
 # Tipos que sabemos convertir a texto (Google Doc, PDF, Word, texto plano).
 SUPPORTED_MIMES = {
@@ -99,25 +101,37 @@ def _check(response):
     response.raise_for_status()
 
 
-def list_folder_files(folder):
-    """Lista los documentos soportados de una carpeta de Drive.
+def list_folder(folder):
+    """Lista una carpeta de Drive: subcarpetas (para navegar) y documentos.
 
-    ``folder`` puede ser un ID o un link. Devuelve ``[{id, name, mime}]``.
+    ``folder`` puede ser un ID o un link. Devuelve
+    ``{folder_id, name, folders: [{id, name}], files: [{id, name, mime}]}``.
+    Las subcarpetas permiten el *drill-down* (la biblioteca suele estar anidada);
+    los archivos soportados se ofrecen para importar.
     """
     folder_id = parse_folder_id(folder)
     if not folder_id:
         raise RuntimeError("No se reconoció la carpeta de Drive. Pegá el ID o el enlace de la carpeta.")
 
     session = _get_session()
-    query = f"'{folder_id}' in parents and trashed = false"
-    files = []
+
+    # Nombre de la carpeta actual (contexto para la UI).
+    meta = session.get(
+        f"{_FILES_URL}/{folder_id}",
+        params={"fields": "id, name", "supportsAllDrives": "true"},
+        timeout=30,
+    )
+    _check(meta)
+    name = meta.json().get("name", "")
+
+    folders, files = [], []
     page_token = None
     while True:
         params = {
-            "q": query,
+            "q": f"'{folder_id}' in parents and trashed = false",
             "fields": "nextPageToken, files(id, name, mimeType)",
             "pageSize": 200,
-            "orderBy": "name",
+            "orderBy": "folder, name",
             "supportsAllDrives": "true",
             "includeItemsFromAllDrives": "true",
         }
@@ -127,16 +141,17 @@ def list_folder_files(folder):
         _check(response)
         data = response.json()
         for item in data.get("files", []):
-            if item.get("mimeType") in SUPPORTED_MIMES:
-                files.append({
-                    "id": item["id"],
-                    "name": item.get("name", item["id"]),
-                    "mime": item["mimeType"],
-                })
+            mime = item.get("mimeType")
+            entry_name = item.get("name", item["id"])
+            if mime == FOLDER_MIME:
+                folders.append({"id": item["id"], "name": entry_name})
+            elif mime in SUPPORTED_MIMES:
+                files.append({"id": item["id"], "name": entry_name, "mime": mime})
         page_token = data.get("nextPageToken")
         if not page_token:
             break
-    return files
+
+    return {"folder_id": folder_id, "name": name, "folders": folders, "files": files}
 
 
 def fetch_file(file_id):
