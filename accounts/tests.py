@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test import TestCase
@@ -89,7 +90,7 @@ class AccountFormTests(TestCase):
         self.assertEqual(form.errors["email"][0], "Este correo electrónico ya está en uso.")
 
     def test_profile_update_form_unique_email_case_insensitive(self):
-        other_user = User.objects.create_user(
+        User.objects.create_user(
             username="other_profesor",
             password="testpass123",
             email="other@example.com",
@@ -162,7 +163,7 @@ class PasswordResetFlowTests(TestCase):
 
 class EmailVerificationFlowTests(TestCase):
     def setUp(self):
-        self.User = get_user_model() if 'get_user_model' in globals() else User
+        self.User = get_user_model()
         self.level = Level.objects.create(name="Primaria", is_active=True)
         # Limpiar la bandeja de salida de correos
         mail.outbox = []
