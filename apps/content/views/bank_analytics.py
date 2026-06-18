@@ -33,6 +33,20 @@ CELL_DEFINITIONS = (
 LOW_SAMPLE_ANSWERS = 10
 
 
+def _clean_id(value):
+    """Normaliza un id de filtro (GET) a string numérico o "".
+
+    Evita un 500 si llega un parámetro inválido (p. ej. ``?area=abc``): el id se
+    usa luego en ``.filter(..._id=value)`` y un valor no entero reventaría la query.
+    Devolver "" hace que el filtro se ignore (lo cubre el guard ``if filters[...]``).
+    Se mantiene como string para no romper la comparación en los <select> del template.
+    """
+    try:
+        return str(int(value))
+    except (TypeError, ValueError):
+        return ""
+
+
 def _question_count_annotations():
     annotations = {
         "published_total": Count(
@@ -461,10 +475,10 @@ def _build_effectiveness_context(filters, user_ids):
 @user_passes_test(is_admin)
 def bank_results(request):
     filters = {
-        "area": request.GET.get("area", ""),
-        "subject": request.GET.get("subject", ""),
-        "topic": request.GET.get("topic", ""),
-        "user": request.GET.get("user", ""),
+        "area": _clean_id(request.GET.get("area", "")),
+        "subject": _clean_id(request.GET.get("subject", "")),
+        "topic": _clean_id(request.GET.get("topic", "")),
+        "user": _clean_id(request.GET.get("user", "")),
     }
     group_by = request.GET.get("group_by", "student")
     if group_by not in {"student", "resource"}:
@@ -497,10 +511,10 @@ def bank_effectiveness(request):
             continue
     user_ids = list(dict.fromkeys(user_ids))
     filters = {
-        "area": request.GET.get("area", ""),
-        "subject": request.GET.get("subject", ""),
-        "topic": request.GET.get("topic", ""),
-        "resource": request.GET.get("resource", ""),
+        "area": _clean_id(request.GET.get("area", "")),
+        "subject": _clean_id(request.GET.get("subject", "")),
+        "topic": _clean_id(request.GET.get("topic", "")),
+        "resource": _clean_id(request.GET.get("resource", "")),
     }
     effectiveness = _build_effectiveness_context(filters, user_ids)
     users_with_answers = (

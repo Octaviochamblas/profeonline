@@ -1,7 +1,7 @@
 # Analítica del banco: cobertura, efectividad y resultados por alumno
 
-- **Estado:** Construcción terminada — pendiente auditoría/cierre 🏛️ Claude
-- **Creado:** 2026-06-17 · **Construido:** 2026-06-18
+- **Estado:** ✅ Auditado y cerrado por 🏛️ Claude (2026-06-18) — mergeado en PR #69
+- **Creado:** 2026-06-17 · **Construido:** 2026-06-18 (🧩 Codex) · **Auditado/cerrado:** 2026-06-18 (🏛️ Claude)
 - **Prioridad:** P2 · **Cartera:** educativa / producto
 - **Dueño:** 🧩 Codex construye → 🏛️ Claude audita y cierra
 
@@ -53,6 +53,37 @@ Exponer, sin modelos ni migraciones nuevas, tres vistas de solo lectura sobre lo
 - **Pruebas:** 10 tests de analítica; regresión `test_quiz_config` y suite completa verdes.
 - **QA visual:** cobertura, filtros, resultados e item analysis revisados localmente; sin errores
   de consola ni overflow horizontal. Selector individual verificado con comparación global.
+
+## Auditoría final (🏛️ Claude, 2026-06-18)
+
+Revisión completa del diff (17 archivos, +2097/−16) contra `main` y los criterios de la tarjeta.
+
+**Verificado OK:**
+- **Matemática:** tasa de acierto (`correct/answers`), ponderada global (38,6% = 32/83 en QA),
+  delta grupo-vs-global (Ada 50% vs global 25% → +25 pp), promedios y % aprobación de resultados.
+  Grupo seleccionado vs "todos": **no mezclan denominadores** (el grupo filtra por `attempt__user`,
+  el global usa el mismo *base* sin filtro de usuario). Sin alumnos → grupo = global → delta 0.
+- **N+1 / consultas:** confirmados los límites — cobertura **1** (`assertNumQueries(1)` con 2 recursos,
+  vía `select_related("quiz_config")` + anotaciones), item analysis **2**, efectividad jerárquica **4**.
+- **Permisos/PII/CSP/HTML/a11y:** todas las vistas `@user_passes_test(is_admin)` (test rechaza staff
+  no-superusuario); sin PII extra; JS externo con `nonce` + cache-buster, sin handlers inline; partial
+  con `aria-label`; sin overflow horizontal ni errores de consola en las 4 páginas.
+- **Casos nulos:** recurso sin tema/asignatura (fallback a `topic.subject`/`None`), preguntas sin
+  respuestas (`accuracy=None` → "Sin datos"), `transcript` `TextField(default="")` (sin `.strip()` sobre None).
+- **Orden de rutas:** `resumen/`, `resultados/`, `efectividad/` antes de `<slug:slug>/` ✓.
+- **Evaluación final de tema:** fuera de la efectividad por pregunta (no genera `QuizAttemptAnswer`);
+  cubierto con test de regresión.
+
+**Hallazgo corregido (🏛️ Claude):**
+- **Parámetros GET inválidos** (`?area=abc`, `?user=foo`, `?resource=xyz`) provocaban un **500**
+  (`ValueError` al castear a `_id`) en `bank_results` y `bank_effectiveness`. **Fix:** helper
+  `_clean_id()` que normaliza cada filtro a string numérico o `""` (se ignora), conservando el tipo
+  para los `<select>`. **+3 tests de regresión** (resultados, efectividad, exclusión de eval de tema).
+
+**QA visual** (4 superficies, logueado como superusuario): cobertura (filtros en cascada + totales en
+vivo), resultados (tablas + filtros, GET inválido → 200), efectividad (selector de grupo + comparación
+global, GET inválido → 200), item analysis (distribución + banderas de baja/alta efectividad y
+distractor dominante). Sin errores.
 
 ## Evidencia de barrera
 

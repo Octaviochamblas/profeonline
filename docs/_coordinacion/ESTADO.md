@@ -14,10 +14,10 @@
 
 ## En curso ahora
 
-- **Analítica del banco — construcción terminada (2026-06-18, 🧩 Codex):** cobertura,
-  resultados, efectividad por pregunta y tasa ponderada filtrable por alumno o grupo ad hoc,
-  agregada por tema/recurso/pregunta. PR #69; 317 tests verdes, sin migraciones.
-  Pendiente auditoría final/cierre de 🏛️ Claude.
+- **Analítica del banco — CERRADO 🟢 (2026-06-18):** cobertura, resultados, efectividad por pregunta
+  y tasa ponderada filtrable por alumno o grupo ad hoc, agregada por tema/recurso/pregunta. 🧩 Codex
+  construyó, 🏛️ Claude auditó (fix de GET inválido + 3 tests de regresión) y cerró. **PR #69
+  squash-mergeado**; suite completa verde, sin migraciones. Tarjeta en `backlog/6-finalizados/`.
 - **Guías desde Google Drive — PR #68 mergeado (2026-06-18):** importar guías desde una carpeta
   de Drive (service account, navegación de subcarpetas), selector jerárquico de vínculos, soporte `.docx`
   (`python-docx`) y **publicar preguntas de inmediato por defecto**. Validado e2e contra carpeta real;

@@ -347,3 +347,54 @@ class BankAnalyticsTests(TestCase):
             self.assertEqual(len(context["topic_stats"]), 1)
             self.assertEqual(len(context["resource_stats"]), 1)
             self.assertEqual(len(context["question_stats"]), 2)
+
+    def test_results_ignores_invalid_get_filters(self):
+        """Parámetros GET no numéricos no deben reventar (500); se ignoran."""
+        QuizAttempt.objects.create(
+            user=self.student,
+            resource=self.resource,
+            level=1,
+            mode="evaluacion",
+            score=3,
+            total=5,
+            passed=False,
+            attempt_number=1,
+        )
+        self.client.force_login(self.admin)
+        response = self.client.get(
+            reverse("content:bank_results"),
+            {"area": "abc", "subject": "x", "topic": "y", "user": "z", "group_by": "raro"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["rows"]), 1)
+        self.assertEqual(response.context["group_by"], "student")  # inválido → default
+
+    def test_effectiveness_ignores_invalid_get_filters(self):
+        """Filtros/usuarios GET inválidos no rompen; sin selección válida → global."""
+        self._seed_effectiveness_answers()
+        self.client.force_login(self.admin)
+        response = self.client.get(
+            reverse("content:bank_effectiveness"),
+            {"area": "abc", "subject": "x", "topic": "y", "resource": "z", "users": "bad"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["totals"]["answers"], 4)
+        self.assertEqual(response.context["selected_user_ids"], [])
+
+    def test_effectiveness_excludes_topic_final_eval(self):
+        """La evaluación final de tema no guarda respuestas por pregunta: queda fuera."""
+        TopicEvaluationAttempt.objects.create(
+            user=self.student,
+            topic=self.topic,
+            score=8,
+            total=10,
+            percentage=80,
+            passed=True,
+            attempt_number=1,
+        )
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_effectiveness"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["totals"]["answers"], 0)
+        self.assertEqual(response.context["question_stats"], [])
+        self.assertEqual(response.context["topic_stats"], [])
