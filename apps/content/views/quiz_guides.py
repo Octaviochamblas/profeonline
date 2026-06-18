@@ -30,6 +30,44 @@ def _set_guide_links(guide, request):
         guide.resources.set(Resource.objects.filter(id__in=res_ids))
 
 
+def _link_tree():
+    """Árbol Asignatura ▸ Tema ▸ Recurso para el selector jerárquico de vínculos.
+
+    Permite vincular al nivel que el admin elija (asignatura completa, tema
+    completo o recursos sueltos). 3 queries; el agrupado se arma en Python.
+    """
+    subjects = list(Subject.objects.filter(is_active=True).order_by("name"))
+    topics = list(Topic.objects.filter(is_active=True).order_by("name"))
+    resources = list(
+        Resource.objects.filter(is_published=True)
+        .order_by("title")
+        .only("id", "title", "subject_id", "topic_id")
+    )
+
+    res_by_topic, loose_by_subject = {}, {}
+    for r in resources:
+        if r.topic_id:
+            res_by_topic.setdefault(r.topic_id, []).append(r)
+        elif r.subject_id:
+            loose_by_subject.setdefault(r.subject_id, []).append(r)
+
+    topics_by_subject = {}
+    for t in topics:
+        topics_by_subject.setdefault(t.subject_id, []).append(t)
+
+    tree = []
+    for s in subjects:
+        tree.append({
+            "subject": s,
+            "topics": [
+                {"topic": t, "resources": res_by_topic.get(t.id, [])}
+                for t in topics_by_subject.get(s.id, [])
+            ],
+            "loose_resources": loose_by_subject.get(s.id, []),
+        })
+    return tree
+
+
 @user_passes_test(is_admin)
 def quiz_guides(request):
     if request.method == "POST":
@@ -78,9 +116,7 @@ def quiz_guides(request):
     ).order_by("title")
     context = {
         "guides": guides,
-        "subjects": Subject.objects.filter(is_active=True).order_by("name"),
-        "topics": Topic.objects.filter(is_active=True).select_related("subject").order_by("name"),
-        "resources": Resource.objects.filter(is_published=True).order_by("title"),
+        "link_tree": _link_tree(),
     }
     context.update(_drive_context(request))
     return render(request, "pages/quiz_guides.html", context)

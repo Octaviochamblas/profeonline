@@ -49,27 +49,9 @@
                 </div>
 
                 <hr class="my-3 border-secondary">
-                <p class="text-secondary small mb-2">Vinculá la guía a (podés elegir varios; se aplica a los recursos de lo que elijas):</p>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label-sm">Asignaturas</label>
-                        <select name="subjects" class="form-select" multiple size="6">
-                            {% for s in subjects %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label-sm">Temas</label>
-                        <select name="topics" class="form-select" multiple size="6">
-                            {% for t in topics %}<option value="{{ t.id }}">{{ t.name }} ({{ t.subject.name }})</option>{% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label-sm">Recursos puntuales</label>
-                        <select name="resources" class="form-select" multiple size="6">
-                            {% for r in resources %}<option value="{{ r.id }}">{{ r.title }}</option>{% endfor %}
-                        </select>
-                    </div>
-                </div>
+                <p class="text-secondary small mb-2">Vinculá la guía al <strong>nivel</strong> que quieras —
+                    asignatura completa, tema completo o recursos sueltos (abrí cada grupo para ver el detalle):</p>
+                {% include "partials/guide_link_picker.html" %}
 
                 <div class="text-end mt-4">
                     <button type="submit" class="btn-primary w-100 py-3">Guardar guía</button>
@@ -129,27 +111,8 @@
                                 {% endfor %}
                             </div>
 
-                            <p class="text-secondary small mb-2">Vinculá lo importado a (opcional):</p>
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="form-label-sm">Asignaturas</label>
-                                    <select name="subjects" class="form-select" multiple size="5">
-                                        {% for s in subjects %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label-sm">Temas</label>
-                                    <select name="topics" class="form-select" multiple size="5">
-                                        {% for t in topics %}<option value="{{ t.id }}">{{ t.name }} ({{ t.subject.name }})</option>{% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label-sm">Recursos puntuales</label>
-                                    <select name="resources" class="form-select" multiple size="5">
-                                        {% for r in resources %}<option value="{{ r.id }}">{{ r.title }}</option>{% endfor %}
-                                    </select>
-                                </div>
-                            </div>
+                            <p class="text-secondary small mb-2">Vinculá lo importado al nivel que quieras (opcional):</p>
+                            {% include "partials/guide_link_picker.html" %}
 
                             <div class="text-end mt-3">
                                 <button type="submit" class="btn-primary px-4 py-2">Importar seleccionados</button>
@@ -195,5 +158,5 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=5">
+<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=8">
 {% endblock %}
