@@ -199,6 +199,14 @@ class EmailVerificationFlowTests(TestCase):
         email_addr = EmailAddress.objects.get(email="nuevo@example.com")
         self.assertFalse(email_addr.verified)
 
+    def test_verification_sent_page_uses_project_template(self):
+        response = self.client.get(reverse("account_email_verification_sent"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account/verification_sent.html")
+        self.assertTemplateUsed(response, "base.html")
+        self.assertContains(response, "Verifica tu correo electrónico")
+
     def test_login_blocked_if_unverified(self):
         # Crear un usuario con email no verificado
         user = self.User.objects.create_user(

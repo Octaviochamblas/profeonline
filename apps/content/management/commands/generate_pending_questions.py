@@ -22,6 +22,7 @@ Ejemplos:
 
 import os
 import sys
+import time
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
@@ -41,6 +42,8 @@ MODES = (("practice", "preparacion", "práctica"), ("eval", "evaluacion", "evalu
 DEFAULT_BATCH_SIZE = 5
 # Tope de caracteres de transcript que se le pasan a la IA.
 TRANSCRIPT_MAX_CHARS = 8000
+# Intervalo conservador entre inicios de solicitudes para no agotar cuotas bajas.
+DEFAULT_REQUEST_INTERVAL_SECONDS = 6.0
 
 
 class Command(BaseCommand):
@@ -146,9 +149,32 @@ class Command(BaseCommand):
             or os.environ.get("OPENAI_API_KEY")
         )
 
+    def _configure_windows_utf8(self):
+        """Configura la consola real sin alterar streams durante el import."""
+        if not sys.platform.startswith("win"):
+            return
+        for stream in (sys.stdout, sys.stderr):
+            reconfigure = getattr(stream, "reconfigure", None)
+            if reconfigure is None:
+                continue
+            try:
+                reconfigure(encoding="utf-8")
+            except (OSError, ValueError):
+                # Streams capturados, cerrados o no reconfigurables.
+                continue
+
+    def _wait_for_request_slot(self, last_request_at, interval):
+        """Mantiene un intervalo mínimo entre inicios de solicitudes."""
+        if last_request_at is None or interval <= 0:
+            return
+        remaining = interval - (time.monotonic() - last_request_at)
+        if remaining > 0:
+            time.sleep(remaining)
+
     # ------------------------------------------------------------------- main
 
     def handle(self, *args, **options):
+        self._configure_windows_utf8()
         dry_run = options["dry_run"]
         limit = options["limit"]
         only_videos = options["only_videos"]
@@ -157,6 +183,18 @@ class Command(BaseCommand):
         education_fallback = options["education_level"]
         force_publish = options["publish"]
         force_draft = options["draft"]
+        try:
+            request_interval = max(
+                0.0,
+                float(os.environ.get(
+                    "AI_REQUEST_INTERVAL_SECONDS",
+                    DEFAULT_REQUEST_INTERVAL_SECONDS,
+                )),
+            )
+        except ValueError as exc:
+            raise CommandError(
+                "AI_REQUEST_INTERVAL_SECONDS debe ser un número de segundos."
+            ) from exc
 
         # Pre-flight de la API key (en dry-run no importa; en DEBUG/tests se usa mock).
         is_testing = "test" in sys.argv or "test" in getattr(settings, "SETTINGS_MODULE", "")
@@ -190,6 +228,7 @@ class Command(BaseCommand):
         n_no_transcript = 0      # recursos saltados por falta de transcript
         total_created = 0
         total_planned = 0        # déficit total detectado (útil en dry-run)
+        last_ai_request_at = None
 
         self.stdout.write(self.style.MIGRATE_HEADING(
             f"{'[DRY-RUN] ' if dry_run else ''}Generación de preguntas pendientes"
@@ -255,6 +294,9 @@ class Command(BaseCommand):
                 remaining = deficit
                 while remaining > 0:
                     batch = min(batch_size, remaining)
+                    if not is_testing:
+                        self._wait_for_request_slot(last_ai_request_at, request_interval)
+                        last_ai_request_at = time.monotonic()
                     try:
                         created = generate_questions_for_resource(
                             resource=resource,
@@ -310,7 +352,7 @@ class Command(BaseCommand):
         self.stdout.write(f"  Recursos ya completos:  {n_no_deficit}")
         self.stdout.write(f"  Saltados sin transcript:{n_no_transcript}")
         self.stdout.write(self.style.SUCCESS(f"  {verbo} {total_created} preguntas."))
-        if not dry_run and total_created and not force_publish:
+        if not dry_run and total_created and force_draft:
             self.stdout.write(
                 "  Las preguntas en 'borrador' esperan tu revisión en la página de revisión."
             )
