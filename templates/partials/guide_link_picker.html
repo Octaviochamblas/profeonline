@@ -1,0 +1,49 @@
+{% comment %}
+Selector jerárquico de vínculos de una guía. Permite elegir el NIVEL:
+- toda una Asignatura, o
+- todo un Tema, o
+- Recursos individuales.
+Usa <details> nativo (sin JS, CSP-safe). Espera `link_tree` en el contexto.
+Los inputs se llaman subjects/topics/resources (los lee la vista al guardar).
+{% endcomment %}
+<div class="link-tree">
+    {% for node in link_tree %}
+        <details class="link-subject">
+            <summary>📘 {{ node.subject.name }}</summary>
+            <div class="link-subject__body">
+                <label class="link-check link-check--all">
+                    <input type="checkbox" name="subjects" value="{{ node.subject.id }}">
+                    Vincular <strong>toda la asignatura</strong>
+                </label>
+                {% for tnode in node.topics %}
+                    <details class="link-topic">
+                        <summary>🏷️ {{ tnode.topic.name }}</summary>
+                        <div class="link-topic__body">
+                            <label class="link-check link-check--all">
+                                <input type="checkbox" name="topics" value="{{ tnode.topic.id }}">
+                                Vincular <strong>todo el tema</strong>
+                            </label>
+                            {% for r in tnode.resources %}
+                                <label class="link-check"><input type="checkbox" name="resources" value="{{ r.id }}"> {{ r.title }}</label>
+                            {% empty %}
+                                <span class="link-empty">sin recursos publicados</span>
+                            {% endfor %}
+                        </div>
+                    </details>
+                {% endfor %}
+                {% if node.loose_resources %}
+                    <details class="link-topic">
+                        <summary>📄 Sin tema</summary>
+                        <div class="link-topic__body">
+                            {% for r in node.loose_resources %}
+                                <label class="link-check"><input type="checkbox" name="resources" value="{{ r.id }}"> {{ r.title }}</label>
+                            {% endfor %}
+                        </div>
+                    </details>
+                {% endif %}
+            </div>
+        </details>
+    {% empty %}
+        <p class="link-empty mb-0">No hay asignaturas activas todavía.</p>
+    {% endfor %}
+</div>

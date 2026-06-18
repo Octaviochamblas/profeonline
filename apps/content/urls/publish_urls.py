@@ -24,6 +24,7 @@ from apps.content.views.question_review import (
 from apps.content.views.quiz_guides import (
     quiz_guides,
     delete_quiz_guide,
+    import_drive_guides,
 )
 
 urlpatterns = [
@@ -39,6 +40,7 @@ urlpatterns = [
     # Banco de Preguntas - Biblioteca de guías de referencia
     path("publicar/guias/", quiz_guides, name="quiz_guides"),
     path("publicar/guias/borrar/<int:guide_id>/", delete_quiz_guide, name="delete_quiz_guide"),
+    path("publicar/guias/importar-drive/", import_drive_guides, name="import_drive_guides"),
 
     # Banco de Preguntas - Revisión y Configuración por Recurso
     path("publicar/preguntas/<slug:slug>/", question_review, name="question_review"),

@@ -94,12 +94,12 @@ class Command(BaseCommand):
         publish_group.add_argument(
             "--publish",
             action="store_true",
-            help="Guardar como 'publicada' (sobrescribe la config del recurso).",
+            help="Guardar como 'publicada' (es el comportamiento por defecto).",
         )
         publish_group.add_argument(
             "--draft",
             action="store_true",
-            help="Forzar guardado como 'borrador' (sobrescribe la config del recurso).",
+            help="Forzar 'borrador' (por defecto las preguntas se publican de inmediato).",
         )
         parser.add_argument(
             "--dry-run",
@@ -132,13 +132,11 @@ class Command(BaseCommand):
         return ResourceQuizConfig.objects.filter(resource=resource).first()
 
     def _resolve_status(self, config, force_publish, force_draft):
-        if force_publish:
-            return "publicada"
+        # Preferencia del 🧑 (2026-06-17): publicar de inmediato por defecto.
+        # Solo queda en borrador si se pide explícito con --draft.
         if force_draft:
             return "borrador"
-        if config and config.autopublish:
-            return "publicada"
-        return "borrador"
+        return "publicada"
 
     def _has_api_key(self):
         return bool(
@@ -287,9 +285,19 @@ class Command(BaseCommand):
                     total_created += n
                     remaining -= n
 
-                self.stdout.write(self.style.SUCCESS(
-                    f"    [ok] N{level} {label}: objetivo {target} (faltaban {deficit})"
-                ))
+                # Pie de celda fiel a lo ocurrido: el [ok] sale solo si se cubrio el
+                # deficit. Si se corto antes (error/0 de la IA) ya se emitio un [x]/[!];
+                # aqui solo se reporta lo generado parcial, nunca un falso [ok].
+                generated = deficit - remaining
+                if remaining == 0:
+                    self.stdout.write(self.style.SUCCESS(
+                        f"    [ok] N{level} {label}: +{generated} (objetivo {target} cubierto)"
+                    ))
+                elif generated > 0:
+                    self.stdout.write(self.style.WARNING(
+                        f"    [~] N{level} {label}: parcial +{generated}/{deficit} "
+                        f"(faltan {remaining}, reintenta luego)"
+                    ))
 
             self.stdout.write(
                 f"  -> {'plan' if dry_run else 'generadas'} {created_here} en '{resource.title}'."
