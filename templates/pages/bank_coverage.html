@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Resumen del banco de preguntas | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="bank-dashboard" data-bank-coverage>
+    <header class="bank-dashboard__header">
+        <div>
+            <span class="studio-badge">Analítica del banco</span>
+            <h1>Resumen de cobertura</h1>
+            <p>Detecta recursos vacíos, pools incompletos y material disponible para generar.</p>
+        </div>
+        <a class="btn-secondary" href="{% url 'content:bank_results' %}">Ver resultados por alumno</a>
+    </header>
+
+    <div class="bank-metrics" aria-live="polite">
+        <article><strong data-total-resources>{{ totals.resources }}</strong><span>Recursos visibles</span></article>
+        <article><strong data-total-empty>{{ totals.empty }}</strong><span>Sin publicadas</span></article>
+        <article><strong data-total-published>{{ totals.published }}</strong><span>Preguntas publicadas</span></article>
+        <article><strong data-total-missing>{{ totals.missing }}</strong><span>Preguntas faltantes</span></article>
+    </div>
+
+    <div class="bank-filters" aria-label="Filtros de cobertura">
+        <label>Área
+            <select data-filter-area>
+                <option value="">Todas</option>
+                {% for area in areas %}<option value="{{ area.id }}">{{ area.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Asignatura
+            <select data-filter-subject>
+                <option value="">Todas</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}" data-area="{{ subject.area_id|default:'' }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>Tema
+            <select data-filter-topic>
+                <option value="">Todos</option>
+                {% for topic in topics %}
+                    <option value="{{ topic.id }}" data-subject="{{ topic.subject_id }}">{{ topic.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label class="bank-filters__search">Buscar recurso
+            <input type="search" data-filter-search placeholder="Título del recurso">
+        </label>
+    </div>
+
+    <div class="bank-table-wrap">
+        <table class="bank-table">
+            <thead>
+                <tr>
+                    <th>Área / Asignatura / Tema</th>
+                    <th>Recurso y fuentes</th>
+                    <th>Publicadas</th>
+                    <th>Nivel 1</th>
+                    <th>Nivel 2</th>
+                    <th>Nivel 3</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr data-coverage-row
+                    data-area="{{ row.area.id|default:'' }}"
+                    data-subject="{{ row.subject.id|default:'' }}"
+                    data-topic="{{ row.topic.id|default:'' }}"
+                    data-title="{{ row.resource.title|lower }}"
+                    data-state="{{ row.overall_state }}"
+                    data-published="{{ row.published_total }}"
+                    data-missing="{{ row.total_missing }}">
+                    <td class="bank-taxonomy">
+                        <strong>{{ row.area.name|default:"Sin área" }}</strong>
+                        <span>{{ row.subject.name|default:"Sin asignatura" }}</span>
+                        <span>{{ row.topic.name|default:"Sin tema" }}</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'content:question_review' row.resource.slug %}"><strong>{{ row.resource.title }}</strong></a>
+                        <div class="bank-source-list" aria-label="Fuentes disponibles">
+                            <span class="{% if row.has_video %}is-ready{% endif %}">Video</span>
+                            <span class="{% if row.has_transcript %}is-ready{% endif %}">Transcript</span>
+                            <span class="{% if row.has_guide %}is-ready{% endif %}">Guía</span>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>{{ row.published_total }}</strong>
+                        {% if row.draft_total %}<small>({{ row.draft_total }} borrador{{ row.draft_total|pluralize:"es" }})</small>{% endif %}
+                    </td>
+                    {% for level in row.levels %}
+                        <td>
+                            <div class="coverage-cell coverage-cell--{{ level.practice.state }}">
+                                <span>P {{ level.practice.available }}/{{ level.practice.pool }} · muestra {{ level.practice.shown }}</span>
+                                {% if level.practice.missing %}<small>faltan {{ level.practice.missing }}</small>{% endif %}
+                            </div>
+                            <div class="coverage-cell coverage-cell--{{ level.eval.state }}">
+                                <span>E {{ level.eval.available }}/{{ level.eval.pool }} · muestra {{ level.eval.shown }}</span>
+                                {% if level.eval.missing %}<small>faltan {{ level.eval.missing }}</small>{% endif %}
+                            </div>
+                        </td>
+                    {% endfor %}
+                    <td><span class="coverage-state coverage-state--{{ row.overall_state }}">
+                        {% if row.overall_state == "complete" %}Completo{% elif row.overall_state == "partial" %}Parcial{% else %}Vacío{% endif %}
+                    </span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7">Todavía no hay recursos.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="bank-empty-filter" data-filter-empty hidden>No hay recursos que coincidan con los filtros.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=1">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/bank_analytics.js' %}?v=1" nonce="{{ csp_nonce }}"></script>
+{% endblock %}

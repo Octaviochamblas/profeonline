@@ -14,6 +14,9 @@
 
 ## En curso ahora
 
+- **Analítica del banco — construcción terminada (2026-06-18, 🧩 Codex):** cobertura,
+  efectividad por pregunta y resultados por alumno; 301 tests verdes, sin migraciones.
+  Pendiente auditoría final y cierre de 🏛️ Claude.
 - **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
   (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
 - **Sprint de producto:** **Home ✅ → a11y/pulido ✅ → pulido técnico ✅ → PWA (handoff Ready)**; KaTeX condicional.

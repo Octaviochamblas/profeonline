@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Resultados del banco de preguntas | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="bank-dashboard">
+    <header class="bank-dashboard__header">
+        <div>
+            <span class="studio-badge">Analítica del banco</span>
+            <h1>Resultados por alumno</h1>
+            <p>Notas e intentos de quizzes por recurso y evaluaciones finales de tema.</p>
+        </div>
+        <a class="btn-secondary" href="{% url 'content:bank_coverage' %}">Ver cobertura del banco</a>
+    </header>
+
+    <form method="get" class="bank-filters bank-filters--results">
+        <label>Área
+            <select name="area">
+                <option value="">Todas</option>
+                {% for area in areas %}<option value="{{ area.id }}" {% if filters.area == area.id|stringformat:"s" %}selected{% endif %}>{{ area.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Asignatura
+            <select name="subject">
+                <option value="">Todas</option>
+                {% for subject in subjects %}<option value="{{ subject.id }}" {% if filters.subject == subject.id|stringformat:"s" %}selected{% endif %}>{{ subject.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Tema
+            <select name="topic">
+                <option value="">Todos</option>
+                {% for topic in topics %}<option value="{{ topic.id }}" {% if filters.topic == topic.id|stringformat:"s" %}selected{% endif %}>{{ topic.name }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Alumno
+            <select name="user">
+                <option value="">Todos</option>
+                {% for result_user in users_with_attempts %}
+                <option value="{{ result_user.id }}" {% if filters.user == result_user.id|stringformat:"s" %}selected{% endif %}>{{ result_user.get_full_name|default:result_user.username }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>Agrupar
+            <select name="group_by">
+                <option value="student" {% if group_by == "student" %}selected{% endif %}>Por alumno</option>
+                <option value="resource" {% if group_by == "resource" %}selected{% endif %}>Por recurso/tema</option>
+            </select>
+        </label>
+        <button type="submit" class="btn-primary">Aplicar filtros</button>
+    </form>
+
+    <h2 class="bank-section-title">Resumen {% if group_by == "student" %}por alumno{% else %}por recurso/tema{% endif %}</h2>
+    <div class="bank-table-wrap">
+        <table class="bank-table">
+            <thead><tr><th>Grupo</th><th>Intentos</th><th>Alumnos</th><th>Promedio</th><th>Aprobación</th></tr></thead>
+            <tbody>
+                {% for item in summary %}
+                <tr>
+                    <td><strong>{{ item.label }}</strong></td>
+                    <td>{{ item.attempts }}</td>
+                    <td>{{ item.students }}</td>
+                    <td>{{ item.average }}%</td>
+                    <td>{{ item.pass_rate }}%</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No hay intentos para estos filtros.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="bank-section-title">Detalle de intentos</h2>
+    <div class="bank-table-wrap">
+        <table class="bank-table">
+            <thead>
+                <tr><th>Alumno</th><th>Contenido</th><th>Nivel / modo</th><th>Nota</th><th>Resultado</th><th>Intento</th><th>Fecha</th></tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td><strong>{{ row.user.get_full_name|default:row.user.username }}</strong></td>
+                    <td><span class="bank-kind">{{ row.kind }}</span> {{ row.target }}<small>{{ row.subject.name }}{% if row.topic %} · {{ row.topic.name }}{% endif %}</small></td>
+                    <td>{{ row.level }} · {{ row.mode }}</td>
+                    <td>{{ row.score }}/{{ row.total }} <small>{{ row.percentage }}%</small></td>
+                    <td><span class="coverage-state coverage-state--{% if row.passed %}complete{% else %}empty{% endif %}">{% if row.passed %}Aprobado{% else %}No aprobado{% endif %}</span></td>
+                    <td>#{{ row.attempt_number }}</td>
+                    <td>{{ row.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7">No hay intentos para estos filtros.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=1">
+{% endblock %}
