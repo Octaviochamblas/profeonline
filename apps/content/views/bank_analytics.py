@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 from apps.content.models import (
     Area,
+    QuizAttemptAnswer,
     QuizAttempt,
     QuizGuide,
     Resource,
@@ -28,6 +29,8 @@ CELL_DEFINITIONS = (
     (3, "practice", "Práctica"),
     (3, "eval", "Evaluación"),
 )
+
+LOW_SAMPLE_ANSWERS = 10
 
 
 def _question_count_annotations():
@@ -314,6 +317,147 @@ def _aggregate_results(rows, key_name):
     return sorted(results, key=lambda item: (-item["attempts"], item["label"].lower()))
 
 
+def _accuracy(correct, answers):
+    return round(correct / answers * 100, 1) if answers else 0.0
+
+
+def _effectiveness_base(filters):
+    queryset = QuizAttemptAnswer.objects.all()
+    if filters["area"]:
+        queryset = queryset.filter(
+            Q(question__resource__subject__area_id=filters["area"])
+            | Q(question__resource__topic__subject__area_id=filters["area"])
+        )
+    if filters["subject"]:
+        queryset = queryset.filter(
+            Q(question__resource__subject_id=filters["subject"])
+            | Q(question__resource__topic__subject_id=filters["subject"])
+        )
+    if filters["topic"]:
+        queryset = queryset.filter(question__resource__topic_id=filters["topic"])
+    if filters["resource"]:
+        queryset = queryset.filter(question__resource_id=filters["resource"])
+    return queryset
+
+
+def _effectiveness_annotations(user_ids):
+    selected = Q()
+    selected_correct = Q(is_correct=True)
+    if user_ids:
+        selected &= Q(attempt__user_id__in=user_ids)
+        selected_correct &= Q(attempt__user_id__in=user_ids)
+    return {
+        "answers": Count("id", filter=selected, distinct=True),
+        "correct": Count("id", filter=selected_correct, distinct=True),
+        "students": Count(
+            "attempt__user_id",
+            filter=selected,
+            distinct=True,
+        ),
+        "global_answers": Count("id", distinct=True),
+        "global_correct": Count(
+            "id",
+            filter=Q(is_correct=True),
+            distinct=True,
+        ),
+    }
+
+
+def _format_effectiveness_rows(rows, label_builder):
+    formatted = []
+    for row in rows:
+        answers = row["answers"]
+        if not answers:
+            continue
+        accuracy = _accuracy(row["correct"], answers)
+        global_accuracy = _accuracy(row["global_correct"], row["global_answers"])
+        formatted.append(
+            {
+                **row,
+                "label": label_builder(row),
+                "accuracy": accuracy,
+                "global_accuracy": global_accuracy,
+                "delta": round(accuracy - global_accuracy, 1),
+                "low_sample": answers < LOW_SAMPLE_ANSWERS,
+            }
+        )
+    return sorted(formatted, key=lambda item: (item["accuracy"], -item["answers"]))
+
+
+def _build_effectiveness_context(filters, user_ids):
+    base = _effectiveness_base(filters)
+    annotations = _effectiveness_annotations(user_ids)
+
+    totals = base.aggregate(**annotations)
+    totals["accuracy"] = _accuracy(totals["correct"], totals["answers"])
+    totals["global_accuracy"] = _accuracy(
+        totals["global_correct"],
+        totals["global_answers"],
+    )
+    totals["delta"] = round(totals["accuracy"] - totals["global_accuracy"], 1)
+
+    topic_rows = (
+        base.values(
+            "question__resource__topic_id",
+            "question__resource__topic__name",
+            "question__resource__topic__subject__name",
+        )
+        .annotate(**annotations)
+    )
+    topics = _format_effectiveness_rows(
+        topic_rows,
+        lambda row: row["question__resource__topic__name"] or "Sin tema",
+    )
+
+    resource_rows = (
+        base.values(
+            "question__resource_id",
+            "question__resource__slug",
+            "question__resource__title",
+            "question__resource__topic__name",
+        )
+        .annotate(**annotations)
+    )
+    resources = _format_effectiveness_rows(
+        resource_rows,
+        lambda row: row["question__resource__title"],
+    )
+
+    question_rows = (
+        base.values(
+            "question_id",
+            "question__text",
+            "question__level",
+            "question__mode",
+            "question__resource__slug",
+            "question__resource__title",
+            "question__resource__topic__name",
+        )
+        .annotate(**annotations)
+    )
+    questions = _format_effectiveness_rows(
+        question_rows,
+        lambda row: row["question__text"],
+    )
+    mode_labels = {
+        "preparacion": "Práctica",
+        "evaluacion": "Evaluación",
+        "ambas": "Ambas",
+    }
+    for question in questions:
+        question["mode_label"] = mode_labels.get(
+            question["question__mode"],
+            question["question__mode"],
+        )
+
+    return {
+        "totals": totals,
+        "topic_stats": topics,
+        "resource_stats": resources,
+        "question_stats": questions,
+    }
+
+
 @user_passes_test(is_admin)
 def bank_results(request):
     filters = {
@@ -341,3 +485,40 @@ def bank_results(request):
         "users_with_attempts": users_with_attempts,
     }
     return render(request, "pages/bank_results.html", context)
+
+
+@user_passes_test(is_admin)
+def bank_effectiveness(request):
+    user_ids = []
+    for raw_id in request.GET.getlist("users"):
+        try:
+            user_ids.append(int(raw_id))
+        except (TypeError, ValueError):
+            continue
+    user_ids = list(dict.fromkeys(user_ids))
+    filters = {
+        "area": request.GET.get("area", ""),
+        "subject": request.GET.get("subject", ""),
+        "topic": request.GET.get("topic", ""),
+        "resource": request.GET.get("resource", ""),
+    }
+    effectiveness = _build_effectiveness_context(filters, user_ids)
+    users_with_answers = (
+        User.objects.filter(quiz_attempts__answers__isnull=False)
+        .distinct()
+        .order_by("last_name", "first_name", "username")
+    )
+    selected_users = list(users_with_answers.filter(id__in=user_ids))
+    context = {
+        **effectiveness,
+        "filters": filters,
+        "selected_user_ids": user_ids,
+        "selected_users": selected_users,
+        "users_with_answers": users_with_answers,
+        "areas": Area.objects.all(),
+        "subjects": Subject.objects.select_related("area").all(),
+        "topics": Topic.objects.select_related("subject").all(),
+        "resources": Resource.objects.select_related("subject", "topic").all(),
+        "low_sample_answers": LOW_SAMPLE_ANSWERS,
+    }
+    return render(request, "pages/bank_effectiveness.html", context)

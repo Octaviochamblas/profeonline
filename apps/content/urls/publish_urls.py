@@ -26,7 +26,11 @@ from apps.content.views.quiz_guides import (
     delete_quiz_guide,
     import_drive_guides,
 )
-from apps.content.views.bank_analytics import bank_coverage, bank_results
+from apps.content.views.bank_analytics import (
+    bank_coverage,
+    bank_effectiveness,
+    bank_results,
+)
 
 urlpatterns = [
     path("publicar/estudio/", publish_studio, name="publish_studio"),
@@ -39,6 +43,11 @@ urlpatterns = [
     path("publicar/preguntas/generar-tanda/", generate_questions_chunk, name="generate_questions_chunk"),
     path("publicar/preguntas/resumen/", bank_coverage, name="bank_coverage"),
     path("publicar/preguntas/resultados/", bank_results, name="bank_results"),
+    path(
+        "publicar/preguntas/efectividad/",
+        bank_effectiveness,
+        name="bank_effectiveness",
+    ),
 
     # Banco de Preguntas - Biblioteca de guías de referencia
     path("publicar/guias/", quiz_guides, name="quiz_guides"),

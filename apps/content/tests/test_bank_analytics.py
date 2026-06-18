@@ -14,7 +14,10 @@ from apps.content.models import (
     Topic,
     TopicEvaluationAttempt,
 )
-from apps.content.views.bank_analytics import _build_coverage_rows
+from apps.content.views.bank_analytics import (
+    _build_coverage_rows,
+    _build_effectiveness_context,
+)
 from apps.content.views.question_review import _build_levels_data
 
 
@@ -95,7 +98,11 @@ class BankAnalyticsTests(TestCase):
 
     def test_analytics_pages_reject_staff_who_is_not_superuser(self):
         self.client.force_login(self.staff)
-        for name in ("content:bank_coverage", "content:bank_results"):
+        for name in (
+            "content:bank_coverage",
+            "content:bank_results",
+            "content:bank_effectiveness",
+        ):
             response = self.client.get(reverse(name))
             self.assertIn(response.status_code, (302, 403))
 
@@ -243,3 +250,100 @@ class BankAnalyticsTests(TestCase):
 
         self.assertEqual(len(response.context["rows"]), 1)
         self.assertEqual(response.context["rows"][0]["user"], self.student)
+
+    def _seed_effectiveness_answers(self):
+        other_student = User.objects.create_user(
+            username="grace",
+            first_name="Grace",
+            last_name="Hopper",
+            password="password123",
+        )
+        first, first_correct, first_wrong = self._question(
+            mode="evaluacion",
+            text="Pregunta uno",
+        )
+        second, second_correct, second_wrong = self._question(
+            mode="evaluacion",
+            text="Pregunta dos",
+        )
+        for student, attempt_number, answers in (
+            (
+                self.student,
+                1,
+                ((first, first_correct, True), (second, second_wrong, False)),
+            ),
+            (
+                other_student,
+                1,
+                ((first, first_wrong, False), (second, second_wrong, False)),
+            ),
+        ):
+            attempt = QuizAttempt.objects.create(
+                user=student,
+                resource=self.resource,
+                level=1,
+                mode="evaluacion",
+                score=sum(is_correct for _q, _choice, is_correct in answers),
+                total=2,
+                passed=False,
+                attempt_number=attempt_number,
+            )
+            for question, choice, is_correct in answers:
+                QuizAttemptAnswer.objects.create(
+                    attempt=attempt,
+                    question=question,
+                    selected_choice=choice,
+                    is_correct=is_correct,
+                )
+        return other_student
+
+    def test_effectiveness_filters_single_student_and_compares_global(self):
+        self._seed_effectiveness_answers()
+        self.client.force_login(self.admin)
+
+        response = self.client.get(
+            reverse("content:bank_effectiveness"),
+            {"users": self.student.id},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["totals"]["answers"], 2)
+        self.assertEqual(response.context["totals"]["correct"], 1)
+        self.assertEqual(response.context["totals"]["students"], 1)
+        self.assertEqual(response.context["totals"]["accuracy"], 50.0)
+        self.assertEqual(response.context["totals"]["global_accuracy"], 25.0)
+        self.assertEqual(response.context["totals"]["delta"], 25.0)
+        self.assertEqual(response.context["topic_stats"][0]["accuracy"], 50.0)
+        self.assertEqual(response.context["resource_stats"][0]["accuracy"], 50.0)
+        self.assertEqual(len(response.context["question_stats"]), 2)
+        self.assertContains(response, "Ada Lovelace")
+        self.assertContains(response, "+25,0 pp")
+
+    def test_effectiveness_supports_ad_hoc_group_selection(self):
+        other_student = self._seed_effectiveness_answers()
+        self.client.force_login(self.admin)
+
+        response = self.client.get(
+            reverse("content:bank_effectiveness"),
+            {"users": [self.student.id, other_student.id]},
+        )
+
+        self.assertEqual(response.context["totals"]["answers"], 4)
+        self.assertEqual(response.context["totals"]["correct"], 1)
+        self.assertEqual(response.context["totals"]["students"], 2)
+        self.assertEqual(response.context["totals"]["accuracy"], 25.0)
+        self.assertEqual(
+            response.context["selected_user_ids"],
+            [self.student.id, other_student.id],
+        )
+
+    def test_effectiveness_aggregations_use_constant_queries(self):
+        self._seed_effectiveness_answers()
+        filters = {"area": "", "subject": "", "topic": "", "resource": ""}
+
+        with self.assertNumQueries(4):
+            context = _build_effectiveness_context(filters, [self.student.id])
+            self.assertEqual(context["totals"]["answers"], 2)
+            self.assertEqual(len(context["topic_stats"]), 1)
+            self.assertEqual(len(context["resource_stats"]), 1)
+            self.assertEqual(len(context["question_stats"]), 2)
