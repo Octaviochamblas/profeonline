@@ -14,9 +14,21 @@
 
 ## En curso ahora
 
-- **Analítica del banco — construcción terminada (2026-06-18, 🧩 Codex):** cobertura,
-  efectividad por pregunta y resultados por alumno; 301 tests verdes, sin migraciones.
-  Pendiente auditoría final y cierre de 🏛️ Claude.
+- **Analítica del banco — ampliación activa (2026-06-18, 🧩 Codex):** cobertura,
+  efectividad por pregunta y resultados por alumno; agregando tasa de acierto filtrable
+  por alumno o grupo seleccionado. PR #69.
+- **Guías desde Google Drive — PR #68 mergeado (2026-06-18):** importar guías desde una carpeta
+  de Drive (service account, navegación de subcarpetas), selector jerárquico de vínculos, soporte `.docx`
+  (`python-docx`) y **publicar preguntas de inmediato por defecto**. Validado e2e contra carpeta real;
+  suite completa verde, sin migraciones. Tarjeta en `backlog/3-construccion/guias-desde-drive.md`.
+  **Pendiente operativo:** el 🧑 carga `GOOGLE_SERVICE_ACCOUNT_JSON` + `GUIDES_DRIVE_FOLDER_ID`
+  en Railway · publicar los borradores que ya están en prod (loops viejos).
+- **Banco de preguntas con generación IA — CERRADO 🟢 y desplegado (2026-06-16):** 6 PRs (#62–#67).
+  Generación grounded en transcript de YouTube + guías de estilo; **2 modos** (🎬 video / 📄 documento)
+  con UI (página de guías + botones por recurso + selector en el estudio); comando `backfill_transcripts`;
+  fix de seguridad de la API key + backoff 429. **289 tests.** Detalle en `reportes-sesion/2026-06-16.md`.
+  **Pendiente operativo del 🧑:** poblar matemática escolar (loops desde el PC) y **rotar la contraseña
+  del Postgres** (quedó expuesta en una captura).
 - **M5 (Analítica) y Verificación de email CERRADAS 🟢 (2026-06-03):** mergeadas vía **PR #36** y **PR #38**
   (Antigravity construyó, Codex auditó, Claude cerró). Analítica interna + verificación obligatoria de email.
 - **Sprint de producto:** **Home ✅ → a11y/pulido ✅ → pulido técnico ✅ → PWA (handoff Ready)**; KaTeX condicional.
@@ -40,13 +52,17 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- 🔨 **Estudio de banco de preguntas** — `backlog/2-arquitectura/estudio-banco-preguntas.md` (2026-06-13).
-  Estudio solo-admin: generar (IA + imágenes/descripción), configurar por recurso (totales,
-  distribución, cuántas aparecen, política) y editar preguntas/alternativas. Feature **por fases**
-  (F1 config → F2 edición → F3 generación → F4 multimodal [bloqueada por storage externo] → F5 runtime).
-  Ready para preflight de Codex.
+- ✅ **Estudio de banco de preguntas — CONSTRUIDO Y DESPLEGADO** (PRs #62–#67, 2026-06-16).
+  Ya incluye generación IA, config por recurso, edición y runtime. **Mover la tarjeta**
+  (`backlog/4-auditoria/estudio-banco-preguntas.md`) a `6-finalizados/`. (F4 multimodal sigue
+  bloqueada por storage externo — fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-16 — 🏛️ Claude + 🧑 Usuario: **Banco de preguntas con generación IA CERRADO 🟢** (6 PRs:
+  #62 banco+generación grounded, #63 fix key-leak + backoff 429, #64 transcript guardado en el recurso,
+  #65 `backfill_transcripts`, #66 dos modos video/documento + UI de guías, #67 filtro `--subject`).
+  289 tests. **Aprendizaje:** YouTube bloquea el scraping masivo de transcripts por IP → se bajan a
+  cuentagotas desde el PC y se guardan. Detalle y pendientes en `reportes-sesion/2026-06-16.md`.
 - 2026-06-05 — 🏛️🔨🧩 **"Estudio de publicación (Fase 1)" CERRADO 🟢.** Página staff (`/publicar/estudio/`) que
   arma una **orden de lote** (`profeonline.upload-batch/v1`): selecciona varios videos (solo por nombre, no sube
   contenido), Área/Asignatura/Tema/Módulo (con creación inline), playlist (enlace o crear nueva) e indicación libre;
