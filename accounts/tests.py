@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core import mail
 from django.test import TestCase
@@ -89,7 +90,7 @@ class AccountFormTests(TestCase):
         self.assertEqual(form.errors["email"][0], "Este correo electrónico ya está en uso.")
 
     def test_profile_update_form_unique_email_case_insensitive(self):
-        other_user = User.objects.create_user(
+        User.objects.create_user(
             username="other_profesor",
             password="testpass123",
             email="other@example.com",
@@ -162,7 +163,7 @@ class PasswordResetFlowTests(TestCase):
 
 class EmailVerificationFlowTests(TestCase):
     def setUp(self):
-        self.User = get_user_model() if 'get_user_model' in globals() else User
+        self.User = get_user_model()
         self.level = Level.objects.create(name="Primaria", is_active=True)
         # Limpiar la bandeja de salida de correos
         mail.outbox = []
@@ -198,6 +199,14 @@ class EmailVerificationFlowTests(TestCase):
         from allauth.account.models import EmailAddress
         email_addr = EmailAddress.objects.get(email="nuevo@example.com")
         self.assertFalse(email_addr.verified)
+
+    def test_verification_sent_page_uses_project_template(self):
+        response = self.client.get(reverse("account_email_verification_sent"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account/verification_sent.html")
+        self.assertTemplateUsed(response, "base.html")
+        self.assertContains(response, "Verifica tu correo electrónico")
 
     def test_login_blocked_if_unverified(self):
         # Crear un usuario con email no verificado

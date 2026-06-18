@@ -11,6 +11,7 @@ from unittest.mock import patch
 from django.core.management import call_command
 from django.test import TestCase
 
+from apps.content.management.commands.generate_pending_questions import Command
 from apps.content.models import Question, Resource, ResourceQuizConfig, Subject, Topic
 
 # Matriz chica para tests rápidos: solo N1 tiene pool (2 práctica + 1 evaluación).
@@ -109,3 +110,47 @@ class GeneratePendingQuestionsTests(TestCase):
         self._run(resource=self.resource.slug, publish=True, allow_without_transcript=True)
 
         self.assertEqual(Question.objects.filter(resource=self.resource).count(), 3)
+
+    @patch(FETCH_PATH)
+    def test_default_publish_summary_does_not_claim_questions_are_drafts(self, mock_fetch):
+        mock_fetch.return_value = "Transcripción de prueba."
+
+        output = self._run(resource=self.resource.slug)
+
+        self.assertEqual(
+            Question.objects.filter(resource=self.resource, status="publicada").count(),
+            3,
+        )
+        self.assertNotIn("esperan tu revisión", output)
+
+    @patch(FETCH_PATH)
+    def test_draft_summary_reports_pending_review(self, mock_fetch):
+        mock_fetch.return_value = "Transcripción de prueba."
+
+        output = self._run(resource=self.resource.slug, draft=True)
+
+        self.assertEqual(
+            Question.objects.filter(resource=self.resource, status="borrador").count(),
+            3,
+        )
+        self.assertIn("esperan tu revisión", output)
+
+
+class RequestPacingTests(TestCase):
+    @patch("apps.content.management.commands.generate_pending_questions.time.sleep")
+    @patch("apps.content.management.commands.generate_pending_questions.time.monotonic")
+    def test_waits_only_for_remaining_interval(self, mock_monotonic, mock_sleep):
+        mock_monotonic.return_value = 12.5
+
+        Command()._wait_for_request_slot(last_request_at=10.0, interval=6.0)
+
+        mock_sleep.assert_called_once_with(3.5)
+
+    @patch("apps.content.management.commands.generate_pending_questions.time.sleep")
+    @patch("apps.content.management.commands.generate_pending_questions.time.monotonic")
+    def test_does_not_wait_when_interval_elapsed(self, mock_monotonic, mock_sleep):
+        mock_monotonic.return_value = 17.0
+
+        Command()._wait_for_request_slot(last_request_at=10.0, interval=6.0)
+
+        mock_sleep.assert_not_called()

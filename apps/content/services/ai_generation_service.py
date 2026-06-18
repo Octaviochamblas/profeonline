@@ -175,8 +175,8 @@ Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de
 
 # Reintentos ante límite de cuota (429) o saturación temporal (503) de la API.
 _RETRY_STATUSES = (429, 503)
-_MAX_RETRIES = 4
-_BACKOFF_BASE = 2.0  # segundos: 2, 4, 8...
+_MAX_RETRIES = 5
+_BACKOFF_BASE = 4.0  # segundos: 4, 8, 16, 32...
 
 
 def _sanitize_key(text, key):

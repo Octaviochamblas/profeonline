@@ -53,6 +53,7 @@ class SeoTechnicalViewTests(TestCase):
         self.assertContains(response, self.subject.name)
         self.assertContains(response, self.level.name)
         self.assertContains(response, self.resource.title)
+
         self.assertNotContains(response, self.inactive_subject.name)
         self.assertNotContains(response, self.inactive_resource.title)
 
@@ -111,6 +112,46 @@ class SeoTechnicalViewTests(TestCase):
         self.assertContains(terminos_res, "Términos de Uso")
         self.assertContains(privacidad_res, "Política de Privacidad")
         self.assertContains(contacto_res, "Contacto")
+
+
+class AdminNavigationTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.admin = User.objects.create_superuser(
+            username="nav-admin",
+            email="nav-admin@example.com",
+            password="testpass123",
+        )
+        self.student = User.objects.create_user(
+            username="nav-student",
+            password="testpass123",
+        )
+
+    def test_admin_tools_are_grouped_in_one_disclosure(self):
+        self.client.force_login(self.admin)
+
+        response = self.client.get(reverse("core:home"))
+
+        self.assertContains(response, 'class="admin-nav"', count=1)
+        self.assertContains(response, "Opciones de Administrador", count=1)
+        for url_name in (
+            "content:publish_studio",
+            "content:question_studio",
+            "content:bank_coverage",
+            "content:bank_results",
+            "content:bank_effectiveness",
+            "content:quiz_guides",
+            "core:analytics_dashboard",
+        ):
+            self.assertContains(response, f'href="{reverse(url_name)}"', count=1)
+
+    def test_admin_disclosure_is_hidden_from_regular_users(self):
+        self.client.force_login(self.student)
+
+        response = self.client.get(reverse("core:home"))
+
+        self.assertNotContains(response, "Opciones de Administrador")
+        self.assertNotContains(response, 'class="admin-nav"')
 
 
 class EnsureAdminCommandTests(TestCase):

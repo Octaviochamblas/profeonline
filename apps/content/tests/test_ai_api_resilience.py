@@ -54,7 +54,18 @@ class GeminiResilienceTests(TestCase):
 
         self.assertEqual(len(result), 1)
         self.assertEqual(mock_post.call_count, 2)
-        mock_sleep.assert_called()  # hubo backoff antes de reintentar
+        mock_sleep.assert_called_once_with(svc._BACKOFF_BASE)
+
+    @patch("time.sleep")
+    @patch("requests.post")
+    def test_honors_longer_retry_after(self, mock_post, mock_sleep):
+        limited = _resp(429)
+        limited.headers = {"Retry-After": "12"}
+        mock_post.side_effect = [limited, _resp(200, GEMINI_OK)]
+
+        svc._call_gemini_api("prompt", KEY)
+
+        mock_sleep.assert_called_once_with(12.0)
 
     @patch("time.sleep")
     @patch("requests.post")
