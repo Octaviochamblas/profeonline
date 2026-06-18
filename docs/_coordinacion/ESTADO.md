@@ -14,6 +14,9 @@
 
 ## En curso ahora
 
+- **Menú “Opciones de Administrador” — construcción terminada (2026-06-18, 🧩 Codex):**
+  siete herramientas staff agrupadas en dropdown/acordeón nativo; 46 tests core verdes.
+  Pendiente auditoría/cierre de 🏛️ Claude.
 - **Analítica del banco — CERRADO 🟢 (2026-06-18):** cobertura, resultados, efectividad por pregunta
   y tasa ponderada filtrable por alumno o grupo ad hoc, agregada por tema/recurso/pregunta. 🧩 Codex
   construyó, 🏛️ Claude auditó (fix de GET inválido + 3 tests de regresión) y cerró. **PR #69

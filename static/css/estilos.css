@@ -172,6 +172,71 @@ a:hover {
     text-decoration: none;
 }
 
+.admin-nav {
+    position: relative;
+}
+
+.admin-nav > summary {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    list-style: none;
+    transition: 0.2s ease;
+}
+
+.admin-nav > summary::-webkit-details-marker {
+    display: none;
+}
+
+.admin-nav > summary::after {
+    content: "";
+    width: 0.42rem;
+    height: 0.42rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+.admin-nav[open] > summary::after {
+    transform: rotate(225deg) translate(-1px, -1px);
+}
+
+.admin-nav > summary:hover,
+.admin-nav > summary:focus-visible,
+.admin-nav[open] > summary {
+    background: var(--surface-soft);
+    color: var(--text);
+    outline: none;
+}
+
+.admin-nav > summary:focus-visible {
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+}
+
+.admin-nav__menu {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    left: 0;
+    z-index: 20;
+    display: grid;
+    min-width: 240px;
+    padding: 0.45rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+}
+
+.admin-nav__menu a {
+    white-space: nowrap;
+}
+
 /* Hamburguer animations */
 .navbar-toggle svg line {
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -1124,6 +1189,32 @@ form ul,
         padding: 0.75rem 1rem;
         border-radius: var(--radius-xs);
         text-align: left;
+    }
+
+    .admin-nav {
+        width: 100%;
+    }
+
+    .admin-nav > summary {
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+    }
+
+    .admin-nav__menu {
+        position: static;
+        min-width: 0;
+        margin: 0.25rem 0 0.25rem 0.75rem;
+        padding: 0.25rem 0 0.25rem 0.65rem;
+        background: transparent;
+        border: 0;
+        border-left: 2px solid var(--border);
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .admin-nav__menu a {
+        padding: 0.65rem 0.8rem;
+        white-space: normal;
     }
 
     .navbar-right {
