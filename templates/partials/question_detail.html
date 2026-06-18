@@ -4,6 +4,32 @@
         <div class="q-detail__expl"><strong>Explicación:</strong> {{ question.explanation|linebreaksbr }}</div>
     {% endif %}
 
+    <section class="item-analysis" aria-label="Efectividad de la pregunta">
+        <div class="item-analysis__summary">
+            <strong>{{ question.answer_count|default:0 }} respuesta{{ question.answer_count|default:0|pluralize:"s" }}</strong>
+            {% if question.accuracy_percentage is not None %}
+                <span>{{ question.accuracy_percentage }}% de aciertos</span>
+            {% else %}
+                <span>Sin datos todavía</span>
+            {% endif %}
+        </div>
+        {% if question.analysis_flags %}
+        <ul class="item-analysis__flags">
+            {% for flag in question.analysis_flags %}<li>⚠️ {{ flag }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+        {% if question.answer_count %}
+        <div class="item-analysis__distribution">
+            {% for choice in question.choices.all %}
+            <div class="{% if choice.is_correct %}is-correct{% elif choice.is_dominant_distractor %}is-warning{% endif %}">
+                <span>{{ choice.text|truncatechars:90 }}</span>
+                <strong>{{ choice.selection_count }} · {{ choice.selection_percentage }}%</strong>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </section>
+
     <div class="q-detail__alts" id="alts-{{ question.id }}">
         {% for choice in question.choices.all %}
             {% include "partials/choice_item.html" with choice=choice %}

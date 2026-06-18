@@ -8,17 +8,21 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| _libre_ | - | - | 🟢 sin lock (Guías desde Drive → PR #68 abierto, pendiente auditoría) |
+| _libre_ | - | - | 🟢 sin lock |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
 
-- **Guías desde Google Drive — PR #68 abierto (2026-06-17, 🏛️ Claude):** importar guías desde una carpeta
+- **Analítica del banco — CERRADO 🟢 (2026-06-18):** cobertura, resultados, efectividad por pregunta
+  y tasa ponderada filtrable por alumno o grupo ad hoc, agregada por tema/recurso/pregunta. 🧩 Codex
+  construyó, 🏛️ Claude auditó (fix de GET inválido + 3 tests de regresión) y cerró. **PR #69
+  squash-mergeado**; suite completa verde, sin migraciones. Tarjeta en `backlog/6-finalizados/`.
+- **Guías desde Google Drive — PR #68 mergeado (2026-06-18):** importar guías desde una carpeta
   de Drive (service account, navegación de subcarpetas), selector jerárquico de vínculos, soporte `.docx`
   (`python-docx`) y **publicar preguntas de inmediato por defecto**. Validado e2e contra carpeta real;
   suite completa verde, sin migraciones. Tarjeta en `backlog/3-construccion/guias-desde-drive.md`.
-  **Pendiente:** auditoría 🧩 Codex + merge · el 🧑 carga `GOOGLE_SERVICE_ACCOUNT_JSON` + `GUIDES_DRIVE_FOLDER_ID`
+  **Pendiente operativo:** el 🧑 carga `GOOGLE_SERVICE_ACCOUNT_JSON` + `GUIDES_DRIVE_FOLDER_ID`
   en Railway · publicar los borradores que ya están en prod (loops viejos).
 - **Banco de preguntas con generación IA — CERRADO 🟢 y desplegado (2026-06-16):** 6 PRs (#62–#67).
   Generación grounded en transcript de YouTube + guías de estilo; **2 modos** (🎬 video / 📄 documento)

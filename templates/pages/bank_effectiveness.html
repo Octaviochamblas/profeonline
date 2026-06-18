@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Efectividad pedagógica del banco | ProfeOnline{% endblock %}
+
+{% block content %}
+<section class="bank-dashboard" data-effectiveness-dashboard>
+    <header class="bank-dashboard__header">
+        <div>
+            <span class="studio-badge">Analítica del banco</span>
+            <h1>Efectividad por alumno o grupo</h1>
+            <p>Compara la tasa de acierto ponderada desde el tema hasta cada pregunta.</p>
+        </div>
+        <div class="bank-header-actions">
+            <a class="btn-secondary" href="{% url 'content:bank_coverage' %}">Cobertura</a>
+            <a class="btn-secondary" href="{% url 'content:bank_results' %}">Notas e intentos</a>
+        </div>
+    </header>
+
+    <form method="get" class="effectiveness-filters">
+        <div class="bank-filters effectiveness-filters__taxonomy">
+            <label>Área
+                <select name="area">
+                    <option value="">Todas</option>
+                    {% for area in areas %}
+                    <option value="{{ area.id }}" {% if filters.area == area.id|stringformat:"s" %}selected{% endif %}>{{ area.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Asignatura
+                <select name="subject">
+                    <option value="">Todas</option>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.id }}" {% if filters.subject == subject.id|stringformat:"s" %}selected{% endif %}>{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Tema
+                <select name="topic">
+                    <option value="">Todos</option>
+                    {% for topic in topics %}
+                    <option value="{{ topic.id }}" {% if filters.topic == topic.id|stringformat:"s" %}selected{% endif %}>{{ topic.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Recurso
+                <select name="resource">
+                    <option value="">Todos</option>
+                    {% for resource in resources %}
+                    <option value="{{ resource.id }}" {% if filters.resource == resource.id|stringformat:"s" %}selected{% endif %}>{{ resource.title }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        <details class="student-picker" {% if selected_user_ids %}open{% endif %}>
+            <summary>
+                <span>Alumnos del análisis</span>
+                <strong>
+                    {% if selected_user_ids %}
+                        {{ selected_user_ids|length }} seleccionado{{ selected_user_ids|length|pluralize:"s" }}
+                    {% else %}
+                        Todos los alumnos
+                    {% endif %}
+                </strong>
+            </summary>
+            <div class="student-picker__body">
+                <div class="student-picker__toolbar">
+                    <label>Buscar alumno
+                        <input type="search" placeholder="Nombre o usuario" data-student-search>
+                    </label>
+                    <button type="button" class="btn-secondary btn-sm" data-student-action="all">Seleccionar visibles</button>
+                    <button type="button" class="btn-secondary btn-sm" data-student-action="clear">Limpiar</button>
+                </div>
+                <div class="student-picker__list">
+                    {% for result_user in users_with_answers %}
+                    <label data-student-row data-search-text="{{ result_user.get_full_name|default:result_user.username|lower }} {{ result_user.username|lower }}">
+                        <input type="checkbox" name="users" value="{{ result_user.id }}" {% if result_user.id in selected_user_ids %}checked{% endif %}>
+                        <span>
+                            <strong>{{ result_user.get_full_name|default:result_user.username }}</strong>
+                            {% if result_user.get_full_name %}<small>@{{ result_user.username }}</small>{% endif %}
+                        </span>
+                    </label>
+                    {% empty %}
+                    <p>Todavía no hay alumnos con respuestas registradas.</p>
+                    {% endfor %}
+                </div>
+                <p class="student-picker__hint">Sin selección se analiza a todos. Marca uno para un alumno individual o varios para formar un grupo ad hoc.</p>
+            </div>
+        </details>
+
+        <button type="submit" class="btn-primary effectiveness-filters__submit">Aplicar selección</button>
+    </form>
+
+    <div class="analysis-scope">
+        <strong>Universo actual:</strong>
+        {% if selected_users %}
+            {% for selected in selected_users %}
+                <span>{{ selected.get_full_name|default:selected.username }}</span>
+            {% endfor %}
+        {% else %}
+            <span>Todos los alumnos con respuestas</span>
+        {% endif %}
+    </div>
+
+    <div class="bank-metrics effectiveness-metrics">
+        <article><strong>{{ totals.accuracy }}%</strong><span>Tasa de acierto ponderada</span></article>
+        <article><strong>{{ totals.correct }}/{{ totals.answers }}</strong><span>Correctas / respuestas</span></article>
+        <article><strong>{{ totals.students }}</strong><span>Alumnos con respuestas</span></article>
+        <article><strong>{{ question_stats|length }}</strong><span>Preguntas respondidas</span></article>
+        <article>
+            <strong>
+                {% if selected_user_ids %}
+                    {% if totals.delta > 0 %}+{% endif %}{{ totals.delta }} pp
+                {% else %}
+                    —
+                {% endif %}
+            </strong>
+            <span>{% if selected_user_ids %}Diferencia vs. global ({{ totals.global_accuracy }}%){% else %}Selecciona alumnos para comparar{% endif %}</span>
+        </article>
+    </div>
+
+    <p class="effectiveness-note">
+        La tasa se pondera por respuesta: cada respuesta vale lo mismo. Los resúmenes de tema incluyen
+        las preguntas de sus recursos; la evaluación final de tema no guarda respuestas por pregunta.
+        <span>⚑ Muestra baja = menos de {{ low_sample_answers }} respuestas.</span>
+    </p>
+
+    <h2 class="bank-section-title">Por tema</h2>
+    <div class="bank-table-wrap">
+        <table class="bank-table effectiveness-table">
+            <thead><tr><th>Tema</th><th>Alumnos</th><th>Respuestas</th><th>Acierto</th><th>Vs. global</th><th>Muestra</th></tr></thead>
+            <tbody>
+                {% for item in topic_stats %}
+                <tr>
+                    <td><strong>{{ item.label }}</strong><small>{{ item.question__resource__topic__subject__name }}</small></td>
+                    <td>{{ item.students }}</td>
+                    <td>{{ item.correct }}/{{ item.answers }}</td>
+                    <td><strong>{{ item.accuracy }}%</strong></td>
+                    <td>{% if selected_user_ids %}{% if item.delta > 0 %}+{% endif %}{{ item.delta }} pp <small>global {{ item.global_accuracy }}%</small>{% else %}—{% endif %}</td>
+                    <td>{% if item.low_sample %}<span class="sample-warning">⚑ Baja</span>{% else %}<span class="sample-ok">Suficiente</span>{% endif %}</td>
+                </tr>
+                {% empty %}<tr><td colspan="6">No hay respuestas para esta selección.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="bank-section-title">Por recurso</h2>
+    <div class="bank-table-wrap">
+        <table class="bank-table effectiveness-table">
+            <thead><tr><th>Recurso</th><th>Alumnos</th><th>Respuestas</th><th>Acierto</th><th>Vs. global</th><th>Muestra</th></tr></thead>
+            <tbody>
+                {% for item in resource_stats %}
+                <tr>
+                    <td><a href="{% url 'content:question_review' item.question__resource__slug %}"><strong>{{ item.label }}</strong></a><small>{{ item.question__resource__topic__name|default:"Sin tema" }}</small></td>
+                    <td>{{ item.students }}</td>
+                    <td>{{ item.correct }}/{{ item.answers }}</td>
+                    <td><strong>{{ item.accuracy }}%</strong></td>
+                    <td>{% if selected_user_ids %}{% if item.delta > 0 %}+{% endif %}{{ item.delta }} pp <small>global {{ item.global_accuracy }}%</small>{% else %}—{% endif %}</td>
+                    <td>{% if item.low_sample %}<span class="sample-warning">⚑ Baja</span>{% else %}<span class="sample-ok">Suficiente</span>{% endif %}</td>
+                </tr>
+                {% empty %}<tr><td colspan="6">No hay respuestas para esta selección.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="bank-section-title">Por pregunta <small>(más difíciles primero)</small></h2>
+    <div class="bank-table-wrap">
+        <table class="bank-table effectiveness-table effectiveness-table--questions">
+            <thead><tr><th>Pregunta</th><th>Nivel / modo</th><th>Alumnos</th><th>Respuestas</th><th>Acierto</th><th>Vs. global</th><th>Muestra</th></tr></thead>
+            <tbody>
+                {% for item in question_stats %}
+                <tr>
+                    <td>
+                        <a href="{% url 'content:question_review' item.question__resource__slug %}#question-item-{{ item.question_id }}"><strong>{{ item.label }}</strong></a>
+                        <small>{{ item.question__resource__title }} · {{ item.question__resource__topic__name|default:"Sin tema" }}</small>
+                    </td>
+                    <td>N{{ item.question__level }} · {{ item.mode_label }}</td>
+                    <td>{{ item.students }}</td>
+                    <td>{{ item.correct }}/{{ item.answers }}</td>
+                    <td><strong>{{ item.accuracy }}%</strong></td>
+                    <td>{% if selected_user_ids %}{% if item.delta > 0 %}+{% endif %}{{ item.delta }} pp <small>global {{ item.global_accuracy }}%</small>{% else %}—{% endif %}</td>
+                    <td>{% if item.low_sample %}<span class="sample-warning">⚑ Baja</span>{% else %}<span class="sample-ok">Suficiente</span>{% endif %}</td>
+                </tr>
+                {% empty %}<tr><td colspan="7">No hay respuestas para esta selección.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=2">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/bank_analytics.js' %}?v=2" nonce="{{ csp_nonce }}"></script>
+{% endblock %}

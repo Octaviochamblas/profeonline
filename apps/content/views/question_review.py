@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.http import require_POST, require_http_methods
 from django.db import transaction
+from django.db.models import Count, Prefetch, Q
 
 from apps.content.views.permissions import is_admin
 from apps.content.models import Resource, Question, Choice, ResourceQuizConfig
@@ -18,6 +19,70 @@ MODE_GROUPS = [
     ("ambas", "Ambas"),
 ]
 
+ITEM_LOW_ACCURACY = 30
+ITEM_HIGH_ACCURACY = 95
+
+
+def _questions_with_analysis(resource=None, question_ids=None):
+    """Carga preguntas + distribución de alternativas en dos consultas fijas."""
+    choice_qs = Choice.objects.annotate(
+        selection_count=Count("attempt_answers"),
+    ).order_by("order", "id")
+    questions = Question.objects.annotate(
+        answer_count=Count("attempt_answers", distinct=True),
+        correct_answer_count=Count(
+            "attempt_answers",
+            filter=Q(attempt_answers__is_correct=True),
+            distinct=True,
+        ),
+    ).prefetch_related(Prefetch("choices", queryset=choice_qs))
+    if resource is not None:
+        questions = questions.filter(resource=resource)
+    if question_ids is not None:
+        questions = questions.filter(id__in=question_ids)
+    questions = list(questions.order_by("level", "order", "id"))
+
+    for question in questions:
+        question.accuracy_percentage = (
+            round(question.correct_answer_count / question.answer_count * 100)
+            if question.answer_count
+            else None
+        )
+        choices = list(question.choices.all())
+        correct_picks = sum(
+            choice.selection_count for choice in choices if choice.is_correct
+        )
+        max_distractor = max(
+            (choice.selection_count for choice in choices if not choice.is_correct),
+            default=0,
+        )
+        question.analysis_flags = []
+        if question.answer_count:
+            if question.accuracy_percentage < ITEM_LOW_ACCURACY:
+                question.analysis_flags.append("Acierto muy bajo: revisar enunciado o clave.")
+            elif question.accuracy_percentage >= ITEM_HIGH_ACCURACY:
+                question.analysis_flags.append("Acierto muy alto: puede ser demasiado fácil.")
+            if max_distractor > correct_picks:
+                question.analysis_flags.append(
+                    "Un distractor fue elegido más veces que la alternativa correcta."
+                )
+        for choice in choices:
+            choice.selection_percentage = (
+                round(choice.selection_count / question.answer_count * 100)
+                if question.answer_count
+                else 0
+            )
+            choice.is_dominant_distractor = bool(
+                not choice.is_correct
+                and choice.selection_count == max_distractor
+                and max_distractor > correct_picks
+            )
+    return questions
+
+
+def _question_with_analysis(question_id):
+    return _questions_with_analysis(question_ids=[question_id])[0]
+
 
 def _edit_choices_ctx(question):
     return {"LEVEL_CHOICES": Question.LEVEL_CHOICES,
@@ -27,11 +92,7 @@ def _edit_choices_ctx(question):
 
 def _build_levels_data(resource):
     """Agrupa las preguntas del recurso en Nivel → Modo → preguntas (con choices)."""
-    all_questions = list(
-        Question.objects.filter(resource=resource)
-        .prefetch_related("choices")
-        .order_by("level", "order", "id")
-    )
+    all_questions = _questions_with_analysis(resource=resource)
     levels_data = []
     for lvl, lvl_name in Question.LEVEL_CHOICES:
         lvl_questions = [q for q in all_questions if q.level == lvl]
@@ -147,11 +208,13 @@ def edit_question_inline(request, question_id):
 
         if request.headers.get("HX-Request"):
             # Devuelve el <details> completo (abierto) para refrescar resumen + cuerpo.
+            question = _question_with_analysis(question.id)
             return render(request, "partials/question_item.html", {"question": question, "open": True})
         return redirect("content:question_review", slug=question.resource.slug)
 
     # GET
     if request.GET.get("cancel"):
+        question = _question_with_analysis(question.id)
         return render(request, "partials/question_detail.html", {"question": question})
     return render(request, "partials/question_edit_form.html", {"question": question, **_edit_choices_ctx(question)})
 
@@ -219,6 +282,7 @@ def add_question_inline(request, resource_id):
     Choice.objects.create(question=question, text="Alternativa D", is_correct=False, order=4)
 
     if request.headers.get("HX-Request"):
+        question = _question_with_analysis(question.id)
         return render(request, "partials/question_item.html", {"question": question, "open": True})
     return redirect("content:question_review", slug=resource.slug)
 
@@ -277,11 +341,11 @@ def bulk_action_questions(request, resource_id):
             qs_target.delete()
 
     if request.headers.get("HX-Request") and level and mode_key:
-        qs = (
-            Question.objects.filter(resource=resource, level=level, mode=mode_key)
-            .prefetch_related("choices")
-            .order_by("order", "id")
-        )
+        qs = [
+            question
+            for question in _questions_with_analysis(resource=resource)
+            if question.level == int(level) and question.mode == mode_key
+        ]
         parts = [
             render_to_string("partials/question_item.html", {"question": q}, request=request)
             for q in qs
@@ -357,8 +421,11 @@ def generate_questions_inline(request, resource_id):
             return _msg("No se generaron preguntas. ¿El recurso tiene transcript guardado?")
         return _msg("No se generaron preguntas.")
 
+    created_questions = _questions_with_analysis(
+        question_ids=[question.id for question in created]
+    )
     html = "".join(
         render_to_string("partials/question_item.html", {"question": q}, request=request)
-        for q in created
+        for q in created_questions
     )
     return HttpResponse(html)
