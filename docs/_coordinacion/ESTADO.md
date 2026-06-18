@@ -8,7 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| _libre_ | - | - | 🟢 sin lock |
+| 🧩 Codex | `codex/analitica-banco-preguntas` | 2026-06-18 12:32 | 🔴 ampliando efectividad por alumno/grupo |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
