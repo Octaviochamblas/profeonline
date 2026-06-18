@@ -8,16 +8,18 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🏛️ Claude | (working tree, sin rama aún) | 2026-06-16 | 🟡 build hecho — Guías desde Drive (pendiente infra 🧑 + commit) |
+| _libre_ | - | - | 🟢 sin lock (Guías desde Drive → PR #68 abierto, pendiente auditoría) |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
 
-- **Guías desde Google Drive 🔨 (2026-06-16, 🏛️ Claude):** elegir documentos de una carpeta de Drive
-  para importarlos como `QuizGuide` (modo documento). Enfoque service-account + carpeta compartida,
-  carpeta configurable desde el panel, sin migración. Tarjeta en `backlog/3-construccion/guias-desde-drive.md`.
-  **Prerrequisito del 🧑:** crear service account + compartir la carpeta + cargar `GOOGLE_SERVICE_ACCOUNT_JSON`.
+- **Guías desde Google Drive — PR #68 abierto (2026-06-17, 🏛️ Claude):** importar guías desde una carpeta
+  de Drive (service account, navegación de subcarpetas), selector jerárquico de vínculos, soporte `.docx`
+  (`python-docx`) y **publicar preguntas de inmediato por defecto**. Validado e2e contra carpeta real;
+  suite completa verde, sin migraciones. Tarjeta en `backlog/3-construccion/guias-desde-drive.md`.
+  **Pendiente:** auditoría 🧩 Codex + merge · el 🧑 carga `GOOGLE_SERVICE_ACCOUNT_JSON` + `GUIDES_DRIVE_FOLDER_ID`
+  en Railway · publicar los borradores que ya están en prod (loops viejos).
 - **Banco de preguntas con generación IA — CERRADO 🟢 y desplegado (2026-06-16):** 6 PRs (#62–#67).
   Generación grounded en transcript de YouTube + guías de estilo; **2 modos** (🎬 video / 📄 documento)
   con UI (página de guías + botones por recurso + selector en el estudio); comando `backfill_transcripts`;
