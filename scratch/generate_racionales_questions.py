@@ -3,6 +3,10 @@ import sys
 import django
 import random
 import math
+import argparse
+import copy
+import re
+from collections import Counter
 
 # Asegurar codificación UTF-8
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,6 +53,228 @@ def get_unique_triplets(count, range1, range2, range3, condition=None):
         if condition is None or condition(a, b, c):
             triplets.add((a, b, c))
     return list(triplets)
+
+
+PEDAGOGICAL_FAMILIES = (
+    "resolucion_directa",
+    "seleccion_de_justificacion",
+    "contraste_de_respuestas",
+    "correccion_de_error",
+    "evaluacion_de_afirmacion",
+    "seleccion_de_estrategia",
+)
+
+
+def _clean_synthetic_suffix(text):
+    """Quita etiquetas que aparentan variedad sin cambiar la tarea cognitiva."""
+    return re.sub(r"\s*\((?:caso|variación)\s+\d+\)", "", text, flags=re.IGNORECASE)
+
+
+def _correct_and_wrong_choices(item):
+    correct = [choice["text"] for choice in item["choices"] if choice.get("is_correct")]
+    wrong = [
+        choice["text"]
+        for choice in item["choices"]
+        if not choice.get("is_correct") and choice["text"] not in correct
+    ]
+    if len(correct) != 1 or not wrong:
+        raise ValueError(f"Pregunta sin una respuesta correcta y distractores: {item.get('text')}")
+    return correct[0], wrong
+
+
+def _choice(text, is_correct=False):
+    return {"text": str(text)[:500], "is_correct": is_correct}
+
+
+def _replace_duplicate_distractors(choices):
+    replacements = (
+        "No se puede determinar con los datos entregados.",
+        "El resultado corresponde al valor opuesto.",
+        "El procedimiento no produce un número racional.",
+    )
+    seen = set()
+    replacement_index = 0
+    for choice in choices:
+        text = str(choice.get("text", "")).strip()
+        if text in seen and not choice.get("is_correct"):
+            while replacements[replacement_index] in seen:
+                replacement_index += 1
+            choice["text"] = replacements[replacement_index]
+            text = choice["text"]
+        seen.add(text)
+    return choices
+
+
+def diversify_question(item, position):
+    """Reformula ejercicios válidos para exigir procesos cognitivos diferentes."""
+    item = copy.deepcopy(item)
+    original_text = _clean_synthetic_suffix(item["text"])
+    explanation = item.get("explanation", "").strip()
+    correct, wrong = _correct_and_wrong_choices(item)
+    family = PEDAGOGICAL_FAMILIES[position % len(PEDAGOGICAL_FAMILIES)]
+    variant = position // len(PEDAGOGICAL_FAMILIES)
+
+    if family == "resolucion_directa":
+        leads = (
+            "Responde de forma directa",
+            "Calcula y selecciona la alternativa correcta",
+            "Determina el resultado con atención",
+            "Encuentra la respuesta",
+            "Obtén el resultado solicitado",
+        )
+        item["text"] = f"{leads[variant]}: «{original_text}»"
+
+    elif family == "seleccion_de_justificacion":
+        leads = (
+            "Analiza el procedimiento",
+            "Examina los pasos necesarios",
+            "Compara posibles razonamientos",
+            "Revisa la fundamentación",
+            "Decide qué argumento es válido",
+        )
+        item["text"] = (
+            f"{leads[variant]} para «{original_text}». ¿Cuál justificación conduce "
+            f"correctamente a la respuesta {correct}?"
+        )
+        item["choices"] = [
+            _choice(explanation, True),
+            _choice("Se elige la alternativa con los números más grandes, sin efectuar el procedimiento."),
+            _choice("Se intercambian todos los datos del enunciado y se conserva el mismo resultado."),
+            _choice("Se ignoran los signos, denominadores o cifras decimales porque no cambian la respuesta."),
+        ]
+
+    elif family == "contraste_de_respuestas":
+        pairs = (
+            ("Camila", "Diego"),
+            ("Sofía", "Tomás"),
+            ("Valentina", "Nicolás"),
+            ("Elena", "Javier"),
+            ("Antonia", "Martín"),
+        )
+        first_student, second_student = pairs[variant]
+        item["text"] = (
+            f"Ante el problema «{original_text}», {first_student} obtiene {correct} y {second_student} "
+            f"obtiene {wrong[0]}. ¿Quién resolvió correctamente?"
+        )
+        item["choices"] = [
+            _choice(first_student, True),
+            _choice(second_student),
+            _choice("Ambos"),
+            _choice("Ninguno"),
+        ]
+
+    elif family == "correccion_de_error":
+        actions = (
+            "reemplazar ese resultado",
+            "corregir su respuesta",
+            "rectificar el cálculo",
+            "enmendar la solución",
+            "modificar la conclusión",
+        )
+        item["text"] = (
+            f"Un estudiante respondió {wrong[0]} al problema «{original_text}». "
+            f"¿Qué alternativa permite {actions[variant]}?"
+        )
+
+    elif family == "evaluacion_de_afirmacion":
+        claim_is_correct = position % 12 < 6
+        claim = correct if claim_is_correct else wrong[0]
+        speakers = ("Un estudiante", "Una compañera", "El equipo A", "Un tutor", "La solución propuesta")
+        item["text"] = (
+            f"{speakers[variant]} afirma que la respuesta a «{original_text}» es {claim}. "
+            "¿Cómo debe evaluarse su afirmación?"
+        )
+        if claim_is_correct:
+            item["choices"] = [
+                _choice("Es correcta y el procedimiento confirma ese resultado.", True),
+                _choice("Es incorrecta porque siempre hay que invertir el resultado."),
+                _choice("Es incorrecta porque deben eliminarse los signos y denominadores."),
+                _choice("No puede evaluarse con los datos disponibles."),
+            ]
+        else:
+            item["choices"] = [
+                _choice(f"Es incorrecta; el resultado correcto es {correct}.", True),
+                _choice("Es correcta porque coincide con una de las alternativas."),
+                _choice("Es correcta si se omite el último paso del procedimiento."),
+                _choice("No puede evaluarse con los datos disponibles."),
+            ]
+
+    elif family == "seleccion_de_estrategia":
+        first_step = explanation.split(".", 1)[0].strip()
+        prompts = (
+            "¿Cuál es la estrategia adecuada para comenzar",
+            "¿Qué primer paso permite encaminar correctamente",
+            "¿Con qué procedimiento conviene iniciar",
+            "¿Qué acción inicial respeta las reglas matemáticas al resolver",
+            "¿Cuál es el mejor punto de partida para solucionar",
+        )
+        item["text"] = f"{prompts[variant]} «{original_text}»?"
+        item["choices"] = [
+            _choice(first_step, True),
+            _choice("Escoger una alternativa al azar y ajustar después los datos."),
+            _choice("Sumar todos los números visibles sin considerar la operación indicada."),
+            _choice("Eliminar fracciones, signos o decimales antes de interpretar el problema."),
+        ]
+
+    item["choices"] = _replace_duplicate_distractors(item["choices"])
+    item["_family"] = family
+    return item
+
+
+def prepare_questions(raw_questions):
+    """Garantiza 30 preguntas por nivel y distribuye seis familias pedagógicas."""
+    levels = [raw_questions[:30], raw_questions[30:60], raw_questions[60:]]
+    prepared = []
+    for level, questions in enumerate(levels, 1):
+        if not questions:
+            raise ValueError(f"El nivel {level} no contiene preguntas base.")
+        expanded = [copy.deepcopy(question) for question in questions[:30]]
+        while len(expanded) < 30:
+            expanded.append(copy.deepcopy(questions[len(expanded) % len(questions)]))
+        prepared.extend(
+            diversify_question(question, position)
+            for position, question in enumerate(expanded)
+        )
+    return prepared
+
+
+def audit_questions(slug, questions):
+    """Valida conteos, alternativas, textos y diversidad sin tocar la base de datos."""
+    errors = []
+    if len(questions) != 90:
+        errors.append(f"se esperaban 90 preguntas y se obtuvieron {len(questions)}")
+
+    texts = [question.get("text", "").strip() for question in questions]
+    if len(texts) != len(set(texts)):
+        errors.append("hay enunciados literales duplicados")
+
+    for index, question in enumerate(questions, 1):
+        choices = question.get("choices", [])
+        correct_count = sum(bool(choice.get("is_correct")) for choice in choices)
+        if len(choices) != 4 or correct_count != 1:
+            errors.append(
+                f"pregunta {index}: requiere 4 alternativas y una correcta "
+                f"(tiene {len(choices)}/{correct_count})"
+            )
+        choice_texts = [str(choice.get("text", "")).strip() for choice in choices]
+        if len(choice_texts) != len(set(choice_texts)):
+            errors.append(f"pregunta {index}: contiene alternativas duplicadas")
+
+    level_summaries = []
+    for level in (1, 2, 3):
+        batch = questions[(level - 1) * 30:level * 30]
+        families = Counter(question.get("_family") for question in batch)
+        if len(families) < 5:
+            errors.append(f"nivel {level}: solo {len(families)} familias pedagógicas")
+        if families and max(families.values()) > 9:
+            errors.append(f"nivel {level}: una familia supera el 30 %")
+        level_summaries.append(
+            f"N{level}=" + ",".join(f"{key}:{value}" for key, value in families.items())
+        )
+
+    if errors:
+        raise ValueError(f"{slug}: " + "; ".join(errors))
+    return " | ".join(level_summaries)
 
 # --- GENERADORES ESPECÍFICOS POR RECURSO ---
 
@@ -1050,7 +1276,24 @@ GENERATORS = {
     '208-numeros-racionales-prioridad-en-las-operaciones': gen_racionales_208
 }
 
-def populate():
+def build_all_questions():
+    generated = {}
+    for slug, generator in GENERATORS.items():
+        random.seed(f"profeonline_racionales:{slug}:2026-06-19")
+        generated[slug] = prepare_questions(generator())
+    return generated
+
+
+def run_audit():
+    generated = build_all_questions()
+    print("Auditoría local de diversidad pedagógica (sin acceso a la base de datos)")
+    for slug, questions in generated.items():
+        summary = audit_questions(slug, questions)
+        print(f"[OK] {slug}: 90 preguntas | {summary}")
+    print(f"\nAuditoría superada: {sum(map(len, generated.values()))} preguntas en {len(generated)} recursos.")
+
+
+def populate(replace=False):
     slugs = list(GENERATORS)
     print(
         f"Iniciando poblado local sin API para {len(slugs)} recursos del tema "
@@ -1066,9 +1309,10 @@ def populate():
             print(f"  [Error] No existe el recurso con slug '{slug}'. Saltando.")
             continue
 
-        # Generación reproducible por recurso. Saneamiento limpio por recurso.
+        # Generación reproducible por recurso.
         random.seed(f"profeonline_racionales:{slug}:2026-06-19")
-        questions_data = GENERATORS[slug]()
+        questions_data = prepare_questions(GENERATORS[slug]())
+        audit_questions(slug, questions_data)
 
         # Agrupar preguntas por nivel y por modo
         new_questions_by_level_and_mode = {
@@ -1104,13 +1348,20 @@ def populate():
 
         try:
             with transaction.atomic():
-                # Saneamiento de preguntas viejas de este recurso
-                Question.objects.filter(resource=resource).delete()
+                if replace:
+                    Question.objects.filter(resource=resource).delete()
 
                 created_count = 0
+                existing_texts = set(
+                    Question.objects.filter(resource=resource).values_list("text", flat=True)
+                )
                 for lvl in (1, 2, 3):
                     for mode in ("preparacion", "evaluacion", "ambas"):
-                        batch = new_questions_by_level_and_mode[lvl][mode]
+                        batch = [
+                            item
+                            for item in new_questions_by_level_and_mode[lvl][mode]
+                            if item["text"] not in existing_texts
+                        ]
                         if batch:
                             created = _save_questions(
                                 resource=resource,
@@ -1133,4 +1384,23 @@ def populate():
 
 
 if __name__ == "__main__":
-    populate()
+    parser = argparse.ArgumentParser(
+        description="Genera y audita preguntas variadas de números racionales."
+    )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Guarda preguntas en la base configurada. Sin esta opción solo se audita.",
+    )
+    parser.add_argument(
+        "--replace",
+        action="store_true",
+        help="Borra primero las preguntas de cada recurso. Requiere --apply.",
+    )
+    args = parser.parse_args()
+    if args.replace and not args.apply:
+        parser.error("--replace requiere --apply")
+    if args.apply:
+        populate(replace=args.replace)
+    else:
+        run_audit()

@@ -14,6 +14,20 @@
 
 ## En curso ahora
 
+- **Pipeline único de publicación educativa — BACKEND EN PR a `main` (2026-06-19):**
+  transcripción como fuente → documento canónico, metadatos, guía y preguntas con segunda auditoría;
+  publicación en dos fases. 🧩 Codex construyó; 🏛️ Claude auditó y corrigió (revert del agente,
+  `SET_NULL` en guía canónica, +tests; **suite 348 OK**). **Agente Python excluido** (duplica el
+  uploader Node `profeonline-uploader`): el flujo de subida se integrará allí. Concurrencia
+  (`select_for_update`) diferida. Tarjeta en `backlog/5-cierre/`.
+- **Limpieza física + auditoría global — CERRADA POR CODEX 🟢 (2026-06-19):**
+  respaldo de 1.351 archivadas, borrado físico sin historial afectado y auditoría de las 2.476
+  activas. Resultado: 0 archivadas, 0 duplicados textuales, 43 grupos estructurales para revisión,
+  0 alternativas huérfanas y producción 200. Tarjeta en `backlog/5-cierre/`.
+- **Diversidad del banco de racionales — APLICADA EN PRODUCCIÓN 🟢 (2026-06-19):**
+  1.351 repeticiones archivadas, 55 representantes antiguas conservadas y 1.440 preguntas nuevas
+  publicadas en 16 recursos. Verificación: 1.495 publicadas, 1.351 archivadas, 0 alternativas
+  inválidas; respaldo JSON local de las 1.406 preguntas originales.
 - **Rama consolidada `codex/admin-options-menu` — CERRADA 🟢 (2026-06-18):**
   menú staff, plantilla allauth, robustez IA, importador JSON y generador local aditivo auditados.
   Hallazgo P0 de migración destructiva corregido; 331 tests y barrera CI local verdes.
