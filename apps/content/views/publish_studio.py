@@ -1,4 +1,5 @@
 import json
+import hashlib
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
@@ -124,7 +125,7 @@ def publish_studio(request):
             return render(request, "pages/publish_studio.html", context)
 
         # Build output batch JSON
-        batch_data = {
+        batch_payload = {
             "schema": "profeonline.upload-batch/v1",
             "files": files,
             "taxonomy": {
@@ -142,7 +143,16 @@ def publish_studio(request):
                     "description": new_playlist_description
                 } if create_playlist else None
             },
-            "instructions": instructions
+            "instructions": instructions,
+            "publication": {
+                "initial_privacy": "unlisted",
+                "publish_only_when_validated": True,
+            },
+        }
+        stable_source = json.dumps(batch_payload, sort_keys=True, ensure_ascii=False)
+        batch_data = {
+            **batch_payload,
+            "batch_id": hashlib.sha256(stable_source.encode("utf-8")).hexdigest()[:24],
         }
 
         # Return json file as attachment

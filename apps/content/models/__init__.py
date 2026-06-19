@@ -12,3 +12,4 @@ from .error_report import QuestionErrorReport
 from .gamification import XPEvent, UserSkill, UserStreak
 from .resource_quiz_config import ResourceQuizConfig
 from .quiz_guide import QuizGuide
+from .publication_pipeline import PublicationItem

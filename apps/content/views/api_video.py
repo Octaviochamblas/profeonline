@@ -5,13 +5,15 @@ import secrets
 
 from django.conf import settings
 from django.core.cache import cache
+from django.db import transaction
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
-from apps.content.models import Level, Resource, Subject, Topic
+from apps.content.models import Level, PublicationItem, Resource, Subject, Topic
 from apps.core.ratelimit import get_client_ip, is_rate_limited, increment_rate_limit
+from apps.content.services.publication_pipeline_service import PipelineError, finalize_publication
 
 logger = logging.getLogger(__name__)
 
@@ -48,8 +50,19 @@ def _reject(request, message, status, reason):
     return JsonResponse({"ok": False, "error": message}, status=status)
 
 
+def _has_valid_api_token(request):
+    expected_token = os.environ.get("API_SECRET_TOKEN")
+    if not expected_token or expected_token == "default_secret_token_change_me":
+        return False
+    token = request.headers.get("X-Api-Token") or request.headers.get("Authorization")
+    if token and token.startswith("Bearer "):
+        token = token[7:]
+    return bool(token and secrets.compare_digest(token, expected_token))
+
+
 @csrf_exempt
 @require_POST
+@transaction.atomic
 def create_resource_from_video(request):
     if _is_rate_limited(request):
         logger.warning(
@@ -87,14 +100,31 @@ def create_resource_from_video(request):
     subject_slug = data.get("subject_slug")
     topic_slug = data.get("topic_slug")
     level_slugs = data.get("level_slugs", [])
+    batch_id = str(data.get("batch_id", "")).strip()
+    source_filename = str(data.get("source_filename", "")).strip()
+    taxonomy = data.get("taxonomy") if isinstance(data.get("taxonomy"), dict) else {}
+    instructions = str(data.get("instructions", "")).strip()
+    target_counts = data.get("target_counts") if isinstance(data.get("target_counts"), dict) else {}
+    youtube_privacy = str(data.get("youtube_privacy", "unlisted")).strip() or "unlisted"
     is_published_provided = "is_published" in data
     is_published = data.get("is_published", False)
+    if batch_id:
+        # El pipeline siempre ingresa en borrador. La publicación ocurre solo al
+        # completar guía, metadatos y auditoría de preguntas. Si el recurso ya
+        # existía y estaba publicado, conserva su versión vigente hasta el cierre.
+        is_published = False
+        is_published_provided = False
     order_provided = "order" in data
     resource_order = 0
 
     if not title or not video_url:
         return JsonResponse(
             {"ok": False, "error": "Faltan parametros requeridos: title y video_url"},
+            status=400,
+        )
+    if batch_id and not source_filename:
+        return JsonResponse(
+            {"ok": False, "error": "source_filename es obligatorio cuando se envía batch_id"},
             status=400,
         )
 
@@ -172,18 +202,19 @@ def create_resource_from_video(request):
         )
         resource.save()
     else:
-        resource.title = title
-        if description:
-            resource.description = description
-        if content:
-            resource.content = content
+        if not batch_id:
+            resource.title = title
+            if description:
+                resource.description = description
+            if content:
+                resource.content = content
         # El transcript suele llegar en una llamada posterior (los subtitulos de
         # YouTube tardan en estar listos). Solo se actualiza si viene con contenido.
         if transcript:
             resource.transcript = transcript
-        if subject:
+        if subject and not batch_id:
             resource.subject = subject
-        if topic:
+        if topic and not batch_id:
             resource.topic = topic
         # Solo cambia el estado de publicación si se envía explícitamente,
         # para no despublicar recursos al re-procesar una subida.
@@ -198,6 +229,32 @@ def create_resource_from_video(request):
         if levels.exists():
             resource.levels.set(levels)
 
+    publication_item = None
+    if batch_id:
+        publication_item, _ = PublicationItem.objects.update_or_create(
+            batch_id=batch_id,
+            source_filename=source_filename,
+            defaults={
+                "youtube_video_id": youtube_id,
+                "youtube_url": video_url,
+                "youtube_privacy": youtube_privacy,
+                "resource": resource,
+                "taxonomy": taxonomy or {
+                    "subject_slug": subject_slug or "",
+                    "topic_slug": topic_slug or "",
+                },
+                "instructions": instructions,
+                "target_counts": target_counts,
+            },
+        )
+        if transcript and publication_item.state in {
+            PublicationItem.STATE_TRANSCRIPT_PENDING,
+            PublicationItem.STATE_FAILED,
+        }:
+            publication_item.state = PublicationItem.STATE_UPLOADED
+            publication_item.last_error = ""
+            publication_item.save(update_fields=["state", "last_error", "updated_at"])
+
     resource_path = reverse("content:resource_detail", kwargs={"slug": resource.slug})
     absolute_url = request.build_absolute_uri(resource_path)
 
@@ -208,6 +265,56 @@ def create_resource_from_video(request):
             "resource_id": resource.id,
             "slug": resource.slug,
             "url": absolute_url,
+            "publication_item_id": publication_item.id if publication_item else None,
+            "publication_state": publication_item.state if publication_item else None,
         },
         status=201 if created else 200,
     )
+
+
+@require_GET
+def publication_item_status(request, item_id):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    item = PublicationItem.objects.select_related("resource", "canonical_guide").filter(id=item_id).first()
+    if item is None:
+        return JsonResponse({"ok": False, "error": "Ítem no encontrado"}, status=404)
+    return JsonResponse({
+        "ok": True,
+        "id": item.id,
+        "state": item.state,
+        "last_error": item.last_error,
+        "youtube_privacy": item.youtube_privacy,
+        "metadata": item.metadata if item.state in {
+            PublicationItem.STATE_METADATA_READY,
+            PublicationItem.STATE_QUESTIONS_READY,
+            PublicationItem.STATE_PUBLISHED,
+        } else {},
+    })
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def confirm_publication_item(request, item_id):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    item = PublicationItem.objects.select_for_update().filter(id=item_id).first()
+    if item is None:
+        return JsonResponse({"ok": False, "error": "Ítem no encontrado"}, status=404)
+    try:
+        data = json.loads(request.body or b"{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+    if data.get("youtube_privacy") != "public":
+        return JsonResponse(
+            {"ok": False, "error": "Se requiere confirmación explícita de YouTube público"},
+            status=400,
+        )
+    item.youtube_privacy = "public"
+    try:
+        finalize_publication(item)
+    except PipelineError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+    item.save(update_fields=["youtube_privacy", "updated_at"])
+    return JsonResponse({"ok": True, "state": item.state, "resource_id": item.resource_id})
