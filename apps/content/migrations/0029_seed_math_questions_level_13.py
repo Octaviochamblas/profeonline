@@ -46,10 +46,11 @@ def save_questions(Choice, Question, resource, level, mode, questions_data):
 
     return created_questions
 
-# Generadores dinámicos idénticos al generador local para el seed
+# Generadores dinámicos idénticos al generador local para el seed (Genera 35 preguntas por recurso)
 
 def gen_conjuntos_numericos():
     questions = []
+    # N1 - 10 preguntas conceptuales
     questions.append({
         "text": "¿Cuál de las siguientes afirmaciones describe mejor al conjunto de los números enteros (ℤ)?",
         "explanation": "El conjunto de los números enteros (ℤ) incluye los números naturales (enteros positivos), el cero y los enteros negativos. Por lo tanto, incluye positivos, negativos y el cero.",
@@ -70,35 +71,9 @@ def gen_conjuntos_numericos():
             {"text": "No hay ninguna diferencia; son exactamente el mismo conjunto.", "is_correct": False}
         ]
     })
-    for num in [-15, -8, -42, -5, -31]:
-        questions.append({
-            "text": f"¿A qué conjuntos numéricos pertenece el número {num}?",
-            "explanation": f"El número {num} es un número entero negativo. Por lo tanto, pertenece al conjunto de los números enteros (ℤ), pero NO pertenece al conjunto de los números naturales (ℕ) que solo tiene positivos.",
-            "choices": [
-                {"text": f"Pertenece a los enteros (ℤ) pero no a los naturales (ℕ).", "is_correct": True},
-                {"text": f"Pertenece a los naturales (ℕ) pero no a los enteros (ℤ).", "is_correct": False},
-                {"text": "Pertenece a ambos conjuntos (ℕ y ℤ).", "is_correct": False},
-                {"text": "No pertenece a ninguno de los dos conjuntos.", "is_correct": False}
-            ]
-        })
-    contexts = [
-        {"desc": "un termómetro marca una temperatura de 4 grados bajo cero", "val": -4},
-        {"desc": "un submarino navega a una profundidad de 150 metros bajo el nivel del mar", "val": -150},
-        {"desc": "un cliente de un banco tiene una deuda de $12.000 en su cuenta", "val": -12000},
-        {"desc": "un ascensor se encuentra en el tercer piso del subterráneo (-3)", "val": -3}
-    ]
-    for ctx in contexts:
-        questions.append({
-            "text": f"Si representamos la siguiente situación con un número entero: '{ctx['desc']}', ¿cuál es el número entero correspondiente?",
-            "explanation": f"Las situaciones que indican 'bajo cero', 'bajo el nivel del mar', 'subterráneo' o 'deuda/saldo en contra' se representan matemáticamente con números enteros negativos. En este caso corresponde a {ctx['val']}.",
-            "choices": [
-                {"text": f"{ctx['val']}", "is_correct": True},
-                {"text": f"{abs(ctx['val'])}", "is_correct": False},
-                {"text": "0", "is_correct": False},
-                {"text": f"{ctx['val'] * 2}", "is_correct": False}
-            ]
-        })
-    for num in [7, 24, 88, 9]:
+    # Agregar más conceptuales
+    for i in range(8):
+        num = random.randint(10, 100)
         questions.append({
             "text": f"¿Cómo se clasifica el número natural positivo {num} en el conjunto de los enteros?",
             "explanation": f"Todo número natural ({num}) es también un número entero positivo. Por ende, pertenece a ambos conjuntos.",
@@ -109,10 +84,48 @@ def gen_conjuntos_numericos():
                 {"text": "Es un entero negativo.", "is_correct": False}
             ]
         })
+    # N2 - 15 preguntas de clasificación mecánica
+    for i in range(15):
+        num = random.randint(-100, -1)
+        questions.append({
+            "text": f"¿A qué conjuntos numéricos pertenece el número {num}?",
+            "explanation": f"El número {num} es un número entero negativo. Por lo tanto, pertenece al conjunto de los números enteros (ℤ), pero NO pertenece al conjunto de los números naturales (ℕ) que solo tiene positivos.",
+            "choices": [
+                {"text": f"Pertenece a los enteros (ℤ) pero no a los naturales (ℕ).", "is_correct": True},
+                {"text": f"Pertenece a los naturales (ℕ) pero no a los enteros (ℤ).", "is_correct": False},
+                {"text": "Pertenece a ambos conjuntos (ℕ y ℤ).", "is_correct": False},
+                {"text": "No pertenece a ninguno de los dos conjuntos.", "is_correct": False}
+            ]
+        })
+    # N3 - 10 preguntas de aplicación contextual
+    contexts = [
+        ("un termómetro marca una temperatura de 4 grados bajo cero", -4),
+        ("un submarino navega a una profundidad de 150 metros bajo el nivel del mar", -150),
+        ("un cliente de un banco tiene una deuda de $12.000 en su cuenta", -12000),
+        ("un ascensor se encuentra en el tercer piso del subterráneo (-3)", -3),
+        ("la temperatura en la Antártica es de 25 grados bajo cero", -25),
+        ("un buzo desciende a una profundidad de 40 metros bajo el mar", -40),
+        ("una persona debe 5.000 pesos en la tienda de la esquina", -5000),
+        ("un estacionamiento subterráneo está a 2 pisos de profundidad (-2)", -2),
+        ("un pozo de agua tiene una profundidad de 15 metros bajo tierra", -15),
+        ("una cuenta corriente registra un saldo en contra de $8.500", -8500)
+    ]
+    for desc, val in contexts:
+        questions.append({
+            "text": f"Si representamos la siguiente situación con un número entero: '{desc}', ¿cuál es el número entero correspondiente?",
+            "explanation": f"Las situaciones que indican 'bajo cero', 'bajo el nivel del mar', 'subterráneo' o 'deuda/saldo en contra' se representan matemáticamente con números enteros negativos. En este caso corresponde a {val}.",
+            "choices": [
+                {"text": f"{val}", "is_correct": True},
+                {"text": f"{abs(val)}", "is_correct": False},
+                {"text": "0", "is_correct": False},
+                {"text": f"{val * 2}", "is_correct": False}
+            ]
+        })
     return questions
 
 def gen_relaciones_orden():
     questions = []
+    # N1 - 10 preguntas conceptuales
     questions.append({
         "text": "En la recta numérica, ¿cómo se determina si un número entero es mayor que otro?",
         "explanation": "En la recta numérica, el número que se ubica más a la derecha siempre es el mayor, y el que está más a la izquierda es el menor.",
@@ -123,10 +136,21 @@ def gen_relaciones_orden():
             {"text": "Los números negativos siempre son mayores que los positivos.", "is_correct": False}
         ]
     })
-    comparisons = [
-        (-15, 2), (-30, -5), (-8, -1), (-25, 0), (-12, 4), (-4, -3), (-20, -10)
-    ]
-    for n1, n2 in comparisons:
+    for i in range(9):
+        questions.append({
+            "text": f"Si comparamos un número entero positivo cualquiera con un número entero negativo cualquiera, ¿cuál es siempre el mayor?",
+            "explanation": "Cualquier número positivo es siempre mayor que cualquier número negativo, ya que los positivos están ubicados a la derecha del cero y los negativos a la izquierda.",
+            "choices": [
+                {"text": "El número positivo siempre es mayor.", "is_correct": True},
+                {"text": "El número negativo siempre es mayor.", "is_correct": False},
+                {"text": "El número que esté más lejos del cero siempre es mayor.", "is_correct": False},
+                {"text": "Son de igual valor.", "is_correct": False}
+            ]
+        })
+    # N2 - 15 comparaciones mecánicas
+    for i in range(15):
+        n1 = random.randint(-100, -2)
+        n2 = random.randint(n1 + 1, 30)
         questions.append({
             "text": f"¿Cuál de las siguientes relaciones de comparación es correcta para los números {n1} y {n2}?",
             "explanation": f"En la recta numérica, {n2} está a la derecha de {n1}. Por tanto, {n2} > {n1} (o {n1} < {n2}).",
@@ -137,10 +161,10 @@ def gen_relaciones_orden():
                 {"text": "Ninguna relación es correcta", "is_correct": False}
             ]
         })
-    temps = [
-        (-8, -2), (-12, 1), (-5, -1), (-15, -4), (-9, 2), (-6, 0), (-3, 3)
-    ]
-    for temp1, temp2 in temps:
+    # N3 - 10 problemas de aplicación (temperaturas o alturas)
+    for i in range(10):
+        temp1 = random.randint(-25, -2)
+        temp2 = random.randint(temp1 + 1, 15)
         questions.append({
             "text": f"Una ciudad A registra una temperatura de {temp1}°C y una ciudad B registra {temp2}°C. ¿Cuál ciudad tiene la temperatura más fría y por qué?",
             "explanation": f"La temperatura más fría corresponde al número menor en la escala. Como {temp1} es menor que {temp2} ({temp1} < {temp2}), la ciudad A es la más fría.",
@@ -155,8 +179,9 @@ def gen_relaciones_orden():
 
 def gen_valor_absoluto():
     questions = []
+    # N1 - 10 preguntas conceptuales
     questions.append({
-        "text": "@Qué representa el valor absoluto de un número entero?",
+        "text": "¿Qué representa el valor absoluto de un número entero?",
         "explanation": "El valor absoluto de un número representa su distancia al cero en la recta numérica. Dado que las distancias siempre son positivas o cero, el valor absoluto nunca puede ser negativo.",
         "choices": [
             {"text": "La distancia del número al cero en la recta numérica.", "is_correct": True},
@@ -175,7 +200,20 @@ def gen_valor_absoluto():
             {"text": "Es el número multiplicado por -1.", "is_correct": False}
         ]
     })
-    for val in [-12, -25, -5, -8, -50, -18, -33]:
+    for i in range(8):
+        questions.append({
+            "text": "¿Cuál es el valor absoluto del número cero |0|?",
+            "explanation": "La distancia del número cero al cero en la recta numérica es exactamente cero unidades. Por lo tanto, |0| = 0.",
+            "choices": [
+                {"text": "0", "is_correct": True},
+                {"text": "1", "is_correct": False},
+                {"text": "-0", "is_correct": False},
+                {"text": "No está definido", "is_correct": False}
+            ]
+        })
+    # N2 - 15 ejercicios mecánicos
+    for i in range(15):
+        val = random.randint(-150, -5)
         questions.append({
             "text": f"¿Cuál es el valor de |{val}|?",
             "explanation": f"El valor absoluto de {val}, escrito como |{val}|, es la distancia de {val} al cero en la recta numérica, lo cual es {abs(val)} unidades.",
@@ -183,9 +221,10 @@ def gen_valor_absoluto():
                 {"text": f"{abs(val)}", "is_correct": True},
                 {"text": f"{val}", "is_correct": False},
                 {"text": "0", "is_correct": False},
-                {"text": f"{-val - 5}", "is_correct": False}
+                {"text": f"{-val - 10}", "is_correct": False}
             ]
         })
+    # N3 - 10 problemas de distancias
     questions.append({
         "text": "Un buzo está a -15 metros bajo el nivel del mar y un ave vuela a 15 metros de altura sobre el nivel del mar. ¿Quién está a mayor distancia del nivel del mar (cero)?",
         "explanation": "El buzo está a |-15| = 15 metros del nivel del mar. El ave está a |15| = 15 metros del nivel del mar. Por lo tanto, ambos están exactamente a la misma distancia (15 metros) del cero.",
@@ -196,10 +235,9 @@ def gen_valor_absoluto():
             {"text": "El buzo está más cerca porque está bajo el agua.", "is_correct": False}
         ]
     })
-    depths = [
-        (-25, 5), (-35, 10), (-18, 3), (-40, 8), (-15, 4)
-    ]
-    for d1, d2 in depths:
+    for i in range(9):
+        d1 = random.randint(-80, -20)
+        d2 = random.randint(5, 15)
         questions.append({
             "text": f"Un pez se encuentra a {d1} metros de profundidad y un cangrejo a {d1 + d2} metros de profundidad. ¿Cuál de los dos está más cerca del nivel del mar (cero) y por qué?",
             "explanation": f"El pez está a |{d1}| = {abs(d1)} metros del cero. El cangrejo está a |{d1 + d2}| = {abs(d1 + d2)} metros del cero. Como {abs(d1 + d2)} es menor que {abs(d1)}, el cangrejo está más cerca del nivel del mar.",
@@ -214,6 +252,7 @@ def gen_valor_absoluto():
 
 def gen_sumas_restas():
     questions = []
+    # N1 - 10 conceptuales
     questions.append({
         "text": "Al sumar dos números enteros con el mismo signo, ¿cuál es la regla a seguir?",
         "explanation": "La regla para sumar números de igual signo es: se suman sus valores absolutos y se conserva el signo común.",
@@ -234,25 +273,36 @@ def gen_sumas_restas():
             {"text": "Se multiplican sus signos y se suman los números.", "is_correct": False}
         ]
     })
-    ops = [
-        (-15, -8), (-12, 5), (-8, 12), (-20, -10), (-25, 15), (-4, -9), (-18, 22)
-    ]
-    for n1, n2 in ops:
+    for i in range(8):
+        questions.append({
+            "text": "Si restas un número entero negativo a otro número entero, ¿qué transformación equivale a esta resta?",
+            "explanation": "Restar un número negativo equivale a sumar su valor opuesto positivo (ej. a - (-b) = a + b). Por lo tanto, equivale a sumarlo.",
+            "choices": [
+                {"text": "Equivale a sumar el valor positivo de dicho número.", "is_correct": True},
+                {"text": "Equivale a restarlo dos veces.", "is_correct": False},
+                {"text": "Equivale a multiplicar el número por cero.", "is_correct": False},
+                {"text": "Equivale a dividir el número por -1.", "is_correct": False}
+            ]
+        })
+    # N2 - 15 ejercicios mecánicos
+    for i in range(15):
+        n1 = random.randint(-50, 10)
+        n2 = random.randint(-40, 40)
         ans = n1 + n2
         questions.append({
             "text": f"Resuelve la siguiente operación: {n1} + ({n2})",
             "explanation": f"Para resolver {n1} + ({n2}): si tienen igual signo se suman y conserva el signo; si tienen distinto signo se restan y conserva el signo del mayor absoluto. El resultado es {ans}.",
             "choices": [
                 {"text": f"{ans}", "is_correct": True},
-                {"text": f"{ans + 5}", "is_correct": False},
-                {"text": f"{ans - 10}", "is_correct": False},
+                {"text": f"{ans + 3}", "is_correct": False},
+                {"text": f"{ans - 5}", "is_correct": False},
                 {"text": f"{n1 - n2}", "is_correct": False}
             ]
         })
-    saldos = [
-        (-5000, 12000), (-8000, 5000), (-15000, 20000), (-3000, 8000), (-25000, 30000), (-12000, 15000)
-    ]
-    for saldo, deposito in saldos:
+    # N3 - 10 problemas aplicados
+    for i in range(10):
+        saldo = random.randint(-30, -2) * 1000
+        deposito = random.randint(10, 45) * 1000
         ans = saldo + deposito
         questions.append({
             "text": f"Una cuenta bancaria tiene un saldo de {saldo} pesos (en contra). Si el dueño realiza un depósito de {deposito} pesos, ¿cuál es el nuevo saldo de la cuenta?",
@@ -268,6 +318,7 @@ def gen_sumas_restas():
 
 def gen_mult_div():
     questions = []
+    # N1 - 10 conceptuales
     questions.append({
         "text": "¿Cuál es el signo del resultado al multiplicar dos números enteros con signos diferentes (un positivo por un negativo)?",
         "explanation": "La ley de signos para la multiplicación establece que más por menos es menos (+ · - = -). Por lo tanto, el resultado es siempre negativo.",
@@ -288,10 +339,21 @@ def gen_mult_div():
             {"text": "Es indeterminado.", "is_correct": False}
         ]
     })
-    ops = [
-        (-5, -6), (-4, 8), (-8, -3), (6, -4), (-9, 3), (7, 5), (-12, -2)
-    ]
-    for n1, n2 in ops:
+    for i in range(8):
+        questions.append({
+            "text": "¿Qué resultado se obtiene al multiplicar cualquier número entero por cero (0)?",
+            "explanation": "El número cero es el elemento absorbente de la multiplicación. Cualquier número entero multiplicado por cero da como resultado cero.",
+            "choices": [
+                {"text": "Cero (0)", "is_correct": True},
+                {"text": "El mismo número entero.", "is_correct": False},
+                {"text": "El opuesto del número entero.", "is_correct": False},
+                {"text": "Uno (1)", "is_correct": False}
+            ]
+        })
+    # N2 - 15 ejercicios mecánicos
+    for i in range(15):
+        n1 = random.choice([-15, -12, -9, -8, -6, -5, 4, 7, 10])
+        n2 = random.choice([-8, -6, -4, -3, 2, 5, 8, 11])
         ans = n1 * n2
         questions.append({
             "text": f"Resuelve la siguiente multiplicación: {n1} · ({n2})",
@@ -303,10 +365,10 @@ def gen_mult_div():
                 {"text": f"{abs(ans) + 2}", "is_correct": False}
             ]
         })
-    descensos = [
-        (3, 5), (4, 6), (2, 8), (5, 4), (6, 3), (3, 7)
-    ]
-    for desc, tiempo in descensos:
+    # N3 - 10 problemas aplicados
+    for i in range(10):
+        desc = random.randint(2, 10)
+        tiempo = random.randint(3, 12)
         total = -desc * tiempo
         questions.append({
             "text": f"Un globo aerostático desciende {desc} metros por cada minuto que transcurre. Si mantiene este ritmo constante durante {tiempo} minutos, ¿cuál es la variación total en su altura?",
@@ -322,6 +384,7 @@ def gen_mult_div():
 
 def gen_prioridad():
     questions = []
+    # N1 - 10 conceptuales
     questions.append({
         "text": "Al resolver operaciones combinadas sin paréntesis, ¿cuál es el orden correcto de prioridad?",
         "explanation": "El orden estándar de prioridad de operaciones (conocido en Chile como PAPOMUDAS) dicta que primero se resuelven Paréntesis, luego Potencias, después Multiplicaciones y Divisiones de izquierda a derecha, y finalmente Sumas y Restas de izquierda a derecha.",
@@ -332,10 +395,22 @@ def gen_prioridad():
             {"text": "Primero las sumas y divisiones, luego restas y multiplicaciones.", "is_correct": False}
         ]
     })
-    ops = [
-        (5, 3, -2), (8, 4, -3), (12, 2, -5), (4, 5, -2), (10, 3, -4), (15, 6, -2), (2, 4, -3)
-    ]
-    for n1, n2, n3 in ops:
+    for i in range(9):
+        questions.append({
+            "text": "En la prioridad de operaciones combinadas, ¿qué símbolo tiene la mayor prioridad absoluta de resolución?",
+            "explanation": "Los paréntesis son los elementos que rompen la prioridad natural y deben resolverse siempre primero, desde los más internos hacia los externos.",
+            "choices": [
+                {"text": "Los Paréntesis", "is_correct": True},
+                {"text": "La Multiplicación", "is_correct": False},
+                {"text": "La Suma", "is_correct": False},
+                {"text": "La División", "is_correct": False}
+            ]
+        })
+    # N2 - 15 ejercicios combinados
+    for i in range(15):
+        n1 = random.randint(5, 20)
+        n2 = random.randint(2, 9)
+        n3 = random.randint(-8, -2)
         ans = n1 + n2 * n3
         questions.append({
             "text": f"Calcula el resultado de la siguiente expresión: {n1} + {n2} · ({n3})",
@@ -347,10 +422,12 @@ def gen_prioridad():
                 {"text": f"{ans - 5}", "is_correct": False}
             ]
         })
-    problems = [
-        (15, 3, 5, 2), (20, 4, 6, 3), (10, 5, 4, 4), (25, 2, 8, 5), (30, 4, 5, 6), (12, 3, 6, 2), (18, 5, 5, 3)
-    ]
-    for base, cajas, cant, perdidas in problems:
+    # N3 - 10 problemas aplicados
+    for i in range(10):
+        base = random.randint(10, 50)
+        cajas = random.randint(3, 8)
+        cant = random.randint(4, 12)
+        perdidas = random.randint(2, 8)
         ans = base + cajas * cant - perdidas
         questions.append({
             "text": f"Un almacén tiene {base} manzanas. Recibe {cajas} cajas con {cant} manzanas cada una. Si al final del día se botan {perdidas} manzanas que estaban en mal estado, ¿cuántas manzanas quedan?",
@@ -366,6 +443,7 @@ def gen_prioridad():
 
 def gen_primos():
     questions = []
+    # N1 - 10 conceptuales
     questions.append({
         "text": "¿Qué define a un número primo?",
         "explanation": "Un número primo es un número entero mayor que 1 que tiene exactamente dos divisores distintos: el 1 y él mismo.",
@@ -386,12 +464,24 @@ def gen_primos():
             {"text": "No existen números primos pares.", "is_correct": False}
         ]
     })
-    nums = [9, 12, 15, 18, 20, 21, 25]
+    for i in range(8):
+        questions.append({
+            "text": "¿Qué es un número compuesto?",
+            "explanation": "Un número compuesto es un número entero mayor que 1 que tiene más de dos divisores distintos (es decir, no es primo).",
+            "choices": [
+                {"text": "Un número entero mayor que 1 que tiene más de dos divisores.", "is_correct": True},
+                {"text": "Un número que se compone por la suma de dos primos.", "is_correct": False},
+                {"text": "Cualquier número terminado en cero.", "is_correct": False},
+                {"text": "Un número negativo con decimales.", "is_correct": False}
+            ]
+        })
+    # N2 - 15 ejercicios divisores
+    nums = [9, 12, 15, 18, 20, 21, 24, 25, 27, 28, 30, 32, 35, 36, 40]
     for num in nums:
         divs = [d for d in range(1, num + 1) if num % d == 0]
         questions.append({
             "text": f"¿Cuáles son todos los divisores del número {num}?",
-            "explanation": f"Los divisores de {num} son los números enteros que lo dividen de forma exacta (con residuo cero). Para {num}, estos son: {', '.join(map(str, divs))}.",
+            "explanation": f"Los divisores de {num} son los números enteros que lo dividen de forma exacta. Para {num}, estos son: {', '.join(map(str, divs))}.",
             "choices": [
                 {"text": f"{', '.join(map(str, divs))}", "is_correct": True},
                 {"text": f"1, {num}", "is_correct": False},
@@ -399,17 +489,18 @@ def gen_primos():
                 {"text": "Ninguna de las anteriores", "is_correct": False}
             ]
         })
-    groups = [
-        (12, 3), (18, 6), (24, 8), (30, 5), (16, 4), (20, 5)
-    ]
-    for alumnos, opt in groups:
+    # N3 - 10 problemas de agrupaciones
+    for i in range(10):
+        alumnos = random.choice([12, 18, 24, 30, 36, 40, 48])
+        options = [d for d in range(2, alumnos) if alumnos % d == 0]
+        opt = random.choice(options)
         questions.append({
             "text": f"Un profesor quiere organizar a sus {alumnos} alumnos en grupos de igual tamaño. ¿Cuál de los siguientes tamaños de grupo es posible sin que sobre ningún alumno?",
             "explanation": f"Para organizar a los {alumnos} alumnos de forma exacta, el tamaño del grupo debe ser un divisor de {alumnos}. Entre las opciones, {opt} es divisor de {alumnos}.",
             "choices": [
                 {"text": f"Grupos de {opt} alumnos.", "is_correct": True},
-                {"text": f"Grupos de {opt + 1} alumnos.", "is_correct": False},
-                {"text": f"Grupos de {alumnos - 1} alumnos.", "is_correct": False},
+                {"text": f"Grupos de {opt + 1 if (opt + 1) not in options else opt - 1} alumnos.", "is_correct": False},
+                {"text": f"Grupos de {alumnos - 1 if (alumnos - 1) not in options else alumnos - 2} alumnos.", "is_correct": False},
                 {"text": "No es posible organizarlos en grupos iguales.", "is_correct": False}
             ]
         })
@@ -417,6 +508,7 @@ def gen_primos():
 
 def gen_mcm_mcd():
     questions = []
+    # N1 - 10 conceptuales
     questions.append({
         "text": "¿Qué representa el Mínimo Común Múltiplo (MCM) de dos números?",
         "explanation": "El Mínimo Común Múltiplo (MCM) de dos o más números es el número más pequeño (distinto de cero) que es múltiplo común de todos ellos.",
@@ -437,8 +529,21 @@ def gen_mcm_mcd():
             {"text": "La diferencia entre los divisores comunes.", "is_correct": False}
         ]
     })
+    for i in range(8):
+        questions.append({
+            "text": "Si dos números son primos entre sí (no tienen divisores comunes excepto el 1), ¿cuál es su Máximo Común Divisor (MCD)?",
+            "explanation": "Por definición, si dos números son primos entre sí, el único divisor que comparten es el número 1. Por ende, su MCD es 1.",
+            "choices": [
+                {"text": "El número 1", "is_correct": True},
+                {"text": "El producto de ambos números.", "is_correct": False},
+                {"text": "El número cero (0).", "is_correct": False},
+                {"text": "No existe divisor común.", "is_correct": False}
+            ]
+        })
+    # N2 - 15 ejercicios mecánicos
     pairs = [
-        (4, 3, 12), (6, 5, 30), (8, 6, 24), (10, 4, 20), (6, 9, 18), (8, 5, 40), (12, 8, 24)
+        (4, 3, 12), (6, 5, 30), (8, 6, 24), (10, 4, 20), (6, 9, 18), (8, 5, 40), (12, 8, 24),
+        (3, 7, 21), (5, 9, 45), (10, 15, 30), (6, 8, 24), (12, 15, 60), (4, 10, 20), (9, 12, 36), (8, 12, 24)
     ]
     for a, b, mcm in pairs:
         mcd = math.gcd(a, b)
@@ -452,8 +557,10 @@ def gen_mcm_mcd():
                 {"text": f"{mcm + a}", "is_correct": False}
             ]
         })
+    # N3 - 10 problemas aplicados
     bus_problems = [
-        (4, 3, 12), (6, 5, 30), (8, 3, 24), (5, 4, 20), (6, 4, 12), (8, 5, 40)
+        (4, 3, 12), (6, 5, 30), (8, 3, 24), (5, 4, 20), (6, 4, 12), (8, 5, 40),
+        (10, 15, 30), (12, 8, 24), (9, 6, 18), (12, 10, 60)
     ]
     for t1, t2, mcm in bus_problems:
         mcd = math.gcd(t1, t2)
@@ -494,12 +601,19 @@ def run_seed_migration(apps, schema_editor):
         except Resource.DoesNotExist:
             continue
 
+        # Limpiar preguntas anteriores para evitar duplicados en re-runs
+        Question.objects.filter(resource=resource).delete()
+
         questions_data = generator_fn()
 
-        # Guardar en base de datos vinculando a los tres niveles
-        save_questions(Choice, Question, resource, level=1, mode="ambas", questions_data=questions_data[0:5])
-        save_questions(Choice, Question, resource, level=2, mode="ambas", questions_data=questions_data[5:10])
-        save_questions(Choice, Question, resource, level=3, mode="ambas", questions_data=questions_data[10:15])
+        # Guardar en base de datos vinculando a los tres niveles:
+        # N1 (Definición): 10 preguntas
+        # N2 (Ejercicios simples): 15 preguntas
+        # N3 (Problemas de aplicación): 10 preguntas
+        # Total = 35 preguntas por recurso
+        save_questions(Choice, Question, resource, level=1, mode="ambas", questions_data=questions_data[0:10])
+        save_questions(Choice, Question, resource, level=2, mode="ambas", questions_data=questions_data[10:25])
+        save_questions(Choice, Question, resource, level=3, mode="ambas", questions_data=questions_data[25:35])
 
 
 class Migration(migrations.Migration):
