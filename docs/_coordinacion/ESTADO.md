@@ -56,12 +56,18 @@
 
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
-- ✅ **Estudio de banco de preguntas — CONSTRUIDO Y DESPLEGADO** (PRs #62–#67, 2026-06-16).
-  Ya incluye generación IA, config por recurso, edición y runtime. **Mover la tarjeta**
-  (`backlog/4-auditoria/estudio-banco-preguntas.md`) a `6-finalizados/`. (F4 multimodal sigue
-  bloqueada por storage externo — fuera de alcance por ahora.)
+- ✅ **Estudio de banco de preguntas — CERRADO 🟢 y ARCHIVADO (2026-06-18).** Construido y desplegado
+  (PRs #62–#67): generación IA, config por recurso, edición y runtime. Tarjeta movida a
+  `6-finalizados/estudio-banco-preguntas.md`. (F4 multimodal sigue bloqueada por storage externo —
+  fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-18 — 🏛️ Claude: **Cierre de Fase 5 (auditoría final).** Auditados como no destructivos el
+  generador local aditivo (`scratch/generate_math_questions.py`: sin `.delete()`, dedup por
+  `existing_texts`) y el importador transaccional (`import_questions_json` dentro de `transaction.atomic`).
+  Tarjeta **"Estudio de banco de preguntas"** archivada (`4-auditoria` → `6-finalizados`); `4-auditoria/`
+  queda vacía (solo `.gitkeep`). Barrera re-verificada local: **331 tests OK**; `check --deploy` solo con
+  warnings de dev-settings (sin errores).
 - 2026-06-16 — 🏛️ Claude + 🧑 Usuario: **Banco de preguntas con generación IA CERRADO 🟢** (6 PRs:
   #62 banco+generación grounded, #63 fix key-leak + backoff 429, #64 transcript guardado en el recurso,
   #65 `backfill_transcripts`, #66 dos modos video/documento + UI de guías, #67 filtro `--subject`).

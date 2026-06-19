@@ -1,6 +1,6 @@
 # Estudio de banco de preguntas (autoría admin: generar · configurar · editar)
 
-- **Estado:** Handoff Ready (arquitectura) — pendiente preflight 🧩 Codex
+- **Estado:** Cerrada 🟢 — construida y desplegada (PRs #62–#67, 2026-06-16); cerrada por 🏛️ Claude el 2026-06-18
 - **Creado:** 2026-06-13 · **Autor del handoff:** 🏛️ Claude (sesión con 🧑 Octavio)
 - **Prioridad:** P2 · **Cartera:** educativa / producto
 - **Tipo:** producto · pedagogía · infraestructura
