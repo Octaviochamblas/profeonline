@@ -1,11 +1,24 @@
+import json
+import tempfile
 from io import StringIO
+from pathlib import Path
 from unittest.mock import patch
 
-from django.core.management import call_command
+from django.core.management import CommandError, call_command
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Area, Level, Module, ModuleResource, Resource, Subject, Topic
+from apps.content.models import (
+    Area,
+    Choice,
+    Level,
+    Module,
+    ModuleResource,
+    Question,
+    Resource,
+    Subject,
+    Topic,
+)
 
 
 class SeedContentCommandTests(TestCase):
@@ -180,6 +193,96 @@ class ImportYouTubeResourcesCommandTests(TestCase):
         self.assertContains(subject_response, topic.name)
         self.assertContains(topic_response, resource.title)
         fetch_mock.assert_called_once()
+
+
+class ImportQuestionsJsonCommandTests(TestCase):
+    def setUp(self):
+        area = Area.objects.create(name="Matemática")
+        subject = Subject.objects.create(name="Matemática escolar", area=area)
+        topic = Topic.objects.create(name="Números enteros", subject=subject)
+        self.resource = Resource.objects.create(
+            title="Introducción a enteros",
+            slug="introduccion-enteros",
+            subject=subject,
+            topic=topic,
+        )
+
+    def _json_file(self, payload):
+        temp = tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".json",
+            encoding="utf-8",
+            delete=False,
+        )
+        json.dump(payload, temp, ensure_ascii=False)
+        temp.close()
+        self.addCleanup(Path(temp.name).unlink, missing_ok=True)
+        return temp.name
+
+    def test_imports_questions_and_choices_atomically(self):
+        path = self._json_file(
+            [
+                {
+                    "text": "¿Cuál es el opuesto de -4?",
+                    "explanation": "El opuesto está a igual distancia del cero.",
+                    "choices": [
+                        {"text": "4", "is_correct": True},
+                        {"text": "-4", "is_correct": False},
+                    ],
+                }
+            ]
+        )
+
+        call_command(
+            "import_questions_json",
+            file=path,
+            resource=self.resource.slug,
+            level=1,
+            mode="ambas",
+            status="publicada",
+        )
+
+        question = Question.objects.get(resource=self.resource)
+        self.assertEqual(question.text, "¿Cuál es el opuesto de -4?")
+        self.assertEqual(question.choices.count(), 2)
+        self.assertTrue(question.choices.get(text="4").is_correct)
+
+    @patch("apps.content.management.commands.import_questions_json._save_questions")
+    def test_rolls_back_if_saving_fails(self, save_mock):
+        def partial_failure(resource, level, mode, questions_data, status):
+            question = Question.objects.create(
+                resource=resource,
+                level=level,
+                mode=mode,
+                text="No debe persistir",
+                status=status,
+            )
+            Choice.objects.create(question=question, text="Temporal", is_correct=True)
+            raise ValueError("JSON inválido")
+
+        save_mock.side_effect = partial_failure
+        path = self._json_file([{"text": "dato"}])
+
+        with self.assertRaises(CommandError):
+            call_command(
+                "import_questions_json",
+                file=path,
+                resource=self.resource.slug,
+                level=1,
+            )
+
+        self.assertFalse(Question.objects.filter(resource=self.resource).exists())
+
+    def test_rejects_json_without_valid_questions(self):
+        path = self._json_file([])
+
+        with self.assertRaisesMessage(CommandError, "no contenía preguntas válidas"):
+            call_command(
+                "import_questions_json",
+                file=path,
+                resource=self.resource.slug,
+                level=1,
+            )
 
 
 class SeedMathResourcesCommandTests(TestCase):

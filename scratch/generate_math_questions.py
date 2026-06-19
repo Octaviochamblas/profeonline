@@ -19,7 +19,9 @@ if sys.platform.startswith("win"):
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 django.setup()
 
-from apps.content.models import Resource, Question, Choice
+from django.db import transaction
+
+from apps.content.models import Question, Resource
 from apps.content.services.ai_generation_service import _save_questions
 
 # Definir generadores dinámicos para cada recurso (35 preguntas cada uno)
@@ -172,7 +174,7 @@ def gen_valor_absoluto():
             {"text": "Es el mismo número pero con signo positivo.", "is_correct": True},
             {"text": "Es el mismo número pero con signo negativo.", "is_correct": False},
             {"text": "Siempre es cero.", "is_correct": False},
-            {"text": "Es el número multiplicado por -1.", "is_correct": False}
+            {"text": "Es la mitad del número original.", "is_correct": False}
         ]
     })
     for i in range(8):
@@ -272,7 +274,7 @@ def gen_sumas_restas():
                 {"text": f"{ans}", "is_correct": True},
                 {"text": f"{ans + 3}", "is_correct": False},
                 {"text": f"{ans - 5}", "is_correct": False},
-                {"text": f"{n1 - n2}", "is_correct": False}
+                {"text": f"{ans + 8}", "is_correct": False}
             ]
         })
     # N3 - 10 problemas
@@ -410,9 +412,9 @@ def gen_prioridad():
             "explanation": f"Escribimos la expresión matemática: {base} + {cajas} · {cant} - {perdidas}. Resolvemos la multiplicación primero: {cajas} · {cant} = {cajas * cant}. Luego sumamos y restamos: {base} + {cajas * cant} - {perdidas} = {ans} manzanas.",
             "choices": [
                 {"text": f"{ans} manzanas", "is_correct": True},
-                {"text": f"{(base + cajas) * cant - perdidas} manzanas", "is_correct": False},
-                {"text": f"{base + cajas * (cant - perdidas)} manzanas", "is_correct": False},
-                {"text": f"{ans - 10} manzanas", "is_correct": False}
+                {"text": f"{ans + 10} manzanas", "is_correct": False},
+                {"text": f"{ans - 10} manzanas", "is_correct": False},
+                {"text": f"{ans + 20} manzanas", "is_correct": False}
             ]
         })
     return questions
@@ -529,7 +531,7 @@ def gen_mcm_mcd():
             "choices": [
                 {"text": f"{mcm}", "is_correct": True},
                 {"text": f"{mcd}", "is_correct": False},
-                {"text": f"{a * b}", "is_correct": False},
+                {"text": f"{mcm + a + b}", "is_correct": False},
                 {"text": f"{mcm + a}", "is_correct": False}
             ]
         })
@@ -566,52 +568,71 @@ GENERATORS = {
     '19a-ejercicios-minimo-comun-multiplo': gen_mcm_mcd
 }
 
-slugs = list(GENERATORS.keys())
+def populate():
+    slugs = list(GENERATORS)
+    print(
+        f"Iniciando poblado local sin API para {len(slugs)} recursos del tema "
+        "'Números enteros' (hasta 35 preguntas nuevas por recurso)..."
+    )
+    total_pobladas = 0
 
-print(f"Iniciando poblado masivo local sin API para {len(slugs)} recursos del tema 'Números enteros' (35 por recurso)...")
-total_pobladas = 0
+    for idx, slug in enumerate(slugs, 1):
+        print(f"\n[{idx}/{len(slugs)}] Generando preguntas para recurso: {slug}...")
+        try:
+            resource = Resource.objects.get(slug=slug)
+        except Resource.DoesNotExist:
+            print(f"  [Error] No existe el recurso con slug '{slug}'. Saltando.")
+            continue
 
-for idx, slug in enumerate(slugs, 1):
-    print(f"\n[{idx}/{len(slugs)}] Generando preguntas para recurso: {slug}...")
-    try:
-        resource = Resource.objects.get(slug=slug)
-    except Resource.DoesNotExist:
-        print(f"  [Error] No existe el recurso con slug '{slug}'. Saltando.")
-        continue
+        # Generación reproducible por recurso. Nunca se borran preguntas existentes.
+        random.seed(f"profeonline:{slug}:2026-06-19")
+        questions_data = GENERATORS[slug]()
 
-    # Limpiar preguntas anteriores para evitar duplicados
-    Question.objects.filter(resource=resource).delete()
-
-    generator_fn = GENERATORS[slug]
-    questions_data = generator_fn()
-
-    try:
-        n1_created = _save_questions(
-            resource=resource,
-            level=1,
-            mode="ambas",
-            questions_data=questions_data[0:10],
-            status="publicada"
+        existing_texts = set(
+            Question.objects.filter(resource=resource).values_list("text", flat=True)
         )
-        n2_created = _save_questions(
-            resource=resource,
-            level=2,
-            mode="ambas",
-            questions_data=questions_data[10:25],
-            status="publicada"
-        )
-        n3_created = _save_questions(
-            resource=resource,
-            level=3,
-            mode="ambas",
-            questions_data=questions_data[25:35],
-            status="publicada"
-        )
+        new_by_level = {1: [], 2: [], 3: []}
+        for level, items in (
+            (1, questions_data[0:10]),
+            (2, questions_data[10:25]),
+            (3, questions_data[25:35]),
+        ):
+            for item in items:
+                text = item.get("text")
+                if not text or text in existing_texts:
+                    continue
+                existing_texts.add(text)
+                new_by_level[level].append(item)
 
-        sum_created = len(n1_created) + len(n2_created) + len(n3_created)
-        total_pobladas += sum_created
-        print(f"  [Éxito] Generadas e insertadas {sum_created} preguntas para '{resource.title}'.")
-    except Exception as e:
-        print(f"  [Error] Al guardar preguntas para '{slug}': {e}")
+        if not any(new_by_level.values()):
+            print("  [Omitido] Todas las preguntas generadas ya existen.")
+            continue
 
-print(f"\n¡Proceso local finalizado! Se poblaron {total_pobladas} preguntas en total.")
+        try:
+            with transaction.atomic():
+                created = []
+                for level in (1, 2, 3):
+                    created.extend(
+                        _save_questions(
+                            resource=resource,
+                            level=level,
+                            mode="ambas",
+                            questions_data=new_by_level[level],
+                            status="publicada",
+                        )
+                    )
+
+            sum_created = len(created)
+            total_pobladas += sum_created
+            print(
+                f"  [Éxito] Agregadas {sum_created} preguntas nuevas para "
+                f"'{resource.title}'; las existentes se conservaron."
+            )
+        except (TypeError, ValueError) as exc:
+            print(f"  [Error] Al guardar preguntas para '{slug}': {exc}")
+
+    print(f"\n¡Proceso local finalizado! Se agregaron {total_pobladas} preguntas nuevas.")
+
+
+if __name__ == "__main__":
+    populate()
