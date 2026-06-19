@@ -14,12 +14,12 @@
 
 ## En curso ahora
 
-- **Pipeline único de publicación educativa — BACKEND EN PR a `main` (2026-06-19):**
+- **Pipeline único de publicación educativa — BACKEND MERGEADO 🟢 (PR #72, 2026-06-19):**
   transcripción como fuente → documento canónico, metadatos, guía y preguntas con segunda auditoría;
-  publicación en dos fases. 🧩 Codex construyó; 🏛️ Claude auditó y corrigió (revert del agente,
-  `SET_NULL` en guía canónica, +tests; **suite 348 OK**). **Agente Python excluido** (duplica el
-  uploader Node `profeonline-uploader`): el flujo de subida se integrará allí. Concurrencia
-  (`select_for_update`) diferida. Tarjeta en `backlog/5-cierre/`.
+  publicación en dos fases. 🧩 Codex construyó; 🏛️ Claude auditó y corrigió (`SET_NULL` en guía
+  canónica, +tests; **suite 348 OK**). **Agente Python excluido** (duplica el uploader Node
+  `profeonline-uploader`): el flujo de subida se integrará allí (paso 2 en curso). Concurrencia
+  (`select_for_update`) diferida. Tarjeta en `backlog/6-finalizados/`.
 - **Limpieza física + auditoría global — CERRADA POR CODEX 🟢 (2026-06-19):**
   respaldo de 1.351 archivadas, borrado físico sin historial afectado y auditoría de las 2.476
   activas. Resultado: 0 archivadas, 0 duplicados textuales, 43 grupos estructurales para revisión,

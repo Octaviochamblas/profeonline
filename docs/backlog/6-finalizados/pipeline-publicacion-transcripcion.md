@@ -1,7 +1,7 @@
 # Pipeline único de publicación educativa basado en transcripción
 
-- **Estado:** Auditoría final de 🏛️ Claude completada · **backend en PR a `main`** · agente de subida
-  (flujo de dos fases) pendiente de integrar en el uploader Node `profeonline-uploader`
+- **Estado:** Cerrada 🟢 — backend **mergeado** (PR #72, 2026-06-19) · agente de subida (flujo de dos
+  fases) a integrar en el uploader Node `profeonline-uploader`
 - **Creado:** 2026-06-19
 - **Prioridad:** P1 · **Cartera:** educativa / ingeniería
 - **Tipo:** producto · pedagogía · infraestructura
