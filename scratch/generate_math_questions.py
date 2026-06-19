@@ -532,17 +532,46 @@ def gen_primos():
         })
 
     # LEVEL 3 - 30 problemas
-    for i in range(30):
-        alumnos = random.choice([12, 16, 18, 20, 24, 28, 30, 32, 36, 40, 44, 48, 50, 60])
-        options = [d for d in range(2, alumnos) if alumnos % d == 0]
-        opt = random.choice(options)
+    combinaciones = [
+        (12, 3, "Juan", "estudiantes", "grupos"),
+        (15, 5, "María", "manzanas", "cajas"),
+        (18, 6, "Carlos", "libros", "repisas"),
+        (20, 4, "Ana", "lápices", "estuches"),
+        (24, 8, "Luis", "flores", "floreros"),
+        (28, 7, "Sofía", "galletas", "bolsas"),
+        (30, 10, "Diego", "juguetes", "cajas"),
+        (32, 8, "Elena", "cuadernos", "paquetes"),
+        (36, 9, "Andrés", "sillas", "filas"),
+        (40, 5, "Patricia", "globos", "ramos"),
+        (42, 6, "Fernando", "monedas", "monederos"),
+        (45, 9, "Gabriela", "frascos", "cajas"),
+        (48, 12, "Roberto", "herramientas", "cajas"),
+        (50, 10, "Lucía", "fotos", "álbumes"),
+        (60, 15, "Esteban", "estampillas", "sobres"),
+        (14, 2, "Clara", "pasteles", "bandejas"),
+        (16, 4, "Gabriel", "pelotas", "cajas"),
+        (21, 3, "Valentina", "cartas", "mazos"),
+        (22, 11, "Javier", "cuadros", "paredes"),
+        (25, 5, "Camila", "dulces", "bolsas"),
+        (26, 2, "Manuel", "llaveros", "cajas"),
+        (27, 9, "Isabel", "botones", "frascos"),
+        (33, 3, "Ricardo", "tazas", "cajas"),
+        (35, 7, "Florencia", "semillas", "maceteros"),
+        (39, 3, "Tomás", "postres", "mesas"),
+        (44, 11, "Antonia", "adornos", "estantes"),
+        (49, 7, "Martín", "plantas", "filas"),
+        (54, 6, "Daniela", "hojas", "carpetas"),
+        (56, 8, "Nicolás", "frutas", "canastas"),
+        (72, 12, "Catalina", "piezas de lego", "cajas")
+    ]
+    for i, (total, opt, nombre, objeto, contenedor) in enumerate(combinaciones):
         questions.append({
-            "text": f"Un profesor quiere organizar a sus {alumnos} alumnos en grupos de igual tamaño. ¿Cuál de los siguientes tamaños de grupo es posible sin que sobre ningún alumno?",
-            "explanation": f"Para organizar a los {alumnos} alumnos de forma exacta, el tamaño del grupo debe ser un divisor de {alumnos}. Entre las opciones, {opt} es divisor de {alumnos}.",
+            "text": f"{nombre} tiene {total} {objeto} y quiere organizarlos en {contenedor} de igual tamaño. ¿Cuál de los siguientes tamaños de {contenedor} es posible sin que sobre ningún {objeto[:-1] if objeto.endswith('s') else objeto}?",
+            "explanation": f"Para organizar los {total} {objeto} sin que sobre ninguno, el tamaño del grupo ({contenedor}) debe ser un divisor de {total}. En este caso, {opt} es divisor de {total}.",
             "choices": [
-                {"text": f"Grupos de {opt} alumnos.", "is_correct": True},
-                {"text": f"Grupos de {opt + 1} alumnos.", "is_correct": False},
-                {"text": f"Grupos de {alumnos - 1} alumnos.", "is_correct": False},
+                {"text": f"Tamaño de {opt} {objeto}.", "is_correct": True},
+                {"text": f"Tamaño de {opt + 1} {objeto}.", "is_correct": False},
+                {"text": f"Tamaño de {total - 1} {objeto}.", "is_correct": False},
                 {"text": "No es posible organizarlos en grupos iguales.", "is_correct": False}
             ]
         })
@@ -660,13 +689,9 @@ def populate():
             print(f"  [Error] No existe el recurso con slug '{slug}'. Saltando.")
             continue
 
-        # Generación reproducible por recurso. Nunca se borran preguntas existentes.
+        # Generación reproducible por recurso. Saneamiento limpio por recurso.
         random.seed(f"profeonline:{slug}:2026-06-19")
         questions_data = GENERATORS[slug]()
-
-        existing_texts = set(
-            Question.objects.filter(resource=resource).values_list("text", flat=True)
-        )
 
         # Agrupar preguntas por nivel y por modo
         new_questions_by_level_and_mode = {
@@ -676,41 +701,35 @@ def populate():
         }
 
         # Level 1 (indices 0 a 29)
+        local_texts = set()
         for sub_idx, item in enumerate(questions_data[0:30]):
             text = item.get("text")
-            if text and text not in existing_texts:
-                existing_texts.add(text)
+            if text and text not in local_texts:
+                local_texts.add(text)
                 mode = "preparacion" if sub_idx < 10 else ("evaluacion" if sub_idx < 20 else "ambas")
                 new_questions_by_level_and_mode[1][mode].append(item)
 
         # Level 2 (indices 30 a 59)
         for sub_idx, item in enumerate(questions_data[30:60]):
             text = item.get("text")
-            if text and text not in existing_texts:
-                existing_texts.add(text)
+            if text and text not in local_texts:
+                local_texts.add(text)
                 mode = "preparacion" if sub_idx < 10 else ("evaluacion" if sub_idx < 20 else "ambas")
                 new_questions_by_level_and_mode[2][mode].append(item)
 
         # Level 3 (indices 60 a 89)
         for sub_idx, item in enumerate(questions_data[60:90]):
             text = item.get("text")
-            if text and text not in existing_texts:
-                existing_texts.add(text)
+            if text and text not in local_texts:
+                local_texts.add(text)
                 mode = "preparacion" if sub_idx < 10 else ("evaluacion" if sub_idx < 20 else "ambas")
                 new_questions_by_level_and_mode[3][mode].append(item)
 
-        has_new = False
-        for lvl in (1, 2, 3):
-            for mode in ("preparacion", "evaluacion", "ambas"):
-                if new_questions_by_level_and_mode[lvl][mode]:
-                    has_new = True
-
-        if not has_new:
-            print("  [Omitido] Todas las preguntas generadas ya existen.")
-            continue
-
         try:
             with transaction.atomic():
+                # Saneamiento de preguntas viejas de este recurso
+                Question.objects.filter(resource=resource).delete()
+
                 created_count = 0
                 for lvl in (1, 2, 3):
                     for mode in ("preparacion", "evaluacion", "ambas"):
@@ -727,8 +746,8 @@ def populate():
 
             total_pobladas += created_count
             print(
-                f"  [Éxito] Agregadas {created_count} preguntas nuevas para "
-                f"'{resource.title}'; las existentes se conservaron."
+                f"  [Éxito] Pobladas exactamente {created_count} preguntas para "
+                f"'{resource.title}' (10 práctica, 10 evaluación y 10 comunes por nivel)."
             )
         except (TypeError, ValueError) as exc:
             print(f"  [Error] Al guardar preguntas para '{slug}': {exc}")
