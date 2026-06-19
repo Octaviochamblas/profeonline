@@ -51,11 +51,27 @@ class Question(models.Model):
     order = models.PositiveIntegerField(default=0, verbose_name="orden")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    publication_item = models.ForeignKey(
+        "content.PublicationItem",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="questions",
+    )
+    generation_key = models.CharField(max_length=64, blank=True)
+    audit_data = models.JSONField(default=dict, blank=True)
 
     class Meta:
         ordering = ["resource", "level", "order"]
         verbose_name = "pregunta"
         verbose_name_plural = "preguntas"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["publication_item", "generation_key"],
+                condition=~models.Q(generation_key=""),
+                name="unique_pipeline_question_key",
+            ),
+        ]
 
     def __str__(self) -> str:
         return f"[N{self.level}] {self.text[:80]}"

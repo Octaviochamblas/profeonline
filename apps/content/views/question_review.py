@@ -306,6 +306,13 @@ def add_choice_inline(request, question_id):
 def delete_question(request, question_id):
     """Elimina la pregunta. Retorna vacío para que HTMX remueva el ítem."""
     question = get_object_or_404(Question, id=question_id)
+    if question.attempt_answers.exists() or question.error_reports.exists():
+        question.status = "archivada"
+        question.save(update_fields=["status", "updated_at"])
+        return HttpResponse(
+            "La pregunta tiene historial de alumnos y fue archivada, no eliminada.",
+            status=409,
+        )
     question.delete()
     return HttpResponse("")
 
@@ -315,6 +322,11 @@ def delete_question(request, question_id):
 def delete_choice(request, choice_id):
     """Elimina la alternativa. Retorna vacío para que HTMX la remueva."""
     choice = get_object_or_404(Choice, id=choice_id)
+    if choice.attempt_answers.exists():
+        return HttpResponse(
+            "La alternativa tiene respuestas históricas y no puede eliminarse.",
+            status=409,
+        )
     choice.delete()
     return HttpResponse("")
 
@@ -338,7 +350,11 @@ def bulk_action_questions(request, resource_id):
         elif action == "archivar":
             qs_target.update(status="archivada")
         elif action == "eliminar":
-            qs_target.delete()
+            protected = qs_target.filter(
+                Q(attempt_answers__isnull=False) | Q(error_reports__isnull=False)
+            ).distinct()
+            protected.update(status="archivada")
+            qs_target.exclude(id__in=protected.values("id")).delete()
 
     if request.headers.get("HX-Request") and level and mode_key:
         qs = [

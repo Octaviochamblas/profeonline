@@ -21,6 +21,15 @@ class QuizGuide(models.Model):
         help_text="Texto limpio y compacto extraído del material; es lo que lee la IA.",
     )
     is_active = models.BooleanField(default=True, verbose_name="activa")
+    canonical_resource = models.OneToOneField(
+        "content.Resource",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="canonical_quiz_guide",
+        verbose_name="recurso canónico",
+        help_text="Recurso cuya transcripción originó esta guía canónica.",
+    )
 
     # Vínculos reutilizables: la guía aplica a estos recursos, temas o asignaturas.
     resources = models.ManyToManyField(

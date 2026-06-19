@@ -83,6 +83,7 @@ Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script lo
 ```json
 {
   "schema": "profeonline.upload-batch/v1",
+  "batch_id": "7f0d8c4c0ab31a6db57af241",
   "files": [
     "clase1.mp4",
     "clase2.mp4"
@@ -99,13 +100,42 @@ Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script lo
     "create_playlist": false,
     "new_playlist": null
   },
-  "instructions": "texto libre aplicado a todos los videos del lote"
+  "instructions": "texto libre aplicado a todos los videos del lote",
+  "publication": {
+    "initial_privacy": "unlisted",
+    "publish_only_when_validated": true
+  }
 }
 ```
 
+*   `batch_id`: Huella estable del contenido de la orden. Junto con el nombre del archivo forma la
+    clave idempotente del ítem; reenviar el mismo lote no duplica recursos, guías ni preguntas.
 *   `taxonomy.module_slug`: Opcional (puede ser `null`).
 *   `files`: Nombres de archivos seleccionados localmente. No contiene rutas absolutas ni sube contenido de video al servidor.
 *   `youtube.playlist_id`: ID normalizado de una playlist existente. La UI acepta un enlace completo de YouTube o el ID directo.
 *   `youtube.create_playlist`: Si es `true`, el agente local debe crear una playlist nueva en YouTube antes de agregar los videos.
 *   `youtube.new_playlist`: `null` cuando se usa una playlist existente. Si `create_playlist` es `true`, contiene `title` obligatorio y `description` opcional.
 *   `instructions`: Texto libre opcional.
+*   `publication`: Política obligatoria del pipeline integrado. El agente local sube como
+    `unlisted`; solo cambia a `public` después de que el servidor informa `questions_ready`.
+
+### Pipeline educativo integrado
+
+1. El **cliente de subida** (el uploader Node `profeonline-uploader`, a extender para este flujo)
+   consume el JSON, sube el video no listado, guarda un sidecar local de reanudación, obtiene la
+   transcripción desde la IP local y llama a `/api/recursos/crear-video/`. Reejecutar el mismo lote
+   reutiliza `video_id` e ítem existentes. *(Existe un prototipo Python de referencia,
+   `scripts/process_upload_batch.py`, no integrado al repo; el cliente canónico es el uploader Node.)*
+2. El webhook hace *upsert* por ID de YouTube y por `batch_id + source_filename`; el recurso queda
+   siempre en borrador.
+3. `python manage.py process_publication_pipeline --limit 1` genera documento canónico, metadatos,
+   guía y preguntas auditadas. Si la transcripción es insuficiente queda en `transcript_pending`.
+4. El agente consulta `/api/publicacion/<id>/`. Al recibir `questions_ready`, actualiza título y
+   descripción de YouTube, cambia el video a público y confirma en
+   `/api/publicacion/<id>/confirmar/`.
+5. La confirmación publica recurso y preguntas en una transacción local. Los reintentos son
+   aditivos/idempotentes y nunca eliminan respuestas históricas.
+
+Credenciales locales del cliente de subida: OAuth de YouTube fuera del repo,
+`PROFEONLINE_BASE_URL` y `PROFEONLINE_API_TOKEN`. No ejecutar contra producción sin autorización
+explícita.

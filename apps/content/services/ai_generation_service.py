@@ -1,6 +1,7 @@
 """Servicio para la generación asistida de preguntas por IA."""
 
 import json
+import hashlib
 import logging
 import os
 import random
@@ -79,15 +80,62 @@ def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_
         from apps.content.services.guide_service import build_reference_block
         reference_guides = build_reference_block(resource)
 
-    prompt = _build_prompt(resource, level, mode, count, education_level, custom_instructions, transcript=transcript, reference_guides=reference_guides)
-
-    if gemini_key:
-        questions_data = _call_gemini_api(prompt, gemini_key)
-    else:
-        questions_data = _call_openai_api(prompt, openai_key)
+    questions_data = generate_question_candidates(
+        resource=resource,
+        level=level,
+        mode=mode,
+        count=count,
+        api_key=api_key,
+        education_level=education_level,
+        custom_instructions=custom_instructions,
+        transcript=transcript,
+        reference_guides=reference_guides,
+        gemini_key=gemini_key,
+        openai_key=openai_key,
+    )
 
     created_questions = _save_questions(resource, level, mode, questions_data, status)
     return created_questions
+
+
+def generate_question_candidates(
+    resource,
+    level,
+    mode="ambas",
+    count=3,
+    api_key=None,
+    education_level=None,
+    custom_instructions=None,
+    transcript=None,
+    reference_guides=None,
+    gemini_key=None,
+    openai_key=None,
+):
+    """Genera candidatos sin persistirlos para permitir una auditoría previa."""
+    if gemini_key is None:
+        gemini_key = api_key or getattr(settings, "GEMINI_API_KEY", None) or os.environ.get("GEMINI_API_KEY", "")
+    if openai_key is None:
+        openai_key = api_key or getattr(settings, "OPENAI_API_KEY", None) or os.environ.get("OPENAI_API_KEY", "")
+
+    prompt = _build_prompt(
+        resource,
+        level,
+        mode,
+        count,
+        education_level,
+        custom_instructions,
+        transcript=transcript,
+        reference_guides=reference_guides,
+    )
+    prompt += (
+        "\nIncluye además `cognitive_type` en cada objeto con uno de: "
+        "recuerdo, comprension, aplicacion, analisis."
+    )
+    if gemini_key:
+        return _call_gemini_api(prompt, gemini_key)
+    if openai_key:
+        return _call_openai_api(prompt, openai_key)
+    raise ValueError("No se configuraron las llaves GEMINI_API_KEY u OPENAI_API_KEY.")
 
 
 
@@ -269,7 +317,15 @@ def _call_openai_api(prompt, key):
         raise RuntimeError(f"Error de generación con OpenAI: {msg}") from None
 
 
-def _save_questions(resource, level, mode, questions_data, status="publicada"):
+def _save_questions(
+    resource,
+    level,
+    mode,
+    questions_data,
+    status="publicada",
+    publication_item=None,
+    audit_data_by_index=None,
+):
     """Guarda las preguntas y alternativas en la base de datos."""
     created_questions = []
 
@@ -292,7 +348,8 @@ def _save_questions(resource, level, mode, questions_data, status="publicada"):
     # Determinar el orden inicial para nuevas preguntas
     last_order = Question.objects.filter(resource=resource, level=level).count()
 
-    for item in questions_data:
+    audit_data_by_index = audit_data_by_index or {}
+    for item_index, item in enumerate(questions_data):
         text = item.get("text") or item.get("enunciado")
         explanation = item.get("explanation") or item.get("explicacion", "")
         choices = item.get("choices") or item.get("alternativas") or item.get("options")
@@ -307,7 +364,16 @@ def _save_questions(resource, level, mode, questions_data, status="publicada"):
             text=text,
             explanation=explanation,
             status=status,
-            order=last_order + 1
+            order=last_order + 1,
+            publication_item=publication_item,
+            generation_key=(
+                hashlib.sha256(
+                    f"{level}|{mode}|{' '.join(text.lower().split())}".encode("utf-8")
+                ).hexdigest()
+                if publication_item
+                else ""
+            ),
+            audit_data=audit_data_by_index.get(item_index, {}),
         )
         last_order += 1
 
