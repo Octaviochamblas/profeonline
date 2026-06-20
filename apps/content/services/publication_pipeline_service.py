@@ -192,7 +192,7 @@ def validate_editorial_package(payload):
 @transaction.atomic
 def apply_editorial_package(item, payload):
     """Reemplaza solo borradores seguros del ítem y deja questions_ready."""
-    item = PublicationItem.objects.select_for_update().select_related("resource").get(pk=item.pk)
+    item = PublicationItem.objects.select_for_update().get(pk=item.pk)
     if item.state == PublicationItem.STATE_PUBLISHED:
         raise PipelineError("El ítem ya está publicado y no admite reemplazo editorial.")
     if item.resource is None:
