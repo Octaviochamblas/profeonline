@@ -7,6 +7,7 @@ from apps.content.views import (
     ResourceUpdateView,
     resource_options,
     create_resource_from_video,
+    publication_item_editorial_package,
     publication_item_status,
     confirm_publication_item,
     toggle_resource_completion,
@@ -35,6 +36,11 @@ urlpatterns = [
         "api/publicacion/<int:item_id>/confirmar/",
         confirm_publication_item,
         name="api_confirm_publication_item",
+    ),
+    path(
+        "api/publicacion/<int:item_id>/paquete-editorial/",
+        publication_item_editorial_package,
+        name="api_publication_item_editorial_package",
     ),
     # Evaluación gamificada
     path("recursos/<slug:slug>/quiz/<int:level>/<str:mode>/", quiz_start, name="quiz_start"),

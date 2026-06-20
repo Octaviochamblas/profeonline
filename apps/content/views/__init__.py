@@ -35,6 +35,7 @@ from .module_resource_list import module_resource_list
 from .api_video import (
     confirm_publication_item,
     create_resource_from_video,
+    publication_item_editorial_package,
     publication_item_status,
 )
 from .resource_completion import toggle_resource_completion

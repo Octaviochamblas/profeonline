@@ -13,7 +13,11 @@ from django.views.decorators.http import require_GET, require_POST
 
 from apps.content.models import Level, PublicationItem, Resource, Subject, Topic
 from apps.core.ratelimit import get_client_ip, is_rate_limited, increment_rate_limit
-from apps.content.services.publication_pipeline_service import PipelineError, finalize_publication
+from apps.content.services.publication_pipeline_service import (
+    PipelineError,
+    apply_editorial_package,
+    finalize_publication,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -291,6 +295,33 @@ def publication_item_status(request, item_id):
             PublicationItem.STATE_PUBLISHED,
         } else {},
     })
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def publication_item_editorial_package(request, item_id):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    item = PublicationItem.objects.filter(id=item_id).first()
+    if item is None:
+        return JsonResponse({"ok": False, "error": "Ítem no encontrado"}, status=404)
+    try:
+        data = json.loads(request.body or b"{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+    try:
+        item = apply_editorial_package(item, data)
+    except PipelineError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+    return JsonResponse(
+        {
+            "ok": True,
+            "state": item.state,
+            "resource_id": item.resource_id,
+            "question_count": item.questions.count(),
+        }
+    )
 
 
 @csrf_exempt

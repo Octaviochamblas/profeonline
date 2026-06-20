@@ -18,6 +18,7 @@ from apps.content.models import (
 )
 from apps.content.services.publication_pipeline_service import (
     PipelineError,
+    _generated_text,
     finalize_publication,
     process_publication_item,
 )
@@ -84,6 +85,44 @@ def _auditor(_item, _level, _mode, candidates):
     }
 
 
+def _editorial_package():
+    questions = []
+    for level in (1, 2, 3):
+        for mode in ("preparacion", "evaluacion", "ambas"):
+            for number in range(1, 11):
+                questions.append({
+                    "level": level,
+                    "mode": mode,
+                    "text": f"Pregunta editorial N{level} {mode} número {number}",
+                    "explanation": "Explicación suficiente y verificable.",
+                    "cognitive_type": "comprension" if level == 1 else "aplicacion",
+                    "choices": [
+                        {"text": f"Correcta {level}-{mode}-{number}", "is_correct": True},
+                        {"text": f"Distractor A {level}-{mode}-{number}", "is_correct": False},
+                        {"text": f"Distractor B {level}-{mode}-{number}", "is_correct": False},
+                        {"text": f"Distractor C {level}-{mode}-{number}", "is_correct": False},
+                    ],
+                })
+    return {
+        "metadata": {
+            "resource_title": "Circuitos y capacitancia",
+            "youtube_title": "Circuitos y capacitancia | Clase universitaria",
+            "resource_description": "Descripción editorial del recurso.",
+            "youtube_description": "Descripción editorial para YouTube.",
+            "introduction": "Introducción editorial basada en la transcripción.",
+            "guide_title": "Guía de circuitos y capacitancia",
+            "pedagogical_document": "Documento pedagógico canónico.",
+            "thumbnail_title": "Circuitos y capacitancia",
+        },
+        "guide": {
+            "title": "Guía de circuitos y capacitancia",
+            "description": "Guía creada por Codex.",
+            "content": "Objetivos, conceptos, procedimientos y límites de la clase.",
+        },
+        "questions": questions,
+    }
+
+
 class PublicationPipelineServiceTests(TestCase):
     def setUp(self):
         subject = Subject.objects.create(name="Matemática pipeline")
@@ -144,6 +183,16 @@ class PublicationPipelineServiceTests(TestCase):
         self.assertEqual(self.item.state, PublicationItem.STATE_TRANSCRIPT_PENDING)
         self.assertFalse(Question.objects.filter(publication_item=self.item).exists())
         generator.assert_not_called()
+
+    def test_structured_ai_document_is_converted_to_readable_text(self):
+        value = {
+            "objetivos": ["Definir un circuito.", "Reconocer un capacitor."],
+            "limites": "No incluye cálculos de capacitancia.",
+        }
+        text = _generated_text(value)
+        self.assertIn("### Objetivos", text)
+        self.assertIn("- Definir un circuito.", text)
+        self.assertIn("### Limites", text)
 
     def test_finalize_requires_public_youtube_and_publishes_atomically(self):
         process_publication_item(
@@ -335,6 +384,104 @@ class PublicationPipelineApiTests(TestCase):
         )
         self.assertEqual(status_resp.status_code, 401)
         self.assertEqual(confirm_resp.status_code, 401)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
+    def test_editorial_package_creates_exact_matrix_and_is_idempotent(self):
+        transcript = " ".join(["Circuitos, capacitores y conductores eléctricos."] * 30)
+        resource = Resource.objects.create(
+            title="Temporal",
+            transcript=transcript,
+            video_url=f"https://youtu.be/{VIDEO_ID}",
+            is_published=False,
+        )
+        item = PublicationItem.objects.create(
+            batch_id="editorial",
+            source_filename="editorial.mp4",
+            youtube_video_id=VIDEO_ID,
+            youtube_url=resource.video_url,
+            resource=resource,
+        )
+        url = reverse("content:api_publication_item_editorial_package", args=[item.id])
+        first = self.client.post(
+            url,
+            data=json.dumps(_editorial_package()),
+            content_type="application/json",
+            HTTP_X_API_TOKEN=TOKEN,
+        )
+        second = self.client.post(
+            url,
+            data=json.dumps(_editorial_package()),
+            content_type="application/json",
+            HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(second.status_code, 200)
+        item.refresh_from_db()
+        self.assertEqual(item.state, PublicationItem.STATE_QUESTIONS_READY)
+        self.assertEqual(item.questions.count(), 90)
+        for level in (1, 2, 3):
+            for mode in ("preparacion", "evaluacion", "ambas"):
+                self.assertEqual(
+                    item.questions.filter(level=level, mode=mode).count(),
+                    10,
+                )
+        self.assertEqual(item.target_counts["1"]["practice"]["pool"], 20)
+        self.assertEqual(item.target_counts["1"]["eval"]["pool"], 20)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
+    def test_editorial_package_rejects_incomplete_matrix_without_writes(self):
+        resource = Resource.objects.create(
+            title="Temporal",
+            transcript=" ".join(["Transcripción suficientemente extensa."] * 30),
+            video_url=f"https://youtu.be/{VIDEO_ID}",
+        )
+        item = PublicationItem.objects.create(
+            batch_id="editorial-invalid",
+            source_filename="invalid.mp4",
+            resource=resource,
+        )
+        package = _editorial_package()
+        package["questions"].pop()
+        response = self.client.post(
+            reverse("content:api_publication_item_editorial_package", args=[item.id]),
+            data=json.dumps(package),
+            content_type="application/json",
+            HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(response.status_code, 409)
+        self.assertFalse(item.questions.exists())
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
+    def test_editorial_package_never_replaces_published_questions(self):
+        resource = Resource.objects.create(
+            title="Temporal",
+            transcript=" ".join(["Transcripción suficientemente extensa."] * 30),
+            video_url=f"https://youtu.be/{VIDEO_ID}",
+        )
+        item = PublicationItem.objects.create(
+            batch_id="editorial-protected",
+            source_filename="protected.mp4",
+            resource=resource,
+        )
+        Question.objects.create(
+            resource=resource,
+            publication_item=item,
+            level=1,
+            mode="preparacion",
+            text="Pregunta publicada protegida",
+            explanation="No debe reemplazarse.",
+            status="publicada",
+        )
+        response = self.client.post(
+            reverse("content:api_publication_item_editorial_package", args=[item.id]),
+            data=json.dumps(_editorial_package()),
+            content_type="application/json",
+            HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(response.status_code, 409)
+        self.assertTrue(
+            Question.objects.filter(text="Pregunta publicada protegida").exists()
+        )
 
 
 class HistoricalAnswerProtectionTests(TestCase):
