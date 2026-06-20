@@ -68,6 +68,18 @@ class BankAnalyticsTests(TestCase):
             topic=self.topic,
             video_url="https://www.youtube.com/watch?v=test",
             transcript="Contenido de la clase",
+            editorial_audit={
+                "audited_at": "2026-06-20T00:00:00+00:00",
+                "transcript": {"available": True, "audited": True},
+                "web": {
+                    "title_audited": True,
+                    "description_audited": True,
+                },
+                "youtube": {
+                    "title_audited": True,
+                    "description_audited": True,
+                },
+            },
         )
         ResourceQuizConfig.objects.create(
             resource=self.resource,
@@ -121,7 +133,51 @@ class BankAnalyticsTests(TestCase):
         self.assertEqual(row["levels"][0]["practice"]["available"], 2)
         self.assertEqual(row["levels"][0]["eval"]["available"], 1)
         self.assertEqual(row["overall_state"], "complete")
+        self.assertTrue(row["editorial_complete"])
+        self.assertTrue(row["editorial_checks"]["transcript"])
+        self.assertEqual(response.context["totals"]["editorial_complete"], 1)
         self.assertContains(response, "Ecuaciones cuadráticas")
+        self.assertContains(response, "Título web")
+        self.assertContains(response, "Descripción YouTube")
+
+    def test_coverage_marks_pending_editorial_components(self):
+        self.resource.editorial_audit = {
+            "transcript": {"available": True, "audited": True},
+            "web": {
+                "title_audited": True,
+                "description_audited": False,
+            },
+            "youtube": {
+                "title_audited": False,
+                "description_audited": False,
+            },
+        }
+        self.resource.save(
+            update_fields=["editorial_audit"],
+            _preserve_editorial_audit=True,
+        )
+
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_coverage"))
+
+        row = response.context["rows"][0]
+        self.assertFalse(row["editorial_complete"])
+        self.assertEqual(row["editorial_pending"], 3)
+        self.assertEqual(response.context["totals"]["editorial_pending"], 1)
+        self.assertContains(response, "Editorial pendiente (3)")
+        self.assertContains(response, 'data-editorial="pending"')
+
+    def test_editing_description_invalidates_only_web_description_audit(self):
+        self.resource.description = "Descripción modificada después de auditar"
+        self.resource.save(update_fields=["description"])
+        self.resource.refresh_from_db()
+
+        audit = self.resource.editorial_audit
+        self.assertTrue(audit["web"]["title_audited"])
+        self.assertFalse(audit["web"]["description_audited"])
+        self.assertTrue(audit["youtube"]["title_audited"])
+        self.assertTrue(audit["youtube"]["description_audited"])
+        self.assertTrue(audit["requires_reaudit"])
 
     def test_coverage_query_count_does_not_grow_per_resource(self):
         second = Resource.objects.create(

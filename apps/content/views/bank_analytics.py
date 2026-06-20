@@ -150,6 +150,26 @@ def _build_coverage_rows():
         else:
             overall_state = "complete"
 
+        audit = resource.editorial_audit or {}
+        transcript_audit = audit.get("transcript") or {}
+        web_audit = audit.get("web") or {}
+        youtube_audit = audit.get("youtube") or {}
+        has_transcript = (
+            bool(transcript_audit.get("available"))
+            or len((resource.transcript or "").split()) >= 50
+        )
+        editorial_checks = {
+            "transcript": has_transcript
+            and bool(transcript_audit.get("audited", has_transcript)),
+            "web_title": bool(web_audit.get("title_audited")),
+            "web_description": bool(web_audit.get("description_audited")),
+            "youtube_title": bool(youtube_audit.get("title_audited")),
+            "youtube_description": bool(
+                youtube_audit.get("description_audited")
+            ),
+        }
+        editorial_complete = all(editorial_checks.values())
+
         rows.append(
             {
                 "resource": resource,
@@ -170,7 +190,13 @@ def _build_coverage_rows():
                 "total_missing": total_missing,
                 "overall_state": overall_state,
                 "has_video": bool(resource.video_url),
-                "has_transcript": bool(resource.transcript.strip()),
+                "has_transcript": has_transcript,
+                "editorial_checks": editorial_checks,
+                "editorial_complete": editorial_complete,
+                "editorial_pending": sum(
+                    not value for value in editorial_checks.values()
+                ),
+                "editorial_audited_at": audit.get("audited_at"),
                 "has_guide": (
                     resource.has_direct_guide
                     or resource.has_topic_guide
@@ -204,6 +230,12 @@ def bank_coverage(request):
             "empty": sum(row["overall_state"] == "empty" for row in rows),
             "published": sum(row["published_total"] for row in rows),
             "missing": sum(row["total_missing"] for row in rows),
+            "editorial_complete": sum(
+                row["editorial_complete"] for row in rows
+            ),
+            "editorial_pending": sum(
+                not row["editorial_complete"] for row in rows
+            ),
         },
     }
     return render(request, "pages/bank_coverage.html", context)

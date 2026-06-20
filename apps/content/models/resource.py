@@ -1,4 +1,5 @@
 import mimetypes
+from copy import deepcopy
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import FileExtensionValidator
@@ -68,6 +69,15 @@ class Resource(models.Model):
         help_text="Texto hablado del video (se baja aparte y se guarda aquí). "
                   "Lo usa la generación de preguntas; no se muestra al público.",
     )
+    editorial_audit = models.JSONField(
+        "Auditoría editorial",
+        blank=True,
+        default=dict,
+        help_text=(
+            "Estado verificable de transcripción, títulos y descripciones "
+            "de la web y YouTube."
+        ),
+    )
     file = models.FileField(
         upload_to="resources/files/",
         blank=True,
@@ -98,6 +108,54 @@ class Resource(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        preserve_editorial_audit = kwargs.pop("_preserve_editorial_audit", False)
+        update_fields = kwargs.get("update_fields")
+        previous = None
+        if self.pk and not preserve_editorial_audit:
+            previous = (
+                Resource.objects.filter(pk=self.pk)
+                .values("title", "description", "transcript", "video_url")
+                .first()
+            )
+
+        if previous:
+            audit = deepcopy(self.editorial_audit or {})
+            transcript_changed = previous["transcript"] != self.transcript
+            title_changed = previous["title"] != self.title
+            description_changed = previous["description"] != self.description
+            video_changed = previous["video_url"] != self.video_url
+
+            if transcript_changed:
+                audit.setdefault("transcript", {}).update(
+                    {
+                        "available": len((self.transcript or "").split()) >= 50,
+                        "audited": False,
+                    }
+                )
+                audit.setdefault("web", {}).update(
+                    {"title_audited": False, "description_audited": False}
+                )
+                audit.setdefault("youtube", {}).update(
+                    {"title_audited": False, "description_audited": False}
+                )
+            if title_changed:
+                audit.setdefault("web", {})["title_audited"] = False
+                audit.setdefault("youtube", {})["title_audited"] = False
+            if description_changed:
+                audit.setdefault("web", {})["description_audited"] = False
+            if video_changed:
+                audit.setdefault("youtube", {}).update(
+                    {"title_audited": False, "description_audited": False}
+                )
+
+            if any(
+                (transcript_changed, title_changed, description_changed, video_changed)
+            ):
+                audit["requires_reaudit"] = True
+                self.editorial_audit = audit
+                if update_fields is not None:
+                    kwargs["update_fields"] = set(update_fields) | {"editorial_audit"}
+
         if not self.slug:
             base_slug = slugify(self.title)
             slug = base_slug

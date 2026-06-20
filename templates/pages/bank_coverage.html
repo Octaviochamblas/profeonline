@@ -9,7 +9,7 @@
         <div>
             <span class="studio-badge">Analítica del banco</span>
             <h1>Resumen de cobertura</h1>
-            <p>Detecta recursos vacíos, pools incompletos y material disponible para generar.</p>
+            <p>Detecta recursos vacíos, pools incompletos y el estado de su auditoría editorial.</p>
         </div>
         <a class="btn-secondary" href="{% url 'content:bank_results' %}">Ver resultados por alumno</a>
     </header>
@@ -19,6 +19,8 @@
         <article><strong data-total-empty>{{ totals.empty }}</strong><span>Sin publicadas</span></article>
         <article><strong data-total-published>{{ totals.published }}</strong><span>Preguntas publicadas</span></article>
         <article><strong data-total-missing>{{ totals.missing }}</strong><span>Preguntas faltantes</span></article>
+        <article><strong data-total-editorial-complete>{{ totals.editorial_complete }}</strong><span>Editorial auditado</span></article>
+        <article><strong data-total-editorial-pending>{{ totals.editorial_pending }}</strong><span>Auditoría pendiente</span></article>
     </div>
 
     <div class="bank-filters" aria-label="Filtros de cobertura">
@@ -47,6 +49,13 @@
         <label class="bank-filters__search">Buscar recurso
             <input type="search" data-filter-search placeholder="Título del recurso">
         </label>
+        <label>Auditoría editorial
+            <select data-filter-editorial>
+                <option value="">Todos</option>
+                <option value="complete">Completa</option>
+                <option value="pending">Pendiente</option>
+            </select>
+        </label>
     </div>
 
     <div class="bank-table-wrap">
@@ -70,6 +79,7 @@
                     data-topic="{{ row.topic.id|default:'' }}"
                     data-title="{{ row.resource.title|lower }}"
                     data-state="{{ row.overall_state }}"
+                    data-editorial="{% if row.editorial_complete %}complete{% else %}pending{% endif %}"
                     data-published="{{ row.published_total }}"
                     data-missing="{{ row.total_missing }}">
                     <td class="bank-taxonomy">
@@ -83,6 +93,28 @@
                             <span class="{% if row.has_video %}is-ready{% endif %}">Video</span>
                             <span class="{% if row.has_transcript %}is-ready{% endif %}">Transcript</span>
                             <span class="{% if row.has_guide %}is-ready{% endif %}">Guía</span>
+                        </div>
+                        <div class="bank-editorial-audit" aria-label="Auditoría editorial">
+                            <span class="{% if row.editorial_checks.transcript %}is-ready{% else %}is-pending{% endif %}"
+                                  title="Transcripción disponible y auditada">
+                                {% if row.editorial_checks.transcript %}✓{% else %}!{% endif %} Transcripción
+                            </span>
+                            <span class="{% if row.editorial_checks.web_title %}is-ready{% else %}is-pending{% endif %}"
+                                  title="Título de la página web auditado con la transcripción">
+                                {% if row.editorial_checks.web_title %}✓{% else %}!{% endif %} Título web
+                            </span>
+                            <span class="{% if row.editorial_checks.web_description %}is-ready{% else %}is-pending{% endif %}"
+                                  title="Descripción de la página web auditada con la transcripción">
+                                {% if row.editorial_checks.web_description %}✓{% else %}!{% endif %} Descripción web
+                            </span>
+                            <span class="{% if row.editorial_checks.youtube_title %}is-ready{% else %}is-pending{% endif %}"
+                                  title="Título de YouTube auditado con la transcripción">
+                                {% if row.editorial_checks.youtube_title %}✓{% else %}!{% endif %} Título YouTube
+                            </span>
+                            <span class="{% if row.editorial_checks.youtube_description %}is-ready{% else %}is-pending{% endif %}"
+                                  title="Descripción de YouTube auditada y verificada">
+                                {% if row.editorial_checks.youtube_description %}✓{% else %}!{% endif %} Descripción YouTube
+                            </span>
                         </div>
                     </td>
                     <td>
@@ -101,9 +133,14 @@
                             </div>
                         </td>
                     {% endfor %}
-                    <td><span class="coverage-state coverage-state--{{ row.overall_state }}">
-                        {% if row.overall_state == "complete" %}Completo{% elif row.overall_state == "partial" %}Parcial{% else %}Vacío{% endif %}
-                    </span></td>
+                    <td>
+                        <span class="coverage-state coverage-state--{{ row.overall_state }}">
+                            {% if row.overall_state == "complete" %}Completo{% elif row.overall_state == "partial" %}Parcial{% else %}Vacío{% endif %}
+                        </span>
+                        <span class="editorial-state {% if row.editorial_complete %}editorial-state--complete{% else %}editorial-state--pending{% endif %}">
+                            {% if row.editorial_complete %}Editorial auditado{% else %}Editorial pendiente ({{ row.editorial_pending }}){% endif %}
+                        </span>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr><td colspan="7">Todavía no hay recursos.</td></tr>
@@ -116,9 +153,9 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=2">
+<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=3">
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/bank_analytics.js' %}?v=2" nonce="{{ csp_nonce }}"></script>
+<script src="{% static 'js/bank_analytics.js' %}?v=3" nonce="{{ csp_nonce }}"></script>
 {% endblock %}

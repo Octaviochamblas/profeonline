@@ -7,6 +7,7 @@
     var area = dashboard.querySelector("[data-filter-area]");
     var subject = dashboard.querySelector("[data-filter-subject]");
     var topic = dashboard.querySelector("[data-filter-topic]");
+    var editorial = dashboard.querySelector("[data-filter-editorial]");
     var search = dashboard.querySelector("[data-filter-search]");
     var rows = Array.from(dashboard.querySelectorAll("[data-coverage-row]"));
     var empty = dashboard.querySelector("[data-filter-empty]");
@@ -33,6 +34,7 @@
           (!area.value || row.dataset.area === area.value) &&
           (!subject.value || row.dataset.subject === subject.value) &&
           (!topic.value || row.dataset.topic === topic.value) &&
+          (!editorial.value || row.dataset.editorial === editorial.value) &&
           (!query || row.dataset.title.indexOf(query) !== -1);
         row.hidden = !matches;
         if (matches) visible.push(row);
@@ -48,10 +50,16 @@
       dashboard.querySelector("[data-total-missing]").textContent = visible.reduce(function (sum, row) {
         return sum + Number(row.dataset.missing || 0);
       }, 0);
+      dashboard.querySelector("[data-total-editorial-complete]").textContent = visible.filter(function (row) {
+        return row.dataset.editorial === "complete";
+      }).length;
+      dashboard.querySelector("[data-total-editorial-pending]").textContent = visible.filter(function (row) {
+        return row.dataset.editorial === "pending";
+      }).length;
       empty.hidden = visible.length !== 0;
     }
 
-    [area, subject, topic].forEach(function (select) {
+    [area, subject, topic, editorial].forEach(function (select) {
       select.addEventListener("change", update);
     });
     search.addEventListener("input", update);

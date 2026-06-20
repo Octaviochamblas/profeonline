@@ -7,6 +7,7 @@ import re
 
 from django.conf import settings
 from django.db import IntegrityError, transaction
+from django.utils import timezone
 
 from apps.content.models import (
     Choice,
@@ -676,7 +677,43 @@ def finalize_publication(item):
         item.resource.description = item.metadata["resource_description"]
         item.resource.content = item.metadata["introduction"]
         item.resource.is_published = True
-        update_fields = ["title", "description", "content", "is_published"]
+        transcript = item.resource.transcript or ""
+        item.resource.editorial_audit = {
+            "schema_version": 1,
+            "audited_at": timezone.now().isoformat(),
+            "audit_source": "codex_editorial_pipeline",
+            "requires_reaudit": False,
+            "transcript": {
+                "available": transcript_is_sufficient(transcript),
+                "audited": True,
+                "words": len(transcript.split()),
+                "sha256": hashlib.sha256(
+                    transcript.encode("utf-8")
+                ).hexdigest(),
+            },
+            "web": {
+                "title_audited": True,
+                "description_audited": True,
+            },
+            "youtube": {
+                "title_audited": True,
+                "description_audited": True,
+                "verified": True,
+                "video_id": item.youtube_video_id,
+            },
+            "questions": {
+                "status": "contextualizados_con_trazabilidad",
+                "count": valid_questions.count(),
+                "provenance": "transcripcion_verificada",
+            },
+        }
+        update_fields = [
+            "title",
+            "description",
+            "content",
+            "is_published",
+            "editorial_audit",
+        ]
         subject_slug = item.taxonomy.get("subject_slug")
         topic_slug = item.taxonomy.get("topic_slug")
         if subject_slug:
@@ -693,7 +730,8 @@ def finalize_publication(item):
                 item.resource.topic = topic
                 update_fields.append("topic")
         item.resource.save(
-            update_fields=update_fields
+            update_fields=update_fields,
+            _preserve_editorial_audit=True,
         )
         item.canonical_guide.is_active = True
         item.canonical_guide.save(update_fields=["is_active"])
