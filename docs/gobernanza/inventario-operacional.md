@@ -1,7 +1,7 @@
 # Inventario operacional
 
 > Documento **canónico** (Capa 1). Servicios, secretos, variables y comandos para operar y
-> desplegar. **No contiene valores secretos**, solo qué existe y dónde. Última revisión: 2026-06-01.
+> desplegar. **No contiene valores secretos**, solo qué existe y dónde. Última revisión: 2026-06-20.
 
 ## 1. Servicios
 
@@ -119,22 +119,24 @@ Esquema de datos JSON (`profeonline.upload-batch/v1`) utilizado por el script lo
 *   `publication`: Política obligatoria del pipeline integrado. El agente local sube como
     `unlisted`; solo cambia a `public` después de que el servidor informa `questions_ready`.
 
-### Pipeline educativo integrado
+### Pipeline editorial asistido por Codex
 
-1. El **cliente de subida** (el uploader Node `profeonline-uploader`, a extender para este flujo)
-   consume el JSON, sube el video no listado, guarda un sidecar local de reanudación, obtiene la
-   transcripción desde la IP local y llama a `/api/recursos/crear-video/`. Reejecutar el mismo lote
-   reutiliza `video_id` e ítem existentes. *(Existe un prototipo Python de referencia,
-   `scripts/process_upload_batch.py`, no integrado al repo; el cliente canónico es el uploader Node.)*
-2. El webhook hace *upsert* por ID de YouTube y por `batch_id + source_filename`; el recurso queda
-   siempre en borrador.
-3. `python manage.py process_publication_pipeline --limit 1` genera documento canónico, metadatos,
-   guía y preguntas auditadas. Si la transcripción es insuficiente queda en `transcript_pending`.
-4. El agente consulta `/api/publicacion/<id>/`. Al recibir `questions_ready`, actualiza título y
-   descripción de YouTube, cambia el video a público y confirma en
-   `/api/publicacion/<id>/confirmar/`.
-5. La confirmación publica recurso y preguntas en una transacción local. Los reintentos son
-   aditivos/idempotentes y nunca eliminan respuestas históricas.
+1. El uploader Node sube el video como no listado, lo agrega a la playlist, guarda el
+   sidecar de reanudación y obtiene la transcripción desde la IP local.
+2. `/api/recursos/crear-video/` hace *upsert* por ID de YouTube y por
+   `batch_id + source_filename`; el recurso queda en borrador.
+3. Codex usa la transcripción como fuente principal y prepara metadatos, guía, panel
+   visual y 90 preguntas: por nivel, 10 `preparacion`, 10 `evaluacion` y 10 `ambas`.
+4. `POST /api/publicacion/<id>/paquete-editorial/` valida el paquete de forma atómica.
+   Rechaza conteos incorrectos, duplicados, explicaciones vacías y alternativas inválidas.
+   Solo reemplaza borradores seguros; nunca preguntas publicadas, respondidas o reportadas.
+5. Al recibir `questions_ready`, el uploader compone la miniatura ProfeOnline, actualiza
+   YouTube, cambia el video a público y llama a `/api/publicacion/<id>/confirmar/`.
+6. La confirmación publica recurso, guía y preguntas. Si falla, el uploader revierte el
+   video a no listado.
+
+Gemini y `process_publication_pipeline` quedan como alternativa manual/legada. No forman
+parte del camino principal para nuevas subidas asistidas por Codex.
 
 Credenciales locales del cliente de subida: OAuth de YouTube fuera del repo,
 `PROFEONLINE_BASE_URL` y `PROFEONLINE_API_TOKEN`. No ejecutar contra producción sin autorización
