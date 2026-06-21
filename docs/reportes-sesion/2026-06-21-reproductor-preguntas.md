@@ -43,7 +43,8 @@ evaluación final del tema**.
 
 - Barrera focalizada verde (60 tests de evaluación + 1 nuevo); `check` OK; sin migraciones.
 - QA visual en escritorio y móvil 360px, sin errores de consola.
-- Suite completa: _(ver commit; corrida al cierre de la sesión)._
+- **Suite completa: 370 tests OK.** Merge a `main` (ff, commit `faacd8c`); tarjeta en
+  `backlog/6-finalizados/`.
 
 ## Pendientes / Próximos pasos
 
