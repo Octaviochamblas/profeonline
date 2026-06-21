@@ -13,136 +13,81 @@
 {% endblock %}
 
 {% block content %}
-<section class="stack">
-    {% include "includes/breadcrumbs.html" %}
-    <p class="page-hero__kicker">Ruta de aprendizaje</p>
-
-    <div class="detail-card stack">
-        <div class="section-header">
-            <div>
-                <h1>{{ topic.name }}</h1>
-                <p class="page-hero__text">
-                    {% if topic.description %}
-                        {{ topic.description }}
-                    {% else %}
-                        Esta ruta reúne los recursos educativos para dominar el tema de {{ topic.name }}, ordenados desde los niveles más básicos a los avanzados.
-                    {% endif %}
-                </p>
-            </div>
-            <div class="page-actions">
-                <a class="btn btn-secondary" href="{% url 'content:topic_list' %}">← Volver a temas</a>
-            </div>
-        </div>
-
-        <div class="detail-meta">
+<section class="topic-detail-page stack">
+    <header class="topic-heading">
+        <a class="topic-heading__back" href="{% url 'content:topic_list' %}">← Temas</a>
+        <h1>{{ topic.name }}</h1>
+        <div class="topic-heading__meta">
             {% if topic.subject %}
                 {% if topic.subject.is_active or user.is_superuser %}
-                    <a class="badge badge--neutral" href="{% url 'content:subject_detail' topic.subject.slug %}">{{ topic.subject.name }}</a>
+                    <a href="{% url 'content:subject_detail' topic.subject.slug %}">{{ topic.subject.name }}</a>
                 {% else %}
-                    <span class="badge badge--neutral">{{ topic.subject.name }}</span>
+                    <span>{{ topic.subject.name }}</span>
                 {% endif %}
             {% endif %}
+            {% if topic_level_label %}
+                <span aria-hidden="true">·</span>
+                <span>{{ topic_level_label }}</span>
+            {% endif %}
             {% if topic_exam_info.passed %}
-                <span class="badge badge--success topic-mastery-badge topic-mastery-badge--brilliance-{{ topic_exam_info.brilliance }}">
+                <span class="topic-heading__mastery topic-mastery-badge--brilliance-{{ topic_exam_info.brilliance }}">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
                     Tema dominado · {{ topic_exam_info.best_percentage }}%
                 </span>
             {% endif %}
         </div>
-    </div>
+    </header>
 
-    <section class="stack">
-        <div class="section-header">
-            <div>
-                <h2>Recursos en esta ruta</h2>
-                <p class="page-hero__text">Comienza por el primer recurso (básico) y avanza secuencialmente hacia los temas avanzados.</p>
+    {% if user.is_authenticated and topic_progress.total %}
+        <section class="topic-progress-summary" aria-labelledby="topic-progress-title">
+            <div class="topic-progress-summary__header">
+                <h2 id="topic-progress-title">Avance del tema</h2>
+                <strong>{{ topic_progress.weighted_progress }}%</strong>
             </div>
-        </div>
+            <div class="topic-progress-summary__bar" role="progressbar" aria-valuenow="{{ topic_progress.weighted_progress }}" aria-valuemin="0" aria-valuemax="100" aria-label="Avance total del tema">
+                <span style="width: {{ topic_progress.weighted_progress }}%;"></span>
+            </div>
 
-        {% if user.is_authenticated and total_count %}
-            <div class="topic-progress topic-progress--panel stack">
-                <div class="topic-progress__header">
-                    <span class="topic-progress__label">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        Progreso del tema
-                    </span>
-                    <span class="topic-progress__count">
-                        {{ weighted_percent }}% progreso · {{ worked_count }}/{{ total_count }} trabajados · {{ approved_count }}/{{ total_count }} aprobados · {{ stars_count }}/{{ stars_total }} estrellas
-                    </span>
+            <div class="topic-progress-summary__stats">
+                <div>
+                    <strong>{{ topic_progress.started }}/{{ topic_progress.total }}</strong>
+                    <span>Recursos iniciados</span>
                 </div>
-
-                <div class="topic-progress__main-bar">
-                    <div class="topic-progress__bar-label">
-                        <span>Estrellas obtenidas</span>
-                        <span>{{ stars_percent }}%</span>
-                    </div>
-                    <div class="topic-progress__bar" role="progressbar" aria-valuenow="{{ stars_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de estrellas">
-                        <div class="topic-progress__fill" style="width: {{ stars_percent }}%;"></div>
-                    </div>
+                <div>
+                    <strong>{{ topic_progress.practice_ready }}/{{ topic_progress.practice_total }}</strong>
+                    <span>Prácticas preparadas</span>
                 </div>
-
-                <div class="topic-progress__secondary-bars">
-                    <div>
-                        <div class="topic-progress__bar-label">
-                            <span>Aprobados</span>
-                            <span>{{ approved_percent }}%</span>
-                        </div>
-                        <div class="topic-progress__bar topic-progress__bar--secondary" role="progressbar" aria-valuenow="{{ approved_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de recursos aprobados">
-                            <div class="topic-progress__fill topic-progress__fill--opacity-8" style="width: {{ approved_percent }}%;"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="topic-progress__bar-label">
-                            <span>Progreso (ponderado)</span>
-                            <span>{{ weighted_percent }}%</span>
-                        </div>
-                        <div class="topic-progress__bar topic-progress__bar--secondary" role="progressbar" aria-valuenow="{{ weighted_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso ponderado del tema">
-                            <div class="topic-progress__fill topic-progress__fill--primary-color" style="width: {{ weighted_percent }}%;"></div>
-                        </div>
-                    </div>
+                <div>
+                    <strong>{{ topic_progress.evaluation_passed }}/{{ topic_progress.evaluation_total }}</strong>
+                    <span>Evaluaciones aprobadas</span>
                 </div>
             </div>
-        {% endif %}
 
+            <details class="topic-progress-summary__help">
+                <summary>¿Cómo se calcula?</summary>
+                <p>El avance considera todos los recursos del tema. En cada nivel, la práctica aporta 30% y la evaluación 70%. Una práctica queda preparada al alcanzar 80% de promedio reciente; una evaluación cuenta al aprobarla.</p>
+            </details>
+        </section>
+    {% endif %}
+
+    <section class="topic-resources stack" aria-labelledby="topic-resources-title">
+        <h2 id="topic-resources-title">Recursos</h2>
         {% if resources %}
             <div class="topic-resource-list">
                 {% for resource in resources %}
-                    <a class="topic-resource-card{% if resource.quiz_progress.max_level %} topic-resource-card--mastery topic-resource-card--mastery-{{ resource.quiz_progress.stars }}{% endif %}" href="{% url 'content:resource_detail' resource.slug %}">
-                        <span class="topic-resource-card__step" aria-hidden="true">
-                            {% if resource.quiz_progress.max_level %}
-                                ★
-                            {% else %}
-                                {{ forloop.counter }}
-                            {% endif %}
-                        </span>
+                    <a class="topic-resource-card{% if resource.academic_status == 'approved' %} topic-resource-card--approved{% endif %}" href="{% url 'content:resource_detail' resource.slug %}">
+                        <span class="topic-resource-card__step" aria-hidden="true">{{ forloop.counter }}</span>
                         <span class="topic-resource-card__content">
                             <span class="topic-resource-card__header">
                                 <span class="topic-resource-card__title">{{ resource.title }}</span>
-                                <span class="topic-resource-card__meta">
-                                    {% if resource.quiz_progress.max_level %}
-                                        <span class="topic-resource-card__badge topic-resource-card__badge--approved">
-                                            Aprobado
-                                            <span aria-hidden="true">
-                                                {% for i in "123" %}
-                                                    {% if forloop.counter <= resource.quiz_progress.stars %}★{% else %}☆{% endif %}
-                                                {% endfor %}
-                                            </span>
-                                        </span>
-                                    {% elif resource.quiz_progress.viewed %}
-                                        <span class="topic-resource-card__badge topic-resource-card__badge--viewed">Visto</span>
-                                    {% endif %}
-                                    {% if resource.subject %}
-                                        <span class="topic-resource-card__badge">{{ resource.subject.name }}</span>
-                                    {% endif %}
-                                    {% for level in resource.levels.all %}
-                                        <span class="topic-resource-card__badge">{{ level.name }}</span>
-                                    {% endfor %}
-                                </span>
+                                {% if resource.academic_status == "approved" %}
+                                    <span class="topic-resource-card__badge topic-resource-card__badge--approved">Aprobado</span>
+                                {% elif resource.academic_status == "prepared" %}
+                                    <span class="topic-resource-card__badge topic-resource-card__badge--prepared">Preparado</span>
+                                {% elif resource.academic_status == "in_progress" %}
+                                    <span class="topic-resource-card__badge topic-resource-card__badge--progress">En curso</span>
+                                {% endif %}
                             </span>
-                            {% if resource.description %}
-                                <span class="topic-resource-card__description">{{ resource.description }}</span>
-                            {% endif %}
                         </span>
                         <span class="topic-resource-card__arrow" aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -152,7 +97,7 @@
             </div>
         {% else %}
             <div class="empty-state">
-                <p>Aún no hay recursos publicados en esta ruta de aprendizaje.</p>
+                <p>Aún no hay recursos publicados para este tema.</p>
             </div>
         {% endif %}
     </section>

@@ -66,7 +66,8 @@ class ResourceCompletionTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["total_count"], 1)
-        self.assertEqual(response.context["worked_count"], 0)
-        self.assertEqual(response.context["weighted_percent"], 0)
+        progress = response.context["topic_progress"]
+        self.assertEqual(progress["total"], 1)
+        self.assertEqual(progress["started"], 0)
+        self.assertEqual(progress["weighted_progress"], 0)
         self.assertNotContains(response, "comprendidos")
