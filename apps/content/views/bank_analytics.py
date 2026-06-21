@@ -42,6 +42,11 @@ EDITORIAL_CATEGORIES = (
 
 # Umbral bajo el cual la cobertura de preguntas se considera crítica (rojo).
 CRITICAL_COVERAGE_RATIO = 0.2
+EDUCATION_LEVEL_ORDER = {
+    "escolar": 1,
+    "mediopreuniversitario": 2,
+    "universitario": 3,
+}
 
 
 def _coverage_status(required, missing):
@@ -369,7 +374,10 @@ def _build_coverage_tree(rows):
         area_node["levels"].sort(
             key=lambda node: (
                 node["level"] is None,
-                getattr(node["level"], "order", 0),
+                EDUCATION_LEVEL_ORDER.get(
+                    getattr(node["level"], "slug", ""),
+                    getattr(node["level"], "order", 999),
+                ),
                 getattr(node["level"], "name", ""),
             )
         )

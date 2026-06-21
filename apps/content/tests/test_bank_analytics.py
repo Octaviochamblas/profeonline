@@ -245,6 +245,23 @@ class BankAnalyticsTests(TestCase):
             resource = level["subjects"][0]["topics"][0]["rows"][0]["resource"]
             self.assertEqual(resource, self.resource)
 
+    def test_coverage_tree_uses_pedagogical_level_order(self):
+        middle = Level.objects.create(
+            name="Medio/Preuniversitario",
+            order=99,
+        )
+        university = Level.objects.create(name="Universitario", order=0)
+        self.resource.levels.add(middle, university)
+
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_coverage"))
+
+        levels = response.context["tree"][0]["levels"]
+        self.assertEqual(
+            [node["level"].slug for node in levels],
+            ["escolar", "mediopreuniversitario", "universitario"],
+        )
+
     def test_coverage_tree_groups_resources_without_level(self):
         self.resource.levels.clear()
 
