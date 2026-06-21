@@ -1,4 +1,5 @@
 import json
+import importlib
 import tempfile
 from io import StringIO
 from pathlib import Path
@@ -19,6 +20,27 @@ from apps.content.models import (
     Subject,
     Topic,
 )
+from apps.content.services.title_cleanup_service import clean_resource_title
+
+
+class ResourceTitleCleanupServiceTests(TestCase):
+    def test_removes_accent_variant_subject_and_class_marker(self):
+        self.assertEqual(
+            clean_resource_title(
+                "Algebra Lineal: Clase 4a: Transformación Lineal - ProfeOnline.cl",
+                subject_name="Álgebra Lineal",
+            ),
+            "4a Transformación Lineal",
+        )
+
+    def test_removes_subject_before_number(self):
+        self.assertEqual(
+            clean_resource_title(
+                "Electromagnetismo 1.2 Líneas de campo | ProfeOnline.cl",
+                subject_name="Electromagnetismo",
+            ),
+            "1.2 Líneas de campo",
+        )
 
 
 class SeedContentCommandTests(TestCase):
@@ -125,6 +147,90 @@ class SeedContentCommandTests(TestCase):
 
         self.assertEqual(list(resource.levels.all()), [new_level])
         self.assertEqual(list(module.levels.all()), [new_level])
+
+    def test_seed_content_uses_compact_title_and_stable_legacy_slug(self):
+        call_command("seed_content", stdout=StringIO())
+
+        resource = Resource.objects.get(
+            slug=(
+                "lenguaje-algebraico-102-ejercicios-agrupacion-de-"
+                "terminos-semejantes-profeonlinecl"
+            )
+        )
+
+        self.assertEqual(resource.title, "1.02 Agrupación de Términos Semejantes")
+
+
+class CleanResourceTitlesCommandTests(TestCase):
+    def setUp(self):
+        self.subject = Subject.objects.create(name="Matemática Media")
+        self.topic = Topic.objects.create(
+            name="Lenguaje y expresiones algebraicas",
+            subject=self.subject,
+        )
+        self.resource = Resource.objects.create(
+            title=(
+                "Lenguaje Algebraico: 1.02 EJERCICIOS: "
+                "Agrupación de Términos Semejantes | ProfeOnline.cl"
+            ),
+            slug="slug-publico-estable",
+            subject=self.subject,
+            topic=self.topic,
+        )
+
+    def test_dry_run_reports_without_modifying(self):
+        stdout = StringIO()
+
+        call_command("clean_resource_titles", stdout=stdout)
+
+        self.resource.refresh_from_db()
+        self.assertIn("1 cambios detectados (dry-run)", stdout.getvalue())
+        self.assertIn("Lenguaje Algebraico", self.resource.title)
+
+    def test_apply_preserves_slug_and_is_idempotent(self):
+        call_command("clean_resource_titles", "--apply", stdout=StringIO())
+
+        self.resource.refresh_from_db()
+        self.assertEqual(
+            self.resource.title,
+            "1.02 Agrupación de Términos Semejantes",
+        )
+        self.assertEqual(self.resource.slug, "slug-publico-estable")
+
+        second_run = StringIO()
+        call_command("clean_resource_titles", "--apply", stdout=second_run)
+        self.assertIn("0 cambios aplicados", second_run.getvalue())
+
+    def test_natural_exercise_phrase_is_not_overtrimmed(self):
+        self.resource.title = "1.5a Ejercicios de sumas y restas"
+        self.resource.save(update_fields=["title"])
+
+        call_command("clean_resource_titles", "--apply", stdout=StringIO())
+
+        self.resource.refresh_from_db()
+        self.assertEqual(
+            self.resource.title,
+            "1.5a Ejercicios de sumas y restas",
+        )
+
+    def test_data_migration_cleans_existing_title_and_marks_reaudit(self):
+        from django.apps import apps
+
+        migration = importlib.import_module(
+            "apps.content.migrations.0032_clean_resource_titles"
+        )
+        migration.clean_existing_titles(apps, schema_editor=None)
+
+        self.resource.refresh_from_db()
+        self.assertEqual(
+            self.resource.title,
+            "1.02 Agrupación de Términos Semejantes",
+        )
+        self.assertEqual(self.resource.slug, "slug-publico-estable")
+        self.assertTrue(self.resource.editorial_audit["requires_reaudit"])
+        self.assertFalse(
+            self.resource.editorial_audit["web"]["title_audited"]
+        )
 
 
 

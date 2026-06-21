@@ -5,6 +5,7 @@ import json
 import os
 
 from apps.content.models import Area, Level, Module, ModuleResource, Resource, Subject, Topic
+from apps.content.services.title_cleanup_service import clean_resource_title
 
 
 class Command(BaseCommand):
@@ -372,13 +373,22 @@ class Command(BaseCommand):
 
         resource_by_title = {}
         for item in resources:
-            resource_slug = slugify(item["title"])
+            raw_title = item["title"]
+            resource_slug = item.get("slug") or slugify(raw_title)
+            subject = subject_by_name[item["subject"]]
+            topic = topic_by_subject[item["subject"]][item["topic"]]
+            public_title = clean_resource_title(
+                raw_title,
+                subject_name=subject.name,
+                topic_name=topic.name,
+                topic_slug=topic.slug,
+            )
             resource, created = Resource.objects.get_or_create(
                 slug=resource_slug,
                 defaults={
-                    "title": item["title"],
-                    "subject": subject_by_name[item["subject"]],
-                    "topic": topic_by_subject[item["subject"]][item["topic"]],
+                    "title": public_title,
+                    "subject": subject,
+                    "topic": topic,
                     "description": item["description"],
                     "content": item["content"],
                     "video_url": item.get("video_url"),
@@ -392,7 +402,8 @@ class Command(BaseCommand):
                     resource.description = item["description"]
                     resource.content = item["content"]
                     resource.save(update_fields=["description", "content"])
-            resource_by_title[resource.title] = resource
+            resource_by_title[raw_title] = resource
+            resource_by_title[public_title] = resource
 
         for item in self.modules:
             module_slug = slugify(item["title"])
