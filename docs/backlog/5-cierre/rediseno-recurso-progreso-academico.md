@@ -5,6 +5,7 @@
 - **Prioridad:** P1  ·  **Cartera:** producto / educativa
 - **Tipo:** producto
 - **Dueño sugerido:** 🏛️ Claude
+- **PR:** #75 — `feat/recurso-progreso-academico` → `main`
 
 ## Objetivo (una frase)
 Rediseñar la vista de recurso (más legible y sin "cajas dentro de cajas", título protagonista,

@@ -50,5 +50,5 @@ acción manual "Comprendido" por un **progreso calculado desde los intentos real
 
 ## Pendientes / Próximos pasos
 
-- Auditoría final y squash-merge de `feat/recurso-progreso-academico` a `main` por 🏛️ Claude.
+- PR **#75** abierto hacia `main`; auditoría final y squash-merge por 🏛️ Claude.
 - Opcional: QA con teclado/lector de pantalla de pestañas y "Ver más".

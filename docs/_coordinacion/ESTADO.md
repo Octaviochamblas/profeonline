@@ -8,7 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🧩 Codex | `feat/recurso-progreso-academico` | 2026-06-21 14:12 | 🔴 corrigiendo auditoría P1/P2/P3 |
+| _libre_ | - | - | 🟢 sin lock |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
@@ -85,7 +85,8 @@
   `progress_service` + selectores sin N+1. Perfil ampliado con panel por tema/recurso. "Comprendido"
   retirado de la UI (endpoint+modelo conservados); agregados de tema usan progreso ponderado.
   🧩 Codex corrigió disponibilidad por modo, cobertura real del perfil y pestañas móviles.
-  **Sin migraciones. 391 tests OK + QA 320/360/390 px.** Pendiente: cierre y merge por 🏛️ Claude.
+  **Sin migraciones. 391 tests OK + QA 320/360/390 px. PR #75 abierto.**
+  Pendiente: auditoría final y squash-merge por 🏛️ Claude.
 - 2026-06-21 — 🏛️ Claude + 🧑: **Reproductor de preguntas a pantalla completa — CERRADO 🟢** (commit
   `faacd8c`, merge a `main`). Panel interno fullscreen (móvil + PC): una pregunta a la vez con
   `Anterior`/`Siguiente`, pantalla de revisión respondida/pendiente previa al envío y resultados a
