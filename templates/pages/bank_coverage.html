@@ -9,7 +9,7 @@
         <div>
             <span class="studio-badge">Analítica del banco</span>
             <h1>Resumen de cobertura</h1>
-            <p>Explora el banco por área, asignatura y tema. Cada nivel muestra cuántos recursos tienen auditada cada categoría editorial.</p>
+            <p>Explora el banco por área, nivel, asignatura y tema. Cada rama muestra cuántos recursos tienen auditada cada categoría editorial.</p>
         </div>
         <a class="btn-secondary" href="{% url 'content:bank_results' %}">Ver resultados por alumno</a>
     </header>
@@ -40,52 +40,65 @@
                 {% include "includes/bank_audit_fractions.html" with audit=area.audit %}
             </summary>
             <div class="acc__body">
-                {% for subject in area.subjects %}
-                <details class="acc acc--subject">
+                {% for level in area.levels %}
+                <details class="acc acc--education-level">
                     <summary class="acc__summary">
                         <i class="ti ti-chevron-right acc__caret" aria-hidden="true"></i>
-                        <span class="acc__dot acc__dot--{{ subject.status }}" title="Estado de cobertura de la asignatura"></span>
-                        <span class="acc__name">{{ subject.subject.name|default:"Sin asignatura" }}</span>
-                        <span class="acc__count">{{ subject.resource_count }} recurso{{ subject.resource_count|pluralize:"s" }}</span>
-                        {% include "includes/bank_audit_fractions.html" with audit=subject.audit %}
+                        <span class="acc__dot acc__dot--{{ level.status }}" title="Estado de cobertura del nivel"></span>
+                        <span class="acc__name">{{ level.level.name|default:"Sin nivel" }}</span>
+                        <span class="acc__count">{{ level.resource_count }} recurso{{ level.resource_count|pluralize:"s" }}</span>
+                        {% include "includes/bank_audit_fractions.html" with audit=level.audit %}
                     </summary>
                     <div class="acc__body">
-                        {% for topic in subject.topics %}
-                        <details class="acc acc--topic">
+                        {% for subject in level.subjects %}
+                        <details class="acc acc--subject">
                             <summary class="acc__summary">
                                 <i class="ti ti-chevron-right acc__caret" aria-hidden="true"></i>
-                                <span class="acc__dot acc__dot--{{ topic.status }}" title="Estado de cobertura del tema"></span>
-                                <span class="acc__name">{{ topic.topic.name|default:"Sin tema" }}</span>
-                                <span class="acc__count">{{ topic.resource_count }} recurso{{ topic.resource_count|pluralize:"s" }}</span>
-                                {% include "includes/bank_audit_fractions.html" with audit=topic.audit %}
+                                <span class="acc__dot acc__dot--{{ subject.status }}" title="Estado de cobertura de la asignatura"></span>
+                                <span class="acc__name">{{ subject.subject.name|default:"Sin asignatura" }}</span>
+                                <span class="acc__count">{{ subject.resource_count }} recurso{{ subject.resource_count|pluralize:"s" }}</span>
+                                {% include "includes/bank_audit_fractions.html" with audit=subject.audit %}
                             </summary>
                             <div class="acc__body">
-                                <ul class="res-list">
-                                    {% for row in topic.rows %}
-                                    <li>
-                                        <a class="res-row res-row--{{ row.coverage_status }}" href="{% url 'content:question_review' row.resource.slug %}">
-                                            <span class="acc__dot acc__dot--{{ row.coverage_status }}" aria-hidden="true"></span>
-                                            <span class="res-row__title">{{ row.resource.title }}</span>
-                                            <span class="res-levels" title="Preguntas publicadas por nivel">
-                                                {% for lc in row.level_counts %}
-                                                <span class="res-level res-level--{{ lc.status }}">
-                                                    <span class="res-level__lbl">N{{ lc.level }}</span>
-                                                    <span class="res-level__n">{{ lc.count }}</span>
-                                                </span>
-                                                {% endfor %}
-                                            </span>
-                                            <span class="res-row__audits">
-                                                {% for c in row.editorial_list %}
-                                                <span class="res-audit {% if c.done %}is-done{% else %}is-missing{% endif %}" title="{{ c.label }}{% if c.done %}: auditado{% else %}: pendiente{% endif %}" aria-label="{{ c.label }}{% if c.done %}: auditado{% else %}: pendiente{% endif %}">
-                                                    {% if c.done %}<i class="ti ti-check" aria-hidden="true"></i>{% else %}<i class="ti ti-x" aria-hidden="true"></i>{% endif %}
-                                                </span>
-                                                {% endfor %}
-                                            </span>
-                                            <i class="ti ti-pencil res-row__go" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
+                                {% for topic in subject.topics %}
+                                <details class="acc acc--topic">
+                                    <summary class="acc__summary">
+                                        <i class="ti ti-chevron-right acc__caret" aria-hidden="true"></i>
+                                        <span class="acc__dot acc__dot--{{ topic.status }}" title="Estado de cobertura del tema"></span>
+                                        <span class="acc__name">{{ topic.topic.name|default:"Sin tema" }}</span>
+                                        <span class="acc__count">{{ topic.resource_count }} recurso{{ topic.resource_count|pluralize:"s" }}</span>
+                                        {% include "includes/bank_audit_fractions.html" with audit=topic.audit %}
+                                    </summary>
+                                    <div class="acc__body">
+                                        <ul class="res-list">
+                                            {% for row in topic.rows %}
+                                            <li>
+                                                <a class="res-row res-row--{{ row.coverage_status }}" href="{% url 'content:question_review' row.resource.slug %}">
+                                                    <span class="acc__dot acc__dot--{{ row.coverage_status }}" aria-hidden="true"></span>
+                                                    <span class="res-row__title">{{ row.resource.title }}</span>
+                                                    <span class="res-levels" title="Preguntas publicadas por nivel">
+                                                        {% for lc in row.level_counts %}
+                                                        <span class="res-level res-level--{{ lc.status }}">
+                                                            <span class="res-level__lbl">N{{ lc.level }}</span>
+                                                            <span class="res-level__n">{{ lc.count }}</span>
+                                                        </span>
+                                                        {% endfor %}
+                                                    </span>
+                                                    <span class="res-row__audits">
+                                                        {% for c in row.editorial_list %}
+                                                        <span class="res-audit {% if c.done %}is-done{% else %}is-missing{% endif %}" title="{{ c.label }}{% if c.done %}: auditado{% else %}: pendiente{% endif %}" aria-label="{{ c.label }}{% if c.done %}: auditado{% else %}: pendiente{% endif %}">
+                                                            {% if c.done %}<i class="ti ti-check" aria-hidden="true"></i>{% else %}<i class="ti ti-x" aria-hidden="true"></i>{% endif %}
+                                                        </span>
+                                                        {% endfor %}
+                                                    </span>
+                                                    <i class="ti ti-pencil res-row__go" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </details>
+                                {% endfor %}
                             </div>
                         </details>
                         {% endfor %}
@@ -102,5 +115,5 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=7">
+<link rel="stylesheet" href="{% static 'css/bank_analytics.css' %}?v=8">
 {% endblock %}

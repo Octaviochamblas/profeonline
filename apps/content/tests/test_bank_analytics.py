@@ -5,6 +5,7 @@ from django.urls import reverse
 from apps.content.models import (
     Area,
     Choice,
+    Level,
     Question,
     QuizAttempt,
     QuizAttemptAnswer,
@@ -60,6 +61,10 @@ class BankAnalyticsTests(TestCase):
             password="password123",
         )
         self.area = Area.objects.create(name="Matemática", order=1)
+        self.education_level = Level.objects.create(
+            name="Escolar",
+            order=1,
+        )
         self.subject = Subject.objects.create(name="Álgebra", area=self.area)
         self.topic = Topic.objects.create(name="Ecuaciones", subject=self.subject)
         self.resource = Resource.objects.create(
@@ -81,6 +86,7 @@ class BankAnalyticsTests(TestCase):
                 },
             },
         )
+        self.resource.levels.add(self.education_level)
         ResourceQuizConfig.objects.create(
             resource=self.resource,
             counts=coverage_counts(),
@@ -181,7 +187,9 @@ class BankAnalyticsTests(TestCase):
         fractions = {item["label"]: (item["done"], item["total"]) for item in area["audit"]}
         self.assertEqual(fractions["Transcripción"], (1, 1))
         self.assertEqual(fractions["Descripción YouTube"], (1, 1))
-        subject = area["subjects"][0]
+        level = area["levels"][0]
+        self.assertEqual(level["level"], self.education_level)
+        subject = level["subjects"][0]
         self.assertEqual(subject["subject"], self.subject)
         topic = subject["topics"][0]
         self.assertEqual(topic["topic"], self.topic)
@@ -216,9 +224,36 @@ class BankAnalyticsTests(TestCase):
         )
         ResourceQuizConfig.objects.create(resource=second, counts=coverage_counts())
 
-        with self.assertNumQueries(1):
+        with self.assertNumQueries(2):
             rows = _build_coverage_rows()
             self.assertEqual(len(rows), 2)
+
+    def test_coverage_tree_places_multilevel_resource_in_each_level(self):
+        university = Level.objects.create(name="Universitario", order=3)
+        self.resource.levels.add(university)
+
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_coverage"))
+
+        area = response.context["tree"][0]
+        self.assertEqual(area["resource_count"], 1)
+        self.assertEqual(
+            [node["level"] for node in area["levels"]],
+            [self.education_level, university],
+        )
+        for level in area["levels"]:
+            resource = level["subjects"][0]["topics"][0]["rows"][0]["resource"]
+            self.assertEqual(resource, self.resource)
+
+    def test_coverage_tree_groups_resources_without_level(self):
+        self.resource.levels.clear()
+
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_coverage"))
+
+        level = response.context["tree"][0]["levels"][0]
+        self.assertIsNone(level["level"])
+        self.assertContains(response, "Sin nivel")
 
     def test_item_analysis_shows_accuracy_distribution_and_flags(self):
         question, correct, distractor = self._question(mode="evaluacion")

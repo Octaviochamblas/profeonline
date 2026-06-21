@@ -143,6 +143,7 @@ def _coverage_queryset():
             "topic__subject__area",
             "quiz_config",
         )
+        .prefetch_related("levels")
         .annotate(
             **_question_count_annotations(),
             has_direct_guide=Exists(
@@ -174,6 +175,7 @@ def _build_coverage_rows(resources=None):
     for resource in queryset:
         subject = resource.subject or getattr(resource.topic, "subject", None)
         area = getattr(subject, "area", None)
+        education_levels = list(resource.levels.all())
         config = get_quiz_config(resource)
         cells = []
         cells_by_level = {1: {}, 2: {}, 3: {}}
@@ -254,6 +256,7 @@ def _build_coverage_rows(resources=None):
             {
                 "resource": resource,
                 "area": area,
+                "education_levels": education_levels,
                 "subject": subject,
                 "topic": resource.topic,
                 "cells": cells,
@@ -302,12 +305,11 @@ def _build_coverage_rows(resources=None):
 
 
 def _build_coverage_tree(rows):
-    """Árbol acordeón Área → Asignatura → Tema → Recursos.
+    """Árbol acordeón Área → Nivel → Asignatura → Tema → Recursos.
 
-    El queryset ya viene ordenado por área/asignatura/tema/título, así que los
-    nodos quedan contiguos. Cada nodo agrega nº de recursos, preguntas, semáforo
-    de cobertura y las fracciones ``auditados/total`` por categoría editorial.
-    Un área/asignatura/tema ``None`` representa "Sin área/asignatura/tema".
+    Un recurso con varios niveles aparece en cada rama asociada, pero el agregado
+    del área se calcula sobre recursos únicos. Los recursos sin nivel quedan bajo
+    una rama explícita "Sin nivel".
     """
     areas = []
     area_index = {}
@@ -318,42 +320,76 @@ def _build_coverage_tree(rows):
             area_node = {
                 "area": row["area"],
                 "rows": [],
-                "subjects": [],
+                "levels": [],
                 "_index": {},
             }
             area_index[area_key] = area_node
             areas.append(area_node)
         area_node["rows"].append(row)
 
-        subject_key = getattr(row["subject"], "id", None)
-        subject_node = area_node["_index"].get(subject_key)
-        if subject_node is None:
-            subject_node = {
-                "subject": row["subject"],
-                "rows": [],
-                "topics": [],
-                "_index": {},
-            }
-            area_node["_index"][subject_key] = subject_node
-            area_node["subjects"].append(subject_node)
-        subject_node["rows"].append(row)
+        education_levels = row["education_levels"] or [None]
+        for education_level in education_levels:
+            level_key = getattr(education_level, "id", None)
+            level_node = area_node["_index"].get(level_key)
+            if level_node is None:
+                level_node = {
+                    "level": education_level,
+                    "rows": [],
+                    "subjects": [],
+                    "_index": {},
+                }
+                area_node["_index"][level_key] = level_node
+                area_node["levels"].append(level_node)
+            level_node["rows"].append(row)
 
-        topic_key = getattr(row["topic"], "id", None)
-        topic_node = subject_node["_index"].get(topic_key)
-        if topic_node is None:
-            topic_node = {"topic": row["topic"], "rows": []}
-            subject_node["_index"][topic_key] = topic_node
-            subject_node["topics"].append(topic_node)
-        topic_node["rows"].append(row)
+            subject_key = getattr(row["subject"], "id", None)
+            subject_node = level_node["_index"].get(subject_key)
+            if subject_node is None:
+                subject_node = {
+                    "subject": row["subject"],
+                    "rows": [],
+                    "topics": [],
+                    "_index": {},
+                }
+                level_node["_index"][subject_key] = subject_node
+                level_node["subjects"].append(subject_node)
+            subject_node["rows"].append(row)
+
+            topic_key = getattr(row["topic"], "id", None)
+            topic_node = subject_node["_index"].get(topic_key)
+            if topic_node is None:
+                topic_node = {"topic": row["topic"], "rows": []}
+                subject_node["_index"][topic_key] = topic_node
+                subject_node["topics"].append(topic_node)
+            topic_node["rows"].append(row)
 
     for area_node in areas:
         area_node.update(_aggregate_node(area_node["rows"]))
         area_node.pop("_index")
-        for subject_node in area_node["subjects"]:
-            subject_node.update(_aggregate_node(subject_node["rows"]))
-            subject_node.pop("_index")
-            for topic_node in subject_node["topics"]:
-                topic_node.update(_aggregate_node(topic_node["rows"]))
+        area_node["levels"].sort(
+            key=lambda node: (
+                node["level"] is None,
+                getattr(node["level"], "order", 0),
+                getattr(node["level"], "name", ""),
+            )
+        )
+        for level_node in area_node["levels"]:
+            level_node.update(_aggregate_node(level_node["rows"]))
+            level_node.pop("_index")
+            level_node["subjects"].sort(
+                key=lambda node: getattr(node["subject"], "name", "")
+            )
+            for subject_node in level_node["subjects"]:
+                subject_node.update(_aggregate_node(subject_node["rows"]))
+                subject_node.pop("_index")
+                subject_node["topics"].sort(
+                    key=lambda node: getattr(node["topic"], "name", "")
+                )
+                for topic_node in subject_node["topics"]:
+                    topic_node.update(_aggregate_node(topic_node["rows"]))
+                    topic_node["rows"].sort(
+                        key=lambda row: row["resource"].title.lower()
+                    )
     return areas
 
 
