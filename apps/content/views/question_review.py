@@ -138,15 +138,25 @@ def save_resource_quiz_config(request, resource_id):
     config, created = ResourceQuizConfig.objects.get_or_create(resource=resource)
 
     try:
+        # El "pool" (meta del banco) ya no se edita desde el formulario: se conserva
+        # el valor existente del recurso (o el default). Desde la UI solo se ajusta
+        # la "muestra" (cuántas preguntas ve el alumno) y los parámetros de evaluación.
+        existing_counts = config.counts or {}
+        default_pool = {"practice": 15, "eval": 10}
         counts = {}
         for lvl in ["1", "2", "3"]:
+            lvl_existing = existing_counts.get(lvl, {})
             counts[lvl] = {
                 "practice": {
-                    "pool": int(request.POST.get(f"practice_pool_{lvl}", 15)),
+                    "pool": int(
+                        lvl_existing.get("practice", {}).get("pool", default_pool["practice"])
+                    ),
                     "shown": int(request.POST.get(f"practice_shown_{lvl}", 5)),
                 },
                 "eval": {
-                    "pool": int(request.POST.get(f"eval_pool_{lvl}", 10)),
+                    "pool": int(
+                        lvl_existing.get("eval", {}).get("pool", default_pool["eval"])
+                    ),
                     "shown": int(request.POST.get(f"eval_shown_{lvl}", 3)),
                 },
             }
@@ -398,6 +408,7 @@ def generate_questions_inline(request, resource_id):
     if mode not in dict(Question.MODE_CHOICES):
         mode = "preparacion"
     source = request.POST.get("source", "video")
+    custom_instructions = (request.POST.get("description", "") or "").strip() or None
     try:
         count = int(request.POST.get("count", 5))
     except (ValueError, TypeError):
@@ -426,6 +437,7 @@ def generate_questions_inline(request, resource_id):
             count=count,
             status=status,
             education_level=edu_level,
+            custom_instructions=custom_instructions,
             use_transcript=(source == "video"),
             use_guides=True,
         )

@@ -32,6 +32,58 @@ CELL_DEFINITIONS = (
 
 LOW_SAMPLE_ANSWERS = 10
 
+EDITORIAL_CATEGORIES = (
+    ("transcript", "Transcripción"),
+    ("web_title", "Título web"),
+    ("web_description", "Descripción web"),
+    ("youtube_title", "Título YouTube"),
+    ("youtube_description", "Descripción YouTube"),
+)
+
+# Umbral bajo el cual la cobertura de preguntas se considera crítica (rojo).
+CRITICAL_COVERAGE_RATIO = 0.2
+
+
+def _coverage_status(required, missing):
+    """Semáforo de cobertura de un recurso o nodo agregado.
+
+    verde (``complete``): no falta nada · rojo (``critical``): tiene menos del
+    20% de lo requerido · amarillo (``partial``): el resto.
+    """
+    if required <= 0 or missing <= 0:
+        return "complete"
+    filled = required - missing
+    if filled < CRITICAL_COVERAGE_RATIO * required:
+        return "critical"
+    return "partial"
+
+
+def _audit_fractions(rows):
+    """Fracción ``auditados/total`` por categoría editorial para un conjunto."""
+    total = len(rows)
+    return [
+        {
+            "key": key,
+            "label": label,
+            "done": sum(1 for row in rows if row["editorial_checks"][key]),
+            "total": total,
+            "complete": total > 0
+            and all(row["editorial_checks"][key] for row in rows),
+        }
+        for key, label in EDITORIAL_CATEGORIES
+    ]
+
+
+def _aggregate_node(rows):
+    required = sum(row["required_total"] for row in rows)
+    missing = sum(row["total_missing"] for row in rows)
+    return {
+        "resource_count": len(rows),
+        "published": sum(row["published_total"] for row in rows),
+        "audit": _audit_fractions(rows),
+        "status": _coverage_status(required, missing),
+    }
+
 
 def _clean_id(value):
     """Normaliza un id de filtro (GET) a string numérico o "".
@@ -71,6 +123,15 @@ def _question_count_annotations():
             & (Q(questions__mode=mode) | Q(questions__mode="ambas")),
             distinct=True,
         )
+    for level in (1, 2, 3):
+        annotations[f"published_l{level}"] = Count(
+            "questions",
+            filter=Q(
+                questions__status="publicada",
+                questions__level=level,
+            ),
+            distinct=True,
+        )
     return annotations
 
 
@@ -107,15 +168,17 @@ def _coverage_queryset():
     )
 
 
-def _build_coverage_rows():
+def _build_coverage_rows(resources=None):
     rows = []
-    for resource in _coverage_queryset():
+    queryset = _coverage_queryset() if resources is None else resources
+    for resource in queryset:
         subject = resource.subject or getattr(resource.topic, "subject", None)
         area = getattr(subject, "area", None)
         config = get_quiz_config(resource)
         cells = []
         cells_by_level = {1: {}, 2: {}, 3: {}}
         total_missing = 0
+        required_total = 0
 
         for level, mode_key, mode_label in CELL_DEFINITIONS:
             settings = config.counts[str(level)][mode_key]
@@ -124,6 +187,7 @@ def _build_coverage_rows():
             shown = settings["shown"]
             missing = max(pool - available, 0)
             total_missing += missing
+            required_total += pool
             if available == 0:
                 state = "empty"
             elif missing:
@@ -139,9 +203,25 @@ def _build_coverage_rows():
                 "shown": shown,
                 "missing": missing,
                 "state": state,
+                "pct": round(available / pool * 100) if pool else 0,
             }
             cells.append(cell)
             cells_by_level[level][mode_key] = cell
+
+        level_counts = []
+        for level in (1, 2, 3):
+            practice = cells_by_level[level]["practice"]
+            evaluation = cells_by_level[level]["eval"]
+            level_required = practice["pool"] + evaluation["pool"]
+            level_missing = practice["missing"] + evaluation["missing"]
+            level_counts.append(
+                {
+                    "level": level,
+                    "count": getattr(resource, f"published_l{level}"),
+                    "required": level_required,
+                    "status": _coverage_status(level_required, level_missing),
+                }
+            )
 
         if resource.published_total == 0:
             overall_state = "empty"
@@ -187,11 +267,24 @@ def _build_coverage_rows():
                 ],
                 "published_total": resource.published_total,
                 "draft_total": resource.draft_total,
+                "level_counts": level_counts,
                 "total_missing": total_missing,
+                "required_total": required_total,
                 "overall_state": overall_state,
+                "coverage_status": _coverage_status(
+                    required_total, total_missing
+                ),
                 "has_video": bool(resource.video_url),
                 "has_transcript": has_transcript,
                 "editorial_checks": editorial_checks,
+                "editorial_list": [
+                    {
+                        "key": key,
+                        "label": label,
+                        "done": editorial_checks[key],
+                    }
+                    for key, label in EDITORIAL_CATEGORIES
+                ],
                 "editorial_complete": editorial_complete,
                 "editorial_pending": sum(
                     not value for value in editorial_checks.values()
@@ -208,23 +301,71 @@ def _build_coverage_rows():
     return rows
 
 
+def _build_coverage_tree(rows):
+    """Árbol acordeón Área → Asignatura → Tema → Recursos.
+
+    El queryset ya viene ordenado por área/asignatura/tema/título, así que los
+    nodos quedan contiguos. Cada nodo agrega nº de recursos, preguntas, semáforo
+    de cobertura y las fracciones ``auditados/total`` por categoría editorial.
+    Un área/asignatura/tema ``None`` representa "Sin área/asignatura/tema".
+    """
+    areas = []
+    area_index = {}
+    for row in rows:
+        area_key = getattr(row["area"], "id", None)
+        area_node = area_index.get(area_key)
+        if area_node is None:
+            area_node = {
+                "area": row["area"],
+                "rows": [],
+                "subjects": [],
+                "_index": {},
+            }
+            area_index[area_key] = area_node
+            areas.append(area_node)
+        area_node["rows"].append(row)
+
+        subject_key = getattr(row["subject"], "id", None)
+        subject_node = area_node["_index"].get(subject_key)
+        if subject_node is None:
+            subject_node = {
+                "subject": row["subject"],
+                "rows": [],
+                "topics": [],
+                "_index": {},
+            }
+            area_node["_index"][subject_key] = subject_node
+            area_node["subjects"].append(subject_node)
+        subject_node["rows"].append(row)
+
+        topic_key = getattr(row["topic"], "id", None)
+        topic_node = subject_node["_index"].get(topic_key)
+        if topic_node is None:
+            topic_node = {"topic": row["topic"], "rows": []}
+            subject_node["_index"][topic_key] = topic_node
+            subject_node["topics"].append(topic_node)
+        topic_node["rows"].append(row)
+
+    for area_node in areas:
+        area_node.update(_aggregate_node(area_node["rows"]))
+        area_node.pop("_index")
+        for subject_node in area_node["subjects"]:
+            subject_node.update(_aggregate_node(subject_node["rows"]))
+            subject_node.pop("_index")
+            for topic_node in subject_node["topics"]:
+                topic_node.update(_aggregate_node(topic_node["rows"]))
+    return areas
+
+
 @user_passes_test(is_admin)
 def bank_coverage(request):
     rows = _build_coverage_rows()
     context = {
         "rows": rows,
-        "areas": Area.objects.filter(
-            Q(subjects__resources__isnull=False)
-            | Q(subjects__topics__resources__isnull=False)
-        ).distinct(),
-        "subjects": Subject.objects.filter(
-            Q(resources__isnull=False) | Q(topics__resources__isnull=False)
-        )
-        .select_related("area")
-        .distinct(),
-        "topics": Topic.objects.filter(resources__isnull=False)
-        .select_related("subject")
-        .distinct(),
+        "tree": _build_coverage_tree(rows),
+        "categories": [
+            {"key": key, "label": label} for key, label in EDITORIAL_CATEGORIES
+        ],
         "totals": {
             "resources": len(rows),
             "empty": sum(row["overall_state"] == "empty" for row in rows),

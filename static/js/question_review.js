@@ -111,10 +111,122 @@ function resetBulkBar(qlistId) {
     }
 }
 
+// ── Generación con IA (orquestador por niveles/modos) ─────────────────────────
+
+const GENX_MODE_LABEL = { preparacion: 'Práctica', evaluacion: 'Evaluación' };
+const GENX_BATCH = 5; // tope por petición para no chocar el timeout de gunicorn
+
+function initGenx() {
+    const root = document.querySelector('[data-genx]');
+    if (!root) return;
+    const url = root.dataset.genUrl;
+    const runBtn = document.getElementById('genx-run');
+    const log = document.getElementById('genx-log');
+
+    // Habilitar/atenuar la config de cada nivel según su checkbox.
+    root.querySelectorAll('.genx-level').forEach(lv => {
+        const enable = lv.querySelector('.genx-level-enable');
+        const cfg = lv.querySelector('.genx-level__cfg');
+        const sync = () => lv.classList.toggle('is-on', enable.checked);
+        enable.addEventListener('change', sync);
+        sync();
+    });
+
+    function csrf() {
+        const meta = document.querySelector('meta[name=csrf-token]');
+        if (meta) return meta.getAttribute('content');
+        const inp = document.querySelector('[name=csrfmiddlewaretoken]');
+        return inp ? inp.value : '';
+    }
+
+    function appendLog(text) {
+        const line = document.createElement('div');
+        line.className = 'genx-log__line';
+        line.textContent = text;
+        log.appendChild(line);
+        return line;
+    }
+
+    async function runJob(job, line) {
+        const qlist = document.getElementById('qlist-' + job.level + '-' + job.mode);
+        if (qlist) {
+            const mode = qlist.closest('.acc-mode');
+            const lvl = qlist.closest('.acc-level');
+            if (lvl) lvl.setAttribute('open', '');
+            if (mode) mode.setAttribute('open', '');
+        }
+        let done = 0;
+        let remaining = job.count;
+        const label = GENX_MODE_LABEL[job.mode] || job.mode;
+        while (remaining > 0) {
+            const batch = Math.min(GENX_BATCH, remaining);
+            const body = new URLSearchParams();
+            body.set('level', job.level);
+            body.set('mode', job.mode);
+            body.set('source', 'video');
+            body.set('count', String(batch));
+            if (job.desc) body.set('description', job.desc);
+            line.textContent = 'Nivel ' + job.level + ' · ' + label + ': ' + done + '/' + job.count + '…';
+            try {
+                const resp = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrf(), 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: body.toString(),
+                });
+                const html = await resp.text();
+                if (qlist) {
+                    const empty = qlist.querySelector('.acc-empty');
+                    if (empty) empty.remove();
+                    qlist.insertAdjacentHTML('beforeend', html);
+                    if (window.htmx) window.htmx.process(qlist);
+                    initSmoothAccordion(qlist);
+                }
+            } catch (err) {
+                line.textContent = 'Nivel ' + job.level + ' · ' + label + ': error de red.';
+                return;
+            }
+            done += batch;
+            remaining -= batch;
+        }
+        line.textContent = 'Nivel ' + job.level + ' · ' + label + ': ' + job.count + ' generadas ✓';
+    }
+
+    runBtn.addEventListener('click', async () => {
+        const jobs = [];
+        root.querySelectorAll('.genx-level').forEach(lv => {
+            if (!lv.querySelector('.genx-level-enable').checked) return;
+            const level = lv.dataset.level;
+            const desc = lv.querySelector('.genx-desc').value.trim();
+            lv.querySelectorAll('.genx-mode-enable').forEach(cb => {
+                if (!cb.checked) return;
+                const mode = cb.dataset.mode;
+                const input = lv.querySelector('.genx-mode-count[data-mode="' + mode + '"]');
+                const count = Math.max(0, parseInt(input.value, 10) || 0);
+                if (count > 0) jobs.push({ level, mode, count, desc });
+            });
+        });
+
+        log.hidden = false;
+        log.innerHTML = '';
+        if (!jobs.length) {
+            appendLog('Habilita al menos un nivel y un modo (práctica o evaluación) con cantidad mayor a 0.');
+            return;
+        }
+
+        runBtn.disabled = true;
+        for (const job of jobs) {
+            const line = appendLog('Nivel ' + job.level + ' · ' + (GENX_MODE_LABEL[job.mode] || job.mode) + ': 0/' + job.count + '…');
+            await runJob(job, line);
+        }
+        runBtn.disabled = false;
+    });
+}
+
 // ── Init ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
     initSmoothAccordion();
+    initGenx();
 
     // 1. Toggle alternativas (Opciones)
     document.addEventListener('click', (e) => {

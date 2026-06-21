@@ -164,8 +164,37 @@ class BankAnalyticsTests(TestCase):
         self.assertFalse(row["editorial_complete"])
         self.assertEqual(row["editorial_pending"], 3)
         self.assertEqual(response.context["totals"]["editorial_pending"], 1)
-        self.assertContains(response, "Editorial pendiente (3)")
-        self.assertContains(response, 'data-editorial="pending"')
+        # La hoja del recurso muestra ✓/✗ por categoría editorial.
+        self.assertContains(response, "res-audit is-missing")
+        self.assertContains(response, "res-audit is-done")
+
+    def test_coverage_tree_aggregates_audit_fractions_per_node(self):
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_coverage"))
+
+        tree = response.context["tree"]
+        self.assertEqual(len(tree), 1)
+        area = tree[0]
+        self.assertEqual(area["area"], self.area)
+        self.assertEqual(area["resource_count"], 1)
+        # El recurso tiene las 5 categorías auditadas → 1/1 en cada una.
+        fractions = {item["label"]: (item["done"], item["total"]) for item in area["audit"]}
+        self.assertEqual(fractions["Transcripción"], (1, 1))
+        self.assertEqual(fractions["Descripción YouTube"], (1, 1))
+        subject = area["subjects"][0]
+        self.assertEqual(subject["subject"], self.subject)
+        topic = subject["topics"][0]
+        self.assertEqual(topic["topic"], self.topic)
+        self.assertEqual(topic["rows"][0]["resource"], self.resource)
+
+    def test_coverage_status_critical_when_below_twenty_percent(self):
+        # pool requerido = 2 (prep N1) + 1 (eval N1) = 3; 0 publicadas → 0% → rojo.
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("content:bank_coverage"))
+
+        row = response.context["rows"][0]
+        self.assertEqual(row["coverage_status"], "critical")
+        self.assertContains(response, "res-row--critical")
 
     def test_editing_description_invalidates_only_web_description_audit(self):
         self.resource.description = "Descripción modificada después de auditar"

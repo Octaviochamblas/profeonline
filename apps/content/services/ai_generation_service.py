@@ -30,7 +30,17 @@ _EDUCATION_DESCRIPTIONS = {
 }
 
 
-def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_key=None, status="publicada", education_level=None, custom_instructions=None, transcript=None, use_transcript=True, reference_guides=None, use_guides=True):
+def _existing_question_texts(resource, limit=80):
+    """Enunciados ya existentes del recurso (no archivados) para evitar repetir."""
+    return list(
+        Question.objects.filter(resource=resource)
+        .exclude(status="archivada")
+        .order_by("-id")
+        .values_list("text", flat=True)[:limit]
+    )
+
+
+def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_key=None, status="publicada", education_level=None, custom_instructions=None, transcript=None, use_transcript=True, reference_guides=None, use_guides=True, existing_questions=None, avoid_existing=True):
     """Genera preguntas para un recurso usando Gemini o OpenAI en el estado especificado.
 
     Si no se provee ni se encuentra una API key en settings/entorno, y settings.DEBUG es True,
@@ -80,6 +90,10 @@ def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_
         from apps.content.services.guide_service import build_reference_block
         reference_guides = build_reference_block(resource)
 
+    # Preguntas ya existentes del recurso: se le pasan a la IA para que NO las repita.
+    if existing_questions is None and avoid_existing:
+        existing_questions = _existing_question_texts(resource)
+
     questions_data = generate_question_candidates(
         resource=resource,
         level=level,
@@ -92,6 +106,7 @@ def generate_questions_for_resource(resource, level, mode="ambas", count=3, api_
         reference_guides=reference_guides,
         gemini_key=gemini_key,
         openai_key=openai_key,
+        existing_questions=existing_questions,
     )
 
     created_questions = _save_questions(resource, level, mode, questions_data, status)
@@ -110,6 +125,7 @@ def generate_question_candidates(
     reference_guides=None,
     gemini_key=None,
     openai_key=None,
+    existing_questions=None,
 ):
     """Genera candidatos sin persistirlos para permitir una auditoría previa."""
     if gemini_key is None:
@@ -126,6 +142,7 @@ def generate_question_candidates(
         custom_instructions,
         transcript=transcript,
         reference_guides=reference_guides,
+        existing_questions=existing_questions,
     )
     prompt += (
         "\nIncluye además `cognitive_type` en cada objeto con uno de: "
@@ -139,10 +156,21 @@ def generate_question_candidates(
 
 
 
-def _build_prompt(resource, level, mode, count, education_level=None, custom_instructions=None, transcript=None, reference_guides=None):
+def _build_prompt(resource, level, mode, count, education_level=None, custom_instructions=None, transcript=None, reference_guides=None, existing_questions=None):
     """Construye el prompt pedagógico para la IA."""
     level_name = dict(Question.LEVEL_CHOICES).get(level, f"Nivel {level}")
     edu_desc = _EDUCATION_DESCRIPTIONS.get(education_level or "", _EDUCATION_DESCRIPTIONS["media"])
+
+    existing_block = ""
+    if existing_questions:
+        listado = "\n".join(f"- {texto}" for texto in existing_questions if texto)
+        if listado:
+            existing_block = (
+                "\n- PREGUNTAS YA EXISTENTES EN ESTE RECURSO (NO las repitas ni generes "
+                "variantes triviales —mismo enunciado con otros números o nombres—; aporta "
+                "preguntas genuinamente distintas que cubran otros aspectos del tema):\n"
+                f"{listado[:4000]}\n"
+            )
 
     transcript_block = ""
     if transcript:
@@ -175,6 +203,7 @@ CONTENIDO EDUCATIVO:
 {resource.content[:2000]}
 {transcript_block}
 {guides_block}
+{existing_block}
 
 DIRECTRICES DEL NIVEL PEDAGÓGICO:
 Nivel solicitado: {level_name} (Nivel {level})

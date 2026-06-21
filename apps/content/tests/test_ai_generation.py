@@ -143,6 +143,39 @@ class AIGenerationTests(TestCase):
         self.assertIn("responseMimeType", kwargs["json"]["generationConfig"])
 
     @patch("requests.post")
+    @override_settings(GEMINI_API_KEY="fake-gemini-key")
+    def test_prompt_includes_existing_questions_to_avoid_repeats(self, mock_post):
+        """El prompt enviado a la IA lista las preguntas ya existentes del recurso."""
+        Question.objects.create(
+            resource=self.resource,
+            level=1,
+            mode="preparacion",
+            text="¿Cuánto es 1/2 + 1/2 expresado como entero?",
+            status="publicada",
+        )
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "candidates": [
+                {"content": {"parts": [{"text": "[]"}]}}
+            ]
+        }
+        mock_post.return_value = mock_response
+
+        generate_questions_for_resource(
+            resource=self.resource,
+            level=1,
+            mode="evaluacion",
+            count=1,
+        )
+
+        args, kwargs = mock_post.call_args
+        prompt = kwargs["json"]["contents"][0]["parts"][0]["text"]
+        self.assertIn("PREGUNTAS YA EXISTENTES", prompt)
+        self.assertIn("¿Cuánto es 1/2 + 1/2 expresado como entero?", prompt)
+
+    @patch("requests.post")
     @override_settings(OPENAI_API_KEY="fake-openai-key")
     def test_api_generation_openai_success(self, mock_post):
         """Verifica la generación exitosa llamando a la API de OpenAI mockeada."""
