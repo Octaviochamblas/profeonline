@@ -16,7 +16,7 @@ Estados históricos (separados del promedio reciente):
 """
 
 from apps.content.selectors.evaluation_selectors import (
-    get_available_levels_map,
+    get_question_availability_map,
     get_recent_attempts_by_resource,
 )
 
@@ -40,13 +40,13 @@ def _average(values):
     return round(sum(values) / len(values)) if values else None
 
 
-def build_resource_progress(grouped, available_levels):
+def build_resource_progress(grouped, availability):
     """Construye el contrato de progreso de un recurso.
 
     Args:
         grouped: dict {(level, mode): {"recent": [pct...], "passed": bool, "count": int}}
                  (salida de `get_recent_attempts_by_resource` para ese recurso).
-        available_levels: lista ordenada de niveles con preguntas publicadas.
+        availability: dict por nivel con flags ``practice`` y ``evaluation``.
 
     Returns:
         dict con `available_levels`, `worked_levels`, `weighted_progress`,
@@ -54,6 +54,8 @@ def build_resource_progress(grouped, available_levels):
         e `initial_level`.
     """
     grouped = grouped or {}
+    availability = availability or {}
+    available_levels = sorted(availability)
     levels = {}
     worked_levels = []
     worked_level_progress = []
@@ -81,6 +83,8 @@ def build_resource_progress(grouped, available_levels):
             "label": LEVEL_LABELS.get(level, f"Nivel {level}"),
             "label_long": LEVEL_LABELS_LONG.get(level, f"Nivel {level}"),
             "available": True,
+            "practice_available": availability[level]["practice"],
+            "evaluation_available": availability[level]["evaluation"],
             "worked": worked,
             "practice_average": practice_average,
             "evaluation_average": evaluation_average,
@@ -129,10 +133,12 @@ def get_resources_progress(user, resource_ids):
     resource_ids = list(resource_ids)
     if not resource_ids:
         return {}
-    available_map = get_available_levels_map(resource_ids)
+    availability_map = get_question_availability_map(resource_ids)
     grouped = get_recent_attempts_by_resource(user, resource_ids, limit=RECENT_ATTEMPTS)
     return {
-        rid: build_resource_progress(grouped.get(rid, {}), available_map.get(rid, []))
+        rid: build_resource_progress(
+            grouped.get(rid, {}), availability_map.get(rid, {})
+        )
         for rid in resource_ids
     }
 
@@ -157,6 +163,7 @@ def get_profile_progress(user):
         return []
 
     from collections import OrderedDict
+    from django.db.models import Count
     from apps.content.models import QuizAttempt, Resource, ResourceCompletion
 
     worked_ids = set(
@@ -178,6 +185,17 @@ def get_profile_progress(user):
         .select_related("topic", "subject", "topic__subject")
         .order_by("topic__name", "title")
     )
+    resources = list(resources)
+    topic_ids = {resource.topic_id for resource in resources if resource.topic_id}
+    topic_totals = {
+        row["topic_id"]: row["total"]
+        for row in Resource.objects.filter(
+            topic_id__in=topic_ids,
+            is_published=True,
+        )
+        .values("topic_id")
+        .annotate(total=Count("id"))
+    }
     progress_map = get_resources_progress(user, [r.id for r in resources])
 
     groups = OrderedDict()
@@ -208,6 +226,9 @@ def get_profile_progress(user):
             round(sum(worked_values) / len(worked_values)) if worked_values else 0
         )
         group["worked_count"] = len(worked_values)
-        group["total_count"] = len(group["resources"])
+        group["total_count"] = topic_totals.get(
+            group["topic"].id if group["topic"] else None,
+            len(group["resources"]),
+        )
         result.append(group)
     return result

@@ -472,6 +472,30 @@ class EvaluationViewTests(TestCase):
         resp = self.client.get(url)
         self.assertContains(resp, "Practica y evalúa tu aprendizaje")
 
+    def test_resource_detail_hides_unavailable_evaluation_mode(self):
+        Question.objects.all().update(mode="preparacion")
+        self.client.force_login(self.user)
+
+        resp = self.client.get(
+            reverse("content:resource_detail", args=[self.resource.slug])
+        )
+
+        self.assertContains(resp, 'aria-label="Practicar Conceptos"')
+        self.assertNotContains(resp, 'aria-label="Evaluarme en Conceptos"')
+        self.assertContains(resp, "Evaluación aún no disponible")
+
+    def test_resource_detail_hides_unavailable_practice_mode(self):
+        Question.objects.all().update(mode="evaluacion")
+        self.client.force_login(self.user)
+
+        resp = self.client.get(
+            reverse("content:resource_detail", args=[self.resource.slug])
+        )
+
+        self.assertNotContains(resp, 'aria-label="Practicar Conceptos"')
+        self.assertContains(resp, 'aria-label="Evaluarme en Conceptos"')
+        self.assertContains(resp, "Práctica aún no disponible")
+
     def test_resource_detail_no_quiz_without_questions(self):
         """Sin preguntas publicadas debe mostrar el estado vacío en la sección de quiz."""
         Question.objects.all().delete()

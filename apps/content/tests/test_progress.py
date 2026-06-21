@@ -1,7 +1,8 @@
 """Tests del motor de progreso académico (progress_service / selectores)."""
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.conf import settings
+from django.test import SimpleTestCase, TestCase
 
 from apps.content.models import (
     Question,
@@ -12,10 +13,12 @@ from apps.content.models import (
 )
 from apps.content.selectors.evaluation_selectors import (
     get_available_levels_map,
+    get_question_availability_map,
     get_recent_attempts_by_resource,
     get_topics_progress_map,
 )
 from apps.content.services.progress_service import (
+    get_profile_progress,
     get_resource_progress,
     select_initial_level,
 )
@@ -33,10 +36,10 @@ class ProgressTestBase(TestCase):
             topic=self.topic, is_published=True,
         )
 
-    def add_questions(self, resource, levels):
+    def add_questions(self, resource, levels, mode="ambas"):
         for level in levels:
             Question.objects.create(
-                resource=resource, level=level, mode="ambas",
+                resource=resource, level=level, mode=mode,
                 text=f"P{level}", status="publicada", order=0,
             )
 
@@ -134,6 +137,29 @@ class AvailabilityTests(ProgressTestBase):
             get_available_levels_map([self.resource.id])[self.resource.id], [1, 3]
         )
 
+    def test_only_practice_question_disables_evaluation_action(self):
+        self.add_questions(self.resource, [1], mode="preparacion")
+        progress = get_resource_progress(self.user, self.resource)
+
+        self.assertTrue(progress["levels"][1]["practice_available"])
+        self.assertFalse(progress["levels"][1]["evaluation_available"])
+
+    def test_only_evaluation_question_disables_practice_action(self):
+        self.add_questions(self.resource, [1], mode="evaluacion")
+        progress = get_resource_progress(self.user, self.resource)
+
+        self.assertFalse(progress["levels"][1]["practice_available"])
+        self.assertTrue(progress["levels"][1]["evaluation_available"])
+
+    def test_both_mode_enables_both_actions(self):
+        self.add_questions(self.resource, [1], mode="ambas")
+        availability = get_question_availability_map([self.resource.id])
+
+        self.assertEqual(
+            availability[self.resource.id][1],
+            {"practice": True, "evaluation": True},
+        )
+
 
 class InitialLevelTests(ProgressTestBase):
     def test_initial_is_first_not_passed(self):
@@ -171,3 +197,34 @@ class BatchQueryTests(ProgressTestBase):
         self.assertEqual(result[self.topic.id]["weighted_progress"], 70)
         self.assertEqual(result[self.topic.id]["percentage"], 70)
         self.assertEqual(result[self.topic.id]["worked"], 1)
+
+
+class ProfileCoverageTests(ProgressTestBase):
+    def test_profile_coverage_counts_all_published_topic_resources(self):
+        self.add_questions(self.resource, [1])
+        self.attempt(1, "evaluacion", 100, passed=True)
+        Resource.objects.create(
+            title="Resta",
+            slug="resta",
+            subject=self.subject,
+            topic=self.topic,
+            is_published=True,
+        )
+
+        groups = get_profile_progress(self.user)
+
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0]["worked_count"], 1)
+        self.assertEqual(groups[0]["total_count"], 2)
+        self.assertEqual(len(groups[0]["resources"]), 1)
+
+
+class MobileTabsCssTests(SimpleTestCase):
+    def test_mobile_tabs_use_three_column_grid_without_horizontal_scroll(self):
+        css = (settings.BASE_DIR / "static" / "css" / "estilos.css").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("grid-template-columns: repeat(3, minmax(0, 1fr));", css)
+        self.assertIn("overflow: visible;", css)
+        self.assertIn("min-height: 44px;", css)

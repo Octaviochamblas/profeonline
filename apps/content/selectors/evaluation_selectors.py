@@ -6,24 +6,50 @@ from django.db.models import Max, Q
 from apps.content.models import QuizAttempt, ResourceView, Resource, Question
 
 
+def get_question_availability_map(resource_ids):
+    """Disponibilidad de práctica/evaluación por recurso y nivel. Una query.
+
+    Las preguntas ``ambas`` habilitan los dos modos. Retorna:
+    ``{resource_id: {level: {"practice": bool, "evaluation": bool}}}``.
+    """
+    resource_ids = list(resource_ids)
+    if not resource_ids:
+        return {}
+
+    rows = (
+        Question.objects.filter(resource_id__in=resource_ids, status="publicada")
+        .values("resource_id", "level", "mode")
+        .distinct()
+    )
+    availability = defaultdict(
+        lambda: defaultdict(lambda: {"practice": False, "evaluation": False})
+    )
+    for row in rows:
+        level = row["level"]
+        if level not in (1, 2, 3):
+            continue
+        slot = availability[row["resource_id"]][level]
+        if row["mode"] in ("preparacion", "ambas"):
+            slot["practice"] = True
+        if row["mode"] in ("evaluacion", "ambas"):
+            slot["evaluation"] = True
+
+    return {
+        rid: {
+            level: dict(modes)
+            for level, modes in sorted(availability.get(rid, {}).items())
+        }
+        for rid in resource_ids
+    }
+
+
 def get_available_levels_map(resource_ids):
     """Niveles (1-3) con preguntas publicadas por recurso. Una sola query.
 
     Returns: dict {resource_id: [niveles ordenados]}.
     """
-    resource_ids = list(resource_ids)
-    if not resource_ids:
-        return {}
-    rows = (
-        Question.objects.filter(resource_id__in=resource_ids, status="publicada")
-        .values("resource_id", "level")
-        .distinct()
-    )
-    levels_by_resource = defaultdict(set)
-    for row in rows:
-        if row["level"] in (1, 2, 3):
-            levels_by_resource[row["resource_id"]].add(row["level"])
-    return {rid: sorted(levels_by_resource.get(rid, set())) for rid in resource_ids}
+    availability = get_question_availability_map(resource_ids)
+    return {rid: list(levels) for rid, levels in availability.items()}
 
 
 def get_recent_attempts_by_resource(user, resource_ids, limit=3):
