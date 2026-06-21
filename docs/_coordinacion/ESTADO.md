@@ -77,7 +77,7 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
-- 2026-06-21 — 🏛️ Claude + 🧩 Codex + 🧑: **Rediseño de recurso + progreso académico — AUDITADO 🟢**
+- 2026-06-21 — 🏛️ Claude + 🧩 Codex + 🧑: **Rediseño de recurso + progreso académico — CERRADO 🟢**
   (rama `feat/recurso-progreso-academico`). Vista de recurso rediseñada (título primero, metadatos
   compactos, descripción con Ver más/menos, columna legible, sin barra "Comprendido") + bloque único
   "Practica y evalúa tu aprendizaje" con pestañas por nivel. **Progreso calculado desde intentos
@@ -85,8 +85,8 @@
   `progress_service` + selectores sin N+1. Perfil ampliado con panel por tema/recurso. "Comprendido"
   retirado de la UI (endpoint+modelo conservados); agregados de tema usan progreso ponderado.
   🧩 Codex corrigió disponibilidad por modo, cobertura real del perfil y pestañas móviles.
-  **Sin migraciones. 391 tests OK + QA 320/360/390 px. PR #75 abierto.**
-  Pendiente: auditoría final y squash-merge por 🏛️ Claude.
+  **Sin migraciones. 391 tests OK + QA 320/360/390 px. PR #75 squash-mergeado**
+  en `main` (`3d847a6`, 2026-06-21). Tarjeta en `backlog/6-finalizados/`.
 - 2026-06-21 — 🏛️ Claude + 🧑: **Reproductor de preguntas a pantalla completa — CERRADO 🟢** (commit
   `faacd8c`, merge a `main`). Panel interno fullscreen (móvil + PC): una pregunta a la vez con
   `Anterior`/`Siguiente`, pantalla de revisión respondida/pendiente previa al envío y resultados a
