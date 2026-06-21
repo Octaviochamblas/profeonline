@@ -14,10 +14,10 @@
 
 ## En curso ahora
 
-- **Rediseño compacto de temas — LISTO PARA CIERRE 🟢 (2026-06-21):**
-  rama `codex/topic-detail-compact-progress`; progreso global corregido, indicadores por nivel,
-  cabecera/tarjetas móviles condensadas y limpieza v1 de títulos con migración `0032`.
-  **398 tests OK**, checks verdes y QA 320/360/390 px sin overflow. Tarjeta en `backlog/5-cierre/`.
+- **Rediseño compacto de temas — CERRADO 🟢 (PR #77, 2026-06-21):**
+  progreso global corregido, indicadores por nivel, cabecera/tarjetas móviles condensadas y
+  limpieza v1 de títulos con migración `0032`. **398 tests OK** y QA 320/360/390 px.
+  Tarjeta en `backlog/6-finalizados/`.
 - **Pipeline único de publicación educativa — BACKEND MERGEADO 🟢 (PR #72, 2026-06-19):**
   transcripción como fuente → documento canónico, metadatos, guía y preguntas con segunda auditoría;
   publicación en dos fases. 🧩 Codex construyó; 🏛️ Claude auditó y corrigió (`SET_NULL` en guía
