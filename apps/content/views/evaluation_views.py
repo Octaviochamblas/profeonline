@@ -31,19 +31,14 @@ QUIZ_LEVELS = [
 
 def _quiz_section_context(user, resource):
     """Contexto compartido para refrescar la sección de quiz por HTMX."""
-    has_questions = {}
-    for lvl in (1, 2, 3):
-        has_questions[lvl] = Question.objects.filter(
-            resource=resource,
-            level=lvl,
-            status="publicada",
-        ).exists()
+    from apps.content.services.progress_service import get_resource_progress
+
+    progress = get_resource_progress(user, resource)
     return {
         "resource": resource,
         "mastery": get_resource_mastery(user, resource),
-        "has_questions": has_questions,
-        "quiz_available": any(has_questions.values()),
-        "levels": QUIZ_LEVELS,
+        "progress": progress,
+        "quiz_available": progress["has_questions"],
     }
 
 

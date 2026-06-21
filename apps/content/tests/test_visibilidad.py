@@ -36,21 +36,28 @@ class TopicProgressCardTests(TestCase):
         url = reverse("content:topic_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "de 2 comprendidos")
-        self.assertNotContains(response, "de 0 comprendidos")
+        self.assertNotContains(response, "trabajado")
 
     def test_authenticated_user_progress_in_cards(self):
         self.client.force_login(self.user)
-        # Mark 1 resource as completed (comprehended)
-        ResourceCompletion.objects.create(user=self.user, resource=self.r1)
+        # El progreso de las tarjetas es ponderado por intentos reales.
+        from apps.content.models import Question, QuizAttempt
+        Question.objects.create(
+            resource=self.r1, level=1, mode="ambas",
+            text="q", status="publicada", order=0,
+        )
+        QuizAttempt.objects.create(
+            user=self.user, resource=self.r1, level=1, mode="evaluacion",
+            score=10, total=10, passed=True, attempt_number=1,
+        )
 
         url = reverse("content:topic_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        # Check topic 1 progress (1 of 2 completed = 50%)
-        self.assertContains(response, "1 de 2 comprendidos")
-        # Check topic 2 progress (0 of 0 completed = 0%)
-        self.assertContains(response, "0 de 0 comprendidos")
+        # topic 1: 1 de 2 recursos trabajados
+        self.assertContains(response, "1 de 2 trabajado")
+        # topic 2: sin recursos
+        self.assertContains(response, "0 de 0 trabajado")
 
     def test_no_n_plus_1_queries_for_topic_list(self):
         self.client.force_login(self.user)
@@ -153,7 +160,7 @@ class TopicDetailProgressTests(TestCase):
         self.assertNotContains(response, "Draft Question Text")
         # It should render quiz section and the empty state message
         self.assertContains(response, "quiz-section")
-        self.assertContains(response, "Aún no hay ejercicios publicados para este nivel")
+        self.assertContains(response, "Aún no hay ejercicios publicados para este recurso")
 
     def test_draft_questions_hint_visible_to_staff(self):
         self.user.is_staff = True

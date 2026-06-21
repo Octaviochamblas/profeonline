@@ -3,6 +3,7 @@ from django.views.generic import DetailView
 
 from apps.content.models import Resource, ResourceView, Question
 from apps.content.services.evaluation_service import get_resource_mastery
+from apps.content.services.progress_service import get_resource_progress
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
 
 
@@ -83,30 +84,23 @@ class ResourceDetailView(DetailView):
             )
 
             # --- Evaluación gamificada ---
-            mastery = get_resource_mastery(self.request.user, resource)
-            context["mastery"] = mastery
+            context["mastery"] = get_resource_mastery(self.request.user, resource)
 
-            has_questions = {}
-            draft_questions = {}
-            for lvl in (1, 2, 3):
-                has_questions[lvl] = Question.objects.filter(
-                    resource=resource,
-                    level=lvl,
-                    status="publicada",
-                ).exists()
-                draft_questions[lvl] = Question.objects.filter(
-                    resource=resource,
-                    level=lvl,
-                    status="borrador",
-                ).count()
-            context["has_questions"] = has_questions
-            context["draft_questions"] = draft_questions
-            context["quiz_available"] = any(has_questions.values())
-            context["quiz_levels"] = [
-                (1, "Conceptos"),
-                (2, "Ejercicios simples"),
-                (3, "Problemas de aplicación"),
-            ]
+            # Progreso académico calculado desde los intentos reales.
+            progress = get_resource_progress(self.request.user, resource)
+            context["progress"] = progress
+            context["quiz_available"] = progress["has_questions"]
+
+            # Hint para staff: borradores sin publicar por nivel.
+            if self.request.user.is_staff:
+                draft_questions = {}
+                for lvl in (1, 2, 3):
+                    draft_questions[lvl] = Question.objects.filter(
+                        resource=resource,
+                        level=lvl,
+                        status="borrador",
+                    ).count()
+                context["draft_questions"] = draft_questions
         else:
             context["completed"] = False
             context["quiz_available"] = False

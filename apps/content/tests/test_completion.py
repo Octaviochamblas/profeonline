@@ -55,7 +55,9 @@ class ResourceCompletionTests(TestCase):
         self.assertTemplateUsed(response, "includes/completion_button.html")
         self.assertContains(response, "Comprendido")
 
-    def test_topic_detail_reports_progress(self):
+    def test_topic_detail_progress_ignores_completion(self):
+        """El progreso del tema es ponderado por intentos: "Comprendido"
+        histórico ya no aporta (worked=0, 0%) si no hubo intentos."""
         self.client.force_login(self.user)
         ResourceCompletion.objects.create(user=self.user, resource=self.resource)
 
@@ -64,7 +66,7 @@ class ResourceCompletionTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["completed_count"], 1)
         self.assertEqual(response.context["total_count"], 1)
-        self.assertEqual(response.context["completed_percent"], 100)
-        self.assertContains(response, "1/1 comprendidos")
+        self.assertEqual(response.context["worked_count"], 0)
+        self.assertEqual(response.context["weighted_percent"], 0)
+        self.assertNotContains(response, "comprendidos")

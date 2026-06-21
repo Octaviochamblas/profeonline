@@ -1,108 +1,131 @@
 {% load static %}
 
-<section class="quiz-section" id="quiz-section" aria-labelledby="quiz-section-title">
-    <div class="quiz-section__header">
-        <h2 class="quiz-section__title" id="quiz-section-title">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            Demuestra lo aprendido
-        </h2>
-        {% if mastery.stars > 0 %}
-        <div class="quiz-stars quiz-stars--{{ mastery.stars }}" aria-label="{{ mastery.stars }} de 3 estrellas">
-            {% for i in "123" %}
-                {% if forloop.counter <= mastery.stars %}
-                <svg class="quiz-star quiz-star--filled" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
-                {% else %}
-                <svg class="quiz-star quiz-star--empty" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-                {% endif %}
-            {% endfor %}
+<section class="quiz-block" id="quiz-section" aria-labelledby="quiz-block-title" data-quiz-block data-quiz-initial="{{ progress.initial_level|default:'' }}">
+    <div class="quiz-block__header">
+        <h2 class="quiz-block__title" id="quiz-block-title">Practica y evalúa tu aprendizaje</h2>
+        {% if progress.available_levels %}
+        <div class="quiz-block__overview" aria-label="Progreso general del recurso">
+            <span class="quiz-block__pct">{{ progress.weighted_progress }}%</span>
+            <span class="quiz-block__coverage">{{ progress.worked_levels|length }} de {{ progress.available_levels|length }} nivel{{ progress.available_levels|length|pluralize:"es" }} trabajado{{ progress.worked_levels|length|pluralize }}</span>
         </div>
         {% endif %}
     </div>
 
-    <div class="quiz-levels">
-        {% for level_num, level_label in levels %}
-        <div class="quiz-level" id="quiz-level-{{ level_num }}">
-            <div class="quiz-level__header">
-                <h3 class="quiz-level__title">
-                    Nivel {{ level_num }}: {{ level_label }}
-                </h3>
-                {% with linfo=mastery.levels_info %}
-                {% if linfo %}
-                    {% if level_num == 1 and linfo.1.passed or level_num == 2 and linfo.2.passed or level_num == 3 and linfo.3.passed %}
-                    <span class="badge badge--success quiz-level__badge">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                        Aprobado
-                    </span>
-                    {% endif %}
-                {% endif %}
-                {% endwith %}
-            </div>
-
-            {% if user.is_staff %}
-                {% if level_num == 1 and draft_questions.1 > 0 or level_num == 2 and draft_questions.2 > 0 or level_num == 3 and draft_questions.3 > 0 %}
-                    <div class="quiz-level__staff-hint">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                        <span>
-                            {% if level_num == 1 %}
-                                Hay {{ draft_questions.1 }} pregunta{{ draft_questions.1|pluralize:"s" }} en borrador; publícalas para que aparezcan en ejercitación/evaluación.
-                            {% elif level_num == 2 %}
-                                Hay {{ draft_questions.2 }} pregunta{{ draft_questions.2|pluralize:"s" }} en borrador; publícalas para que aparezcan en ejercitación/evaluación.
-                            {% elif level_num == 3 %}
-                                Hay {{ draft_questions.3 }} pregunta{{ draft_questions.3|pluralize:"s" }} en borrador; publícalas para que aparezcan en ejercitación/evaluación.
-                            {% endif %}
-                        </span>
-                    </div>
-                {% endif %}
+    {% if progress.available_levels %}
+    <div class="quiz-tabs" role="tablist" aria-label="Niveles de práctica y evaluación">
+        {% for lvl in progress.levels_list %}
+        <button type="button"
+                class="quiz-tab{% if lvl.level == progress.initial_level %} quiz-tab--active{% endif %}"
+                id="quiz-tab-{{ lvl.level }}"
+                role="tab"
+                data-quiz-tab="{{ lvl.level }}"
+                aria-controls="quiz-panel-{{ lvl.level }}"
+                aria-selected="{% if lvl.level == progress.initial_level %}true{% else %}false{% endif %}"
+                tabindex="{% if lvl.level == progress.initial_level %}0{% else %}-1{% endif %}">
+            <span class="quiz-tab__num">{{ lvl.level }}</span>
+            <span class="quiz-tab__label">{{ lvl.label }}</span>
+            {% if lvl.passed %}
+            <svg class="quiz-tab__check" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             {% endif %}
+        </button>
+        {% endfor %}
+    </div>
 
-            {% if level_num == 1 and has_questions.1 or level_num == 2 and has_questions.2 or level_num == 3 and has_questions.3 %}
-            <div class="quiz-level__modes">
-                <div class="quiz-mode-card quiz-mode-card--practice">
-                    <p class="quiz-mode-card__desc">Estudia y entrena sin límite de intentos.</p>
-                    <button class="btn btn-secondary quiz-btn"
-                            hx-get="{% url 'content:quiz_start' resource.slug level_num 'preparacion' %}"
+    {% for lvl in progress.levels_list %}
+    <div class="quiz-panel{% if lvl.level == progress.initial_level %} quiz-panel--active{% endif %}"
+         id="quiz-panel-{{ lvl.level }}"
+         role="tabpanel"
+         data-quiz-panel="{{ lvl.level }}"
+         aria-labelledby="quiz-tab-{{ lvl.level }}"
+         tabindex="0"
+         {% if lvl.level != progress.initial_level %}hidden{% endif %}>
+
+        {% if draft_questions %}
+            {% if lvl.level == 1 and draft_questions.1 %}
+            <div class="quiz-level__staff-hint">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Hay {{ draft_questions.1 }} pregunta{{ draft_questions.1|pluralize:"s" }} en borrador; publícala{{ draft_questions.1|pluralize:"s" }} para que aparezca{{ draft_questions.1|pluralize:"n" }} en práctica/evaluación.</span>
+            </div>
+            {% elif lvl.level == 2 and draft_questions.2 %}
+            <div class="quiz-level__staff-hint">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Hay {{ draft_questions.2 }} pregunta{{ draft_questions.2|pluralize:"s" }} en borrador; publícala{{ draft_questions.2|pluralize:"s" }} para que aparezca{{ draft_questions.2|pluralize:"n" }} en práctica/evaluación.</span>
+            </div>
+            {% elif lvl.level == 3 and draft_questions.3 %}
+            <div class="quiz-level__staff-hint">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Hay {{ draft_questions.3 }} pregunta{{ draft_questions.3|pluralize:"s" }} en borrador; publícala{{ draft_questions.3|pluralize:"s" }} para que aparezca{{ draft_questions.3|pluralize:"n" }} en práctica/evaluación.</span>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        <div class="quiz-actions">
+            <div class="quiz-action quiz-action--practice">
+                <div class="quiz-action__top">
+                    <span class="quiz-action__name">Practicar</span>
+                    {% if lvl.practice_ready %}<span class="quiz-state quiz-state--ready">Preparado</span>{% endif %}
+                </div>
+                <p class="quiz-action__stat">
+                    {% if lvl.practice_average is not None %}
+                        Promedio reciente: <strong>{{ lvl.practice_average }}%</strong>
+                    {% else %}
+                        Sin intentos aún
+                    {% endif %}
+                </p>
+                {% if lvl.practice_available %}
+                    <button type="button" class="btn btn-secondary quiz-action__btn"
+                            hx-get="{% url 'content:quiz_start' resource.slug lvl.level 'preparacion' %}"
                             hx-target="#quiz-player-root"
                             hx-swap="innerHTML"
-                            aria-label="Practicar nivel {{ level_num }}">
+                            aria-label="Practicar {{ lvl.label }}">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                         Practicar
                     </button>
-                </div>
-                {% with linfo=mastery.levels_info %}
-                {% if linfo %}
-                    {% if level_num == 1 and not linfo.1.passed or level_num == 2 and not linfo.2.passed or level_num == 3 and not linfo.3.passed %}
-                    <div class="quiz-mode-card quiz-mode-card--eval">
-                        <p class="quiz-mode-card__desc">Prueba tus conocimientos para aprobar el nivel.</p>
-                        <button class="btn btn-primary quiz-btn"
-                                hx-get="{% url 'content:quiz_start' resource.slug level_num 'evaluacion' %}"
-                                hx-target="#quiz-player-root"
-                                hx-swap="innerHTML"
-                                aria-label="Evaluación nivel {{ level_num }}">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                            Evaluación
-                            {% if level_num == 1 and linfo.1.used > 0 %}
-                                ({{ linfo.1.remaining }} intento{{ linfo.1.remaining|pluralize:"s" }})
-                            {% elif level_num == 2 and linfo.2.used > 0 %}
-                                ({{ linfo.2.remaining }} intento{{ linfo.2.remaining|pluralize:"s" }})
-                            {% elif level_num == 3 and linfo.3.used > 0 %}
-                                ({{ linfo.3.remaining }} intento{{ linfo.3.remaining|pluralize:"s" }})
-                            {% endif %}
-                        </button>
-                    </div>
-                    {% else %}
-                    <div class="quiz-mode-card quiz-mode-card--passed">
-                        <p class="quiz-mode-card__desc">✓ ¡Ya has aprobado este nivel!</p>
-                    </div>
-                    {% endif %}
+                {% else %}
+                    <p class="quiz-action__unavailable">Práctica aún no disponible.</p>
                 {% endif %}
-                {% endwith %}
             </div>
-            {% else %}
-            <p class="quiz-level__coming-soon">Aún no hay ejercicios publicados para este nivel</p>
-            {% endif %}
 
-            <div id="quiz-area-{{ level_num }}" class="quiz-area"></div>
+            <div class="quiz-action quiz-action--eval">
+                <div class="quiz-action__top">
+                    <span class="quiz-action__name">Evaluarme</span>
+                    {% if lvl.passed %}<span class="quiz-state quiz-state--approved">Aprobado</span>{% endif %}
+                </div>
+                <p class="quiz-action__stat">
+                    {% if lvl.evaluation_average is not None %}
+                        Promedio reciente: <strong>{{ lvl.evaluation_average }}%</strong>
+                    {% else %}
+                        Sin intentos aún
+                    {% endif %}
+                </p>
+                {% if lvl.evaluation_available %}
+                    <button type="button" class="btn btn-primary quiz-action__btn"
+                            hx-get="{% url 'content:quiz_start' resource.slug lvl.level 'evaluacion' %}"
+                            hx-target="#quiz-player-root"
+                            hx-swap="innerHTML"
+                            aria-label="Evaluarme en {{ lvl.label }}">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Evaluarme
+                    </button>
+                {% else %}
+                    <p class="quiz-action__unavailable">Evaluación aún no disponible.</p>
+                {% endif %}
+            </div>
         </div>
-        {% endfor %}
+
+        <div class="quiz-level-progress" aria-label="Progreso de este nivel">
+            <div class="quiz-level-progress__label">
+                <span>Progreso del nivel</span>
+                <span>{{ lvl.weighted_progress }}%</span>
+            </div>
+            <div class="quiz-level-progress__bar" role="progressbar" aria-valuenow="{{ lvl.weighted_progress }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="quiz-level-progress__fill" style="width: {{ lvl.weighted_progress }}%;"></div>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+
+    {% else %}
+    <p class="quiz-block__empty">Aún no hay ejercicios publicados para este recurso. Próximamente.</p>
+    {% endif %}
 </section>

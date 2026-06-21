@@ -435,7 +435,7 @@ class EvaluationViewTests(TestCase):
         resp = self.client.get(url)
 
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "Demuestra lo aprendido")
+        self.assertContains(resp, "Practica y evalúa tu aprendizaje")
         self.assertContains(resp, "Aprobado")
 
     def test_quiz_status_returns_section(self):
@@ -443,7 +443,7 @@ class EvaluationViewTests(TestCase):
         url = reverse("content:quiz_status", args=[self.resource.slug])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "Demuestra lo aprendido")
+        self.assertContains(resp, "Practica y evalúa tu aprendizaje")
 
     def test_report_error_creates_report(self):
         self.client.force_login(self.user)
@@ -470,7 +470,31 @@ class EvaluationViewTests(TestCase):
         self.client.force_login(self.user)
         url = reverse("content:resource_detail", args=[self.resource.slug])
         resp = self.client.get(url)
-        self.assertContains(resp, "Demuestra lo aprendido")
+        self.assertContains(resp, "Practica y evalúa tu aprendizaje")
+
+    def test_resource_detail_hides_unavailable_evaluation_mode(self):
+        Question.objects.all().update(mode="preparacion")
+        self.client.force_login(self.user)
+
+        resp = self.client.get(
+            reverse("content:resource_detail", args=[self.resource.slug])
+        )
+
+        self.assertContains(resp, 'aria-label="Practicar Conceptos"')
+        self.assertNotContains(resp, 'aria-label="Evaluarme en Conceptos"')
+        self.assertContains(resp, "Evaluación aún no disponible")
+
+    def test_resource_detail_hides_unavailable_practice_mode(self):
+        Question.objects.all().update(mode="evaluacion")
+        self.client.force_login(self.user)
+
+        resp = self.client.get(
+            reverse("content:resource_detail", args=[self.resource.slug])
+        )
+
+        self.assertNotContains(resp, 'aria-label="Practicar Conceptos"')
+        self.assertContains(resp, 'aria-label="Evaluarme en Conceptos"')
+        self.assertContains(resp, "Práctica aún no disponible")
 
     def test_resource_detail_no_quiz_without_questions(self):
         """Sin preguntas publicadas debe mostrar el estado vacío en la sección de quiz."""
@@ -478,13 +502,13 @@ class EvaluationViewTests(TestCase):
         self.client.force_login(self.user)
         url = reverse("content:resource_detail", args=[self.resource.slug])
         resp = self.client.get(url)
-        self.assertContains(resp, "Demuestra lo aprendido")
-        self.assertContains(resp, "Aún no hay ejercicios publicados para este nivel")
+        self.assertContains(resp, "Practica y evalúa tu aprendizaje")
+        self.assertContains(resp, "Aún no hay ejercicios publicados para este recurso")
 
     def test_resource_detail_anonymous_no_quiz(self):
         url = reverse("content:resource_detail", args=[self.resource.slug])
         resp = self.client.get(url)
-        self.assertNotContains(resp, "Demuestra lo aprendido")
+        self.assertNotContains(resp, "Practica y evalúa tu aprendizaje")
 
     def test_resource_list_shows_viewed_badge(self):
         ResourceView.objects.create(user=self.user, resource=self.resource)
