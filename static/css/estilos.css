@@ -580,6 +580,10 @@ a:hover {
 
 .stack {
     display: grid;
+    /* Una sola columna que puede encogerse bajo su contenido: evita que
+       hijos anchos (títulos largos, palabras con "/") provoquen scroll
+       horizontal en móvil (blowout de grid por min-width:auto). */
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
 }
 
@@ -1935,7 +1939,7 @@ a.home-link-card__title:hover {
 
 .topic-resource-card {
     display: grid;
-    grid-template-columns: 2.5rem 1fr auto;
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.25rem;
@@ -1994,10 +1998,8 @@ a.home-link-card__title:hover {
     font-weight: 700;
     font-size: 1.05rem;
     line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .topic-resource-card:hover .topic-resource-card__title {
@@ -2057,7 +2059,7 @@ a.home-link-card__title:hover {
 
 @media (max-width: 500px) {
     .topic-resource-card {
-        grid-template-columns: 2rem 1fr auto;
+        grid-template-columns: 2rem minmax(0, 1fr) auto;
         gap: 0.75rem;
         padding: 0.875rem 1rem;
     }
