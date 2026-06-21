@@ -1,10 +1,10 @@
 # Rediseño compacto de tema y progreso académico
 
-- **Estado:** En cierre
+- **Estado:** Finalizado
 - **Creado:** 2026-06-21
 - **Prioridad:** P1 · **Cartera:** educativa / retención
 - **Tipo:** producto · pedagogía · QA
-- **Dueño sugerido:** 🏛️ Claude
+- **Dueño sugerido:** 🧩 Codex
 
 ## Objetivo (una frase)
 
@@ -66,3 +66,4 @@ La limpieza masiva podría recortar títulos legítimos. Se limita a reglas v1 v
 - QA responsive: 320/360/390 px sin overflow; tarjetas de 83 px y títulos limitados a tres líneas.
 - Reproductor validado a pantalla completa (320×780, `position: fixed`).
 - Verificación: 398 tests OK, `check` OK, `check --deploy` solo con los 7 warnings esperados de settings locales, sin migraciones pendientes.
+- Integrado a `main` mediante squash-merge del PR #77 (`dea2ec8`, 2026-06-21).
