@@ -1,0 +1,60 @@
+<section class="profile-progress" aria-labelledby="profile-progress-title">
+    <h2 id="profile-progress-title" class="profile-progress__title">Mi progreso académico</h2>
+    <p class="form-help">Calculado desde tus intentos reales de práctica y evaluación (promedio de los últimos 3 por modo).</p>
+
+    {% if progress_groups %}
+        {% for group in progress_groups %}
+        <details class="profile-topic"{% if forloop.first %} open{% endif %}>
+            <summary class="profile-topic__summary">
+                <span class="profile-topic__name">{{ group.topic.name|default:"Sin tema" }}</span>
+                <span class="profile-topic__stat">{{ group.weighted_progress }}% · {{ group.worked_count }}/{{ group.total_count }} trabajado{{ group.worked_count|pluralize }}</span>
+            </summary>
+
+            {% for item in group.resources %}
+            <div class="profile-resource">
+                <div class="profile-resource__head">
+                    <a class="profile-resource__title" href="{% url 'content:resource_detail' item.resource.slug %}">{{ item.resource.title }}</a>
+                    <span class="profile-resource__pct">{{ item.progress.weighted_progress }}%</span>
+                </div>
+                <p class="profile-resource__coverage">
+                    {{ item.progress.worked_levels|length }}/{{ item.progress.available_levels|length }} nivel{{ item.progress.available_levels|length|pluralize:"es" }} trabajado{{ item.progress.worked_levels|length|pluralize }}
+                    {% if item.completed_previously %}
+                        · <span class="profile-tag profile-tag--muted">Comprendido anteriormente</span>
+                    {% endif %}
+                </p>
+
+                {% for lvl in item.progress.levels_list %}
+                    {% if lvl.worked %}
+                    <div class="profile-level">
+                        <div class="profile-level__head">
+                            <span class="profile-level__name">{{ lvl.level }}. {{ lvl.label }}</span>
+                            <span class="profile-level__states">
+                                {% if lvl.practice_ready %}<span class="quiz-state quiz-state--ready">Preparado</span>{% endif %}
+                                {% if lvl.passed %}<span class="quiz-state quiz-state--approved">Aprobado</span>{% endif %}
+                            </span>
+                        </div>
+                        <div class="profile-level__modes">
+                            <div class="profile-level__mode">
+                                <span class="profile-level__mode-label">Práctica</span>
+                                <span class="profile-level__mode-avg">{% if lvl.practice_average is not None %}{{ lvl.practice_average }}%{% else %}—{% endif %}</span>
+                                {% if lvl.practice_recent %}<span class="profile-level__recent">últimos: {{ lvl.practice_recent|join:"% · " }}%</span>{% endif %}
+                            </div>
+                            <div class="profile-level__mode">
+                                <span class="profile-level__mode-label">Evaluación</span>
+                                <span class="profile-level__mode-avg">{% if lvl.evaluation_average is not None %}{{ lvl.evaluation_average }}%{% else %}—{% endif %}</span>
+                                {% if lvl.evaluation_recent %}<span class="profile-level__recent">últimos: {{ lvl.evaluation_recent|join:"% · " }}%</span>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </details>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <p>Aún no has practicado ni rendido evaluaciones. Abre un recurso y comienza con «Practicar».</p>
+        </div>
+    {% endif %}
+</section>

@@ -2,8 +2,11 @@ from django.db.models import Min, Value
 from django.db.models.functions import Coalesce
 from django.views.generic import DetailView
 
-from apps.content.models import ResourceCompletion, Topic
-from apps.content.selectors.evaluation_selectors import get_resource_progress_map
+from apps.content.models import Topic
+from apps.content.selectors.evaluation_selectors import (
+    get_resource_progress_map,
+    get_topics_progress_map,
+)
 from apps.content.services.evaluation_service import get_topic_exam_info
 from apps.content.views._seo import breadcrumb_schema, build_breadcrumbs
 
@@ -45,18 +48,15 @@ class TopicDetailView(DetailView):
                 {"viewed": False, "max_level": 0, "stars": 0},
             )
 
-        # Progreso del usuario autenticado dentro de la ruta
+        # Progreso del usuario autenticado dentro de la ruta. El progreso del
+        # tema ya no depende de "Comprendido": usa el progreso ponderado
+        # (práctica 30% / evaluación 70%) promediado sobre los recursos trabajados.
         total = len(resources)
-        completed_ids = set()
-        if self.request.user.is_authenticated and total:
-            completed_ids = set(
-                ResourceCompletion.objects.filter(
-                    user=self.request.user,
-                    resource__in=resources,
-                ).values_list("resource_id", flat=True)
-            )
-        context["completed_ids"] = completed_ids
-        context["completed_count"] = len(completed_ids)
+        topic_progress = get_topics_progress_map(
+            self.request.user, [topic.id]
+        ).get(topic.id, {})
+        context["weighted_percent"] = topic_progress.get("weighted_progress", 0)
+        context["worked_count"] = topic_progress.get("worked", 0)
         context["approved_count"] = sum(
             1 for progress in progress_map.values() if progress["max_level"] > 0
         )
@@ -91,9 +91,6 @@ class TopicDetailView(DetailView):
         context["stars_total"] = stars_total
 
         # Porcentajes para las barras de progreso
-        context["completed_percent"] = (
-            int(len(completed_ids) / total * 100) if total else 0
-        )
         context["approved_percent"] = (
             int(context["approved_count"] / total * 100) if total else 0
         )

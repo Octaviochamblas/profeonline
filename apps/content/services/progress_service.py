@@ -103,6 +103,7 @@ def build_resource_progress(grouped, available_levels):
         "worked_levels": worked_levels,
         "weighted_progress": weighted_progress,
         "levels": levels,
+        "levels_list": [levels[level] for level in available_levels],
         "has_questions": bool(available_levels),
     }
     progress["initial_level"] = select_initial_level(progress)
@@ -140,3 +141,73 @@ def get_resource_progress(user, resource):
     """Progreso del contrato para un único recurso."""
     rid = resource.id if hasattr(resource, "id") else resource
     return get_resources_progress(user, [rid])[rid]
+
+
+def get_profile_progress(user):
+    """Resumen de progreso del estudiante para el perfil, agrupado por tema.
+
+    Incluye los recursos con algún intento o con "Comprendido" histórico. Por
+    recurso entrega el contrato de progreso y `completed_previously` (solo aquí
+    se muestra "Comprendido anteriormente"). Sin N+1.
+
+    Returns: lista ordenada de dicts {topic, subject, weighted_progress,
+    worked_count, total_count, resources:[{resource, progress, completed_previously}]}.
+    """
+    if not getattr(user, "is_authenticated", False):
+        return []
+
+    from collections import OrderedDict
+    from apps.content.models import QuizAttempt, Resource, ResourceCompletion
+
+    worked_ids = set(
+        QuizAttempt.objects.filter(user=user)
+        .values_list("resource_id", flat=True)
+        .distinct()
+    )
+    completed_ids = set(
+        ResourceCompletion.objects.filter(user=user).values_list(
+            "resource_id", flat=True
+        )
+    )
+    resource_ids = worked_ids | completed_ids
+    if not resource_ids:
+        return []
+
+    resources = (
+        Resource.objects.filter(id__in=resource_ids, is_published=True)
+        .select_related("topic", "subject", "topic__subject")
+        .order_by("topic__name", "title")
+    )
+    progress_map = get_resources_progress(user, [r.id for r in resources])
+
+    groups = OrderedDict()
+    for resource in resources:
+        key = resource.topic_id
+        if key not in groups:
+            groups[key] = {
+                "topic": resource.topic,
+                "subject": (resource.topic.subject if resource.topic else resource.subject),
+                "resources": [],
+            }
+        groups[key]["resources"].append(
+            {
+                "resource": resource,
+                "progress": progress_map.get(resource.id),
+                "completed_previously": resource.id in completed_ids,
+            }
+        )
+
+    result = []
+    for group in groups.values():
+        worked_values = [
+            item["progress"]["weighted_progress"]
+            for item in group["resources"]
+            if item["progress"] and item["progress"]["worked_levels"]
+        ]
+        group["weighted_progress"] = (
+            round(sum(worked_values) / len(worked_values)) if worked_values else 0
+        )
+        group["worked_count"] = len(worked_values)
+        group["total_count"] = len(group["resources"])
+        result.append(group)
+    return result

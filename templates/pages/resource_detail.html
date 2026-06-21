@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load markdown_tags %}
+{% load static %}
 
 {% block title %}{{ resource.title }} | Recurso para Clases Particulares | ProfeOnline{% endblock %}
 {% block meta_description %}{% if resource.description %}{{ resource.description }}{% else %}Recurso educativo para clases particulares online y apoyo escolar, organizado por asignatura, tema y nivel en ProfeOnline.{% endif %}{% endblock %}
@@ -14,115 +15,93 @@
 {% endblock %}
 
 {% block content %}
-<article class="detail-card stack">
-    {% include "includes/breadcrumbs.html" %}
+<article class="resource-view stack">
+    {# Enlace discreto al tema (reemplaza "Volver a recursos") #}
+    {% if resource.topic and resource.topic.slug and resource.topic.is_active or resource.topic and resource.topic.slug and user.is_superuser %}
+        <a href="{% url 'content:topic_detail' resource.topic.slug %}" class="resource-view__back">← {{ resource.topic.name }}</a>
+    {% else %}
+        <a href="{% url 'content:resource_list' %}" class="resource-view__back">← Recursos</a>
+    {% endif %}
 
-    <a href="{% url 'content:resource_list' %}" class="detail-back-link">← Volver a recursos</a>
-
-    <header class="stack">
-        <div class="page-hero">
-            <h1 class="page-hero__title">{{ resource.title }}</h1>
-            {% if resource.description %}
-                <p class="page-hero__text">{{ resource.description }}</p>
-            {% endif %}
-        </div>
-        <div class="detail-meta">
+    <header class="resource-view__header">
+        <h1 class="resource-view__title">{{ resource.title }}</h1>
+        <div class="resource-view__meta">
             {% if resource.subject %}
                 {% if resource.subject.is_active or user.is_superuser %}
-                    <a class="badge badge--neutral" href="{% url 'content:subject_detail' resource.subject.slug %}">{{ resource.subject.name }}</a>
+                    <a class="resource-view__tag" href="{% url 'content:subject_detail' resource.subject.slug %}">{{ resource.subject.name }}</a>
                 {% else %}
-                    <span class="badge badge--neutral">{{ resource.subject.name }}</span>
+                    <span class="resource-view__tag">{{ resource.subject.name }}</span>
                 {% endif %}
             {% endif %}
             {% if resource.topic %}
-                {% if resource.topic.slug %}
-                    {% if resource.topic.is_active or user.is_superuser %}
-                        <a class="badge badge--neutral" href="{% url 'content:topic_detail' resource.topic.slug %}">{{ resource.topic.name }}</a>
-                    {% else %}
-                        <span class="badge badge--neutral">{{ resource.topic.name }}</span>
-                    {% endif %}
+                {% if resource.topic.slug and resource.topic.is_active or resource.topic.slug and user.is_superuser %}
+                    <a class="resource-view__tag" href="{% url 'content:topic_detail' resource.topic.slug %}">{{ resource.topic.name }}</a>
                 {% else %}
-                    <span class="badge badge--neutral">{{ resource.topic.name }}</span>
+                    <span class="resource-view__tag">{{ resource.topic.name }}</span>
                 {% endif %}
             {% endif %}
             {% for level in resource.levels.all %}
                 {% if level.is_active or user.is_superuser %}
-                    <a class="badge badge--info" href="{% url 'content:level_detail' level.slug %}">{{ level.name }}</a>
+                    <a class="resource-view__tag resource-view__tag--level" href="{% url 'content:level_detail' level.slug %}">{{ level.name }}</a>
                 {% else %}
-                    <span class="badge badge--info">{{ level.name }}</span>
+                    <span class="resource-view__tag resource-view__tag--level">{{ level.name }}</span>
                 {% endif %}
             {% endfor %}
         </div>
     </header>
 
     {% if user.is_authenticated %}
-    {% if youtube_id %}
-        <div class="video-container">
-            <iframe src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?enablejsapi=1" referrerpolicy="strict-origin-when-cross-origin" title="Reproductor de video de YouTube: {{ resource.title }}" loading="lazy" allowfullscreen></iframe>
-        </div>
-    {% endif %}
+        {% if youtube_id %}
+            <div class="video-container">
+                <iframe src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?enablejsapi=1" referrerpolicy="strict-origin-when-cross-origin" title="Reproductor de video de YouTube: {{ resource.title }}" loading="lazy" allowfullscreen></iframe>
+            </div>
+        {% endif %}
 
-    {% if resource.file %}
-        <div class="panel panel--spacious resource-material-panel">
-            <div class="page-toolbar">
-                <div class="stack resource-material-stack">
-                    <p class="page-hero__kicker resource-material-kicker">Material de apoyo</p>
-                    <p class="page-hero__text resource-material-desc">Descarga el archivo adjunto (guía de ejercicios, ppt o actividades).</p>
+        {% if resource.description %}
+            <div class="resource-view__desc" data-resource-desc>
+                <p class="resource-view__desc-text" data-resource-desc-text>{{ resource.description }}</p>
+                <button type="button" class="resource-view__desc-toggle" data-resource-desc-toggle aria-expanded="false" hidden>Ver más</button>
+            </div>
+        {% endif %}
+
+        {% if resource.file %}
+            <div class="resource-view__material">
+                <div class="resource-view__material-text">
+                    <p class="resource-view__material-kicker">Material de apoyo</p>
+                    <p>Descarga el archivo adjunto (guía de ejercicios, ppt o actividades).</p>
                 </div>
                 <a href="{{ resource.file.url }}" class="btn btn-primary" download>Descargar recurso</a>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
 
-
-    {% if resource.content %}
-        <article class="stack">
-            {{ resource.content|markdown }}
-        </article>
-    {% elif not youtube_id %}
-        <article class="stack">
+        {% if resource.content %}
+            <div class="resource-view__content">
+                {{ resource.content|markdown }}
+            </div>
+        {% elif not youtube_id %}
             <div class="empty-state">
                 <p>Este recurso aún no tiene contenido publicado.</p>
             </div>
-        </article>
-    {% endif %}
+        {% endif %}
 
-    {% if user.is_authenticated %}
-        <div class="resource-action-bar">
-            <a href="#quiz-level-1" class="btn btn-secondary resource-action-btn">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                Ir a Ejercitación
-            </a>
-            <a href="#quiz-section" class="btn btn-secondary resource-action-btn">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                Ir a Evaluación
-            </a>
-            <div class="resource-action-btn-wrapper">
-                {% include "includes/completion_button.html" %}
-            </div>
-        </div>
-    {% endif %}
+        {% include "includes/quiz_section.html" %}
 
-    {% if user.is_authenticated %}
-        {% include "includes/quiz_section.html" with levels=quiz_levels %}
-    {% endif %}
-
-    {% if previous_resource or next_resource %}
-        <nav class="resource-navigation" aria-label="Navegación de recurso dentro del tema">
-            {% if previous_resource %}
-                <a class="resource-navigation__link resource-navigation__link--prev" href="{% url 'content:resource_detail' previous_resource.slug %}">
-                    <span class="resource-navigation__kicker">← Recurso Anterior</span>
-                    <span class="resource-navigation__title">{{ previous_resource.title }}</span>
-                </a>
-            {% endif %}
-            {% if next_resource %}
-                <a class="resource-navigation__link resource-navigation__link--next" href="{% url 'content:resource_detail' next_resource.slug %}">
-                    <span class="resource-navigation__kicker">Siguiente Recurso →</span>
-                    <span class="resource-navigation__title">{{ next_resource.title }}</span>
-                </a>
-            {% endif %}
-        </nav>
-    {% endif %}
+        {% if previous_resource or next_resource %}
+            <nav class="resource-navigation" aria-label="Navegación de recurso dentro del tema">
+                {% if previous_resource %}
+                    <a class="resource-navigation__link resource-navigation__link--prev" href="{% url 'content:resource_detail' previous_resource.slug %}">
+                        <span class="resource-navigation__kicker">← Recurso Anterior</span>
+                        <span class="resource-navigation__title">{{ previous_resource.title }}</span>
+                    </a>
+                {% endif %}
+                {% if next_resource %}
+                    <a class="resource-navigation__link resource-navigation__link--next" href="{% url 'content:resource_detail' next_resource.slug %}">
+                        <span class="resource-navigation__kicker">Siguiente Recurso →</span>
+                        <span class="resource-navigation__title">{{ next_resource.title }}</span>
+                    </a>
+                {% endif %}
+            </nav>
+        {% endif %}
     {% else %}
         <section class="resource-access-panel" aria-labelledby="resource-access-title">
             <div class="resource-access-panel__content">
@@ -150,6 +129,9 @@
             <a href="{% url 'content:resource_delete' resource.pk %}" class="btn btn-danger">Eliminar</a>
         </div>
     {% endif %}
-
 </article>
+{% endblock %}
+
+{% block extra_js %}
+<script nonce="{{ csp_nonce }}" src="{% static 'js/resource-detail.js' %}?v=1" defer></script>
 {% endblock %}

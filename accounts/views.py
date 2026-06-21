@@ -77,6 +77,7 @@ def register_view(request):
 def profile_view(request):
     from apps.content.selectors import get_resume_resource
     from apps.content.services.gamification_service import get_gamification_summary
+    from apps.content.services.progress_service import get_profile_progress
 
     profile, created = Profile.objects.get_or_create(
         user=request.user,
@@ -93,6 +94,7 @@ def profile_view(request):
             "last_resource": last_resource,
             "last_resource_completed": last_resource_completed,
             "gamification": get_gamification_summary(request.user),
+            "progress_groups": get_profile_progress(request.user),
         },
     )
 
