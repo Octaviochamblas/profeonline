@@ -15,7 +15,8 @@ web y en YouTube.
 
 - Se añadió `Resource.editorial_audit` como registro JSON persistente y extensible.
 - Se migró el inventario publicado usando la auditoría global del 20 de junio.
-- El panel de cobertura muestra cinco marcas, estado agregado, métricas y filtro.
+- El panel de cobertura muestra cinco marcas y estado agregado dentro de la
+  jerarquía Área → Nivel → Asignatura → Tema → Recurso.
 - Las ediciones posteriores invalidan las marcas que dejan de ser confiables.
 - El cierre del pipeline editorial registra automáticamente una auditoría completa.
 - Se documentó y versionó la evidencia global de los 111 recursos.
@@ -27,6 +28,8 @@ web y en YouTube.
 - [x] Título y descripción YouTube auditados.
 - [x] Estado pendiente visible por componente.
 - [x] Filtro y métricas actualizados en el navegador.
+- [x] Recursos multinivel visibles en cada rama sin inflar agregados del área.
+- [x] Orden Escolar → Medio/Preuniversitario → Universitario.
 - [x] Invalidación automática ante cambios editoriales.
 - [x] Backfill idempotente mediante migración aditiva.
 - [x] 32 pruebas focalizadas aprobadas.

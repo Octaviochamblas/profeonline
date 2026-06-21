@@ -76,19 +76,26 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-21 — 🧩 Codex + 🧑: **Taxonomía, cobertura y Lenguaje Algebraico actualizados en producción.**
+  Asignaciones vigentes: Electromagnetismo → Física; Física Escolar → Física +
+  Medio/Preuniversitario; Matemática Media/Preuniversitaria → Matemáticas. El resumen del banco usa
+  Área→Nivel→Asignatura→Tema→Recurso y orden Escolar→Medio/Preuniversitario→Universitario.
+  Lenguaje Algebraico quedó con 1.530 preguntas (90 en cada uno de 17 recursos), cobertura 17/17 y
+  orden manual `1.x→2.x→3.x→4.01→4.01a→4.02→4.03→4.04`.
 - 2026-06-20 — 🏛️ Claude + 🧑: **Nivel educativo por asignatura (rama `feat/nivel-por-asignatura`).**
   Nuevo campo `Subject.education_level` (migración 0031) que los temas/recursos sin nivel propio
   heredan vía `Resource.get_education_level()`; cableado en generación inline, estudio, pipeline y
   `generate_pending_questions`. Comando `set_subject_level --subject … --level … [--apply]` (dry-run
-  por defecto). Aplicado en local: **Física Escolar → media**. Pendiente: aplicar en prod tras el
-  deploy de la migración. Tests focalizados verdes.
+  por defecto). Aplicado en producción: **Física Escolar → Medio/Preuniversitario**. Tests
+  focalizados verdes.
 - 2026-06-20 — 🏛️ Claude + 🧑: **Rediseño de dos paneles del banco (rama `feat/rediseno-resumen-banco`).**
-  (1) Resumen `/publicar/preguntas/resumen/` → acordeón Área→Asignatura→Tema→Recurso con fracciones
+  (1) Resumen `/publicar/preguntas/resumen/` → acordeón
+  Área→Nivel→Asignatura→Tema→Recurso con fracciones
   `auditados/total` por categoría editorial, preguntas por nivel y semáforo (verde/amarillo/rojo <20%).
   (2) `question_review` → config de evaluación full-width arriba + generador IA por nivel/modo con
   cantidad y descripción; Gemini ahora ve las preguntas existentes para no repetir; "copiando documento"
   deshabilitado. Sin migraciones. Tests focalizados verdes. Detalle en
-  `reportes-sesion/2026-06-20-rediseno-paneles-banco.md`. **Pendiente:** QA visual en navegador.
+  `reportes-sesion/2026-06-20-rediseno-paneles-banco.md`. QA visual y despliegue completados.
 - 2026-06-18 — 🏛️ Claude: **Cierre de Fase 5 (auditoría final).** Auditados como no destructivos el
   generador local aditivo (`scratch/generate_math_questions.py`: sin `.delete()`, dedup por
   `existing_texts`) y el importador transaccional (`import_questions_json` dentro de `transaction.atomic`).

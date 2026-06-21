@@ -5,6 +5,12 @@
 - **Estado:** vigente.
 - **Evidencia estructurada:** `2026-06-20-contextualizacion-recursos.json`.
 
+> **Actualización del 21 de junio de 2026:** las filas de Lenguaje Algebraico que
+> figuran como `sin_ejercicios` reflejan el estado de esta auditoría al 20 de
+> junio. Posteriormente se publicaron 90 preguntas por recurso en sus 17 recursos.
+> La evidencia vigente del banco está en
+> `2026-06-21-lenguaje-algebraico-preguntas.md`.
+
 ## Resumen
 
 - Recursos publicados auditados: **111**.

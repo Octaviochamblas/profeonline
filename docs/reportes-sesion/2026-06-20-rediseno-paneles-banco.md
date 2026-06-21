@@ -3,7 +3,13 @@
 > Sesión 🏛️ Claude + 🧑 Octavio. Rama `feat/rediseno-resumen-banco`. Trabajo de UI/UX
 > sobre dos paneles del banco de preguntas; sin migraciones ni cambios en producción.
 
-## 1. Resumen del banco (`/publicar/preguntas/resumen/`) — acordeón Área → Asignatura → Tema → Recurso
+## 1. Resumen del banco (`/publicar/preguntas/resumen/`)
+
+> **Actualización 2026-06-21:** la jerarquía vigente es
+> Área → Nivel → Asignatura → Tema → Recurso. Este apartado conserva la
+> descripción del primer rediseño realizado el 20 de junio.
+
+### Diseño original — Área → Asignatura → Tema → Recurso
 
 Se reemplazó la tabla ancha (que mezclaba todo al mismo peso visual) por un **acordeón
 jerárquico** navegable:

@@ -9,7 +9,7 @@
 
 Exponer, sin modelos ni migraciones nuevas, tres vistas de solo lectura sobre los datos existentes:
 
-1. Resumen de cobertura por Área → Asignatura → Tema → Recurso.
+1. Resumen de cobertura por Área → Nivel → Asignatura → Tema → Recurso.
 2. Efectividad de cada pregunta dentro de la revisión del banco.
 3. Resultados e intentos agrupables por alumno o recurso/tema.
 4. Efectividad ponderada filtrable por alumno individual o grupo ad hoc seleccionado.
@@ -21,7 +21,8 @@ Exponer, sin modelos ni migraciones nuevas, tres vistas de solo lectura sobre lo
 - Permiso elegido: `is_admin` (superusuario), coherente con el resto del banco.
 - Las preguntas legacy `mode="ambas"` cuentan en práctica y evaluación, como el runtime real.
 - Las rutas estáticas `resumen/` y `resultados/` deben ir antes de `<slug:slug>/`.
-- Anti-N+1: cobertura en una consulta anotada; item analysis en dos consultas fijas
+- Anti-N+1: cobertura en dos consultas constantes (recursos anotados + niveles
+  M2M); item analysis en dos consultas fijas
   (preguntas + alternativas anotadas).
 
 ## Criterios de aceptación
@@ -40,8 +41,12 @@ Exponer, sin modelos ni migraciones nuevas, tres vistas de solo lectura sobre lo
 
 ## Qué se hizo
 
-- **Pieza A:** nueva ruta `/publicar/preguntas/resumen/`, tabla jerárquica, fuentes disponibles,
-  objetivos efectivos desde `get_quiz_config`, métricas y filtros en cascada.
+- **Pieza A:** nueva ruta `/publicar/preguntas/resumen/`, acordeón jerárquico
+  Área → Nivel → Asignatura → Tema → Recurso, fuentes disponibles, objetivos
+  efectivos desde `get_quiz_config` y métricas agregadas.
+- **Ampliación 2026-06-21:** recursos multinivel aparecen en cada rama asociada
+  sin duplicar los totales del área; los recursos sin nivel quedan en `Sin nivel`.
+  El orden es Escolar → Medio/Preuniversitario → Universitario.
 - **Pieza C:** anotaciones de respuestas/aciertos y prefetch anotado de alternativas en
   `question_review`; alertas por baja/alta efectividad y distractor dominante.
 - **Pieza B:** nueva ruta `/publicar/preguntas/resultados/`, detalle unificado de intentos,
@@ -63,8 +68,9 @@ Revisión completa del diff (17 archivos, +2097/−16) contra `main` y los crite
   delta grupo-vs-global (Ada 50% vs global 25% → +25 pp), promedios y % aprobación de resultados.
   Grupo seleccionado vs "todos": **no mezclan denominadores** (el grupo filtra por `attempt__user`,
   el global usa el mismo *base* sin filtro de usuario). Sin alumnos → grupo = global → delta 0.
-- **N+1 / consultas:** confirmados los límites — cobertura **1** (`assertNumQueries(1)` con 2 recursos,
-  vía `select_related("quiz_config")` + anotaciones), item analysis **2**, efectividad jerárquica **4**.
+- **N+1 / consultas:** cobertura **2** constantes
+  (`select_related`/anotaciones + `prefetch_related("levels")`), item analysis
+  **2**, efectividad jerárquica **4**.
 - **Permisos/PII/CSP/HTML/a11y:** todas las vistas `@user_passes_test(is_admin)` (test rechaza staff
   no-superusuario); sin PII extra; JS externo con `nonce` + cache-buster, sin handlers inline; partial
   con `aria-label`; sin overflow horizontal ni errores de consola en las 4 páginas.
