@@ -115,7 +115,7 @@ def question_review(request, slug):
     config = get_quiz_config(resource)
     config_db = getattr(resource, "quiz_config", None)
 
-    topic_edu_level = getattr(resource.topic, "education_level", "") or ""
+    topic_edu_level = resource.get_education_level()
     context = {
         "resource": resource,
         "config": config,
@@ -427,7 +427,7 @@ def generate_questions_inline(request, resource_id):
 
     config = getattr(resource, "quiz_config", None)
     status = "publicada" if (config and config.autopublish) else "borrador"
-    edu_level = (getattr(resource.topic, "education_level", "") or "") or "media"
+    edu_level = resource.get_education_level() or "media"
 
     try:
         created = generate_questions_for_resource(

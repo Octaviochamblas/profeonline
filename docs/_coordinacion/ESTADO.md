@@ -76,6 +76,12 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-20 — 🏛️ Claude + 🧑: **Nivel educativo por asignatura (rama `feat/nivel-por-asignatura`).**
+  Nuevo campo `Subject.education_level` (migración 0031) que los temas/recursos sin nivel propio
+  heredan vía `Resource.get_education_level()`; cableado en generación inline, estudio, pipeline y
+  `generate_pending_questions`. Comando `set_subject_level --subject … --level … [--apply]` (dry-run
+  por defecto). Aplicado en local: **Física Escolar → media**. Pendiente: aplicar en prod tras el
+  deploy de la migración. Tests focalizados verdes.
 - 2026-06-20 — 🏛️ Claude + 🧑: **Rediseño de dos paneles del banco (rama `feat/rediseno-resumen-banco`).**
   (1) Resumen `/publicar/preguntas/resumen/` → acordeón Área→Asignatura→Tema→Recurso con fracciones
   `auditados/total` por categoría editorial, preguntas por nivel y semáforo (verde/amarillo/rojo <20%).

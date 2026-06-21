@@ -268,7 +268,7 @@ class Command(BaseCommand):
             reference_guides = build_reference_block(resource)
 
             status = self._resolve_status(config, force_publish, force_draft)
-            edu_level = (getattr(resource.topic, "education_level", "") or "") or education_fallback
+            edu_level = resource.get_education_level() or education_fallback
             t_flag = "con transcript" if transcript else "SIN transcript"
             g_flag = "con guia" if reference_guides else "sin guia"
 

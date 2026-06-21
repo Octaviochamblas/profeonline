@@ -200,9 +200,8 @@ def generate_questions_chunk(request):
     resource_id = resource_ids[current_index]
     resource = get_object_or_404(Resource.objects.select_related("topic"), id=resource_id)
 
-    # Nivel educativo: del tema del recurso si está configurado, si no el override del form.
-    topic_edu_level = getattr(resource.topic, "education_level", "") or ""
-    edu_level = topic_edu_level or education_level_override
+    # Nivel educativo: del tema o la asignatura del recurso; si no, el override del form.
+    edu_level = resource.get_education_level() or education_level_override
 
     # 1. Guardar/actualizar config UNA sola vez por recurso (primera celda, primer lote).
     if level == 1 and mode == "practice" and batch_offset == 0:

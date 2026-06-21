@@ -559,7 +559,7 @@ def generate_and_audit_questions(
     auditor = auditor or audit_question_candidates
     counts = _target_counts(item)
     education_level = item.taxonomy.get("education_level") or (
-        getattr(item.resource.topic, "education_level", "") if item.resource.topic_id else ""
+        item.resource.get_education_level() if item.resource_id else ""
     ) or "media"
 
     for level, config_mode, model_mode in PIPELINE_MODES:

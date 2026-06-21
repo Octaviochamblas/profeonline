@@ -3,6 +3,14 @@ from django.utils.text import slugify
 
 
 class Subject(models.Model):
+    # Mismo conjunto que Topic.EDUCATION_LEVEL_CHOICES; se duplica a propósito para
+    # evitar un import cruzado entre modelos.
+    EDUCATION_LEVEL_CHOICES = [
+        ("escolar", "Escolar (hasta 13 años)"),
+        ("media", "Media preuniversitaria (14-17 años)"),
+        ("universitaria", "Universitaria (18+)"),
+    ]
+
     area = models.ForeignKey(
         "content.Area",
         on_delete=models.SET_NULL,
@@ -14,6 +22,14 @@ class Subject(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=120, unique=True, blank=True, null=True)
     description = models.TextField(blank=True)
+    education_level = models.CharField(
+        max_length=20,
+        choices=EDUCATION_LEVEL_CHOICES,
+        default="",
+        blank=True,
+        verbose_name="nivel educativo",
+        help_text="Nivel por defecto que heredan los temas/recursos sin nivel propio.",
+    )
     is_active = models.BooleanField(default=True)
     levels = models.ManyToManyField(
         "content.Level",

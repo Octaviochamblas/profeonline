@@ -107,6 +107,20 @@ class Resource(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def get_education_level(self):
+        """Nivel educativo efectivo: del tema; si no, de la asignatura; si no, ''.
+
+        Permite asociar el nivel a una asignatura completa y que sus temas/recursos
+        sin nivel propio lo hereden.
+        """
+        topic = self.topic
+        if topic and topic.education_level:
+            return topic.education_level
+        subject = self.subject or getattr(topic, "subject", None)
+        if subject and getattr(subject, "education_level", ""):
+            return subject.education_level
+        return ""
+
     def save(self, *args, **kwargs):
         preserve_editorial_audit = kwargs.pop("_preserve_editorial_audit", False)
         update_fields = kwargs.get("update_fields")
