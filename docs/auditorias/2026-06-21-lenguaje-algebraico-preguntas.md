@@ -2,7 +2,8 @@
 
 - **Autor/agente:** Codex.
 - **Alcance:** los 17 recursos del tema `lenguaje-algebraico`.
-- **Estado:** vigente y aplicado en producción.
+- **Estado:** superada por la revisión v2 aplicada en producción el 21 de junio
+  de 2026; se conserva como evidencia del primer poblado.
 
 ## Resultado
 
@@ -42,3 +43,35 @@ valores `Resource.order` existentes. Esto evita que el orden alfabético muestre
 
 Respaldo previo:
 `backups/lenguaje_algebraico_before_20260621T033745Z.json` (archivo local no versionado).
+
+## Revisión v2 aplicada
+
+Tras comparar el banco inicial con cinco preguntas editoriales más concretas, se
+detectó que varias preguntas v1 eran correctas pero demasiado genéricas. Se creó
+un paquete v2 y se revisó antes de publicarlo mediante un HTML local navegable.
+
+Resultado del reemplazo:
+
+- preguntas v2 publicadas: **1.530**;
+- preguntas anteriores archivadas: **1.535**;
+- respuestas históricas preservadas: **5**;
+- recursos completos: **17/17**;
+- preguntas v2 con trazabilidad: **1.530**;
+- alternativas inválidas: **0**;
+- explicaciones vacías: **0**;
+- duplicados literales dentro de cada recurso: **0**.
+
+Las cinco preguntas editoriales usadas como referencia fueron incorporadas al
+paquete v2; la mención ambigua “mínimo común denominador (MCD)” se corrigió a
+“mínimo común denominador”.
+
+Herramientas:
+
+- `scratch/build_lenguaje_algebraico_review_v2.py`: genera el paquete de revisión
+  sin tocar producción.
+- `scratch/apply_lenguaje_algebraico_review_v2.py`: valida hashes, respalda,
+  archiva el banco anterior y publica el paquete aprobado en una transacción.
+
+Respaldo v2:
+`backups/lenguaje_algebraico_before_v2_20260621T043147Z.json`
+(archivo local no versionado).
