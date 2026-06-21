@@ -1,6 +1,6 @@
 # Rediseño móvil del recurso y progreso académico
 
-- **Estado:** Auditoría Codex aprobada — listo para cierre
+- **Estado:** Finalizado — PR #75 squash-mergeado
 - **Creado:** 2026-06-21
 - **Prioridad:** P1  ·  **Cartera:** producto / educativa
 - **Tipo:** producto

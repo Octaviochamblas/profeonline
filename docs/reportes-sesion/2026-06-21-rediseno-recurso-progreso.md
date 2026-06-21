@@ -50,5 +50,5 @@ acción manual "Comprendido" por un **progreso calculado desde los intentos real
 
 ## Pendientes / Próximos pasos
 
-- PR **#75** abierto hacia `main`; auditoría final y squash-merge por 🏛️ Claude.
+- PR **#75** squash-mergeado a `main` (`3d847a6`, 2026-06-21).
 - Opcional: QA con teclado/lector de pantalla de pestañas y "Ver más".
