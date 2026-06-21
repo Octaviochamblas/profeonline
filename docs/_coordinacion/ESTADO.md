@@ -18,7 +18,8 @@
   transcripción como fuente → documento canónico, metadatos, guía y preguntas con segunda auditoría;
   publicación en dos fases. 🧩 Codex construyó; 🏛️ Claude auditó y corrigió (`SET_NULL` en guía
   canónica, +tests; **suite 348 OK**). **Agente Python excluido** (duplica el uploader Node
-  `profeonline-uploader`): el flujo de subida se integrará allí (paso 2 en curso). Concurrencia
+  `profeonline-uploader`): el flujo de subida se implementó como **agente Python local**
+  (`scripts/process_upload_batch.py`, commit `79836ad`, 2026-06-21) — paso 2 ✅. Concurrencia
   (`select_for_update`) diferida. Tarjeta en `backlog/6-finalizados/`.
 - **Limpieza física + auditoría global — CERRADA POR CODEX 🟢 (2026-06-19):**
   respaldo de 1.351 archivadas, borrado físico sin historial afectado y auditoría de las 2.476
@@ -76,6 +77,13 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-21 — 🏛️ Claude + 🧑: **Agente local de subida `upload-batch/v1`** (commit `79836ad`).
+  `scripts/process_upload_batch.py` sube cada video como no listado, obtiene la transcripción
+  desde la IP local, registra el ítem en ProfeOnline y espera la validación antes de hacerlo
+  público (revierte a no listado si la confirmación server-side falla). Cierra el **paso 2** del
+  pipeline único de publicación: el cliente Node `profeonline-uploader` se reemplaza por este
+  agente Python local. Incluye `cleanup_borradores` (limpia borradores residuales, dry-run por
+  defecto, respeta ítems en vuelo) + tests del agente (4 OK). Sin migraciones.
 - 2026-06-21 — 🧩 Codex + 🧑: **Taxonomía, cobertura y Lenguaje Algebraico actualizados en producción.**
   Asignaciones vigentes: Electromagnetismo → Física; Física Escolar → Física +
   Medio/Preuniversitario; Matemática Media/Preuniversitaria → Matemáticas. El resumen del banco usa
