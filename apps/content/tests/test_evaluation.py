@@ -364,6 +364,29 @@ class EvaluationViewTests(TestCase):
         self.assertContains(resp, "Aprobado")
         self.assertTrue(QuizAttempt.objects.filter(user=self.user, passed=True).exists())
 
+    def test_quiz_results_preserve_presentation_order(self):
+        """Los resultados se listan en el mismo orden (aleatorio) en que se
+        presentaron las preguntas en el reproductor, no por question.order."""
+        self.client.force_login(self.user)
+        start_url = reverse("content:quiz_start", args=[self.resource.slug, 1, "evaluacion"])
+        self.client.get(start_url)
+
+        session = self.client.session
+        question_ids = session[f"quiz_{self.resource.pk}_1_evaluacion"]
+
+        # Responder todas mal para que ninguna corrija el orden por casualidad
+        post_data = {}
+        for q_id in question_ids:
+            wrong = Question.objects.get(pk=q_id).choices.filter(is_correct=False).first()
+            post_data[f"question_{q_id}"] = str(wrong.pk)
+
+        submit_url = reverse("content:quiz_submit", args=[self.resource.slug, 1, "evaluacion"])
+        html = self.client.post(submit_url, post_data, HTTP_HX_REQUEST="true").content.decode()
+
+        presented_texts = [Question.objects.get(pk=q_id).text for q_id in question_ids]
+        positions = [html.index(text) for text in presented_texts]
+        self.assertEqual(positions, sorted(positions))
+
     def test_quiz_submit_unanswered_question_counts_as_wrong(self):
         self.client.force_login(self.user)
         start_url = reverse("content:quiz_start", args=[self.resource.slug, 1, "evaluacion"])

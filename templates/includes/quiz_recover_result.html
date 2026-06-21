@@ -1,3 +1,12 @@
+<div class="quiz-player quiz-player--panel" data-quiz-status-url="{% url 'content:quiz_status' resource.slug %}">
+<header class="quiz-player__bar">
+    <button type="button" class="quiz-player__close" data-quiz-close aria-label="Volver a niveles">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="quiz-player__mode">Evaluación · Nivel {{ level }}</span>
+    <span class="quiz-player__progress"></span>
+</header>
+<div class="quiz-player__panel-body">
 <div class="quiz-recover-result" role="status">
     {% if recovered %}
     <div class="quiz-recover-result--success">
@@ -7,7 +16,7 @@
         </p>
         <button class="btn btn-primary quiz-btn"
                 hx-get="{% url 'content:quiz_start' resource.slug level 'evaluacion' %}"
-                hx-target="#quiz-area-{{ level }}"
+                hx-target="#quiz-player-root"
                 hx-swap="innerHTML">
             Intentar evaluación
         </button>
@@ -20,4 +29,6 @@
         </p>
     </div>
     {% endif %}
+</div>
+</div>
 </div>

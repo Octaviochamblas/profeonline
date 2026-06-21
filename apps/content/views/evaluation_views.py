@@ -139,10 +139,14 @@ def quiz_submit(request, slug, level, mode):
     # Limpiar session
     request.session.pop(session_key, None)
 
-    # Cargar las respuestas con preguntas y choices para feedback
-    answers = attempt.answers.select_related(
-        "question", "selected_choice"
-    ).order_by("question__order")
+    # Cargar las respuestas con preguntas y choices para feedback.
+    # Se conserva el mismo orden (aleatorio) en que se presentaron las preguntas
+    # en el reproductor; `question_ids` viene de la sesión.
+    answers = list(
+        attempt.answers.select_related("question", "selected_choice")
+    )
+    order_index = {q_id: pos for pos, q_id in enumerate(question_ids)}
+    answers.sort(key=lambda a: order_index.get(a.question_id, len(order_index)))
 
     # Para cada respuesta, incluir la choice correcta
     results = []

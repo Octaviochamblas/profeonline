@@ -14,6 +14,13 @@
 
 ## En curso ahora
 
+- **Reproductor de preguntas a pantalla completa — CONSTRUIDO 🔨 (rama `feat/reproductor-preguntas-fullscreen`, 2026-06-21):**
+  panel interno fullscreen (móvil + PC), una pregunta a la vez con `Anterior`/`Siguiente`, pantalla
+  de revisión previa al envío y resultados a pantalla completa con corrección. Aplica a Preparación,
+  Evaluación por nivel y evaluación final del tema. Overlay global `#quiz-player-root` + `quiz-player.js`
+  (CSP-safe), reusa las vistas HTMX existentes; `quiz_submit` ahora ordena resultados por orden de
+  presentación. **Sin migraciones ni endpoints nuevos.** Tests focalizados + QA visual (escritorio y
+  móvil 360px) OK. Tarjeta en `backlog/3-construccion/`. Pendiente: suite completa + merge a `main`.
 - **Pipeline único de publicación educativa — BACKEND MERGEADO 🟢 (PR #72, 2026-06-19):**
   transcripción como fuente → documento canónico, metadatos, guía y preguntas con segunda auditoría;
   publicación en dos fases. 🧩 Codex construyó; 🏛️ Claude auditó y corrigió (`SET_NULL` en guía

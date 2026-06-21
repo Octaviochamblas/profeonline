@@ -1,4 +1,15 @@
 {% load markdown_tags %}
+<div class="quiz-player quiz-player--panel" data-quiz-status-url="{% url 'content:quiz_status' resource.slug %}">
+<header class="quiz-player__bar">
+    <button type="button" class="quiz-player__close" data-quiz-close aria-label="Volver a niveles">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="quiz-player__mode">
+        {% if mode == "preparacion" %}Resultado de práctica{% else %}Resultado de evaluación{% endif %} · Nivel {{ level }}
+    </span>
+    <span class="quiz-player__progress"></span>
+</header>
+<div class="quiz-player__panel-body">
 <div class="quiz-results {% if attempt.passed %}quiz-results--passed{% else %}quiz-results--failed{% endif %}" id="quiz-results-{{ level }}">
     <div class="quiz-results__header">
         {% if mode == "preparacion" %}
@@ -116,39 +127,38 @@
                 {% if not attempt.passed and info.remaining > 0 %}
                 <button class="btn btn-primary quiz-btn"
                         hx-get="{% url 'content:quiz_start' resource.slug level 'evaluacion' %}"
-                        hx-target="#quiz-area-{{ level }}"
-                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                        hx-target="#quiz-player-root"
+                        hx-swap="innerHTML">
                     Volver a intentar
                 </button>
                 {% endif %}
                 <button class="btn btn-secondary quiz-btn"
                         hx-get="{% url 'content:quiz_start' resource.slug level 'preparacion' %}"
-                        hx-target="#quiz-area-{{ level }}"
-                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                        hx-target="#quiz-player-root"
+                        hx-swap="innerHTML">
                     Ir a Práctica
                 </button>
             {% else %}
                 {% if not info.passed and not info.max_reached or info.can_recover %}
                 <button class="btn btn-primary quiz-btn"
                         hx-get="{% url 'content:quiz_start' resource.slug level 'evaluacion' %}"
-                        hx-target="#quiz-area-{{ level }}"
-                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                        hx-target="#quiz-player-root"
+                        hx-swap="innerHTML">
                     Ir a Evaluación
                 </button>
                 {% endif %}
                 <button class="btn btn-secondary quiz-btn"
                         hx-get="{% url 'content:quiz_start' resource.slug level 'preparacion' %}"
-                        hx-target="#quiz-area-{{ level }}"
-                        hx-swap="innerHTML show:#quiz-level-{{ level }}:top">
+                        hx-target="#quiz-player-root"
+                        hx-swap="innerHTML">
                     Practicar de nuevo
                 </button>
             {% endif %}
-            <button class="btn btn-secondary"
-                    hx-get="{% url 'content:quiz_status' resource.slug %}"
-                    hx-target="#quiz-section"
-                    hx-swap="outerHTML show:#quiz-section:top">
+            <button type="button" class="btn btn-secondary" data-quiz-close>
                 Volver a niveles
             </button>
         </div>
     </div>
+</div>
+</div>
 </div>

@@ -104,4 +104,36 @@ como en PC.
 ---
 
 ## Qué se hizo
-_(Completar al cerrar, antes de mover a `backlog/6-finalizados/`.)_
+**Implementado en la rama `feat/reproductor-preguntas-fullscreen` (🏛️ Claude).**
+
+- **Overlay global** `#quiz-player-root` en `templates/base.html` (fixed, `inset:0`, fuera del
+  contenido) + inclusión de `static/js/quiz-player.js?v=1` y cache-buster CSS `?v=30`.
+- **`static/js/quiz-player.js`** (CSP-safe, externo): apertura/cierre del overlay vía
+  `htmx:afterSwap`, navegación una-pregunta-a-la-vez (`Anterior`/`Siguiente`), progreso
+  "Pregunta N de M", pantalla de **revisión** con chips respondida/pendiente y salto a cualquier
+  pregunta, foco atrapado + restauración al disparador, cierre con Escape, **confirmación al cerrar
+  con respuestas seleccionadas**, bloqueo de scroll del body y refresco de niveles vía
+  `quiz_status` al cerrar.
+- **Reproductor en formularios:** `templates/includes/quiz_form.html` y `topic_exam_form.html`
+  reescritos como reproductor (todas las preguntas en el mismo `<form>`, ocultas salvo la activa →
+  las respuestas persisten sin autosave). Reporte de error pasó a `data-quiz-report-toggle`
+  (sin `onclick` inline).
+- **Paneles dentro del reproductor:** `quiz_results.html`, `quiz_blocked.html`,
+  `quiz_recover_result.html`, `quiz_empty.html`, `quiz_error.html`, `topic_exam_results.html`,
+  `topic_exam_empty.html` envueltos en cabecera fija + cuerpo scrollable; "Volver a niveles"/
+  "Cerrar" pasaron a `data-quiz-close`.
+- **Disparadores** (`quiz_section.html`, `topic_exam_section.html` y botones de resultados/bloqueo/
+  recuperación) re-apuntados a `hx-target="#quiz-player-root"`.
+- **Backend:** `quiz_submit` (`apps/content/views/evaluation_views.py`) ahora ordena los resultados
+  por el **orden de presentación** (IDs de la sesión), no por `question.order`. (La evaluación final
+  del tema ya preservaba el orden.) **Sin migraciones ni endpoints nuevos.**
+- **CSS** nuevo en `static/css/estilos.css` para el reproductor (cabecera/cuerpo/pie, revisión,
+  resultados, ocultar WhatsApp con `body.quiz-open`, `env(safe-area-inset-*)`).
+
+### Verificación
+- Tests focalizados de evaluación verdes (60) + nuevo test
+  `test_quiz_results_preserve_presentation_order`. `check` sin errores; `makemigrations --check
+  --dry-run` sin cambios.
+- **QA visual** (runserver) en escritorio y móvil 360px: abrir, navegar, persistencia al
+  retroceder, salto desde revisión, envío, resultados a pantalla completa con corrección, cierre con
+  restauración de scroll/WhatsApp y refresco de niveles. **Sin errores de consola.**
