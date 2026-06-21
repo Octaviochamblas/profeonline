@@ -828,6 +828,9 @@ class TopicDetailViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.topic.name)
         self.assertContains(response, "BreadcrumbList")
+        self.assertNotContains(response, '<nav class="breadcrumbs"')
+        self.assertNotContains(response, "Ruta de aprendizaje")
+        self.assertNotContains(response, "topic-resource-card__description")
 
         # Verify resources are listed in order: basic_resource -> advanced_resource -> no_level_resource
         resources = list(response.context["resources"])

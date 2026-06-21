@@ -149,6 +149,42 @@ def get_resource_progress(user, resource):
     return get_resources_progress(user, [rid])[rid]
 
 
+def summarize_topic_progress(resource_ids, progress_by_resource):
+    """Resume el avance contra toda la cobertura publicada de un tema."""
+    resource_ids = list(resource_ids)
+    summary = {
+        "total": len(resource_ids),
+        "started": 0,
+        "weighted_progress": 0,
+        "practice_ready": 0,
+        "practice_total": 0,
+        "evaluation_passed": 0,
+        "evaluation_total": 0,
+    }
+    if not resource_ids:
+        return summary
+
+    weighted_sum = 0
+    for resource_id in resource_ids:
+        progress = progress_by_resource.get(resource_id) or {}
+        if progress.get("worked_levels"):
+            summary["started"] += 1
+        weighted_sum += progress.get("weighted_progress", 0)
+
+        for level in progress.get("levels_list", []):
+            if level.get("practice_available"):
+                summary["practice_total"] += 1
+                if level.get("practice_ready"):
+                    summary["practice_ready"] += 1
+            if level.get("evaluation_available"):
+                summary["evaluation_total"] += 1
+                if level.get("passed"):
+                    summary["evaluation_passed"] += 1
+
+    summary["weighted_progress"] = round(weighted_sum / len(resource_ids))
+    return summary
+
+
 def get_profile_progress(user):
     """Resumen de progreso del estudiante para el perfil, agrupado por tema.
 

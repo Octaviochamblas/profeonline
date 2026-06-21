@@ -184,8 +184,8 @@ def get_topics_progress_map(user, topic_ids):
 
     El porcentaje ya **no** depende de "Comprendido" (`ResourceCompletion`):
     se calcula como el **progreso ponderado** (práctica 30% / evaluación 70%)
-    promediado sobre los recursos trabajados del tema. `worked` indica cuántos
-    recursos tienen algún intento (cobertura).
+    dividido por todos los recursos publicados del tema. Los no iniciados
+    aportan cero. `worked` indica cuántos recursos tienen algún intento.
 
     Returns:
         dict {topic_id: {total, viewed, approved, stars, worked,
@@ -214,13 +214,20 @@ def get_topics_progress_map(user, topic_ids):
         "worked": 0,
         "weighted_progress": 0,
         "percentage": 0,
+        "practice_ready": 0,
+        "practice_total": 0,
+        "evaluation_passed": 0,
+        "evaluation_total": 0,
     }
 
     if not getattr(user, "is_authenticated", False) or not all_resource_ids:
         return {tid: empty(tid) for tid in topic_ids}
 
     # Progreso ponderado por recurso (sin N+1). Import diferido para evitar ciclo.
-    from apps.content.services.progress_service import get_resources_progress
+    from apps.content.services.progress_service import (
+        get_resources_progress,
+        summarize_topic_progress,
+    )
 
     progress_by_resource = get_resources_progress(user, all_resource_ids)
 
@@ -256,21 +263,21 @@ def get_topics_progress_map(user, topic_ids):
         approved = sum(1 for rid in rids if passed_map.get(rid, 0) > 0)
         stars = sum(passed_map.get(rid, 0) for rid in rids)
 
-        worked_values = [
-            progress_by_resource[rid]["weighted_progress"]
-            for rid in rids
-            if progress_by_resource.get(rid, {}).get("worked_levels")
-        ]
-        weighted = round(sum(worked_values) / len(worked_values)) if worked_values else 0
+        academic_summary = summarize_topic_progress(rids, progress_by_resource)
+        weighted = academic_summary["weighted_progress"]
 
         result[tid] = {
             "total": len(rids),
             "viewed": viewed,
             "approved": approved,
             "stars": stars,
-            "worked": len(worked_values),
+            "worked": academic_summary["started"],
             "weighted_progress": weighted,
             "percentage": weighted,
+            "practice_ready": academic_summary["practice_ready"],
+            "practice_total": academic_summary["practice_total"],
+            "evaluation_passed": academic_summary["evaluation_passed"],
+            "evaluation_total": academic_summary["evaluation_total"],
         }
 
     return result

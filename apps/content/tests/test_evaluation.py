@@ -564,9 +564,12 @@ class EvaluationViewTests(TestCase):
         resp = self.client.get(reverse("content:topic_detail", args=[self.topic.slug]))
 
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "1/1 aprobados")
-        self.assertContains(resp, "3/3 estrellas")
-        self.assertContains(resp, "topic-resource-card--mastery-3")
+        self.assertContains(resp, "1/1")
+        self.assertContains(resp, "Recursos iniciados")
+        self.assertContains(resp, "1/3")
+        self.assertContains(resp, "Evaluaciones aprobadas")
+        self.assertContains(resp, "topic-resource-card--approved")
+        self.assertNotContains(resp, "estrellas")
 
 
 class TopicExamServiceTests(TestCase):

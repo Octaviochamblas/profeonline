@@ -198,6 +198,27 @@ class BatchQueryTests(ProgressTestBase):
         self.assertEqual(result[self.topic.id]["percentage"], 70)
         self.assertEqual(result[self.topic.id]["worked"], 1)
 
+    def test_topics_progress_includes_unstarted_published_resources(self):
+        self.add_questions(self.resource, [1], mode="preparacion")
+        self.attempt(1, "preparacion", 100)  # recurso iniciado = 30%
+        for index in range(2, 20):
+            Resource.objects.create(
+                title=f"Recurso {index}",
+                slug=f"recurso-{index}",
+                subject=self.subject,
+                topic=self.topic,
+                is_published=True,
+            )
+
+        result = get_topics_progress_map(self.user, [self.topic.id])[self.topic.id]
+
+        self.assertEqual(result["weighted_progress"], 2)
+        self.assertEqual(result["worked"], 1)
+        self.assertEqual(result["total"], 19)
+        self.assertEqual(result["practice_ready"], 1)
+        self.assertEqual(result["practice_total"], 1)
+        self.assertEqual(result["evaluation_total"], 0)
+
 
 class ProfileCoverageTests(ProgressTestBase):
     def test_profile_coverage_counts_all_published_topic_resources(self):

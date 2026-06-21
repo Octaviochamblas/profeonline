@@ -113,10 +113,20 @@ class TopicDetailProgressTests(TestCase):
         url = reverse("content:topic_detail", kwargs={"slug": empty_topic.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["stars_total"], 0)
-        self.assertEqual(response.context["stars_percent"], 0)
+        self.assertEqual(
+            response.context["topic_progress"],
+            {
+                "total": 0,
+                "started": 0,
+                "weighted_progress": 0,
+                "practice_ready": 0,
+                "practice_total": 0,
+                "evaluation_passed": 0,
+                "evaluation_total": 0,
+            },
+        )
 
-    def test_stars_total_calculation_with_fewer_published_levels(self):
+    def test_progress_denominators_use_only_published_modes_and_levels(self):
         # We publish questions for level 1 on r1, and level 1 and 2 on r2
         # r1 has level 1 published (1 level)
         q1 = Question.objects.create(resource=self.r1, level=1, text="Q1", status="publicada")
@@ -128,13 +138,15 @@ class TopicDetailProgressTests(TestCase):
         q3 = Question.objects.create(resource=self.r2, level=2, text="Q3", status="publicada")
         Choice.objects.create(question=q3, text="C3", is_correct=True)
 
-        # total published levels across all resources in this topic is 1 (for r1) + 2 (for r2) = 3
-        # So stars_total should be 3
         self.client.force_login(self.user)
         url = reverse("content:topic_detail", kwargs={"slug": self.topic.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["stars_total"], 3)
+        progress = response.context["topic_progress"]
+        self.assertEqual(progress["practice_total"], 3)
+        self.assertEqual(progress["evaluation_total"], 3)
+        self.assertEqual(progress["practice_ready"], 0)
+        self.assertEqual(progress["evaluation_passed"], 0)
 
     def test_comprehension_does_not_award_xp(self):
         self.client.force_login(self.user)
