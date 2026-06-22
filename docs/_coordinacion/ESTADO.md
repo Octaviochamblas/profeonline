@@ -13,6 +13,14 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Guías interactivas - Fase 4 - CERRADA 🟢 (2026-06-22):**
+  🧩 Codex construyó el parser seguro AST→SymPy; 🏛️ Claude auditó como IA distinta, encontró y
+  corrigió **1 hallazgo Medium de DoS** (apilamiento de exponentes que evadía el tope por-exponente y
+  explotaba en `cancel`: nuevo `MAX_TOTAL_DEGREE`/`_degree_upper_bound` que corta sobre el AST antes
+  del paso caro, +1 test) y cerró. **494 tests OK** (1 skip local `SIGALRM`), sin migraciones,
+  `check --deploy` exit 0. Squash-merge de PR **#82** a `main`. Tarjeta en `backlog/6-finalizados/`.
+  **Nota a futuro:** el timeout depende de `SIGALRM`+main thread (ok con gunicorn `sync`); documentar
+  si se migra a `gthread`/`gevent`. **Siguiente: Fase 5 (evaluaciones nivel/final).**
 - **Guías interactivas - Fase 3 - APROBADA TÉCNICAMENTE 🟢 (2026-06-22):**
   🧩 Codex auditó y corrigió generación/publicación manual, aislamiento y revalidación del runtime,
   panel editorial, esquema real de la guía, CSP, borrado lógico y N+1. **469 tests OK**; tarjeta en
@@ -95,7 +103,8 @@
 
 - 🔨 **Guías interactivas — Fases 4–7** (epic `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`).
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
-  **F4** parser respuesta directa (🟢 Ready, `seguridad:requiere-claude`),
+  **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
+  `seguridad:requiere-claude`),
   **F5** evaluaciones nivel/final (🟡 afinar en preflight), **F6** PDF (🟡),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
@@ -106,6 +115,25 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🏛️ Claude: **Fase 4 AUDITADA Y CERRADA 🟢 — merge de PR #82 a `main`.**
+  Auditor distinto al builder (Codex). Propiedad crítica intacta (sin `eval`/`exec`/`parse_expr`/
+  `sympify(string)`; whitelist AST; inyección bien cubierta). Hallazgo Medium de DoS corregido por
+  excepción (Claude builder, por decisión del 🧑): apilamiento de exponentes `(...**n)**m` evadía
+  `MAX_EXPONENT_ABS` y explotaba en `cancel` (~296 MB + cuelgue confirmado); fix con
+  `MAX_TOTAL_DEGREE=32` + `_degree_upper_bound` que corta sobre el AST antes del paso caro (<0,04 s).
+  **494 tests OK**, sin migraciones, `check --deploy` exit 0. `audit:aprobado` aplicado.
+- 2026-06-22 — 🧩 Codex: **Fase 4 CONSTRUIDA — PR #82 esperando auditor distinto 🟡.**
+  Parser AST→SymPy seguro, respuestas numéricas/algebraicas, panel editorial y práctica mixta
+  completados. **493 tests OK local y CI Linux completo verde** (incluido timeout `SIGALRM`);
+  pip-audit, deploy-check, migraciones, Ruff y pre-commit verdes. El único check rojo es el gate
+  organizativo que exige revisión de otra IA. Auto-merge deshabilitado; label
+  `seguridad:requiere-claude` aplicado.
+- 2026-06-22 — 🧩 Codex: **Preflight Fase 4 — LISTO PARA CONSTRUIR 🟢.**
+  Se resolvieron las contradicciones del handoff: la práctica visible no persiste `text_answer`;
+  parser AST→SymPy nodo a nodo sin `parse_expr`/`sympify(string)`; tolerancia absoluta; gramática,
+  límites y timeout concretos; edición/publicación por tipo; práctica mixta y adaptación
+  retrocompatible del reproductor. SymPy 1.14.0 queda como dependencia nueva. Tarjeta movida a
+  `backlog/3-construccion/`.
 - 2026-06-22 — 🏛️ Claude: **Fix dificultad acentuada — 🟢 mergeado a `main`** (`fix/dificultad-acentos`).
   Detectado en QA local: con API key real, la generación de guías de F2 fallaba la validación porque
   la IA devuelve dificultades **con acento** (`"básica"`) y el modelo usa claves **sin acento**

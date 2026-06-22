@@ -44,6 +44,14 @@
     {% if question.scope == "banco_visible" %}
     <div class="q-edit__row" style="margin-top: 12px;">
         <div class="q-edit__col" style="flex: 1;">
+            <label class="q-edit__label">Tipo de respuesta</label>
+            <select name="question_type" class="q-edit__input">
+                {% for value, label in QUESTION_TYPE_CHOICES %}
+                <option value="{{ value }}"{% if question.question_type == value %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="q-edit__col" style="flex: 1;">
             <label class="q-edit__label">Dificultad</label>
             <select name="difficulty" class="q-edit__input">
                 <option value="basica"{% if question.difficulty == "basica" %} selected{% endif %}>Básica</option>
@@ -55,6 +63,27 @@
         <div class="q-edit__col" style="flex: 2;">
             <label class="q-edit__label">Pista (Hint)</label>
             <input type="text" name="hint" class="q-edit__input" value="{{ question.hint }}" required>
+        </div>
+    </div>
+    <div class="q-edit__row" style="margin-top: 12px;">
+        <div class="q-edit__col" style="flex: 2;">
+            <label class="q-edit__label">Respuesta canónica</label>
+            <input type="text"
+                   name="canonical_answer"
+                   class="q-edit__input"
+                   value="{{ question.canonical_answer }}"
+                   maxlength="200">
+            <small>En alternativas este valor se ignora y se sincroniza con la opción correcta.</small>
+        </div>
+        <div class="q-edit__col" style="flex: 1;">
+            <label class="q-edit__label">Tolerancia absoluta</label>
+            <input type="text"
+                   name="answer_tolerance"
+                   class="q-edit__input"
+                   value="{{ question.answer_tolerance|default_if_none:'' }}"
+                   inputmode="decimal"
+                   maxlength="30">
+            <small>Solo se aplica a preguntas numéricas.</small>
         </div>
     </div>
     {% endif %}

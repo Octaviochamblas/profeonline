@@ -1,18 +1,23 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from django.urls import reverse
-from django.template.loader import render_to_string
+import math
+
 from django.contrib.auth.decorators import user_passes_test
-from django.views.decorators.http import require_POST, require_http_methods
 from django.db import transaction
 from django.db.models import Count, Prefetch, Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.views.decorators.http import require_http_methods, require_POST
 
-from apps.content.views.permissions import is_admin
-from apps.content.models import Resource, Question, Choice, ResourceQuizConfig
-from apps.content.models.topic import Topic
+from apps.content.models import Choice, Question, Resource, ResourceQuizConfig
 from apps.content.models.exercise_item import ExerciseItem, ResourceExerciseItem
 from apps.content.models.learning_guide import LearningGuide
+from apps.content.models.topic import Topic
+from apps.content.services.answer_grading_service import (
+    validate_direct_answer_config,
+)
 from apps.content.services.evaluation_service import get_quiz_config
+from apps.content.views.permissions import is_admin
 
 # Modos que se muestran como secciones plegables dentro de cada nivel.
 # "ambas" (legacy) solo aparece si tiene preguntas.
@@ -26,6 +31,15 @@ ITEM_LOW_ACCURACY = 30
 ITEM_HIGH_ACCURACY = 95
 
 
+def _visible_bank_mutation_error(question):
+    if question.scope != "banco_visible":
+        return None
+    topic = question.resource.topic
+    if not topic or not topic.is_active or not topic.structured_bank_enabled:
+        return HttpResponse("Tema no habilitado.", status=400)
+    return None
+
+
 def _visible_question_publication_error(question):
     """Return a validation message when a visible-bank question is not publishable."""
     if not question.text.strip() or not question.explanation.strip():
@@ -34,18 +48,33 @@ def _visible_question_publication_error(question):
         return "Selecciona una dificultad válida antes de publicar."
     if not question.hint.strip():
         return "Completa la pista antes de publicar."
-    choices = list(question.choices.all())
-    if len(choices) != 4:
-        return "Cada pregunta debe tener exactamente cuatro alternativas."
-    correct = [choice for choice in choices if choice.is_correct]
-    if len(correct) != 1:
-        return "Cada pregunta debe tener exactamente una alternativa correcta."
-    if len({choice.text.strip() for choice in choices}) != 4 or any(
-        not choice.text.strip() for choice in choices
-    ):
-        return "Las alternativas deben ser únicas y no estar vacías."
-    if question.canonical_answer != correct[0].text:
-        return "La respuesta canónica no coincide con la alternativa correcta."
+    if question.question_type == "alternativa":
+        choices = list(question.choices.all())
+        if len(choices) != 4:
+            return "Cada pregunta debe tener exactamente cuatro alternativas."
+        correct = [choice for choice in choices if choice.is_correct]
+        if len(correct) != 1:
+            return "Cada pregunta debe tener exactamente una alternativa correcta."
+        if len({choice.text.strip() for choice in choices}) != 4 or any(
+            not choice.text.strip() for choice in choices
+        ):
+            return "Las alternativas deben ser únicas y no estar vacías."
+        if question.canonical_answer != correct[0].text:
+            return "La respuesta canónica no coincide con la alternativa correcta."
+        return None
+
+    if question.question_type not in {"numerica", "algebraica"}:
+        return "Selecciona un tipo de pregunta válido."
+    if not question.canonical_answer.strip():
+        return "Completa la respuesta canónica antes de publicar."
+    reason = validate_direct_answer_config(question)
+    if reason:
+        messages = {
+            "invalid_canonical": "La respuesta canónica o tolerancia no es válida.",
+            "limits_exceeded": "La respuesta canónica excede los límites permitidos.",
+            "grading_timeout": "La respuesta canónica es demasiado compleja.",
+        }
+        return messages.get(reason, "La respuesta canónica no es válida para el tipo.")
     return None
 
 
@@ -113,7 +142,8 @@ def _question_with_analysis(question_id):
 def _edit_choices_ctx(question):
     return {"LEVEL_CHOICES": Question.LEVEL_CHOICES,
             "MODE_CHOICES": Question.MODE_CHOICES,
-            "STATUS_CHOICES": Question.STATUS_CHOICES}
+            "STATUS_CHOICES": Question.STATUS_CHOICES,
+            "QUESTION_TYPE_CHOICES": Question.QUESTION_TYPE_CHOICES}
 
 
 def _build_levels_data(resource):
@@ -271,6 +301,9 @@ def save_resource_quiz_config(request, resource_id):
 def edit_question_inline(request, question_id):
     """GET: formulario de edición (o lectura si cancel). POST: guarda y devuelve el ítem."""
     question = get_object_or_404(Question, id=question_id)
+    scope_error = _visible_bank_mutation_error(question)
+    if scope_error:
+        return scope_error
 
     if request.method == "POST":
         question.text = request.POST.get("text", "").strip()
@@ -284,11 +317,39 @@ def edit_question_inline(request, question_id):
             difficulty = request.POST.get("difficulty", "").strip()
             if difficulty not in dict(Question.DIFFICULTY_CHOICES):
                 return HttpResponse("Dificultad inválida.", status=400)
+            question_type = request.POST.get("question_type", "").strip()
+            if question_type not in dict(Question.QUESTION_TYPE_CHOICES):
+                return HttpResponse("Tipo de pregunta inválido.", status=400)
             question.level = question.exercise_item.level
             question.mode = "preparacion"
             question.status = "borrador"
             question.difficulty = difficulty
             question.hint = request.POST.get("hint", "").strip()
+            question.question_type = question_type
+            if question_type == "alternativa":
+                correct_choice = question.choices.filter(is_correct=True).first()
+                question.canonical_answer = (
+                    correct_choice.text if correct_choice else ""
+                )
+                question.answer_tolerance = None
+            else:
+                question.canonical_answer = request.POST.get(
+                    "canonical_answer", ""
+                ).strip()
+                if question_type == "numerica":
+                    raw_tolerance = request.POST.get("answer_tolerance", "").strip()
+                    if raw_tolerance:
+                        try:
+                            tolerance = float(raw_tolerance.replace(",", "."))
+                        except ValueError:
+                            return HttpResponse("Tolerancia inválida.", status=400)
+                        if not math.isfinite(tolerance) or tolerance < 0:
+                            return HttpResponse("Tolerancia inválida.", status=400)
+                        question.answer_tolerance = tolerance
+                    else:
+                        question.answer_tolerance = None
+                else:
+                    question.answer_tolerance = None
         else:
             question.mode = request.POST.get("mode", "ambas")
             question.status = request.POST.get("status", "borrador")
@@ -313,6 +374,14 @@ def edit_choice_inline(request, choice_id):
     """GET: form de edición (o lectura si cancel). POST: guarda y devuelve la alternativa."""
     choice = get_object_or_404(Choice, id=choice_id)
     question = choice.question
+    scope_error = _visible_bank_mutation_error(question)
+    if scope_error:
+        return scope_error
+    if question.scope == "banco_visible" and question.question_type != "alternativa":
+        return HttpResponse(
+            "Las preguntas de respuesta directa no usan alternativas.",
+            status=400,
+        )
 
     if request.method == "POST":
         choice.text = request.POST.get("text", "").strip()
@@ -385,10 +454,14 @@ def add_question_inline(request, resource_id):
 def add_choice_inline(request, question_id):
     """Crea una alternativa y devuelve su formulario de edición (para completarla)."""
     question = get_object_or_404(Question, id=question_id)
-    if question.scope == "banco_visible":
-        question.status = "archivada"
-        question.save(update_fields=["status", "updated_at"])
-        return HttpResponse("")
+    scope_error = _visible_bank_mutation_error(question)
+    if scope_error:
+        return scope_error
+    if question.scope == "banco_visible" and question.question_type != "alternativa":
+        return HttpResponse(
+            "Las preguntas de respuesta directa no usan alternativas.",
+            status=400,
+        )
     last_order = question.choices.count()
     choice = Choice.objects.create(
         question=question, text="Nueva alternativa", is_correct=False, order=last_order + 1
@@ -406,6 +479,9 @@ def add_choice_inline(request, question_id):
 def delete_question(request, question_id):
     """Elimina la pregunta. Retorna vacío para que HTMX remueva el ítem."""
     question = get_object_or_404(Question, id=question_id)
+    scope_error = _visible_bank_mutation_error(question)
+    if scope_error:
+        return scope_error
     if question.scope == "banco_visible":
         question.status = "archivada"
         question.save(update_fields=["status", "updated_at"])
@@ -426,6 +502,17 @@ def delete_question(request, question_id):
 def delete_choice(request, choice_id):
     """Elimina la alternativa. Retorna vacío para que HTMX la remueva."""
     choice = get_object_or_404(Choice, id=choice_id)
+    scope_error = _visible_bank_mutation_error(choice.question)
+    if scope_error:
+        return scope_error
+    if (
+        choice.question.scope == "banco_visible"
+        and choice.question.question_type != "alternativa"
+    ):
+        return HttpResponse(
+            "Las preguntas de respuesta directa conservan sus alternativas.",
+            status=400,
+        )
     if choice.attempt_answers.exists():
         return HttpResponse(
             "La alternativa tiene respuestas históricas y no puede eliminarse.",

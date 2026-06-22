@@ -6,9 +6,13 @@
 
     {% if question.scope == "banco_visible" %}
         <div class="q-detail__meta mb-3" style="font-size: 0.85rem; color: #94a3b8; display: flex; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; margin-bottom: 12px;">
+            <div><strong>Tipo:</strong> <span class="text-light">{{ question.get_question_type_display }}</span></div>
             <div><strong>Dificultad:</strong> <span class="badge" style="background-color: #0d9488; color: white;">{{ question.difficulty|capfirst }}</span></div>
             <div><strong>Pista (Hint):</strong> <span class="text-light" style="color: #e2e8f0;">{{ question.hint }}</span></div>
             <div><strong>Respuesta Canónica:</strong> <span class="text-teal" style="color: #0d9488; font-weight: 600;">{{ question.canonical_answer }}</span></div>
+            {% if question.question_type == "numerica" %}
+            <div><strong>Tolerancia:</strong> <span class="text-light">{{ question.answer_tolerance|default_if_none:"0" }}</span></div>
+            {% endif %}
         </div>
     {% else %}
         <section class="item-analysis" aria-label="Efectividad de la pregunta">
@@ -38,19 +42,23 @@
         </section>
     {% endif %}
 
+    {% if question.question_type == "alternativa" %}
     <div class="q-detail__alts" id="alts-{{ question.id }}">
         {% for choice in question.choices.all %}
             {% include "partials/choice_item.html" with choice=choice %}
         {% endfor %}
     </div>
+    {% endif %}
 
     <div class="q-detail__actions">
+        {% if question.question_type == "alternativa" %}
         <button type="button" class="btn-secondary btn-sm"
                 hx-post="{% url 'content:add_choice_inline' question.id %}"
                 hx-target="#alts-{{ question.id }}"
                 hx-swap="beforeend">
             + Alternativa
         </button>
+        {% endif %}
         <button type="button" class="btn-secondary btn-sm"
                 hx-get="{% url 'content:edit_question_inline' question.id %}"
                 hx-target="#question-body-{{ question.id }}"

@@ -1,13 +1,14 @@
 import random
 from collections import defaultdict
 
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
 
-from apps.content.models import Topic, Resource, Question, Choice, ResourceExerciseItem, ExerciseItem
+from apps.content.models import ExerciseItem, Question, Resource, ResourceExerciseItem, Topic
 from apps.content.models.learning_guide import LearningGuide
+from apps.content.services.answer_grading_service import grade_answer
 from apps.content.services.visible_bank_service import select_visible_practice_questions
 
 VISIBLE_BANK_INITIAL_LIMIT = 200
@@ -176,31 +177,21 @@ def submit_visible_practice(request, topic_id):
     if not question_ids:
         return HttpResponse("La sesión de práctica está vacía.", status=400)
 
-    # 1. Validar que la petición POST no contenga llaves/parámetros manipulados
-    answers = {}
-    for key, value in request.POST.items():
+    # 1. Validar llaves ajenas y parámetros duplicados antes de corregir.
+    raw_answers = {}
+    for key, values in request.POST.lists():
         if key.startswith("question_"):
+            if len(values) != 1:
+                return HttpResponse("Respuesta duplicada o manipulada.", status=400)
             try:
-                q_id = int(key.replace("question_", ""))
+                q_id = int(key.removeprefix("question_"))
             except ValueError:
                 return HttpResponse("Estructura de envío manipulada.", status=400)
-
             if q_id not in question_ids:
                 return HttpResponse("La pregunta no pertenece a esta práctica.", status=400)
-
-            if value:  # El alumno seleccionó alguna alternativa
-                try:
-                    c_id = int(value)
-                except ValueError:
-                    return HttpResponse("Estructura de alternativas manipulada.", status=400)
-
-                # Validar que la alternativa pertenezca a la pregunta
-                if not Choice.objects.filter(id=c_id, question_id=q_id).exists():
-                    return HttpResponse("La alternativa seleccionada no corresponde a la pregunta.", status=400)
-
-                answers[q_id] = c_id
-            else:
-                answers[q_id] = None
+            if q_id in raw_answers:
+                return HttpResponse("Respuesta duplicada o manipulada.", status=400)
+            raw_answers[q_id] = values[0]
 
     # 2. Cargar preguntas respetando el orden original guardado en sesión
     questions_map = {
@@ -235,13 +226,56 @@ def submit_visible_practice(request, topic_id):
         if not q:
             continue
 
-        selected_choice_id = answers.get(q_id)
         selected_choice = None
-        if selected_choice_id:
-            selected_choice = next((c for c in q.choices.all() if c.id == selected_choice_id), None)
+        correct_choice = None
+        text_answer = ""
+        normalized_answer = ""
+        raw_answer = raw_answers.get(q_id, "")
 
-        correct_choice = next((c for c in q.choices.all() if c.is_correct), None)
-        is_correct = bool(selected_choice and selected_choice.is_correct)
+        if q.question_type == "alternativa":
+            choices = list(q.choices.all())
+            correct_choice = next(
+                (choice for choice in choices if choice.is_correct),
+                None,
+            )
+            if raw_answer:
+                try:
+                    selected_choice_id = int(raw_answer)
+                except (TypeError, ValueError):
+                    return HttpResponse(
+                        "Estructura de alternativas manipulada.",
+                        status=400,
+                    )
+                selected_choice = next(
+                    (
+                        choice
+                        for choice in choices
+                        if choice.id == selected_choice_id
+                    ),
+                    None,
+                )
+                if selected_choice is None:
+                    return HttpResponse(
+                        "La alternativa seleccionada no corresponde a la pregunta.",
+                        status=400,
+                    )
+            is_correct = bool(selected_choice and selected_choice.is_correct)
+            grading_reason = (
+                "correct"
+                if is_correct
+                else ("incorrect" if selected_choice else "empty")
+            )
+        elif q.question_type in {"numerica", "algebraica"}:
+            text_answer = raw_answer
+            grading = grade_answer(q, raw_answer)
+            is_correct = grading["correct"]
+            grading_reason = grading["reason"]
+            normalized_answer = grading["normalized"]
+        else:
+            return HttpResponse(
+                "La práctica contiene un tipo de pregunta no soportado.",
+                status=400,
+            )
 
         if is_correct:
             score += 1
@@ -254,12 +288,17 @@ def submit_visible_practice(request, topic_id):
                     "objective": item.objective,
                 }
 
-        results.append({
-            "question": q,
-            "selected_choice": selected_choice,
-            "correct_choice": correct_choice,
-            "is_correct": is_correct,
-        })
+        results.append(
+            {
+                "question": q,
+                "selected_choice": selected_choice,
+                "correct_choice": correct_choice,
+                "text_answer": text_answer,
+                "normalized_answer": normalized_answer,
+                "grading_reason": grading_reason,
+                "is_correct": is_correct,
+            }
+        )
 
     total = len(question_ids)
     percentage = round((score / total) * 100) if total > 0 else 0
