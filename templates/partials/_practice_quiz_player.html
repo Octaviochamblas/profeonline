@@ -72,6 +72,7 @@
 
                         <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">{{ r.question.text }}</p>
 
+                        {% if r.question.question_type == "alternativa" %}
                         <div class="choices-review mb-3" style="display: flex; flex-direction: column; gap: 6px;">
                             {% for choice in r.question.choices.all %}
                                 <div class="p-2 rounded" style="font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;
@@ -91,6 +92,19 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div class="p-3 rounded mb-3" style="background: rgba(0, 0, 0, 0.15); color: #cbd5e1;">
+                            <div><strong>Tu respuesta:</strong> {{ r.text_answer|default:"Sin respuesta" }}</div>
+                            <div><strong>Respuesta esperada:</strong> {{ r.question.canonical_answer }}</div>
+                            {% if r.grading_reason == "invalid_format" %}
+                            <small>El formato de la respuesta no fue reconocido.</small>
+                            {% elif r.grading_reason == "limits_exceeded" %}
+                            <small>La respuesta excede los límites permitidos.</small>
+                            {% elif r.grading_reason == "grading_timeout" %}
+                            <small>No fue posible corregir esta expresión dentro del tiempo seguro.</small>
+                            {% endif %}
+                        </div>
+                        {% endif %}
 
                         {% if r.question.explanation %}
                             <div class="p-3 rounded mt-2" style="background: rgba(13, 148, 136, 0.05); border-left: 3px solid #0d9488; font-size: 0.9rem; color: #cbd5e1; line-height: 1.5;">
@@ -143,6 +157,7 @@
                         {{ question.text }}
                     </legend>
 
+                    {% if question.question_type == "alternativa" %}
                     <div class="quiz-choices" role="radiogroup" aria-label="Alternativas para pregunta {{ forloop.counter }}">
                         {% for choice in question.choices.all %}
                         <label class="quiz-choice" for="choice_{{ choice.pk }}">
@@ -150,11 +165,28 @@
                                    id="choice_{{ choice.pk }}"
                                    name="question_{{ question.pk }}"
                                    value="{{ choice.pk }}"
-                                   class="quiz-choice__input">
+                                   class="quiz-choice__input"
+                                   data-quiz-answer>
                             <span class="quiz-choice__text">{{ choice.text }}</span>
                         </label>
                         {% endfor %}
                     </div>
+                    {% else %}
+                    <div class="quiz-choices">
+                        <label class="quiz-choice" for="answer_{{ question.pk }}">
+                            <span class="quiz-choice__text">Escribe tu respuesta</span>
+                            <input type="text"
+                                   id="answer_{{ question.pk }}"
+                                   name="question_{{ question.pk }}"
+                                   class="form-control"
+                                   maxlength="200"
+                                   autocomplete="off"
+                                   spellcheck="false"
+                                   {% if question.question_type == "numerica" %}inputmode="decimal"{% endif %}
+                                   data-quiz-answer>
+                        </label>
+                    </div>
+                    {% endif %}
                 </fieldset>
                 {% endfor %}
 

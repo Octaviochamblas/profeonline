@@ -33,8 +33,23 @@
     return Array.prototype.slice.call(player.querySelectorAll("[data-quiz-slide]"));
   }
 
-  function hasSelections() {
-    return !!root.querySelector('input[type="radio"]:checked');
+  function answerIsPresent(input) {
+    if (input.type === "radio" || input.type === "checkbox") {
+      return input.checked;
+    }
+    return input.value.trim() !== "";
+  }
+
+  function slideIsAnswered(slide) {
+    return Array.prototype.slice
+      .call(slide.querySelectorAll("[data-quiz-answer]"))
+      .some(answerIsPresent);
+  }
+
+  function hasAnswers() {
+    return Array.prototype.slice
+      .call(root.querySelectorAll("[data-quiz-answer]"))
+      .some(answerIsPresent);
   }
 
   /* ---- Apertura / cierre ---- */
@@ -64,7 +79,7 @@
   }
 
   function requestClose() {
-    if (getPlayer() && hasSelections()) {
+    if (getPlayer() && hasAnswers()) {
       if (!window.confirm("¿Salir del cuestionario? Se perderán las respuestas seleccionadas.")) {
         return;
       }
@@ -136,7 +151,7 @@
     list.innerHTML = "";
     var pending = 0;
     slides.forEach(function (slide, i) {
-      var answered = !!slide.querySelector('input[type="radio"]:checked');
+      var answered = slideIsAnswered(slide);
       if (!answered) pending += 1;
       var li = document.createElement("li");
       li.className = "quiz-review__item" + (answered ? " quiz-review__item--done" : " quiz-review__item--pending");
@@ -213,15 +228,18 @@
   });
 
   // Al recalcular respondida/pendiente en vivo, refrescar revisión si está visible
-  root.addEventListener("change", function (e) {
-    if (e.target.matches('input[type="radio"]')) {
+  function refreshReviewForAnswer(e) {
+    if (e.target.matches("[data-quiz-answer]")) {
       var player = getPlayer();
       if (player && player.querySelector("[data-quiz-review]") &&
           currentIndex(player) === getSlides(player).length) {
         buildReview(player, getSlides(player));
       }
     }
-  });
+  }
+
+  root.addEventListener("change", refreshReviewForAnswer);
+  root.addEventListener("input", refreshReviewForAnswer);
 
   // HTMX: cada vez que se inyecta contenido en el root
   document.addEventListener("htmx:afterSwap", function (e) {

@@ -8,11 +8,15 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| — | — | — | 🟢 libre |
+| 🧩 Codex | codex/guias-fase4-parser | 2026-06-22 | 🔴 construyendo Fase 4 |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Guías interactivas - Fase 4 - LISTA PARA AUDITORÍA 🟡 (2026-06-22):**
+  Por decisión del usuario, 🧩 Codex construyó el parser seguro y su integración completa en
+  `codex/guias-fase4-parser`. **493 tests OK**, sin migraciones, pip-audit/pre-commit/Ruff verdes.
+  Tarjeta en `backlog/4-auditoria/`; cierre de seguridad sigue reservado a 🏛️ Claude.
 - **Guías interactivas - Fase 3 - APROBADA TÉCNICAMENTE 🟢 (2026-06-22):**
   🧩 Codex auditó y corrigió generación/publicación manual, aislamiento y revalidación del runtime,
   panel editorial, esquema real de la guía, CSP, borrado lógico y N+1. **469 tests OK**; tarjeta en
@@ -95,7 +99,8 @@
 
 - 🔨 **Guías interactivas — Fases 4–7** (epic `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`).
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
-  **F4** parser respuesta directa (🟢 Ready, `seguridad:requiere-claude`),
+  **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
+  `seguridad:requiere-claude`),
   **F5** evaluaciones nivel/final (🟡 afinar en preflight), **F6** PDF (🟡),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
@@ -106,6 +111,12 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🧩 Codex: **Preflight Fase 4 — LISTO PARA CONSTRUIR 🟢.**
+  Se resolvieron las contradicciones del handoff: la práctica visible no persiste `text_answer`;
+  parser AST→SymPy nodo a nodo sin `parse_expr`/`sympify(string)`; tolerancia absoluta; gramática,
+  límites y timeout concretos; edición/publicación por tipo; práctica mixta y adaptación
+  retrocompatible del reproductor. SymPy 1.14.0 queda como dependencia nueva. Tarjeta movida a
+  `backlog/3-construccion/`.
 - 2026-06-22 — 🏛️ Claude: **Fix dificultad acentuada — 🟢 mergeado a `main`** (`fix/dificultad-acentos`).
   Detectado en QA local: con API key real, la generación de guías de F2 fallaba la validación porque
   la IA devuelve dificultades **con acento** (`"básica"`) y el modelo usa claves **sin acento**
