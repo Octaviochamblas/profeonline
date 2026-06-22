@@ -9,7 +9,10 @@ from django.urls import reverse
 
 from apps.content.admin import ResourceAdmin
 from apps.content.models import Choice, Question, Resource, Subject, Topic
-from apps.content.services.ai_generation_service import generate_questions_for_resource
+from apps.content.services.ai_generation_service import (
+    _build_prompt,
+    generate_questions_for_resource,
+)
 
 User = get_user_model()
 
@@ -54,6 +57,28 @@ class AIGenerationTests(TestCase):
             self.assertEqual(len(choices), 4)
             correct_choices = [c for c in choices if c.is_correct]
             self.assertEqual(len(correct_choices), 1)
+
+    def test_prompt_includes_latex_notation_directive(self):
+        """El prompt instruye a la IA a escribir fórmulas en LaTeX (KaTeX)."""
+        prompt = _build_prompt(self.resource, level=2, mode="ambas", count=3)
+
+        self.assertIn("NOTACIÓN MATEMÁTICA", prompt)
+        self.assertIn("KaTeX", prompt)
+        self.assertIn("$...$", prompt)
+        self.assertIn("$$...$$", prompt)
+        # Ejemplo JSON con LaTeX correctamente escapado para JSON válido.
+        self.assertIn(r"\\int", prompt)
+        self.assertIn(r"\\frac", prompt)
+
+    def test_prompt_includes_restructured_pedagogical_levels(self):
+        """El prompt usa los tres niveles pedagógicos reestructurados."""
+        prompt = _build_prompt(self.resource, level=1, mode="ambas", count=3)
+
+        self.assertIn("Comprensión conceptual y funcional", prompt)
+        self.assertIn("Dominio procedimental y resolución técnica", prompt)
+        self.assertIn("Transferencia y aplicación en contextos reales", prompt)
+        # Guía de distractores por nivel (rasgo de la nueva versión).
+        self.assertIn("distractores", prompt)
 
     def test_mock_generation_science_level_3(self):
         """Verifica la generación simulada para ciencias/general nivel 3."""
