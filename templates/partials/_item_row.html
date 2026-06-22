@@ -1,0 +1,144 @@
+<tr id="item-row-{{ item.id }}" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); vertical-align: top;">
+    <!-- Checkbox Fusión -->
+    <td style="padding: 12px 8px; text-align: center;">
+        <input type="checkbox" name="item_ids" value="{{ item.id }}" class="item-select-checkbox" style="transform: scale(1.2); cursor: pointer;">
+    </td>
+
+    <!-- Nivel -->
+    <td style="padding: 12px 8px;">
+        <span class="badge bg-secondary text-light">Nivel {{ item.level }}</span>
+    </td>
+
+    <!-- Dificultad -->
+    <td style="padding: 12px 8px;">
+        {% if item.difficulty == 'básica' %}
+            <span class="badge" style="background-color: #2563eb; color: white;">Básica</span>
+        {% elif item.difficulty == 'intermedia' %}
+            <span class="badge" style="background-color: #d97706; color: white;">Intermedia</span>
+        {% elif item.difficulty == 'avanzada' %}
+            <span class="badge" style="background-color: #dc2626; color: white;">Avanzada</span>
+        {% elif item.difficulty == 'desafío' %}
+            <span class="badge" style="background-color: #7c3aed; color: white;">Desafío</span>
+        {% else %}
+            <span class="badge bg-secondary">{{ item.difficulty|default:"Sin definir" }}</span>
+        {% endif %}
+    </td>
+
+    <!-- Detalles (Título, Objetivo, Recomendaciones, Errores, Recursos) -->
+    <td style="padding: 12px 8px;">
+        <div class="mb-2">
+            <strong style="font-size: 1.05rem; color: var(--text-color, #f8fafc);">{{ item.title }}</strong>
+            {% if item.status == 'propuesto' %}
+                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.75rem; vertical-align: middle;">Propuesto</span>
+            {% elif item.status == 'aprobado' %}
+                <span class="badge bg-success text-white ms-2" style="font-size: 0.75rem; vertical-align: middle;">Aprobado</span>
+            {% endif %}
+        </div>
+
+        <div class="mb-2" style="font-size: 0.9rem; line-height: 1.4;">
+            <span class="text-teal" style="font-weight: 600;">Objetivo:</span>
+            <span>{{ item.objective }}</span>
+        </div>
+
+        <div class="mb-2" style="font-size: 0.8rem; color: #94a3b8;">
+            <span style="font-weight: 600;">Ejercicios detectados:</span>
+            <span>{{ item.detected_exercise_count }}</span>
+        </div>
+
+        {% if item.recommendation %}
+            <div class="mb-2" style="font-size: 0.85rem; line-height: 1.4; color: #cbd5e1;">
+                <span class="text-secondary" style="font-weight: 600;">Recomendación:</span>
+                <span>{{ item.recommendation }}</span>
+            </div>
+        {% endif %}
+
+        {% if item.common_errors %}
+            <div class="mb-3" style="font-size: 0.85rem; line-height: 1.4; color: #fca5a5;">
+                <span style="font-weight: 600; color: #f87171;">Errores Comunes:</span>
+                <span>{{ item.common_errors }}</span>
+            </div>
+        {% endif %}
+
+        <!-- Vinculación de Recursos -->
+        <div class="resources-box p-2 rounded" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.85rem;">
+            <div class="mb-2"><strong>Recursos asociados:</strong></div>
+
+            <!-- Listado de Vinculados -->
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                {% for link in item.resource_links.all %}
+                    <span class="badge bg-dark text-light d-flex align-items-center gap-2 p-2" style="border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <span>{{ link.resource.title }}</span>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Desvincular"
+                                style="font-size: 0.65rem; padding: 0.1rem; border: none; background: transparent; color: #f87171; cursor: pointer;"
+                                hx-post="{% url 'content:unlink_item_resource' item.id %}"
+                                hx-vals='{"resource_id": "{{ link.resource.id }}"}'
+                                hx-target="#item-row-{{ item.id }}"
+                                hx-swap="outerHTML">
+                            &times;
+                        </button>
+                    </span>
+                {% empty %}
+                    <span class="text-secondary italic">Sin recursos asociados.</span>
+                {% endfor %}
+            </div>
+
+            <!-- Formulario para Vincular uno nuevo -->
+            {% with unlinked=item.unlinked_resources_list %}
+                {% if unlinked %}
+                    <form hx-post="{% url 'content:link_item_resource' item.id %}" hx-target="#item-row-{{ item.id }}" hx-swap="outerHTML" class="d-flex gap-2 align-items-center mt-2">
+                        {% csrf_token %}
+                        <select name="resource_id" class="form-control form-control-sm py-1 px-2" style="max-width: 250px; font-size: 0.8rem; background: #1e293b; color: white;" required>
+                            <option value="">-- Vincular recurso --</option>
+                            {% for r in unlinked %}
+                                <option value="{{ r.id }}">{{ r.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm py-1 px-3" style="font-size: 0.8rem;">+</button>
+                    </form>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </td>
+
+    <!-- Acciones (Editar, Aprobar/Propuesto, Archivar) -->
+    <td style="padding: 12px 8px; text-align: right; white-space: nowrap;">
+        <div class="d-flex flex-column gap-2 align-items-end">
+            <!-- Botón Editar -->
+            <button class="btn btn-secondary btn-sm w-100" style="font-size: 0.8rem; padding: 6px 12px;"
+                    hx-get="{% url 'content:edit_item_inline' item.id %}"
+                    hx-target="#item-row-{{ item.id }}"
+                    hx-swap="outerHTML">
+                ✏️ Editar
+            </button>
+
+            <!-- Botón Estado (Aprobar/Propuesto) -->
+            {% if item.status == 'propuesto' %}
+                <button class="btn btn-primary btn-sm w-100" style="font-size: 0.8rem; padding: 6px 12px;"
+                        hx-post="{% url 'content:set_item_status' item.id %}"
+                        hx-vals='{"status": "aprobado"}'
+                        hx-target="#item-row-{{ item.id }}"
+                        hx-swap="outerHTML">
+                    ✅ Aprobar
+                </button>
+            {% else %}
+                <button class="btn btn-secondary btn-sm w-100" style="font-size: 0.8rem; padding: 6px 12px;"
+                        hx-post="{% url 'content:set_item_status' item.id %}"
+                        hx-vals='{"status": "propuesto"}'
+                        hx-target="#item-row-{{ item.id }}"
+                        hx-swap="outerHTML">
+                    ⚠️ Desaprobar
+                </button>
+            {% endif %}
+
+            <!-- Botón Archivar -->
+            <button class="btn btn-sm w-100" style="font-size: 0.8rem; padding: 6px 12px; background-color: #dc2626; color: white; border: none;"
+                    hx-post="{% url 'content:set_item_status' item.id %}"
+                    hx-vals='{"status": "archivado"}'
+                    hx-confirm="¿Estás seguro de archivar este ítem de aprendizaje? Desaparecerá del panel."
+                    hx-target="#item-row-{{ item.id }}"
+                    hx-swap="outerHTML">
+                🗑️ Archivar
+            </button>
+        </div>
+    </td>
+</tr>

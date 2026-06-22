@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Extracción de ítems | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="question-review-container">
+    <header class="studio-header">
+        <div class="studio-header__nav">
+            <a href="{% url 'content:question_studio' %}" class="btn-back">&larr; Volver al estudio</a>
+        </div>
+        <div class="studio-header__main">
+            <div class="studio-header__info">
+                <span class="studio-badge">Estudio Solo-Admin</span>
+                <h1 class="studio-title">Extracción de ítems de aprendizaje</h1>
+                <p class="studio-subtitle">Propón, aprueba y fusiona ítems pedagógicos a partir de guías de referencia para estructurar el banco por ítems.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="studio-layout">
+        <!-- Selector y configuración -->
+        <aside class="studio-sidebar bg-glass p-4 rounded shadow-sm" style="max-height: fit-content;">
+            <h2 class="h5 mb-3 text-teal">Configuración de Extracción</h2>
+
+            <form id="extraction-form" hx-post="{% url 'content:propose_items' %}" hx-target="#items-list-container" hx-indicator="#loading-spinner">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Tema de destino</label>
+                    <select name="topic_id" class="form-control" required
+                            hx-get="{% url 'content:item_extraction' %}?action=load_guides"
+                            hx-target="#guide-selector"
+                            hx-trigger="change">
+                        <option value="">-- Selecciona un tema --</option>
+                        {% for t in topics %}
+                            <option value="{{ t.id }}">{{ t.subject.name }} - {{ t.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Guía de referencia</label>
+                    <select name="guide_id" id="guide-selector" class="form-control" required>
+                        <option value="">-- Primero selecciona un tema --</option>
+                    </select>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                        <span>Proponer ítems con IA</span>
+                        <div id="loading-spinner" class="htmx-indicator spinner-border spinner-border-sm text-light" role="status" style="width: 1rem; height: 1rem; border-width: 0.15em;">
+                            <span class="visually-hidden">...</span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </aside>
+
+        <!-- Listado de ítems resultantes/existentes -->
+        <main class="studio-content bg-glass p-4 rounded shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="h5 text-teal mb-0">Ítems de Aprendizaje</h2>
+                <div class="actions-panel d-flex gap-2">
+                    <button type="button" class="btn btn-secondary px-3 py-2 btn-sm" id="btn-merge-selected"
+                            style="display: none;"
+                            data-merge-url="{% url 'content:merge_items' %}">
+                        📦 Fusionar seleccionados
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contenedor dinámico HTMX -->
+            <div id="items-list-container"
+                 hx-get="{% url 'content:item_extraction' %}?action=list_items"
+                 hx-trigger="topicChanged from:body"
+                 hx-include="[name='topic_id']">
+                <p class="text-secondary text-center py-5">Selecciona un tema para ver o proponer ítems.</p>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce }}" src="{% static 'js/item-extraction.js' %}?v=1" defer></script>
+{% endblock %}

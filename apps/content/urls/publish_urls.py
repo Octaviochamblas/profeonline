@@ -31,6 +31,15 @@ from apps.content.views.bank_analytics import (
     bank_effectiveness,
     bank_results,
 )
+from apps.content.views.item_review import (
+    item_extraction,
+    propose_items,
+    edit_item_inline,
+    set_item_status,
+    merge_items,
+    link_item_resource,
+    unlink_item_resource,
+)
 
 urlpatterns = [
     path("publicar/estudio/", publish_studio, name="publish_studio"),
@@ -65,4 +74,13 @@ urlpatterns = [
     path("publicar/preguntas/borrar-alternativa/<int:choice_id>/", delete_choice, name="delete_choice"),
     path("publicar/preguntas/accion-lote/<int:resource_id>/", bulk_action_questions, name="bulk_action_questions"),
     path("publicar/preguntas/generar-inline/<int:resource_id>/", generate_questions_inline, name="generate_questions_inline"),
+
+    # Banco de Preguntas - Extracción y Aprobación de Ítems (Fase 1)
+    path("publicar/items/", item_extraction, name="item_extraction"),
+    path("publicar/items/proponer/", propose_items, name="propose_items"),
+    path("publicar/items/editar/<int:item_id>/", edit_item_inline, name="edit_item_inline"),
+    path("publicar/items/estado/<int:item_id>/", set_item_status, name="set_item_status"),
+    path("publicar/items/fusionar/", merge_items, name="merge_items"),
+    path("publicar/items/vincular/<int:item_id>/", link_item_resource, name="link_item_resource"),
+    path("publicar/items/desvincular/<int:item_id>/", unlink_item_resource, name="unlink_item_resource"),
 ]

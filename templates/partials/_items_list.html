@@ -1,0 +1,26 @@
+{% if success_msg %}
+    <div class="alert alert--success mb-3">{{ success_msg }}</div>
+{% endif %}
+
+{% if items %}
+    <div class="table-responsive">
+        <table class="table" style="width: 100%; border-collapse: collapse; margin-top: 1rem; color: var(--text-color, #e2e8f0);">
+            <thead>
+                <tr style="border-bottom: 2px solid rgba(255, 255, 255, 0.15); text-align: left;">
+                    <th style="padding: 12px 8px; width: 40px;">Fusión</th>
+                    <th style="padding: 12px 8px; width: 80px;">Nivel</th>
+                    <th style="padding: 12px 8px; width: 100px;">Dificultad</th>
+                    <th style="padding: 12px 8px;">Detalles del Ítem</th>
+                    <th style="padding: 12px 8px; width: 180px; text-align: right;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="items-table-body">
+                {% for item in items %}
+                    {% include "partials/_item_row.html" %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p class="text-secondary text-center py-5">No hay ítems de aprendizaje creados o propuestos para este tema aún.</p>
+{% endif %}

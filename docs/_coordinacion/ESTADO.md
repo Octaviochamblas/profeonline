@@ -8,7 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| _libre_ | - | - | 🟢 sin lock |
+| 🏛️ Claude | feat/guias-fase1-extraccion-items | 2026-06-22 | 🔴 corrigiendo P1/P2 de Codex (cierre Fase 1) |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
@@ -90,6 +90,7 @@
 
 ## Handoffs abiertos (Ready para construir)
 
+
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
 - ✅ **Estudio de banco de preguntas — CERRADO 🟢 y ARCHIVADO (2026-06-18).** Construido y desplegado
@@ -98,6 +99,13 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🧩 Codex: **Fase 1 de guías interactivas — GATE RECHAZADO 🔴.**
+  Suite completa **425 tests OK**, `check --deploy` sin errores, sin migraciones y pre-commit verde;
+  pero quedaron P1: flag por tema no aplicado, fusión cruzada entre temas, JS inline bloqueado por
+  CSP, `detected_exercise_count` descartado y guía no validada contra el tema. Tarjeta con hallazgos
+  devuelta mediante `git mv` a `backlog/3-construccion/` para corrección por 🔨 Antigravity.
+- 2026-06-22 — 🔨 Antigravity: **Guías interactivas — Fase 1 (extracción y aprobación de ítems) — LISTO PARA AUDITORÍA 🟡**
+  (rama `feat/guias-fase1-extraccion-items`). Se implementó el servicio de extracción curricular IA `item_extraction_service.py` (calibra la dificultad por nivel pedagógico y soporta LaTeX) y el panel HTMX in-app `publicar/items/` (edición inline, aprobación/archivado, vinculación de recursos y fusión segura de ítems). Todo 100% aditivo y detrás del flag de tema. Suite completa con 425 tests OK (10 nuevos para esta fase). Tarjeta movida de `2-arquitectura/` a `4-auditoria/`.
 - 2026-06-21 — 🏛️ Claude + 🧩 Codex + 🧑: **Rediseño de recurso + progreso académico — CERRADO 🟢**
   (rama `feat/recurso-progreso-academico`). Vista de recurso rediseñada (título primero, metadatos
   compactos, descripción con Ver más/menos, columna legible, sin barra "Comprendido") + bloque único

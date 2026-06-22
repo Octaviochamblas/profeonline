@@ -1,0 +1,79 @@
+<tr id="item-row-{{ item.id }}" style="border-bottom: 1px solid rgba(255, 255, 255, 0.15); vertical-align: top; background: rgba(255, 255, 255, 0.03);">
+    <!-- Checkbox Fusión (deshabilitado en edición) -->
+    <td style="padding: 12px 8px; text-align: center;">
+        <input type="checkbox" disabled style="transform: scale(1.2); opacity: 0.5;">
+    </td>
+
+    <!-- Nivel -->
+    <td style="padding: 12px 8px;">
+        <select name="level" class="form-control form-control-sm" style="background: #1e293b; color: white;" required>
+            {% for lvl, label in LEVEL_CHOICES %}
+                <option value="{{ lvl }}" {% if item.level == lvl %}selected{% endif %}>Nivel {{ lvl }}</option>
+            {% endfor %}
+        </select>
+    </td>
+
+    <!-- Dificultad -->
+    <td style="padding: 12px 8px;">
+        <select name="difficulty" class="form-control form-control-sm" style="background: #1e293b; color: white;" required>
+            {% for diff, label in DIFFICULTY_CHOICES %}
+                <option value="{{ diff }}" {% if item.difficulty == diff %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </td>
+
+    <!-- Detalles Editables -->
+    <td style="padding: 12px 8px;">
+        {% if error %}
+            <div class="alert alert--danger py-1 px-2 mb-2" style="font-size: 0.8rem;">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; display: block; color: #cbd5e1;">Título</label>
+            <input type="text" name="title" class="form-control form-control-sm" value="{{ item.title }}" style="background: #1e293b; color: white;" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; display: block; color: #cbd5e1;">Objetivo (admite LaTeX)</label>
+            <textarea name="objective" class="form-control form-control-sm" rows="3" style="background: #1e293b; color: white; resize: vertical;" required>{{ item.objective }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; display: block; color: #cbd5e1;">Recomendación (opcional)</label>
+            <textarea name="recommendation" class="form-control form-control-sm" rows="2" style="background: #1e293b; color: white; resize: vertical;">{{ item.recommendation }}</textarea>
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; display: block; color: #cbd5e1;">Errores Comunes (opcional)</label>
+            <textarea name="common_errors" class="form-control form-control-sm" rows="2" style="background: #1e293b; color: white; resize: vertical;">{{ item.common_errors }}</textarea>
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; display: block; color: #cbd5e1;">Ejercicios detectados</label>
+            <input type="number" name="detected_exercise_count" min="0" class="form-control form-control-sm" value="{{ item.detected_exercise_count }}" style="background: #1e293b; color: white; max-width: 120px;">
+        </div>
+    </td>
+
+    <!-- Acciones de Formulario (Guardar / Cancelar) -->
+    <td style="padding: 12px 8px; text-align: right; white-space: nowrap;">
+        <div class="d-flex flex-column gap-2 align-items-end">
+            {% csrf_token %}
+            <!-- Botón Guardar -->
+            <button class="btn btn-primary btn-sm w-100" style="font-size: 0.8rem; padding: 6px 12px;"
+                    hx-post="{% url 'content:edit_item_inline' item.id %}"
+                    hx-include="closest tr"
+                    hx-target="#item-row-{{ item.id }}"
+                    hx-swap="outerHTML">
+                💾 Guardar
+            </button>
+
+            <!-- Botón Cancelar -->
+            <button class="btn btn-secondary btn-sm w-100" style="font-size: 0.8rem; padding: 6px 12px;"
+                    hx-get="{% url 'content:edit_item_inline' item.id %}?cancel=true"
+                    hx-target="#item-row-{{ item.id }}"
+                    hx-swap="outerHTML">
+                ❌ Cancelar
+            </button>
+        </div>
+    </td>
+</tr>

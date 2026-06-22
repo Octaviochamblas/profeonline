@@ -36,6 +36,11 @@ class ExerciseItem(models.Model):
     objective = models.TextField(verbose_name="objetivo")
     recommendation = models.TextField(blank=True, verbose_name="recomendación")
     common_errors = models.TextField(blank=True, verbose_name="errores frecuentes")
+    detected_exercise_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name="ejercicios detectados",
+        help_text="Cantidad de ejercicios de este ítem detectados por la IA en la guía de origen.",
+    )
     order = models.PositiveIntegerField(default=0, verbose_name="orden")
     status = models.CharField(
         max_length=10,
@@ -61,6 +66,21 @@ class ExerciseItem(models.Model):
 
     def __str__(self) -> str:
         return f"[N{self.level}] {self.title[:80]}"
+
+    def get_unlinked_resources(self, topic_resources=None):
+        """Recursos del tema aún no vinculados a este ítem.
+
+        Si se pasa ``topic_resources`` (lista ya cargada) y ``resource_links`` viene
+        prefetcheado, no ejecuta consultas extra — evita el N+1 al renderizar la lista.
+        """
+        linked_ids = {link.resource_id for link in self.resource_links.all()}
+        if topic_resources is None:
+            topic_resources = self.topic.resources.order_by("title")
+        return [r for r in topic_resources if r.id not in linked_ids]
+
+    def get_linked_resources(self):
+        """Recursos asociados a este ítem (usa ``resource_links`` prefetcheado si existe)."""
+        return [link.resource for link in self.resource_links.all()]
 
 
 class ResourceExerciseItem(models.Model):
