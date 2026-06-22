@@ -8,15 +8,17 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🧩 Codex | codex/guias-fase4-parser | 2026-06-22 | 🔴 construyendo Fase 4 |
+| — | — | — | 🟢 libre |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Guías interactivas - Fase 4 - LISTA PARA AUDITORÍA 🟡 (2026-06-22):**
+- **Guías interactivas - Fase 4 - ESPERANDO AUDITOR DISTINTO 🟡 (2026-06-22):**
   Por decisión del usuario, 🧩 Codex construyó el parser seguro y su integración completa en
-  `codex/guias-fase4-parser`. **493 tests OK**, sin migraciones, pip-audit/pre-commit/Ruff verdes.
-  Tarjeta en `backlog/4-auditoria/`; cierre de seguridad sigue reservado a 🏛️ Claude.
+  `codex/guias-fase4-parser`. **493 tests OK local + CI Linux verde**, sin migraciones,
+  pip-audit/pre-commit/Ruff verdes. PR **#82**, auto-merge deshabilitado y label
+  `seguridad:requiere-claude`. El gate exige auditoría de una IA distinta al builder; debe revisar
+  🏛️ Claude y, si aprueba, añadir `audit:aprobado`.
 - **Guías interactivas - Fase 3 - APROBADA TÉCNICAMENTE 🟢 (2026-06-22):**
   🧩 Codex auditó y corrigió generación/publicación manual, aislamiento y revalidación del runtime,
   panel editorial, esquema real de la guía, CSP, borrado lógico y N+1. **469 tests OK**; tarjeta en
@@ -111,6 +113,12 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🧩 Codex: **Fase 4 CONSTRUIDA — PR #82 esperando auditor distinto 🟡.**
+  Parser AST→SymPy seguro, respuestas numéricas/algebraicas, panel editorial y práctica mixta
+  completados. **493 tests OK local y CI Linux completo verde** (incluido timeout `SIGALRM`);
+  pip-audit, deploy-check, migraciones, Ruff y pre-commit verdes. El único check rojo es el gate
+  organizativo que exige revisión de otra IA. Auto-merge deshabilitado; label
+  `seguridad:requiere-claude` aplicado.
 - 2026-06-22 — 🧩 Codex: **Preflight Fase 4 — LISTO PARA CONSTRUIR 🟢.**
   Se resolvieron las contradicciones del handoff: la práctica visible no persiste `text_answer`;
   parser AST→SymPy nodo a nodo sin `parse_expr`/`sympify(string)`; tolerancia absoluta; gramática,

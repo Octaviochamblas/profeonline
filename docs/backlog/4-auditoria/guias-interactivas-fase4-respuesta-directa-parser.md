@@ -1,6 +1,6 @@
 # Guías interactivas — Fase 4: respuesta directa (parser numérico/algebraico)
 
-- **Estado:** 🟡 Construcción completada por 🧩 Codex (2026-06-22) · en auditoría · ⚠️ `seguridad:requiere-claude`
+- **Estado:** 🟡 Construcción + CI completados por 🧩 Codex (2026-06-22) · esperando auditor distinto · ⚠️ `seguridad:requiere-claude`
 - **Creado:** 2026-06-22 · **Epic padre:** `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`
 - **Prioridad:** P1 · **Cartera:** educativa · **Tipo:** producto · seguridad
 - **Dueño:** 🧩 Codex (construye y audita, rama `codex/guias-fase4-parser`, por decisión del usuario) →
@@ -320,3 +320,14 @@ Submit:
 - `makemigrations --check --dry-run`: `No changes detected`.
 - `pip-audit -r requirements.txt`: `No known vulnerabilities found`.
 - `pre-commit run --all-files`, Ruff, `node --check` y `git diff --check`: verdes.
+
+### Estado del gate independiente
+
+- PR: https://github.com/Octaviochamblas/profeonline/pull/82
+- CI Ubuntu/Python 3.12: **verde**; ejecutó la prueba de timeout `SIGALRM` omitida en Windows.
+- `pip-audit`, system check, deploy check, suite con cobertura y lint del workflow: verdes.
+- Auto-merge fue deshabilitado expresamente; Codex no hará merge.
+- El check `audit-gate` permanece rojo **por diseño**: el builder fue Codex y el repositorio exige
+  que una IA distinta revise y aplique `audit:aprobado`.
+- Próximo dueño: 🏛️ Claude debe auditar seguridad/diff, resolver cualquier hallazgo y, solo si
+  aprueba, añadir `audit:aprobado`, mover la tarjeta a cierre y efectuar el squash-merge.
