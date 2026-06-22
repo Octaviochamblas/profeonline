@@ -170,6 +170,28 @@ class AlgebraicAnswerGradingTests(SimpleTestCase):
             "limits_exceeded",
         )
 
+    def test_rejects_stacked_exponent_degree_blowup(self):
+        # El apilamiento de potencias `(...**n)**m` evade el tope por-exponente
+        # (cada `**` es <=8) pero el grado efectivo crece geométricamente y, al
+        # expandirse en `cancel`, explota en memoria/CPU. El tope de grado total
+        # debe cortarlo antes de ese paso caro.
+        algebraic = question("algebraica", "x")
+        for payload in (
+            "((x+y+z)**8)**8",
+            "(((x+1)**4)**4)**4",
+            "((((x+y+z)**8)**8)**8)**8",
+        ):
+            with self.subTest(payload=payload):
+                self.assertEqual(
+                    grade_answer(algebraic, payload)["reason"],
+                    "limits_exceeded",
+                )
+        # Un grado total dentro del tope sigue evaluándose normalmente.
+        self.assertEqual(
+            grade_answer(question("algebraica", "x**4"), "(x**2)**2")["reason"],
+            "correct",
+        )
+
     def test_rejects_invalid_canonical_and_algebraic_tolerance(self):
         self.assertEqual(
             grade_answer(question("algebraica", "sqrt(x)"), "x")["reason"],

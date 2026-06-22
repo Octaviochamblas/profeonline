@@ -25,6 +25,7 @@ MAX_EXPONENT_ABS = 8
 MAX_INTEGER_DIGITS = 12
 MAX_NESTING = 12
 MAX_RESULT_OPS = 120
+MAX_TOTAL_DEGREE = 32
 GRADING_TIMEOUT_SECONDS = 0.5
 
 _INTEGER_RE = re.compile(r"[+-]?\d+\Z")
@@ -183,6 +184,35 @@ def _tree_depth(node):
     return 1 + max(_tree_depth(child) for child in children)
 
 
+def _degree_upper_bound(node):
+    """Cota superior del grado polinomial total del AST (ya validado por el builder).
+
+    Se calcula sobre el AST sin construir objetos SymPy: las potencias `evaluate=False`
+    no se aplanan, así que `(x**3)**3` parece grado bajo en `count_ops` pero al expandirse
+    en `cancel` cuesta como grado 9. Aquí se multiplica el grado de la base por el exponente
+    literal, de modo que el apilamiento de potencias se acota antes del paso caro.
+    """
+    if isinstance(node, ast.Expression):
+        return _degree_upper_bound(node.body)
+    if isinstance(node, ast.Name):
+        return 1
+    if isinstance(node, ast.UnaryOp):
+        return _degree_upper_bound(node.operand)
+    if isinstance(node, ast.BinOp):
+        left = _degree_upper_bound(node.left)
+        if isinstance(node.op, ast.Pow):
+            exponent_node = node.right
+            if isinstance(exponent_node, ast.UnaryOp):
+                exponent_node = exponent_node.operand
+            # El builder ya garantizó que el exponente es un entero literal acotado.
+            return left * abs(exponent_node.value)
+        right = _degree_upper_bound(node.right)
+        if isinstance(node.op, (ast.Mult, ast.Div)):
+            return left + right
+        return max(left, right)
+    return 0
+
+
 class _SafeExpressionBuilder:
     _BINARY_OPERATORS = (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.Pow)
     _UNARY_OPERATORS = (ast.UAdd, ast.USub)
@@ -289,6 +319,10 @@ def _parse_algebraic(raw_text):
 
     builder = _SafeExpressionBuilder(normalized)
     expression = builder.build(tree)
+    # Acotar el grado total ANTES del paso caro (`cancel`/`together`): las potencias
+    # anidadas evaden el tope por-exponente y, expandidas, explotan en memoria/CPU.
+    if _degree_upper_bound(tree) > MAX_TOTAL_DEGREE:
+        raise _LimitsExceeded
     variables = frozenset(str(symbol) for symbol in expression.free_symbols)
     if len(variables) > MAX_VARIABLES:
         raise _LimitsExceeded

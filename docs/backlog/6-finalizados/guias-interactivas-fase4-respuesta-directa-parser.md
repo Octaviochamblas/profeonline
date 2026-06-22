@@ -1,6 +1,6 @@
 # Guías interactivas — Fase 4: respuesta directa (parser numérico/algebraico)
 
-- **Estado:** 🟡 Construcción + CI completados por 🧩 Codex (2026-06-22) · esperando auditor distinto · ⚠️ `seguridad:requiere-claude`
+- **Estado:** 🟢 Auditada y cerrada por 🏛️ Claude (2026-06-22) — 1 hallazgo Medium corregido + merge a `main`
 - **Creado:** 2026-06-22 · **Epic padre:** `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`
 - **Prioridad:** P1 · **Cartera:** educativa · **Tipo:** producto · seguridad
 - **Dueño:** 🧩 Codex (construye y audita, rama `codex/guias-fase4-parser`, por decisión del usuario) →
@@ -331,3 +331,45 @@ Submit:
   que una IA distinta revise y aplique `audit:aprobado`.
 - Próximo dueño: 🏛️ Claude debe auditar seguridad/diff, resolver cualquier hallazgo y, solo si
   aprueba, añadir `audit:aprobado`, mover la tarjeta a cierre y efectuar el squash-merge.
+
+## Auditoría de seguridad y cierre — 🏛️ Claude (2026-06-22)
+
+Auditor distinto al builder (🧩 Codex construyó). Revisión enfocada en la propiedad crítica
+(no ejecución de código) y en disponibilidad.
+
+### Veredicto: propiedad crítica intacta ✅
+
+- La entrada del alumno **nunca** alcanza `eval`/`exec`/`parse_expr`/`sympify(string)`. El builder
+  es un whitelist de nodos AST (`Expression`, `Constant`, `Name [a-z]`, `UnaryOp ±`,
+  `BinOp +-*/**`); no es construible `ast.Call` (toda `(` tras un átomo recibe `*` implícito y las
+  funciones multi-letra se rechazan antes de tokenizar). Cobertura de inyección en tests excelente.
+- Ruta numérica pura `Fraction`/`Decimal` sin SymPy. Aislamiento `scope="banco_visible"` correcto en
+  todas las queries; práctica efímera sin persistencia académica; guards editoriales por scope/tema;
+  footgun de `add_choice_inline` corregido.
+
+### Hallazgo Medium (disponibilidad/DoS) — CORREGIDO
+
+- **Apilamiento de exponentes** evade `MAX_EXPONENT_ABS=8`: `(x**3)**3` se construye con
+  `evaluate=False` y no se aplana, por lo que `count_ops`/`together` (sobre la forma sin expandir)
+  pasan; la explosión ocurre dentro de `sympy.cancel(together(student - canonical))`, **antes** del
+  guard `count_ops > MAX_RESULT_OPS`. Confirmado empíricamente: `((x+y+z)**8)**8` y más profundos
+  hacían crecer el proceso a ~296 MB y colgarlo. En producción (Linux + gunicorn `sync`) el timeout
+  `SIGALRM` de 0,5 s acota el tiempo, pero queda el pico de memoria y la saturación de workers por
+  concurrencia; en plataformas sin `SIGALRM` (p. ej. Windows dev) el cuelgue es total.
+- **Fix:** nuevo `MAX_TOTAL_DEGREE=32` + helper `_degree_upper_bound(tree)` que calcula una cota del
+  grado polinomial sobre el AST (multiplica el grado de la base por el exponente literal) y rechaza
+  con `limits_exceeded` **antes** del paso caro. Cierra el vector incluso sin `SIGALRM`
+  (corte en <0,04 s, verificado). +1 test (`test_rejects_stacked_exponent_degree_blowup`).
+
+### Nota a futuro (no bloqueante)
+
+- El timeout depende de `SIGALRM` + main thread. Hoy es correcto (gunicorn `sync` en Linux). Si se
+  cambia a `gthread`/`gevent`, el timeout se vuelve no-op silenciosamente: documentarlo junto al
+  Custom Start Command.
+
+### Barrera de cierre (`.venv`, corrida limpia de Claude)
+
+- `manage.py test`: **494 tests OK** (1 skipped local: prueba `SIGALRM`, corre en CI Linux).
+- `check --deploy`: exit 0 (7 warnings de settings locales) · `makemigrations --check`: sin cambios.
+- Merge: squash-merge de `codex/guias-fase4-parser` a `main` y push (despliega a Railway; sin
+  migraciones). `audit:aprobado` aplicado tras la corrección. Tarjeta movida a `6-finalizados/`.

@@ -13,12 +13,14 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Guías interactivas - Fase 4 - ESPERANDO AUDITOR DISTINTO 🟡 (2026-06-22):**
-  Por decisión del usuario, 🧩 Codex construyó el parser seguro y su integración completa en
-  `codex/guias-fase4-parser`. **493 tests OK local + CI Linux verde**, sin migraciones,
-  pip-audit/pre-commit/Ruff verdes. PR **#82**, auto-merge deshabilitado y label
-  `seguridad:requiere-claude`. El gate exige auditoría de una IA distinta al builder; debe revisar
-  🏛️ Claude y, si aprueba, añadir `audit:aprobado`.
+- **Guías interactivas - Fase 4 - CERRADA 🟢 (2026-06-22):**
+  🧩 Codex construyó el parser seguro AST→SymPy; 🏛️ Claude auditó como IA distinta, encontró y
+  corrigió **1 hallazgo Medium de DoS** (apilamiento de exponentes que evadía el tope por-exponente y
+  explotaba en `cancel`: nuevo `MAX_TOTAL_DEGREE`/`_degree_upper_bound` que corta sobre el AST antes
+  del paso caro, +1 test) y cerró. **494 tests OK** (1 skip local `SIGALRM`), sin migraciones,
+  `check --deploy` exit 0. Squash-merge de PR **#82** a `main`. Tarjeta en `backlog/6-finalizados/`.
+  **Nota a futuro:** el timeout depende de `SIGALRM`+main thread (ok con gunicorn `sync`); documentar
+  si se migra a `gthread`/`gevent`. **Siguiente: Fase 5 (evaluaciones nivel/final).**
 - **Guías interactivas - Fase 3 - APROBADA TÉCNICAMENTE 🟢 (2026-06-22):**
   🧩 Codex auditó y corrigió generación/publicación manual, aislamiento y revalidación del runtime,
   panel editorial, esquema real de la guía, CSP, borrado lógico y N+1. **469 tests OK**; tarjeta en
@@ -113,6 +115,13 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🏛️ Claude: **Fase 4 AUDITADA Y CERRADA 🟢 — merge de PR #82 a `main`.**
+  Auditor distinto al builder (Codex). Propiedad crítica intacta (sin `eval`/`exec`/`parse_expr`/
+  `sympify(string)`; whitelist AST; inyección bien cubierta). Hallazgo Medium de DoS corregido por
+  excepción (Claude builder, por decisión del 🧑): apilamiento de exponentes `(...**n)**m` evadía
+  `MAX_EXPONENT_ABS` y explotaba en `cancel` (~296 MB + cuelgue confirmado); fix con
+  `MAX_TOTAL_DEGREE=32` + `_degree_upper_bound` que corta sobre el AST antes del paso caro (<0,04 s).
+  **494 tests OK**, sin migraciones, `check --deploy` exit 0. `audit:aprobado` aplicado.
 - 2026-06-22 — 🧩 Codex: **Fase 4 CONSTRUIDA — PR #82 esperando auditor distinto 🟡.**
   Parser AST→SymPy seguro, respuestas numéricas/algebraicas, panel editorial y práctica mixta
   completados. **493 tests OK local y CI Linux completo verde** (incluido timeout `SIGALRM`);
