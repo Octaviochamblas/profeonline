@@ -283,17 +283,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const action  = btn.dataset.action;
         const url     = btn.dataset.url;
         const qlistId = btn.dataset.qlist;
-        const level   = btn.dataset.level;
-        const mode    = btn.dataset.mode;
+        const level   = btn.dataset.level || '';
+        const mode    = btn.dataset.mode || '';
+        const scope   = btn.dataset.scope || '';
+        const exercise_item_id = btn.dataset.exercise_item_id || '';
+        const learning_guide_id = btn.dataset.learning_guide_id || '';
         const qlist   = document.getElementById(qlistId);
         if (!qlist || !url) return;
 
         const selected = Array.from(qlist.querySelectorAll('.q-check:checked')).map(cb => cb.value);
         if (selected.length === 0) return;
 
-        if (action === 'eliminar') {
+        if (action === 'eliminar' || action === 'archivar') {
             const n = selected.length;
-            if (!confirm('¿Eliminar ' + n + ' pregunta' + (n === 1 ? '' : 's') + '? Esta acción no se puede deshacer.')) return;
+            const verb = action === 'archivar' ? 'Archivar ' : 'Eliminar ';
+            if (!confirm('¿' + verb + n + ' pregunta' + (n === 1 ? '' : 's') + '?')) return;
         }
 
         const csrf = document.querySelector('[name=csrfmiddlewaretoken]');
@@ -302,16 +306,23 @@ document.addEventListener('DOMContentLoaded', () => {
         fd.append('action', action);
         fd.append('level', level);
         fd.append('mode', mode);
+        if (scope) fd.append('scope', scope);
+        if (exercise_item_id) fd.append('exercise_item_id', exercise_item_id);
+        if (learning_guide_id) fd.append('learning_guide_id', learning_guide_id);
         selected.forEach(id => fd.append('selected_questions', id));
 
         fetch(url, { method: 'POST', body: fd, headers: { 'HX-Request': 'true' } })
-            .then(r => r.text())
+            .then(async r => {
+                const html = await r.text();
+                if (!r.ok) throw new Error(html);
+                return html;
+            })
             .then(html => {
                 qlist.innerHTML = html;
                 initSmoothAccordion(qlist);
                 resetBulkBar(qlistId);
             })
-            .catch(err => console.error('Bulk action error:', err));
+            .catch(err => window.alert(err.message || 'No fue posible completar la acción.'));
     });
 
     // 5. Restaurar listeners tras actualizaciones HTMX

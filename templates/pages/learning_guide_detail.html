@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guía ProfeOnline: {{ guide.title }} | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="container py-4 guide-container" style="max-width: 1000px; font-family: 'Outfit', 'Inter', sans-serif; color: #f8fafc;">
+    <!-- Breadcrumbs (no-print) -->
+    <nav class="mb-4 no-print" aria-label="Breadcrumbs">
+        <a href="{% url 'content:topic_detail' topic.slug %}" class="text-teal text-decoration-none d-inline-flex align-items-center gap-1" style="color: #0d9488; font-weight: 500;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Volver al Tema: {{ topic.name }}
+        </a>
+    </nav>
+
+    <!-- Header de la Guía -->
+    <header class="guide-header p-4 rounded mb-4" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+            <div class="d-flex gap-3 align-items-center">
+                <img src="{% static 'img/logo.png' %}" alt="ProfeOnline" class="guide-logo" width="90" height="52">
+                <div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge" style="background-color: #0d9488; font-weight: 600; font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;">Guía Oficial</span>
+                    <span class="text-secondary" style="font-size: 0.85rem; color: #94a3b8;">Asignatura: {{ topic.subject.name }}</span>
+                </div>
+                <h1 class="guide-main-title" style="font-size: 2rem; font-weight: 700; color: #f8fafc; margin: 0; line-height: 1.2;">{{ guide.title }}</h1>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 no-print">
+                <button type="button" data-print-guide class="btn btn-outline-light d-flex align-items-center gap-2" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    🖨️ Imprimir Guía
+                </button>
+                <form hx-post="{% url 'content:start_visible_practice' topic.id %}" hx-target="#quiz-player-root" hx-swap="innerHTML" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2" style="background-color: #0d9488; border: none; color: white; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                        ⚡ Práctica Mixta ({{ total_questions }})
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="guide-content-main mb-5">
+        {% include "partials/_guide_content_box.html" %}
+    </main>
+
+    <!-- Banco Visible Agrupado por Ítem -->
+    <section class="banco-visible-section">
+        <h2 class="mb-4" style="font-size: 1.6rem; font-weight: 700; color: #f8fafc; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+            📚 Ejercicios Prácticos del Banco
+        </h2>
+
+        {% for grouped in sorted_items %}
+            <div class="item-block p-4 rounded mb-4" style="background: rgba(30, 41, 59, 0.25); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                <!-- Cabecera del Ítem -->
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3 border-bottom pb-2" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <div>
+                        <span class="badge bg-secondary mb-1" style="font-size: 0.75rem;">Ítem {{ forloop.counter }} &bull; Nivel {{ grouped.item.level }}</span>
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #f8fafc; margin: 0;">{{ grouped.item.title }}</h3>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 4px 0 0 0;"><strong>Objetivo:</strong> {{ grouped.item.objective }}</p>
+                    </div>
+
+                    <div class="no-print">
+                        <form hx-post="{% url 'content:start_visible_practice' topic.id %}" hx-target="#quiz-player-root" hx-swap="innerHTML" class="m-0">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ grouped.item.id }}">
+                            <button type="submit" class="btn btn-sm d-flex align-items-center gap-1" style="background: rgba(13, 148, 136, 0.15); border: 1px solid rgba(13, 148, 136, 0.3); color: #2dd4bf; padding: 5px 12px; border-radius: 4px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                🎯 Practicar Ítem
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Preguntas Normales -->
+                {% if grouped.normal %}
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        {% for q in grouped.normal %}
+                            <div class="question-card p-3 rounded" style="background: rgba(15, 23, 42, 0.3); border: 1px solid rgba(255, 255, 255, 0.03);">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-teal-soft" style="background-color: rgba(13, 148, 136, 0.2); color: #2dd4bf; font-size: 0.7rem; padding: 2px 6px; border-radius: 3px;">{{ q.get_difficulty_display|default:q.difficulty|capfirst }}</span>
+                                    <span class="text-secondary small">Pregunta {{ forloop.counter }}</span>
+                                </div>
+                                <p style="font-size: 1rem; color: #e2e8f0; line-height: 1.5; margin-bottom: 12px;">{{ q.text }}</p>
+
+                                <ul style="list-style-type: lower-alpha; padding-left: 20px; color: #cbd5e1; margin-bottom: 15px;">
+                                    {% for choice in q.choices.all %}
+                                        <li style="margin-bottom: 6px; font-size: 0.95rem;">{{ choice.text }}</li>
+                                    {% endfor %}
+                                </ul>
+
+                                <!-- Controles interactivos (no-print) -->
+                                <div class="no-print d-flex gap-2" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-reveal-target="hint-{{ q.id }}" data-label-show="Ver Pista" style="font-size: 0.8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; border-radius: 4px; padding: 4px 10px; cursor: pointer;">
+                                        Ver Pista
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-teal" data-reveal-target="solution-{{ q.id }}" data-label-show="Ver Solución" style="font-size: 0.8rem; background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.3); color: #2dd4bf; border-radius: 4px; padding: 4px 10px; cursor: pointer;">
+                                        Ver Solución
+                                    </button>
+                                </div>
+
+                                <!-- Divs de Revelado (no-print) -->
+                                <div id="hint-{{ q.id }}" class="no-print p-3 rounded mt-2" style="display: none; background: rgba(217, 119, 6, 0.08); border-left: 3px solid #d97706; font-size: 0.9rem; color: #f59e0b;">
+                                    <strong>Pista:</strong> {{ q.hint }}
+                                </div>
+                                <div id="solution-{{ q.id }}" class="no-print p-3 rounded mt-2" style="display: none; background: rgba(13, 148, 136, 0.08); border-left: 3px solid #0d9488; font-size: 0.9rem;">
+                                    <div class="mb-2"><strong>Alternativa Correcta:</strong> <span class="text-teal" style="color: #2dd4bf; font-weight: 600;">{{ q.canonical_answer }}</span></div>
+                                    <div><strong>Explicación:</strong> {{ q.explanation|linebreaksbr }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Desafíos -->
+                {% if grouped.desafio %}
+                    <div class="mt-3">
+                        <strong style="color: #a78bfa; font-size: 0.95rem; display: block; margin-bottom: 10px;">⚡ Desafíos</strong>
+                        <div class="d-flex flex-column gap-3">
+                            {% for q in grouped.desafio %}
+                                <div class="question-card p-3 rounded" style="background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(124, 58, 237, 0.15);">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <span class="badge" style="background-color: #7d3aed; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 3px;">Desafío</span>
+                                        <span class="text-secondary small">Pregunta {{ forloop.counter }}</span>
+                                    </div>
+                                    <p style="font-size: 1rem; color: #e2e8f0; line-height: 1.5; margin-bottom: 12px;">{{ q.text }}</p>
+
+                                    <ul style="list-style-type: lower-alpha; padding-left: 20px; color: #cbd5e1; margin-bottom: 15px;">
+                                        {% for choice in q.choices.all %}
+                                            <li style="margin-bottom: 6px; font-size: 0.95rem;">{{ choice.text }}</li>
+                                        {% endfor %}
+                                    </ul>
+
+                                    <!-- Controles interactivos (no-print) -->
+                                    <div class="no-print d-flex gap-2" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" data-reveal-target="hint-{{ q.id }}" data-label-show="Ver Pista" style="font-size: 0.8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; border-radius: 4px; padding: 4px 10px; cursor: pointer;">
+                                            Ver Pista
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-teal" data-reveal-target="solution-{{ q.id }}" data-label-show="Ver Solución" style="font-size: 0.8rem; background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.3); color: #2dd4bf; border-radius: 4px; padding: 4px 10px; cursor: pointer;">
+                                            Ver Solución
+                                        </button>
+                                    </div>
+
+                                    <!-- Divs de Revelado (no-print) -->
+                                    <div id="hint-{{ q.id }}" class="no-print p-3 rounded mt-2" style="display: none; background: rgba(217, 119, 6, 0.08); border-left: 3px solid #d97706; font-size: 0.9rem; color: #f59e0b;">
+                                        <strong>Pista:</strong> {{ q.hint }}
+                                    </div>
+                                    <div id="solution-{{ q.id }}" class="no-print p-3 rounded mt-2" style="display: none; background: rgba(13, 148, 136, 0.08); border-left: 3px solid #0d9488; font-size: 0.9rem;">
+                                        <div class="mb-2"><strong>Alternativa Correcta:</strong> <span class="text-teal" style="color: #2dd4bf; font-weight: 600;">{{ q.canonical_answer }}</span></div>
+                                        <div><strong>Explicación:</strong> {{ q.explanation|linebreaksbr }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p class="text-secondary text-center py-4">No hay preguntas publicadas en este banco estructurado aún.</p>
+        {% endfor %}
+        {% if bank_truncated %}
+            <p class="text-secondary text-center no-print">
+                Se muestran las primeras 200 preguntas. Usa las prácticas por ítem para estudiar el resto.
+            </p>
+        {% endif %}
+    </section>
+
+    <!-- Solucionario impreso (visible solo al imprimir en papel) -->
+    <section class="print-solution-block">
+        <h2 style="font-size: 16pt; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 15pt;">Solucionario de la Guía</h2>
+        <div class="print-solution-grid">
+            {% for grouped in sorted_items %}
+                {% for q in grouped.normal %}
+                    <div class="print-solution-item">
+                        <strong>Pregunta (Ítem {{ forloop.parentloop.counter }}.{{ forloop.counter }}):</strong><br>
+                        Respuesta correcta: {{ q.canonical_answer }}<br>
+                        {% if q.hint %}Pista: {{ q.hint }}<br>{% endif %}
+                        Explicación: {{ q.explanation }}
+                    </div>
+                {% endfor %}
+                {% for q in grouped.desafio %}
+                    <div class="print-solution-item">
+                        <strong>Desafío (Ítem {{ forloop.parentloop.counter }}.D{{ forloop.counter }}):</strong><br>
+                        Respuesta correcta: {{ q.canonical_answer }}<br>
+                        {% if q.hint %}Pista: {{ q.hint }}<br>{% endif %}
+                        Explicación: {{ q.explanation }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/learning-guide-print.css' %}?v=2">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/learning-guide-detail.js' %}?v=1" nonce="{{ csp_nonce }}" defer></script>
+{% endblock %}

@@ -623,3 +623,77 @@ def _generate_mock_questions(resource, level, mode, count, status="publicada"):
         })
 
     return _save_questions(resource, level, mode, questions_data, status)
+
+
+def call_ai_structured_json(prompt, api_key=None) -> dict:
+    """Helper genérico que llama a la IA para obtener un JSON estructurado (objeto/dict).
+
+    A diferencia de _call_openai_api, no asume que debe devolver la primera lista
+    interna del JSON, sino que devuelve la estructura completa parseada.
+    """
+    is_testing = "test" in sys.argv or getattr(settings, "TESTING", False) or "test" in getattr(settings, "SETTINGS_MODULE", "")
+
+    gemini_key = api_key
+    if gemini_key is None:
+        gemini_key = getattr(settings, "GEMINI_API_KEY", None)
+        if is_testing and gemini_key == os.environ.get("GEMINI_API_KEY", ""):
+            gemini_key = ""
+        elif gemini_key is None and not is_testing:
+            gemini_key = os.environ.get("GEMINI_API_KEY", "")
+        elif gemini_key is None:
+            gemini_key = ""
+
+    openai_key = api_key
+    if openai_key is None:
+        openai_key = getattr(settings, "OPENAI_API_KEY", None)
+        if is_testing and openai_key == os.environ.get("OPENAI_API_KEY", ""):
+            openai_key = ""
+        elif openai_key is None and not is_testing:
+            openai_key = os.environ.get("OPENAI_API_KEY", "")
+        elif openai_key is None:
+            openai_key = ""
+
+    if not gemini_key and not openai_key:
+        raise ValueError("No se configuraron las llaves GEMINI_API_KEY u OPENAI_API_KEY.")
+
+    if gemini_key:
+        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+        headers = {"Content-Type": "application/json", "x-goog-api-key": gemini_key}
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseMimeType": "application/json"},
+        }
+        try:
+            response = _post_json_with_retry(url, headers, payload, key=gemini_key)
+            data = response.json()
+            text_response = data["candidates"][0]["content"]["parts"][0]["text"]
+            return _loads_ai_json(text_response)
+        except RuntimeError:
+            raise
+        except Exception as e:
+            msg = _sanitize_key(str(e), gemini_key)
+            logger.error("Error llamando a Gemini API en call_ai_structured_json: %s", msg)
+            raise RuntimeError(f"Error de generación con Gemini: {msg}") from None
+
+    if openai_key:
+        url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {openai_key}",
+        }
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [{"role": "user", "content": prompt}],
+            "response_format": {"type": "json_object"},
+        }
+        try:
+            response = _post_json_with_retry(url, headers, payload, key=openai_key)
+            data = response.json()
+            text_response = data["choices"][0]["message"]["content"]
+            return _loads_ai_json(text_response)
+        except RuntimeError:
+            raise
+        except Exception as e:
+            msg = _sanitize_key(str(e), openai_key)
+            logger.error("Error llamando a OpenAI API en call_ai_structured_json: %s", msg)
+            raise RuntimeError(f"Error de generación con OpenAI: {msg}") from None

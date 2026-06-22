@@ -17,6 +17,7 @@ class LearningGuide(models.Model):
     STATUS_CHOICES = [
         ("borrador", "Borrador"),
         ("publicada", "Publicada"),
+        ("archivada", "Archivada"),
     ]
 
     topic = models.ForeignKey(
@@ -60,6 +61,21 @@ class LearningGuide(models.Model):
         default="borrador",
         verbose_name="estado",
     )
+    originality_report = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="informe de originalidad"
+    )
+    originality_checked_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="fecha de validación de originalidad"
+    )
+    originality_content_hash = models.CharField(
+        max_length=64,
+        blank=True,
+        verbose_name="hash de contenido validado"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -67,6 +83,13 @@ class LearningGuide(models.Model):
         ordering = ["topic", "title"]
         verbose_name = "guía ProfeOnline"
         verbose_name_plural = "guías ProfeOnline"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["topic"],
+                condition=models.Q(status="publicada"),
+                name="unique_active_published_guide_per_topic",
+            )
+        ]
 
     def __str__(self) -> str:
         return self.title

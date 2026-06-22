@@ -1,0 +1,126 @@
+<div class="guide-details-wrapper">
+    {% if success_msg %}
+        <div class="alert alert--success mb-3">{{ success_msg }}</div>
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-start border-bottom border-secondary pb-3 mb-3">
+        <div>
+            <span class="badge" style="background-color: var(--teal-color, #0f766e); color: white;">Tema Habilitado</span>
+            <h2 class="h3 text-teal mt-1 mb-0">{{ topic.subject.name }} - {{ topic.name }}</h2>
+        </div>
+        <div>
+            {% if guide %}
+                {% if guide.status == 'publicada' %}
+                    <span class="badge bg-success text-white p-2" style="font-size: 0.9rem;">🟢 Publicada (Pública)</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark p-2" style="font-size: 0.9rem;">🟡 Borrador (Interna)</span>
+                {% endif %}
+            {% else %}
+                <span class="badge bg-secondary text-light p-2" style="font-size: 0.9rem;">Sin Guía ProfeOnline</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 1. Ítems aprobados del tema -->
+    <section class="mb-4">
+        <h3 class="h6 text-teal mb-2">📋 Ítems de Aprendizaje Aprobados ({{ approved_items|length }})</h3>
+        {% if approved_items %}
+            <ul class="list-group p-0 m-0" style="list-style: none;">
+                {% for item in approved_items %}
+                    <li class="p-2 mb-2 rounded" style="background: rgba(255,255,255,0.03); border-left: 3px solid #0f766e; font-size: 0.85rem;">
+                        <strong>[Nivel {{ item.level }}] {{ item.title }}</strong>: {{ item.objective }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert--danger mb-0 py-2 px-3" style="font-size: 0.85rem;">
+                ⚠️ No existen ítems de aprendizaje en estado 'aprobado' para este tema. Primero debes proponer y aprobar ítems.
+            </div>
+        {% endif %}
+    </section>
+
+    <!-- 2. Generación manual: crea un reemplazo si la guía visible ya está publicada -->
+    <section class="mb-4 p-3 rounded" style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
+            <h3 class="h6 text-teal mb-2">
+                🤖 {% if guide.status == 'publicada' %}Crear borrador de reemplazo{% else %}Generar Nuevo Borrador con IA{% endif %}
+            </h3>
+
+            {% if approved_items %}
+                <form hx-post="{% url 'content:generate_guide_draft_view' %}" hx-target="#guide-details-container" hx-indicator="#gen-indicator">
+                    {% csrf_token %}
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 4px;">Selecciona fuentes privadas autorizadas para grounded generation:</label>
+                        {% for pg in private_guides %}
+                            <div class="form-check mb-1">
+                                <input type="checkbox" name="private_guide_ids" value="{{ pg.id }}" id="pg-{{ pg.id }}" class="form-check-input" checked>
+                                <label class="form-check-label small" for="pg-{{ pg.id }}">
+                                    📁 {{ pg.title }} ({{ pg.content_text|length }} caracteres)
+                                </label>
+                            </div>
+                        {% empty %}
+                            <span class="text-secondary small italic">No hay guías privadas asociadas a este tema o asignatura.</span>
+                        {% endfor %}
+                    </div>
+
+                    {% if private_guides %}
+                        <button type="submit" class="btn btn-primary btn-sm py-2 px-3 d-flex align-items-center gap-2">
+                            <span>Generar Borrador</span>
+                            <div id="gen-indicator" class="htmx-indicator spinner-border spinner-border-sm text-light" role="status">
+                                <span class="visually-hidden">...</span>
+                            </div>
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary btn-sm" disabled>Generar Borrador (Faltan fuentes)</button>
+                    {% endif %}
+                </form>
+            {% else %}
+                <p class="text-secondary small mb-0">Habilita y aprueba al menos un ítem curricular para poder proponer la guía.</p>
+            {% endif %}
+    </section>
+
+    <!-- 3. Contenido actual y validación de originalidad -->
+    {% if guide %}
+        <!-- Acciones principales de la guía -->
+        {% if guide.status == 'borrador' %}
+        <section class="mb-4">
+            <div class="d-flex flex-wrap gap-2">
+                <!-- Botón Editar -->
+                <button class="btn btn-secondary btn-sm py-2 px-3"
+                        hx-get="{% url 'content:edit_guide_draft_view' guide.id %}"
+                        hx-target="#guide-content-box"
+                        hx-swap="outerHTML">
+                    ✏️ Editar Borrador
+                </button>
+
+                <!-- Botón Validar Originalidad -->
+                <form hx-post="{% url 'content:validate_originality_view' guide.id %}" hx-target="#originality-report-container" hx-indicator="#val-indicator" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-sm py-2 px-3 d-inline-flex align-items-center gap-2">
+                        <span>🔍 Validar Originalidad</span>
+                        <div id="val-indicator" class="htmx-indicator spinner-border spinner-border-sm text-light" role="status"></div>
+                    </button>
+                </form>
+
+                <!-- Botón Publicar -->
+                <form hx-post="{% url 'content:publish_learning_guide_view' guide.id %}" hx-target="#guide-details-container" hx-confirm="¿Estás seguro de publicar esta guía ProfeOnline? Se despublicarán versiones anteriores del tema." class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" id="btn-publish-guide" class="btn btn-primary btn-sm py-2 px-4"
+                            {% if not guide.originality_report.passed or not guide.originality_content_hash %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+                        🚀 Publicar Guía Original
+                    </button>
+                </form>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Contenedor dinámico del reporte de originalidad -->
+        <section class="mb-4" id="originality-report-container">
+            {% include "partials/_originality_report_panel.html" with result=guide.originality_report %}
+        </section>
+
+        <!-- Contenido Estructurado de la Guía -->
+        {% include "partials/_guide_content_box.html" %}
+    {% endif %}
+</div>

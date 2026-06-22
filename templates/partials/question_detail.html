@@ -4,31 +4,39 @@
         <div class="q-detail__expl"><strong>Explicación:</strong> {{ question.explanation|linebreaksbr }}</div>
     {% endif %}
 
-    <section class="item-analysis" aria-label="Efectividad de la pregunta">
-        <div class="item-analysis__summary">
-            <strong>{{ question.answer_count|default:0 }} respuesta{{ question.answer_count|default:0|pluralize:"s" }}</strong>
-            {% if question.accuracy_percentage is not None %}
-                <span>{{ question.accuracy_percentage }}% de aciertos</span>
-            {% else %}
-                <span>Sin datos todavía</span>
-            {% endif %}
+    {% if question.scope == "banco_visible" %}
+        <div class="q-detail__meta mb-3" style="font-size: 0.85rem; color: #94a3b8; display: flex; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; margin-bottom: 12px;">
+            <div><strong>Dificultad:</strong> <span class="badge" style="background-color: #0d9488; color: white;">{{ question.difficulty|capfirst }}</span></div>
+            <div><strong>Pista (Hint):</strong> <span class="text-light" style="color: #e2e8f0;">{{ question.hint }}</span></div>
+            <div><strong>Respuesta Canónica:</strong> <span class="text-teal" style="color: #0d9488; font-weight: 600;">{{ question.canonical_answer }}</span></div>
         </div>
-        {% if question.analysis_flags %}
-        <ul class="item-analysis__flags">
-            {% for flag in question.analysis_flags %}<li>⚠️ {{ flag }}</li>{% endfor %}
-        </ul>
-        {% endif %}
-        {% if question.answer_count %}
-        <div class="item-analysis__distribution">
-            {% for choice in question.choices.all %}
-            <div class="{% if choice.is_correct %}is-correct{% elif choice.is_dominant_distractor %}is-warning{% endif %}">
-                <span>{{ choice.text|truncatechars:90 }}</span>
-                <strong>{{ choice.selection_count }} · {{ choice.selection_percentage }}%</strong>
+    {% else %}
+        <section class="item-analysis" aria-label="Efectividad de la pregunta">
+            <div class="item-analysis__summary">
+                <strong>{{ question.answer_count|default:0 }} respuesta{{ question.answer_count|default:0|pluralize:"s" }}</strong>
+                {% if question.accuracy_percentage is not None %}
+                    <span>{{ question.accuracy_percentage }}% de aciertos</span>
+                {% else %}
+                    <span>Sin datos todavía</span>
+                {% endif %}
             </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </section>
+            {% if question.analysis_flags %}
+            <ul class="item-analysis__flags">
+                {% for flag in question.analysis_flags %}<li>⚠️ {{ flag }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+            {% if question.answer_count %}
+            <div class="item-analysis__distribution">
+                {% for choice in question.choices.all %}
+                <div class="{% if choice.is_correct %}is-correct{% elif choice.is_dominant_distractor %}is-warning{% endif %}">
+                    <span>{{ choice.text|truncatechars:90 }}</span>
+                    <strong>{{ choice.selection_count }} · {{ choice.selection_percentage }}%</strong>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </section>
+    {% endif %}
 
     <div class="q-detail__alts" id="alts-{{ question.id }}">
         {% for choice in question.choices.all %}
@@ -51,10 +59,10 @@
         </button>
         <button type="button" class="btn-danger btn-sm"
                 hx-post="{% url 'content:delete_question' question.id %}"
-                hx-confirm="¿Eliminar esta pregunta y todas sus alternativas?"
+                hx-confirm="{% if question.scope == 'banco_visible' %}¿Archivar esta pregunta?{% else %}¿Eliminar esta pregunta y todas sus alternativas?{% endif %}"
                 hx-target="#question-item-{{ question.id }}"
                 hx-swap="outerHTML">
-            Eliminar
+            {% if question.scope == "banco_visible" %}Archivar{% else %}Eliminar{% endif %}
         </button>
     </div>
 </div>

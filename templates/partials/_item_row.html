@@ -98,6 +98,77 @@
                 {% endif %}
             {% endwith %}
         </div>
+
+        {% if item.status == "aprobado" %}
+        <div class="resources-box p-2 rounded mt-3" style="background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.25); font-size: 0.85rem;">
+            <div class="mb-2"><strong>Banco visible</strong></div>
+            {% if guide %}
+                {% for link in item.resource_links.all %}
+                <div class="mb-3 p-2 rounded" style="background: rgba(0, 0, 0, 0.18);">
+                    <div class="mb-2">
+                        <strong>{{ link.resource.title }}</strong>
+                        <span class="text-secondary">
+                            · {{ link.draft_count }} borrador
+                            · {{ link.published_count }} publicada
+                            · déficit {{ link.deficit }}
+                        </span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <form
+                            hx-post="{% url 'content:edit_practice_quota' link.id %}"
+                            hx-target="#item-row-{{ item.id }}"
+                            hx-swap="outerHTML"
+                            class="d-flex gap-1 align-items-center"
+                        >
+                            {% csrf_token %}
+                            <label for="quota-{{ link.id }}">Cuota</label>
+                            <input
+                                id="quota-{{ link.id }}"
+                                type="number"
+                                name="practice_quota"
+                                value="{{ link.practice_quota }}"
+                                min="0"
+                                max="50"
+                                class="form-control form-control-sm"
+                                style="width: 75px;"
+                            >
+                            <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
+                        </form>
+                        {% if link.deficit %}
+                        <form
+                            hx-post="{% url 'content:generate_visible_bank_drafts' %}"
+                            hx-target="#item-row-{{ item.id }}"
+                            hx-swap="outerHTML"
+                        >
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <input type="hidden" name="resource_id" value="{{ link.resource.id }}">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                Generar {{ link.deficit }} borradores
+                            </button>
+                        </form>
+                        {% endif %}
+                        <a
+                            class="btn btn-secondary btn-sm"
+                            href="{% url 'content:question_review' link.resource.slug %}?scope=banco_visible&exercise_item_id={{ item.id }}"
+                        >Revisar preguntas</a>
+                    </div>
+                    {% if not link.practice_quota %}
+                    <small class="text-secondary">
+                        Cuota 0 usa el fallback detectado: {{ link.effective_quota }}.
+                    </small>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <span class="text-secondary">Vincula un recurso para generar preguntas.</span>
+                {% endfor %}
+            {% else %}
+                <span class="text-secondary">
+                    Publica primero una guía ProfeOnline pública para habilitar la generación.
+                </span>
+            {% endif %}
+        </div>
+        {% endif %}
     </td>
 
     <!-- Acciones (Editar, Aprobar/Propuesto, Archivar) -->

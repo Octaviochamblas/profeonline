@@ -11,7 +11,7 @@
     <textarea name="explanation" rows="3" class="q-edit__input" placeholder="Un paso por línea...">{{ question.explanation }}</textarea>
 
     <div class="q-edit__row">
-        <div class="q-edit__col">
+        <div class="q-edit__col"{% if question.scope == "banco_visible" %} hidden{% endif %}>
             <label class="q-edit__label">Nivel</label>
             <select name="level" class="q-edit__input">
                 {% for lvl, name in LEVEL_CHOICES %}
@@ -19,7 +19,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="q-edit__col">
+        <div class="q-edit__col"{% if question.scope == "banco_visible" %} hidden{% endif %}>
             <label class="q-edit__label">Modo</label>
             <select name="mode" class="q-edit__input">
                 {% for val, name in MODE_CHOICES %}
@@ -27,7 +27,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="q-edit__col">
+        <div class="q-edit__col"{% if question.scope == "banco_visible" %} hidden{% endif %}>
             <label class="q-edit__label">Estado</label>
             <select name="status" class="q-edit__input">
                 {% for val, name in STATUS_CHOICES %}
@@ -40,6 +40,24 @@
             <input type="number" name="order" class="q-edit__input" value="{{ question.order }}" min="0">
         </div>
     </div>
+
+    {% if question.scope == "banco_visible" %}
+    <div class="q-edit__row" style="margin-top: 12px;">
+        <div class="q-edit__col" style="flex: 1;">
+            <label class="q-edit__label">Dificultad</label>
+            <select name="difficulty" class="q-edit__input">
+                <option value="basica"{% if question.difficulty == "basica" %} selected{% endif %}>Básica</option>
+                <option value="intermedia"{% if question.difficulty == "intermedia" %} selected{% endif %}>Intermedia</option>
+                <option value="avanzada"{% if question.difficulty == "avanzada" %} selected{% endif %}>Avanzada</option>
+                <option value="desafio"{% if question.difficulty == "desafio" %} selected{% endif %}>Desafío</option>
+            </select>
+        </div>
+        <div class="q-edit__col" style="flex: 2;">
+            <label class="q-edit__label">Pista (Hint)</label>
+            <input type="text" name="hint" class="q-edit__input" value="{{ question.hint }}" required>
+        </div>
+    </div>
+    {% endif %}
 
     <div class="q-edit__actions">
         <button type="button" class="btn-secondary btn-sm"

@@ -17,7 +17,7 @@ def get_question_availability_map(resource_ids):
         return {}
 
     rows = (
-        Question.objects.filter(resource_id__in=resource_ids, status="publicada")
+        Question.objects.filter(resource_id__in=resource_ids, status="publicada", scope="")
         .values("resource_id", "level", "mode")
         .distinct()
     )

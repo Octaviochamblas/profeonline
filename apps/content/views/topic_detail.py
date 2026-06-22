@@ -76,4 +76,12 @@ class TopicDetailView(DetailView):
 
         # Evaluación final del tema (Fase 7)
         context["topic_exam_info"] = get_topic_exam_info(self.request.user, topic)
+
+        # Guía ProfeOnline pública (Fase 3)
+        if topic.structured_bank_enabled:
+            from apps.content.models.learning_guide import LearningGuide
+            context["learning_guide"] = LearningGuide.objects.filter(
+                topic=topic, status="publicada", visibility="publica"
+            ).first()
+
         return context

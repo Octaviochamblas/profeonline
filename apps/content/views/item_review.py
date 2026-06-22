@@ -3,9 +3,11 @@ import logging
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
-from django.views.decorators.http import require_POST, require_http_methods
+from collections import defaultdict
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Count, Q
+from django.views.decorators.http import require_POST, require_http_methods
+from apps.content.models.learning_guide import LearningGuide
 
 from apps.content.views.permissions import is_admin
 from apps.content.models import Resource
@@ -49,6 +51,7 @@ def _items_list_context(topic, **extra):
 
     Prefetch de ``resource_links__resource`` + recursos del tema cargados una sola
     vez; cada ítem recibe ``unlinked_resources_list`` ya calculado en memoria.
+    También anota conteos del banco visible para cada vínculo para evitar consultas N+1.
     """
     topic_resources = list(topic.resources.order_by("title"))
     items = list(
@@ -56,11 +59,45 @@ def _items_list_context(topic, **extra):
         .exclude(status="archivado")
         .prefetch_related("resource_links__resource")
     )
+
+    # Una sola consulta para obtener los conteos agrupados de preguntas del banco visible del tema
+    visible_counts = (
+        Question.objects.filter(
+            exercise_item__topic=topic,
+            scope="banco_visible"
+        )
+        .values("exercise_item_id", "resource_id", "status")
+        .annotate(total=Count("id"))
+    )
+
+    counts_map = defaultdict(lambda: {"borrador": 0, "publicada": 0, "archivada": 0})
+    for row in visible_counts:
+        key = (row["exercise_item_id"], row["resource_id"])
+        status = row["status"]
+        if status in ("borrador", "publicada", "archivada"):
+            counts_map[key][status] = row["total"]
+
     for item in items:
         item.unlinked_resources_list = item.get_unlinked_resources(topic_resources)
+        for link in item.resource_links.all():
+            key = (item.id, link.resource_id)
+            link.draft_count = counts_map[key]["borrador"]
+            link.published_count = counts_map[key]["publicada"]
+            link.archived_count = counts_map[key]["archivada"]
+            link.effective_quota = (
+                link.practice_quota or item.detected_exercise_count
+            )
+            link.deficit = max(
+                0,
+                link.effective_quota - (link.draft_count + link.published_count),
+            )
+
+    guide = LearningGuide.objects.filter(topic=topic, status="publicada", visibility="publica").first()
+
     ctx = {
         "items": items,
         "topic": topic,
+        "guide": guide,
         "LEVEL_CHOICES": Question.LEVEL_CHOICES,
         "DIFFICULTY_CHOICES": Question.DIFFICULTY_CHOICES,
     }
@@ -70,9 +107,47 @@ def _items_list_context(topic, **extra):
 
 def _item_row_context(item, **extra):
     """Contexto para renderizar una sola fila de ítem (paths de mutación puntual)."""
-    item.unlinked_resources_list = item.get_unlinked_resources()
+    item = (
+        ExerciseItem.objects.select_related("topic")
+        .prefetch_related("resource_links__resource")
+        .get(pk=item.pk)
+    )
+    topic_resources = list(item.topic.resources.order_by("title"))
+    item.unlinked_resources_list = item.get_unlinked_resources(topic_resources)
+
+    # Cargar conteos del banco visible para este ítem específico
+    visible_counts = (
+        Question.objects.filter(
+            exercise_item=item,
+            scope="banco_visible"
+        )
+        .values("resource_id", "status")
+        .annotate(total=Count("id"))
+    )
+
+    counts_map = defaultdict(lambda: {"borrador": 0, "publicada": 0, "archivada": 0})
+    for row in visible_counts:
+        key = row["resource_id"]
+        status = row["status"]
+        if status in ("borrador", "publicada", "archivada"):
+            counts_map[key][status] = row["total"]
+
+    for link in item.resource_links.all():
+        key = link.resource_id
+        link.draft_count = counts_map[key]["borrador"]
+        link.published_count = counts_map[key]["publicada"]
+        link.archived_count = counts_map[key]["archivada"]
+        link.effective_quota = link.practice_quota or item.detected_exercise_count
+        link.deficit = max(
+            0,
+            link.effective_quota - (link.draft_count + link.published_count),
+        )
+
+    guide = LearningGuide.objects.filter(topic=item.topic, status="publicada", visibility="publica").first()
+
     ctx = {
         "item": item,
+        "guide": guide,
         "LEVEL_CHOICES": Question.LEVEL_CHOICES,
         "DIFFICULTY_CHOICES": Question.DIFFICULTY_CHOICES,
     }
@@ -448,3 +523,104 @@ def unlink_item_resource(request, item_id):
         ).delete()
 
     return render(request, "partials/_item_row.html", _item_row_context(item))
+
+
+@user_passes_test(is_admin)
+@require_POST
+def edit_practice_quota(request, link_id):
+    """Guarda la cuota de práctica para un vínculo ResourceExerciseItem."""
+    link = get_object_or_404(
+        ResourceExerciseItem.objects.select_related(
+            "exercise_item__topic", "resource"
+        ),
+        id=link_id,
+        exercise_item__status="aprobado",
+        resource__is_published=True,
+    )
+    item = link.exercise_item
+    topic = item.topic
+
+    # Aislamiento por flag de tema
+    if not topic.structured_bank_enabled or not topic.is_active:
+        return HttpResponse("Tema no habilitado", status=400)
+
+    try:
+        quota = int(request.POST.get("practice_quota", 0))
+    except (ValueError, TypeError):
+        return HttpResponse("La cuota debe ser un número entero.", status=400)
+    if quota < 0 or quota > 50:
+        return HttpResponse("La cuota debe estar entre 0 y 50.", status=400)
+
+    link.practice_quota = quota
+    link.save(update_fields=["practice_quota"])
+
+    if request.headers.get("HX-Request"):
+        return render(request, "partials/_item_row.html", _item_row_context(item))
+    return redirect("content:item_extraction")
+
+
+@user_passes_test(is_admin)
+@require_POST
+def generate_visible_bank_drafts_view(request):
+    """Genera una tanda de preguntas del banco visible en estado borrador."""
+    item_id = request.POST.get("item_id")
+    resource_id = request.POST.get("resource_id")
+
+    if not item_id or not resource_id:
+        return HttpResponse("Faltan parámetros", status=400)
+
+    item = _get_enabled_item(item_id)
+    resource = get_object_or_404(Resource, id=resource_id, topic=item.topic, is_published=True)
+
+    # Obtener guía del tema
+    guide = LearningGuide.objects.filter(topic=item.topic, status="publicada", visibility="publica").first()
+    if not guide:
+        return HttpResponse("No existe una guía ProfeOnline publicada para este tema.", status=400)
+
+    # Calcular déficit contra todas las preguntas activas (borrador + publicada)
+    # archivada no cuenta.
+    active_questions_count = Question.objects.filter(
+        exercise_item=item,
+        resource=resource,
+        scope="banco_visible",
+        status__in=["borrador", "publicada"]
+    ).count()
+
+    try:
+        resource_link = ResourceExerciseItem.objects.get(exercise_item=item, resource=resource)
+    except ResourceExerciseItem.DoesNotExist:
+        return HttpResponse("Vínculo no existe", status=400)
+
+    quota = resource_link.practice_quota or item.detected_exercise_count
+    deficit = max(0, quota - active_questions_count)
+
+    if deficit <= 0:
+        return HttpResponse(
+            f'<div class="alert alert--warning">La cuota ya está cubierta con {active_questions_count} preguntas activas (borrador + publicada).</div>',
+            status=400
+        )
+
+    from apps.content.services.visible_bank_service import generate_visible_bank_questions
+    try:
+        generate_visible_bank_questions(
+            exercise_item=item,
+            resource=resource,
+            learning_guide=guide,
+            count=deficit,
+        )
+    except Exception:
+        logger.exception(
+            "Error generando banco visible para item=%s resource=%s",
+            item.id,
+            resource.id,
+        )
+        return HttpResponse(
+            '<div class="alert alert--danger mb-3">'
+            "No fue posible generar las preguntas. Revisa la configuración y vuelve a intentar."
+            "</div>",
+            status=400
+        )
+
+    if request.headers.get("HX-Request"):
+        return render(request, "partials/_item_row.html", _item_row_context(item))
+    return redirect("content:item_extraction")

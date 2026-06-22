@@ -8,23 +8,36 @@
     <!-- Header -->
     <header class="studio-header">
         <div class="studio-header__nav">
+            {% if scope == 'banco_visible' %}
+            <a href="{% url 'content:item_extraction' %}?topic_id={{ resource.topic.id }}&action=list_items" class="btn-back">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Volver a Ítems del Tema
+            </a>
+            {% else %}
             <a href="{% url 'content:resource_list' %}" class="btn-back">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                 Volver a Recursos
             </a>
+            {% endif %}
         </div>
         <div class="studio-header__main">
             <div class="studio-header__info">
-                <span class="studio-badge">Banco de Preguntas</span>
-                <h1 class="studio-title">{{ resource.title }}</h1>
-                <p class="studio-subtitle">Asignatura: {{ resource.subject.name|default:"Sin definir" }} &bull; Tema: {{ resource.topic.name|default:"Sin definir" }}</p>
+                {% if scope == 'banco_visible' %}
+                    <span class="studio-badge" style="background-color: #0d9488;">Banco Visible &bull; Ítem de Aprendizaje</span>
+                    <h1 class="studio-title">{{ exercise_item.title }}</h1>
+                    <p class="studio-subtitle">Objetivo: {{ exercise_item.objective }} &bull; Recurso: {{ resource.title }}</p>
+                {% else %}
+                    <span class="studio-badge">Banco de Preguntas</span>
+                    <h1 class="studio-title">{{ resource.title }}</h1>
+                    <p class="studio-subtitle">Asignatura: {{ resource.subject.name|default:"Sin definir" }} &bull; Tema: {{ resource.topic.name|default:"Sin definir" }}</p>
+                {% endif %}
             </div>
             <div class="studio-header__actions">
                 <a href="{% url 'content:resource_detail' resource.slug %}" class="btn-secondary" target="_blank" rel="noopener">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                     Visitar recurso
                 </a>
-                <a href="{% url 'content:question_review' resource.slug %}" class="btn-secondary">
+                <a href="{% if scope == 'banco_visible' %}{% url 'content:question_review' resource.slug %}?scope=banco_visible&exercise_item_id={{ exercise_item.id }}&resource_id={{ resource.id }}{% else %}{% url 'content:question_review' resource.slug %}{% endif %}" class="btn-secondary">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
                     Refrescar
                 </a>
@@ -32,6 +45,72 @@
         </div>
     </header>
 
+    {% if scope == 'banco_visible' %}
+    <!-- ===== PANEL EDITORIAL EDITABLE PARA BANCO VISIBLE ===== -->
+    <main class="studio-main-content">
+        <section class="acc card" style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+            <div class="mb-4" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 1.25rem; color: #2dd4bf; margin: 0;">📋 Preguntas Estructuradas (Banco Visible)</h2>
+                <div style="display: flex; gap: 8px;">
+                    <span class="badge" style="background-color: #0d9488; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Guía: {{ learning_guide.title }}</span>
+                    <span class="badge" style="background-color: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">{{ questions.count }} pregunta{{ questions.count|pluralize:"s" }}</span>
+                </div>
+            </div>
+
+            <!-- Barra de acciones en lote para banco visible -->
+            <div class="bulk-bar" id="bulk-bar-visible-bank" hidden style="background: rgba(13, 148, 136, 0.15); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: 8px; padding: 12px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <span class="bulk-bar__count" style="font-weight: 600; color: #e2e8f0; font-size: 0.9rem;">0 seleccionadas</span>
+                <div class="bulk-bar__btns" style="display: flex; gap: 8px;">
+                    {% csrf_token %}
+                    <button type="button" class="btn-secondary btn-sm bulk-action-btn"
+                            data-action="publicar"
+                            data-qlist="qlist-visible-bank"
+                            data-scope="banco_visible"
+                            data-exercise_item_id="{{ exercise_item.id }}"
+                            data-learning_guide_id="{{ learning_guide.id }}"
+                            data-url="{% url 'content:bulk_action_questions' resource.id %}"
+                            style="background-color: #0d9488; color: white; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer;">Publicar</button>
+                    <button type="button" class="btn-secondary btn-sm bulk-action-btn"
+                            data-action="borrador"
+                            data-qlist="qlist-visible-bank"
+                            data-scope="banco_visible"
+                            data-exercise_item_id="{{ exercise_item.id }}"
+                            data-learning_guide_id="{{ learning_guide.id }}"
+                            data-url="{% url 'content:bulk_action_questions' resource.id %}"
+                            style="background-color: #475569; color: white; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer;">Borrador</button>
+                    <button type="button" class="btn-danger btn-sm bulk-action-btn"
+                            data-action="archivar"
+                            data-qlist="qlist-visible-bank"
+                            data-scope="banco_visible"
+                            data-exercise_item_id="{{ exercise_item.id }}"
+                            data-learning_guide_id="{{ learning_guide.id }}"
+                            data-url="{% url 'content:bulk_action_questions' resource.id %}"
+                            style="background-color: #dc2626; color: white; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer;">Archivar</button>
+                </div>
+            </div>
+
+            <!-- Cabecera de la tabla de preguntas -->
+            <div class="acc-table-head" style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 15px; align-items: center; background: rgba(0, 0, 0, 0.2); padding: 10px 15px; border-radius: 8px 8px 0 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                <input type="checkbox" class="q-select-all"
+                       data-qlist="qlist-visible-bank"
+                       aria-label="Seleccionar todas"
+                       style="transform: scale(1.2); cursor: pointer;">
+                <span style="font-weight: 600; color: #94a3b8; font-size: 0.85rem;">Enunciado de la Pregunta</span>
+                <span style="font-weight: 600; color: #94a3b8; font-size: 0.85rem; text-align: center; width: 80px;">Estado</span>
+                <span></span>
+            </div>
+
+            <!-- Listado de preguntas -->
+            <div class="acc-qlist" id="qlist-visible-bank" style="background: rgba(0, 0, 0, 0.1); border-radius: 0 0 8px 8px; border: 1px solid rgba(255, 255, 255, 0.05); border-top: none; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
+                {% for q in questions %}
+                    {% include "partials/question_item.html" with question=q %}
+                {% empty %}
+                    <p class="acc-empty" style="text-align: center; padding: 40px; color: #64748b;">No hay preguntas estructuradas en el banco visible para este ítem todavía.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+    {% else %}
     <!-- ===== Configuración de Evaluación (ancho completo, arriba) ===== -->
     <section class="evalcfg card">
         <div class="evalcfg__head">
@@ -251,6 +330,7 @@
             {% endfor %}
         </div>
     </main>
+    {% endif %}
 </div>
 {% endblock %}
 

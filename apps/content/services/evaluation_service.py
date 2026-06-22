@@ -72,6 +72,7 @@ def get_questions_for_quiz(resource, level, mode, count=None):
         resource=resource,
         level=level,
         status="publicada",
+        scope="",
     ).filter(
         Q(mode=mode) | Q(mode="ambas"),
     ).prefetch_related("choices")
@@ -229,6 +230,7 @@ def submit_quiz(user, resource, level, mode, answers_dict):
             pk__in=question_ids,
             resource=resource,
             level=level,
+            scope="",
         ).prefetch_related("choices")
     }
     valid_choice_ids = {
@@ -328,6 +330,7 @@ def _topic_exam_question_qs(topic):
             resource__topic=topic,
             resource__is_published=True,
             status="publicada",
+            scope="",
         )
         .filter(Q(mode="evaluacion") | Q(mode="ambas"))
     )
@@ -410,6 +413,7 @@ def submit_topic_exam(user, topic, answers_dict):
         for question in Question.objects.filter(
             pk__in=question_ids,
             resource__topic=topic,
+            scope="",
         ).prefetch_related("choices")
     }
 

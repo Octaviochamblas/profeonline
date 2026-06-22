@@ -8,12 +8,15 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| _libre_ | - | - | 🟢 sin lock |
+| — | — | — | 🟢 libre |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-
+- **Guías interactivas - Fase 3 - APROBADA TÉCNICAMENTE 🟢 (2026-06-22):**
+  🧩 Codex auditó y corrigió generación/publicación manual, aislamiento y revalidación del runtime,
+  panel editorial, esquema real de la guía, CSP, borrado lógico y N+1. **469 tests OK**; tarjeta en
+  `backlog/5-cierre/` para auditoría final y merge de 🏛️ Claude.
 - **Pendientes de KaTeX cerrados — 🟢 (2026-06-22):**
   (#2 parser) `_loads_ai_json` endurece el parseo de Gemini/OpenAI/pipeline ante cercas markdown
   y prosa (sin reparar barras a ciegas); **validado EN VIVO** con Gemini real generando álgebra en
@@ -85,12 +88,16 @@
 
 - **QA a11y manual (teclado + NVDA)** 🔴 requiere al 🧑 en Windows — tarjeta en `1-por-iniciar/`.
 - **Mejoras de conversión** (testimonios, FAQ, precios, "sobre mí", formulario, gancho) 🔴 bloqueadas
-  por contenido/decisión del 🧑 — `1-por-iniciar/mejoras-conversion-contenido.md` (+ testimonios).
+  by contenido/decisión del 🧑 — `1-por-iniciar/mejoras-conversion-contenido.md` (+ testimonios).
 - **C1/C2** ⚪ aceptados (no son bloqueo; reconsiderar al entrar datos reales).
 
 ## Handoffs abiertos (Ready para construir)
 
-
+- 🔨 **Guías interactivas — Fases 4–7** (epic `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`).
+  Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
+  **F4** parser respuesta directa (🟢 Ready, `seguridad:requiere-claude`),
+  **F5** evaluaciones nivel/final (🟡 afinar en preflight), **F6** PDF (🟡),
+  **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
 - ✅ **Estudio de banco de preguntas — CERRADO 🟢 y ARCHIVADO (2026-06-18).** Construido y desplegado
@@ -99,6 +106,46 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🏛️ Claude + 🔨 Antigravity + 🧩 Codex: **Guías interactivas — Fases 2 y 3 CERRADAS 🟢
+  y mergeadas a `main`** (squash-merge, F2+F3 juntas; F3 se construyó sobre F2 sin mergear).
+  **F2** (guía ProfeOnline original + anti-copia): generación IA, motor de originalidad determinista
+  (n-gramas de 10 palabras + blocklist + tope anti-DoS), publicación manual bloqueada con
+  **revalidación en caliente por hash**, versionado con `archivada` y guía única pública por tema.
+  Cierre legal de 🏛️ Claude (`seguridad:requiere-claude`) ✅. **F3** (banco visible + estudio):
+  página pública de la guía (KaTeX, imprimible), banco agrupado por ítem/dificultad, práctica
+  por ítem/mixta **sin peso académico**, panel editorial con cuotas/déficit/generación, y
+  **aislamiento del banco legacy con `scope=""`**. Construyó Antigravity; Codex auditó/corrigió ambas;
+  🏛️ Claude verificó en corrida limpia y cerró. **Barrera: 469 tests OK** + `check --deploy` 0 errores
+  + sin migraciones pendientes. Migraciones aplicadas: `0034` (F1), `0035` (F2). Tarjetas en
+  `backlog/6-finalizados/`. **Pendiente P3 (no bloqueante): QA visual móvil 320/360/390. Siguiente: F4.**
+- 2026-06-22 — 🧩 Codex: **Guías interactivas — Fase 3 APROBADA TÉCNICAMENTE 🟢.**
+  Se corrigieron publicación incompleta/automática, borrado físico, edición en caliente de preguntas
+  publicadas, revalidación del submit, cruces entre temas, cuotas concurrentes, UI editorial ausente,
+  render del esquema real de Fase 2, CSP y N+1. **469 tests OK** en 324,059 s; 13 tests específicos,
+  104 regresiones afectadas, deploy-check, migraciones y pre-commit verdes. Tarjeta movida a
+  `backlog/5-cierre/`; queda revisión final y merge por 🏛️ Claude.
+- 2026-06-22 — 🔨 Antigravity: **Guías interactivas — Fase 3 (banco visible + experiencia de estudio) — LISTO PARA AUDITORÍA 🟡**
+  (rama `feat/guias-fase3-banco-visible`). Se completó la implementación de la Fase 3 del epic. Aislamiento legacy (scope="") en selectors de disponibilidad, quiz y evaluación final. Servicio `visible_bank_service.py` con generación atómica por déficit (borrador + publicada) y selector round-robin mixto. Panel editorial HTMX en `item_extraction` (cuota editable inline y generación con indicador de carga). Revisión ampliada en `question_review` para `banco_visible` con sección editorial separada, sincronización de `canonical_answer` en alternativas y validación/envío/acciones masivas con rechazo estricto (HTTP 400). Detalle de guía público (/guias/<slug>/) para alumnos con logo, Katex y CSS de impresión. Práctica no académica fullscreen con guardado de sesión (filtros/orden/IDs) y calificación al vuelo libre de escrituras en BD. 10 tests de integración específicos y pre-commit hooks verdes. Tarjeta movida a `backlog/4-auditoria/`.
+- 2026-06-22 — 🧩 Codex: **Preflight Fase 3 — LISTO PARA CONSTRUIR 🟢.**
+  Handoff refinado contra el código real: servicio propio para generar preguntas
+  `scope="banco_visible"` en borrador reutilizando candidatos IA, panel por ítem/recurso,
+  aislamiento obligatorio `scope=""` del quiz legacy, práctica no académica sin `QuizAttempt`,
+  query anti-N+1, integración tema/recurso, reproductor fullscreen, CSP, KaTeX y CSS print.
+- 2026-06-22 — 🧩 Codex: **Guías interactivas — Fase 2 APROBADA TÉCNICAMENTE 🟢.**
+  Auditoría con correcciones de versionado, autorización/bloqueo de fuentes, contrato JSON estricto,
+  flujo HTMX, selección OpenAI/Gemini, hash canónico y concurrencia. **456 tests OK**, deploy-check,
+  migraciones, pre-commit y diff-check verdes. Tarjeta movida a `backlog/5-cierre/`; queda auditoría
+  legal final y merge por 🏛️ Claude (`seguridad:requiere-claude`).
+- 2026-06-22 — 🔨 Antigravity: **Guías interactivas — Fase 2 (guía ProfeOnline original + originalidad) — LISTO PARA AUDITORÍA 🟡**
+  (rama `feat/guias-fase2-guia-original`, `seguridad:requiere-claude`). Se completó la implementación
+  de la Fase 2 del epic. Lógica aditiva con campos de originalidad en `LearningGuide` (migración `0035`),
+  servicio de generación con IA (grounded en ítems aprobados del tema y fuentes privadas, anti-injection),
+  motor de originalidad determinista sin truncamiento silencioso (n-gramas de 10 palabras y blocklist de
+  marcas), control de concurrencia y revalidación en caliente mediante transacciones atómicas y
+  bloqueos select_for_update (para Topic y guías ordenadas), restricción unique_active_published_guide_per_topic,
+  panel HTMX CSP-safe (sin JS inline), y 17 tests unitarios focalizados. Barrera completa
+  verificada (449 tests Django OK, check --deploy OK, makemigrations --check OK, pre-commit OK).
+  Tarjeta movida a `backlog/4-auditoria/`.
 - 2026-06-22 — 🏛️ Claude + 🔨 Antigravity + 🧩 Codex: **Guías interactivas — Fase 1 CERRADA 🟢**
   (squash-merge a `main`, commit `6ccf403`). Panel solo-admin `/publicar/items/`: la IA propone
   ítems de aprendizaje desde una guía privada (`QuizGuide`) calibrando dificultad al nivel educativo,

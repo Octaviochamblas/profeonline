@@ -1,0 +1,36 @@
+<section class="mb-4" id="guide-content-box">
+    <div class="p-4 rounded bg-glass border" style="border-color: rgba(255,255,255,0.08) !important;">
+        <h3 class="h4 text-teal mb-3">✏️ Editar Borrador de Guía</h3>
+
+        {% if error %}
+            <div class="alert alert--danger mb-3 py-2 px-3" style="font-size: 0.85rem;">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; display: block; margin-bottom: 6px;">Contenido Estructurado (JSON Versionado v1)</label>
+            <textarea name="structured_content_json" class="form-control" rows="20"
+                      style="font-family: monospace; font-size: 0.85rem; background: #1e293b; color: #38bdf8; line-height: 1.5; resize: vertical;"
+                      required>{{ draft_json }}</textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+            {% csrf_token %}
+            <!-- Botón Guardar -->
+            <button class="btn btn-primary btn-sm py-2 px-4"
+                    hx-post="{% url 'content:edit_guide_draft_view' guide.id %}"
+                    hx-include="closest section"
+                    hx-target="#guide-details-container"
+                    hx-swap="innerHTML">
+                💾 Guardar Cambios
+            </button>
+
+            <!-- Botón Cancelar -->
+            <button class="btn btn-secondary btn-sm py-2 px-4"
+                    hx-get="{% url 'content:edit_guide_draft_view' guide.id %}?cancel=true"
+                    hx-target="#guide-content-box"
+                    hx-swap="outerHTML">
+                ❌ Cancelar
+            </button>
+        </div>
+    </div>
+</section>

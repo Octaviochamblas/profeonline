@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.urls import reverse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.http import require_POST, require_http_methods
@@ -9,6 +10,8 @@ from django.db.models import Count, Prefetch, Q
 from apps.content.views.permissions import is_admin
 from apps.content.models import Resource, Question, Choice, ResourceQuizConfig
 from apps.content.models.topic import Topic
+from apps.content.models.exercise_item import ExerciseItem, ResourceExerciseItem
+from apps.content.models.learning_guide import LearningGuide
 from apps.content.services.evaluation_service import get_quiz_config
 
 # Modos que se muestran como secciones plegables dentro de cada nivel.
@@ -21,6 +24,29 @@ MODE_GROUPS = [
 
 ITEM_LOW_ACCURACY = 30
 ITEM_HIGH_ACCURACY = 95
+
+
+def _visible_question_publication_error(question):
+    """Return a validation message when a visible-bank question is not publishable."""
+    if not question.text.strip() or not question.explanation.strip():
+        return "Completa el enunciado y la explicación antes de publicar."
+    if question.difficulty not in dict(Question.DIFFICULTY_CHOICES):
+        return "Selecciona una dificultad válida antes de publicar."
+    if not question.hint.strip():
+        return "Completa la pista antes de publicar."
+    choices = list(question.choices.all())
+    if len(choices) != 4:
+        return "Cada pregunta debe tener exactamente cuatro alternativas."
+    correct = [choice for choice in choices if choice.is_correct]
+    if len(correct) != 1:
+        return "Cada pregunta debe tener exactamente una alternativa correcta."
+    if len({choice.text.strip() for choice in choices}) != 4 or any(
+        not choice.text.strip() for choice in choices
+    ):
+        return "Las alternativas deben ser únicas y no estar vacías."
+    if question.canonical_answer != correct[0].text:
+        return "La respuesta canónica no coincide con la alternativa correcta."
+    return None
 
 
 def _questions_with_analysis(resource=None, question_ids=None):
@@ -112,6 +138,48 @@ def _build_levels_data(resource):
 def question_review(request, slug):
     """Vista principal: acordeón Nivel → Modo → preguntas → alternativas."""
     resource = get_object_or_404(Resource, slug=slug)
+
+    scope = request.GET.get("scope", "")
+    if scope == "banco_visible":
+        exercise_item_id = request.GET.get("exercise_item_id")
+        if not exercise_item_id:
+            return HttpResponse("Falta el ítem de aprendizaje", status=400)
+
+        topic = resource.topic
+        if not topic.structured_bank_enabled or not topic.is_active:
+            return HttpResponse("Tema no habilitado", status=400)
+
+        exercise_item = get_object_or_404(ExerciseItem, id=exercise_item_id)
+        if exercise_item.topic != topic or exercise_item.status != "aprobado":
+            return HttpResponse("Ítem inválido o no aprobado", status=400)
+
+        try:
+            ResourceExerciseItem.objects.get(exercise_item=exercise_item, resource=resource)
+        except ResourceExerciseItem.DoesNotExist:
+            return HttpResponse("Vínculo no existe para este recurso e ítem", status=400)
+
+        guide = get_object_or_404(LearningGuide, topic=topic, status="publicada", visibility="publica")
+
+        # Cargar las preguntas del banco visible
+        questions = Question.objects.filter(
+            resource=resource,
+            exercise_item=exercise_item,
+            scope="banco_visible",
+            learning_guide=guide
+        ).prefetch_related("choices").order_by("difficulty", "order", "id")
+
+        context = {
+            "resource": resource,
+            "exercise_item": exercise_item,
+            "learning_guide": guide,
+            "scope": scope,
+            "questions": questions,
+            "LEVEL_CHOICES": Question.LEVEL_CHOICES,
+            "DIFFICULTY_CHOICES": Question.DIFFICULTY_CHOICES,
+            "STATUS_CHOICES": Question.STATUS_CHOICES,
+        }
+        return render(request, "pages/question_review.html", context)
+
     config = get_quiz_config(resource)
     config_db = getattr(resource, "quiz_config", None)
 
@@ -212,8 +280,18 @@ def edit_question_inline(request, question_id):
             question.order = int(request.POST.get("order", 0))
         except ValueError:
             pass
-        question.mode = request.POST.get("mode", "ambas")
-        question.status = request.POST.get("status", "borrador")
+        if question.scope == "banco_visible":
+            difficulty = request.POST.get("difficulty", "").strip()
+            if difficulty not in dict(Question.DIFFICULTY_CHOICES):
+                return HttpResponse("Dificultad inválida.", status=400)
+            question.level = question.exercise_item.level
+            question.mode = "preparacion"
+            question.status = "borrador"
+            question.difficulty = difficulty
+            question.hint = request.POST.get("hint", "").strip()
+        else:
+            question.mode = request.POST.get("mode", "ambas")
+            question.status = request.POST.get("status", "borrador")
         question.save()
 
         if request.headers.get("HX-Request"):
@@ -245,6 +323,11 @@ def edit_choice_inline(request, choice_id):
                 question.choices.all().update(is_correct=False)
             choice.is_correct = is_correct
             choice.save()
+            if question.scope == "banco_visible":
+                correct_choice = question.choices.filter(is_correct=True).first()
+                question.canonical_answer = correct_choice.text if correct_choice else ""
+                question.status = "borrador"
+                question.save(update_fields=["canonical_answer", "status", "updated_at"])
 
         correct_count = question.choices.filter(is_correct=True).count()
         warning = None
@@ -302,10 +385,17 @@ def add_question_inline(request, resource_id):
 def add_choice_inline(request, question_id):
     """Crea una alternativa y devuelve su formulario de edición (para completarla)."""
     question = get_object_or_404(Question, id=question_id)
+    if question.scope == "banco_visible":
+        question.status = "archivada"
+        question.save(update_fields=["status", "updated_at"])
+        return HttpResponse("")
     last_order = question.choices.count()
     choice = Choice.objects.create(
         question=question, text="Nueva alternativa", is_correct=False, order=last_order + 1
     )
+    if question.scope == "banco_visible" and question.status != "borrador":
+        question.status = "borrador"
+        question.save(update_fields=["status", "updated_at"])
     if request.headers.get("HX-Request"):
         return render(request, "partials/choice_edit_form.html", {"choice": choice})
     return redirect("content:question_review", slug=question.resource.slug)
@@ -316,6 +406,10 @@ def add_choice_inline(request, question_id):
 def delete_question(request, question_id):
     """Elimina la pregunta. Retorna vacío para que HTMX remueva el ítem."""
     question = get_object_or_404(Question, id=question_id)
+    if question.scope == "banco_visible":
+        question.status = "archivada"
+        question.save(update_fields=["status", "updated_at"])
+        return HttpResponse("")
     if question.attempt_answers.exists() or question.error_reports.exists():
         question.status = "archivada"
         question.save(update_fields=["status", "updated_at"])
@@ -337,7 +431,15 @@ def delete_choice(request, choice_id):
             "La alternativa tiene respuestas históricas y no puede eliminarse.",
             status=409,
         )
+    question = choice.question
     choice.delete()
+    if question.scope == "banco_visible":
+        correct_choice = question.choices.filter(is_correct=True).first()
+        question.canonical_answer = correct_choice.text if correct_choice else ""
+        question.status = "borrador"
+        question.save(
+            update_fields=["canonical_answer", "status", "updated_at"]
+        )
     return HttpResponse("")
 
 
@@ -350,6 +452,86 @@ def bulk_action_questions(request, resource_id):
     question_ids = request.POST.getlist("selected_questions")
     level = request.POST.get("level")
     mode_key = request.POST.get("mode")
+    scope = request.POST.get("scope", "")
+
+    if scope == "banco_visible":
+        exercise_item_id = request.POST.get("exercise_item_id")
+        learning_guide_id = request.POST.get("learning_guide_id")
+        if not exercise_item_id or not learning_guide_id:
+            return HttpResponse("Faltan parámetros de banco visible", status=400)
+
+        # Validar permisos y existencia
+        topic = resource.topic
+        if not topic.structured_bank_enabled or not topic.is_active:
+            return HttpResponse("Tema no habilitado", status=400)
+
+        exercise_item = get_object_or_404(ExerciseItem, id=exercise_item_id)
+        if exercise_item.topic != topic or exercise_item.status != "aprobado":
+            return HttpResponse("Ítem inválido o no aprobado", status=400)
+
+        try:
+            ResourceExerciseItem.objects.get(exercise_item=exercise_item, resource=resource)
+        except ResourceExerciseItem.DoesNotExist:
+            return HttpResponse("Vínculo no existe para este recurso e ítem", status=400)
+
+        guide = get_object_or_404(LearningGuide, id=learning_guide_id, topic=topic, status="publicada", visibility="publica")
+
+        # Validar que todos los IDs pertenecen a este recurso, guía, ítem y scope esperado antes de mutar
+        if question_ids:
+            actual_count = Question.objects.filter(
+                id__in=question_ids,
+                resource=resource,
+                exercise_item=exercise_item,
+                learning_guide=guide,
+                scope="banco_visible"
+            ).count()
+            if actual_count != len(question_ids):
+                return HttpResponse("Uno o más IDs de pregunta no pertenecen al recurso, guía, ítem o scope esperados.", status=400)
+
+            qs_target = Question.objects.filter(
+                id__in=question_ids,
+                resource=resource,
+                exercise_item=exercise_item,
+                learning_guide=guide,
+                scope="banco_visible",
+            ).prefetch_related("choices")
+            if action == "publicar":
+                for question in qs_target:
+                    error = _visible_question_publication_error(question)
+                    if error:
+                        return HttpResponse(
+                            f"Pregunta {question.id}: {error}",
+                            status=400,
+                        )
+                Question.objects.filter(
+                    id__in=[question.id for question in qs_target]
+                ).update(status="publicada")
+            elif action == "borrador":
+                qs_target.update(status="borrador")
+            elif action == "archivar":
+                qs_target.update(status="archivada")
+            elif action == "eliminar":
+                qs_target.update(status="archivada")
+            else:
+                return HttpResponse("Acción inválida.", status=400)
+
+        # Retornar la lista actualizada de preguntas para este ítem
+        if request.headers.get("HX-Request"):
+            questions = Question.objects.filter(
+                resource=resource,
+                exercise_item=exercise_item,
+                scope="banco_visible",
+                learning_guide=guide
+            ).prefetch_related("choices").order_by("difficulty", "order", "id")
+            parts = [
+                render_to_string("partials/question_item.html", {"question": q}, request=request)
+                for q in questions
+            ]
+            if not parts:
+                parts = ['<p class="acc-empty">Sin preguntas en esta sección todavía.</p>']
+            return HttpResponse("".join(parts))
+
+        return redirect(f"{reverse('content:question_review', args=[resource.slug])}?scope=banco_visible&exercise_item_id={exercise_item.id}")
 
     if question_ids:
         qs_target = Question.objects.filter(resource=resource, id__in=question_ids)

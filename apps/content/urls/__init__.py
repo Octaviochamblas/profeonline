@@ -5,6 +5,7 @@ from .topic_urls import urlpatterns as topic_urlpatterns
 from .level_urls import urlpatterns as level_urlpatterns
 from .module_urls import urlpatterns as module_urlpatterns
 from .publish_urls import urlpatterns as publish_urlpatterns
+from .learning_guide_urls import urlpatterns as learning_guide_urlpatterns
 
 app_name = "content"
 
@@ -16,4 +17,5 @@ urlpatterns = [
     *level_urlpatterns,
     *module_urlpatterns,
     *publish_urlpatterns,
+    *learning_guide_urlpatterns,
 ]

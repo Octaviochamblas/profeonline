@@ -1,0 +1,123 @@
+<section class="mb-4" id="guide-content-box">
+    <div class="p-4 rounded bg-glass border" style="border-color: rgba(255,255,255,0.08) !important;">
+        <h3 class="h4 text-teal mb-3">📖 {{ guide.title }}</h3>
+
+        <div class="mb-4">
+            <h4 class="h6 text-teal">Introducción</h4>
+            <p class="small text-light" style="line-height: 1.6;">{{ guide.structured_content.introduction }}</p>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="h6 text-teal">Resumen</h4>
+            <p class="small text-light" style="line-height: 1.6;">{{ guide.structured_content.summary }}</p>
+        </div>
+
+        <!-- Fórmulas -->
+        {% if guide.structured_content.formulas %}
+            <div class="mb-4">
+                <h4 class="h6 text-teal">Fórmulas Clave</h4>
+                <div class="d-flex flex-column gap-3">
+                    {% for f in guide.structured_content.formulas %}
+                        <div class="p-3 rounded" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                            <div class="text-center py-2" style="font-size: 1.2rem; overflow-x: auto;">
+                                {{ f.latex }}
+                            </div>
+                            <p class="small text-secondary m-0 mt-2">{{ f.explanation }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Ítems y Ejercicios -->
+        <div class="mb-4">
+            <h4 class="h6 text-teal mb-3">📚 Desarrollo Curricular</h4>
+
+            {% for itm in guide.structured_content.items %}
+                <div class="mb-4 p-3 rounded" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(15,118,110,0.15);">
+                    <h5 class="h6 text-teal mb-2">Item ID: {{ itm.item_id }} · {{ itm.title }}</h5>
+
+                    <!-- Ejemplos -->
+                    {% if itm.examples %}
+                        <div class="mb-3">
+                            <h6 class="small text-light mb-2">💡 Ejemplos Resueltos:</h6>
+                            {% for ex in itm.examples %}
+                                <div class="p-2 mb-2 rounded bg-dark border border-secondary" style="font-size: 0.85rem;">
+                                    <div class="mb-2"><strong>Ejemplo:</strong> {{ ex.statement }}</div>
+                                    <div class="mb-2 text-secondary">
+                                        <strong>Pasos:</strong>
+                                        <div class="ps-2 mt-1">
+                                            {% for step in ex.steps %}
+                                                <div>{{ step }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="text-teal"><strong>Respuesta:</strong> {{ ex.answer }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Ejercicios Propuestos -->
+                    {% if itm.exercises %}
+                        <div>
+                            <h6 class="small text-light mb-2">✍️ Ejercicios Propuestos:</h6>
+                            {% for exe in itm.exercises %}
+                                <div class="p-2 mb-2 rounded bg-dark border border-secondary" style="font-size: 0.85rem;">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <strong>Ejercicio [{{ exe.id }}]</strong>
+                                        <span class="badge bg-secondary">{{ exe.difficulty }}</span>
+                                    </div>
+                                    <div class="mb-1">{{ exe.statement }}</div>
+                                    {% if exe.hint %}
+                                        <div class="text-secondary small"><em>Pista: {{ exe.hint }}</em></div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Desafíos -->
+        {% if guide.structured_content.challenges %}
+            <div class="mb-4">
+                <h4 class="h6 text-teal">🔥 Desafíos</h4>
+                {% for ch in guide.structured_content.challenges %}
+                    <div class="p-3 rounded mb-2 border border-danger" style="background: rgba(220,38,38,0.03); font-size: 0.85rem;">
+                        <div class="mb-1"><strong>Desafío [{{ ch.id }}]:</strong> {{ ch.statement }}</div>
+                        {% if ch.hint %}
+                            <div class="text-secondary"><em>Pista: {{ ch.hint }}</em></div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Solucionario -->
+        {% if guide.structured_content.answer_key %}
+            <div class="mb-0">
+                <h4 class="h6 text-teal mb-2">🔑 Solucionario</h4>
+                <div class="table-responsive">
+                    <table class="table table-sm text-light small">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th>ID Ejercicio</th>
+                                <th>Solución</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ak in guide.structured_content.answer_key %}
+                                <tr>
+                                    <td style="width: 150px; font-weight: bold; color: var(--teal-color);">{{ ak.exercise_id }}</td>
+                                    <td>{{ ak.solution }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>

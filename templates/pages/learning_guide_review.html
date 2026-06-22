@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guías ProfeOnline | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="question-review-container">
+    <header class="studio-header">
+        <div class="studio-header__nav">
+            <a href="{% url 'content:question_studio' %}" class="btn-back">&larr; Volver al estudio</a>
+        </div>
+        <div class="studio-header__main">
+            <div class="studio-header__info">
+                <span class="studio-badge">Estudio Solo-Admin</span>
+                <h1 class="studio-title">Guías ProfeOnline Originales</h1>
+                <p class="studio-subtitle">Genera borradores con IA, valida la originalidad técnica y publica las guías estructuradas del banco por ítems.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="studio-layout">
+        <!-- Barra lateral de selección de Tema -->
+        <aside class="studio-sidebar bg-glass p-4 rounded shadow-sm" style="max-height: fit-content;">
+            <h2 class="h5 mb-3 text-teal">Temas Habilitados</h2>
+            <div class="mb-3">
+                <label class="form-label">Selecciona el tema de trabajo</label>
+                <select id="topic-selector" name="topic_id" class="form-control"
+                        hx-get="{% url 'content:learning_guide_review' %}?action=load_topic_details"
+                        hx-target="#guide-details-container"
+                        hx-trigger="change"
+                        hx-indicator="#loading-spinner">
+                    <option value="">-- Elige un tema habilitado --</option>
+                    {% for t in topics %}
+                        <option value="{{ t.id }}">{{ t.subject.name }} - {{ t.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="text-center">
+                <div id="loading-spinner" class="htmx-indicator spinner-border spinner-border-sm text-teal" role="status" style="width: 1.5rem; height: 1.5rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Panel de detalles de la Guía -->
+        <main class="studio-content bg-glass p-4 rounded shadow-sm" id="guide-details-container">
+            <p class="text-secondary text-center py-5">Selecciona un tema habilitado de la lista para comenzar.</p>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/question_studio.css' %}?v=8">
+{% endblock %}
+
+{% block extra_js %}
+<script nonce="{{ csp_nonce }}" src="{% static 'js/learning_guide_review.js' %}?v=1" defer></script>
+{% endblock %}

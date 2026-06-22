@@ -99,11 +99,19 @@ class ResourceDetailView(DetailView):
                         resource=resource,
                         level=lvl,
                         status="borrador",
+                        scope="",
                     ).count()
                 context["draft_questions"] = draft_questions
         else:
             context["completed"] = False
             context["quiz_available"] = False
+
+        # Guía ProfeOnline pública (Fase 3)
+        if topic and topic.structured_bank_enabled:
+            from apps.content.models.learning_guide import LearningGuide
+            context["learning_guide"] = LearningGuide.objects.filter(
+                topic=topic, status="publicada", visibility="publica", resources=resource
+            ).first()
 
         context["structured_data_json_list"] = [
             breadcrumb_schema(breadcrumbs),

@@ -39,6 +39,15 @@ from apps.content.views.item_review import (
     merge_items,
     link_item_resource,
     unlink_item_resource,
+    edit_practice_quota,
+    generate_visible_bank_drafts_view,
+)
+from apps.content.views.learning_guide_review import (
+    learning_guide_review,
+    generate_guide_draft_view,
+    edit_guide_draft_view,
+    validate_originality_view,
+    publish_learning_guide_view,
 )
 
 urlpatterns = [
@@ -83,4 +92,13 @@ urlpatterns = [
     path("publicar/items/fusionar/", merge_items, name="merge_items"),
     path("publicar/items/vincular/<int:item_id>/", link_item_resource, name="link_item_resource"),
     path("publicar/items/desvincular/<int:item_id>/", unlink_item_resource, name="unlink_item_resource"),
+    path("publicar/items/cuota/<int:link_id>/", edit_practice_quota, name="edit_practice_quota"),
+    path("publicar/items/generar-banco-visible/", generate_visible_bank_drafts_view, name="generate_visible_bank_drafts"),
+
+    # Banco de Preguntas - Guías ProfeOnline Originales + Originalidad (Fase 2)
+    path("publicar/guias-profeonline/", learning_guide_review, name="learning_guide_review"),
+    path("publicar/guias-profeonline/generar/", generate_guide_draft_view, name="generate_guide_draft_view"),
+    path("publicar/guias-profeonline/editar/<int:guide_id>/", edit_guide_draft_view, name="edit_guide_draft_view"),
+    path("publicar/guias-profeonline/validar/<int:guide_id>/", validate_originality_view, name="validate_originality_view"),
+    path("publicar/guias-profeonline/publicar/<int:guide_id>/", publish_learning_guide_view, name="publish_learning_guide_view"),
 ]
