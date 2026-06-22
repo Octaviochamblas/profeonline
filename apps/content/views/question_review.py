@@ -31,8 +31,11 @@ ITEM_LOW_ACCURACY = 30
 ITEM_HIGH_ACCURACY = 95
 
 
+STRUCTURED_SCOPES = {"banco_visible", "evaluacion_nivel", "prueba_final"}
+
+
 def _visible_bank_mutation_error(question):
-    if question.scope != "banco_visible":
+    if question.scope not in STRUCTURED_SCOPES:
         return None
     topic = question.resource.topic
     if not topic or not topic.is_active or not topic.structured_bank_enabled:
@@ -48,6 +51,8 @@ def _visible_question_publication_error(question):
         return "Selecciona una dificultad válida antes de publicar."
     if not question.hint.strip():
         return "Completa la pista antes de publicar."
+    if question.scope in {"evaluacion_nivel", "prueba_final"} and question.estimated_minutes <= 0:
+        return "Define una duración estimada mayor que cero antes de publicar."
     if question.question_type == "alternativa":
         choices = list(question.choices.all())
         if len(choices) != 4:
@@ -170,7 +175,7 @@ def question_review(request, slug):
     resource = get_object_or_404(Resource, slug=slug)
 
     scope = request.GET.get("scope", "")
-    if scope == "banco_visible":
+    if scope in STRUCTURED_SCOPES:
         exercise_item_id = request.GET.get("exercise_item_id")
         if not exercise_item_id:
             return HttpResponse("Falta el ítem de aprendizaje", status=400)
@@ -190,11 +195,11 @@ def question_review(request, slug):
 
         guide = get_object_or_404(LearningGuide, topic=topic, status="publicada", visibility="publica")
 
-        # Cargar las preguntas del banco visible
+        # Cargar exclusivamente el pool editorial solicitado.
         questions = Question.objects.filter(
             resource=resource,
             exercise_item=exercise_item,
-            scope="banco_visible",
+            scope=scope,
             learning_guide=guide
         ).prefetch_related("choices").order_by("difficulty", "order", "id")
 
@@ -203,6 +208,7 @@ def question_review(request, slug):
             "exercise_item": exercise_item,
             "learning_guide": guide,
             "scope": scope,
+            "scope_label": dict(Question.SCOPE_CHOICES)[scope],
             "questions": questions,
             "LEVEL_CHOICES": Question.LEVEL_CHOICES,
             "DIFFICULTY_CHOICES": Question.DIFFICULTY_CHOICES,
@@ -313,7 +319,7 @@ def edit_question_inline(request, question_id):
             question.order = int(request.POST.get("order", 0))
         except ValueError:
             pass
-        if question.scope == "banco_visible":
+        if question.scope in STRUCTURED_SCOPES:
             difficulty = request.POST.get("difficulty", "").strip()
             if difficulty not in dict(Question.DIFFICULTY_CHOICES):
                 return HttpResponse("Dificultad inválida.", status=400)
@@ -325,6 +331,18 @@ def edit_question_inline(request, question_id):
             question.status = "borrador"
             question.difficulty = difficulty
             question.hint = request.POST.get("hint", "").strip()
+            if question.scope in {"evaluacion_nivel", "prueba_final"}:
+                try:
+                    question.estimated_minutes = int(
+                        request.POST.get("estimated_minutes", 0)
+                    )
+                    question.points = int(request.POST.get("points", 1))
+                except (TypeError, ValueError):
+                    return HttpResponse("Puntaje o duración no válidos.", status=400)
+                if question.estimated_minutes <= 0 or question.points <= 0:
+                    return HttpResponse(
+                        "Puntaje y duración deben ser mayores que cero.", status=400
+                    )
             question.question_type = question_type
             if question_type == "alternativa":
                 correct_choice = question.choices.filter(is_correct=True).first()
@@ -377,7 +395,7 @@ def edit_choice_inline(request, choice_id):
     scope_error = _visible_bank_mutation_error(question)
     if scope_error:
         return scope_error
-    if question.scope == "banco_visible" and question.question_type != "alternativa":
+    if question.scope in STRUCTURED_SCOPES and question.question_type != "alternativa":
         return HttpResponse(
             "Las preguntas de respuesta directa no usan alternativas.",
             status=400,
@@ -392,7 +410,7 @@ def edit_choice_inline(request, choice_id):
                 question.choices.all().update(is_correct=False)
             choice.is_correct = is_correct
             choice.save()
-            if question.scope == "banco_visible":
+            if question.scope in STRUCTURED_SCOPES:
                 correct_choice = question.choices.filter(is_correct=True).first()
                 question.canonical_answer = correct_choice.text if correct_choice else ""
                 question.status = "borrador"
@@ -457,7 +475,7 @@ def add_choice_inline(request, question_id):
     scope_error = _visible_bank_mutation_error(question)
     if scope_error:
         return scope_error
-    if question.scope == "banco_visible" and question.question_type != "alternativa":
+    if question.scope in STRUCTURED_SCOPES and question.question_type != "alternativa":
         return HttpResponse(
             "Las preguntas de respuesta directa no usan alternativas.",
             status=400,
@@ -466,7 +484,7 @@ def add_choice_inline(request, question_id):
     choice = Choice.objects.create(
         question=question, text="Nueva alternativa", is_correct=False, order=last_order + 1
     )
-    if question.scope == "banco_visible" and question.status != "borrador":
+    if question.scope in STRUCTURED_SCOPES and question.status != "borrador":
         question.status = "borrador"
         question.save(update_fields=["status", "updated_at"])
     if request.headers.get("HX-Request"):
@@ -482,7 +500,7 @@ def delete_question(request, question_id):
     scope_error = _visible_bank_mutation_error(question)
     if scope_error:
         return scope_error
-    if question.scope == "banco_visible":
+    if question.scope in STRUCTURED_SCOPES:
         question.status = "archivada"
         question.save(update_fields=["status", "updated_at"])
         return HttpResponse("")
@@ -506,7 +524,7 @@ def delete_choice(request, choice_id):
     if scope_error:
         return scope_error
     if (
-        choice.question.scope == "banco_visible"
+        choice.question.scope in STRUCTURED_SCOPES
         and choice.question.question_type != "alternativa"
     ):
         return HttpResponse(
@@ -520,7 +538,7 @@ def delete_choice(request, choice_id):
         )
     question = choice.question
     choice.delete()
-    if question.scope == "banco_visible":
+    if question.scope in STRUCTURED_SCOPES:
         correct_choice = question.choices.filter(is_correct=True).first()
         question.canonical_answer = correct_choice.text if correct_choice else ""
         question.status = "borrador"
@@ -541,7 +559,7 @@ def bulk_action_questions(request, resource_id):
     mode_key = request.POST.get("mode")
     scope = request.POST.get("scope", "")
 
-    if scope == "banco_visible":
+    if scope in STRUCTURED_SCOPES:
         exercise_item_id = request.POST.get("exercise_item_id")
         learning_guide_id = request.POST.get("learning_guide_id")
         if not exercise_item_id or not learning_guide_id:
@@ -570,7 +588,7 @@ def bulk_action_questions(request, resource_id):
                 resource=resource,
                 exercise_item=exercise_item,
                 learning_guide=guide,
-                scope="banco_visible"
+                scope=scope
             ).count()
             if actual_count != len(question_ids):
                 return HttpResponse("Uno o más IDs de pregunta no pertenecen al recurso, guía, ítem o scope esperados.", status=400)
@@ -580,7 +598,7 @@ def bulk_action_questions(request, resource_id):
                 resource=resource,
                 exercise_item=exercise_item,
                 learning_guide=guide,
-                scope="banco_visible",
+                scope=scope,
             ).prefetch_related("choices")
             if action == "publicar":
                 for question in qs_target:
@@ -607,7 +625,7 @@ def bulk_action_questions(request, resource_id):
             questions = Question.objects.filter(
                 resource=resource,
                 exercise_item=exercise_item,
-                scope="banco_visible",
+                scope=scope,
                 learning_guide=guide
             ).prefetch_related("choices").order_by("difficulty", "order", "id")
             parts = [
@@ -618,7 +636,10 @@ def bulk_action_questions(request, resource_id):
                 parts = ['<p class="acc-empty">Sin preguntas en esta sección todavía.</p>']
             return HttpResponse("".join(parts))
 
-        return redirect(f"{reverse('content:question_review', args=[resource.slug])}?scope=banco_visible&exercise_item_id={exercise_item.id}")
+        return redirect(
+            f"{reverse('content:question_review', args=[resource.slug])}"
+            f"?scope={scope}&exercise_item_id={exercise_item.id}"
+        )
 
     if question_ids:
         qs_target = Question.objects.filter(resource=resource, id__in=question_ids)

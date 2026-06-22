@@ -10,6 +10,7 @@ from apps.content.models import ExerciseItem, Question, Resource, ResourceExerci
 from apps.content.models.learning_guide import LearningGuide
 from apps.content.services.answer_grading_service import grade_answer
 from apps.content.services.visible_bank_service import select_visible_practice_questions
+from apps.content.services.structured_progress_service import get_structured_topic_domain
 
 VISIBLE_BANK_INITIAL_LIMIT = 200
 
@@ -71,6 +72,17 @@ def learning_guide_detail(request, slug):
         "sorted_items": sorted_items,
         "total_questions": len(questions),
         "bank_truncated": bank_truncated,
+        "evaluation_resources": list(
+            Resource.objects.filter(
+                topic=topic,
+                is_published=True,
+                exercise_item_links__exercise_item__status="aprobado",
+                exercise_item_links__evaluation_quota__gt=0,
+            )
+            .distinct()
+            .order_by("title")
+        ),
+        "structured_domain": get_structured_topic_domain(request.user, topic),
     }
     return render(request, "pages/learning_guide_detail.html", context)
 

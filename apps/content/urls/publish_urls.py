@@ -40,7 +40,9 @@ from apps.content.views.item_review import (
     link_item_resource,
     unlink_item_resource,
     edit_practice_quota,
+    edit_evaluation_quota,
     generate_visible_bank_drafts_view,
+    generate_evaluation_bank_drafts_view,
 )
 from apps.content.views.learning_guide_review import (
     learning_guide_review,
@@ -93,7 +95,9 @@ urlpatterns = [
     path("publicar/items/vincular/<int:item_id>/", link_item_resource, name="link_item_resource"),
     path("publicar/items/desvincular/<int:item_id>/", unlink_item_resource, name="unlink_item_resource"),
     path("publicar/items/cuota/<int:link_id>/", edit_practice_quota, name="edit_practice_quota"),
+    path("publicar/items/cuota-evaluacion/<int:link_id>/", edit_evaluation_quota, name="edit_evaluation_quota"),
     path("publicar/items/generar-banco-visible/", generate_visible_bank_drafts_view, name="generate_visible_bank_drafts"),
+    path("publicar/items/generar-pool-evaluacion/", generate_evaluation_bank_drafts_view, name="generate_evaluation_bank_drafts"),
 
     # Banco de Preguntas - Guías ProfeOnline Originales + Originalidad (Fase 2)
     path("publicar/guias-profeonline/", learning_guide_review, name="learning_guide_review"),
