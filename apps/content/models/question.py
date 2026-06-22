@@ -19,6 +19,23 @@ class Question(models.Model):
         ("publicada", "Publicada"),
         ("archivada", "Archivada"),
     ]
+    # --- Banco estandarizado por ítems (epic "Guías interactivas", aditivo) ---
+    QUESTION_TYPE_CHOICES = [
+        ("alternativa", "Alternativa"),
+        ("numerica", "Numérica"),
+        ("algebraica", "Algebraica"),
+    ]
+    DIFFICULTY_CHOICES = [
+        ("basica", "Básica"),
+        ("intermedia", "Intermedia"),
+        ("avanzada", "Avanzada"),
+        ("desafio", "Desafío"),
+    ]
+    SCOPE_CHOICES = [
+        ("banco_visible", "Banco visible"),
+        ("evaluacion_nivel", "Evaluación de nivel"),
+        ("prueba_final", "Prueba final"),
+    ]
 
     resource = models.ForeignKey(
         "content.Resource",
@@ -60,6 +77,52 @@ class Question(models.Model):
     )
     generation_key = models.CharField(max_length=64, blank=True)
     audit_data = models.JSONField(default=dict, blank=True)
+
+    # --- Banco estandarizado por ítems (todo aditivo: nullable o con default) ---
+    exercise_item = models.ForeignKey(
+        "content.ExerciseItem",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="questions",
+        verbose_name="ítem",
+    )
+    question_type = models.CharField(
+        max_length=12,
+        choices=QUESTION_TYPE_CHOICES,
+        default="alternativa",
+        verbose_name="tipo",
+    )
+    difficulty = models.CharField(
+        max_length=12,
+        choices=DIFFICULTY_CHOICES,
+        blank=True,
+        default="",
+        verbose_name="dificultad",
+    )
+    canonical_answer = models.TextField(blank=True, verbose_name="respuesta canónica")
+    answer_tolerance = models.FloatField(null=True, blank=True, verbose_name="tolerancia")
+    hint = models.TextField(blank=True, verbose_name="pista")
+    points = models.PositiveSmallIntegerField(default=1, verbose_name="puntaje")
+    estimated_minutes = models.PositiveSmallIntegerField(
+        default=0, verbose_name="minutos estimados"
+    )
+    scope = models.CharField(
+        max_length=20,
+        choices=SCOPE_CHOICES,
+        blank=True,
+        default="",
+        verbose_name="ámbito",
+        help_text="Vacío = sin clasificar; no entra al sistema nuevo.",
+    )
+    learning_guide = models.ForeignKey(
+        "content.LearningGuide",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="bank_questions",
+        verbose_name="guía de origen",
+    )
 
     class Meta:
         ordering = ["resource", "level", "order"]

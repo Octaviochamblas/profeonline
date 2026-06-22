@@ -133,6 +133,11 @@ class QuizAttemptAnswer(models.Model):
         related_name="attempt_answers",
     )
     is_correct = models.BooleanField(verbose_name="es correcta")
+    text_answer = models.TextField(
+        blank=True,
+        verbose_name="texto ingresado",
+        help_text="Respuesta escrita en preguntas numéricas/algebraicas.",
+    )
 
     class Meta:
         verbose_name = "respuesta de intento"

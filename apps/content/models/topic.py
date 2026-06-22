@@ -38,6 +38,11 @@ class Topic(models.Model):
         verbose_name="nivel educativo",
     )
     is_active = models.BooleanField(default=True)
+    structured_bank_enabled = models.BooleanField(
+        default=False,
+        verbose_name="banco estandarizado activado",
+        help_text="Si está apagado, el tema usa el sistema de evaluación actual.",
+    )
     levels = models.ManyToManyField(
         "content.Level",
         blank=True,
