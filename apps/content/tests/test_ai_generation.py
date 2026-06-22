@@ -11,10 +11,41 @@ from apps.content.admin import ResourceAdmin
 from apps.content.models import Choice, Question, Resource, Subject, Topic
 from apps.content.services.ai_generation_service import (
     _build_prompt,
+    _loads_ai_json,
     generate_questions_for_resource,
 )
 
 User = get_user_model()
+
+
+class LoadsAiJsonTests(TestCase):
+    """El parser tolera el JSON con LaTeX (barras escapadas) y respuestas envueltas."""
+
+    def test_parses_escaped_latex_to_literal_backslash(self):
+        # En modo JSON la IA escapa las barras: "$\\frac{a}{b}$" -> "$\frac{a}{b}$".
+        payload = r'[{"text": "Calcula $\\frac{a}{b}$ y $\\sqrt{x}$", "choices": []}]'
+        data = _loads_ai_json(payload)
+        self.assertEqual(data[0]["text"], r"Calcula $\frac{a}{b}$ y $\sqrt{x}$")
+
+    def test_preserves_newline_separators_in_explanations(self):
+        payload = r'[{"explanation": "1. Paso uno.\n2. Paso dos: $x^2$."}]'
+        data = _loads_ai_json(payload)
+        self.assertEqual(data[0]["explanation"], "1. Paso uno.\n2. Paso dos: $x^2$.")
+
+    def test_strips_markdown_code_fences(self):
+        payload = '```json\n[{"text": "$\\\\int_0^1 x\\\\,dx$"}]\n```'
+        data = _loads_ai_json(payload)
+        self.assertEqual(data[0]["text"], r"$\int_0^1 x\,dx$")
+
+    def test_extracts_json_array_embedded_in_prose(self):
+        payload = 'Aquí tienes las preguntas:\n[{"text": "$x^2$"}]\n¡Listo!'
+        data = _loads_ai_json(payload)
+        self.assertEqual(data[0]["text"], "$x^2$")
+
+    def test_invalid_json_raises(self):
+        from json import JSONDecodeError
+        with self.assertRaises(JSONDecodeError):
+            _loads_ai_json("esto no es json")
 
 
 class AIGenerationTests(TestCase):
