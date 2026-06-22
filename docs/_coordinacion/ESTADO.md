@@ -8,7 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🏛️ Claude | feat/guias-fase1-extraccion-items | 2026-06-22 | 🔴 corrigiendo P1/P2 de Codex (cierre Fase 1) |
+| _libre_ | - | - | 🟢 sin lock |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
@@ -99,6 +99,17 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🏛️ Claude + 🔨 Antigravity + 🧩 Codex: **Guías interactivas — Fase 1 CERRADA 🟢**
+  (squash-merge a `main`, commit `6ccf403`). Panel solo-admin `/publicar/items/`: la IA propone
+  ítems de aprendizaje desde una guía privada (`QuizGuide`) calibrando dificultad al nivel educativo,
+  y el profesor los edita/fusiona/aprueba/archiva. Todo **detrás del flag
+  `Topic.structured_bank_enabled`** (banco legacy intacto). Antigravity construyó; Codex rechazó por
+  5 P1 + 5 P2; ante la falta de correcciones del builder, 🏛️ Claude (por decisión del 🧑) corrigió
+  **todos** los hallazgos (flag server-side, fusión mismo-tema, CSP→JS externo con nonce,
+  `detected_exercise_count` con migración aditiva `0034`, validación de guía, N+1, dedupe IA, choices,
+  `_sanitize_key`) y cerró. **432 tests OK** + barrera completa verde. Tarjeta en
+  `backlog/6-finalizados/`. **Próximo: Fase 2 (guía ProfeOnline original + anti-copia,
+  `seguridad:requiere-claude`).**
 - 2026-06-22 — 🧩 Codex: **Fase 1 de guías interactivas — GATE RECHAZADO 🔴.**
   Suite completa **425 tests OK**, `check --deploy` sin errores, sin migraciones y pre-commit verde;
   pero quedaron P1: flag por tema no aplicado, fusión cruzada entre temas, JS inline bloqueado por
