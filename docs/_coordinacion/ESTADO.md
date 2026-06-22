@@ -14,6 +14,13 @@
 
 ## En curso ahora
 
+- **Pendientes de KaTeX cerrados — 🟢 (2026-06-22):**
+  (#2 parser) `_loads_ai_json` endurece el parseo de Gemini/OpenAI/pipeline ante cercas markdown
+  y prosa (sin reparar barras a ciegas); **validado EN VIVO** con Gemini real generando álgebra en
+  `$...$` y parseando bien. 5 tests nuevos. Rama `fix/parser-json-latex` (PR pendiente).
+  (#1 banco existente) **Decisión del 🧑: dejar las ~1.500 preguntas en prosa como están** —
+  solo el contenido nuevo sale con notación; se conserva la revisión humana (v2). Regeneración por
+  recurso queda disponible a pedido.
 - **KaTeX — render de fórmulas matemáticas en TODO el sitio — CERRADO 🟢 (2026-06-21):**
   KaTeX 0.16.11 **self-host** (`static/vendor/katex/`, sin CDN, CSP intacta) + `katex-init.js`
   (nonce) que renderiza `document.body` al cargar y cada `htmx:afterSwap` → cubre preguntas,

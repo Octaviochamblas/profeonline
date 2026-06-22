@@ -5,6 +5,7 @@ import hashlib
 import logging
 import os
 import random
+import re
 import sys
 import time
 import requests
@@ -314,6 +315,54 @@ def _sanitize_key(text, key):
     return text
 
 
+def _loads_ai_json(text):
+    """Parsea la respuesta JSON de la IA de forma tolerante.
+
+    Los proveedores se invocan en modo JSON (``responseMimeType`` /
+    ``response_format``), así que normalmente el texto ya es JSON válido con las
+    barras invertidas de LaTeX correctamente escapadas (``$\\\\frac{a}{b}$``) y
+    ``json.loads`` lo resuelve sin más. Como red de seguridad ante respuestas que
+    igualmente vengan envueltas en cercas markdown (```json …```) o con prosa
+    alrededor, se limpian las cercas y, si hace falta, se recorta al primer bloque
+    JSON detectable (``[…]`` o ``{…}``).
+
+    NO se intenta "reparar" las barras invertidas: doblarlas a ciegas corrompería
+    separadores válidos como ``\\n`` y es innecesario en modo JSON. Si tras la
+    limpieza sigue sin parsear, se relanza el ``JSONDecodeError`` para que el
+    llamador lo registre o regenere.
+    """
+    if text is None:
+        raise ValueError("Respuesta vacía de la IA")
+    raw = str(text).strip()
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
+
+    # 1) Quitar cercas de código markdown (```json … ``` o ``` … ```).
+    candidate = raw
+    if candidate.startswith("```"):
+        candidate = re.sub(r"^```[a-zA-Z]*\s*", "", candidate)
+        candidate = re.sub(r"\s*```$", "", candidate).strip()
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            pass
+
+    # 2) Recortar a la primera estructura JSON (array u objeto) embebida en prosa.
+    for open_ch, close_ch in (("[", "]"), ("{", "}")):
+        start = candidate.find(open_ch)
+        end = candidate.rfind(close_ch)
+        if start != -1 and end > start:
+            try:
+                return json.loads(candidate[start:end + 1])
+            except json.JSONDecodeError:
+                continue
+
+    # Sin suerte: relanzar el error original (con el texto ya saneado).
+    return json.loads(raw)
+
+
 def _post_json_with_retry(url, headers, payload, key=None):
     """POST con reintentos exponenciales ante 429/503; nunca expone la API key.
 
@@ -357,7 +406,7 @@ def _call_gemini_api(prompt, key):
         response = _post_json_with_retry(url, headers, payload, key=key)
         data = response.json()
         text_response = data["candidates"][0]["content"]["parts"][0]["text"]
-        return json.loads(text_response.strip())
+        return _loads_ai_json(text_response)
     except RuntimeError:
         raise
     except Exception as e:
@@ -383,7 +432,7 @@ def _call_openai_api(prompt, key):
         data = response.json()
         text_response = data["choices"][0]["message"]["content"]
         # OpenAI puede devolver un objeto con una clave raíz como "questions".
-        parsed = json.loads(text_response.strip())
+        parsed = _loads_ai_json(text_response)
         if isinstance(parsed, dict):
             for value in parsed.values():
                 if isinstance(value, list):
