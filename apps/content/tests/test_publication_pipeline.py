@@ -216,6 +216,39 @@ class PublicationPipelineServiceTests(TestCase):
             "publicada",
         )
 
+    def test_pipeline_prompts_request_latex_notation(self):
+        """El documento canónico y el auditor saben que el formato es LaTeX (KaTeX)."""
+        from apps.content.models import QuizGuide
+        from apps.content.services import publication_pipeline_service as svc
+
+        captured = []
+
+        def fake_provider_json(prompt):
+            captured.append(prompt)
+            return {}
+
+        with mock.patch.object(svc, "_provider_json", side_effect=fake_provider_json):
+            try:
+                svc.generate_canonical_document(self.item)
+            except Exception:
+                pass  # solo nos interesa el prompt capturado, no el procesamiento
+            guide = QuizGuide.objects.create(
+                title="Guía canónica", content_text="Contenido canónico de prueba."
+            )
+            self.item.canonical_guide = guide
+            self.item.save(update_fields=["canonical_guide"])
+            try:
+                svc.audit_question_candidates(self.item, level=2, mode="evaluacion", candidates=[])
+            except Exception:
+                pass
+
+        self.assertEqual(len(captured), 2)
+        canonical_prompt, auditor_prompt = captured
+        self.assertIn("NOTACIÓN MATEMÁTICA", canonical_prompt)
+        self.assertIn("$$", canonical_prompt)
+        self.assertIn("LaTeX", auditor_prompt)
+        self.assertIn("KaTeX", auditor_prompt)
+
     def test_pipeline_never_touches_historical_questions(self):
         old = Question.objects.create(
             resource=self.resource,

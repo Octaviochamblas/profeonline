@@ -327,6 +327,10 @@ def generate_canonical_document(item):
 PRINCIPALMENTE la transcripción real. No agregues conceptos, ejercicios ni afirmaciones ausentes.
 Si el contenido no permite completar un campo con fidelidad, devuelve error en vez de inventar.
 
+NOTACIÓN MATEMÁTICA: escribe toda fórmula o expresión matemática en LaTeX entre $...$ (en
+línea) o $$...$$ (en bloque); la plataforma la renderiza con KaTeX. No uses texto plano para
+matemática (escribe $x^2$, no x^2).
+
 TRANSCRIPCIÓN:
 {transcript[:14000]}
 
@@ -438,6 +442,10 @@ def audit_question_candidates(item, level, mode, candidates):
 transcripción y la guía canónica. Acepta solo si: es fiel, está dentro de la guía, tiene una única
 respuesta correcta, distractores plausibles, explicación correcta, dificultad N{level} adecuada,
 y aporta diversidad cognitiva sin duplicar estructura.
+
+NOTACIÓN: las fórmulas correctas vienen en LaTeX entre $...$ o $$...$$ (la plataforma las
+renderiza con KaTeX); NO penalices ni rechaces por usar LaTeX. Al contrario, considera un
+problema que una expresión matemática esté en texto plano (por ejemplo x^2 en vez de $x^2$).
 
 TRANSCRIPCIÓN:
 {resource.transcript[:10000]}

@@ -190,10 +190,42 @@ def _build_prompt(resource, level, mode, count, education_level=None, custom_ins
             f"{reference_guides[:5000]}\n"
         )
 
+    # Bloques con LaTeX: se definen como raw strings para que las barras
+    # invertidas y las llaves de LaTeX no choquen con el f-string del prompt.
+    notation_block = (
+        r"""NOTACIÓN MATEMÁTICA (OBLIGATORIO — la plataforma renderiza LaTeX con KaTeX):
+- Escribe TODA expresión matemática en LaTeX entre delimitadores, nunca en texto plano:
+    · En línea (dentro de una frase):  $...$       ej.  la solución es $x = \frac{-b}{2a}$
+    · En bloque (ecuación centrada):   $$...$$      ej.  $$\int_0^1 x^2\,dx = \frac{1}{3}$$
+- Úsalo en el enunciado, en las 4 alternativas y en la explicación.
+- Aprovecha: potencias $x^2$, subíndices $a_1$, fracciones $\frac{a}{b}$, raíces $\sqrt{x}$ y $\sqrt[3]{x}$,
+  sumatorias $\sum_{i=1}^n i$, integrales $\int$, derivadas $\frac{d}{dx}f(x)$, límites $\lim_{x\to 0}$,
+  matrices $\begin{pmatrix}1&2\\3&4\end{pmatrix}$, símbolos $\pi$, $\theta$, $\leq$, $\Rightarrow$.
+- Prohibido escribir matemática como "x^2", "raíz de x" o "1/2": usa siempre LaTeX.
+- JSON: escapa las barras invertidas como dobles. Debe ir "$\\frac{a}{b}$" (con \\), nunca "$\frac{a}{b}$"."""
+    )
+
+    json_example = (
+        r"""[
+  {
+    "text": "¿Cuál es el valor de $\\int_0^1 2x\\,dx$?",
+    "explanation": "1. La integral de $2x$ es $x^2$.\n2. Evaluamos entre $0$ y $1$: $1^2 - 0^2 = 1$.\n3. El resultado es $1$.",
+    "choices": [
+      {"text": "$1$", "is_correct": true},
+      {"text": "$2$", "is_correct": false},
+      {"text": "$\\frac{1}{2}$", "is_correct": false},
+      {"text": "$x^2$", "is_correct": false}
+    ]
+  }
+]"""
+    )
+
     prompt = f"""Eres un experto pedagogo en matemáticas y ciencias para la plataforma 'ProfeOnline'.
 Tu tarea es generar exactamente {count} preguntas de opción múltiple de alta calidad pedagógica sobre el siguiente contenido educativo.
 
 REGLA CRÍTICA: Las preguntas deben evaluar si el estudiante comprendió los conceptos, NO mencionar nunca "el recurso", "la lección", "el texto", "el documento" ni ningún título. Redacta como si el estudiante ya hubiera estudiado el tema y le estuvieras evaluando directamente.
+
+{notation_block}
 
 CONTENIDO EDUCATIVO:
 - Tema: {resource.topic.name if resource.topic else "General"}
@@ -206,10 +238,39 @@ CONTENIDO EDUCATIVO:
 {existing_block}
 
 DIRECTRICES DEL NIVEL PEDAGÓGICO:
-Nivel solicitado: {level_name} (Nivel {level})
-- Nivel 1 — Definición: Preguntas conceptuales sobre términos clave, definiciones o fundamentos teóricos del tema.
-- Nivel 2 — Ejercicios simples: Ejercicios directos, cálculos mecánicos o aplicación simple de fórmulas con números sencillos.
-- Nivel 3 — Problemas de aplicación: Problemas en un contexto o situación real donde el estudiante deba interpretar el enunciado y aplicar los conceptos del tema para resolverlo.
+Genera las preguntas para el Nivel {level} ({level_name}). Los tres niveles forman una
+progresión; respeta el alcance del nivel solicitado y no lo mezcles con los otros.
+
+Nivel 1 — Comprensión conceptual y funcional.
+El estudiante identifica los conceptos centrales, comprende para qué sirven, cuándo se
+utilizan y cuál es su lógica básica. Las preguntas deben evaluar que pueda explicar el
+contenido con sus propias palabras, reconocer su utilidad y distinguir un concepto de
+otro: significado, propósito, condiciones de uso y relaciones entre ideas. NO pidas
+resolución numérica ni cálculos en este nivel. Los distractores deben reflejar
+confusiones conceptuales típicas (confundir dos términos parecidos, atribuir mal una
+propiedad, equivocarse en "cuándo se aplica").
+
+Nivel 2 — Dominio procedimental y resolución técnica.
+El estudiante aplica fórmulas, reglas, algoritmos o procedimientos para resolver
+ejercicios de dificultad progresiva. No basta con reemplazar datos en una fórmula: la
+pregunta debe exigir que identifique qué procedimiento corresponde, ordene la información
+disponible, desarrolle los pasos de forma lógica y obtenga el resultado correcto. Cuando
+sea pertinente, evalúa también la capacidad de justificar por qué se usa una fórmula,
+interpretar cada variable, cuidar las unidades de medida, verificar si el resultado es
+razonable y detectar errores de cálculo o de planteamiento. Varía la dificultad: desde
+ejercicios estructurados donde se indica qué fórmula usar, hasta otros donde el estudiante
+deba decidir el método adecuado. Los distractores deben representar errores procedimentales
+reales (error de signo, fórmula equivocada, paso omitido, unidades mal convertidas,
+resultado no razonable).
+
+Nivel 3 — Transferencia y aplicación en contextos reales.
+El estudiante usa lo aprendido para analizar situaciones reales o casos prácticos. La
+pregunta debe presentar un escenario nuevo y exigir que interprete la información, escoja
+el método adecuado entre varios posibles, justifique sus decisiones y adapte el
+conocimiento al contexto. Prioriza enunciados contextualizados y de varios pasos, donde
+el dato relevante deba extraerse del problema (no venir "servido"). Los distractores deben
+reflejar errores de interpretación o de modelado (elegir el método equivocado, usar un
+dato irrelevante, trasladar mal el contexto a la fórmula).
 
 NIVEL EDUCATIVO DEL ESTUDIANTE:
 {edu_desc}
@@ -228,22 +289,12 @@ DIRECTRICES DE LA EXPLICACIÓN (importante para la legibilidad):
   paso con un salto de línea real (carácter \\n en el JSON). NO juntes todos los pasos en un
   solo párrafo corrido.
 - Cada paso debe ser una idea concreta y corta (un cálculo o una afirmación por línea).
+- Toda fórmula o cálculo dentro de la explicación también va en LaTeX ($...$ / $$...$$).
 
 FORMATO DE SALIDA REQUERIDO (JSON):
 Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de objetos con el siguiente formato, sin bloques de código markdown, explicaciones previas o posteriores:
 
-[
-  {{
-    "text": "Enunciado de la pregunta...",
-    "explanation": "Explicación de por qué la opción correcta es la adecuada y cómo resolver el problema...",
-    "choices": [
-      {{"text": "Opción 1 (correcta)", "is_correct": true}},
-      {{"text": "Opción 2 (incorrecta)", "is_correct": false}},
-      {{"text": "Opción 3 (incorrecta)", "is_correct": false}},
-      {{"text": "Opción 4 (incorrecta)", "is_correct": false}}
-    ]
-  }}
-]
+{json_example}
 """
     if custom_instructions:
         prompt += f"\n\nINSTRUCCIONES ADICIONALES DEL PROFESOR:\n{custom_instructions}\n"

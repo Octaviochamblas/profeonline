@@ -114,6 +114,21 @@ class SeoTechnicalViewTests(TestCase):
         self.assertContains(contacto_res, "Contacto")
 
 
+class KatexWiringTests(TestCase):
+    """KaTeX se carga self-host en todo el sitio para renderizar fórmulas."""
+
+    def test_base_template_loads_katex_assets(self):
+        response = self.client.get(reverse("core:home"))
+
+        self.assertEqual(response.status_code, 200)
+        # CSS y JS servidos desde el propio dominio (self-host, no CDN).
+        self.assertContains(response, "vendor/katex/katex.min.css")
+        self.assertContains(response, "vendor/katex/katex.min.js")
+        self.assertContains(response, "vendor/katex/contrib/auto-render.min.js")
+        self.assertContains(response, "js/katex-init.js")
+        self.assertNotContains(response, "cdn.jsdelivr.net")
+
+
 class AdminNavigationTests(TestCase):
     def setUp(self):
         User = get_user_model()

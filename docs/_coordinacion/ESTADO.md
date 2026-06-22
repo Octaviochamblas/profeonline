@@ -14,6 +14,17 @@
 
 ## En curso ahora
 
+- **KaTeX — render de fórmulas matemáticas en TODO el sitio — CERRADO 🟢 (2026-06-21):**
+  KaTeX 0.16.11 **self-host** (`static/vendor/katex/`, sin CDN, CSP intacta) + `katex-init.js`
+  (nonce) que renderiza `document.body` al cargar y cada `htmx:afterSwap` → cubre preguntas,
+  alternativas, explicaciones, recursos y el reproductor fullscreen. Delimitadores `$...$`/`$$...$$`
+  (y `\(\)`/`\[\]`). **Generación IA conectada:** el prompt compartido (`_build_prompt`) ahora
+  ordena LaTeX y reestructura los niveles pedagógicos (N1 conceptual / N2 procedimental / N3
+  transferencia, con distractores por nivel) y refuerza el pipeline (documento canónico + auditor
+  saben de LaTeX). **403 tests OK** + QA visual
+  (potencia/fracción/raíz/integral/matriz). Tarjeta en `backlog/6-finalizados/`.
+  **Pendiente aparte:** migrar/regenerar el banco existente y verificar el parser JSON ante el
+  escape `\\` de la IA en la primera generación real.
 - **Rediseño compacto de temas — CERRADO 🟢 (PR #77, 2026-06-21):**
   progreso global corregido, indicadores por nivel, cabecera/tarjetas móviles condensadas y
   limpieza v1 de títulos con migración `0032`. **398 tests OK** y QA 320/360/390 px.
@@ -68,7 +79,6 @@
 - **QA a11y manual (teclado + NVDA)** 🔴 requiere al 🧑 en Windows — tarjeta en `1-por-iniciar/`.
 - **Mejoras de conversión** (testimonios, FAQ, precios, "sobre mí", formulario, gancho) 🔴 bloqueadas
   por contenido/decisión del 🧑 — `1-por-iniciar/mejoras-conversion-contenido.md` (+ testimonios).
-- **KaTeX** ⏸️ pendiente decisión del 🧑: ¿el contenido llevará fórmulas en notación?
 - **C1/C2** ⚪ aceptados (no son bloqueo; reconsiderar al entrar datos reales).
 
 ## Handoffs abiertos (Ready para construir)
