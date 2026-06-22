@@ -250,9 +250,8 @@ def propose_items(request):
             if level not in VALID_LEVELS:
                 level = 1
 
-            difficulty = item_data.get("difficulty") or ""
-            if difficulty not in VALID_DIFFICULTIES:
-                difficulty = "intermedia"
+            # Normaliza variantes acentuadas de la IA ('Básica'→'basica'); fallback si no reconoce.
+            difficulty = Question.normalize_difficulty(item_data.get("difficulty")) or "intermedia"
 
             try:
                 detected = int(item_data.get("detected_exercise_count") or 0)
@@ -316,14 +315,14 @@ def edit_item_inline(request, item_id):
             level = int(request.POST.get("level", item.level))
         except (ValueError, TypeError):
             level = None
-        difficulty = request.POST.get("difficulty", "")
+        difficulty = Question.normalize_difficulty(request.POST.get("difficulty", ""))
 
         error = None
         if not title or not objective:
             error = "El título y el objetivo no pueden estar vacíos."
         elif level not in VALID_LEVELS:
             error = "Nivel no válido."
-        elif difficulty not in VALID_DIFFICULTIES:
+        elif not difficulty:
             error = "Dificultad no válida."
 
         if error:

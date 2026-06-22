@@ -84,11 +84,11 @@ class ItemExtractionTests(TestCase):
         """Verifica que el prompt generado para la IA incluye el nivel educativo."""
         prompt = _build_item_prompt(self.quiz_guide, self.topic, "escolar")
         self.assertIn("escolar", prompt.lower())
-        self.assertIn("básica o intermedia", prompt.lower())
+        self.assertIn("basica o intermedia", prompt.lower())
 
         prompt_uni = _build_item_prompt(self.quiz_guide, self.topic, "universitaria")
         self.assertIn("universitaria", prompt_uni.lower())
-        self.assertIn("avanzada o desafío", prompt_uni.lower())
+        self.assertIn("avanzada o desafio", prompt_uni.lower())
 
     def test_service_mock_items(self):
         """Verifica que el modo mock determinista funciona y calibra dificultades."""
@@ -97,17 +97,17 @@ class ItemExtractionTests(TestCase):
         self.topic.save()
         items_escolar = propose_items_from_guide(self.quiz_guide, self.topic)
         self.assertEqual(len(items_escolar), 3)
-        # Escolar debe retornar básica e intermedia
+        # Escolar debe retornar basica e intermedia (claves canónicas, sin acento)
         difficulties_escolar = {itm["difficulty"] for itm in items_escolar}
-        self.assertTrue(difficulties_escolar.issubset({"básica", "intermedia"}))
+        self.assertTrue(difficulties_escolar.issubset({"basica", "intermedia"}))
 
         # Para el nivel universitario
         self.topic.education_level = "universitaria"
         self.topic.save()
         items_uni = propose_items_from_guide(self.quiz_guide, self.topic)
         difficulties_uni = {itm["difficulty"] for itm in items_uni}
-        # Universitaria debe retornar avanzada y desafío
-        self.assertTrue(difficulties_uni.issubset({"avanzada", "desafío"}))
+        # Universitaria debe retornar avanzada y desafio (claves canónicas, sin acento)
+        self.assertTrue(difficulties_uni.issubset({"avanzada", "desafio"}))
 
     def test_access_control_item_extraction_views(self):
         """Verifica que solo los administradores puedan acceder al panel de ítems."""
@@ -173,7 +173,7 @@ class ItemExtractionTests(TestCase):
             topic=self.topic,
             title="Item original",
             level=1,
-            difficulty="básica",
+            difficulty="basica",
             objective="Original",
         )
 
@@ -238,7 +238,7 @@ class ItemExtractionTests(TestCase):
     def test_merge_items_view(self):
         """Prueba la fusión de ítems combinando campos y previniendo duplicados de recursos."""
         item1 = ExerciseItem.objects.create(
-            topic=self.topic, title="Tema 1", level=1, difficulty="básica", objective="Obj1", common_errors="Err1"
+            topic=self.topic, title="Tema 1", level=1, difficulty="basica", objective="Obj1", common_errors="Err1"
         )
         item2 = ExerciseItem.objects.create(
             topic=self.topic, title="Tema 2", level=2, difficulty="intermedia", objective="Obj2", common_errors="Err2"
@@ -417,7 +417,7 @@ class ItemExtractionTests(TestCase):
     def test_edit_rejects_invalid_choices(self):
         """La edición valida level/difficulty contra los choices (400 si inválidos)."""
         item = ExerciseItem.objects.create(
-            topic=self.topic, title="Item", level=1, difficulty="básica", objective="Obj"
+            topic=self.topic, title="Item", level=1, difficulty="basica", objective="Obj"
         )
         c = Client()
         c.force_login(self.admin_user)
@@ -427,7 +427,33 @@ class ItemExtractionTests(TestCase):
         self.assertEqual(resp.status_code, 400)
         item.refresh_from_db()
         self.assertEqual(item.level, 1)  # sin cambios
-        self.assertEqual(item.difficulty, "básica")
+        self.assertEqual(item.difficulty, "basica")
+
+    def test_normalize_difficulty_maps_accented_variants(self):
+        """normalize_difficulty mapea variantes acentuadas/mayúsculas a la clave del modelo."""
+        self.assertEqual(Question.normalize_difficulty("Básica"), "basica")
+        self.assertEqual(Question.normalize_difficulty("DESAFÍO"), "desafio")
+        self.assertEqual(Question.normalize_difficulty(" intermedia "), "intermedia")
+        self.assertEqual(Question.normalize_difficulty("avanzada"), "avanzada")
+        self.assertEqual(Question.normalize_difficulty("inexistente"), "")
+        self.assertEqual(Question.normalize_difficulty(""), "")
+        self.assertEqual(Question.normalize_difficulty(None), "")
+
+    def test_propose_items_normalizes_accented_difficulty(self):
+        """La IA puede devolver 'Básica' (acentuada); debe persistirse como clave canónica."""
+        crafted = [{
+            "title": "Ítem acentuado", "level": 2, "difficulty": "Avanzada",
+            "objective": "Obj", "recommendation": "", "common_errors": "",
+            "suggested_resource_ids": [], "detected_exercise_count": 0,
+        }]
+        c = Client()
+        c.force_login(self.admin_user)
+        with patch("apps.content.views.item_review.propose_items_from_guide", return_value=crafted):
+            resp = c.post(reverse("content:propose_items"),
+                          {"topic_id": self.topic.id, "guide_id": self.quiz_guide.id})
+        self.assertEqual(resp.status_code, 200)
+        item = ExerciseItem.objects.get(topic=self.topic, title="Ítem acentuado")
+        self.assertEqual(item.difficulty, "avanzada")  # normalizada, no perdida
 
     def test_legacy_generation_regression(self):
         """Prueba de regresión: verifica que los flujos legacy de generación siguen funcionando."""

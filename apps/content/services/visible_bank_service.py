@@ -40,18 +40,16 @@ def _validate_candidates(candidates, expected_count):
         raise ValueError("La IA no devolvió la cantidad exacta de preguntas solicitada.")
 
     validated = []
-    valid_difficulties = dict(Question.DIFFICULTY_CHOICES)
     for candidate in candidates:
         text = str(candidate.get("text", "")).strip()
         explanation = str(candidate.get("explanation", "")).strip()
-        difficulty = str(candidate.get("difficulty", "")).strip()
+        # Normaliza variantes acentuadas de la IA ('Básica'→'basica') a la clave canónica.
+        difficulty = Question.normalize_difficulty(candidate.get("difficulty"))
         hint = str(candidate.get("hint", "")).strip()
         raw_choices = candidate.get("choices", [])
 
         if not text or not explanation or not difficulty or not hint:
             raise ValueError("Estructura de pregunta incompleta en la respuesta de la IA.")
-        if difficulty not in valid_difficulties:
-            raise ValueError(f"Dificultad inválida '{difficulty}' devuelta por la IA.")
         if not isinstance(raw_choices, list) or len(raw_choices) != 4:
             raise ValueError("Cada pregunta debe contener exactamente 4 alternativas.")
 

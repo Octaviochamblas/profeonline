@@ -184,7 +184,8 @@ FUENTES PRIVADAS DE REFERENCIA (Úsalas únicamente como base conceptual de difi
 {sources_text}
 
 FORMATO DE SALIDA REQUERIDO (JSON):
-Debes responder ÚNICAMENTE con un objeto JSON válido estructurado exactamente según el siguiente esquema (schema_version = 1), sin bloques de código markdown, explicaciones previas o posteriores:
+Debes responder ÚNICAMENTE con un objeto JSON válido estructurado exactamente según el siguiente esquema (schema_version = 1), sin bloques de código markdown, explicaciones previas o posteriores.
+El campo "difficulty" de cada ejercicio debe ser EXACTAMENTE una de estas claves, en minúsculas y SIN acentos: 'basica', 'intermedia', 'avanzada', 'desafio'.
 
 {json_example}
 """
@@ -290,7 +291,6 @@ def validate_guide_schema(data, approved_items) -> None:
                 f"La sección 'exercises' del ítem {itm_id_int} debe ser una lista no vacía."
             )
 
-        valid_difficulties = [diff for diff, _ in Question.DIFFICULTY_CHOICES]
         for exe in exercises:
             if not isinstance(exe, dict):
                 raise ValueError(f"El ejercicio en el ítem {itm_id_int} tiene una estructura inválida.")
@@ -310,8 +310,11 @@ def validate_guide_schema(data, approved_items) -> None:
             all_exercise_ids.add(exe_id)
             answerable_ids.add(exe_id)
 
-            if exe["difficulty"] not in valid_difficulties:
+            # Normaliza variantes acentuadas de la IA ('Básica'→'basica') a la clave canónica.
+            normalized_difficulty = Question.normalize_difficulty(exe["difficulty"])
+            if not normalized_difficulty:
                 raise ValueError(f"Dificultad inválida '{exe['difficulty']}' en el ejercicio '{exe_id}'.")
+            exe["difficulty"] = normalized_difficulty
 
     if represented_item_ids != approved_item_ids:
         missing_items = sorted(approved_item_ids - represented_item_ids)
@@ -372,15 +375,15 @@ def _generate_mock_guide_draft(topic, private_guides) -> dict:
 
     education_level = get_topic_education_level(topic)
 
-    # Dificultades variadas según el nivel pedagógico
+    # Dificultades variadas según el nivel pedagógico (claves canónicas del modelo, sin acento)
     if education_level == "escolar":
-        diff_1 = "básica"
-        diff_2 = "básica"
+        diff_1 = "basica"
+        diff_2 = "basica"
     elif education_level == "universitaria":
         diff_1 = "avanzada"
-        diff_2 = "desafío"
+        diff_2 = "desafio"
     else:
-        diff_1 = "básica"
+        diff_1 = "basica"
         diff_2 = "intermedia"
 
     first_item = approved_items[0]

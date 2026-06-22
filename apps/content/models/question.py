@@ -1,3 +1,5 @@
+import unicodedata
+
 from django.db import models
 
 
@@ -31,6 +33,21 @@ class Question(models.Model):
         ("avanzada", "Avanzada"),
         ("desafio", "Desafío"),
     ]
+
+    @staticmethod
+    def normalize_difficulty(value):
+        """Mapea cualquier variante (acentuada, mayúsculas, espacios) a la clave canónica.
+
+        La IA suele devolver 'Básica'/'desafío'; las claves del modelo son sin acento
+        ('basica'/'desafio'). Devuelve la clave válida o '' si no reconoce el valor.
+        """
+        if not value:
+            return ""
+        text = unicodedata.normalize("NFD", str(value).strip().lower())
+        text = "".join(c for c in text if unicodedata.category(c) != "Mn")
+        valid = {key for key, _ in Question.DIFFICULTY_CHOICES}
+        return text if text in valid else ""
+
     SCOPE_CHOICES = [
         ("banco_visible", "Banco visible"),
         ("evaluacion_nivel", "Evaluación de nivel"),

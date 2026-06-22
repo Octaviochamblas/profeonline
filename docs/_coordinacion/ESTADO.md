@@ -106,6 +106,13 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🏛️ Claude: **Fix dificultad acentuada — 🟢 mergeado a `main`** (`fix/dificultad-acentos`).
+  Detectado en QA local: con API key real, la generación de guías de F2 fallaba la validación porque
+  la IA devuelve dificultades **con acento** (`"básica"`) y el modelo usa claves **sin acento**
+  (`basica/.../desafio`); además F1 perdía silenciosamente la dificultad a "intermedia". Se agregó
+  `Question.normalize_difficulty()` y se canonizó en prompts/mocks/validación/plantilla
+  (`item_extraction`, `learning_guide`, `visible_bank`, `item_review`, `_item_row.html`). +3 tests.
+  **472 tests OK**, sin migración. Verificado en navegador (badge "Básica" correcto).
 - 2026-06-22 — 🏛️ Claude + 🔨 Antigravity + 🧩 Codex: **Guías interactivas — Fases 2 y 3 CERRADAS 🟢
   y mergeadas a `main`** (squash-merge, F2+F3 juntas; F3 se construyó sobre F2 sin mergear).
   **F2** (guía ProfeOnline original + anti-copia): generación IA, motor de originalidad determinista

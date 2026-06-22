@@ -97,9 +97,9 @@ def _build_item_prompt(quiz_guide, topic, education_level) -> str:
     )
 
     edu_labels = {
-        "escolar": "Escolar (hasta 13 años) - Dificultad recomendada: básica o intermedia.",
+        "escolar": "Escolar (hasta 13 años) - Dificultad recomendada: basica o intermedia.",
         "media": "Media preuniversitaria (14-17 años) - Dificultad recomendada: intermedia o avanzada.",
-        "universitaria": "Universitaria (18+) - Dificultad recomendada: avanzada o desafío.",
+        "universitaria": "Universitaria (18+) - Dificultad recomendada: avanzada o desafio.",
     }
     edu_desc = edu_labels.get(education_level, "Media preuniversitaria (14-17 años) - Dificultad recomendada: intermedia o avanzada.")
 
@@ -141,8 +141,8 @@ REQUERIMIENTOS:
    - 3: Transferencia y aplicación en contextos reales o problemas complejos.
 3. Calibra la dificultad de cada ítem según el nivel educativo de destino.
    - Nivel educativo del tema: {education_level} ({edu_desc})
-   - Opciones válidas de dificultad: 'básica', 'intermedia', 'avanzada', 'desafío'.
-   - Asegúrate de distribuir las dificultades de manera balanceada en base al nivel educativo de destino (por ejemplo, si es universitario, tiende a 'avanzada' y 'desafío'). No clasifiques todo como 'intermedia'.
+   - Opciones válidas de dificultad (usa EXACTAMENTE estas claves, sin acentos): 'basica', 'intermedia', 'avanzada', 'desafio'.
+   - Asegúrate de distribuir las dificultades de manera balanceada en base al nivel educativo de destino (por ejemplo, si es universitario, tiende a 'avanzada' y 'desafio'). No clasifiques todo como 'intermedia'.
 4. Sugiere a cuáles recursos del tema corresponde asociar cada ítem, utilizando únicamente IDs válidos del listado provisto abajo.
 5. Estima cuántos ejercicios o preguntas se detectaron en la guía que corresponden a cada ítem en el campo 'detected_exercise_count'.
 
@@ -169,17 +169,17 @@ def _generate_mock_items(topic) -> list[dict]:
     """
     education_level = get_topic_education_level(topic)
 
-    # Determinar dificultades recomendadas según el nivel educativo
+    # Determinar dificultades recomendadas según el nivel educativo (claves canónicas del modelo)
     if education_level == "escolar":
-        diff_1 = "básica"
-        diff_2 = "básica"
+        diff_1 = "basica"
+        diff_2 = "basica"
         diff_3 = "intermedia"
     elif education_level == "universitaria":
         diff_1 = "avanzada"
         diff_2 = "avanzada"
-        diff_3 = "desafío"
+        diff_3 = "desafio"
     else:
-        diff_1 = "básica"
+        diff_1 = "basica"
         diff_2 = "intermedia"
         diff_3 = "avanzada"
 

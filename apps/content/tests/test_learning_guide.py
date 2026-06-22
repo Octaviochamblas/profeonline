@@ -90,6 +90,13 @@ class LearningGuideTests(TestCase):
             "answer_key": [{"exercise_id": "q1", "solution": "La velocidad es $5$."}],
         }
 
+    def test_schema_accepts_accented_difficulty_and_normalizes(self):
+        """La IA suele devolver 'Básica' (acentuada): el esquema la acepta y la canoniza."""
+        content = self.valid_content()
+        content["items"][0]["exercises"][0]["difficulty"] = "Básica"
+        validate_guide_schema(content, [self.item_approved])  # no debe lanzar
+        self.assertEqual(content["items"][0]["exercises"][0]["difficulty"], "basica")
+
     @patch("apps.content.services.learning_guide_service.call_ai_structured_json")
     def test_generation_mock_complete_and_zero_red(self, mock_ai_call):
         """Verifica que la generación simulada/mock de borrador es completa y no toca red."""
