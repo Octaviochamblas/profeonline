@@ -13,6 +13,11 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Guías interactivas - Fase 6 - EN AUDITORÍA 🟡 (2026-06-23):**
+  🧩 Codex reconstruyó la impresión nativa contra el markup real: portada, tema claro, KaTeX negro,
+  saltos de página y solucionario final consolidado. Botón relabelado a “Descargar PDF”, sin JS ni
+  librerías nuevas. QA real: PDF A4 de 7 páginas + 320/360/390 sin overflow. **511 tests OK**
+  (1 skip), sin migraciones, pre-commit verde. Tarjeta en `backlog/4-auditoria/`; cierre por 🏛️ Claude.
 - **Guías interactivas - Fase 5 - CERRADA 🟢 (2026-06-23):**
   🧩 Codex construyó pools ocultos editoriales, ensamblado por cuotas + distribución 20/50/30,
   no-repetición, sesiones transaccionales con timer server-side, corrección idempotente y dominio

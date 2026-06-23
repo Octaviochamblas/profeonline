@@ -1,148 +1,336 @@
+/* Print/PDF presentation for the public ProfeOnline learning guide. */
+
+.print-cover,
+.print-solution-block {
+    display: none;
+}
+
+@page {
+    size: A4;
+    margin: 16mm 14mm 18mm;
+}
+
 @media print {
-    /* Ocultar elementos no imprimibles */
-    header,
-    footer,
+    html,
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-family: "Outfit", "Inter", "Segoe UI", Arial, sans-serif !important;
+        font-size: 10.5pt !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    body > header,
+    body > footer,
+    .header-wrapper,
+    .site-footer,
+    .bottom-contact-cta,
+    .whatsapp-float,
+    .nav-overlay,
     nav,
+    .no-print,
     .btn,
     button,
-    .btn-back,
-    .btn-secondary,
-    .practice-section,
-    .interactive-controls,
-    .no-print,
-    .reveal-btn,
-    .solved-example .alert-info {
+    form,
+    .quiz-player-root {
         display: none !important;
     }
 
-    /* Resetear fondos y colores para la impresión */
-    body {
-        background: #ffffff !important;
-        color: #000000 !important;
-        font-family: 'Outfit', 'Inter', 'Segoe UI', Arial, sans-serif !important;
-        font-size: 11pt !important;
-        line-height: 1.5 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .question-review-container,
     .guide-container {
         width: 100% !important;
-        max-width: 100% !important;
+        max-width: none !important;
         margin: 0 !important;
         padding: 0 !important;
+        color: #000 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        border: 0 !important;
+    }
+
+    .site-main,
+    .content-wrapper {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .guide-header {
+        display: none !important;
+    }
+
+    .print-cover {
+        display: flex !important;
+        min-height: 245mm;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #000 !important;
+        background: #fff !important;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .print-cover__logo {
+        display: block;
+        width: 46mm;
+        height: auto;
+        margin: 0 auto 18mm;
+    }
+
+    .print-cover__eyebrow {
+        margin: 0 0 5mm;
+        color: #333 !important;
+        font-size: 11pt;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .print-cover__title {
+        max-width: 165mm;
+        margin: 0 0 10mm !important;
+        padding: 0 0 7mm;
+        border-bottom: 1.5pt solid #111;
+        color: #000 !important;
+        font-size: 25pt !important;
+        line-height: 1.2 !important;
+    }
+
+    .print-cover__meta {
+        margin: 0 0 3mm;
+        color: #222 !important;
+        font-size: 12pt;
+    }
+
+    .print-cover__date {
+        margin: 10mm 0 0;
+        color: #555 !important;
+        font-size: 10pt;
+    }
+
+    .guide-content-main,
+    #guide-content-box,
+    #guide-content-box > div,
+    .banco-visible-section,
+    .item-block,
+    .question-card,
+    .print-solution-block,
+    .print-solution-section,
+    .print-solution-item {
+        color: #000 !important;
         background: transparent !important;
         box-shadow: none !important;
-        border: none !important;
     }
 
-    /* Títulos y secciones */
-    h1, h2, h3, h4 {
-        color: #000000 !important;
+    .guide-container *,
+    .guide-container .text-light,
+    .guide-container .text-secondary,
+    .guide-container .text-teal,
+    .guide-container .text-muted,
+    .guide-container .badge,
+    .guide-container .bg-dark,
+    .guide-container .bg-glass,
+    .guide-container .question-card p,
+    .guide-container .question-card li,
+    .guide-container .question-card span,
+    .guide-container .item-block p,
+    .guide-container .item-block li,
+    .guide-container table,
+    .guide-container th,
+    .guide-container td,
+    .guide-container .katex,
+    .guide-container .katex * {
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+
+    .guide-container [class*="bg-"],
+    .guide-container [style*="background"],
+    #guide-content-box > div {
+        background: transparent !important;
+        background-image: none !important;
+    }
+
+    .guide-container [style*="border-color"],
+    .guide-container .border,
+    .guide-container .border-secondary,
+    .guide-container .border-danger,
+    .item-block,
+    .question-card {
+        border-color: #bbb !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #000 !important;
+        break-after: avoid-page;
         page-break-after: avoid;
-        margin-top: 1.5em !important;
-        margin-bottom: 0.5em !important;
     }
 
-    h1 {
-        font-size: 20pt !important;
-        text-align: center;
-        border-bottom: 2px solid #000000;
-        padding-bottom: 10px;
-        margin-top: 0 !important;
+    .guide-content-main {
+        margin-bottom: 8mm !important;
     }
 
-    h2 {
-        font-size: 14pt !important;
-        border-bottom: 1px solid #cccccc;
-        padding-bottom: 4px;
+    #guide-content-box {
+        margin: 0 0 8mm !important;
     }
 
-    .guide-section {
-        margin-bottom: 20pt !important;
+    #guide-content-box > div {
+        padding: 0 !important;
+        border: 0 !important;
+    }
+
+    #guide-content-box > div > h3 {
+        margin: 0 0 7mm !important;
+        padding-bottom: 3mm;
+        border-bottom: 1.5pt solid #111;
+        font-size: 18pt !important;
+    }
+
+    #guide-content-box .p-3,
+    #guide-content-box .p-2 {
+        padding: 3mm !important;
+    }
+
+    #guide-content-box .mb-4,
+    #guide-content-box .mb-3,
+    #guide-content-box .mb-2 {
+        margin-bottom: 4mm !important;
+    }
+
+    #guide-content-box .d-flex.flex-column > div,
+    #guide-content-box .border,
+    #guide-content-box table,
+    .question-card,
+    .print-solution-item {
+        break-inside: avoid;
         page-break-inside: avoid;
     }
 
-    /* Bloques de código/fórmulas */
-    .formula-list {
-        padding-left: 20px !important;
-        margin-bottom: 15pt !important;
+    .screen-answer-key {
+        display: none !important;
     }
 
-    .formula-list li {
-        font-size: 12pt !important;
-        margin-bottom: 5pt !important;
-        list-style-type: square !important;
+    .banco-visible-section > h2 {
+        margin: 8mm 0 5mm !important;
+        padding-bottom: 3mm !important;
+        border-bottom: 1.5pt solid #111 !important;
+        font-size: 17pt !important;
     }
 
-    /* Ejemplos resueltos */
-    .solved-example {
-        border: 1px solid #cccccc !important;
-        border-radius: 4px !important;
-        padding: 10pt !important;
-        margin-bottom: 12pt !important;
+    .item-block {
+        margin: 0 0 7mm !important;
+        padding: 4mm !important;
+        border: 1px solid #aaa !important;
+        break-inside: avoid;
         page-break-inside: avoid;
-        background: #fdfdfd !important;
     }
 
-    /* Preguntas del banco visible */
-    .exercise-item-block {
-        border-top: 1px solid #333333;
-        padding-top: 15pt !important;
-        margin-top: 25pt !important;
-        page-break-inside: avoid;
+    .item-block h3 {
+        margin: 0 0 2mm !important;
+        font-size: 13pt !important;
     }
 
     .question-card {
-        border: 1px solid #dddddd !important;
-        border-radius: 4px !important;
-        padding: 10pt !important;
-        margin-bottom: 15pt !important;
-        page-break-inside: avoid;
+        margin: 0 0 4mm !important;
+        padding: 3mm !important;
+        border: 1px solid #ccc !important;
+    }
+
+    .question-card ul {
+        margin-bottom: 2mm !important;
+        padding-left: 7mm !important;
+    }
+
+    .badge {
+        border: 1px solid #888 !important;
         background: transparent !important;
     }
 
-    .choices-list {
-        margin-top: 8pt !important;
-        padding-left: 15pt !important;
+    .table-responsive {
+        overflow: visible !important;
     }
 
-    .choice-option {
-        margin-bottom: 4pt !important;
-        list-style-type: lower-alpha !important;
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
     }
 
-    /* Solucionario impreso al final */
+    th,
+    td {
+        padding: 2mm !important;
+        border-bottom: 0.5pt solid #bbb !important;
+        vertical-align: top !important;
+    }
+
+    .katex-display {
+        margin: 3mm 0 !important;
+        overflow: visible !important;
+    }
+
     .print-solution-block {
         display: block !important;
-        margin-top: 30pt !important;
-        border-top: 2px dashed #000000;
-        padding-top: 20pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        break-before: page;
         page-break-before: always;
     }
 
+    .print-solution-block > h2 {
+        margin: 0 0 7mm !important;
+        padding-bottom: 3mm !important;
+        border-bottom: 1.5pt solid #111 !important;
+        font-size: 18pt !important;
+    }
+
+    .print-solution-section {
+        margin-bottom: 8mm;
+    }
+
+    .print-solution-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .print-solution-section > h3 {
+        margin: 0 0 4mm !important;
+        font-size: 13pt !important;
+    }
+
     .print-solution-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15pt;
+        display: block !important;
     }
 
     .print-solution-item {
-        font-size: 10pt !important;
-        margin-bottom: 8pt !important;
-        page-break-inside: avoid;
+        margin: 0 0 4mm !important;
+        padding: 0 0 4mm !important;
+        border-bottom: 0.5pt solid #ccc;
+        font-size: 9.5pt !important;
+    }
+
+    .print-solution-item:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        border-bottom: 0 !important;
     }
 }
 
-/* Ocultar solucionario impreso en pantalla */
-@media screen {
-    .print-solution-block {
-        display: none !important;
-    }
-}
-
-@media (max-width: 576px) {
+@media screen and (max-width: 576px) {
     .guide-main-title {
         font-size: 1.5rem !important;
     }
@@ -155,5 +343,26 @@
     .guide-logo {
         width: 64px;
         height: auto;
+    }
+
+    .guide-header__actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .guide-download-action,
+    .guide-header__actions form,
+    .guide-header__actions button {
+        width: 100%;
+    }
+
+    .guide-header__actions button {
+        justify-content: center;
+    }
+
+    .guide-download-hint {
+        max-width: none;
+        text-align: center;
     }
 }
