@@ -4,4 +4,6 @@
 cmds = ["pip install -r requirements.txt", "python manage.py collectstatic --no-input"]
 
 [start]
-cmd = "python manage.py migrate && python manage.py ensure_admin && python manage.py ensure_site && gunicorn config.wsgi:application"
+# --timeout 120: las llamadas a la IA (extracción de ítems, generación) son síncronas
+# y pueden tardar >30s (el default de gunicorn), lo que abortaba el worker (SystemExit: 1).
+cmd = "python manage.py migrate && python manage.py ensure_admin && python manage.py ensure_site && gunicorn config.wsgi:application --timeout 120"
