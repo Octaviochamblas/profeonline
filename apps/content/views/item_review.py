@@ -593,7 +593,10 @@ def edit_evaluation_quota(request, link_id):
         exercise_item__status="aprobado",
         resource__is_published=True,
     )
-    if not link.exercise_item.topic.structured_bank_enabled:
+    if not (
+        link.exercise_item.topic.structured_bank_enabled
+        and link.exercise_item.topic.is_active
+    ):
         return HttpResponse("Tema no habilitado", status=400)
     try:
         quota = int(request.POST.get("evaluation_quota", 0))

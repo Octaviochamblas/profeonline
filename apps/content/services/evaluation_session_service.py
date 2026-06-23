@@ -71,20 +71,33 @@ def create_evaluation_session(
                     _expire_stale_session(active, now)
                     active.refresh_from_db()
                     if active.status == "en_curso":
+                        if (
+                            kind == "evaluacion_nivel"
+                            and active.resource_id != resource.id
+                        ):
+                            raise ValueError(
+                                "Ya existe una evaluación en curso para este nivel."
+                            )
                         return active
                 maximum = (
                     config.level_eval_attempts
                     if kind == "evaluacion_nivel"
                     else config.final_attempts
                 )
+                sessions = EvaluationSession.objects.filter(
+                    user=user, topic=topic, kind=kind, level=level
+                )
+                attempts_used = (
+                    sessions.filter(resource=resource).count()
+                    if kind == "evaluacion_nivel"
+                    else sessions.count()
+                )
+                if attempts_used >= maximum:
+                    raise ValueError("No quedan intentos disponibles.")
                 last = (
-                    EvaluationSession.objects.filter(
-                        user=user, topic=topic, kind=kind, level=level
-                    ).aggregate(value=Max("attempt_number"))["value"]
+                    sessions.aggregate(value=Max("attempt_number"))["value"]
                     or 0
                 )
-                if last >= maximum:
-                    raise ValueError("No quedan intentos disponibles.")
                 questions = (
                     assemble_level_evaluation(
                         user=user,

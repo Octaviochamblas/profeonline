@@ -39,13 +39,13 @@ repetir variantes hasta agotar el pool, con **temporizadores controlados por el 
    si** promedio ponderado ≥ 80% **y** final ≥ 80%. Integrar con `progress_service`.
 
 ## Criterios de aceptación
-- [ ] Barrera verde. Migraciones, si hay, aditivas.
-- [ ] Cuotas por ítem + no-repetición hasta agotar pool + pool de la final separado.
-- [ ] Distribución final 20/50/30 y duración 45±10% respetadas por el ensamblador.
-- [ ] Timers **server-side**: intento consumido al iniciar, vencimiento marca pendientes incorrectas,
+- [x] Barrera verde. Migraciones, si hay, aditivas.
+- [x] Cuotas por ítem + no-repetición hasta agotar pool + pool de la final separado.
+- [x] Distribución final 20/50/30 y duración 45±10% respetadas por el ensamblador.
+- [x] Timers **server-side**: intento consumido al iniciar, vencimiento marca pendientes incorrectas,
   15 s de tolerancia. Tests de expiración e intentos.
-- [ ] Dominio 60/40 y condición de aprobación (≥80% y final ≥80%) verificados con tests.
-- [ ] Banco visible (Fase 3) y legacy intactos; flag por tema gobierna todo.
+- [x] Dominio 60/40 y condición de aprobación (≥80% y final ≥80%) verificados con tests.
+- [x] Banco visible (Fase 3) y legacy intactos; flag por tema gobierna todo.
 
 ## No-objetivos
 - Exportación PDF (Fase 6); migración legacy + gate de activación + piloto (Fase 7).
@@ -106,11 +106,11 @@ Contrastado contra el código real (`evaluation_session.py`, `topic_bank_config.
   aplicación, no de modelo. Si surge algún campo, **aditivo**.
 
 ### Criterios de aceptación añadidos
-- [ ] Generación + edición + publicación de pools `evaluacion_nivel` y `prueba_final` por
+- [x] Generación + edición + publicación de pools `evaluacion_nivel` y `prueba_final` por
   `evaluation_quota`, con validación por tipo (Fase 4) y `estimated_minutes>0`.
-- [ ] Una sola sesión `en_curso` por `(user,topic,kind,level)`; intento consumido en transacción.
-- [ ] `finalize_session` idempotente y lazy; tests de envío, expiración+gracia y reintentos.
-- [ ] Dominio por último intento (60/40, ≥80% y final ≥80%) con tests, sin tocar progreso legacy.
+- [x] Una sola sesión `en_curso` por `(user,topic,kind,level)`; intento consumido en transacción.
+- [x] `finalize_session` idempotente y lazy; tests de envío, expiración+gracia y reintentos.
+- [x] Dominio por último intento (60/40, ≥80% y final ≥80%) con tests, sin tocar progreso legacy.
 
 **Veredicto: Listo para construir** en `feat/guias-fase5-evaluaciones` (🔨 Antigravity → 🧩 Codex
 audita → 🏛️ Claude cierra). Tarjeta movida a `backlog/3-construccion/`.
@@ -131,3 +131,35 @@ audita → 🏛️ Claude cierra). Tarjeta movida a `backlog/3-construccion/`.
   conocidos; `makemigrations --check --dry-run` sin cambios; pre-commit y diff-check verdes.
 
 **Estado:** construcción terminada; pasa a auditoría independiente. No mergear desde esta etapa.
+
+## Auditoría correctiva del builder — 🧩 Codex (2026-06-22)
+
+Revisión exhaustiva solicitada por el usuario. Hallazgos corregidos antes del gate independiente:
+
+- **P1:** la prueba final sumaba cuotas como si fueran puntos y podía ignorar la cuota de cada
+  ítem/recurso. Se reemplazó por ensamblado acotado que conserva cada cuota, busca combinaciones por
+  puntaje/duración, aplica mayor-resto 20/50/30 y registra desvíos inevitables.
+- **P1:** editar una pregunta de pool oculto cambiaba silenciosamente `mode` a `preparacion`.
+  Ahora conserva `evaluacion` y la publicación valida modo, nivel, puntaje y duración.
+- **P1:** preguntas ya asignadas podían editarse y alterar enunciado, clave o puntaje histórico.
+  Se bloquean mutaciones en panel y admin una vez usadas por una `EvaluationSession`.
+- **P1:** `level_eval_attempts` se consumía globalmente por tema/nivel, impidiendo evaluar un segundo
+  recurso. El límite ahora es por recurso; `attempt_number` mantiene la secuencia global exigida por
+  el constraint existente.
+- **P2:** el dominio ejecutaba un aggregate por recurso/nivel (N+1). Ahora carga sesiones y
+  respuestas en bloque; regresión fija el cálculo en 3 queries.
+- **P2:** la UI mostraba niveles inexistentes y omitía cuotas fallback. Ahora publica solo pares
+  recurso/nivel con cobertura completa y oculta la final incompleta.
+- **P2:** generación IA de pools usaba siempre calibración educativa media/modo de práctica.
+  Ahora envía `resource.get_education_level()` y `mode="evaluacion"`.
+- **P2:** si las variantes no vistas no permitían cumplir duración, la final fallaba aunque el pool
+  completo sí servía. Ahora resetea el ciclo conforme al contrato.
+- **P3:** el intervalo del contador seguía activo después de cerrar/cambiar el reproductor. Ahora se
+  cancela al desconectarse el DOM y valida deadline/formulario.
+
+**Barrera posterior:** `manage.py test` → **510 OK, 1 skip** en 470,555 s; `check --deploy` exit 0
+con 7 warnings locales conocidos; `makemigrations --check --dry-run` → `No changes detected`;
+pre-commit completo, sintaxis Node y `git diff --check` verdes.
+
+No quedan P0/P1 conocidos en esta revisión. Por separación de roles, la tarjeta permanece en
+`4-auditoria/` y el PR sigue bloqueado hasta la auditoría independiente de 🏛️ Claude.

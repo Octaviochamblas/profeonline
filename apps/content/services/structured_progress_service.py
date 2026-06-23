@@ -1,19 +1,23 @@
 """Academic domain for the structured bank, isolated from legacy QuizAttempt."""
 
-from django.db.models import Sum
+from django.db.models import Prefetch
 
-from apps.content.models import EvaluationSession, ResourceExerciseItem
+from apps.content.models import (
+    EvaluationSession,
+    EvaluationSessionAnswer,
+    ResourceExerciseItem,
+)
 
 
 def _score(session):
     if not session:
         return 0
-    totals = session.answers.aggregate(
-        earned=Sum("points_awarded"),
-        possible=Sum("question__points"),
-    )
-    possible = totals["possible"] or 0
-    return round((totals["earned"] or 0) * 100 / possible) if possible else 0
+    answers = getattr(session, "_domain_answers", None)
+    if answers is None:
+        answers = list(session.answers.select_related("question"))
+    earned = sum(answer.points_awarded for answer in answers)
+    possible = sum(answer.question.points for answer in answers)
+    return round(earned * 100 / possible) if possible else 0
 
 
 def get_structured_topic_domain(user, topic):
@@ -28,19 +32,30 @@ def get_structured_topic_domain(user, topic):
         .exclude(evaluation_quota=0, exercise_item__detected_exercise_count=0)
         .values_list("resource_id", "exercise_item__level")
     )
-    sessions = (
+    sessions = list(
         EvaluationSession.objects.filter(
             user=user,
             topic=topic,
-            kind="evaluacion_nivel",
+            kind__in=["evaluacion_nivel", "prueba_final"],
             status__in=["enviada", "vencida"],
         )
-        .prefetch_related("answers__question")
-        .order_by("resource_id", "level", "-attempt_number")
+        .prefetch_related(
+            Prefetch(
+                "answers",
+                queryset=EvaluationSessionAnswer.objects.select_related("question"),
+                to_attr="_domain_answers",
+            )
+        )
+        .order_by("kind", "resource_id", "level", "-attempt_number")
     )
     latest_by_pair = {}
+    latest_final = None
     for session in sessions:
-        latest_by_pair.setdefault((session.resource_id, session.level), session)
+        if session.kind == "evaluacion_nivel":
+            latest_by_pair.setdefault((session.resource_id, session.level), session)
+        elif latest_final is None:
+            latest_final = session
+
     scores_by_level = {1: [], 2: [], 3: []}
     by_resource = {}
     for resource_id, level in required_pairs:
@@ -57,18 +72,7 @@ def get_structured_topic_domain(user, topic):
         if required_levels
         else 0
     )
-    final = (
-        EvaluationSession.objects.filter(
-            user=user,
-            topic=topic,
-            kind="prueba_final",
-            status__in=["enviada", "vencida"],
-        )
-        .prefetch_related("answers__question")
-        .order_by("-attempt_number")
-        .first()
-    )
-    final_score = _score(final)
+    final_score = _score(latest_final)
     weighted = round(levels_average * 0.6 + final_score * 0.4)
     return {
         "resource_scores": by_resource,

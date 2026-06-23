@@ -51,8 +51,15 @@ def _visible_question_publication_error(question):
         return "Selecciona una dificultad válida antes de publicar."
     if not question.hint.strip():
         return "Completa la pista antes de publicar."
-    if question.scope in {"evaluacion_nivel", "prueba_final"} and question.estimated_minutes <= 0:
-        return "Define una duración estimada mayor que cero antes de publicar."
+    if question.scope in {"evaluacion_nivel", "prueba_final"}:
+        if question.estimated_minutes <= 0 or question.points <= 0:
+            return "Define puntaje y duración mayores que cero antes de publicar."
+        if (
+            not question.exercise_item
+            or question.level != question.exercise_item.level
+            or question.mode != "evaluacion"
+        ):
+            return "La pregunta no coincide con el nivel o modo de su ítem."
     if question.question_type == "alternativa":
         choices = list(question.choices.all())
         if len(choices) != 4:
@@ -80,6 +87,18 @@ def _visible_question_publication_error(question):
             "grading_timeout": "La respuesta canónica es demasiado compleja.",
         }
         return messages.get(reason, "La respuesta canónica no es válida para el tipo.")
+    return None
+
+
+def _structured_question_history_error(question):
+    if (
+        question.scope in {"evaluacion_nivel", "prueba_final"}
+        and question.evaluation_sessions.exists()
+    ):
+        return HttpResponse(
+            "La pregunta ya pertenece a una evaluación y no puede editarse.",
+            status=409,
+        )
     return None
 
 
@@ -312,6 +331,9 @@ def edit_question_inline(request, question_id):
         return scope_error
 
     if request.method == "POST":
+        history_error = _structured_question_history_error(question)
+        if history_error:
+            return history_error
         question.text = request.POST.get("text", "").strip()
         question.explanation = request.POST.get("explanation", "").strip()
         try:
@@ -327,7 +349,11 @@ def edit_question_inline(request, question_id):
             if question_type not in dict(Question.QUESTION_TYPE_CHOICES):
                 return HttpResponse("Tipo de pregunta inválido.", status=400)
             question.level = question.exercise_item.level
-            question.mode = "preparacion"
+            question.mode = (
+                "preparacion"
+                if question.scope == "banco_visible"
+                else "evaluacion"
+            )
             question.status = "borrador"
             question.difficulty = difficulty
             question.hint = request.POST.get("hint", "").strip()
@@ -402,6 +428,9 @@ def edit_choice_inline(request, choice_id):
         )
 
     if request.method == "POST":
+        history_error = _structured_question_history_error(question)
+        if history_error:
+            return history_error
         choice.text = request.POST.get("text", "").strip()
         is_correct = request.POST.get("is_correct") in ["true", "on", "checked"]
 
@@ -475,6 +504,9 @@ def add_choice_inline(request, question_id):
     scope_error = _visible_bank_mutation_error(question)
     if scope_error:
         return scope_error
+    history_error = _structured_question_history_error(question)
+    if history_error:
+        return history_error
     if question.scope in STRUCTURED_SCOPES and question.question_type != "alternativa":
         return HttpResponse(
             "Las preguntas de respuesta directa no usan alternativas.",
@@ -523,6 +555,9 @@ def delete_choice(request, choice_id):
     scope_error = _visible_bank_mutation_error(choice.question)
     if scope_error:
         return scope_error
+    history_error = _structured_question_history_error(choice.question)
+    if history_error:
+        return history_error
     if (
         choice.question.scope in STRUCTURED_SCOPES
         and choice.question.question_type != "alternativa"

@@ -49,29 +49,31 @@
         <h2>Evaluaciones del tema</h2>
         <p>Dominio actual: {{ structured_domain.weighted_score }}%</p>
         <div class="d-flex flex-wrap gap-2 mb-3">
-            {% for resource in evaluation_resources %}
-                {% for level in "123" %}
+            {% for option in evaluation_options %}
                 <form hx-post="{% url 'content:start_structured_evaluation' topic.id %}"
                       hx-target="#quiz-player-root" hx-swap="innerHTML">
                     {% csrf_token %}
                     <input type="hidden" name="kind" value="evaluacion_nivel">
-                    <input type="hidden" name="resource_id" value="{{ resource.id }}">
-                    <input type="hidden" name="level" value="{{ level }}">
+                    <input type="hidden" name="resource_id" value="{{ option.resource.id }}">
+                    <input type="hidden" name="level" value="{{ option.level }}">
                     <button type="submit" class="btn btn-secondary btn-sm">
-                        {{ resource.title }} · Nivel {{ level }}
+                        {{ option.resource.title }} · Nivel {{ option.level }}
                     </button>
                 </form>
-                {% endfor %}
             {% empty %}
                 <span class="text-secondary">Aún no hay evaluaciones de nivel configuradas.</span>
             {% endfor %}
         </div>
+        {% if final_evaluation_available %}
         <form hx-post="{% url 'content:start_structured_evaluation' topic.id %}"
               hx-target="#quiz-player-root" hx-swap="innerHTML">
             {% csrf_token %}
             <input type="hidden" name="kind" value="prueba_final">
             <button type="submit" class="btn btn-primary">Iniciar prueba final</button>
         </form>
+        {% else %}
+        <p class="text-secondary">La prueba final aún no tiene cobertura completa.</p>
+        {% endif %}
     </section>
 
     <!-- Banco Visible Agrupado por Ítem -->

@@ -43,6 +43,8 @@ def _validate_candidates(candidates, expected_count):
 
     validated = []
     for candidate in candidates:
+        if not isinstance(candidate, dict):
+            raise ValueError("Cada pregunta generada debe ser un objeto JSON.")
         text = str(candidate.get("text", "")).strip()
         explanation = str(candidate.get("explanation", "")).strip()
         # Normaliza variantes acentuadas de la IA ('Básica'→'basica') a la clave canónica.
@@ -64,6 +66,8 @@ def _validate_candidates(candidates, expected_count):
 
         choices = []
         for raw_choice in raw_choices:
+            if not isinstance(raw_choice, dict):
+                raise ValueError("Cada alternativa debe ser un objeto JSON.")
             choice_text = str(raw_choice.get("text", "")).strip()
             if not choice_text:
                 raise ValueError("El texto de la alternativa no puede estar vacío.")
@@ -170,9 +174,10 @@ def generate_visible_bank_questions(
         candidates = generate_question_candidates(
             resource=resource,
             level=exercise_item.level,
-            mode="preparacion",
+            mode="preparacion" if scope == "banco_visible" else "evaluacion",
             count=count,
             api_key=api_key,
+            education_level=resource.get_education_level(),
             custom_instructions=(
                 "Incluye obligatoriamente difficulty, hint y explanation. "
                 "Incluye estimated_minutes y points como enteros mayores que cero. "

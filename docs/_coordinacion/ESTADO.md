@@ -16,8 +16,10 @@
 - **Guías interactivas - Fase 5 - EN AUDITORÍA 🟡 (2026-06-22):**
   🧩 Codex construyó pools ocultos editoriales, ensamblado por cuotas y distribución 20/50/30,
   no-repetición, sesiones transaccionales con timer server-side, corrección idempotente y dominio
-  estructurado 60/40 aislado del progreso legacy. **502 tests OK** (1 skip), pre-commit verde,
-  sin migraciones. Tarjeta en `backlog/4-auditoria/`; cierre de seguridad reservado a 🏛️ Claude.
+  estructurado 60/40 aislado del progreso legacy. Auditoría correctiva posterior cerró fallos de
+  cuotas/distribución final, modo editorial, intentos multi-recurso, mutabilidad histórica, N+1,
+  disponibilidad y timer. **510 tests OK** (1 skip), pre-commit verde, sin migraciones. Tarjeta en
+  `backlog/4-auditoria/`; auditoría independiente y cierre de seguridad reservados a 🏛️ Claude.
 - **Guías interactivas - Fase 4 - CERRADA 🟢 (2026-06-22):**
   🧩 Codex construyó el parser seguro AST→SymPy; 🏛️ Claude auditó como IA distinta, encontró y
   corrigió **1 hallazgo Medium de DoS** (apilamiento de exponentes que evadía el tope por-exponente y

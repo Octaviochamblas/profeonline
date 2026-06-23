@@ -164,6 +164,24 @@ class QuestionAdmin(admin.ModelAdmin):
     def choices_count(self, obj):
         return obj.choices.count()
 
+    def has_change_permission(self, request, obj=None):
+        if (
+            obj
+            and obj.scope in {"evaluacion_nivel", "prueba_final"}
+            and obj.evaluation_sessions.exists()
+        ):
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if (
+            obj
+            and obj.scope in {"evaluacion_nivel", "prueba_final"}
+            and obj.evaluation_sessions.exists()
+        ):
+            return False
+        return super().has_delete_permission(request, obj)
+
 
 @admin.register(QuizAttempt)
 class QuizAttemptAdmin(admin.ModelAdmin):

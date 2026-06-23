@@ -8,13 +8,18 @@
         var deadline = Date.parse(player.dataset.evaluationDeadline);
         var output = player.querySelector("[data-evaluation-countdown]");
         var form = player.querySelector("[data-evaluation-form]");
+        if (!Number.isFinite(deadline) || !output || !form) return;
         var timer = window.setInterval(function () {
+            if (!document.contains(player)) {
+                window.clearInterval(timer);
+                return;
+            }
             var seconds = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
             var minutes = Math.floor(seconds / 60);
             output.textContent = minutes + ":" + String(seconds % 60).padStart(2, "0");
             if (seconds === 0) {
                 window.clearInterval(timer);
-                if (form) form.requestSubmit();
+                form.requestSubmit();
             }
         }, 250);
     }
