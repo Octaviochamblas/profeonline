@@ -40,7 +40,7 @@ def _effective_evaluation_quota(link):
     return link.evaluation_quota or link.exercise_item.detected_exercise_count
 
 
-def _published_count(*, item, resource, scope, level=None):
+def _published_count(*, item, resource, scope, learning_guide=None):
     filters = {
         "exercise_item": item,
         "resource": resource,
@@ -54,6 +54,9 @@ def _published_count(*, item, resource, scope, level=None):
         filters["estimated_minutes__gt"] = 0
         filters["points__gt"] = 0
         filters["level"] = item.level
+    elif scope == "banco_visible" and learning_guide is not None:
+        # El alumno solo ve el banco ligado a la guía pública vigente: cuenta lo mismo.
+        filters["learning_guide"] = learning_guide
     return Question.objects.filter(**filters).count()
 
 
@@ -129,7 +132,10 @@ def evaluate_topic_gate(topic, *, user):
             eval_quota = _effective_evaluation_quota(link)
             if practice_quota > 0:
                 published = _published_count(
-                    item=item, resource=resource, scope="banco_visible"
+                    item=item,
+                    resource=resource,
+                    scope="banco_visible",
+                    learning_guide=guide,
                 )
                 if published < practice_quota:
                     visible_gaps.append(

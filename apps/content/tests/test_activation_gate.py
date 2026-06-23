@@ -182,3 +182,61 @@ class ActivationGateTests(TestCase):
             reverse("content:learning_guide_detail", args=[self.guide.slug])
         )
         self.assertEqual(detail.status_code, 404)
+
+    # --- Correcciones de la re-auditoría (2026-06-23) --------------------
+
+    def test_merge_items_allowed_in_staging(self):
+        # F7-A: fusionar ítems debe funcionar con el tema en preparación.
+        second = ExerciseItem.objects.create(
+            topic=self.topic, title="F7 Ítem B", level=1,
+            objective="Resolver B", status="aprobado",
+        )
+        response = self.client.post(
+            reverse("content:merge_items"),
+            {"item_ids": [self.item.id, second.id]},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "no tiene el banco estandarizado habilitado")
+
+    def test_edit_practice_quota_allowed_in_staging(self):
+        # F7-B: editar la cuota de práctica debe funcionar en preparación.
+        response = self.client.post(
+            reverse("content:edit_practice_quota", args=[self.link.id]),
+            {"practice_quota": 4},
+            HTTP_HX_REQUEST="true",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.link.refresh_from_db()
+        self.assertEqual(self.link.practice_quota, 4)
+
+    def test_legacy_topic_can_enter_staging_from_panel(self):
+        # F7-C: un tema legacy debe poder verse y marcarse en preparación.
+        legacy = Topic.objects.create(
+            name="F7 Legacy", subject=self.subject,
+            structured_bank_enabled=False, structured_bank_staging=False,
+        )
+        panel = self.client.get(
+            reverse("content:activation_panel"),
+            {"activation_topic_id": legacy.id},
+        )
+        self.assertEqual(panel.status_code, 200)
+        self.assertContains(panel, "Marcar en preparación")
+        # El selector de activación lista el tema legacy.
+        page = self.client.get(reverse("content:item_extraction"))
+        self.assertContains(page, "F7 Legacy")
+        # Marcarlo en preparación.
+        self.client.post(
+            reverse("content:set_staging"),
+            {"topic_id": legacy.id, "staging": "1"},
+        )
+        legacy.refresh_from_db()
+        self.assertTrue(legacy.structured_bank_staging)
+
+    def test_gate_visible_count_respects_published_guide(self):
+        # F7-D: el banco visible ligado a OTRA guía no cuenta como cobertura.
+        Question.objects.filter(scope="banco_visible").update(learning_guide=None)
+        gate = evaluate_topic_gate(self.topic, user=self.admin)
+        self.assertFalse(gate["ok"])
+        self.assertIn(
+            "banco_visible_completo", {c.key for c in gate["checks"] if not c.ok}
+        )

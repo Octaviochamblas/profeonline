@@ -1,6 +1,6 @@
 import logging
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 from collections import defaultdict
@@ -221,8 +221,15 @@ def item_extraction(request):
         Q(structured_bank_enabled=True) | Q(structured_bank_staging=True),
         is_active=True,
     ).order_by("subject__name", "name")
+    # Para la sección de activación: TODOS los temas activos, incluidos los legacy,
+    # para poder marcar uno en preparación (staging) — el selector de ítems solo lista
+    # los editables, así que un tema legacy no podría entrar a staging desde ahí.
+    activation_topics = Topic.objects.filter(is_active=True).order_by(
+        "subject__name", "name"
+    )
     ctx = {
         "topics": topics,
+        "activation_topics": activation_topics,
         "LEVEL_CHOICES": Question.LEVEL_CHOICES,
         "DIFFICULTY_CHOICES": Question.DIFFICULTY_CHOICES,
     }
@@ -451,7 +458,7 @@ def merge_items(request):
         )
 
     topic = items_to_merge[0].topic
-    if not (topic.is_active and topic.structured_bank_enabled):
+    if not (topic.is_active and topic.structured_bank_editable):
         return HttpResponse(
             '<div class="alert alert--danger mb-3">El tema no tiene el banco estandarizado habilitado.</div>',
             status=400,
@@ -572,8 +579,8 @@ def edit_practice_quota(request, link_id):
     item = link.exercise_item
     topic = item.topic
 
-    # Aislamiento por flag de tema
-    if not topic.structured_bank_enabled or not topic.is_active:
+    # Aislamiento por flag de tema (editable = activo o en preparación/staging)
+    if not topic.structured_bank_editable or not topic.is_active:
         return HttpResponse("Tema no habilitado", status=400)
 
     try:

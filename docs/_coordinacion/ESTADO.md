@@ -142,6 +142,13 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-23 — 🏛️ Claude: **Re-auditoría profunda del épico (F1–F7) + correcciones 🟢.**
+  Doc en `docs/auditorias/2026-06-23-auditoria-epico-guias-interactivas.md`. F1–F6 sólidas. 5 hallazgos
+  en F7 (Media/Baja, sin afectar datos), todos corregidos: `merge_items`/`edit_practice_quota` no
+  funcionaban en staging (guard `enabled`→`editable`); un tema legacy no podía entrar a staging desde
+  la UI (selector propio con todos los temas activos); `redirect` no importado en `item_review.py`
+  (bug latente, NameError en ruta no-HTMX); gate contaba banco visible sin filtrar por la guía pública.
+  13 tests F7 (de 9). Sin migraciones. Rama `fix/guias-fase7-auditoria`.
 - 2026-06-23 — 🏛️ Claude: **Fase 7 (gate + piloto) PREFLIGHT + CONSTRUIDA 🟡 — esperando auditor distinto.**
   Modelo de coexistencia (no se toca el legacy). `Topic.structured_bank_staging` (mig. aditiva `0036`)
   + `structured_bank_editable` para preparar con el flag apagado; gate solo-lectura que reusa los
