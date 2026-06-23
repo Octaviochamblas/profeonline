@@ -15,6 +15,11 @@ from apps.content.services.ai_generation_service import (
 
 logger = logging.getLogger(__name__)
 
+# Tope del texto de guía que entra al prompt: acota la latencia de la IA (la llamada
+# es síncrona y debe responder dentro del timeout de gunicorn) y el tamaño del prompt.
+# Coherente con la generación de guías (sources_text[:12000]).
+MAX_ITEM_GUIDE_CHARS = 12000
+
 
 def get_topic_education_level(topic):
     """Calcula el nivel educativo efectivo del tema en base a sus recursos y asignatura.
@@ -152,7 +157,7 @@ RECURSOS DISPONIBLES EN EL TEMA (puedes sugerir asociar a estos IDs):
 {resources_block}
 
 GUÍA DE REFERENCIA PRIVADA (TEXTO A ANALIZAR):
-{quiz_guide.content_text}
+{(quiz_guide.content_text or "")[:MAX_ITEM_GUIDE_CHARS]}
 
 FORMATO DE RESPUESTA REQUERIDO (JSON):
 Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de objetos con el siguiente formato, sin bloques de código markdown, explicaciones previas o posteriores:
