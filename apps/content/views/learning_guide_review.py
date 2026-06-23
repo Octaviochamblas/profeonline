@@ -74,7 +74,7 @@ def learning_guide_review(request):
             id=topic_id
         )
 
-        if not topic.structured_bank_enabled:
+        if not topic.structured_bank_editable:
             return HttpResponse(
                 '<div class="alert alert--danger">El tema seleccionado no tiene activado el banco estructurado.</div>',
                 status=400
@@ -93,8 +93,11 @@ def learning_guide_review(request):
         ctx = _details_context(topic, guide)
         return render(request, "partials/_guide_details_panel.html", ctx)
 
-    # Carga inicial del panel
-    topics = Topic.objects.filter(is_active=True, structured_bank_enabled=True).order_by("subject__name", "name")
+    # Carga inicial del panel (incluye temas en preparación / staging).
+    topics = Topic.objects.filter(
+        Q(structured_bank_enabled=True) | Q(structured_bank_staging=True),
+        is_active=True,
+    ).order_by("subject__name", "name")
     ctx = {
         "topics": topics,
         "LEVEL_CHOICES": Question.LEVEL_CHOICES,
@@ -114,7 +117,7 @@ def generate_guide_draft_view(request):
         return HttpResponse("Falta topic_id", status=400)
 
     topic = get_object_or_404(Topic, id=topic_id)
-    if not topic.structured_bank_enabled:
+    if not topic.structured_bank_editable:
         return HttpResponse("Tema no habilitado para banco estructurado", status=400)
 
     approved_items = topic.exercise_items.filter(status="aprobado")
@@ -187,7 +190,7 @@ def edit_guide_draft_view(request, guide_id):
     if guide.status != "borrador":
         return HttpResponse("Solo se pueden editar guías en estado borrador.", status=400)
 
-    if not topic.structured_bank_enabled:
+    if not topic.structured_bank_editable:
         return HttpResponse("Tema no habilitado para banco estructurado", status=400)
 
     if request.method == "POST":
@@ -256,7 +259,7 @@ def validate_originality_view(request, guide_id):
             id=guide_id,
         )
         topic = Topic.objects.select_for_update().get(id=guide.topic_id)
-        if not topic.structured_bank_enabled:
+        if not topic.structured_bank_editable:
             return HttpResponse("Tema no habilitado para banco estructurado", status=400)
         if guide.status != "borrador":
             return HttpResponse("Solo se pueden validar guías en estado borrador.", status=400)
@@ -299,7 +302,7 @@ def publish_learning_guide_view(request, guide_id):
     guide = get_object_or_404(LearningGuide, id=guide_id)
     topic = guide.topic
 
-    if not topic.structured_bank_enabled:
+    if not topic.structured_bank_editable:
         return HttpResponse("Tema no habilitado para banco estructurado", status=400)
 
     # Iniciar transacción y bloquear Topic y guías en orden estable

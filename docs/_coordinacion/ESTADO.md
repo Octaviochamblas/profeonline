@@ -13,6 +13,15 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
+  🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
+  **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
+  (migración aditiva `0036`) + propiedad `structured_bank_editable` para preparar el tema con el flag
+  apagado; guards admin → `editable`, vistas de alumno siguen en `enabled`. Gate solo-lectura
+  (`activation_gate_service`) que reusa los ensambladores reales; activación admin que **solo enciende
+  el flag si el gate pasa**; rollback = apagar. 9 tests F7. `check --deploy` exit 0,
+  `makemigrations --check` sin cambios. **Gate exige auditoría de IA distinta al builder (🧩 Codex)**;
+  `seguridad:requiere-claude`, auto-merge off. Es la **última fase** del épico.
 - **Guías interactivas - Fase 6 (PDF) - CERRADA 🟢 (2026-06-23):**
   🧩 Codex reconstruyó la impresión nativa contra el markup real: portada A4, tema claro, KaTeX negro,
   saltos de página y solucionario final consolidado. Botón "Descargar PDF", **sin JS ni librerías
@@ -122,6 +131,8 @@
   **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
   `seguridad:requiere-claude`),
   **F5** evaluaciones nivel/final ✅ (cerrada, PR #83), **F6** PDF ✅ (cerrada, PR #84 — print nativo),
+  **F7** gate + piloto (🟡 construida por Claude, en `4-auditoria/`, esperando audit de Codex —
+  **última fase**),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
@@ -131,6 +142,11 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-23 — 🏛️ Claude: **Fase 7 (gate + piloto) PREFLIGHT + CONSTRUIDA 🟡 — esperando auditor distinto.**
+  Modelo de coexistencia (no se toca el legacy). `Topic.structured_bank_staging` (mig. aditiva `0036`)
+  + `structured_bank_editable` para preparar con el flag apagado; gate solo-lectura que reusa los
+  ensambladores; activación admin gobernada por el gate + rollback. 9 tests F7. Rama
+  `feat/guias-fase7-gate-piloto`; `seguridad:requiere-claude`. Audita 🧩 Codex (IA distinta al builder).
 - 2026-06-23 — 🏛️ Claude: **Fase 6 (PDF) AUDITADA Y CERRADA 🟢 — merge de PR #84 a `main`.**
   Auditor distinto al builder (Codex). Fase solo-front: verificado print nativo (sin JS/deps nuevas,
   CSP intacta), el fix del bug de texto invisible (`!important` vence color inline), portada solo-print

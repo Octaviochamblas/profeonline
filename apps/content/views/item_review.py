@@ -26,23 +26,29 @@ VALID_DIFFICULTIES = [diff for diff, _ in Question.DIFFICULTY_CHOICES]
 # --- Helpers de aislamiento (flag por tema) y contexto ---------------------
 
 def _get_enabled_topic(topic_id):
-    """Tema activo con el banco estandarizado habilitado, o 404.
+    """Tema activo cuyo banco estructurado es editable (activo o en preparación), o 404.
 
-    Aísla toda la Fase 1 tras ``Topic.structured_bank_enabled``: un tema con el
-    flag apagado no puede crear ni listar ítems.
+    Aísla los paneles editoriales tras el flag, pero admite el modo *staging* (Fase 7)
+    para poder preparar/clasificar el tema antes de encender el banco para los alumnos.
     """
     return get_object_or_404(
-        Topic, id=topic_id, is_active=True, structured_bank_enabled=True
+        Topic.objects.filter(
+            Q(structured_bank_enabled=True) | Q(structured_bank_staging=True)
+        ),
+        id=topic_id,
+        is_active=True,
     )
 
 
 def _get_enabled_item(item_id):
-    """Ítem cuyo tema está activo y con el flag habilitado, o 404."""
+    """Ítem cuyo tema está activo y con el banco editable (activo o en preparación), o 404."""
     return get_object_or_404(
-        ExerciseItem,
+        ExerciseItem.objects.filter(
+            Q(topic__structured_bank_enabled=True)
+            | Q(topic__structured_bank_staging=True)
+        ),
         id=item_id,
         topic__is_active=True,
-        topic__structured_bank_enabled=True,
     )
 
 
@@ -210,9 +216,10 @@ def item_extraction(request):
         topic = _get_enabled_topic(topic_id)
         return render(request, "partials/_items_list.html", _items_list_context(topic))
 
-    # Carga inicial completa: solo temas con el flag habilitado.
+    # Carga inicial completa: temas con el banco editable (activo o en preparación).
     topics = Topic.objects.filter(
-        is_active=True, structured_bank_enabled=True
+        Q(structured_bank_enabled=True) | Q(structured_bank_staging=True),
+        is_active=True,
     ).order_by("subject__name", "name")
     ctx = {
         "topics": topics,
@@ -594,7 +601,7 @@ def edit_evaluation_quota(request, link_id):
         resource__is_published=True,
     )
     if not (
-        link.exercise_item.topic.structured_bank_enabled
+        link.exercise_item.topic.structured_bank_editable
         and link.exercise_item.topic.is_active
     ):
         return HttpResponse("Tema no habilitado", status=400)

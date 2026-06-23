@@ -38,7 +38,7 @@ def _visible_bank_mutation_error(question):
     if question.scope not in STRUCTURED_SCOPES:
         return None
     topic = question.resource.topic
-    if not topic or not topic.is_active or not topic.structured_bank_enabled:
+    if not topic or not topic.is_active or not topic.structured_bank_editable:
         return HttpResponse("Tema no habilitado.", status=400)
     return None
 
@@ -200,7 +200,7 @@ def question_review(request, slug):
             return HttpResponse("Falta el ítem de aprendizaje", status=400)
 
         topic = resource.topic
-        if not topic.structured_bank_enabled or not topic.is_active:
+        if not topic.structured_bank_editable or not topic.is_active:
             return HttpResponse("Tema no habilitado", status=400)
 
         exercise_item = get_object_or_404(ExerciseItem, id=exercise_item_id)
@@ -602,7 +602,7 @@ def bulk_action_questions(request, resource_id):
 
         # Validar permisos y existencia
         topic = resource.topic
-        if not topic.structured_bank_enabled or not topic.is_active:
+        if not topic.structured_bank_editable or not topic.is_active:
             return HttpResponse("Tema no habilitado", status=400)
 
         exercise_item = get_object_or_404(ExerciseItem, id=exercise_item_id)

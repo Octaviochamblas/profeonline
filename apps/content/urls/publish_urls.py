@@ -51,6 +51,12 @@ from apps.content.views.learning_guide_review import (
     validate_originality_view,
     publish_learning_guide_view,
 )
+from apps.content.views.structured_activation import (
+    activation_panel,
+    set_staging,
+    activate_structured_bank,
+    deactivate_structured_bank,
+)
 
 urlpatterns = [
     path("publicar/estudio/", publish_studio, name="publish_studio"),
@@ -98,6 +104,12 @@ urlpatterns = [
     path("publicar/items/cuota-evaluacion/<int:link_id>/", edit_evaluation_quota, name="edit_evaluation_quota"),
     path("publicar/items/generar-banco-visible/", generate_visible_bank_drafts_view, name="generate_visible_bank_drafts"),
     path("publicar/items/generar-pool-evaluacion/", generate_evaluation_bank_drafts_view, name="generate_evaluation_bank_drafts"),
+
+    # Guías interactivas - Activación del piloto (Fase 7): staging + gate + flag
+    path("publicar/items/activacion/", activation_panel, name="activation_panel"),
+    path("publicar/items/activacion/preparar/", set_staging, name="set_staging"),
+    path("publicar/items/activacion/activar/", activate_structured_bank, name="activate_structured_bank"),
+    path("publicar/items/activacion/desactivar/", deactivate_structured_bank, name="deactivate_structured_bank"),
 
     # Banco de Preguntas - Guías ProfeOnline Originales + Originalidad (Fase 2)
     path("publicar/guias-profeonline/", learning_guide_review, name="learning_guide_review"),

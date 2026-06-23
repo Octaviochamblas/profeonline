@@ -1,0 +1,77 @@
+{% if not topic %}
+    <p class="text-secondary text-center py-3 m-0">Selecciona un tema para ver su estado de activación.</p>
+{% else %}
+    {% if message %}
+        <div class="alert alert--{{ message_kind|default:'info' }} mb-3">{{ message }}</div>
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div>
+            <strong>{{ topic.subject.name }} — {{ topic.name }}</strong>
+            <div>
+                {% if topic.structured_bank_enabled %}
+                    <span class="badge bg-success">Banco activo (visible para alumnos)</span>
+                {% elif topic.structured_bank_staging %}
+                    <span class="badge bg-warning text-dark">En preparación (oculto a alumnos)</span>
+                {% else %}
+                    <span class="badge bg-secondary">Sistema legacy</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            {% if topic.structured_bank_enabled %}
+                <form hx-post="{% url 'content:deactivate_structured_bank' %}"
+                      hx-target="#activation-panel" hx-swap="innerHTML" class="m-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Desactivar (rollback)</button>
+                </form>
+            {% elif topic.structured_bank_staging %}
+                <form hx-post="{% url 'content:set_staging' %}"
+                      hx-target="#activation-panel" hx-swap="innerHTML" class="m-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+                    <input type="hidden" name="staging" value="0">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Quitar de preparación</button>
+                </form>
+                <form hx-post="{% url 'content:activate_structured_bank' %}"
+                      hx-target="#activation-panel" hx-swap="innerHTML" class="m-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+                    <button type="submit" class="btn btn-sm btn-primary"
+                            {% if not gate.ok %}disabled aria-disabled="true"{% endif %}>
+                        Activar banco para alumnos
+                    </button>
+                </form>
+            {% else %}
+                <form hx-post="{% url 'content:set_staging' %}"
+                      hx-target="#activation-panel" hx-swap="innerHTML" class="m-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+                    <input type="hidden" name="staging" value="1">
+                    <button type="submit" class="btn btn-sm btn-secondary">Marcar en preparación</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if gate %}
+        <ul class="list-unstyled m-0">
+            {% for check in gate.checks %}
+                <li class="d-flex align-items-start gap-2 mb-2">
+                    <span aria-hidden="true">{% if check.ok %}✅{% else %}❌{% endif %}</span>
+                    <div>
+                        <span>{{ check.label }}</span>
+                        {% if not check.ok and check.detail %}
+                            <div class="small text-secondary">{{ check.detail }}</div>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if topic.structured_bank_staging and not gate.ok %}
+            <p class="small text-secondary mt-2 mb-0">Completa todos los requisitos para habilitar la activación.</p>
+        {% endif %}
+    {% endif %}
+{% endif %}

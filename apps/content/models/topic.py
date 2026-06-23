@@ -43,6 +43,14 @@ class Topic(models.Model):
         verbose_name="banco estandarizado activado",
         help_text="Si está apagado, el tema usa el sistema de evaluación actual.",
     )
+    structured_bank_staging = models.BooleanField(
+        default=False,
+        verbose_name="banco estandarizado en preparación",
+        help_text=(
+            "Permite preparar/clasificar el banco estructurado del tema en los paneles admin "
+            "SIN exponerlo a los alumnos. La activación real (encender el flag) la hace el gate."
+        ),
+    )
     levels = models.ManyToManyField(
         "content.Level",
         blank=True,
@@ -63,6 +71,16 @@ class Topic(models.Model):
 
     def __str__(self) -> str:
         return f"{self.subject.name} - {self.name}"
+
+    @property
+    def structured_bank_editable(self) -> bool:
+        """¿Se puede editar/preparar el banco estructurado del tema desde los paneles admin?
+
+        Verdadero si el banco ya está activo (live) o si el tema está en preparación
+        (staging). Las vistas de alumno siguen exigiendo ``structured_bank_enabled``: el
+        staging NO expone nada al alumno; solo habilita los paneles editoriales.
+        """
+        return self.structured_bank_enabled or self.structured_bank_staging
 
     def get_ordered_resources(self):
         from django.db.models import Min, Value
