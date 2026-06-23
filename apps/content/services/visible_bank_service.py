@@ -112,7 +112,7 @@ def generate_visible_bank_questions(
     if scope not in allowed_scopes:
         raise ValueError("Ámbito de banco no válido.")
     topic = resource.topic
-    if not topic.structured_bank_enabled or not topic.is_active:
+    if not topic.structured_bank_editable or not topic.is_active:
         raise ValueError("El tema no está activo o no tiene habilitado el banco estructurado.")
     if exercise_item.topic_id != topic.id or exercise_item.status != "aprobado":
         raise ValueError("El ítem debe estar aprobado y pertenecer al tema del recurso.")

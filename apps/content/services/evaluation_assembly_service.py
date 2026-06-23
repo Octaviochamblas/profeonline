@@ -14,7 +14,7 @@ MAX_ASSEMBLY_STATES = 50_000
 
 
 def _base_pool(topic, scope):
-    if not topic.is_active or not topic.structured_bank_enabled:
+    if not topic.is_active or not topic.structured_bank_editable:
         raise ValueError("El tema no tiene habilitado el banco estructurado.")
     return (
         Question.objects.filter(
