@@ -314,9 +314,12 @@ class ItemExtractionTests(TestCase):
         c = Client()
         c.force_login(self.admin_user)
 
-        # No aparece en el selector inicial de temas.
+        # No es editable: queda fuera del selector de ítems del sistema nuevo...
         resp = c.get(reverse("content:item_extraction"))
-        self.assertNotContains(resp, "Tema legacy")
+        self.assertNotIn(off_topic, list(resp.context["topics"]))
+        # ...pero SÍ se ofrece en el selector de activación para poder marcarlo
+        # en preparación (staging) — entrada legítima al piloto (Fase 7).
+        self.assertIn(off_topic, list(resp.context["activation_topics"]))
 
         # load_guides / list_items sobre un tema apagado → 404.
         url = reverse("content:item_extraction")

@@ -32,8 +32,13 @@ def _render_panel(request, topic, *, message="", message_kind="", status=200):
 @user_passes_test(is_admin)
 @require_GET
 def activation_panel(request):
-    """Render the gate checklist for a topic (HTMX)."""
-    topic_id = request.GET.get("topic_id")
+    """Render the gate checklist for a topic (HTMX).
+
+    Usa un parámetro propio (``activation_topic_id``) para no acoplarse al selector de
+    ítems del panel: la activación debe poder elegir cualquier tema activo (incluido un
+    legacy) para marcarlo en preparación.
+    """
+    topic_id = request.GET.get("activation_topic_id") or request.GET.get("topic_id")
     if not topic_id:
         return render(request, "partials/_activation_gate.html", {"topic": None})
     topic = get_object_or_404(Topic, id=topic_id, is_active=True)

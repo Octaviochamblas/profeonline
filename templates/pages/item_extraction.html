@@ -86,10 +86,21 @@
             Prepara el tema con el flag apagado, verifica el gate y, solo si todo está completo,
             actívalo para los alumnos. La activación es reversible.
         </p>
-        <div id="activation-panel"
-             hx-get="{% url 'content:activation_panel' %}"
-             hx-trigger="topicChanged from:body"
-             hx-include="[name='topic_id']">
+        <div class="mb-3" style="max-width: 480px;">
+            <label class="form-label">Tema</label>
+            <select name="activation_topic_id" class="form-control"
+                    hx-get="{% url 'content:activation_panel' %}"
+                    hx-target="#activation-panel"
+                    hx-swap="innerHTML"
+                    hx-trigger="change"
+                    hx-include="this">
+                <option value="">-- Selecciona un tema (incluye legacy) --</option>
+                {% for t in activation_topics %}
+                    <option value="{{ t.id }}">{{ t.subject.name }} - {{ t.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="activation-panel">
             <p class="text-secondary text-center py-3 m-0">Selecciona un tema para ver su estado de activación.</p>
         </div>
     </section>
