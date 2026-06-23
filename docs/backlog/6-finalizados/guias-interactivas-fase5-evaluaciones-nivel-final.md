@@ -1,6 +1,6 @@
 # Guías interactivas — Fase 5: evaluaciones por nivel + prueba final
 
-- **Estado:** 🟢 Preflight resuelto por 🏛️ Claude (2026-06-22) — Ready para construir (🔨 Antigravity)
+- **Estado:** 🟢 Auditada y CERRADA por 🏛️ Claude (2026-06-23) — sin errores, merge de PR #83 a `main`
 - **Creado:** 2026-06-22 · **Epic padre:** `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`
 - **Prioridad:** P1 · **Cartera:** educativa · **Tipo:** producto · pedagogía · **seguridad** (timers server-side)
 - **Dueño:** 🧩 Codex (preflight) → 🔨 Antigravity (construye, rama `feat/guias-fase5-evaluaciones`) → 🧩 Codex (audita) → 🏛️ Claude (cierre)
@@ -163,3 +163,45 @@ pre-commit completo, sintaxis Node y `git diff --check` verdes.
 
 No quedan P0/P1 conocidos en esta revisión. Por separación de roles, la tarjeta permanece en
 `4-auditoria/` y el PR sigue bloqueado hasta la auditoría independiente de 🏛️ Claude.
+
+## Auditoría independiente y cierre — 🏛️ Claude (2026-06-23)
+
+Auditor distinto al builder (🧩 Codex construyó y auto-auditó). Revisión enfocada en seguridad
+(timers, consumo de intentos, aislamiento, reuso del parser de Fase 4) y en los 9 hallazgos
+reportados. **Verdicto: sin errores que corregir** — los fixes están presentes y son correctos.
+
+### Invariantes de seguridad verificadas ✅
+- **Timers 100% server-side:** `expires_at = started_at + config.minutes`; el cliente solo muestra el
+  contador. `finalize_session` recalcula expiración con `select_for_update` (autoridad del servidor).
+- **Consumo de intento transaccional y por-recurso:** lock sobre `Topic`, intento computado dentro de
+  `transaction.atomic`, unique `(user,topic,kind,level,attempt_number)` como backstop con reintento
+  ante `IntegrityError`; los cupos de nivel se cuentan **por recurso** (no globalmente).
+- **Aislamiento:** todo el ensamblado filtra `scope ∈ {evaluacion_nivel|prueba_final}` + `mode=evaluacion`
+  + `estimated_minutes>0`/`points>0`, gobernado por `structured_bank_enabled`. Legacy y banco visible
+  intactos.
+- **Parser seguro de Fase 4 reutilizado** (`grade_answer`) sin reimplementar; expirada ⇒ todo incorrecto.
+- **Protección de historial:** editar/agregar/borrar alternativas de una pregunta ya usada en una
+  evaluación devuelve **409**; las preguntas de pool solo se **archivan** (nunca hard-delete), preservando
+  el FK histórico.
+- **Auth/CSRF:** vistas `@login_required @require_POST`, ownership `user=request.user`, rechazo de
+  llaves ajenas/duplicadas en el submit. Guards anti-DoS en el ensamblador (`MAX_ASSEMBLY_STATES`).
+- **Cobertura (gating):** `_structured_evaluation_availability` solo ofrece niveles/final con cuota
+  **publicada completa** (mismos filtros que `_base_pool`), evitando iniciar evaluaciones sin pool.
+
+### Hallazgos corregidos por el builder (verificados)
+- P1×4: distribución por puntos vs cuota por ítem/recurso; `mode` conservado en pools ocultos; cupos
+  por recurso (no globales); 409 ante modificación de preguntas con historial.
+- P2×4: N+1 del dominio (Prefetch `to_attr`); gating de cobertura; `education_level`+`mode` a la IA;
+  reset del pool ante incompatibilidad de duración.
+- P3: el `setInterval` se cancela al salir del DOM (`!document.contains(player)`).
+
+### Barrera (independiente)
+- **CI Linux `test (3.12)` verde (510 OK, 1 skip)** — barrera real del repo.
+- Local: `check --deploy` exit 0 (7 warnings conocidos); `makemigrations --check` → sin cambios.
+- **Sin migraciones.** Squash-merge de PR **#83** a `main` (`5063113`); `audit:aprobado` aplicado.
+  Tarjeta a `backlog/6-finalizados/`. **Siguiente: Fase 6 (exportación PDF).**
+
+### Observaciones menores (no bloqueantes, registradas)
+- Una sola sesión `en_curso` por `(user,topic,kind,level)` bloquea iniciar otra de un **segundo recurso
+  del mismo nivel** en paralelo (regla "termina la actual primero"; UX aceptable).
+- `finalize_session` corre `grade_answer` dentro del lock de la sesión (impacto menor de rendimiento).

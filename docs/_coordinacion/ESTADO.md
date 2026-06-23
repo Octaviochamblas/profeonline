@@ -13,13 +13,14 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Guías interactivas - Fase 5 - EN AUDITORÍA 🟡 (2026-06-22):**
-  🧩 Codex construyó pools ocultos editoriales, ensamblado por cuotas y distribución 20/50/30,
+- **Guías interactivas - Fase 5 - CERRADA 🟢 (2026-06-23):**
+  🧩 Codex construyó pools ocultos editoriales, ensamblado por cuotas + distribución 20/50/30,
   no-repetición, sesiones transaccionales con timer server-side, corrección idempotente y dominio
-  estructurado 60/40 aislado del progreso legacy. Auditoría correctiva posterior cerró fallos de
-  cuotas/distribución final, modo editorial, intentos multi-recurso, mutabilidad histórica, N+1,
-  disponibilidad y timer. **510 tests OK** (1 skip), pre-commit verde, sin migraciones. Tarjeta en
-  `backlog/4-auditoria/`; auditoría independiente y cierre de seguridad reservados a 🏛️ Claude.
+  estructurado 60/40 aislado del progreso legacy (9 hallazgos propios corregidos). 🏛️ Claude auditó
+  como IA distinta: verificó timers server-side, intentos transaccionales por-recurso, aislamiento por
+  scope+flag, reuso del parser de Fase 4, protección de historial (409) y gating de cobertura — **sin
+  errores que corregir**. **CI Linux verde (510 OK, 1 skip)**, sin migraciones. Squash-merge de PR
+  **#83** a `main` (`5063113`). Tarjeta en `backlog/6-finalizados/`. **Siguiente: Fase 6 (PDF).**
 - **Guías interactivas - Fase 4 - CERRADA 🟢 (2026-06-22):**
   🧩 Codex construyó el parser seguro AST→SymPy; 🏛️ Claude auditó como IA distinta, encontró y
   corrigió **1 hallazgo Medium de DoS** (apilamiento de exponentes que evadía el tope por-exponente y
@@ -112,7 +113,7 @@
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
   **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
   `seguridad:requiere-claude`),
-  **F5** evaluaciones nivel/final (🟢 Ready tras preflight, en `3-construccion/`), **F6** PDF (🟡),
+  **F5** evaluaciones nivel/final ✅ (cerrada, PR #83), **F6** PDF (🟡 — siguiente),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
@@ -122,6 +123,13 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-23 — 🏛️ Claude: **Fase 5 AUDITADA Y CERRADA 🟢 — merge de PR #83 a `main`.**
+  Auditor distinto al builder (Codex). Verificadas las invariantes sensibles: timers 100% server-side,
+  consumo de intento transaccional y **por-recurso** (no global), aislamiento `scope+flag`, reuso del
+  parser seguro de Fase 4, **protección de historial** (409 al editar preguntas ya usadas; pools solo se
+  archivan), ownership/CSRF, guards anti-DoS del ensamblador y gating de cobertura. Los 9 hallazgos del
+  self-audit de Codex están corregidos; **no encontré P0/P1 nuevos**. CI Linux verde (510 OK, 1 skip),
+  sin migraciones. `audit:aprobado` aplicado.
 - 2026-06-22 — 🏛️ Claude: **Preflight Fase 5 RESUELTO 🟢 — Ready para construir.**
   Contrastado contra el código real. Hueco de alcance resuelto (decisión 🧑: **Fase 5 incluye la
   generación de los pools ocultos** — `visible_bank_service` hardcodea `banco_visible`). Contradicciones
