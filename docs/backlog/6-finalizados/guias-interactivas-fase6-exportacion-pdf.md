@@ -1,6 +1,6 @@
 # Guías interactivas — Fase 6: exportación PDF
 
-- **Estado:** 🟢 Preflight resuelto por 🏛️ Claude (2026-06-23) — Ready para construir (🔨 Antigravity)
+- **Estado:** 🟢 Auditada y CERRADA por 🏛️ Claude (2026-06-23) — sin errores, merge de PR #84 a `main`
 - **Creado:** 2026-06-22 · **Epic padre:** `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`
 - **Prioridad:** P2 · **Cartera:** educativa · **Tipo:** producto
 - **Dueño:** 🧩 Codex (preflight) → 🔨 Antigravity (construye, rama `feat/guias-fase6-pdf`) → 🧩 Codex (audita) → 🏛️ Claude (cierre)
@@ -135,3 +135,35 @@ en el markup (`.guide-section`, `.formula-list`, `.solved-example`, `.choices-li
 - `pre-commit run --all-files` y `git diff --check` verdes.
 
 **Estado:** construcción terminada; pasa a auditoría independiente. No mergear desde esta etapa.
+
+## Auditoría independiente y cierre — 🏛️ Claude (2026-06-23)
+
+Auditor distinto al builder (🧩 Codex). Fase solo-front (CSS + template + label).
+**Verdicto: sin errores que corregir.** La implementación cubre cada punto del preflight.
+
+### Verificado contra el markup real ✅
+- **Decisión respetada:** print nativo (`window.print()`); **sin JS nuevo** ni dependencias; CSP intacta.
+  El test fija la decisión con `assertNotContains("html2pdf")`.
+- **Bug de texto invisible resuelto correctamente:** `.guide-container * { color:#000 !important }` —
+  un `!important` de hoja de estilos vence al `color` inline sin `!important` (era el riesgo clave del
+  preflight). Fondos cubiertos por `[class*="bg-"]`/`[style*="background"]`.
+- **Portada solo-print** (`.print-cover`, A4, `page-break-after`) con logo+título+asignatura+fecha;
+  `aria-hidden="true"` + `alt=""` (a11y correcta: el título real sigue en el header para pantalla/SR).
+  El header interactivo se oculta en print.
+- **Doble solucionario consolidado:** `.screen-answer-key` oculto en print; el `print-solution-block`
+  muestra "Ejercicios de la guía" (`answer_key`) + "Banco práctico" una sola vez.
+- **Saltos de página** (`page-break-inside: avoid`) en `.item-block`/`.question-card`/cajas del
+  content-box; KaTeX forzado a negro; cache-buster `?v=2 → ?v=3`.
+- Test `test_learning_guide_print` significativo (verifica portada, label, hint, solucionario, `?v=3`,
+  ausencia de html2pdf).
+
+### Barrera (independiente)
+- **CI Linux `test (3.12)` verde (511 OK, 1 skip)** — barrera real del repo.
+- **Sin migraciones** (front-only); pre-commit verde. QA del builder: PDF A4 real de 7 páginas +
+  móviles 320/360/390 sin overflow.
+- Squash-merge de PR **#84** a `main` (`22d3d7d`); `audit:aprobado` aplicado. Tarjeta a
+  `backlog/6-finalizados/`. **Siguiente: Fase 7 (migración legacy + gate de activación + piloto).**
+
+### Observación menor (no bloqueante)
+- `@media print { form { display:none } }` es amplio, pero inocuo: todas las forms del detalle son
+  interactivas y ya están en secciones `.no-print`.

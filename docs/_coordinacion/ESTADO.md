@@ -13,11 +13,14 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Guías interactivas - Fase 6 - EN AUDITORÍA 🟡 (2026-06-23):**
-  🧩 Codex reconstruyó la impresión nativa contra el markup real: portada, tema claro, KaTeX negro,
-  saltos de página y solucionario final consolidado. Botón relabelado a “Descargar PDF”, sin JS ni
-  librerías nuevas. QA real: PDF A4 de 7 páginas + 320/360/390 sin overflow. **511 tests OK**
-  (1 skip), sin migraciones, pre-commit verde. Tarjeta en `backlog/4-auditoria/`; cierre por 🏛️ Claude.
+- **Guías interactivas - Fase 6 (PDF) - CERRADA 🟢 (2026-06-23):**
+  🧩 Codex reconstruyó la impresión nativa contra el markup real: portada A4, tema claro, KaTeX negro,
+  saltos de página y solucionario final consolidado. Botón "Descargar PDF", **sin JS ni librerías
+  nuevas** (CSP intacta). 🏛️ Claude auditó como IA distinta: verificó la decisión de print nativo, el
+  fix de especificidad (`!important` vence color inline), portada con a11y correcta y solucionario
+  único — **sin errores**. **CI Linux verde (511 OK, 1 skip)**, sin migraciones. Squash-merge de PR
+  **#84** a `main` (`22d3d7d`). Tarjeta en `backlog/6-finalizados/`. **Siguiente: Fase 7 (migración
+  legacy + gate + piloto) — última del épico.**
 - **Guías interactivas - Fase 5 - CERRADA 🟢 (2026-06-23):**
   🧩 Codex construyó pools ocultos editoriales, ensamblado por cuotas + distribución 20/50/30,
   no-repetición, sesiones transaccionales con timer server-side, corrección idempotente y dominio
@@ -118,8 +121,7 @@
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
   **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
   `seguridad:requiere-claude`),
-  **F5** evaluaciones nivel/final ✅ (cerrada, PR #83), **F6** PDF (🟢 Ready tras preflight, en
-  `3-construccion/` — print nativo),
+  **F5** evaluaciones nivel/final ✅ (cerrada, PR #83), **F6** PDF ✅ (cerrada, PR #84 — print nativo),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
@@ -129,6 +131,11 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-23 — 🏛️ Claude: **Fase 6 (PDF) AUDITADA Y CERRADA 🟢 — merge de PR #84 a `main`.**
+  Auditor distinto al builder (Codex). Fase solo-front: verificado print nativo (sin JS/deps nuevas,
+  CSP intacta), el fix del bug de texto invisible (`!important` vence color inline), portada solo-print
+  con a11y correcta, solucionario único consolidado y saltos de página. Test fija la decisión
+  (`assertNotContains("html2pdf")`). CI Linux verde (511 OK, 1 skip), sin migraciones. **Sin errores.**
 - 2026-06-23 — 🏛️ Claude: **Preflight Fase 6 (PDF) RESUELTO 🟢 — Ready para 🔨 Antigravity.**
   Decisión del 🧑: **print nativo** (`window.print()` + `@media print`), NO html2pdf.js (riesgo
   `unsafe-eval`/CSP, rasterización del tema oscuro, ~1 MB JS). Realidad encontrada: el
