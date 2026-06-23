@@ -113,7 +113,8 @@
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
   **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
   `seguridad:requiere-claude`),
-  **F5** evaluaciones nivel/final ✅ (cerrada, PR #83), **F6** PDF (🟡 — siguiente),
+  **F5** evaluaciones nivel/final ✅ (cerrada, PR #83), **F6** PDF (🟢 Ready tras preflight, en
+  `3-construccion/` — print nativo),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
@@ -123,6 +124,14 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-23 — 🏛️ Claude: **Preflight Fase 6 (PDF) RESUELTO 🟢 — Ready para 🔨 Antigravity.**
+  Decisión del 🧑: **print nativo** (`window.print()` + `@media print`), NO html2pdf.js (riesgo
+  `unsafe-eval`/CSP, rasterización del tema oscuro, ~1 MB JS). Realidad encontrada: el
+  `learning-guide-print.css` está **obsoleto** (apunta a clases inexistentes), `header{display:none}`
+  **oculta logo+título** (no hay portada) y las clases Bootstrap/inline dejan **texto invisible** en
+  papel. Alcance afinado: reescribir el print CSS contra el markup real, portada solo-print, forzar
+  texto negro, resolver doble solucionario, relabelar botón. **Sin migraciones** (front).
+  Tarjeta en `backlog/3-construccion/`; rama `feat/guias-fase6-pdf`.
 - 2026-06-23 — 🏛️ Claude: **Fase 5 AUDITADA Y CERRADA 🟢 — merge de PR #83 a `main`.**
   Auditor distinto al builder (Codex). Verificadas las invariantes sensibles: timers 100% server-side,
   consumo de intento transaccional y **por-recurso** (no global), aislamiento `scope+flag`, reuso del
