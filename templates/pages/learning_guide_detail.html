@@ -5,6 +5,14 @@
 
 {% block content %}
 <div class="container py-4 guide-container" style="max-width: 1000px; font-family: 'Outfit', 'Inter', sans-serif; color: #f8fafc;">
+    <section class="print-cover" aria-hidden="true">
+        <img src="{% static 'img/logo.png' %}" alt="" class="print-cover__logo">
+        <p class="print-cover__eyebrow">Guía oficial ProfeOnline</p>
+        <h1 class="print-cover__title">{{ guide.title }}</h1>
+        <p class="print-cover__meta"><strong>Asignatura:</strong> {{ topic.subject.name }}</p>
+        <p class="print-cover__meta"><strong>Tema:</strong> {{ topic.name }}</p>
+        <p class="print-cover__date">Generado el {% now "d/m/Y" %}</p>
+    </section>
     <!-- Breadcrumbs (no-print) -->
     <nav class="mb-4 no-print" aria-label="Breadcrumbs">
         <a href="{% url 'content:topic_detail' topic.slug %}" class="text-teal text-decoration-none d-inline-flex align-items-center gap-1" style="color: #0d9488; font-weight: 500;">
@@ -27,10 +35,15 @@
                 </div>
             </div>
 
-            <div class="d-flex gap-2 no-print">
-                <button type="button" data-print-guide class="btn btn-outline-light d-flex align-items-center gap-2" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
-                    🖨️ Imprimir Guía
-                </button>
+            <div class="d-flex gap-2 no-print guide-header__actions">
+                <div class="guide-download-action">
+                    <button type="button" data-print-guide class="btn btn-outline-light d-flex align-items-center gap-2" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                        Descargar PDF
+                    </button>
+                    <small class="d-block text-secondary mt-1 guide-download-hint">
+                        Elige “Guardar como PDF” en el diálogo.
+                    </small>
+                </div>
                 <form hx-post="{% url 'content:start_visible_practice' topic.id %}" hx-target="#quiz-player-root" hx-swap="innerHTML" class="m-0">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary d-flex align-items-center gap-2" style="background-color: #0d9488; border: none; color: white; padding: 8px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
@@ -210,8 +223,32 @@
 
     <!-- Solucionario impreso (visible solo al imprimir en papel) -->
     <section class="print-solution-block">
-        <h2 style="font-size: 16pt; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 15pt;">Solucionario de la Guía</h2>
-        <div class="print-solution-grid">
+        <h2>Solucionario</h2>
+        {% if guide.structured_content.answer_key %}
+        <section class="print-solution-section">
+            <h3>Ejercicios de la guía</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ejercicio</th>
+                        <th>Solución</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for answer in guide.structured_content.answer_key %}
+                    <tr>
+                        <td><strong>{{ answer.exercise_id }}</strong></td>
+                        <td>{{ answer.solution }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        {% endif %}
+        {% if total_questions %}
+        <section class="print-solution-section">
+            <h3>Banco práctico</h3>
+            <div class="print-solution-grid">
             {% for grouped in sorted_items %}
                 {% for q in grouped.normal %}
                     <div class="print-solution-item">
@@ -230,13 +267,15 @@
                     </div>
                 {% endfor %}
             {% endfor %}
-        </div>
+            </div>
+        </section>
+        {% endif %}
     </section>
 </div>
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/learning-guide-print.css' %}?v=2">
+<link rel="stylesheet" href="{% static 'css/learning-guide-print.css' %}?v=3">
 {% endblock %}
 
 {% block extra_js %}

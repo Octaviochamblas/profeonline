@@ -28,10 +28,10 @@ cliente **después** de que KaTeX haya renderizado las fórmulas, sin almacenar 
 4. JS en archivo externo con nonce + `?v=N`; nada inline. **No** persistir el PDF (descarga directa).
 
 ## Criterios de aceptación
-- [ ] Barrera verde. Sin migraciones (es front).
-- [ ] El PDF se genera con fórmulas YA renderizadas (no LaTeX crudo), con portada y solucionario.
-- [ ] Saltos de página correctos; sin almacenamiento server-side.
-- [ ] CSP intacta (vendor self-host + nonce); cache-buster en assets nuevos. QA en escritorio y móvil.
+- [x] Barrera verde. Sin migraciones (es front).
+- [x] El PDF se genera con fórmulas YA renderizadas (no LaTeX crudo), con portada y solucionario.
+- [x] Saltos de página correctos; sin almacenamiento server-side.
+- [x] CSP intacta; sin JS nuevo y cache-buster actualizado. QA en escritorio y móvil.
 
 ## No-objetivos
 - Generación server-side de PDF; almacenamiento/caché de PDFs.
@@ -93,13 +93,13 @@ en el markup (`.guide-section`, `.formula-list`, `.solved-example`, `.choices-li
 5. **Cache-buster:** subir `?v=` del CSS modificado (hoy `?v=2`).
 
 ### Criterios de aceptación
-- [ ] Barrera verde. **Sin migraciones** (solo front: CSS + template + label).
-- [ ] El PDF (vía print) sale con **portada** (logo+título), cuerpo legible en **tema claro**, fórmulas
+- [x] Barrera verde. **Sin migraciones** (solo front: CSS + template + label).
+- [x] El PDF (vía print) sale con **portada** (logo+título), cuerpo legible en **tema claro**, fórmulas
   KaTeX **en negro** y **un** solucionario claro.
-- [ ] Todo `.no-print`/controles/evaluaciones ocultos; saltos de página razonables; sin texto gris/blanco
+- [x] Todo `.no-print`/controles/evaluaciones ocultos; saltos de página razonables; sin texto gris/blanco
   invisible.
-- [ ] **CSP intacta** (no se agrega JS ni inline; solo CSS). Cache-buster actualizado.
-- [ ] QA en print-preview de **escritorio y móvil** (320/360/390) con una guía real con varias fórmulas.
+- [x] **CSP intacta** (no se agrega JS ni inline; solo CSS). Cache-buster actualizado.
+- [x] QA en print-preview de **escritorio y móvil** (320/360/390) con una guía real con varias fórmulas.
 
 ### No-objetivos / Riesgos
 - Sin html2pdf, sin generación/almacenamiento server-side de PDF (descartados).
@@ -108,3 +108,30 @@ en el markup (`.guide-section`, `.formula-list`, `.solved-example`, `.choices-li
 
 **Veredicto: Listo para construir** en `feat/guias-fase6-pdf` (🔨 Antigravity → 🧩 Codex audita →
 🏛️ Claude cierra). Tarjeta movida a `backlog/3-construccion/`.
+
+## Construcción — 🧩 Codex (2026-06-23)
+
+- Reescrito `learning-guide-print.css` contra las clases y estilos inline reales. En impresión se
+  resetean contenedores globales, fondos oscuros, sombras y colores Bootstrap; KaTeX hereda negro.
+- Agregada portada solo-print con logo, título, asignatura, tema y fecha; A4 con márgenes definidos.
+- Botón relabelado a **Descargar PDF** con microcopy de “Guardar como PDF”; conserva
+  `data-print-guide` y `window.print()`. No se agregó JS, vendor, CDN ni persistencia server-side.
+- **Decisión del solucionario:** el `answer_key` sigue visible en pantalla, pero se oculta en print.
+  Al final del PDF hay un único bloque “Solucionario”, con secciones “Ejercicios de la guía” y
+  “Banco práctico”; así no se duplica ni se confunden sus fuentes.
+- Agregados saltos/guards para portada, ítems, preguntas y soluciones. Se ocultan navegación,
+  evaluaciones, formularios, CTA, footer, overlay y WhatsApp flotante.
+- Cache-buster del CSS actualizado de `?v=2` a `?v=3`; regresión de template añadida.
+
+### Evidencia
+
+- QA con guía local realista: 3 fórmulas principales y 90 nodos KaTeX renderizados.
+- Chrome print nativo/headless → PDF **A4 de 7 páginas**, portada y solucionario completos, texto
+  seleccionable, sin página final vacía, CTA, WhatsApp ni controles.
+- Responsive 320/360/390 px: `scrollWidth == viewport`, sin overflow; botón/microcopy apilados.
+- `manage.py test` → **511 OK, 1 skip** en 836,877 s.
+- `check --deploy` exit 0 con 7 warnings locales conocidos.
+- `makemigrations --check --dry-run` → `No changes detected`.
+- `pre-commit run --all-files` y `git diff --check` verdes.
+
+**Estado:** construcción terminada; pasa a auditoría independiente. No mergear desde esta etapa.
