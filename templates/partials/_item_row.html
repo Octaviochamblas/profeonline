@@ -168,6 +168,68 @@
                 </span>
             {% endif %}
         </div>
+
+        <div class="resources-box p-2 rounded mt-3" style="background: rgba(124, 58, 237, 0.08); border: 1px solid rgba(124, 58, 237, 0.25); font-size: 0.85rem;">
+            <div class="mb-2"><strong>Pools ocultos de evaluación</strong></div>
+            {% for link in item.resource_links.all %}
+            <div class="mb-3 p-2 rounded" style="background: rgba(0, 0, 0, 0.18);">
+                <strong>{{ link.resource.title }}</strong>
+                <form hx-post="{% url 'content:edit_evaluation_quota' link.id %}"
+                      hx-target="#item-row-{{ item.id }}" hx-swap="outerHTML"
+                      class="d-flex gap-1 align-items-center my-2">
+                    {% csrf_token %}
+                    <label for="eval-quota-{{ link.id }}">Cuota</label>
+                    <input id="eval-quota-{{ link.id }}" type="number"
+                           name="evaluation_quota" value="{{ link.evaluation_quota }}"
+                           min="0" max="50" class="form-control form-control-sm"
+                           style="width: 75px;">
+                    <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
+                </form>
+                <div class="d-flex flex-wrap gap-2">
+                    {% if link.level_pool_deficit %}
+                    <form hx-post="{% url 'content:generate_evaluation_bank_drafts' %}"
+                          hx-target="#item-row-{{ item.id }}" hx-swap="outerHTML">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="hidden" name="resource_id" value="{{ link.resource.id }}">
+                        <input type="hidden" name="scope" value="evaluacion_nivel">
+                        <button class="btn btn-primary btn-sm" type="submit">
+                            Generar nivel ({{ link.level_pool_deficit }})
+                        </button>
+                    </form>
+                    {% endif %}
+                    <a class="btn btn-secondary btn-sm"
+                       href="{% url 'content:question_review' link.resource.slug %}?scope=evaluacion_nivel&exercise_item_id={{ item.id }}">
+                        Revisar nivel
+                    </a>
+                    {% if link.final_pool_deficit %}
+                    <form hx-post="{% url 'content:generate_evaluation_bank_drafts' %}"
+                          hx-target="#item-row-{{ item.id }}" hx-swap="outerHTML">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="hidden" name="resource_id" value="{{ link.resource.id }}">
+                        <input type="hidden" name="scope" value="prueba_final">
+                        <button class="btn btn-primary btn-sm" type="submit">
+                            Generar final ({{ link.final_pool_deficit }})
+                        </button>
+                    </form>
+                    {% endif %}
+                    <a class="btn btn-secondary btn-sm"
+                       href="{% url 'content:question_review' link.resource.slug %}?scope=prueba_final&exercise_item_id={{ item.id }}">
+                        Revisar final
+                    </a>
+                </div>
+                <small class="text-secondary">
+                    Nivel: {{ link.level_pool_draft_count }} borrador /
+                    {{ link.level_pool_published_count }} publicada ·
+                    Final: {{ link.final_pool_draft_count }} borrador /
+                    {{ link.final_pool_published_count }} publicada
+                </small>
+            </div>
+            {% empty %}
+            <span class="text-secondary">Vincula un recurso para configurar los pools.</span>
+            {% endfor %}
+        </div>
         {% endif %}
     </td>
 

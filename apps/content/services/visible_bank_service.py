@@ -24,6 +24,8 @@ def _generate_mock_visible_bank_candidates(exercise_item, resource, count):
             "explanation": f"Explicación detallada {index + 1}.\n1. Paso uno.\n2. Paso dos.",
             "difficulty": difficulties[index % len(difficulties)],
             "hint": f"Pista simulada para la pregunta {index + 1}.",
+            "estimated_minutes": 1,
+            "points": 1,
             "choices": [
                 {"text": f"Respuesta correcta {index + 1}", "is_correct": True},
                 {"text": f"Distractor A {index + 1}", "is_correct": False},
@@ -41,20 +43,31 @@ def _validate_candidates(candidates, expected_count):
 
     validated = []
     for candidate in candidates:
+        if not isinstance(candidate, dict):
+            raise ValueError("Cada pregunta generada debe ser un objeto JSON.")
         text = str(candidate.get("text", "")).strip()
         explanation = str(candidate.get("explanation", "")).strip()
         # Normaliza variantes acentuadas de la IA ('Básica'→'basica') a la clave canónica.
         difficulty = Question.normalize_difficulty(candidate.get("difficulty"))
         hint = str(candidate.get("hint", "")).strip()
         raw_choices = candidate.get("choices", [])
+        try:
+            estimated_minutes = int(candidate.get("estimated_minutes", 1))
+            points = int(candidate.get("points", 1))
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Puntaje o duración estimada no válidos.") from exc
 
         if not text or not explanation or not difficulty or not hint:
             raise ValueError("Estructura de pregunta incompleta en la respuesta de la IA.")
         if not isinstance(raw_choices, list) or len(raw_choices) != 4:
             raise ValueError("Cada pregunta debe contener exactamente 4 alternativas.")
+        if estimated_minutes <= 0 or points <= 0:
+            raise ValueError("Puntaje y duración estimada deben ser mayores que cero.")
 
         choices = []
         for raw_choice in raw_choices:
+            if not isinstance(raw_choice, dict):
+                raise ValueError("Cada alternativa debe ser un objeto JSON.")
             choice_text = str(raw_choice.get("text", "")).strip()
             if not choice_text:
                 raise ValueError("El texto de la alternativa no puede estar vacío.")
@@ -78,6 +91,8 @@ def _validate_candidates(candidates, expected_count):
                 "hint": hint,
                 "choices": choices,
                 "canonical_answer": correct_choices[0]["text"],
+                "estimated_minutes": estimated_minutes,
+                "points": points,
             }
         )
     return validated
@@ -90,8 +105,12 @@ def generate_visible_bank_questions(
     learning_guide,
     count=None,
     api_key=None,
+    scope="banco_visible",
 ) -> list[Question]:
     """Generate validated draft questions for one item/resource link."""
+    allowed_scopes = {"banco_visible", "evaluacion_nivel", "prueba_final"}
+    if scope not in allowed_scopes:
+        raise ValueError("Ámbito de banco no válido.")
     topic = resource.topic
     if not topic.structured_bank_enabled or not topic.is_active:
         raise ValueError("El tema no está activo o no tiene habilitado el banco estructurado.")
@@ -115,10 +134,14 @@ def generate_visible_bank_questions(
     active_count = Question.objects.filter(
         exercise_item=exercise_item,
         resource=resource,
-        scope="banco_visible",
+        scope=scope,
         status__in=["borrador", "publicada"],
     ).count()
-    quota = resource_link.practice_quota or exercise_item.detected_exercise_count
+    quota = (
+        resource_link.practice_quota
+        if scope == "banco_visible"
+        else resource_link.evaluation_quota
+    ) or exercise_item.detected_exercise_count
     if count is None:
         count = max(0, quota - active_count)
     try:
@@ -151,11 +174,13 @@ def generate_visible_bank_questions(
         candidates = generate_question_candidates(
             resource=resource,
             level=exercise_item.level,
-            mode="preparacion",
+            mode="preparacion" if scope == "banco_visible" else "evaluacion",
             count=count,
             api_key=api_key,
+            education_level=resource.get_education_level(),
             custom_instructions=(
                 "Incluye obligatoriamente difficulty, hint y explanation. "
+                "Incluye estimated_minutes y points como enteros mayores que cero. "
                 "difficulty debe ser basica, intermedia, avanzada o desafio, "
                 "calibrada al nivel educativo del recurso. Devuelve exactamente "
                 "cuatro alternativas y una sola correcta."
@@ -171,18 +196,23 @@ def generate_visible_bank_questions(
         current_active = Question.objects.filter(
             exercise_item=exercise_item,
             resource=resource,
-            scope="banco_visible",
+            scope=scope,
             status__in=["borrador", "publicada"],
         ).count()
         current_quota = (
-            locked_link.practice_quota or exercise_item.detected_exercise_count
+            (
+                locked_link.practice_quota
+                if scope == "banco_visible"
+                else locked_link.evaluation_quota
+            )
+            or exercise_item.detected_exercise_count
         )
         validated = validated[: max(0, current_quota - current_active)]
         last_order = (
             Question.objects.filter(
                 exercise_item=exercise_item,
                 resource=resource,
-                scope="banco_visible",
+                scope=scope,
             )
             .order_by("-order")
             .values_list("order", flat=True)
@@ -194,7 +224,7 @@ def generate_visible_bank_questions(
             question = Question.objects.create(
                 resource=resource,
                 level=exercise_item.level,
-                mode="preparacion",
+                mode="preparacion" if scope == "banco_visible" else "evaluacion",
                 text=candidate["text"],
                 explanation=candidate["explanation"],
                 status="borrador",
@@ -204,8 +234,10 @@ def generate_visible_bank_questions(
                 difficulty=candidate["difficulty"],
                 hint=candidate["hint"],
                 canonical_answer=candidate["canonical_answer"],
-                scope="banco_visible",
+                scope=scope,
                 learning_guide=learning_guide,
+                estimated_minutes=candidate["estimated_minutes"],
+                points=candidate["points"],
             )
             Choice.objects.bulk_create(
                 [

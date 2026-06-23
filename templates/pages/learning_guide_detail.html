@@ -45,6 +45,37 @@
         {% include "partials/_guide_content_box.html" %}
     </main>
 
+    <section class="no-print p-4 rounded mb-4" style="background:rgba(124,58,237,.08); border:1px solid rgba(124,58,237,.25);">
+        <h2>Evaluaciones del tema</h2>
+        <p>Dominio actual: {{ structured_domain.weighted_score }}%</p>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            {% for option in evaluation_options %}
+                <form hx-post="{% url 'content:start_structured_evaluation' topic.id %}"
+                      hx-target="#quiz-player-root" hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <input type="hidden" name="kind" value="evaluacion_nivel">
+                    <input type="hidden" name="resource_id" value="{{ option.resource.id }}">
+                    <input type="hidden" name="level" value="{{ option.level }}">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                        {{ option.resource.title }} · Nivel {{ option.level }}
+                    </button>
+                </form>
+            {% empty %}
+                <span class="text-secondary">Aún no hay evaluaciones de nivel configuradas.</span>
+            {% endfor %}
+        </div>
+        {% if final_evaluation_available %}
+        <form hx-post="{% url 'content:start_structured_evaluation' topic.id %}"
+              hx-target="#quiz-player-root" hx-swap="innerHTML">
+            {% csrf_token %}
+            <input type="hidden" name="kind" value="prueba_final">
+            <button type="submit" class="btn btn-primary">Iniciar prueba final</button>
+        </form>
+        {% else %}
+        <p class="text-secondary">La prueba final aún no tiene cobertura completa.</p>
+        {% endif %}
+    </section>
+
     <!-- Banco Visible Agrupado por Ítem -->
     <section class="banco-visible-section">
         <h2 class="mb-4" style="font-size: 1.6rem; font-weight: 700; color: #f8fafc; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
@@ -210,4 +241,5 @@
 
 {% block extra_js %}
 <script src="{% static 'js/learning-guide-detail.js' %}?v=1" nonce="{{ csp_nonce }}" defer></script>
+<script src="{% static 'js/structured-evaluation-timer.js' %}?v=1" nonce="{{ csp_nonce }}" defer></script>
 {% endblock %}

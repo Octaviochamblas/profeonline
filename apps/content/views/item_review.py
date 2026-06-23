@@ -64,15 +64,15 @@ def _items_list_context(topic, **extra):
     visible_counts = (
         Question.objects.filter(
             exercise_item__topic=topic,
-            scope="banco_visible"
+            scope__in=["banco_visible", "evaluacion_nivel", "prueba_final"],
         )
-        .values("exercise_item_id", "resource_id", "status")
+        .values("exercise_item_id", "resource_id", "scope", "status")
         .annotate(total=Count("id"))
     )
 
     counts_map = defaultdict(lambda: {"borrador": 0, "publicada": 0, "archivada": 0})
     for row in visible_counts:
-        key = (row["exercise_item_id"], row["resource_id"])
+        key = (row["exercise_item_id"], row["resource_id"], row["scope"])
         status = row["status"]
         if status in ("borrador", "publicada", "archivada"):
             counts_map[key][status] = row["total"]
@@ -80,7 +80,7 @@ def _items_list_context(topic, **extra):
     for item in items:
         item.unlinked_resources_list = item.get_unlinked_resources(topic_resources)
         for link in item.resource_links.all():
-            key = (item.id, link.resource_id)
+            key = (item.id, link.resource_id, "banco_visible")
             link.draft_count = counts_map[key]["borrador"]
             link.published_count = counts_map[key]["publicada"]
             link.archived_count = counts_map[key]["archivada"]
@@ -91,6 +91,19 @@ def _items_list_context(topic, **extra):
                 0,
                 link.effective_quota - (link.draft_count + link.published_count),
             )
+            for scope, prefix in (
+                ("evaluacion_nivel", "level_pool"),
+                ("prueba_final", "final_pool"),
+            ):
+                pool = counts_map[(item.id, link.resource_id, scope)]
+                setattr(link, f"{prefix}_draft_count", pool["borrador"])
+                setattr(link, f"{prefix}_published_count", pool["publicada"])
+                effective = link.evaluation_quota or item.detected_exercise_count
+                setattr(
+                    link,
+                    f"{prefix}_deficit",
+                    max(0, effective - pool["borrador"] - pool["publicada"]),
+                )
 
     guide = LearningGuide.objects.filter(topic=topic, status="publicada", visibility="publica").first()
 
@@ -119,21 +132,21 @@ def _item_row_context(item, **extra):
     visible_counts = (
         Question.objects.filter(
             exercise_item=item,
-            scope="banco_visible"
+            scope__in=["banco_visible", "evaluacion_nivel", "prueba_final"],
         )
-        .values("resource_id", "status")
+        .values("resource_id", "scope", "status")
         .annotate(total=Count("id"))
     )
 
     counts_map = defaultdict(lambda: {"borrador": 0, "publicada": 0, "archivada": 0})
     for row in visible_counts:
-        key = row["resource_id"]
+        key = (row["resource_id"], row["scope"])
         status = row["status"]
         if status in ("borrador", "publicada", "archivada"):
             counts_map[key][status] = row["total"]
 
     for link in item.resource_links.all():
-        key = link.resource_id
+        key = (link.resource_id, "banco_visible")
         link.draft_count = counts_map[key]["borrador"]
         link.published_count = counts_map[key]["publicada"]
         link.archived_count = counts_map[key]["archivada"]
@@ -142,6 +155,19 @@ def _item_row_context(item, **extra):
             0,
             link.effective_quota - (link.draft_count + link.published_count),
         )
+        for scope, prefix in (
+            ("evaluacion_nivel", "level_pool"),
+            ("prueba_final", "final_pool"),
+        ):
+            pool = counts_map[(link.resource_id, scope)]
+            setattr(link, f"{prefix}_draft_count", pool["borrador"])
+            setattr(link, f"{prefix}_published_count", pool["publicada"])
+            effective = link.evaluation_quota or item.detected_exercise_count
+            setattr(
+                link,
+                f"{prefix}_deficit",
+                max(0, effective - pool["borrador"] - pool["publicada"]),
+            )
 
     guide = LearningGuide.objects.filter(topic=item.topic, status="publicada", visibility="publica").first()
 
@@ -560,6 +586,33 @@ def edit_practice_quota(request, link_id):
 
 @user_passes_test(is_admin)
 @require_POST
+def edit_evaluation_quota(request, link_id):
+    link = get_object_or_404(
+        ResourceExerciseItem.objects.select_related("exercise_item__topic", "resource"),
+        id=link_id,
+        exercise_item__status="aprobado",
+        resource__is_published=True,
+    )
+    if not (
+        link.exercise_item.topic.structured_bank_enabled
+        and link.exercise_item.topic.is_active
+    ):
+        return HttpResponse("Tema no habilitado", status=400)
+    try:
+        quota = int(request.POST.get("evaluation_quota", 0))
+    except (TypeError, ValueError):
+        return HttpResponse("La cuota debe ser un número entero.", status=400)
+    if quota < 0 or quota > 50:
+        return HttpResponse("La cuota debe estar entre 0 y 50.", status=400)
+    link.evaluation_quota = quota
+    link.save(update_fields=["evaluation_quota"])
+    return render(
+        request, "partials/_item_row.html", _item_row_context(link.exercise_item)
+    )
+
+
+@user_passes_test(is_admin)
+@require_POST
 def generate_visible_bank_drafts_view(request):
     """Genera una tanda de preguntas del banco visible en estado borrador."""
     item_id = request.POST.get("item_id")
@@ -623,3 +676,57 @@ def generate_visible_bank_drafts_view(request):
     if request.headers.get("HX-Request"):
         return render(request, "partials/_item_row.html", _item_row_context(item))
     return redirect("content:item_extraction")
+
+
+@user_passes_test(is_admin)
+@require_POST
+def generate_evaluation_bank_drafts_view(request):
+    item = _get_enabled_item(request.POST.get("item_id"))
+    resource = get_object_or_404(
+        Resource,
+        id=request.POST.get("resource_id"),
+        topic=item.topic,
+        is_published=True,
+    )
+    scope = request.POST.get("scope")
+    if scope not in {"evaluacion_nivel", "prueba_final"}:
+        return HttpResponse("Ámbito no válido.", status=400)
+    guide = LearningGuide.objects.filter(
+        topic=item.topic, status="publicada", visibility="publica"
+    ).first()
+    if not guide:
+        return HttpResponse("No existe una guía pública para este tema.", status=400)
+    link = get_object_or_404(
+        ResourceExerciseItem, exercise_item=item, resource=resource
+    )
+    active = Question.objects.filter(
+        exercise_item=item,
+        resource=resource,
+        scope=scope,
+        status__in=["borrador", "publicada"],
+    ).count()
+    quota = link.evaluation_quota or item.detected_exercise_count
+    deficit = max(0, quota - active)
+    if not deficit:
+        return HttpResponse("La cuota de este pool ya está cubierta.", status=400)
+    from apps.content.services.evaluation_bank_service import (
+        generate_evaluation_bank_questions,
+    )
+
+    try:
+        generate_evaluation_bank_questions(
+            exercise_item=item,
+            resource=resource,
+            learning_guide=guide,
+            scope=scope,
+            count=deficit,
+        )
+    except Exception:
+        logger.exception(
+            "Error generando pool %s para item=%s resource=%s",
+            scope,
+            item.id,
+            resource.id,
+        )
+        return HttpResponse("No fue posible generar el pool.", status=400)
+    return render(request, "partials/_item_row.html", _item_row_context(item))

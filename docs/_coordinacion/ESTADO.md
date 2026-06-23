@@ -13,6 +13,13 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Guías interactivas - Fase 5 - EN AUDITORÍA 🟡 (2026-06-22):**
+  🧩 Codex construyó pools ocultos editoriales, ensamblado por cuotas y distribución 20/50/30,
+  no-repetición, sesiones transaccionales con timer server-side, corrección idempotente y dominio
+  estructurado 60/40 aislado del progreso legacy. Auditoría correctiva posterior cerró fallos de
+  cuotas/distribución final, modo editorial, intentos multi-recurso, mutabilidad histórica, N+1,
+  disponibilidad y timer. **510 tests OK** (1 skip), pre-commit verde, sin migraciones. Tarjeta en
+  `backlog/4-auditoria/`; auditoría independiente y cierre de seguridad reservados a 🏛️ Claude.
 - **Guías interactivas - Fase 4 - CERRADA 🟢 (2026-06-22):**
   🧩 Codex construyó el parser seguro AST→SymPy; 🏛️ Claude auditó como IA distinta, encontró y
   corrigió **1 hallazgo Medium de DoS** (apilamiento de exponentes que evadía el tope por-exponente y
@@ -105,7 +112,7 @@
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
   **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
   `seguridad:requiere-claude`),
-  **F5** evaluaciones nivel/final (🟡 afinar en preflight), **F6** PDF (🟡),
+  **F5** evaluaciones nivel/final (🟢 Ready tras preflight, en `3-construccion/`), **F6** PDF (🟡),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
@@ -115,6 +122,14 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-22 — 🏛️ Claude: **Preflight Fase 5 RESUELTO 🟢 — Ready para construir.**
+  Contrastado contra el código real. Hueco de alcance resuelto (decisión 🧑: **Fase 5 incluye la
+  generación de los pools ocultos** — `visible_bank_service` hardcodea `banco_visible`). Contradicciones
+  fijadas: `final_distribution` mapea a `level` (N1/N2/N3); timer (`expires_at = inicio + config`) ≠
+  cota de duración (`sum(estimated_minutes)±%`), exigir `estimated_minutes>0`; intento en transacción
+  + una sola sesión `en_curso`. Dominio por **último intento** (60/40, ≥80% y final ≥80%), función
+  nueva sin tocar el `progress_service` legacy. Sin migraciones esperadas. Tarjeta en
+  `backlog/3-construccion/`; construye 🔨 Antigravity (`feat/guias-fase5-evaluaciones`).
 - 2026-06-22 — 🏛️ Claude: **Fase 4 AUDITADA Y CERRADA 🟢 — merge de PR #82 a `main`.**
   Auditor distinto al builder (Codex). Propiedad crítica intacta (sin `eval`/`exec`/`parse_expr`/
   `sympify(string)`; whitelist AST; inyección bien cubierta). Hallazgo Medium de DoS corregido por

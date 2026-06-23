@@ -2,6 +2,7 @@ import random
 from collections import defaultdict
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count, F
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
@@ -10,8 +11,60 @@ from apps.content.models import ExerciseItem, Question, Resource, ResourceExerci
 from apps.content.models.learning_guide import LearningGuide
 from apps.content.services.answer_grading_service import grade_answer
 from apps.content.services.visible_bank_service import select_visible_practice_questions
+from apps.content.services.structured_progress_service import get_structured_topic_domain
 
 VISIBLE_BANK_INITIAL_LIMIT = 200
+
+
+def _structured_evaluation_availability(topic):
+    links = list(
+        ResourceExerciseItem.objects.filter(
+            resource__topic=topic,
+            resource__is_published=True,
+            exercise_item__status="aprobado",
+        ).select_related("resource", "exercise_item")
+    )
+    counts = {
+        (row["exercise_item_id"], row["resource_id"], row["scope"]): row["total"]
+        for row in Question.objects.filter(
+            resource__topic=topic,
+            status="publicada",
+            scope__in=["evaluacion_nivel", "prueba_final"],
+            mode="evaluacion",
+            exercise_item__status="aprobado",
+            level=F("exercise_item__level"),
+            estimated_minutes__gt=0,
+            points__gt=0,
+        )
+        .values("exercise_item_id", "resource_id", "scope")
+        .annotate(total=Count("id"))
+    }
+    required_links = [
+        link
+        for link in links
+        if (link.evaluation_quota or link.exercise_item.detected_exercise_count) > 0
+    ]
+    grouped = defaultdict(list)
+    for link in required_links:
+        grouped[(link.resource_id, link.exercise_item.level)].append(link)
+    options = []
+    for (_, level), group in grouped.items():
+        if all(
+            counts.get(
+                (link.exercise_item_id, link.resource_id, "evaluacion_nivel"), 0
+            )
+            >= (link.evaluation_quota or link.exercise_item.detected_exercise_count)
+            for link in group
+        ):
+            options.append({"resource": group[0].resource, "level": level})
+    options.sort(key=lambda option: (option["resource"].title, option["level"]))
+    final_available = bool(required_links) and all(
+        counts.get((link.exercise_item_id, link.resource_id, "prueba_final"), 0)
+        >= (link.evaluation_quota or link.exercise_item.detected_exercise_count)
+        for link in required_links
+    )
+    return options, final_available
+
 
 @login_required
 def learning_guide_detail(request, slug):
@@ -65,12 +118,16 @@ def learning_guide_detail(request, slug):
         key=lambda x: (x["item"].order, x["item"].id)
     )
 
+    evaluation_options, final_available = _structured_evaluation_availability(topic)
     context = {
         "guide": guide,
         "topic": topic,
         "sorted_items": sorted_items,
         "total_questions": len(questions),
         "bank_truncated": bank_truncated,
+        "evaluation_options": evaluation_options,
+        "final_evaluation_available": final_available,
+        "structured_domain": get_structured_topic_domain(request.user, topic),
     }
     return render(request, "pages/learning_guide_detail.html", context)
 

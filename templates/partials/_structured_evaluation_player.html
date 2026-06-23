@@ -1,0 +1,74 @@
+{% if results %}
+<div class="quiz-player">
+    <header class="quiz-player__bar">
+        <button type="button" class="quiz-player__close" data-quiz-close aria-label="Cerrar">×</button>
+        <span class="quiz-player__mode">Resultado de evaluación</span>
+    </header>
+    <div class="quiz-player__stage p-4" style="max-width: 760px; margin: 0 auto; overflow-y:auto;">
+        <h2>{{ percentage }}%</h2>
+        <p>{{ earned }} de {{ possible }} puntos · Estado: {{ session.get_status_display }}</p>
+        <p>Dominio del tema: {{ domain.weighted_score }}%
+            {% if domain.dominated %}· Tema dominado{% endif %}
+        </p>
+        {% for answer in results %}
+        <article class="p-3 mb-3 rounded" style="background:rgba(15,23,42,.5);">
+            <strong>{% if answer.is_correct %}✓{% else %}✗{% endif %} {{ answer.question.text }}</strong>
+            <p>{{ answer.question.explanation }}</p>
+        </article>
+        {% endfor %}
+        <button type="button" class="btn btn-secondary" data-quiz-close>Cerrar</button>
+    </div>
+</div>
+{% else %}
+<div class="quiz-player" data-quiz-player data-evaluation-deadline="{{ session.expires_at|date:'c' }}">
+    <header class="quiz-player__bar">
+        <button type="button" class="quiz-player__close" data-quiz-close aria-label="Cerrar">×</button>
+        <span class="quiz-player__mode">{{ session.get_kind_display }}</span>
+        <span data-evaluation-countdown aria-live="polite"></span>
+        <span class="quiz-player__progress" data-quiz-progress>Pregunta 1 de {{ entries|length }}</span>
+    </header>
+    <form hx-post="{% url 'content:submit_structured_evaluation' session.id %}"
+          hx-target="#quiz-player-root" hx-swap="innerHTML"
+          class="quiz-player__form" data-evaluation-form>
+        {% csrf_token %}
+        <div class="quiz-player__stage" data-quiz-stage>
+            {% for entry in entries %}
+            {% with question=entry.question %}
+            <fieldset class="quiz-question" data-quiz-slide>
+                <legend class="quiz-question__text" data-quiz-focus tabindex="-1">
+                    {{ forloop.counter }}. {{ question.text }}
+                </legend>
+                <div class="quiz-choices">
+                {% if question.question_type == "alternativa" %}
+                    {% for choice in question.choices.all %}
+                    <label class="quiz-choice">
+                        <input type="radio" name="question_{{ question.id }}"
+                               value="{{ choice.id }}" data-quiz-answer>
+                        <span class="quiz-choice__text">{{ choice.text }}</span>
+                    </label>
+                    {% endfor %}
+                {% else %}
+                    <label class="quiz-choice">
+                        <span class="quiz-choice__text">Escribe tu respuesta</span>
+                        <input type="text" name="question_{{ question.id }}"
+                               maxlength="200" autocomplete="off" data-quiz-answer>
+                    </label>
+                {% endif %}
+                </div>
+            </fieldset>
+            {% endwith %}
+            {% endfor %}
+            <section class="quiz-review" data-quiz-review hidden>
+                <h3 data-quiz-focus tabindex="-1">Revisa tus respuestas</h3>
+                <p data-quiz-review-summary></p>
+                <ul data-quiz-review-list></ul>
+                <button type="submit" class="btn btn-primary">Enviar evaluación</button>
+            </section>
+        </div>
+        <footer class="quiz-player__footer">
+            <button type="button" class="btn btn-secondary" data-quiz-prev>Anterior</button>
+            <button type="button" class="btn btn-primary" data-quiz-next>Siguiente</button>
+        </footer>
+    </form>
+</div>
+{% endif %}

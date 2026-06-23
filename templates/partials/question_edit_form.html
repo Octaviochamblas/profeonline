@@ -11,7 +11,7 @@
     <textarea name="explanation" rows="3" class="q-edit__input" placeholder="Un paso por línea...">{{ question.explanation }}</textarea>
 
     <div class="q-edit__row">
-        <div class="q-edit__col"{% if question.scope == "banco_visible" %} hidden{% endif %}>
+        <div class="q-edit__col"{% if question.scope %} hidden{% endif %}>
             <label class="q-edit__label">Nivel</label>
             <select name="level" class="q-edit__input">
                 {% for lvl, name in LEVEL_CHOICES %}
@@ -19,7 +19,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="q-edit__col"{% if question.scope == "banco_visible" %} hidden{% endif %}>
+        <div class="q-edit__col"{% if question.scope %} hidden{% endif %}>
             <label class="q-edit__label">Modo</label>
             <select name="mode" class="q-edit__input">
                 {% for val, name in MODE_CHOICES %}
@@ -27,7 +27,7 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="q-edit__col"{% if question.scope == "banco_visible" %} hidden{% endif %}>
+        <div class="q-edit__col"{% if question.scope %} hidden{% endif %}>
             <label class="q-edit__label">Estado</label>
             <select name="status" class="q-edit__input">
                 {% for val, name in STATUS_CHOICES %}
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    {% if question.scope == "banco_visible" %}
+{% if question.scope %}
     <div class="q-edit__row" style="margin-top: 12px;">
         <div class="q-edit__col" style="flex: 1;">
             <label class="q-edit__label">Tipo de respuesta</label>
@@ -65,6 +65,20 @@
             <input type="text" name="hint" class="q-edit__input" value="{{ question.hint }}" required>
         </div>
     </div>
+    {% if question.scope == "evaluacion_nivel" or question.scope == "prueba_final" %}
+    <div class="q-edit__row">
+        <div class="q-edit__col">
+            <label for="estimated-minutes-{{ question.id }}">Minutos estimados</label>
+            <input id="estimated-minutes-{{ question.id }}" type="number"
+                   name="estimated_minutes" min="1" value="{{ question.estimated_minutes }}" required>
+        </div>
+        <div class="q-edit__col">
+            <label for="points-{{ question.id }}">Puntos</label>
+            <input id="points-{{ question.id }}" type="number"
+                   name="points" min="1" value="{{ question.points }}" required>
+        </div>
+    </div>
+    {% endif %}
     <div class="q-edit__row" style="margin-top: 12px;">
         <div class="q-edit__col" style="flex: 2;">
             <label class="q-edit__label">Respuesta canónica</label>
