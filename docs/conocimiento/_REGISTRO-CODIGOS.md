@@ -18,9 +18,24 @@ del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad` (basica|med
 | 02.03–02.08 | Teoría de Números (divisibilidad, primos, factorización, m.c.m., M.C.D., aplicaciones) | `numeros-teoria-de-numeros.yaml` | ✅ guardado |
 | 02.09–02.21 | Números Racionales (Q, fracciones, decimales, aproximaciones, error) | `numeros-racionales.yaml` | ✅ guardado |
 | 02.22–02.33 | Reales, Potencias, Notación científica, Raíces, Racionalización, Logaritmos, Imaginarios, Complejos | `numeros-reales-potencias-raices-logaritmos.yaml` | ✅ guardado |
-| **02.34+** | **Razones, Proporciones, Porcentajes y Matemática Financiera** | — | **⏭️ PRÓXIMO** |
+| 02.34–02.44 | Razones, Proporciones, Porcentajes, Finanzas, Interés simple y compuesto | `numeros-razones-porcentajes-finanzas.yaml` | ✅ guardado |
 
-**Próximo código libre en rama 02: `02.34`.**
+**Rama 02 NÚMEROS COMPLETA (02.01–02.44).**
+
+## Rama 03 — ÁLGEBRA Y FUNCIONES (abrev. ALG)  · se trabaja sub-tema por sub-tema
+
+| Códigos | Bloque | Archivo | Estado |
+|---|---|---|---|
+| 03.01–03.05 | Nomenclatura y conceptos básicos | `algebra-nomenclatura-conceptos.yaml` | ✅ guardado |
+| 03.06–03.08 | Lenguaje algebraico y valorización | `algebra-lenguaje-valorizacion.yaml` | ✅ guardado |
+| 03.09–03.13 | Operaciones con expresiones algebraicas | `algebra-operaciones.yaml` | ✅ guardado |
+| 03.14–03.17 | Multiplicación algebraica | `algebra-multiplicacion.yaml` | ✅ guardado |
+| 03.18–03.23 | Productos notables | `algebra-productos-notables.yaml` | ✅ guardado |
+| 03.24–03.29 | Factorización | `algebra-factorizacion.yaml` | ✅ guardado |
+| **03.30+** | **M.C.D., m.c.m. y fracciones algebraicas** | — | **⏭️ PRÓXIMO** |
+
+**Próximo código libre en rama 03: `03.30`.** (Sub-temas restantes: MCD/mcm/fracciones algebraicas,
+ecuaciones y sistemas, inecuaciones, funciones.)
 
 ## Rama 01 — FUNDAMENTOS (abrev. FUND)
 Versión atómica (12 temas `01.01`–`01.12`: lógica básica, conectivos, tablas de verdad,
