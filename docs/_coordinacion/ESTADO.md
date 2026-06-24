@@ -13,6 +13,17 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Biblioteca de Conocimiento — Fase 1 (esqueleto atómico de Matemática) EN CURSO 🟡 (2026-06-24):**
+  🏛️ Claude + 🧑 construyendo el esqueleto atómico **por bloques** en `docs/conocimiento/`.
+  **Estándar fijado** (en memoria + `_REGISTRO-CODIGOS.md`): nomenclatura `RR.TT.rr` + `id` semántico
+  estable (Opción B), 3 ejes por recurso (`competencia` M1/M2/U · `dificultad` · `cursos` `[1B..8B,1M..4M]`),
+  atomización máxima, **un archivo YAML separado por bloque** (regla permanente), grafo de
+  `prerrequisitos` **diferido a pasada final**. **Rama 02 NÚMEROS: `02.01–02.33` cubiertos.** Archivos
+  nuevos: `numeros-teoria-de-numeros.yaml` (02.03–08), `numeros-racionales.yaml` (02.09–21),
+  `numeros-reales-potencias-raices-logaritmos.yaml` (02.22–33). **Próximo: `02.34` Razones/Proporciones/
+  Porcentajes/Finanzas.** FUND (01.x atómica) y Enteros (02.01–02.02) revisados en chat, **pendientes de
+  guardar**. La generación la hace el 🧑 en NotebookLM/ChatGPT (grounded en sus libros); Claude revisa,
+  renumera para evitar colisiones e integra. **Sin commitear** en rama `docs/indice-conocimiento`.
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
