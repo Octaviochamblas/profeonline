@@ -126,6 +126,12 @@
 
 ## Handoffs abiertos (Ready para construir)
 
+- 📚 **Biblioteca de Conocimiento Estructurada** — `1-por-iniciar/biblioteca-conocimiento-estructurada.md`
+  (PR #89). Estructura universal por conceptos, partiendo por **Matemática preuniversitaria**. 4 capas por
+  recurso (teórico / banco estructurado / práctica aleatoria / evaluación), 6 ejes de clasificación de
+  ejercicios, mapa de cobertura acordeón. Plan **F0–F6 con gates del 🧑**. **Bloqueado por:** el 🧑 debe
+  entregar los **índices** de sus libros de matemática para arrancar la Fase 1 (esqueleto en
+  `docs/conocimiento/matematica.yaml`).
 - 🔨 **Guías interactivas — Fases 4–7** (epic `1-por-iniciar/guias-interactivas-banco-estandarizado-items.md`).
   Fases 1–3 ✅. Handoffs de arquitectura redactados en `2-arquitectura/`:
   **F4** parser respuesta directa en `3-construccion/` (🟢 Ready tras preflight,
@@ -142,6 +148,16 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-23 (tarde) — 🏛️ Claude + 🧑: **Bugfixes operativos de guías + proyecto nuevo.**
+  (1) **PR #87** `gunicorn --timeout 120` + truncar guía en extracción de ítems: arregla el
+  `SystemExit: 1` (worker abortado a los 30 s en la llamada síncrona a Gemini; detectado por Sentry
+  `PYTHON-DJANGO-K`). **⚠️ El Custom Start Command de Railway sobrescribe los archivos del repo →
+  el 🧑 debe agregar `--timeout 120 --workers 3` en el dashboard.** (2) **PR #88** N+1 en
+  `/asignaturas/` (30→3 queries; `SubjectListView` con `select_related`/`prefetch_related` + agrupado
+  en memoria). (3) Diagnóstico de lentitud del sitio: **no era el código** sino **1 worker de gunicorn**
+  saturado por los clics de extracción que colgaban el worker → recomendado `WEB_CONCURRENCY=3`.
+  (4) **PR #89** tarjeta de backlog del proyecto **Biblioteca de Conocimiento Estructurada**.
+  Tracing de Sentry activado temporal (`SENTRY_TRACES_SAMPLE_RATE=1.0`, **revertir a 0**).
 - 2026-06-23 — 🏛️ Claude: **Re-auditoría profunda del épico (F1–F7) + correcciones 🟢.**
   Doc en `docs/auditorias/2026-06-23-auditoria-epico-guias-interactivas.md`. F1–F6 sólidas. 5 hallazgos
   en F7 (Media/Baja, sin afectar datos), todos corregidos: `merge_items`/`edit_practice_quota` no
