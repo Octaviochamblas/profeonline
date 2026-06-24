@@ -14,7 +14,7 @@ del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad` (basica|med
 
 | Códigos | Bloque | Archivo | Estado |
 |---|---|---|---|
-| 02.01–02.02 | Enteros (conjunto/orden + operatoria) | _(pendiente de guardar)_ | revisado en chat |
+| 02.01–02.02 | Enteros (conjunto/orden + operatoria) | `numeros-enteros.yaml` | ✅ guardado |
 | 02.03–02.08 | Teoría de Números (divisibilidad, primos, factorización, m.c.m., M.C.D., aplicaciones) | `numeros-teoria-de-numeros.yaml` | ✅ guardado |
 | 02.09–02.21 | Números Racionales (Q, fracciones, decimales, aproximaciones, error) | `numeros-racionales.yaml` | ✅ guardado |
 | 02.22–02.33 | Reales, Potencias, Notación científica, Raíces, Racionalización, Logaritmos, Imaginarios, Complejos | `numeros-reales-potencias-raices-logaritmos.yaml` | ✅ guardado |
@@ -25,9 +25,9 @@ del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad` (basica|med
 ## Rama 01 — FUNDAMENTOS (abrev. FUND)
 Versión atómica (12 temas `01.01`–`01.12`: lógica básica, conectivos, tablas de verdad,
 razonamiento lógico, cuantificadores, conjuntos básicos, relaciones, diagramas de Venn,
-operaciones, propiedades, cardinalidad, producto cartesiano) **revisada y aprobada en chat**;
-pendiente de guardar como archivo(s) separado(s). El `fundamentos.yaml` que está en el repo es la
-versión **gruesa antigua** (a reemplazar).
+operaciones, propiedades, cardinalidad, producto cartesiano) en `fundamentos-atomico.yaml` ✅.
+El `fundamentos.yaml` que está en el repo es la versión **gruesa antigua** (a reemplazar en la
+pasada de reconciliación).
 
 ## Ramas pendientes
 - **03 ÁLGEBRA y Funciones** (ALG) — reinicia en `03.01`.
