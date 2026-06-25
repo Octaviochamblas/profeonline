@@ -93,8 +93,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Probabilidad Básica | 05.04 | 05.04.01–05.04.05 | `probabilidad-basica.yaml` | ✅ guardado (solo M1; Pascal → 05.06; condicional → 05.05) |
 | Probabilidad Condicional y Regla de Bayes | 05.05 | 05.05.01–05.05.05 | `probabilidad-condicional-bayes.yaml` | ✅ guardado |
 | Técnicas de Conteo y Distribución Binomial | 05.06 | 05.06.01–05.06.05 | `probabilidad-conteo-binomial.yaml` | ✅ guardado |
+| Distribución Normal | 05.07 | 05.07.01–05.07.04 | `estadistica-normal.yaml` | ✅ guardado (solo M2, 4M; 41 recursos) |
 
-**Eje 05 PROBABILIDAD Y ESTADÍSTICA COMPLETO (05.01–05.06).** Siguiente bloque: `05.07` (libre — candidato: Distribución Normal).
+**Eje 05 PROBABILIDAD Y ESTADÍSTICA COMPLETO (05.01–05.07).** Siguiente bloque: `05.08` (libre).
 
 ---
 
