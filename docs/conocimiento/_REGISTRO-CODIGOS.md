@@ -32,10 +32,12 @@ del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad` (basica|med
 | 03.14–03.17 | Multiplicación algebraica | `algebra-multiplicacion.yaml` | ✅ guardado |
 | 03.18–03.23 | Productos notables | `algebra-productos-notables.yaml` | ✅ guardado |
 | 03.24–03.29 | Factorización | `algebra-factorizacion.yaml` | ✅ guardado |
-| **03.30+** | **M.C.D., m.c.m. y fracciones algebraicas** | — | **⏭️ PRÓXIMO** |
+| 03.30–03.37 | M.C.D., m.c.m. y fracciones algebraicas | `algebra-mcd-mcm-fracciones.yaml` | ✅ guardado |
+| 03.38–03.44 | Ecuaciones de primer grado y sistemas | `algebra-ecuaciones-sistemas.yaml` | ✅ guardado |
+| 03.45–03.51 | Desigualdades e inecuaciones | `algebra-inecuaciones.yaml` | ✅ guardado |
+| 03.52–03.60 | Funciones | `algebra-funciones.yaml` | ✅ guardado |
 
-**Próximo código libre en rama 03: `03.30`.** (Sub-temas restantes: MCD/mcm/fracciones algebraicas,
-ecuaciones y sistemas, inecuaciones, funciones.)
+**Rama 03 ÁLGEBRA Y FUNCIONES COMPLETA (03.01–03.60).** Siguiente: **rama 04 GEOMETRÍA, empieza en `04.01`.**
 
 ## Rama 01 — FUNDAMENTOS (abrev. FUND)
 Versión atómica (12 temas `01.01`–`01.12`: lógica básica, conectivos, tablas de verdad,
