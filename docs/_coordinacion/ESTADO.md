@@ -21,8 +21,8 @@
   3 ejes por recurso (`competencia` M1/M2/U · `dificultad` · `cursos`), atomización máxima,
   **un YAML por bloque** (permanente). **Ejes completos:** 01 FUND (2 bloques: Lógica `01.01`,
   Conjuntos `01.02`), 02 NÚMEROS (5 bloques: `02.01`–`02.05`), 03 ÁLGEBRA (10 bloques: `03.01`–`03.10`).
-  **17 archivos YAML actualizados.** Sin commitear; rama `docs/biblioteca-algebra-completa`.
-  **Próximo: commitear esta rama y arrancar eje 04 GEOMETRÍA (bloque `04.01`).**
+  **17 archivos YAML actualizados.** Mergeado en PR #97 a `main` (2026-06-24).
+  Rama activa: **`docs/biblioteca-geometria`**. **Próximo: eje 04 GEOMETRÍA (bloque `04.01`).**
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
