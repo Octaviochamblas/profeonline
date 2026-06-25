@@ -90,8 +90,11 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Estadística Descriptiva | 05.01 | 05.01.01–05.01.08 | `estadistica-descriptiva.yaml` | ✅ guardado (temas 09–11 retirados → 05.02/05.03) |
 | Medidas de Tendencia Central (MTC) | 05.02 | 05.02.01–05.02.04 | `estadistica-tendencia-central.yaml` | ✅ guardado |
 | Medidas de Posición y Dispersión | 05.03 | 05.03.01–05.03.05 | `estadistica-posicion-dispersion.yaml` | ✅ guardado |
+| Probabilidad Básica | 05.04 | 05.04.01–05.04.05 | `probabilidad-basica.yaml` | ✅ guardado (solo M1; Pascal → 05.06; condicional → 05.05) |
+| Probabilidad Condicional y Regla de Bayes | 05.05 | 05.05.01–05.05.05 | `probabilidad-condicional-bayes.yaml` | ✅ guardado |
+| Técnicas de Conteo y Distribución Binomial | 05.06 | 05.06.01–05.06.05 | `probabilidad-conteo-binomial.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 05:** `05.04` (libre).
+**Eje 05 PROBABILIDAD Y ESTADÍSTICA COMPLETO (05.01–05.06).** Siguiente bloque: `05.07` (libre — candidato: Distribución Normal).
 
 ---
 
