@@ -87,8 +87,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Transformaciones Isométricas | 04.10 | 04.10.01–04.10.03 | `geometria-isometrias.yaml` | ✅ guardado |
 | Trigonometría en el Triángulo Rectángulo | 04.11 | 04.11.01–04.11.05 | `geometria-trigonometria.yaml` | ✅ guardado |
 | Trigonometría Ampliada | 04.12 | 04.12.01–04.12.04 | `geometria-trigonometria-ampliada.yaml` | ✅ guardado (cuadrantes/identidades→M2; ley senos/cosenos/Herón/SSA→U; 39 recursos) |
+| Geometría Analítica Ampliada | 04.13 | 04.13.01–04.13.04 | `geometria-analitica-ampliada.yaml` | ✅ guardado (rectas M2; circunferencia/dist.punto-recta→U; 49 recursos) |
 
-**Eje 04 GEOMETRÍA COMPLETO (04.01–04.12).** Siguiente bloque: `04.13` (libre).
+**Eje 04 GEOMETRÍA COMPLETO (04.01–04.13).** Siguiente bloque: `04.14` (libre).
 
 ---
 
