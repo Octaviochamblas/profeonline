@@ -63,9 +63,18 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 
 ---
 
+## Eje 04 — GEOMETRÍA (abrev. GEO)
+
+| Bloque | Código BB | Temas | Archivo | Estado |
+|--------|-----------|-------|---------|--------|
+| Ángulos: Fundamentos y Relaciones | 04.01 | 04.01.01–04.01.07 | `geometria-angulos.yaml` | ✅ guardado |
+
+**Siguiente bloque en eje 04:** `04.02` (Triángulos: Propiedades y Clasificación).
+
+---
+
 ## Ejes pendientes
 
-- **04 GEOMETRÍA** (GEO) — empieza en `04.01.01`.
 - **05 PROBABILIDAD y ESTADÍSTICA** (EST) — empieza en `05.01.01`.
 
 ## Pasadas pendientes (post-esqueleto)
