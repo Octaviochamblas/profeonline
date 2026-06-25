@@ -69,8 +69,11 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 |--------|-----------|-------|---------|--------|
 | Ángulos: Fundamentos y Relaciones | 04.01 | 04.01.01–04.01.07 | `geometria-angulos.yaml` | ✅ guardado |
 | Triángulos: Propiedades y Clasificación | 04.02 | 04.02.01–04.02.06 | `geometria-triangulos.yaml` | ✅ guardado |
+| Elementos Secundarios del Triángulo | 04.03 | — | `geometria-elementos-secundarios.yaml` | ⏳ pendiente |
+| Perímetros, Áreas y Teoremas | 04.04 | — | `geometria-areas-pitagoras.yaml` | ⏳ pendiente (conflicto TRIANGULOS_NOTABLES) |
+| Congruencia, Semejanza y Homotecia | 04.05 | 04.05.01–04.05.04 | `geometria-congruencia-semejanza.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 04:** `04.03` (Elementos Secundarios del Triángulo).
+**Siguiente bloque en eje 04:** `04.06` (Polígonos y Cuadriláteros).
 
 ---
 
