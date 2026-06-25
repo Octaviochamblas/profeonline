@@ -13,16 +13,15 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Biblioteca de Conocimiento — Fase 1 (esqueleto atómico de Matemática) EN CURSO 🟡 (2026-06-24):**
+- **Biblioteca de Conocimiento — Fase 1 (esqueleto atómico de Matemática) EN CURSO 🟡 (2026-06-25):**
   🏛️ Claude + 🧑 construyendo el esqueleto atómico **por bloques** en `docs/conocimiento/`.
-  **Estándar actualizado (2026-06-24):** nomenclatura migrada de `RR.TT.rr` → `EE.BB.TT.RR`
-  (eje.bloque.tema.recurso); temas reinician en `.01` dentro de cada bloque para evitar renumeración
-  global al insertar. `bloque_codigo` (EE.BB) ahora en cabecera de cada YAML.
-  3 ejes por recurso (`competencia` M1/M2/U · `dificultad` · `cursos`), atomización máxima,
-  **un YAML por bloque** (permanente). **Ejes completos:** 01 FUND (2 bloques: Lógica `01.01`,
-  Conjuntos `01.02`), 02 NÚMEROS (5 bloques: `02.01`–`02.05`), 03 ÁLGEBRA (10 bloques: `03.01`–`03.10`).
-  **17 archivos YAML actualizados.** Mergeado en PR #97 a `main` (2026-06-24).
-  Rama activa: **`docs/biblioteca-geometria`**. **Próximo: eje 04 GEOMETRÍA (bloque `04.01`).**
+  **Estándar:** nomenclatura `EE.BB.TT.RR`; `bloque_codigo` en cabecera; 3 ejes por recurso
+  (`competencia` M1/M2/U · `dificultad` · `cursos`); atomización máxima; **un YAML por bloque**.
+  **Ejes completos:** 01 FUND (2 bloques), 02 NÚMEROS (5 bloques), 03 ÁLGEBRA (10 bloques)
+  → mergeados en PR #97 (2026-06-24).
+  **04 GEOMETRÍA (11 bloques: `04.01`–`04.11`) → PR #98 en auto-merge (CI pendiente, 2026-06-25).**
+  **Próximo:** eje 05 PROBABILIDAD Y ESTADÍSTICA (6 bloques: `05.01`–`05.06`).
+  Prompts NotebookLM + plantilla auditoría ChatGPT entregados al 🧑 (2026-06-25).
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
@@ -158,6 +157,10 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-25 — 🏛️ Claude + 🧑: **Eje 04 GEOMETRÍA completo — PR #98 en auto-merge.**
+  11 bloques YAML atómicos (04.01–04.11), ~382 recursos, 55 temas. Flujo: NotebookLM genera,
+  ChatGPT audita, Claude integra (commit por bloque). Conflict `TRIANGULOS_NOTABLES` resuelto
+  con sufijo `_METRICA` en 04.04. Prompts para eje 05 PROBABILIDAD Y ESTADÍSTICA entregados.
 - 2026-06-23 (tarde) — 🏛️ Claude + 🧑: **Bugfixes operativos de guías + proyecto nuevo.**
   (1) **PR #87** `gunicorn --timeout 120` + truncar guía en extracción de ítems: arregla el
   `SystemExit: 1` (worker abortado a los 30 s en la llamada síncrona a Gemini; detectado por Sentry
