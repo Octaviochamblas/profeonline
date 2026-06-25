@@ -40,7 +40,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Reales, Potencias, Raíces y Logaritmos | 02.04 | 02.04.01–02.04.12 | `numeros-reales-potencias-raices-logaritmos.yaml` | ✅ guardado |
 | Razones, Proporciones, Porcentajes y Finanzas | 02.05 | 02.05.01–02.05.11 | `numeros-razones-porcentajes-finanzas.yaml` | ✅ guardado |
 
-**Eje 02 NÚMEROS COMPLETO (02.01–02.05).** Siguiente bloque: `02.06` (libre).
+| Sucesiones y Progresiones | 02.06 | 02.06.01–02.06.05 | `numeros-sucesiones-progresiones.yaml` | ✅ guardado (PA→M1, PG→M2, series→U; 38 recursos; no unidad DEMRE explícita) |
+
+**Eje 02 NÚMEROS COMPLETO (02.01–02.06).** Siguiente bloque: `02.07` (libre).
 
 ---
 
