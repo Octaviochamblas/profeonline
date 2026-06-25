@@ -68,8 +68,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Bloque | Código BB | Temas | Archivo | Estado |
 |--------|-----------|-------|---------|--------|
 | Ángulos: Fundamentos y Relaciones | 04.01 | 04.01.01–04.01.07 | `geometria-angulos.yaml` | ✅ guardado |
+| Triángulos: Propiedades y Clasificación | 04.02 | 04.02.01–04.02.06 | `geometria-triangulos.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 04:** `04.02` (Triángulos: Propiedades y Clasificación).
+**Siguiente bloque en eje 04:** `04.03` (Elementos Secundarios del Triángulo).
 
 ---
 
