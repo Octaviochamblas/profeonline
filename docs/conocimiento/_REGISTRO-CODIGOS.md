@@ -72,8 +72,10 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Elementos Secundarios del Triángulo | 04.03 | 04.03.01–04.03.07 | `geometria-elementos-secundarios.yaml` | ✅ guardado |
 | Perímetros, Áreas y Teoremas | 04.04 | 04.04.01–04.04.06 | `geometria-areas-pitagoras.yaml` | ✅ guardado (04.04.04 usa TRIANGULOS_NOTABLES_METRICA) |
 | Congruencia, Semejanza y Homotecia | 04.05 | 04.05.01–04.05.04 | `geometria-congruencia-semejanza.yaml` | ✅ guardado |
+| Polígonos y Cuadriláteros | 04.06 | 04.06.01–04.06.04 | `geometria-poligonos-cuadrilateros.yaml` | ✅ guardado |
+| Circunferencia y Círculo | 04.07 | 04.07.01–04.07.05 | `geometria-circunferencia-circulo.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 04:** `04.06` (Polígonos y Cuadriláteros).
+**Siguiente bloque en eje 04:** `04.08` (libre).
 
 ---
 
