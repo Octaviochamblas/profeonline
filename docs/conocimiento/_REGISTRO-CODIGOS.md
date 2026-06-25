@@ -63,9 +63,28 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 
 ---
 
+## Eje 04 — GEOMETRÍA (abrev. GEO)
+
+| Bloque | Código BB | Temas | Archivo | Estado |
+|--------|-----------|-------|---------|--------|
+| Ángulos: Fundamentos y Relaciones | 04.01 | 04.01.01–04.01.07 | `geometria-angulos.yaml` | ✅ guardado |
+| Triángulos: Propiedades y Clasificación | 04.02 | 04.02.01–04.02.06 | `geometria-triangulos.yaml` | ✅ guardado |
+| Elementos Secundarios del Triángulo | 04.03 | 04.03.01–04.03.07 | `geometria-elementos-secundarios.yaml` | ✅ guardado |
+| Perímetros, Áreas y Teoremas | 04.04 | 04.04.01–04.04.06 | `geometria-areas-pitagoras.yaml` | ✅ guardado (04.04.04 usa TRIANGULOS_NOTABLES_METRICA) |
+| Congruencia, Semejanza y Homotecia | 04.05 | 04.05.01–04.05.04 | `geometria-congruencia-semejanza.yaml` | ✅ guardado |
+| Polígonos y Cuadriláteros | 04.06 | 04.06.01–04.06.04 | `geometria-poligonos-cuadrilateros.yaml` | ✅ guardado |
+| Circunferencia y Círculo | 04.07 | 04.07.01–04.07.05 | `geometria-circunferencia-circulo.yaml` | ✅ guardado |
+| Geometría del Espacio y Cuerpos Geométricos | 04.08 | 04.08.01–04.08.04 | `geometria-espacio-cuerpos.yaml` | ✅ guardado |
+| Sistema Cartesiano y Vectores | 04.09 | 04.09.01–04.09.04 | `geometria-cartesiano-vectores.yaml` | ✅ guardado |
+| Transformaciones Isométricas | 04.10 | 04.10.01–04.10.03 | `geometria-isometrias.yaml` | ✅ guardado |
+| Trigonometría en el Triángulo Rectángulo | 04.11 | 04.11.01–04.11.05 | `geometria-trigonometria.yaml` | ✅ guardado |
+
+**Eje 04 GEOMETRÍA COMPLETO (04.01–04.11).** Siguiente eje: `05` (PROBABILIDAD Y ESTADÍSTICA).
+
+---
+
 ## Ejes pendientes
 
-- **04 GEOMETRÍA** (GEO) — empieza en `04.01.01`.
 - **05 PROBABILIDAD y ESTADÍSTICA** (EST) — empieza en `05.01.01`.
 
 ## Pasadas pendientes (post-esqueleto)
