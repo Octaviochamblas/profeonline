@@ -83,9 +83,19 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 
 ---
 
+## Eje 05 — PROBABILIDAD Y ESTADÍSTICA (abrev. EST)
+
+| Bloque | Código BB | Temas | Archivo | Estado |
+|--------|-----------|-------|---------|--------|
+| Estadística Descriptiva | 05.01 | 05.01.01–05.01.11 | `estadistica-descriptiva.yaml` | ✅ guardado |
+
+**Siguiente bloque en eje 05:** `05.02` (libre).
+
+---
+
 ## Ejes pendientes
 
-- **05 PROBABILIDAD y ESTADÍSTICA** (EST) — empieza en `05.01.01`.
+_(ninguno — todos los ejes iniciados. Bloques 05.02–05.06 pendientes de generación.)_
 
 ## Pasadas pendientes (post-esqueleto)
 
