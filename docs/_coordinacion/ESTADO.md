@@ -13,15 +13,13 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Biblioteca de Conocimiento — Fase 1 (esqueleto atómico de Matemática) EN CURSO 🟡 (2026-06-25):**
-  🏛️ Claude + 🧑 construyendo el esqueleto atómico **por bloques** en `docs/conocimiento/`.
+- **Biblioteca de Conocimiento — Fase 1 (esqueleto atómico de Matemática) COMPLETA 🟡 (2026-06-25):**
+  🏛️ Claude + 🧑 completaron el esqueleto atómico **por bloques** en `docs/conocimiento/`.
   **Estándar:** nomenclatura `EE.BB.TT.RR`; `bloque_codigo` en cabecera; 3 ejes por recurso
   (`competencia` M1/M2/U · `dificultad` · `cursos`); atomización máxima; **un YAML por bloque**.
-  **Ejes completos:** 01 FUND (2 bloques), 02 NÚMEROS (5 bloques), 03 ÁLGEBRA (10 bloques)
-  → mergeados en PR #97 (2026-06-24).
-  **04 GEOMETRÍA (11 bloques: `04.01`–`04.11`) → PR #98 en auto-merge (CI pendiente, 2026-06-25).**
-  **Próximo:** eje 05 PROBABILIDAD Y ESTADÍSTICA (6 bloques: `05.01`–`05.06`).
-  Prompts NotebookLM + plantilla auditoría ChatGPT entregados al 🧑 (2026-06-25).
+  **Ejes 01–05 completos** — PR #99 abierto (`docs/biblioteca-probabilidad` → `main`, 2026-06-25).
+  **Pendientes de pasada final:** prerrequisitos DAG, anti-duplicado, validación competencia/cursos
+  contra DEMRE y retiro de YAMLs gruesos antiguos.
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
@@ -157,6 +155,10 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-25 — 🏛️ Claude + 🧑: **Biblioteca de Conocimiento — esqueleto YAML completo (ejes 01–05) — PR #99 abierto.**
+  Eje 05 PROBABILIDAD Y ESTADÍSTICA (7 bloques 05.01–05.07), Eje 02 ampliado (02.06 Sucesiones),
+  Eje 03 completado (03.11–03.15), Eje 04 ampliado (04.12–04.13). Flujo: NotebookLM genera,
+  ChatGPT audita, Claude integra (commit por bloque). Total: ~700 recursos en 37 bloques, 5 ejes.
 - 2026-06-25 — 🏛️ Claude + 🧑: **Eje 04 GEOMETRÍA completo — PR #98 en auto-merge.**
   11 bloques YAML atómicos (04.01–04.11), ~382 recursos, 55 temas. Flujo: NotebookLM genera,
   ChatGPT audita, Claude integra (commit por bloque). Conflict `TRIANGULOS_NOTABLES` resuelto
