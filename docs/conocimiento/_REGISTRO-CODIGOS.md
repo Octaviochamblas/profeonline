@@ -76,8 +76,10 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Circunferencia y Círculo | 04.07 | 04.07.01–04.07.05 | `geometria-circunferencia-circulo.yaml` | ✅ guardado |
 | Geometría del Espacio y Cuerpos Geométricos | 04.08 | 04.08.01–04.08.04 | `geometria-espacio-cuerpos.yaml` | ✅ guardado |
 | Sistema Cartesiano y Vectores | 04.09 | 04.09.01–04.09.04 | `geometria-cartesiano-vectores.yaml` | ✅ guardado |
+| Transformaciones Isométricas | 04.10 | 04.10.01–04.10.03 | `geometria-isometrias.yaml` | ✅ guardado |
+| Trigonometría en el Triángulo Rectángulo | 04.11 | 04.11.01–04.11.05 | `geometria-trigonometria.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 04:** `04.10` (libre).
+**Eje 04 GEOMETRÍA COMPLETO (04.01–04.11).** Siguiente eje: `05` (PROBABILIDAD Y ESTADÍSTICA).
 
 ---
 
