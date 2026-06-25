@@ -65,7 +65,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Funciones Exponencial y Logarítmica | 03.13 | 03.13.01–03.13.05 | `algebra-funciones-exp-log.yaml` | ✅ guardado (M2; 54 recursos) |
 | Función Potencia | 03.14 | 03.14.01–03.14.05 | `algebra-funcion-potencia.yaml` | ✅ guardado (M2; 50 recursos) |
 
-**Eje 03 ÁLGEBRA Y FUNCIONES COMPLETO (03.01–03.14).** Siguiente bloque: `03.15` (libre).
+| Función Trigonométrica | 03.15 | 03.15.01–03.15.06 | `algebra-funcion-trigonometrica.yaml` | ✅ guardado (M2 + ext. U; tangente→U; 58 recursos) |
+
+**Eje 03 ÁLGEBRA Y FUNCIONES COMPLETO (03.01–03.15).** Siguiente bloque: `03.16` (libre).
 
 ---
 
