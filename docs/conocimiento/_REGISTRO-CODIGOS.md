@@ -86,8 +86,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Sistema Cartesiano y Vectores | 04.09 | 04.09.01–04.09.04 | `geometria-cartesiano-vectores.yaml` | ✅ guardado |
 | Transformaciones Isométricas | 04.10 | 04.10.01–04.10.03 | `geometria-isometrias.yaml` | ✅ guardado |
 | Trigonometría en el Triángulo Rectángulo | 04.11 | 04.11.01–04.11.05 | `geometria-trigonometria.yaml` | ✅ guardado |
+| Trigonometría Ampliada | 04.12 | 04.12.01–04.12.04 | `geometria-trigonometria-ampliada.yaml` | ✅ guardado (cuadrantes/identidades→M2; ley senos/cosenos/Herón/SSA→U; 39 recursos) |
 
-**Eje 04 GEOMETRÍA COMPLETO (04.01–04.11).** Siguiente eje: `05` (PROBABILIDAD Y ESTADÍSTICA).
+**Eje 04 GEOMETRÍA COMPLETO (04.01–04.12).** Siguiente bloque: `04.13` (libre).
 
 ---
 
@@ -109,7 +110,7 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 
 ## Ejes pendientes
 
-_(ninguno — todos los ejes iniciados. Bloques 05.02–05.06 pendientes de generación.)_
+_(ninguno — todos los ejes iniciados y con bloques completos.)_
 
 ## Pasadas pendientes (post-esqueleto)
 
