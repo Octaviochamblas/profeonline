@@ -74,8 +74,10 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Congruencia, Semejanza y Homotecia | 04.05 | 04.05.01–04.05.04 | `geometria-congruencia-semejanza.yaml` | ✅ guardado |
 | Polígonos y Cuadriláteros | 04.06 | 04.06.01–04.06.04 | `geometria-poligonos-cuadrilateros.yaml` | ✅ guardado |
 | Circunferencia y Círculo | 04.07 | 04.07.01–04.07.05 | `geometria-circunferencia-circulo.yaml` | ✅ guardado |
+| Geometría del Espacio y Cuerpos Geométricos | 04.08 | 04.08.01–04.08.04 | `geometria-espacio-cuerpos.yaml` | ✅ guardado |
+| Sistema Cartesiano y Vectores | 04.09 | 04.09.01–04.09.04 | `geometria-cartesiano-vectores.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 04:** `04.08` (libre).
+**Siguiente bloque en eje 04:** `04.10` (libre).
 
 ---
 
