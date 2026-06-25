@@ -58,8 +58,12 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Ecuaciones de Primer Grado y Sistemas | 03.08 | 03.08.01–03.08.07 | `algebra-ecuaciones-sistemas.yaml` | ✅ guardado |
 | Desigualdades e Inecuaciones | 03.09 | 03.09.01–03.09.07 | `algebra-inecuaciones.yaml` | ✅ guardado |
 | Funciones | 03.10 | 03.10.01–03.10.09 | `algebra-funciones.yaml` | ✅ guardado |
+| Ecuaciones de Segundo Grado | 03.11 | pendiente | `algebra-ecuaciones-cuadraticas.yaml` | ⏳ pendiente de generación |
+| Función Cuadrática | 03.12 | 03.12.01–03.12.06 | `algebra-funcion-cuadratica.yaml` | ✅ guardado (M1; 47 recursos) |
+| Funciones Exponencial y Logarítmica | 03.13 | pendiente | `algebra-funciones-exp-log.yaml` | ⏳ pendiente de generación |
+| Función Potencia | 03.14 | pendiente | `algebra-funcion-potencia.yaml` | ⏳ pendiente de generación (M2) |
 
-**Eje 03 ÁLGEBRA Y FUNCIONES COMPLETO (03.01–03.10).** Siguiente bloque: `03.11` (libre).
+**Eje 03 base completo (03.01–03.10).** Ampliando: 03.11–03.14 en progreso. Siguiente libre: `03.15`.
 
 ---
 
