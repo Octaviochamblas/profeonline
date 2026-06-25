@@ -33,13 +33,13 @@
 - [x] 4. Multiplicación algebraica (03.14–03.17) → `algebra-multiplicacion.yaml` ✅
 - [x] 5. Productos notables (03.18–03.23) → `algebra-productos-notables.yaml` ✅
 - [x] 6. Factorización (03.24–03.29) → `algebra-factorizacion.yaml` ✅
-- [ ] 7. M.C.D., m.c.m. y fracciones algebraicas  → empieza en `03.30`  ⏭️ **AQUÍ VAMOS**
-- [ ] 8. Ecuaciones de primer grado y sistemas
-- [ ] 9. Desigualdades e inecuaciones
-- [ ] 10. Funciones
+- [x] 7. M.C.D., m.c.m. y fracciones algebraicas (03.30–03.37) → `algebra-mcd-mcm-fracciones.yaml` ✅
+- [x] 8. Ecuaciones de primer grado y sistemas (03.38–03.44) → `algebra-ecuaciones-sistemas.yaml` ✅
+- [x] 9. Desigualdades e inecuaciones (03.45–03.51) → `algebra-inecuaciones.yaml` ✅
+- [x] 10. Funciones (03.52–03.60) → `algebra-funciones.yaml` ✅  · **RAMA 03 COMPLETA**
 
 ## RAMA 04 — GEOMETRÍA (GEO)  · reinicia en `04.01`
-- [ ] Geometría plana (ángulos, triángulos, cuadriláteros, polígonos, circunferencia)
+- [ ] Geometría plana (ángulos, triángulos, cuadriláteros, polígonos, circunferencia)  → empieza en `04.01`  ⏭️ **AQUÍ VAMOS**
 - [ ] Perímetros y áreas
 - [ ] Congruencia, semejanza, Thales y Pitágoras
 - [ ] Cuerpos geométricos (área y volumen)
@@ -64,5 +64,5 @@
 - [ ] **Reconciliar/retirar** los YAML gruesos antiguos (`numeros.yaml`, `fundamentos.yaml`, etc.).
 
 ## Estado actual
-**Rama 02 completa.** Rama 03 ÁLGEBRA: sub-temas 1–6 listos (03.01–03.29).
-**Próximo paso:** Rama 03, sub-tema 7 **«M.C.D., m.c.m. y fracciones algebraicas»**, código inicial **`03.30`**.
+**Rama 02 completa. Rama 03 ÁLGEBRA completa (03.01–03.60).**
+**Próximo paso:** Rama 04 GEOMETRÍA, bloque 1 **«Geometría plana»**, código inicial **`04.01`**.
