@@ -40,7 +40,9 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Reales, Potencias, Raíces y Logaritmos | 02.04 | 02.04.01–02.04.12 | `numeros-reales-potencias-raices-logaritmos.yaml` | ✅ guardado |
 | Razones, Proporciones, Porcentajes y Finanzas | 02.05 | 02.05.01–02.05.11 | `numeros-razones-porcentajes-finanzas.yaml` | ✅ guardado |
 
-**Eje 02 NÚMEROS COMPLETO (02.01–02.05).** Siguiente bloque: `02.06` (libre).
+| Sucesiones y Progresiones | 02.06 | 02.06.01–02.06.05 | `numeros-sucesiones-progresiones.yaml` | ✅ guardado (PA→M1, PG→M2, series→U; 38 recursos; no unidad DEMRE explícita) |
+
+**Eje 02 NÚMEROS COMPLETO (02.01–02.06).** Siguiente bloque: `02.07` (libre).
 
 ---
 
@@ -58,8 +60,14 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Ecuaciones de Primer Grado y Sistemas | 03.08 | 03.08.01–03.08.07 | `algebra-ecuaciones-sistemas.yaml` | ✅ guardado |
 | Desigualdades e Inecuaciones | 03.09 | 03.09.01–03.09.07 | `algebra-inecuaciones.yaml` | ✅ guardado |
 | Funciones | 03.10 | 03.10.01–03.10.09 | `algebra-funciones.yaml` | ✅ guardado |
+| Ecuaciones de Segundo Grado | 03.11 | 03.11.01–03.11.06 | `algebra-ecuaciones-cuadraticas.yaml` | ✅ guardado (M1 + ext. M2; 41 recursos) |
+| Función Cuadrática | 03.12 | 03.12.01–03.12.06 | `algebra-funcion-cuadratica.yaml` | ✅ guardado (M1; 47 recursos) |
+| Funciones Exponencial y Logarítmica | 03.13 | 03.13.01–03.13.05 | `algebra-funciones-exp-log.yaml` | ✅ guardado (M2; 54 recursos) |
+| Función Potencia | 03.14 | 03.14.01–03.14.05 | `algebra-funcion-potencia.yaml` | ✅ guardado (M2; 50 recursos) |
 
-**Eje 03 ÁLGEBRA Y FUNCIONES COMPLETO (03.01–03.10).** Siguiente bloque: `03.11` (libre).
+| Función Trigonométrica | 03.15 | 03.15.01–03.15.06 | `algebra-funcion-trigonometrica.yaml` | ✅ guardado (M2 + ext. U; tangente→U; 58 recursos) |
+
+**Eje 03 ÁLGEBRA Y FUNCIONES COMPLETO (03.01–03.15).** Siguiente bloque: `03.16` (libre).
 
 ---
 
@@ -78,14 +86,32 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Sistema Cartesiano y Vectores | 04.09 | 04.09.01–04.09.04 | `geometria-cartesiano-vectores.yaml` | ✅ guardado |
 | Transformaciones Isométricas | 04.10 | 04.10.01–04.10.03 | `geometria-isometrias.yaml` | ✅ guardado |
 | Trigonometría en el Triángulo Rectángulo | 04.11 | 04.11.01–04.11.05 | `geometria-trigonometria.yaml` | ✅ guardado |
+| Trigonometría Ampliada | 04.12 | 04.12.01–04.12.04 | `geometria-trigonometria-ampliada.yaml` | ✅ guardado (cuadrantes/identidades→M2; ley senos/cosenos/Herón/SSA→U; 39 recursos) |
+| Geometría Analítica Ampliada | 04.13 | 04.13.01–04.13.04 | `geometria-analitica-ampliada.yaml` | ✅ guardado (rectas M2; circunferencia/dist.punto-recta→U; 49 recursos) |
 
-**Eje 04 GEOMETRÍA COMPLETO (04.01–04.11).** Siguiente eje: `05` (PROBABILIDAD Y ESTADÍSTICA).
+**Eje 04 GEOMETRÍA COMPLETO (04.01–04.13).** Siguiente bloque: `04.14` (libre).
+
+---
+
+## Eje 05 — PROBABILIDAD Y ESTADÍSTICA (abrev. EST)
+
+| Bloque | Código BB | Temas | Archivo | Estado |
+|--------|-----------|-------|---------|--------|
+| Estadística Descriptiva | 05.01 | 05.01.01–05.01.08 | `estadistica-descriptiva.yaml` | ✅ guardado (temas 09–11 retirados → 05.02/05.03) |
+| Medidas de Tendencia Central (MTC) | 05.02 | 05.02.01–05.02.04 | `estadistica-tendencia-central.yaml` | ✅ guardado |
+| Medidas de Posición y Dispersión | 05.03 | 05.03.01–05.03.05 | `estadistica-posicion-dispersion.yaml` | ✅ guardado |
+| Probabilidad Básica | 05.04 | 05.04.01–05.04.05 | `probabilidad-basica.yaml` | ✅ guardado (solo M1; Pascal → 05.06; condicional → 05.05) |
+| Probabilidad Condicional y Regla de Bayes | 05.05 | 05.05.01–05.05.05 | `probabilidad-condicional-bayes.yaml` | ✅ guardado |
+| Técnicas de Conteo y Distribución Binomial | 05.06 | 05.06.01–05.06.05 | `probabilidad-conteo-binomial.yaml` | ✅ guardado |
+| Distribución Normal | 05.07 | 05.07.01–05.07.04 | `estadistica-normal.yaml` | ✅ guardado (solo M2, 4M; 41 recursos) |
+
+**Eje 05 PROBABILIDAD Y ESTADÍSTICA COMPLETO (05.01–05.07).** Siguiente bloque: `05.08` (libre).
 
 ---
 
 ## Ejes pendientes
 
-- **05 PROBABILIDAD y ESTADÍSTICA** (EST) — empieza en `05.01.01`.
+_(ninguno — todos los ejes iniciados y con bloques completos.)_
 
 ## Pasadas pendientes (post-esqueleto)
 
