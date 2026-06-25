@@ -88,8 +88,10 @@ con el id del tema). 3 ejes por recurso: `competencia` (M1|M2|U), `dificultad`
 | Bloque | Código BB | Temas | Archivo | Estado |
 |--------|-----------|-------|---------|--------|
 | Estadística Descriptiva | 05.01 | 05.01.01–05.01.11 | `estadistica-descriptiva.yaml` | ✅ guardado |
+| Medidas de Tendencia Central (MTC) | 05.02 | 05.02.01–05.02.04 | `estadistica-tendencia-central.yaml` | ✅ guardado |
+| Medidas de Posición y Dispersión | 05.03 | 05.03.01–05.03.05 | `estadistica-posicion-dispersion.yaml` | ✅ guardado |
 
-**Siguiente bloque en eje 05:** `05.02` (libre).
+**Siguiente bloque en eje 05:** `05.04` (libre).
 
 ---
 
