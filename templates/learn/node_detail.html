@@ -32,6 +32,8 @@
         {% endif %}
     </header>
 
+    {% include "learn/_prereqs.html" %}
+
     {% if not content %}
     {# Placeholder para nodos sin contenido aún #}
     <div class="learn-placeholder">
@@ -140,6 +142,63 @@
     {% endif %}
 
     {% endif %}{# end if content #}
+
+    {% if practice_bank %}
+    <section class="learn-section learn-practice">
+        <h2 class="learn-section__title">Practica por ítems</h2>
+        {% for block in practice_bank %}
+        <details class="learn-itemgroup">
+            <summary class="learn-itemgroup__titulo">{{ block.group.title }}</summary>
+            {% if block.group.purpose %}
+            <p class="learn-itemgroup__purpose">{{ block.group.purpose }}</p>
+            {% endif %}
+            <ol class="learn-exercise-list">
+                {% for ex in block.exercises %}
+                <li class="learn-exercise" id="ex-{{ ex.id }}">
+                    <div class="learn-exercise__prompt">{{ ex.prompt|markdown }}</div>
+                    {% if ex.choices %}
+                    <ul class="learn-exercise__choices">
+                        {% for choice in ex.choices %}
+                        <li>{{ choice }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <button type="button" class="learn-exercise__toggle"
+                            data-target="sol-{{ ex.id }}" aria-expanded="false">
+                        Ver solución
+                    </button>
+                    <div class="learn-exercise__solution" id="sol-{{ ex.id }}" hidden>
+                        {% if ex.solution_steps %}
+                        <div class="learn-exercise__steps">{{ ex.solution_steps|markdown }}</div>
+                        {% endif %}
+                        {% if ex.correct_answer %}
+                        <p class="learn-exercise__answer"><strong>Respuesta:</strong> {{ ex.correct_answer }}</p>
+                        {% endif %}
+                        {% if ex.explanation %}
+                        <div class="learn-exercise__explanation">{{ ex.explanation|markdown }}</div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+        </details>
+        {% endfor %}
+    </section>
+
+    <script nonce="{{ csp_nonce }}">
+    (function () {
+        document.querySelectorAll(".learn-exercise__toggle").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var sol = document.getElementById(btn.dataset.target);
+                if (!sol) { return; }
+                sol.hidden = !sol.hidden;
+                btn.setAttribute("aria-expanded", sol.hidden ? "false" : "true");
+                btn.textContent = sol.hidden ? "Ver solución" : "Ocultar solución";
+            });
+        });
+    })();
+    </script>
+    {% endif %}
 
 </article>
 {% endblock %}

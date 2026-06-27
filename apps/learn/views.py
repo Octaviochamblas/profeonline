@@ -1,9 +1,15 @@
 import re
 
+from django.db.models import Prefetch
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
-from apps.content.models import KnowledgeNode, NodeContent, NodeMedia
+from apps.content.models import (
+    KnowledgeNode,
+    NodeExercise,
+    NodeMedia,
+    NodePrerequisite,
+)
 
 
 def _youtube_id(url):
@@ -37,6 +43,38 @@ def _build_breadcrumbs(chain):
     return crumbs
 
 
+def _node_url(node):
+    """URL pública /aprender/… de un nodo, recorriendo sus ancestros."""
+    chain = _ancestor_chain(node)
+    return "/aprender/" + "/".join(n.slug for n in chain) + "/"
+
+
+def _build_prerequisites(node):
+    """Prerrequisitos publicados del nodo (requeridos primero), como enlaces.
+
+    Sin estado por alumno todavía (F5 diferida): solo informativo, nunca bloquea.
+    Omite prerrequisitos cuyo nodo destino no está publicado (evita enlaces rotos).
+    """
+    order_map = {
+        NodePrerequisite.KIND_REQUERIDO: 0,
+        NodePrerequisite.KIND_RECOMENDADO: 1,
+    }
+    prereqs = sorted(
+        node.prerequisites.select_related("requires"),
+        key=lambda pr: (order_map.get(pr.kind, 9), pr.requires.name),
+    )
+    return [
+        {
+            "node": pr.requires,
+            "url": _node_url(pr.requires),
+            "kind": pr.kind,
+            "kind_display": pr.get_kind_display(),
+        }
+        for pr in prereqs
+        if pr.requires.is_published
+    ]
+
+
 def learn_home(request):
     asignaturas = KnowledgeNode.objects.filter(
         node_type=KnowledgeNode.NODE_ASIGNATURA,
@@ -61,12 +99,13 @@ def node_view(request, **kwargs):
     chain = _ancestor_chain(node)
     breadcrumbs = _build_breadcrumbs(chain)
 
+    prerequisites = _build_prerequisites(node)
     if node.is_leaf:
-        return _recurso_view(request, node, breadcrumbs)
-    return _list_view(request, node, chain, breadcrumbs)
+        return _recurso_view(request, node, breadcrumbs, prerequisites)
+    return _list_view(request, node, chain, breadcrumbs, prerequisites)
 
 
-def _list_view(request, node, chain, breadcrumbs):
+def _list_view(request, node, chain, breadcrumbs, prerequisites):
     children = node.children.order_by("order", "code")
     if not request.user.is_staff:
         children = children.filter(is_published=True)
@@ -78,12 +117,39 @@ def _list_view(request, node, chain, breadcrumbs):
             "node": node,
             "children": children,
             "breadcrumbs": breadcrumbs,
+            "prerequisites": prerequisites,
             "noindex": not node.is_published,
         },
     )
 
 
-def _recurso_view(request, node, breadcrumbs):
+def _build_practice_bank(node):
+    """Grupos de ítems publicados con sus ejercicios publicados, en orden.
+
+    Solo se muestran ejercicios `status=published`. Devuelve una lista de
+    `{"group": ItemGroup, "exercises": [...]}`; omite grupos sin ejercicios.
+    """
+    groups = (
+        node.item_groups.filter(is_published=True)
+        .order_by("order")
+        .prefetch_related(
+            Prefetch(
+                "exercises",
+                queryset=NodeExercise.objects.filter(
+                    status=NodeExercise.STATUS_PUBLISHED
+                ).order_by("order"),
+                to_attr="published_exercises",
+            )
+        )
+    )
+    return [
+        {"group": g, "exercises": g.published_exercises}
+        for g in groups
+        if g.published_exercises
+    ]
+
+
+def _recurso_view(request, node, breadcrumbs, prerequisites):
     content = getattr(node, "content", None)
     noindex = not node.is_published or content is None or content.is_draft
 
@@ -107,6 +173,8 @@ def _recurso_view(request, node, breadcrumbs):
             "content": content,
             "youtube_id": youtube_id,
             "other_media": other_media,
+            "practice_bank": _build_practice_bank(node),
+            "prerequisites": prerequisites,
             "breadcrumbs": breadcrumbs,
             "noindex": noindex,
         },

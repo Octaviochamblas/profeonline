@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 
@@ -161,6 +162,11 @@ class NodeContent(models.Model):
         verbose_name="estado",
     )
     fuente = models.TextField(blank=True, verbose_name="fuente")
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    published_at = models.DateTimeField(
+        null=True, blank=True, verbose_name="publicado el"
+    )
 
     class Meta:
         verbose_name = "contenido del nodo"
@@ -172,6 +178,12 @@ class NodeContent(models.Model):
     @property
     def is_draft(self) -> bool:
         return self.estado == self.ESTADO_BORRADOR
+
+    def save(self, *args, **kwargs):
+        # Sella la primera publicación; no se vuelve a tocar al re-guardar.
+        if self.estado == self.ESTADO_PUBLICADO and self.published_at is None:
+            self.published_at = timezone.now()
+        super().save(*args, **kwargs)
 
 
 class NodeMedia(models.Model):

@@ -140,3 +140,29 @@ class LoadNodeContentCommandTests(TestCase):
             call_command("load_node_content", file=str(path), verbosity=0)
 
         self.assertEqual(NodeContent.objects.count(), 1)
+
+
+class NodeContentTimestampTests(TestCase):
+    def test_published_sets_published_at(self):
+        node = _make_node()
+        content = NodeContent.objects.create(
+            node=node, estado=NodeContent.ESTADO_PUBLICADO
+        )
+        self.assertIsNotNone(content.created_at)
+        self.assertIsNotNone(content.published_at)
+
+    def test_draft_has_no_published_at(self):
+        node = _make_node()
+        content = NodeContent.objects.create(node=node)
+        self.assertIsNone(content.published_at)
+
+    def test_published_at_stable_once_set(self):
+        node = _make_node()
+        content = NodeContent.objects.create(
+            node=node, estado=NodeContent.ESTADO_PUBLICADO
+        )
+        first = content.published_at
+        content.objetivo = "editado"
+        content.save()
+        content.refresh_from_db()
+        self.assertEqual(content.published_at, first)

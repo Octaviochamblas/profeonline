@@ -134,6 +134,26 @@ Lógica:
   template de nodo de F2 (`apps/learn/`), leyendo `StudentNodeState` (de F5) para el estado por alumno.
 - **Estado del alumno:** reutilizar el `StudentNodeState` de F5 (no recalcular dominio aquí).
 
-## Qué se hizo
+## Qué se hizo (2026-06-27, 🏛️ Claude — subconjunto estructural)
 
-_(Completar al cerrar, antes de mover a `backlog/6-finalizados/`.)_
+Construido lo que **no depende del estado del alumno** (F5 está diferida por D4):
+
+- **Comando `load_prerequisites`** (`apps/content/management/commands/`): lee
+  `docs/conocimiento/dag/*.yaml` (clave `prerequisitos:` con `node`/`requires`/`kind`/`min_mastery`),
+  resuelve por `semantic_id`, **valida aciclicidad** con `graphlib.TopologicalSorter` sobre el grafo
+  final (existentes + nuevas) y **aborta sin escribir** si hay ciclo (transaccional). Idempotente por
+  `(node, requires)`. Autoprerrequisito = error; `semantic_id` inexistente = aviso + omitir (no fatal).
+- **"Antes de empezar"** en la página del nodo (`templates/learn/_prereqs.html`, incluido en
+  `node_detail.html` y `node_list.html`): lista los prerrequisitos **publicados** como enlaces, con
+  etiqueta requerido/recomendado, lenguaje blando, **nunca bloquea**. Helper `_build_prerequisites`
+  sin N+1 (`select_related`). Omite destinos no publicados (sin enlaces rotos).
+- **DAG piloto** `docs/conocimiento/dag/num-enteros.yaml` (operatoria ← conjunto). Cargado y
+  verificado en navegador (la página de operatoria muestra "Antes de empezar").
+- **Tests** (13): `test_prerequisites.py` (7: happy/idempotente/ciclo corto y largo/autoref/faltante/
+  defaults) + 3 de display en `apps/learn` + 3 de timestamps de `NodeContent`.
+
+**Diferido a cuando exista F5 (`StudentNodeState`):** estado por alumno (✓ dominado / ! pendiente) y
+"Siguiente recomendado" consciente de prerrequisitos no dominados. La versión actual es informativa.
+
+> Nota: la dependencia "Requiere: F5" del encabezado aplica solo a esas partes con estado; el DAG y el
+> aviso informativo se adelantaron por ser estructura pura (capa 1), sin tocar la medición.

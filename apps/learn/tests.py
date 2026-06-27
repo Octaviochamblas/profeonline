@@ -4,7 +4,13 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import KnowledgeNode, NodeContent
+from apps.content.models import (
+    ItemGroup,
+    KnowledgeNode,
+    NodeContent,
+    NodeExercise,
+    NodePrerequisite,
+)
 
 User = get_user_model()
 
@@ -175,3 +181,90 @@ class NodeDetailViewTests(TestCase):
         self.assertContains(response, "Matemáticas")
         self.assertContains(response, "Números")
         self.assertContains(response, "Enteros")
+
+
+class NodePracticeBankViewTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+        self.group = ItemGroup.objects.create(
+            node=self.recurso,
+            code="conceptuales",
+            title="Preguntas conceptuales",
+            level=ItemGroup.LEVEL_COMPRENDER,
+            order=1,
+        )
+
+    def test_published_exercise_shows_in_bank(self):
+        NodeExercise.objects.create(
+            node=self.recurso,
+            item_group=self.group,
+            prompt="¿Qué es un número natural?",
+            correct_answer="Un entero positivo",
+            status=NodeExercise.STATUS_PUBLISHED,
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, "Practica por ítems")
+        self.assertContains(response, "¿Qué es un número natural?")
+
+    def test_unpublished_exercise_hidden_from_bank(self):
+        NodeExercise.objects.create(
+            node=self.recurso,
+            item_group=self.group,
+            prompt="Ejercicio en revisión",
+            status=NodeExercise.STATUS_REVIEW_REQUIRED,
+        )
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "Practica por ítems")
+        self.assertNotContains(response, "Ejercicio en revisión")
+
+    def test_no_exercises_no_bank_section(self):
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "Practica por ítems")
+
+
+class NodePrerequisiteDisplayTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+        self.target = KnowledgeNode.objects.create(
+            semantic_id="MAT.NUM.ENTEROS_CONJUNTO.PRE",
+            code="02.01.01.09",
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            axis_abbr="NUM",
+            name="Recurso previo",
+            parent=self.tema,
+            is_published=True,
+        )
+
+    def test_shows_published_prerequisite(self):
+        NodePrerequisite.objects.create(
+            node=self.recurso,
+            requires=self.target,
+            kind=NodePrerequisite.KIND_REQUERIDO,
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, "Antes de empezar")
+        self.assertContains(response, "Recurso previo")
+
+    def test_hides_unpublished_prerequisite_target(self):
+        self.target.is_published = False
+        self.target.save()
+        NodePrerequisite.objects.create(
+            node=self.recurso,
+            requires=self.target,
+            kind=NodePrerequisite.KIND_REQUERIDO,
+        )
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "Antes de empezar")
+
+    def test_no_prerequisites_no_section(self):
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "Antes de empezar")
