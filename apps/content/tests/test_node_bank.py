@@ -167,7 +167,7 @@ class LoadExerciseBankTests(TestCase):
         )
         self.assertEqual(NodeExercise.objects.count(), 1)
         ex = NodeExercise.objects.get()
-        self.assertEqual(ex.status, NodeExercise.STATUS_READY)
+        self.assertEqual(ex.status, NodeExercise.STATUS_PUBLISHED)
         # ItemGroup creado desde plantilla estándar.
         self.assertEqual(ex.item_group.title, "Preguntas conceptuales")
         self.assertEqual(ex.item_group.level, ItemGroup.LEVEL_COMPRENDER)
@@ -198,7 +198,7 @@ class LoadExerciseBankTests(TestCase):
         )
         self.assertEqual(NodeExercise.objects.count(), 0)
 
-    def test_legal_review_forces_review_required(self):
+    def test_legal_review_publishes_and_sets_flag(self):
         self._run(
             [
                 {
@@ -211,11 +211,11 @@ class LoadExerciseBankTests(TestCase):
                 }
             ]
         )
-        self.assertEqual(
-            NodeExercise.objects.get().status, NodeExercise.STATUS_REVIEW_REQUIRED
-        )
+        ex = NodeExercise.objects.get()
+        self.assertEqual(ex.status, NodeExercise.STATUS_PUBLISHED)
+        self.assertTrue(ex.legal_review)
 
-    def test_missing_answer_forces_review(self):
+    def test_missing_answer_still_publishes(self):
         self._run(
             [
                 {
@@ -227,10 +227,10 @@ class LoadExerciseBankTests(TestCase):
             ]
         )
         self.assertEqual(
-            NodeExercise.objects.get().status, NodeExercise.STATUS_REVIEW_REQUIRED
+            NodeExercise.objects.get().status, NodeExercise.STATUS_PUBLISHED
         )
 
-    def test_published_downgraded_to_ready(self):
+    def test_published_status_in_jsonl_publishes_immediately(self):
         self._run(
             [
                 {
@@ -242,7 +242,7 @@ class LoadExerciseBankTests(TestCase):
                 }
             ]
         )
-        self.assertEqual(NodeExercise.objects.get().status, NodeExercise.STATUS_READY)
+        self.assertEqual(NodeExercise.objects.get().status, NodeExercise.STATUS_PUBLISHED)
 
     def test_reimport_does_not_unpublish(self):
         row = {
