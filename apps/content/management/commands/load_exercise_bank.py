@@ -3,10 +3,10 @@
 Formato: una línea JSON por ejercicio (salida del pipeline NotebookLM → Claude,
 handoff §12). Idempotente por `stable_id`: reejecutar actualiza sin duplicar.
 
-Regla de seguridad (handoff §13): el importador NUNCA publica. Un ejercicio entra
-como `review_required` si trae `legal_review`/`rewrite_required`, le falta
-`correct_answer`, o ya viene marcado para revisión; `published` entrante baja a
-`ready` (la publicación se aprueba a mano).
+Política de publicación: autopublicado inmediato. Los flags legal_review /
+rewrite_required son metadata informativa pero no bloquean la publicación.
+Los ItemGroups se crean con is_published=True para que el ejercicio sea visible
+en /aprender/ sin pasos adicionales.
 """
 
 import json
@@ -35,37 +35,32 @@ def _resolve_item_group(node, code):
             "purpose": spec["purpose"],
             "level": spec["level"],
             "order": _STANDARD_ORDER[code],
+            "is_published": True,
         }
     else:
         defaults = {
             "title": code.replace("_", " ").capitalize(),
             "level": ItemGroup.LEVEL_RESOLVER,
             "order": 99,
+            "is_published": True,
         }
     group, _ = ItemGroup.objects.get_or_create(node=node, code=code, defaults=defaults)
+    # Si el grupo ya existía sin estar publicado, activarlo.
+    if not group.is_published:
+        group.is_published = True
+        group.save(update_fields=["is_published"])
     return group
 
 
 def _resolve_status(raw):
-    """(status, flagged_for_review). El importador nunca devuelve 'published'."""
-    incoming = _valid(
-        raw.get("status") or NodeExercise.STATUS_DRAFT,
-        NodeExercise.STATUS_CHOICES,
-        NodeExercise.STATUS_DRAFT,
-    )
-    if incoming == NodeExercise.STATUS_PUBLISHED:
-        incoming = NodeExercise.STATUS_READY
-
-    has_answer = bool(str(raw.get("correct_answer") or "").strip())
+    """Autopublicado inmediato. Retorna siempre STATUS_PUBLISHED.
+    Los flags legal_review / rewrite_required se registran como metadata."""
     needs_review = (
         bool(raw.get("legal_review"))
         or bool(raw.get("rewrite_required"))
-        or not has_answer
-        or incoming == NodeExercise.STATUS_REVIEW_REQUIRED
+        or (raw.get("status") or "") == NodeExercise.STATUS_REVIEW_REQUIRED
     )
-    if needs_review:
-        return NodeExercise.STATUS_REVIEW_REQUIRED, True
-    return incoming, False
+    return NodeExercise.STATUS_PUBLISHED, needs_review
 
 
 class Command(BaseCommand):

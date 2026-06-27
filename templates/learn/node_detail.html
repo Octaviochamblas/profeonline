@@ -2,6 +2,61 @@
 {% load markdown_tags %}
 
 {% block title %}{{ node.name }} | ProfeOnline{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── Ejercicios interactivos ─────────────────────────── */
+.learn-exercise__tf { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.75rem; }
+.learn-exercise__mc { list-style:none; padding:0; margin:.75rem 0 0; display:flex; flex-direction:column; gap:.4rem; }
+.ex-choice {
+  padding:.5rem 1.1rem; border:2px solid #d0d5dd; border-radius:8px;
+  background:#fff; cursor:pointer; font-size:.92rem; font-family:inherit;
+  text-align:left; transition:border-color .15s, background .15s;
+}
+.ex-choice:hover:not(:disabled) { border-color:#4a7cf6; background:#f0f4ff; }
+.ex-choice:disabled { cursor:default; opacity:.85; }
+.ex-choice--correct { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d; font-weight:600; }
+.ex-choice--wrong   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c; }
+.learn-exercise__open { display:flex; flex-direction:column; gap:.5rem; margin-top:.75rem; }
+.ex-input {
+  width:100%; padding:.5rem .75rem; border:1px solid #d0d5dd; border-radius:6px;
+  font-family:inherit; font-size:.92rem; resize:vertical; min-height:70px;
+}
+.ex-submit {
+  align-self:flex-start; padding:.45rem 1.1rem; border:none; border-radius:6px;
+  background:#4a7cf6; color:#fff; cursor:pointer; font-size:.92rem; font-family:inherit;
+}
+.ex-submit:hover:not(:disabled) { background:#3b6de0; }
+.ex-submit:disabled { background:#a5b4fc; cursor:default; }
+.learn-exercise__feedback {
+  margin-top:.85rem; padding:.75rem 1rem; background:#f8f9fa;
+  border-radius:8px; border-left:3px solid #e0e0e0;
+}
+.learn-exercise__verdict { font-weight:700; font-size:1rem; margin-bottom:.5rem; }
+.learn-exercise__verdict--ok  { color:#16a34a; }
+.learn-exercise__verdict--err { color:#dc2626; }
+
+/* ── Clasificación (matching) ───────────────────────────── */
+.classify-grid { display:flex; flex-direction:column; gap:.6rem; margin-top:.75rem; }
+.classify-row  { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+.classify-row__label {
+  font-weight:600; min-width:3rem; text-align:center;
+  padding:.3rem .65rem; background:#f0f4ff; border-radius:6px;
+  font-size:.93rem; white-space:nowrap;
+}
+.classify-row.classified .classify-row__label { background:#e8f0fe; }
+.ex-catbtn {
+  padding:.3rem .8rem; border:1.5px solid #d0d5dd; border-radius:6px;
+  background:#fff; cursor:pointer; font-size:.82rem; font-family:inherit;
+  transition:border-color .12s, background .12s;
+}
+.ex-catbtn:hover:not(:disabled) { border-color:#4a7cf6; background:#f0f4ff; }
+.ex-catbtn.selected  { border-color:#4a7cf6; background:#e8f0fe; color:#1d4ed8; font-weight:600; }
+.ex-catbtn.cat-ok    { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d !important; font-weight:700; }
+.ex-catbtn.cat-err   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c !important; }
+.ex-catbtn:disabled  { cursor:default; opacity:.85; }
+</style>
+{% endblock %}
 {% block meta_description %}{% if content and content.objetivo %}{{ content.objetivo|truncatechars:155 }}{% else %}Recurso educativo: {{ node.name }}{% endif %}{% endblock %}
 {% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
 
@@ -145,29 +200,63 @@
 
     {% if practice_bank %}
     <section class="learn-section learn-practice">
-        <h2 class="learn-section__title">Practica por ítems</h2>
+        <h2 class="learn-section__title">Practica</h2>
         {% for block in practice_bank %}
-        <details class="learn-itemgroup">
+        <details class="learn-itemgroup" open>
             <summary class="learn-itemgroup__titulo">{{ block.group.title }}</summary>
             {% if block.group.purpose %}
             <p class="learn-itemgroup__purpose">{{ block.group.purpose }}</p>
             {% endif %}
             <ol class="learn-exercise-list">
                 {% for ex in block.exercises %}
-                <li class="learn-exercise" id="ex-{{ ex.id }}">
+                <li class="learn-exercise" id="ex-{{ ex.id }}"
+                    data-format="{{ ex.format }}"
+                    data-answer="{{ ex.correct_answer }}">
+
                     <div class="learn-exercise__prompt">{{ ex.prompt|markdown }}</div>
-                    {% if ex.choices %}
-                    <ul class="learn-exercise__choices">
-                        {% for choice in ex.choices %}
-                        <li>{{ choice }}</li>
+
+                    {% if ex.format == "true_false" %}
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                    </div>
+
+                    {% elif ex.format == "multiple_choice" %}
+                    <ul class="learn-exercise__mc">
+                        {% for ch in ex.choices %}
+                        <li><button type="button" class="ex-choice" data-value="{{ ch }}">{{ ch }}</button></li>
                         {% endfor %}
                     </ul>
+
+                    {% elif ex.format == "matching" and ex.pattern.items and ex.pattern.categories %}
+                    <div class="learn-exercise__classify"
+                         data-answers="{{ ex.pattern.answer|to_json }}">
+                      <div class="classify-grid">
+                        {% for item in ex.pattern.items %}
+                        <div class="classify-row" data-item="{{ item }}">
+                          <span class="classify-row__label">{{ item }}</span>
+                          <div class="classify-row__cats">
+                            {% for cat in ex.pattern.categories %}
+                            <button type="button" class="ex-catbtn" data-cat="{{ cat }}">{{ cat }}</button>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <button type="button" class="ex-submit classify-verify" disabled
+                              style="margin-top:.75rem">Verificar</button>
+                    </div>
+
+                    {% else %}
+                    <div class="learn-exercise__open">
+                        <textarea class="ex-input" rows="3"
+                            placeholder="Escribe tu respuesta aquí…"></textarea>
+                        <button type="button" class="ex-submit">Ver corrección</button>
+                    </div>
                     {% endif %}
-                    <button type="button" class="learn-exercise__toggle"
-                            data-target="sol-{{ ex.id }}" aria-expanded="false">
-                        Ver solución
-                    </button>
-                    <div class="learn-exercise__solution" id="sol-{{ ex.id }}" hidden>
+
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
                         {% if ex.solution_steps %}
                         <div class="learn-exercise__steps">{{ ex.solution_steps|markdown }}</div>
                         {% endif %}
@@ -187,15 +276,137 @@
 
     <script nonce="{{ csp_nonce }}">
     (function () {
-        document.querySelectorAll(".learn-exercise__toggle").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                var sol = document.getElementById(btn.dataset.target);
-                if (!sol) { return; }
-                sol.hidden = !sol.hidden;
-                btn.setAttribute("aria-expanded", sol.hidden ? "false" : "true");
-                btn.textContent = sol.hidden ? "Ver solución" : "Ocultar solución";
-            });
+      "use strict";
+
+      function renderKatex(el) {
+        if (typeof window.renderMathInElement === "function") {
+          try { window.renderMathInElement(el, { throwOnError: false }); } catch (e) {}
+        }
+      }
+
+      function lockExercise(li) {
+        li.querySelectorAll(".ex-choice").forEach(function (b) { b.disabled = true; });
+        var inp = li.querySelector(".ex-input");
+        var sub = li.querySelector(".ex-submit");
+        if (inp) inp.disabled = true;
+        if (sub) sub.disabled = true;
+      }
+
+      function showFeedback(li, verdict) {
+        /* verdict: "ok" | "err" | null (open_answer sin corrección automática) */
+        var fb = li.querySelector(".learn-exercise__feedback");
+        var vd = li.querySelector(".learn-exercise__verdict");
+        fb.hidden = false;
+        if (verdict === "ok") {
+          vd.textContent = "✓ ¡Correcto!";
+          vd.className = "learn-exercise__verdict learn-exercise__verdict--ok";
+          fb.style.borderLeftColor = "#16a34a";
+        } else if (verdict === "err") {
+          vd.textContent = "✗ Incorrecto — aquí va la explicación:";
+          vd.className = "learn-exercise__verdict learn-exercise__verdict--err";
+          fb.style.borderLeftColor = "#dc2626";
+        } else {
+          vd.textContent = "";
+        }
+        renderKatex(fb);
+      }
+
+      function highlightChoices(li, chosen, correct) {
+        li.querySelectorAll(".ex-choice").forEach(function (btn) {
+          var v = (btn.dataset.value || "").trim();
+          if (v === correct) {
+            btn.classList.add("ex-choice--correct");
+          } else if (v === chosen) {
+            btn.classList.add("ex-choice--wrong");
+          }
         });
+      }
+
+      document.querySelectorAll(".learn-exercise").forEach(function (li) {
+        var format  = li.dataset.format || "";
+        var correct = (li.dataset.answer || "").trim();
+
+        /* V/F y selección múltiple: corrección inmediata al clic */
+        if (format === "true_false" || format === "multiple_choice") {
+          li.querySelectorAll(".ex-choice").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var chosen = (btn.dataset.value || "").trim();
+              lockExercise(li);
+              highlightChoices(li, chosen, correct);
+              showFeedback(li, chosen === correct ? "ok" : "err");
+            });
+          });
+        }
+
+        /* Clasificación (matching con pattern.items/categories) */
+        var classDiv = li.querySelector(".learn-exercise__classify");
+        if (classDiv) {
+          var answers = {};
+          try { answers = JSON.parse(classDiv.dataset.answers || "{}"); } catch (e) {}
+          var rows = classDiv.querySelectorAll(".classify-row");
+          var selected = {};
+          var verifyBtn = classDiv.querySelector(".classify-verify");
+
+          rows.forEach(function (row) {
+            var itemKey = row.dataset.item;
+            row.querySelectorAll(".ex-catbtn").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                row.querySelectorAll(".ex-catbtn").forEach(function (b) {
+                  b.classList.remove("selected");
+                });
+                btn.classList.add("selected");
+                selected[itemKey] = btn.dataset.cat;
+                row.classList.add("classified");
+                if (verifyBtn && Object.keys(selected).length === rows.length) {
+                  verifyBtn.disabled = false;
+                }
+              });
+            });
+          });
+
+          if (verifyBtn) {
+            verifyBtn.addEventListener("click", function () {
+              verifyBtn.disabled = true;
+              var okCount = 0;
+              rows.forEach(function (row) {
+                var itemKey = row.dataset.item;
+                var correctCat = answers[itemKey];
+                row.querySelectorAll(".ex-catbtn").forEach(function (btn) {
+                  btn.disabled = true;
+                  if (btn.classList.contains("selected")) {
+                    if (btn.dataset.cat === correctCat) {
+                      btn.classList.add("cat-ok");
+                      okCount++;
+                    } else {
+                      btn.classList.add("cat-err");
+                    }
+                  }
+                  if (!btn.classList.contains("selected") && btn.dataset.cat === correctCat) {
+                    btn.classList.add("cat-ok");
+                  }
+                });
+              });
+              var verdict = okCount === rows.length ? "ok" : "err";
+              showFeedback(li, verdict);
+              var vd = li.querySelector(".learn-exercise__verdict");
+              if (verdict === "ok") {
+                vd.textContent = "✓ ¡Todos clasificados correctamente!";
+              } else {
+                vd.textContent = "✗ " + okCount + " de " + rows.length + " correctos — las correctas están marcadas en verde:";
+              }
+            });
+          }
+        }
+
+        /* Open answer: botón revela la corrección sin juzgar */
+        var submitBtn = li.querySelector(".ex-submit:not(.classify-verify)");
+        if (submitBtn) {
+          submitBtn.addEventListener("click", function () {
+            lockExercise(li);
+            showFeedback(li, null);
+          });
+        }
+      });
     })();
     </script>
     {% endif %}
