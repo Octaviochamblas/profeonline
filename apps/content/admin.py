@@ -7,8 +7,10 @@ from apps.content.services.ai_generation_service import generate_questions_for_r
 from apps.content.models import (
     Area,
     Choice,
+    KnowledgeNode,
     Level,
     Module,
+    NodePrerequisite,
     Question,
     QuestionErrorReport,
     QuizAttempt,
@@ -20,6 +22,39 @@ from apps.content.models import (
     UserStreak,
     XPEvent,
 )
+
+
+@admin.register(KnowledgeNode)
+class KnowledgeNodeAdmin(admin.ModelAdmin):
+    list_display = (
+        "code",
+        "node_type",
+        "name",
+        "subject_abbr",
+        "axis_abbr",
+        "competencia",
+        "is_published",
+    )
+    list_filter = (
+        "node_type",
+        "subject_abbr",
+        "axis_abbr",
+        "competencia",
+        "dificultad",
+        "is_published",
+    )
+    search_fields = ("semantic_id", "code", "name")
+    raw_id_fields = ("parent",)
+    ordering = ("subject_abbr", "code")
+    list_per_page = 100
+
+
+@admin.register(NodePrerequisite)
+class NodePrerequisiteAdmin(admin.ModelAdmin):
+    list_display = ("node", "requires", "kind", "min_mastery")
+    list_filter = ("kind",)
+    search_fields = ("node__semantic_id", "requires__semantic_id")
+    raw_id_fields = ("node", "requires")
 
 
 @admin.register(Area)

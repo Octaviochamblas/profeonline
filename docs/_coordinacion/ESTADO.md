@@ -13,13 +13,18 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Biblioteca de Conocimiento — Fase 1 (esqueleto atómico de Matemática) COMPLETA 🟡 (2026-06-25):**
-  🏛️ Claude + 🧑 completaron el esqueleto atómico **por bloques** en `docs/conocimiento/`.
-  **Estándar:** nomenclatura `EE.BB.TT.RR`; `bloque_codigo` en cabecera; 3 ejes por recurso
-  (`competencia` M1/M2/U · `dificultad` · `cursos`); atomización máxima; **un YAML por bloque**.
-  **Ejes 01–05 completos** — PR #99 abierto (`docs/biblioteca-probabilidad` → `main`, 2026-06-25).
-  **Pendientes de pasada final:** prerrequisitos DAG, anti-duplicado, validación competencia/cursos
-  contra DEMRE y retiro de YAMLs gruesos antiguos.
+- **Plataforma de Conocimiento — Arquitectura 6 capas + F1 CONSTRUIDO 🟡 (2026-06-26):**
+  🏛️ Claude (por pedido directo del 🧑) diseñó la arquitectura basal en **6 capas**
+  (`backlog/2-arquitectura/arquitectura-plataforma-conocimiento.md`) y escribió las tarjetas
+  **F1–F6** (`kb-f1…kb-f6`). **Construyó F1** (rama `feat/grafo-conocimiento-f1`):
+  `KnowledgeNode` (árbol autorreferente Asignatura>Eje>Bloque>Tema>Recurso, `semantic_id` único
+  global, `code` único por asignatura) + `NodePrerequisite` + comando idempotente
+  `import_knowledge_tree` + admin + migración `0037` + 8 tests. **Import real: 2208 nodos**
+  (1 asig · 5 ejes · 43 bloques · 248 temas · 1911 recursos); 13 YAML legacy omitidos.
+  Barrera verde (8/8 tests · `check` · `makemigrations --check`). Tarjeta F1 en `4-auditoria/`.
+  **Decisiones:** banco≠evaluación (capas 3 y 4), estado solo-rendimiento, asignatura como raíz
+  (para Física/Química a futuro), **piloto = Números Enteros**. **Siguiente: F2** (contenido +
+  páginas `/aprender/…`). PR #99 (esqueleto YAML) ya mergeado.
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
@@ -155,6 +160,11 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-26 — 🏛️ Claude + 🧑: **Arquitectura de plataforma (6 capas) + F1 construido — rama `feat/grafo-conocimiento-f1`.**
+  Rediseño en 6 capas (banco≠evaluación; estado solo-rendimiento; asignatura como nodo raíz para
+  Física/Química a futuro). Tarjetas F1–F6. **F1 construido y verde:** `KnowledgeNode`/`NodePrerequisite`,
+  `import_knowledge_tree` idempotente (2208 nodos importados, 13 legacy omitidos), admin, migración `0037`,
+  8 tests. Detalle en `reportes-sesion/2026-06-26.md`. **Siguiente: F2 (contenido + páginas, piloto Números Enteros).**
 - 2026-06-25 — 🏛️ Claude + 🧑: **Biblioteca de Conocimiento — esqueleto YAML completo (ejes 01–05) — PR #99 abierto.**
   Eje 05 PROBABILIDAD Y ESTADÍSTICA (7 bloques 05.01–05.07), Eje 02 ampliado (02.06 Sucesiones),
   Eje 03 completado (03.11–03.15), Eje 04 ampliado (04.12–04.13). Flujo: NotebookLM genera,
