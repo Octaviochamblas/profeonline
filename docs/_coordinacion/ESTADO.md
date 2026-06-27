@@ -13,16 +13,14 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Plataforma de Conocimiento — F3 (estructura por ítems) CONSTRUIDO 🟡 (2026-06-27):**
-  🏛️ Claude + 🧑 ratificaron **D2/D3/D4** (tablas nuevas ancladas al nodo, **Sistema A intacto** ·
-  banco **ÚNICO** por `ItemGroup` + generadores futuros · **medición del alumno diferida**).
-  Construido en `feat/grafo-conocimiento-f1`: `ItemGroup` + `NodeExercise` (banco único,
-  `kind=item|template`), plantilla estándar de 7 grupos, migración **aditiva** `0039`, admin, comando
-  idempotente `load_exercise_bank` (JSONL del pipeline NotebookLM→Claude, **nunca autopublica**;
-  publicación manual "pegajosa"), sección "Practica por ítems" en la página del nodo (acordeón por
-  grupo, toggle "Ver solución", KaTeX), prompts del pipeline en `docs/conocimiento/pipeline/`. Piloto:
-  4 ejercicios en el nodo Naturales (verificado en navegador). 20 tests nuevos. Tarjeta F3 en
-  `4-auditoria/`.
+- **Plataforma de Conocimiento — F1–F3 + F6 CERRADAS 🟢 (2026-06-27, PR #102):**
+  Squash-merge de `feat/grafo-conocimiento-f1` a `main`. Incluye: `KnowledgeNode`/`NodePrerequisite`,
+  `NodeContent`/`NodeMedia`, app `learn`, `ItemGroup`/`NodeExercise` (**autopublicado inmediato** —
+  `load_exercise_bank` siempre publica; flags `legal_review`/`rewrite_required` son metadata no
+  bloqueante), UI rediseñada (`node_detail.html`: breadcrumb plegable, objetivo card, ejemplos
+  interactivos V/F/Sí-No, errores como preguntas conceptuales, banco con tarjetas), ejercicios de
+  clasificación (formato `matching`), filtro `to_json`. Contenido piloto: 14 NodeContent + ejercicios
+  para ENTEROS_CONJUNTO. Tarjetas en `6-finalizados/`.
 - **Plataforma de Conocimiento — F6 (prerrequisitos, subconjunto estructural) CONSTRUIDO 🟡 (2026-06-27):**
   Parte que **no depende del estado del alumno** (F5 diferida): comando `load_prerequisites`
   (YAML→`NodePrerequisite`, **valida aciclicidad** con `graphlib`, aborta sin escribir si hay ciclo,
@@ -184,6 +182,11 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-27 — 🏛️ Claude + 🧑: **F1–F3 + F6 CERRADAS — PR #102 squash-merge a `main` (rama `feat/grafo-conocimiento-f1`).**
+  UI rediseñada: breadcrumb plegable, objetivo card, ejemplos interactivos (V/F/Sí-No), errores como
+  preguntas conceptuales, banco con tarjetas+sombra. Ejercicios de clasificación (formato `matching`).
+  Política **autopublicado inmediato** en `load_exercise_bank`. Contenido: 14 NodeContent + ejercicios
+  ENTEROS_CONJUNTO + clasificación. Tests actualizados. Tarjetas en `6-finalizados/`.
 - 2026-06-27 — 🏛️ Claude + 🧑: **F3 — estructura pedagógica por ítems (`ItemGroup` + `NodeExercise` + pipeline JSONL) — rama `feat/grafo-conocimiento-f1`.**
   Decisiones **D2/D3/D4** ratificadas en la arquitectura (§8). Modelos nuevos **aditivos** anclados a
   `KnowledgeNode` (Sistema A intacto): `ItemGroup` (7 grupos estándar) + `NodeExercise` (banco único,
