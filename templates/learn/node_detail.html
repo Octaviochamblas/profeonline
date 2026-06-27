@@ -1,0 +1,638 @@
+{% extends "base.html" %}
+{% load markdown_tags %}
+
+{% block title %}{{ node.name }} | ProfeOnline{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── Miga de pan plegable ───────────────────────────── */
+.breadcrumb-wrap > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .8rem;
+  background: #f1f5f9;
+  border-radius: 20px;
+  font-size: .82rem;
+  color: #64748b;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  border: 1px solid #e2e8f0;
+}
+.breadcrumb-wrap > summary::-webkit-details-marker { display: none; }
+.breadcrumb-wrap > summary::before { content: "↗ "; font-size: .78rem; }
+.breadcrumb-wrap[open] > summary { margin-bottom: .5rem; border-radius: 8px 8px 0 0; }
+
+/* ── Objetivo ──────────────────────────────────────── */
+.learn-objetivo-card {
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 10px;
+  padding: .85rem 1.1rem;
+}
+.learn-objetivo-card__label {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #3b82f6;
+  display: block;
+  margin-bottom: .3rem;
+}
+.learn-objetivo-card p { margin: 0; color: #1e3a5f; font-size: .96rem; }
+
+/* ── Títulos de sección ─────────────────────────── */
+.learn-section { margin-top: 2rem; }
+.learn-section__title {
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #4a7cf6;
+  padding: .45rem .9rem;
+  background: #f0f4ff;
+  border-left: 3px solid #4a7cf6;
+  border-radius: 0 6px 6px 0;
+  display: block;
+  margin: 0 0 1rem;
+}
+
+/* ── Ejemplos como tarjetas ─────────────────────── */
+.learn-ejemplos-list { display: flex; flex-direction: column; gap: 1.1rem; margin-top: .75rem; }
+.learn-ejemplo-card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.learn-ejemplo-card__header {
+  background: #f8faff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+}
+.learn-ejemplo-card__num {
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+.learn-ejemplo-card__titulo { font-weight: 600; font-size: .95rem; color: #1e293b; }
+.learn-ejemplo-card__body { padding: .85rem 1rem 1rem; }
+.learn-ejemplo-card .learn-exercise__feedback {
+  margin-top: .75rem;
+  padding: .7rem .9rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #e0e0e0;
+}
+
+/* ── Preguntas conceptuales (desde errores) ──────── */
+.conceptual-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .9rem; margin-top: .75rem; }
+.conceptual-item {
+  border: 1.5px solid #fde68a;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.conceptual-item__claim {
+  background: #fffbeb;
+  padding: .6rem 1rem;
+  font-style: italic;
+  color: #78350f;
+  border-bottom: 1px solid #fde68a;
+  font-size: .93rem;
+}
+.conceptual-item__body { padding: .65rem 1rem .75rem; }
+.conceptual-item__q { font-size: .85rem; color: #6b7280; margin-bottom: .4rem; }
+.conceptual-item .learn-exercise__feedback {
+  margin-top: .6rem;
+  padding: .65rem .9rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #e0e0e0;
+}
+
+/* ── Banco de práctica ──────────────────────────── */
+.learn-practice { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.25rem; }
+.learn-itemgroup {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+}
+.learn-itemgroup > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .8rem 1.1rem;
+  background: #f8faff;
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  font-size: .93rem;
+  color: #1e293b;
+  user-select: none;
+}
+.learn-itemgroup > summary::-webkit-details-marker { display: none; }
+.learn-itemgroup > summary::after {
+  content: "‹";
+  font-size: 1.1rem;
+  color: #94a3b8;
+  transition: transform .2s;
+  transform: rotate(-90deg);
+}
+.learn-itemgroup[open] > summary::after { transform: rotate(90deg); }
+.learn-itemgroup__purpose {
+  font-size: .82rem;
+  color: #64748b;
+  padding: .5rem 1.1rem;
+  background: #f8faff;
+  border-bottom: 1px dashed #e2e8f0;
+  margin: 0;
+}
+.learn-itemgroup .learn-exercise-list { padding: .9rem 1rem 1.1rem; }
+
+/* ── Ejercicios interactivos ─────────────────────── */
+.learn-exercise-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+.learn-exercise__tf { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem; }
+.learn-exercise__mc { list-style:none; padding:0; margin:.6rem 0 0; display:flex; flex-direction:column; gap:.4rem; }
+.ex-choice {
+  padding:.45rem 1.05rem; border:2px solid #d0d5dd; border-radius:8px;
+  background:#fff; cursor:pointer; font-size:.91rem; font-family:inherit;
+  text-align:left; transition:border-color .15s, background .15s;
+}
+.ex-choice:hover:not(:disabled) { border-color:#4a7cf6; background:#f0f4ff; }
+.ex-choice:disabled { cursor:default; opacity:.85; }
+.ex-choice--correct { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d; font-weight:600; }
+.ex-choice--wrong   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c; }
+.learn-exercise__open { display:flex; flex-direction:column; gap:.5rem; margin-top:.75rem; }
+.ex-input {
+  width:100%; padding:.5rem .75rem; border:1px solid #d0d5dd; border-radius:6px;
+  font-family:inherit; font-size:.92rem; resize:vertical; min-height:70px;
+  box-sizing: border-box;
+}
+.ex-submit {
+  align-self:flex-start; padding:.42rem 1.05rem; border:none; border-radius:6px;
+  background:#4a7cf6; color:#fff; cursor:pointer; font-size:.9rem; font-family:inherit;
+}
+.ex-submit:hover:not(:disabled) { background:#3b6de0; }
+.ex-submit:disabled { background:#a5b4fc; cursor:default; }
+.learn-exercise__feedback {
+  margin-top:.85rem; padding:.75rem 1rem; background:#f8f9fa;
+  border-radius:8px; border-left:3px solid #e0e0e0;
+}
+.learn-exercise__verdict { font-weight:700; font-size:1rem; margin-bottom:.4rem; }
+.learn-exercise__verdict--ok  { color:#16a34a; }
+.learn-exercise__verdict--err { color:#dc2626; }
+
+/* ── Clasificación (matching) ───────────────────── */
+.classify-grid { display:flex; flex-direction:column; gap:.6rem; margin-top:.75rem; }
+.classify-row  { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+.classify-row__label {
+  font-weight:600; min-width:3rem; text-align:center;
+  padding:.3rem .65rem; background:#f0f4ff; border-radius:6px;
+  font-size:.93rem; white-space:nowrap;
+}
+.classify-row.classified .classify-row__label { background:#e8f0fe; }
+.ex-catbtn {
+  padding:.3rem .8rem; border:1.5px solid #d0d5dd; border-radius:6px;
+  background:#fff; cursor:pointer; font-size:.82rem; font-family:inherit;
+  transition:border-color .12s, background .12s;
+}
+.ex-catbtn:hover:not(:disabled) { border-color:#4a7cf6; background:#f0f4ff; }
+.ex-catbtn.selected  { border-color:#4a7cf6; background:#e8f0fe; color:#1d4ed8; font-weight:600; }
+.ex-catbtn.cat-ok    { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d !important; font-weight:700; }
+.ex-catbtn.cat-err   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c !important; }
+.ex-catbtn:disabled  { cursor:default; opacity:.85; }
+</style>
+{% endblock %}
+
+{% block meta_description %}{% if content and content.objetivo %}{{ content.objetivo|truncatechars:155 }}{% else %}Recurso educativo: {{ node.name }}{% endif %}{% endblock %}
+{% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
+
+{% block content %}
+<article class="resource-view stack">
+
+    <details class="breadcrumb-wrap">
+        <summary>Ruta de aprendizaje</summary>
+        <nav aria-label="Miga de pan">
+            <ol class="breadcrumb">
+                {% for crumb in breadcrumbs %}
+                <li class="breadcrumb__item">
+                    {% if crumb.url %}
+                    <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
+                    {% else %}
+                    <span aria-current="page">{{ crumb.label }}</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ol>
+        </nav>
+    </details>
+
+    <header class="resource-view__header">
+        <h1 class="resource-view__title">{{ node.name }}</h1>
+        {% if node.competencia %}
+        <div class="resource-view__meta">
+            <span class="resource-view__tag">{{ node.get_competencia_display }}</span>
+            {% if node.dificultad %}<span class="resource-view__tag">{{ node.get_dificultad_display }}</span>{% endif %}
+        </div>
+        {% endif %}
+    </header>
+
+    {% include "learn/_prereqs.html" %}
+
+    {% if not content %}
+    <div class="learn-placeholder">
+        <p>El contenido de este recurso está siendo preparado. ¡Vuelve pronto!</p>
+    </div>
+
+    {% else %}
+
+    {% if content.objetivo %}
+    <div class="learn-objetivo-card">
+        <span class="learn-objetivo-card__label">Objetivo</span>
+        <p>{{ content.objetivo }}</p>
+    </div>
+    {% endif %}
+
+    {% if content.explicacion %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Explicación</h2>
+        <div class="resource-view__content">
+            {{ content.explicacion|markdown }}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if content.procedimiento %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Cómo hacerlo paso a paso</h2>
+        <ol class="learn-procedure">
+            {% for paso in content.procedimiento %}
+            <li class="learn-procedure__step">{{ paso }}</li>
+            {% endfor %}
+        </ol>
+    </section>
+    {% endif %}
+
+    {% if content.ejemplos %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Ejemplos</h2>
+        <div class="learn-ejemplos-list">
+            {% for ej in content.ejemplos %}
+            {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="true_false"
+                 data-answer="{{ ej.respuesta }}">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Sí">Sí</button>
+                        <button type="button" class="ex-choice" data-value="No">No</button>
+                    </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% elif ej.respuesta == "Verdadero" or ej.respuesta == "Falso" %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="true_false"
+                 data-answer="{{ ej.respuesta }}">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                    </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="open_answer"
+                 data-answer="">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
+                    <button type="button" class="ex-submit">Ver solución</button>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if content.errores_frecuentes %}
+    <section class="learn-section conceptual-section">
+        <h2 class="learn-section__title">Preguntas conceptuales</h2>
+        <ul class="conceptual-list">
+            {% for error in content.errores_frecuentes %}
+            <li class="conceptual-item learn-exercise"
+                data-format="true_false"
+                data-answer="Falso">
+                <div class="conceptual-item__claim">"{{ error }}"</div>
+                <div class="conceptual-item__body">
+                    <p class="conceptual-item__q">¿Es correcta esta afirmación?</p>
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                    </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        <p style="margin-top:.4rem;font-size:.9rem;color:#374151;">
+                            Esta afirmación describe un error frecuente: es <strong>incorrecta</strong>.
+                        </p>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% if other_media %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Material adicional</h2>
+        <ul class="learn-media-list">
+            {% for m in other_media %}
+            <li>
+                {% if m.url %}
+                <a href="{{ m.url }}" target="_blank" rel="noopener">
+                    {{ m.get_video_kind_display|default:m.get_kind_display }}
+                </a>
+                {% elif m.file %}
+                <a href="{{ m.file.url }}" download>
+                    {{ m.get_kind_display }}
+                </a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% if content.fuente %}
+    <footer class="learn-fuente">
+        <small>Fuente: {{ content.fuente }}</small>
+    </footer>
+    {% endif %}
+
+    {% endif %}{# end if content #}
+
+    {% if practice_bank %}
+    <section class="learn-section learn-practice">
+        <h2 class="learn-section__title">Practica</h2>
+        {% for block in practice_bank %}
+        <details class="learn-itemgroup" open>
+            <summary class="learn-itemgroup__titulo">{{ block.group.title }}</summary>
+            {% if block.group.purpose %}
+            <p class="learn-itemgroup__purpose">{{ block.group.purpose }}</p>
+            {% endif %}
+            <ol class="learn-exercise-list">
+                {% for ex in block.exercises %}
+                <li class="learn-exercise" id="ex-{{ ex.id }}"
+                    data-format="{{ ex.format }}"
+                    data-answer="{{ ex.correct_answer }}">
+
+                    <div class="learn-exercise__prompt">{{ ex.prompt|markdown }}</div>
+
+                    {% if ex.format == "true_false" %}
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                    </div>
+
+                    {% elif ex.format == "multiple_choice" %}
+                    <ul class="learn-exercise__mc">
+                        {% for ch in ex.choices %}
+                        <li><button type="button" class="ex-choice" data-value="{{ ch }}">{{ ch }}</button></li>
+                        {% endfor %}
+                    </ul>
+
+                    {% elif ex.format == "matching" and ex.pattern.items and ex.pattern.categories %}
+                    <div class="learn-exercise__classify"
+                         data-answers="{{ ex.pattern.answer|to_json }}">
+                      <div class="classify-grid">
+                        {% for item in ex.pattern.items %}
+                        <div class="classify-row" data-item="{{ item }}">
+                          <span class="classify-row__label">{{ item }}</span>
+                          <div class="classify-row__cats">
+                            {% for cat in ex.pattern.categories %}
+                            <button type="button" class="ex-catbtn" data-cat="{{ cat }}">{{ cat }}</button>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <button type="button" class="ex-submit classify-verify" disabled
+                              style="margin-top:.75rem">Verificar</button>
+                    </div>
+
+                    {% else %}
+                    <div class="learn-exercise__open">
+                        <textarea class="ex-input" rows="3"
+                            placeholder="Escribe tu respuesta aquí…"></textarea>
+                        <button type="button" class="ex-submit">Ver corrección</button>
+                    </div>
+                    {% endif %}
+
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ex.solution_steps %}
+                        <div class="learn-exercise__steps">{{ ex.solution_steps|markdown }}</div>
+                        {% endif %}
+                        {% if ex.correct_answer %}
+                        <p class="learn-exercise__answer"><strong>Respuesta:</strong> {{ ex.correct_answer }}</p>
+                        {% endif %}
+                        {% if ex.explanation %}
+                        <div class="learn-exercise__explanation">{{ ex.explanation|markdown }}</div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ol>
+        </details>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <script nonce="{{ csp_nonce }}">
+    (function () {
+      "use strict";
+
+      function renderKatex(el) {
+        if (typeof window.renderMathInElement === "function") {
+          try { window.renderMathInElement(el, { throwOnError: false }); } catch (e) {}
+        }
+      }
+
+      function lockExercise(el) {
+        el.querySelectorAll(".ex-choice").forEach(function (b) { b.disabled = true; });
+        var inp = el.querySelector(".ex-input");
+        var sub = el.querySelector(".ex-submit");
+        if (inp) inp.disabled = true;
+        if (sub) sub.disabled = true;
+      }
+
+      function showFeedback(el, verdict) {
+        var fb = el.querySelector(".learn-exercise__feedback");
+        var vd = el.querySelector(".learn-exercise__verdict");
+        if (!fb) return;
+        fb.hidden = false;
+        if (verdict === "ok") {
+          vd.textContent = "✓ ¡Correcto!";
+          vd.className = "learn-exercise__verdict learn-exercise__verdict--ok";
+          fb.style.borderLeftColor = "#16a34a";
+        } else if (verdict === "err") {
+          vd.textContent = "✗ Incorrecto — aquí va la explicación:";
+          vd.className = "learn-exercise__verdict learn-exercise__verdict--err";
+          fb.style.borderLeftColor = "#dc2626";
+        } else {
+          vd.textContent = "";
+          vd.className = "learn-exercise__verdict";
+        }
+        renderKatex(fb);
+      }
+
+      function highlightChoices(el, chosen, correct) {
+        el.querySelectorAll(".ex-choice").forEach(function (btn) {
+          var v = (btn.dataset.value || "").trim();
+          if (v === correct) {
+            btn.classList.add("ex-choice--correct");
+          } else if (v === chosen) {
+            btn.classList.add("ex-choice--wrong");
+          }
+        });
+      }
+
+      document.querySelectorAll(".learn-exercise").forEach(function (el) {
+        var format  = el.dataset.format || "";
+        var correct = (el.dataset.answer || "").trim();
+
+        /* V/F y selección múltiple: corrección inmediata al clic */
+        if (format === "true_false" || format === "multiple_choice") {
+          el.querySelectorAll(".ex-choice").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var chosen = (btn.dataset.value || "").trim();
+              lockExercise(el);
+              highlightChoices(el, chosen, correct);
+              showFeedback(el, chosen === correct ? "ok" : "err");
+            });
+          });
+        }
+
+        /* Clasificación (matching con pattern.items/categories) */
+        var classDiv = el.querySelector(".learn-exercise__classify");
+        if (classDiv) {
+          var answers = {};
+          try { answers = JSON.parse(classDiv.dataset.answers || "{}"); } catch (e) {}
+          var rows = classDiv.querySelectorAll(".classify-row");
+          var selected = {};
+          var verifyBtn = classDiv.querySelector(".classify-verify");
+
+          rows.forEach(function (row) {
+            var itemKey = row.dataset.item;
+            row.querySelectorAll(".ex-catbtn").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                row.querySelectorAll(".ex-catbtn").forEach(function (b) {
+                  b.classList.remove("selected");
+                });
+                btn.classList.add("selected");
+                selected[itemKey] = btn.dataset.cat;
+                row.classList.add("classified");
+                if (verifyBtn && Object.keys(selected).length === rows.length) {
+                  verifyBtn.disabled = false;
+                }
+              });
+            });
+          });
+
+          if (verifyBtn) {
+            verifyBtn.addEventListener("click", function () {
+              verifyBtn.disabled = true;
+              var okCount = 0;
+              rows.forEach(function (row) {
+                var itemKey = row.dataset.item;
+                var correctCat = answers[itemKey];
+                row.querySelectorAll(".ex-catbtn").forEach(function (btn) {
+                  btn.disabled = true;
+                  if (btn.classList.contains("selected")) {
+                    if (btn.dataset.cat === correctCat) {
+                      btn.classList.add("cat-ok");
+                      okCount++;
+                    } else {
+                      btn.classList.add("cat-err");
+                    }
+                  }
+                  if (!btn.classList.contains("selected") && btn.dataset.cat === correctCat) {
+                    btn.classList.add("cat-ok");
+                  }
+                });
+              });
+              var verdict = okCount === rows.length ? "ok" : "err";
+              showFeedback(el, verdict);
+              var vd = el.querySelector(".learn-exercise__verdict");
+              if (verdict === "ok") {
+                vd.textContent = "✓ ¡Todos clasificados correctamente!";
+              } else {
+                vd.textContent = "✗ " + okCount + " de " + rows.length + " correctos — las correctas están marcadas en verde:";
+              }
+            });
+          }
+        }
+
+        /* Open answer / Ver solución / Ver corrección */
+        var submitBtn = el.querySelector(".ex-submit:not(.classify-verify)");
+        if (submitBtn) {
+          submitBtn.addEventListener("click", function () {
+            lockExercise(el);
+            showFeedback(el, null);
+          });
+        }
+      });
+    })();
+    </script>
+
+</article>
+{% endblock %}

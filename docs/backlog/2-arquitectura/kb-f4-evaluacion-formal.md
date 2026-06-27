@@ -1,6 +1,6 @@
 # F4 — Evaluación formal de dominio (piloto: 02.01 Números Enteros)
 
-- **Estado:** Handoff — listo para preflight
+- **Estado:** Handoff Ready — verificado contra código real (2026-06-26)
 - **Creado:** 2026-06-26
 - **Prioridad:** P1 · **Cartera:** educativa · producto
 - **Tipo:** infraestructura · producto
@@ -134,6 +134,21 @@ Registrar `AssessmentExercise`, `NodeAssessmentRule`, `AssessmentAttempt` en adm
 - Rollback: revertir migraciones (tablas nuevas, sin FK a tablas existentes críticas)
 
 ---
+
+## Reutilización verificada (código real, 2026-06-26)
+
+- **Corrección de respuestas: REUTILIZAR `apps/content/services/answer_grading_service.py`.** Es un
+  parser AST→SymPy **seguro** (tokenizer estricto, sin `eval`/`sympify(string)`, con límites anti-DoS:
+  `MAX_AST_NODES`, `MAX_TOTAL_DEGREE`, timeout 0.5 s). **NO reescribir** la corrección numérica/algebraica;
+  llamar a este servicio.
+- **Generación IA de ejercicios:** reutilizar `apps/content/services/ai_generation_service.py` (ya genera
+  preguntas; adaptarla para etiquetar por `node` + `exercise_type`).
+- **Patrón de sesión/ensamblado/corrección:** existe maquinaria completa anclada a `Topic`/`ExerciseItem`
+  — `evaluation_session_service.py`, `evaluation_assembly_service.py`, `evaluation_bank_service.py`, y los
+  modelos `EvaluationSession`/`EvaluationSessionQuestion`/`EvaluationSessionAnswer`. **F4 espeja el patrón
+  (sesión transaccional, timer server-side, no-repetición) pero ancla a `KnowledgeNode` + `AssessmentExercise`.**
+  No mezclar con el dominio estructurado legacy (scope aislado).
+- **Historial de referencia:** `QuizAttempt` / `TopicEvaluationAttempt` (en `models/evaluation.py`).
 
 ## Qué se hizo
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 
@@ -125,6 +126,111 @@ class KnowledgeNode(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+
+class NodeContent(models.Model):
+    """Contenido pedagógico de un nodo hoja (recurso).
+
+    Texto tipo AlonsoFormula: objetivo, explicación, procedimiento, ejemplos.
+    El campo `estado` controla indexación SEO: borrador → noindex.
+    """
+
+    ESTADO_BORRADOR = "borrador"
+    ESTADO_PUBLICADO = "publicado"
+    ESTADO_CHOICES = [
+        (ESTADO_BORRADOR, "Borrador"),
+        (ESTADO_PUBLICADO, "Publicado"),
+    ]
+
+    node = models.OneToOneField(
+        KnowledgeNode,
+        on_delete=models.CASCADE,
+        related_name="content",
+        verbose_name="nodo",
+    )
+    objetivo = models.TextField(blank=True, verbose_name="objetivo")
+    explicacion = models.TextField(blank=True, verbose_name="explicación")
+    procedimiento = models.JSONField(default=list, blank=True, verbose_name="procedimiento")
+    ejemplos = models.JSONField(default=list, blank=True, verbose_name="ejemplos")
+    errores_frecuentes = models.JSONField(
+        default=list, blank=True, verbose_name="errores frecuentes"
+    )
+    estado = models.CharField(
+        max_length=12,
+        choices=ESTADO_CHOICES,
+        default=ESTADO_BORRADOR,
+        verbose_name="estado",
+    )
+    fuente = models.TextField(blank=True, verbose_name="fuente")
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    published_at = models.DateTimeField(
+        null=True, blank=True, verbose_name="publicado el"
+    )
+
+    class Meta:
+        verbose_name = "contenido del nodo"
+        verbose_name_plural = "contenidos de nodos"
+
+    def __str__(self) -> str:
+        return f"Contenido: {self.node}"
+
+    @property
+    def is_draft(self) -> bool:
+        return self.estado == self.ESTADO_BORRADOR
+
+    def save(self, *args, **kwargs):
+        # Sella la primera publicación; no se vuelve a tocar al re-guardar.
+        if self.estado == self.ESTADO_PUBLICADO and self.published_at is None:
+            self.published_at = timezone.now()
+        super().save(*args, **kwargs)
+
+
+class NodeMedia(models.Model):
+    """Video u otro archivo multimedia asociado a un nodo de conocimiento."""
+
+    KIND_VIDEO_YOUTUBE = "video_youtube"
+    KIND_FILE = "file"
+    KIND_EXTERNAL = "external"
+    KIND_CHOICES = [
+        (KIND_VIDEO_YOUTUBE, "Video de YouTube"),
+        (KIND_FILE, "Archivo"),
+        (KIND_EXTERNAL, "Enlace externo"),
+    ]
+
+    VIDEO_KIND_EXPLICACION = "explicacion"
+    VIDEO_KIND_EJERCICIOS = "ejercicios_resueltos"
+    VIDEO_KIND_COMPLEMENTARIO = "complementario"
+    VIDEO_KIND_CHOICES = [
+        (VIDEO_KIND_EXPLICACION, "Explicación"),
+        (VIDEO_KIND_EJERCICIOS, "Ejercicios resueltos"),
+        (VIDEO_KIND_COMPLEMENTARIO, "Complementario"),
+    ]
+
+    node = models.ForeignKey(
+        KnowledgeNode,
+        on_delete=models.CASCADE,
+        related_name="media",
+        verbose_name="nodo",
+    )
+    kind = models.CharField(max_length=16, choices=KIND_CHOICES, verbose_name="tipo")
+    video_kind = models.CharField(
+        max_length=20,
+        choices=VIDEO_KIND_CHOICES,
+        blank=True,
+        verbose_name="subtipo de video",
+    )
+    url = models.URLField(blank=True, verbose_name="URL")
+    file = models.FileField(upload_to="node_media/", blank=True, verbose_name="archivo")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name="orden")
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "media del nodo"
+        verbose_name_plural = "medias del nodo"
+
+    def __str__(self) -> str:
+        return f"{self.get_kind_display()}: {self.node}"
 
 
 class NodePrerequisite(models.Model):

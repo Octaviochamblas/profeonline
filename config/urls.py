@@ -44,6 +44,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("", include("apps.core.urls")),
     path("", include("apps.content.urls")),
+    path("aprender/", include("apps.learn.urls")),
     path("content/", include("apps.content.urls_legacy")),
     path("cuentas/", include("accounts.urls")),
 ]

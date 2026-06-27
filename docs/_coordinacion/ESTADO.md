@@ -13,18 +13,32 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Plataforma de Conocimiento — Arquitectura 6 capas + F1 CONSTRUIDO 🟡 (2026-06-26):**
-  🏛️ Claude (por pedido directo del 🧑) diseñó la arquitectura basal en **6 capas**
-  (`backlog/2-arquitectura/arquitectura-plataforma-conocimiento.md`) y escribió las tarjetas
-  **F1–F6** (`kb-f1…kb-f6`). **Construyó F1** (rama `feat/grafo-conocimiento-f1`):
-  `KnowledgeNode` (árbol autorreferente Asignatura>Eje>Bloque>Tema>Recurso, `semantic_id` único
-  global, `code` único por asignatura) + `NodePrerequisite` + comando idempotente
-  `import_knowledge_tree` + admin + migración `0037` + 8 tests. **Import real: 2208 nodos**
-  (1 asig · 5 ejes · 43 bloques · 248 temas · 1911 recursos); 13 YAML legacy omitidos.
-  Barrera verde (8/8 tests · `check` · `makemigrations --check`). Tarjeta F1 en `4-auditoria/`.
-  **Decisiones:** banco≠evaluación (capas 3 y 4), estado solo-rendimiento, asignatura como raíz
-  (para Física/Química a futuro), **piloto = Números Enteros**. **Siguiente: F2** (contenido +
-  páginas `/aprender/…`). PR #99 (esqueleto YAML) ya mergeado.
+- **Plataforma de Conocimiento — F1–F3 + F6 CERRADAS 🟢 (2026-06-27, PR #102):**
+  Squash-merge de `feat/grafo-conocimiento-f1` a `main`. Incluye: `KnowledgeNode`/`NodePrerequisite`,
+  `NodeContent`/`NodeMedia`, app `learn`, `ItemGroup`/`NodeExercise` (**autopublicado inmediato** —
+  `load_exercise_bank` siempre publica; flags `legal_review`/`rewrite_required` son metadata no
+  bloqueante), UI rediseñada (`node_detail.html`: breadcrumb plegable, objetivo card, ejemplos
+  interactivos V/F/Sí-No, errores como preguntas conceptuales, banco con tarjetas), ejercicios de
+  clasificación (formato `matching`), filtro `to_json`. Contenido piloto: 14 NodeContent + ejercicios
+  para ENTEROS_CONJUNTO. Tarjetas en `6-finalizados/`.
+- **Plataforma de Conocimiento — F6 (prerrequisitos, subconjunto estructural) CONSTRUIDO 🟡 (2026-06-27):**
+  Parte que **no depende del estado del alumno** (F5 diferida): comando `load_prerequisites`
+  (YAML→`NodePrerequisite`, **valida aciclicidad** con `graphlib`, aborta sin escribir si hay ciclo,
+  idempotente) + sección **"Antes de empezar"** informativa en la página del nodo (enlaces a
+  prerrequisitos publicados, nunca bloquea) + DAG piloto `num-enteros.yaml` (operatoria←conjunto,
+  verificado en navegador) + timestamps en `NodeContent` (migración `0040`). 13 tests nuevos.
+  **Diferido a F5:** estado por alumno (✓/!) y "siguiente recomendado". Tarjeta F6 en `4-auditoria/`.
+  **Siguiente: poblar banco/contenido (pipeline) · F4–F5 (medición) cuando se decida.**
+- **Plataforma de Conocimiento — F1 y F2 CONSTRUIDOS 🟡 (2026-06-26):**
+  🏛️ Claude diseñó arquitectura 6 capas + tarjetas F1–F6. **F1** (rama `feat/grafo-conocimiento-f1`):
+  `KnowledgeNode`/`NodePrerequisite`, `import_knowledge_tree` idempotente (2208 nodos), migración
+  `0037`, 8 tests. **F2 construido en la misma rama:** `NodeContent` (O2O con hoja,
+  objetivo/explicación/procedimiento/ejemplos) + `NodeMedia` (video_youtube/file/external,
+  video_kind), migración `0038`, app `apps/learn/` con 6 rutas jerárquicas
+  `/aprender/<asig>/<eje>/<bloque>/<tema>/<recurso>/`, 3 templates (home/list/detail), KaTeX hereda
+  de `base.html`, comando `load_node_content` idempotente, admin inlines. YAML ejemplo:
+  `docs/conocimiento/contenido/mat-num-enteros-conjunto-naturales.yaml`. **554/554 tests verde.**
+  Tarjetas F1 y F2 en `4-auditoria/`. **F3 construido (2026-06-27).**
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
@@ -138,6 +152,14 @@
 
 ## Handoffs abiertos (Ready para construir)
 
+- 🔨 **Plataforma de Conocimiento — Fases F4–F5 (medición, diferidas por D4)** (handoffs en
+  `2-arquitectura/kb-f4…kb-f5`). F1, F2, **F3 y F6 (estructural) construidos** (rama
+  `feat/grafo-conocimiento-f1`). Quedan, como migraciones **aditivas** cuando se decida medir:
+  **F4** evaluación formal (reusa `answer_grading_service`/`evaluation_assembly_service` + generadores
+  de D3 para ítems no vistos), **F5** estado (`StudentNodeState`) — que además habilita las partes con
+  estado de F6 (✓/! y "siguiente recomendado"). Foco actual: **poblar banco/contenido** (pipeline
+  NotebookLM→JSONL→`load_exercise_bank`).
+
 - 📚 **Biblioteca de Conocimiento Estructurada** — `1-por-iniciar/biblioteca-conocimiento-estructurada.md`
   (PR #89). Estructura universal por conceptos, partiendo por **Matemática preuniversitaria**. 4 capas por
   recurso (teórico / banco estructurado / práctica aleatoria / evaluación), 6 ejes de clasificación de
@@ -160,6 +182,30 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-27 — 🏛️ Claude + 🧑: **F1–F3 + F6 CERRADAS — PR #102 squash-merge a `main` (rama `feat/grafo-conocimiento-f1`).**
+  UI rediseñada: breadcrumb plegable, objetivo card, ejemplos interactivos (V/F/Sí-No), errores como
+  preguntas conceptuales, banco con tarjetas+sombra. Ejercicios de clasificación (formato `matching`).
+  Política **autopublicado inmediato** en `load_exercise_bank`. Contenido: 14 NodeContent + ejercicios
+  ENTEROS_CONJUNTO + clasificación. Tests actualizados. Tarjetas en `6-finalizados/`.
+- 2026-06-27 — 🏛️ Claude + 🧑: **F3 — estructura pedagógica por ítems (`ItemGroup` + `NodeExercise` + pipeline JSONL) — rama `feat/grafo-conocimiento-f1`.**
+  Decisiones **D2/D3/D4** ratificadas en la arquitectura (§8). Modelos nuevos **aditivos** anclados a
+  `KnowledgeNode` (Sistema A intacto): `ItemGroup` (7 grupos estándar) + `NodeExercise` (banco único,
+  `kind=item|template` para generadores futuros), migración `0039`, admin, comando idempotente
+  `load_exercise_bank` (JSONL NotebookLM→Claude; **nunca autopublica**; no degrada publicaciones
+  manuales), sección "Practica por ítems" (acordeón + toggle solución + KaTeX), prompts en
+  `docs/conocimiento/pipeline/`. Piloto Naturales (4 ejercicios) verificado en navegador. 20 tests
+  nuevos. Tarjeta F3 → `4-auditoria/`.
+- 2026-06-27 — 🏛️ Claude: **F6 (estructural) — prerrequisitos DAG + "Antes de empezar" — misma rama.**
+  Comando `load_prerequisites` (YAML→`NodePrerequisite`, valida aciclicidad con `graphlib`, aborta sin
+  escribir si hay ciclo, idempotente), sección informativa "Antes de empezar" en la página
+  (`_prereqs.html`, enlaces a prerrequisitos publicados, nunca bloquea), DAG piloto `num-enteros.yaml`,
+  timestamps en `NodeContent` (mig. `0040`). 13 tests. Estado por alumno (✓/!) y "siguiente
+  recomendado" diferidos a F5. Verificado en navegador. Tarjeta F6 a `4-auditoria/`.
+- 2026-06-26 — 🏛️ Claude + 🧑: **F2 construido — `NodeContent`/`NodeMedia` + app `learn` + `/aprender/` — rama `feat/grafo-conocimiento-f1`.**
+  Modelos con migración `0038`, app `apps/learn/` con 6 rutas jerárquicas, 3 templates (home/list/detail),
+  KaTeX por herencia de `base.html`, comando `load_node_content` idempotente (actualiza `NodeMedia` si
+  YAML incluye clave `media:`), admin inlines, YAML ejemplo piloto. 22 tests nuevos. **554/554 verde.**
+  Tarjeta F2 movida a `4-auditoria/`.
 - 2026-06-26 — 🏛️ Claude + 🧑: **Arquitectura de plataforma (6 capas) + F1 construido — rama `feat/grafo-conocimiento-f1`.**
   Rediseño en 6 capas (banco≠evaluación; estado solo-rendimiento; asignatura como nodo raíz para
   Física/Química a futuro). Tarjetas F1–F6. **F1 construido y verde:** `KnowledgeNode`/`NodePrerequisite`,

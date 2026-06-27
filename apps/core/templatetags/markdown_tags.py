@@ -1,3 +1,4 @@
+import json as _json
 import re
 
 from django import template
@@ -59,6 +60,11 @@ ALLOWED_ATTRIBUTES = {
 }
 
 ALLOWED_PROTOCOLS = ["http", "https", "mailto"]
+
+
+@register.filter(name="to_json")
+def to_json_filter(value):
+    return _json.dumps(value, ensure_ascii=False)
 
 
 @register.filter(name="markdown")

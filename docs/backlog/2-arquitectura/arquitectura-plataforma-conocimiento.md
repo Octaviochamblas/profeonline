@@ -352,7 +352,7 @@ Reglas del pipeline:
 
 ---
 
-## 8. Decisión abierta principal (a ratificar por 🧑 + preflight)
+## 8. Decisiones de fundación (ratificadas por 🧑)
 
 **D1 — ✅ DECIDIDO (🧑, 2026-06-26): Grafo nuevo conviviendo, luego reemplazo.**
 
@@ -361,10 +361,31 @@ vivo mientras se puebla el árbol; cuando un eje está completo y validado, sus 
 a `/aprender/…` (ya existe el patrón `legacy_redirects`). Razón: menos riesgo, valor incremental y no
 rompe el SEO existente. La reescritura limpia se descartó como primer paso (más riesgo, sitio en obra).
 
-**D2 — ¿Los ejercicios reusan `Question` extendido o se crea `Exercise` nuevo?**
-Recomendado: **extender `Question`** con FK `knowledge_node` + `exercise_type` + `purpose` (aditivo,
-sin romper el banco actual) en vez de una tabla nueva. Menos migración, reusa todo el flujo de
-generación/corrección existente. El nombre "`Exercise`" en este doc es conceptual.
+**D2 — ✅ DECIDIDO (🧑, 2026-06-27): Tablas nuevas ancladas a `KnowledgeNode`, Sistema A intacto.**
+Se descarta extender `Question` (su FK `resource` es **obligatorio y con datos vivos** → volverlo
+nullable y desambiguar doble anclaje es MÁS cirugía sobre una tabla en uso que crear tablas aditivas).
+Se crean `ItemGroup` + `NodeExercise` nuevas, ancladas al nodo, **reutilizando los SERVICIOS** existentes
+(`answer_grading_service`, `evaluation_assembly_service`, `evaluation_bank_service`,
+`structured_progress_service`) sin tocar sus modelos. El Sistema A (`Question`/`Resource` + banco viejo
+bajo `Topic`) queda **100 % intacto** y sigue sirviendo el sitio actual.
+
+**D3 — ✅ DECIDIDO (🧑, 2026-06-27): Banco ÚNICO por `ItemGroup` + generadores para ítems no vistos.**
+Un solo pool de ejercicios por recurso, organizado en `ItemGroup` (progresión `conceptuales` →
+`reconocimiento` → `procedimiento_basico` → `variacion_controlada` → `contextualizados` → `tipo_paes`
+→ `mixto`). La evaluación formal (futura) muestrea por blueprint; para que el "dominio" sea **honesto**,
+los ítems de evaluación saldrán de **PATRONES/GENERADORES** (variantes frescas no practicadas), no del
+pool visible. `NodeExercise` se diseña con `kind=item|template` + `pattern` (JSON) para soportar
+generadores **sin construir el runtime ahora**. → Sustituye el esquema de dos bancos
+`BookExercise`/`AssessmentExercise` de §3 (capas 3–4): ahora es **un solo modelo** con `status`.
+
+**D4 — ✅ DECIDIDO (🧑, 2026-06-27): Foco actual = estructura pedagógica; medición del alumno diferida.**
+Se construyen las **capas 1–3** (grafo + contenido + banco por ítems con el pipeline
+NotebookLM→Claude→JSONL→DB). Las **capas 4–5** (evaluación formal, intentos **con snapshot**,
+`StudentNodeState`, revalidación) y la gamificación quedan **diseñadas pero NO construidas** — entran
+como migraciones aditivas cuando se quiera medir, sin reescribir lo de abajo. Se difiere también
+`NodeCodeHistory` (bajo valor: `code` no es URL ni FK) y el redirect de slug (se usará `urls_legacy`
+cuando se muevan URLs ya publicadas). El versionado de contenido se resuelve con **snapshot en el
+intento** + timestamps (`created_at`/`updated_at`/`published_at`), no con tablas de versión.
 
 ---
 

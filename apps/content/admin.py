@@ -7,7 +7,11 @@ from apps.content.services.ai_generation_service import generate_questions_for_r
 from apps.content.models import (
     Area,
     Choice,
+    ItemGroup,
     KnowledgeNode,
+    NodeContent,
+    NodeExercise,
+    NodeMedia,
     Level,
     Module,
     NodePrerequisite,
@@ -22,6 +26,12 @@ from apps.content.models import (
     UserStreak,
     XPEvent,
 )
+
+
+class NodeMediaInline(admin.TabularInline):
+    model = NodeMedia
+    extra = 1
+    fields = ("kind", "video_kind", "url", "file", "order")
 
 
 @admin.register(KnowledgeNode)
@@ -47,6 +57,23 @@ class KnowledgeNodeAdmin(admin.ModelAdmin):
     raw_id_fields = ("parent",)
     ordering = ("subject_abbr", "code")
     list_per_page = 100
+    inlines = [NodeMediaInline]
+
+
+@admin.register(NodeContent)
+class NodeContentAdmin(admin.ModelAdmin):
+    list_display = ("node", "estado", "fuente")
+    list_filter = ("estado",)
+    search_fields = ("node__semantic_id", "node__name")
+    raw_id_fields = ("node",)
+
+
+@admin.register(NodeMedia)
+class NodeMediaAdmin(admin.ModelAdmin):
+    list_display = ("node", "kind", "video_kind", "url", "order")
+    list_filter = ("kind", "video_kind")
+    search_fields = ("node__semantic_id",)
+    raw_id_fields = ("node",)
 
 
 @admin.register(NodePrerequisite)
@@ -55,6 +82,53 @@ class NodePrerequisiteAdmin(admin.ModelAdmin):
     list_filter = ("kind",)
     search_fields = ("node__semantic_id", "requires__semantic_id")
     raw_id_fields = ("node", "requires")
+
+
+class NodeExerciseInline(admin.TabularInline):
+    model = NodeExercise
+    extra = 0
+    fields = ("prompt", "format", "difficulty", "status", "order")
+    show_change_link = True
+
+
+@admin.register(ItemGroup)
+class ItemGroupAdmin(admin.ModelAdmin):
+    list_display = ("title", "code", "node", "level", "order", "is_published")
+    list_filter = ("level", "is_published", "node__axis_abbr")
+    search_fields = ("title", "code", "node__semantic_id", "node__name")
+    raw_id_fields = ("node",)
+    ordering = ("node", "order")
+    inlines = [NodeExerciseInline]
+
+
+@admin.register(NodeExercise)
+class NodeExerciseAdmin(admin.ModelAdmin):
+    list_display = (
+        "short_prompt",
+        "node",
+        "item_group",
+        "format",
+        "difficulty",
+        "status",
+        "legal_review",
+    )
+    list_filter = (
+        "status",
+        "format",
+        "difficulty",
+        "source_kind",
+        "legal_review",
+        "rewrite_required",
+        "node__axis_abbr",
+    )
+    search_fields = ("prompt", "stable_id", "node__semantic_id")
+    raw_id_fields = ("node", "item_group")
+    list_editable = ("status",)
+    ordering = ("item_group", "order")
+
+    @admin.display(description="Enunciado")
+    def short_prompt(self, obj):
+        return obj.prompt[:80] + "…" if len(obj.prompt) > 80 else obj.prompt
 
 
 @admin.register(Area)
