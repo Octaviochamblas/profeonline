@@ -196,6 +196,7 @@ class NodePracticeBankViewTests(TestCase):
             title="Preguntas conceptuales",
             level=ItemGroup.LEVEL_COMPRENDER,
             order=1,
+            is_published=True,
         )
 
     def test_published_exercise_shows_in_bank(self):
@@ -207,7 +208,7 @@ class NodePracticeBankViewTests(TestCase):
             status=NodeExercise.STATUS_PUBLISHED,
         )
         response = self.client.get(self.url)
-        self.assertContains(response, "Practica por ítems")
+        self.assertContains(response, "Practica")
         self.assertContains(response, "¿Qué es un número natural?")
 
     def test_unpublished_exercise_hidden_from_bank(self):
@@ -218,12 +219,12 @@ class NodePracticeBankViewTests(TestCase):
             status=NodeExercise.STATUS_REVIEW_REQUIRED,
         )
         response = self.client.get(self.url)
-        self.assertNotContains(response, "Practica por ítems")
+        self.assertNotContains(response, "Practica")
         self.assertNotContains(response, "Ejercicio en revisión")
 
     def test_no_exercises_no_bank_section(self):
         response = self.client.get(self.url)
-        self.assertNotContains(response, "Practica por ítems")
+        self.assertNotContains(response, "Practica")
 
 
 class NodePrerequisiteDisplayTests(TestCase):
