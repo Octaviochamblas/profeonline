@@ -196,4 +196,13 @@ de KaTeX en los templates nuevos. Reusar el mismo pipeline que el resto de la ap
 
 ## Qué se hizo
 
-_(Completar al cerrar, antes de mover a `backlog/6-finalizados/`.)_
+Implementado 2026-06-26 en `feat/grafo-conocimiento-f1`:
+
+- **Modelos** (`apps/content/models/knowledge.py`): `NodeContent` (O2O con hoja, campos: objetivo, explicacion, procedimiento JSONField, ejemplos JSONField, errores_frecuentes JSONField, estado borrador/publicado, fuente) + `NodeMedia` (FK, kind video_youtube/file/external, video_kind explicacion/ejercicios_resueltos/complementario, url, file, order).
+- **Migración** `0038_nodecontent_nodemedia_f2.py`.
+- **App `apps/learn/`**: `apps.py`, `urls.py` (6 rutas jerárquicas), `views.py` (`learn_home` + `node_view` con split `_list_view`/`_recurso_view`). Slug más profundo de la URL resuelve el nodo; staff ve nodos no publicados.
+- **Templates**: `templates/learn/home.html`, `templates/learn/node_list.html`, `templates/learn/node_detail.html`. KaTeX hereda de `base.html`; robots block condicional corregido (if dentro del block, no al revés).
+- **Comando** `load_node_content` (idempotente, sincroniza `NodeMedia` si hay clave `media:` en el YAML).
+- **Admin**: `NodeMediaInline` en `KnowledgeNodeAdmin`, `NodeContentAdmin`, `NodeMediaAdmin`.
+- **YAML de ejemplo**: `docs/conocimiento/contenido/mat-num-enteros-conjunto-naturales.yaml` (recurso MAT.NUM.ENTEROS_CONJUNTO.NATURALES, estado publicado).
+- **Tests**: 22 tests nuevos en `test_knowledge_f2.py` (modelos + comando) y `apps/learn/tests.py` (vistas). Suite completa: **554/554 verde**. `check` + `makemigrations --check` limpios.

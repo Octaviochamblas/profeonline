@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load markdown_tags %}
+
+{% block title %}{{ node.name }} | ProfeOnline{% endblock %}
+{% block meta_description %}{% if content and content.objetivo %}{{ content.objetivo|truncatechars:155 }}{% else %}Recurso educativo: {{ node.name }}{% endif %}{% endblock %}
+{% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
+
+{% block content %}
+<article class="resource-view stack">
+
+    <nav aria-label="Miga de pan">
+        <ol class="breadcrumb">
+            {% for crumb in breadcrumbs %}
+            <li class="breadcrumb__item">
+                {% if crumb.url %}
+                <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
+                {% else %}
+                <span aria-current="page">{{ crumb.label }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
+
+    <header class="resource-view__header">
+        <h1 class="resource-view__title">{{ node.name }}</h1>
+        {% if node.competencia %}
+        <div class="resource-view__meta">
+            <span class="resource-view__tag">{{ node.get_competencia_display }}</span>
+            {% if node.dificultad %}<span class="resource-view__tag">{{ node.get_dificultad_display }}</span>{% endif %}
+        </div>
+        {% endif %}
+    </header>
+
+    {% if not content %}
+    {# Placeholder para nodos sin contenido aún #}
+    <div class="learn-placeholder">
+        <p>El contenido de este recurso está siendo preparado. ¡Vuelve pronto!</p>
+    </div>
+
+    {% else %}
+
+    {% if content.objetivo %}
+    <div class="learn-objetivo">
+        <p><strong>Al finalizar:</strong> {{ content.objetivo }}</p>
+    </div>
+    {% endif %}
+
+    {% if youtube_id %}
+    <div class="video-container">
+        <iframe
+            src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}"
+            referrerpolicy="strict-origin-when-cross-origin"
+            title="Explicación: {{ node.name }}"
+            loading="lazy"
+            allowfullscreen
+        ></iframe>
+    </div>
+    {% endif %}
+
+    {% if content.explicacion %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Explicación</h2>
+        <div class="resource-view__content">
+            {{ content.explicacion|markdown }}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if content.procedimiento %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Cómo hacerlo paso a paso</h2>
+        <ol class="learn-procedure">
+            {% for paso in content.procedimiento %}
+            <li class="learn-procedure__step">{{ paso }}</li>
+            {% endfor %}
+        </ol>
+    </section>
+    {% endif %}
+
+    {% if content.ejemplos %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Ejemplos</h2>
+        {% for ej in content.ejemplos %}
+        <details class="learn-ejemplo">
+            <summary class="learn-ejemplo__titulo">{{ ej.titulo }}</summary>
+            <div class="learn-ejemplo__body">
+                {% if ej.enunciado %}
+                <p class="learn-ejemplo__enunciado">{{ ej.enunciado }}</p>
+                {% endif %}
+                {% if ej.solucion_pasos %}
+                <ol class="learn-procedure">
+                    {% for paso in ej.solucion_pasos %}
+                    <li class="learn-procedure__step">{{ paso }}</li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+            </div>
+        </details>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if content.errores_frecuentes %}
+    <section class="learn-section learn-section--warning">
+        <h2 class="learn-section__title">Errores frecuentes</h2>
+        <ul class="learn-errors">
+            {% for error in content.errores_frecuentes %}
+            <li class="learn-errors__item">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% if other_media %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Material adicional</h2>
+        <ul class="learn-media-list">
+            {% for m in other_media %}
+            <li>
+                {% if m.url %}
+                <a href="{{ m.url }}" target="_blank" rel="noopener">
+                    {{ m.get_video_kind_display|default:m.get_kind_display }}
+                </a>
+                {% elif m.file %}
+                <a href="{{ m.file.url }}" download>
+                    {{ m.get_kind_display }}
+                </a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% if content.fuente %}
+    <footer class="learn-fuente">
+        <small>Fuente: {{ content.fuente }}</small>
+    </footer>
+    {% endif %}
+
+    {% endif %}{# end if content #}
+
+</article>
+{% endblock %}

@@ -8,6 +8,8 @@ from apps.content.models import (
     Area,
     Choice,
     KnowledgeNode,
+    NodeContent,
+    NodeMedia,
     Level,
     Module,
     NodePrerequisite,
@@ -22,6 +24,12 @@ from apps.content.models import (
     UserStreak,
     XPEvent,
 )
+
+
+class NodeMediaInline(admin.TabularInline):
+    model = NodeMedia
+    extra = 1
+    fields = ("kind", "video_kind", "url", "file", "order")
 
 
 @admin.register(KnowledgeNode)
@@ -47,6 +55,23 @@ class KnowledgeNodeAdmin(admin.ModelAdmin):
     raw_id_fields = ("parent",)
     ordering = ("subject_abbr", "code")
     list_per_page = 100
+    inlines = [NodeMediaInline]
+
+
+@admin.register(NodeContent)
+class NodeContentAdmin(admin.ModelAdmin):
+    list_display = ("node", "estado", "fuente")
+    list_filter = ("estado",)
+    search_fields = ("node__semantic_id", "node__name")
+    raw_id_fields = ("node",)
+
+
+@admin.register(NodeMedia)
+class NodeMediaAdmin(admin.ModelAdmin):
+    list_display = ("node", "kind", "video_kind", "url", "order")
+    list_filter = ("kind", "video_kind")
+    search_fields = ("node__semantic_id",)
+    raw_id_fields = ("node",)
 
 
 @admin.register(NodePrerequisite)

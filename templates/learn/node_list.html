@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ node.name }} | ProfeOnline{% endblock %}
+{% block meta_description %}Explora los contenidos de {{ node.name }} en ProfeOnline.{% endblock %}
+{% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container stack">
+
+    <nav aria-label="Miga de pan">
+        <ol class="breadcrumb">
+            {% for crumb in breadcrumbs %}
+            <li class="breadcrumb__item">
+                {% if crumb.url %}
+                <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
+                {% else %}
+                <span aria-current="page">{{ crumb.label }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
+
+    <header class="resource-view__header">
+        <h1 class="resource-view__title">{{ node.name }}</h1>
+    </header>
+
+    <ul class="learn-list">
+        {% for child in children %}
+        <li class="learn-list__item">
+            <a class="learn-list__link" href="{{ request.path }}{{ child.slug }}/">
+                <span class="learn-list__code">{{ child.code }}</span>
+                <span class="learn-list__name">{{ child.name }}</span>
+            </a>
+        </li>
+        {% empty %}
+        <li class="learn-list__item learn-list__item--empty">
+            No hay contenidos disponibles aún.
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

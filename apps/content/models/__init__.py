@@ -21,4 +21,4 @@ from .evaluation_session import (
     EvaluationSessionQuestion,
     EvaluationSessionAnswer,
 )
-from .knowledge import KnowledgeNode, NodePrerequisite
+from .knowledge import KnowledgeNode, NodeContent, NodeMedia, NodePrerequisite

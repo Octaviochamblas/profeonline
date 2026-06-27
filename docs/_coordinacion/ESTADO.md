@@ -13,18 +13,16 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Plataforma de Conocimiento — Arquitectura 6 capas + F1 CONSTRUIDO 🟡 (2026-06-26):**
-  🏛️ Claude (por pedido directo del 🧑) diseñó la arquitectura basal en **6 capas**
-  (`backlog/2-arquitectura/arquitectura-plataforma-conocimiento.md`) y escribió las tarjetas
-  **F1–F6** (`kb-f1…kb-f6`). **Construyó F1** (rama `feat/grafo-conocimiento-f1`):
-  `KnowledgeNode` (árbol autorreferente Asignatura>Eje>Bloque>Tema>Recurso, `semantic_id` único
-  global, `code` único por asignatura) + `NodePrerequisite` + comando idempotente
-  `import_knowledge_tree` + admin + migración `0037` + 8 tests. **Import real: 2208 nodos**
-  (1 asig · 5 ejes · 43 bloques · 248 temas · 1911 recursos); 13 YAML legacy omitidos.
-  Barrera verde (8/8 tests · `check` · `makemigrations --check`). Tarjeta F1 en `4-auditoria/`.
-  **Decisiones:** banco≠evaluación (capas 3 y 4), estado solo-rendimiento, asignatura como raíz
-  (para Física/Química a futuro), **piloto = Números Enteros**. **Siguiente: F2** (contenido +
-  páginas `/aprender/…`). PR #99 (esqueleto YAML) ya mergeado.
+- **Plataforma de Conocimiento — F1 y F2 CONSTRUIDOS 🟡 (2026-06-26):**
+  🏛️ Claude diseñó arquitectura 6 capas + tarjetas F1–F6. **F1** (rama `feat/grafo-conocimiento-f1`):
+  `KnowledgeNode`/`NodePrerequisite`, `import_knowledge_tree` idempotente (2208 nodos), migración
+  `0037`, 8 tests. **F2 construido en la misma rama:** `NodeContent` (O2O con hoja,
+  objetivo/explicación/procedimiento/ejemplos) + `NodeMedia` (video_youtube/file/external,
+  video_kind), migración `0038`, app `apps/learn/` con 6 rutas jerárquicas
+  `/aprender/<asig>/<eje>/<bloque>/<tema>/<recurso>/`, 3 templates (home/list/detail), KaTeX hereda
+  de `base.html`, comando `load_node_content` idempotente, admin inlines. YAML ejemplo:
+  `docs/conocimiento/contenido/mat-num-enteros-conjunto-naturales.yaml`. **554/554 tests verde.**
+  Tarjetas F1 y F2 en `4-auditoria/`. **Siguiente: F3** (banco de ejercicios, `BookExercise`).
 - **Guías interactivas - Fase 7 (gate + piloto) - EN AUDITORÍA 🟡 (2026-06-23):**
   🏛️ Claude hizo preflight + construcción (rama `feat/guias-fase7-gate-piloto`). Decisión del 🧑:
   **coexistencia** (no se retira/clasifica el legacy). Nuevo `Topic.structured_bank_staging`
@@ -138,12 +136,12 @@
 
 ## Handoffs abiertos (Ready para construir)
 
-- 🔨 **Plataforma de Conocimiento — Fases F2–F6** (handoffs Ready en `2-arquitectura/kb-f2…kb-f6`,
-  **verificados contra el código real**, con sección de reutilización por fase). F1 ya construido
-  (PR #100, en auditoría). Construir **en orden**, cada fase primero sobre **Números Enteros** antes de
-  escalar, una rama por fase con preflight de 🧩 Codex: **F2** contenido + páginas `/aprender/…` →
-  **F3** banco (`BookExercise`) → **F4** evaluación (reusa `answer_grading_service`) → **F5** estado
-  (`StudentNodeState`, espeja `structured_progress_service`) → **F6** prerrequisitos (DAG con `graphlib`).
+- 🔨 **Plataforma de Conocimiento — Fases F3–F6** (handoffs Ready en `2-arquitectura/kb-f3…kb-f6`,
+  **verificados contra el código real**). F1 y F2 construidos (PR #100, en auditoría). Construir
+  **en orden**, una rama por fase, primero sobre **Números Enteros**:
+  **F3** banco (`BookExercise`) → **F4** evaluación (reusa `answer_grading_service`) →
+  **F5** estado (`StudentNodeState`, espeja `structured_progress_service`) →
+  **F6** prerrequisitos (DAG con `graphlib`).
 
 - 📚 **Biblioteca de Conocimiento Estructurada** — `1-por-iniciar/biblioteca-conocimiento-estructurada.md`
   (PR #89). Estructura universal por conceptos, partiendo por **Matemática preuniversitaria**. 4 capas por
@@ -167,6 +165,11 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-26 — 🏛️ Claude + 🧑: **F2 construido — `NodeContent`/`NodeMedia` + app `learn` + `/aprender/` — rama `feat/grafo-conocimiento-f1`.**
+  Modelos con migración `0038`, app `apps/learn/` con 6 rutas jerárquicas, 3 templates (home/list/detail),
+  KaTeX por herencia de `base.html`, comando `load_node_content` idempotente (actualiza `NodeMedia` si
+  YAML incluye clave `media:`), admin inlines, YAML ejemplo piloto. 22 tests nuevos. **554/554 verde.**
+  Tarjeta F2 movida a `4-auditoria/`.
 - 2026-06-26 — 🏛️ Claude + 🧑: **Arquitectura de plataforma (6 capas) + F1 construido — rama `feat/grafo-conocimiento-f1`.**
   Rediseño en 6 capas (banco≠evaluación; estado solo-rendimiento; asignatura como nodo raíz para
   Física/Química a futuro). Tarjetas F1–F6. **F1 construido y verde:** `KnowledgeNode`/`NodePrerequisite`,

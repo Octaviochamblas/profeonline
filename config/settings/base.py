@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     "apps.content",
     "apps.core",
+    "apps.learn",
     "accounts",
 ]
 
