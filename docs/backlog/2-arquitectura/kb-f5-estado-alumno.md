@@ -1,6 +1,6 @@
 # F5 — Estado del alumno: StudentNodeState + mastery_service
 
-- **Estado:** Handoff — listo para preflight
+- **Estado:** Handoff Ready — verificado contra código real (2026-06-26)
 - **Creado:** 2026-06-26
 - **Prioridad:** P1 · **Cartera:** producto · retención
 - **Tipo:** infraestructura · producto
@@ -149,6 +149,19 @@ Sin login: no muestra indicador de estado (el contenido se ve igual).
 - Rollback: revertir migración (`StudentNodeState` tabla nueva); eliminar `signals.py` y la importación en el POST de evaluación
 
 ---
+
+## Reutilización verificada (código real, 2026-06-26)
+
+- **Análogo directo: `apps/content/services/structured_progress_service.py`.** Ya calcula el "dominio"
+  de un alumno a partir de `EvaluationSession`, **aislado del legacy `QuizAttempt`** (mismo principio que
+  buscamos). F5 **espeja este patrón** pero para `KnowledgeNode` + `AssessmentAttempt` → `StudentNodeState`.
+- `apps/content/services/progress_service.py` (legacy, basado en `QuizAttempt`) queda como referencia,
+  no se toca.
+- **Señal `node_mastered`:** `django.dispatch.Signal` en un `apps/content/signals.py` nuevo. El
+  `apps/content/services/gamification_service.py` **ya existe** y se conectará como **suscriptor** a futuro
+  (capa 6) — el núcleo (capas 1–5) **nunca** importa gamificación.
+- **Patrón de servicio:** seguir el estilo de los servicios existentes en `apps/content/services/`
+  (funciones puras + `transaction.atomic`).
 
 ## Qué se hizo
 

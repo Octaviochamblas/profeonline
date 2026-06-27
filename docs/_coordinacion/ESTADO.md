@@ -138,6 +138,13 @@
 
 ## Handoffs abiertos (Ready para construir)
 
+- 🔨 **Plataforma de Conocimiento — Fases F2–F6** (handoffs Ready en `2-arquitectura/kb-f2…kb-f6`,
+  **verificados contra el código real**, con sección de reutilización por fase). F1 ya construido
+  (PR #100, en auditoría). Construir **en orden**, cada fase primero sobre **Números Enteros** antes de
+  escalar, una rama por fase con preflight de 🧩 Codex: **F2** contenido + páginas `/aprender/…` →
+  **F3** banco (`BookExercise`) → **F4** evaluación (reusa `answer_grading_service`) → **F5** estado
+  (`StudentNodeState`, espeja `structured_progress_service`) → **F6** prerrequisitos (DAG con `graphlib`).
+
 - 📚 **Biblioteca de Conocimiento Estructurada** — `1-por-iniciar/biblioteca-conocimiento-estructurada.md`
   (PR #89). Estructura universal por conceptos, partiendo por **Matemática preuniversitaria**. 4 capas por
   recurso (teórico / banco estructurado / práctica aleatoria / evaluación), 6 ejes de clasificación de

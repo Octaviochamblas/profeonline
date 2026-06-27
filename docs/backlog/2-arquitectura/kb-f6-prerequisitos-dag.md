@@ -1,6 +1,6 @@
 # F6 — Prerrequisitos y guía de ruta (piloto: 02.01 Números Enteros)
 
-- **Estado:** Handoff — listo para preflight
+- **Estado:** Handoff Ready — verificado contra código real (2026-06-26)
 - **Creado:** 2026-06-26
 - **Prioridad:** P2 · **Cartera:** educativa · producto
 - **Tipo:** infraestructura · producto
@@ -123,6 +123,16 @@ Lógica:
 - Rollback: `NodePrerequisite` es tabla nueva (F1); sin impacto en tablas existentes. Eliminar el archivo YAML del DAG.
 
 ---
+
+## Reutilización verificada (código real, 2026-06-26)
+
+- **`graphlib` es stdlib** (Python ≥3.9; CI corre **3.12**) → `TopologicalSorter`/`CycleError`
+  disponibles **sin dependencia nueva**.
+- **Modelo `NodePrerequisite` ya existe** (creado en F1, sin UI). F6 solo agrega el comando de carga
+  (`load_prerequisites`), la validación de ciclos y la UI.
+- **Integración UI:** las secciones "Antes de empezar" / "Siguiente recomendado" se insertan en el
+  template de nodo de F2 (`apps/learn/`), leyendo `StudentNodeState` (de F5) para el estado por alumno.
+- **Estado del alumno:** reutilizar el `StudentNodeState` de F5 (no recalcular dominio aquí).
 
 ## Qué se hizo
 

@@ -1,6 +1,6 @@
 # F2 — Contenido pedagógico y páginas de consulta (piloto: 02.01 Números Enteros)
 
-- **Estado:** Handoff — listo para preflight
+- **Estado:** Handoff Ready — verificado contra código real (2026-06-26)
 - **Creado:** 2026-06-26
 - **Prioridad:** P0 · **Cartera:** educativa · producto
 - **Tipo:** infraestructura · producto
@@ -179,6 +179,20 @@ de KaTeX en los templates nuevos. Reusar el mismo pipeline que el resto de la ap
 - Rollback: revertir migraciones + eliminar app `learn`; sin impacto en el sitio existente
 
 ---
+
+## Reutilización verificada (código real, 2026-06-26)
+
+- **Wiring de URLs:** `config/urls.py` incluye apps en la raíz (`path("", include("apps.content.urls"))`).
+  Agregar **una línea**: `path("aprender/", include("apps.learn.urls"))`. Crear `apps/learn/` y
+  registrarla en `INSTALLED_APPS` (local + production).
+- **KaTeX YA está cableado una sola vez** en `templates/base.html` (+ `static/js/katex-init.js` con nonce,
+  que renderiza al cargar y en cada `htmx:afterSwap`). Las plantillas de F2 **solo extienden
+  `base.html`** y emiten `$...$` / `$$...$$`. **NO** re-incluir KaTeX ni tocar la CSP.
+- **SEO:** reutilizar los helpers de `apps/content/views/_seo.py` (ya usados por las vistas actuales).
+- **Plantilla de referencia:** `apps/content/views/resource_detail.py` + sus templates muestran el patrón
+  de breadcrumb + secciones; replicar el estilo, no el modelo.
+- **Redirect de páginas viejas:** `apps/content/views/legacy_redirects.py` ya existe — se usará en F7
+  (escalado), **no** en F2.
 
 ## Qué se hizo
 

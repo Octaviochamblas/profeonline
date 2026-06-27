@@ -1,6 +1,6 @@
 # F3 — Banco de ejercicios de libros (piloto: 02.01 Números Enteros)
 
-- **Estado:** Handoff — listo para preflight
+- **Estado:** Handoff Ready — verificado contra código real (2026-06-26)
 - **Creado:** 2026-06-26
 - **Prioridad:** P1 · **Cartera:** educativa
 - **Tipo:** infraestructura · producto
@@ -119,6 +119,18 @@ El toggle JS puede ser vanilla (no requiere framework).
 - Rollback: revertir migración (tabla nueva, FK a `KnowledgeNode` que también es nueva — sin impacto en tablas existentes)
 
 ---
+
+## Reutilización verificada (código real, 2026-06-26)
+
+- **Existe un "banco visible" estructurado:** `apps/content/services/visible_bank_service.py` +
+  modelos `ExerciseItem`/`ResourceExerciseItem`, anclado a `Topic`/`Resource` con cuotas de
+  práctica/evaluación e ítems de aprendizaje. **Decisión:** F3 **NO** reutiliza ese sistema (distinto
+  anclaje y propósito; está atado a la jerarquía vieja). F3 crea `BookExercise` propio, anclado a
+  `KnowledgeNode`, **más simple** (ejercicio con respuesta siempre visible, sin cuotas ni ítems).
+- **Referencia de UI:** la página pública de guía (`apps/content/views/learning_guide_student.py` y su
+  template) muestra un banco agrupado con práctica — sirve como referencia visual del acordeón por tipo.
+- **KaTeX:** igual que F2 — extender `base.html`, emitir `$...$`. No re-cablear.
+- **Toggle "Ver solución":** JS vanilla con nonce (patrón CSP del sitio); sin librerías nuevas.
 
 ## Qué se hizo
 
