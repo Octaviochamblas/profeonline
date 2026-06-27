@@ -5,12 +5,167 @@
 
 {% block extra_css %}
 <style>
-/* ── Ejercicios interactivos ─────────────────────────── */
-.learn-exercise__tf { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.75rem; }
-.learn-exercise__mc { list-style:none; padding:0; margin:.75rem 0 0; display:flex; flex-direction:column; gap:.4rem; }
+/* ── Miga de pan plegable ───────────────────────────── */
+.breadcrumb-wrap > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .8rem;
+  background: #f1f5f9;
+  border-radius: 20px;
+  font-size: .82rem;
+  color: #64748b;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  border: 1px solid #e2e8f0;
+}
+.breadcrumb-wrap > summary::-webkit-details-marker { display: none; }
+.breadcrumb-wrap > summary::before { content: "↗ "; font-size: .78rem; }
+.breadcrumb-wrap[open] > summary { margin-bottom: .5rem; border-radius: 8px 8px 0 0; }
+
+/* ── Objetivo ──────────────────────────────────────── */
+.learn-objetivo-card {
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  border-radius: 10px;
+  padding: .85rem 1.1rem;
+}
+.learn-objetivo-card__label {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #3b82f6;
+  display: block;
+  margin-bottom: .3rem;
+}
+.learn-objetivo-card p { margin: 0; color: #1e3a5f; font-size: .96rem; }
+
+/* ── Títulos de sección ─────────────────────────── */
+.learn-section { margin-top: 2rem; }
+.learn-section__title {
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #4a7cf6;
+  padding: .45rem .9rem;
+  background: #f0f4ff;
+  border-left: 3px solid #4a7cf6;
+  border-radius: 0 6px 6px 0;
+  display: block;
+  margin: 0 0 1rem;
+}
+
+/* ── Ejemplos como tarjetas ─────────────────────── */
+.learn-ejemplos-list { display: flex; flex-direction: column; gap: 1.1rem; margin-top: .75rem; }
+.learn-ejemplo-card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.learn-ejemplo-card__header {
+  background: #f8faff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+}
+.learn-ejemplo-card__num {
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+.learn-ejemplo-card__titulo { font-weight: 600; font-size: .95rem; color: #1e293b; }
+.learn-ejemplo-card__body { padding: .85rem 1rem 1rem; }
+.learn-ejemplo-card .learn-exercise__feedback {
+  margin-top: .75rem;
+  padding: .7rem .9rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #e0e0e0;
+}
+
+/* ── Preguntas conceptuales (desde errores) ──────── */
+.conceptual-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .9rem; margin-top: .75rem; }
+.conceptual-item {
+  border: 1.5px solid #fde68a;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.conceptual-item__claim {
+  background: #fffbeb;
+  padding: .6rem 1rem;
+  font-style: italic;
+  color: #78350f;
+  border-bottom: 1px solid #fde68a;
+  font-size: .93rem;
+}
+.conceptual-item__body { padding: .65rem 1rem .75rem; }
+.conceptual-item__q { font-size: .85rem; color: #6b7280; margin-bottom: .4rem; }
+.conceptual-item .learn-exercise__feedback {
+  margin-top: .6rem;
+  padding: .65rem .9rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #e0e0e0;
+}
+
+/* ── Banco de práctica ──────────────────────────── */
+.learn-practice { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.25rem; }
+.learn-itemgroup {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+}
+.learn-itemgroup > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .8rem 1.1rem;
+  background: #f8faff;
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  font-size: .93rem;
+  color: #1e293b;
+  user-select: none;
+}
+.learn-itemgroup > summary::-webkit-details-marker { display: none; }
+.learn-itemgroup > summary::after {
+  content: "‹";
+  font-size: 1.1rem;
+  color: #94a3b8;
+  transition: transform .2s;
+  transform: rotate(-90deg);
+}
+.learn-itemgroup[open] > summary::after { transform: rotate(90deg); }
+.learn-itemgroup__purpose {
+  font-size: .82rem;
+  color: #64748b;
+  padding: .5rem 1.1rem;
+  background: #f8faff;
+  border-bottom: 1px dashed #e2e8f0;
+  margin: 0;
+}
+.learn-itemgroup .learn-exercise-list { padding: .9rem 1rem 1.1rem; }
+
+/* ── Ejercicios interactivos ─────────────────────── */
+.learn-exercise-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+.learn-exercise__tf { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem; }
+.learn-exercise__mc { list-style:none; padding:0; margin:.6rem 0 0; display:flex; flex-direction:column; gap:.4rem; }
 .ex-choice {
-  padding:.5rem 1.1rem; border:2px solid #d0d5dd; border-radius:8px;
-  background:#fff; cursor:pointer; font-size:.92rem; font-family:inherit;
+  padding:.45rem 1.05rem; border:2px solid #d0d5dd; border-radius:8px;
+  background:#fff; cursor:pointer; font-size:.91rem; font-family:inherit;
   text-align:left; transition:border-color .15s, background .15s;
 }
 .ex-choice:hover:not(:disabled) { border-color:#4a7cf6; background:#f0f4ff; }
@@ -21,10 +176,11 @@
 .ex-input {
   width:100%; padding:.5rem .75rem; border:1px solid #d0d5dd; border-radius:6px;
   font-family:inherit; font-size:.92rem; resize:vertical; min-height:70px;
+  box-sizing: border-box;
 }
 .ex-submit {
-  align-self:flex-start; padding:.45rem 1.1rem; border:none; border-radius:6px;
-  background:#4a7cf6; color:#fff; cursor:pointer; font-size:.92rem; font-family:inherit;
+  align-self:flex-start; padding:.42rem 1.05rem; border:none; border-radius:6px;
+  background:#4a7cf6; color:#fff; cursor:pointer; font-size:.9rem; font-family:inherit;
 }
 .ex-submit:hover:not(:disabled) { background:#3b6de0; }
 .ex-submit:disabled { background:#a5b4fc; cursor:default; }
@@ -32,11 +188,11 @@
   margin-top:.85rem; padding:.75rem 1rem; background:#f8f9fa;
   border-radius:8px; border-left:3px solid #e0e0e0;
 }
-.learn-exercise__verdict { font-weight:700; font-size:1rem; margin-bottom:.5rem; }
+.learn-exercise__verdict { font-weight:700; font-size:1rem; margin-bottom:.4rem; }
 .learn-exercise__verdict--ok  { color:#16a34a; }
 .learn-exercise__verdict--err { color:#dc2626; }
 
-/* ── Clasificación (matching) ───────────────────────────── */
+/* ── Clasificación (matching) ───────────────────── */
 .classify-grid { display:flex; flex-direction:column; gap:.6rem; margin-top:.75rem; }
 .classify-row  { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
 .classify-row__label {
@@ -57,25 +213,29 @@
 .ex-catbtn:disabled  { cursor:default; opacity:.85; }
 </style>
 {% endblock %}
+
 {% block meta_description %}{% if content and content.objetivo %}{{ content.objetivo|truncatechars:155 }}{% else %}Recurso educativo: {{ node.name }}{% endif %}{% endblock %}
 {% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
 
 {% block content %}
 <article class="resource-view stack">
 
-    <nav aria-label="Miga de pan">
-        <ol class="breadcrumb">
-            {% for crumb in breadcrumbs %}
-            <li class="breadcrumb__item">
-                {% if crumb.url %}
-                <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
-                {% else %}
-                <span aria-current="page">{{ crumb.label }}</span>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ol>
-    </nav>
+    <details class="breadcrumb-wrap">
+        <summary>Ruta de aprendizaje</summary>
+        <nav aria-label="Miga de pan">
+            <ol class="breadcrumb">
+                {% for crumb in breadcrumbs %}
+                <li class="breadcrumb__item">
+                    {% if crumb.url %}
+                    <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
+                    {% else %}
+                    <span aria-current="page">{{ crumb.label }}</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ol>
+        </nav>
+    </details>
 
     <header class="resource-view__header">
         <h1 class="resource-view__title">{{ node.name }}</h1>
@@ -90,7 +250,6 @@
     {% include "learn/_prereqs.html" %}
 
     {% if not content %}
-    {# Placeholder para nodos sin contenido aún #}
     <div class="learn-placeholder">
         <p>El contenido de este recurso está siendo preparado. ¡Vuelve pronto!</p>
     </div>
@@ -98,20 +257,9 @@
     {% else %}
 
     {% if content.objetivo %}
-    <div class="learn-objetivo">
-        <p><strong>Al finalizar:</strong> {{ content.objetivo }}</p>
-    </div>
-    {% endif %}
-
-    {% if youtube_id %}
-    <div class="video-container">
-        <iframe
-            src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}"
-            referrerpolicy="strict-origin-when-cross-origin"
-            title="Explicación: {{ node.name }}"
-            loading="lazy"
-            allowfullscreen
-        ></iframe>
+    <div class="learn-objetivo-card">
+        <span class="learn-objetivo-card__label">Objetivo</span>
+        <p>{{ content.objetivo }}</p>
     </div>
     {% endif %}
 
@@ -138,32 +286,106 @@
     {% if content.ejemplos %}
     <section class="learn-section">
         <h2 class="learn-section__title">Ejemplos</h2>
-        {% for ej in content.ejemplos %}
-        <details class="learn-ejemplo">
-            <summary class="learn-ejemplo__titulo">{{ ej.titulo }}</summary>
-            <div class="learn-ejemplo__body">
-                {% if ej.enunciado %}
-                <p class="learn-ejemplo__enunciado">{{ ej.enunciado }}</p>
-                {% endif %}
-                {% if ej.solucion_pasos %}
-                <ol class="learn-procedure">
-                    {% for paso in ej.solucion_pasos %}
-                    <li class="learn-procedure__step">{{ paso }}</li>
-                    {% endfor %}
-                </ol>
-                {% endif %}
+        <div class="learn-ejemplos-list">
+            {% for ej in content.ejemplos %}
+            {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="true_false"
+                 data-answer="{{ ej.respuesta }}">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Sí">Sí</button>
+                        <button type="button" class="ex-choice" data-value="No">No</button>
+                    </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </details>
-        {% endfor %}
+            {% elif ej.respuesta == "Verdadero" or ej.respuesta == "Falso" %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="true_false"
+                 data-answer="{{ ej.respuesta }}">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                    </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="open_answer"
+                 data-answer="">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
+                    <button type="button" class="ex-submit">Ver solución</button>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
     </section>
     {% endif %}
 
     {% if content.errores_frecuentes %}
-    <section class="learn-section learn-section--warning">
-        <h2 class="learn-section__title">Errores frecuentes</h2>
-        <ul class="learn-errors">
+    <section class="learn-section conceptual-section">
+        <h2 class="learn-section__title">Preguntas conceptuales</h2>
+        <ul class="conceptual-list">
             {% for error in content.errores_frecuentes %}
-            <li class="learn-errors__item">{{ error }}</li>
+            <li class="conceptual-item learn-exercise"
+                data-format="true_false"
+                data-answer="Falso">
+                <div class="conceptual-item__claim">"{{ error }}"</div>
+                <div class="conceptual-item__body">
+                    <p class="conceptual-item__q">¿Es correcta esta afirmación?</p>
+                    <div class="learn-exercise__tf">
+                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                    </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        <p style="margin-top:.4rem;font-size:.9rem;color:#374151;">
+                            Esta afirmación describe un error frecuente: es <strong>incorrecta</strong>.
+                        </p>
+                    </div>
+                </div>
+            </li>
             {% endfor %}
         </ul>
     </section>
@@ -273,6 +495,7 @@
         </details>
         {% endfor %}
     </section>
+    {% endif %}
 
     <script nonce="{{ csp_nonce }}">
     (function () {
@@ -284,18 +507,18 @@
         }
       }
 
-      function lockExercise(li) {
-        li.querySelectorAll(".ex-choice").forEach(function (b) { b.disabled = true; });
-        var inp = li.querySelector(".ex-input");
-        var sub = li.querySelector(".ex-submit");
+      function lockExercise(el) {
+        el.querySelectorAll(".ex-choice").forEach(function (b) { b.disabled = true; });
+        var inp = el.querySelector(".ex-input");
+        var sub = el.querySelector(".ex-submit");
         if (inp) inp.disabled = true;
         if (sub) sub.disabled = true;
       }
 
-      function showFeedback(li, verdict) {
-        /* verdict: "ok" | "err" | null (open_answer sin corrección automática) */
-        var fb = li.querySelector(".learn-exercise__feedback");
-        var vd = li.querySelector(".learn-exercise__verdict");
+      function showFeedback(el, verdict) {
+        var fb = el.querySelector(".learn-exercise__feedback");
+        var vd = el.querySelector(".learn-exercise__verdict");
+        if (!fb) return;
         fb.hidden = false;
         if (verdict === "ok") {
           vd.textContent = "✓ ¡Correcto!";
@@ -307,12 +530,13 @@
           fb.style.borderLeftColor = "#dc2626";
         } else {
           vd.textContent = "";
+          vd.className = "learn-exercise__verdict";
         }
         renderKatex(fb);
       }
 
-      function highlightChoices(li, chosen, correct) {
-        li.querySelectorAll(".ex-choice").forEach(function (btn) {
+      function highlightChoices(el, chosen, correct) {
+        el.querySelectorAll(".ex-choice").forEach(function (btn) {
           var v = (btn.dataset.value || "").trim();
           if (v === correct) {
             btn.classList.add("ex-choice--correct");
@@ -322,24 +546,24 @@
         });
       }
 
-      document.querySelectorAll(".learn-exercise").forEach(function (li) {
-        var format  = li.dataset.format || "";
-        var correct = (li.dataset.answer || "").trim();
+      document.querySelectorAll(".learn-exercise").forEach(function (el) {
+        var format  = el.dataset.format || "";
+        var correct = (el.dataset.answer || "").trim();
 
         /* V/F y selección múltiple: corrección inmediata al clic */
         if (format === "true_false" || format === "multiple_choice") {
-          li.querySelectorAll(".ex-choice").forEach(function (btn) {
+          el.querySelectorAll(".ex-choice").forEach(function (btn) {
             btn.addEventListener("click", function () {
               var chosen = (btn.dataset.value || "").trim();
-              lockExercise(li);
-              highlightChoices(li, chosen, correct);
-              showFeedback(li, chosen === correct ? "ok" : "err");
+              lockExercise(el);
+              highlightChoices(el, chosen, correct);
+              showFeedback(el, chosen === correct ? "ok" : "err");
             });
           });
         }
 
         /* Clasificación (matching con pattern.items/categories) */
-        var classDiv = li.querySelector(".learn-exercise__classify");
+        var classDiv = el.querySelector(".learn-exercise__classify");
         if (classDiv) {
           var answers = {};
           try { answers = JSON.parse(classDiv.dataset.answers || "{}"); } catch (e) {}
@@ -387,8 +611,8 @@
                 });
               });
               var verdict = okCount === rows.length ? "ok" : "err";
-              showFeedback(li, verdict);
-              var vd = li.querySelector(".learn-exercise__verdict");
+              showFeedback(el, verdict);
+              var vd = el.querySelector(".learn-exercise__verdict");
               if (verdict === "ok") {
                 vd.textContent = "✓ ¡Todos clasificados correctamente!";
               } else {
@@ -398,18 +622,17 @@
           }
         }
 
-        /* Open answer: botón revela la corrección sin juzgar */
-        var submitBtn = li.querySelector(".ex-submit:not(.classify-verify)");
+        /* Open answer / Ver solución / Ver corrección */
+        var submitBtn = el.querySelector(".ex-submit:not(.classify-verify)");
         if (submitBtn) {
           submitBtn.addEventListener("click", function () {
-            lockExercise(li);
-            showFeedback(li, null);
+            lockExercise(el);
+            showFeedback(el, null);
           });
         }
       });
     })();
     </script>
-    {% endif %}
 
 </article>
 {% endblock %}
