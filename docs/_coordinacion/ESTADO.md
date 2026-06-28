@@ -13,12 +13,18 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Población MAT.NUM B0201/B0202 — AUDITORÍA RECHAZADA 🔴 (2026-06-28):**
+  Codex verificó loaders + `check` + 587 tests verdes, pero devolvió la tarjeta a construcción por
+  7 estados no canónicos, LaTeX sobreescapado, ejemplos Tipo B insuficientes y listas incompletas.
+  Hallazgos y evidencia en `backlog/3-construccion/poblar-contenido-mat-num-b0201-b0202.md`.
 - **Plataforma de Conocimiento — ENTEROS_CONJUNTO + UI + pauta de contenido 🟢 (2026-06-28):**
   Todo el contenido ENTEROS_CONJUNTO desplegado en `main`. Campo `introduccion` añadido al modelo
   (migración `0042`) + 15 introducciones didácticas (nivel ~10 años) cargadas en los YAMLs.
   Sección renombrada "Ejemplos Verdadero/Falso" con accordeón nativo. Pauta de contenido
-  en `docs/conocimiento/pauta-contenido.md`.
-  **Pendiente operativo:** `python manage.py generate_node_summaries --all` (cuota Gemini se restablece a medianoche Pacífico).
+  en `docs/conocimiento/pauta-contenido.md`. Los 15 resúmenes quedaron versionados en los YAML
+  para evitar que `load_node_content` los borre al recargar.
+  **Pendiente operativo:** tras desplegar el cambio, ejecutar `python manage.py load_node_content`
+  en producción (el arranque de Railway no carga contenido automáticamente).
 - **Plataforma de Conocimiento — F1–F3 + F6 CERRADAS 🟢 (2026-06-27, PR #102):**
   Squash-merge de `feat/grafo-conocimiento-f1` a `main`. Incluye: `KnowledgeNode`/`NodePrerequisite`,
   `NodeContent`/`NodeMedia`, app `learn`, `ItemGroup`/`NodeExercise` (**autopublicado inmediato** —
@@ -180,6 +186,15 @@
   **F7** gate + piloto (🟡 construida por Claude, en `4-auditoria/`, esperando audit de Codex —
   **última fase**),
   **F7** migración legacy + gate + piloto (🟡). Construir **en orden**, una fase por rama, cada una con preflight de Codex.
+- 🔨 **Población de contenido — MAT completa (1.891 recursos pendientes):**
+  Handoffs autónomos en `backlog/2-arquitectura/` — uno por eje/grupo:
+  - `poblar-contenido-mat-num-b0201-b0202.md` — 56r (21 B0201 + 35 B0202), rama `content/mat-num-b0201-b0202`
+  - `poblar-contenido-mat-num-b0203-b0206.md` — 289r (B0203 Racionales + B0204 Reales + B0205 Razones + B0206 Sucesiones), rama `content/mat-num-b0203-b0206`
+  - `poblar-contenido-mat-fund.md` — 106r (B0101 Lógica + B0102 Conjuntos), rama `content/mat-fund`
+  - `poblar-contenido-mat-est.md` — 260r (B0501–B0507 Estadística+Probabilidad), rama `content/mat-est`
+  - `poblar-contenido-mat-alg.md` — 698r (B0301–B0315 Álgebra y Funciones), rama `content/mat-alg`
+  - `poblar-contenido-mat-geo.md` — 482r (B0401–B0413 Geometría), rama `content/mat-geo`
+  Todos listos para Antigravity. El proceso: query de pendientes → YAML → JSONL → `load_node_content` → `load_exercise_bank` → commit por tanda.
 - 🔨 **PWA básica** — `backlog/2-arquitectura/pwa-progressive-web-app.md`. Ready para Codex (preflight)
   → Antigravity (rama `feat/pwa-basica`). Manifest + SW conservador + offline + iconos; sin tocar CSP.
 - ✅ **Estudio de banco de preguntas — CERRADO 🟢 y ARCHIVADO (2026-06-18).** Construido y desplegado
@@ -188,6 +203,29 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-28 — 🏛️ Claude: **Handoff autónomo de población de contenido MAT.NUM B0201+B0202.**
+  Creado `docs/backlog/2-arquitectura/poblar-contenido-mat-num-b0201-b0202.md` — listo para
+  ejecución por Antigravity (o cualquier IA). Cubre 56 recursos pendientes: 21 de B0201
+  (ENTEROS_OPERATORIA) + 35 de B0202 (divisibilidad/primos/MCM/MCD). Tanda 1 de B0202 ya
+  cargada en BD (5 recursos DIVISIBILIDAD + 50 ejercicios). El handoff incluye: tablas de
+  recursos por tanda, reglas de formato YAML/JSONL, abreviaciones `stable_id`, comandos de
+  carga y verificación, criterios de aceptación y lista de no-tocar.
+- 2026-06-28 — 🏛️ Claude: **Tanda 1 B0202 generada y cargada en BD (5 recursos + 50 ejercicios).**
+  Archivos YAML: `mat-num-divisibilidad-{multiplo-concepto,divisor-concepto,division-exacta,
+  obtencion-multiplos,obtencion-divisores}.yaml`. JSONL: `mat-num-teoria-numeros-banco-gen-1.jsonl`.
+  Corregido error en OMULT-GEN-PAES-2 (correct_answer 15→14). Cargado con `load_node_content`
+  (5 created) + `load_exercise_bank` (50 ejercicios). Estrategia documentada en
+  `docs/conocimiento/estrategia-poblacion.md`.
+- 2026-06-28 — 🏛️ Claude: **Estructura de recurso documentada como estándar.**
+  Añadida sección `## 0. Estructura completa de la página de recurso` a
+  `docs/conocimiento/pauta-contenido.md`: las 11 secciones de la página `/aprender/<slug>/`
+  descritas con fuente de datos (modelo/campo), formato, reglas de presencia, propósito
+  pedagógico y diagramas ASCII de cada tipo de ejemplo/ejercicio. Es el estándar de referencia
+  para cualquier contenido nuevo.
+- 2026-06-28 — 🧩 Codex: **resúmenes de ENTEROS_CONJUNTO versionados en YAML.**
+  Diagnosticado el borrado al recargar contenido: los YAML omitían `resumen` y el loader escribía
+  una cadena vacía. Los 15 recursos ahora incluyen resumen; pauta actualizada a 9 campos
+  obligatorios. Validación local: 15/15 con resumen, tests focalizados 4/4 OK.
 - 2026-06-28 — 🏛️ Claude + 🧑: **UI accordeón + introducción didáctica + pauta de contenido.**
   Campo `introduccion` en `NodeContent` (migración `0042`) + 15 textos nivel ~10 años en YAMLs.
   Sección "Ejemplos Verdadero/Falso" renombrada. Fix acordeón KaTeX (wrap con `<span>` para

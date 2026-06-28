@@ -1,0 +1,76 @@
+semantic_id: MAT.NUM.MINIMO_COMUN_MULTIPLO.METODO_TABLA_SIMULTANEA
+objetivo: 'Calcular el mínimo común múltiplo (MCM) de dos o más números usando el método de la tabla de divisiones simultáneas.'
+introduccion: |
+  ¿Qué pasaría si tuvieras que calcular el MCM de números grandes como 24, 36 y 40? Si hicieras listas de múltiplos, ¡podrías pasar horas escribiendo números larguísimos antes de encontrar uno en común!
+
+  Para evitar este trabajo gigante, los matemáticos inventaron un súper truco: el método de la tabla de divisiones simultáneas. En lugar de calcular cada número por separado, los pones todos juntos en una tabla y los divides al mismo tiempo usando números primos.
+
+  Es un proceso súper rápido, directo y automático. Cuando todos los números de la izquierda llegan a 1, multiplicas todos los números primos de la derecha y, ¡pum!, tienes tu MCM de inmediato.
+resumen: |
+  La tabla de divisiones simultáneas consiste en dividir los números dados al mismo tiempo por factores primos en común o individuales. El proceso termina cuando todos los números de la izquierda se reducen a $1$; el producto de la columna derecha es el MCM.
+explicacion: |
+  El **Método de la Tabla de Divisiones Simultáneas** es el algoritmo operacional más práctico para encontrar el MCM de dos o más números.
+
+  **Cómo construir la tabla:**
+  1. Escribe los números en una fila horizontal a la izquierda de una línea vertical.
+  2. Busca un número primo ($2, 3, 5, 7, \dots$) que divida a **al menos uno** de los números. Escríbelo a la derecha de la línea.
+  3. Divide los números de la izquierda que sean divisibles exactamente por este primo y escribe los cocientes abajo. Si alguno **no** es divisible, simplemente cópialo igual en la fila de abajo.
+  4. Repite el proceso con la nueva fila de números hasta que todos se hayan reducido a $1$.
+  5. Multiplica todos los números primos que escribiste en la columna derecha. El producto obtenido es el MCM.
+
+  **Ejemplo práctico: Calcular el MCM de $12, 18$ y $20$:**
+
+  $$\begin{array}{ccc|l}
+  12 & 18 & 20 & 2 \text{ (dividimos por 2)}\\
+  6 & 9 & 10 & 2 \text{ (dividimos por 2; el 9 se baja igual)}\\
+  3 & 9 & 5 & 3 \text{ (dividimos por 3; el 5 se baja igual)}\\
+  1 & 3 & 5 & 3 \text{ (dividimos por 3; el 1 y 5 se bajan)}\\
+  1 & 1 & 5 & 5 \text{ (dividimos por 5)}\\
+  1 & 1 & 1 & \\
+  \end{array}$$
+
+  El proceso termina porque todos los números llegaron a $1$.
+  Multiplicamos los factores de la derecha:
+  $$\text{MCM}(12, 18, 20) = 2 \cdot 2 \cdot 3 \cdot 3 \cdot 5 = 2^2 \cdot 3^2 \cdot 5 = 4 \cdot 9 \cdot 5 = 180$$
+
+  El MCM es $180$.
+procedimiento:
+  - 'Paso 1: Coloca los números a la izquierda de una línea vertical, separados por un espacio.'
+  - 'Paso 2: Escribe a la derecha de la línea el menor número primo que divida exactamente a al menos uno de los números de la izquierda.'
+  - 'Paso 3: Divide los números correspondientes y escribe los cocientes abajo. Copia igual aquellos números que no se dividieron de forma exacta.'
+  - 'Paso 4: Repite los pasos 2 y 3 hasta que todos los números de la columna izquierda se conviertan en 1.'
+  - 'Paso 5: Multiplica todos los factores primos de la derecha para obtener el MCM final.'
+ejemplos:
+  - titulo: 'Ejemplo 1'
+    enunciado: 'Calcula el MCM de $8$ y $12$ utilizando la tabla de divisiones simultáneas.'
+    solucion_pasos:
+      - 'Paso a: Escribimos $8$ y $12$ a la izquierda. Dividimos por el primo $2$: los cocientes son $4$ y $6$. Escribimos $2$ a la derecha.'
+      - 'Paso b: Dividimos $4$ y $6$ por el primo $2$: los cocientes son $2$ y $3$. Escribimos $2$ a la derecha.'
+      - 'Paso c: Dividimos por el primo $2$: el $2$ queda en $1$, y el $3$ se baja igual por no ser divisible. Escribimos $2$ a la derecha.'
+      - 'Paso d: Dividimos por el primo $3$: el $3$ queda en $1$. Escribimos $3$ a la derecha. Ahora todos son $1$.'
+      - 'Paso e: Multiplicamos los factores de la derecha: $2 \cdot 2 \cdot 2 \cdot 3 = 2^3 \cdot 3 = 24$. Así, $\text{MCM}(8, 12) = 24$.'
+  - titulo: 'Ejemplo 2'
+    enunciado: 'Determina el MCM entre $15$ y $25$ usando divisiones simultáneas.'
+    solucion_pasos:
+      - 'Paso a: Colocamos $15$ and $25$ a la izquierda. Ninguno es divisible por $2$. Dividimos por $3$: el $15$ pasa a $5$ y el $25$ se baja igual. Escribimos $3$ a la derecha.'
+      - 'Paso b: Ahora tenemos $5$ y $25$. Dividimos por el primo $5$: quedan en $1$ y $5$, respectivamente. Escribimos $5$ a la derecha.'
+      - 'Paso c: Volvemos a dividir por $5$: el $5$ pasa a $1$. Escribimos $5$ a la derecha. Ambos llegaron a $1$.'
+      - 'Paso d: Multiplicamos la columna derecha: $3 \cdot 5 \cdot 5 = 3 \cdot 5^2 = 75$. El MCM es $75$.'
+  - titulo: 'En la tabla de divisiones simultáneas para calcular el MCM, ¿debemos bajar igual los números que no son divisibles por el factor primo elegido?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'En las divisiones simultáneas, solo se dividen aquellos números que tienen división exacta por el número primo elegido.'
+      - 'Si un número no es divisible exactamente, simplemente se copia igual en la línea de abajo para ser dividido en los siguientes pasos.'
+  - titulo: 'Si al calcular el MCM de $9$ y $15$, la columna de la derecha tiene los números $3$, $3$ y $5$, ¿es $45$ el MCM?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'El producto de los números primos obtenidos en la columna derecha es $3 \cdot 3 \cdot 5 = 9 \cdot 5 = 45$.'
+      - 'Como este producto representa al MCM de los números, el resultado efectivamente es $45$.'
+errores_frecuentes:
+  - 'Olvidar bajar o copiar un número que no fue dividido en un paso determinado, perdiéndolo en la tabla.'
+  - 'Colocar números compuestos en la columna de la derecha (como dividir por 6 en lugar de dividir por 2 y por 3 por separado).'
+  - 'Dividir un número de forma inexacta dando decimales en lugar de bajar el número entero tal cual.'
+  - 'Detener la tabla cuando solo uno de los números ha llegado a 1, en lugar de esperar a que todos se reduzcan a 1.'
+  - 'Multiplicar incorrectamente los factores primos de la derecha al final del procedimiento.'
+fuente: 'Teoría de Números'
+estado: publicado

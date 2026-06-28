@@ -6,6 +6,96 @@
 
 ---
 
+## 0. Estructura completa de la página de recurso
+
+Cada recurso se muestra en la ruta `/aprender/<slug>/` y está compuesto por las
+siguientes secciones, en este orden. Las columnas indican de dónde viene cada dato
+y qué reglas aplican al generarlo.
+
+| # | Sección visible | Modelo / campo | Formato | Propósito pedagógico |
+|---|---|---|---|---|
+| 1 | **Encabezado** | `KnowledgeNode.name` + `competencia` + breadcrumb | Texto plano, etiqueta M1/M2/U | Orientar al alumno: nombre exacto del tema y su categoría curricular. |
+| 2 | **Objetivo** | `NodeContent.objetivo` | Texto plano, 1 frase | Declarar qué logrará el alumno. Empieza siempre con verbo infinitivo ("Identificar…", "Calcular…"). |
+| 3 | **Introducción** | `NodeContent.introduccion` | Markdown, sin LaTeX denso | Conectar el concepto con la experiencia cotidiana del alumno de ~10 años. Máximo 3 párrafos, analogías concretas. |
+| 4 | **Resumen IA** | `NodeContent.resumen` | Markdown, 2-3 oraciones | Tarjeta de repaso generada o revisada manualmente. Explica qué es el concepto y cuándo se aplica. |
+| 5 | **Explicación** | `NodeContent.explicacion` | Markdown + LaTeX completo | Contenido técnico para el alumno que quiere profundidad: definición formal, propiedades, contexto. Puede ser largo. |
+| 6 | **Cómo hacerlo paso a paso** | `NodeContent.procedimiento` | Lista de strings, cada uno puede tener LaTeX | Guía operacional memorizable: qué hacer en orden para resolver un problema de este tipo. Mínimo 2 pasos, recomendado 3-4. |
+| 7 | **Ejemplos — Tipo A (abiertos)** | `NodeContent.ejemplos` items con `enunciado` | Acordeón "Ver solución" | Ejercicio abierto: el alumno lee el enunciado, piensa, y hace clic para ver los pasos. Mínimo 2 por recurso. |
+| 8 | **Ejemplos — Tipo B (Sí/No)** | `NodeContent.ejemplos` items con `respuesta` | Botones interactivos Sí / No con reveal | El título es la pregunta. El alumno responde y recibe feedback inmediato + explicación. Mínimo 2 por recurso, siempre al final de la lista de ejemplos. |
+| 9 | **Ejemplos Verdadero/Falso** | `NodeContent.errores_frecuentes` | Acordeón V/F — el alumno abre para ver por qué es falso | Exactamente 5 afirmaciones, todas falsas. El alumno las evalúa y descubre el error conceptual. Sin XP — es refuerzo comprensivo. |
+| 10 | **Material adicional** | `NodeResource` (videos, documentos) | Lista de enlaces | Videos de YouTube u otros recursos vinculados al nodo en la DB. Aparece solo si el nodo tiene recursos asociados. |
+| 11 | **Practica** | `NodeExercise` (banco JSONL) | Acordeón por nivel, quiz interactivo | Ejercicios medibles: respuestas generan XP y desbloquean estrellas. Dividido en nivel 1 (⭐), nivel 2 (⭐⭐) y nivel 3 (⭐⭐⭐). |
+
+### Reglas de presencia (cuándo aparece cada sección)
+
+| Sección | Condición para aparecer |
+|---|---|
+| Encabezado | Siempre (viene del `KnowledgeNode`, obligatorio). |
+| Objetivo | Si `NodeContent.objetivo` no está vacío. |
+| Introducción | Si `NodeContent.introduccion` no está vacío. |
+| Resumen IA | Si `NodeContent.resumen` no está vacío. Se genera con `generate_node_summaries`; se puede escribir a mano en el YAML. |
+| Explicación | Si `NodeContent.explicacion` no está vacío. |
+| Procedimiento | Si `NodeContent.procedimiento` tiene al menos 1 paso. |
+| Ejemplos | Si `NodeContent.ejemplos` tiene al menos 1 item. Tipo A y Tipo B se distinguen por la presencia del campo `respuesta`. |
+| Ejemplos V/F | Si `NodeContent.errores_frecuentes` tiene al menos 1 afirmación. |
+| Material adicional | Si el nodo tiene `NodeResource` asociados distintos de los del banco de ejercicios. |
+| Practica | Si el nodo tiene `NodeExercise` en el banco con `status: ready`. |
+
+### Anatomía de cada tipo de ejemplo
+
+```
+TIPO A — Ejemplo abierto
+┌─────────────────────────────────────────────────────┐
+│ "Ejemplo N"                             [Ver solución] │
+│ Enunciado de la pregunta o situación real.            │
+└─────────────────────────────────────────────────────┘
+ Al hacer clic en "Ver solución":
+ → Aparecen los solucion_pasos uno a uno en lista.
+
+TIPO B — Sí / No interactivo
+┌─────────────────────────────────────────────────────┐
+│ ¿La pregunta va directamente aquí en el título?     │
+│                   [  Sí  ]   [  No  ]               │
+└─────────────────────────────────────────────────────┘
+ Al responder:
+ → Feedback inmediato (correcto / incorrecto)
+ → Aparecen los solucion_pasos explicando por qué.
+
+EJEMPLOS VERDADERO / FALSO (errores_frecuentes)
+┌─────────────────────────────────────────────────────┐
+│ ▶ "El cero es par porque termina en cero."          │
+└─────────────────────────────────────────────────────┘
+ Al expandir el acordeón:
+ → Se muestra "FALSO" y la explicación del error.
+ (No hay botón: el alumno sabe que todas son falsas.)
+
+PRACTICA — Niveles y estrellas
+┌─────────────────────────────────────────────────────┐
+│ ⭐ Nivel 1 — Comprensión (4 preguntas)              │
+│ ⭐⭐ Nivel 2 — Procedimiento (3 preguntas)           │
+│ ⭐⭐⭐ Nivel 3 — Aplicación PAES (3 preguntas)        │
+└─────────────────────────────────────────────────────┘
+ Cada nivel toma preguntas al azar del grupo correspondiente.
+ Aprobar los 3 niveles → XP + skill desbloqueada.
+```
+
+### Mapa: campo YAML/JSONL → sección visible
+
+```
+KnowledgeNode.name        →  Encabezado (título h1)
+NodeContent.objetivo      →  Sección 2 "Objetivo"
+NodeContent.introduccion  →  Sección 3 "Introducción"
+NodeContent.resumen       →  Sección 4 "Resumen IA"
+NodeContent.explicacion   →  Sección 5 "Explicación"
+NodeContent.procedimiento →  Sección 6 "Cómo hacerlo paso a paso"
+NodeContent.ejemplos      →  Sección 7 (Tipo A) + Sección 8 (Tipo B)
+NodeContent.errores_frecuentes → Sección 9 "Ejemplos Verdadero/Falso"
+NodeResource (DB)         →  Sección 10 "Material adicional"
+NodeExercise (banco JSONL)→  Sección 11 "Practica"
+```
+
+---
+
 ## 1. Por qué este formato es gamificable
 
 La plataforma tiene dos capas que se alimentan de archivos distintos:
@@ -39,6 +129,9 @@ introduccion: |
   Texto muy simple, como para un alumno de 10 años.
   Sin LaTeX ni tecnicismos. Usa analogías concretas.
   Máximo 3 párrafos cortos.
+resumen: |
+  Tarjeta de repaso en 2-3 oraciones: explica qué es el concepto y cómo se aplica.
+  Usa lenguaje claro para enseñanza media y evita repetir textualmente el título.
 explicacion: |
   Texto técnico completo en Markdown (soporta **negrita**, $LaTeX$, listas).
   Aquí sí se espera profundidad. Puede ser largo.
@@ -75,6 +168,7 @@ estado: publicado    # o borrador
 | `semantic_id` | Sí | Debe existir en la DB (`KnowledgeNode`). Formato: `MAT.NUM.BLOQUE.RECURSO` |
 | `objetivo` | Sí | Una frase. Empieza con verbo infinitivo ("Identificar…", "Calcular…"). |
 | `introduccion` | Sí | Lenguaje de 10 años. Sin LaTeX pesado. Usa analogías del mundo real. |
+| `resumen` | Sí | Tarjeta de repaso de 2-3 oraciones. Debe explicar qué es el concepto y cómo se aplica. |
 | `explicacion` | Sí | Markdown + LaTeX. Puede ser denso — es para el alumno que quiere profundidad. |
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. |
 | `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (abiertos) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. |
@@ -222,8 +316,9 @@ del banco. Un recurso sin JSONL se puede leer, pero no se puede "ganar" en él.
 ## 5. Checklist antes de cargar un recurso nuevo
 
 - [ ] `semantic_id` existe en la DB (`KnowledgeNode`)
-- [ ] YAML tiene los 8 campos obligatorios completos
+- [ ] YAML tiene los 9 campos obligatorios completos
 - [ ] `introduccion` usa lenguaje simple (sin jerga, analogías concretas)
+- [ ] `resumen` explica qué es el concepto y cómo se aplica en 2-3 oraciones
 - [ ] `ejemplos`: mínimo 2 Tipo A + 2 Tipo B (al final)
 - [ ] `errores_frecuentes`: exactamente 5 afirmaciones falsas
 - [ ] `estado: publicado`

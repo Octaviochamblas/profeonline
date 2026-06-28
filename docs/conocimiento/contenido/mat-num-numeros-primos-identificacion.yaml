@@ -1,0 +1,66 @@
+semantic_id: MAT.NUM.NUMEROS_PRIMOS.PRIMO_IDENTIFICACION
+objetivo: Identificar números primos utilizando métodos como la criba de Eratóstenes o la verificación de divisores hasta la raíz cuadrada del número.
+introduccion: |-
+  Imagínate que tienes un colador gigante para números y quieres separar los números primos de los demás. Hace más de 2000 años, un sabio griego llamado Eratóstenes inventó un "colador de números" de papel.
+
+  El truco consiste en escribir los números del 1 al 100 e ir tachando los múltiplos de 2, de 3, de 5, de 7... ¡y así sucesivamente! Al final, los números que quedan sin tachar son los números primos.
+
+  En esta lección descubrirás este y otros métodos para encontrar los números primos.
+resumen: La identificación de números primos se puede realizar tachando de forma sistemática los múltiplos de números menores en una lista (Criba de Eratóstenes) o bien verificando que el número no sea divisible por ningún número primo menor o igual a su raíz cuadrada.
+explicacion: |-
+  Para identificar si un número $N$ es primo, existen varios métodos:
+
+  1. **La Criba de Eratóstenes:** Es un algoritmo antiguo y eficiente para encontrar todos los números primos menores que un número dado. Consiste en listar los números y tachar consecutivamente los múltiplos de cada primo encontrado (empezando por los múltiplos de 2, luego los de 3, 5, etc.). Los números que permanecen sin tachar son primos.
+
+  2. **Prueba de Divisibilidad Acotada:** Para comprobar si un número específico $N$ es primo, no es necesario dividirlo por todos los números menores a él. Basta con comprobar que no sea divisible por ningún número primo menor o igual a su raíz cuadrada ($\sqrt{N}$).
+
+  *Por ejemplo*, para verificar si $97$ es primo:
+  - Calculamos $\sqrt{97} \approx 9.85$.
+  - Los primos menores o iguales a $9.85$ son $2, 3, 5, 7$.
+  - Probamos la divisibilidad de $97$ por cada uno:
+    - $97$ no termina en par (no divisible por $2$).
+    - $9+7=16$, no es múltiplo de 3 (no divisible por $3$).
+    - $97$ no termina en $0$ ni en $5$ (no divisible por $5$).
+    - $97 \div 7 = 13$ con residuo $6$ (no divisible por $7$).
+  - Como no es divisible por ninguno de estos primos, $97$ es un número primo.
+procedimiento:
+- 'Paso 1: Estima la raíz cuadrada entera o aproximada del número $N$ que quieres evaluar.'
+- 'Paso 2: Haz una lista de todos los números primos que sean menores o iguales a esa raíz cuadrada.'
+- 'Paso 3: Divide el número $N$ por cada uno de los primos de la lista. Si alguna división es exacta, el número no es primo. Si ninguna división es exacta, el número es primo.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Identifica si el número $53$ es primo usando la regla de la raíz cuadrada.
+  solucion_pasos:
+  - 'Paso a: Estimamos la raíz cuadrada de $53$. Como $7^2 = 49$ y $8^2 = 64$, entonces $\sqrt{53}$ está entre $7$ y $8$ (es aproximadamente $7.28$).'
+  - 'Paso b: Listamos los números primos menores o iguales a $7$, que son: $2, 3, 5, 7$.'
+  - 'Paso c: Probamos la divisibilidad de $53$ por estos primos: no es divisible por $2$ (es impar), ni por $3$ ($5+3=8$), ni por $5$ (termina en $3$), ni por $7$ ($53 \div 7 = 7$ con resto $4$).'
+  - 'Paso d: Al no ser divisible por ninguno de ellos, $53$ es un número primo.'
+- titulo: Ejemplo 2
+  enunciado: Determina si el número $91$ es primo o no.
+  solucion_pasos:
+  - 'Paso a: Calculamos la raíz cuadrada aproximada de $91$. Como $9^2 = 81$ y $10^2 = 100$, $\sqrt{91}$ es aproximadamente $9.54$.'
+  - 'Paso b: Los primos menores o iguales a $9$ son: $2, 3, 5, 7$.'
+  - 'Paso c: Probamos la divisibilidad: $91$ es impar (no por $2$), $9+1=10$ (no por $3$), termina en $1$ (no por $5$).'
+  - 'Paso d: Al probar por $7$: $91 \div 7 = 13$ de forma exacta. Por lo tanto, $91$ tiene como divisores a $7$ y $13$. Concluimos que $91$ no es primo.'
+- titulo: ¿Es el número $101$ un número primo?
+  respuesta: Sí
+  solucion_pasos:
+  - 'La raíz aproximada de $101$ es un poco más de $10$ ($10^2 = 100$).'
+  - 'Los primos menores o iguales a $10$ son $2, 3, 5, 7$.'
+  - 'Probamos divisores: $101$ no es divisible por $2$ (impar), ni por $3$ ($1+0+1=2$), ni por $5$ (termina en $1$), ni por $7$ ($101 \div 7 = 14$ residuo $3$).'
+  - 'Como no es divisible por ninguno de ellos, $101$ es primo.'
+- titulo: ¿Es el número $87$ un número primo?
+  respuesta: No
+  solucion_pasos:
+  - 'La raíz aproximada de $87$ es algo menor que $10$ ($9^2 = 81$).'
+  - 'Los primos menores o iguales a $9$ son $2, 3, 5, 7$.'
+  - 'Probamos divisibilidad: $87$ es impar, por lo que no es divisible por $2$.'
+  - 'Sumamos las cifras: $8 + 7 = 15$. Como $15$ es múltiplo de $3$, el número $87$ es divisible por $3$ ($87 = 3 \cdot 29$). Por lo tanto, no es primo.'
+errores_frecuentes:
+- Olvidar probar la divisibilidad con el número 7, lo que lleva a clasificar erróneamente números como 91 o 119 como primos.
+- Pensar que hay que probar la división por todos los números menores, haciendo el cálculo innecesariamente largo.
+- No usar correctamente los criterios de divisibilidad básicos al verificar los posibles divisores.
+- Asumir que un número que termina en 1, 3, 7 o 9 es automáticamente primo sin verificar divisores.
+- Confundir la raíz cuadrada con la mitad del número en la regla del límite de búsqueda.
+fuente: Teoría de Números
+estado: publicado

@@ -1,0 +1,81 @@
+semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.METODO_POTENCIAS_PRIMAS
+objetivo: Calcular el MCD a partir de la descomposición en factores primos usando las potencias con el menor exponente.
+introduccion: |-
+  ¿Sabías que todos los números enteros mayores que 1 se pueden desarmar en piezas básicas llamadas números primos? ¡Es como si los números estuvieran hechos de bloques de Lego!
+
+  Si desarmamos dos números en sus "bloques primos" y miramos cuáles tienen en común, podemos encontrar su MCD muy fácilmente. Solo tenemos que comparar los bloques primos compartidos y quedarnos con la menor cantidad de cada uno (es decir, el exponente más pequeño).
+
+  Al multiplicar esos bloques comunes mínimos, construimos exactamente el divisor común más grande. ¡Es un método súper poderoso y elegante!
+resumen: El método de potencias primas para calcular el MCD consiste en descomponer cada número en sus factores primos (Teorema Fundamental de la Aritmética) y luego multiplicar únicamente los factores primos comunes elevados a su menor exponente.
+explicacion: |-
+  El **Teorema Fundamental de la Aritmética** establece que cualquier número entero positivo mayor que 1 puede expresarse de forma única como un producto de números primos (descomposición factorial).
+
+  Para hallar el MCD de dos o más números mediante la **descomposición en factores primos**, seguimos estos pasos:
+
+  1. Descomponemos cada número en sus factores primos y expresamos el resultado en forma de potencias. Por ejemplo:
+     $$a = p_1^{e_1} \cdot p_2^{e_2} \cdots p_k^{e_k}$$
+     $$b = p_1^{f_1} \cdot p_2^{f_2} \cdots p_k^{f_k}$$
+     donde los $p_i$ son números primos distintos y los exponentes $e_i, f_i \ge 0$.
+  2. Identificamos los **factores primos comunes** en las descomposiciones de todos los números.
+  3. Para cada factor primo común, comparamos sus exponentes y seleccionamos el **menor exponente** con el que aparece en las descomposiciones.
+  4. Multiplicamos estos factores primos comunes elevados a sus respectivos menores exponentes.
+
+  **Fórmula matemática:**
+  $$\text{MCD}(a, b) = p_1^{\min(e_1, f_1)} \cdot p_2^{\min(e_2, f_2)} \cdots p_k^{\min(e_k, f_k)}$$
+
+  **Ejemplo práctico:**
+  Calcular $\text{MCD}(72, 120)$:
+  - Descomposición de $72$:
+    $$72 = 2^3 \cdot 3^2$$
+  - Descomposición de $120$:
+    $$120 = 2^3 \cdot 3^1 \cdot 5^1$$
+  - Factores comunes: $2$ y $3$ (el $5$ no es común).
+  - Menor exponente para el $2$: $\min(3, 3) = 3 \Rightarrow 2^3$.
+  - Menor exponente para el $3$: $\min(2, 1) = 1 \Rightarrow 3^1$.
+  - Multiplicamos:
+    $$\text{MCD}(72, 120) = 2^3 \cdot 3^1 = 8 \cdot 3 = 24$$
+
+  Este método es sumamente eficaz cuando trabajamos con números muy grandes o cuando ya conocemos la descomposición en factores primos de los números.
+procedimiento:
+  - 'Paso 1: Realiza la descomposición factorial en números primos de cada uno de los números por separado.'
+  - 'Paso 2: Escribe la descomposición de cada número expresada como producto de potencias de bases primas.'
+  - 'Paso 3: Identifica los factores primos que sean comunes a todas las descomposiciones.'
+  - 'Paso 4: Para cada factor primo común, elige la potencia que tenga el menor exponente.'
+  - 'Paso 5: Multiplica los factores primos comunes con sus menores exponentes obtenidos en el Paso 4 para hallar el MCD.'
+ejemplos:
+  - titulo: Ejemplo 1
+    enunciado: Halla el MCD de $36$ y $90$ usando descomposiciones en factores primos.
+    solucion_pasos:
+      - 'Paso a: Descomponemos $36$: $36 = 2^2 \cdot 3^2$.'
+      - 'Paso b: Descomponemos $90$: $90 = 2^1 \cdot 3^2 \cdot 5^1$.'
+      - 'Paso c: Los factores primos comunes son $2$ y $3$.'
+      - 'Paso d: Tomamos los menores exponentes: para el $2$ es $1$ ($2^1$) y para el $3$ es $2$ ($3^2$).'
+      - 'Paso e: Multiplicamos: $\text{MCD}(36, 90) = 2^1 \cdot 3^2 = 2 \cdot 9 = 18$.'
+  - titulo: Ejemplo 2
+    enunciado: Calcula el MCD de $40$ y $56$ mediante el método de potencias primas.
+    solucion_pasos:
+      - 'Paso a: Descomponemos $40$: $40 = 2^3 \cdot 5^1$.'
+      - 'Paso b: Descomponemos $56$: $56 = 2^3 \cdot 7^1$.'
+      - 'Paso c: El único factor primo en común es el $2$.'
+      - 'Paso d: El menor exponente para el factor $2$ es $3$, por lo que tomamos $2^3$.'
+      - 'Paso e: Por lo tanto, el MCD es $2^3 = 8$.'
+  - titulo: 'Si $A = 2^3 \cdot 3^2 \cdot 5^1$ y $B = 2^2 \cdot 3^4$, ¿es el $\text{MCD}(A, B) = 2^2 \cdot 3^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Los factores primos comunes a $A$ y $B$ son $2$ y $3$.'
+      - 'El menor exponente de la base $2$ es $\min(3, 2) = 2$, es decir, $2^2$.'
+      - 'El menor exponente de la base $3$ es $\min(2, 4) = 2$, es decir, $3^2$.'
+      - 'Multiplicamos los factores comunes con su menor exponente: $2^2 \cdot 3^2$. La afirmación es correcta.'
+  - titulo: '¿Debemos incluir el factor $5$ en el cálculo del MCD entre $2^2 \cdot 5$ y $2^3 \cdot 3$?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'El factor primo $5$ solo aparece en la descomposición del primer número, mientras que el factor $3$ solo aparece en el segundo.'
+      - 'El cálculo del MCD solo contempla los factores primos comunes (en este caso, solo el $2$).'
+errores_frecuentes:
+  - Tomar los mayores exponentes de los factores en lugar de los menores (esta acción calcula el MCM, no el MCD).
+  - Incluir factores primos no comunes en el producto final (por ejemplo, agregar factores que solo están en un número).
+  - Multiplicar las bases sin considerar sus exponentes correspondientes en la fórmula.
+  - Realizar una descomposición incorrecta de los números originales en factores que no son primos (por ejemplo, descomponer $12 = 4 \cdot 3$ y usar el 4 como base prima).
+  - Confundir la base con el exponente al momento de realizar la comparación de potencias menores.
+fuente: Teoría de Números
+estado: publicado
