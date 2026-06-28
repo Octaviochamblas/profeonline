@@ -45,17 +45,42 @@
 /* ── Títulos de sección ─────────────────────────── */
 .learn-section { margin-top: 2rem; }
 .learn-section__title {
-  font-size: .82rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  color: #4a7cf6;
-  padding: .45rem .9rem;
+  letter-spacing: .04em;
+  color: #3b6de0;
+  padding: .55rem 1rem;
   background: #f0f4ff;
-  border-left: 3px solid #4a7cf6;
-  border-radius: 0 6px 6px 0;
+  border-left: 4px solid #4a7cf6;
+  border-radius: 0 8px 8px 0;
   display: block;
   margin: 0 0 1rem;
+}
+
+/* ── Tarjeta resumen ────────────────────────────── */
+.learn-resumen-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
+  border: 1.5px solid #c4b5fd;
+  border-radius: 14px;
+  padding: 1.15rem 1.4rem;
+  margin-top: 2rem;
+}
+.learn-resumen-card__label {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #7c3aed;
+  display: block;
+  margin-bottom: .35rem;
+}
+.learn-resumen-card__obj { margin: 0 0 .5rem; font-size: 1.02rem; font-weight: 500; line-height: 1.55; color: #1e293b; }
+.learn-resumen-card__steps {
+  margin: 0;
+  font-size: .88rem;
+  color: #6d28d9;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 /* ── Ejemplos como tarjetas ─────────────────────── */
@@ -118,6 +143,29 @@
   border-left: 3px solid #e0e0e0;
 }
 
+/* ── Pasos de procedimiento ─────────────────────── */
+.learn-procedure {
+  list-style: none;
+  padding: 0;
+  margin: .5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.learn-procedure__step {
+  padding: .6rem .95rem;
+  background: #faf5ff;
+  border-left: 3px solid #7c3aed;
+  border-radius: 0 8px 8px 0;
+  line-height: 1.55;
+  color: #1e293b;
+}
+.learn-procedure__step-label {
+  color: #6d28d9;
+  font-weight: 800;
+  margin-right: .15rem;
+}
+
 /* ── Banco de práctica ──────────────────────────── */
 .learn-practice { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.25rem; }
 .learn-itemgroup {
@@ -174,8 +222,8 @@
 .ex-choice--wrong   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c; }
 .learn-exercise__open { display:flex; flex-direction:column; gap:.5rem; margin-top:.75rem; }
 .ex-input {
-  width:100%; padding:.5rem .75rem; border:1px solid #d0d5dd; border-radius:6px;
-  font-family:inherit; font-size:.92rem; resize:vertical; min-height:70px;
+  width:100%; padding:.4rem .75rem; border:1px solid #d0d5dd; border-radius:6px;
+  font-family:inherit; font-size:.92rem; resize:vertical; min-height:42px;
   box-sizing: border-box;
 }
 .ex-submit {
@@ -275,11 +323,11 @@
     {% if content.procedimiento %}
     <section class="learn-section">
         <h2 class="learn-section__title">Cómo hacerlo paso a paso</h2>
-        <ol class="learn-procedure">
+        <ul class="learn-procedure">
             {% for paso in content.procedimiento %}
-            <li class="learn-procedure__step">{{ paso }}</li>
+            <li class="learn-procedure__step">{{ paso|bold_step }}</li>
             {% endfor %}
-        </ol>
+        </ul>
     </section>
     {% endif %}
 
@@ -418,13 +466,20 @@
     </footer>
     {% endif %}
 
+    {% if content and content.resumen %}
+    <div class="learn-resumen-card">
+        <span class="learn-resumen-card__label">Resumen</span>
+        <p class="learn-resumen-card__obj">{{ content.resumen }}</p>
+    </div>
+    {% endif %}
+
     {% endif %}{# end if content #}
 
     {% if practice_bank %}
     <section class="learn-section learn-practice">
         <h2 class="learn-section__title">Practica</h2>
         {% for block in practice_bank %}
-        <details class="learn-itemgroup" open>
+        <details class="learn-itemgroup">
             <summary class="learn-itemgroup__titulo">{{ block.group.title }}</summary>
             {% if block.group.purpose %}
             <p class="learn-itemgroup__purpose">{{ block.group.purpose }}</p>
@@ -471,7 +526,7 @@
 
                     {% else %}
                     <div class="learn-exercise__open">
-                        <textarea class="ex-input" rows="3"
+                        <textarea class="ex-input" rows="2"
                             placeholder="Escribe tu respuesta aquí…"></textarea>
                         <button type="button" class="ex-submit">Ver corrección</button>
                     </div>

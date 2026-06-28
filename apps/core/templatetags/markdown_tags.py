@@ -67,6 +67,42 @@ def to_json_filter(value):
     return _json.dumps(value, ensure_ascii=False)
 
 
+_PASO_RE = re.compile(r"^(Paso\s*\d+\s*:)\s*", re.UNICODE)
+
+
+@register.filter(name="procedure_summary")
+def procedure_summary(value):
+    """Junta los pasos del procedimiento en una línea corta, sin 'Paso N:'.
+
+    Toma las primeras 6 palabras de cada paso para expresar la acción clave.
+    Ejemplo: "Identificar los componentes → Representar el conjunto → Validar"
+    """
+    if not value:
+        return ""
+    parts = []
+    for step in value:
+        text = _PASO_RE.sub("", str(step)).strip()
+        words = text.split()
+        snippet = " ".join(words[:6])
+        if len(words) > 6:
+            snippet += "…"
+        parts.append(snippet)
+    return " → ".join(parts)
+
+
+@register.filter(name="bold_step")
+def bold_step(value):
+    """Si el texto empieza con 'Paso N:', lo envuelve en <strong>."""
+    if not value:
+        return ""
+    text = escape(str(value))
+    result = _PASO_RE.sub(
+        lambda m: '<strong class="learn-procedure__step-label">' + m.group(1) + "</strong> ",
+        text,
+    )
+    return mark_safe(result)
+
+
 @register.filter(name="markdown")
 def markdown_filter(value):
     if not value:

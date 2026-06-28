@@ -59,6 +59,7 @@ class Command(BaseCommand):
 
             defaults = {
                 "objetivo": data.get("objetivo", ""),
+                "resumen": data.get("resumen", ""),
                 "explicacion": data.get("explicacion", ""),
                 "procedimiento": data.get("procedimiento") or [],
                 "ejemplos": data.get("ejemplos") or [],
