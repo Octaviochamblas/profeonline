@@ -44,22 +44,32 @@ def _call_gemini(prompt: str, key: str) -> str:
     headers = {"Content-Type": "application/json", "x-goog-api-key": key}
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.4, "maxOutputTokens": 300},
+        "generationConfig": {
+            "temperature": 0.4,
+            "maxOutputTokens": 800,
+            "thinkingConfig": {"thinkingBudget": 0},
+        },
     }
     for attempt in range(3):
         try:
             resp = requests.post(url, headers=headers, json=payload, timeout=30)
             if resp.status_code == 429:
-                time.sleep(5 * (attempt + 1))
+                time.sleep(30 * (attempt + 1))
                 continue
             resp.raise_for_status()
             data = resp.json()
-            return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            # Gemini 2.5 puede devolver varios parts (thinking + texto).
+            # Solo concatenamos los parts sin thought:true.
+            parts = data["candidates"][0]["content"]["parts"]
+            text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
+            if not text.strip():
+                raise RuntimeError("Gemini devolvió texto vacío")
+            return text.strip()
         except Exception as e:
             if attempt == 2:
                 raise RuntimeError(f"Gemini falló tras 3 intentos: {e}") from e
             time.sleep(3)
-    return ""
+    raise RuntimeError("Gemini no respondió tras 3 intentos (rate limit)")
 
 
 class Command(BaseCommand):
@@ -117,7 +127,7 @@ class Command(BaseCommand):
                 nc.save(update_fields=["resumen"])
                 self.stdout.write(f"  OK  {nc.node.semantic_id}")
                 ok += 1
-                time.sleep(1)  # cortesía con la API gratuita
+                time.sleep(6)  # cortesía con la API gratuita (límite: 10 RPM)
             except Exception as e:
                 self.stderr.write(f"  ERR {nc.node.semantic_id}: {e}")
                 errors += 1

@@ -13,6 +13,12 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Plataforma de Conocimiento — ENTEROS_CONJUNTO + UI + pauta de contenido 🟢 (2026-06-28):**
+  Todo el contenido ENTEROS_CONJUNTO desplegado en `main`. Campo `introduccion` añadido al modelo
+  (migración `0042`) + 15 introducciones didácticas (nivel ~10 años) cargadas en los YAMLs.
+  Sección renombrada "Ejemplos Verdadero/Falso" con accordeón nativo. Pauta de contenido
+  en `docs/conocimiento/pauta-contenido.md`.
+  **Pendiente operativo:** `python manage.py generate_node_summaries --all` (cuota Gemini se restablece a medianoche Pacífico).
 - **Plataforma de Conocimiento — F1–F3 + F6 CERRADAS 🟢 (2026-06-27, PR #102):**
   Squash-merge de `feat/grafo-conocimiento-f1` a `main`. Incluye: `KnowledgeNode`/`NodePrerequisite`,
   `NodeContent`/`NodeMedia`, app `learn`, `ItemGroup`/`NodeExercise` (**autopublicado inmediato** —
@@ -182,6 +188,16 @@
   fuera de alcance por ahora.)
 
 ## Últimas entregas
+- 2026-06-28 — 🏛️ Claude + 🧑: **UI accordeón + introducción didáctica + pauta de contenido.**
+  Campo `introduccion` en `NodeContent` (migración `0042`) + 15 textos nivel ~10 años en YAMLs.
+  Sección "Ejemplos Verdadero/Falso" renombrada. Fix acordeón KaTeX (wrap con `<span>` para
+  que `justify-content: space-between` no explote los spans de math). Pauta de autoría
+  `docs/conocimiento/pauta-contenido.md` (YAML + JSONL + gamificación + checklist).
+- 2026-06-27 (tarde) — 🏛️ Claude + 🧑: **Contenido ENTEROS_CONJUNTO estandarizado + banco GEN.**
+  15 YAMLs con 4 ejemplos Sí/No + 5 errores_frecuentes + estado publicado. 150 ejercicios nuevos
+  en 3 archivos JSONL (`-banco-gen-1/2/3.jsonl`): 3 CONC + 1 REC + 3 PROC + 3 PAES por recurso.
+  Fixes `generate_node_summaries`: encoding Windows, Gemini multi-part parsing, rate-limit resilience.
+  Resúmenes pendientes de regenerar (cuota Gemini agotada).
 - 2026-06-27 — 🏛️ Claude + 🧑: **F1–F3 + F6 CERRADAS — PR #102 squash-merge a `main` (rama `feat/grafo-conocimiento-f1`).**
   UI rediseñada: breadcrumb plegable, objetivo card, ejemplos interactivos (V/F/Sí-No), errores como
   preguntas conceptuales, banco con tarjetas+sombra. Ejercicios de clasificación (formato `matching`).

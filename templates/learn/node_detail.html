@@ -42,6 +42,19 @@
 }
 .learn-objetivo-card p { margin: 0; color: #1e3a5f; font-size: .96rem; }
 
+/* ── Introducción ───────────────────────────────── */
+.learn-intro__body {
+  background: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #14532d;
+}
+.learn-intro__body p { margin: 0 0 .6rem; }
+.learn-intro__body p:last-child { margin-bottom: 0; }
+
 /* ── Títulos de sección ─────────────────────────── */
 .learn-section { margin-top: 2rem; }
 .learn-section__title {
@@ -83,7 +96,7 @@
   line-height: 1.5;
 }
 
-/* ── Ejemplos como tarjetas ─────────────────────── */
+/* ── Ejemplos como acordeón ─────────────────────── */
 .learn-ejemplos-list { display: flex; flex-direction: column; gap: 1.1rem; margin-top: .75rem; }
 .learn-ejemplo-card {
   border: 1.5px solid #e2e8f0;
@@ -93,12 +106,28 @@
 }
 .learn-ejemplo-card__header {
   background: #f8faff;
-  border-bottom: 1px solid #e2e8f0;
   padding: .6rem 1rem;
   display: flex;
   align-items: baseline;
   gap: .5rem;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  justify-content: space-between;
 }
+.learn-ejemplo-card__header::-webkit-details-marker { display: none; }
+.learn-ejemplo-card__header::after {
+  content: "‹";
+  font-size: 1.05rem;
+  color: #94a3b8;
+  transition: transform .2s;
+  transform: rotate(-90deg);
+  flex-shrink: 0;
+}
+.learn-ejemplo-card[open] > .learn-ejemplo-card__header {
+  border-bottom: 1px solid #e2e8f0;
+}
+.learn-ejemplo-card[open] > .learn-ejemplo-card__header::after { transform: rotate(90deg); }
 .learn-ejemplo-card__num {
   font-size: .67rem;
   font-weight: 800;
@@ -107,7 +136,7 @@
   color: #94a3b8;
   white-space: nowrap;
 }
-.learn-ejemplo-card__titulo { font-weight: 600; font-size: .95rem; color: #1e293b; }
+.learn-ejemplo-card__titulo { font-weight: 600; font-size: .95rem; color: #1e293b; flex: 1; }
 .learn-ejemplo-card__body { padding: .85rem 1rem 1rem; }
 .learn-ejemplo-card .learn-exercise__feedback {
   margin-top: .75rem;
@@ -117,8 +146,8 @@
   border-left: 3px solid #e0e0e0;
 }
 
-/* ── Preguntas conceptuales (desde errores) ──────── */
-.conceptual-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .9rem; margin-top: .75rem; }
+/* ── Ejemplos conceptuales (desde errores) ──────── */
+.conceptual-list { padding: 0; display: flex; flex-direction: column; gap: .9rem; margin-top: .75rem; }
 .conceptual-item {
   border: 1.5px solid #fde68a;
   border-radius: 10px;
@@ -130,9 +159,28 @@
   padding: .6rem 1rem;
   font-style: italic;
   color: #78350f;
-  border-bottom: 1px solid #fde68a;
   font-size: .93rem;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
 }
+.conceptual-item__claim::-webkit-details-marker { display: none; }
+.conceptual-item__claim::after {
+  content: "‹";
+  font-size: 1.05rem;
+  color: #b45309;
+  transition: transform .2s;
+  transform: rotate(-90deg);
+  flex-shrink: 0;
+}
+.conceptual-item[open] > .conceptual-item__claim {
+  border-bottom: 1px solid #fde68a;
+}
+.conceptual-item[open] > .conceptual-item__claim::after { transform: rotate(90deg); }
 .conceptual-item__body { padding: .65rem 1rem .75rem; }
 .conceptual-item__q { font-size: .85rem; color: #6b7280; margin-bottom: .4rem; }
 .conceptual-item .learn-exercise__feedback {
@@ -311,6 +359,15 @@
     </div>
     {% endif %}
 
+    {% if content.introduccion %}
+    <section class="learn-section learn-intro">
+        <h2 class="learn-section__title">Introducción</h2>
+        <div class="learn-intro__body">
+            {{ content.introduccion|markdown }}
+        </div>
+    </section>
+    {% endif %}
+
     {% if content.explicacion %}
     <section class="learn-section">
         <h2 class="learn-section__title">Explicación</h2>
@@ -337,15 +394,14 @@
         <div class="learn-ejemplos-list">
             {% for ej in content.ejemplos %}
             {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
-            <div class="learn-ejemplo-card learn-exercise"
+            <details class="learn-ejemplo-card learn-exercise"
                  data-format="true_false"
                  data-answer="{{ ej.respuesta }}">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
-                </div>
+                <summary class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                </summary>
                 <div class="learn-ejemplo-card__body">
-                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
                     <div class="learn-exercise__tf">
                         <button type="button" class="ex-choice" data-value="Sí">Sí</button>
                         <button type="button" class="ex-choice" data-value="No">No</button>
@@ -359,17 +415,16 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
+            </details>
             {% elif ej.respuesta == "Verdadero" or ej.respuesta == "Falso" %}
-            <div class="learn-ejemplo-card learn-exercise"
+            <details class="learn-ejemplo-card learn-exercise"
                  data-format="true_false"
                  data-answer="{{ ej.respuesta }}">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
-                </div>
+                <summary class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                </summary>
                 <div class="learn-ejemplo-card__body">
-                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
                     <div class="learn-exercise__tf">
                         <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
                         <button type="button" class="ex-choice" data-value="Falso">Falso</button>
@@ -383,17 +438,16 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
+            </details>
             {% else %}
-            <div class="learn-ejemplo-card learn-exercise"
+            <details class="learn-ejemplo-card learn-exercise"
                  data-format="open_answer"
                  data-answer="">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">Ej. {{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.titulo }}</span>
-                </div>
+                <summary class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                </summary>
                 <div class="learn-ejemplo-card__body">
-                    {% if ej.enunciado %}<p style="margin:0 0 .6rem;color:#374151;">{{ ej.enunciado }}</p>{% endif %}
                     <button type="button" class="ex-submit">Ver solución</button>
                     <div class="learn-exercise__feedback" hidden>
                         <div class="learn-exercise__verdict"></div>
@@ -404,7 +458,7 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
+            </details>
             {% endif %}
             {% endfor %}
         </div>
@@ -413,13 +467,13 @@
 
     {% if content.errores_frecuentes %}
     <section class="learn-section conceptual-section">
-        <h2 class="learn-section__title">Preguntas conceptuales</h2>
-        <ul class="conceptual-list">
+        <h2 class="learn-section__title">Ejemplos Verdadero/Falso</h2>
+        <div class="conceptual-list">
             {% for error in content.errores_frecuentes %}
-            <li class="conceptual-item learn-exercise"
+            <details class="conceptual-item learn-exercise"
                 data-format="true_false"
                 data-answer="Falso">
-                <div class="conceptual-item__claim">"{{ error }}"</div>
+                <summary class="conceptual-item__claim"><span>"{{ error }}"</span></summary>
                 <div class="conceptual-item__body">
                     <p class="conceptual-item__q">¿Es correcta esta afirmación?</p>
                     <div class="learn-exercise__tf">
@@ -433,9 +487,9 @@
                         </p>
                     </div>
                 </div>
-            </li>
+            </details>
             {% endfor %}
-        </ul>
+        </div>
     </section>
     {% endif %}
 

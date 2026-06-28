@@ -149,6 +149,7 @@ class NodeContent(models.Model):
         verbose_name="nodo",
     )
     objetivo = models.TextField(blank=True, verbose_name="objetivo")
+    introduccion = models.TextField(blank=True, verbose_name="introducción")
     resumen = models.TextField(blank=True, verbose_name="resumen (IA)")
     explicacion = models.TextField(blank=True, verbose_name="explicación")
     procedimiento = models.JSONField(default=list, blank=True, verbose_name="procedimiento")
