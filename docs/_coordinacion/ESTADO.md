@@ -13,10 +13,11 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Población MAT.NUM B0201/B0202 — AUDITORÍA RECHAZADA 🔴 (2026-06-28):**
-  Codex verificó loaders + `check` + 587 tests verdes, pero devolvió la tarjeta a construcción por
-  7 estados no canónicos, LaTeX sobreescapado, ejemplos Tipo B insuficientes y listas incompletas.
-  Hallazgos y evidencia en `backlog/3-construccion/poblar-contenido-mat-num-b0201-b0202.md`.
+- **Población MAT.NUM B0201/B0202 — CERRADA 🟢 (2026-06-28, squash-merge main `4b99118`):**
+  56 recursos con contenido publicado (21 B0201 + 35 B0202). 610 ejercicios en banco.
+  Claude coordinó cierre: corrigió 4 P1 Codex (LaTeX, errores_frecuentes, Tipo B, estado).
+  Tarjeta en `backlog/6-finalizados/`. 5 handoffs de ejes pendientes en `2-arquitectura/`.
+  **Pendiente operativo:** ejecutar `load_node_content` + `load_exercise_bank` en producción.
 - **Plataforma de Conocimiento — ENTEROS_CONJUNTO + UI + pauta de contenido 🟢 (2026-06-28):**
   Todo el contenido ENTEROS_CONJUNTO desplegado en `main`. Campo `introduccion` añadido al modelo
   (migración `0042`) + 15 introducciones didácticas (nivel ~10 años) cargadas en los YAMLs.
