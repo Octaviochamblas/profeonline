@@ -1,0 +1,142 @@
+semantic_id: MAT.FUND.PRODUCTO_CARTESIANO.CARDINALIDAD_PRODUCTO_CARTESIANO
+
+objetivo: |
+  Calcular la cardinalidad del producto cartesiano $A \times B$ usando la fórmula
+  $|A \times B| = |A| \cdot |B|$, y comprender los casos especiales cuando uno de
+  los conjuntos es vacío.
+
+introduccion: |
+  Cuando trabajamos con conjuntos finitos, una pregunta natural es: ¿cuántos
+  elementos tiene $A \times B$? No es necesario listar todos los pares para saberlo.
+  Basta multiplicar las cardinalidades de los conjuntos. Esta propiedad es muy
+  útil para verificar listados y para resolver problemas de combinatoria elemental.
+
+resumen: |
+  Para dos conjuntos finitos $A$ y $B$:
+  $$|A \times B| = |A| \cdot |B|$$
+  Propiedades clave:
+  - Si $A = \emptyset$ o $B = \emptyset$, entonces $A \times B = \emptyset$ y $|A \times B| = 0$.
+  - $|A \times B| = |B \times A|$ (las cardinalidades son iguales aunque los conjuntos difieran).
+  - Si $|A| = m$ y $|B| = n$, entonces $A \times B$ tiene exactamente $m \times n$ pares.
+
+explicacion: |
+  La fórmula $|A \times B| = |A| \cdot |B|$ se entiende intuitivamente: por cada uno
+  de los $|A|$ elementos de $A$, se forman $|B|$ pares distintos (uno con cada elemento
+  de $B$). En total, $|A|$ grupos de $|B|$ pares = $|A| \cdot |B|$ pares.
+
+  **Caso vacío:** si $B = \emptyset$, no hay elementos de $B$ con qué formar pares,
+  así que $A \times \emptyset = \emptyset$ y $|\emptyset| = 0$.
+  Esto es consistente con $|A| \cdot 0 = 0$ para cualquier $|A|$.
+
+  **Simetría de la cardinalidad:**
+  $|A \times B| = |A| \cdot |B| = |B| \cdot |A| = |B \times A|$
+  aunque $A \times B \neq B \times A$ como conjuntos (salvo casos especiales).
+
+procedimiento: |
+  Para calcular $|A \times B|$:
+  1. Determinar $|A|$ (número de elementos de $A$).
+  2. Determinar $|B|$ (número de elementos de $B$).
+  3. Si alguno es vacío, concluir que $|A \times B| = 0$.
+  4. En caso contrario, calcular $|A| \cdot |B|$.
+
+ejemplos:
+  - tipo: A
+    titulo: 'Calcular $|A \times B|$ con $|A| = 4$ y $|B| = 6$'
+    enunciado: |
+      Se sabe que el conjunto $A$ tiene 4 elementos y el conjunto $B$ tiene 6 elementos.
+      Calcula la cardinalidad de $A \times B$.
+    solucion_pasos: |
+      Paso 1 — Identificar cardinalidades:
+        $|A| = 4$ y $|B| = 6$.
+
+      Paso 2 — Aplicar la fórmula:
+        $|A \times B| = |A| \cdot |B| = 4 \cdot 6 = 24$
+
+      Paso 3 — Interpretación:
+        El producto cartesiano $A \times B$ tiene exactamente 24 pares ordenados.
+
+      Respuesta: $|A \times B| = 24$.
+
+  - tipo: A
+    titulo: 'Calcular $|A \times B|$ con $|A| = 5$ y $B = \emptyset$'
+    enunciado: |
+      El conjunto $A$ tiene 5 elementos y $B = \emptyset$. Calcula $|A \times B|$.
+    solucion_pasos: |
+      Paso 1 — Identificar cardinalidades:
+        $|A| = 5$ y $|B| = |\emptyset| = 0$.
+
+      Paso 2 — Caso vacío:
+        Si $B = \emptyset$, entonces $A \times B = \emptyset$, porque no existe ningún
+        elemento de $B$ con quien formar un par.
+
+      Paso 3 — Aplicar la fórmula (consistencia):
+        $|A \times B| = |A| \cdot |B| = 5 \cdot 0 = 0$ ✓
+
+      Respuesta: $|A \times B| = 0$, porque $A \times \emptyset = \emptyset$.
+
+  - tipo: B
+    titulo: '¿Se cumple que $|A \times B| = |A| \cdot |B|$ para todo par de conjuntos finitos?'
+    respuesta: 'Sí'
+    solucion_pasos: |
+      Esta es la fórmula de cardinalidad del producto cartesiano para conjuntos finitos.
+      Se puede verificar con cualquier ejemplo:
+        $A = \{1, 2\}$, $B = \{a, b, c\}$:
+        $A \times B = \{(1,a),(1,b),(1,c),(2,a),(2,b),(2,c)\}$ → 6 elementos.
+        $|A| \cdot |B| = 2 \cdot 3 = 6$ ✓
+
+      El caso $B = \emptyset$ también es consistente: $|A| \cdot 0 = 0$.
+
+      La respuesta es **Sí**.
+
+  - tipo: B
+    titulo: '¿Puede $|A \times B| > |B \times A|$?'
+    respuesta: 'No'
+    solucion_pasos: |
+      $|A \times B| = |A| \cdot |B|$ y $|B \times A| = |B| \cdot |A|$.
+      Como la multiplicación de números naturales es conmutativa:
+      $$|A| \cdot |B| = |B| \cdot |A|$$
+      Por tanto $|A \times B| = |B \times A|$ siempre.
+
+      Ninguno puede ser estrictamente mayor que el otro.
+      La respuesta es **No**.
+
+errores_frecuentes:
+  - error: 'Sumar las cardinalidades en lugar de multiplicarlas'
+    descripcion: |
+      Con $|A| = 4$ y $|B| = 6$, calcular $|A \times B| = 4 + 6 = 10$ en vez de $24$.
+    correccion: |
+      La cardinalidad del producto cartesiano se calcula **multiplicando**:
+      $|A \times B| = |A| \cdot |B| = 4 \cdot 6 = 24$.
+
+  - error: 'Creer que $A \times \emptyset$ tiene algún elemento'
+    descripcion: |
+      Pensar que $A \times \emptyset$ contiene pares como $(a, \text{nada})$.
+    correccion: |
+      Un par ordenado requiere dos componentes; si $B = \emptyset$ no hay segunda
+      componente posible. Por tanto $A \times \emptyset = \emptyset$.
+
+  - error: 'Confundir $|A \times B| = |B \times A|$ con $A \times B = B \times A$'
+    descripcion: |
+      Concluir que como las cardinalidades son iguales, los conjuntos son iguales.
+    correccion: |
+      Las cardinalidades son iguales ($|A \times B| = |B \times A|$), pero los
+      conjuntos pueden ser distintos ($A \times B \neq B \times A$ en general).
+
+  - error: 'Aplicar la fórmula a conjuntos infinitos sin cuidado'
+    descripcion: |
+      Escribir $|\mathbb{R} \times \mathbb{R}| = |\mathbb{R}| \cdot |\mathbb{R}|$
+      como si fueran números naturales.
+    correccion: |
+      La fórmula $|A \times B| = |A| \cdot |B|$ se aplica directamente a conjuntos
+      **finitos**. Para conjuntos infinitos se requiere teoría de cardinalidades
+      (que está fuera del alcance de este nivel).
+
+  - error: 'Olvidar que $|A \times B|$ cuenta pares, no elementos individuales'
+    descripcion: |
+      Pensar que si $|A \times B| = 24$, el conjunto tiene 24 "números" distintos.
+    correccion: |
+      El conjunto $A \times B$ tiene 24 **pares ordenados**; cada elemento es
+      un par $(a, b)$, no un número aislado.
+
+fuente: 'Matemáticas para la Educación Media, MINEDUC'
+estado: publicado

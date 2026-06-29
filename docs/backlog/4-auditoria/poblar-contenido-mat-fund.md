@@ -139,8 +139,33 @@ for sid in ['MAT.FUND.B0101', 'MAT.FUND.B0102']:
 
 ## Criterios de aceptación
 
-- [ ] B0101: 43/43 recursos con `NodeContent`
-- [ ] B0102: 63/63 recursos con `NodeContent`
-- [ ] Cada recurso: ≥ 10 ejercicios (3 conceptuales + 1 reconocimiento + 3 procedimiento + 3 tipo_paes)
-- [ ] `python manage.py check` sin errores
-- [ ] No se tocó código Python, HTML ni archivos de otros ejes
+- [x] B0101: 43/43 recursos con `NodeContent`
+- [x] B0102: 63/63 recursos con `NodeContent`
+- [x] Cada recurso: ≥ 10 ejercicios (3 conceptuales + 1 reconocimiento + 3 procedimiento + 3 tipo_paes)
+- [x] `python manage.py check` sin errores
+- [x] No se tocó código Python, HTML ni archivos de otros ejes
+
+---
+
+## Qué se hizo
+
+- Se completaron los **106 YAML** de `MAT.FUND`, incluyendo los 10 archivos faltantes detectados
+  al retomar la rama.
+- Se corrigieron nombres de archivo del subtema `RAZONAMIENTO_LOGICO` para alinear el kebab-case con
+  los `semantic_id` reales del grafo.
+- Se normalizaron y/o regeneraron los bancos `JSONL` de `MAT.FUND` hasta dejar **106 recursos con
+  exactamente 10 ejercicios cada uno**.
+- Se corrigieron inconsistencias heredadas:
+  - `semantic_id` equivocado en `mat-fund-cardinalidad-banco-gen-1.jsonl`
+  - dos `semantic_id` mal clasificados en el banco mixto de producto/cartesiano
+  - dos archivos en esquema legacy (`enunciado`/`opciones`/`respuesta_correcta`) convertidos al
+    esquema del loader (`prompt`/`choices`/`correct_answer`)
+- Validaciones ejecutadas con `.venv\Scripts\python.exe`:
+  - `manage.py load_node_content` → OK
+  - `manage.py load_exercise_bank` → OK (`inválidos: 0`)
+  - `manage.py check` → OK
+  - `manage.py test` → OK (`587` tests, `1` skipped)
+- Verificación en DB:
+  - `MAT.FUND.B0101: 43/43`
+  - `MAT.FUND.B0102: 63/63`
+  - `0` recursos con menos de 10 ejercicios

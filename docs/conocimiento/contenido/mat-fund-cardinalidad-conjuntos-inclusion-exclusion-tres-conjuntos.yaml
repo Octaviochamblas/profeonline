@@ -1,0 +1,59 @@
+semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.INCLUSION_EXCLUSION_TRES_CONJUNTOS
+objetivo: Aplicar el principio de inclusión-exclusión para tres conjuntos para calcular la cardinalidad de la unión o de alguna de las intersecciones múltiples.
+introduccion: |-
+  Imagina que en un colegio hay estudiantes inscritos en tres talleres diferentes: Arte ($A$), Música ($B$) y Deportes ($C$). Si deseamos calcular el total de estudiantes únicos que participan en al menos uno de los tres talleres, no podemos simplemente sumar las cantidades de cada taller, porque hay estudiantes que están en dos o incluso en los tres talleres. Para no repetir a nadie, la fórmula nos indica: sumar los de cada taller, restar los que están en parejas de talleres, y sumar de nuevo a los estudiantes súper activos que están en los tres talleres a la vez. Esta técnica se conoce como el principio de inclusión-exclusión para tres conjuntos.
+resumen: |-
+  El principio de inclusión-exclusión para tres conjuntos establece que la cardinalidad de la unión de tres conjuntos es igual a la suma de sus cardinalidades individuales, menos la suma de las intersecciones dobles, más la intersección triple. Formalmente: $|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |A \cap C| - |B \cap C| + |A \cap B \cap C|$.
+explicacion: |-
+  El **principio de inclusión-exclusión para tres conjuntos** es una extensión natural del principio para dos conjuntos, y permite contar de manera precisa los elementos de la unión de tres conjuntos finitos que pueden traslaparse de múltiples formas.
+
+  ### Explicación Paso a Paso de la Fórmula
+  Para calcular el tamaño de la unión $A \cup B \cup C$:
+  1. **Inclusión individual:** Sumamos $|A| + |B| + |C|$. En este paso, cualquier elemento que pertenece a más de un conjunto ha sido sobrecontado. Específicamente, los elementos de las intersecciones dobles se han contado 2 veces, y los de la intersección triple ($A \cap B \cap C$) se han contado 3 veces.
+  2. **Exclusión doble:** Restamos las cardinalidades de las intersecciones de dos en dos: $-|A \cap B| - |A \cap C| - |B \cap C|$. Esto remueve los conteos duplicados de los elementos que pertenecen a dos conjuntos. Sin embargo, al restar estas tres intersecciones, los elementos que pertenecen a la intersección triple (que se contaron 3 veces al inicio) ahora se han restado 3 veces, quedando con un conteo neto de 0.
+  3. **Inclusión triple:** Para corregir el hecho de que la intersección triple quedó completamente excluida, debemos sumarla de nuevo una vez: $+|A \cap B \cap C|$.
+
+  ### Fórmula Matemática
+  $$|A \cup B \cup C| = |A| + |B| + |C| - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$$
+procedimiento:
+  - 'Paso 1: Identifica todas las cardinalidades dadas en el enunciado: individuales ($|A|, |B|, |C|$), intersecciones dobles ($|A \cap B|, |A \cap C|, |B \cap C|$) e intersección triple ($|A \cap B \cap C|$).'
+  - 'Paso 2: Suma las tres cardinalidades individuales.'
+  - 'Paso 3: Resta la suma de las tres intersecciones dobles al resultado del Paso 2.'
+  - 'Paso 4: Suma la intersección triple al resultado anterior para obtener la cardinalidad de la unión $|A \cup B \cup C|$.'
+ejemplos:
+  - titulo: Ejemplo 1
+    enunciado: |-
+      En un grupo de 50 deportistas, 22 juegan fútbol ($F$), 18 básquetbol ($B$) y 20 tenis ($T$). Además, 7 juegan fútbol y básquetbol ($F \cap B$), 6 juegan fútbol y tenis ($F \cap T$), 5 juegan básquetbol y tenis ($B \cap T$), y 3 practican los tres deportes ($F \cap B \cap T$). ¿Cuántos deportistas juegan al menos uno de los tres deportes?
+    solucion_pasos:
+      - 'Paso a: Identificamos los datos: individuales ($|F| = 22$, $|B| = 18$, $|T| = 20$), intersecciones dobles ($|F \cap B| = 7$, $|F \cap T| = 6$, $|B \cap T| = 5$), intersección triple ($|F \cap B \cap T| = 3$).'
+      - 'Paso b: Aplicamos la fórmula del principio de inclusión-exclusión: $|F \cup B \cup T| = 22 + 18 + 20 - (7 + 6 + 5) + 3$.'
+      - 'Paso c: Calculamos la suma individual: $22 + 18 + 20 = 60$.'
+      - 'Paso d: Calculamos la suma de las intersecciones dobles: $7 + 6 + 5 = 18$. Restamos al total individual: $60 - 18 = 42$.'
+      - 'Paso e: Sumamos la intersección triple: $42 + 3 = 45$. Por lo tanto, 45 deportistas juegan al menos uno de los tres deportes.'
+  - titulo: Ejemplo 2
+    enunciado: |-
+      Un grupo de estudiantes lee tres revistas: Ciencia ($C$), Literatura ($L$) e Historia ($H$). Se sabe que 15 leen Ciencia, 12 Literatura y 10 Historia. Además, 5 leen Ciencia y Literatura, 4 Ciencia e Historia, y 3 Literatura e Historia. Si hay 25 estudiantes en total que leen al menos una revista y nadie lee las tres a la vez ($C \cap L \cap H = \varnothing$), verifica si los datos son coherentes.
+    solucion_pasos:
+      - 'Paso a: Los datos son $|C|=15$, $|L|=12$, $|H|=10$, $|C \cap L|=5$, $|C \cap H|=4$, $|L \cap H|=3$, $|C \cup L \cup H|=25$, e intersección triple $|C \cap L \cap H|=0$.'
+      - 'Paso b: Aplicamos la fórmula para verificar la igualdad: $25 = 15 + 12 + 10 - (5 + 4 + 3) + 0$.'
+      - 'Paso c: Evaluamos el lado derecho: $15 + 12 + 10 = 37$; restamos las dobles: $37 - 12 = 25$; sumamos la triple: $25 + 0 = 25$.'
+      - 'Paso d: Como $25 = 25$, la igualdad se cumple, demostrando que los datos de cardinalidad del problema son coherentes.'
+  - titulo: '¿Se cumple la fórmula si las tres intersecciones dobles son vacías?'
+    # El título es la pregunta para el tipo B
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Si las intersecciones dobles son vacías ($|A \cap B| = 0$, etc.), la intersección triple también debe ser necesariamente vacía ($|A \cap B \cap C| = 0$).'
+      - 'En este caso, la fórmula se simplifica a la suma directa de las cardinalidades individuales: $|A \cup B \cup C| = |A| + |B| + |C|$, lo cual corresponde a la unión de conjuntos disjuntos.'
+  - titulo: '¿Es posible que la intersección triple $|A \cap B \cap C|$ sea mayor que alguna de las intersecciones dobles?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'La intersección triple $A \cap B \cap C$ está contenida dentro de cualquiera de las intersecciones dobles (por ejemplo, $A \cap B \cap C \subseteq A \cap B$).'
+      - 'Por las propiedades de la inclusión, la cardinalidad de un subconjunto nunca puede superar a la del conjunto que lo contiene. Por lo tanto, $|A \cap B \cap C| \le |A \cap B|$ siempre.'
+errores_frecuentes:
+  - 'Olvidar sumar de vuelta la intersección triple ($|A \cap B \cap C|$), lo que deja a ese grupo de elementos sin contabilizar.'
+  - Sumar las intersecciones dobles en lugar de restarlas de la suma individual.
+  - 'Confundir la cardinalidad de la unión $|A \cup B \cup C|$ con el tamaño del universo completo (puede haber elementos en el universo que no están en ninguno de los tres conjuntos).'
+  - No verificar que los datos de las intersecciones sean coherentes entre sí (por ejemplo, que la intersección triple no sea mayor que las dobles).
+  - Restar la intersección triple al final en lugar de sumarla.
+fuente: 'Matemática Discreta, Editorial Pearson, pág. 248'
+estado: publicado

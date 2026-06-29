@@ -1,0 +1,69 @@
+semantic_id: MAT.FUND.CONECTIVOS_LOGICOS.PARENTESIS_LOGICOS
+nombre: Uso de paréntesis en proposiciones compuestas
+objetivo: Comprender y aplicar el uso de paréntesis para modificar el orden de evaluación en fórmulas lógicas compuestas, agrupando subfórmulas correctamente
+introduccion: |
+  En aritmética, (2 + 3) × 4 = 20 es diferente de 2 + (3 × 4) = 14. Los paréntesis cambian el resultado. En lógica ocurre lo mismo: los paréntesis agrupan subfórmulas y pueden cambiar completamente el valor de verdad de una proposición compuesta. Son la herramienta que nos permite anular la prioridad predeterminada de los conectivos.
+resumen: |
+  Los paréntesis en lógica permiten agrupar subfórmulas y forzar un orden de evaluación diferente al establecido por la prioridad de conectivos. La subfórmula dentro del paréntesis más interno se evalúa primero.
+explicacion: |
+  Los **paréntesis** son símbolos de agrupación que forman parte de la sintaxis de la lógica proposicional.
+
+  **Función:** Modificar el orden de evaluación que establece la prioridad de conectivos.
+
+  **Regla de evaluación:** Se evalúa primero el paréntesis más interno (anidamiento), luego los externos.
+
+  **Ejemplo de impacto en el valor de verdad:**
+
+  Sean $p = V$, $q = F$, $r = V$:
+  - $p \lor q \land r$ (sin paréntesis) = $p \lor (q \land r)$ = $V \lor (F \land V)$ = $V \lor F$ = $V$
+  - $(p \lor q) \land r$ (con paréntesis) = $(V \lor F) \land V$ = $V \land V$ = $V$
+  - En este caso coinciden, pero no siempre ocurre así.
+
+  **Ejemplo con paréntesis que cambia el resultado:** sean $p = F$, $q = V$, $r = V$:
+  - $\neg p \land q$ = $(\neg F) \land V$ = $V \land V$ = $V$
+  - $\neg(p \land q)$ = $\neg(F \land V)$ = $\neg F$ = $V$ (coinciden aquí)
+  - $p \land \neg q$ vs $\neg(p \land q)$: son fórmulas distintas con resultados distintos en general.
+
+  **Paréntesis anidados:** Se evalúa de adentro hacia afuera.
+  - $((p \land q) \lor r) \to s$: primero $p \land q$, luego $\_ \lor r$, luego $\_ \to s$.
+
+  **Fórmula bien formada (FBF):** Una fórmula sin paréntesis ambiguos o faltantes. Toda FBF tiene un árbol sintáctico único.
+procedimiento:
+  - 'Identificar el paréntesis más interno de la fórmula.'
+  - 'Evaluar la subfórmula contenida en ese paréntesis con los valores de verdad dados.'
+  - 'Reemplazar el paréntesis evaluado por su valor (V o F) y continuar hacia afuera.'
+  - 'Repetir el proceso hasta evaluar la fórmula completa.'
+  - 'Verificar que el resultado final corresponde al valor de la fórmula completa.'
+ejemplos:
+  - titulo: Ejemplo 1
+    enunciado: 'Con $p = V$, $q = F$, $r = V$, evalúa $\neg(p \land q) \lor r$.'
+    solucion_pasos:
+      - 'Paso 1 (paréntesis más interno): $p \land q = V \land F = F$.'
+      - 'Paso 2 (negación sobre el resultado): $\neg(F) = V$.'
+      - 'Paso 3 (disyunción final): $V \lor r = V \lor V = V$.'
+      - 'La fórmula tiene valor de verdad: V.'
+  - titulo: Ejemplo 2
+    enunciado: 'Con $p = V$, $q = V$, $r = F$, evalúa $((p \to q) \land r) \leftrightarrow \neg p$.'
+    solucion_pasos:
+      - 'Paso 1 (paréntesis más interno): $p \to q = V \to V = V$.'
+      - 'Paso 2 (paréntesis externo): $(V) \land r = V \land F = F$.'
+      - 'Paso 3 (negación separada): $\neg p = \neg V = F$.'
+      - 'Paso 4 (bicondicional): $F \leftrightarrow F = V$ (mismos valores de verdad).'
+  - titulo: '¿Cambia el valor de verdad de $\neg p \land q$ si se escribe como $\neg(p \land q)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Ejemplo con $p = V$, $q = V$: $\neg p \land q = F \land V = F$; mientras que $\neg(p \land q) = \neg(V) = F$ (coinciden en este caso).'
+      - 'Ejemplo con $p = F$, $q = V$: $\neg p \land q = V \land V = V$; mientras que $\neg(p \land q) = \neg(F \land V) = \neg F = V$ (coinciden nuevamente, pero no siempre). Con $p=V$, $q=F$: $\neg p \land q = F \land F = F$; $\neg(p\land q)=\neg F=V$. ¡Difieren!'
+  - titulo: '¿Tiene sentido una fórmula con paréntesis mal balanceados, como $p \land (q \lor r$?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'Una fórmula bien formada (FBF) exige que cada paréntesis de apertura tenga su correspondiente paréntesis de cierre.'
+      - 'La expresión $p \land (q \lor r$ no es una FBF: está incompleta y es sintácticamente inválida en lógica proposicional.'
+errores_frecuentes:
+  - Ignorar los paréntesis y evaluar los conectivos de izquierda a derecha sin respetar la agrupación.
+  - Confundir el alcance de la negación: ¬p ∧ q es diferente de ¬(p ∧ q).
+  - Olvidar que en paréntesis anidados se evalúa de adentro hacia afuera.
+  - Añadir o quitar paréntesis creyendo que no cambian el significado, cuando en realidad pueden cambiar el valor de verdad.
+  - Escribir fórmulas con paréntesis desbalanceados o mal cerrados, produciendo expresiones sintácticamente inválidas.
+fuente: Lógica Proposicional — Fundamentos Matemáticos
+estado: publicado

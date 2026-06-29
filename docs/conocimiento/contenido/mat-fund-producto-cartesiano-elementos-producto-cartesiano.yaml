@@ -1,0 +1,151 @@
+semantic_id: MAT.FUND.PRODUCTO_CARTESIANO.ELEMENTOS_PRODUCTO_CARTESIANO
+
+objetivo: |
+  Listar de forma sistemática y sin omisiones todos los elementos del producto
+  cartesiano $A \times B$, fijando cada elemento de $A$ y recorriendo todos los
+  elementos de $B$.
+
+introduccion: |
+  Una vez definido el producto cartesiano, la tarea práctica consiste en construir
+  la lista completa de sus pares ordenados. Para no olvidar ninguno ni repetir,
+  conviene seguir un método ordenado: fijar la primera coordenada (cada elemento de $A$)
+  y variar la segunda (todos los elementos de $B$), antes de pasar a la siguiente
+  primera coordenada. Este procedimiento garantiza que se generan exactamente
+  $|A| \times |B|$ pares.
+
+resumen: |
+  Para listar $A \times B$ sistemáticamente:
+  - Tomar el primer elemento $a_1 \in A$ y formar $(a_1, b)$ para todo $b \in B$.
+  - Tomar el segundo elemento $a_2 \in A$ y formar $(a_2, b)$ para todo $b \in B$.
+  - Continuar hasta agotar todos los elementos de $A$.
+  - La cantidad total de pares es siempre $|A| \cdot |B|$.
+
+explicacion: |
+  El listado sistemático puede pensarse como llenar una tabla:
+  las filas corresponden a los elementos de $A$ y las columnas a los de $B$.
+  Cada celda es un par ordenado $(a_i, b_j)$.
+
+  **Ejemplo con $A = \{1, 2\}$ y $B = \{a, b\}$:**
+
+  |       | $a$    | $b$    |
+  |-------|--------|--------|
+  | $1$   | (1, a) | (1, b) |
+  | $2$   | (2, a) | (2, b) |
+
+  Leyendo la tabla fila por fila:
+  $A \times B = \{(1, a),\, (1, b),\, (2, a),\, (2, b)\}$
+
+  **Nota importante:** el par $(b, 1)$ o $(b, p)$ donde la primera coordenada
+  proviene de $B$ **no** pertenece a $A \times B$.
+
+procedimiento: |
+  Para listar todos los elementos de $A \times B$:
+  1. Escribir los elementos de $A$ en una lista ordenada: $a_1, a_2, \ldots, a_m$.
+  2. Para $a_1$: formar $(a_1, b_1),\, (a_1, b_2),\, \ldots,\, (a_1, b_n)$.
+  3. Para $a_2$: formar $(a_2, b_1),\, (a_2, b_2),\, \ldots,\, (a_2, b_n)$.
+  4. Repetir hasta $a_m$.
+  5. Reunir todos los pares en un conjunto.
+  6. Verificar: la cantidad debe ser $m \times n = |A| \times |B|$.
+
+ejemplos:
+  - tipo: A
+    titulo: 'Listar $A \times B$ con $A = \{p, q, r\}$ y $B = \{1, 2\}$'
+    enunciado: |
+      Dados $A = \{p, q, r\}$ y $B = \{1, 2\}$, lista sistemáticamente
+      todos los elementos de $A \times B$.
+    solucion_pasos: |
+      Paso 1 — Elemento $p \in A$, emparejado con cada $b \in B$:
+        $(p, 1)$, $(p, 2)$
+
+      Paso 2 — Elemento $q \in A$, emparejado con cada $b \in B$:
+        $(q, 1)$, $(q, 2)$
+
+      Paso 3 — Elemento $r \in A$, emparejado con cada $b \in B$:
+        $(r, 1)$, $(r, 2)$
+
+      Paso 4 — Reunir y verificar:
+        $A \times B = \{(p,1),\, (p,2),\, (q,1),\, (q,2),\, (r,1),\, (r,2)\}$
+        Cantidad: $3 \times 2 = 6$ pares ✓
+
+  - tipo: A
+    titulo: 'Listar $A \times B$ con $A = \{0, 1\}$ y $B = \{0, 1, 2\}$'
+    enunciado: |
+      Dados $A = \{0, 1\}$ y $B = \{0, 1, 2\}$, lista sistemáticamente
+      todos los elementos de $A \times B$.
+    solucion_pasos: |
+      Paso 1 — Elemento $0 \in A$, emparejado con cada $b \in B$:
+        $(0, 0)$, $(0, 1)$, $(0, 2)$
+
+      Paso 2 — Elemento $1 \in A$, emparejado con cada $b \in B$:
+        $(1, 0)$, $(1, 1)$, $(1, 2)$
+
+      Paso 3 — Reunir y verificar:
+        $A \times B = \{(0,0),\, (0,1),\, (0,2),\, (1,0),\, (1,1),\, (1,2)\}$
+        Cantidad: $2 \times 3 = 6$ pares ✓
+
+  - tipo: B
+    titulo: '¿El par $(b, p)$ pertenece a $A \times B$ si $A = \{p, q\}$ y $B = \{1, 2\}$?'
+    respuesta: 'No'
+    solucion_pasos: |
+      Para que $(b, p) \in A \times B$, necesitamos:
+        - Primera coordenada $b \in A = \{p, q\}$: ¿es $b \in \{p, q\}$? No, $b \notin A$.
+        - Además, segunda coordenada $p \in B = \{1, 2\}$: ¿es $p \in \{1, 2\}$? No, $p \notin B$.
+
+      Ninguna de las dos condiciones se satisface.
+      El par $(b, p)$ no pertenece a $A \times B$.
+
+      La respuesta es **No**.
+
+  - tipo: B
+    titulo: '¿Al listar $A \times B$ sistemáticamente, la cantidad total de pares generados es $|A| \cdot |B|$?'
+    respuesta: 'Sí'
+    solucion_pasos: |
+      Por cada uno de los $|A|$ elementos de $A$, se generan exactamente $|B|$ pares
+      (uno por cada elemento de $B$). En total:
+      $$\text{Pares totales} = |A| \cdot |B|$$
+      Esto coincide con la cardinalidad del producto cartesiano, $|A \times B| = |A| \cdot |B|$.
+
+      La respuesta es **Sí**.
+
+errores_frecuentes:
+  - error: 'Incluir pares cuya primera coordenada pertenece a $B$'
+    descripcion: |
+      Al calcular $A \times B$ con $A = \{p, q\}$ y $B = \{1, 2\}$,
+      incluir el par $(1, p)$ pensando que pertenece a $A \times B$.
+    correccion: |
+      $(1, p)$ pertenece a $B \times A$, no a $A \times B$.
+      En $A \times B$, la primera coordenada siempre es un elemento de $A$.
+
+  - error: 'Omitir pares al listar sin un método sistemático'
+    descripcion: |
+      Generar pares al azar y olvidar alguna combinación, por ejemplo omitir
+      $(r, 2)$ al construir $A \times B$ con $A = \{p, q, r\}$.
+    correccion: |
+      Seguir el procedimiento fila a fila: para cada $a \in A$, recorrer
+      **todos** los $b \in B$ antes de pasar al siguiente $a$.
+
+  - error: 'Repetir pares en el listado'
+    descripcion: |
+      Escribir el mismo par ordenado dos veces, por ejemplo $(p, 1)$ aparece
+      al procesar $p$ y luego de nuevo al procesar otro elemento.
+    correccion: |
+      Cada par se genera exactamente una vez. Seguir el orden sistemático
+      evita duplicados naturalmente.
+
+  - error: 'Confundir el orden dentro del par con el orden del listado'
+    descripcion: |
+      Creer que $(p, 1)$ y $(1, p)$ son el mismo par porque "contienen los mismos elementos".
+    correccion: |
+      Son pares distintos: $(p, 1)$ tiene primera coordenada $p$; $(1, p)$ tiene
+      primera coordenada $1$. El orden dentro del par siempre importa.
+
+  - error: 'No verificar la cantidad total de pares generados'
+    descripcion: |
+      Terminar el listado sin comprobar que se obtuvieron $|A| \times |B|$ pares,
+      dejando posibles omisiones sin detectar.
+    correccion: |
+      Contar los pares listados y comparar con $|A| \times |B|$.
+      Si el número no coincide, buscar el par faltante.
+
+fuente: 'Matemáticas para la Educación Media, MINEDUC'
+estado: publicado

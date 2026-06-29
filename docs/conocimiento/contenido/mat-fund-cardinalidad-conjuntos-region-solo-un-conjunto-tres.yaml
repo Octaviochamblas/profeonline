@@ -1,0 +1,165 @@
+semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.REGION_SOLO_UN_CONJUNTO_TRES
+
+objetivo: |
+  Calcular la cardinalidad de la región «solo A» en un diagrama de Venn de tres
+  conjuntos, aplicando la fórmula |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|.
+
+introduccion: |
+  En un diagrama de Venn de tres conjuntos A, B y C, la región «solo A» contiene
+  los elementos que pertenecen a A pero no a B ni a C. Para obtener su cardinalidad
+  no basta con restar |A∩B| y |A∩C| de |A|, ya que los elementos de A∩B∩C quedarían
+  restados dos veces. Por eso se suma de vuelta |A∩B∩C| al final, aplicando el
+  principio de inclusión-exclusión a nivel de región.
+
+resumen: |
+  Fórmula para la región «solo A» en un diagrama de tres conjuntos:
+  |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|
+
+  Por simetría:
+  |solo B| = |B| - |A∩B| - |B∩C| + |A∩B∩C|
+  |solo C| = |C| - |A∩C| - |B∩C| + |A∩B∩C|
+
+explicacion: |
+  El conjunto A se descompone en cuatro regiones disjuntas del diagrama:
+    A = (solo A) ∪ [(A∩B)\C] ∪ [(A∩C)\B] ∪ (A∩B∩C)
+
+  Por tanto:
+    |A| = |solo A| + |(A∩B)\C| + |(A∩C)\B| + |A∩B∩C|
+
+  Usando |(A∩B)\C| = |A∩B| - |A∩B∩C| y |(A∩C)\B| = |A∩C| - |A∩B∩C|:
+
+    |A| = |solo A| + (|A∩B| - |A∩B∩C|) + (|A∩C| - |A∩B∩C|) + |A∩B∩C|
+
+  Despejando:
+    |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|
+
+  La suma de |A∩B∩C| al final corrige el doble descuento de los elementos
+  que pertenecen a los tres conjuntos.
+
+procedimiento: |
+  Para calcular la cardinalidad de la región «solo A»:
+
+  Paso 1. Identificar los datos: |A|, |A∩B|, |A∩C| y |A∩B∩C|.
+  Paso 2. Verificar que |A∩B∩C| ≤ |A∩B| y |A∩B∩C| ≤ |A∩C|.
+  Paso 3. Aplicar la fórmula:
+          |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|.
+  Paso 4. Verificar que el resultado sea ≥ 0.
+  Paso 5. (Opcional) Sumar las siete regiones interiores y la exterior para
+          comprobar que el total es |U|.
+
+ejemplos:
+  - tipo: A
+    titulo: 'Calcular |solo A| con |A|=30, |A∩B|=12, |A∩C|=10, |A∩B∩C|=5'
+    enunciado: |
+      Dados |A| = 30, |A∩B| = 12, |A∩C| = 10 y |A∩B∩C| = 5,
+      calcula la cardinalidad de la región «solo A».
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          Identificamos los datos: |A| = 30, |A∩B| = 12, |A∩C| = 10, |A∩B∩C| = 5.
+      - paso: 2
+        descripcion: |
+          Verificamos: 5 ≤ 12 ✓ y 5 ≤ 10 ✓.
+      - paso: 3
+        descripcion: |
+          Aplicamos la fórmula:
+          |solo A| = 30 - 12 - 10 + 5 = 13.
+      - paso: 4
+        descripcion: |
+          Verificación: el resultado 13 ≥ 0 ✓.
+          Resultado: |solo A| = 13.
+
+  - tipo: A
+    titulo: 'Calcular |solo A| con |A|=25, |A∩B|=8, |A∩C|=7, |A∩B∩C|=3'
+    enunciado: |
+      Dados |A| = 25, |A∩B| = 8, |A∩C| = 7 y |A∩B∩C| = 3,
+      calcula la cardinalidad de la región «solo A».
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          Identificamos los datos: |A| = 25, |A∩B| = 8, |A∩C| = 7, |A∩B∩C| = 3.
+      - paso: 2
+        descripcion: |
+          Verificamos: 3 ≤ 8 ✓ y 3 ≤ 7 ✓.
+      - paso: 3
+        descripcion: |
+          Aplicamos la fórmula:
+          |solo A| = 25 - 8 - 7 + 3 = 13.
+      - paso: 4
+        descripcion: |
+          Verificación: 13 ≥ 0 ✓.
+          Resultado: |solo A| = 13.
+
+  - tipo: B
+    titulo: '¿La fórmula correcta para «solo A» en tres conjuntos incluye sumar $|A \cap B \cap C|$?'
+    enunciado: |
+      ¿La fórmula para la región «solo A» en un diagrama de tres conjuntos es
+      $|A| - |A \cap B| - |A \cap C| + |A \cap B \cap C|$?
+    respuesta: 'Sí'
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          Al restar |A∩B| y |A∩C| de |A|, los elementos de A∩B∩C se descuentan
+          dos veces (una por |A∩B| y otra por |A∩C|).
+      - paso: 2
+        descripcion: |
+          Para corregir este doble descuento, se suma |A∩B∩C| una vez, restaurando
+          el conteo correcto.
+      - paso: 3
+        descripcion: |
+          La fórmula resultante |A| - |A∩B| - |A∩C| + |A∩B∩C| da exactamente la
+          cardinalidad de los elementos que están SOLO en A.
+      - paso: 4
+        descripcion: |
+          Conclusión: Sí, la fórmula es correcta y el término +|A∩B∩C| es esencial. ✓
+
+  - tipo: B
+    titulo: '¿Puede la región «solo A» contener elementos que también pertenezcan a $B$?'
+    enunciado: |
+      ¿Puede la región «solo A» contener elementos que también pertenezcan a $B$?
+    respuesta: 'No'
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          Por definición, la región «solo A» = A\(B∪C) contiene únicamente elementos
+          que NO pertenecen a B ni a C.
+      - paso: 2
+        descripcion: |
+          Si un elemento perteneciera a B, estaría en A∩B y no en la región «solo A».
+      - paso: 3
+        descripcion: |
+          La fórmula garantiza esto al descontar |A∩B|: los elementos compartidos
+          con B quedan fuera de la región «solo A».
+      - paso: 4
+        descripcion: |
+          Conclusión: No, ningún elemento de la región «solo A» pertenece a B. ✓
+
+errores_frecuentes:
+  - error: 'Olvidar sumar |A∩B∩C| al final, calculando |solo A| = |A| - |A∩B| - |A∩C|.'
+    correccion: |
+      Los elementos de A∩B∩C se restan dos veces (en |A∩B| y en |A∩C|). Se deben
+      sumar de vuelta: |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|.
+
+  - error: 'Restar |B∩C| en la fórmula de «solo A», incluyendo datos que no corresponden a A.'
+    correccion: |
+      |B∩C| no contiene elementos de «solo A» y no aparece en la fórmula. Solo se
+      usan intersecciones que involucran a A: |A∩B|, |A∩C| y |A∩B∩C|.
+
+  - error: 'Confundir «solo A» con A completo, sin descontar las intersecciones.'
+    correccion: |
+      A completo incluye las regiones (A∩B)\C, (A∩C)\B y A∩B∩C. «Solo A» excluye
+      todas esas partes; de ahí la necesidad de restar las intersecciones.
+
+  - error: 'Aplicar la fórmula de dos conjuntos |A\B| = |A| - |A∩B| en un contexto de tres.'
+    correccion: |
+      En tres conjuntos hay que descontar también |A∩C| y corregir el doble descuento
+      de |A∩B∩C|. La fórmula de dos conjuntos es insuficiente.
+
+  - error: 'Obtener un resultado negativo sin cuestionar los datos del problema.'
+    correccion: |
+      Un resultado negativo indica datos inconsistentes. Verificar que
+      |A∩B∩C| ≤ |A∩B|, |A∩B∩C| ≤ |A∩C| y que |solo A| ≥ 0 antes de aceptar
+      el resultado.
+
+fuente: 'Matemáticas para la Educación Media, MINEDUC'
+estado: publicado

@@ -1,0 +1,70 @@
+semantic_id: MAT.FUND.TABLAS_VERDAD.CONSTRUCCION_TRES_VARIABLES
+objetivo: Construir de manera completa y paso a paso una tabla de verdad para expresiones lógicas compuestas con tres variables proposicionales.
+introduccion: |-
+  Imagina que eres un programador diseñando las condiciones de seguridad para abrir una caja fuerte electrónica. Necesitas que se cumplan tres cosas a la vez: que la contraseña sea correcta, que la huella digital coincida y que la llave física esté puesta. Para asegurarte de que ningún intruso pueda burlar el sistema bajo ninguna circunstancia, tienes que probar todas las combinaciones posibles de estas tres entradas. ¡Construir una tabla de verdad de tres variables es exactamente el método matemático estructurado que te permite comprobar las 8 combinaciones de seguridad sin que se te escape ninguna!
+resumen: |-
+  La construcción de una tabla de verdad para tres variables ($p$, $q$ y $r$) requiere $2^3 = 8$ filas. Las columnas se estructuran resolviendo primero las negaciones, luego las operaciones entre paréntesis más internas, seguidas de los conectivos externos hasta llegar al operador principal.
+explicacion: |-
+  Construir una tabla de verdad con tres variables proposicionales requiere paciencia y método riguroso. Al trabajar con $n = 3$ variables ($p$, $q$, $r$), la tabla obligatoriamente posee $2^3 = 8$ filas.
+
+  **Pasos lógicos para el diseño de la tabla:**
+  1. **Columnas de Entrada**: Definimos las columnas base en orden de alternancia estándar:
+     - '$p$: $V, V, V, V, F, F, F, F$'
+     - '$q$: $V, V, F, F, V, V, F, F$'
+     - '$r$: $V, F, V, F, V, F, V, F$'
+  2. **Columnas de Negaciones**: Si la expresión contiene términos como $\neg p$, $\neg q$ o $\neg r$, creamos sus columnas específicas y las evaluamos invirtiendo la columna base correspondiente.
+  3. **Columnas Intermedias (Paréntesis)**: Evaluamos cada término compuesto menor. Por ejemplo, en $(p \land q) \rightarrow (\neg r \lor p)$, calculamos primero $(p \land q)$ y luego $(\neg r \lor p)$.
+  4. **Columna Principal**: Evaluamos el conectivo final que vincula los términos previamente resueltos.
+
+  **Ejemplo**: Evaluemos el término $(p \land q) \rightarrow r$.
+  - 'La columna $(p \land q)$ es verdadera únicamente en las filas 1 y 2 (donde $p$ y $q$ son $V$). Sus valores son: ($V, V, F, F, F, F, F, F$).'
+  - 'Ahora evaluamos $(p \land q) \rightarrow r$ conectando la columna de la conjunción con la columna de $r$:'
+    - 'Fila 1: $V \rightarrow V = V$'
+    - 'Fila 2: $V \rightarrow F = F$'
+    - 'Fila 3: $F \rightarrow V = V$'
+    - 'Fila 4: $F \rightarrow F = V$'
+    - 'Fila 5: $F \rightarrow V = V$'
+    - 'Fila 6: $F \rightarrow F = V$'
+    - 'Fila 7: $F \rightarrow V = V$'
+    - 'Fila 8: $F \rightarrow F = V$'
+
+  La columna final resultante de la implicación es ($V, F, V, V, V, V, V, V$).
+procedimiento:
+  - 'Paso 1: Determinar el número de proposiciones simples $n$. Para tres variables, calculamos el número de filas mediante la fórmula $2^n = 2^3 = 8$ filas.'
+  - 'Paso 2: Definir las columnas de la tabla ordenadamente de izquierda a derecha: variables base $p$, $q$ y $r$; negaciones individuales; operaciones intermedias contenidas en paréntesis; y por último, el operador lógico principal.'
+  - 'Paso 3: Llenar las columnas de las variables de entrada según la distribución estándar: $p$ alternando de cuatro en cuatro, $q$ de dos en dos, y $r$ de uno en uno.'
+  - 'Paso 4: Evaluar la expresión conectivo por conectivo de adentro hacia afuera, aplicando secuencialmente las reglas lógicas correspondientes a cada fila hasta obtener la columna final de la expresión.'
+ejemplos:
+  - titulo: Ejemplo 1
+    enunciado: 'Determina el valor de verdad de la expresión $(p \land q) \lor \neg r$ en la cuarta fila de la distribución estándar.'
+    solucion_pasos:
+      - 'Paso a: Identificamos los valores de las variables en la cuarta fila estándar: $p = V$, $q = F$ y $r = F$.'
+      - 'Paso b: Evaluamos los términos intermedios: la conjunción $(p \land q)$ resulta en $V \land F = F$. La negación $\neg r$ resulta en $\neg F = V$.'
+      - 'Paso c: Evaluamos la disyunción principal: $(p \land q) \lor \neg r \equiv F \lor V = V$. Por lo tanto, el valor en la cuarta fila es Verdadero ($V$).'
+  - titulo: Ejemplo 2
+    enunciado: 'Construye la columna de la operación intermedia $(\neg p \lor q)$ para una tabla con variables $p$, $q$ y $r$.'
+    solucion_pasos:
+      - 'Paso a: Llenamos las columnas estándar de $p$ ($V,V,V,V,F,F,F,F$) y $q$ ($V,V,F,F,V,V,F,F$).'
+      - 'Paso b: Obtenemos la columna $\neg p$ invirtiendo $p$: ($F,F,F,F,V,V,V,V$).'
+      - 'Paso c: Evaluamos la disyunción inclusiva $\neg p \lor q$ aplicando el conectivo "o" en cada fila. Obtenemos como resultado: ($V, V, F, F, V, V, V, V$).'
+  - titulo: '¿La última fila de la tabla de verdad de la expresión $(p \lor q) \rightarrow \neg r$ es Falsa ($F$)?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'En la última fila (fila 8) de la distribución estándar, los valores son $p = F$, $q = F$, $r = F$.'
+      - 'Evaluamos la disyunción: $p \lor q \equiv F \lor F \equiv F$.'
+      - 'Evaluamos la negación: $\neg r \equiv \neg F \equiv V$.'
+      - 'Evaluamos el condicional principal: $F \rightarrow V \equiv V$. Por lo tanto, en la última fila el valor resultante es Verdadero ($V$).'
+  - titulo: '¿La columna resultante de la expresión $(p \land \neg p) \land r$ tiene todos sus valores falsos?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Observamos la parte izquierda: $p \land \neg p$ es una contradicción y siempre dará Falso ($F$) para cualquier fila.'
+      - 'Al evaluar la conjunción lógica final con $r$, tenemos la operación $F \land r$.'
+      - 'Dado que una conjunción con un término falso es siempre falsa, la columna completa tendrá únicamente valores Falsos ($F$).'
+errores_frecuentes:
+  - Mezclar el orden de las columnas de variables simples, impidiendo verificar de forma directa las equivalencias lógicas de la tabla.
+  - 'Confundir la prioridad de los operadores lógicos en ausencia de paréntesis explícitos (se debe recordar que $\neg$ tiene mayor prioridad, seguido de $\land$ y $\lor$, y por último $\rightarrow$ y $\leftrightarrow$).'
+  - Cometer errores de arrastre al evaluar mal una columna intermedia y usar esos valores incorrectos para calcular el conectivo final.
+  - 'Asumir que la negación de una implicación $p \rightarrow q$ se calcula simplemente negando ambas variables ($\neg p \rightarrow \neg q$).'
+  - 'Trabajar con tablas de 6 filas (creyendo erróneamente que $2 \cdot 3 = 6$ ) en lugar de las 8 filas requeridas por la progresión matemática de las combinaciones.'
+fuente: Lógica Matemática y Teoría de Conjuntos, pág. 41
+estado: publicado

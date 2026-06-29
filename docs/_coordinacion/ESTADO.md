@@ -13,6 +13,10 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Población MAT.FUND — CONSTRUIDA 🟡 (2026-06-28, rama `content/mat-fund`):**
+  106/106 recursos con `NodeContent`, 106 recursos con al menos 10 ejercicios cada uno,
+  `load_node_content` OK, `load_exercise_bank` OK (`inválidos: 0`), `check` OK y
+  `python manage.py test` OK (587 tests, 1 skip). Tarjeta movida a `backlog/4-auditoria/`.
 - **Población MAT.NUM B0201/B0202 — CERRADA 🟢 (2026-06-28, squash-merge main `4b99118`):**
   56 recursos con contenido publicado (21 B0201 + 35 B0202). 610 ejercicios en banco.
   Claude coordinó cierre: corrigió 4 P1 Codex (LaTeX, errores_frecuentes, Tipo B, estado).

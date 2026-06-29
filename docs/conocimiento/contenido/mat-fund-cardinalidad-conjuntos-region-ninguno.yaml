@@ -1,0 +1,165 @@
+semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.REGION_NINGUNO
+
+objetivo: |
+  Calcular la cardinalidad de la región «ninguno» en un diagrama de Venn de dos
+  conjuntos, aplicando la fórmula |ninguno| = |U| - |A∪B| junto con el principio
+  de inclusión-exclusión para obtener |A∪B|.
+
+introduccion: |
+  En muchos problemas de conjuntos se pregunta cuántos elementos del universo no
+  pertenecen a ninguno de los conjuntos dados. Esta cantidad es la cardinalidad de
+  la región exterior del diagrama de Venn. Para calcularla se necesita conocer el
+  total del universo y la cardinalidad de la unión A∪B, que se obtiene mediante
+  el principio de inclusión-exclusión: |A∪B| = |A| + |B| - |A∩B|.
+
+resumen: |
+  Fórmula para la región «ninguno» en un diagrama de dos conjuntos:
+  - |A∪B| = |A| + |B| - |A∩B|       (principio de inclusión-exclusión)
+  - |ninguno| = |U| - |A∪B|
+
+  Es decir: |ninguno| = |U| - |A| - |B| + |A∩B|.
+
+explicacion: |
+  El universo U se descompone en dos partes disjuntas:
+    U = (A∪B) ∪ (A∪B)'
+
+  Por tanto: |U| = |A∪B| + |(A∪B)'|
+
+  Despejando la región exterior:
+    |(A∪B)'| = |U| - |A∪B|
+
+  Para obtener |A∪B| sin contar doble la intersección, se usa el principio de
+  inclusión-exclusión:
+    |A∪B| = |A| + |B| - |A∩B|
+
+  Sustituyendo:
+    |ninguno| = |U| - |A| - |B| + |A∩B|
+
+  Este valor debe ser ≥ 0; si resulta negativo, los datos del problema son
+  inconsistentes.
+
+procedimiento: |
+  Para calcular la cardinalidad de la región «ninguno»:
+
+  Paso 1. Identificar los datos: |U|, |A|, |B| y |A∩B|.
+  Paso 2. Calcular |A∪B| = |A| + |B| - |A∩B|.
+  Paso 3. Calcular |ninguno| = |U| - |A∪B|.
+  Paso 4. Verificar que |ninguno| ≥ 0 y que la suma de las cuatro regiones
+          sea igual a |U|.
+
+ejemplos:
+  - tipo: A
+    titulo: 'Calcular la región «ninguno» con |U|=50'
+    enunciado: |
+      Dados |U| = 50, |A| = 20, |B| = 18 y |A∩B| = 8, calcula la
+      cardinalidad de la región «ninguno».
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          Identificamos los datos: |U| = 50, |A| = 20, |B| = 18, |A∩B| = 8.
+      - paso: 2
+        descripcion: |
+          Calculamos |A∪B|:
+          |A∪B| = |A| + |B| - |A∩B| = 20 + 18 - 8 = 30.
+      - paso: 3
+        descripcion: |
+          Calculamos la región «ninguno»:
+          |ninguno| = |U| - |A∪B| = 50 - 30 = 20.
+      - paso: 4
+        descripcion: |
+          Verificación de las cuatro regiones:
+          |A\B| = 20 - 8 = 12, |A∩B| = 8, |B\A| = 18 - 8 = 10, |ninguno| = 20.
+          12 + 8 + 10 + 20 = 50 = |U| ✓.
+
+  - tipo: A
+    titulo: 'Calcular la región «ninguno» con |U|=100'
+    enunciado: |
+      Dados |U| = 100, |A| = 45, |B| = 38 y |A∩B| = 13, calcula la
+      cardinalidad de la región «ninguno».
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          Identificamos los datos: |U| = 100, |A| = 45, |B| = 38, |A∩B| = 13.
+      - paso: 2
+        descripcion: |
+          Calculamos |A∪B|:
+          |A∪B| = 45 + 38 - 13 = 70.
+      - paso: 3
+        descripcion: |
+          Calculamos la región «ninguno»:
+          |ninguno| = 100 - 70 = 30.
+      - paso: 4
+        descripcion: |
+          Verificación: |A\B| = 32, |A∩B| = 13, |B\A| = 25, |ninguno| = 30.
+          32 + 13 + 25 + 30 = 100 = |U| ✓.
+
+  - tipo: B
+    titulo: '¿La región «ninguno» es igual a $|U| - |A \cup B|$?'
+    enunciado: |
+      ¿Es la región «ninguno» igual a $|U| - |A \cup B|$?
+    respuesta: 'Sí'
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          La región «ninguno» corresponde a (A∪B)', el complemento de la unión.
+      - paso: 2
+        descripcion: |
+          Por la ley de complementos: |U| = |A∪B| + |(A∪B)'|.
+      - paso: 3
+        descripcion: |
+          Despejando: |(A∪B)'| = |U| - |A∪B|. Esta es exactamente la región «ninguno».
+      - paso: 4
+        descripcion: |
+          Conclusión: Sí, |ninguno| = |U| - |A∪B|. ✓
+
+  - tipo: B
+    titulo: '¿Puede la cardinalidad de la región «ninguno» ser negativa?'
+    enunciado: |
+      ¿Puede la cardinalidad de la región «ninguno» ser negativa?
+    respuesta: 'No'
+    solucion_pasos:
+      - paso: 1
+        descripcion: |
+          La región «ninguno» = (A∪B)' ⊆ U, por lo que es un conjunto (no puede
+          tener cardinalidad negativa).
+      - paso: 2
+        descripcion: |
+          Formalmente: |ninguno| = |U| - |A∪B|. Como A∪B ⊆ U, se tiene
+          |A∪B| ≤ |U|, y por tanto |ninguno| ≥ 0.
+      - paso: 3
+        descripcion: |
+          Si un cálculo arroja un valor negativo, los datos son inconsistentes
+          (A∪B excede el universo), lo que indica un error en el enunciado.
+      - paso: 4
+        descripcion: |
+          Conclusión: No, la cardinalidad de la región «ninguno» no puede ser negativa. ✓
+
+errores_frecuentes:
+  - error: 'Olvidar restar |A∩B| al calcular |A∪B|, contando la intersección dos veces.'
+    correccion: |
+      La fórmula correcta es |A∪B| = |A| + |B| - |A∩B|. Sumar |A| + |B| directamente
+      cuenta los elementos de A∩B dos veces.
+
+  - error: 'Calcular |ninguno| = |U| - |A| - |B|, ignorando la intersección.'
+    correccion: |
+      Hay que descontar |A∪B|, no |A| + |B|. La fórmula completa es
+      |ninguno| = |U| - |A| - |B| + |A∩B|.
+
+  - error: 'Confundir la región «ninguno» con el complemento de A o de B por separado.'
+    correccion: |
+      «Ninguno» = (A∪B)'. El complemento de A sería A' = U\A, que aún incluye
+      elementos de B\A. «Ninguno» excluye tanto A como B.
+
+  - error: 'No verificar que la suma de las cuatro regiones es |U|.'
+    correccion: |
+      Siempre verificar: |A\B| + |A∩B| + |B\A| + |ninguno| = |U|. Si no se cumple,
+      hay un error en alguno de los cálculos.
+
+  - error: |
+      Usar |U| - |A∩B| en lugar de |U| - |A∪B|, confundiendo intersección con unión.
+    correccion: |
+      La región «ninguno» se calcula restando la UNIÓN, no la intersección.
+      |ninguno| = |U| - |A∪B|.
+
+fuente: 'Matemáticas para la Educación Media, MINEDUC'
+estado: publicado
