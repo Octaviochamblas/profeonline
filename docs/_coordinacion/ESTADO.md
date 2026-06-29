@@ -13,6 +13,12 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Población MAT.NUM.B0203 — CONSTRUIDA 🟡 (2026-06-28, rama `content/mat-num-b0203`):**
+  `74/74` recursos con `NodeContent`, `74` recursos con al menos `10` ejercicios cada uno,
+  `load_node_content` OK, `load_exercise_bank` OK (`inválidos: 0`), `check` OK y
+  `python manage.py test` OK (`587` tests, `1` skip). Se mantuvo la tarjeta
+  `poblar-contenido-mat-num-b0203-b0206.md` en `2-arquitectura/` porque el scope original del
+  handoff incluye también `B0204–B0206`.
 - **Población MAT.FUND — CONSTRUIDA 🟡 (2026-06-28, rama `content/mat-fund`):**
   106/106 recursos con `NodeContent`, 106 recursos con al menos 10 ejercicios cada uno,
   `load_node_content` OK, `load_exercise_bank` OK (`inválidos: 0`), `check` OK y
