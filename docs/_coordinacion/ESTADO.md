@@ -8,17 +8,27 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| — | — | — | 🟢 libre |
+| 🔨 Antigravity | content/mat-alg-b0304 | 2026-06-30 14:02 | 🔴 trabajando |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **Población MAT.NUM.B0203 — CONSTRUIDA 🟡 (2026-06-28, rama `content/mat-num-b0203`):**
-  `74/74` recursos con `NodeContent`, `74` recursos con al menos `10` ejercicios cada uno,
-  `load_node_content` OK, `load_exercise_bank` OK (`inválidos: 0`), `check` OK y
-  `python manage.py test` OK (`587` tests, `1` skip). Se mantuvo la tarjeta
+- **Población MAT.GEO B0401 — ÁNGULOS CONSTRUIDO 🟡 (2026-06-30, rama `content/mat-num-b0205`):**
+  Bloque `04.01` completado con `53/53` recursos y `530` ejercicios publicados (`10` por recurso).
+  Se generaron `53` YAML + `11` JSONL con contenido contextualizado por recurso; auditoría local:
+  `53` objetivos únicos, `51` introducciones únicas, `53` resúmenes únicos y `530` prompts únicos.
+  `load_node_content` y `load_exercise_bank` OK, `python manage.py check` OK, sin migraciones nuevas,
+  `git diff --check` OK y 28 tests focalizados (`test_knowledge_f2` + `test_node_bank`) en verde.
+  La tarjeta `poblar-contenido-mat-geo.md` se mantiene en `2-arquitectura/` porque el handoff completo
+  aún incluye `B0402–B0413`.
+- **Población MAT.NUM B0203+B0204 — CONTENIDO ORGÁNICO 🟡 (2026-06-29, rama `content/mat-num-b0203`):**
+  B0203 revisado otra vez: objetivos, ejemplos y V/F ahora usan el caso y el control matemático propio
+  de cada recurso. B0204 construido completo: `93/93` contenidos + `930` ejercicios. Auditoría conjunta:
+  `167` objetivos, `501` pasos, `668` títulos de ejemplos/VF y `1.670` prompts únicos; importadores sin
+  inválidos, cobertura 10 ejercicios por recurso, `check` y 28 tests focalizados OK.
+  Se mantuvo la tarjeta
   `poblar-contenido-mat-num-b0203-b0206.md` en `2-arquitectura/` porque el scope original del
-  handoff incluye también `B0204–B0206`.
+  handoff incluye también `B0205–B0206`.
 - **Población MAT.FUND — CONSTRUIDA 🟡 (2026-06-28, rama `content/mat-fund`):**
   106/106 recursos con `NodeContent`, 106 recursos con al menos 10 ejercicios cada uno,
   `load_node_content` OK, `load_exercise_bank` OK (`inválidos: 0`), `check` OK y
