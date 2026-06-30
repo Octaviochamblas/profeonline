@@ -391,6 +391,91 @@ class MarkdownSecurityFilterTests(TestCase):
 
         self.assertIn('<a href="https://example.com/guia">Guia</a>', rendered)
 
+    def test_markdown_filter_preserves_latex_delimiters(self):
+        from django.template import Context, Template
+
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context(
+                {
+                    "content": (
+                        r"Por ejemplo, \(\frac{5}{6}-\frac{1}{4}=\frac{7}{12}\). "
+                        r"Y en bloque: \[\frac{2}{3}+\frac{1}{3}=1\]"
+                    )
+                }
+            )
+        )
+
+        self.assertIn(r"\(\frac{5}{6}-\frac{1}{4}=\frac{7}{12}\)", rendered)
+        self.assertIn(r"\[\frac{2}{3}+\frac{1}{3}=1\]", rendered)
+
+    def test_markdown_inline_strips_wrapping_paragraph_and_keeps_latex(self):
+        from django.template import Context, Template
+
+        template_to_test = Template(
+            "{% load markdown_tags %}<span>{{ content|markdown_inline }}</span>"
+        )
+
+        rendered = template_to_test.render(
+            Context({"content": r"Suma: $(2m^2 - 3m) + (m^2 + 5m - 4)$"})
+        )
+
+        self.assertNotIn("<p>", rendered)
+        self.assertIn(r"$(2m^2 - 3m) + (m^2 + 5m - 4)$", rendered)
+
+    def test_markdown_inline_auto_wraps_plain_algebra_in_examples(self):
+        from django.template import Context, Template
+
+        template_to_test = Template(
+            "{% load markdown_tags %}<span>{{ content|markdown_inline }}</span>"
+        )
+
+        rendered = template_to_test.render(
+            Context({"content": "Suma: (5a - 3) + (2a + 7)."})
+        )
+
+        self.assertNotIn("<p>", rendered)
+        self.assertIn(r"Suma: $(5a - 3) + (2a + 7)$.", rendered)
+
+    def test_markdown_inline_auto_wraps_equations_inside_prose(self):
+        from django.template import Context, Template
+
+        template_to_test = Template(
+            "{% load markdown_tags %}<span>{{ content|markdown_inline }}</span>"
+        )
+
+        rendered = template_to_test.render(
+            Context(
+                {
+                    "content": (
+                        "En la expresión 5x - 3 = 2x + 9, identifica el vínculo y los miembros."
+                    )
+                }
+            )
+        )
+
+        self.assertIn(
+            r"En la expresión $5x - 3 = 2x + 9$, identifica el vínculo y los miembros.",
+            rendered,
+        )
+
+    def test_markdown_inline_auto_wraps_plain_set_notation(self):
+        from django.template import Context, Template
+
+        template_to_test = Template(
+            "{% load markdown_tags %}<span>{{ content|markdown_inline }}</span>"
+        )
+
+        rendered = template_to_test.render(
+            Context({"content": r"Calcular |A\B| con |A|=20, |B|=12 y |A∩B|=7"})
+        )
+
+        self.assertIn(r"$|A \setminus B|$", rendered)
+        self.assertIn(r"$|A|=20$", rendered)
+        self.assertIn(r"$|B|=12$", rendered)
+        self.assertIn(r"$|A \cap B|=7$", rendered)
+
 
 class CacheBackendCheckTests(TestCase):
     @override_settings(

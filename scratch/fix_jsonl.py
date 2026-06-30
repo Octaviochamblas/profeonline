@@ -13,19 +13,19 @@ with open('docs/conocimiento/ejercicios/mat-alg-multiplicacion-banco-gen-4.jsonl
     for i, line in enumerate(f):
         if not line.strip(): continue
         ex = json.loads(line)
-        
+
         node_id = ex.get('node_id')
         kind = ex.get('kind')
-        
+
         # Build stable_id
         prefix = "GEN4"
         if node_id == "MAT.ALG.MULT_MON_POL.MONOMIO_NEGATIVO": prefix = "MN"
         elif node_id == "MAT.ALG.MULT_POLINOMIOS.COEFICIENTES_FRACCIONARIOS": prefix = "CF"
         elif node_id == "MAT.ALG.MULT_MONOMIOS.GRADO_PRODUCTO": prefix = "GP"
         elif node_id == "MAT.ALG.MULT_MON_POL.DISTRIBUCION_PARCIAL_ERROR": prefix = "DPE"
-        
+
         stable_id = f"{prefix}-{kind_map[kind].upper()}-{i}"
-        
+
         # Build choices
         options = ex.get('options', [])
         letters = ['A) ', 'B) ', 'C) ', 'D) ']
@@ -36,7 +36,7 @@ with open('docs/conocimiento/ejercicios/mat-alg-multiplicacion-banco-gen-4.jsonl
             choices.append(txt)
             if opt.get('is_correct'):
                 correct_ans = txt
-                
+
         new_ex = {
             "stable_id": stable_id,
             "semantic_id": node_id,

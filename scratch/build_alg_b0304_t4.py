@@ -14,19 +14,19 @@ objetivo: "Multiplicar un monomio con coeficiente negativo por un polinomio, dis
 introduccion: "Cuando el monomio que multiplica al polinomio es negativo, no solo cambian los números y las letras, ¡también cambian todos los signos del polinomio! Es como si el signo menos se 'repartiera' a cada término."
 resumen: |
   Para multiplicar un monomio negativo por un polinomio:
-  
+
   - Se multiplica el monomio por cada término del polinomio (propiedad distributiva).
   - Se aplica la regla de los signos en cada multiplicación ($-$ por $+$ es $-$; $-$ por $-$ es $+$).
   - Se multiplican los coeficientes numéricos y se suman los exponentes de las bases iguales.
 explicacion: |
   La multiplicación de un monomio negativo por un polinomio sigue el mismo principio de la propiedad distributiva, con una atención especial a los signos.
-  
+
   Si tenemos $-a(b - c)$, el monomio negativo $-a$ se distribuye:
   $(-a) \\cdot b + (-a) \\cdot (-c)$
-  
+
   Aplicando la ley de los signos, obtenemos:
   $-ab + ac$
-  
+
   Es fundamental recordar que multiplicar por un negativo invierte todos los signos originales de los términos dentro del paréntesis.
 procedimiento: |
   1. Identifica el monomio negativo y los términos del polinomio.
@@ -66,16 +66,16 @@ objetivo: "Multiplicar dos polinomios donde los coeficientes son fracciones, apl
 introduccion: "Multiplicar polinomios con fracciones es igual que con números enteros, solo que ahora debemos recordar cómo multiplicar fracciones: el numerador por el numerador y el denominador por el denominador."
 resumen: |
   Al multiplicar polinomios con coeficientes fraccionarios, se aplica la propiedad distributiva multiplicando cada término del primer polinomio por cada término del segundo.
-  
+
   Para cada multiplicación de términos:
   - Multiplica los coeficientes (numerador con numerador, denominador con denominador).
   - Suma los exponentes de las letras iguales.
   - Al final, reduce términos semejantes, lo cual puede requerir encontrar un denominador común.
 explicacion: |
   La regla general para multiplicar dos polinomios $P(x)$ y $Q(x)$ se mantiene: cada término de $P(x)$ se multiplica por cada término de $Q(x)$.
-  
+
   Cuando los coeficientes son fracciones, como $\\frac{a}{b}$ y $\\frac{c}{d}$, el coeficiente del término resultante será $\\frac{a \\cdot c}{b \\cdot d}$.
-  
+
   Después de distribuir todos los términos, es probable que se generen términos semejantes con coeficientes fraccionarios. Para reducirlos, debes sumar o restar esas fracciones encontrando el mínimo común múltiplo (MCM) de sus denominadores.
 procedimiento: |
   1. Multiplica cada término del primer polinomio por cada término del segundo.
@@ -115,22 +115,22 @@ objetivo: "Determinar el grado absoluto y relativo del resultado de multiplicar 
 introduccion: "Cuando multiplicas dos monomios, el 'tamaño' algebraico (su grado) aumenta. Si multiplicas algo de grado 2 por algo de grado 3, el resultado es de grado 5. ¡Los grados siempre se suman!"
 resumen: |
   El grado de un monomio es la suma de los exponentes de sus letras (grado absoluto) o el exponente de una letra específica (grado relativo).
-  
+
   Al multiplicar monomios:
   - El grado absoluto del producto es igual a la suma de los grados absolutos de los factores.
   - El grado relativo (respecto a una variable) del producto es igual a la suma de los grados relativos de esa variable en los factores.
 explicacion: |
   La propiedad del grado en la multiplicación se deriva directamente de la regla de los exponentes: $x^a \\cdot x^b = x^{a+b}$.
-  
+
   Si tienes un monomio $M_1$ de grado absoluto $m$ y un monomio $M_2$ de grado absoluto $n$, el producto $M_1 \\cdot M_2$ tendrá grado absoluto $m + n$.
-  
+
   Por ejemplo, si $M_1 = 3x^2y^3$ (grado $2+3=5$) y $M_2 = -2x^4y$ (grado $4+1=5$), el producto es $-6x^6y^4$. Su grado absoluto es $6+4=10$, que es exactamente $5 + 5$.
 procedimiento: |
   Para hallar el grado absoluto del producto sin calcularlo completamente:
   1. Encuentra el grado absoluto del primer factor (suma sus exponentes).
   2. Encuentra el grado absoluto del segundo factor.
   3. Suma ambos grados obtenidos.
-  
+
   Para hallar el grado absoluto del producto calculado:
   1. Multiplica los monomios normalmente.
   2. Suma todos los exponentes de las letras en el resultado final.
@@ -164,16 +164,16 @@ objective: "Identificar y corregir el error de la distribución parcial al multi
 introduccion: "Un error muy clásico al resolver paréntesis es repartir el número de afuera solo al primer término de adentro y olvidarse de los demás. ¡No dejes a los otros términos sin su multiplicación!"
 resumen: |
   La distribución parcial es un error frecuente donde el monomio exterior solo multiplica al primer término del polinomio y se deja el resto inalterado.
-  
+
   - Forma incorrecta: $a(b + c) = ab + c$
   - Forma correcta: $a(b + c) = ab + ac$
-  
+
   Para evitar este error, se recomienda dibujar arcos desde el monomio exterior hacia **cada uno** de los términos del polinomio.
 explicacion: |
   La propiedad distributiva establece que la multiplicación se distribuye sobre la adición y la sustracción. Esto significa que el factor externo actúa como un multiplicador universal para todo lo contenido en el paréntesis.
-  
+
   Si tenemos $3x(2x + 5y - 4)$, el error de distribución parcial daría como resultado $6x^2 + 5y - 4$. El estudiante operó correctamente $3x \\cdot 2x$, pero se olvidó del $5y$ y del $-4$.
-  
+
   El resultado correcto requiere realizar tres multiplicaciones separadas:
   $(3x \\cdot 2x) + (3x \\cdot 5y) + (3x \\cdot -4) = 6x^2 + 15xy - 12x$.
 procedimiento: |
@@ -212,10 +212,10 @@ errores_frecuentes:
 
 def generate_exercises():
     exercises = []
-    
+
     # 1. MAT.ALG.MULT_MON_POL.MONOMIO_NEGATIVO
     nid = "MAT.ALG.MULT_MON_POL.MONOMIO_NEGATIVO"
-    
+
     # Conceptuales
     exercises.append({"node_id": nid, "kind": "conceptual", "difficulty": "basica", "text": "Al multiplicar un polinomio por un monomio con coeficiente negativo, ¿qué ocurre con los signos de los términos del polinomio?", "options": [{"text": "Todos los signos se invierten.", "is_correct": True}, {"text": "Todos los signos quedan iguales.", "is_correct": False}, {"text": "Solo se invierte el primer signo.", "is_correct": False}, {"text": "Los signos cambian dependiendo del exponente.", "is_correct": False}], "explanation": "La multiplicación por un número negativo invierte el signo positivo a negativo, y el negativo a positivo en cada término."})
     exercises.append({"node_id": nid, "kind": "conceptual", "difficulty": "intermedia", "text": "Si el resultado de multiplicar un monomio por el binomio $(a - b)$ es $-3a + 3b$, ¿cuál era el monomio multiplicador?", "options": [{"text": "$-3$", "is_correct": True}, {"text": "$3$", "is_correct": False}, {"text": "$-a$", "is_correct": False}, {"text": "$-3a$", "is_correct": False}], "explanation": "Al dividir $-3a$ entre $a$ obtenemos $-3$. Al verificar, $-3(a - b) = -3a + 3b$."})
@@ -295,7 +295,7 @@ def generate_exercises():
     with open(jsonl_filename, "w", encoding="utf-8") as f:
         for ex in exercises:
             f.write(json.dumps(ex, ensure_ascii=False) + "\\n")
-            
+
     print(f"{jsonl_filename} con {len(exercises)} ejercicios")
 
 if __name__ == "__main__":

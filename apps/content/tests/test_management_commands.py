@@ -21,6 +21,9 @@ from apps.content.models import (
     Topic,
 )
 from apps.content.services.title_cleanup_service import clean_resource_title
+from apps.content.management.commands.generate_node_summaries import (
+    _normalize_summary_output,
+)
 
 
 class ResourceTitleCleanupServiceTests(TestCase):
@@ -40,6 +43,21 @@ class ResourceTitleCleanupServiceTests(TestCase):
                 subject_name="Electromagnetismo",
             ),
             "1.2 Líneas de campo",
+        )
+
+
+class GenerateNodeSummariesNormalizationTests(TestCase):
+    def test_strips_surrounding_quotes_and_empty_bold(self):
+        self.assertEqual(
+            _normalize_summary_output('"Un **concepto** útil. ** "" **"'),
+            "Un **concepto** útil.",
+        )
+
+    def test_strips_code_fences_but_preserves_valid_markdown_and_latex(self):
+        raw = "```markdown\nUn **binomio** se puede escribir como $a+b$.\n```"
+        self.assertEqual(
+            _normalize_summary_output(raw),
+            "Un **binomio** se puede escribir como $a+b$.",
         )
 
 

@@ -122,6 +122,19 @@ class NodeDetailViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Identificar números naturales.")
 
+    def test_resumen_renders_markdown_and_math(self):
+        NodeContent.objects.create(
+            node=self.recurso,
+            resumen="Un **resumen** con $0$ y una lista:\n\n- punto clave",
+            estado=NodeContent.ESTADO_PUBLICADO,
+        )
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<strong>resumen</strong>", html=False)
+        self.assertContains(response, "<li>punto clave</li>", html=False)
+        self.assertContains(response, "$0$", html=False)
+        self.assertNotContains(response, "**resumen**", html=False)
+
     def test_draft_content_sets_noindex(self):
         NodeContent.objects.create(
             node=self.recurso,

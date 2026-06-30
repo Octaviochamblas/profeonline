@@ -176,6 +176,33 @@ estado: publicado    # o borrador
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
 
+### Reglas de render que NO se pueden romper
+
+Estas reglas son obligatorias para toda generación nueva de contenido. Existen
+porque ya hubo errores reales en contenido generado: fórmulas que se veían como
+texto plano (`a^2`), resúmenes con markdown literal (`**concepto**`) y listas
+mal formadas.
+
+| Zona | Regla obligatoria | Correcto | Incorrecto |
+|---|---|---|---|
+| `resumen` | Se renderiza como Markdown real. Puedes usar `**negrita**`, listas y `$LaTeX$`, pero solo si aportan claridad. | `Un **binomio** tiene dos términos.` | `Un ** ""` |
+| `resumen` | No envolver todo el texto en comillas. No usar placeholders como `""`. | `Un polinomio ordenado...` | `"Un polinomio ordenado..."` |
+| `resumen` | Si incluyes lista Markdown, deja una línea en blanco antes de `-` o `1.`. | `Idea clave:\n\n- Ordenar\n- Reducir` | `Idea clave:\n- Ordenar\n- Reducir` |
+| `resumen`, `explicacion`, `procedimiento`, `ejemplos`, `errores_frecuentes` | Toda fórmula, operación o notación matemática debe ir delimitada con `$...$` o `$$...$$`. | `$a^2 + 3a - 1$` | `a^2 + 3a - 1` |
+| `ejemplos.tipo_a.enunciado` | Si el enunciado contiene una operación o expresión, esa parte debe ir en LaTeX inline. | `Suma: $(2a^3 - 5) + (a^2 + 3a + 2)$.` | `Suma: (2a^3 - 5) + (a^2 + 3a + 2).` |
+| `ejemplos.solucion_pasos` | Cada paso con cálculo debe llevar sus fragmentos matemáticos en `$...$`. | `Resultado: $2a^3 + a^2 + 3a - 3$.` | `Resultado: 2a^3 + a^2 + 3a - 3.` |
+| contenido general | No usar Markdown vacío o decorativo. Toda negrita debe contener una expresión útil. | `**Términos semejantes**` | `** **`, `** ""` |
+
+### Observaciones operativas importantes
+
+- Existe un autoformateo defensivo en ejemplos cortos para cubrir algunos textos
+  crudos heredados, pero es solo red de seguridad. No reemplaza escribir bien el
+  YAML de origen.
+- La política correcta es: si una secuencia debe verse como matemática, escríbela
+  como matemática desde el YAML.
+- En Álgebra y Funciones esto es especialmente importante para exponentes,
+  fracciones, raíces, productos implícitos, conjuntos y ecuaciones.
+
 ### Sobre `ejemplos`: Tipo A vs Tipo B
 
 ```yaml

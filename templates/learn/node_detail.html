@@ -87,7 +87,13 @@
   display: block;
   margin-bottom: .35rem;
 }
-.learn-resumen-card__obj { margin: 0 0 .5rem; font-size: 1.02rem; font-weight: 500; line-height: 1.55; color: #1e293b; }
+.learn-resumen-card__obj { font-size: 1.02rem; font-weight: 500; line-height: 1.55; color: #1e293b; }
+.learn-resumen-card__obj > *:first-child { margin-top: 0; }
+.learn-resumen-card__obj > *:last-child { margin-bottom: 0; }
+.learn-resumen-card__obj p,
+.learn-resumen-card__obj ul,
+.learn-resumen-card__obj ol { margin: 0 0 .5rem; }
+.learn-resumen-card__obj li + li { margin-top: .25rem; }
 .learn-resumen-card__steps {
   margin: 0;
   font-size: .88rem;
@@ -399,7 +405,7 @@
                  data-answer="{{ ej.respuesta }}">
                 <summary class="learn-ejemplo-card__header">
                     <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo|markdown_inline }}</span>
                 </summary>
                 <div class="learn-ejemplo-card__body">
                     <div class="learn-exercise__tf">
@@ -410,7 +416,7 @@
                         <div class="learn-exercise__verdict"></div>
                         {% if ej.solucion_pasos %}
                         <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
                         </ol>
                         {% endif %}
                     </div>
@@ -422,7 +428,7 @@
                  data-answer="{{ ej.respuesta }}">
                 <summary class="learn-ejemplo-card__header">
                     <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo|markdown_inline }}</span>
                 </summary>
                 <div class="learn-ejemplo-card__body">
                     <div class="learn-exercise__tf">
@@ -433,7 +439,7 @@
                         <div class="learn-exercise__verdict"></div>
                         {% if ej.solucion_pasos %}
                         <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
                         </ol>
                         {% endif %}
                     </div>
@@ -445,7 +451,7 @@
                  data-answer="">
                 <summary class="learn-ejemplo-card__header">
                     <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo|markdown_inline }}</span>
                 </summary>
                 <div class="learn-ejemplo-card__body">
                     <button type="button" class="ex-submit">Ver solución</button>
@@ -453,7 +459,7 @@
                         <div class="learn-exercise__verdict"></div>
                         {% if ej.solucion_pasos %}
                         <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
                         </ol>
                         {% endif %}
                     </div>
@@ -523,7 +529,7 @@
     {% if content and content.resumen %}
     <div class="learn-resumen-card">
         <span class="learn-resumen-card__label">Resumen</span>
-        <p class="learn-resumen-card__obj">{{ content.resumen }}</p>
+        <div class="learn-resumen-card__obj">{{ content.resumen|markdown }}</div>
     </div>
     {% endif %}
 

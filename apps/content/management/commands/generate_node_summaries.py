@@ -8,6 +8,7 @@ Uso:
 
 import logging
 import os
+import re
 import time
 
 import requests
@@ -28,6 +29,11 @@ El resumen debe:
 - Usar lenguaje claro y directo, apropiado para un alumno secundario.
 - NO repetir el título del recurso textualmente.
 - NO comenzar con "En este recurso..." ni "Este recurso...".
+- Si usas énfasis, usa Markdown real y con intención (ej. `**concepto clave**`).
+- Si aparece notación matemática, delimítala con `$...$`. Nunca escribas fórmulas
+  crudas como `x^2`, `a/b` o `a+b` fuera de delimitadores matemáticos.
+- NO uses comillas envolventes, placeholders como `""`, énfasis vacío como `** **`
+  o `** ""`, listas, títulos, ni bloques de código.
 
 Información del recurso:
 Tema: {nombre}
@@ -35,8 +41,37 @@ Objetivo: {objetivo}
 Procedimiento (pasos clave):
 {procedimiento}
 
-Responde SOLO con el texto del resumen, sin comillas ni formato adicional.
+Responde SOLO con el texto final del resumen. Puedes usar Markdown ligero si aporta
+claridad, pero sin comillas exteriores ni formato sobrante.
 """
+
+_SURROUNDING_QUOTES = (
+    ('"', '"'),
+    ("'", "'"),
+    ("“", "”"),
+    ("‘", "’"),
+)
+
+
+def _normalize_summary_output(text: str) -> str:
+    summary = str(text or "").strip()
+    if summary.startswith("```") and summary.endswith("```"):
+        summary = re.sub(r"^```[a-zA-Z0-9_-]*\s*", "", summary)
+        summary = re.sub(r"\s*```$", "", summary).strip()
+
+    changed = True
+    while changed and len(summary) >= 2:
+        changed = False
+        for opener, closer in _SURROUNDING_QUOTES:
+            if summary.startswith(opener) and summary.endswith(closer):
+                summary = summary[len(opener):-len(closer)].strip()
+                changed = True
+                break
+
+    summary = re.sub(r"\*\*\s*\*\*", "", summary)
+    summary = re.sub(r"\*\*\s*[\"“”'‘’]{0,2}\s*\*\*", "", summary)
+    summary = re.sub(r"\s{2,}", " ", summary).strip()
+    return summary
 
 
 def _call_gemini(prompt: str, key: str) -> str:
@@ -122,7 +157,7 @@ class Command(BaseCommand):
             )
 
             try:
-                resumen = _call_gemini(prompt, key)
+                resumen = _normalize_summary_output(_call_gemini(prompt, key))
                 nc.resumen = resumen
                 nc.save(update_fields=["resumen"])
                 self.stdout.write(f"  OK  {nc.node.semantic_id}")
