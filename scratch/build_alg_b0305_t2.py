@@ -1,0 +1,307 @@
+import json
+import os
+
+def generate_exercises():
+    YAMLS = {
+        "mat-alg-cuadrado-binomio-diferencia-definicion.yaml": """semantic_id: "MAT.ALG.CUADRADO_BINOMIO.DIFERENCIA_DEFINICION"
+titulo: "Definición de cuadrado de binomio (Diferencia)"
+objetivo: "Comprender e interpretar algebraicamente el concepto del cuadrado de un binomio en su forma de diferencia $(a-b)^2$."
+introduccion: "Al igual que con la suma, podemos elevar una resta o diferencia al cuadrado. ¿Crees que el resultado es muy distinto al de la suma?"
+resumen: |
+  El cuadrado de un binomio diferencia se define como la multiplicación del binomio por sí mismo: $(a-b)^2 = (a-b)(a-b)$.
+  Al aplicar la distributividad, se genera un término central negativo: $a^2 - 2ab + b^2$.
+explicacion: |
+  Desarrollemos $(a-b)(a-b)$ paso a paso:
+  1. $a \cdot a = a^2$
+  2. $a \cdot (-b) = -ab$
+  3. $(-b) \cdot a = -ba = -ab$
+  4. $(-b) \cdot (-b) = b^2$ (positivo, por regla de signos)
+  
+  Sumando los términos semejantes: $a^2 - ab - ab + b^2 = a^2 - 2ab + b^2$.
+  La única diferencia con el cuadrado de la suma es el signo del doble producto central. ¡El tercer término ($b^2$) sigue siendo positivo!
+procedimiento: |
+  Para entender la definición de la diferencia:
+  1. Escribe la base multiplicada por sí misma: $(A-B)(A-B)$.
+  2. Recuerda que los productos cruzados tendrán un signo negativo y un signo positivo, resultando siempre negativos.
+  3. Recuerda que el producto de los segundos términos será $(-B)(-B) = +B^2$.
+ejemplos:
+  - titulo: "Expansión conceptual"
+    enunciado: "Expresa conceptualmente qué significa $(5x - 2y)^2$."
+    solucion_pasos:
+      - "La base es la resta $(5x - 2y)$."
+      - "El cuadrado indica multiplicar esa base por sí misma dos veces."
+      - "Significa $(5x - 2y)(5x - 2y)$."
+errores_frecuentes:
+  - "Pensar que el último término es negativo: $(a-b)^2 = a^2 - 2ab - b^2$."
+  - "Creer que $(a-b)^2 = a^2 - b^2$."
+""",
+        "mat-alg-cuadrado-binomio-regla-suma.yaml": """semantic_id: "MAT.ALG.CUADRADO_BINOMIO.REGLA_SUMA"
+titulo: "Aplicación de la regla del cuadrado de binomio (Suma)"
+objetivo: "Aplicar la fórmula rápida del cuadrado de binomio suma para resolver expresiones algebraicas de forma directa."
+introduccion: "Una vez que entendemos de dónde sale $(a+b)^2$, no necesitamos multiplicar término por término cada vez. ¡Hay una regla rápida que te ahorrará mucho tiempo!"
+resumen: |
+  La regla de oro para $(a+b)^2$ es:
+  **"El cuadrado del primer término, más el doble del primero por el segundo, más el cuadrado del segundo término."**
+  Fórmula: $(a+b)^2 = a^2 + 2ab + b^2$
+explicacion: |
+  Aplicar esta regla requiere identificar quién es tu "primer término" ($a$) y quién es tu "segundo término" ($b$), sin importar qué tan complejos sean.
+  Por ejemplo, en $(3x + 4y^2)^2$:
+  - El primer término es $3x$. Su cuadrado es $(3x)^2 = 9x^2$.
+  - El segundo término es $4y^2$. Su cuadrado es $(4y^2)^2 = 16y^4$.
+  - El doble de su producto es $2 \cdot (3x) \cdot (4y^2) = 24xy^2$.
+  Resultado final: $9x^2 + 24xy^2 + 16y^4$.
+procedimiento: |
+  Pasos para aplicar la regla a $(A+B)^2$:
+  1. Eleva el primer término al cuadrado: $(A)^2$.
+  2. Multiplica el primer término por el segundo y duplícalo: $2(A)(B)$.
+  3. Eleva el segundo término al cuadrado: $(B)^2$.
+  4. Escribe la suma de estos tres resultados obtenidos.
+ejemplos:
+  - titulo: "Aplicación directa"
+    enunciado: "Desarrolla el producto notable $(x + 7)^2$."
+    solucion_pasos:
+      - "El cuadrado del primero: $x^2$."
+      - "El doble del primero por el segundo: $2(x)(7) = 14x$."
+      - "El cuadrado del segundo: $7^2 = 49$."
+      - "Resultado: $x^2 + 14x + 49$."
+  - titulo: "Con coeficientes fraccionarios"
+    enunciado: "Desarrolla $(\frac{1}{2}a + 2b)^2$."
+    solucion_pasos:
+      - "Cuadrado del primero: $(\frac{1}{2}a)^2 = \frac{1}{4}a^2$."
+      - "Doble producto: $2(\frac{1}{2}a)(2b) = 2ab$."
+      - "Cuadrado del segundo: $(2b)^2 = 4b^2$."
+      - "Resultado: $\frac{1}{4}a^2 + 2ab + 4b^2$."
+errores_frecuentes:
+  - "Olvidar elevar al cuadrado el coeficiente numérico del término (ej. decir que $(3x)^2 = 3x^2$ en vez de $9x^2$)."
+""",
+        "mat-alg-cuadrado-binomio-regla-diferencia.yaml": """semantic_id: "MAT.ALG.CUADRADO_BINOMIO.REGLA_DIFERENCIA"
+titulo: "Aplicación de la regla del cuadrado de binomio (Diferencia)"
+objetivo: "Aplicar la fórmula rápida del cuadrado de binomio diferencia para resolver expresiones algebraicas de forma directa."
+introduccion: "¡La regla para la diferencia es casi idéntica a la suma! Solo hay un pequeño (pero crucial) cambio de signo."
+resumen: |
+  La regla para $(a-b)^2$ es:
+  **"El cuadrado del primer término, MENOS el doble del primero por el segundo, MÁS el cuadrado del segundo término."**
+  Fórmula: $(a-b)^2 = a^2 - 2ab + b^2$
+explicacion: |
+  El término del medio es negativo porque proviene de sumar $a(-b)$ y $(-b)a$.
+  El último término sigue siendo positivo porque $(-b)^2 = +b^2$.
+  Asegúrate de tomar $b$ como el valor absoluto después del signo menos para aplicar la fórmula "$-2ab$". Si lo prefieres, puedes considerarlo como una suma $(a + (-b))^2$ y aplicar la misma regla de la suma; el resultado será el mismo.
+procedimiento: |
+  Pasos para aplicar la regla a $(A-B)^2$:
+  1. Eleva el primer término al cuadrado: $(A)^2$.
+  2. Escribe un signo MENOS y luego el doble producto de los términos sin signo: $-2(A)(B)$.
+  3. Escribe un signo MÁS y eleva el segundo término (sin signo) al cuadrado: $+(B)^2$.
+  4. Junta todo en un trinomio.
+ejemplos:
+  - titulo: "Aplicación paso a paso"
+    enunciado: "Desarrolla el producto notable $(p - 6)^2$."
+    solucion_pasos:
+      - "Primer término: $p$. Segundo término: $6$."
+      - "Cuadrado del primero: $p^2$."
+      - "Menos el doble producto: $-2(p)(6) = -12p$."
+      - "Más cuadrado del segundo: $6^2 = 36$."
+      - "Resultado: $p^2 - 12p + 36$."
+  - titulo: "Términos con exponentes"
+    enunciado: "Calcula $(x^3 - 5y)^2$."
+    solucion_pasos:
+      - "$(x^3)^2 = x^6$."
+      - "$-2(x^3)(5y) = -10x^3y$."
+      - "$(5y)^2 = +25y^2$."
+      - "Resultado: $x^6 - 10x^3y + 25y^2$."
+errores_frecuentes:
+  - "Poner el último término como negativo, escribiendo erróneamente $a^2 - 2ab - b^2$."
+""",
+        "mat-alg-cuadrado-binomio-representacion-area.yaml": """semantic_id: "MAT.ALG.CUADRADO_BINOMIO.REPRESENTACION_AREA"
+titulo: "Representación geométrica del cuadrado de binomio"
+objetivo: "Interpretar el cuadrado de un binomio suma $(a+b)^2$ como el área de un cuadrado de lado $(a+b)$."
+introduccion: "¿Sabías que la fórmula del cuadrado de binomio tiene una interpretación visual directa? Podemos dibujarla dividiendo un cuadrado en piezas más pequeñas."
+resumen: |
+  El área de un cuadrado de lado $(a+b)$ se puede calcular de dos formas:
+  1. La fórmula directa del área del cuadrado total: $(a+b) \\cdot (a+b) = (a+b)^2$.
+  2. Sumando las áreas de las $4$ figuras interiores en las que se puede dividir (dos cuadrados y dos rectángulos): $a^2 + ab + ba + b^2$.
+  Como ambas formas calculan la misma área, concluimos que $(a+b)^2 = a^2 + 2ab + b^2$.
+explicacion: |
+  Imagina un cuadrado cuyo lado mide $(a+b)$. Podemos trazar una línea vertical y una horizontal que dividan cada lado en un segmento de medida $a$ y otro de medida $b$.
+  Esto divide el cuadrado grande en cuatro piezas:
+  - En una esquina, un cuadrado pequeño de lado $a$, cuya área es $a^2$.
+  - En la esquina opuesta, un cuadrado de lado $b$, cuya área es $b^2$.
+  - Quedan dos rectángulos restantes, uno de base $a$ y altura $b$ (área $ab$), y otro de base $b$ y altura $a$ (área $ba$).
+  Al juntar las piezas: $a^2 + b^2 + 2ab$. Esto demuestra gráficamente la validez del desarrollo algebraico.
+procedimiento: |
+  Para resolver problemas de áreas relacionados:
+  1. Identifica las longitudes de los lados del cuadrado mayor.
+  2. Calcula el área total como el binomio al cuadrado.
+  3. O bien, suma las áreas parciales de las subdivisiones que te entregan.
+  4. Iguala ambas expresiones.
+ejemplos:
+  - titulo: "Cálculo de área seccionada"
+    enunciado: "Si el lado de un cuadrado se divide en $x$ y $3$, expresa el área total del cuadrado sumando sus partes."
+    solucion_pasos:
+      - "El lado total es $(x+3)$."
+      - "Las piezas interiores son: un cuadrado de $x \\cdot x = x^2$."
+      - "Un cuadrado de $3 \\cdot 3 = 9$."
+      - "Dos rectángulos de $x \\cdot 3 = 3x$."
+      - "La suma de las áreas es $x^2 + 3x + 3x + 9 = x^2 + 6x + 9$."
+errores_frecuentes:
+  - "Creer que el cuadrado de lado $(a+b)$ solo contiene un cuadrado de $a^2$ y uno de $b^2$, omitiendo por completo los dos rectángulos de área $ab$."
+""",
+        "mat-alg-cuadrado-binomio-simetria-diferencia.yaml": """semantic_id: "MAT.ALG.CUADRADO_BINOMIO.SIMETRIA_DIFERENCIA"
+titulo: "Equivalencia de cuadrados de diferencias opuestas"
+objetivo: "Reconocer y aplicar la propiedad de que $(a-b)^2 = (b-a)^2$."
+introduccion: "¿Es lo mismo $5-3$ que $3-5$? Claramente no. Pero, ¿qué pasa si elevamos ambos resultados al cuadrado? ¡La historia cambia!"
+resumen: |
+  Una propiedad muy útil (y a veces sorprendente) en álgebra es que:
+  **$(a-b)^2 = (b-a)^2$**
+  Esto sucede porque $(a-b)$ y $(b-a)$ son números opuestos (difieren solo en el signo), y al elevar cualquier número real al cuadrado, el resultado es positivo.
+explicacion: |
+  Veamos la demostración algebraica:
+  1. Sabemos que $(a-b)^2 = a^2 - 2ab + b^2$.
+  2. Si desarrollamos $(b-a)^2$, tenemos $b^2 - 2ba + a^2$.
+  3. Reordenando y recordando que $ba = ab$, nos queda $a^2 - 2ab + b^2$.
+  Ambas expresiones producen el mismo trinomio cuadrado perfecto.
+  
+  Otra forma de verlo: $(b-a) = -(a-b)$. Si elevamos todo al cuadrado:
+  $[-(a-b)]^2 = (-1)^2 \\cdot (a-b)^2 = 1 \\cdot (a-b)^2 = (a-b)^2$.
+procedimiento: |
+  Al enfrentarte a expresiones como $(x - 4)^2$ o $(4 - x)^2$:
+  1. Puedes usar la que te sea más conveniente de las dos (por ejemplo, es más común dejar la variable positiva al inicio).
+  2. Si en una simplificación debes restar $(a-b)^2$ y $(b-a)^2$, recuerda que son iguales, así que su resta será $0$.
+ejemplos:
+  - titulo: "Reescritura de expresiones"
+    enunciado: "Simplifica la expresión: $(2x - 5)^2 - (5 - 2x)^2$"
+    solucion_pasos:
+      - "Nota que $(5 - 2x)$ es el opuesto de $(2x - 5)$."
+      - "Por la propiedad de simetría, $(5 - 2x)^2 = (2x - 5)^2$."
+      - "Por lo tanto, la resta es de dos cantidades idénticas: $(2x - 5)^2 - (2x - 5)^2 = 0$."
+      - "No es necesario expandir los trinomios, aunque si lo hicieras, obtendrías $0$ de igual forma."
+errores_frecuentes:
+  - "Creer que $(a-b)^2 = -(b-a)^2$, arrastrando un signo negativo imaginario."
+""",
+        "mat-alg-cuadrado-binomio-omision-doble-producto.yaml": """semantic_id: "MAT.ALG.CUADRADO_BINOMIO.OMISION_DOBLE_PRODUCTO"
+titulo: "Detección del error por omisión del doble producto"
+objetivo: "Identificar y corregir el error común de distribuir el exponente sobre una suma o resta $(a \\pm b)^2 \neq a^2 \\pm b^2$."
+introduccion: "Si hay un error que todo estudiante de álgebra ha cometido al menos una vez, es el llamado 'sueño del estudiante principiante': creer que el exponente se distribuye en la suma."
+resumen: |
+  Es fundamental detectar cuando una expresión ha sido mal desarrollada:
+  **El error:** Escribir que $(x+y)^2 = x^2 + y^2$.
+  **La corrección:** Faltó sumar el doble producto $+2xy$.
+  Este error proviene de confundir las propiedades de las potencias, que sí se distribuyen en multiplicaciones $(xy)^2 = x^2 y^2$, pero ¡NUNCA en sumas o restas!
+explicacion: |
+  ¿Por qué es tan tentador este error? Nuestro cerebro ve paréntesis con un exponente y quiere aplicar reglas simples. Sin embargo, evaluar con números reales demuestra rápidamente la falsedad:
+  Ejemplo: $(3+4)^2$.
+  - Forma errónea: $3^2 + 4^2 = 9 + 16 = 25$.
+  - Forma correcta: $(7)^2 = 49$.
+  La diferencia es exactamente $2 \\cdot 3 \\cdot 4 = 24$.
+  Cuando en un problema de alternativa, texto o demostración te encuentres con $(A+B)^2 = A^2 + B^2$, debes identificar inmediatamente que se está asumiendo falsamente que el doble producto $2AB = 0$.
+procedimiento: |
+  Para auditar un desarrollo:
+  1. Revisa cada paso donde se expanda un cuadrado de binomio.
+  2. Verifica que el trinomio resultante tenga 3 términos, no 2.
+  3. Si la expresión tiene 2 términos, el desarrollo está malo (o bien uno de los sumandos era $0$).
+ejemplos:
+  - titulo: "Auditoría de un problema"
+    enunciado: "Un estudiante dice que para resolver $(x-3)^2 = 16$, puede tomar la raíz cuadrada a cada término y decir $x - 3 = 4 \\Rightarrow x = 7$. Luego, expande como $x^2 - 9 = 16$. ¿Qué errores cometió?"
+    solucion_pasos:
+      - "Error 1: al sacar raíz cuadrada de 16 debía considerar $\\pm 4$, no solo $+4$."
+      - "Error 2 (vital): Expandió mal el binomio al decir $x^2 - 9$. Omitió el $-6x$ y además puso $-9$ en lugar de $+9$."
+      - "La verdadera expansión es $x^2 - 6x + 9 = 16$."
+errores_frecuentes:
+  - "Afirmar que $\\sqrt{a^2 + b^2} = a + b$."
+"""
+    }
+
+    exercises = []
+    
+    # MAT.ALG.CUADRADO_BINOMIO.DIFERENCIA_DEFINICION
+    sid = "MAT.ALG.CUADRADO_BINOMIO.DIFERENCIA_DEFINICION"
+    exercises.append({"stable_id": "PN-CBD-CONC-1", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "¿Qué indica conceptualmente la expresión $(x-y)^2$?", "choices": ["A) La multiplicación del binomio $(x-y)$ por sí mismo.", "B) El cuadrado del primer término menos el cuadrado del segundo.", "C) La diferencia entre el doble de $x$ y el doble de $y$.", "D) El producto de $(x-y)(x+y)$."], "correct_answer": "A) La multiplicación del binomio $(x-y)$ por sí mismo.", "solution_steps": "El exponente $2$ indica multiplicar la base, que es el binomio completo $(x-y)$, por sí misma.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-CONC-2", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Al multiplicar término a término $(a-b)(a-b)$, el último término resulta ser $+b^2$. ¿Cuál es la razón de su signo positivo?", "choices": ["A) Proviene de multiplicar los segundos términos: $(-b) \\cdot (-b) = +b^2$.", "B) Por convención algebraica, el último término siempre es positivo.", "C) Porque un cuadrado nunca puede ser negativo en ningún caso.", "D) Porque los signos se alternan en todo polinomio."], "correct_answer": "A) Proviene de multiplicar los segundos términos: $(-b) \\cdot (-b) = +b^2$.", "solution_steps": "Al hacer FOIL, los 'Lasts' son $(-b)$ y $(-b)$. Menos por menos da más.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-CONC-3", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "¿Cuál es la principal diferencia estructural entre los desarrollos de $(a+b)^2$ y $(a-b)^2$?", "choices": ["A) El signo del doble producto central ($+2ab$ versus $-2ab$).", "B) El signo del término $b^2$.", "C) La cantidad de términos generados antes de reducir.", "D) En $(a-b)^2$ desaparece el término del medio."], "correct_answer": "A) El signo del doble producto central ($+2ab$ versus $-2ab$).", "solution_steps": "Ambos resultan en $a^2$ y $+b^2$. Solo cambia el signo del $2ab$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-REC-1", "semantic_id": sid, "item_group": "reconocimiento", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "Identifica cuál de las siguientes expresiones corresponde a la forma no reducida del cuadrado de un binomio diferencia $(m-n)^2$.", "choices": ["A) $m^2 - mn - mn + n^2$", "B) $m^2 - 2mn - n^2$", "C) $m^2 + mn - mn - n^2$", "D) $m^2 - n^2$"], "correct_answer": "A) $m^2 - mn - mn + n^2$", "solution_steps": "Al multiplicar sin agrupar, los términos cruzados son $-mn$ y $-mn$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-PROC-1", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Expande $(3p - 2q)^2$ usando su definición $(3p - 2q)(3p - 2q)$ y agrupando términos.", "choices": ["A) $9p^2 - 12pq + 4q^2$", "B) $9p^2 - 6pq + 4q^2$", "C) $9p^2 - 12pq - 4q^2$", "D) $9p^2 - 4q^2$"], "correct_answer": "A) $9p^2 - 12pq + 4q^2$", "solution_steps": "$(3p)(3p) = 9p^2$. Los cruzados son $(3p)(-2q) = -6pq$ y $(-2q)(3p) = -6pq$. Sumados dan $-12pq$. $(-2q)(-2q) = +4q^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-PROC-2", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Halla la suma de los coeficientes numéricos del trinomio resultante de expandir $(x - 5)^2$.", "choices": ["A) $16$", "B) $36$", "C) $10$", "D) $-14$"], "correct_answer": "A) $16$", "solution_steps": "El desarrollo es $1x^2 - 10x + 25$. La suma de coeficientes es $1 - 10 + 25 = 16$. (Truco: evaluar en $x=1 \\Rightarrow (1-5)^2 = (-4)^2 = 16$).", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-PROC-3", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Desarrolla el producto $(-x - y)^2$ pensándolo como la multiplicación por sí mismo.", "choices": ["A) $x^2 + 2xy + y^2$", "B) $-x^2 - 2xy - y^2$", "C) $x^2 - 2xy + y^2$", "D) $x^2 + y^2$"], "correct_answer": "A) $x^2 + 2xy + y^2$", "solution_steps": "$(-x)(-x) = x^2$. $(-x)(-y) = xy$. $(-y)(-x) = xy$. $(-y)(-y) = y^2$. Total: $x^2+2xy+y^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBD-PAES-1", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "media", "competencia": "M2", "prompt": "Sabiendo que $(a-b)^2 = 36$ y que $a^2+b^2=100$. ¿Cuál es el valor del producto $ab$?", "choices": ["A) $32$", "B) $64$", "C) $-32$", "D) $136$"], "correct_answer": "A) $32$", "solution_steps": "$(a-b)^2 = a^2 - 2ab + b^2 = 100 - 2ab$. Como sabemos que es igual a $36$, entonces $100 - 2ab = 36 \\Rightarrow 2ab = 64 \\Rightarrow ab = 32$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBD-PAES-2", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "La diferencia entre el desarrollo de $(x+a)^2$ y el desarrollo de $(x-a)^2$ corresponde exactamente a:", "choices": ["A) $4ax$", "B) $2ax$", "C) $0$", "D) $2x^2 + 2a^2$"], "correct_answer": "A) $4ax$", "solution_steps": "$(x^2 + 2ax + a^2) - (x^2 - 2ax + a^2) = x^2 - x^2 + 2ax - (-2ax) + a^2 - a^2 = 4ax$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBD-PAES-3", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Un alumno deduce geométricamente que el área de $(a-b)^2$ se puede formar al tomar un cuadrado de área $a^2$, quitarle dos rectángulos de área $ab$, pero al hacer esto, el cuadrado $b^2$ que se cruza fue restado dos veces, por lo que debe sumarlo de vuelta. Esta lógica geométrica prueba que:", "choices": ["A) La fórmula algebraica $(a-b)^2 = a^2 - 2ab + b^2$ tiene un respaldo geométrico lógico.", "B) El último término de la fórmula debería ser negativo, sumarlo es un error.", "C) Solamente aplica si $a$ y $b$ son números enteros.", "D) El área siempre será menor a cero."], "correct_answer": "A) La fórmula algebraica $(a-b)^2 = a^2 - 2ab + b^2$ tiene un respaldo geométrico lógico.", "solution_steps": "Restar las franjas $ab$ dos veces en un cuadrado remueve su intersección $b^2$ dos veces. Se debe devolver una para compensar, justificando el $+b^2$.", "paes_style": True})
+
+    # MAT.ALG.CUADRADO_BINOMIO.REGLA_SUMA
+    sid = "MAT.ALG.CUADRADO_BINOMIO.REGLA_SUMA"
+    exercises.append({"stable_id": "PN-CBRS-CONC-1", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "En la regla del cuadrado de binomio $(a+b)^2 = a^2 + 2ab + b^2$, la frase 'el doble producto' se refiere al término:", "choices": ["A) $2ab$", "B) $a^2$", "C) $b^2$", "D) $(a+b)^2$"], "correct_answer": "A) $2ab$", "solution_steps": "El doble producto es la multiplicación del primer por el segundo término, multiplicada por 2: $2ab$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-CONC-2", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Si vas a aplicar la regla rápida a $(3x + 5y)^2$, ¿cuál es la expresión correcta para calcular el doble del primero por el segundo?", "choices": ["A) $2 \\cdot (3x) \\cdot (5y)$", "B) $2 \\cdot (3x + 5y)$", "C) $2x \\cdot 3y$", "D) $(3x) \\cdot (5y)$"], "correct_answer": "A) $2 \\cdot (3x) \\cdot (5y)$", "solution_steps": "El primer término es $3x$ y el segundo es $5y$. El doble producto es $2(3x)(5y)$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-CONC-3", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "¿Por qué es útil conocer la regla del cuadrado del binomio en lugar de solo multiplicar paso a paso?", "choices": ["A) Porque permite obtener el resultado final de un solo paso, disminuyendo la probabilidad de errores aritméticos.", "B) Porque la multiplicación paso a paso a veces da resultados incorrectos.", "C) Porque es la única forma de expandir la expresión.", "D) Porque elimina la necesidad de conocer las leyes de signos."], "correct_answer": "A) Porque permite obtener el resultado final de un solo paso, disminuyendo la probabilidad de errores aritméticos.", "solution_steps": "Ambos métodos son matemáticamente correctos, pero la regla general ahorra tiempo y pasos (que propician fallos).", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-REC-1", "semantic_id": sid, "item_group": "reconocimiento", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "Identifica cuál de las siguientes expresiones es el desarrollo correcto de $(x+3)^2$.", "choices": ["A) $x^2 + 6x + 9$", "B) $x^2 + 3x + 9$", "C) $x^2 + 9$", "D) $x^2 + 6x + 6$"], "correct_answer": "A) $x^2 + 6x + 9$", "solution_steps": "$x^2 + 2(x)(3) + 3^2 = x^2 + 6x + 9$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-PROC-1", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Aplica la regla del cuadrado de binomio a la expresión $(2m + 5)^2$.", "choices": ["A) $4m^2 + 20m + 25$", "B) $2m^2 + 20m + 25$", "C) $4m^2 + 10m + 25$", "D) $4m^2 + 25$"], "correct_answer": "A) $4m^2 + 20m + 25$", "solution_steps": "$(2m)^2 + 2(2m)(5) + 5^2 = 4m^2 + 20m + 25$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-PROC-2", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Desarrolla $(3a^2 + 4b^3)^2$.", "choices": ["A) $9a^4 + 24a^2b^3 + 16b^6$", "B) $9a^4 + 12a^2b^3 + 16b^6$", "C) $3a^4 + 24a^2b^3 + 4b^6$", "D) $9a^4 + 16b^6$"], "correct_answer": "A) $9a^4 + 24a^2b^3 + 16b^6$", "solution_steps": "$(3a^2)^2 = 9a^4$. $2(3a^2)(4b^3) = 24a^2b^3$. $(4b^3)^2 = 16b^6$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-PROC-3", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Calcula el coeficiente del término central de $(6x + \frac{1}{3}y)^2$.", "choices": ["A) $4$", "B) $2$", "C) $6$", "D) $12$"], "correct_answer": "A) $4$", "solution_steps": "Doble producto: $2(6)(\frac{1}{3}) = 2(2) = 4$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRS-PAES-1", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "media", "competencia": "M2", "prompt": "Un número se escribe como el cuadrado del binomio $(x + 0.5)^2$. Al aplicar la regla, ¿qué trinomio se obtiene?", "choices": ["A) $x^2 + x + 0.25$", "B) $x^2 + 0.5x + 0.25$", "C) $x^2 + x + 0.5$", "D) $x^2 + 2x + 0.25$"], "correct_answer": "A) $x^2 + x + 0.25$", "solution_steps": "$x^2 + 2(0.5)x + (0.5)^2 = x^2 + 1x + 0.25$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBRS-PAES-2", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Si el área de un cuadrado está dada por la expresión $16x^2 + 40x + 25$, y sabemos que su lado es un binomio de la forma $(ax + b)$, ¿cuáles son los valores de $a$ y $b$ (si $a,b > 0$)?", "choices": ["A) $a=4, b=5$", "B) $a=16, b=25$", "C) $a=8, b=5$", "D) $a=4, b=25$"], "correct_answer": "A) $a=4, b=5$", "solution_steps": "Identificamos que $16x^2 = (4x)^2$ y $25 = 5^2$. Probamos si $2(4x)(5) = 40x$, y sí lo es. Por lo tanto, el lado es $4x + 5$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBRS-PAES-3", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Para facilitar el cálculo mental de $32^2$, un estudiante escribe $(30 + 2)^2$ y aplica la regla del cuadrado de binomio. El valor exacto de la suma de los tres términos resultantes es:", "choices": ["A) $1024$", "B) $964$", "C) $904$", "D) $1044$"], "correct_answer": "A) $1024$", "solution_steps": "$(30)^2 + 2(30)(2) + 2^2 = 900 + 120 + 4 = 1024$.", "paes_style": True})
+
+    # MAT.ALG.CUADRADO_BINOMIO.REGLA_DIFERENCIA
+    sid = "MAT.ALG.CUADRADO_BINOMIO.REGLA_DIFERENCIA"
+    exercises.append({"stable_id": "PN-CBRD-CONC-1", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "¿Qué término es el único que cambia de signo en la fórmula de $(a-b)^2$ comparado con $(a+b)^2$?", "choices": ["A) El término del doble producto.", "B) El primer término al cuadrado.", "C) El segundo término al cuadrado.", "D) Todos los términos."], "correct_answer": "A) El término del doble producto.", "solution_steps": "En la diferencia, el término central es $-2ab$. Los otros son $a^2$ y $+b^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-CONC-2", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Al aplicar la regla a $(5x - 3)^2$, el último término se calcula elevando el $3$ (o el $-3$) al cuadrado. ¿Por qué el resultado siempre se suma?", "choices": ["A) Porque cualquier número real al cuadrado, ya sea positivo o negativo, da resultado positivo.", "B) Porque la fórmula manda poner un más obligatoriamente, sin justificación matemática.", "C) Porque los signos negativos no se pueden elevar al cuadrado.", "D) Porque los dos primeros términos ya absorben la negatividad."], "correct_answer": "A) Porque cualquier número real al cuadrado, ya sea positivo o negativo, da resultado positivo.", "solution_steps": "$(-3)^2 = (-3)(-3) = +9$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-CONC-3", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Si expandimos $(A - B)^2$, el resultado es $A^2 - 2AB + B^2$. Si en esta fórmula reemplazamos $B$ por un número que ya trae su propio signo negativo (ej. $B = -4$), el término del doble producto quedará:", "choices": ["A) Positivo, porque el menos de la fórmula y el menos del número se multiplican.", "B) Negativo, porque la fórmula siempre exige un menos al medio.", "C) Cero.", "D) Imposible de determinar."], "correct_answer": "A) Positivo, porque el menos de la fórmula y el menos del número se multiplican.", "solution_steps": "$-2A(-4) = +8A$. Esto confirma que un 'doble negativo' es equivalente a sumar.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-REC-1", "semantic_id": sid, "item_group": "reconocimiento", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "Identifica cuál de los siguientes trinomios proviene de un cuadrado de diferencia.", "choices": ["A) $m^2 - 10m + 25$", "B) $m^2 + 10m + 25$", "C) $m^2 - 10m - 25$", "D) $m^2 - 25$"], "correct_answer": "A) $m^2 - 10m + 25$", "solution_steps": "El término central es negativo, y los extremos son cuadrados positivos. Corresponde a $(m-5)^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-PROC-1", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Desarrolla el cuadrado de la diferencia: $(7 - 2x)^2$.", "choices": ["A) $49 - 28x + 4x^2$", "B) $49 - 14x + 4x^2$", "C) $49 - 28x - 4x^2$", "D) $49 + 28x + 4x^2$"], "correct_answer": "A) $49 - 28x + 4x^2$", "solution_steps": "$7^2 = 49$. $-2(7)(2x) = -28x$. $(2x)^2 = +4x^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-PROC-2", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Aplica la regla de la diferencia a $(x^4 - 9)^2$.", "choices": ["A) $x^8 - 18x^4 + 81$", "B) $x^{16} - 18x^4 + 81$", "C) $x^8 - 81$", "D) $x^8 - 18x^4 - 81$"], "correct_answer": "A) $x^8 - 18x^4 + 81$", "solution_steps": "$(x^4)^2 = x^8$. $-2(x^4)(9) = -18x^4$. $(9)^2 = 81$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-PROC-3", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Calcula el desarrollo de $(ab - c^2)^2$.", "choices": ["A) $a^2b^2 - 2abc^2 + c^4$", "B) $ab^2 - 2abc^2 + c^4$", "C) $a^2b^2 - ac^2 + c^4$", "D) $a^2b^2 - 2abc^2 - c^4$"], "correct_answer": "A) $a^2b^2 - 2abc^2 + c^4$", "solution_steps": "$(ab)^2 = a^2b^2$. Doble producto: $-2(ab)(c^2) = -2abc^2$. Cuadrado: $(c^2)^2 = c^4$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRD-PAES-1", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "media", "competencia": "M2", "prompt": "¿Cuál es la expresión equivalente a $1 - (1 - x)^2$?", "choices": ["A) $2x - x^2$", "B) $x^2 - 2x$", "C) $x^2$", "D) $-x^2$"], "correct_answer": "A) $2x - x^2$", "solution_steps": "$(1-x)^2 = 1 - 2x + x^2$. Luego, $1 - (1 - 2x + x^2) = 1 - 1 + 2x - x^2 = 2x - x^2$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBRD-PAES-2", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Si $x - \\frac{1}{x} = 5$, entonces ¿cuál es el valor de $x^2 + \\frac{1}{x^2}$?", "choices": ["A) $27$", "B) $25$", "C) $23$", "D) $29$"], "correct_answer": "A) $27$", "solution_steps": "Elevando la ecuación al cuadrado: $(x - \\frac{1}{x})^2 = 25$. Desarrollando: $x^2 - 2(x)(\\frac{1}{x}) + \\frac{1}{x^2} = 25$. Como $x \\cdot \\frac{1}{x} = 1$, queda $x^2 - 2 + \\frac{1}{x^2} = 25$. Despejando: $x^2 + \\frac{1}{x^2} = 27$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBRD-PAES-3", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Calcula el valor de $98^2$ aplicando la técnica del cuadrado de binomio con números redondos.", "choices": ["A) $9604$", "B) $10004$", "C) $9996$", "D) $9804$"], "correct_answer": "A) $9604$", "solution_steps": "$98 = 100 - 2$. Entonces $(100 - 2)^2 = 10000 - 2(100)(2) + 4 = 10000 - 400 + 4 = 9600 + 4 = 9604$.", "paes_style": True})
+
+    # MAT.ALG.CUADRADO_BINOMIO.REPRESENTACION_AREA
+    sid = "MAT.ALG.CUADRADO_BINOMIO.REPRESENTACION_AREA"
+    exercises.append({"stable_id": "PN-CBRA-CONC-1", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "En la representación geométrica de $(a+b)^2$, las figuras interiores rectangulares que NO son cuadrados tienen como área conjunta:", "choices": ["A) $2ab$", "B) $a^2 + b^2$", "C) $ab$", "D) $a^2$"], "correct_answer": "A) $2ab$", "solution_steps": "Son dos rectángulos, uno de $a \\times b$ y otro de $b \\times a$. Sumados: $ab + ab = 2ab$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-CONC-2", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Geométricamente, ¿por qué es incorrecto decir que un cuadrado de lado $(x+y)$ tiene un área igual a $x^2 + y^2$?", "choices": ["A) Porque estaríamos ignorando los dos rectángulos de área $xy$ que completan el cuadrado mayor.", "B) Porque el área de un cuadrado siempre es un trinomio.", "C) Porque los cuadrados no pueden sumar sus áreas directamente.", "D) Porque $x$ e $y$ deben ser negativos."], "correct_answer": "A) Porque estaríamos ignorando los dos rectángulos de área $xy$ que completan el cuadrado mayor.", "solution_steps": "Las piezas $x^2$ y $y^2$ colocadas en esquinas opuestas dejan un 'espacio vacío' que corresponde a los dos rectángulos $xy$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-CONC-3", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "¿Cuántas piezas en total se obtienen de subdividir el lado del cuadrado en dos segmentos ($a$ y $b$) trazando ortogonales de lado a lado?", "choices": ["A) Cuatro piezas.", "B) Dos piezas.", "C) Tres piezas.", "D) Seis piezas."], "correct_answer": "A) Cuatro piezas.", "solution_steps": "Una cuadrícula de $2 \\times 2$ produce $4$ secciones: $a^2, b^2, ab$ y $ba$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-REC-1", "semantic_id": sid, "item_group": "reconocimiento", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Dada un área descompuesta en: un cuadrado de lado $3x$, un cuadrado de lado $5$, y dos rectángulos de lados $3x$ y $5$. ¿Qué producto notable representa el área total?", "choices": ["A) $(3x + 5)^2$", "B) $(3x)^2 + 5^2$", "C) $(3x + 5)(3x - 5)$", "D) $(15x)^2$"], "correct_answer": "A) $(3x + 5)^2$", "solution_steps": "Las piezas corresponden exactamente al desarrollo $a^2 + 2ab + b^2$ con $a=3x$ y $b=5$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-PROC-1", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Calcula el área de un cuadrado cuyo lado mide $(2x + 7)$ cm usando el desarrollo algebraico.", "choices": ["A) $(4x^2 + 28x + 49)$ cm$^2$", "B) $(4x^2 + 49)$ cm$^2$", "C) $(2x^2 + 14x + 49)$ cm$^2$", "D) $(4x^2 + 14x + 49)$ cm$^2$"], "correct_answer": "A) $(4x^2 + 28x + 49)$ cm$^2$", "solution_steps": "$(2x+7)^2 = 4x^2 + 2(2x)(7) + 49 = 4x^2 + 28x + 49$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-PROC-2", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Se tiene un terreno cuadrado de $100$ m$^2$. Si cada lado se aumenta en $x$ metros, la nueva área se expresa como:", "choices": ["A) $(x^2 + 20x + 100)$ m$^2$", "B) $(100 + x^2)$ m$^2$", "C) $(10 + x)^2$ m$^2$ (que equivale a $A$)", "D) A y C son correctas."], "correct_answer": "D) A y C son correctas.", "solution_steps": "Lado inicial es $10$. Lado nuevo $10+x$. Área nueva $(x+10)^2 = x^2+20x+100$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-PROC-3", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Las áreas interiores de un cuadrado suman $x^2 + 12x + 36$. ¿Cuánto mide el lado del cuadrado grande?", "choices": ["A) $x + 6$", "B) $x + 12$", "C) $x + 36$", "D) $2x + 6$"], "correct_answer": "A) $x + 6$", "solution_steps": "El trinomio es un cuadrado perfecto: $(x)^2 + 2(x)(6) + (6)^2 = (x+6)^2$. Su lado es $x+6$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBRA-PAES-1", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "media", "competencia": "M2", "prompt": "A un cuadrado de lado $a$ se le aumenta el lado en $b$ unidades. ¿En cuánto aumenta su área total?", "choices": ["A) En $b(2a + b)$", "B) En $b^2$", "C) En $a^2 + b^2$", "D) En $2ab$"], "correct_answer": "A) En $b(2a + b)$", "solution_steps": "Área nueva: $(a+b)^2 = a^2 + 2ab + b^2$. Área vieja: $a^2$. Aumento: $2ab + b^2 = b(2a+b)$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBRA-PAES-2", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Una piscina cuadrada tiene de lado $x$ metros. Se decide pavimentar un borde de $2$ metros de ancho por todo el contorno de la piscina. ¿Cuál es el área del borde pavimentado en función de $x$?", "choices": ["A) $8x + 16$", "B) $4x + 4$", "C) $8x + 4$", "D) $x^2 + 4x + 4$"], "correct_answer": "A) $8x + 16$", "solution_steps": "Lado de la piscina $x$. Lado total con borde: $x + 2 + 2 = x+4$. Área total $(x+4)^2 = x^2 + 8x + 16$. Restamos área piscina $x^2$, nos queda $8x + 16$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBRA-PAES-3", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "El esquema de un plano indica que una pieza cuadrada está compuesta de 4 sectores: oficina A de $16$ m$^2$, baño de $4$ m$^2$, y dos pasillos iguales. ¿Cuál es el área total de la pieza?", "choices": ["A) $36$ m$^2$", "B) $25$ m$^2$", "C) $20$ m$^2$", "D) $64$ m$^2$"], "correct_answer": "A) $36$ m$^2$", "solution_steps": "Cuadrados tienen lados $\\sqrt{16}=4$ y $\\sqrt{4}=2$. El lado total es $4+2=6$. Área total $6^2=36$. Comprobamos pasillos: cada uno mide $4 \\times 2 = 8$. Sumando: $16 + 4 + 8 + 8 = 36$.", "paes_style": True})
+
+    # MAT.ALG.CUADRADO_BINOMIO.SIMETRIA_DIFERENCIA
+    sid = "MAT.ALG.CUADRADO_BINOMIO.SIMETRIA_DIFERENCIA"
+    exercises.append({"stable_id": "PN-CBSD-CONC-1", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "La propiedad $(a-b)^2 = (b-a)^2$ se fundamenta en que:", "choices": ["A) Elevar al cuadrado una cantidad y su inverso aditivo da el mismo resultado.", "B) La resta es conmutativa.", "C) El cuadrado siempre elimina las variables.", "D) Es un caso especial que solo aplica a $a=b$."], "correct_answer": "A) Elevar al cuadrado una cantidad y su inverso aditivo da el mismo resultado.", "solution_steps": "$(b-a)$ es $-(a-b)$. Y un número negativo al cuadrado se vuelve positivo.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-CONC-2", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "¿En qué caso es falso que $(x-3) = (3-x)$?", "choices": ["A) En todos los casos excepto cuando $x = 3$.", "B) En todos los casos.", "C) Nunca es falso.", "D) Solo cuando $x$ es negativo."], "correct_answer": "A) En todos los casos excepto cuando $x = 3$.", "solution_steps": "Sin el cuadrado, son números opuestos. Solo $0 = -0$, que ocurre si $x=3$. Pero al cuadrado, SIEMPRE son iguales.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-CONC-3", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Si simplificas $-(x-y)^2$, ¿a qué expresión es equivalente?", "choices": ["A) $-(y-x)^2$", "B) $(-x+y)^2$", "C) $(y-x)^2$", "D) $-x^2 + y^2$"], "correct_answer": "A) $-(y-x)^2$", "solution_steps": "Como $(x-y)^2 = (y-x)^2$, al agregar un menos por fuera, sigue manteniendo la equivalencia: $-(x-y)^2 = -(y-x)^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-REC-1", "semantic_id": sid, "item_group": "reconocimiento", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "¿Cuál de las siguientes es una afirmación verdadera?", "choices": ["A) $(5-m)^2 = (m-5)^2$", "B) $(5-m)^2 = -(m-5)^2$", "C) $(5-m)^2 = (5+m)^2$", "D) $(5-m)^2 = - (5+m)^2$"], "correct_answer": "A) $(5-m)^2 = (m-5)^2$", "solution_steps": "Es la aplicación directa de la simetría de cuadrados.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-PROC-1", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Reduce la expresión: $(7-x)^2 + (x-7)^2$.", "choices": ["A) $2(x-7)^2$", "B) $0$", "C) $(14-2x)^2$", "D) $x^2 - 14x + 49$"], "correct_answer": "A) $2(x-7)^2$", "solution_steps": "Son la misma cantidad, así que sumarlas es como $A + A = 2A$. Es decir $2(x-7)^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-PROC-2", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Calcula el valor de la expresión fraccionaria $\\frac{(a-b)^2}{(b-a)^2}$ sabiendo que $a \neq b$.", "choices": ["A) $1$", "B) $-1$", "C) $0$", "D) Faltan datos."], "correct_answer": "A) $1$", "solution_steps": "Como el numerador y el denominador son iguales (simetría) y distintos de cero, su división es exactamente $1$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-PROC-3", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Expande $(-p + q)^2$.", "choices": ["A) $p^2 - 2pq + q^2$", "B) $-p^2 + 2pq + q^2$", "C) $p^2 + 2pq + q^2$", "D) $-p^2 - 2pq + q^2$"], "correct_answer": "A) $p^2 - 2pq + q^2$", "solution_steps": "$(-p+q)$ es lo mismo que $(q-p)$. Y $(q-p)^2 = q^2 - 2pq + p^2$, que ordenado da $p^2 - 2pq + q^2$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBSD-PAES-1", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "media", "competencia": "M2", "prompt": "Dada la expresión $(2x - 3y)^2 - (3y - 2x)^2$, ¿a qué es equivalente?", "choices": ["A) $0$", "B) $4x^2 - 9y^2$", "C) $8x^2 - 18y^2$", "D) $2(2x-3y)^2$"], "correct_answer": "A) $0$", "solution_steps": "Ambos términos son iguales por simetría, luego restar una cantidad de sí misma da cero.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBSD-PAES-2", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Si sabemos que $A^2 - B^2 = (A-B)(A+B)$. ¿Qué obtenemos al reemplazar $A = (x-y)$ y $B = (y-x)$?", "choices": ["A) $0$", "B) $4x^2 - 4y^2$", "C) $2x - 2y$", "D) $4xy$"], "correct_answer": "A) $0$", "solution_steps": "Notemos que $B = -(x-y) = -A$. Entonces $A^2 - (-A)^2 = A^2 - A^2 = 0$.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBSD-PAES-3", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "¿Qué expresión de las alternativas NO es un trinomio cuadrado perfecto equivalente a los demás?", "choices": ["A) $(a+b)^2$", "B) $(-a-b)^2$", "C) $(b+a)^2$", "D) $(a-b)^2$"], "correct_answer": "D) $(a-b)^2$", "solution_steps": "$(-a-b) = -(a+b)$, así que al cuadrado da $(a+b)^2$. $(b+a)$ es lo mismo. Pero $(a-b)^2$ difiere de ellas en el doble producto (es negativo).", "paes_style": True})
+
+    # MAT.ALG.CUADRADO_BINOMIO.OMISION_DOBLE_PRODUCTO
+    sid = "MAT.ALG.CUADRADO_BINOMIO.OMISION_DOBLE_PRODUCTO"
+    exercises.append({"stable_id": "PN-CBOD-CONC-1", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "basica", "competencia": "M1", "prompt": "El error común 'El sueño del estudiante principiante' consiste en suponer que el desarrollo de $(x+y)^2$ es:", "choices": ["A) $x^2 + y^2$", "B) $x^2 + 2xy + y^2$", "C) $2x + 2y$", "D) $x^2y^2$"], "correct_answer": "A) $x^2 + y^2$", "solution_steps": "Consiste en distribuir el exponente erróneamente omitiendo el doble producto.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-CONC-2", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "¿En qué única situación ocurre que $(a+b)^2$ es numéricamente igual a $a^2 + b^2$?", "choices": ["A) Cuando $a = 0$ o $b = 0$.", "B) Para todo par de números enteros.", "C) Nunca, es matemáticamente imposible.", "D) Solo cuando $a = b$."], "correct_answer": "A) Cuando $a = 0$ o $b = 0$.", "solution_steps": "Igualando ambas expresiones, tendríamos $a^2+2ab+b^2 = a^2+b^2 \\Rightarrow 2ab = 0$. Esto solo pasa si $a=0$ o $b=0$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-CONC-3", "semantic_id": sid, "item_group": "conceptuales", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "¿Cómo se prueba numéricamente de la forma más rápida a un compañero que $(3+5)^2$ NO es $3^2 + 5^2$?", "choices": ["A) Calculando $8^2 = 64$ y mostrando que es distinto de $9 + 25 = 34$.", "B) Aplicando las propiedades de los logaritmos.", "C) Despejando $x$ en una ecuación.", "D) No se puede probar con números, solo con letras."], "correct_answer": "A) Calculando $8^2 = 64$ y mostrando que es distinto de $9 + 25 = 34$.", "solution_steps": "Un simple contraejemplo numérico (evaluando antes de elevar) destruye la falsa propiedad.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-REC-1", "semantic_id": sid, "item_group": "reconocimiento", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "Identifica cuál desarrollo es correcto.", "choices": ["A) $(x-2)^2 = x^2 - 4x + 4$", "B) $(x-2)^2 = x^2 - 4$", "C) $(x-2)^2 = x^2 + 4$", "D) $(x-2)^2 = 2x - 4$"], "correct_answer": "A) $(x-2)^2 = x^2 - 4x + 4$", "solution_steps": "La alternativa A es la única que incluye el doble producto.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-PROC-1", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Si un estudiante resolvió $(x+4)^2 - (x^2+16) = 0$, pensando que el primer término era $x^2+16$. ¿Cuál es el verdadero valor de la resta anterior?", "choices": ["A) $8x$", "B) $0$", "C) $32$", "D) $8x + 32$"], "correct_answer": "A) $8x$", "solution_steps": "$(x^2+8x+16) - (x^2+16) = 8x$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-PROC-2", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "media", "competencia": "M1", "prompt": "¿Cuál es el 'término fantasma' o faltante que omite alguien que escribe $(2a-b)^2 = 4a^2 + b^2$?", "choices": ["A) $-4ab$", "B) $4ab$", "C) $-2ab$", "D) $2ab$"], "correct_answer": "A) $-4ab$", "solution_steps": "Falta el doble producto: $2(2a)(-b) = -4ab$.", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-PROC-3", "semantic_id": sid, "item_group": "procedimiento_basico", "format": "multiple_choice", "difficulty": "alta", "competencia": "M1", "prompt": "Evalúa numéricamente para $m=2, n=1$ la 'diferencia' entre la forma correcta y la forma incorrecta de calcular $(m+n)^2$. Es decir, calcula $(m+n)^2 - (m^2+n^2)$.", "choices": ["A) $4$", "B) $9$", "C) $5$", "D) $0$"], "correct_answer": "A) $4$", "solution_steps": "Forma correcta: $(2+1)^2 = 9$. Forma errónea: $2^2 + 1^2 = 5$. Diferencia: $9 - 5 = 4$. (Que justamente equivale a $2mn = 2(2)(1) = 4$).", "paes_style": False})
+    exercises.append({"stable_id": "PN-CBOD-PAES-1", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "media", "competencia": "M2", "prompt": "En una prueba, 4 alumnos desarrollan $\\sqrt{x^2+9}$. ¿Quién tiene la razón?", "choices": ["A) Pedro, quien dice que no se puede simplificar más (para todo $x$).", "B) Juan, quien dice que es $x+3$.", "C) Ana, quien dice que es $x-3$.", "D) Sofía, quien dice que es $\\pm (x+3)$."], "correct_answer": "A) Pedro, quien dice que no se puede simplificar más (para todo $x$).", "solution_steps": "Decir que es $x+3$ implica que $(x+3)^2 = x^2+9$, cayendo en el error de omisión del $6x$. No se puede sacar raíz distribuyéndola en la suma.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBOD-PAES-2", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Para que un trinomio $ax^2 + bx + c$ sea un desarrollo perfecto de un binomio al cuadrado, se debe cumplir que $b^2 = 4ac$. Si alguien comete el error de omisión, ¿cuál sería el valor que le asigna a $b$ inconscientemente?", "choices": ["A) $b = 0$", "B) $b = 1$", "C) $b = 2$", "D) $b = 2ac$"], "correct_answer": "A) $b = 0$", "solution_steps": "Al omitir el doble producto, la expresión es $x^2 + y^2$, es decir, el término lineal es cero.", "paes_style": True})
+    exercises.append({"stable_id": "PN-CBOD-PAES-3", "semantic_id": sid, "item_group": "tipo_paes", "format": "multiple_choice", "difficulty": "alta", "competencia": "M2", "prompt": "Considera la función $f(x) = (x+5)^2 - x^2 - 25$. Si un estudiante tiene el error de omisión de doble producto grabado en la mente, ¿qué gráfica dibujaría para esta función?", "choices": ["A) La gráfica del eje X ($f(x) = 0$).", "B) Una recta con pendiente $10$ que pasa por el origen ($f(x) = 10x$).", "C) Una parábola cóncava hacia arriba.", "D) Una recta horizontal en $y=25$."], "correct_answer": "A) La gráfica del eje X ($f(x) = 0$).", "solution_steps": "El estudiante cree que $(x+5)^2 = x^2+25$, por lo que $f(x) = (x^2+25) - x^2 - 25 = 0$. (La función real es $f(x)=10x$, pero nos preguntan qué dibujaría él).", "paes_style": True})
+
+
+    # Write files
+    for yaml_filename, yaml_content in YAMLS.items():
+        with open(f"docs/conocimiento/contenido/{yaml_filename}", "w", encoding="utf-8") as f:
+            f.write(yaml_content)
+    print(f"Creados {len(YAMLS)} yamls T2...")
+    
+    jsonl_filename = "docs/conocimiento/ejercicios/mat-alg-productos-notables-banco-gen-2.jsonl"
+    with open(jsonl_filename, "w", encoding="utf-8") as f:
+        for ex in exercises:
+            f.write(json.dumps(ex, ensure_ascii=False) + "\n")
+    print(f"{jsonl_filename} con {len(exercises)} ejercicios T2")
+
+if __name__ == "__main__":
+    generate_exercises()
