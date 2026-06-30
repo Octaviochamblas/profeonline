@@ -27,24 +27,24 @@ procedimiento: |
   4. Coloca el nuevo polinomio entre paréntesis y multiplícalo por el siguiente factor.
   5. Repite hasta agotar los factores.
 ejemplos:
-  - title: "Producto de tres binomios"
-    text: "Resuelve: $(x + 1)(x - 2)(x + 3)$"
-    steps:
+  - titulo: "Producto de tres binomios"
+    enunciado: "Resuelve: $(x + 1)(x - 2)(x + 3)$"
+    solucion_pasos:
       - "Paso 1: Multiplica los dos primeros: $(x + 1)(x - 2) = x^2 - 2x + x - 2 = (x^2 - x - 2)$."
       - "Paso 2: Multiplica el resultado por el tercero: $(x^2 - x - 2)(x + 3)$."
       - "Distribuye $x^2$: $x^3 + 3x^2$."
       - "Distribuye $-x$: $-x^2 - 3x$."
       - "Distribuye $-2$: $-2x - 6$."
       - "Paso 3: Suma todo y reduce: $x^3 + (3-1)x^2 + (-3-2)x - 6 = x^3 + 2x^2 - 5x - 6$."
-  - title: "Aprovechando productos notables"
-    text: "Calcula $(x - 5)(x + 5)(x + 1)$"
-    steps:
+  - titulo: "Aprovechando productos notables"
+    enunciado: "Calcula $(x - 5)(x + 5)(x + 1)$"
+    solucion_pasos:
       - "Los dos primeros forman una suma por su diferencia: $(x - 5)(x + 5) = (x^2 - 25)$."
       - "Multiplicamos el resultado por el tercer factor: $(x^2 - 25)(x + 1)$."
       - "Distribuyendo: $x^3 + x^2 - 25x - 25$."
-  - title: "Monomio por dos binomios"
-    text: "Desarrolla $2x(x + 2)(x - 1)$"
-    steps:
+  - titulo: "Monomio por dos binomios"
+    enunciado: "Desarrolla $2x(x + 2)(x - 1)$"
+    solucion_pasos:
       - "Podemos multiplicar los binomios primero: $(x + 2)(x - 1) = x^2 + x - 2$."
       - "Luego distribuimos el monomio: $2x(x^2 + x - 2) = 2x^3 + 2x^2 - 4x$."
       - "(También se pudo distribuir $2x$ en $(x+2)$ primero, dando el mismo resultado)."
@@ -79,22 +79,22 @@ procedimiento: |
   3. Agrupa y multiplica esos dos factores primero.
   4. Multiplica el resultado obtenido por el factor o factores restantes.
 ejemplos:
-  - title: "Agrupación estratégica numérica"
-    text: "Calcula $4 \\cdot (7a^2) \\cdot 25$"
-    steps:
+  - titulo: "Agrupación estratégica numérica"
+    enunciado: "Calcula $4 \\cdot (7a^2) \\cdot 25$"
+    solucion_pasos:
       - "Asociando $4$ y $25$: $(4 \\cdot 25) \\cdot 7a^2$."
       - "$100 \\cdot 7a^2$."
       - "$700a^2$."
       - "(Asociar $4 \\cdot 7a^2$ primero hubiera dado $28a^2$, luego multiplicar por $25$ es más difícil)."
-  - title: "Agrupación con polinomios"
-    text: "Desarrolla $-3(a - b)(a + b)$"
-    steps:
+  - titulo: "Agrupación con polinomios"
+    enunciado: "Desarrolla $-3(a - b)(a + b)$"
+    solucion_pasos:
       - "Asociamos los binomios, que forman una suma por su diferencia: $-3[(a - b)(a + b)]$."
       - "Resolvemos los binomios: $-3[a^2 - b^2]$."
       - "Distribuimos el $-3$: $-3a^2 + 3b^2$."
-  - title: "Verdadero o Falso: Distribución múltiple"
-    text: "Es correcto afirmar que $2(x+1)(x+3) = (2x+2)(2x+6)$."
-    steps:
+  - titulo: "Verdadero o Falso: Distribución múltiple"
+    enunciado: "Es correcto afirmar que $2(x+1)(x+3) = (2x+2)(2x+6)$."
+    solucion_pasos:
       - "En $(a \\cdot b \\cdot c)$, si asocias el primero con el segundo, tienes $(ab)c$."
       - "El $2$ solo debe multiplicar a UNO de los paréntesis. Al multiplicar a ambos, estás haciendo $2(x+1) \\cdot 2(x+3) = 4(x+1)(x+3)$, lo cual es el doble de lo pedido."
       - "La afirmación es Falsa."
@@ -130,25 +130,25 @@ procedimiento: |
   4. Repite el proceso para el siguiente nivel de agrupación.
   5. Continúa hasta que no queden signos de agrupación.
 ejemplos:
-  - title: "Paréntesis y corchetes"
-    text: "Desarrolla: $a[2a - 3(a - 2)]$"
-    steps:
+  - titulo: "Paréntesis y corchetes"
+    enunciado: "Desarrolla: $a[2a - 3(a - 2)]$"
+    solucion_pasos:
       - "Identificamos el paréntesis interno: $(a - 2)$."
       - "Distribuimos el $-3$: $a[2a - 3a + 6]$."
       - "Reducimos dentro del corchete ($2a - 3a = -a$): $a[-a + 6]$."
       - "Multiplicamos el exterior por el corchete: $-a^2 + 6a$."
-  - title: "Tres niveles de anidación"
-    text: "Calcula: $2\\{x - [y + 2(x - y)]\\}$"
-    steps:
+  - titulo: "Tres niveles de anidación"
+    enunciado: "Calcula: $2\\{x - [y + 2(x - y)]\\}$"
+    solucion_pasos:
       - "Paréntesis interno: $2(x - y) = 2x - 2y$."
       - "La expresión queda: $2\\{x - [y + 2x - 2y]\\}$."
       - "Reducimos el corchete ($y - 2y = -y$): $2\\{x - [2x - y]\\}$."
       - "El signo menos frente al corchete invierte signos: $2\\{x - 2x + y\\}$."
       - "Reducimos dentro de la llave: $2\\{-x + y\\}$."
       - "Multiplicamos finalmente: $-2x + 2y$."
-  - title: "Verdadero o Falso: Orden de resolución"
-    text: "En la expresión $3[x(x+1)]$, es incorrecto distribuir primero el $3$ hacia la $x$."
-    steps:
+  - titulo: "Verdadero o Falso: Orden de resolución"
+    enunciado: "En la expresión $3[x(x+1)]$, es incorrecto distribuir primero el $3$ hacia la $x$."
+    solucion_pasos:
       - "Por jerarquía, se podría resolver el corchete primero: $3[x^2+x] = 3x^2+3x$."
       - "Sin embargo, por asociatividad, $(3 \\cdot x)(x+1) = 3x(x+1) = 3x^2+3x$."
       - "Ambos caminos son válidos matemáticamente si solo hay multiplicación, pero el algoritmo estándar pide resolver desde adentro."
@@ -188,22 +188,22 @@ procedimiento: |
   5. Escribe todos los productos parciales obtenidos en una sola línea.
   6. Agrupa y suma (reduce) los términos semejantes.
 ejemplos:
-  - title: "Binomio por trinomio"
-    text: "Desarrolla $(2x - 1)(x^2 + 3x - 5)$"
-    steps:
+  - titulo: "Binomio por trinomio"
+    enunciado: "Desarrolla $(2x - 1)(x^2 + 3x - 5)$"
+    solucion_pasos:
       - "Distribuye el $2x$: $(2x)(x^2) + (2x)(3x) + (2x)(-5) = 2x^3 + 6x^2 - 10x$."
       - "Distribuye el $-1$: $(-1)(x^2) + (-1)(3x) + (-1)(-5) = -x^2 - 3x + 5$."
       - "Junta todo: $2x^3 + 6x^2 - 10x - x^2 - 3x + 5$."
       - "Reduce semejantes: $2x^3 + 5x^2 - 13x + 5$."
-  - title: "Conteo de términos (Verificación)"
-    text: "Si multiplicas $(a+b+c)(x+y+z)$, ¿cuántos términos obtienes antes de reducir?"
-    steps:
+  - titulo: "Conteo de términos (Verificación)"
+    enunciado: "Si multiplicas $(a+b+c)(x+y+z)$, ¿cuántos términos obtienes antes de reducir?"
+    solucion_pasos:
       - "El primer polinomio tiene 3 términos."
       - "El segundo polinomio tiene 3 términos."
       - "El número de productos es $3 \\times 3 = 9$ términos."
-  - title: "Polinomio por binomio"
-    text: "Calcula $(x^3 - x + 2)(x + 4)$"
-    steps:
+  - titulo: "Polinomio por binomio"
+    enunciado: "Calcula $(x^3 - x + 2)(x + 4)$"
+    solucion_pasos:
       - "También puedes distribuir el binomio sobre el trinomio: $(x^3)(x) + (x^3)(4) + (-x)(x) + (-x)(4) + (2)(x) + (2)(4)$."
       - "$x^4 + 4x^3 - x^2 - 4x + 2x + 8$."
       - "Resultado final: $x^4 + 4x^3 - x^2 - 2x + 8$."
@@ -235,21 +235,21 @@ procedimiento: |
   5. Repite para cada producto parcial de la distribución.
   6. Agrupa y reduce los términos cuyos exponentes literales y partes literales completas sean exactamente iguales.
 ejemplos:
-  - title: "Suma simple de exponentes"
-    text: "Multiplica $3x^a$ por $2x^{a+1}$"
-    steps:
+  - titulo: "Suma simple de exponentes"
+    enunciado: "Multiplica $3x^a$ por $2x^{a+1}$"
+    solucion_pasos:
       - "Multiplica coeficientes: $3 \\cdot 2 = 6$."
       - "Suma exponentes: $a + (a + 1) = 2a + 1$."
       - "Resultado: $6x^{2a+1}$."
-  - title: "Monomio por binomio"
-    text: "Desarrolla: $-2y^{n-1}(y^{n+2} - y^{n-3})$"
-    steps:
+  - titulo: "Monomio por binomio"
+    enunciado: "Desarrolla: $-2y^{n-1}(y^{n+2} - y^{n-3})$"
+    solucion_pasos:
       - "Primer término: $(-2)(1)y^{(n-1)+(n+2)} = -2y^{2n+1}$."
       - "Segundo término: $(-2)(-1)y^{(n-1)+(n-3)} = +2y^{2n-4}$."
       - "Resultado: $-2y^{2n+1} + 2y^{2n-4}$."
-  - title: "Verdadero o Falso: Multiplicación de exponentes literales"
-    text: "Al multiplicar $x^{2n}$ por $x^{3n}$, el resultado es $x^{6n^2}$."
-    steps:
+  - titulo: "Verdadero o Falso: Multiplicación de exponentes literales"
+    enunciado: "Al multiplicar $x^{2n}$ por $x^{3n}$, el resultado es $x^{6n^2}$."
+    solucion_pasos:
       - "La regla es sumar exponentes, no multiplicarlos."
       - "El exponente resultante debe ser $2n + 3n = 5n$."
       - "Por tanto, el resultado es $x^{5n}$ y la afirmación es Falsa."
@@ -294,9 +294,9 @@ procedimiento: |
   6. Suma las columnas verticalmente.
   7. Reasigna las variables en orden descendente, partiendo desde la suma de los grados mayores de los factores originales.
 ejemplos:
-  - title: "Polinomios completos"
-    text: "Multiplica $(3x^2 - x + 2)(2x - 1)$ usando coeficientes separados."
-    steps:
+  - titulo: "Polinomios completos"
+    enunciado: "Multiplica $(3x^2 - x + 2)(2x - 1)$ usando coeficientes separados."
+    solucion_pasos:
       - "Coeficientes P1: $3, -1, 2$."
       - "Coeficientes P2: $2, -1$."
       - "Multiplicando por $-1$:  $-3,   1, -2$."
@@ -310,9 +310,9 @@ ejemplos:
       - " -----------------"
       - " $6   -5    5   -2$"
       - "El grado máximo es $2+1=3$. Resultado: $6x^3 - 5x^2 + 5x - 2$."
-  - title: "Polinomio incompleto (requiere cero)"
-    text: "Multiplica $(x^3 - 2)(x + 3)$."
-    steps:
+  - titulo: "Polinomio incompleto (requiere cero)"
+    enunciado: "Multiplica $(x^3 - 2)(x + 3)$."
+    solucion_pasos:
       - "El primer polinomio no tiene grado 2 ni 1. Coeficientes: $1, 0, 0, -2$."
       - "Segundo polinomio: $1, 3$."
       - "Multiplicando por $3$:  $3, 0, 0, -6$."
@@ -362,9 +362,9 @@ procedimiento: |
   4. Rellena cada celda multiplicando la columna por su respectiva fila.
   5. Suma todos los contenidos de las celdas y reduce los términos semejantes para obtener el polinomio final.
 ejemplos:
-  - title: "Modelo con números positivos"
-    text: "Multiplica $(x + 5)(x + 3)$ usando el modelo de área."
-    steps:
+  - titulo: "Modelo con números positivos"
+    enunciado: "Multiplica $(x + 5)(x + 3)$ usando el modelo de área."
+    solucion_pasos:
       - "Columnas: $x$ y $+5$. Filas: $x$ y $+3$."
       - "Celda sup-izq ($x \\cdot x$): $x^2$"
       - "Celda sup-der ($5 \\cdot x$): $5x$"
@@ -372,9 +372,9 @@ ejemplos:
       - "Celda inf-der ($5 \\cdot 3$): $15$"
       - "Suma total: $x^2 + 5x + 3x + 15$."
       - "Reducción: $x^2 + 8x + 15$."
-  - title: "Modelo con signos negativos"
-    text: "Aplica el modelo para $(2x - 1)(x + 4)$"
-    steps:
+  - titulo: "Modelo con signos negativos"
+    enunciado: "Aplica el modelo para $(2x - 1)(x + 4)$"
+    solucion_pasos:
       - "Columnas: $2x$ y $-1$. Filas: $x$ y $+4$."
       - "Celda sup-izq: $(2x)(x) = 2x^2$"
       - "Celda sup-der: $(-1)(x) = -x$"
@@ -382,9 +382,9 @@ ejemplos:
       - "Celda inf-der: $(-1)(4) = -4$"
       - "Suma de términos: $2x^2 - x + 8x - 4$."
       - "Resultado: $2x^2 + 7x - 4$."
-  - title: "Verdadero o Falso: Diagonal semejante"
-    text: "En el modelo de área para $(ax + b)(cx + d)$, los términos de la diagonal que va desde abajo-izquierda hacia arriba-derecha siempre serán términos semejantes."
-    steps:
+  - titulo: "Verdadero o Falso: Diagonal semejante"
+    enunciado: "En el modelo de área para $(ax + b)(cx + d)$, los términos de la diagonal que va desde abajo-izquierda hacia arriba-derecha siempre serán términos semejantes."
+    solucion_pasos:
       - "Celda inf-izq: base $ax \\cdot$ altura $d = adx$."
       - "Celda sup-der: base $b \\cdot$ altura $cx = bcx$."
       - "Ambos términos contienen $x$ a la potencia $1$, por lo tanto, son semejantes."
@@ -418,9 +418,9 @@ procedimiento: |
   4. Extrae los términos de la tabla, sumando las diagonales si contienen términos semejantes.
   5. Escribe el polinomio final ordenado.
 ejemplos:
-  - title: "Trinomio por binomio"
-    text: "Multiplica $(x^2 - 3x + 2)(2x + 1)$ con cuadrícula."
-    steps:
+  - titulo: "Trinomio por binomio"
+    enunciado: "Multiplica $(x^2 - 3x + 2)(2x + 1)$ con cuadrícula."
+    solucion_pasos:
       - "Tabla de $3 \\times 2$."
       - "Columnas: $x^2$, $-3x$, $+2$. Filas: $2x$, $+1$."
       - "Fila 1 (por $2x$): $2x^3$, $-6x^2$, $+4x$."
@@ -428,9 +428,9 @@ ejemplos:
       - "Diagonal $x^2$: $-6x^2 + x^2 = -5x^2$."
       - "Diagonal $x$: $4x - 3x = x$."
       - "Polinomio final: $2x^3 - 5x^2 + x + 2$."
-  - title: "Con variables distintas"
-    text: "Resuelve $(a + b - c)(a + c)$"
-    steps:
+  - titulo: "Con variables distintas"
+    enunciado: "Resuelve $(a + b - c)(a + c)$"
+    solucion_pasos:
       - "Columnas: $a$, $b$, $-c$. Filas: $a$, $c$."
       - "Fila 1 (por $a$): $a^2$, $ab$, $-ac$."
       - "Fila 2 (por $c$): $ac$, $bc$, $-c^2$."
@@ -464,21 +464,21 @@ procedimiento: |
   3. Agrega los productos faltantes: $A \\cdot D$ y $B \\cdot C$.
   4. Suma todo y reduce para obtener el polinomio correcto.
 ejemplos:
-  - title: "Diagnóstico del error"
-    text: "Identifica el error: $(3x + 1)(x - 5) = 3x^2 - 5$."
-    steps:
+  - titulo: "Diagnóstico del error"
+    enunciado: "Identifica el error: $(3x + 1)(x - 5) = 3x^2 - 5$."
+    solucion_pasos:
       - "El error es la distributiva incompleta: el estudiante hizo $(3x)(x)$ y $(1)(-5)$."
       - "Faltan los cruces: $(3x)(-5) = -15x$ y $(1)(x) = x$."
       - "El resultado correcto es $3x^2 - 14x - 5$."
-  - title: "Corrección paso a paso"
-    text: "Si un alumno dice que $(m^2 + n)(m - n) = m^3 - n^2$, ¿qué términos le faltan?"
-    steps:
+  - titulo: "Corrección paso a paso"
+    enunciado: "Si un alumno dice que $(m^2 + n)(m - n) = m^3 - n^2$, ¿qué términos le faltan?"
+    solucion_pasos:
       - "Desarrollamos completo: $(m^2)(m) + (m^2)(-n) + (n)(m) + (n)(-n)$."
       - "Resultado correcto: $m^3 - m^2n + mn - n^2$."
       - "Al alumno le faltaron los términos cruzados: $-m^2n + mn$."
-  - title: "Verdadero o Falso: Cantidad de términos"
-    text: "El error de distributiva incompleta en binomios produce un resultado con dos términos, mientras que la expansión correcta genera siempre cuatro términos antes de reducir."
-    steps:
+  - titulo: "Verdadero o Falso: Cantidad de términos"
+    enunciado: "El error de distributiva incompleta en binomios produce un resultado con dos términos, mientras que la expansión correcta genera siempre cuatro términos antes de reducir."
+    solucion_pasos:
       - "La distributiva incompleta calcula $ac + bd$, que son dos términos."
       - "La expansión correcta de binomio $\\times$ binomio calcula $ac + ad + bc + bd$, que son cuatro términos."
       - "La afirmación es Verdadera."

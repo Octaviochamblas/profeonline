@@ -15,9 +15,9 @@ def generate_yaml(semantic_id, data):
                 f.write(f'{key}:\n')
                 for item in value:
                     if isinstance(item, dict):
-                        f.write(f'  - title: "{item["title"]}"\n')
-                        f.write(f'    text: "{item["text"]}"\n')
-                        f.write(f'    steps:\n')
+                        f.write(f'  - titulo: "{item["title"]}"\n')
+                        f.write(f'    enunciado: "{item["text"]}"\n')
+                        f.write(f'    solucion_pasos:\n')
                         for step in item["steps"]:
                             f.write(f'      - "{step}"\n')
                     else:
