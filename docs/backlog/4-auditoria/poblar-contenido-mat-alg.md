@@ -1,11 +1,18 @@
 # Poblar contenido: MAT.ALG — Álgebra y Funciones
 
 ## Metadata
-- **Estado:** listo para ejecución
-- **Dueño actual:** Antigravity
+- **Estado:** auditoría parcial completada para B0301–B0308; B0309–B0315 pendientes
+- **Dueño actual:** Codex (auditoría B0301–B0308 cerrada)
 - **Scope:** 698 recursos — 15 bloques (B0301–B0315)
 - **Rama sugerida:** `content/mat-alg`
 - **Fecha:** 2026-06-28
+
+### Avance auditado — 2026-07-01
+
+- B0301–B0308: `300/300` recursos con estructura completa y contenido cargado.
+- B0309: `65/65` recursos poblados con YAMLs y JSONL ejercicios.
+- B0308 tandas 3–7: `350/350` ejercicios placeholder reemplazados sobre sus IDs originales.
+- Cobertura restante del alcance global: B0310–B0315.
 
 ---
 

@@ -8,9 +8,7 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| Codex | codex/refine-mat-alg-b0301-b0308 | 2026-07-01 20:25 | 🔴 trabajando |
-| Antigravity | content/mat-alg-b0309 | 2026-07-01 11:13 | 🔴 trabajando |
-
+| — | — | — | 🟢 libre |
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
