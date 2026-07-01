@@ -167,14 +167,33 @@ estado: publicado    # o borrador
 |---|---|---|
 | `semantic_id` | Sí | Debe existir en la DB (`KnowledgeNode`). Formato: `MAT.NUM.BLOQUE.RECURSO` |
 | `objetivo` | Sí | Una frase. Empieza con verbo infinitivo ("Identificar…", "Calcular…"). |
-| `introduccion` | Sí | Lenguaje de 10 años. Sin LaTeX pesado. Usa analogías del mundo real. |
+| `introduccion` | Sí | Lenguaje accesible y concreto. Las analogías son opcionales y solo se usan si aclaran el concepto; nunca sustituyen la definición matemática. |
 | `resumen` | Sí | Tarjeta de repaso de 2-3 oraciones. Debe explicar qué es el concepto y cómo se aplica. |
-| `explicacion` | Sí | Markdown + LaTeX. Puede ser denso — es para el alumno que quiere profundidad. |
+| `explicacion` | Sí | Markdown + LaTeX. Debe comenzar con una definición formal y profesional; después desarrolla una interpretación didáctica, ejemplos y propiedades. |
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. |
 | `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (abiertos) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. |
 | `errores_frecuentes` | Sí | **Exactamente 5**. Son las afirmaciones de la sección "Ejemplos Verdadero/Falso". Siempre falsas. |
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
+
+#### Calidad editorial obligatoria
+
+- La estructura común no autoriza prosa repetida: objetivo, introducción, resumen,
+  explicación, ejemplos y errores deben responder al concepto específico del recurso.
+- Está prohibido publicar marcadores como `Problema modelo`, `Opción 1`,
+  `algoritmo correspondiente`, `Ejercicio número`, `Ejemplo ilustrativo` o referencias
+  al `semantic_id` como si fueran contenido para el alumno.
+- La explicación sigue el orden **definición formal → desarrollo didáctico**. El tono
+  didáctico puede ser cercano, pero evita magia, monstruos, explosiones, personajes o
+  metáforas que deformen el significado matemático.
+- La **definición formal** enuncia el concepto de manera general mediante variables,
+  condiciones, propiedades o cuantificadores. No contiene ejercicios resueltos, valores
+  particulares ni frases como `por ejemplo`; todo caso concreto pertenece al desarrollo
+  didáctico o a la sección de ejemplos.
+- Los títulos de ejemplos describen el caso trabajado. No se usan títulos genéricos
+  como `Ejemplo 1`, `Ejercicio 2` o `Caso 3`.
+- Antes de declarar un bloque completo se auditan archivos vacíos, campos ausentes,
+  duplicados exactos, placeholders y la cuota estructural de cada recurso.
 
 ### Reglas de render que NO se pueden romper
 
@@ -191,6 +210,7 @@ mal formadas.
 | `resumen`, `explicacion`, `procedimiento`, `ejemplos`, `errores_frecuentes` | Toda fórmula, operación o notación matemática debe ir delimitada con `$...$` o `$$...$$`. | `$a^2 + 3a - 1$` | `a^2 + 3a - 1` |
 | `ejemplos.tipo_a.enunciado` | Si el enunciado contiene una operación o expresión, esa parte debe ir en LaTeX inline. | `Suma: $(2a^3 - 5) + (a^2 + 3a + 2)$.` | `Suma: (2a^3 - 5) + (a^2 + 3a + 2).` |
 | `ejemplos.solucion_pasos` | Cada paso con cálculo debe llevar sus fragmentos matemáticos en `$...$`. | `Resultado: $2a^3 + a^2 + 3a - 3$.` | `Resultado: 2a^3 + a^2 + 3a - 3.` |
+| `ejemplos` | Usar exclusivamente el esquema vigente: `titulo`, `enunciado`, `respuesta`, `solucion_pasos`. No usar claves heredadas `title`, `text` ni `steps`, porque rompen el render en `learn`. | `titulo: "Producto con dos variables"` | `title: "Example"`, `text: ...`, `steps: ...` |
 | contenido general | No usar Markdown vacío o decorativo. Toda negrita debe contener una expresión útil. | `**Términos semejantes**` | `** **`, `** ""` |
 
 ### Observaciones operativas importantes
@@ -207,7 +227,7 @@ mal formadas.
 
 ```yaml
 # TIPO A — Pregunta abierta
-- titulo: "Ejemplo 1"          # Siempre "Ejemplo N" para los abiertos
+- titulo: "Suma de polinomios con término faltante"  # Describe el caso; nunca "Ejemplo N"
   enunciado: "La pregunta real que el alumno lee y piensa."
   solucion_pasos: [...]        # Se oculta hasta hacer clic en "Ver solución"
 
