@@ -8,11 +8,18 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🔨 Antigravity | content/mat-alg-b0304 | 2026-06-30 14:02 | 🔴 trabajando |
+| Codex | codex/refine-mat-alg-b0301-b0308 | 2026-07-01 20:25 | 🔴 trabajando |
+| Antigravity | content/mat-alg-b0309 | 2026-07-01 11:13 | 🔴 trabajando |
 
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Auditoría y reconstrucción MAT.ALG B0301–B0308 — COMPLETA 🟢 (2026-07-01, rama `codex/refine-mat-alg-b0301-b0308`):**
+  Se recuperaron 115 YAML truncados, se redactaron 17 recursos ausentes y se normalizaron los 300 recursos
+  con definición formal antes del desarrollo didáctico, 2 ejemplos abiertos, 2 Sí/No y 5 V/F. Se eliminaron
+  placeholders y duplicados exactos. Los 350 ejercicios placeholder de B0308 tandas 3–7 fueron reemplazados
+  conservando sus `stable_id`. Base local: 300/300 contenidos; 35/35 recursos reconstruidos con 10 ejercicios.
+  `check`, 47 tests focalizados y QA en navegador de una ficha por bloque, OK.
 - **Población MAT.GEO B0401 — ÁNGULOS CONSTRUIDO 🟡 (2026-06-30, rama `content/mat-num-b0205`):**
   Bloque `04.01` completado con `53/53` recursos y `530` ejercicios publicados (`10` por recurso).
   Se generaron `53` YAML + `11` JSONL con contenido contextualizado por recurso; auditoría local:
