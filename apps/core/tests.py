@@ -391,6 +391,27 @@ class MarkdownSecurityFilterTests(TestCase):
 
         self.assertIn('<a href="https://example.com/guia">Guia</a>', rendered)
 
+    def test_markdown_filter_allows_static_images(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context({"content": "![Ángulo agudo](/static/img/geometria/angulos/agudo.svg)"})
+        )
+
+        self.assertIn('<img alt="Ángulo agudo" src="/static/img/geometria/angulos/agudo.svg">', rendered)
+
+    def test_markdown_filter_strips_javascript_image_src(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context({"content": '<img src="javascript:alert(1)" onerror="alert(1)">'})
+        )
+
+        self.assertNotIn("javascript:", rendered)
+        self.assertNotIn("onerror", rendered)
+
     def test_markdown_filter_preserves_latex_inline_delimiters(self):
         from django.template import Template, Context
         template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
