@@ -4,7 +4,7 @@ import re
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError, transaction
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -158,6 +158,47 @@ def _build_practice_bank(node):
     ]
 
 
+def _build_resource_navigation(request, node):
+    """Recursos hermanos anterior/siguiente según el orden editorial."""
+    if node.parent_id is None:
+        return {"previous_resource": None, "next_resource": None}
+
+    siblings = KnowledgeNode.objects.filter(
+        parent_id=node.parent_id,
+        node_type=KnowledgeNode.NODE_RECURSO,
+    )
+    if not request.user.is_staff:
+        siblings = siblings.filter(is_published=True)
+
+    previous_node = (
+        siblings.filter(
+            Q(order__lt=node.order)
+            | Q(order=node.order, code__lt=node.code)
+        )
+        .order_by("-order", "-code")
+        .first()
+    )
+    next_node = (
+        siblings.filter(
+            Q(order__gt=node.order)
+            | Q(order=node.order, code__gt=node.code)
+        )
+        .order_by("order", "code")
+        .first()
+    )
+    parent_url = _node_url(node.parent)
+
+    def item(neighbor):
+        if neighbor is None:
+            return None
+        return {"node": neighbor, "url": f"{parent_url}{neighbor.slug}/"}
+
+    return {
+        "previous_resource": item(previous_node),
+        "next_resource": item(next_node),
+    }
+
+
 def _recurso_view(request, node, breadcrumbs, prerequisites):
     content = getattr(node, "content", None)
     noindex = not node.is_published or content is None or content.is_draft
@@ -174,6 +215,8 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
         else:
             other_media.append(m)
 
+    navigation = _build_resource_navigation(request, node)
+
     return render(
         request,
         "learn/node_detail.html",
@@ -186,6 +229,7 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "prerequisites": prerequisites,
             "breadcrumbs": breadcrumbs,
             "noindex": noindex,
+            **navigation,
         },
     )
 

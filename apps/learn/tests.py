@@ -243,6 +243,85 @@ class NodeDetailViewTests(TestCase):
         self.assertNotContains(response, "Editar contenido")
 
 
+class ResourceNavigationTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.recurso.order = 2
+        self.recurso.save(update_fields=["order"])
+        self.url = self._url(self.recurso)
+
+    def _resource(self, name, code, order, published=True):
+        return KnowledgeNode.objects.create(
+            semantic_id=f"MAT.NUM.ENTEROS_CONJUNTO.{name.upper().replace(' ', '_')}",
+            code=code,
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            axis_abbr="NUM",
+            name=name,
+            parent=self.tema,
+            order=order,
+            is_published=published,
+        )
+
+    def _url(self, resource):
+        return (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{resource.slug}/"
+        )
+
+    def test_middle_resource_links_to_previous_and_next(self):
+        previous = self._resource("Anterior ordenado", "02.01.01.00", 1)
+        next_resource = self._resource("Siguiente ordenado", "02.01.01.02", 3)
+
+        response = self.client.get(self.url)
+
+        self.assertContains(response, "Recurso anterior")
+        self.assertContains(response, previous.name)
+        self.assertContains(response, self._url(previous))
+        self.assertContains(response, "Recurso siguiente")
+        self.assertContains(response, next_resource.name)
+        self.assertContains(response, self._url(next_resource))
+
+    def test_same_order_uses_code_as_tiebreaker(self):
+        previous = self._resource("Anterior por código", "02.01.01.00", 2)
+        next_resource = self._resource("Siguiente por código", "02.01.01.02", 2)
+
+        response = self.client.get(self.url)
+
+        self.assertContains(response, previous.name)
+        self.assertContains(response, next_resource.name)
+
+    def test_first_resource_only_shows_next_link(self):
+        self.recurso.order = 0
+        self.recurso.save(update_fields=["order"])
+        next_resource = self._resource("Solo siguiente", "02.01.01.02", 1)
+
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, "Recurso anterior")
+        self.assertContains(response, "Recurso siguiente")
+        self.assertContains(response, next_resource.name)
+
+    def test_anonymous_skips_unpublished_neighbor(self):
+        visible = self._resource("Anterior visible", "02.01.01.00", 0)
+        hidden = self._resource("Anterior privado", "02.01.01.02", 1, published=False)
+
+        response = self.client.get(self.url)
+
+        self.assertContains(response, visible.name)
+        self.assertNotContains(response, hidden.name)
+
+    def test_staff_can_navigate_to_unpublished_neighbor(self):
+        hidden = self._resource("Anterior privado", "02.01.01.00", 1, published=False)
+        staff = User.objects.create_user("nav-staff", password="pass", is_staff=True)
+        self.client.force_login(staff)
+
+        response = self.client.get(self.url)
+
+        self.assertContains(response, hidden.name)
+        self.assertContains(response, self._url(hidden))
+
+
 class NodeContentEditorViewTests(TestCase):
     def setUp(self):
         self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()

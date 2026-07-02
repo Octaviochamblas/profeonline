@@ -11,6 +11,9 @@
 <!-- Ejemplo: | ðŸ”¨ Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | ðŸ”´ trabajando | -->
 
 ## En curso ahora
+- **Navegación anterior/siguiente entre recursos — CONSTRUIDA (2026-07-02, rama `codex/navegacion-recursos`):**
+  Cada ficha enlaza sus vecinos publicados del mismo tema por `order`, `code`; staff también puede recorrer
+  borradores. Extremos y responsive verificados. 17 tests focalizados, `check`, migraciones y QA navegador, OK.
 - **Editor manual desde cada recurso — CONSTRUIDO (2026-07-01, rama `codex/editor-manual-recursos`):**
   Modal inline accesible para editar todo `NodeContent`, con listas visuales reordenables, CSRF, validación,
   control de concurrencia y protección de importaciones mediante `manual_override` + `--force-manual`.

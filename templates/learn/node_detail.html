@@ -333,6 +333,37 @@
 .ex-catbtn.cat-ok    { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d !important; font-weight:700; }
 .ex-catbtn.cat-err   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c !important; }
 .ex-catbtn:disabled  { cursor:default; opacity:.85; }
+
+/* ── Navegación secuencial entre recursos ─────────────────── */
+.learn-resource-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .8rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+.learn-resource-nav__link {
+  display: grid;
+  gap: .25rem;
+  min-width: 0;
+  padding: .85rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #fff;
+  color: #1e293b;
+  text-decoration: none;
+  box-shadow: 0 2px 7px rgb(15 23 42 / 6%);
+}
+.learn-resource-nav__link:hover { border-color: #4a7cf6; background: #f8faff; }
+.learn-resource-nav__link:focus-visible { outline: 3px solid rgb(74 124 246 / 30%); outline-offset: 2px; }
+.learn-resource-nav__link--next { grid-column: 2; text-align: right; }
+.learn-resource-nav__direction { color: #4a7cf6; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.learn-resource-nav__name { overflow-wrap: anywhere; font-size: .92rem; line-height: 1.35; }
+@media (max-width: 540px) {
+  .learn-resource-nav { grid-template-columns: 1fr; }
+  .learn-resource-nav__link--next { grid-column: auto; }
+}
 </style>
 {% endblock %}
 
@@ -634,6 +665,23 @@
         </details>
         {% endfor %}
     </section>
+    {% endif %}
+
+    {% if previous_resource or next_resource %}
+    <nav class="learn-resource-nav" aria-label="Navegación entre recursos">
+        {% if previous_resource %}
+        <a class="learn-resource-nav__link learn-resource-nav__link--previous" href="{{ previous_resource.url }}">
+            <span class="learn-resource-nav__direction">← Recurso anterior</span>
+            <strong class="learn-resource-nav__name">{{ previous_resource.node.name }}</strong>
+        </a>
+        {% endif %}
+        {% if next_resource %}
+        <a class="learn-resource-nav__link learn-resource-nav__link--next" href="{{ next_resource.url }}">
+            <span class="learn-resource-nav__direction">Recurso siguiente →</span>
+            <strong class="learn-resource-nav__name">{{ next_resource.node.name }}</strong>
+        </a>
+        {% endif %}
+    </nav>
     {% endif %}
 
     <script nonce="{{ csp_nonce }}">
