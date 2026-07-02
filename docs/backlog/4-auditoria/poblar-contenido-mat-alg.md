@@ -1,10 +1,11 @@
 # Poblar contenido: MAT.ALG — Álgebra y Funciones
 
 ## Metadata
-- **Estado:** auditoría parcial completada para B0301–B0308; B0309–B0315 pendientes
-- **Dueño actual:** Codex (auditoría B0301–B0308 cerrada)
+- **Estado:** `698/698` recursos poblados — MAT.ALG.B0301–B0315 completo. B0301–B0308 auditados por Codex;
+  B0309–B0315 pendientes de auditoría.
+- **Dueño actual:** por asignar auditoría de B0309–B0315 (Codex)
 - **Scope:** 698 recursos — 15 bloques (B0301–B0315)
-- **Rama sugerida:** `content/mat-alg`
+- **Rama:** `content/mat-alg-b0309`
 - **Fecha:** 2026-06-28
 
 ### Avance auditado — 2026-07-01
@@ -12,7 +13,17 @@
 - B0301–B0308: `300/300` recursos con estructura completa y contenido cargado.
 - B0309: `65/65` recursos poblados con YAMLs y JSONL ejercicios.
 - B0308 tandas 3–7: `350/350` ejercicios placeholder reemplazados sobre sus IDs originales.
-- Cobertura restante del alcance global: B0310–B0315.
+
+### Cierre del scope global — 2026-07-02
+
+- **B0310–B0315 poblados: `291/291` recursos** (B0310 Funciones 82, B0311 Ec. 2º grado 41, B0312 Func. Cuadrática 47,
+  B0313 Func. Exp/Log 54, B0314 Func. Potencia 50, B0315 Func. Trigonométrica 59), vía `/loop` autónomo.
+- **MAT.ALG.B0301–B0315 queda 100% poblado: `698/698` recursos.** Detalle de B0313–B0315 (143 recursos, última
+  tanda de esta sesión) en `reportes-sesion/2026-07-02.md`.
+- `check` OK y suite completa `python manage.py test` — 617 tests OK (1 skip), sin regresiones, verificada al
+  cerrar cada bloque completo (B0313, B0314, B0315).
+- **Pendiente:** auditoría de Codex para B0309–B0315 (B0301–B0308 ya auditados) y apertura del PR de
+  `content/mat-alg-b0309` a `main`.
 
 ---
 

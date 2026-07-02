@@ -11,6 +11,14 @@
 <!-- Ejemplo: | ðŸ”¨ Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | ðŸ”´ trabajando | -->
 
 ## En curso ahora
+- **MAT.ALG completo (B0301–B0315) — 143 recursos finales poblados 🟢 (2026-07-02, rama `content/mat-alg-b0309`):**
+  Cierre de los últimos 3 bloques del eje Álgebra y Funciones vía `/loop` autónomo: B0313 Func. Exponencial/Log
+  (54/54), B0314 Función Potencia (50/50), B0315 Función Trigonométrica (59/59). Con esto **los 698 recursos de
+  MAT.ALG.B0301–B0315 quedan 100% poblados**. 16 commits (uno por tanda de subtema), ~1.430 ejercicios nuevos en
+  el banco (10 por recurso: 3 conceptuales, 1 reconocimiento, 3 procedimiento_básico, 3 tipo_PAES), `check` OK en
+  cada tanda y **suite completa `python manage.py test` — 617 tests OK (1 skip), sin regresiones** (verificada al
+  cerrar B0313, B0314 y B0315). Detalle en `reportes-sesion/2026-07-02.md`. **Pendiente: abrir PR a `main` y mover
+  la rama a `4-auditoria/`** para revisión de Codex (queda para el 🧑 confirmar el PR).
 - **Navegación anterior/siguiente entre recursos — CONSTRUIDA (2026-07-02, rama `codex/navegacion-recursos`):**
   Cada ficha enlaza sus vecinos publicados del mismo tema por `order`, `code`; staff también puede recorrer
   borradores. Extremos y responsive verificados. 17 tests focalizados, `check`, migraciones y QA navegador, OK.
