@@ -12,9 +12,10 @@
 
 ## En curso ahora
 - **Editor manual desde cada recurso — CONSTRUIDO (2026-07-01, rama `codex/editor-manual-recursos`):**
-  Los usuarios con permiso de cambio/alta de `NodeContent` ven una acción en la ficha para editar el contenido
-  existente o crearlo con el nodo preseleccionado. Se advierte que una carga YAML posterior puede reemplazar la
-  edición en base de datos. 12 tests focalizados, `check` y `makemigrations --check --dry-run`, OK.
+  Modal inline accesible para editar todo `NodeContent`, con listas visuales reordenables, CSRF, validación,
+  control de concurrencia y protección de importaciones mediante `manual_override` + `--force-manual`.
+  36 tests focalizados, `check --deploy`, migraciones y QA real escritorio/móvil, OK. La suite global excedió
+  dos veces el límite local (2 y 5 min) sin emitir fallos; queda para CI/auditoría.
 - **Auditoría de `explicacion` (formal+didáctico) MAT.ALG B0301–B0309 — COMPLETA 🟢 (2026-07-01, rama `content/mat-alg-b0309`):**
   Auditados los 365 recursos de los 9 bloques verificando "Definición formal" + "Desarrollo didáctico". Corregidos
   215 recursos con viñeta duplicada al final de `procedimiento` (artefacto de generación), 2 recursos de B0309 con

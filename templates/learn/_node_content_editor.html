@@ -1,0 +1,146 @@
+<aside class="learn-staff-editor" aria-label="Edición del contenido">
+    <button type="button" class="btn btn-secondary" data-content-editor-open>
+        {% if content %}Editar contenido{% else %}Crear contenido{% endif %}
+    </button>
+    <p class="learn-staff-editor__note">La edición manual quedará protegida frente a las importaciones YAML normales.</p>
+</aside>
+
+<dialog class="content-editor" data-content-editor-dialog aria-labelledby="content-editor-title">
+    <form class="content-editor__form" data-content-editor-form data-endpoint="{% url 'learn:edit_node_content' node.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="updated_at" value="{% if content %}{{ content.updated_at|date:'c' }}{% endif %}">
+
+        <header class="content-editor__header">
+            <div>
+                <span class="content-editor__eyebrow">Edición manual</span>
+                <h2 id="content-editor-title">{{ node.name }}</h2>
+            </div>
+            <button type="button" class="content-editor__close" data-content-editor-close aria-label="Cerrar editor">&times;</button>
+        </header>
+
+        <div class="content-editor__errors" data-content-editor-errors role="alert" aria-live="assertive" hidden></div>
+
+        <div class="content-editor__body">
+            <p class="content-editor__help">Puedes usar Markdown y LaTeX, por ejemplo <code>$x^2$</code>.</p>
+
+            <section class="content-editor__section" aria-labelledby="editor-main-heading">
+                <h3 id="editor-main-heading">Contenido principal</h3>
+                <label>Objetivo<textarea name="objetivo" rows="2">{% if content %}{{ content.objetivo }}{% endif %}</textarea></label>
+                <label>Introducción<textarea name="introduccion" rows="4">{% if content %}{{ content.introduccion }}{% endif %}</textarea></label>
+                <label>Explicación<textarea name="explicacion" rows="10">{% if content %}{{ content.explicacion }}{% endif %}</textarea></label>
+                <label>Resumen<textarea name="resumen" rows="4">{% if content %}{{ content.resumen }}{% endif %}</textarea></label>
+            </section>
+
+            <section class="content-editor__section" aria-labelledby="editor-procedure-heading">
+                <div class="content-editor__section-heading">
+                    <h3 id="editor-procedure-heading">Procedimiento</h3>
+                    <button type="button" class="btn btn-secondary content-editor__add" data-add-item="procedimiento">Añadir paso</button>
+                </div>
+                <div class="content-editor__list" data-list="procedimiento">
+                    {% if content %}{% for paso in content.procedimiento %}
+                    <div class="content-editor__item" data-item>
+                        <label>Paso<textarea rows="2" data-value>{{ paso }}</textarea></label>
+                        {% include "learn/_node_content_editor_actions.html" with item_label="paso" %}
+                    </div>
+                    {% endfor %}{% endif %}
+                </div>
+            </section>
+
+            <section class="content-editor__section" aria-labelledby="editor-examples-heading">
+                <div class="content-editor__section-heading">
+                    <h3 id="editor-examples-heading">Ejemplos</h3>
+                    <button type="button" class="btn btn-secondary content-editor__add" data-add-item="ejemplos">Añadir ejemplo</button>
+                </div>
+                <div class="content-editor__list" data-list="ejemplos">
+                    {% if content %}{% for ejemplo in content.ejemplos %}
+                    <article class="content-editor__item content-editor__example" data-item>
+                        {% include "learn/_node_content_editor_actions.html" with item_label="ejemplo" %}
+                        <label>Título<input type="text" data-example-field="titulo" value="{{ ejemplo.titulo }}"></label>
+                        <label>Enunciado<textarea rows="3" data-example-field="enunciado">{{ ejemplo.enunciado }}</textarea></label>
+                        <label>Respuesta opcional
+                            <select data-example-field="respuesta">
+                                <option value="">Respuesta abierta</option>
+                                <option value="Sí" {% if ejemplo.respuesta == "Sí" %}selected{% endif %}>Sí</option>
+                                <option value="No" {% if ejemplo.respuesta == "No" %}selected{% endif %}>No</option>
+                                <option value="Verdadero" {% if ejemplo.respuesta == "Verdadero" %}selected{% endif %}>Verdadero</option>
+                                <option value="Falso" {% if ejemplo.respuesta == "Falso" %}selected{% endif %}>Falso</option>
+                            </select>
+                        </label>
+                        <div class="content-editor__solutions">
+                            <div class="content-editor__section-heading">
+                                <strong>Pasos de solución</strong>
+                                <button type="button" class="btn btn-secondary content-editor__add" data-add-solution>Añadir</button>
+                            </div>
+                            <div class="content-editor__list" data-solution-list>
+                                {% for paso in ejemplo.solucion_pasos %}
+                                <div class="content-editor__item content-editor__solution" data-item>
+                                    <label>Solución<textarea rows="2" data-value>{{ paso }}</textarea></label>
+                                    {% include "learn/_node_content_editor_actions.html" with item_label="solución" %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}{% endif %}
+                </div>
+            </section>
+
+            <section class="content-editor__section" aria-labelledby="editor-errors-heading">
+                <div class="content-editor__section-heading">
+                    <h3 id="editor-errors-heading">Errores frecuentes</h3>
+                    <button type="button" class="btn btn-secondary content-editor__add" data-add-item="errores_frecuentes">Añadir error</button>
+                </div>
+                <div class="content-editor__list" data-list="errores_frecuentes">
+                    {% if content %}{% for error in content.errores_frecuentes %}
+                    <div class="content-editor__item" data-item>
+                        <label>Error<textarea rows="2" data-value>{{ error }}</textarea></label>
+                        {% include "learn/_node_content_editor_actions.html" with item_label="error" %}
+                    </div>
+                    {% endfor %}{% endif %}
+                </div>
+            </section>
+
+            <section class="content-editor__section content-editor__metadata" aria-labelledby="editor-meta-heading">
+                <h3 id="editor-meta-heading">Publicación y fuente</h3>
+                <label>Fuente<textarea name="fuente" rows="2">{% if content %}{{ content.fuente }}{% endif %}</textarea></label>
+                <label>Estado
+                    <select name="estado">
+                        <option value="borrador" {% if not content or content.estado == "borrador" %}selected{% endif %}>Borrador</option>
+                        <option value="publicado" {% if content.estado == "publicado" %}selected{% endif %}>Publicado</option>
+                    </select>
+                </label>
+            </section>
+        </div>
+
+        <footer class="content-editor__footer">
+            <span class="content-editor__status" data-content-editor-status aria-live="polite"></span>
+            <button type="button" class="btn btn-secondary" data-content-editor-close>Cancelar</button>
+            <button type="submit" class="btn btn-primary" data-content-editor-save>Guardar cambios</button>
+        </footer>
+    </form>
+</dialog>
+
+<template data-template="list-item">
+    <div class="content-editor__item" data-item>
+        <label>Elemento<textarea rows="2" data-value></textarea></label>
+        {% include "learn/_node_content_editor_actions.html" with item_label="elemento" %}
+    </div>
+</template>
+
+<template data-template="example">
+    <article class="content-editor__item content-editor__example" data-item>
+        {% include "learn/_node_content_editor_actions.html" with item_label="ejemplo" %}
+        <label>Título<input type="text" data-example-field="titulo"></label>
+        <label>Enunciado<textarea rows="3" data-example-field="enunciado"></textarea></label>
+        <label>Respuesta opcional
+            <select data-example-field="respuesta">
+                <option value="">Respuesta abierta</option><option value="Sí">Sí</option><option value="No">No</option>
+                <option value="Verdadero">Verdadero</option><option value="Falso">Falso</option>
+            </select>
+        </label>
+        <div class="content-editor__solutions">
+            <div class="content-editor__section-heading"><strong>Pasos de solución</strong><button type="button" class="btn btn-secondary content-editor__add" data-add-solution>Añadir</button></div>
+            <div class="content-editor__list" data-solution-list></div>
+        </div>
+    </article>
+</template>

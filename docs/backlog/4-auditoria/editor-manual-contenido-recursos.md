@@ -1,6 +1,6 @@
 # Editor manual de contenido desde cada recurso
 
-- **Estado:** Construido; pendiente de auditoría
+- **Estado:** Construido; pendiente de auditoría (suite global pendiente en CI)
 - **Creado:** 2026-07-01
 - **Prioridad:** P1  ·  **Cartera:** continuidad
 - **Tipo:** producto
@@ -16,30 +16,35 @@ Permitir que el personal autorizado abra la edición manual del contenido direct
 - `apps/learn/tests.py`
 
 ## Propuesta
-Añadir una acción visible solo para staff que enlace al editor seguro de Django Admin: modificar el `NodeContent` existente o crearlo con el nodo preseleccionado.
+Añadir un modal amplio en la propia ficha, protegido por permisos de `NodeContent`, para editar todos sus campos con controles visuales y proteger las ediciones manuales frente a importaciones YAML.
 
 ## No-objetivos (qué queda FUERA)
-- Crear un segundo formulario/editor paralelo al Admin.
 - Editar bancos de ejercicios, multimedia o la jerarquía del nodo.
 - Sincronizar ediciones de base de datos hacia YAML versionado.
 
 ## Criterios de aceptación (verificables)
-- [x] Barrera verde: tests focalizados · `check` · `makemigrations --check --dry-run`
-- [x] Staff autorizado ve una acción de edición en cada recurso y llega al registro correcto.
-- [x] Si no existe contenido, staff autorizado llega al alta con el nodo preseleccionado.
-- [x] Usuarios no autorizados no ven la acción.
+- [x] Barrera focal verde: 36 tests · `check --deploy` · migraciones · sintaxis JS.
+- [ ] Suite completa: dos intentos locales excedieron 2 y 5 minutos sin emitir fallos; ejecutar en CI/auditoría.
+- [x] Staff autorizado edita todo `NodeContent` sin abandonar la ficha.
+- [x] Procedimientos, ejemplos, soluciones y errores usan controles visuales reordenables.
+- [x] Guardado inmediato, validado y protegido contra ediciones concurrentes.
+- [x] Importación YAML omite ediciones manuales salvo `--force-manual`.
+- [x] Usuarios no autorizados no ven ni pueden invocar el editor.
 
 ## Plan de pruebas
-Tests de vista para visitante, staff con contenido y staff sin contenido; `check` y comprobación de migraciones.
+Tests de permisos, CSRF, creación, edición, validación, concurrencia e importador; QA real de guardado,
+reordenamiento, Escape, foco y viewport móvil.
 
 ## Riesgos / rollback
-Una carga YAML posterior puede sobrescribir ediciones en base de datos; se advierte en la interfaz. Rollback: retirar el enlace y sus tests.
+Las ediciones manuales pueden divergir del YAML; `manual_override` las protege y `--force-manual` permite volver
+explícitamente a la fuente versionada. Rollback: revertir la migración y restaurar el enlace al Admin.
 
 ---
 
 ## Qué se hizo
-- Se añadió a la ficha una acción editorial protegida por permisos de `NodeContent`.
-- La acción abre Django Admin en el contenido correcto o en el alta con el nodo preseleccionado.
-- La interfaz avisa que una importación YAML posterior puede sobrescribir cambios guardados en la base.
-- Se cubrieron visitante, administrador con/sin contenido y staff sin permiso mediante 4 regresiones nuevas.
-- Validación: 12 tests de `NodeDetailViewTests`, `check` y ausencia de migraciones, OK.
+- Modal amplio dentro de la ficha para todos los campos de `NodeContent`, sin entrar al Admin.
+- Controles visuales para crear, borrar y reordenar pasos, ejemplos, soluciones y errores.
+- Endpoint JSON transaccional con permisos, CSRF, validación y conflicto `409` mediante `updated_at`.
+- Migración `0043`: protección manual, fecha y autor; importador omite protegidos salvo `--force-manual`.
+- QA real corrigió Escape/retorno de foco y el pie fuera de pantalla en móvil.
+- Validación: 36 tests focalizados, barreras Django y QA navegador OK; suite global pendiente por timeout local.

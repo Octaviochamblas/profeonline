@@ -62,10 +62,11 @@ class KnowledgeNodeAdmin(admin.ModelAdmin):
 
 @admin.register(NodeContent)
 class NodeContentAdmin(admin.ModelAdmin):
-    list_display = ("node", "estado", "fuente")
-    list_filter = ("estado",)
+    list_display = ("node", "estado", "manual_override", "manual_edited_at", "fuente")
+    list_filter = ("estado", "manual_override")
     search_fields = ("node__semantic_id", "node__name")
     raw_id_fields = ("node",)
+    readonly_fields = ("manual_edited_at", "manual_edited_by")
 
 
 @admin.register(NodeMedia)

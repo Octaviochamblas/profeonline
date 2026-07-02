@@ -61,6 +61,7 @@ class NodeContentModelTests(TestCase):
         content = NodeContent.objects.create(node=node, objetivo="Objetivo de prueba")
         self.assertTrue(content.is_draft)
         self.assertEqual(content.estado, NodeContent.ESTADO_BORRADOR)
+        self.assertFalse(content.manual_override)
 
     def test_node_content_published(self):
         node = _make_node()
@@ -140,6 +141,40 @@ class LoadNodeContentCommandTests(TestCase):
             call_command("load_node_content", file=str(path), verbosity=0)
 
         self.assertEqual(NodeContent.objects.count(), 1)
+
+    def test_manual_override_is_not_replaced(self):
+        node = _make_node()
+        NodeContent.objects.create(
+            node=node,
+            objetivo="Edición manual",
+            manual_override=True,
+        )
+        with tempfile.TemporaryDirectory() as d:
+            self._write(d, "naturales.yaml", SAMPLE_YAML)
+            call_command("load_node_content", dir=d, verbosity=0)
+
+        content = NodeContent.objects.get(node=node)
+        self.assertEqual(content.objetivo, "Edición manual")
+        self.assertTrue(content.manual_override)
+
+    def test_force_manual_replaces_and_clears_protection(self):
+        node = _make_node()
+        NodeContent.objects.create(
+            node=node,
+            objetivo="Edición manual",
+            manual_override=True,
+        )
+        with tempfile.TemporaryDirectory() as d:
+            self._write(d, "naturales.yaml", SAMPLE_YAML)
+            call_command(
+                "load_node_content", dir=d, force_manual=True, verbosity=0
+            )
+
+        content = NodeContent.objects.get(node=node)
+        self.assertEqual(content.objetivo, "Identificar los números naturales.")
+        self.assertFalse(content.manual_override)
+        self.assertIsNone(content.manual_edited_at)
+        self.assertIsNone(content.manual_edited_by)
 
 
 class NodeContentTimestampTests(TestCase):

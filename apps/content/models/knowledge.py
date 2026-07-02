@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -168,6 +169,22 @@ class NodeContent(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     published_at = models.DateTimeField(
         null=True, blank=True, verbose_name="publicado el"
+    )
+    manual_override = models.BooleanField(
+        default=False,
+        verbose_name="protegido de importaciones",
+        help_text="Impide que load_node_content reemplace esta edición sin --force-manual.",
+    )
+    manual_edited_at = models.DateTimeField(
+        null=True, blank=True, verbose_name="editado manualmente el"
+    )
+    manual_edited_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="manually_edited_node_contents",
+        verbose_name="editado manualmente por",
     )
 
     class Meta:

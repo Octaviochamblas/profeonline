@@ -26,6 +26,11 @@ class Command(BaseCommand):
             default=None,
             help="Importar un único archivo YAML",
         )
+        parser.add_argument(
+            "--force-manual",
+            action="store_true",
+            help="Reemplazar también contenidos protegidos por una edición manual.",
+        )
 
     def handle(self, *args, **options):
         if options["file"]:
@@ -34,7 +39,7 @@ class Command(BaseCommand):
             dirpath = Path(options["dir"])
             files = sorted(dirpath.glob("*.yaml")) + sorted(dirpath.glob("*.yml"))
 
-        created = updated = not_found = 0
+        created = updated = not_found = protected = 0
 
         for path in files:
             with open(path, encoding="utf-8") as f:
@@ -67,13 +72,22 @@ class Command(BaseCommand):
                 "errores_frecuentes": data.get("errores_frecuentes") or [],
                 "estado": data.get("estado", NodeContent.ESTADO_BORRADOR),
                 "fuente": data.get("fuente", ""),
+                "manual_override": False,
+                "manual_edited_at": None,
+                "manual_edited_by": None,
             }
 
-            _, is_new = NodeContent.objects.update_or_create(node=node, defaults=defaults)
-            if is_new:
-                created += 1
+            current = NodeContent.objects.filter(node=node).first()
+            if current and current.manual_override and not options["force_manual"]:
+                protected += 1
             else:
-                updated += 1
+                _, is_new = NodeContent.objects.update_or_create(
+                    node=node, defaults=defaults
+                )
+                if is_new:
+                    created += 1
+                else:
+                    updated += 1
 
             # Sincronizar media: reemplaza completo si la clave está presente.
             if "media" in data and data["media"] is not None:
@@ -90,6 +104,7 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 f"Creados: {created}, Actualizados: {updated}, "
+                f"protegidos omitidos: {protected}, "
                 f"semantic_id no encontrado: {not_found}"
             )
         )

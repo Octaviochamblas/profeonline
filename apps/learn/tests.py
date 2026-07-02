@@ -1,7 +1,10 @@
 """Tests de F2 — vistas de apps/learn/."""
 
+import json
+import re
+
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from apps.content.models import (
@@ -212,10 +215,9 @@ class NodeDetailViewTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertContains(response, "Editar contenido")
-        self.assertContains(
-            response,
-            reverse("admin:content_nodecontent_change", args=[content.pk]),
-        )
+        self.assertContains(response, "data-content-editor-dialog")
+        self.assertContains(response, 'name="updated_at"')
+        self.assertContains(response, reverse("learn:edit_node_content", args=[self.recurso.pk]))
 
     def test_authorized_staff_can_create_missing_content_for_node(self):
         admin = User.objects.create_superuser(
@@ -225,9 +227,9 @@ class NodeDetailViewTests(TestCase):
 
         response = self.client.get(self.url)
 
-        add_url = reverse("admin:content_nodecontent_add")
         self.assertContains(response, "Crear contenido")
-        self.assertContains(response, f'{add_url}?node={self.recurso.pk}')
+        self.assertContains(response, "data-content-editor-dialog")
+        self.assertContains(response, reverse("learn:edit_node_content", args=[self.recurso.pk]))
 
     def test_staff_without_model_permission_does_not_see_editor(self):
         NodeContent.objects.create(node=self.recurso)
@@ -239,6 +241,152 @@ class NodeDetailViewTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertNotContains(response, "Editar contenido")
+
+
+class NodeContentEditorViewTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.url = reverse("learn:edit_node_content", args=[self.recurso.pk])
+        self.page_url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+        self.admin = User.objects.create_superuser(
+            "inline-editor", "inline@example.com", "pass"
+        )
+
+    def _payload(self, content=None, **overrides):
+        payload = {
+            "objetivo": "Objetivo **editado**",
+            "introduccion": "Introducción con $x$",
+            "resumen": "Resumen",
+            "explicacion": "Explicación",
+            "procedimiento": ["Paso 2", "Paso 1"],
+            "ejemplos": [
+                {
+                    "titulo": "Ejemplo visual",
+                    "enunciado": "Resuelve $x+1=2$",
+                    "respuesta": "Sí",
+                    "solucion_pasos": ["Restar 1", "$x=1$"],
+                }
+            ],
+            "errores_frecuentes": ["Error B", "Error A"],
+            "fuente": "Fuente manual",
+            "estado": NodeContent.ESTADO_PUBLICADO,
+            "updated_at": content.updated_at.isoformat() if content else "",
+        }
+        payload.update(overrides)
+        return payload
+
+    def _post(self, payload):
+        return self.client.post(
+            self.url,
+            data=json.dumps(payload),
+            content_type="application/json",
+        )
+
+    def test_get_is_not_allowed(self):
+        self.client.force_login(self.admin)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405)
+
+    def test_anonymous_post_redirects_to_login(self):
+        response = self._post(self._payload())
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_requires_csrf_token(self):
+        csrf_client = Client(enforce_csrf_checks=True)
+        csrf_client.force_login(self.admin)
+        response = csrf_client.post(
+            self.url,
+            data=json.dumps(self._payload()),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_authenticated_user_without_permission_gets_403(self):
+        user = User.objects.create_user("no-editor", password="pass")
+        self.client.force_login(user)
+        response = self._post(self._payload())
+        self.assertEqual(response.status_code, 403)
+
+    def test_non_resource_node_returns_404(self):
+        self.client.force_login(self.admin)
+        self.url = reverse("learn:edit_node_content", args=[self.tema.pk])
+        response = self._post(self._payload())
+        self.assertEqual(response.status_code, 404)
+
+    def test_invalid_json_returns_400_without_write(self):
+        self.client.force_login(self.admin)
+        response = self.client.post(
+            self.url, data="{", content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(NodeContent.objects.filter(node=self.recurso).exists())
+
+    def test_invalid_example_returns_400_without_partial_update(self):
+        content = NodeContent.objects.create(node=self.recurso, objetivo="Original")
+        self.client.force_login(self.admin)
+        payload = self._payload(
+            content,
+            ejemplos=[{"titulo": "", "enunciado": "", "respuesta": "Tal vez"}],
+        )
+        response = self._post(payload)
+        self.assertEqual(response.status_code, 400)
+        content.refresh_from_db()
+        self.assertEqual(content.objetivo, "Original")
+
+    def test_creates_content_and_marks_manual_override(self):
+        self.client.force_login(self.admin)
+        response = self._post(self._payload())
+        self.assertEqual(response.status_code, 200)
+        content = NodeContent.objects.get(node=self.recurso)
+        self.assertTrue(content.manual_override)
+        self.assertEqual(content.manual_edited_by, self.admin)
+        self.assertIsNotNone(content.manual_edited_at)
+        self.assertEqual(content.estado, NodeContent.ESTADO_PUBLICADO)
+
+    def test_updates_all_fields_preserving_list_order(self):
+        content = NodeContent.objects.create(node=self.recurso, objetivo="Original")
+        self.client.force_login(self.admin)
+        response = self._post(self._payload(content))
+        self.assertEqual(response.status_code, 200)
+        content.refresh_from_db()
+        self.assertEqual(content.objetivo, "Objetivo **editado**")
+        self.assertEqual(content.procedimiento, ["Paso 2", "Paso 1"])
+        self.assertEqual(content.errores_frecuentes, ["Error B", "Error A"])
+        self.assertEqual(content.ejemplos[0]["solucion_pasos"], ["Restar 1", "$x=1$"])
+        self.assertEqual(content.fuente, "Fuente manual")
+
+    def test_rendered_version_token_is_accepted(self):
+        content = NodeContent.objects.create(node=self.recurso, objetivo="Original")
+        self.client.force_login(self.admin)
+        page = self.client.get(self.page_url)
+        match = re.search(
+            rb'name="updated_at" value="([^"]+)"', page.content
+        )
+        self.assertIsNotNone(match)
+        rendered_token = match.group(1).decode()
+
+        response = self._post(self._payload(content, updated_at=rendered_token))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_stale_updated_at_returns_409(self):
+        content = NodeContent.objects.create(node=self.recurso, objetivo="Original")
+        content.objetivo = "Cambio paralelo"
+        content.save()
+        self.client.force_login(self.admin)
+        response = self._post(
+            self._payload(
+                content,
+                updated_at="2000-01-01T00:00:00+00:00",
+                objetivo="Sobrescribir",
+            )
+        )
+        self.assertEqual(response.status_code, 409)
+        content.refresh_from_db()
+        self.assertEqual(content.objetivo, "Cambio paralelo")
 
 
 class NodePracticeBankViewTests(TestCase):

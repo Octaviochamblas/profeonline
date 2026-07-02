@@ -1,9 +1,10 @@
 {% extends "base.html" %}
-{% load markdown_tags %}
+{% load markdown_tags static %}
 
 {% block title %}{{ node.name }} | ProfeOnline{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/node-content-editor.css' %}?v=2">
 <style>
 /* ── Miga de pan plegable ───────────────────────────── */
 .breadcrumb-wrap > summary {
@@ -368,24 +369,8 @@
         {% endif %}
     </header>
 
-    {% if content and perms.content.change_nodecontent %}
-    <aside class="learn-staff-editor" aria-label="Edición del contenido">
-        <a class="btn btn-secondary" href="{% url 'admin:content_nodecontent_change' content.pk %}">
-            Editar contenido
-        </a>
-        <p class="learn-staff-editor__note">
-            Los cambios se guardan en la base de datos. Una carga posterior desde YAML puede reemplazarlos.
-        </p>
-    </aside>
-    {% elif not content and perms.content.add_nodecontent %}
-    <aside class="learn-staff-editor" aria-label="Creación del contenido">
-        <a class="btn btn-secondary" href="{% url 'admin:content_nodecontent_add' %}?node={{ node.pk }}">
-            Crear contenido
-        </a>
-        <p class="learn-staff-editor__note">
-            El recurso quedará preseleccionado en el editor manual.
-        </p>
-    </aside>
+    {% if content and perms.content.change_nodecontent or not content and perms.content.add_nodecontent %}
+        {% include "learn/_node_content_editor.html" %}
     {% endif %}
 
     {% include "learn/_prereqs.html" %}
@@ -789,4 +774,8 @@
     </script>
 
 </article>
+{% endblock %}
+
+{% block extra_js %}
+<script nonce="{{ csp_nonce }}" src="{% static 'js/node-content-editor.js' %}?v=2" defer></script>
 {% endblock %}

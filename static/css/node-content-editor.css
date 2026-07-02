@@ -1,0 +1,62 @@
+.content-editor {
+    box-sizing: border-box;
+    width: min(1100px, calc(100vw - 2rem));
+    max-width: none;
+    height: min(90vh, 900px);
+    max-height: 90vh;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+    background: #f8fafc;
+    color: #0f172a;
+    box-shadow: 0 24px 70px rgb(15 23 42 / 35%);
+}
+
+.content-editor::backdrop { background: rgb(15 23 42 / 58%); }
+.content-editor__form { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; height: 100%; }
+.content-editor__header { grid-row: 1; }
+.content-editor__errors { grid-row: 2; }
+.content-editor__body { grid-row: 3; }
+.content-editor__footer { grid-row: 4; }
+.content-editor__header, .content-editor__footer { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: #fff; }
+.content-editor__header { justify-content: space-between; border-bottom: 1px solid #e2e8f0; }
+.content-editor__header h2 { margin: .15rem 0 0; font-size: clamp(1.15rem, 2.5vw, 1.55rem); }
+.content-editor__eyebrow { color: #4a7cf6; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.content-editor__close { border: 0; background: transparent; color: #64748b; font-size: 2rem; line-height: 1; cursor: pointer; }
+.content-editor__body { overflow-y: auto; padding: 1.25rem; }
+.content-editor__help { margin: 0 0 1rem; color: #64748b; font-size: .86rem; }
+.content-editor__section { display: grid; gap: .85rem; margin-bottom: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+.content-editor__section h3 { margin: 0; color: #1e3a5f; font-size: 1rem; }
+.content-editor__section-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.content-editor label { display: grid; gap: .35rem; color: #334155; font-size: .82rem; font-weight: 700; }
+.content-editor textarea, .content-editor input, .content-editor select { width: 100%; padding: .65rem .75rem; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #0f172a; font: inherit; font-weight: 400; line-height: 1.5; }
+.content-editor textarea { resize: vertical; }
+.content-editor textarea:focus, .content-editor input:focus, .content-editor select:focus { outline: 3px solid rgb(74 124 246 / 22%); border-color: #4a7cf6; }
+.content-editor__list { display: grid; gap: .75rem; }
+.content-editor__item { position: relative; display: grid; gap: .65rem; padding: .85rem; border: 1px solid #dbe4f0; border-radius: 10px; background: #f8fafc; }
+.content-editor__item-actions { display: flex; justify-content: flex-end; gap: .35rem; }
+.content-editor__item-actions button { min-width: 2rem; padding: .2rem .45rem; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; cursor: pointer; }
+.content-editor__item-actions button[data-remove] { color: #b91c1c; }
+.content-editor__solutions { display: grid; gap: .65rem; padding-top: .65rem; border-top: 1px solid #e2e8f0; }
+.content-editor__solution { background: #fff; }
+.content-editor__add { padding: .35rem .65rem; font-size: .78rem; }
+.content-editor__metadata { grid-template-columns: minmax(0, 2fr) minmax(10rem, 1fr); }
+.content-editor__metadata h3 { grid-column: 1 / -1; }
+.content-editor__errors { margin: 1rem 1.25rem 0; padding: .7rem .9rem; border: 1px solid #fca5a5; border-radius: 8px; background: #fef2f2; color: #991b1b; font-size: .85rem; }
+.content-editor__errors ul { margin: 0; padding-left: 1.2rem; }
+.content-editor__footer { justify-content: flex-end; border-top: 1px solid #e2e8f0; }
+.content-editor__status { margin-right: auto; color: #475569; font-size: .82rem; }
+.content-editor[aria-busy="true"] { cursor: progress; }
+.content-editor[aria-busy="true"] button { pointer-events: none; opacity: .72; }
+
+@media (max-width: 640px) {
+    .content-editor { width: 100vw; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; }
+    .content-editor__body { padding: .8rem; }
+    .content-editor__section { padding: .8rem; }
+    .content-editor__metadata { grid-template-columns: 1fr; }
+    .content-editor__metadata h3 { grid-column: auto; }
+    .content-editor__footer { flex-wrap: wrap; padding: .75rem; }
+    .content-editor__status { flex-basis: 100%; }
+}

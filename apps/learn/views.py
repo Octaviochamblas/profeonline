@@ -1,15 +1,24 @@
+import json
 import re
 
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.db import IntegrityError, transaction
 from django.db.models import Prefetch
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+from django.views.decorators.http import require_POST
 
 from apps.content.models import (
     KnowledgeNode,
+    NodeContent,
     NodeExercise,
     NodeMedia,
     NodePrerequisite,
 )
+from apps.learn.forms import NodeContentEditorForm
 
 
 def _youtube_id(url):
@@ -179,3 +188,99 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "noindex": noindex,
         },
     )
+
+
+@require_POST
+@login_required
+def edit_node_content(request, node_id):
+    node = get_object_or_404(
+        KnowledgeNode,
+        pk=node_id,
+        node_type=KnowledgeNode.NODE_RECURSO,
+    )
+    permission = (
+        "content.change_nodecontent"
+        if NodeContent.objects.filter(node=node).exists()
+        else "content.add_nodecontent"
+    )
+    if not request.user.has_perm(permission):
+        raise PermissionDenied
+
+    try:
+        payload = json.loads(request.body)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse(
+            {"ok": False, "errors": {"__all__": ["JSON inválido."]}},
+            status=400,
+        )
+
+    if not isinstance(payload, dict):
+        return JsonResponse(
+            {"ok": False, "errors": {"__all__": ["Datos inválidos."]}},
+            status=400,
+        )
+
+    form = NodeContentEditorForm(payload)
+    if not form.is_valid():
+        return JsonResponse({"ok": False, "errors": form.errors.get_json_data()}, status=400)
+
+    try:
+        with transaction.atomic():
+            content = NodeContent.objects.select_for_update().filter(node=node).first()
+            permission = (
+                "content.change_nodecontent" if content else "content.add_nodecontent"
+            )
+            if not request.user.has_perm(permission):
+                raise PermissionDenied
+
+            expected_updated_at = form.cleaned_data["updated_at"]
+            if content:
+                expected = (
+                    parse_datetime(expected_updated_at) if expected_updated_at else None
+                )
+                if expected is None or expected != content.updated_at:
+                    return JsonResponse(
+                        {
+                            "ok": False,
+                            "error": "El recurso fue modificado en otra sesión. Recarga la página antes de guardar.",
+                        },
+                        status=409,
+                    )
+            elif expected_updated_at:
+                return JsonResponse(
+                    {
+                        "ok": False,
+                        "error": "El recurso fue creado en otra sesión. Recarga la página antes de guardar.",
+                    },
+                    status=409,
+                )
+
+            if content is None:
+                content = NodeContent(node=node)
+
+            for field in (
+                "objetivo",
+                "introduccion",
+                "resumen",
+                "explicacion",
+                "procedimiento",
+                "ejemplos",
+                "errores_frecuentes",
+                "fuente",
+                "estado",
+            ):
+                setattr(content, field, form.cleaned_data[field])
+            content.manual_override = True
+            content.manual_edited_at = timezone.now()
+            content.manual_edited_by = request.user
+            content.save()
+    except IntegrityError:
+        return JsonResponse(
+            {
+                "ok": False,
+                "error": "El recurso fue creado en otra sesión. Recarga la página antes de guardar.",
+            },
+            status=409,
+        )
+
+    return JsonResponse({"ok": True, "updated_at": content.updated_at.isoformat()})
