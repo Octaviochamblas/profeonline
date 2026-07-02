@@ -11,6 +11,10 @@
 <!-- Ejemplo: | ðŸ”¨ Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | ðŸ”´ trabajando | -->
 
 ## En curso ahora
+- **Editor manual desde cada recurso — CONSTRUIDO (2026-07-01, rama `codex/editor-manual-recursos`):**
+  Los usuarios con permiso de cambio/alta de `NodeContent` ven una acción en la ficha para editar el contenido
+  existente o crearlo con el nodo preseleccionado. Se advierte que una carga YAML posterior puede reemplazar la
+  edición en base de datos. 12 tests focalizados, `check` y `makemigrations --check --dry-run`, OK.
 - **Auditoría de `explicacion` (formal+didáctico) MAT.ALG B0301–B0309 — COMPLETA 🟢 (2026-07-01, rama `content/mat-alg-b0309`):**
   Auditados los 365 recursos de los 9 bloques verificando "Definición formal" + "Desarrollo didáctico". Corregidos
   215 recursos con viñeta duplicada al final de `procedimiento` (artefacto de generación), 2 recursos de B0309 con

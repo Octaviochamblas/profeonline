@@ -195,6 +195,51 @@ class NodeDetailViewTests(TestCase):
         self.assertContains(response, "Números")
         self.assertContains(response, "Enteros")
 
+    def test_anonymous_does_not_see_manual_content_editor(self):
+        NodeContent.objects.create(node=self.recurso)
+
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, "Editar contenido")
+
+    def test_authorized_staff_can_edit_existing_content(self):
+        content = NodeContent.objects.create(node=self.recurso)
+        admin = User.objects.create_superuser(
+            "admin-editor", "admin@example.com", "pass"
+        )
+        self.client.force_login(admin)
+
+        response = self.client.get(self.url)
+
+        self.assertContains(response, "Editar contenido")
+        self.assertContains(
+            response,
+            reverse("admin:content_nodecontent_change", args=[content.pk]),
+        )
+
+    def test_authorized_staff_can_create_missing_content_for_node(self):
+        admin = User.objects.create_superuser(
+            "admin-creator", "creator@example.com", "pass"
+        )
+        self.client.force_login(admin)
+
+        response = self.client.get(self.url)
+
+        add_url = reverse("admin:content_nodecontent_add")
+        self.assertContains(response, "Crear contenido")
+        self.assertContains(response, f'{add_url}?node={self.recurso.pk}')
+
+    def test_staff_without_model_permission_does_not_see_editor(self):
+        NodeContent.objects.create(node=self.recurso)
+        staff = User.objects.create_user(
+            "staff-no-editor", password="pass", is_staff=True
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, "Editar contenido")
+
 
 class NodePracticeBankViewTests(TestCase):
     def setUp(self):

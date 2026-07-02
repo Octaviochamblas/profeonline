@@ -55,6 +55,25 @@
 .learn-intro__body p { margin: 0 0 .6rem; }
 .learn-intro__body p:last-child { margin-bottom: 0; }
 
+/* ── Acción editorial para personal autorizado ─────────────── */
+.learn-staff-editor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem 1rem;
+  padding: .75rem 1rem;
+  border: 1px dashed #94a3b8;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+.learn-staff-editor__note {
+  margin: 0;
+  color: #64748b;
+  font-size: .78rem;
+  line-height: 1.4;
+  flex: 1 1 20rem;
+}
+
 /* ── Títulos de sección ─────────────────────────── */
 .learn-section { margin-top: 2rem; }
 .learn-section__title {
@@ -348,6 +367,26 @@
         </div>
         {% endif %}
     </header>
+
+    {% if content and perms.content.change_nodecontent %}
+    <aside class="learn-staff-editor" aria-label="Edición del contenido">
+        <a class="btn btn-secondary" href="{% url 'admin:content_nodecontent_change' content.pk %}">
+            Editar contenido
+        </a>
+        <p class="learn-staff-editor__note">
+            Los cambios se guardan en la base de datos. Una carga posterior desde YAML puede reemplazarlos.
+        </p>
+    </aside>
+    {% elif not content and perms.content.add_nodecontent %}
+    <aside class="learn-staff-editor" aria-label="Creación del contenido">
+        <a class="btn btn-secondary" href="{% url 'admin:content_nodecontent_add' %}?node={{ node.pk }}">
+            Crear contenido
+        </a>
+        <p class="learn-staff-editor__note">
+            El recurso quedará preseleccionado en el editor manual.
+        </p>
+    </aside>
+    {% endif %}
 
     {% include "learn/_prereqs.html" %}
 
