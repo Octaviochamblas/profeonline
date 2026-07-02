@@ -40,6 +40,7 @@ ALLOWED_TAGS = [
     "h3",
     "h4",
     "hr",
+    "img",
     "li",
     "ol",
     "p",
@@ -56,6 +57,7 @@ ALLOWED_TAGS = [
 
 ALLOWED_ATTRIBUTES = {
     "a": ["href", "title"],
+    "img": ["src", "alt", "title", "width", "height"],
     "td": ["align"],
     "th": ["align"],
 }
