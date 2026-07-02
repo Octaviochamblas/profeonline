@@ -1,0 +1,125 @@
+semantic_id: MAT.FUND.RAZONAMIENTO_LOGICO.EQUIVALENCIA_LOGICA
+titulo: Equivalencia lógica
+objetivo: Identificar y demostrar cuándo dos proposiciones compuestas son lógicamente equivalentes mediante
+  tablas de verdad o leyes lógicas.
+introduccion: '¿Alguna vez te has dado cuenta de que puedes decir la misma cosa usando diferentes palabras?
+  Por ejemplo, decir "está lloviendo y hace frío" es exactamente lo mismo que decir "hace frío y está
+  lloviendo". En el mundo de la lógica matemática pasa algo muy parecido.
+
+
+  A veces, dos frases o expresiones lógicas parecen muy distintas a simple vista, pero cuando las analizamos
+  con cuidado, descubrimos que significan exactamente lo mismo en cualquier situación.
+
+
+  A este "gemelo de significado" en matemáticas lo llamamos equivalencia lógica. Es como una balanza perfecta:
+  si un lado es verdadero, el otro también lo es; y si uno es falso, el otro lo acompaña.'
+resumen: 'Dos proposiciones compuestas $P$ y $Q$ son lógicamente equivalentes (denotado $P \equiv Q$)
+  si tienen el mismo valor de verdad en todas las filas de su tabla de verdad. Esto significa que la proposición
+  bicondicional $P \leftrightarrow Q$ es una tautología.
+
+  '
+explicacion: 'La **equivalencia lógica** ocurre cuando dos proposiciones lógicas tienen exactamente los
+  mismos valores de verdad para cada una de las combinaciones posibles de sus variables proposicionales.
+
+
+  Formalmente, si tenemos dos proposiciones lógicas $P$ y $Q$ formadas por las mismas variables proposicionales,
+  decimos que son **lógicamente equivalentes** si y solo si la proposición bicondicional $P \leftrightarrow
+  Q$ es una **tautología** (es decir, siempre es verdadera para cualquier asignación de verdad). Esto
+  se denota como:
+
+  $$P \equiv Q$$
+
+  o también:
+
+  $$P \Leftrightarrow Q$$
+
+
+  **Demostración mediante Tablas de Verdad**
+
+  Para demostrar que $P \equiv Q$, podemos construir la tabla de verdad para ambas y comparar sus columnas
+  finales:
+
+  - Si las columnas resultantes son idénticas fila por fila, entonces son equivalentes.
+
+  - Si difieren en al menos una fila, no son equivalentes.
+
+
+  Por ejemplo, comparemos $\neg(p \lor q)$ y $\neg p \land \neg q$ (Ley de De Morgan):
+
+
+  | $p$ | $q$ | $p \lor q$ | $\neg(p \lor q)$ | $\neg p$ | $\neg q$ | $\neg p \land \neg q$ |
+
+  | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+
+  | V | V | V | **F** | F | F | **F** |
+
+  | V | F | V | **F** | F | V | **F** |
+
+  | F | V | V | **F** | V | F | **F** |
+
+  | F | F | F | **V** | V | V | **V** |
+
+
+  Como las columnas de $\neg(p \lor q)$ y $\neg p \land \neg q$ son idénticas, concluimos que $\neg(p
+  \lor q) \equiv \neg p \land \neg q$.'
+procedimiento:
+- 'Paso 1: Identificar las variables proposicionales simples involucradas en ambas expresiones (por ejemplo,
+  $p$ y $q$).'
+- 'Paso 2: Construir una tabla de verdad que contenga columnas para las variables simples y todas las
+  subexpresiones lógicas.'
+- 'Paso 3: Calcular paso a paso los valores de verdad de la primera proposición compuesta $P$ y luego
+  de la segunda proposición compuesta $Q$.'
+- 'Paso 4: Comparar los resultados de ambas columnas fila por fila. Si todos los valores de verdad coinciden
+  en cada fila, entonces la equivalencia lógica es válida: $P \equiv Q$. En esquema: $P \leftrightarrow
+  Q \text{ es tautología} \vdash P \equiv Q$.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Determina si las proposiciones $p \to q$ y $\neg p \lor q$ son lógicamente equivalentes.
+  solucion_pasos:
+  - 'Paso a: Construimos la tabla de verdad con las variables $p$ y $q$.'
+  - 'Paso b: Para el condicional $p \to q$, la columna resultante es (V, F, V, V) para las filas (VV,
+    VF, FV, FF).'
+  - 'Paso c: Para la disyunción $\neg p \lor q$, calculamos primero $\neg p$ (F, F, V, V). Al operar la
+    disyunción con $q$, la columna resultante es (V, F, V, V).'
+  - 'Paso d: Al comparar ambas columnas de resultados, vemos que coinciden exactamente en cada fila. Por
+    lo tanto, la cadena de equivalencia es $p \to q \equiv \neg p \lor q$.'
+- titulo: Ejemplo 2
+  enunciado: Verifica si $p \land (q \lor r)$ es lógicamente equivalente a $(p \land q) \lor r$.
+  solucion_pasos:
+  - 'Paso a: Si analizamos la combinación donde $p$ es Falso, $q$ es Falso y $r$ es Verdadero (F, F, V).'
+  - 'Paso b: Evaluamos la primera expresión: $p \land (q \lor r) \equiv F \land (F \lor V) \equiv F \land
+    V \equiv F$.'
+  - 'Paso c: Evaluamos la segunda expresión: $(p \land q) \lor r \equiv (F \land F) \lor V \equiv F \lor
+    V \equiv V$.'
+  - 'Paso d: Dado que para la combinación (F, F, V) una expresión da Falso y la otra da Verdadero, no
+    coinciden en todas las filas. Por lo tanto, no son lógicamente equivalentes: $p \land (q \lor r) \not\equiv
+    (p \land q) \lor r$.'
+- titulo: ¿Son las proposiciones $\neg(p \land q)$ y $\neg p \land \neg q$ lógicamente equivalentes?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'La equivalencia correcta para la negación de una conjunción es la Ley de De Morgan: $\neg(p \land
+    q) \equiv \neg p \lor \neg q$, la cual usa una disyunción ($\lor$) y no una conjunción ($\land$).'
+  - Si evaluamos la combinación $p$ Verdadero y $q$ Falso (V, F), tenemos $\neg(V \land F) \equiv \neg
+    F \equiv V$, mientras que $\neg V \land \neg F \equiv F \land V \equiv F$.
+  - 'Al no coincidir en todos sus valores, demostramos la no equivalencia: $\neg(p \land q) \not\equiv
+    \neg p \land \neg q$.'
+- titulo: ¿La expresión $p \leftrightarrow q$ es lógicamente equivalente a $(p \to q) \land (q \to p)$?
+  respuesta: Sí
+  solucion_pasos:
+  - Por definición formal, el bicondicional 'si y solo si' ($p \leftrightarrow q$) requiere que se cumpla
+    la implicación en ambos sentidos.
+  - La tabla de verdad de ambos da Verdadero cuando $p$ y $q$ tienen el mismo valor de verdad (ambas V
+    o ambas F) y da Falso cuando difieren.
+  - 'Así se comprueba la equivalencia lógica: $(p \leftrightarrow q) \equiv (p \to q) \land (q \to p)$.'
+errores_frecuentes:
+- Pensar que dos proposiciones son equivalentes solo porque coinciden en algunas filas de la tabla de
+  verdad; deben coincidir en absolutamente todas.
+- Creer que si dos proposiciones tienen la misma cantidad de letras variables, automáticamente son equivalentes.
+- Confundir la equivalencia lógica con el condicional simple; la equivalencia requiere una relación bidireccional
+  de igualdad de verdad.
+- Olvidar evaluar todas las filas posibles de la tabla (por ejemplo, omitir filas cuando hay 3 variables,
+  donde debe haber 8 filas).
+- Asumir que si una equivalencia lógica se cumple para un ejemplo de la vida real, se cumple siempre formalmente
+  sin verificar la estructura lógica.
+fuente: Introducción a la Lógica Matemática, P. Suppes, Capítulo 2
+estado: publicado
