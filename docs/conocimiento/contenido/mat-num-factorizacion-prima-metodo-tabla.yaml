@@ -1,0 +1,93 @@
+semantic_id: MAT.NUM.FACTORIZACION_PRIMA.METODO_TABLA
+objetivo: 'Aplicar el método de la tabla de divisiones sucesivas para obtener la descomposición prima de un número compuesto.'
+introduccion: |
+  Imagina que estás bajando por una escalera de caracol muy alta. Cada escalón te lleva a un nivel más bajo hasta que finalmente llegas al suelo firme (que en este caso es el número 1).
+
+  El método de la tabla de divisiones sucesivas es precisamente como esa escalera. Es una herramienta súper organizada donde colocas tu número en una columna y lo vas dividiendo paso a paso por números primos. Los resultados los anotas abajo y sigues dividiendo hasta llegar al final.
+
+  Es el método favorito de los matemáticos porque es muy ordenado, evita que te confundas y hace que trabajar con números grandes sea pan comido.
+resumen: |
+  El método de la tabla consiste en dividir sucesivamente un número por factores primos organizados en dos columnas: el número a dividir a la izquierda y el divisor primo a la derecha. El proceso se detiene al llegar a $1$ en la columna izquierda.
+explicacion: |
+  El **Método de la Tabla** (también llamado de divisiones sucesivas o de la línea vertical) es un algoritmo muy eficiente para descomponer números enteros en factores primos.
+
+  Para utilizar este método, trazamos una línea vertical:
+  - A la **izquierda** escribimos el número que queremos descomponer.
+  - A la **derecha** escribiremos los números primos que actúan como divisores exactos.
+
+  **Ejemplo detallado para el número $60$:**
+
+  1. Dibujamos la tabla y comenzamos con el $60$ a la izquierda. Buscamos el menor número primo que divida a $60$, que es el $2$.
+     ```
+     60 | 2
+     ```
+  2. Realizamos la división: $60 \div 2 = 30$. Escribimos el cociente $30$ debajo de $60$.
+     ```
+     60 | 2
+     30 |
+     ```
+  3. Repetimos el proceso con $30$. El menor primo que lo divide es el $2$. Dividimos: $30 \div 2 = 15$.
+     ```
+     60 | 2
+     30 | 2
+     15 |
+     ```
+  4. Repetimos con $15$. No es divisible por $2$. Probamos con el siguiente primo, que es $3$. Dividimos: $15 \div 3 = 5$.
+     ```
+     60 | 2
+     30 | 2
+     15 | 3
+      5 |
+     ```
+  5. Repetimos con $5$. Como $5$ es un número primo, solo se divide por $5$. Dividimos: $5 \div 5 = 1$. Escribimos el $1$ abajo a la izquierda.
+     ```
+     60 | 2
+     30 | 2
+     15 | 3
+      5 | 5
+      1 |
+     ```
+
+  Al llegar al $1$ a la izquierda, el proceso termina. La columna derecha contiene los factores primos del número.
+  La descomposición final es la multiplicación de los números de la derecha:
+  $$60 = 2 \cdot 2 \cdot 3 \cdot 5 = 2^2 \cdot 3 \cdot 5$$
+procedimiento:
+  - 'Paso 1: Dibuja una línea vertical. Escribe el número original arriba a la izquierda.'
+  - 'Paso 2: Encuentra el menor número primo ($2, 3, 5, 7, \dots$) que divida al número de la izquierda de forma exacta. Escríbelo a la derecha de la línea.'
+  - 'Paso 3: Divide el número de la izquierda por el primo de la derecha. Escribe el resultado de la división (cociente) inmediatamente debajo del número anterior a la izquierda.'
+  - 'Paso 4: Repite los pasos 2 y 3 usando el nuevo número de la izquierda, hasta obtener un cociente de 1.'
+  - 'Paso 5: Escribe la descomposición multiplicando todos los números de la columna derecha, agrupando los repetidos con exponentes.'
+ejemplos:
+  - titulo: 'Ejemplo 1'
+    enunciado: 'Utiliza el método de la tabla para descomponer el número $28$.'
+    solucion_pasos:
+      - 'Paso a: Escribimos $28$ a la izquierda. Su menor divisor primo es $2$. Escribimos $2$ a la derecha y dividimos: $28 \div 2 = 14$. Escribimos $14$ abajo a la izquierda.'
+      - 'Paso b: Para $14$, el menor divisor primo sigue siendo $2$. Escribimos $2$ a la derecha y dividimos: $14 \div 2 = 7$. Escribimos $7$ abajo a la izquierda.'
+      - 'Paso c: Para $7$, como es primo, su único divisor primo es $7$. Escribimos $7$ a la derecha y dividimos: $7 \div 7 = 1$. Llegamos a $1$.'
+      - 'Paso d: Tomamos los números de la derecha y expresamos el resultado: $28 = 2 \cdot 2 \cdot 7 = 2^2 \cdot 7$.'
+  - titulo: 'Ejemplo 2'
+    enunciado: 'Descompón el número $45$ usando el método de la tabla.'
+    solucion_pasos:
+      - 'Paso a: Colocamos $45$ a la izquierda. Como termina en cifra impar, no es divisible por $2$. Probamos con el primo $3$ (la suma de sus cifras es $4+5=9$, que es múltiplo de $3$). Escribimos $3$ a la derecha y dividimos: $45 \div 3 = 15$.'
+      - 'Paso b: Colocamos $15$ abajo a la izquierda. Volvemos a dividir por $3$: $15 \div 3 = 5$. Escribimos $5$ abajo a la izquierda y $3$ a la derecha.'
+      - 'Paso c: Colocamos $5$ a la izquierda. Su único divisor primo es $5$. Escribimos $5$ a la derecha y dividimos: $5 \div 5 = 1$.'
+      - 'Paso d: La columna de la derecha tiene los factores $\{3, 3, 5\}$. Así, la descomposición de $45$ es $3^2 \cdot 5$.'
+  - titulo: 'En la tabla de divisiones sucesivas de un número, ¿se deben colocar números compuestos en la columna de la derecha?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'La columna de la derecha está reservada exclusivamente para los divisores que son números primos.'
+      - 'Si se colocan números compuestos (como 4, 6 o 9), el resultado final no será una descomposición en factores primos.'
+  - titulo: 'Si al aplicar el método de la tabla para el número $30$ se obtiene la columna derecha con los valores $2$, $3$ y $5$, ¿es $2 \cdot 3 \cdot 5$ su descomposición prima?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Los valores obtenidos a la derecha ($2, 3$ y $5$) son todos números primos.'
+      - 'El producto de estos factores es $2 \cdot 3 \cdot 5 = 30$.'
+      - 'Por lo tanto, la descomposición prima es correcta y coincide con los valores de la columna derecha.'
+errores_frecuentes:
+  - 'Colocar números compuestos en la columna de la derecha (como dividir por 4 en lugar de dividir por 2 dos veces).'
+  - 'Escribir el residuo en lugar del cociente en la columna de la izquierda.'
+  - 'No empezar o no intentar dividir por los primos más pequeños primero, lo que puede causar desorden o saltarse divisores primos.'
+  - 'Olvidar que el proceso termina únicamente cuando se llega al número 1 en la columna izquierda.'
+  - 'Realizar mal las divisiones mentales, arrastrando el error durante todo el resto de la tabla.'
+fuente: 'Teoría de Números'
+estado: publicado
