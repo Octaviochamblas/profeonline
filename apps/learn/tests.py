@@ -46,13 +46,17 @@ def _build_tree(published=True):
 
 class LearnHomeViewTests(TestCase):
     def test_home_200(self):
-        KnowledgeNode.objects.create(
+        subject = KnowledgeNode.objects.create(
             semantic_id="MAT", code="MAT", node_type=KnowledgeNode.NODE_ASIGNATURA,
             subject_abbr="MAT", name="Matemáticas", is_published=True,
         )
         response = self.client.get("/aprender/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Matemáticas")
+        self.assertContains(response, "learn-card-grid")
+        self.assertContains(response, "learn-card")
+        self.assertContains(response, f'/aprender/{subject.slug}/')
+        self.assertContains(response, "/static/css/learn-catalog.css?v=2")
 
     def test_home_hides_unpublished(self):
         KnowledgeNode.objects.create(
@@ -62,6 +66,12 @@ class LearnHomeViewTests(TestCase):
         response = self.client.get("/aprender/")
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Matemáticas")
+
+    def test_home_empty_state_is_presented_as_panel(self):
+        response = self.client.get("/aprender/")
+
+        self.assertContains(response, "learn-card-grid__empty")
+        self.assertContains(response, "Estamos preparando nuevas asignaturas")
 
 
 class NodeListViewTests(TestCase):
@@ -92,6 +102,59 @@ class NodeListViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.recurso.name)
+
+    def test_list_uses_clickable_cards_and_compact_breadcrumbs(self):
+        url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/"
+        )
+
+        response = self.client.get(url)
+
+        self.assertContains(response, 'class="learn-breadcrumbs"')
+        self.assertContains(response, 'class="learn-breadcrumbs__current"')
+        self.assertContains(response, 'aria-current="page"')
+        self.assertContains(response, 'class="learn-card"')
+        self.assertContains(response, self.recurso.code)
+        self.assertContains(response, f'{url}{self.recurso.slug}/')
+        self.assertContains(response, "Selecciona un contenido para continuar")
+        self.assertContains(response, "/static/css/learn-catalog.css?v=2")
+
+    def test_list_hides_unpublished_children_for_anonymous(self):
+        hidden = KnowledgeNode.objects.create(
+            semantic_id="MAT.NUM.ENTEROS_CONJUNTO.OCULTO",
+            code="02.01.01.02",
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            axis_abbr="NUM",
+            name="Recurso oculto",
+            parent=self.tema,
+            is_published=False,
+        )
+        url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/"
+        )
+
+        response = self.client.get(url)
+
+        self.assertNotContains(response, hidden.name)
+
+    def test_list_renders_long_title_inside_card(self):
+        self.recurso.name = (
+            "Identificación del desplazamiento vertical de una función "
+            "trigonométrica periódica"
+        )
+        self.recurso.save(update_fields=["name"])
+        url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/"
+        )
+
+        response = self.client.get(url)
+
+        self.assertContains(response, self.recurso.name)
+        self.assertContains(response, 'class="learn-card__name"')
 
     def test_unknown_slug_returns_404(self):
         response = self.client.get("/aprender/no-existe/")

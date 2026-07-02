@@ -1,43 +1,54 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ node.name }} | ProfeOnline{% endblock %}
 {% block meta_description %}Explora los contenidos de {{ node.name }} en ProfeOnline.{% endblock %}
 {% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
 
-{% block content %}
-<div class="container stack">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/learn-catalog.css' %}?v=2">
+{% endblock %}
 
-    <nav aria-label="Miga de pan">
-        <ol class="breadcrumb">
+{% block content %}
+<div class="learn-catalog stack">
+
+    <nav class="learn-breadcrumbs" aria-label="Ruta de aprendizaje">
+        <ol class="learn-breadcrumbs__list">
             {% for crumb in breadcrumbs %}
-            <li class="breadcrumb__item">
+            <li class="learn-breadcrumbs__item">
                 {% if crumb.url %}
-                <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
+                <a href="{{ crumb.url }}" class="learn-breadcrumbs__link">{{ crumb.label }}</a>
                 {% else %}
-                <span aria-current="page">{{ crumb.label }}</span>
+                <span class="learn-breadcrumbs__current" aria-current="page">{{ crumb.label }}</span>
                 {% endif %}
             </li>
             {% endfor %}
         </ol>
     </nav>
 
-    <header class="resource-view__header">
-        <h1 class="resource-view__title">{{ node.name }}</h1>
+    <header class="learn-catalog__hero">
+        <span class="learn-catalog__eyebrow">Explora contenidos</span>
+        <h1 class="learn-catalog__title">{{ node.name }}</h1>
+        <p class="learn-catalog__intro">Selecciona un contenido para continuar.</p>
     </header>
 
     {% include "learn/_prereqs.html" %}
 
-    <ul class="learn-list">
+    <ul class="learn-card-grid" aria-label="Contenidos de {{ node.name }}">
         {% for child in children %}
-        <li class="learn-list__item">
-            <a class="learn-list__link" href="{{ request.path }}{{ child.slug }}/">
-                <span class="learn-list__code">{{ child.code }}</span>
-                <span class="learn-list__name">{{ child.name }}</span>
+        <li class="learn-card-grid__item">
+            <a class="learn-card" href="{{ request.path }}{{ child.slug }}/">
+                <span class="learn-card__topline">
+                    {% if child.code %}<span class="learn-card__code">{{ child.code }}</span>{% endif %}
+                    <span class="learn-card__arrow" aria-hidden="true">→</span>
+                </span>
+                <strong class="learn-card__name">{{ child.name }}</strong>
             </a>
         </li>
         {% empty %}
-        <li class="learn-list__item learn-list__item--empty">
-            No hay contenidos disponibles aún.
+        <li class="learn-card-grid__empty">
+            <strong>No hay contenidos disponibles aún.</strong>
+            <span>Estamos trabajando para incorporar nuevos recursos.</span>
         </li>
         {% endfor %}
     </ul>

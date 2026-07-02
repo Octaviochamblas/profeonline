@@ -13,6 +13,9 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Explorador visual de `/aprender/` — CONSTRUIDO (2026-07-02, rama `codex/redisenar-explorador-aprender`):**
+  Tarjetas clickeables en grid 2→1 columnas, hero de marca, breadcrumb horizontal compacto y estados accesibles
+  de hover/foco/movimiento reducido. 11 tests focalizados, `check`, migraciones y QA navegador, OK.
 - **Plataforma de Conocimiento — ENTEROS_CONJUNTO + UI + pauta de contenido 🟢 (2026-06-28):**
   Todo el contenido ENTEROS_CONJUNTO desplegado en `main`. Campo `introduccion` añadido al modelo
   (migración `0042`) + 15 introducciones didácticas (nivel ~10 años) cargadas en los YAMLs.
