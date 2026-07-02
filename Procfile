@@ -1,1 +1,1 @@
-web: python manage.py migrate && python manage.py ensure_admin && python manage.py ensure_site && gunicorn config.wsgi:application --timeout 120
+web: python manage.py migrate && python manage.py ensure_admin && python manage.py ensure_site && python manage.py import_knowledge_tree && python manage.py load_node_content && python manage.py load_exercise_bank && python manage.py publish_knowledge_nodes && gunicorn config.wsgi:application --timeout 120

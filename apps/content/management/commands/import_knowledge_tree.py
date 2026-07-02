@@ -135,6 +135,7 @@ class Command(BaseCommand):
                 axis_abbr="",
                 name=SUBJECT_NAMES.get(subject_abbr, subject_abbr),
                 order=0,
+                is_published=True,
             ),
         )
 
@@ -148,6 +149,7 @@ class Command(BaseCommand):
                 axis_abbr=abreviatura,
                 name=rama,
                 order=self._int(eje_codigo),
+                is_published=True,
             ),
         )
 
@@ -161,6 +163,7 @@ class Command(BaseCommand):
                 axis_abbr=abreviatura,
                 name=bloque_nombre,
                 order=self._last_segment(bloque_codigo),
+                is_published=True,
             ),
         )
 
@@ -179,6 +182,7 @@ class Command(BaseCommand):
                     name=tema.get("nombre", tema["id"]),
                     competencia=tema_comp,
                     order=t_index,
+                    is_published=True,
                 ),
             )
             for r_index, rec in enumerate(tema.get("recursos") or [], start=1):

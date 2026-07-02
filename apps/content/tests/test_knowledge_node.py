@@ -7,7 +7,7 @@ from django.core.management import call_command
 from django.db import IntegrityError
 from django.test import TestCase
 
-from apps.content.models import KnowledgeNode
+from apps.content.models import KnowledgeNode, NodeContent
 
 # YAML mínimo en formato atómico (EE.BB.TT.RR), igual estructura que numeros-enteros.yaml.
 ATOMIC_YAML = """\
@@ -195,3 +195,80 @@ class ImportKnowledgeTreeTests(TestCase):
             path = self._write(d, "numeros-enteros.yaml", ATOMIC_YAML)
             call_command("import_knowledge_tree", file=str(path), verbosity=0)
         self.assertEqual(KnowledgeNode.objects.count(), 8)
+
+    def test_structural_nodes_published_but_not_leaf_resources(self):
+        """Asignatura/eje/bloque/tema deben quedar navegables de inmediato; los
+        recursos solo se publican cuando su contenido está listo (ver
+        publish_knowledge_nodes), para no exponer páginas vacías."""
+        with tempfile.TemporaryDirectory() as d:
+            self._write(d, "numeros-enteros.yaml", ATOMIC_YAML)
+            call_command("import_knowledge_tree", dir=d, verbosity=0)
+
+        for node_type in ("asignatura", "eje", "bloque", "tema"):
+            self.assertTrue(
+                KnowledgeNode.objects.filter(node_type=node_type, is_published=False).count() == 0,
+                f"hay nodos '{node_type}' sin publicar",
+            )
+        self.assertFalse(
+            KnowledgeNode.objects.get(
+                semantic_id="MAT.NUM.ENTEROS_CONJUNTO.NATURALES"
+            ).is_published
+        )
+
+
+class PublishKnowledgeNodesCommandTests(TestCase):
+    def _leaf(self, semantic_id, estado=None, is_published=False):
+        asign, _ = KnowledgeNode.objects.get_or_create(
+            semantic_id="MAT",
+            defaults=dict(
+                code="MAT", node_type=KnowledgeNode.NODE_ASIGNATURA,
+                subject_abbr="MAT", name="Matemáticas", is_published=True,
+            ),
+        )
+        node = KnowledgeNode.objects.create(
+            semantic_id=semantic_id,
+            code=semantic_id,
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            name=semantic_id,
+            parent=asign,
+            is_published=is_published,
+        )
+        if estado is not None:
+            NodeContent.objects.create(node=node, estado=estado)
+        return node
+
+    def test_publishes_only_recursos_with_published_content(self):
+        ready = self._leaf("MAT.X.READY", estado=NodeContent.ESTADO_PUBLICADO)
+        draft = self._leaf("MAT.X.DRAFT", estado=NodeContent.ESTADO_BORRADOR)
+        empty = self._leaf("MAT.X.EMPTY", estado=None)
+
+        call_command("publish_knowledge_nodes", verbosity=0)
+
+        ready.refresh_from_db()
+        draft.refresh_from_db()
+        empty.refresh_from_db()
+        self.assertTrue(ready.is_published)
+        self.assertFalse(draft.is_published)
+        self.assertFalse(empty.is_published)
+
+    def test_does_not_touch_already_published_nodes(self):
+        node = self._leaf(
+            "MAT.X.ALREADY", estado=NodeContent.ESTADO_PUBLICADO, is_published=True
+        )
+        call_command("publish_knowledge_nodes", verbosity=0)
+        node.refresh_from_db()
+        self.assertTrue(node.is_published)
+
+    def test_dry_run_makes_no_changes(self):
+        node = self._leaf("MAT.X.DRY", estado=NodeContent.ESTADO_PUBLICADO)
+        call_command("publish_knowledge_nodes", "--dry-run", verbosity=0)
+        node.refresh_from_db()
+        self.assertFalse(node.is_published)
+
+    def test_is_idempotent(self):
+        node = self._leaf("MAT.X.IDEMP", estado=NodeContent.ESTADO_PUBLICADO)
+        call_command("publish_knowledge_nodes", verbosity=0)
+        call_command("publish_knowledge_nodes", verbosity=0)
+        node.refresh_from_db()
+        self.assertTrue(node.is_published)
