@@ -391,6 +391,40 @@ class MarkdownSecurityFilterTests(TestCase):
 
         self.assertIn('<a href="https://example.com/guia">Guia</a>', rendered)
 
+    def test_markdown_filter_preserves_latex_inline_delimiters(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context({"content": r"Simplificar \(\frac{a}{b}\) por \(k\)."})
+        )
+
+        self.assertIn(r"\(\frac{a}{b}\)", rendered)
+        self.assertIn(r"\(k\)", rendered)
+
+    def test_markdown_filter_preserves_latex_block_and_dollar_delimiters(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context({"content": r"$$x^2$$ y también $y^2$ y \[z^2\]."})
+        )
+
+        self.assertIn(r"$$x^2$$", rendered)
+        self.assertIn(r"$y^2$", rendered)
+        self.assertIn(r"\[z^2\]", rendered)
+
+    def test_markdown_filter_keeps_headings_around_math(self):
+        from django.template import Template, Context
+        template_to_test = Template("{% load markdown_tags %}{{ content|markdown }}")
+
+        rendered = template_to_test.render(
+            Context({"content": "### Definición formal\n\nUsa \\(\\frac{a}{b}\\) aquí."})
+        )
+
+        self.assertIn("<h3>Definición formal</h3>", rendered)
+        self.assertIn(r"\(\frac{a}{b}\)", rendered)
+
 
 class CacheBackendCheckTests(TestCase):
     @override_settings(

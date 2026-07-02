@@ -1,5 +1,6 @@
 import json as _json
 import re
+import uuid
 
 from django import template
 from django.utils.html import escape
@@ -103,12 +104,34 @@ def bold_step(value):
     return mark_safe(result)
 
 
+# Delimitadores LaTeX soportados por KaTeX (ver static/js/katex-init.js).
+# Python-Markdown escapa por defecto '(' y ')' — sin esta protección
+# "\(...\)" pierde las barras y KaTeX ya no reconoce el bloque como fórmula.
+_MATH_SPAN_RE = re.compile(
+    r"\$\$.*?\$\$|\\\[.*?\\\]|\\\(.*?\\\)|\$(?:[^$\n]|\\\$)*?\$",
+    re.DOTALL,
+)
+
+
 @register.filter(name="markdown")
 def markdown_filter(value):
     if not value:
         return ""
 
-    html = md.markdown(value, extensions=["fenced_code", "tables", "nl2br"])
+    text = str(value)
+    math_spans = []
+    nonce = uuid.uuid4().hex
+
+    def _stash(match):
+        math_spans.append(match.group(0))
+        return f"{nonce}MATH{len(math_spans) - 1}X"
+
+    protected = _MATH_SPAN_RE.sub(_stash, text)
+    html = md.markdown(protected, extensions=["fenced_code", "tables", "nl2br"])
+
+    for i, span in enumerate(math_spans):
+        html = html.replace(f"{nonce}MATH{i}X", span)
+
     clean_html = bleach.clean(
         html,
         tags=ALLOWED_TAGS,
