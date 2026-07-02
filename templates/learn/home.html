@@ -1,23 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Aprende — ProfeOnline{% endblock %}
 {% block meta_description %}Recursos educativos organizados por asignatura y tema para aprender matemáticas, física y química.{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/learn-catalog.css' %}?v=2">
+{% endblock %}
+
 {% block content %}
-<div class="container stack">
-    <header class="resource-view__header">
-        <h1 class="resource-view__title">Aprende</h1>
+<div class="learn-catalog stack">
+    <header class="learn-catalog__hero">
+        <span class="learn-catalog__eyebrow">Biblioteca de conocimiento</span>
+        <h1 class="learn-catalog__title">Aprende</h1>
+        <p class="learn-catalog__intro">Elige una asignatura para comenzar tu recorrido.</p>
     </header>
 
-    <ul class="learn-subject-list">
+    <ul class="learn-card-grid" aria-label="Asignaturas disponibles">
         {% for asignatura in asignaturas %}
-        <li>
-            <a class="learn-subject-link" href="/aprender/{{ asignatura.slug }}/">
-                {{ asignatura.name }}
+        <li class="learn-card-grid__item">
+            <a class="learn-card" href="/aprender/{{ asignatura.slug }}/">
+                <span class="learn-card__topline">
+                    <span class="learn-card__type">Asignatura</span>
+                    <span class="learn-card__arrow" aria-hidden="true">→</span>
+                </span>
+                <strong class="learn-card__name">{{ asignatura.name }}</strong>
             </a>
         </li>
         {% empty %}
-        <li>No hay asignaturas disponibles aún.</li>
+        <li class="learn-card-grid__empty">
+            <strong>Estamos preparando nuevas asignaturas.</strong>
+            <span>Vuelve pronto para explorar sus contenidos.</span>
+        </li>
         {% endfor %}
     </ul>
 </div>
