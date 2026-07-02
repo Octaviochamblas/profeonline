@@ -1,0 +1,73 @@
+semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.ALGORITMO_EUCLIDES
+objetivo: Calcular el MCD de dos números aplicando el Algoritmo de Euclides basado en divisiones sucesivas.
+introduccion: |-
+  ¿Sabías que hace más de 2000 años un matemático griego llamado Euclides inventó un método genial para encontrar el MCD sin tener que calcular ningún número primo ni listar divisores? ¡Y sigue siendo uno de los métodos más rápidos del mundo, especialmente para números gigantescos!
+
+  El truco consiste en hacer divisiones sucesivas. Divides el número más grande por el más chico. Si sobra algo (el resto), ahora divides el número chico por ese resto. Y repites esto: vas dividiendo el divisor anterior por el nuevo resto.
+
+  ¿Cuándo terminas? Cuando la división sea exacta (el resto sea cero). El último divisor que usaste es, mágicamente, ¡el MCD de los dos números originales!
+resumen: El Algoritmo de Euclides es un método eficiente para calcular el MCD de dos enteros. Se basa en que el MCD de dos números $a$ y $b$ (con $a > b$) es igual al MCD de $b$ y el resto de la división de $a$ entre $b$. El proceso se repite sucesivamente hasta obtener un resto de cero, siendo el último resto no nulo (o el último divisor) el MCD buscado.
+explicacion: |-
+  El **Algoritmo de Euclides** es un método fundamentado en la siguiente propiedad fundamental de la divisibilidad:
+  $$\text{MCD}(a, b) = \text{MCD}(b, r)$$
+  donde $r$ es el resto de la división entera de $a$ entre $b$, es decir, $a = b \cdot q + r$, con $0 \le r < b$.
+
+  **Pasos del algoritmo:**
+  1. Tomamos los dos números, designando $a$ como el mayor y $b$ como el menor.
+  2. Realizamos la división entera de $a$ entre $b$ para obtener el resto $r$.
+  3. Si $r = 0$, entonces la división es exacta y el divisor $b$ es el $\text{MCD}(a, b)$.
+  4. Si $r > 0$, reemplazamos $a$ por $b$, y $b$ por $r$, y volvemos al paso 2 (dividimos el divisor anterior por el resto obtenido).
+  5. Repetimos sucesivamente hasta obtener un resto igual a $0$. El divisor de esta última división (es decir, el último resto antes de llegar a cero) es el MCD.
+
+  **Ejemplo práctico:**
+  Calcular $\text{MCD}(105, 45)$:
+  - Dividimos $105 \div 45$:
+    $$105 = 45 \cdot 2 + 15 \Rightarrow \text{resto} = 15$$
+  - Como el resto es $15 \ne 0$, ahora dividimos el divisor anterior ($45$) entre el resto ($15$):
+    $$45 = 15 \cdot 3 + 0 \Rightarrow \text{resto} = 0$$
+  - Dado que el resto es $0$, nos detenemos. El último divisor utilizado (o último resto no nulo) es $15$.
+  - Por lo tanto:
+    $$\text{MCD}(105, 45) = 15$$
+
+  Este método es sumamente ventajoso para números grandes porque el resto disminuye rápidamente en cada paso, requiriendo muy pocas divisiones comparado con otros métodos.
+procedimiento:
+  - 'Paso 1: Identifica cuál de los dos números es el mayor (a) y cuál es el menor (b).'
+  - 'Paso 2: Divide el número mayor por el número menor y calcula el resto de la división entera.'
+  - 'Paso 3: Si el resto es cero, detén el proceso; el divisor utilizado en esta última división es el MCD.'
+  - 'Paso 4: Si el resto es distinto de cero, reemplaza el número mayor por el divisor, y el número menor por el resto obtenido, y regresa al Paso 2.'
+ejemplos:
+  - titulo: Ejemplo 1
+    enunciado: Calcula el MCD de $344$ y $120$ aplicando el Algoritmo de Euclides.
+    solucion_pasos:
+      - 'Paso a: Dividimos el mayor ($344$) por el menor ($120$): $344 = 120 \cdot 2 + 104$. El resto es $104$ (diferente de $0$).'
+      - 'Paso b: Ahora dividimos el divisor anterior ($120$) por el resto ($104$): $120 = 104 \cdot 1 + 16$. El resto es $16$ (diferente de $0$).'
+      - 'Paso c: Dividimos el divisor anterior ($104$) por el resto ($16$): $104 = 16 \cdot 6 + 8$. El resto es $8$ (diferente de $0$).'
+      - 'Paso d: Dividimos el divisor anterior ($16$) por el resto ($8$): $16 = 8 \cdot 2 + 0$. El resto es $0$.'
+      - 'Paso e: Como el resto es $0$, el último divisor es $8$. Por lo tanto, $\text{MCD}(344, 120) = 8$.'
+  - titulo: Ejemplo 2
+    enunciado: Encuentra el MCD de $150$ y $35$ usando divisiones sucesivas.
+    solucion_pasos:
+      - 'Paso a: Dividimos $150 \div 35$: $150 = 35 \cdot 4 + 10$. El resto es $10$.'
+      - 'Paso b: Dividimos el divisor anterior ($35$) por el resto ($10$): $35 = 10 \cdot 3 + 5$. El resto es $5$.'
+      - 'Paso c: Dividimos el divisor anterior ($10$) por el resto ($5$): $10 = 5 \cdot 2 + 0$. El resto es $0$.'
+      - 'Paso d: Al ser el resto $0$, el último divisor fue $5$. Por lo tanto, $\text{MCD}(150, 35) = 5$.'
+  - titulo: 'Si al aplicar el Algoritmo de Euclides para dos números la primera división es exacta (resto = 0), ¿significa que el menor de los dos números es el MCD?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Si dividimos $a$ por $b$ y el resto es $0$, significa que $b$ divide exactamente a $a$.'
+      - 'Por lo tanto, el mayor divisor común que pueden compartir es el propio $b$. La afirmación es correcta.'
+  - titulo: '¿Es el MCD de $99$ y $27$ igual a $18$?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'Aplicamos divisiones sucesivas: $99 \div 27$: $99 = 27 \cdot 3 + 18$. El resto es $18$.'
+      - 'Luego dividimos $27 \div 18$: $27 = 18 \cdot 1 + 9$. El resto es $9$.'
+      - 'Finalmente dividimos $18 \div 9$: $18 = 9 \cdot 2 + 0$. El resto es $0$.'
+      - 'El último divisor no nulo fue $9$, por lo tanto, el MCD es $9$, no $18$.'
+errores_frecuentes:
+  - Confundir el cociente con el resto, usando el valor del cociente para la siguiente división en lugar del resto.
+  - Detener el algoritmo en la primera división aunque el resto no sea cero, asumiendo erróneamente que ese primer resto es el MCD.
+  - Dividir al revés (el número menor por el mayor), lo que produce un cociente cero y no ayuda en el cálculo.
+  - Cometer errores de cálculo mental en las divisiones o restas, lo cual desvía por completo todos los pasos sucesivos.
+  - Considerar el número cero como el MCD cuando se obtiene una división exacta, en lugar de considerar el divisor que produjo esa división exacta.
+fuente: Teoría de Números
+estado: publicado
