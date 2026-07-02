@@ -1,6 +1,6 @@
 # Rediseñar explorador visual de Aprende
 
-- **Estado:** Construido; pendiente de auditoría
+- **Estado:** Finalizado
 - **Creado:** 2026-07-02
 - **Prioridad:** P1  ·  **Cartera:** educativa
 - **Tipo:** producto
