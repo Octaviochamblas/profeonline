@@ -13,6 +13,17 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Biblioteca de Conocimiento — Ejes 04 (Geometría) y 05 (Probabilidad y Estadística) POBLADOS
+  Y MERGEADOS 🟢 (2026-07-03):** contenido completo cargado en `main` para ambas ramas.
+  **Geometría (PR #155):** 482 recursos publicados (bloques 04.01–04.13 completos: círculo,
+  espacio/cuerpos, cartesiano/vectores, isometrías, trigonometría, analítica ampliada). Merge con
+  `--admin` por límite de 300 archivos en `gh pr diff` (tooling, no de contenido; `test (3.12)`
+  había pasado limpio). **Probabilidad (PR #156):** 116 recursos publicados (bloques 05.04–05.06
+  completos: probabilidad básica, condicional/Bayes, conteo/binomial), 1160 ejercicios nuevos.
+  Cada recurso con objetivo/introducción/resumen/explicación/procedimiento/4 ejemplos/3 errores +
+  banco de 10 ejercicios + SVG propio. **601 tests OK** en `main` tras ambos merges.
+  Cierra el trabajo de población de contenido iniciado con el esqueleto YAML (2026-06-25).
+  **Siguiente:** definir próximo eje/bloque a poblar, o pasar a F4–F5 (medición/evaluación).
 - **Explorador visual de `/aprender/` — CONSTRUIDO (2026-07-02, rama `codex/redisenar-explorador-aprender`):**
   Tarjetas clickeables en grid 2→1 columnas, hero de marca, breadcrumb horizontal compacto y estados accesibles
   de hover/foco/movimiento reducido. 11 tests focalizados, `check`, migraciones y QA navegador, OK.
