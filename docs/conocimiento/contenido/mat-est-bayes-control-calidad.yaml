@@ -1,0 +1,53 @@
+semantic_id: MAT.EST.REGLA_BAYES.CONTROL_CALIDAD
+titulo: Aplicación de Bayes en procesos de control de calidad
+objetivo: Aplicar la regla de Bayes para calcular la probabilidad de que un producto defectuoso provenga
+  de un proveedor o máquina específica.
+introduccion: En control de calidad, cuando se detecta un producto defectuoso, es útil calcular la probabilidad
+  de que provenga de cada fuente posible, para dirigir mejor las acciones correctivas.
+resumen: En control de calidad, la regla de Bayes calcula $P(\text{fuente}|\text{defectuoso})$, combinando
+  la proporción de producción de cada fuente con su tasa específica de defectos.
+explicacion: '![Aplicación de Bayes en control de calidad](/static/img/probabilidad/bayes/bayes-control-calidad.svg)
+
+
+  ### Definición formal
+
+
+  $P(\text{proveedor X}|\text{defectuoso})=\dfrac{P(\text{X})\times P(\text{defectuoso}|\text{X})}{P(\text{defectuoso})}$,
+  usando la probabilidad total en el denominador.
+
+
+  ### Desarrollo didáctico
+
+
+  Un producto proviene del proveedor X (70%, 3% defectuoso) o Y (30%, 8% defectuoso). Si se detecta un
+  producto defectuoso, $P(\text{X}|\text{defectuoso})=\dfrac{0{,}7\times0{,}03}{0{,}7\times0{,}03+0{,}3\times0{,}08}=\dfrac{0{,}021}{0{,}045}\approx0{,}47$.'
+procedimiento:
+- 'Paso 1: Identifica la proporción de producción de cada fuente (proveedor, máquina, turno) y sus tasas
+  de defecto específicas.'
+- 'Paso 2: Calcula el denominador (probabilidad total de defecto) sumando las rutas de todas las fuentes.'
+- 'Paso 3: Calcula la probabilidad a posteriori de cada fuente específica dado el defecto, dividiendo
+  su ruta por el denominador total.'
+ejemplos:
+- titulo: Calcular P(proveedor X|defectuoso)
+  enunciado: P(X)=0,7, P(defectuoso|X)=0,03, P(defectuoso)=0,045.
+  solucion_pasos:
+  - P(X|defectuoso)=(0,7×0,03)/0,045=0,021/0,045≈0,47.
+- titulo: Calcular P(proveedor Y|defectuoso)
+  enunciado: P(Y)=0,3, P(defectuoso|Y)=0,08, P(defectuoso)=0,045.
+  solucion_pasos:
+  - P(Y|defectuoso)=(0,3×0,08)/0,045=0,024/0,045≈0,53.
+- titulo: ¿La suma de P(X|defectuoso) y P(Y|defectuoso) debe dar 1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, ya que representan las únicas dos fuentes posibles de un producto defectuoso.
+- titulo: ¿Este análisis ayuda a dirigir acciones correctivas en la fábrica?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, permite priorizar la revisión del proveedor con mayor probabilidad de haber causado el defecto.
+errores_frecuentes:
+- Confundir la tasa de defecto de una fuente (P(defectuoso|fuente)) con la probabilidad de que un defecto
+  provenga de esa fuente (P(fuente|defectuoso)).
+- Olvidar calcular correctamente el denominador (probabilidad total) sumando todas las fuentes relevantes.
+- No verificar que las probabilidades a posteriori de todas las fuentes sumen 1.
+fuente: Elaboración propia.
+estado: publicado
