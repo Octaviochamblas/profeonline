@@ -1,0 +1,55 @@
+semantic_id: MAT.EST.PROBA_COMPUESTA_CONDICIONAL.ACTUALIZACION_CASOS
+titulo: Actualización de casos favorables y totales en experimentos sucesivos
+objetivo: Actualizar correctamente el número de casos favorables y el número de casos totales al pasar
+  de una extracción a la siguiente en un experimento sucesivo.
+introduccion: En cada etapa de un experimento sin reposición, tanto el numerador (casos favorables) como
+  el denominador (casos totales) pueden necesitar actualización, dependiendo del resultado anterior.
+resumen: En experimentos sucesivos sin reposición, el conteo de casos favorables y totales debe recalcularse
+  en cada etapa, restando 1 al total y, si corresponde, también al número de casos favorables de la categoría
+  ya extraída.
+explicacion: '![Actualización de casos favorables y totales](/static/img/probabilidad/compuesta/compuesta-actualizacion-casos.svg)
+
+
+  ### Definición formal
+
+
+  Si inicialmente hay $n$ objetos totales y $k$ favorables, tras extraer un objeto favorable sin reponerlo,
+  el nuevo total es $n-1$ y los nuevos favorables son $k-1$; si el objeto extraído no era favorable, el
+  nuevo total es $n-1$ pero los favorables se mantienen en $k$.
+
+
+  ### Desarrollo didáctico
+
+
+  En una urna con 6 rojas y 4 azules (10 en total), si se extrae una roja, el nuevo estado es 5 rojas
+  y 4 azules (9 en total): tanto el numerador (rojas) como el denominador (total) se actualizaron.'
+procedimiento:
+- 'Paso 1: Identifica el estado inicial: número de casos favorables y número de casos totales.'
+- 'Paso 2: Según el resultado de la extracción, determina si el numerador (casos favorables) también disminuye,
+  además del denominador (casos totales).'
+- 'Paso 3: Usa los valores actualizados para calcular la probabilidad de la siguiente extracción.'
+ejemplos:
+- titulo: Actualizar casos tras extraer una roja
+  enunciado: 'Urna inicial: 6 rojas, 4 azules (10 total). Se extrae una roja.'
+  solucion_pasos:
+  - 'Nuevo estado: 5 rojas, 4 azules (9 total). P(2da roja)=5/9.'
+- titulo: Actualizar casos tras extraer una azul (buscando rojas)
+  enunciado: Misma urna inicial. Se extrae una azul.
+  solucion_pasos:
+  - 'Nuevo estado: 6 rojas, 3 azules (9 total). P(2da roja)=6/9=2/3, ya que el número de rojas no cambió,
+    solo el total y las azules.'
+- titulo: ¿El denominador siempre disminuye en 1 tras cada extracción sin reposición?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, sin importar qué categoría fue extraída.
+- titulo: ¿El numerador de la categoría buscada siempre disminuye tras la primera extracción?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, solo disminuye si el objeto extraído pertenecía a esa misma categoría buscada.
+errores_frecuentes:
+- Disminuir siempre el numerador, incluso cuando el objeto extraído no pertenecía a la categoría de interés.
+- Olvidar disminuir el denominador (total) en cada extracción sucesiva.
+- Confundir cuál conteo específico (de qué categoría) se debe actualizar según el resultado de la extracción
+  previa.
+fuente: 'Elaboración propia (referencia: Moraleja 411).'
+estado: publicado

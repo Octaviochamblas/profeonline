@@ -1,0 +1,56 @@
+semantic_id: MAT.EST.REGLA_BAYES.DIAGNOSTICO_MEDICO
+titulo: Aplicación de Bayes en contextos de diagnósticos de salud
+objetivo: Aplicar la regla de Bayes para calcular la probabilidad real de tener una enfermedad, dado un
+  resultado positivo en una prueba diagnóstica.
+introduccion: Un resultado positivo en una prueba médica no significa automáticamente que la persona tenga
+  la enfermedad con certeza; la regla de Bayes permite calcular la probabilidad real considerando también
+  la tasa de la enfermedad en la población y la tasa de falsos positivos.
+resumen: En diagnósticos médicos, la regla de Bayes calcula $P(\text{enfermo}|\text{positivo})$ combinando
+  la prevalencia de la enfermedad, la sensibilidad de la prueba y la tasa de falsos positivos.
+explicacion: '![Aplicación de Bayes en diagnóstico médico](/static/img/probabilidad/bayes/bayes-diagnostico-medico.svg)
+
+
+  ### Definición formal
+
+
+  $P(\text{enfermo}|\text{positivo})=\dfrac{P(\text{enfermo})\times P(\text{positivo}|\text{enfermo})}{P(\text{enfermo})\times
+  P(\text{positivo}|\text{enfermo})+P(\text{sano})\times P(\text{positivo}|\text{sano})}$.
+
+
+  ### Desarrollo didáctico
+
+
+  Si el 5% de la población tiene la enfermedad, la prueba detecta correctamente al 90% de los enfermos
+  (sensibilidad) y da falsos positivos en el 10% de los sanos: $P(\text{enfermo}|\text{positivo})=\dfrac{0{,}05\times0{,}9}{0{,}05\times0{,}9+0{,}95\times0{,}1}=\dfrac{0{,}045}{0{,}045+0{,}095}=\dfrac{0{,}045}{0{,}14}\approx0{,}32$.'
+procedimiento:
+- 'Paso 1: Identifica la prevalencia de la enfermedad P(enfermo) y su complemento P(sano).'
+- 'Paso 2: Identifica la sensibilidad de la prueba P(positivo|enfermo) y la tasa de falsos positivos P(positivo|sano).'
+- 'Paso 3: Aplica la regla de Bayes para calcular P(enfermo|positivo), el valor realmente relevante para
+  el paciente.'
+ejemplos:
+- titulo: Calcular P(enfermo|positivo) con datos concretos
+  enunciado: P(enfermo)=0,05, P(positivo|enfermo)=0,9, P(positivo|sano)=0,1.
+  solucion_pasos:
+  - P(enfermo|positivo)=(0,05×0,9)/((0,05×0,9)+(0,95×0,1))=0,045/0,14≈0,32.
+- titulo: Interpretar por qué el resultado es menor de lo esperado
+  enunciado: Aunque la prueba tiene 90% de sensibilidad, P(enfermo|positivo)≈0,32.
+  solucion_pasos:
+  - Como la enfermedad es poco frecuente (5%), incluso con una buena prueba, muchos positivos son en realidad
+    falsos positivos de la gran mayoría de personas sanas.
+- titulo: ¿La sensibilidad de la prueba es lo mismo que P(enfermo|positivo)?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, la sensibilidad es P(positivo|enfermo), el orden opuesto al que realmente interesa al paciente.
+- titulo: ¿La prevalencia de la enfermedad afecta el resultado final de Bayes?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, es un factor crucial: enfermedades más raras dan valores de P(enfermo|positivo) más bajos, incluso
+    con pruebas precisas.'
+errores_frecuentes:
+- Confundir la sensibilidad de la prueba (P(positivo|enfermo)) con la probabilidad real de estar enfermo
+  dado un positivo (P(enfermo|positivo)).
+- Ignorar la tasa de prevalencia de la enfermedad, asumiendo que un resultado positivo siempre implica
+  alta probabilidad de enfermedad.
+- Olvidar incluir la tasa de falsos positivos en el cálculo del denominador.
+fuente: Elaboración propia.
+estado: publicado
