@@ -1,0 +1,56 @@
+semantic_id: MAT.EST.DIAGRAMA_CAJA.OUTLIERS_RIC
+titulo: Identificar valores atípicos con el criterio del rango intercuartílico
+objetivo: Aplicar el criterio del rango intercuartílico para identificar valores atípicos (outliers) en un conjunto de
+  datos.
+introduccion: A veces un dato es tan distinto al resto que parece no pertenecer al grupo; existe una regla matemática
+  para decidir si ese dato es realmente "raro".
+resumen: Un dato se considera atípico si es menor que $Q_1 - 1{,}5 \cdot RIC$ o mayor que $Q_3 + 1{,}5 \cdot RIC$, donde
+  $RIC$ es el rango intercuartílico.
+explicacion: '![Criterio de outliers con el RIC](/static/img/estadistica/diagcaja/diagcaja-outliers-ric.svg)
+
+
+  ### Definición formal
+
+
+  Se definen los límites $L_{inf} = Q_1 - 1{,}5\cdot RIC$ y $L_{sup} = Q_3 + 1{,}5\cdot RIC$. Cualquier dato fuera de
+
+  este intervalo se considera un valor atípico.
+
+
+  ### Desarrollo didáctico
+
+
+  En un diagrama de caja, los valores atípicos se suelen marcar con puntos separados, mientras que los bigotes solo se
+
+  extienden hasta el dato más extremo que aún está dentro de los límites calculados.'
+procedimiento:
+- 'Paso 1: Calcula $Q_1$, $Q_3$ y el rango intercuartílico $RIC = Q_3 - Q_1$.'
+- 'Paso 2: Calcula los límites $L_{inf} = Q_1 - 1{,}5\cdot RIC$ y $L_{sup} = Q_3 + 1{,}5\cdot RIC$.'
+- 'Paso 3: Clasifica como atípico cualquier dato menor que $L_{inf}$ o mayor que $L_{sup}$.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Si $Q_1=20$, $Q_3=35$ y $RIC=15$, calcula el límite superior para detectar valores atípicos.
+  solucion_pasos:
+  - $L_{sup} = Q_3 + 1{,}5\cdot RIC = 35 + 1{,}5\cdot 15$.
+  - $L_{sup} = 35 + 22{,}5 = 57{,}5$.
+- titulo: Ejemplo 2
+  enunciado: Con los límites $L_{inf}=5$ y $L_{sup}=57{,}5$, ¿el dato 60 es atípico?
+  solucion_pasos:
+  - 60 es mayor que $L_{sup}=57{,}5$.
+  - Por lo tanto, 60 se clasifica como un valor atípico.
+- titulo: ¿El criterio usa el factor 1,5 multiplicado por el rango intercuartílico?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, ese es el factor estándar del criterio de outliers con el $RIC$.
+- titulo: ¿Un dato es atípico solo si es menor que $Q_1$?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, debe ser menor que $Q_1 - 1{,}5\cdot RIC$, un límite más estricto que el propio $Q_1$.'
+errores_frecuentes:
+- Comparar los datos directamente con $Q_1$ y $Q_3$ en vez de con los límites calculados.
+- Olvidar multiplicar el $RIC$ por 1,5 antes de sumarlo o restarlo.
+- Confundir la resta y la suma al calcular $L_{inf}$ y $L_{sup}$.
+- Creer que cualquier valor fuera de la caja es automáticamente un valor atípico.
+- No calcular primero el $RIC$ antes de aplicar el criterio de outliers.
+fuente: 'Elaboración propia (referencia: Moraleja 138).'
+estado: publicado

@@ -1,0 +1,51 @@
+semantic_id: MAT.EST.PERCENTILES.INTERVALO_PERCENTIL
+titulo: Identificar el intervalo que contiene al percentil k en datos agrupados
+objetivo: Identificar el intervalo de clase que contiene a un percentil específico, cuando los datos están
+  agrupados en intervalos.
+introduccion: Al igual que con la mediana y la moda, con datos agrupados solo se puede determinar el intervalo
+  donde se ubica el percentil, no un valor puntual exacto.
+resumen: El intervalo percentílico es el intervalo de clase cuya frecuencia acumulada alcanza o supera
+  por primera vez la posición (k×n)/100 correspondiente al percentil buscado.
+explicacion: '![Intervalo que contiene al percentil k](/static/img/estadistica/percentil/percentil-intervalo-percentil.svg)
+
+
+  ### Definición formal
+
+
+  El intervalo percentílico es aquel $[LI_i,LS_i)$ cuya frecuencia acumulada $F_i$ es la primera en alcanzar
+  o superar $(k\times n)/100$.
+
+
+  ### Desarrollo didáctico
+
+
+  Con intervalos [10-20) f=4 F=4, [20-30) f=10 F=14, [30-40) f=6 F=20 (n=20), para el percentil 60: posición=(60×20)/100=12;
+  F=14 (en [20-30)) es la primera en alcanzar 12, por lo que ese es el intervalo percentílico.'
+procedimiento:
+- 'Paso 1: Calcula la posición del percentil k usando (k×n)/100.'
+- 'Paso 2: Calcula la frecuencia acumulada de cada intervalo de la tabla de datos agrupados.'
+- 'Paso 3: Identifica el primer intervalo cuya frecuencia acumulada alcance o supere esa posición.'
+ejemplos:
+- titulo: Determinar el intervalo del percentil 60
+  enunciado: '[10-20) f=4 F=4, [20-30) f=10 F=14, [30-40) f=6 F=20 (n=20).'
+  solucion_pasos:
+  - Posición=(60×20)/100=12. F=14 (en [20-30)) es la primera en alcanzar 12. Intervalo percentílico=[20-30).
+- titulo: Determinar el intervalo del percentil 25 de estaturas
+  enunciado: '[150-160) f=5 F=5, [160-170) f=12 F=17, [170-180) f=8 F=25 (n=25).'
+  solucion_pasos:
+  - Posición=(25×25)/100=6,25. F=17 (en [160-170)) es la primera en alcanzar esa posición. Intervalo=[160-170).
+- titulo: ¿Se necesita calcular la posición del percentil antes de determinar el intervalo?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es el paso previo indispensable para buscar el intervalo correcto en la frecuencia acumulada.
+- titulo: ¿Se puede determinar con este método un valor puntual exacto del percentil en datos agrupados?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, solo se puede determinar el intervalo; un valor puntual exacto requeriría fórmulas de interpolación
+    adicionales.
+errores_frecuentes:
+- Calcular la posición del percentil usando una fórmula distinta a (k×n)/100 al trabajar con datos agrupados.
+- Buscar el intervalo usando la frecuencia absoluta simple (f) en vez de la acumulada (F).
+- No revisar todos los intervalos en orden antes de determinar cuál es el primero en cumplir la condición.
+fuente: 'Elaboración propia (referencia: Moraleja 378).'
+estado: publicado
