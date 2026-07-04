@@ -13,6 +13,17 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Biblioteca de Conocimiento — Esqueleto YAML completo al 100% 🟢 (2026-07-04):** auditoría
+  completa (script que compara todos los `id:` hoja de `docs/conocimiento/*.yaml` contra
+  `semantic_id` en `docs/conocimiento/contenido/*.yaml`) detectó 7 recursos huecos sobre 1911
+  definidos: `MAT.FUND.PROPIEDADES_CONJUNTOS.IDEMPOTENCIA_INTERSECCION` (hueco aislado en
+  Fundamentos) y 6 recursos del bloque `MAT.GEO.AREAS_TRIANGULOS` (04.04.03) que había quedado a
+  medias (`FORMULA_HERON`, `HERON_APLICACION`, `FORMULA_DOS_LADOS_ANGULO`, `TRIANGULOS_IGUAL_BASE`,
+  `AREA_REGIONES_COMPUESTAS`, `AREA_COORDENADAS`). Rama `content/cerrar-huecos-fund-geo`, 70
+  ejercicios nuevos. **601 tests OK (1 skip)**. Con esto, **los 1911 recursos del árbol completo
+  (Fundamentos, Números, Álgebra, Geometría, Probabilidad, Estadística) tienen contenido
+  publicado.** **Siguiente:** pasar a F4–F5 (medición/evaluación) sobre todo lo construido, o
+  iterar sobre calidad/profundidad del contenido ya existente.
 - **Biblioteca de Conocimiento — Estadística Descriptiva (bloque 05.02–05.03 y 05.07) POBLADA
   Y MERGEADA 🟢 (2026-07-04):** rama `content/estadistica-descriptiva` completa, 68 recursos
   nuevos y 680 ejercicios (680 + previos). Bloques cerrados en esta sesión: `RECOLECCION_BASE`,
