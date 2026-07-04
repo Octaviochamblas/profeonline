@@ -13,6 +13,17 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Biblioteca de Conocimiento — Estadística Descriptiva (bloque 05.02–05.03 y 05.07) POBLADA
+  Y MERGEADA 🟢 (2026-07-04):** rama `content/estadistica-descriptiva` completa, 68 recursos
+  nuevos y 680 ejercicios (680 + previos). Bloques cerrados en esta sesión: `RECOLECCION_BASE`,
+  `VARIABLES_TIPOS`, `TABLAS_NO_AGRUPADAS`, `DATOS_AGRUPADOS`, `GRAFICOS_BASE`, `GRAFICOS_CONTINUOS`,
+  `REPRESENTACIONES_AVANZADAS`, `INTERPRETACION_CRITICA` (estadistica-descriptiva.yaml, completo);
+  `MEDIA_PROMEDIO`, `MODA_ANALISIS`, `MEDIANA_ANALISIS`, `MTC_PROPIEDADES` (estadistica-tendencia-central.yaml,
+  completo); `PERCENTILES`, `CUARTILES`, `DIAGRAMA_CAJA`, `DISPERSION_BASE`, `DISPERSION_COMPARATIVA`
+  (estadistica-posicion-dispersion.yaml, completo); `NORMAL_BASE`, `NORMAL_ESTANDAR`, `NORMAL_CALCULO`,
+  `NORMAL_APLICACIONES` (estadistica-normal.yaml, completo). **601 tests OK (1 skip)** antes del
+  merge. Squash-merge a `main`. **Siguiente:** decidir próximo eje a poblar (quedan 01-03 del
+  esqueleto YAML original) o pasar a F4–F5 de medición/evaluación.
 - **Biblioteca de Conocimiento — Ejes 04 (Geometría) y 05 (Probabilidad y Estadística) POBLADOS
   Y MERGEADOS 🟢 (2026-07-03):** contenido completo cargado en `main` para ambas ramas.
   **Geometría (PR #155):** 482 recursos publicados (bloques 04.01–04.13 completos: círculo,
