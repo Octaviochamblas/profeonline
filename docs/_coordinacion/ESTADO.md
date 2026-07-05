@@ -13,10 +13,10 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
-- **F6 estructural — cierre en `content/dag-prerrequisitos` 🟡 (2026-07-04):** DAG de Fundamentos
+- **F6 estructural — CERRADA 🟢 (PR #160, 2026-07-04):** DAG de Fundamentos
   poblado con 12 aristas; caja "Antes de empezar" pulida; breadcrumb de recursos unificado con los
-  chips del explorador y alineación corregida. 18 tests focalizados verdes. Tarjeta reconciliada en
-  `5-cierre/`; queda CI del PR y auditoría final. Estado por alumno y siguiente recomendado siguen
+  chips del explorador y alineación corregida. CI canónico verde, `audit:aprobado` y squash-merge a
+  `main` (`be747637`). Tarjeta en `6-finalizados/`. Estado por alumno y siguiente recomendado siguen
   diferidos a F5.
 - **Biblioteca de Conocimiento — Esqueleto YAML completo al 100% 🟢 (2026-07-04):** auditoría
   completa (script que compara todos los `id:` hoja de `docs/conocimiento/*.yaml` contra
@@ -74,7 +74,7 @@
   idempotente) + sección **"Antes de empezar"** informativa en la página del nodo (enlaces a
   prerrequisitos publicados, nunca bloquea) + DAG piloto `num-enteros.yaml` (operatoria←conjunto,
   verificado en navegador) + timestamps en `NodeContent` (migración `0040`). 13 tests nuevos.
-  **Diferido a F5:** estado por alumno (✓/!) y "siguiente recomendado". Tarjeta F6 en `5-cierre/`.
+  **Diferido a F5:** estado por alumno (✓/!) y "siguiente recomendado". Tarjeta F6 en `6-finalizados/`.
   **Siguiente: poblar banco/contenido (pipeline) · F4–F5 (medición) cuando se decida.**
 - **Plataforma de Conocimiento — F1 y F2 CONSTRUIDOS 🟡 (2026-06-26):**
   🏛️ Claude diseñó arquitectura 6 capas + tarjetas F1–F6. **F1** (rama `feat/grafo-conocimiento-f1`):
