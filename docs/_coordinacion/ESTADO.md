@@ -13,6 +13,9 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Breadcrumb de Aprender unificado 🟢 (2026-07-04):** las páginas de recurso reutilizan los
+  mismos chips del explorador y se corrigió la desalineación vertical causada por la regla global
+  `li + li`. Navegador verificado y 15 tests focalizados verdes en `content/dag-prerrequisitos`.
 - **Biblioteca de Conocimiento — Esqueleto YAML completo al 100% 🟢 (2026-07-04):** auditoría
   completa (script que compara todos los `id:` hoja de `docs/conocimiento/*.yaml` contra
   `semantic_id` en `docs/conocimiento/contenido/*.yaml`) detectó 7 recursos huecos sobre 1911

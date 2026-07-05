@@ -1,29 +1,11 @@
 {% extends "base.html" %}
-{% load markdown_tags %}
+{% load markdown_tags static %}
 
 {% block title %}{{ node.name }} | ProfeOnline{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/learn-catalog.css' %}?v=3">
 <style>
-/* ── Miga de pan plegable ───────────────────────────── */
-.breadcrumb-wrap > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  padding: .3rem .8rem;
-  background: #f1f5f9;
-  border-radius: 20px;
-  font-size: .82rem;
-  color: #64748b;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  border: 1px solid #e2e8f0;
-}
-.breadcrumb-wrap > summary::-webkit-details-marker { display: none; }
-.breadcrumb-wrap > summary::before { content: "↗ "; font-size: .78rem; }
-.breadcrumb-wrap[open] > summary { margin-bottom: .5rem; border-radius: 8px 8px 0 0; }
-
 /* ── Objetivo ──────────────────────────────────────── */
 .learn-objetivo-card {
   background: #eff6ff;
@@ -316,22 +298,19 @@
 {% block content %}
 <article class="resource-view stack">
 
-    <details class="breadcrumb-wrap">
-        <summary>Ruta de aprendizaje</summary>
-        <nav aria-label="Miga de pan">
-            <ol class="breadcrumb">
-                {% for crumb in breadcrumbs %}
-                <li class="breadcrumb__item">
-                    {% if crumb.url %}
-                    <a href="{{ crumb.url }}" class="breadcrumb__link">{{ crumb.label }}</a>
-                    {% else %}
-                    <span aria-current="page">{{ crumb.label }}</span>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ol>
-        </nav>
-    </details>
+    <nav class="learn-breadcrumbs" aria-label="Ruta de aprendizaje">
+        <ol class="learn-breadcrumbs__list">
+            {% for crumb in breadcrumbs %}
+            <li class="learn-breadcrumbs__item">
+                {% if crumb.url %}
+                <a href="{{ crumb.url }}" class="learn-breadcrumbs__link">{{ crumb.label }}</a>
+                {% else %}
+                <span class="learn-breadcrumbs__current" aria-current="page">{{ crumb.label }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
 
     <header class="resource-view__header">
         <h1 class="resource-view__title">{{ node.name }}</h1>
