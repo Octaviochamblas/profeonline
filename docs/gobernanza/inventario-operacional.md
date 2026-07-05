@@ -52,11 +52,14 @@ python manage.py check_environment
 # Deploy check de producción o staging (como en CI):
 python manage.py check --deploy --fail-level ERROR --settings=config.settings.production
 
-# Arranque en Railway (Procfile / nixpacks.toml):
+# Custom Start Command canónico de Railway:
 migrate && ensure_admin && ensure_site && gunicorn config.wsgi:application
 ```
 
 - `ensure_admin` lee `DJANGO_ADMIN_*` y **nunca** reescribe contraseñas existentes.
+- No agregar `import_knowledge_tree`, `load_node_content`, `load_exercise_bank` ni
+  `publish_knowledge_nodes` al arranque: con la biblioteca completa retrasan Gunicorn y provocan 502
+  durante el deploy. Son operaciones explícitas de carga editorial.
 - `seed_math_resources` **ya no** corre en el arranque (C1 mitigado): es idempotente (`get_or_create`,
   no pisa ediciones del staff) y se corre **a demanda**; usar `--refrescar-seo` para refrescar SEO.
 
