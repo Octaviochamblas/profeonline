@@ -13,6 +13,12 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **Incidente Railway — producción recuperada 🟢 (2026-07-04):** `www.profeonline.cl` devolvió 502
+  tras PR #161 porque el `Custom Start Command` había derivado y ejecutaba en cada boot
+  `import_knowledge_tree`, `load_node_content`, `load_exercise_bank` y `publish_knowledge_nodes`
+  antes de Gunicorn. Con 1911 recursos quedó ocupado sin abrir puerto. Se restauró el comando
+  canónico `migrate && ensure_admin && ensure_site && gunicorn`; portada, `/aprender/` y recurso
+  profundo verificados HTTP 200.
 - **F6 estructural — CERRADA 🟢 (PR #160, 2026-07-04):** DAG de Fundamentos
   poblado con 12 aristas; caja "Antes de empezar" pulida; breadcrumb de recursos unificado con los
   chips del explorador y alineación corregida. CI canónico verde, `audit:aprobado` y squash-merge a
