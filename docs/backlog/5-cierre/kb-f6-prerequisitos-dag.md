@@ -1,17 +1,21 @@
 # F6 — Prerrequisitos y guía de ruta (piloto: 02.01 Números Enteros)
 
-- **Estado:** Handoff — listo para preflight
+- **Estado:** Cierre — subconjunto estructural construido; complemento con estado diferido a F5
 - **Creado:** 2026-06-26
 - **Prioridad:** P2 · **Cartera:** educativa · producto
 - **Tipo:** infraestructura · producto
 - **Dueño sugerido:** 🧩 Codex (preflight) → 🔨 Antigravity (construcción)
-- **Requiere:** F5 completo (`StudentNodeState` en DB)
+- **Requiere:** F1 completo (`NodePrerequisite`). La parte con estado requiere F5 y queda diferida.
 
 ## Objetivo
 
 Activar el DAG de prerrequisitos: crear el archivo YAML del piloto, el comando `load_prerequisites`
 con validación transaccional de ciclos, y la UI "Antes de empezar" / "Siguiente recomendado" en la
 página del nodo. El acceso nunca se bloquea — solo se avisa.
+
+> **Decisión de alcance D4:** F6 se cerró primero como infraestructura estructural independiente del
+> estado del alumno. Los indicadores ✓/!, la lógica de dominio y "Siguiente recomendado" se
+> implementarán junto con F5 (`StudentNodeState`), sin bloquear la consulta actual.
 
 ## Fuentes a leer
 
@@ -100,15 +104,15 @@ Lógica:
 
 ## Criterios de aceptación
 
-- [ ] Barrera verde: `python manage.py test` · `check` · `makemigrations --check --dry-run`
-- [ ] `load_prerequisites` con `num-enteros.yaml` válido: crea el `NodePrerequisite` correctamente
-- [ ] `load_prerequisites` con un ciclo artificial introducido en el YAML: aborta, no modifica la DB, imprime el ciclo
-- [ ] `load_prerequisites` es idempotente (segunda ejecución: `Creados: 0, Actualizados: 1`)
-- [ ] Página del nodo `MAT.NUM.ENTEROS_OPERATORIA` muestra sección "Antes de empezar"
-- [ ] Sin login: prerrequisitos visibles como links (sin estado)
-- [ ] Con login: estado del prerrequisito correcto (✓ dominado / ! pendiente)
-- [ ] "Siguiente recomendado" lleva al nodo correcto
-- [ ] Tests: detección de ciclos (con grafo con ciclo y sin ciclo), idempotencia del comando, UI con y sin login
+- [ ] Barrera verde en CI del PR de cierre
+- [x] `load_prerequisites` con `num-enteros.yaml` válido: crea el `NodePrerequisite` correctamente
+- [x] `load_prerequisites` con un ciclo artificial introducido en el YAML: aborta sin modificar la DB
+- [x] `load_prerequisites` es idempotente
+- [x] Página del nodo con prerrequisitos muestra sección "Antes de empezar"
+- [x] Sin login: prerrequisitos visibles como links (sin estado)
+- [ ] Con login: estado del prerrequisito correcto (✓ dominado / ! pendiente) — **diferido a F5**
+- [ ] "Siguiente recomendado" lleva al nodo correcto — **diferido a F5**
+- [x] Tests: detección de ciclos, atomicidad, idempotencia y UI estructural
 
 ## Plan de pruebas
 
@@ -126,4 +130,13 @@ Lógica:
 
 ## Qué se hizo
 
-_(Completar al cerrar, antes de mover a `backlog/6-finalizados/`.)_
+- Se implementó `load_prerequisites` con carga YAML, resolución por `semantic_id`, validación de
+  ciclos con `TopologicalSorter`, transacción atómica e idempotencia.
+- Se creó el piloto `docs/conocimiento/dag/num-enteros.yaml` y se amplió la población con
+  `fundamentos.yaml` (12 aristas de Lógica y Conjuntos).
+- Se incorporó la caja informativa "Antes de empezar" con enlaces solo a prerrequisitos publicados;
+  nunca bloquea el acceso.
+- Se mejoró visualmente la caja y se unificó el breadcrumb del detalle de recursos con los chips del
+  explorador, corrigiendo además su alineación vertical.
+- La parte dependiente del alumno (✓/! y siguiente recomendado) queda explícitamente en F5.
+- Verificación local de la entrega final: 18 tests focalizados verdes, `check` verde, sin migraciones.

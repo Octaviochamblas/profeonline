@@ -56,7 +56,7 @@ class LearnHomeViewTests(TestCase):
         self.assertContains(response, "learn-card-grid")
         self.assertContains(response, "learn-card")
         self.assertContains(response, f'/aprender/{subject.slug}/')
-        self.assertContains(response, "/static/css/learn-catalog.css?v=2")
+        self.assertContains(response, "/static/css/learn-catalog.css?v=3")
 
     def test_home_hides_unpublished(self):
         KnowledgeNode.objects.create(
@@ -118,7 +118,7 @@ class NodeListViewTests(TestCase):
         self.assertContains(response, self.recurso.code)
         self.assertContains(response, f'{url}{self.recurso.slug}/')
         self.assertContains(response, "Selecciona un contenido para continuar")
-        self.assertContains(response, "/static/css/learn-catalog.css?v=2")
+        self.assertContains(response, "/static/css/learn-catalog.css?v=3")
 
     def test_list_hides_unpublished_children_for_anonymous(self):
         hidden = KnowledgeNode.objects.create(
@@ -244,6 +244,11 @@ class NodeDetailViewTests(TestCase):
         self.assertContains(response, "Matemáticas")
         self.assertContains(response, "Números")
         self.assertContains(response, "Enteros")
+        self.assertContains(response, 'class="learn-breadcrumbs"')
+        self.assertContains(response, 'class="learn-breadcrumbs__current"')
+        self.assertContains(response, 'aria-current="page"')
+        self.assertContains(response, "/static/css/learn-catalog.css?v=3")
+        self.assertNotContains(response, 'class="breadcrumb-wrap"')
 
 
 class NodePracticeBankViewTests(TestCase):
