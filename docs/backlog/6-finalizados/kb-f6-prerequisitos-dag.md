@@ -1,11 +1,11 @@
 # F6 — Prerrequisitos y guía de ruta (piloto: 02.01 Números Enteros)
 
-- **Estado:** Handoff Ready — verificado contra código real (2026-06-26)
+- **Estado:** Cerrada — subconjunto estructural mergeado; complemento con estado diferido a F5
 - **Creado:** 2026-06-26
 - **Prioridad:** P2 · **Cartera:** educativa · producto
 - **Tipo:** infraestructura · producto
 - **Dueño sugerido:** 🧩 Codex (preflight) → 🔨 Antigravity (construcción)
-- **Requiere:** F5 completo (`StudentNodeState` en DB)
+- **Requiere:** F1 completo (`NodePrerequisite`). La parte con estado requiere F5 y queda diferida.
 
 ## Objetivo
 
@@ -157,3 +157,14 @@ Construido lo que **no depende del estado del alumno** (F5 está diferida por D4
 
 > Nota: la dependencia "Requiere: F5" del encabezado aplica solo a esas partes con estado; el DAG y el
 > aviso informativo se adelantaron por ser estructura pura (capa 1), sin tocar la medición.
+
+## Ampliación y cierre definitivo (2026-07-04, PR #160)
+
+- Se pobló `docs/conocimiento/dag/fundamentos.yaml` con 12 aristas de Lógica y Conjuntos,
+  respetando el curso mínimo real de cada tema.
+- Se pulió visualmente la caja "Antes de empezar" y se unificó el breadcrumb del detalle de recursos
+  con los chips del explorador; también se corrigió la alineación vertical de todos sus elementos.
+- Verificación: 18 tests focalizados locales, `check`, pre-commit y CI canónico completos en verde.
+- `audit:aprobado` y squash-merge de PR **#160** a `main` (`be747637`).
+- Continúan diferidos a F5 los indicadores ✓/! y "Siguiente recomendado" basados en
+  `StudentNodeState`.
