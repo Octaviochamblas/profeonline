@@ -25,6 +25,10 @@ from apps.content.models import (
     UserSkill,
     UserStreak,
     XPEvent,
+    NodeAssessmentQuestion,
+    NodeAssessmentChoice,
+    NodeAssessmentAttempt,
+    NodeAssessmentAnswer,
 )
 
 
@@ -441,6 +445,81 @@ class UserStreakAdmin(admin.ModelAdmin):
         "updated_at",
     )
     ordering = ("-current_count",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+class NodeAssessmentChoiceInline(admin.TabularInline):
+    model = NodeAssessmentChoice
+    extra = 4
+    min_num = 2
+    fields = ("text", "is_correct", "order")
+
+
+@admin.register(NodeAssessmentQuestion)
+class NodeAssessmentQuestionAdmin(admin.ModelAdmin):
+    list_display = ("short_text", "node", "level", "status", "choices_count")
+    list_filter = ("level", "status", "node__subject_abbr")
+    search_fields = ("text", "node__name", "node__semantic_id")
+    list_editable = ("status",)
+    inlines = [NodeAssessmentChoiceInline]
+    raw_id_fields = ("node",)
+    ordering = ("node", "level", "order")
+
+    @admin.display(description="Enunciado")
+    def short_text(self, obj):
+        return obj.text[:100] + "…" if len(obj.text) > 100 else obj.text
+
+    @admin.display(description="Alternativas")
+    def choices_count(self, obj):
+        return obj.choices.count()
+
+
+@admin.register(NodeAssessmentAttempt)
+class NodeAssessmentAttemptAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "node",
+        "level",
+        "score_display",
+        "passed",
+        "attempt_number",
+        "created_at",
+    )
+    list_filter = ("passed", "level", "node__subject_abbr")
+    search_fields = ("user__email", "user__username", "node__name")
+    readonly_fields = (
+        "user",
+        "node",
+        "level",
+        "score",
+        "total",
+        "passed",
+        "attempt_number",
+        "created_at",
+    )
+    ordering = ("-created_at",)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description="Puntaje")
+    def score_display(self, obj):
+        return f"{obj.score}/{obj.total}"
+
+
+@admin.register(NodeAssessmentAnswer)
+class NodeAssessmentAnswerAdmin(admin.ModelAdmin):
+    list_display = ("attempt", "question", "selected_choice", "is_correct")
+    list_filter = ("is_correct",)
+    readonly_fields = ("attempt", "question", "selected_choice", "is_correct")
 
     def has_add_permission(self, request):
         return False

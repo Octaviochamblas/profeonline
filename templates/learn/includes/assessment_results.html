@@ -1,0 +1,95 @@
+{% load static %}
+<div class="assessment-results-view" style="background: #fff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,.05); margin-top: 1rem;">
+
+    <header style="text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+        {% if attempt.passed %}
+            <div style="font-size: 3rem; color: #10b981; margin-bottom: .5rem;">✓</div>
+            <h3 style="margin: 0 0 .5rem; font-size: 1.3rem; font-weight: 800; color: #047857;">
+                ¡Nivel Aprobado!
+            </h3>
+            <p style="font-size: .95rem; color: #374151; margin: 0;">
+                Has obtenido un puntaje de <strong>{{ attempt.score }} de {{ attempt.total }}</strong>.
+            </p>
+        {% else %}
+            <div style="font-size: 3rem; color: #ef4444; margin-bottom: .5rem;">✗</div>
+            <h3 style="margin: 0 0 .5rem; font-size: 1.3rem; font-weight: 800; color: #b91c1c;">
+                Intento No Aprobado
+            </h3>
+            <p style="font-size: .95rem; color: #374151; margin: 0 0 1rem;">
+                Has obtenido un puntaje de <strong>{{ attempt.score }} de {{ attempt.total }}</strong>. Se requiere al menos un 80% (6 correctas) para aprobar.
+            </p>
+            {% if info.max_reached %}
+                <div style="background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: .75rem 1rem; color: #991b1b; font-size: .88rem; font-weight: 600; display: inline-block; margin-bottom: 1rem;">
+                    Has alcanzado el límite máximo de 3 intentos.
+                </div>
+            {% else %}
+                <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: .75rem 1rem; color: #92400e; font-size: .88rem; font-weight: 600; display: inline-block; margin-bottom: 1rem;">
+                    Te quedan {{ info.remaining }} intento{{ info.remaining|pluralize }} disponible{{ info.remaining|pluralize }}.
+                </div>
+            {% endif %}
+            <p style="font-size: .88rem; color: #4b5563; margin: 0;">
+                Te recomendamos repasar la sección de <a href="#assessment-section-root" style="color: #2563eb; font-weight: 600; text-decoration: underline;">Práctica por ítems</a> para reforzar los conceptos antes de reintentar.
+            </p>
+        {% endif %}
+    </header>
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
+        <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #1e3a5f;">Revisión de respuestas</h4>
+        {% for res in results %}
+        <div class="result-item" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; background: {% if res.is_correct %}#f0fdf4{% else %}#fef2f2{% endif %};">
+            <p style="margin: 0 0 .75rem; font-weight: 700; font-size: .92rem; color: #1e293b;">
+                {{ forloop.counter }}. {{ res.question.text }}
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: .35rem; font-size: .88rem; margin-bottom: .75rem;">
+                <div>
+                    <span style="color: #64748b;">Tu respuesta:</span>
+                    <span style="font-weight: 600; color: {% if res.is_correct %}#15803d{% else %}#b91c1c{% endif %};">
+                        {{ res.selected.text|default:"(Sin responder)" }}
+                    </span>
+                </div>
+                {% if not res.is_correct %}
+                <div>
+                    <span style="color: #64748b;">Respuesta correcta:</span>
+                    <span style="font-weight: 600; color: #15803d;">
+                        {{ res.correct_choice.text }}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if res.explanation %}
+            <div style="background: rgba(255, 255, 255, 0.7); border-radius: 8px; border-left: 3px solid #64748b; padding: .75rem 1rem; font-size: .88rem; color: #374151; margin-top: .5rem;">
+                <strong style="color: #1e293b; display: block; margin-bottom: .25rem;">Explicación paso a paso:</strong>
+                <p style="margin: 0; line-height: 1.5; white-space: pre-line;">{{ res.explanation }}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="padding-top: 1rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: center;">
+        <button type="button" class="btn btn-primary" style="padding: .5rem 1.5rem; font-weight: 700;"
+                hx-get="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
+                hx-target="#assessment-container"
+                hx-swap="innerHTML">
+            Volver a la vista general
+        </button>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce }}">
+(function() {
+    // Renderizar fórmulas de KaTeX si están presentes
+    if (typeof window.renderMathInElement === "function") {
+        var container = document.getElementById("assessment-container");
+        if (container) {
+            try {
+                window.renderMathInElement(container, { throwOnError: false });
+            } catch (e) {
+                console.error("Error al renderizar KaTeX en los resultados: ", e);
+            }
+        }
+    }
+})();
+</script>

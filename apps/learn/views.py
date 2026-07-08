@@ -150,6 +150,8 @@ def _build_practice_bank(node):
 
 
 def _recurso_view(request, node, breadcrumbs, prerequisites):
+    from apps.content.services.node_assessment_service import get_node_mastery
+
     content = getattr(node, "content", None)
     noindex = not node.is_published or content is None or content.is_draft
 
@@ -177,5 +179,6 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "prerequisites": prerequisites,
             "breadcrumbs": breadcrumbs,
             "noindex": noindex,
+            "mastery": get_node_mastery(request.user, node),
         },
     )

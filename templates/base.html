@@ -291,6 +291,18 @@
                 }
             });
         })();
+
+        (function () {
+            document.addEventListener('click', function (e) {
+                const toggle = e.target.closest('.learn-breadcrumbs__toggle');
+                if (!toggle) return;
+
+                const nav = toggle.closest('.learn-breadcrumbs');
+                const open = !nav.classList.contains('is-open');
+                nav.classList.toggle('is-open', open);
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+        })();
     </script>
     <script nonce="{{ csp_nonce }}" src="{% static 'js/analytics.js' %}"></script>
     <script nonce="{{ csp_nonce }}" src="{% static 'js/hero-counters.js' %}" defer></script>

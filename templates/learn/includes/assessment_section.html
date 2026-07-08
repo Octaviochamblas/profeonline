@@ -1,0 +1,63 @@
+{% load static %}
+<div class="assessment-block">
+    <div class="assessment-block__header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <span class="assessment-block__subtitle" style="font-size: .85rem; color: #64748b; font-weight: 600;">Nivel de Dominio</span>
+            <div class="assessment-stars" style="display: flex; gap: .25rem; font-size: 1.5rem; color: #f59e0b; margin-top: .25rem;" aria-label="Estrellas de dominio: {{ mastery.stars }} de 3">
+                {% for i in "123" %}
+                    {% if forloop.counter <= mastery.stars %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <span style="font-size: .85rem; color: #64748b; font-weight: 600; display: block;">Estado</span>
+            <span class="quiz-state {% if mastery.stars == 3 %}quiz-state--approved{% else %}quiz-state--ready{% endif %}" style="display: inline-block; margin-top: .25rem;">
+                {% if mastery.stars == 3 %}Dominado{% else %}En progreso{% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="quiz-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        {% for level, info in mastery.levels_info.items %}
+        <div class="quiz-action quiz-action--eval" style="padding: 1.2rem; border: 1.5px solid #e2e8f0; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.04);">
+            <div class="quiz-action__top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem;">
+                <span class="quiz-action__name" style="font-weight: 700; font-size: .95rem; color: #1e293b;">
+                    Nivel {{ level }}: {% if level == 1 %}Definición{% elif level == 2 %}Ejercicios simples{% else %}Problemas de aplicación{% endif %}
+                </span>
+                {% if info.passed %}
+                    <span class="quiz-state quiz-state--approved" style="background: #ecfdf5; color: #047857; padding: .2rem .6rem; border-radius: 6px; font-size: .75rem; font-weight: 700;">Aprobado</span>
+                {% endif %}
+            </div>
+
+            <p style="font-size: .82rem; color: #64748b; margin-bottom: 1rem;">
+                {% if info.used > 0 %}
+                    Mejor puntaje: <strong>{{ info.best_score }}/7</strong> ({{ info.used }} intento{{ info.used|pluralize }})
+                {% else %}
+                    Sin intentos aún
+                {% endif %}
+            </p>
+
+            {% if info.passed %}
+                <p style="font-size: .85rem; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: .25rem;">
+                    ✓ Nivel completado con éxito
+                </p>
+            {% elif info.max_reached %}
+                <p style="font-size: .85rem; color: #ef4444; font-weight: 600; display: flex; align-items: center; gap: .25rem;">
+                    ✗ 3 intentos fallidos (Bloqueado)
+                </p>
+            {% else %}
+                <button type="button" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: .5rem;"
+                        hx-get="{% url 'learn:assessment_start' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug level %}"
+                        hx-target="#assessment-container"
+                        hx-swap="innerHTML">
+                    Evaluarme (Intento {{ info.used|add:1 }}/3)
+                </button>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
