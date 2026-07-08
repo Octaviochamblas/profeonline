@@ -6,14 +6,20 @@
 {% block robots %}{% if noindex %}noindex,nofollow{% else %}index,follow{% endif %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/learn-catalog.css' %}?v=3">
+<link rel="stylesheet" href="{% static 'css/learn-catalog.css' %}?v=5">
 {% endblock %}
 
 {% block content %}
 <div class="learn-catalog stack">
 
     <nav class="learn-breadcrumbs" aria-label="Ruta de aprendizaje">
-        <ol class="learn-breadcrumbs__list">
+        {% with current_crumb=breadcrumbs|last %}
+        <button type="button" class="learn-breadcrumbs__toggle" aria-expanded="false" aria-controls="learn-breadcrumbs-list">
+            <span class="learn-breadcrumbs__toggle-label">{{ current_crumb.label }}</span>
+            <svg class="learn-breadcrumbs__chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        {% endwith %}
+        <ol class="learn-breadcrumbs__list" id="learn-breadcrumbs-list">
             {% for crumb in breadcrumbs %}
             <li class="learn-breadcrumbs__item">
                 {% if crumb.url %}
