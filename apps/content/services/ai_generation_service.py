@@ -10,7 +10,7 @@ import sys
 import time
 import requests
 from django.conf import settings
-from apps.content.models import Choice, Question
+from apps.content.models import Choice, Question, NodeAssessmentQuestion, NodeAssessmentChoice
 
 logger = logging.getLogger(__name__)
 
@@ -697,3 +697,286 @@ def call_ai_structured_json(prompt, api_key=None) -> dict:
             msg = _sanitize_key(str(e), openai_key)
             logger.error("Error llamando a OpenAI API en call_ai_structured_json: %s", msg)
             raise RuntimeError(f"Error de generación con OpenAI: {msg}") from None
+
+
+def generate_assessment_questions_for_node(node, level, count=3, api_key=None, status="borrador", education_level=None, custom_instructions=None, avoid_existing=True):
+    """Genera preguntas de evaluación formal para un KnowledgeNode usando Gemini o OpenAI."""
+    is_testing = "test" in sys.argv or getattr(settings, "TESTING", False) or "test" in getattr(settings, "SETTINGS_MODULE", "")
+
+    gemini_key = api_key
+    if gemini_key is None:
+        gemini_key = getattr(settings, "GEMINI_API_KEY", None)
+        if is_testing and gemini_key == os.environ.get("GEMINI_API_KEY", ""):
+            gemini_key = ""
+        elif gemini_key is None and not is_testing:
+            gemini_key = os.environ.get("GEMINI_API_KEY", "")
+        elif gemini_key is None:
+            gemini_key = ""
+
+    openai_key = api_key
+    if openai_key is None:
+        openai_key = getattr(settings, "OPENAI_API_KEY", None)
+        if is_testing and openai_key == os.environ.get("OPENAI_API_KEY", ""):
+            openai_key = ""
+        elif openai_key is None and not is_testing:
+            openai_key = os.environ.get("OPENAI_API_KEY", "")
+        elif openai_key is None:
+            openai_key = ""
+
+    if not gemini_key and not openai_key:
+        if settings.DEBUG or is_testing:
+            return _generate_mock_node_assessment_questions(node, level, count, status)
+        raise ValueError("No se configuraron las llaves GEMINI_API_KEY u OPENAI_API_KEY.")
+
+    existing_questions = []
+    if avoid_existing:
+        existing_questions = list(
+            NodeAssessmentQuestion.objects.filter(node=node, level=level)
+            .exclude(status="archivada")
+            .order_by("-id")
+            .values_list("text", flat=True)[:80]
+        )
+
+    prompt = _build_node_assessment_prompt(
+        node=node,
+        level=level,
+        count=count,
+        education_level=education_level,
+        custom_instructions=custom_instructions,
+        existing_questions=existing_questions,
+    )
+    prompt += (
+        "\nIncluye además `cognitive_type` en cada objeto con uno de: "
+        "recuerdo, comprension, aplicacion, analisis."
+    )
+
+    if gemini_key:
+        questions_data = _call_gemini_api(prompt, gemini_key)
+    else:
+        questions_data = _call_openai_api(prompt, openai_key)
+
+    return _save_node_assessment_questions(node, level, questions_data, status)
+
+
+def _build_node_assessment_prompt(node, level, count, education_level=None, custom_instructions=None, existing_questions=None):
+    ancestors = []
+    curr = node.parent
+    while curr:
+        ancestors.append(curr.name)
+        curr = curr.parent
+    ancestors.reverse()
+    ancestors_str = " > ".join(ancestors) if ancestors else ""
+
+    content_obj = getattr(node, "content", None)
+    obj_text = content_obj.objetivo if content_obj else ""
+    intro_text = content_obj.introduccion if content_obj else ""
+    resumen_text = content_obj.resumen if content_obj else ""
+    explicacion_text = content_obj.explicacion if content_obj else ""
+
+    procedimientos = []
+    if content_obj and content_obj.procedimiento:
+        for p in content_obj.procedimiento:
+            if isinstance(p, dict):
+                procedimientos.append(f"- {p.get('titulo', '')}: {p.get('paso', '')}")
+            else:
+                procedimientos.append(f"- {p}")
+    procedimientos_str = "\n".join(procedimientos)
+
+    ejemplos = []
+    if content_obj and content_obj.ejemplos:
+        for e in content_obj.ejemplos:
+            if isinstance(e, dict):
+                ejemplos.append(f"- Ej: {e.get('pregunta', '')} | Explicación: {e.get('explicacion', '')}")
+            else:
+                ejemplos.append(f"- {e}")
+    ejemplos_str = "\n".join(ejemplos)
+
+    level_name = dict(NodeAssessmentQuestion.LEVEL_CHOICES).get(level, f"Nivel {level}")
+    edu_desc = _EDUCATION_DESCRIPTIONS.get(education_level or "", _EDUCATION_DESCRIPTIONS["media"])
+
+    existing_block = ""
+    if existing_questions:
+        listado = "\n".join(f"- {texto}" for texto in existing_questions if texto)
+        if listado:
+            existing_block = (
+                "\n- PREGUNTAS YA EXISTENTES EN ESTE NODO (NO las repitas ni generes "
+                "variantes triviales):\n"
+                f"{listado[:4000]}\n"
+            )
+
+    notation_block = (
+        r"""NOTACIÓN MATEMÁTICA (OBLIGATORIO — la plataforma renderiza LaTeX con KaTeX):
+- Escribe TODA expresión matemática en LaTeX entre delimitadores, nunca en texto plano:
+    · En línea (dentro de una frase):  $...$       ej.  la solución es $x = \frac{-b}{2a}$
+    · En bloque (ecuación centrada):   $$...$$      ej.  $$\int_0^1 x^2\,dx = \frac{1}{3}$$
+- Úsalo en el enunciado, en las 4 alternativas y en la explicación.
+- JSON: escapa las barras invertidas como dobles. Debe ir "$\\frac{a}{b}$", nunca "$\frac{a}{b}$"."""
+    )
+
+    json_example = (
+        r"""[
+  {
+    "text": "¿Cuál es el valor de $x$ en la ecuación $2x = 4$?",
+    "explanation": "1. Dividimos ambos lados por $2$.\n2. $x = \\frac{4}{2} = 2$.",
+    "choices": [
+      {"text": "$2$", "is_correct": true},
+      {"text": "$4$", "is_correct": false},
+      {"text": "$0$", "is_correct": false},
+      {"text": "$-2$", "is_correct": false}
+    ]
+  }
+]"""
+    )
+
+    prompt = f"""Eres un experto pedagogo en matemáticas y ciencias para la plataforma 'ProfeOnline'.
+Tu tarea es generar exactamente {count} preguntas de opción múltiple de alta calidad pedagógica sobre el siguiente contenido educativo de un nodo de conocimiento.
+
+REGLA CRÍTICA: Las preguntas deben evaluar si el estudiante comprendió los conceptos, NO mencionar nunca "el recurso", "la lección", "el texto", "el documento" ni ningún título. Redacta como si el estudiante ya hubiera estudiado el tema y le estuvieras evaluando directamente.
+
+{notation_block}
+
+CONTENIDO EDUCATIVO:
+- Nodo: {node.name} ({ancestors_str})
+- Objetivo: {obj_text}
+- Introducción: {intro_text}
+- Resumen: {resumen_text}
+- Explicación: {explicacion_text}
+- Procedimientos:
+{procedimientos_str}
+- Ejemplos:
+{ejemplos_str}
+{existing_block}
+
+DIRECTRICES DEL NIVEL PEDAGÓGICO:
+Genera las preguntas para el Nivel {level} ({level_name}). Los tres niveles forman una
+progresión; respeta el alcance del nivel solicitado y no lo mezcles con los otros.
+
+Nivel 1 — Comprensión conceptual y funcional (Definición).
+El estudiante identifica los conceptos centrales, comprende para qué sirven, cuándo se
+utilizan y cuál es su lógica básica. NO pidas resolución numérica ni cálculos en este nivel.
+Los distractores deben reflejar confusiones conceptuales típicas.
+
+Nivel 2 — Dominio procedimental y resolución técnica (Ejercicios simples).
+El estudiante aplica fórmulas, reglas, algoritmos o procedimientos para resolver
+ejercicios de dificultad progresiva. Los distractores deben representar errores procedimentales reales.
+
+Nivel 3 — Transferencia y aplicación en contextos reales (Problemas de aplicación).
+El estudiante usa lo aprendido para analizar situaciones reales o casos prácticos. Prioriza enunciados contextualizados y de varios pasos.
+
+NIVEL EDUCATIVO DEL ESTUDIANTE:
+{edu_desc}
+
+DIRECTRICES DE LAS ALTERNATIVAS:
+1. Proporciona exactamente 4 alternativas por pregunta.
+2. Exactamente UNA alternativa debe ser correcta (`is_correct` = true).
+3. Las otras 3 alternativas (distractores) deben ser incorrectas pero plausibles.
+4. Incluye una explicación clara de la respuesta correcta.
+
+DIRECTRICES DE LA EXPLICACIÓN:
+- Numera los pasos ("1. ", "2. ", "3. ...") y separa cada paso con un salto de línea real (carácter \\n).
+- Toda fórmula o cálculo dentro de la explicación va en LaTeX.
+
+FORMATO DE SALIDA REQUERIDO (JSON):
+Debes responder ÚNICAMENTE con una estructura JSON válida que sea una lista de objetos con el siguiente formato, sin bloques de código markdown, explicaciones previas o posteriores:
+
+{json_example}
+"""
+    if custom_instructions:
+        prompt += f"\n\nINSTRUCCIONES ADICIONALES DEL PROFESOR:\n{custom_instructions}\n"
+    return prompt
+
+
+def _save_node_assessment_questions(node, level, questions_data, status="borrador"):
+    """Guarda las preguntas de evaluación formal y alternativas en la base de datos."""
+    created_questions = []
+
+    if isinstance(questions_data, dict):
+        if "questions" in questions_data:
+            questions_data = questions_data["questions"]
+        elif "preguntas" in questions_data:
+            questions_data = questions_data["preguntas"]
+        else:
+            for v in questions_data.values():
+                if isinstance(v, list):
+                    questions_data = v
+                    break
+
+    if not isinstance(questions_data, list):
+        raise ValueError("El formato retornado por la IA no contiene una lista de preguntas válida.")
+
+    last_order = NodeAssessmentQuestion.objects.filter(node=node, level=level).count()
+
+    for item in questions_data:
+        text = item.get("text") or item.get("enunciado")
+        explanation = item.get("explanation") or item.get("explicacion", "")
+        choices = item.get("choices") or item.get("alternativas") or item.get("options")
+
+        if not text or not choices:
+            continue
+
+        generation_key = hashlib.sha256(
+            f"{level}|{' '.join(text.lower().split())}".encode("utf-8")
+        ).hexdigest()
+
+        # Si ya existe con esta key, evitar duplicados (idempotencia)
+        if NodeAssessmentQuestion.objects.filter(node=node, generation_key=generation_key).exists():
+            continue
+
+        question = NodeAssessmentQuestion.objects.create(
+            node=node,
+            level=level,
+            text=text,
+            explanation=explanation,
+            status=status,
+            order=last_order + 1,
+            generation_key=generation_key,
+        )
+        last_order += 1
+
+        choice_objs = []
+        for idx, choice_data in enumerate(choices):
+            if isinstance(choice_data, dict):
+                c_text = choice_data.get("text") or choice_data.get("texto")
+                c_correct = choice_data.get("is_correct") or choice_data.get("correcta") or False
+            else:
+                c_text = str(choice_data)
+                c_correct = idx == 0
+
+            choice_objs.append(
+                NodeAssessmentChoice(
+                    question=question,
+                    text=c_text,
+                    is_correct=bool(c_correct),
+                    order=idx + 1
+                )
+            )
+
+        NodeAssessmentChoice.objects.bulk_create(choice_objs)
+        created_questions.append(question)
+
+    return created_questions
+
+
+def _generate_mock_node_assessment_questions(node, level, count, status="borrador"):
+    """Genera preguntas de evaluación formal simuladas para un nodo de conocimiento."""
+    questions_data = []
+    for i in range(count):
+        val1 = random.randint(2, 9)
+        val2 = random.randint(2, 9)
+        ans = val1 + val2
+        text = f"¿Cuál es el resultado de evaluar la expresión simulada de nivel {level} para '{node.name}' con valores {val1} y {val2}?"
+        choices = [
+            {"text": f"${ans}$", "is_correct": True},
+            {"text": f"${ans + 1}$", "is_correct": False},
+            {"text": f"${ans - 1}$", "is_correct": False},
+            {"text": f"${val1 * val2}$", "is_correct": False},
+        ]
+        explanation = f"1. Sumamos {val1} y {val2}.\n2. {val1} + {val2} = {ans}."
+
+        questions_data.append({
+            "text": f"[Simulado N{level}] {text}",
+            "explanation": explanation,
+            "choices": choices
+        })
+
+    return _save_node_assessment_questions(node, level, questions_data, status)

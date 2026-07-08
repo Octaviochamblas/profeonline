@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from django.conf import settings
 
 
 class KnowledgeNode(models.Model):
@@ -111,6 +112,39 @@ class KnowledgeNode(models.Model):
     @property
     def is_leaf(self) -> bool:
         return self.node_type == self.NODE_RECURSO
+
+    @property
+    def ancestors_chain(self):
+        if not hasattr(self, "_cached_chain"):
+            chain = []
+            cur = self
+            while cur:
+                chain.append(cur)
+                cur = cur.parent
+            chain.reverse()
+            self._cached_chain = chain
+        return self._cached_chain
+
+    @property
+    def asignatura_slug(self) -> str:
+        chain = self.ancestors_chain
+        return chain[0].slug if len(chain) > 0 else ""
+
+    @property
+    def eje_slug(self) -> str:
+        chain = self.ancestors_chain
+        return chain[1].slug if len(chain) > 1 else ""
+
+    @property
+    def bloque_slug(self) -> str:
+        chain = self.ancestors_chain
+        return chain[2].slug if len(chain) > 2 else ""
+
+    @property
+    def tema_slug(self) -> str:
+        chain = self.ancestors_chain
+        return chain[3].slug if len(chain) > 3 else ""
+
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -281,3 +315,147 @@ class NodePrerequisite(models.Model):
 
     def __str__(self) -> str:
         return f"{self.node.code} ← {self.requires.code} ({self.kind})"
+
+
+class NodeAssessmentQuestion(models.Model):
+    """Pregunta de evaluación formal de un nodo de conocimiento."""
+    STATUS_BORRADOR = "borrador"
+    STATUS_PUBLICADA = "publicada"
+    STATUS_ARCHIVADA = "archivada"
+    STATUS_CHOICES = [
+        (STATUS_BORRADOR, "Borrador"),
+        (STATUS_PUBLICADA, "Publicada"),
+        (STATUS_ARCHIVADA, "Archivada"),
+    ]
+
+    LEVEL_DEFINICION = 1
+    LEVEL_EJERCICIOS = 2
+    LEVEL_PROBLEMAS = 3
+    LEVEL_CHOICES = [
+        (LEVEL_DEFINICION, "Definición"),
+        (LEVEL_EJERCICIOS, "Ejercicios simples"),
+        (LEVEL_PROBLEMAS, "Problemas de aplicación"),
+    ]
+
+    node = models.ForeignKey(
+        KnowledgeNode,
+        on_delete=models.CASCADE,
+        related_name="assessment_questions",
+        verbose_name="nodo",
+    )
+    level = models.PositiveSmallIntegerField(
+        choices=LEVEL_CHOICES,
+        verbose_name="nivel",
+    )
+    text = models.TextField(verbose_name="enunciado")
+    explanation = models.TextField(blank=True, verbose_name="explicación")
+    status = models.CharField(
+        max_length=12,
+        choices=STATUS_CHOICES,
+        default=STATUS_BORRADOR,
+        verbose_name="estado",
+    )
+    generation_key = models.CharField(
+        max_length=64,
+        blank=True,
+        verbose_name="llave de generación",
+    )
+    order = models.PositiveIntegerField(default=0, verbose_name="orden")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "pregunta de evaluación de nodo"
+        verbose_name_plural = "preguntas de evaluación de nodos"
+
+    def __str__(self) -> str:
+        return f"[{self.get_level_display()}] {self.node.name}: {self.text[:50]}"
+
+
+class NodeAssessmentChoice(models.Model):
+    """Alternativa para una pregunta de evaluación formal de nodo."""
+    question = models.ForeignKey(
+        NodeAssessmentQuestion,
+        on_delete=models.CASCADE,
+        related_name="choices",
+        verbose_name="pregunta",
+    )
+    text = models.CharField(max_length=500, verbose_name="texto")
+    is_correct = models.BooleanField(default=False, verbose_name="es correcta")
+    order = models.PositiveIntegerField(default=0, verbose_name="orden")
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "alternativa de evaluación"
+        verbose_name_plural = "alternativas de evaluación"
+
+    def __str__(self) -> str:
+        return f"{self.text[:50]} ({'Correcta' if self.is_correct else 'Incorrecta'})"
+
+
+class NodeAssessmentAttempt(models.Model):
+    """Intento de evaluación formal de un nodo realizado por un alumno."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="node_assessment_attempts",
+        verbose_name="usuario",
+    )
+    node = models.ForeignKey(
+        KnowledgeNode,
+        on_delete=models.CASCADE,
+        related_name="assessment_attempts",
+        verbose_name="nodo",
+    )
+    level = models.PositiveSmallIntegerField(verbose_name="nivel")
+    score = models.PositiveSmallIntegerField(verbose_name="aciertos")
+    total = models.PositiveSmallIntegerField(verbose_name="total de preguntas")
+    passed = models.BooleanField(verbose_name="aprobado")
+    attempt_number = models.PositiveSmallIntegerField(verbose_name="número de intento")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="creado el")
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "intento de evaluación de nodo"
+        verbose_name_plural = "intentos de evaluación de nodos"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "node", "level", "attempt_number"],
+                name="unique_user_node_level_attempt",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user.email} - {self.node.name} L{self.level} - Intento {self.attempt_number} ({'Aprobado' if self.passed else 'Reprobado'})"
+
+
+class NodeAssessmentAnswer(models.Model):
+    """Respuesta específica dada por un usuario en un intento de evaluación."""
+    attempt = models.ForeignKey(
+        NodeAssessmentAttempt,
+        on_delete=models.CASCADE,
+        related_name="answers",
+        verbose_name="intento",
+    )
+    question = models.ForeignKey(
+        NodeAssessmentQuestion,
+        on_delete=models.CASCADE,
+        related_name="attempt_answers",
+        verbose_name="pregunta",
+    )
+    selected_choice = models.ForeignKey(
+        NodeAssessmentChoice,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name="alternativa seleccionada",
+    )
+    is_correct = models.BooleanField(verbose_name="es correcta")
+
+    class Meta:
+        verbose_name = "respuesta de intento de evaluación"
+        verbose_name_plural = "respuestas de intentos de evaluación"
+
+    def __str__(self) -> str:
+        return f"{self.attempt} - {self.question.id}: {self.is_correct}"

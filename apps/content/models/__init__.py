@@ -21,5 +21,14 @@ from .evaluation_session import (
     EvaluationSessionQuestion,
     EvaluationSessionAnswer,
 )
-from .knowledge import KnowledgeNode, NodeContent, NodeMedia, NodePrerequisite
+from .knowledge import (
+    KnowledgeNode,
+    NodeContent,
+    NodeMedia,
+    NodePrerequisite,
+    NodeAssessmentQuestion,
+    NodeAssessmentChoice,
+    NodeAssessmentAttempt,
+    NodeAssessmentAnswer,
+)
 from .node_bank import ItemGroup, NodeExercise
