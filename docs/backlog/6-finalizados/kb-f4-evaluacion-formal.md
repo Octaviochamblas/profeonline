@@ -231,6 +231,13 @@ mismo lenguaje visual que el panel `quiz_section.html` de `Resource` en lo posib
 - **Tests** (`apps/content/tests/test_node_assessment.py`, 9 tests): cap de 7 preguntas, aprobado/
   reprobado según umbral 80%, bloqueo al 4º intento, estrellas de mastery, comando de generación
   (dry-run + ejecución real + idempotencia al re-correr), flujo completo de vistas GET→POST→estado.
+- **Fix post-PR (🏛️ Claude, 2026-07-08):** CI (`test (3.12)`) detectó `test_generate_command_execution`
+  flaky (`20 != 21`) — el generador mock (`_generate_mock_node_assessment_questions`) sorteaba
+  `val1`/`val2` entre 2-9 (64 combinaciones), y con 7 preguntas por lote más el reintento parcial
+  del comando, podía repetir texto exacto → colisión de `generation_key` → una pregunta descartada
+  por la deduplicación. Corregido: rango ampliado a 2-9999 + índice `#{i+1}` embebido en el texto
+  (comentario `ponytail:` en el código). Verificado 10/10 corridas del test + suite completa
+  609 OK (1 skip) en limpio tras el fix.
 - **Verificación final (🏛️ Claude, 2026-07-08):** revisión de todo el diff contra el handoff línea
   por línea (sin desviaciones de alcance), suite completa **609 tests OK (1 skip)**, `check` y
   `makemigrations --check --dry-run` verdes. Se investigó un mensaje anómalo de "base de datos

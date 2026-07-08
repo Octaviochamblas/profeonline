@@ -961,10 +961,12 @@ def _generate_mock_node_assessment_questions(node, level, count, status="borrado
     """Genera preguntas de evaluación formal simuladas para un nodo de conocimiento."""
     questions_data = []
     for i in range(count):
-        val1 = random.randint(2, 9)
-        val2 = random.randint(2, 9)
+        # ponytail: rango amplio + índice para que el texto (y su generation_key) no
+        # colisione dentro de un lote ni entre reintentos parciales del mismo comando.
+        val1 = random.randint(2, 9999)
+        val2 = random.randint(2, 9999)
         ans = val1 + val2
-        text = f"¿Cuál es el resultado de evaluar la expresión simulada de nivel {level} para '{node.name}' con valores {val1} y {val2}?"
+        text = f"¿Cuál es el resultado de evaluar la expresión simulada #{i + 1} de nivel {level} para '{node.name}' con valores {val1} y {val2}?"
         choices = [
             {"text": f"${ans}$", "is_correct": True},
             {"text": f"${ans + 1}$", "is_correct": False},
