@@ -1,6 +1,6 @@
 # F4 — Evaluación formal por recurso (espejo del motor de `Resource`, generada por IA)
 
-- **Estado:** Handoff Ready — rediseñado y verificado contra código real (2026-07-08)
+- **Estado:** ✅ Cerrado — construido, auditado y mergeado a `main` (2026-07-08)
 - **Creado:** 2026-06-26 · **Rediseñado:** 2026-07-08 (decisión del 🧑, ver abajo)
 - **Prioridad:** P1 · **Cartera:** educativa · producto
 - **Tipo:** infraestructura · producto
@@ -200,4 +200,45 @@ mismo lenguaje visual que el panel `quiz_section.html` de `Resource` en lo posib
 
 ## Qué se hizo
 
-_(Completar al cerrar, antes de mover a `backlog/6-finalizados/`.)_
+**Construido por 🔨 Antigravity, auditado por 🧩 Codex, cierre y auditoría final por 🏛️ Claude
+(2026-07-08).**
+
+- **Modelos** (`apps/content/models/knowledge.py`): `NodeAssessmentQuestion`, `NodeAssessmentChoice`,
+  `NodeAssessmentAttempt` (con `UniqueConstraint` por `user+node+level+attempt_number`),
+  `NodeAssessmentAnswer` — espejo fiel de `Question`/`Choice`/`QuizAttempt`/`QuizAttemptAnswer`,
+  anclados a `KnowledgeNode` en vez de `Resource`. Migración `0043` (solo `CreateModel`, sin tocar
+  tablas existentes). De regalo: propiedades `ancestors_chain`/`asignatura_slug`/`eje_slug`/
+  `bloque_slug`/`tema_slug` en `KnowledgeNode` (cacheadas por instancia), usadas por el prompt IA.
+- **Servicio** (`apps/content/services/node_assessment_service.py`): réplica del algoritmo de
+  `evaluation_service.py` (selección de hasta 7 preguntas, `get_attempts_info`, `submit_assessment`
+  con bloqueo a los 3 intentos, `get_node_mastery` con estrellas 0-3) — sin modo preparación ni
+  recuperación, tal como se cerró en el handoff.
+- **Generación IA** (`apps/content/services/ai_generation_service.generate_assessment_questions_for_node`
+  + comando `generate_node_assessment_questions --node/--all/--batch-size/--publish/--dry-run`):
+  prompt construido desde `NodeContent` (objetivo/introducción/resumen/explicación/procedimiento/
+  ejemplos) + cadena de ancestros, con directrices explícitas por nivel pedagógico y notación KaTeX
+  obligatoria. Idempotencia vía `generation_key` (hash de nivel+texto normalizado) en vez de esperar
+  que la IA lo entregue — más confiable. Fallback mock determinista si no hay API key y `DEBUG`/tests.
+- **Vistas** (`apps/learn/assessment_views.py` + rutas en `apps/learn/urls.py`, registradas ANTES de
+  la ruta genérica de recurso para no ser eclipsadas): `evaluar/<nivel>/` (GET arma intento con
+  anti-tampering vía sesión, igual que `quiz_start`), `evaluar/<nivel>/enviar/` (POST califica),
+  `evaluar/` (GET panel de estado). Reutiliza la lista de IDs de sesión para reconstruir
+  `answers_dict` — cierra el vector de manipulación de "enviar menos preguntas para inflar el %".
+- **Integración en `node_detail.html`**: sección nueva "Evaluación de dominio" **después** de la
+  sección "Practica" existente (verificado el orden), sin tocar el banco `NodeExercise`/`ItemGroup`.
+- **Admin**: `NodeAssessmentQuestion`/`Choice` editables (CRUD editorial); `Attempt`/`Answer`
+  registrados solo lectura (`has_add/change_permission = False`).
+- **Tests** (`apps/content/tests/test_node_assessment.py`, 9 tests): cap de 7 preguntas, aprobado/
+  reprobado según umbral 80%, bloqueo al 4º intento, estrellas de mastery, comando de generación
+  (dry-run + ejecución real + idempotencia al re-correr), flujo completo de vistas GET→POST→estado.
+- **Verificación final (🏛️ Claude, 2026-07-08):** revisión de todo el diff contra el handoff línea
+  por línea (sin desviaciones de alcance), suite completa **609 tests OK (1 skip)**, `check` y
+  `makemigrations --check --dry-run` verdes. Se investigó un mensaje anómalo de "base de datos
+  remota/producción" aparecido en la salida de un comando en background; se descartó como causa el
+  código de este proyecto (settings local usa sqlite exclusivamente, sin `.env`, sin señales que
+  conecten tests con `ensure_admin`/`ensure_site`) y se confirmó con el 🧑 que no existe ningún
+  superusuario `root` inesperado en producción — se concluyó que fue un artefacto del entorno de
+  ejecución de la herramienta, no un efecto real de este cambio.
+
+**Divergencias del handoff:** ninguna de alcance. `generation_key` se calculó por hash determinista
+en vez de depender de la IA, lo cual es una mejora de robustez, no una desviación de producto.
