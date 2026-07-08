@@ -142,13 +142,13 @@ def submit_assessment(user, node, level, answers_dict):
 def get_node_mastery(user, node):
     """Calcula el dominio de un usuario sobre un nodo (0 a 3 estrellas)."""
     if not user.is_authenticated:
+        empty_level = {
+            "used": 0, "remaining": MAX_EVAL_ATTEMPTS, "max_reached": False,
+            "passed": False, "best_score": 0, "total": QUESTIONS_PER_LEVEL,
+        }
         return {
             "stars": 0,
-            "levels_info": {
-                1: {"passed": False},
-                2: {"passed": False},
-                3: {"passed": False},
-            }
+            "levels_info": {level: dict(empty_level) for level in (1, 2, 3)},
         }
 
     levels_info = {}
