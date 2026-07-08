@@ -13,6 +13,20 @@
 <!-- Ejemplo: | 🔨 Antigravity | fix/seed-idempotente | 2026-06-02 10:15 | 🔴 trabajando | -->
 
 ## En curso ahora
+- **F4 — Evaluación formal por recurso, CERRADA 🟢 (PR #163, 2026-07-08):** construida por
+  🔨 Antigravity, auditada por 🧩 Codex + auditoría final de 🏛️ Claude. Evaluación de dominio por
+  3 niveles (Definición · Ejercicios simples · Problemas de aplicación), 7 preguntas por nivel
+  generadas por IA desde el `NodeContent` del propio nodo, espejo del motor probado de `Resource`
+  (`Question`/`Choice`/`QuizAttempt`) sin compartir tablas. Sección nueva y separada del banco de
+  práctica (`NodeExercise`, sin tocar). Se encontró y corrigió en la auditoría final un test flaky
+  (colisión de `generation_key` en el generador mock por rango de números aleatorio muy angosto).
+  Suite completa 609 tests OK (1 skip), CI verde, squash-merge a `main` (`f26c08f9`). Tarjeta en
+  `6-finalizados/`.
+- **Breadcrumb retráctil de `/aprender/`, CERRADO 🟢 (PR #164, 2026-07-08):** el breadcrumb de
+  recursos ahora arranca colapsado (solo nivel actual + chevron) y se despliega al hacer clic, para
+  cualquier profundidad. De paso se resolvió un diff suelto que duplicaba reglas CSS de breadcrumbs
+  en `estilos.css` (nunca se veía, `learn-catalog.css` ya las controlaba). Mergeado a `main`
+  (`12d0fd1a`).
 - **Incidente Railway — producción recuperada 🟢 (2026-07-04):** `www.profeonline.cl` devolvió 502
   tras PR #161 porque el `Custom Start Command` había derivado y ejecutaba en cada boot
   `import_knowledge_tree`, `load_node_content`, `load_exercise_bank` y `publish_knowledge_nodes`
