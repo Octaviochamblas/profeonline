@@ -17,6 +17,8 @@
 
   var lastTrigger = null;
   var statusUrl = null;
+  var refreshTargetSelector = "#quiz-section";
+  var refreshSwapMode = "outerHTML";
 
   var FOCUSABLE =
     'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex="0"]';
@@ -63,9 +65,9 @@
   }
 
   function closePlayer() {
-    var refreshTarget = statusUrl && document.getElementById("quiz-section");
+    var refreshTarget = statusUrl && document.querySelector(refreshTargetSelector);
     if (refreshTarget && window.htmx) {
-      window.htmx.ajax("GET", statusUrl, { target: "#quiz-section", swap: "outerHTML" });
+      window.htmx.ajax("GET", statusUrl, { target: refreshTargetSelector, swap: refreshSwapMode });
     }
     root.classList.remove("quiz-player-root--open");
     root.hidden = true;
@@ -178,6 +180,8 @@
   function initContent() {
     var holder = root.querySelector("[data-quiz-status-url]");
     statusUrl = holder ? holder.getAttribute("data-quiz-status-url") : statusUrl;
+    refreshTargetSelector = (holder && holder.getAttribute("data-quiz-refresh-target")) || "#quiz-section";
+    refreshSwapMode = (holder && holder.getAttribute("data-quiz-refresh-swap")) || "outerHTML";
 
     var player = getPlayer();
     if (player && getSlides(player).length) {

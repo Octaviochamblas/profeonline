@@ -1,20 +1,26 @@
-<div class="assessment-error" style="background: #fff; border: 1.5px solid #fca5a5; border-radius: 16px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,.05); margin-top: 1rem;">
-    <div style="font-size: 2.5rem; color: #ef4444; margin-bottom: .5rem;">⚠️</div>
-    <h3 style="margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 800; color: #991b1b;">
-        Error en la Evaluación
-    </h3>
-    <p style="font-size: .92rem; color: #4b5563; line-height: 1.5; margin: 0 0 1.25rem;">
-        Ha ocurrido un problema al procesar tu solicitud:
-    </p>
-    <div style="background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: .75rem 1rem; color: #991b1b; font-size: .88rem; font-weight: 600; display: inline-block; margin-bottom: 1.5rem;">
-        {{ error }}
+<div class="quiz-player quiz-player--panel"
+     data-quiz-status-url="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
+     data-quiz-refresh-target="#assessment-container"
+     data-quiz-refresh-swap="innerHTML">
+<header class="quiz-player__bar">
+    <button type="button" class="quiz-player__close" data-quiz-close aria-label="Volver a niveles">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="quiz-player__mode">Error en la evaluación</span>
+    <span class="quiz-player__progress"></span>
+</header>
+<div class="quiz-player__panel-body">
+<div class="quiz-blocked" role="alert">
+    <div class="quiz-blocked__icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     </div>
-    <div>
-        <button type="button" class="btn btn-secondary" style="padding: .45rem 1.25rem;"
-                hx-get="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
-                hx-target="#assessment-container"
-                hx-swap="innerHTML">
-            Volver a la vista general
+    <h3 class="quiz-blocked__title">Ha ocurrido un problema</h3>
+    <p class="quiz-blocked__text">{{ error }}</p>
+    <div class="quiz-blocked__actions">
+        <button type="button" class="btn btn-secondary quiz-btn" data-quiz-close>
+            Volver a niveles
         </button>
     </div>
+</div>
+</div>
 </div>

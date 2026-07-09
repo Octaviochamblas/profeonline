@@ -143,3 +143,14 @@ def markdown_filter(value):
     )
 
     return mark_safe(clean_html)
+
+
+@register.filter(name="markdown_inline")
+def markdown_inline_filter(value):
+    """Como |markdown pero sin envolver el resultado en <p>: para texto corto
+    de una línea (enunciado de pregunta, alternativa) donde un bloque no
+    encaja dentro de <legend>/<span>."""
+    html = str(markdown_filter(value))
+    if html.startswith("<p>") and html.endswith("</p>") and "<p>" not in html[3:-4]:
+        return mark_safe(html[3:-4])
+    return mark_safe(html)

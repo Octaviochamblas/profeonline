@@ -1,62 +1,78 @@
-{% load static %}
-<div class="assessment-player" style="background: #fafafa; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,.05); margin-top: 1rem;">
-    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
-        <div>
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #1e3a5f;">
-                Evaluación · Nivel {{ level }}: {{ level_label }}
-            </h3>
-            <span style="font-size: .82rem; color: #64748b;">Responde todas las preguntas para enviar tu evaluación.</span>
-        </div>
-        <button type="button" class="btn btn-secondary" style="font-size: .85rem; padding: .35rem .75rem;"
-                hx-get="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
-                hx-target="#assessment-container"
-                hx-swap="innerHTML">
-            Cancelar
+{% load static markdown_tags %}
+<div class="quiz-player"
+     data-quiz-player
+     data-quiz-index="0"
+     data-quiz-status-url="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
+     data-quiz-refresh-target="#assessment-container"
+     data-quiz-refresh-swap="innerHTML">
+    <header class="quiz-player__bar">
+        <button type="button" class="quiz-player__close" data-quiz-close aria-label="Cerrar evaluación">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
+        <span class="quiz-player__mode">
+            Evaluación · Nivel {{ level }}: {{ level_label }}
+        </span>
+        <span class="quiz-player__progress" data-quiz-progress>Pregunta 1 de {{ questions|length }}</span>
     </header>
 
     <form hx-post="{% url 'learn:assessment_submit' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug level %}"
-          hx-target="#assessment-container"
+          hx-target="#quiz-player-root"
           hx-swap="innerHTML"
-          class="assessment-form">
+          class="quiz-player__form">
         {% csrf_token %}
 
-        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="quiz-player__stage" data-quiz-stage>
             {% for question in questions %}
-            <fieldset style="border: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem;">
-                <legend style="font-weight: 700; font-size: .95rem; color: #1e293b; margin-bottom: .5rem; width: 100%;">
-                    <span style="color: #3b82f6;">{{ forloop.counter }}.</span> {{ question.text }}
+            <fieldset class="quiz-question" data-quiz-slide id="quiz-question-{{ question.pk }}">
+                <legend class="quiz-question__text" data-quiz-focus tabindex="-1">
+                    <span class="quiz-question__number">{{ forloop.counter }}.</span>
+                    {{ question.text|markdown_inline }}
                 </legend>
 
-                <div style="display: flex; flex-direction: column; gap: .5rem;">
+                <div class="quiz-choices" role="radiogroup" aria-label="Alternativas para pregunta {{ forloop.counter }}">
                     {% for choice in question.choices.all %}
-                    <label style="display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; border: 1.5px solid #d0d5dd; border-radius: 10px; background: #fff; cursor: pointer; transition: background .15s, border-color .15s;">
+                    <label class="quiz-choice" for="choice_{{ choice.pk }}">
                         <input type="radio"
+                               id="choice_{{ choice.pk }}"
                                name="question_{{ question.pk }}"
                                value="{{ choice.pk }}"
-                               required
-                               style="width: 1.15rem; height: 1.15rem; cursor: pointer;">
-                        <span style="font-size: .91rem; color: #374151;">{{ choice.text }}</span>
+                               class="quiz-choice__input"
+                               data-quiz-answer>
+                        <span class="quiz-choice__text">{{ choice.text|markdown_inline }}</span>
                     </label>
                     {% endfor %}
                 </div>
             </fieldset>
             {% endfor %}
+
+            <section class="quiz-review" data-quiz-review hidden>
+                <h3 class="quiz-review__title" data-quiz-focus tabindex="-1">Revisa tus respuestas</h3>
+                <p class="quiz-review__summary" data-quiz-review-summary></p>
+                <ul class="quiz-review__list" data-quiz-review-list></ul>
+                <button type="submit" class="btn btn-primary quiz-submit-btn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Enviar evaluación
+                </button>
+            </section>
         </div>
 
-        <div style="padding-top: 1rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
-            <button type="submit" class="btn btn-primary" style="padding: .6rem 1.5rem; font-weight: 700;">
-                Enviar evaluación
+        <footer class="quiz-player__footer">
+            <button type="button" class="btn btn-secondary quiz-player__nav" data-quiz-prev>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                Anterior
             </button>
-        </div>
+            <button type="button" class="btn btn-primary quiz-player__nav" data-quiz-next>
+                Siguiente
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </footer>
     </form>
 </div>
 
 <script nonce="{{ csp_nonce }}">
 (function() {
-    // Renderizar fórmulas de KaTeX si están presentes
     if (typeof window.renderMathInElement === "function") {
-        var container = document.getElementById("assessment-container");
+        var container = document.getElementById("quiz-player-root");
         if (container) {
             try {
                 window.renderMathInElement(container, { throwOnError: false });

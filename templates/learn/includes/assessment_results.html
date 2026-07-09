@@ -1,95 +1,95 @@
-{% load static %}
-<div class="assessment-results-view" style="background: #fff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,.05); margin-top: 1rem;">
-
-    <header style="text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+{% load static markdown_tags %}
+<div class="quiz-player quiz-player--panel"
+     data-quiz-status-url="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
+     data-quiz-refresh-target="#assessment-container"
+     data-quiz-refresh-swap="innerHTML">
+<header class="quiz-player__bar">
+    <button type="button" class="quiz-player__close" data-quiz-close aria-label="Volver a niveles">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="quiz-player__mode">Resultado de evaluación · Nivel {{ level }}</span>
+    <span class="quiz-player__progress"></span>
+</header>
+<div class="quiz-player__panel-body">
+<div class="quiz-results {% if attempt.passed %}quiz-results--passed{% else %}quiz-results--failed{% endif %}">
+    <div class="quiz-results__header">
         {% if attempt.passed %}
-            <div style="font-size: 3rem; color: #10b981; margin-bottom: .5rem;">✓</div>
-            <h3 style="margin: 0 0 .5rem; font-size: 1.3rem; font-weight: 800; color: #047857;">
-                ¡Nivel Aprobado!
-            </h3>
-            <p style="font-size: .95rem; color: #374151; margin: 0;">
-                Has obtenido un puntaje de <strong>{{ attempt.score }} de {{ attempt.total }}</strong>.
-            </p>
+        <div class="quiz-results__icon quiz-results__icon--success">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 class="quiz-results__title quiz-results__title--success">¡Nivel aprobado! 🎉</h3>
         {% else %}
-            <div style="font-size: 3rem; color: #ef4444; margin-bottom: .5rem;">✗</div>
-            <h3 style="margin: 0 0 .5rem; font-size: 1.3rem; font-weight: 800; color: #b91c1c;">
-                Intento No Aprobado
-            </h3>
-            <p style="font-size: .95rem; color: #374151; margin: 0 0 1rem;">
-                Has obtenido un puntaje de <strong>{{ attempt.score }} de {{ attempt.total }}</strong>. Se requiere al menos un 80% (6 correctas) para aprobar.
-            </p>
-            {% if info.max_reached %}
-                <div style="background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: .75rem 1rem; color: #991b1b; font-size: .88rem; font-weight: 600; display: inline-block; margin-bottom: 1rem;">
-                    Has alcanzado el límite máximo de 3 intentos.
-                </div>
-            {% else %}
-                <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: .75rem 1rem; color: #92400e; font-size: .88rem; font-weight: 600; display: inline-block; margin-bottom: 1rem;">
-                    Te quedan {{ info.remaining }} intento{{ info.remaining|pluralize }} disponible{{ info.remaining|pluralize }}.
-                </div>
-            {% endif %}
-            <p style="font-size: .88rem; color: #4b5563; margin: 0;">
-                Te recomendamos repasar la sección de <a href="#assessment-section-root" style="color: #2563eb; font-weight: 600; text-decoration: underline;">Práctica por ítems</a> para reforzar los conceptos antes de reintentar.
-            </p>
+        <div class="quiz-results__icon quiz-results__icon--fail">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <h3 class="quiz-results__title quiz-results__title--fail">Intento No Aprobado</h3>
         {% endif %}
-    </header>
+        <p class="quiz-results__score">
+            {{ attempt.score }}/{{ attempt.total }} respuestas correctas
+            {% if not attempt.passed %}(se requiere al menos 80%){% endif %}
+        </p>
+    </div>
 
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
-        <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #1e3a5f;">Revisión de respuestas</h4>
+    <div class="quiz-results__details">
         {% for res in results %}
-        <div class="result-item" style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; background: {% if res.is_correct %}#f0fdf4{% else %}#fef2f2{% endif %};">
-            <p style="margin: 0 0 .75rem; font-weight: 700; font-size: .92rem; color: #1e293b;">
-                {{ forloop.counter }}. {{ res.question.text }}
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: .35rem; font-size: .88rem; margin-bottom: .75rem;">
-                <div>
-                    <span style="color: #64748b;">Tu respuesta:</span>
-                    <span style="font-weight: 600; color: {% if res.is_correct %}#15803d{% else %}#b91c1c{% endif %};">
-                        {{ res.selected.text|default:"(Sin responder)" }}
-                    </span>
-                </div>
-                {% if not res.is_correct %}
-                <div>
-                    <span style="color: #64748b;">Respuesta correcta:</span>
-                    <span style="font-weight: 600; color: #15803d;">
-                        {{ res.correct_choice.text }}
-                    </span>
-                </div>
+        <div class="quiz-result-item {% if res.is_correct %}quiz-result-item--correct{% else %}quiz-result-item--wrong{% endif %}">
+            <div class="quiz-result-item__header">
+                {% if res.is_correct %}
+                <span class="quiz-result-item__mark quiz-result-item__mark--correct" aria-label="Correcta">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                {% else %}
+                <span class="quiz-result-item__mark quiz-result-item__mark--wrong" aria-label="Incorrecta">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </span>
                 {% endif %}
+                <span class="quiz-result-item__question">{{ forloop.counter }}. {{ res.question.text|markdown_inline }}</span>
             </div>
 
+            {% if not res.is_correct %}
+            <div class="quiz-result-item__answer">
+                <p class="quiz-result-item__yours"><strong>Tu respuesta:</strong> {{ res.selected.text|default:"Sin responder"|markdown_inline }}</p>
+                {% if res.correct_choice %}
+                <p class="quiz-result-item__correct"><strong>Correcta:</strong> {{ res.correct_choice.text|markdown_inline }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+
             {% if res.explanation %}
-            <div style="background: rgba(255, 255, 255, 0.7); border-radius: 8px; border-left: 3px solid #64748b; padding: .75rem 1rem; font-size: .88rem; color: #374151; margin-top: .5rem;">
-                <strong style="color: #1e293b; display: block; margin-bottom: .25rem;">Explicación paso a paso:</strong>
-                <p style="margin: 0; line-height: 1.5; white-space: pre-line;">{{ res.explanation }}</p>
+            <div class="quiz-result-item__explanation">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="quiz-result-item__explanation-text">{{ res.explanation|markdown }}</span>
             </div>
             {% endif %}
         </div>
         {% endfor %}
     </div>
 
-    <div style="padding-top: 1rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: center;">
-        <button type="button" class="btn btn-primary" style="padding: .5rem 1.5rem; font-weight: 700;"
-                hx-get="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
-                hx-target="#assessment-container"
-                hx-swap="innerHTML">
-            Volver a la vista general
-        </button>
+    <div class="quiz-results__footer">
+        {% if not attempt.passed %}
+            {% if info.max_reached %}
+            <p class="quiz-results__retry-hint">Has alcanzado el límite máximo de 3 intentos para este nivel.</p>
+            {% else %}
+            <p class="quiz-results__retry-hint">
+                Te quedan <strong>{{ info.remaining }} intento{{ info.remaining|pluralize:"s" }}</strong> disponible{{ info.remaining|pluralize }}.
+            </p>
+            {% endif %}
+        {% endif %}
+
+        <div class="quiz-results__actions">
+            {% if not attempt.passed and not info.max_reached %}
+            <button class="btn btn-primary quiz-btn"
+                    hx-get="{% url 'learn:assessment_start' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug level %}"
+                    hx-target="#quiz-player-root"
+                    hx-swap="innerHTML">
+                Volver a intentar
+            </button>
+            {% endif %}
+            <button type="button" class="btn btn-secondary" data-quiz-close>
+                Volver a niveles
+            </button>
+        </div>
     </div>
 </div>
-
-<script nonce="{{ csp_nonce }}">
-(function() {
-    // Renderizar fórmulas de KaTeX si están presentes
-    if (typeof window.renderMathInElement === "function") {
-        var container = document.getElementById("assessment-container");
-        if (container) {
-            try {
-                window.renderMathInElement(container, { throwOnError: false });
-            } catch (e) {
-                console.error("Error al renderizar KaTeX en los resultados: ", e);
-            }
-        }
-    }
-})();
-</script>
+</div>
+</div>

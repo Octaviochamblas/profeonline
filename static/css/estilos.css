@@ -2644,13 +2644,38 @@ a.home-link-card__title:hover {
     outline-offset: 2px;
 }
 .quiz-choice__input {
+    /* Dibujado a mano en vez de accent-color: en algunos navegadores/OS
+       móviles el punto de selección de accent-color en radios se renderiza
+       cuadrado en vez de circular. */
+    appearance: none;
+    -webkit-appearance: none;
     margin-top: 0.2rem;
-    accent-color: var(--primary);
     flex-shrink: 0;
     width: 1.1rem;
     min-width: 1.1rem;
     height: 1.1rem;
     padding: 0;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.quiz-choice__input:checked {
+    border-color: var(--primary);
+}
+.quiz-choice__input::before {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--primary);
+    transform: scale(0);
+    transition: transform 0.1s ease-in-out;
+}
+.quiz-choice__input:checked::before {
+    transform: scale(1);
 }
 .quiz-choice__text {
     font-size: 0.9rem;

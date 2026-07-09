@@ -315,49 +315,99 @@ def _sanitize_key(text, key):
     return text
 
 
+# \b, \f, \r, \t no tienen ningún uso legítimo en este contenido (no hay
+# backspace, form feed, retorno de carro ni tabulaciones intencionales en las
+# explicaciones), así que si a la letra le sigue otra letra es casi seguro un
+# comando LaTeX sin escapar (\bf, \forall, \right, \rho, \tau...) y se repara.
+# \n SÍ se usa a propósito (el prompt pide saltos de línea reales entre pasos,
+# y le sigue una letra en cualquier frase normal), así que se deja intacto:
+# comandos como \nu quedan como limitación conocida, no se pueden distinguir
+# de un salto de línea real seguido de una palabra que empiece con "u".
+_AMBIGUOUS_LETTER_ESCAPES = set("bfrt")
+_ALWAYS_VALID_ESCAPES = set('"\\/n')
+_HEX_DIGITS = set("0123456789abcdefABCDEF")
+
+
+def _escape_stray_backslashes(s):
+    """Escapa barras invertidas que no forman un escape JSON válido.
+
+    Ver el comentario de ``_AMBIGUOUS_LETTER_ESCAPES`` arriba: además de los
+    escapes claramente inválidos (``\\d`` de ``\\div``), repara comandos LaTeX
+    que empiezan igual que un escape de un carácter (``\\right``, ``\\tau``)
+    cuando eso no genera falsos positivos con el contenido real.
+    """
+    out = []
+    i, n = 0, len(s)
+    while i < n:
+        c = s[i]
+        if c == "\\" and i + 1 < n:
+            nxt = s[i + 1]
+            if nxt in _ALWAYS_VALID_ESCAPES:
+                out.append(s[i:i + 2])
+                i += 2
+                continue
+            if nxt == "u":
+                hex4 = s[i + 2:i + 6]
+                if len(hex4) == 4 and all(ch in _HEX_DIGITS for ch in hex4):
+                    out.append(s[i:i + 6])
+                    i += 6
+                    continue
+            elif nxt in _AMBIGUOUS_LETTER_ESCAPES:
+                after = s[i + 2] if i + 2 < n else ""
+                if not after.isalpha():
+                    out.append(s[i:i + 2])
+                    i += 2
+                    continue
+            # Escape inválido o comando LaTeX sin escapar: duplicar la barra.
+            out.append("\\\\")
+            out.append(nxt)
+            i += 2
+            continue
+        out.append(c)
+        i += 1
+    return "".join(out)
+
+
 def _loads_ai_json(text):
     """Parsea la respuesta JSON de la IA de forma tolerante.
 
     Los proveedores se invocan en modo JSON (``responseMimeType`` /
     ``response_format``), así que normalmente el texto ya es JSON válido con las
-    barras invertidas de LaTeX correctamente escapadas (``$\\\\frac{a}{b}$``) y
-    ``json.loads`` lo resuelve sin más. Como red de seguridad ante respuestas que
-    igualmente vengan envueltas en cercas markdown (```json …```) o con prosa
-    alrededor, se limpian las cercas y, si hace falta, se recorta al primer bloque
-    JSON detectable (``[…]`` o ``{…}``).
-
-    NO se intenta "reparar" las barras invertidas: doblarlas a ciegas corrompería
-    separadores válidos como ``\\n`` y es innecesario en modo JSON. Si tras la
-    limpieza sigue sin parsear, se relanza el ``JSONDecodeError`` para que el
-    llamador lo registre o regenere.
+    barras invertidas de LaTeX correctamente escapadas (``$\\\\frac{a}{b}$``).
+    Como red de seguridad ante respuestas que igualmente vengan envueltas en
+    cercas markdown (```json …```), con prosa alrededor, o con barras de LaTeX
+    sin escapar (``$\\div$`` en vez de ``$\\\\div$``), se aplica
+    ``_escape_stray_backslashes`` antes de intentar parsear: algunos de esos
+    casos (p. ej. ``\\right``) son JSON sintácticamente válido pero semánticamente
+    incorrecto (``\\r`` se interpreta como retorno de carro), así que no basta
+    con reintentar solo tras un ``JSONDecodeError``.
     """
     if text is None:
         raise ValueError("Respuesta vacía de la IA")
     raw = str(text).strip()
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        pass
+    candidates = [raw]
 
     # 1) Quitar cercas de código markdown (```json … ``` o ``` … ```).
-    candidate = raw
-    if candidate.startswith("```"):
-        candidate = re.sub(r"^```[a-zA-Z]*\s*", "", candidate)
-        candidate = re.sub(r"\s*```$", "", candidate).strip()
-        try:
-            return json.loads(candidate)
-        except json.JSONDecodeError:
-            pass
+    fenced = raw
+    if fenced.startswith("```"):
+        fenced = re.sub(r"^```[a-zA-Z]*\s*", "", fenced)
+        fenced = re.sub(r"\s*```$", "", fenced).strip()
+        candidates.append(fenced)
 
     # 2) Recortar a la primera estructura JSON (array u objeto) embebida en prosa.
+    base = candidates[-1]
     for open_ch, close_ch in (("[", "]"), ("{", "}")):
-        start = candidate.find(open_ch)
-        end = candidate.rfind(close_ch)
+        start = base.find(open_ch)
+        end = base.rfind(close_ch)
         if start != -1 and end > start:
-            try:
-                return json.loads(candidate[start:end + 1])
-            except json.JSONDecodeError:
-                continue
+            candidates.append(base[start:end + 1])
+
+    # 3) Reparar barras invertidas y parsear, probando cada candidato en orden.
+    for candidate in candidates:
+        try:
+            return json.loads(_escape_stray_backslashes(candidate))
+        except json.JSONDecodeError:
+            continue
 
     # Sin suerte: relanzar el error original (con el texto ya saneado).
     return json.loads(raw)
@@ -810,7 +860,9 @@ def _build_node_assessment_prompt(node, level, count, education_level=None, cust
     · En línea (dentro de una frase):  $...$       ej.  la solución es $x = \frac{-b}{2a}$
     · En bloque (ecuación centrada):   $$...$$      ej.  $$\int_0^1 x^2\,dx = \frac{1}{3}$$
 - Úsalo en el enunciado, en las 4 alternativas y en la explicación.
-- JSON: escapa las barras invertidas como dobles. Debe ir "$\\frac{a}{b}$", nunca "$\frac{a}{b}$"."""
+- JSON: escapa las barras invertidas como dobles. Debe ir "$\\frac{a}{b}$", nunca "$\frac{a}{b}$".
+- Para destacar una palabra clave usa doble asterisco: **palabra** (el renderer solo convierte
+  **doble asterisco** en negrita; un solo asterisco se muestra en cursiva, no en negrita)."""
     )
 
     json_example = (

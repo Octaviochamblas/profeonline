@@ -1,18 +1,29 @@
-<div class="assessment-blocked" style="background: #fff; border: 1.5px solid #fca5a5; border-radius: 16px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,.05); margin-top: 1rem;">
-    <div style="font-size: 2.5rem; color: #ef4444; margin-bottom: .5rem;">🔒</div>
-    <h3 style="margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 800; color: #991b1b;">
-        Evaluación Bloqueada
-    </h3>
-    <p style="font-size: .92rem; color: #4b5563; line-height: 1.5; margin: 0 0 1.25rem;">
-        Has alcanzado el límite máximo de 3 intentos fallidos para el <strong>Nivel {{ level }}</strong> de este recurso.
-    </p>
-    <div style="background: #fcf8f2; border-left: 3px solid #f59e0b; border-radius: 0 8px 8px 0; padding: .75rem 1rem; color: #78350f; font-size: .88rem; text-align: left; margin-bottom: 1.5rem;">
-        Recomendamos repasar cuidadosamente el contenido explicativo de este recurso y resolver las preguntas del banco de práctica para consolidar tu aprendizaje.
-    </div>
-    <button type="button" class="btn btn-secondary" style="padding: .45rem 1.25rem;"
-            hx-get="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
-            hx-target="#assessment-container"
-            hx-swap="innerHTML">
-        Volver a la vista general
+<div class="quiz-player quiz-player--panel"
+     data-quiz-status-url="{% url 'learn:assessment_status' node.asignatura_slug node.eje_slug node.bloque_slug node.tema_slug node.slug %}"
+     data-quiz-refresh-target="#assessment-container"
+     data-quiz-refresh-swap="innerHTML">
+<header class="quiz-player__bar">
+    <button type="button" class="quiz-player__close" data-quiz-close aria-label="Volver a niveles">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
+    <span class="quiz-player__mode">Evaluación · Nivel {{ level }}</span>
+    <span class="quiz-player__progress"></span>
+</header>
+<div class="quiz-player__panel-body">
+<div class="quiz-blocked" role="alert">
+    <div class="quiz-blocked__icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 class="quiz-blocked__title">Evaluación bloqueada</h3>
+    <p class="quiz-blocked__text">
+        Has alcanzado el límite máximo de 3 intentos fallidos para el Nivel {{ level }} de este recurso.
+        Repasa el contenido explicativo y el banco de práctica para consolidar tu aprendizaje.
+    </p>
+    <div class="quiz-blocked__actions">
+        <button type="button" class="btn btn-secondary quiz-btn" data-quiz-close>
+            Volver a niveles
+        </button>
+    </div>
+</div>
+</div>
 </div>

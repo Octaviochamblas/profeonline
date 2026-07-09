@@ -5,6 +5,11 @@
 > (banco de práctica, flujo manual NotebookLM → ChatGPT → YAML), esto es **100% automático**: un
 > comando de Django llama a la IA directamente y guarda. Cualquiera de las tres IAs (Claude, Codex,
 > Antigravity) puede ejecutar este mismo procedimiento con los mismos resultados.
+>
+> **Alternativa sin API de Gemini:** si no quieres gastar cuota de Gemini, o quieres que el propio
+> agente de código redacte las preguntas leyendo el contenido del nodo, usa
+> `reglas-generacion-preguntas.md` — mismas reglas pedagógicas y mismo destino en la DB, pero el
+> agente escribe el JSON (o usa el ORM) en vez de llamar a la API.
 
 ## Decisiones ya cerradas (no volver a preguntar)
 
