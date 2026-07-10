@@ -38,7 +38,18 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   **barrera real en CI** (`.github/workflows/django_ci.yml`); Railway está configurado con
   *Wait for CI* para no desplegar si CI falla. El **pre-commit** se mantiene rápido a
   propósito: solo corre `check` + `makemigrations --check` (el entry usa
-  `.venv\\Scripts\\python.exe`). Aun así, corre los tests localmente antes de pushear.
+  `.venv\\Scripts\\python.exe`).
+- **Regla de ejecución de tests (obligatoria, medida 2026-07-10):** la suite completa
+  demora ~6 min (~630 tests); un módulo aislado demora segundos. Por eso:
+  1. **Durante el desarrollo**, correr SOLO el módulo afectado
+     (ej. `python manage.py test apps.learn` ≈ 2 s). NUNCA la suite completa por cada
+     iteración o fix pequeño.
+  2. **La suite completa se corre UNA sola vez, justo antes de pushear** (o se delega a CI,
+     que la corre igual y bloquea el deploy si falla).
+  3. **No borrar tests para "acelerar"**: los ~630 cubren funcionalidades vivas y son la
+     única barrera pre-deploy.
+  4. `--parallel` NO funciona en Windows local (falla con `cannot pickle 'traceback'`);
+     no insistir con él.
 - **Despliegue:** push a `main` → Railway despliega. El *Custom Start Command*
   corre `migrate && ensure_admin && ensure_site && seed_math_resources && gunicorn`.
 - **Email:** API HTTP de Brevo (`BREVO_API_KEY`); Railway bloquea puertos SMTP.
