@@ -1,0 +1,44 @@
+NAME Obtención de divisores de un número natural
+SEMANTIC MAT.NUM.DIVISIBILIDAD.OBTENCION_DIVISORES
+---OBJETIVO---
+Obtener la lista completa de divisores de un número natural usando divisiones sucesivas y la estrategia de pares complementarios.
+---INTRO---
+Imagina que tienes 24 baldosas y quieres formar un rectángulo con todas ellas.
+¿De cuántas formas distintas puedes hacerlo? Podrías hacer uno de 1 × 24, otro
+de 2 × 12, otro de 3 × 8, otro de 4 × 6... Cada combinación usa exactamente
+24 baldosas sin que sobre ni una.
+
+Los divisores de 24 son exactamente los números que aparecen en esas combinaciones:
+1, 2, 3, 4, 6, 8, 12 y 24. El truco es que los divisores siempre vienen en parejas
+que al multiplicarse dan 24. Eso nos permite encontrarlos todos sin probar todos
+los números: solo hay que llegar hasta $\sqrt{24} \approx 4{,}9$, es decir, hasta el 4.
+
+---RESUMEN---
+Los divisores de $n$ se obtienen probando si 1, 2, 3, ..., $\sqrt{n}$ dividen exactamente
+a $n$. Cada divisor $d$ encontrado viene acompañado de su complementario $n/d$.
+Todo número natural tiene al menos dos divisores: 1 y él mismo.
+
+---EXPLICACION---
+El conjunto de **todos los divisores** de $n$, denotado $D(n)$, se obtiene identificando
+todos los naturales que dividen exactamente a $n$.
+
+**Estrategia de pares complementarios:**
+Si $d \mid n$, entonces $n/d$ también es divisor de $n$. Los divisores se organizan en pares
+$(d,\; n/d)$ tales que $d \cdot (n/d) = n$. Esto implica que solo es necesario probar
+divisores desde 1 hasta $\lfloor\sqrt{n}\rfloor$:
+
+- Si $d < \sqrt{n}$: el par es $(d,\; n/d)$ con $d \neq n/d$ — dos divisores distintos.
+- Si $d = \sqrt{n}$: el par colapsa a $(d, d)$ — un solo divisor que se cuenta una vez.
+
+**Consecuencia sobre la cantidad de divisores:**
+- Si $n$ **no es cuadrado perfecto**, $|D(n)|$ es un número **par** (los divisores vienen de a dos).
+- Si $n$ **es cuadrado perfecto**, $|D(n)|$ es un número **impar** (la raíz forma un par consigo misma).
+
+Ejemplos:
+- $D(12) = \{1, 2, 3, 4, 6, 12\}$ — 6 divisores (par, pues 12 no es cuadrado perfecto).
+- $D(36) = \{1, 2, 3, 4, 6, 9, 12, 18, 36\}$ — 9 divisores (impar, pues $36 = 6^2$).
+
+---PROCEDIMIENTO---
+['Paso 1: Calcular $\\lfloor\\sqrt{n}\\rfloor$ para conocer hasta dónde probar.', 'Paso 2: Probar si 1, 2, 3, ..., $\\lfloor\\sqrt{n}\\rfloor$ dividen exactamente a $n$.', 'Paso 3: Por cada divisor $d$ encontrado, agregar también el complementario $n/d$.', 'Paso 4: Si $d = \\sqrt{n}$, contar ese divisor una sola vez.', 'Paso 5: Ordenar todos los divisores encontrados de menor a mayor.']
+---EJEMPLOS---
+[{'titulo': 'Ejemplo 1', 'enunciado': 'Encuentra todos los divisores de 36.', 'solucion_pasos': ['$\\sqrt{36} = 6$, así que probamos divisores desde 1 hasta 6.', '$1 \\mid 36$ (par: 1 y 36); $2 \\mid 36$ (par: 2 y 18); $3 \\mid 36$ (par: 3 y 12).', '$4 \\mid 36$ (par: 4 y 9); $5 \\nmid 36$; $6 \\mid 36$ ($6 = \\sqrt{36}$, un solo divisor).', '$D(36) = \\{1, 2, 3, 4, 6, 9, 12, 18, 36\\}$ — 9 divisores (impar: 36 es cuadrado perfecto).']}, {'titulo': 'Ejemplo 2', 'enunciado': 'Encuentra todos los divisores de 48.', 'solucion_pasos': ['$\\sqrt{48} \\approx 6{,}9$, así que probamos divisores desde 1 hasta 6.', '$1 \\mid 48$ (par: 1 y 48); $2 \\mid 48$ (par: 2 y 24); $3 \\mid 48$ (par: 3 y 16).', '$4 \\mid 48$ (par: 4 y 12); $5 \\nmid 48$; $6 \\mid 48$ (par: 6 y 8).', '$D(48) = \\{1, 2, 3, 4, 6, 8, 12, 16, 24, 48\\}$ — 10 divisores (par: 48 no es cuadrado perfecto).']}, {'titulo': '¿El número 1 siempre es divisor de cualquier número natural?', 'respuesta': 'Sí', 'solucion_pasos': ['Para cualquier $n$ natural, $n = 1 \\cdot n$: la división $n \\div 1 = n$ es exacta.', 'Por lo tanto, $1 \\mid n$ para todo número natural $n$.', '1 y $n$ son siempre los divisores triviales de $n$.']}, {'titulo': '¿Los cuadrados perfectos tienen un número par de divisores?', 'respuesta': 'No', 'solucion_pasos': ['En un cuadrado perfecto $n = k^2$, la raíz $k = \\sqrt{n}$ es divisor de $n$.', 'Este divisor no tiene un complementario distinto (se empareja consigo mismo).', 'Por eso los cuadrados perfectos tienen un número IMPAR de divisores.']}]

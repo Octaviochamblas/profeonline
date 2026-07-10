@@ -1,0 +1,41 @@
+NAME Obtención de múltiplos de un número natural
+SEMANTIC MAT.NUM.DIVISIBILIDAD.OBTENCION_MULTIPLOS
+---OBJETIVO---
+Calcular los múltiplos de un número natural dado multiplicando por naturales consecutivos y contar cuántos múltiplos caen en un intervalo.
+---INTRO---
+Imagina que cada vez que pisas un escalón subes 4 peldaños. Empiezas en 0, luego
+estás en 4, después en 8, luego 12, 16... Estás generando los múltiplos de 4
+simplemente sumando 4 una y otra vez.
+
+Para obtener los múltiplos de cualquier número, multiplicas ese número por
+0, 1, 2, 3, 4... La lista sigue sin parar. Lo útil de esto es que puedes
+predecir fácilmente en qué "escalón" estás: el décimo múltiplo de 4 es
+$4 \times 10 = 40$, sin tener que contar uno por uno.
+
+---RESUMEN---
+Los múltiplos de $n$ se obtienen calculando $n \times 0,\; n \times 1,\; n \times 2,\;\ldots$
+Para hallar el $k$-ésimo múltiplo (sin contar el 0), se calcula $n \times k$.
+La cantidad de múltiplos positivos de $n$ que hay entre 1 y $m$ es $\lfloor m/n \rfloor$
+(la parte entera del cociente $m \div n$).
+
+---EXPLICACION---
+Los **múltiplos de $n$** se generan multiplicando $n$ por cada número natural:
+$$M(n) = \{0,\; n,\; 2n,\; 3n,\; 4n,\; \ldots,\; kn,\; \ldots\}$$
+
+Para **listar los múltiplos** de $n$:
+- Se calcula $n \times 0 = 0$, luego $n \times 1 = n$, luego $n \times 2 = 2n$, y así.
+- Cada múltiplo se obtiene sumando $n$ al anterior: la diferencia entre
+  múltiplos consecutivos es siempre $n$.
+
+Para **contar múltiplos de $n$ en el intervalo $[1, m]$**:
+$$\text{cantidad} = \left\lfloor \frac{m}{n} \right\rfloor$$
+(la parte entera del cociente $m \div n$, ignorando el resto).
+
+**Ejemplo:** ¿Cuántos múltiplos de 7 hay entre 1 y 50?
+$50 \div 7 = 7$ con resto $1$, luego hay $\lfloor 50/7 \rfloor = 7$ múltiplos:
+$\{7, 14, 21, 28, 35, 42, 49\}$.
+
+---PROCEDIMIENTO---
+['Paso 1: Para listar los primeros $k$ múltiplos positivos, calcular $n \\times 1, n \\times 2, \\ldots, n \\times k$.', 'Paso 2: Para el $k$-ésimo múltiplo positivo, usar directamente la fórmula $n \\times k$.', 'Paso 3: Para contar múltiplos de $n$ entre 1 y $m$, calcular $\\lfloor m \\div n \\rfloor$ (cociente entero).']
+---EJEMPLOS---
+[{'titulo': 'Ejemplo 1', 'enunciado': 'Escribe los primeros 6 múltiplos positivos de 9.', 'solucion_pasos': ['Se multiplica $9 \\times 1 = 9$, $9 \\times 2 = 18$, $9 \\times 3 = 27$.', 'Continúa: $9 \\times 4 = 36$, $9 \\times 5 = 45$, $9 \\times 6 = 54$.', 'Los primeros 6 múltiplos positivos de 9 son: $\\{9, 18, 27, 36, 45, 54\\}$.']}, {'titulo': 'Ejemplo 2', 'enunciado': '¿Cuántos múltiplos de 4 hay entre 1 y 30?', 'solucion_pasos': ['Se calcula $30 \\div 4 = 7$ con resto $2$.', 'La parte entera es 7, luego hay 7 múltiplos de 4 en ese rango.', 'Verificación: $\\{4, 8, 12, 16, 20, 24, 28\\}$ — efectivamente 7 elementos.']}, {'titulo': '¿El 0 pertenece al conjunto de múltiplos de cualquier número natural?', 'respuesta': 'Sí', 'solucion_pasos': ['Para cualquier $n$ natural, $n \\times 0 = 0$.', 'Por definición de múltiplo, $0 = n \\cdot 0$, así que $0 \\in M(n)$.', 'El 0 es múltiplo de cualquier número natural.']}, {'titulo': '¿Es posible listar TODOS los múltiplos de un número natural?', 'respuesta': 'No', 'solucion_pasos': ['Los múltiplos de $n$ son $0, n, 2n, 3n, \\ldots$: la secuencia no tiene fin.', 'Siempre existe un múltiplo mayor: $n \\cdot k < n \\cdot (k+1)$ para todo $k$.', 'El conjunto $M(n)$ es infinito, por lo que no puede listarse completamente.']}]
