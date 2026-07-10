@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=38">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}?v=39">
     <link rel="stylesheet" href="{% static 'vendor/katex/katex.min.css' %}?v=0.16.11">
     {% block extra_css %}{% endblock %}
     <script src="{% static 'js/htmx.min.js' %}"></script>
@@ -86,10 +86,10 @@
                         </button>
                     </div>
                     <div class="nav-links">
-                        {# ponytail: reutiliza las clases admin-nav/__menu (mismo dropdown) para no duplicar CSS #}
-                        <details class="admin-nav" name="topnav">
+                        {# nav-dropdown comparte estilo con admin-nav vía selectores agrupados en estilos.css #}
+                        <details class="nav-dropdown" name="topnav">
                             <summary>Material Audiovisual</summary>
-                            <div class="admin-nav__menu">
+                            <div class="nav-dropdown__menu">
                                 <a href="{% url 'content:resource_list' %}">Todos los videos</a>
                                 <a href="{% url 'content:subject_list' %}">Por asignatura</a>
                                 <a href="{% url 'content:level_list' %}">Por nivel</a>
@@ -101,9 +101,9 @@
                             </div>
                         </details>
 
-                        <details class="admin-nav" name="topnav">
+                        <details class="nav-dropdown" name="topnav">
                             <summary>Nodos de Materia</summary>
-                            <div class="admin-nav__menu">
+                            <div class="nav-dropdown__menu">
                                 {% for asig in nav_subjects %}
                                     <a href="{% url 'learn:asignatura' asig.slug %}">{{ asig.name }}</a>
                                 {% endfor %}
