@@ -1,5 +1,21 @@
 from django.conf import settings
 
+from apps.content.models import KnowledgeNode
+
+
+def nav_subjects(request):
+    """Asignaturas publicadas, para el menú 'Nodos de Materia'.
+
+    Se arma dinámicamente desde el árbol de conocimiento: al agregar una asignatura
+    (Química, Física) al árbol y publicarla, aparece sola en el menú.
+    """
+    asignaturas = list(
+        KnowledgeNode.objects.filter(
+            node_type=KnowledgeNode.NODE_ASIGNATURA, is_published=True
+        ).order_by("order", "code")
+    )
+    return {"nav_subjects": asignaturas}
+
 
 def canonical_settings(request):
     host = request.get_host()

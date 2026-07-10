@@ -81,6 +81,7 @@ TEMPLATES = [
                 'apps.core.context_processors.canonical_settings',
                 'apps.core.context_processors.csp_nonce',
                 'apps.core.context_processors.google_login',
+                'apps.core.context_processors.nav_subjects',
             ],
         },
     },
