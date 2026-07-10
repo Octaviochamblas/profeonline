@@ -1,7 +1,12 @@
+from functools import wraps
+from urllib.parse import urlencode, urlparse
+
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from apps.content.models import KnowledgeNode
@@ -14,6 +19,33 @@ from apps.content.services.node_assessment_service import (
 )
 
 
+def _htmx_login_required(view_func):
+    """Como @login_required, pero apto para vistas disparadas por HTMX.
+
+    Si el usuario es anónimo y la petición es HTMX, en vez de un 302 (que HTMX
+    seguiría e inyectaría la página de login completa dentro del overlay
+    #quiz-player-root), responde con el header HX-Redirect para forzar una
+    navegación real del navegador al login. El `next` apunta a la página donde
+    está el usuario (HX-Current-URL), no al endpoint-fragmento, para que tras
+    autenticarse vuelva al recurso con la barra ya mostrando la sesión iniciada.
+    """
+
+    @wraps(view_func)
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_authenticated and request.headers.get("HX-Request"):
+            try:
+                login_path = reverse(settings.LOGIN_URL)
+            except Exception:
+                login_path = settings.LOGIN_URL
+            next_path = urlparse(request.headers.get("HX-Current-URL", "")).path or "/"
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = f"{login_path}?{urlencode({'next': next_path})}"
+            return response
+        return login_required(view_func)(request, *args, **kwargs)
+
+    return _wrapped
+
+
 def _node_assessment_context(user, node):
     """Contexto compartido para refrescar la sección de evaluación de nodo."""
     mastery = get_node_mastery(user, node)
@@ -23,7 +55,7 @@ def _node_assessment_context(user, node):
     }
 
 
-@login_required
+@_htmx_login_required
 def node_assessment_start(request, recurso_slug, level, **kwargs):
     """GET — Renderiza el formulario de evaluación de nodo con preguntas aleatorias."""
     node = get_object_or_404(KnowledgeNode, slug=recurso_slug, is_published=True, node_type=KnowledgeNode.NODE_RECURSO)
@@ -76,7 +108,7 @@ def node_assessment_start(request, recurso_slug, level, **kwargs):
     )
 
 
-@login_required
+@_htmx_login_required
 @require_POST
 def node_assessment_submit(request, recurso_slug, level, **kwargs):
     """POST — Califica el intento de evaluación de nodo y retorna la pauta de resultados."""
@@ -147,7 +179,7 @@ def node_assessment_submit(request, recurso_slug, level, **kwargs):
     )
 
 
-@login_required
+@_htmx_login_required
 def node_assessment_status(request, recurso_slug, **kwargs):
     """GET — Retorna el panel de estado actualizado de la evaluación de nodo."""
     node = get_object_or_404(KnowledgeNode, slug=recurso_slug, is_published=True, node_type=KnowledgeNode.NODE_RECURSO)

@@ -1,5 +1,7 @@
 """Tests de F2 — vistas de apps/learn/."""
 
+from urllib.parse import parse_qs, urlparse
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -293,6 +295,39 @@ class NodePracticeBankViewTests(TestCase):
     def test_no_exercises_no_bank_section(self):
         response = self.client.get(self.url)
         self.assertNotContains(response, "Practica")
+
+
+class NodeAssessmentAuthTests(TestCase):
+    """Login en el flujo de evaluación de nodo (bug del overlay HTMX)."""
+
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.page_url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+        self.eval_url = self.page_url + "evaluar/1/"
+
+    def test_anonymous_htmx_gets_hx_redirect_to_login(self):
+        """Anónimo + HTMX: en vez de un 302 que HTMX inyecta en el overlay,
+        debe devolver header HX-Redirect para forzar navegación real al login,
+        con next = la página del recurso (desde HX-Current-URL)."""
+        response = self.client.get(
+            self.eval_url,
+            HTTP_HX_REQUEST="true",
+            HTTP_HX_CURRENT_URL="http://testserver" + self.page_url,
+        )
+        self.assertIn("HX-Redirect", response)
+        location = response["HX-Redirect"]
+        self.assertIn("/cuentas/login/", location)
+        next_val = parse_qs(urlparse(location).query).get("next", [""])[0]
+        self.assertEqual(next_val, self.page_url)
+
+    def test_anonymous_full_page_still_redirects_to_login(self):
+        """Petición normal (no HTMX) conserva el redirect 302 clásico."""
+        response = self.client.get(self.eval_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/cuentas/login/", response["Location"])
 
 
 class NodePrerequisiteDisplayTests(TestCase):
