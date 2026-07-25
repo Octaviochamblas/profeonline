@@ -32,3 +32,4 @@ from .knowledge import (
     NodeAssessmentAnswer,
 )
 from .node_bank import ItemGroup, NodeExercise
+from .resource_node_suggestion import ResourceNodeSuggestion
