@@ -2,6 +2,8 @@
 {% load markdown_tags %}
 {% load static %}
 
+{% block katex %}{% include "includes/_katex_assets.html" %}{% endblock %}
+
 {% block title %}{{ resource.title }} | Recurso para Clases Particulares | ProfeOnline{% endblock %}
 {% block meta_description %}{% if resource.description %}{{ resource.description }}{% else %}Recurso educativo para clases particulares online y apoyo escolar, organizado por asignatura, tema y nivel en ProfeOnline.{% endif %}{% endblock %}
 {% block og_title %}{{ resource.title }} | ProfeOnline{% endblock %}
@@ -128,6 +130,15 @@
                 <a class="btn btn-primary" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Iniciar sesi&oacute;n</a>
                 <a class="btn btn-secondary" href="{% url 'register' %}?next={{ request.get_full_path|urlencode }}">Crear cuenta</a>
             </div>
+        </section>
+    {% endif %}
+
+    {% if related_node %}
+        <section class="resource-related-node" style="margin: 24px 0; padding: 16px; border: 1px solid #334155; border-radius: 8px;">
+            <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #94a3b8;">Ver también</p>
+            <a href="{% url 'learn:recurso' asignatura_slug=related_node.asignatura_slug eje_slug=related_node.eje_slug bloque_slug=related_node.bloque_slug tema_slug=related_node.tema_slug recurso_slug=related_node.slug %}">
+                {{ related_node.name }} (guía interactiva en /aprender/)
+            </a>
         </section>
     {% endif %}
 

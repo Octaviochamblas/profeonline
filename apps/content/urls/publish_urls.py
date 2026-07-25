@@ -57,6 +57,12 @@ from apps.content.views.structured_activation import (
     activate_structured_bank,
     deactivate_structured_bank,
 )
+from apps.content.views.node_suggestions import (
+    node_suggestions_review,
+    confirm_node_suggestion,
+    discard_node_suggestion,
+    node_options,
+)
 
 urlpatterns = [
     path("publicar/estudio/", publish_studio, name="publish_studio"),
@@ -117,4 +123,18 @@ urlpatterns = [
     path("publicar/guias-profeonline/editar/<int:guide_id>/", edit_guide_draft_view, name="edit_guide_draft_view"),
     path("publicar/guias-profeonline/validar/<int:guide_id>/", validate_originality_view, name="validate_originality_view"),
     path("publicar/guias-profeonline/publicar/<int:guide_id>/", publish_learning_guide_view, name="publish_learning_guide_view"),
+
+    # Enlace cruzado Sistema A (Resource) <-> Sistema B (KnowledgeNode)
+    path("publicar/sugerencias-nodos/", node_suggestions_review, name="node_suggestions_review"),
+    path(
+        "publicar/sugerencias-nodos/<int:suggestion_id>/confirmar/",
+        confirm_node_suggestion,
+        name="confirm_node_suggestion",
+    ),
+    path(
+        "publicar/sugerencias-nodos/<int:suggestion_id>/descartar/",
+        discard_node_suggestion,
+        name="discard_node_suggestion",
+    ),
+    path("publicar/opciones/nodos/", node_options, name="node_options"),
 ]

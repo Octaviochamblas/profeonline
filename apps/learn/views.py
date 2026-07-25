@@ -167,6 +167,13 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
         else:
             other_media.append(m)
 
+    confirmed_suggestion = (
+        node.resource_suggestions.filter(status="confirmado")
+        .select_related("resource")
+        .first()
+    )
+    related_resource = confirmed_suggestion.resource if confirmed_suggestion else None
+
     return render(
         request,
         "learn/node_detail.html",
@@ -180,5 +187,6 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "breadcrumbs": breadcrumbs,
             "noindex": noindex,
             "mastery": get_node_mastery(request.user, node),
+            "related_resource": related_resource,
         },
     )
