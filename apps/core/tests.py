@@ -115,10 +115,21 @@ class SeoTechnicalViewTests(TestCase):
 
 
 class KatexWiringTests(TestCase):
-    """KaTeX se carga self-host en todo el sitio para renderizar fórmulas."""
+    """KaTeX se carga self-host, solo en páginas que renderizan notación.
 
-    def test_base_template_loads_katex_assets(self):
-        response = self.client.get(reverse("core:home"))
+    Desde 'perf(templates): cargar KaTeX solo en páginas que lo necesitan',
+    KaTeX ya NO se carga en todas las páginas (ej. home) -- se probó ahí en
+    una página del bloque katex opt-in (resource_detail.html) en vez de home.
+    """
+
+    def test_page_with_katex_block_loads_katex_assets(self):
+        subject = Subject.objects.create(name="Matematica KaTeX", is_active=True)
+        resource = Resource.objects.create(
+            title="Recurso con notacion", subject=subject, is_published=True,
+        )
+        response = self.client.get(
+            reverse("content:resource_detail", args=[resource.slug])
+        )
 
         self.assertEqual(response.status_code, 200)
         # CSS y JS servidos desde el propio dominio (self-host, no CDN).
@@ -127,6 +138,12 @@ class KatexWiringTests(TestCase):
         self.assertContains(response, "vendor/katex/contrib/auto-render.min.js")
         self.assertContains(response, "js/katex-init.js")
         self.assertNotContains(response, "cdn.jsdelivr.net")
+
+    def test_home_does_not_load_katex_assets(self):
+        response = self.client.get(reverse("core:home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "vendor/katex/katex.min.css")
 
 
 class AdminNavigationTests(TestCase):
