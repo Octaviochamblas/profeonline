@@ -7,11 +7,16 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.content.models import (
+    Area,
     ItemGroup,
     KnowledgeNode,
     NodeContent,
     NodeExercise,
     NodePrerequisite,
+    Resource,
+    ResourceNodeSuggestion,
+    Subject,
+    Topic,
 )
 
 User = get_user_model()
@@ -372,3 +377,27 @@ class NodePrerequisiteDisplayTests(TestCase):
     def test_no_prerequisites_no_section(self):
         response = self.client.get(self.url)
         self.assertNotContains(response, "Antes de empezar")
+
+
+class NodeDetailCrossLinkTests(TestCase):
+    def setUp(self):
+        *_, self.node = _build_tree()
+        area = Area.objects.create(name="Ciencias")
+        subject = Subject.objects.create(name="Matemática Escolar", area=area)
+        topic = Topic.objects.create(subject=subject, name="Fracciones")
+        self.resource = Resource.objects.create(
+            title="Video de fracción propia", topic=topic, is_published=True, slug="video-fraccion-propia",
+        )
+
+    def test_shows_cross_link_when_confirmed(self):
+        ResourceNodeSuggestion.objects.create(
+            resource=self.resource, node=self.node,
+            status=ResourceNodeSuggestion.STATUS_CONFIRMADO,
+        )
+        response = self.client.get(f"/aprender/{self.node.slug}/")
+        self.assertContains(response, "Ver también")
+        self.assertContains(response, "Video de fracción propia")
+
+    def test_no_cross_link_without_confirmed_suggestion(self):
+        response = self.client.get(f"/aprender/{self.node.slug}/")
+        self.assertNotContains(response, "Ver también")
