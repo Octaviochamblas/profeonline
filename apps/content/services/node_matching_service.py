@@ -7,6 +7,7 @@ ai_generation_service.call_ai_structured_json como corroboración acotada.
 from difflib import SequenceMatcher
 
 from apps.content.models import KnowledgeNode
+from apps.content.services.ai_generation_service import call_ai_structured_json
 
 BLOCK_MATCH_THRESHOLD = 0.5
 MAX_LEAF_CANDIDATES = 20
@@ -57,3 +58,100 @@ def find_candidate_leaf_nodes(block_node, resource):
     scored = [(leaf, _similarity(resource.title, leaf.name)) for leaf in leaves]
     scored.sort(key=lambda pair: pair[1], reverse=True)
     return scored[:3]
+
+
+def _node_summary(node) -> str:
+    content = getattr(node, "content", None)
+    objetivo = (content.objetivo if content else "") or ""
+    return f"{node.code} — {node.name}: {objetivo}".strip()
+
+
+def corroborate_with_ai(resource, candidate_leaf, alternatives):
+    """Paso 3: le pide a la IA confirmar o corregir el candidato del paso 2.
+
+    alternatives: lista de 0 a 2 KnowledgeNode. Devuelve
+    {'node': KnowledgeNode, 'ai_corrigio': bool, 'ai_rationale': str}, o None
+    si la IA no está disponible o falla (se degrada al candidato de texto).
+    """
+    transcript_excerpt = (resource.transcript or "").strip()[:800]
+    alt_lines = "\n".join(f"- id={n.id}: {_node_summary(n)}" for n in alternatives)
+
+    prompt = (
+        "Un video educativo necesita conectarse al nodo de conocimiento correcto.\n\n"
+        f'Video: "{resource.title}"\n'
+        + (f"Extracto de la transcripción: {transcript_excerpt}\n" if transcript_excerpt else "")
+        + "\nCandidato sugerido por búsqueda de texto:\n"
+        f"- id={candidate_leaf.id}: {_node_summary(candidate_leaf)}\n\n"
+        "Alternativas cercanas:\n"
+        f"{alt_lines if alt_lines else '(ninguna)'}\n\n"
+        "¿Es el candidato sugerido el más adecuado para este video? Si no, ¿cuál de "
+        "las alternativas calza mejor? Responde en JSON exacto:\n"
+        '{"chosen_id": <id del nodo elegido>, "corrected": <true si elegiste una '
+        'alternativa en vez del candidato, false si confirmaste el candidato>, '
+        '"rationale": "<razón breve, 1-2 oraciones>"}'
+    )
+
+    try:
+        data = call_ai_structured_json(prompt)
+    except (ValueError, RuntimeError):
+        return None
+
+    chosen_id = data.get("chosen_id")
+    rationale = str(data.get("rationale", ""))[:500]
+    corrected = bool(data.get("corrected", False))
+
+    options = {n.id: n for n in [candidate_leaf, *alternatives]}
+    chosen_node = options.get(chosen_id, candidate_leaf)
+
+    return {
+        "node": chosen_node,
+        "ai_corrigio": corrected and chosen_node.id != candidate_leaf.id,
+        "ai_rationale": rationale,
+    }
+
+
+def generate_suggestion(resource):
+    """Corre el pipeline de 3 pasos y crea el ResourceNodeSuggestion del recurso.
+
+    Idempotente: si ya existe una fila para este recurso, la devuelve sin
+    reprocesar (nunca crea una segunda).
+    """
+    from apps.content.models import ResourceNodeSuggestion
+
+    existing = ResourceNodeSuggestion.objects.filter(resource=resource).first()
+    if existing:
+        return existing
+
+    block_node = find_matching_block(resource)
+    if block_node is None:
+        return ResourceNodeSuggestion.objects.create(
+            resource=resource, node=None, status=ResourceNodeSuggestion.STATUS_SIN_BLOQUE,
+        )
+
+    scored_candidates = find_candidate_leaf_nodes(block_node, resource)
+    if not scored_candidates:
+        return ResourceNodeSuggestion.objects.create(
+            resource=resource, node=None, status=ResourceNodeSuggestion.STATUS_SIN_BLOQUE,
+        )
+
+    top_candidate = scored_candidates[0][0]
+    alternatives = [pair[0] for pair in scored_candidates[1:3]]
+
+    ai_result = corroborate_with_ai(resource, top_candidate, alternatives)
+    if ai_result:
+        node = ai_result["node"]
+        ai_corrigio = ai_result["ai_corrigio"]
+        ai_rationale = ai_result["ai_rationale"]
+    else:
+        node = top_candidate
+        ai_corrigio = False
+        ai_rationale = ""
+
+    return ResourceNodeSuggestion.objects.create(
+        resource=resource,
+        node=node,
+        status=ResourceNodeSuggestion.STATUS_SUGERIDO,
+        ai_rationale=ai_rationale,
+        ai_corrigio=ai_corrigio,
+        origen=ResourceNodeSuggestion.ORIGEN_IA,
+    )
