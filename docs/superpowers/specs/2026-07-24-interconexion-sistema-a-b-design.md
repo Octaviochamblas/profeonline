@@ -64,9 +64,12 @@ Tabla puente, aditiva, sin tocar `Resource`, `NodeMedia` ni ningún modelo exist
 | `ai_corrigio` | Bool, default False | si la IA cambió el candidato del paso 2 (señal de confianza para quien revisa) |
 | `created_at` / `confirmed_at` | DateTime | |
 
-Constraint: unique together (`resource`, `node`) para no duplicar la misma sugerencia si el comando
-se corre de nuevo. Un `Resource` con una fila `confirmado` o `descartado` se excluye de futuras
-corridas del comando (idempotencia).
+Constraint: **una sola fila `ResourceNodeSuggestion` por `resource`** (`OneToOneField` a `Resource`,
+no `ForeignKey` — un recurso tiene a lo más una sugerencia vigente, se actualiza in-place). Esto evita
+el problema de un `unique_together(resource, node)` con `node` nulo (Postgres no detecta como
+duplicados dos filas con `node=NULL`, lo que rompería la idempotencia justo en el caso `sin_bloque`).
+El comando de matching solo procesa recursos publicados que **no tengan ninguna fila** todavía;
+confirmar/descartar/re-intentar actualiza la fila existente, nunca crea una segunda.
 
 ### 4.2 Pipeline de matching (comando de un solo uso, `suggest_resource_node_links`)
 
@@ -165,7 +168,8 @@ Vista de revisión (staff) — confirma / busca manual / descarta
 
 - Comando `suggest_resource_node_links`: mock de la llamada IA; verificar paso 1 (match de topic→bloque
   determinístico, incluyendo el caso sin match); verificar que el paso 2 nunca manda más de 20
-  candidatos; verificar que no se duplican sugerencias en recursos ya `confirmado`/`descartado`.
+  candidatos; verificar que el comando ignora recursos que ya tienen una fila `ResourceNodeSuggestion`
+  (de cualquier `status`, incluido `sin_bloque`), evitando una segunda fila para el mismo recurso.
 - Vista de revisión: permisos (solo staff); confirmar automático vs. manual actualiza `origen`
   correctamente; descartar no deja el recurso disponible para nueva sugerencia automática.
 - Endpoint `node_options`: filtra correctamente por texto, formato JSON esperado por el autocompletado.
