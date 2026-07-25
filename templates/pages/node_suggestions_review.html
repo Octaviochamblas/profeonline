@@ -1,10 +1,96 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Sugerencias de Nodos | ProfeOnline{% endblock %}
+
 {% block content %}
-<h1>Sugerencias de Nodos</h1>
-<ul>
-  {% for suggestion in suggestions %}
-    <li>{{ suggestion.resource.title }} — {{ suggestion.node.name|default:"(sin bloque)" }}</li>
-  {% endfor %}
-</ul>
+<div class="container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h1>Sugerencias de conexión Recurso ↔ Nodo</h1>
+    <p style="color: #94a3b8; margin-bottom: 24px;">
+        Revisa a qué nodo del árbol de conocimiento corresponde cada video. Confirma la
+        sugerencia automática, busca uno manual, o descarta si no aplica.
+    </p>
+
+    {% if not suggestions %}
+        <p>No hay sugerencias pendientes.</p>
+    {% endif %}
+
+    {% for suggestion in suggestions %}
+    <div id="suggestion-{{ suggestion.pk }}" class="card mb-3" style="border: 1px solid #334155; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+        <h3 style="margin: 0 0 8px 0;">{{ suggestion.resource.title }}</h3>
+        <p style="margin: 0 0 4px 0; font-size: 0.85rem; color: #94a3b8;">
+            Tema: {{ suggestion.resource.topic.name|default:"(sin tema)" }}
+        </p>
+
+        {% if suggestion.node %}
+            <p style="margin: 8px 0;">
+                <strong>Sugerencia automática:</strong> {{ suggestion.node.code }} — {{ suggestion.node.name }}
+                {% if suggestion.ai_corrigio %}
+                    <span style="color: #f59e0b;"> (la IA corrigió el candidato inicial — revisar con cuidado)</span>
+                {% endif %}
+            </p>
+            {% if suggestion.ai_rationale %}
+                <p style="margin: 0 0 8px 0; font-size: 0.9rem; color: #cbd5e1;">{{ suggestion.ai_rationale }}</p>
+            {% endif %}
+            <form hx-post="{% url 'content:confirm_node_suggestion' suggestion.pk %}"
+                  hx-target="#suggestion-{{ suggestion.pk }}" hx-swap="outerHTML"
+                  style="display: inline;">
+                <button type="submit" class="btn btn-primary">Confirmar sugerencia</button>
+            </form>
+        {% else %}
+            <p style="margin: 8px 0; color: #f59e0b;">Sin bloque encontrado automáticamente.</p>
+        {% endif %}
+
+        <details style="margin-top: 12px;">
+            <summary style="cursor: pointer;">Buscar nodo manualmente</summary>
+            <div style="margin-top: 8px;">
+                <input type="text" placeholder="Buscar por nombre o código..."
+                       hx-get="{% url 'content:node_options' %}"
+                       hx-trigger="keyup changed delay:300ms"
+                       hx-target="#node-results-{{ suggestion.pk }}"
+                       name="q" class="form-control" style="max-width: 400px;">
+                <div id="node-results-{{ suggestion.pk }}" style="margin-top: 8px;"></div>
+            </div>
+        </details>
+
+        <form hx-post="{% url 'content:discard_node_suggestion' suggestion.pk %}"
+              hx-target="#suggestion-{{ suggestion.pk }}" hx-swap="outerHTML"
+              style="display: inline; margin-top: 8px;">
+            <button type="submit" class="btn btn-secondary">Descartar</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+<script nonce="{{ csp_nonce }}">
+document.body.addEventListener('htmx:afterRequest', function (evt) {
+    if (!evt.detail.pathInfo || !evt.detail.pathInfo.requestPath.includes('/opciones/nodos/')) return;
+    var target = evt.detail.target;
+    try {
+        var data = JSON.parse(evt.detail.xhr.responseText);
+        target.innerHTML = '';
+        data.nodes.forEach(function (node) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-sm';
+            btn.textContent = node.label;
+            btn.style.marginRight = '6px';
+            btn.style.marginBottom = '6px';
+            btn.addEventListener('click', function () {
+                var form = target.closest('.card').querySelector('form[hx-post*="confirmar"]');
+                var hidden = form.querySelector('input[name="node_id"]');
+                if (!hidden) {
+                    hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'node_id';
+                    form.appendChild(hidden);
+                }
+                hidden.value = node.id;
+                form.querySelector('button[type="submit"]').textContent = 'Confirmar: ' + node.label;
+            });
+            target.appendChild(btn);
+        });
+    } catch (e) { /* respuesta no-JSON, ignorar */ }
+});
+</script>
 {% endblock %}
