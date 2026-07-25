@@ -38,3 +38,22 @@ def find_matching_block(resource) -> KnowledgeNode | None:
     if best_score < BLOCK_MATCH_THRESHOLD:
         return None
     return best_node
+
+
+def find_candidate_leaf_nodes(block_node, resource):
+    """Paso 2: dentro de block_node (bloque o tema), busca los nodos hoja
+    ('recurso') mas parecidos al titulo del recurso, via similitud de texto.
+    Devuelve hasta 3 pares (node, score) ordenados de mayor a menor score.
+    """
+    leaves = list(
+        KnowledgeNode.objects.filter(
+            node_type=KnowledgeNode.NODE_RECURSO,
+            code__startswith=f"{block_node.code}.",
+        ).order_by("code")[:MAX_LEAF_CANDIDATES]
+    )
+    if not leaves:
+        return []
+
+    scored = [(leaf, _similarity(resource.title, leaf.name)) for leaf in leaves]
+    scored.sort(key=lambda pair: pair[1], reverse=True)
+    return scored[:3]
