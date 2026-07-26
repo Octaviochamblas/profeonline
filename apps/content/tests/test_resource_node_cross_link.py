@@ -45,12 +45,12 @@ class ResourceDetailCrossLinkTests(TestCase):
         self.topic.related_node = self.node
         self.topic.save()
         response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
-        self.assertContains(response, "Ver también")
+        self.assertContains(response, "Ver guía interactiva")
         self.assertContains(response, "Fracción propia")
 
     def test_no_cross_link_when_topic_unlinked(self):
         response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
-        self.assertNotContains(response, "Ver también")
+        self.assertNotContains(response, "Ver guía interactiva")
 
 
 class VincularBotonTests(TestCase):
