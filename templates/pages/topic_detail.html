@@ -41,14 +41,15 @@
     </header>
 
     {% if topic.related_node %}
-        <section class="topic-related-node" style="margin: 16px 0; padding: 16px; border: 1px solid #334155; border-radius: 8px;">
-            <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #94a3b8;">Ver también</p>
-            <a href="{{ topic.related_node.get_absolute_url }}">
+        <section class="cross-link-card">
+            <p class="cross-link-card__label">Ver también</p>
+            <a class="cross-link-card__link" href="{{ topic.related_node.get_absolute_url }}">
                 {{ topic.related_node.name }} (guía interactiva en /aprender/)
+                <span class="cross-link-card__link-arrow" aria-hidden="true">→</span>
             </a>
         </section>
     {% elif user.is_superuser %}
-        <section class="topic-related-node" style="margin: 16px 0; padding: 16px; border: 1px solid #334155; border-radius: 8px;">
+        <section class="cross-link-card">
             <a href="{% url 'content:topic_node_links_review' %}#topic-{{ topic.pk }}" class="btn btn-secondary">Vincular a nodo de conocimiento</a>
         </section>
     {% endif %}

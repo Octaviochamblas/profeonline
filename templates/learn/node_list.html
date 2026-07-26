@@ -60,11 +60,16 @@
     </ul>
 
     {% if related_topics %}
-    <section class="learn-section">
-        <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #94a3b8;">Ver también</p>
-        <ul style="margin: 0; padding-left: 1.2em;">
+    <section class="cross-link-card">
+        <p class="cross-link-card__label">Ver también</p>
+        <ul class="cross-link-card__list">
             {% for topic in related_topics %}
-            <li><a href="{% url 'content:topic_detail' topic.slug %}">{{ topic.name }} (videos en la biblioteca de recursos)</a></li>
+            <li>
+                <a class="cross-link-card__link" href="{% url 'content:topic_detail' topic.slug %}">
+                    {{ topic.name }} (videos en la biblioteca de recursos)
+                    <span class="cross-link-card__link-arrow" aria-hidden="true">→</span>
+                </a>
+            </li>
             {% endfor %}
         </ul>
     </section>
