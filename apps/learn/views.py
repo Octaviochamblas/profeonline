@@ -110,6 +110,13 @@ def _list_view(request, node, chain, breadcrumbs, prerequisites):
     if not request.user.is_staff:
         children = children.filter(is_published=True)
 
+    related_resources = [
+        s.resource
+        for s in node.resource_suggestions.filter(
+            status="confirmado"
+        ).select_related("resource")
+    ]
+
     return render(
         request,
         "learn/node_list.html",
@@ -119,6 +126,7 @@ def _list_view(request, node, chain, breadcrumbs, prerequisites):
             "breadcrumbs": breadcrumbs,
             "prerequisites": prerequisites,
             "noindex": not node.is_published,
+            "related_resources": related_resources,
         },
     )
 

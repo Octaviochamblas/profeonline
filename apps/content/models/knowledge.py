@@ -145,6 +145,8 @@ class KnowledgeNode(models.Model):
         chain = self.ancestors_chain
         return chain[3].slug if len(chain) > 3 else ""
 
+    def get_absolute_url(self) -> str:
+        return "/aprender/" + "/".join(n.slug for n in self.ancestors_chain) + "/"
 
     def save(self, *args, **kwargs):
         if not self.slug:

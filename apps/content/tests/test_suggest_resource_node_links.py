@@ -34,9 +34,7 @@ class SuggestResourceNodeLinksCommandTests(TestCase):
         call_command("suggest_resource_node_links", stdout=StringIO())
         self.assertEqual(ResourceNodeSuggestion.objects.filter(resource=resource).count(), 1)
 
-    @patch("apps.content.services.node_matching_service.call_ai_structured_json")
-    def test_generates_suggestion_for_new_published_resource(self, mock_call):
-        mock_call.side_effect = ValueError("sin llaves en test")
+    def test_generates_suggestion_for_new_published_resource(self):
         resource = Resource.objects.create(title="Fracción propia", topic=self.topic, is_published=True)
         out = StringIO()
         call_command("suggest_resource_node_links", stdout=out)
