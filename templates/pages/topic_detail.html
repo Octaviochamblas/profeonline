@@ -40,6 +40,19 @@
         </div>
     </header>
 
+    {% if topic.related_node %}
+        <section class="topic-related-node" style="margin: 16px 0; padding: 16px; border: 1px solid #334155; border-radius: 8px;">
+            <p style="margin: 0 0 8px 0; font-size: 0.85rem; color: #94a3b8;">Ver también</p>
+            <a href="{{ topic.related_node.get_absolute_url }}">
+                {{ topic.related_node.name }} (guía interactiva en /aprender/)
+            </a>
+        </section>
+    {% elif user.is_superuser %}
+        <section class="topic-related-node" style="margin: 16px 0; padding: 16px; border: 1px solid #334155; border-radius: 8px;">
+            <a href="{% url 'content:topic_node_links_review' %}#topic-{{ topic.pk }}" class="btn btn-secondary">Vincular a nodo de conocimiento</a>
+        </section>
+    {% endif %}
+
     {% if user.is_authenticated and topic_progress.total %}
         <section class="topic-progress-summary" aria-labelledby="topic-progress-title">
             <div class="topic-progress-summary__header">

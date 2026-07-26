@@ -14,7 +14,6 @@ from apps.content.models import (
     NodeExercise,
     NodePrerequisite,
     Resource,
-    ResourceNodeSuggestion,
     Subject,
     Topic,
 )
@@ -380,57 +379,50 @@ class NodePrerequisiteDisplayTests(TestCase):
 
 
 class NodeDetailCrossLinkTests(TestCase):
+    """Un Topic legacy se vincula una sola vez a un nodo; todos sus videos
+    (y la página del nodo) heredan ese enlace."""
+
     def setUp(self):
         *_, self.node = _build_tree()
         area = Area.objects.create(name="Ciencias")
         subject = Subject.objects.create(name="Matemática Escolar", area=area)
-        topic = Topic.objects.create(subject=subject, name="Fracciones")
+        self.topic = Topic.objects.create(subject=subject, name="Fracciones")
         self.resource = Resource.objects.create(
-            title="Video de fracción propia", topic=topic, is_published=True, slug="video-fraccion-propia",
+            title="Video de fracción propia", topic=self.topic, is_published=True, slug="video-fraccion-propia",
         )
 
-    def test_shows_cross_link_when_confirmed(self):
-        ResourceNodeSuggestion.objects.create(
-            resource=self.resource, node=self.node,
-            status=ResourceNodeSuggestion.STATUS_CONFIRMADO,
-        )
+    def test_shows_cross_link_when_topic_linked(self):
+        self.topic.related_node = self.node
+        self.topic.save()
         response = self.client.get(f"/aprender/{self.node.slug}/")
         self.assertContains(response, "Ver también")
-        self.assertContains(response, "Video de fracción propia")
+        self.assertContains(response, "Fracciones")
 
-    def test_no_cross_link_without_confirmed_suggestion(self):
+    def test_no_cross_link_when_topic_unlinked(self):
         response = self.client.get(f"/aprender/{self.node.slug}/")
         self.assertNotContains(response, "Ver también")
 
 
 class NodeListCrossLinkTests(TestCase):
-    """Un Tema puede acumular varios videos confirmados (a diferencia de un
-    recurso atómico, que en la práctica solo recibe uno)."""
+    """Un Tema del árbol nuevo puede recibir el link de varios Topics legacy."""
 
     def setUp(self):
         *_, self.tema, _recurso = _build_tree()
         area = Area.objects.create(name="Ciencias")
         subject = Subject.objects.create(name="Matemática Escolar", area=area)
-        topic = Topic.objects.create(subject=subject, name="Enteros")
-        self.video_a = Resource.objects.create(
-            title="Suma de enteros", topic=topic, is_published=True, slug="suma-enteros",
-        )
-        self.video_b = Resource.objects.create(
-            title="Orden de enteros", topic=topic, is_published=True, slug="orden-enteros",
-        )
+        self.topic_a = Topic.objects.create(subject=subject, name="Enteros")
+        self.topic_b = Topic.objects.create(subject=subject, name="Orden de enteros")
 
-    def test_lists_all_confirmed_videos_for_the_tema(self):
-        ResourceNodeSuggestion.objects.create(
-            resource=self.video_a, node=self.tema, status=ResourceNodeSuggestion.STATUS_CONFIRMADO,
-        )
-        ResourceNodeSuggestion.objects.create(
-            resource=self.video_b, node=self.tema, status=ResourceNodeSuggestion.STATUS_CONFIRMADO,
-        )
+    def test_lists_all_topics_linked_to_the_tema(self):
+        self.topic_a.related_node = self.tema
+        self.topic_a.save()
+        self.topic_b.related_node = self.tema
+        self.topic_b.save()
         response = self.client.get(self.tema.get_absolute_url())
         self.assertContains(response, "Ver también")
-        self.assertContains(response, "Suma de enteros")
+        self.assertContains(response, "Enteros")
         self.assertContains(response, "Orden de enteros")
 
-    def test_no_cross_link_without_confirmed_suggestion(self):
+    def test_no_cross_link_when_no_topic_linked(self):
         response = self.client.get(self.tema.get_absolute_url())
         self.assertNotContains(response, "Ver también")

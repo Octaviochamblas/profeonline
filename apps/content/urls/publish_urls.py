@@ -57,10 +57,10 @@ from apps.content.views.structured_activation import (
     activate_structured_bank,
     deactivate_structured_bank,
 )
-from apps.content.views.node_suggestions import (
-    node_suggestions_review,
-    confirm_node_suggestion,
-    discard_node_suggestion,
+from apps.content.views.topic_node_links import (
+    topic_node_links_review,
+    set_topic_node_link,
+    clear_topic_node_link,
     node_options,
 )
 
@@ -124,17 +124,17 @@ urlpatterns = [
     path("publicar/guias-profeonline/validar/<int:guide_id>/", validate_originality_view, name="validate_originality_view"),
     path("publicar/guias-profeonline/publicar/<int:guide_id>/", publish_learning_guide_view, name="publish_learning_guide_view"),
 
-    # Enlace cruzado Sistema A (Resource) <-> Sistema B (KnowledgeNode)
-    path("publicar/sugerencias-nodos/", node_suggestions_review, name="node_suggestions_review"),
+    # Enlace cruzado Sistema A (Topic) <-> Sistema B (KnowledgeNode)
+    path("publicar/vinculos-tema/", topic_node_links_review, name="topic_node_links_review"),
     path(
-        "publicar/sugerencias-nodos/<int:suggestion_id>/confirmar/",
-        confirm_node_suggestion,
-        name="confirm_node_suggestion",
+        "publicar/vinculos-tema/<int:topic_id>/guardar/",
+        set_topic_node_link,
+        name="set_topic_node_link",
     ),
     path(
-        "publicar/sugerencias-nodos/<int:suggestion_id>/descartar/",
-        discard_node_suggestion,
-        name="discard_node_suggestion",
+        "publicar/vinculos-tema/<int:topic_id>/quitar/",
+        clear_topic_node_link,
+        name="clear_topic_node_link",
     ),
     path("publicar/opciones/nodos/", node_options, name="node_options"),
 ]

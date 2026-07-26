@@ -19,7 +19,6 @@ from apps.content.models import (
     QuestionErrorReport,
     QuizAttempt,
     Resource,
-    ResourceNodeSuggestion,
     Subject,
     Topic,
     TopicEvaluationAttempt,
@@ -88,13 +87,6 @@ class NodePrerequisiteAdmin(admin.ModelAdmin):
     search_fields = ("node__semantic_id", "requires__semantic_id")
     raw_id_fields = ("node", "requires")
 
-
-@admin.register(ResourceNodeSuggestion)
-class ResourceNodeSuggestionAdmin(admin.ModelAdmin):
-    list_display = ("resource", "node", "status", "origen", "ai_corrigio", "created_at")
-    list_filter = ("status", "origen", "ai_corrigio")
-    search_fields = ("resource__title", "node__name", "node__code")
-    raw_id_fields = ("resource", "node")
 
 
 class NodeExerciseInline(admin.TabularInline):

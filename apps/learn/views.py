@@ -110,12 +110,7 @@ def _list_view(request, node, chain, breadcrumbs, prerequisites):
     if not request.user.is_staff:
         children = children.filter(is_published=True)
 
-    related_resources = [
-        s.resource
-        for s in node.resource_suggestions.filter(
-            status="confirmado"
-        ).select_related("resource")
-    ]
+    related_topics = list(node.linked_topics.all())
 
     return render(
         request,
@@ -126,7 +121,7 @@ def _list_view(request, node, chain, breadcrumbs, prerequisites):
             "breadcrumbs": breadcrumbs,
             "prerequisites": prerequisites,
             "noindex": not node.is_published,
-            "related_resources": related_resources,
+            "related_topics": related_topics,
         },
     )
 
@@ -175,12 +170,7 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
         else:
             other_media.append(m)
 
-    confirmed_suggestion = (
-        node.resource_suggestions.filter(status="confirmado")
-        .select_related("resource")
-        .first()
-    )
-    related_resource = confirmed_suggestion.resource if confirmed_suggestion else None
+    related_topics = list(node.linked_topics.all())
 
     return render(
         request,
@@ -195,6 +185,6 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "breadcrumbs": breadcrumbs,
             "noindex": noindex,
             "mastery": get_node_mastery(request.user, node),
-            "related_resource": related_resource,
+            "related_topics": related_topics,
         },
     )

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Vínculos de Temas | ProfeOnline{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h1>Vínculos Tema ↔ Nodo de conocimiento</h1>
+    <p style="color: #94a3b8; margin-bottom: 24px;">
+        Cada Tema legacy se vincula una sola vez al Bloque/Tema del árbol nuevo que le
+        corresponde. Todos sus videos heredan ese enlace ("Ver también") automáticamente.
+    </p>
+
+    {% if not rows %}
+        <p>No hay temas.</p>
+    {% endif %}
+
+    {% for row in rows %}
+    <div id="topic-{{ row.topic.pk }}" class="card mb-3" style="border: 1px solid #334155; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+        <h3 style="margin: 0 0 8px 0;">{{ row.topic.name }}</h3>
+        <p style="margin: 0 0 4px 0; font-size: 0.85rem; color: #94a3b8;">
+            {{ row.topic.subject.name }} · {{ row.topic.resource_count }} recurso{{ row.topic.resource_count|pluralize }} publicado{{ row.topic.resource_count|pluralize }}
+        </p>
+
+        {% if row.topic.related_node %}
+            <p style="margin: 8px 0;">
+                <strong>Vinculado a:</strong> {{ row.topic.related_node.code }} — {{ row.topic.related_node.name }}
+            </p>
+            <form method="post" action="{% url 'content:clear_topic_node_link' row.topic.pk %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary">Quitar vínculo</button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'content:set_topic_node_link' row.topic.pk %}" id="link-form-{{ row.topic.pk }}">
+                {% csrf_token %}
+                <input type="hidden" name="node_id" id="node-id-{{ row.topic.pk }}" value="{% if row.suggestion %}{{ row.suggestion.id }}{% endif %}">
+                {% if row.suggestion %}
+                    <p style="margin: 8px 0;"><strong>Sugerencia automática:</strong> {{ row.suggestion.code }} — {{ row.suggestion.name }}</p>
+                {% else %}
+                    <p style="margin: 8px 0; color: #f59e0b;">Sin sugerencia automática — busca manualmente.</p>
+                {% endif %}
+
+                <details style="margin-top: 8px;">
+                    <summary style="cursor: pointer;">Buscar nodo manualmente</summary>
+                    <div style="margin-top: 8px;">
+                        <input type="text" placeholder="Buscar por nombre o código..."
+                               hx-get="{% url 'content:node_options' %}"
+                               hx-trigger="keyup changed delay:300ms"
+                               hx-target="#node-results-{{ row.topic.pk }}"
+                               name="q" class="form-control" style="max-width: 400px;">
+                        <div id="node-results-{{ row.topic.pk }}" style="margin-top: 8px;"></div>
+                    </div>
+                </details>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 8px;" id="submit-btn-{{ row.topic.pk }}" {% if not row.suggestion %}disabled{% endif %}>
+                    {% if row.suggestion %}Confirmar sugerencia{% else %}Vincular{% endif %}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<script nonce="{{ csp_nonce }}">
+document.body.addEventListener('htmx:afterRequest', function (evt) {
+    if (!evt.detail.pathInfo || !evt.detail.pathInfo.requestPath.includes('/opciones/nodos/')) return;
+    var target = evt.detail.target;
+    try {
+        var data = JSON.parse(evt.detail.xhr.responseText);
+        target.innerHTML = '';
+        data.nodes.forEach(function (node) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-sm';
+            btn.textContent = node.label;
+            btn.style.marginRight = '6px';
+            btn.style.marginBottom = '6px';
+            btn.addEventListener('click', function () {
+                var form = target.closest('form');
+                form.querySelector('input[name="node_id"]').value = node.id;
+                var submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Vincular: ' + node.label;
+            });
+            target.appendChild(btn);
+        });
+    } catch (e) { /* respuesta no-JSON, ignorar */ }
+});
+</script>
+{% endblock %}

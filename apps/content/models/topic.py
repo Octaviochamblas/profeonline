@@ -57,6 +57,15 @@ class Topic(models.Model):
         related_name="topics",
         verbose_name="niveles",
     )
+    related_node = models.ForeignKey(
+        "content.KnowledgeNode",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="linked_topics",
+        verbose_name="nodo de conocimiento vinculado",
+        help_text="Bloque/Tema del árbol nuevo (/aprender/) al que corresponde este Tema legacy.",
+    )
 
     class Meta:
         ordering = ["subject__name", "name"]

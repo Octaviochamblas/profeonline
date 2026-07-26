@@ -122,11 +122,7 @@ class ResourceDetailView(DetailView):
             ),
         ]
 
-        # Enlace cruzado a Sistema B (KnowledgeNode), si hay una sugerencia confirmada.
-        suggestion = getattr(resource, "node_suggestion", None)
-        if suggestion and suggestion.status == suggestion.STATUS_CONFIRMADO and suggestion.node:
-            context["related_node"] = suggestion.node
-        else:
-            context["related_node"] = None
+        # Enlace cruzado a Sistema B (KnowledgeNode), heredado del Tema del recurso.
+        context["related_node"] = topic.related_node if topic else None
 
         return context
