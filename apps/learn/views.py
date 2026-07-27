@@ -3,6 +3,7 @@ import re
 from django.db.models import Prefetch
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from apps.content.models import (
     KnowledgeNode,
@@ -105,12 +106,26 @@ def node_view(request, **kwargs):
     return _list_view(request, node, chain, breadcrumbs, prerequisites)
 
 
+def _related_items(node, user):
+    """Temas y recursos que apuntan a este nodo, para el bloque "Ver también"."""
+    items = [
+        {"label": topic.name, "url": reverse("content:topic_detail", args=[topic.slug])}
+        for topic in node.linked_topics.all()
+    ]
+    resources = node.linked_resources.all()
+    if not user.is_staff:
+        resources = resources.filter(is_published=True)
+    items += [
+        {"label": resource.title, "url": reverse("content:resource_detail", args=[resource.slug])}
+        for resource in resources
+    ]
+    return items
+
+
 def _list_view(request, node, chain, breadcrumbs, prerequisites):
     children = node.children.order_by("order", "code")
     if not request.user.is_staff:
         children = children.filter(is_published=True)
-
-    related_topics = list(node.linked_topics.all())
 
     return render(
         request,
@@ -121,7 +136,7 @@ def _list_view(request, node, chain, breadcrumbs, prerequisites):
             "breadcrumbs": breadcrumbs,
             "prerequisites": prerequisites,
             "noindex": not node.is_published,
-            "related_topics": related_topics,
+            "related_items": _related_items(node, request.user),
         },
     )
 
@@ -170,7 +185,21 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
         else:
             other_media.append(m)
 
-    related_topics = list(node.linked_topics.all())
+    previous_node = None
+    next_node = None
+    if node.parent:
+        siblings = node.parent.children.order_by("order", "code")
+        if not request.user.is_staff:
+            siblings = siblings.filter(is_published=True)
+        siblings = list(siblings)
+        try:
+            idx = siblings.index(node)
+            if idx > 0:
+                previous_node = siblings[idx - 1]
+            if idx + 1 < len(siblings):
+                next_node = siblings[idx + 1]
+        except ValueError:
+            pass
 
     return render(
         request,
@@ -185,6 +214,8 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "breadcrumbs": breadcrumbs,
             "noindex": noindex,
             "mastery": get_node_mastery(request.user, node),
-            "related_topics": related_topics,
+            "related_items": _related_items(node, request.user),
+            "previous_node": previous_node,
+            "next_node": next_node,
         },
     )

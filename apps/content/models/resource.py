@@ -59,6 +59,20 @@ class Resource(models.Model):
         verbose_name="niveles",
     )
 
+    related_node = models.ForeignKey(
+        "content.KnowledgeNode",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="linked_resources",
+        verbose_name="nodo de conocimiento vinculado directamente",
+        help_text=(
+            "Vínculo puntual a un nodo específico, cuando el Tema completo no es "
+            "suficientemente preciso para este video. Tiene prioridad sobre el "
+            "vínculo del Tema."
+        ),
+    )
+
     slug = models.SlugField(max_length=220, unique=True, blank=True, null=True)
     description = models.TextField("Descripción breve", blank=True)
     content = models.TextField("Contenido", blank=True)

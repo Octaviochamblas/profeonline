@@ -61,6 +61,8 @@ from apps.content.views.topic_node_links import (
     topic_node_links_review,
     set_topic_node_link,
     clear_topic_node_link,
+    set_resource_node_link,
+    clear_resource_node_link,
     node_options,
 )
 
@@ -135,6 +137,16 @@ urlpatterns = [
         "publicar/vinculos-tema/<int:topic_id>/quitar/",
         clear_topic_node_link,
         name="clear_topic_node_link",
+    ),
+    path(
+        "publicar/vinculos-recurso/<int:resource_id>/guardar/",
+        set_resource_node_link,
+        name="set_resource_node_link",
+    ),
+    path(
+        "publicar/vinculos-recurso/<int:resource_id>/quitar/",
+        clear_resource_node_link,
+        name="clear_resource_node_link",
     ),
     path("publicar/opciones/nodos/", node_options, name="node_options"),
 ]

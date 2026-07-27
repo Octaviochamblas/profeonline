@@ -8,6 +8,14 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/learn-catalog.css' %}?v=7">
 <style>
+/* ── Página sin la tarjeta/borde global (.content-wrapper de base.html) ── */
+.content-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
 /* ── Objetivo ──────────────────────────────────────── */
 .learn-objetivo-card {
   background: #eff6ff;
@@ -42,15 +50,19 @@
 /* ── Títulos de sección ─────────────────────────── */
 .learn-section { margin-top: 2rem; }
 .learn-section__title {
-  font-size: 1.05rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  letter-spacing: .04em;
+  letter-spacing: -.01em;
   color: #3b6de0;
-  padding: .55rem 1rem;
-  background: #f0f4ff;
-  border-left: 4px solid #4a7cf6;
-  border-radius: 0 8px 8px 0;
   display: block;
+  margin: 0 0 1rem;
+}
+.learn-section__title:has(+ .learn-section__hint) {
+  margin-bottom: .35rem;
+}
+.learn-section__hint {
+  color: #64748b;
+  font-size: .92rem;
   margin: 0 0 1rem;
 }
 
@@ -80,7 +92,7 @@
   line-height: 1.5;
 }
 
-/* ── Ejemplos como acordeón ─────────────────────── */
+/* ── Ejemplos: pregunta y alternativas visibles de inmediato ── */
 .learn-ejemplos-list { display: flex; flex-direction: column; gap: 1.1rem; margin-top: .75rem; }
 .learn-ejemplo-card {
   border: 1.5px solid #e2e8f0;
@@ -94,24 +106,8 @@
   display: flex;
   align-items: baseline;
   gap: .5rem;
-  list-style: none;
-  cursor: pointer;
-  user-select: none;
-  justify-content: space-between;
-}
-.learn-ejemplo-card__header::-webkit-details-marker { display: none; }
-.learn-ejemplo-card__header::after {
-  content: "‹";
-  font-size: 1.05rem;
-  color: #94a3b8;
-  transition: transform .2s;
-  transform: rotate(-90deg);
-  flex-shrink: 0;
-}
-.learn-ejemplo-card[open] > .learn-ejemplo-card__header {
   border-bottom: 1px solid #e2e8f0;
 }
-.learn-ejemplo-card[open] > .learn-ejemplo-card__header::after { transform: rotate(90deg); }
 .learn-ejemplo-card__num {
   font-size: .67rem;
   font-weight: 800;
@@ -144,29 +140,13 @@
   font-style: italic;
   color: #78350f;
   font-size: .93rem;
-  list-style: none;
-  cursor: pointer;
-  user-select: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: .5rem;
-}
-.conceptual-item__claim::-webkit-details-marker { display: none; }
-.conceptual-item__claim::after {
-  content: "‹";
-  font-size: 1.05rem;
-  color: #b45309;
-  transition: transform .2s;
-  transform: rotate(-90deg);
-  flex-shrink: 0;
-}
-.conceptual-item[open] > .conceptual-item__claim {
   border-bottom: 1px solid #fde68a;
 }
-.conceptual-item[open] > .conceptual-item__claim::after { transform: rotate(90deg); }
 .conceptual-item__body { padding: .65rem 1rem .75rem; }
-.conceptual-item__q { font-size: .85rem; color: #6b7280; margin-bottom: .4rem; }
 .conceptual-item .learn-exercise__feedback {
   margin-top: .6rem;
   padding: .65rem .9rem;
@@ -271,7 +251,6 @@
 .learn-exercise__verdict { font-weight:700; font-size:1rem; margin-bottom:.4rem; }
 .learn-exercise__verdict--ok  { color:#16a34a; }
 .learn-exercise__verdict--err { color:#dc2626; }
-
 /* ── Clasificación (matching) ───────────────────── */
 .classify-grid { display:flex; flex-direction:column; gap:.6rem; margin-top:.75rem; }
 .classify-row  { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
@@ -348,7 +327,6 @@
 
     {% if content.introduccion %}
     <section class="learn-section learn-intro">
-        <h2 class="learn-section__title">Introducción</h2>
         <div class="learn-intro__body">
             {{ content.introduccion|markdown }}
         </div>
@@ -378,16 +356,17 @@
     {% if content.ejemplos %}
     <section class="learn-section">
         <h2 class="learn-section__title">Ejemplos</h2>
+        <p class="learn-section__hint">Responde los siguientes ejercicios para poner a prueba lo que acabas de aprender.</p>
         <div class="learn-ejemplos-list">
             {% for ej in content.ejemplos %}
             {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
-            <details class="learn-ejemplo-card learn-exercise"
+            <div class="learn-ejemplo-card learn-exercise"
                  data-format="true_false"
                  data-answer="{{ ej.respuesta }}">
-                <summary class="learn-ejemplo-card__header">
+                <div class="learn-ejemplo-card__header">
                     <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
                     <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </summary>
+                </div>
                 <div class="learn-ejemplo-card__body">
                     <div class="learn-exercise__tf">
                         <button type="button" class="ex-choice" data-value="Sí">Sí</button>
@@ -402,15 +381,15 @@
                         {% endif %}
                     </div>
                 </div>
-            </details>
+            </div>
             {% elif ej.respuesta == "Verdadero" or ej.respuesta == "Falso" %}
-            <details class="learn-ejemplo-card learn-exercise"
+            <div class="learn-ejemplo-card learn-exercise"
                  data-format="true_false"
                  data-answer="{{ ej.respuesta }}">
-                <summary class="learn-ejemplo-card__header">
+                <div class="learn-ejemplo-card__header">
                     <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
                     <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </summary>
+                </div>
                 <div class="learn-ejemplo-card__body">
                     <div class="learn-exercise__tf">
                         <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
@@ -425,15 +404,15 @@
                         {% endif %}
                     </div>
                 </div>
-            </details>
+            </div>
             {% else %}
-            <details class="learn-ejemplo-card learn-exercise"
+            <div class="learn-ejemplo-card learn-exercise"
                  data-format="open_answer"
                  data-answer="">
-                <summary class="learn-ejemplo-card__header">
+                <div class="learn-ejemplo-card__header">
                     <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
                     <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </summary>
+                </div>
                 <div class="learn-ejemplo-card__body">
                     <button type="button" class="ex-submit">Ver solución</button>
                     <div class="learn-exercise__feedback" hidden>
@@ -445,7 +424,7 @@
                         {% endif %}
                     </div>
                 </div>
-            </details>
+            </div>
             {% endif %}
             {% endfor %}
         </div>
@@ -455,14 +434,14 @@
     {% if content.errores_frecuentes %}
     <section class="learn-section conceptual-section">
         <h2 class="learn-section__title">Ejemplos Verdadero/Falso</h2>
+        <p class="learn-section__hint">Decide si cada afirmación es verdadera o falsa antes de ver la explicación.</p>
         <div class="conceptual-list">
             {% for error in content.errores_frecuentes %}
-            <details class="conceptual-item learn-exercise"
+            <div class="conceptual-item learn-exercise"
                 data-format="true_false"
                 data-answer="Falso">
-                <summary class="conceptual-item__claim"><span>"{{ error }}"</span></summary>
+                <div class="conceptual-item__claim"><span>"{{ error }}"</span></div>
                 <div class="conceptual-item__body">
-                    <p class="conceptual-item__q">¿Es correcta esta afirmación?</p>
                     <div class="learn-exercise__tf">
                         <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
                         <button type="button" class="ex-choice" data-value="Falso">Falso</button>
@@ -474,7 +453,7 @@
                         </p>
                     </div>
                 </div>
-            </details>
+            </div>
             {% endfor %}
         </div>
     </section>
@@ -601,14 +580,31 @@
         </div>
     </section>
 
-    {% if related_topics %}
+    {% if previous_node or next_node %}
+        <nav class="resource-navigation" aria-label="Navegación entre nodos">
+            {% if previous_node %}
+                <a class="resource-navigation__link resource-navigation__link--prev" href="{{ previous_node.get_absolute_url }}">
+                    <span class="resource-navigation__kicker">← Anterior</span>
+                    <span class="resource-navigation__title">{{ previous_node.name }}</span>
+                </a>
+            {% endif %}
+            {% if next_node %}
+                <a class="resource-navigation__link resource-navigation__link--next" href="{{ next_node.get_absolute_url }}">
+                    <span class="resource-navigation__kicker">Siguiente →</span>
+                    <span class="resource-navigation__title">{{ next_node.name }}</span>
+                </a>
+            {% endif %}
+        </nav>
+    {% endif %}
+
+    {% if related_items %}
     <section class="cross-link-card">
-        <p class="cross-link-card__label">Ver también</p>
+        <p class="cross-link-card__label">Ver material Audiovisual</p>
         <ul class="cross-link-card__list">
-            {% for topic in related_topics %}
+            {% for item in related_items %}
             <li>
-                <a class="cross-link-card__link" href="{% url 'content:topic_detail' topic.slug %}">
-                    {{ topic.name }}
+                <a class="cross-link-card__link" href="{{ item.url }}">
+                    {{ item.label }}
                 </a>
             </li>
             {% endfor %}

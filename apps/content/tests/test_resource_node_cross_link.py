@@ -86,3 +86,71 @@ class VincularBotonTests(TestCase):
     def test_no_link_button_for_non_staff(self):
         response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
         self.assertNotContains(response, "Vincular a nodo de conocimiento")
+
+
+class ResourceDirectNodeLinkTests(TestCase):
+    """Vínculo directo Resource -> KnowledgeNode: tiene prioridad sobre el del Tema."""
+
+    def setUp(self):
+        area = Area.objects.create(name="Ciencias")
+        subject = Subject.objects.create(name="Matemática Escolar", area=area)
+        self.topic = Topic.objects.create(subject=subject, name="Fracciones")
+        self.resource = Resource.objects.create(
+            title="Video de fracciones", topic=self.topic, is_published=True,
+        )
+        self.topic_node = _chain(subject_abbr="MAT")
+        self.direct_node = KnowledgeNode.objects.create(
+            semantic_id="MAT.OTRO", code="09", node_type=KnowledgeNode.NODE_BLOQUE,
+            subject_abbr="MAT", name="Nodo puntual",
+        )
+        self.admin = User.objects.create_superuser(
+            username="admin", email="admin@example.com", password="password123",
+        )
+
+    def test_direct_link_takes_priority_over_topic_link(self):
+        self.topic.related_node = self.topic_node
+        self.topic.save()
+        self.resource.related_node = self.direct_node
+        self.resource.save()
+        response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
+        self.assertContains(response, "Nodo puntual")
+        self.assertNotContains(response, self.topic_node.name)
+
+    def test_falls_back_to_topic_link_without_direct_link(self):
+        self.topic.related_node = self.topic_node
+        self.topic.save()
+        response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
+        self.assertContains(response, self.topic_node.name)
+
+    def test_set_resource_node_link(self):
+        self.client.login(username="admin", password="password123")
+        response = self.client.post(
+            reverse("content:set_resource_node_link", args=[self.resource.pk]),
+            {"node_id": self.direct_node.pk},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.resource.refresh_from_db()
+        self.assertEqual(self.resource.related_node, self.direct_node)
+
+    def test_clear_resource_node_link(self):
+        self.resource.related_node = self.direct_node
+        self.resource.save()
+        self.client.login(username="admin", password="password123")
+        response = self.client.post(
+            reverse("content:clear_resource_node_link", args=[self.resource.pk])
+        )
+        self.assertEqual(response.status_code, 302)
+        self.resource.refresh_from_db()
+        self.assertIsNone(self.resource.related_node)
+
+    def test_shows_direct_link_form_when_unlinked(self):
+        self.client.login(username="admin", password="password123")
+        response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
+        self.assertContains(response, "Vincular este video directamente a un nodo específico")
+
+    def test_shows_clear_button_when_directly_linked(self):
+        self.resource.related_node = self.direct_node
+        self.resource.save()
+        self.client.login(username="admin", password="password123")
+        response = self.client.get(reverse("content:resource_detail", args=[self.resource.slug]))
+        self.assertContains(response, "Quitar vínculo directo")

@@ -122,7 +122,10 @@ class ResourceDetailView(DetailView):
             ),
         ]
 
-        # Enlace cruzado a Sistema B (KnowledgeNode), heredado del Tema del recurso.
-        context["related_node"] = topic.related_node if topic else None
+        # Enlace cruzado a Sistema B (KnowledgeNode): el vínculo directo del
+        # recurso tiene prioridad; si no existe, se hereda el del Tema.
+        context["related_node"] = resource.related_node or (
+            topic.related_node if topic else None
+        )
 
         return context

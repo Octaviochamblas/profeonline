@@ -151,14 +151,41 @@
             <a href="{% url 'content:question_review' resource.slug %}" class="btn btn-secondary">Gestionar Preguntas</a>
             <a href="{% url 'content:resource_update' resource.pk %}" class="btn btn-secondary">Editar</a>
             <a href="{% url 'content:resource_delete' resource.pk %}" class="btn btn-danger">Eliminar</a>
-            {% if not related_node and resource.topic %}
+            {% if resource.topic and not resource.topic.related_node %}
                 <a href="{% url 'content:topic_node_links_review' %}#topic-{{ resource.topic.pk }}" class="btn btn-secondary">Vincular a nodo de conocimiento</a>
             {% endif %}
         </div>
+
+        {% if resource.related_node %}
+            <section class="cross-link-card">
+                <p class="cross-link-card__label">Vínculo directo de este video</p>
+                <p style="margin: 0 0 .75rem;">{{ resource.related_node.code }} — {{ resource.related_node.name }}</p>
+                <form method="post" action="{% url 'content:clear_resource_node_link' resource.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Quitar vínculo directo</button>
+                </form>
+            </section>
+        {% else %}
+            <details class="cross-link-card">
+                <summary style="cursor: pointer; font-weight: 600;">Vincular este video directamente a un nodo específico</summary>
+                <form method="post" action="{% url 'content:set_resource_node_link' resource.pk %}" style="margin-top: .75rem;">
+                    {% csrf_token %}
+                    <input type="hidden" name="node_id">
+                    <input type="text" placeholder="Buscar por nombre o código..."
+                           hx-get="{% url 'content:node_options' %}"
+                           hx-trigger="keyup changed delay:300ms"
+                           hx-target="#resource-node-results"
+                           name="q" class="form-control" style="max-width: 400px;">
+                    <div id="resource-node-results" style="margin-top: .5rem;"></div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: .75rem;" disabled>Vincular</button>
+                </form>
+            </details>
+        {% endif %}
     {% endif %}
 </article>
 {% endblock %}
 
 {% block extra_js %}
 <script nonce="{{ csp_nonce }}" src="{% static 'js/resource-detail.js' %}?v=1" defer></script>
+<script nonce="{{ csp_nonce }}" src="{% static 'js/node_link_picker.js' %}?v=1" defer></script>
 {% endblock %}

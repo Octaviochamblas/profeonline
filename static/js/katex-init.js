@@ -9,7 +9,10 @@
  * Delimitadores soportados al redactar contenido/preguntas:
  *   - En línea:  $...$   o  \(...\)        ej.  $x^2$  →  x²
  *   - En bloque: $$...$$ o  \[...\]        ej.  $$\frac{a}{b}$$
- * Para un signo $ literal (precios), escribir \$.
+ * OJO con el signo $ literal (precios): \$ evita que KaTeX lo confunda con
+ * una fórmula, pero NO borra la barra invertida — se ve "\$5", no "$5".
+ * Para precios, mejor evitar el símbolo $ y escribir el monto en palabras
+ * (ej. "5 pesos") o usar otra unidad.
  *
  * CSP-safe: archivo externo cargado con nonce, sin eval.
  */

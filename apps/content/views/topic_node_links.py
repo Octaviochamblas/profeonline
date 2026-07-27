@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from apps.content.models import KnowledgeNode, Topic
+from apps.content.models import KnowledgeNode, Resource, Topic
 from apps.content.services.node_matching_service import find_matching_block
 from apps.content.views.permissions import is_admin
 
@@ -53,6 +53,27 @@ def clear_topic_node_link(request, topic_id):
     topic.related_node = None
     topic.save(update_fields=["related_node"])
     return redirect(f"/publicar/vinculos-tema/#topic-{topic.pk}")
+
+
+@user_passes_test(is_admin)
+@require_POST
+def set_resource_node_link(request, resource_id):
+    resource = get_object_or_404(Resource, pk=resource_id)
+    node = get_object_or_404(
+        KnowledgeNode, pk=request.POST.get("node_id"), node_type__in=NODE_TYPES_LINKABLE,
+    )
+    resource.related_node = node
+    resource.save(update_fields=["related_node"])
+    return redirect("content:resource_detail", slug=resource.slug)
+
+
+@user_passes_test(is_admin)
+@require_POST
+def clear_resource_node_link(request, resource_id):
+    resource = get_object_or_404(Resource, pk=resource_id)
+    resource.related_node = None
+    resource.save(update_fields=["related_node"])
+    return redirect("content:resource_detail", slug=resource.slug)
 
 
 @user_passes_test(is_admin)

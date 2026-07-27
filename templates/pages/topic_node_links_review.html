@@ -61,30 +61,8 @@
     {% endfor %}
 </div>
 
-<script nonce="{{ csp_nonce }}">
-document.body.addEventListener('htmx:afterRequest', function (evt) {
-    if (!evt.detail.pathInfo || !evt.detail.pathInfo.requestPath.includes('/opciones/nodos/')) return;
-    var target = evt.detail.target;
-    try {
-        var data = JSON.parse(evt.detail.xhr.responseText);
-        target.innerHTML = '';
-        data.nodes.forEach(function (node) {
-            var btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'btn btn-sm';
-            btn.textContent = node.label;
-            btn.style.marginRight = '6px';
-            btn.style.marginBottom = '6px';
-            btn.addEventListener('click', function () {
-                var form = target.closest('form');
-                form.querySelector('input[name="node_id"]').value = node.id;
-                var submitBtn = form.querySelector('button[type="submit"]');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Vincular: ' + node.label;
-            });
-            target.appendChild(btn);
-        });
-    } catch (e) { /* respuesta no-JSON, ignorar */ }
-});
-</script>
+{% endblock %}
+
+{% block extra_js %}
+<script nonce="{{ csp_nonce }}" src="{% static 'js/node_link_picker.js' %}?v=1" defer></script>
 {% endblock %}

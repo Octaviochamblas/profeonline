@@ -257,6 +257,66 @@ class NodeDetailViewTests(TestCase):
         self.assertNotContains(response, 'class="breadcrumb-wrap"')
 
 
+class NodeDetailNextNodeTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+
+    def test_shows_next_node_button_when_sibling_exists(self):
+        siguiente = KnowledgeNode.objects.create(
+            semantic_id="MAT.NUM.ENTEROS_CONJUNTO.CARDINALES",
+            code="02.01.01.02",
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            name="Números cardinales",
+            parent=self.tema,
+            is_published=True,
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, "resource-navigation__link--next")
+        self.assertContains(response, "Números cardinales")
+        self.assertContains(response, siguiente.get_absolute_url())
+
+    def test_no_next_node_button_when_last_in_tema(self):
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "resource-navigation__link--next")
+
+    def test_next_node_skips_unpublished_for_anonymous(self):
+        KnowledgeNode.objects.create(
+            semantic_id="MAT.NUM.ENTEROS_CONJUNTO.CARDINALES",
+            code="02.01.01.02",
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            name="Números cardinales (borrador)",
+            parent=self.tema,
+            is_published=False,
+        )
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "resource-navigation__link--next")
+
+    def test_shows_previous_node_button_when_sibling_exists(self):
+        anterior = KnowledgeNode.objects.create(
+            semantic_id="MAT.NUM.ENTEROS_CONJUNTO.PREVIO",
+            code="02.01.01.00",
+            node_type=KnowledgeNode.NODE_RECURSO,
+            subject_abbr="MAT",
+            name="Conteo básico",
+            parent=self.tema,
+            is_published=True,
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, "resource-navigation__link--prev")
+        self.assertContains(response, "Conteo básico")
+        self.assertContains(response, anterior.get_absolute_url())
+
+    def test_no_previous_node_button_when_first_in_tema(self):
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "resource-navigation__link--prev")
+
+
 class NodePracticeBankViewTests(TestCase):
     def setUp(self):
         self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
@@ -395,12 +455,12 @@ class NodeDetailCrossLinkTests(TestCase):
         self.topic.related_node = self.node
         self.topic.save()
         response = self.client.get(f"/aprender/{self.node.slug}/")
-        self.assertContains(response, "Ver también")
+        self.assertContains(response, "Ver material Audiovisual")
         self.assertContains(response, "Fracciones")
 
     def test_no_cross_link_when_topic_unlinked(self):
         response = self.client.get(f"/aprender/{self.node.slug}/")
-        self.assertNotContains(response, "Ver también")
+        self.assertNotContains(response, "Ver material Audiovisual")
 
 
 class NodeListCrossLinkTests(TestCase):
@@ -419,10 +479,24 @@ class NodeListCrossLinkTests(TestCase):
         self.topic_b.related_node = self.tema
         self.topic_b.save()
         response = self.client.get(self.tema.get_absolute_url())
-        self.assertContains(response, "Ver también")
+        self.assertContains(response, "Ver material Audiovisual")
         self.assertContains(response, "Enteros")
         self.assertContains(response, "Orden de enteros")
 
     def test_no_cross_link_when_no_topic_linked(self):
         response = self.client.get(self.tema.get_absolute_url())
-        self.assertNotContains(response, "Ver también")
+        self.assertNotContains(response, "Ver material Audiovisual")
+
+    def test_lists_directly_linked_resource_alongside_topics(self):
+        self.topic_a.related_node = self.tema
+        self.topic_a.save()
+        resource = Resource.objects.create(
+            title="Video puntual sobre enteros",
+            topic=self.topic_b,
+            is_published=True,
+            related_node=self.tema,
+        )
+        response = self.client.get(self.tema.get_absolute_url())
+        self.assertContains(response, "Ver material Audiovisual")
+        self.assertContains(response, "Enteros")
+        self.assertContains(response, "Video puntual sobre enteros")
