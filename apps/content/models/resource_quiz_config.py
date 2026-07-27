@@ -5,7 +5,7 @@ def default_quiz_counts():
     return {
         "1": {"practice": {"pool": 15, "shown": 5}, "eval": {"pool": 10, "shown": 5}},
         "2": {"practice": {"pool": 15, "shown": 5}, "eval": {"pool": 10, "shown": 5}},
-        "3": {"practice": {"pool": 15, "shown": 5}, "eval": {"pool": 10, "shown": 3}}
+        "3": {"practice": {"pool": 15, "shown": 3}, "eval": {"pool": 10, "shown": 3}}
     }
 
 

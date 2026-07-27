@@ -37,6 +37,8 @@ class ResourceQuizConfigTestCase(TestCase):
         self.assertFalse(config.autopublish)
         self.assertEqual(config.counts["1"]["practice"]["shown"], 5)
         self.assertEqual(config.counts["1"]["eval"]["shown"], 5)
+        self.assertEqual(config.counts["3"]["practice"]["shown"], 3)
+        self.assertEqual(config.counts["3"]["eval"]["shown"], 3)
 
     def test_get_quiz_config_override(self):
         # Crear una configuración explícita
@@ -125,6 +127,25 @@ class ResourceQuizConfigTestCase(TestCase):
 
         questions = get_questions_for_quiz(self.resource, level=1, mode="evaluacion")
         self.assertEqual(len(questions), 6)
+
+    def test_practice_matches_eval_count_at_level3_without_config(self):
+        # Sin ResourceQuizConfig, práctica y evaluación deben mostrar la misma
+        # cantidad en Nivel 3 (3), igual que ya ocurre en los Niveles 1 y 2 (5).
+        for i in range(10):
+            q = Question.objects.create(
+                resource=self.resource,
+                level=3,
+                mode="ambas",
+                text=f"Pregunta {i}",
+                status="publicada",
+                order=i,
+            )
+            Choice.objects.create(question=q, text="Opción correcta", is_correct=True)
+
+        practice_questions = get_questions_for_quiz(self.resource, level=3, mode="preparacion")
+        eval_questions = get_questions_for_quiz(self.resource, level=3, mode="evaluacion")
+        self.assertEqual(len(practice_questions), 3)
+        self.assertEqual(len(eval_questions), 3)
 
     def test_attempts_limit_and_retake(self):
         # Configurar 2 intentos máximos y no permitir repetir
