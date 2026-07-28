@@ -118,6 +118,15 @@ class Resource(models.Model):
         blank=True,
         default="",
     )
+    reading_checkpoints = models.JSONField(
+        "comprobaciones durante la lectura",
+        blank=True,
+        default=list,
+        help_text=(
+            "Tres preguntas formativas no calificadas, insertadas dentro de la guía "
+            "sin formar parte del banco de práctica y evaluación."
+        ),
+    )
     file = models.FileField(
         upload_to="resources/files/",
         blank=True,

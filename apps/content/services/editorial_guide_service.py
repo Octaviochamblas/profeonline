@@ -7,10 +7,21 @@ import re
 from django.urls import reverse
 
 
-REQUIRED_GUIDE_SECTIONS = (
+LEGACY_REQUIRED_GUIDE_SECTIONS = (
     "Resumen inicial",
     "Explicación formal",
     "Explicación en palabras simples",
+    "Definiciones clave",
+    "Propiedades y relaciones importantes",
+    "Ejemplo guiado",
+    "Procedimiento",
+    "Errores frecuentes y cómo corregirlos",
+    "Al terminar debes poder",
+)
+REQUIRED_GUIDE_SECTIONS = (
+    "Resumen inicial",
+    "Explicación en palabras simples",
+    "Explicación formal",
     "Definiciones clave",
     "Propiedades y relaciones importantes",
     "Ejemplo guiado",
@@ -39,9 +50,13 @@ def _sections(content: str) -> list[str]:
 
 
 def validate_guide_structure(content: str) -> None:
-    if _sections(content) != list(REQUIRED_GUIDE_SECTIONS):
+    sections = _sections(content)
+    if sections not in (
+        list(REQUIRED_GUIDE_SECTIONS),
+        list(LEGACY_REQUIRED_GUIDE_SECTIONS),
+    ):
         raise ValueError("La guía debe contener exactamente las nueve secciones editoriales y en su orden canónico.")
-    for heading in REQUIRED_GUIDE_SECTIONS:
+    for heading in sections:
         match = re.search(
             rf"^##\s+{re.escape(heading)}\s*$\n(.*?)(?=^##\s|\Z)",
             content,

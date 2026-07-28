@@ -80,6 +80,9 @@
             <div class="resource-view__content" data-resource-content>
                 {{ resource.content|markdown }}
             </div>
+            {% if resource.reading_checkpoints %}
+                {{ resource.reading_checkpoints|json_script:"resource-reading-checkpoints" }}
+            {% endif %}
         {% elif not youtube_id %}
             <div class="empty-state">
                 <p>Este recurso aún no tiene contenido publicado.</p>
@@ -186,6 +189,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script nonce="{{ csp_nonce }}" src="{% static 'js/resource-detail.js' %}?v=6" defer></script>
+<script nonce="{{ csp_nonce }}" src="{% static 'js/resource-detail.js' %}?v=7" defer></script>
 <script nonce="{{ csp_nonce }}" src="{% static 'js/node_link_picker.js' %}?v=1" defer></script>
 {% endblock %}

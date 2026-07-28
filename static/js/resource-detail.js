@@ -100,6 +100,142 @@
     return "default";
   }
 
+  function renderInsertedMath(element) {
+    if (!element || typeof window.renderMathInElement !== "function") return;
+    window.renderMathInElement(element, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "\\[", right: "\\]", display: true },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "$", right: "$", display: false },
+      ],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"],
+      throwOnError: false,
+    });
+  }
+
+  function checkpointCard(checkpoint, index) {
+    var card = document.createElement("section");
+    card.className = "resource-reading-checkpoint";
+    card.setAttribute("aria-labelledby", "reading-checkpoint-title-" + index);
+
+    var kicker = document.createElement("p");
+    kicker.className = "resource-reading-checkpoint__kicker";
+    kicker.textContent = "Comprueba tu avance";
+
+    var title = document.createElement("h3");
+    title.className = "resource-reading-checkpoint__question";
+    title.id = "reading-checkpoint-title-" + index;
+    title.textContent = checkpoint.question;
+
+    var choices = document.createElement("div");
+    choices.className = "resource-reading-checkpoint__choices";
+    choices.setAttribute("role", "group");
+    choices.setAttribute("aria-label", "Alternativas");
+
+    var feedback = document.createElement("div");
+    feedback.className = "resource-reading-checkpoint__feedback";
+    feedback.setAttribute("aria-live", "polite");
+    feedback.hidden = true;
+
+    var feedbackTitle = document.createElement("strong");
+    var feedbackText = document.createElement("p");
+    var reinforcement = document.createElement("p");
+    reinforcement.className = "resource-reading-checkpoint__reinforcement";
+
+    var retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "resource-reading-checkpoint__retry";
+    retry.textContent = "Intentar nuevamente";
+    retry.hidden = true;
+
+    var buttons = checkpoint.choices.map(function (choice, choiceIndex) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "resource-reading-checkpoint__choice";
+      button.dataset.correct = choice.is_correct ? "1" : "0";
+      button.textContent = String.fromCharCode(65 + choiceIndex) + ". " + choice.text;
+      choices.appendChild(button);
+      return button;
+    });
+
+    function answer(selected) {
+      var isCorrect = selected.dataset.correct === "1";
+      buttons.forEach(function (button) {
+        button.disabled = true;
+        if (button.dataset.correct === "1") {
+          button.classList.add("resource-reading-checkpoint__choice--correct");
+        }
+      });
+      if (!isCorrect) {
+        selected.classList.add("resource-reading-checkpoint__choice--incorrect");
+      }
+      feedbackTitle.textContent = isCorrect ? "Correcto." : "Revisa tu razonamiento.";
+      feedbackText.textContent = checkpoint.explanation;
+      reinforcement.textContent = "Refuerzo recomendado: " + checkpoint.reinforcement_section + ".";
+      feedback.hidden = false;
+      retry.hidden = false;
+      renderInsertedMath(feedback);
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () { answer(button); });
+    });
+    retry.addEventListener("click", function () {
+      buttons.forEach(function (button) {
+        button.disabled = false;
+        button.classList.remove(
+          "resource-reading-checkpoint__choice--correct",
+          "resource-reading-checkpoint__choice--incorrect",
+        );
+      });
+      feedback.hidden = true;
+      retry.hidden = true;
+      buttons[0].focus();
+    });
+
+    feedback.appendChild(feedbackTitle);
+    feedback.appendChild(feedbackText);
+    feedback.appendChild(reinforcement);
+    card.appendChild(kicker);
+    card.appendChild(title);
+    card.appendChild(choices);
+    card.appendChild(feedback);
+    card.appendChild(retry);
+    renderInsertedMath(card);
+    return card;
+  }
+
+  function insertReadingCheckpoints(content, conceptFigure, sections) {
+    var data = document.getElementById("resource-reading-checkpoints");
+    if (!data) return;
+    var checkpoints;
+    try {
+      checkpoints = JSON.parse(data.textContent || "[]");
+    } catch (_error) {
+      return;
+    }
+    if (!Array.isArray(checkpoints) || checkpoints.length !== 3) return;
+
+    function sectionByKind(kind) {
+      return content.querySelector(".resource-content-block--" + kind);
+    }
+
+    var targets = {
+      after_concept_image: conceptFigure || sectionByKind("formal"),
+      after_guided_example: sectionByKind("example"),
+      after_errors: sectionByKind("errors"),
+    };
+    checkpoints.forEach(function (checkpoint, index) {
+      var target = targets[checkpoint.placement];
+      if (!target) return;
+      var card = checkpointCard(checkpoint, index + 1);
+      target.insertAdjacentElement("afterend", card);
+      targets[checkpoint.placement] = card;
+      sections.push(card);
+    });
+  }
+
   function initContentBlocks(content) {
     if (!content || content.dataset.blocksReady === "1") return;
     var children = Array.prototype.slice.call(content.children);
@@ -146,6 +282,7 @@
     });
     if (conceptFigure) sections.push(conceptFigure);
     if (infographicFigure) sections.push(infographicFigure);
+    insertReadingCheckpoints(content, conceptFigure, sections);
 
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion || !("IntersectionObserver" in window)) {

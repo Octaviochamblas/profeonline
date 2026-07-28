@@ -24,6 +24,9 @@ from apps.content.services.editorial_guide_service import (
     validate_closing,
     validate_guide_structure,
 )
+from apps.content.services.reading_checkpoint_service import (
+    normalize_reading_checkpoints,
+)
 from apps.content.models.resource_quiz_config import default_quiz_counts
 from apps.content.services.ai_generation_service import (
     _call_gemini_api,
@@ -72,6 +75,27 @@ def has_malformed_math(value):
         if any(character.isspace() for character in body) and PROSE_IN_MATH.search(body):
             return True
     return False
+
+
+def _normalized_reading_checkpoints(guide):
+    if "checkpoints" not in guide:
+        return None
+    try:
+        checkpoints = normalize_reading_checkpoints(guide["checkpoints"])
+    except ValueError as exc:
+        raise PipelineError(str(exc)) from exc
+    fields = []
+    for checkpoint in checkpoints:
+        fields.extend(
+            [
+                checkpoint["question"],
+                checkpoint["explanation"],
+                *(choice["text"] for choice in checkpoint["choices"]),
+            ]
+        )
+    if any(has_malformed_math(value) for value in fields):
+        raise PipelineError("Una comprobación intermedia contiene notación KaTeX inválida.")
+    return checkpoints
 
 
 class PipelineError(RuntimeError):
@@ -132,6 +156,7 @@ def validate_editorial_package(payload):
         raise PipelineError(
             "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
         )
+    checkpoints = _normalized_reading_checkpoints(guide)
     if not isinstance(questions, list) or len(questions) != EDITORIAL_QUESTION_TOTAL:
         raise PipelineError(
             f"El paquete debe contener exactamente {EDITORIAL_QUESTION_TOTAL} preguntas."
@@ -235,13 +260,16 @@ def validate_editorial_package(payload):
         str(level): {"ambas": EDITORIAL_QUESTIONS_PER_LEVEL}
         for level in (1, 2, 3)
     }
+    normalized_guide = {
+        "title": normalize_text(guide.get("title", metadata["guide_title"])),
+        "description": normalize_text(guide.get("description", "")),
+        "content": normalize_text(guide["content"]),
+    }
+    if checkpoints is not None:
+        normalized_guide["checkpoints"] = checkpoints
     return {
         "metadata": normalized_metadata,
-        "guide": {
-            "title": normalize_text(guide.get("title", metadata["guide_title"])),
-            "description": normalize_text(guide.get("description", "")),
-            "content": normalize_text(guide["content"]),
-        },
+        "guide": normalized_guide,
         "questions": normalized_questions,
     }
 
@@ -268,6 +296,7 @@ def validate_editorial_content(payload):
         raise PipelineError(
             "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
         )
+    checkpoints = _normalized_reading_checkpoints(guide)
     try:
         validate_guide_structure(content)
         validate_closing(content)
@@ -278,13 +307,16 @@ def validate_editorial_content(payload):
         metadata.get("thumbnail_title", metadata["resource_title"])
     )
     normalized_metadata["editorial_source"] = "codex"
+    normalized_guide = {
+        "title": normalize_text(guide.get("title", metadata["guide_title"])),
+        "description": normalize_text(guide.get("description", "")),
+        "content": content,
+    }
+    if checkpoints is not None:
+        normalized_guide["checkpoints"] = checkpoints
     return {
         "metadata": normalized_metadata,
-        "guide": {
-            "title": normalize_text(guide.get("title", metadata["guide_title"])),
-            "description": normalize_text(guide.get("description", "")),
-            "content": content,
-        },
+        "guide": normalized_guide,
     }
 
 
@@ -308,6 +340,9 @@ def apply_content_package(item, payload):
         },
     )
     guide.resources.add(item.resource)
+    if "checkpoints" in package["guide"]:
+        item.resource.reading_checkpoints = package["guide"]["checkpoints"]
+        item.resource.save(update_fields=["reading_checkpoints"])
     item.canonical_guide = guide
     item.metadata = package["metadata"]
     item.target_counts = editorial_quiz_counts()
@@ -330,13 +365,16 @@ def apply_question_package(item, payload):
         raise PipelineError("Primero debe completarse la etapa de contenido editorial.")
     if not has_current_infographic(item.canonical_guide.content_text, item.resource):
         raise PipelineError("Primero debe subirse e insertarse la infografía editorial.")
+    guide_payload = {
+        "title": item.canonical_guide.title,
+        "description": item.canonical_guide.description,
+        "content": item.canonical_guide.content_text,
+    }
+    if item.resource.reading_checkpoints:
+        guide_payload["checkpoints"] = item.resource.reading_checkpoints
     complete_payload = {
         "metadata": item.metadata,
-        "guide": {
-            "title": item.canonical_guide.title,
-            "description": item.canonical_guide.description,
-            "content": item.canonical_guide.content_text,
-        },
+        "guide": guide_payload,
         "questions": payload.get("questions"),
     }
     return apply_editorial_package(item, complete_payload)
@@ -376,6 +414,9 @@ def apply_editorial_package(item, payload):
         },
     )
     guide.resources.add(item.resource)
+    if "checkpoints" in package["guide"]:
+        item.resource.reading_checkpoints = package["guide"]["checkpoints"]
+        item.resource.save(update_fields=["reading_checkpoints"])
 
     question_objects = []
     for order, question in enumerate(package["questions"], start=1):

@@ -555,6 +555,26 @@ def refresh_direct_resource_editorial(request, slug):
             status=409,
         )
 
+    content = package["guide"]["content"]
+    if resource.concept_image_key:
+        content = insert_concept_image_after_explanations(content, resource)
+    if resource.infographic_key:
+        content = insert_infographic_before_closing(content, resource)
+
+    if payload.get("dry_run") is True:
+        return JsonResponse(
+            {
+                "ok": True,
+                "dry_run": True,
+                "resource_id": resource.id,
+                "questions": "would_replace" if replace_questions else "preserved",
+                "reading_checkpoints": len(package["guide"].get("checkpoints", resource.reading_checkpoints)),
+                "concept_image": bool(resource.concept_image_key),
+                "infographic": bool(resource.infographic_key),
+                "history": history,
+            }
+        )
+
     created_questions = []
     if replace_questions:
         Question.objects.filter(resource=resource).delete()
@@ -596,14 +616,19 @@ def refresh_direct_resource_editorial(request, slug):
                 for choice_order, choice in enumerate(item["choices"], start=1)
             ]
         )
-    resource.content = package["guide"]["content"]
+    resource.content = content
     resource.description = package["metadata"]["resource_description"]
-    resource.save(update_fields=["content", "description"])
+    update_fields = ["content", "description"]
+    if "checkpoints" in package["guide"]:
+        resource.reading_checkpoints = package["guide"]["checkpoints"]
+        update_fields.append("reading_checkpoints")
+    resource.save(update_fields=update_fields)
     return JsonResponse(
         {
             "ok": True,
             "resource_id": resource.id,
             "questions": len(created_questions) if replace_questions else "preserved",
+            "reading_checkpoints": len(resource.reading_checkpoints),
             "history": history,
         }
     )
