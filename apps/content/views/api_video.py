@@ -541,7 +541,7 @@ def refresh_direct_resource_editorial(request, slug):
     )
 
 
-_MATH_SPAN = re.compile(r"\$([^$\n]+)\$")
+_MATH_SPAN = re.compile(r"\$(?!\$)([^$\n]+)\$(?!\$)")
 _BARE_KATEX = re.compile(r"(?<!\\)\b(leq|geq|ldots|neq|square|circ|mathrm)\b")
 _PROSE_IN_MATH = re.compile(r"\b(y|o|otra|saldo|cuenta|tiene)\b", re.IGNORECASE)
 

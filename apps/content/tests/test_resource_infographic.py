@@ -204,7 +204,7 @@ class ResourceInfographicTests(TestCase):
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
     def test_repair_api_preserves_question_ids_and_fixes_malformed_math(self):
-        self.resource.content = "Usa $leq$ o $geq$."
+        self.resource.content = r"Usa $leq$ o $geq$. Conserva $$a = b \text{ y } c = d$$."
         self.resource.save(update_fields=["content"])
         question = Question.objects.create(
             resource=self.resource,
@@ -229,7 +229,10 @@ class ResourceInfographicTests(TestCase):
         self.resource.refresh_from_db()
         question.refresh_from_db()
         choice.refresh_from_db()
-        self.assertEqual(self.resource.content, r"Usa $\leq$ o $\geq$.")
+        self.assertEqual(
+            self.resource.content,
+            r"Usa $\leq$ o $\geq$. Conserva $$a = b \text{ y } c = d$$.",
+        )
         self.assertEqual(
             question.text,
             "Una cuenta tiene saldo -7.000 y otra -12.000. ¿Cuál es mayor?",
