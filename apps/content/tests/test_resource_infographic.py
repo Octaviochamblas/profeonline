@@ -167,6 +167,42 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(self.resource.questions.count(), 1)
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    def test_editorial_api_accepts_prose_between_separate_math_spans(self):
+        guide = "\n\n".join(
+            [
+                r"## Resumen inicial\nCompara $<$ o $>$ sin mezclar delimitadores.",
+                r"## Explicación completa\nTambién distingue $\leq$ o $\geq$.",
+                "## Definiciones clave\nOrden y comparación.",
+                "## Diferencias que no debes confundir\nLos símbolos tienen usos distintos.",
+                "## Ejemplo guiado\nCompara dos enteros.",
+                "## Procedimiento\nEvalúa y luego compara.",
+                "## Errores frecuentes\nNo inviertas el signo.",
+                (
+                    "## Al terminar debes poder\nComparar enteros mediante su posición, "
+                    "elegir el símbolo adecuado y comprobar el resultado verificando "
+                    "qué valor queda a la izquierda y cuál queda a la derecha en la "
+                    "recta numérica antes de concluir."
+                ),
+            ]
+        ).replace("\\n", "\n")
+        url = reverse(
+            "content:api_resource_editorial_refresh_by_slug",
+            kwargs={"slug": self.resource.slug},
+        )
+        response = self.client.post(
+            url,
+            data={
+                "replace_questions": False,
+                "metadata": {"resource_description": "Descripción renovada."},
+                "guide": {"content": guide},
+            },
+            content_type="application/json",
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
     def test_repair_api_preserves_question_ids_and_fixes_malformed_math(self):
         self.resource.content = "Usa $leq$ o $geq$."
         self.resource.save(update_fields=["content"])
