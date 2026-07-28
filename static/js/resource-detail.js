@@ -77,9 +77,87 @@
     });
   }
 
+  /* ---------- Bloques pedagógicos de la guía ---------- */
+  function normalizedHeading(value) {
+    return (value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+  function blockKind(heading) {
+    var value = normalizedHeading(heading);
+    if (value.indexOf("resumen") === 0) return "summary";
+    if (value.indexOf("explicacion completa") === 0) return "explanation";
+    if (value.indexOf("definiciones") === 0) return "definitions";
+    if (value.indexOf("propiedades") === 0) return "properties";
+    if (value.indexOf("ejemplo") === 0) return "example";
+    if (value.indexOf("procedimiento") === 0) return "procedure";
+    if (value.indexOf("errores") === 0) return "errors";
+    if (value.indexOf("al terminar") === 0) return "closing";
+    return "default";
+  }
+
+  function wrapExplanationSubsections(section) {
+    var headings = Array.prototype.slice.call(section.querySelectorAll(":scope > h3"));
+    headings.forEach(function (heading) {
+      var subsection = document.createElement("div");
+      var kind = normalizedHeading(heading.textContent).indexOf("formal") !== -1
+        ? "formal"
+        : "plain";
+      subsection.className = "resource-content-subsection resource-content-subsection--" + kind;
+      section.insertBefore(subsection, heading);
+      subsection.appendChild(heading);
+      while (subsection.nextSibling && subsection.nextSibling.tagName !== "H3") {
+        subsection.appendChild(subsection.nextSibling);
+      }
+    });
+  }
+
+  function initContentBlocks(content) {
+    if (!content || content.dataset.blocksReady === "1") return;
+    var children = Array.prototype.slice.call(content.children);
+    var headings = children.filter(function (child) { return child.tagName === "H2"; });
+    if (!headings.length) return;
+    content.dataset.blocksReady = "1";
+    content.classList.add("resource-view__content--enhanced");
+
+    var sections = [];
+    headings.forEach(function (heading) {
+      var section = document.createElement("section");
+      var kind = blockKind(heading.textContent);
+      section.className = "resource-content-block resource-content-block--" + kind;
+      content.insertBefore(section, heading);
+      section.appendChild(heading);
+      while (section.nextSibling && section.nextSibling.tagName !== "H2") {
+        section.appendChild(section.nextSibling);
+      }
+      if (kind === "explanation") wrapExplanationSubsections(section);
+      sections.push(section);
+    });
+
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      sections.forEach(function (section) { section.classList.add("is-visible"); });
+      return;
+    }
+
+    content.classList.add("resource-view__content--motion");
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+    sections.forEach(function (section) { observer.observe(section); });
+  }
+
   function initAll(root) {
     (root || document).querySelectorAll("[data-quiz-block]").forEach(initTabs);
     (root || document).querySelectorAll("[data-resource-desc]").forEach(initDesc);
+    (root || document).querySelectorAll("[data-resource-content]").forEach(initContentBlocks);
   }
 
   if (document.readyState === "loading") {

@@ -4791,6 +4791,88 @@ body.quiz-open .whatsapp-float {
     margin-top: 0.35rem;
 }
 
+/* Secciones pedagógicas: el Markdown sigue limpio y JS agrupa cada encabezado ##. */
+.resource-view__content--enhanced {
+    display: grid;
+    gap: 1rem;
+}
+.resource-view__content--enhanced > * + * {
+    margin-top: 0;
+}
+.resource-content-block {
+    --resource-block-accent: #2563eb;
+    position: relative;
+    padding: 1.15rem 1.2rem 1.2rem;
+    border: 1px solid var(--border);
+    border-color: color-mix(in srgb, var(--resource-block-accent) 28%, var(--border));
+    border-left: 5px solid var(--resource-block-accent);
+    border-radius: 6px;
+    background: var(--surface, #fff);
+    background: color-mix(in srgb, var(--resource-block-accent) 4%, var(--surface, #fff));
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+.resource-content-block--summary { --resource-block-accent: #2563eb; }
+.resource-content-block--explanation { --resource-block-accent: #6d4db3; }
+.resource-content-block--definitions { --resource-block-accent: #087f8c; }
+.resource-content-block--properties { --resource-block-accent: #b36b00; }
+.resource-content-block--example { --resource-block-accent: #16835f; }
+.resource-content-block--procedure { --resource-block-accent: #1d6f8a; }
+.resource-content-block--errors { --resource-block-accent: #c2414f; }
+.resource-content-block--closing { --resource-block-accent: #334155; }
+.resource-content-block > h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.22rem;
+    color: var(--text);
+}
+.resource-content-block > :last-child,
+.resource-content-subsection > :last-child {
+    margin-bottom: 0;
+}
+.resource-content-subsection {
+    padding: 0.9rem 0 0.9rem 1rem;
+    border-left: 2px solid color-mix(in srgb, var(--resource-block-accent) 45%, var(--border));
+}
+.resource-content-subsection + .resource-content-subsection {
+    margin-top: 0.85rem;
+}
+.resource-content-subsection--formal {
+    background: color-mix(in srgb, var(--resource-block-accent) 5%, transparent);
+}
+.resource-content-subsection > h3 {
+    margin: 0 0 0.55rem;
+    font-size: 1.05rem;
+    color: color-mix(in srgb, var(--resource-block-accent) 78%, var(--text));
+}
+.resource-view__content--motion .resource-content-block {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+        opacity 420ms ease,
+        transform 420ms ease,
+        box-shadow 220ms ease;
+}
+.resource-view__content--motion .resource-content-block.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+@media (hover: hover) {
+    .resource-content-block:hover {
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .resource-view__content--motion .resource-content-block {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+@media (max-width: 560px) {
+    .resource-content-block {
+        padding: 1rem;
+    }
+}
+
 /* ---- Bloque único: Practica y evalúa tu aprendizaje ---- */
 .quiz-block {
     border-top: 1px solid var(--border);

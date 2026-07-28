@@ -1,6 +1,7 @@
 import os
 from unittest import mock
 
+from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
@@ -38,6 +39,22 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(response["Content-Type"], "image/png")
         self.assertEqual(b"".join(response.streaming_content), b"image-bytes")
 
+    def test_resource_detail_enables_semantic_content_blocks(self):
+        user = get_user_model().objects.create_user(
+            username="reader",
+            password="safe-test-password",
+        )
+        self.resource.content = "## Resumen inicial\nContenido de prueba."
+        self.resource.save(update_fields=["content"])
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse("content:resource_detail", kwargs={"slug": self.resource.slug})
+        )
+
+        self.assertContains(response, "data-resource-content")
+        self.assertContains(response, "js/resource-detail.js?v=2")
+
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
     @mock.patch("apps.content.views.api_video._store_infographic_for_resource")
     def test_upload_api_can_resolve_direct_resource_by_slug(self, store):
@@ -67,12 +84,17 @@ class ResourceInfographicTests(TestCase):
         guide = "\n\n".join(
             [
                 "## Resumen inicial\nResumen concreto del orden de enteros.",
-                "## Explicación completa\nLos enteros se comparan por su posición.",
+                (
+                    "## Explicación completa\n### Explicación formal\n"
+                    "Los enteros se comparan por su posición.\n"
+                    "### Explicación en palabras simples\n"
+                    "Más a la derecha significa mayor."
+                ),
                 "## Definiciones clave\nUn entero puede ser negativo, cero o positivo.",
-                "## Diferencias que no debes confundir\nValor y valor absoluto no son lo mismo.",
+                "## Propiedades y relaciones importantes\nValor y valor absoluto no son lo mismo.",
                 "## Ejemplo guiado\n$-5<-2$ porque $-5$ queda a la izquierda.",
                 "## Procedimiento\nUbica, compara y escribe el signo correcto.",
-                "## Errores frecuentes\nNo compares negativos ignorando su signo.",
+                "## Errores frecuentes y cómo corregirlos\nNo compares negativos ignorando su signo.",
                 (
                     "## Al terminar debes poder\nUbicar enteros en una recta numérica, "
                     "comparar negativos, cero y positivos, seleccionar el signo de orden "
@@ -133,12 +155,16 @@ class ResourceInfographicTests(TestCase):
         guide = "\n\n".join(
             [
                 "## Resumen inicial\nResumen concreto.",
-                "## Explicación completa\nExplicación concreta.",
+                (
+                    "## Explicación completa\n### Explicación formal\n"
+                    "Explicación concreta.\n### Explicación en palabras simples\n"
+                    "Lectura cotidiana concreta."
+                ),
                 "## Definiciones clave\nDefinición concreta.",
-                "## Diferencias que no debes confundir\nDiferencia concreta.",
+                "## Propiedades y relaciones importantes\nPropiedad concreta.",
                 "## Ejemplo guiado\nEjemplo concreto.",
                 "## Procedimiento\nProcedimiento concreto.",
-                "## Errores frecuentes\nError concreto.",
+                "## Errores frecuentes y cómo corregirlos\nError concreto.",
                 (
                     "## Al terminar debes poder\nComparar enteros negativos, cero y "
                     "positivos mediante su posición en la recta numérica, escoger el "
@@ -171,12 +197,17 @@ class ResourceInfographicTests(TestCase):
         guide = "\n\n".join(
             [
                 r"## Resumen inicial\nCompara $<$ o $>$ sin mezclar delimitadores.",
-                r"## Explicación completa\nTambién distingue $\leq$ o $\geq$.",
+                (
+                    "## Explicación completa\n### Explicación formal\n"
+                    r"También distingue $\leq$ o $\geq$."
+                    "\n### Explicación en palabras simples\n"
+                    "Compara límites en lenguaje cotidiano."
+                ),
                 "## Definiciones clave\nOrden y comparación.",
-                "## Diferencias que no debes confundir\nLos símbolos tienen usos distintos.",
+                "## Propiedades y relaciones importantes\nLos símbolos tienen usos distintos.",
                 "## Ejemplo guiado\nCompara dos enteros.",
                 "## Procedimiento\nEvalúa y luego compara.",
-                "## Errores frecuentes\nNo inviertas el signo.",
+                "## Errores frecuentes y cómo corregirlos\nNo inviertas el signo.",
                 (
                     "## Al terminar debes poder\nComparar enteros mediante su posición, "
                     "elegir el símbolo adecuado y comprobar el resultado verificando "

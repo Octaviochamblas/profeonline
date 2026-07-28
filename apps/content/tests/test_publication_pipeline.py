@@ -123,12 +123,12 @@ def _editorial_package():
             "description": "Guía creada por Codex.",
             "content": (
                 "## Resumen inicial\n\nSe estudian circuitos y capacitores para relacionar carga, potencial y energía.\n\n"
-                "## Explicación completa\n\nUn capacitor almacena carga y energía al establecer una diferencia de potencial entre conductores.\n\n"
+                "## Explicación completa\n\n### Explicación formal\n\nLa relación $C=Q/V$ define la capacitancia a partir de la carga y la diferencia de potencial.\n\n### Explicación en palabras simples\n\nUn capacitor almacena carga y energía al establecer una diferencia de potencial entre conductores.\n\n"
                 "## Definiciones clave\n\nLa capacitancia relaciona carga almacenada y diferencia de potencial en un sistema.\n\n"
-                "## Diferencias que no debes confundir\n\nCarga, voltaje, energía y capacitancia describen magnitudes distintas y no se intercambian.\n\n"
+                "## Propiedades y relaciones importantes\n\nCarga, voltaje, energía y capacitancia describen magnitudes distintas y no se intercambian.\n\n"
                 "## Ejemplo guiado\n\nCon los datos de carga y voltaje se identifica la relación adecuada y se revisan sus unidades.\n\n"
                 "## Procedimiento\n\nIdentifica las magnitudes disponibles, elige la relación que las conecta, sustituye unidades coherentes y revisa el resultado.\n\n"
-                "## Errores frecuentes\n\nNo confundas energía con carga ni uses una unidad de voltaje como si fuera una unidad de capacitancia.\n\n"
+                "## Errores frecuentes y cómo corregirlos\n\nNo confundas energía con carga ni uses una unidad de voltaje como si fuera una unidad de capacitancia.\n\n"
                 "## Al terminar debes poder\n\nAl terminar debes poder distinguir carga, diferencia de potencial, capacitancia y energía en un circuito simple; seleccionar la relación que conecta los datos disponibles; conservar las unidades durante el cálculo; e interpretar si el resultado es coherente con el componente y la situación descrita."
             ),
         },
