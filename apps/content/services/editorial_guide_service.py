@@ -19,7 +19,7 @@ REQUIRED_GUIDE_SECTIONS = (
 )
 FINAL_HEADING = "## Al terminar debes poder"
 INFOGRAPHIC_MARKDOWN = re.compile(
-    r"^!\[[^\]]*\]\([^\)]*/recursos/[^\)]*/infografia/[^\)]*\)\s*$\n?",
+    r"^!\[[^\]]*\]\(/recursos/[^\)]*(?:/infografia/|\?asset=infographic)[^\)]*\)\s*$\n?",
     re.MULTILINE,
 )
 GENERIC_CLOSING = re.compile(
@@ -58,9 +58,9 @@ def infographic_markdown(resource) -> str:
     if not resource.infographic_key:
         return ""
     version = resource.infographic_key.rsplit("/", 1)[-1].split(".", 1)[0]
-    url = reverse("content:resource_infographic", kwargs={"slug": resource.slug})
+    url = reverse("content:resource_detail", kwargs={"slug": resource.slug})
     alt = resource.infographic_alt_text or f"Infografía de repaso: {resource.title}"
-    return f"![{alt}]({url}?v={version})"
+    return f"![{alt}]({url}?asset=infographic&v={version})"
 
 
 def insert_infographic_before_closing(content: str, resource) -> str:

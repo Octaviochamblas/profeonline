@@ -505,7 +505,7 @@ class PublicationPipelineApiTests(TestCase):
         )
         self.assertEqual(infographic_response.status_code, 200)
         item.refresh_from_db()
-        self.assertIn("/infografia/", item.canonical_guide.content_text)
+        self.assertIn("?asset=infographic", item.canonical_guide.content_text)
         questions_response = self.client.post(
             url,
             data=json.dumps({"stage": "questions", "questions": package["questions"]}),

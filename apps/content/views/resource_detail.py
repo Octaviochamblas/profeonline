@@ -14,6 +14,30 @@ from apps.content.services.editorial_asset_service import get_infographic_object
 logger = logging.getLogger(__name__)
 
 
+def infographic_response(resource):
+    try:
+        asset = get_infographic_object(resource)
+    except Exception:
+        logger.exception("No se pudo recuperar la infografia del recurso %s", resource.id)
+        return StreamingHttpResponse(
+            status=503,
+            headers={"X-ProfeOnline-Infographic": "storage-error"},
+        )
+    if asset is None:
+        raise Http404("Infografia no disponible")
+    response = StreamingHttpResponse(
+        asset["Body"].iter_chunks(),
+        content_type=asset.get("ContentType", "image/png"),
+    )
+    response["Cache-Control"] = asset.get(
+        "CacheControl",
+        "public, max-age=31536000, immutable",
+    )
+    if asset.get("ContentLength") is not None:
+        response["Content-Length"] = str(asset["ContentLength"])
+    return response
+
+
 def get_youtube_id(url):
     if not url:
         return None
@@ -26,6 +50,12 @@ class ResourceDetailView(DetailView):
     model = Resource
     template_name = "pages/resource_detail.html"
     context_object_name = "resource"
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get("asset") == "infographic":
+            self.object = self.get_object()
+            return infographic_response(self.object)
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = super().get_queryset().select_related(
