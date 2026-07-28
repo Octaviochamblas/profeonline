@@ -1,3 +1,4 @@
+import hashlib
 import json
 import logging
 import os
@@ -12,7 +13,19 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
-from apps.content.models import Level, PublicationItem, Resource, Subject, Topic
+from apps.content.models import (
+    Choice,
+    EvaluationSessionAnswer,
+    Level,
+    NodeAssessmentAnswer,
+    PublicationItem,
+    Question,
+    QuestionErrorReport,
+    QuizAttemptAnswer,
+    Resource,
+    Subject,
+    Topic,
+)
 from apps.core.ratelimit import get_client_ip, is_rate_limited, increment_rate_limit
 from apps.content.services.publication_pipeline_service import (
     PipelineError,
@@ -20,9 +33,14 @@ from apps.content.services.publication_pipeline_service import (
     apply_editorial_package,
     apply_question_package,
     finalize_publication,
+    validate_editorial_package,
 )
 from apps.content.services.editorial_asset_service import upload_infographic
-from apps.content.services.editorial_guide_service import insert_infographic_before_closing
+from apps.content.services.editorial_guide_service import (
+    insert_infographic_before_closing,
+    validate_closing,
+    validate_guide_structure,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -397,6 +415,121 @@ def upload_resource_infographic(request, resource_id=None, slug=None):
     except PipelineError as exc:
         return JsonResponse({"ok": False, "error": str(exc)}, status=409)
     return JsonResponse({"ok": True, "resource_id": resource.id, "infographic_ready": True})
+
+
+def _direct_resource_history(resource):
+    counts = {
+        "QuizAttemptAnswer": QuizAttemptAnswer.objects.filter(
+            question__resource=resource
+        ).count(),
+        "QuestionErrorReport": QuestionErrorReport.objects.filter(
+            question__resource=resource
+        ).count(),
+        "EvaluationSessionAnswer": EvaluationSessionAnswer.objects.filter(
+            question__resource=resource
+        ).count(),
+        "NodeAssessmentAnswer": 0,
+    }
+    if resource.related_node_id:
+        counts["NodeAssessmentAnswer"] = NodeAssessmentAnswer.objects.filter(
+            question__node_id=resource.related_node_id
+        ).count()
+    return counts
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def refresh_direct_resource_editorial(request, slug):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    resource = Resource.objects.select_for_update().filter(slug=slug).first()
+    if resource is None:
+        return JsonResponse({"ok": False, "error": "Recurso no encontrado"}, status=404)
+    try:
+        payload = json.loads(request.body or b"{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"ok": False, "error": "JSON invalido"}, status=400)
+
+    metadata = dict(payload.get("metadata") or {})
+    description = str(metadata.get("resource_description") or resource.description or resource.title)
+    metadata.setdefault("resource_title", resource.title)
+    metadata.setdefault("youtube_title", resource.title)
+    metadata.setdefault("resource_description", description)
+    metadata.setdefault("youtube_description", description)
+    metadata.setdefault("introduction", description)
+    metadata.setdefault("guide_title", f"Guia: {resource.title}")
+    metadata.setdefault("pedagogical_document", description)
+    payload["metadata"] = metadata
+    try:
+        package = validate_editorial_package(payload)
+        validate_guide_structure(package["guide"]["content"])
+        validate_closing(package["guide"]["content"])
+    except (PipelineError, ValueError) as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+
+    history = _direct_resource_history(resource)
+    blocked = {name: count for name, count in history.items() if count}
+    if blocked:
+        return JsonResponse(
+            {
+                "ok": False,
+                "error": "El recurso tiene historial y no permite reemplazar preguntas.",
+                "history": blocked,
+            },
+            status=409,
+        )
+
+    Question.objects.filter(resource=resource).delete()
+    created_questions = Question.objects.bulk_create(
+        [
+            Question(
+                resource=resource,
+                level=item["level"],
+                mode="ambas",
+                text=item["text"],
+                explanation=item["explanation"],
+                status="publicada",
+                order=order,
+                generation_key=hashlib.sha256(
+                    f"{resource.slug}:{item['level']}:{item['text']}".encode("utf-8")
+                ).hexdigest(),
+                audit_data={
+                    "accepted": True,
+                    "source": "direct_resource_editorial_api",
+                    "cognitive_type": item["cognitive_type"],
+                },
+            )
+            for order, item in enumerate(package["questions"], start=1)
+        ]
+    )
+    Choice.objects.bulk_create(
+        [
+            Choice(
+                question=question,
+                text=choice["text"],
+                is_correct=choice["is_correct"],
+                order=choice_order,
+            )
+            for question, item in zip(
+                created_questions,
+                package["questions"],
+                strict=True,
+            )
+            for choice_order, choice in enumerate(item["choices"], start=1)
+        ]
+    )
+    resource.content = package["guide"]["content"]
+    resource.description = package["metadata"]["resource_description"]
+    resource.save(update_fields=["content", "description"])
+    return JsonResponse(
+        {
+            "ok": True,
+            "resource_id": resource.id,
+            "questions": len(created_questions),
+            "history": history,
+        }
+    )
 
 
 @csrf_exempt

@@ -61,3 +61,61 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["resource_id"], self.resource.id)
         store.assert_called_once()
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    def test_editorial_api_replaces_direct_resource_by_slug(self):
+        guide = "\n\n".join(
+            [
+                "## Resumen inicial\nResumen concreto del orden de enteros.",
+                "## Explicación completa\nLos enteros se comparan por su posición.",
+                "## Definiciones clave\nUn entero puede ser negativo, cero o positivo.",
+                "## Diferencias que no debes confundir\nValor y valor absoluto no son lo mismo.",
+                "## Ejemplo guiado\n$-5<-2$ porque $-5$ queda a la izquierda.",
+                "## Procedimiento\nUbica, compara y escribe el signo correcto.",
+                "## Errores frecuentes\nNo compares negativos ignorando su signo.",
+                (
+                    "## Al terminar debes poder\nUbicar enteros en una recta numérica, "
+                    "comparar negativos, cero y positivos, seleccionar el signo de orden "
+                    "correcto y comprobar cada respuesta verificando que el menor quede "
+                    "a la izquierda y el mayor a la derecha."
+                ),
+            ]
+        )
+        questions = []
+        for level in (1, 2, 3):
+            for number in range(1, 11):
+                correct = f"Respuesta correcta N{level}-{number}"
+                questions.append(
+                    {
+                        "level": level,
+                        "mode": "ambas",
+                        "text": f"Pregunta única N{level}-{number}",
+                        "explanation": f"La alternativa correcta es: {correct}",
+                        "cognitive_type": "comprension",
+                        "choices": [
+                            {"text": correct, "is_correct": True},
+                            {"text": f"Distractor A N{level}-{number}", "is_correct": False},
+                            {"text": f"Distractor B N{level}-{number}", "is_correct": False},
+                            {"text": f"Distractor C N{level}-{number}", "is_correct": False},
+                        ],
+                    }
+                )
+        url = reverse(
+            "content:api_resource_editorial_refresh_by_slug",
+            kwargs={"slug": self.resource.slug},
+        )
+        response = self.client.post(
+            url,
+            data={
+                "metadata": {"resource_description": "Descripción renovada."},
+                "guide": {"content": guide},
+                "questions": questions,
+            },
+            content_type="application/json",
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.resource.refresh_from_db()
+        self.assertTrue(self.resource.content.startswith("## Resumen inicial"))
+        self.assertEqual(self.resource.questions.count(), 30)

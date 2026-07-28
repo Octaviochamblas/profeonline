@@ -12,6 +12,7 @@ from apps.content.views import (
     publication_item_status,
     upload_publication_infographic,
     upload_resource_infographic,
+    refresh_direct_resource_editorial,
     confirm_publication_item,
     toggle_resource_completion,
     quiz_start,
@@ -36,6 +37,11 @@ urlpatterns = [
         "api/recursos/slug/<slug:slug>/infografia/",
         upload_resource_infographic,
         name="api_resource_infographic_upload_by_slug",
+    ),
+    path(
+        "api/recursos/slug/<slug:slug>/paquete-editorial/",
+        refresh_direct_resource_editorial,
+        name="api_resource_editorial_refresh_by_slug",
     ),
     path(
         "api/publicacion/<int:item_id>/",
