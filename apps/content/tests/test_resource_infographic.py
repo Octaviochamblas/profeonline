@@ -7,6 +7,9 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.content.models import Choice, Question, Resource
+from apps.content.services.editorial_guide_service import (
+    insert_concept_image_after_explanations,
+)
 
 
 class _BucketBody:
@@ -21,6 +24,7 @@ class ResourceInfographicTests(TestCase):
             slug="orden-de-enteros",
             is_published=True,
             infographic_key="editorial-infographics/1/example.png",
+            concept_image_key="editorial-concept-images/1/example.png",
         )
 
     @mock.patch("apps.content.views.resource_detail.get_infographic_object")
@@ -34,6 +38,22 @@ class ResourceInfographicTests(TestCase):
 
         url = reverse("content:resource_detail", kwargs={"slug": self.resource.slug})
         response = self.client.get(url, {"asset": "infographic"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/png")
+        self.assertEqual(b"".join(response.streaming_content), b"image-bytes")
+
+    @mock.patch("apps.content.views.resource_detail.get_concept_image_object")
+    def test_detail_route_serves_concept_image_asset(self, get_object):
+        get_object.return_value = {
+            "Body": _BucketBody(),
+            "ContentType": "image/png",
+            "ContentLength": 11,
+            "CacheControl": "public, max-age=31536000, immutable",
+        }
+
+        url = reverse("content:resource_detail", kwargs={"slug": self.resource.slug})
+        response = self.client.get(url, {"asset": "concept"})
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/png")
@@ -53,7 +73,22 @@ class ResourceInfographicTests(TestCase):
         )
 
         self.assertContains(response, "data-resource-content")
-        self.assertContains(response, "js/resource-detail.js?v=3")
+        self.assertContains(response, "js/resource-detail.js?v=4")
+
+    def test_concept_image_is_inserted_between_explanations_and_definitions(self):
+        content = (
+            "## Explicación formal\nDefinición por casos.\n\n"
+            "## Explicación en palabras simples\nDistancia al cero.\n\n"
+            "## Definiciones clave\nValor absoluto."
+        )
+
+        updated = insert_concept_image_after_explanations(content, self.resource)
+
+        self.assertIn("?asset=concept", updated)
+        self.assertLess(
+            updated.index("?asset=concept"),
+            updated.index("## Definiciones clave"),
+        )
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
     @mock.patch("apps.content.views.api_video._store_infographic_for_resource")
@@ -77,6 +112,31 @@ class ResourceInfographicTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["resource_id"], self.resource.id)
+        store.assert_called_once()
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    @mock.patch("apps.content.views.api_video._store_concept_image_for_resource")
+    def test_concept_image_upload_can_resolve_direct_resource_by_slug(self, store):
+        url = reverse(
+            "content:api_resource_concept_image_upload_by_slug",
+            kwargs={"slug": self.resource.slug},
+        )
+        response = self.client.post(
+            url,
+            data={
+                "image": SimpleUploadedFile(
+                    "concepto.png",
+                    b"\x89PNG\r\n\x1a\ncontenido",
+                    content_type="image/png",
+                ),
+                "alt_text": "Definición formal y explicación sencilla",
+            },
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["resource_id"], self.resource.id)
+        self.assertTrue(response.json()["concept_image_ready"])
         store.assert_called_once()
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})

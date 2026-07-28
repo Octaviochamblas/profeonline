@@ -40,7 +40,9 @@ from .api_video import (
     repair_direct_resource_editorial_text,
     refresh_direct_resource_editorial,
     upload_publication_infographic,
+    upload_publication_concept_image,
     upload_resource_infographic,
+    upload_resource_concept_image,
 )
 from .resource_completion import toggle_resource_completion
 from .evaluation_views import (

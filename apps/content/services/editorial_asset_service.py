@@ -99,8 +99,36 @@ def upload_infographic(resource, uploaded_file, alt_text: str = "") -> str:
     return key
 
 
+def upload_concept_image(resource, uploaded_file, alt_text: str = "") -> str:
+    """Stores an AI-generated conceptual image without replacing the infographic."""
+    payload, content_type, extension = _image_payload(uploaded_file)
+    digest = hashlib.sha256(payload).hexdigest()
+    config = get_bucket_config()
+    key = f"editorial-concept-images/{resource.id}/{digest[:24]}{extension}"
+    _s3_client().put_object(
+        Bucket=config.bucket_name,
+        Key=key,
+        Body=payload,
+        ContentType=content_type,
+        CacheControl="public, max-age=31536000, immutable",
+    )
+    resource.concept_image_key = key
+    resource.concept_image_alt_text = (
+        alt_text or f"Explicación visual integrada: {resource.title}"
+    ).strip()[:240]
+    resource.save(update_fields=["concept_image_key", "concept_image_alt_text"])
+    return key
+
+
 def get_infographic_object(resource):
     if not resource.infographic_key:
         return None
     config = get_bucket_config()
     return _s3_client().get_object(Bucket=config.bucket_name, Key=resource.infographic_key)
+
+
+def get_concept_image_object(resource):
+    if not resource.concept_image_key:
+        return None
+    config = get_bucket_config()
+    return _s3_client().get_object(Bucket=config.bucket_name, Key=resource.concept_image_key)

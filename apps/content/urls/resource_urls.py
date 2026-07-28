@@ -11,7 +11,9 @@ from apps.content.views import (
     publication_item_editorial_package,
     publication_item_status,
     upload_publication_infographic,
+    upload_publication_concept_image,
     upload_resource_infographic,
+    upload_resource_concept_image,
     refresh_direct_resource_editorial,
     repair_direct_resource_editorial_text,
     confirm_publication_item,
@@ -38,6 +40,16 @@ urlpatterns = [
         "api/recursos/slug/<slug:slug>/infografia/",
         upload_resource_infographic,
         name="api_resource_infographic_upload_by_slug",
+    ),
+    path(
+        "api/recursos/<int:resource_id>/imagen-conceptual/",
+        upload_resource_concept_image,
+        name="api_resource_concept_image_upload",
+    ),
+    path(
+        "api/recursos/slug/<slug:slug>/imagen-conceptual/",
+        upload_resource_concept_image,
+        name="api_resource_concept_image_upload_by_slug",
     ),
     path(
         "api/recursos/slug/<slug:slug>/paquete-editorial/",
@@ -68,6 +80,11 @@ urlpatterns = [
         "api/publicacion/<int:item_id>/infografia/",
         upload_publication_infographic,
         name="api_publication_infographic_upload",
+    ),
+    path(
+        "api/publicacion/<int:item_id>/imagen-conceptual/",
+        upload_publication_concept_image,
+        name="api_publication_concept_image_upload",
     ),
     # Evaluación gamificada
     path("recursos/<slug:slug>/quiz/<int:level>/<str:mode>/", quiz_start, name="quiz_start"),

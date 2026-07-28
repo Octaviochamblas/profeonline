@@ -37,8 +37,9 @@ from apps.content.services.publication_pipeline_service import (
     validate_editorial_content,
     validate_editorial_package,
 )
-from apps.content.services.editorial_asset_service import upload_infographic
+from apps.content.services.editorial_asset_service import upload_concept_image, upload_infographic
 from apps.content.services.editorial_guide_service import (
+    insert_concept_image_after_explanations,
     insert_infographic_before_closing,
     validate_closing,
     validate_guide_structure,
@@ -380,6 +381,34 @@ def _store_infographic_for_resource(resource, uploaded_file, alt_text):
         raise PipelineError(str(exc)) from exc
 
 
+def _store_concept_image_for_resource(resource, uploaded_file, alt_text):
+    try:
+        upload_concept_image(resource, uploaded_file, alt_text)
+        item = (
+            PublicationItem.objects.select_for_update()
+            .filter(resource=resource)
+            .order_by("-updated_at")
+            .first()
+        )
+        if item and item.canonical_guide_id:
+            guide = item.canonical_guide
+            guide.content_text = insert_concept_image_after_explanations(
+                guide.content_text,
+                resource,
+            )
+            guide.save(update_fields=["content_text", "updated_at"])
+            resource.content = guide.content_text
+            resource.save(update_fields=["content"])
+        else:
+            resource.content = insert_concept_image_after_explanations(
+                resource.content,
+                resource,
+            )
+            resource.save(update_fields=["content"])
+    except (ValueError, ValidationError, ImproperlyConfigured) as exc:
+        raise PipelineError(str(exc)) from exc
+
+
 @csrf_exempt
 @require_POST
 @transaction.atomic
@@ -417,6 +446,45 @@ def upload_resource_infographic(request, resource_id=None, slug=None):
     except PipelineError as exc:
         return JsonResponse({"ok": False, "error": str(exc)}, status=409)
     return JsonResponse({"ok": True, "resource_id": resource.id, "infographic_ready": True})
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def upload_publication_concept_image(request, item_id):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    item = PublicationItem.objects.select_for_update().select_related("resource").filter(id=item_id).first()
+    if item is None or item.resource is None:
+        return JsonResponse({"ok": False, "error": "Ítem o recurso no encontrado"}, status=404)
+    image = request.FILES.get("image")
+    if image is None:
+        return JsonResponse({"ok": False, "error": "Falta la imagen conceptual"}, status=400)
+    try:
+        _store_concept_image_for_resource(item.resource, image, request.POST.get("alt_text", ""))
+    except PipelineError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+    return JsonResponse({"ok": True, "resource_id": item.resource_id, "concept_image_ready": True})
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def upload_resource_concept_image(request, resource_id=None, slug=None):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    lookup = {"id": resource_id} if resource_id is not None else {"slug": slug}
+    resource = Resource.objects.select_for_update().filter(**lookup).first()
+    if resource is None:
+        return JsonResponse({"ok": False, "error": "Recurso no encontrado"}, status=404)
+    image = request.FILES.get("image")
+    if image is None:
+        return JsonResponse({"ok": False, "error": "Falta la imagen conceptual"}, status=400)
+    try:
+        _store_concept_image_for_resource(resource, image, request.POST.get("alt_text", ""))
+    except PipelineError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+    return JsonResponse({"ok": True, "resource_id": resource.id, "concept_image_ready": True})
 
 
 def _direct_resource_history(resource):

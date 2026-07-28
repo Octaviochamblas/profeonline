@@ -8,7 +8,10 @@ from apps.content.models import Resource, ResourceView, Question
 from apps.content.services.evaluation_service import get_resource_mastery
 from apps.content.services.progress_service import get_resource_progress
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
-from apps.content.services.editorial_asset_service import get_infographic_object
+from apps.content.services.editorial_asset_service import (
+    get_concept_image_object,
+    get_infographic_object,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -25,6 +28,30 @@ def infographic_response(resource):
         )
     if asset is None:
         raise Http404("Infografia no disponible")
+    response = StreamingHttpResponse(
+        asset["Body"].iter_chunks(),
+        content_type=asset.get("ContentType", "image/png"),
+    )
+    response["Cache-Control"] = asset.get(
+        "CacheControl",
+        "public, max-age=31536000, immutable",
+    )
+    if asset.get("ContentLength") is not None:
+        response["Content-Length"] = str(asset["ContentLength"])
+    return response
+
+
+def concept_image_response(resource):
+    try:
+        asset = get_concept_image_object(resource)
+    except Exception:
+        logger.exception("No se pudo recuperar la imagen conceptual del recurso %s", resource.id)
+        return StreamingHttpResponse(
+            status=503,
+            headers={"X-ProfeOnline-Concept-Image": "storage-error"},
+        )
+    if asset is None:
+        raise Http404("Imagen conceptual no disponible")
     response = StreamingHttpResponse(
         asset["Body"].iter_chunks(),
         content_type=asset.get("ContentType", "image/png"),
@@ -55,6 +82,9 @@ class ResourceDetailView(DetailView):
         if request.GET.get("asset") == "infographic":
             self.object = self.get_object()
             return infographic_response(self.object)
+        if request.GET.get("asset") == "concept":
+            self.object = self.get_object()
+            return concept_image_response(self.object)
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):

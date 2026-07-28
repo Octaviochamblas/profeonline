@@ -105,6 +105,19 @@ class Resource(models.Model):
         blank=True,
         default="",
     )
+    concept_image_key = models.CharField(
+        "clave de imagen conceptual",
+        max_length=320,
+        blank=True,
+        default="",
+        help_text="Ilustración conceptual generada con IA y almacenada en Railway Storage Bucket.",
+    )
+    concept_image_alt_text = models.CharField(
+        "texto alternativo de imagen conceptual",
+        max_length=240,
+        blank=True,
+        default="",
+    )
     file = models.FileField(
         upload_to="resources/files/",
         blank=True,

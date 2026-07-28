@@ -108,6 +108,12 @@
     content.dataset.blocksReady = "1";
     content.classList.add("resource-view__content--enhanced");
 
+    var conceptImage = content.querySelector('img[src*="asset=concept"]');
+    var conceptFigure = conceptImage ? conceptImage.parentElement : null;
+    if (conceptFigure) {
+      conceptFigure.classList.add("resource-concept-figure");
+    }
+
     var sections = [];
     headings.forEach(function (heading) {
       var section = document.createElement("section");
@@ -115,11 +121,16 @@
       section.className = "resource-content-block resource-content-block--" + kind;
       content.insertBefore(section, heading);
       section.appendChild(heading);
-      while (section.nextSibling && section.nextSibling.tagName !== "H2") {
+      while (
+        section.nextSibling
+        && section.nextSibling.tagName !== "H2"
+        && !section.nextSibling.classList.contains("resource-concept-figure")
+      ) {
         section.appendChild(section.nextSibling);
       }
       sections.push(section);
     });
+    if (conceptFigure) sections.push(conceptFigure);
 
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion || !("IntersectionObserver" in window)) {
