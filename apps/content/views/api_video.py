@@ -4,6 +4,7 @@ import os
 import secrets
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.cache import cache
 from django.db import transaction
 from django.http import JsonResponse
@@ -15,9 +16,13 @@ from apps.content.models import Level, PublicationItem, Resource, Subject, Topic
 from apps.core.ratelimit import get_client_ip, is_rate_limited, increment_rate_limit
 from apps.content.services.publication_pipeline_service import (
     PipelineError,
+    apply_content_package,
     apply_editorial_package,
+    apply_question_package,
     finalize_publication,
 )
+from apps.content.services.editorial_asset_service import upload_infographic
+from apps.content.services.editorial_guide_service import insert_infographic_before_closing
 
 logger = logging.getLogger(__name__)
 
@@ -289,6 +294,7 @@ def publication_item_status(request, item_id):
         "state": item.state,
         "last_error": item.last_error,
         "youtube_privacy": item.youtube_privacy,
+        "infographic_ready": bool(item.resource and item.resource.infographic_key),
         "metadata": item.metadata if item.state in {
             PublicationItem.STATE_METADATA_READY,
             PublicationItem.STATE_QUESTIONS_READY,
@@ -310,8 +316,16 @@ def publication_item_editorial_package(request, item_id):
         data = json.loads(request.body or b"{}")
     except json.JSONDecodeError:
         return JsonResponse({"ok": False, "error": "JSON inválido"}, status=400)
+    stage = data.get("stage")
     try:
-        item = apply_editorial_package(item, data)
+        if stage == "content":
+            item = apply_content_package(item, data)
+        elif stage == "questions":
+            item = apply_question_package(item, data)
+        elif stage in (None, "full"):
+            item = apply_editorial_package(item, data)
+        else:
+            raise PipelineError("Etapa editorial inválida.")
     except PipelineError as exc:
         return JsonResponse({"ok": False, "error": str(exc)}, status=409)
     return JsonResponse(
@@ -322,6 +336,67 @@ def publication_item_editorial_package(request, item_id):
             "question_count": item.questions.count(),
         }
     )
+
+
+def _store_infographic_for_resource(resource, uploaded_file, alt_text):
+    try:
+        upload_infographic(resource, uploaded_file, alt_text)
+        item = (
+            PublicationItem.objects.select_for_update()
+            .select_related("canonical_guide")
+            .filter(resource=resource)
+            .order_by("-updated_at")
+            .first()
+        )
+        if item and item.canonical_guide_id:
+            guide = item.canonical_guide
+            guide.content_text = insert_infographic_before_closing(guide.content_text, resource)
+            guide.save(update_fields=["content_text", "updated_at"])
+            resource.content = guide.content_text
+            resource.save(update_fields=["content"])
+        else:
+            resource.content = insert_infographic_before_closing(resource.content, resource)
+            resource.save(update_fields=["content"])
+    except (ValueError, ValidationError, ImproperlyConfigured) as exc:
+        raise PipelineError(str(exc)) from exc
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def upload_publication_infographic(request, item_id):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    item = PublicationItem.objects.select_for_update().select_related("resource").filter(id=item_id).first()
+    if item is None or item.resource is None:
+        return JsonResponse({"ok": False, "error": "Ítem o recurso no encontrado"}, status=404)
+    image = request.FILES.get("image")
+    if image is None:
+        return JsonResponse({"ok": False, "error": "Falta el archivo de infografía"}, status=400)
+    try:
+        _store_infographic_for_resource(item.resource, image, request.POST.get("alt_text", ""))
+    except PipelineError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+    return JsonResponse({"ok": True, "resource_id": item.resource_id, "infographic_ready": True})
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def upload_resource_infographic(request, resource_id):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    resource = Resource.objects.select_for_update().filter(id=resource_id).first()
+    if resource is None:
+        return JsonResponse({"ok": False, "error": "Recurso no encontrado"}, status=404)
+    image = request.FILES.get("image")
+    if image is None:
+        return JsonResponse({"ok": False, "error": "Falta el archivo de infografía"}, status=400)
+    try:
+        _store_infographic_for_resource(resource, image, request.POST.get("alt_text", ""))
+    except PipelineError as exc:
+        return JsonResponse({"ok": False, "error": str(exc)}, status=409)
+    return JsonResponse({"ok": True, "resource_id": resource.id, "infographic_ready": True})
 
 
 @csrf_exempt

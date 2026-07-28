@@ -92,6 +92,19 @@ class Resource(models.Model):
             "de la web y YouTube."
         ),
     )
+    infographic_key = models.CharField(
+        "clave de infografía editorial",
+        max_length=320,
+        blank=True,
+        default="",
+        help_text="Objeto privado en Railway Storage Bucket, servido por ProfeOnline.",
+    )
+    infographic_alt_text = models.CharField(
+        "texto alternativo de infografía",
+        max_length=240,
+        blank=True,
+        default="",
+    )
     file = models.FileField(
         upload_to="resources/files/",
         blank=True,

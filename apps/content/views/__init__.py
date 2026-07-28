@@ -4,7 +4,7 @@ from .area_create import AreaCreateView
 from .area_update import AreaUpdateView
 from .area_delete import AreaDeleteView
 from .resource_list import ResourceListView
-from .resource_detail import ResourceDetailView
+from .resource_detail import ResourceDetailView, resource_infographic
 from .resource_create import ResourceCreateView
 from .resource_update import ResourceUpdateView
 from .resource_delete import ResourceDeleteView
@@ -37,6 +37,8 @@ from .api_video import (
     create_resource_from_video,
     publication_item_editorial_package,
     publication_item_status,
+    upload_publication_infographic,
+    upload_resource_infographic,
 )
 from .resource_completion import toggle_resource_completion
 from .evaluation_views import (

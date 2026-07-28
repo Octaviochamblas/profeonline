@@ -4,6 +4,7 @@ import json
 import hashlib
 import os
 import re
+import unicodedata
 
 from django.conf import settings
 from django.db import IntegrityError, transaction
@@ -18,6 +19,11 @@ from apps.content.models import (
     Subject,
     Topic,
 )
+from apps.content.services.editorial_guide_service import (
+    has_current_infographic,
+    validate_closing,
+    validate_guide_structure,
+)
 from apps.content.models.resource_quiz_config import default_quiz_counts
 from apps.content.services.ai_generation_service import (
     _call_gemini_api,
@@ -31,18 +37,21 @@ MIN_TRANSCRIPT_CHARS = 300
 MIN_TRANSCRIPT_WORDS = 50
 MAX_REGENERATION_ROUNDS = 3
 
-PIPELINE_MODES = (
-    (1, "practice", "preparacion"),
-    (1, "eval", "evaluacion"),
-    (2, "practice", "preparacion"),
-    (2, "eval", "evaluacion"),
-    (3, "practice", "preparacion"),
-    (3, "eval", "evaluacion"),
+PIPELINE_MODES = tuple(
+    (level, mode, "ambas")
+    for level in (1, 2, 3)
+    for mode in ("practice", "eval")
 )
 
-EDITORIAL_MODES = ("preparacion", "evaluacion", "ambas")
-EDITORIAL_QUESTIONS_PER_MODE = 10
-EDITORIAL_QUESTION_TOTAL = 90
+# Un banco canónico por recurso: el modo pertenece al intento, no a la pregunta.
+EDITORIAL_MODES = ("ambas",)
+EDITORIAL_QUESTIONS_PER_LEVEL = 10
+EDITORIAL_QUESTION_TOTAL = 30
+COSMETIC_QUESTION_PREFIXES = (
+    "antes de una practica guiada",
+    "en una evaluacion donde debes justificar tu eleccion",
+    "al transferir lo aprendido a un ejercicio nuevo",
+)
 
 
 class PipelineError(RuntimeError):
@@ -50,11 +59,11 @@ class PipelineError(RuntimeError):
 
 
 def editorial_quiz_counts():
-    """Matriz visible: 10 exclusivas + 10 comunes disponibles por modo."""
+    """Diez preguntas por nivel compartidas entre práctica y evaluación."""
     return {
         str(level): {
-            "practice": {"pool": 20, "shown": 5},
-            "eval": {"pool": 20, "shown": 5 if level < 3 else 3},
+            "practice": {"pool": 10, "shown": 5 if level < 3 else 3},
+            "eval": {"pool": 10, "shown": 5 if level < 3 else 3},
         }
         for level in (1, 2, 3)
     }
@@ -62,6 +71,17 @@ def editorial_quiz_counts():
 
 def _question_fingerprint(text):
     return " ".join(normalize_text(text).lower().split())
+
+
+def _cosmetic_question_fingerprint(text):
+    """Ignora envoltorios de contexto que no hacen distinta una pregunta."""
+    value = unicodedata.normalize("NFD", _question_fingerprint(text))
+    value = "".join(char for char in value if not unicodedata.combining(char))
+    for prefix in COSMETIC_QUESTION_PREFIXES:
+        if value.startswith(prefix):
+            value = value[len(prefix):].lstrip(" :.-—–")
+            break
+    return value
 
 
 def validate_editorial_package(payload):
@@ -93,12 +113,9 @@ def validate_editorial_package(payload):
             f"El paquete debe contener exactamente {EDITORIAL_QUESTION_TOTAL} preguntas."
         )
 
-    counts = {
-        (level, mode): 0
-        for level in (1, 2, 3)
-        for mode in EDITORIAL_MODES
-    }
+    counts = {level: 0 for level in (1, 2, 3)}
     seen = set()
+    seen_cosmetic = set()
     normalized_questions = []
     for index, question in enumerate(questions, start=1):
         if not isinstance(question, dict):
@@ -107,7 +124,7 @@ def validate_editorial_package(payload):
             level = int(question.get("level"))
         except (TypeError, ValueError):
             level = 0
-        mode = str(question.get("mode", "")).strip()
+        mode = str(question.get("mode", "ambas")).strip() or "ambas"
         text = normalize_text(question.get("text", ""))
         explanation = normalize_text(question.get("explanation", ""))
         choices = question.get("choices")
@@ -118,7 +135,13 @@ def validate_editorial_package(payload):
         fingerprint = _question_fingerprint(text)
         if fingerprint in seen:
             raise PipelineError(f"Pregunta {index}: enunciado duplicado.")
+        cosmetic_fingerprint = _cosmetic_question_fingerprint(text)
+        if cosmetic_fingerprint in seen_cosmetic:
+            raise PipelineError(
+                f"Pregunta {index}: duplica otra pregunta tras quitar un prefijo cosmético."
+            )
         seen.add(fingerprint)
+        seen_cosmetic.add(cosmetic_fingerprint)
         if not isinstance(choices, list) or len(choices) != 4:
             raise PipelineError(f"Pregunta {index}: debe tener exactamente cuatro alternativas.")
         normalized_choices = []
@@ -130,7 +153,7 @@ def validate_editorial_package(payload):
                     f"Pregunta {index}, alternativa {choice_index}: estructura inválida."
                 )
             choice_text = normalize_text(choice.get("text", ""))
-            is_correct = bool(choice.get("is_correct"))
+            is_correct = choice.get("is_correct") is True
             if not choice_text or choice_text.lower() in choice_texts:
                 raise PipelineError(
                     f"Pregunta {index}: alternativas vacías o duplicadas."
@@ -144,7 +167,12 @@ def validate_editorial_package(payload):
             raise PipelineError(
                 f"Pregunta {index}: debe tener exactamente una alternativa correcta."
             )
-        counts[(level, mode)] += 1
+        correct_text = next(choice["text"] for choice in normalized_choices if choice["is_correct"])
+        if _question_fingerprint(correct_text) not in _question_fingerprint(explanation):
+            raise PipelineError(
+                f"Pregunta {index}: la explicación debe referirse explícitamente a la alternativa correcta."
+            )
+        counts[level] += 1
         normalized_questions.append(
             {
                 "level": level,
@@ -157,9 +185,9 @@ def validate_editorial_package(payload):
         )
 
     invalid_counts = {
-        f"N{level}/{mode}": count
-        for (level, mode), count in counts.items()
-        if count != EDITORIAL_QUESTIONS_PER_MODE
+        f"N{level}": count
+        for level, count in counts.items()
+        if count != EDITORIAL_QUESTIONS_PER_LEVEL
     }
     if invalid_counts:
         detail = ", ".join(f"{key}={value}" for key, value in invalid_counts.items())
@@ -174,9 +202,7 @@ def validate_editorial_package(payload):
     )
     normalized_metadata["editorial_source"] = "codex"
     normalized_metadata["question_distribution"] = {
-        str(level): {
-            mode: EDITORIAL_QUESTIONS_PER_MODE for mode in EDITORIAL_MODES
-        }
+        str(level): {"ambas": EDITORIAL_QUESTIONS_PER_LEVEL}
         for level in (1, 2, 3)
     }
     return {
@@ -190,6 +216,98 @@ def validate_editorial_package(payload):
     }
 
 
+def validate_editorial_content(payload):
+    """Valida el contenido de la etapa 2 sin exigir todavía preguntas."""
+    if not isinstance(payload, dict):
+        raise PipelineError("El paquete editorial debe ser un objeto JSON.")
+    metadata = payload.get("metadata")
+    guide = payload.get("guide")
+    required_metadata = (
+        "resource_title", "youtube_title", "resource_description",
+        "youtube_description", "introduction", "guide_title", "pedagogical_document",
+    )
+    if not isinstance(metadata, dict):
+        raise PipelineError("Falta metadata válida en el paquete editorial.")
+    missing = [key for key in required_metadata if not normalize_text(metadata.get(key, ""))]
+    if missing:
+        raise PipelineError(f"Metadata incompleta: {', '.join(missing)}.")
+    if not isinstance(guide, dict) or not normalize_text(guide.get("content", "")):
+        raise PipelineError("La guía editorial debe incluir content.")
+    content = normalize_text(guide["content"])
+    try:
+        validate_guide_structure(content)
+        validate_closing(content)
+    except ValueError as exc:
+        raise PipelineError(str(exc)) from exc
+    normalized_metadata = {key: normalize_text(metadata[key]) for key in required_metadata}
+    normalized_metadata["thumbnail_title"] = normalize_text(
+        metadata.get("thumbnail_title", metadata["resource_title"])
+    )
+    normalized_metadata["editorial_source"] = "codex"
+    return {
+        "metadata": normalized_metadata,
+        "guide": {
+            "title": normalize_text(guide.get("title", metadata["guide_title"])),
+            "description": normalize_text(guide.get("description", "")),
+            "content": content,
+        },
+    }
+
+
+@transaction.atomic
+def apply_content_package(item, payload):
+    """Guarda metadatos y guía desde la transcripción; no toca preguntas."""
+    item = PublicationItem.objects.select_for_update().get(pk=item.pk)
+    if item.state == PublicationItem.STATE_PUBLISHED:
+        raise PipelineError("El ítem ya está publicado y no admite reemplazo editorial.")
+    if item.resource is None or not transcript_is_sufficient(item.resource.transcript):
+        raise PipelineError("La transcripción es insuficiente para aplicar el contenido editorial.")
+    package = validate_editorial_content(payload)
+    guide, _ = QuizGuide.objects.update_or_create(
+        canonical_resource=item.resource,
+        defaults={
+            "title": package["guide"]["title"],
+            "description": package["guide"]["description"],
+            "source_filename": item.source_filename,
+            "content_text": package["guide"]["content"],
+            "is_active": False,
+        },
+    )
+    guide.resources.add(item.resource)
+    item.canonical_guide = guide
+    item.metadata = package["metadata"]
+    item.target_counts = editorial_quiz_counts()
+    item.state = PublicationItem.STATE_METADATA_READY
+    item.resume_state = ""
+    item.last_error = ""
+    item.save(update_fields=[
+        "canonical_guide", "metadata", "target_counts", "state", "resume_state",
+        "last_error", "updated_at",
+    ])
+    return item
+
+
+def apply_question_package(item, payload):
+    """Completa la etapa 3 usando el contenido ya aprobado en la etapa 2."""
+    if item.state not in {
+        PublicationItem.STATE_METADATA_READY,
+        PublicationItem.STATE_QUESTIONS_READY,
+    } or not item.canonical_guide_id or not item.metadata:
+        raise PipelineError("Primero debe completarse la etapa de contenido editorial.")
+    if not has_current_infographic(item.canonical_guide.content_text, item.resource):
+        raise PipelineError("Primero debe subirse e insertarse la infografía editorial.")
+    complete_payload = {
+        "metadata": item.metadata,
+        "guide": {
+            "title": item.canonical_guide.title,
+            "description": item.canonical_guide.description,
+            "content": item.canonical_guide.content_text,
+        },
+        "questions": payload.get("questions"),
+    }
+    return apply_editorial_package(item, complete_payload)
+
+
 @transaction.atomic
 def apply_editorial_package(item, payload):
     """Reemplaza solo borradores seguros del ítem y deja questions_ready."""
@@ -201,6 +319,7 @@ def apply_editorial_package(item, payload):
     if not transcript_is_sufficient(item.resource.transcript):
         raise PipelineError("La transcripción es insuficiente para aplicar el paquete editorial.")
 
+    validate_editorial_content(payload)
     package = validate_editorial_package(payload)
     existing = item.questions.all()
     protected = existing.exclude(status="borrador").exists() or existing.filter(
@@ -683,7 +802,9 @@ def finalize_publication(item):
         config.save(update_fields=["counts", "autopublish"])
         item.resource.title = item.metadata["resource_title"]
         item.resource.description = item.metadata["resource_description"]
-        item.resource.content = item.metadata["introduction"]
+        # La guía validada es el material público del recurso; la introducción
+        # queda en metadata para listados y API, pero no reemplaza la guía.
+        item.resource.content = item.canonical_guide.content_text
         item.resource.is_published = True
         transcript = item.resource.transcript or ""
         item.resource.editorial_audit = {

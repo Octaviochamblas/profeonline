@@ -1,10 +1,13 @@
 import re
+from django.http import Http404, StreamingHttpResponse
+from django.views.decorators.http import require_GET
 from django.views.generic import DetailView
 
 from apps.content.models import Resource, ResourceView, Question
 from apps.content.services.evaluation_service import get_resource_mastery
 from apps.content.services.progress_service import get_resource_progress
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
+from apps.content.services.editorial_asset_service import get_infographic_object
 
 
 def get_youtube_id(url):
@@ -129,3 +132,21 @@ class ResourceDetailView(DetailView):
         )
 
         return context
+
+
+@require_GET
+def resource_infographic(request, slug):
+    resource = Resource.objects.filter(slug=slug).first()
+    if resource is None or (not resource.is_published and not request.user.is_superuser):
+        raise Http404("Recurso no encontrado")
+    try:
+        asset = get_infographic_object(resource)
+    except Exception as exc:  # Bucket errors must not expose storage internals.
+        raise Http404("Infografía no disponible") from exc
+    if asset is None:
+        raise Http404("Infografía no disponible")
+    response = StreamingHttpResponse(asset["Body"].iter_chunks(), content_type=asset.get("ContentType", "image/png"))
+    response["Cache-Control"] = asset.get("CacheControl", "public, max-age=31536000, immutable")
+    if asset.get("ContentLength") is not None:
+        response["Content-Length"] = str(asset["ContentLength"])
+    return response

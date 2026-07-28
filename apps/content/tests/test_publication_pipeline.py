@@ -4,6 +4,7 @@ from unittest import mock
 
 from django.test import TestCase
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 
 from apps.content.models import (
@@ -88,9 +89,9 @@ def _auditor(_item, _level, _mode, candidates):
 def _editorial_package():
     questions = []
     for level in (1, 2, 3):
-        for mode in ("preparacion", "evaluacion", "ambas"):
-            for number in range(1, 11):
-                questions.append({
+        for number in range(1, 11):
+            mode = "ambas"
+            questions.append({
                     "level": level,
                     "mode": mode,
                     "text": f"Pregunta editorial N{level} {mode} número {number}",
@@ -102,7 +103,10 @@ def _editorial_package():
                         {"text": f"Distractor B {level}-{mode}-{number}", "is_correct": False},
                         {"text": f"Distractor C {level}-{mode}-{number}", "is_correct": False},
                     ],
-                })
+            })
+            questions[-1]["explanation"] = (
+                f"La alternativa correcta es Correcta {level}-{mode}-{number}."
+            )
     return {
         "metadata": {
             "resource_title": "Circuitos y capacitancia",
@@ -117,7 +121,16 @@ def _editorial_package():
         "guide": {
             "title": "Guía de circuitos y capacitancia",
             "description": "Guía creada por Codex.",
-            "content": "Objetivos, conceptos, procedimientos y límites de la clase.",
+            "content": (
+                "## Resumen inicial\n\nSe estudian circuitos y capacitores para relacionar carga, potencial y energía.\n\n"
+                "## Explicación completa\n\nUn capacitor almacena carga y energía al establecer una diferencia de potencial entre conductores.\n\n"
+                "## Definiciones clave\n\nLa capacitancia relaciona carga almacenada y diferencia de potencial en un sistema.\n\n"
+                "## Diferencias que no debes confundir\n\nCarga, voltaje, energía y capacitancia describen magnitudes distintas y no se intercambian.\n\n"
+                "## Ejemplo guiado\n\nCon los datos de carga y voltaje se identifica la relación adecuada y se revisan sus unidades.\n\n"
+                "## Procedimiento\n\nIdentifica las magnitudes disponibles, elige la relación que las conecta, sustituye unidades coherentes y revisa el resultado.\n\n"
+                "## Errores frecuentes\n\nNo confundas energía con carga ni uses una unidad de voltaje como si fuera una unidad de capacitancia.\n\n"
+                "## Al terminar debes poder\n\nAl terminar debes poder distinguir carga, diferencia de potencial, capacitancia y energía en un circuito simple; seleccionar la relación que conecta los datos disponibles; conservar las unidades durante el cálculo; e interpretar si el resultado es coherente con el componente y la situación descrita."
+            ),
         },
         "questions": questions,
     }
@@ -210,6 +223,7 @@ class PublicationPipelineServiceTests(TestCase):
         self.resource.refresh_from_db()
         self.assertEqual(self.item.state, PublicationItem.STATE_PUBLISHED)
         self.assertTrue(self.resource.is_published)
+        self.assertEqual(self.resource.content, self.item.canonical_guide.content_text)
         self.assertEqual(self.resource.title, "Suma de enteros con signos")
         self.assertEqual(
             Question.objects.get(publication_item=self.item).status,
@@ -451,15 +465,83 @@ class PublicationPipelineApiTests(TestCase):
         self.assertEqual(second.status_code, 200)
         item.refresh_from_db()
         self.assertEqual(item.state, PublicationItem.STATE_QUESTIONS_READY)
-        self.assertEqual(item.questions.count(), 90)
+        self.assertEqual(item.questions.count(), 30)
         for level in (1, 2, 3):
-            for mode in ("preparacion", "evaluacion", "ambas"):
-                self.assertEqual(
-                    item.questions.filter(level=level, mode=mode).count(),
-                    10,
-                )
-        self.assertEqual(item.target_counts["1"]["practice"]["pool"], 20)
-        self.assertEqual(item.target_counts["1"]["eval"]["pool"], 20)
+            self.assertEqual(item.questions.filter(level=level, mode="ambas").count(), 10)
+        self.assertEqual(item.target_counts["1"]["practice"]["pool"], 10)
+        self.assertEqual(item.target_counts["1"]["eval"]["pool"], 10)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
+    @mock.patch("apps.content.views.api_video.upload_infographic")
+    def test_editorial_content_and_questions_stages_are_separate(self, upload_mock):
+        resource = Resource.objects.create(
+            title="Temporal",
+            transcript=" ".join(["Transcripción suficientemente extensa."] * 30),
+        )
+        item = PublicationItem.objects.create(
+            batch_id="editorial-stages", source_filename="stages.mp4", resource=resource,
+        )
+        package = _editorial_package()
+        url = reverse("content:api_publication_item_editorial_package", args=[item.id])
+        content_response = self.client.post(
+            url,
+            data=json.dumps({"stage": "content", "metadata": package["metadata"], "guide": package["guide"]}),
+            content_type="application/json", HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(content_response.status_code, 200)
+        self.assertEqual(content_response.json()["state"], PublicationItem.STATE_METADATA_READY)
+        questions_response = self.client.post(
+            url,
+            data=json.dumps({"stage": "questions", "questions": package["questions"]}),
+            content_type="application/json", HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(questions_response.status_code, 409)
+        self.assertIn("infografía", questions_response.json()["error"])
+        upload_mock.side_effect = lambda resource, _image, alt: setattr(resource, "infographic_key", "editorial-infographics/test.png") or resource.save(update_fields=["infographic_key"])
+        infographic_response = self.client.post(
+            reverse("content:api_publication_infographic_upload", args=[item.id]),
+            data={"image": SimpleUploadedFile("infografia.png", b"\x89PNG\r\n\x1a\ncontenido", content_type="image/png")},
+            HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(infographic_response.status_code, 200)
+        item.refresh_from_db()
+        self.assertIn("/infografia/", item.canonical_guide.content_text)
+        questions_response = self.client.post(
+            url,
+            data=json.dumps({"stage": "questions", "questions": package["questions"]}),
+            content_type="application/json", HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(questions_response.status_code, 200)
+        self.assertEqual(questions_response.json()["question_count"], 30)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
+    def test_editorial_package_rejects_cosmetic_duplicates_and_mismatched_explanations(self):
+        resource = Resource.objects.create(
+            title="Temporal",
+            transcript=" ".join(["Transcripción suficientemente extensa."] * 30),
+        )
+        item = PublicationItem.objects.create(
+            batch_id="editorial-quality", source_filename="quality.mp4", resource=resource,
+        )
+        package = _editorial_package()
+        package["questions"][1]["text"] = (
+            "Antes de una práctica guiada: " + package["questions"][0]["text"]
+        )
+        response = self.client.post(
+            reverse("content:api_publication_item_editorial_package", args=[item.id]),
+            data=json.dumps(package), content_type="application/json", HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(response.status_code, 409)
+        self.assertIn("prefijo cosmético", response.json()["error"])
+
+        package = _editorial_package()
+        package["questions"][0]["explanation"] = "No menciona la respuesta correcta."
+        response = self.client.post(
+            reverse("content:api_publication_item_editorial_package", args=[item.id]),
+            data=json.dumps(package), content_type="application/json", HTTP_X_API_TOKEN=TOKEN,
+        )
+        self.assertEqual(response.status_code, 409)
+        self.assertIn("alternativa correcta", response.json()["error"])
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
     def test_editorial_package_rejects_incomplete_matrix_without_writes(self):
