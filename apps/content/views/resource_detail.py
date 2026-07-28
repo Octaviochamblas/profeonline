@@ -147,6 +147,7 @@ def resource_infographic(request, slug):
         asset = get_infographic_object(resource)
     except Exception as exc:  # Bucket errors must not expose storage internals.
         logger.exception("No se pudo recuperar la infografia del recurso %s", resource.id)
+        return StreamingHttpResponse(status=503, headers={"X-ProfeOnline-Infographic": "storage-error"})
         raise Http404("Infografía no disponible") from exc
     if asset is None:
         raise Http404("Infografía no disponible")
