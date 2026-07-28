@@ -13,6 +13,7 @@ from apps.content.views import (
     upload_publication_infographic,
     upload_resource_infographic,
     refresh_direct_resource_editorial,
+    repair_direct_resource_editorial_text,
     confirm_publication_item,
     toggle_resource_completion,
     quiz_start,
@@ -42,6 +43,11 @@ urlpatterns = [
         "api/recursos/slug/<slug:slug>/paquete-editorial/",
         refresh_direct_resource_editorial,
         name="api_resource_editorial_refresh_by_slug",
+    ),
+    path(
+        "api/recursos/slug/<slug:slug>/reparar-texto/",
+        repair_direct_resource_editorial_text,
+        name="api_resource_editorial_repair_by_slug",
     ),
     path(
         "api/publicacion/<int:item_id>/",

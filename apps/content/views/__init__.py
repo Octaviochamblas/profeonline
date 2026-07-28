@@ -37,6 +37,7 @@ from .api_video import (
     create_resource_from_video,
     publication_item_editorial_package,
     publication_item_status,
+    repair_direct_resource_editorial_text,
     refresh_direct_resource_editorial,
     upload_publication_infographic,
     upload_resource_infographic,

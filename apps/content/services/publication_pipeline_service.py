@@ -52,6 +52,11 @@ COSMETIC_QUESTION_PREFIXES = (
     "en una evaluacion donde debes justificar tu eleccion",
     "al transferir lo aprendido a un ejercicio nuevo",
 )
+MALFORMED_MATH = re.compile(
+    r"\$(?:[^$\n]*)(?<!\\)\b(?:leq|geq|ldots|neq|square|circ|mathrm)\b[^$\n]*\$"
+    r"|\$(?=[^$\n]*\s)(?=[^$\n]*\b(?:y|o|otra|saldo|cuenta|tiene)\b)[^$\n]+\$",
+    re.IGNORECASE,
+)
 
 
 class PipelineError(RuntimeError):
@@ -108,6 +113,10 @@ def validate_editorial_package(payload):
         raise PipelineError(f"Metadata incompleta: {', '.join(missing)}.")
     if not isinstance(guide, dict) or not normalize_text(guide.get("content", "")):
         raise PipelineError("La guía editorial debe incluir content.")
+    if MALFORMED_MATH.search(normalize_text(guide["content"])):
+        raise PipelineError(
+            "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
+        )
     if not isinstance(questions, list) or len(questions) != EDITORIAL_QUESTION_TOTAL:
         raise PipelineError(
             f"El paquete debe contener exactamente {EDITORIAL_QUESTION_TOTAL} preguntas."
@@ -147,6 +156,7 @@ def validate_editorial_package(payload):
         normalized_choices = []
         correct_count = 0
         choice_texts = set()
+        fields_to_check = [text, explanation]
         for choice_index, choice in enumerate(choices, start=1):
             if not isinstance(choice, dict):
                 raise PipelineError(
@@ -162,6 +172,11 @@ def validate_editorial_package(payload):
             correct_count += int(is_correct)
             normalized_choices.append(
                 {"text": choice_text, "is_correct": is_correct}
+            )
+            fields_to_check.append(choice_text)
+        if any(MALFORMED_MATH.search(value) for value in fields_to_check):
+            raise PipelineError(
+                f"Pregunta {index}: contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
             )
         if correct_count != 1:
             raise PipelineError(
@@ -234,6 +249,10 @@ def validate_editorial_content(payload):
     if not isinstance(guide, dict) or not normalize_text(guide.get("content", "")):
         raise PipelineError("La guía editorial debe incluir content.")
     content = normalize_text(guide["content"])
+    if MALFORMED_MATH.search(content):
+        raise PipelineError(
+            "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
+        )
     try:
         validate_guide_structure(content)
         validate_closing(content)

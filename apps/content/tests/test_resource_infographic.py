@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Question, Resource
+from apps.content.models import Choice, Question, Resource
 
 
 class _BucketBody:
@@ -165,3 +165,37 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["questions"], "preserved")
         self.assertEqual(self.resource.questions.count(), 1)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    def test_repair_api_preserves_question_ids_and_fixes_malformed_math(self):
+        self.resource.content = "Usa $leq$ o $geq$."
+        self.resource.save(update_fields=["content"])
+        question = Question.objects.create(
+            resource=self.resource,
+            level=1,
+            mode="ambas",
+            text="Una cuenta tiene saldo $-7.000 y otra -12.000$. ¿Cuál es mayor?",
+            explanation="Compara $-7.000 y otra -12.000$ en la recta.",
+            status="publicada",
+        )
+        choice = Choice.objects.create(
+            question=question,
+            text="$-7.000 y otra -12.000$",
+            is_correct=True,
+        )
+        url = reverse(
+            "content:api_resource_editorial_repair_by_slug",
+            kwargs={"slug": self.resource.slug},
+        )
+        response = self.client.post(url, HTTP_X_API_TOKEN="test-token")
+
+        self.assertEqual(response.status_code, 200)
+        self.resource.refresh_from_db()
+        question.refresh_from_db()
+        choice.refresh_from_db()
+        self.assertEqual(self.resource.content, r"Usa $\leq$ o $\geq$.")
+        self.assertEqual(
+            question.text,
+            "Una cuenta tiene saldo -7.000 y otra -12.000. ¿Cuál es mayor?",
+        )
+        self.assertEqual(choice.text, "-7.000 y otra -12.000")

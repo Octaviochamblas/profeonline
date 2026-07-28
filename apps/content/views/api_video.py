@@ -2,6 +2,7 @@ import hashlib
 import json
 import logging
 import os
+import re
 import secrets
 
 from django.conf import settings
@@ -538,6 +539,61 @@ def refresh_direct_resource_editorial(request, slug):
             "history": history,
         }
     )
+
+
+_MATH_SPAN = re.compile(r"\$([^$\n]+)\$")
+_BARE_KATEX = re.compile(r"(?<!\\)\b(leq|geq|ldots|neq|square|circ|mathrm)\b")
+_PROSE_IN_MATH = re.compile(r"\b(y|o|otra|saldo|cuenta|tiene)\b", re.IGNORECASE)
+
+
+def _repair_editorial_text(value):
+    def repair_span(match):
+        body = _BARE_KATEX.sub(lambda item: "\\" + item.group(1), match.group(1))
+        if any(character.isspace() for character in body) and _PROSE_IN_MATH.search(body):
+            return body
+        return f"${body}$"
+
+    return _MATH_SPAN.sub(repair_span, value or "")
+
+
+@csrf_exempt
+@require_POST
+@transaction.atomic
+def repair_direct_resource_editorial_text(request, slug):
+    if not _has_valid_api_token(request):
+        return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
+    resource = Resource.objects.select_for_update().filter(slug=slug).first()
+    if resource is None:
+        return JsonResponse({"ok": False, "error": "Recurso no encontrado"}, status=404)
+
+    changed = {"content": 0, "questions": 0, "choices": 0}
+    repaired_content = _repair_editorial_text(resource.content)
+    if repaired_content != resource.content:
+        resource.content = repaired_content
+        resource.save(update_fields=["content"])
+        changed["content"] = 1
+
+    for question in Question.objects.filter(resource=resource).prefetch_related("choices"):
+        repaired_text = _repair_editorial_text(question.text)
+        repaired_explanation = _repair_editorial_text(question.explanation)
+        update_fields = []
+        if repaired_text != question.text:
+            question.text = repaired_text
+            update_fields.append("text")
+        if repaired_explanation != question.explanation:
+            question.explanation = repaired_explanation
+            update_fields.append("explanation")
+        if update_fields:
+            question.save(update_fields=update_fields)
+            changed["questions"] += 1
+        for choice in question.choices.all():
+            repaired_choice = _repair_editorial_text(choice.text)
+            if repaired_choice != choice.text:
+                choice.text = repaired_choice
+                choice.save(update_fields=["text"])
+                changed["choices"] += 1
+
+    return JsonResponse({"ok": True, "resource_id": resource.id, "changed": changed})
 
 
 @csrf_exempt
