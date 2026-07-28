@@ -124,7 +124,10 @@
       while (
         section.nextSibling
         && section.nextSibling.tagName !== "H2"
-        && !section.nextSibling.classList.contains("resource-concept-figure")
+        && !(
+          section.nextSibling.nodeType === 1
+          && section.nextSibling.classList.contains("resource-concept-figure")
+        )
       ) {
         section.appendChild(section.nextSibling);
       }

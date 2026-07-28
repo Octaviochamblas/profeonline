@@ -73,7 +73,7 @@ class ResourceInfographicTests(TestCase):
         )
 
         self.assertContains(response, "data-resource-content")
-        self.assertContains(response, "js/resource-detail.js?v=4")
+        self.assertContains(response, "js/resource-detail.js?v=5")
 
     def test_concept_image_is_inserted_between_explanations_and_definitions(self):
         content = (
