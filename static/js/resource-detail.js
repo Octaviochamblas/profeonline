@@ -111,7 +111,18 @@
     var conceptImage = content.querySelector('img[src*="asset=concept"]');
     var conceptFigure = conceptImage ? conceptImage.parentElement : null;
     if (conceptFigure) {
-      conceptFigure.classList.add("resource-concept-figure");
+      conceptFigure.classList.add(
+        "resource-editorial-figure",
+        "resource-concept-figure",
+      );
+    }
+    var infographicImage = content.querySelector('img[src*="asset=infographic"]');
+    var infographicFigure = infographicImage ? infographicImage.parentElement : null;
+    if (infographicFigure) {
+      infographicFigure.classList.add(
+        "resource-editorial-figure",
+        "resource-infographic-figure",
+      );
     }
 
     var sections = [];
@@ -126,7 +137,7 @@
         && section.nextSibling.tagName !== "H2"
         && !(
           section.nextSibling.nodeType === 1
-          && section.nextSibling.classList.contains("resource-concept-figure")
+          && section.nextSibling.classList.contains("resource-editorial-figure")
         )
       ) {
         section.appendChild(section.nextSibling);
@@ -134,6 +145,7 @@
       sections.push(section);
     });
     if (conceptFigure) sections.push(conceptFigure);
+    if (infographicFigure) sections.push(infographicFigure);
 
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion || !("IntersectionObserver" in window)) {
