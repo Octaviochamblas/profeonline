@@ -343,7 +343,6 @@ def _store_infographic_for_resource(resource, uploaded_file, alt_text):
         upload_infographic(resource, uploaded_file, alt_text)
         item = (
             PublicationItem.objects.select_for_update()
-            .select_related("canonical_guide")
             .filter(resource=resource)
             .order_by("-updated_at")
             .first()
