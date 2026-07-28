@@ -1,3 +1,4 @@
+import logging
 import re
 from django.http import Http404, StreamingHttpResponse
 from django.views.decorators.http import require_GET
@@ -8,6 +9,9 @@ from apps.content.services.evaluation_service import get_resource_mastery
 from apps.content.services.progress_service import get_resource_progress
 from apps.content.views._seo import article_schema, breadcrumb_schema, build_breadcrumbs
 from apps.content.services.editorial_asset_service import get_infographic_object
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_youtube_id(url):
@@ -142,6 +146,7 @@ def resource_infographic(request, slug):
     try:
         asset = get_infographic_object(resource)
     except Exception as exc:  # Bucket errors must not expose storage internals.
+        logger.exception("No se pudo recuperar la infografia del recurso %s", resource.id)
         raise Http404("Infografía no disponible") from exc
     if asset is None:
         raise Http404("Infografía no disponible")
