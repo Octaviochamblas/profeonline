@@ -42,6 +42,7 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/png")
         self.assertEqual(b"".join(response.streaming_content), b"image-bytes")
+        self.assertEqual(response["Cache-Control"], "no-cache, must-revalidate")
 
     @mock.patch("apps.content.views.resource_detail.get_concept_image_object")
     def test_detail_route_serves_concept_image_asset(self, get_object):
@@ -58,6 +59,23 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/png")
         self.assertEqual(b"".join(response.streaming_content), b"image-bytes")
+        self.assertEqual(response["Cache-Control"], "no-cache, must-revalidate")
+
+    @mock.patch("apps.content.views.resource_detail.get_infographic_object")
+    def test_versioned_asset_can_be_cached_immutably(self, get_object):
+        get_object.return_value = {
+            "Body": _BucketBody(),
+            "ContentType": "image/png",
+            "ContentLength": 11,
+        }
+        url = reverse("content:resource_detail", kwargs={"slug": self.resource.slug})
+
+        response = self.client.get(url, {"asset": "infographic", "v": "content-hash"})
+
+        self.assertEqual(
+            response["Cache-Control"],
+            "public, max-age=31536000, immutable",
+        )
 
     def test_resource_detail_enables_semantic_content_blocks(self):
         user = get_user_model().objects.create_user(

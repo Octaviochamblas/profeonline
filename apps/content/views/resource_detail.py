@@ -17,7 +17,13 @@ from apps.content.services.editorial_asset_service import (
 logger = logging.getLogger(__name__)
 
 
-def infographic_response(resource):
+def _asset_cache_control(request):
+    if request.GET.get("v"):
+        return "public, max-age=31536000, immutable"
+    return "no-cache, must-revalidate"
+
+
+def infographic_response(resource, request):
     try:
         asset = get_infographic_object(resource)
     except Exception:
@@ -32,16 +38,13 @@ def infographic_response(resource):
         asset["Body"].iter_chunks(),
         content_type=asset.get("ContentType", "image/png"),
     )
-    response["Cache-Control"] = asset.get(
-        "CacheControl",
-        "public, max-age=31536000, immutable",
-    )
+    response["Cache-Control"] = _asset_cache_control(request)
     if asset.get("ContentLength") is not None:
         response["Content-Length"] = str(asset["ContentLength"])
     return response
 
 
-def concept_image_response(resource):
+def concept_image_response(resource, request):
     try:
         asset = get_concept_image_object(resource)
     except Exception:
@@ -56,10 +59,7 @@ def concept_image_response(resource):
         asset["Body"].iter_chunks(),
         content_type=asset.get("ContentType", "image/png"),
     )
-    response["Cache-Control"] = asset.get(
-        "CacheControl",
-        "public, max-age=31536000, immutable",
-    )
+    response["Cache-Control"] = _asset_cache_control(request)
     if asset.get("ContentLength") is not None:
         response["Content-Length"] = str(asset["ContentLength"])
     return response
@@ -81,10 +81,10 @@ class ResourceDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         if request.GET.get("asset") == "infographic":
             self.object = self.get_object()
-            return infographic_response(self.object)
+            return infographic_response(self.object, request)
         if request.GET.get("asset") == "concept":
             self.object = self.get_object()
-            return concept_image_response(self.object)
+            return concept_image_response(self.object, request)
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -212,7 +212,7 @@ def resource_infographic(request, slug):
     if asset is None:
         raise Http404("Infografía no disponible")
     response = StreamingHttpResponse(asset["Body"].iter_chunks(), content_type=asset.get("ContentType", "image/png"))
-    response["Cache-Control"] = asset.get("CacheControl", "public, max-age=31536000, immutable")
+    response["Cache-Control"] = _asset_cache_control(request)
     if asset.get("ContentLength") is not None:
         response["Content-Length"] = str(asset["ContentLength"])
     return response
