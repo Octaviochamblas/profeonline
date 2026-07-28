@@ -383,10 +383,11 @@ def upload_publication_infographic(request, item_id):
 @csrf_exempt
 @require_POST
 @transaction.atomic
-def upload_resource_infographic(request, resource_id):
+def upload_resource_infographic(request, resource_id=None, slug=None):
     if not _has_valid_api_token(request):
         return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
-    resource = Resource.objects.select_for_update().filter(id=resource_id).first()
+    lookup = {"id": resource_id} if resource_id is not None else {"slug": slug}
+    resource = Resource.objects.select_for_update().filter(**lookup).first()
     if resource is None:
         return JsonResponse({"ok": False, "error": "Recurso no encontrado"}, status=404)
     image = request.FILES.get("image")

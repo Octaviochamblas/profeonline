@@ -1,5 +1,7 @@
+import os
 from unittest import mock
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
@@ -35,3 +37,27 @@ class ResourceInfographicTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "image/png")
         self.assertEqual(b"".join(response.streaming_content), b"image-bytes")
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    @mock.patch("apps.content.views.api_video._store_infographic_for_resource")
+    def test_upload_api_can_resolve_direct_resource_by_slug(self, store):
+        url = reverse(
+            "content:api_resource_infographic_upload_by_slug",
+            kwargs={"slug": self.resource.slug},
+        )
+        response = self.client.post(
+            url,
+            data={
+                "image": SimpleUploadedFile(
+                    "infografia.png",
+                    b"\x89PNG\r\n\x1a\ncontenido",
+                    content_type="image/png",
+                ),
+                "alt_text": "Resumen visual",
+            },
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["resource_id"], self.resource.id)
+        store.assert_called_once()

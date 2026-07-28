@@ -33,6 +33,11 @@ urlpatterns = [
     path("api/recursos/crear-video/", create_resource_from_video, name="api_create_resource_from_video"),
     path("api/recursos/<int:resource_id>/infografia/", upload_resource_infographic, name="api_resource_infographic_upload"),
     path(
+        "api/recursos/slug/<slug:slug>/infografia/",
+        upload_resource_infographic,
+        name="api_resource_infographic_upload_by_slug",
+    ),
+    path(
         "api/publicacion/<int:item_id>/",
         publication_item_status,
         name="api_publication_item_status",
