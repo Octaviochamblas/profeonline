@@ -123,7 +123,8 @@ def _editorial_package():
             "description": "Guía creada por Codex.",
             "content": (
                 "## Resumen inicial\n\nSe estudian circuitos y capacitores para relacionar carga, potencial y energía.\n\n"
-                "## Explicación completa\n\n### Explicación formal\n\nLa relación $C=Q/V$ define la capacitancia a partir de la carga y la diferencia de potencial.\n\n### Explicación en palabras simples\n\nUn capacitor almacena carga y energía al establecer una diferencia de potencial entre conductores.\n\n"
+                "## Explicación formal\n\nLa relación $C=Q/V$ define la capacitancia a partir de la carga y la diferencia de potencial.\n\n"
+                "## Explicación en palabras simples\n\nUn capacitor almacena carga y energía al establecer una diferencia de potencial entre conductores.\n\n"
                 "## Definiciones clave\n\nLa capacitancia relaciona carga almacenada y diferencia de potencial en un sistema.\n\n"
                 "## Propiedades y relaciones importantes\n\nCarga, voltaje, energía y capacitancia describen magnitudes distintas y no se intercambian.\n\n"
                 "## Ejemplo guiado\n\nCon los datos de carga y voltaje se identifica la relación adecuada y se revisan sus unidades.\n\n"

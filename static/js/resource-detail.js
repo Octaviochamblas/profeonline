@@ -89,7 +89,8 @@
   function blockKind(heading) {
     var value = normalizedHeading(heading);
     if (value.indexOf("resumen") === 0) return "summary";
-    if (value.indexOf("explicacion completa") === 0) return "explanation";
+    if (value.indexOf("explicacion formal") === 0) return "formal";
+    if (value.indexOf("explicacion en palabras simples") === 0) return "plain";
     if (value.indexOf("definiciones") === 0) return "definitions";
     if (value.indexOf("propiedades") === 0) return "properties";
     if (value.indexOf("ejemplo") === 0) return "example";
@@ -97,22 +98,6 @@
     if (value.indexOf("errores") === 0) return "errors";
     if (value.indexOf("al terminar") === 0) return "closing";
     return "default";
-  }
-
-  function wrapExplanationSubsections(section) {
-    var headings = Array.prototype.slice.call(section.querySelectorAll(":scope > h3"));
-    headings.forEach(function (heading) {
-      var subsection = document.createElement("div");
-      var kind = normalizedHeading(heading.textContent).indexOf("formal") !== -1
-        ? "formal"
-        : "plain";
-      subsection.className = "resource-content-subsection resource-content-subsection--" + kind;
-      section.insertBefore(subsection, heading);
-      subsection.appendChild(heading);
-      while (subsection.nextSibling && subsection.nextSibling.tagName !== "H3") {
-        subsection.appendChild(subsection.nextSibling);
-      }
-    });
   }
 
   function initContentBlocks(content) {
@@ -133,7 +118,6 @@
       while (section.nextSibling && section.nextSibling.tagName !== "H2") {
         section.appendChild(section.nextSibling);
       }
-      if (kind === "explanation") wrapExplanationSubsections(section);
       sections.push(section);
     });
 

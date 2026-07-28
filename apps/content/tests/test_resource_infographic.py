@@ -53,7 +53,7 @@ class ResourceInfographicTests(TestCase):
         )
 
         self.assertContains(response, "data-resource-content")
-        self.assertContains(response, "js/resource-detail.js?v=2")
+        self.assertContains(response, "js/resource-detail.js?v=3")
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
     @mock.patch("apps.content.views.api_video._store_infographic_for_resource")
@@ -85,9 +85,9 @@ class ResourceInfographicTests(TestCase):
             [
                 "## Resumen inicial\nResumen concreto del orden de enteros.",
                 (
-                    "## Explicación completa\n### Explicación formal\n"
+                    "## Explicación formal\n"
                     "Los enteros se comparan por su posición.\n"
-                    "### Explicación en palabras simples\n"
+                    "## Explicación en palabras simples\n"
                     "Más a la derecha significa mayor."
                 ),
                 "## Definiciones clave\nUn entero puede ser negativo, cero o positivo.",
@@ -156,8 +156,8 @@ class ResourceInfographicTests(TestCase):
             [
                 "## Resumen inicial\nResumen concreto.",
                 (
-                    "## Explicación completa\n### Explicación formal\n"
-                    "Explicación concreta.\n### Explicación en palabras simples\n"
+                    "## Explicación formal\n"
+                    "Explicación concreta.\n## Explicación en palabras simples\n"
                     "Lectura cotidiana concreta."
                 ),
                 "## Definiciones clave\nDefinición concreta.",
@@ -198,9 +198,9 @@ class ResourceInfographicTests(TestCase):
             [
                 r"## Resumen inicial\nCompara $<$ o $>$ sin mezclar delimitadores.",
                 (
-                    "## Explicación completa\n### Explicación formal\n"
+                    "## Explicación formal\n"
                     r"También distingue $\leq$ o $\geq$."
-                    "\n### Explicación en palabras simples\n"
+                    "\n## Explicación en palabras simples\n"
                     "Compara límites en lenguaje cotidiano."
                 ),
                 "## Definiciones clave\nOrden y comparación.",

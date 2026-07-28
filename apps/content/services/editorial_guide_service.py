@@ -9,17 +9,14 @@ from django.urls import reverse
 
 REQUIRED_GUIDE_SECTIONS = (
     "Resumen inicial",
-    "Explicación completa",
+    "Explicación formal",
+    "Explicación en palabras simples",
     "Definiciones clave",
     "Propiedades y relaciones importantes",
     "Ejemplo guiado",
     "Procedimiento",
     "Errores frecuentes y cómo corregirlos",
     "Al terminar debes poder",
-)
-REQUIRED_EXPLANATION_SUBSECTIONS = (
-    "Explicación formal",
-    "Explicación en palabras simples",
 )
 FINAL_HEADING = "## Al terminar debes poder"
 INFOGRAPHIC_MARKDOWN = re.compile(
@@ -47,21 +44,6 @@ def validate_guide_structure(content: str) -> None:
         )
         if not match or not match.group(1).strip():
             raise ValueError(f"La sección '{heading}' no puede estar vacía.")
-    explanation = re.search(
-        r"^##\s+Explicación completa\s*$\n(.*?)(?=^##\s|\Z)",
-        content,
-        flags=re.MULTILINE | re.DOTALL,
-    )
-    explanation_headings = (
-        re.findall(r"^###\s+(.+?)\s*$", explanation.group(1), flags=re.MULTILINE)
-        if explanation
-        else []
-    )
-    if explanation_headings != list(REQUIRED_EXPLANATION_SUBSECTIONS):
-        raise ValueError(
-            "La sección 'Explicación completa' debe contener, en este orden, "
-            "'Explicación formal' y 'Explicación en palabras simples'."
-        )
 
 
 def validate_closing(content: str) -> None:
