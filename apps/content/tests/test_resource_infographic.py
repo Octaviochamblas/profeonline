@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Resource
+from apps.content.models import Question, Resource
 
 
 class _BucketBody:
@@ -119,3 +119,49 @@ class ResourceInfographicTests(TestCase):
         self.resource.refresh_from_db()
         self.assertTrue(self.resource.content.startswith("## Resumen inicial"))
         self.assertEqual(self.resource.questions.count(), 30)
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    def test_editorial_api_can_update_content_without_replacing_questions(self):
+        Question.objects.create(
+            resource=self.resource,
+            level=1,
+            mode="ambas",
+            text="Pregunta histórica",
+            explanation="Explicación histórica",
+            status="publicada",
+        )
+        guide = "\n\n".join(
+            [
+                "## Resumen inicial\nResumen concreto.",
+                "## Explicación completa\nExplicación concreta.",
+                "## Definiciones clave\nDefinición concreta.",
+                "## Diferencias que no debes confundir\nDiferencia concreta.",
+                "## Ejemplo guiado\nEjemplo concreto.",
+                "## Procedimiento\nProcedimiento concreto.",
+                "## Errores frecuentes\nError concreto.",
+                (
+                    "## Al terminar debes poder\nComparar enteros negativos, cero y "
+                    "positivos mediante su posición en la recta numérica, escoger el "
+                    "signo de orden adecuado y comprobar el resultado verificando cuál "
+                    "valor queda a la izquierda y cuál queda a la derecha."
+                ),
+            ]
+        )
+        url = reverse(
+            "content:api_resource_editorial_refresh_by_slug",
+            kwargs={"slug": self.resource.slug},
+        )
+        response = self.client.post(
+            url,
+            data={
+                "replace_questions": False,
+                "metadata": {"resource_description": "Descripción renovada."},
+                "guide": {"content": guide},
+            },
+            content_type="application/json",
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["questions"], "preserved")
+        self.assertEqual(self.resource.questions.count(), 1)

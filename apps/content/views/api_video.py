@@ -33,6 +33,7 @@ from apps.content.services.publication_pipeline_service import (
     apply_editorial_package,
     apply_question_package,
     finalize_publication,
+    validate_editorial_content,
     validate_editorial_package,
 )
 from apps.content.services.editorial_asset_service import upload_infographic
@@ -461,8 +462,13 @@ def refresh_direct_resource_editorial(request, slug):
     metadata.setdefault("guide_title", f"Guia: {resource.title}")
     metadata.setdefault("pedagogical_document", description)
     payload["metadata"] = metadata
+    replace_questions = payload.get("replace_questions", True) is not False
     try:
-        package = validate_editorial_package(payload)
+        package = (
+            validate_editorial_package(payload)
+            if replace_questions
+            else validate_editorial_content(payload)
+        )
         validate_guide_structure(package["guide"]["content"])
         validate_closing(package["guide"]["content"])
     except (PipelineError, ValueError) as exc:
@@ -470,7 +476,7 @@ def refresh_direct_resource_editorial(request, slug):
 
     history = _direct_resource_history(resource)
     blocked = {name: count for name, count in history.items() if count}
-    if blocked:
+    if replace_questions and blocked:
         return JsonResponse(
             {
                 "ok": False,
@@ -480,45 +486,47 @@ def refresh_direct_resource_editorial(request, slug):
             status=409,
         )
 
-    Question.objects.filter(resource=resource).delete()
-    created_questions = Question.objects.bulk_create(
-        [
-            Question(
-                resource=resource,
-                level=item["level"],
-                mode="ambas",
-                text=item["text"],
-                explanation=item["explanation"],
-                status="publicada",
-                order=order,
-                generation_key=hashlib.sha256(
-                    f"{resource.slug}:{item['level']}:{item['text']}".encode("utf-8")
-                ).hexdigest(),
-                audit_data={
-                    "accepted": True,
-                    "source": "direct_resource_editorial_api",
-                    "cognitive_type": item["cognitive_type"],
-                },
-            )
-            for order, item in enumerate(package["questions"], start=1)
-        ]
-    )
-    Choice.objects.bulk_create(
-        [
-            Choice(
-                question=question,
-                text=choice["text"],
-                is_correct=choice["is_correct"],
-                order=choice_order,
-            )
-            for question, item in zip(
-                created_questions,
-                package["questions"],
-                strict=True,
-            )
-            for choice_order, choice in enumerate(item["choices"], start=1)
-        ]
-    )
+    created_questions = []
+    if replace_questions:
+        Question.objects.filter(resource=resource).delete()
+        created_questions = Question.objects.bulk_create(
+            [
+                Question(
+                    resource=resource,
+                    level=item["level"],
+                    mode="ambas",
+                    text=item["text"],
+                    explanation=item["explanation"],
+                    status="publicada",
+                    order=order,
+                    generation_key=hashlib.sha256(
+                        f"{resource.slug}:{item['level']}:{item['text']}".encode("utf-8")
+                    ).hexdigest(),
+                    audit_data={
+                        "accepted": True,
+                        "source": "direct_resource_editorial_api",
+                        "cognitive_type": item["cognitive_type"],
+                    },
+                )
+                for order, item in enumerate(package["questions"], start=1)
+            ]
+        )
+        Choice.objects.bulk_create(
+            [
+                Choice(
+                    question=question,
+                    text=choice["text"],
+                    is_correct=choice["is_correct"],
+                    order=choice_order,
+                )
+                for question, item in zip(
+                    created_questions,
+                    package["questions"],
+                    strict=True,
+                )
+                for choice_order, choice in enumerate(item["choices"], start=1)
+            ]
+        )
     resource.content = package["guide"]["content"]
     resource.description = package["metadata"]["resource_description"]
     resource.save(update_fields=["content", "description"])
@@ -526,7 +534,7 @@ def refresh_direct_resource_editorial(request, slug):
         {
             "ok": True,
             "resource_id": resource.id,
-            "questions": len(created_questions),
+            "questions": len(created_questions) if replace_questions else "preserved",
             "history": history,
         }
     )
