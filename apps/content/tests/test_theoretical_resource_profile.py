@@ -5,6 +5,7 @@ from django.test import SimpleTestCase
 from apps.content.services.editorial_guide_service import THEORETICAL_RESOURCE_PROFILE
 from apps.content.services.publication_pipeline_service import (
     PipelineError,
+    has_malformed_math,
     validate_editorial_content,
 )
 
@@ -161,6 +162,14 @@ def _package():
 
 
 class TheoreticalResourceProfileTests(SimpleTestCase):
+    def test_display_math_does_not_shift_following_inline_delimiters(self):
+        content = (
+            r"Definición: $$\frac{a}{b},\qquad a,b\in\mathbb Z,\quad b\neq0.$$ "
+            r"En $\frac{a}{b}$, $a$ es el numerador y $b$ es el denominador."
+        )
+
+        self.assertFalse(has_malformed_math(content))
+
     def test_accepts_complete_theoretical_profile(self):
         normalized = validate_editorial_content(_package())
 

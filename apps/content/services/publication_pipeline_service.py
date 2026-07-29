@@ -57,7 +57,7 @@ COSMETIC_QUESTION_PREFIXES = (
     "en una evaluacion donde debes justificar tu eleccion",
     "al transferir lo aprendido a un ejercicio nuevo",
 )
-INLINE_MATH_SPAN = re.compile(r"\$(?!\$)([^$\n]+)\$(?!\$)")
+INLINE_MATH_SPAN = re.compile(r"(?<!\$)\$(?!\$)([^$\n]+)(?<!\$)\$(?!\$)")
 BARE_KATEX_COMMAND = re.compile(
     r"(?<!\\)\b(?:leq|geq|ldots|neq|square|circ|mathrm)\b",
     re.IGNORECASE,
