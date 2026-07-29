@@ -29,6 +29,27 @@ REQUIRED_GUIDE_SECTIONS = (
     "Errores frecuentes y cómo corregirlos",
     "Al terminar debes poder",
 )
+THEORETICAL_RESOURCE_PROFILE = "teorico-interactivo-v1"
+THEORETICAL_SUMMARY_BLOCKS = (
+    "Pregunta de activación",
+    "Propósito",
+    "Antes de comenzar",
+    "Recorrido",
+)
+THEORETICAL_EXAMPLE_BLOCKS = (
+    "1. Qué se hace",
+    "2. Por qué se hace así",
+    "3. Qué regla lo permite",
+    "4. Cómo se comprueba",
+)
+THEORETICAL_PROCEDURE_BLOCKS = (
+    "Método general",
+    "Variaciones que debes reconocer",
+)
+THEORETICAL_ERROR_BLOCKS = (
+    "No confundir",
+    "Errores frecuentes",
+)
 FINAL_HEADING = "## Al terminar debes poder"
 DEFINITIONS_HEADING = "## Definiciones clave"
 INFOGRAPHIC_MARKDOWN = re.compile(
@@ -64,6 +85,77 @@ def validate_guide_structure(content: str) -> None:
         )
         if not match or not match.group(1).strip():
             raise ValueError(f"La sección '{heading}' no puede estar vacía.")
+
+
+def _section_content(content: str, heading: str) -> str:
+    match = re.search(
+        rf"^##\s+{re.escape(heading)}\s*$\n(.*?)(?=^##\s|\Z)",
+        content,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    return match.group(1).strip() if match else ""
+
+
+def _subsection_headings(content: str) -> list[str]:
+    return re.findall(r"^###\s+(.+?)\s*$", content, flags=re.MULTILINE)
+
+
+def _require_subsections(content: str, expected: tuple[str, ...], label: str) -> None:
+    if _subsection_headings(content) != list(expected):
+        names = ", ".join(f"'{name}'" for name in expected)
+        raise ValueError(f"{label} debe contener {names} en ese orden.")
+
+
+def validate_theoretical_resource_profile(
+    content: str,
+    profile: str,
+    checkpoints: list[dict] | None,
+) -> None:
+    if not profile:
+        return
+    if profile != THEORETICAL_RESOURCE_PROFILE:
+        raise ValueError(
+            f"Perfil teórico desconocido; usa guide.profile='{THEORETICAL_RESOURCE_PROFILE}'."
+        )
+    if _sections(content) != list(REQUIRED_GUIDE_SECTIONS):
+        raise ValueError("El perfil teórico exige el orden canónico vigente.")
+    if re.search(
+        r"\[\[(?:COMPLETAR|PENDIENTE|TEMA|EJEMPLO)(?::[^\]]*)?\]\]|\bPLACEHOLDER\b|^TODO:",
+        content,
+        flags=re.MULTILINE,
+    ):
+        raise ValueError("La guía teórica contiene marcadores sin completar.")
+
+    summary = _section_content(content, "Resumen inicial")
+    plain = _section_content(content, "Explicación en palabras simples")
+    formal = _section_content(content, "Explicación formal")
+    example = _section_content(content, "Ejemplo guiado")
+    procedure = _section_content(content, "Procedimiento")
+    errors = _section_content(content, "Errores frecuentes y cómo corregirlos")
+    _require_subsections(summary, THEORETICAL_SUMMARY_BLOCKS, "Resumen inicial")
+    _require_subsections(example, THEORETICAL_EXAMPLE_BLOCKS, "Ejemplo guiado")
+    _require_subsections(procedure, THEORETICAL_PROCEDURE_BLOCKS, "Procedimiento")
+    _require_subsections(errors, THEORETICAL_ERROR_BLOCKS, "Errores frecuentes")
+
+    activation = re.search(
+        r"^### Pregunta de activación\s*$\n(.*?)(?=^###\s)",
+        summary,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if not activation or not re.search(r"[?¿]", activation.group(1)):
+        raise ValueError("La activación debe formular una pregunta real.")
+    if len(plain.split()) < 30:
+        raise ValueError("La explicación sencilla debe desarrollar una interpretación comprensible.")
+    formal_signal = re.compile(
+        r"(?<!\\)\$|\b(definición|se define|regla|principio|ley|teorema|criterio|convención|notación)\b",
+        flags=re.IGNORECASE,
+    )
+    if len(formal.split()) < 30 or not formal_signal.search(formal):
+        raise ValueError(
+            "La explicación formal debe incluir una definición, regla, principio, criterio o notación."
+        )
+    if checkpoints is None:
+        raise ValueError("El perfil teórico exige exactamente tres comprobaciones intermedias.")
 
 
 def validate_closing(content: str) -> None:

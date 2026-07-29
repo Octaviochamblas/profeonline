@@ -46,6 +46,11 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
 - **Login con Google:** allauth, credenciales en `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
 - **CSP:** con nonce por petición (`apps/core/middleware.py`).
 - **Auditorías:** vigentes en `docs/auditorias/`; las antiguas en `docs/auditorias/_archivo-2026-05-30/`.
+- **Recursos teóricos:** la API reconoce el perfil versionado
+  `guide.profile="teorico-interactivo-v1"` y debe validar su estructura, tres
+  comprobaciones y briefs visuales. Contrato backend en
+  `docs/gobernanza/estandar-editorial-recursos-teoricos.md`; plantilla de autoría
+  en el repo hermano `profeonline-uploader/docs/estandar-recurso-teorico-interactivo.md`.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 

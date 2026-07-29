@@ -21,8 +21,10 @@ from apps.content.models import (
 )
 from apps.content.services.editorial_guide_service import (
     has_current_infographic,
+    THEORETICAL_RESOURCE_PROFILE,
     validate_closing,
     validate_guide_structure,
+    validate_theoretical_resource_profile,
 )
 from apps.content.services.reading_checkpoint_service import (
     normalize_reading_checkpoints,
@@ -98,6 +100,39 @@ def _normalized_reading_checkpoints(guide):
     return checkpoints
 
 
+THEORETICAL_INFOGRAPHIC_COVERAGE = (
+    "resumen",
+    "definiciones",
+    "formulas_relaciones",
+    "ejemplo",
+    "procedimiento",
+    "errores",
+    "sintesis_final",
+)
+
+
+def _validate_theoretical_visual_briefs(payload, profile):
+    if profile != THEORETICAL_RESOURCE_PROFILE:
+        return
+    concept_image = payload.get("concept_image")
+    infographic = payload.get("infographic")
+    formal = normalize_text(
+        concept_image.get("formal_summary", "") if isinstance(concept_image, dict) else ""
+    )
+    plain = normalize_text(
+        concept_image.get("plain_language_summary", "") if isinstance(concept_image, dict) else ""
+    )
+    if len(formal.split()) < 8 or len(plain.split()) < 8:
+        raise PipelineError(
+            "El perfil teórico exige briefs completos para la explicación formal y sencilla."
+        )
+    coverage = infographic.get("coverage") if isinstance(infographic, dict) else None
+    if coverage != list(THEORETICAL_INFOGRAPHIC_COVERAGE):
+        raise PipelineError(
+            "La infografía del perfil teórico debe cubrir el recurso completo en el orden canónico."
+        )
+
+
 class PipelineError(RuntimeError):
     pass
 
@@ -157,6 +192,14 @@ def validate_editorial_package(payload):
             "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
         )
     checkpoints = _normalized_reading_checkpoints(guide)
+    profile = normalize_text(guide.get("profile", ""))
+    try:
+        validate_guide_structure(guide["content"])
+        validate_closing(guide["content"])
+        validate_theoretical_resource_profile(guide["content"], profile, checkpoints)
+    except ValueError as exc:
+        raise PipelineError(str(exc)) from exc
+    _validate_theoretical_visual_briefs(payload, profile)
     if not isinstance(questions, list) or len(questions) != EDITORIAL_QUESTION_TOTAL:
         raise PipelineError(
             f"El paquete debe contener exactamente {EDITORIAL_QUESTION_TOTAL} preguntas."
@@ -265,6 +308,8 @@ def validate_editorial_package(payload):
         "description": normalize_text(guide.get("description", "")),
         "content": normalize_text(guide["content"]),
     }
+    if profile:
+        normalized_guide["profile"] = profile
     if checkpoints is not None:
         normalized_guide["checkpoints"] = checkpoints
     return {
@@ -297,11 +342,14 @@ def validate_editorial_content(payload):
             "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
         )
     checkpoints = _normalized_reading_checkpoints(guide)
+    profile = normalize_text(guide.get("profile", ""))
     try:
         validate_guide_structure(content)
         validate_closing(content)
+        validate_theoretical_resource_profile(content, profile, checkpoints)
     except ValueError as exc:
         raise PipelineError(str(exc)) from exc
+    _validate_theoretical_visual_briefs(payload, profile)
     normalized_metadata = {key: normalize_text(metadata[key]) for key in required_metadata}
     normalized_metadata["thumbnail_title"] = normalize_text(
         metadata.get("thumbnail_title", metadata["resource_title"])
@@ -312,6 +360,8 @@ def validate_editorial_content(payload):
         "description": normalize_text(guide.get("description", "")),
         "content": content,
     }
+    if profile:
+        normalized_guide["profile"] = profile
     if checkpoints is not None:
         normalized_guide["checkpoints"] = checkpoints
     return {
