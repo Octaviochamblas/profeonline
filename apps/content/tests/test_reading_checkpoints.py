@@ -123,7 +123,10 @@ class ReadingCheckpointTests(TestCase):
             data=json.dumps(
                 {
                     "replace_questions": False,
-                    "metadata": {"resource_description": "Descripción renovada."},
+                    "metadata": {
+                        "resource_title": "Valor absoluto renovado",
+                        "resource_description": "Descripción renovada.",
+                    },
                     "guide": {"content": _guide(), "checkpoints": _checkpoints()},
                 }
             ),
@@ -133,6 +136,8 @@ class ReadingCheckpointTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.resource.refresh_from_db()
+        self.assertEqual(self.resource.title, "Valor absoluto renovado")
+        self.assertEqual(self.resource.description, "Descripción renovada.")
         self.assertEqual(len(self.resource.reading_checkpoints), 3)
         self.assertEqual(response.json()["questions"], "preserved")
 

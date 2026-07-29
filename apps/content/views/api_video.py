@@ -616,9 +616,10 @@ def refresh_direct_resource_editorial(request, slug):
                 for choice_order, choice in enumerate(item["choices"], start=1)
             ]
         )
+    resource.title = package["metadata"]["resource_title"]
     resource.content = content
     resource.description = package["metadata"]["resource_description"]
-    update_fields = ["content", "description"]
+    update_fields = ["title", "content", "description"]
     if "checkpoints" in package["guide"]:
         resource.reading_checkpoints = package["guide"]["checkpoints"]
         update_fields.append("reading_checkpoints")

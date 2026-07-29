@@ -170,6 +170,11 @@ class TheoreticalResourceProfileTests(SimpleTestCase):
 
         self.assertFalse(has_malformed_math(content))
 
+    def test_rejects_bare_katex_commands_and_control_characters(self):
+        self.assertTrue(has_malformed_math(r"$2{,}6cdot0{,}4$"))
+        self.assertTrue(has_malformed_math("$2{,}6\x0crac{4}{10}$"))
+        self.assertFalse(has_malformed_math(r"$2{,}6\cdot0{,}4$"))
+
     def test_accepts_complete_theoretical_profile(self):
         normalized = validate_editorial_content(_package())
 

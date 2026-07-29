@@ -59,7 +59,8 @@ COSMETIC_QUESTION_PREFIXES = (
 )
 INLINE_MATH_SPAN = re.compile(r"(?<!\$)\$(?!\$)([^$\n]+)(?<!\$)\$(?!\$)")
 BARE_KATEX_COMMAND = re.compile(
-    r"(?<!\\)\b(?:leq|geq|ldots|neq|square|circ|mathrm)\b",
+    r"(?<![\\A-Za-z])(?:cdot|times|div|frac|approx|leq|geq|ldots|neq|square|circ|"
+    r"mathrm|operatorname|overline|mathbb|qquad|quad)(?![A-Za-z])",
     re.IGNORECASE,
 )
 PROSE_IN_MATH = re.compile(
@@ -70,7 +71,10 @@ PROSE_IN_MATH = re.compile(
 
 def has_malformed_math(value):
     """Revisa cada bloque inline sin confundir el cierre de uno con el inicio de otro."""
-    for match in INLINE_MATH_SPAN.finditer(normalize_text(value)):
+    normalized = normalize_text(value)
+    if re.search(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", normalized):
+        return True
+    for match in INLINE_MATH_SPAN.finditer(normalized):
         body = match.group(1)
         if BARE_KATEX_COMMAND.search(body):
             return True
