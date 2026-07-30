@@ -91,7 +91,9 @@ class ResourceInfographicTests(TestCase):
         )
 
         self.assertContains(response, "data-resource-content")
-        self.assertContains(response, "css/estilos.css?v=42")
+        self.assertContains(response, 'class="container resource-page-shell"')
+        self.assertNotContains(response, 'class="container content-wrapper"')
+        self.assertContains(response, "css/estilos.css?v=43")
         self.assertContains(response, "js/quiz-player.js?v=3")
         self.assertContains(response, "js/resource-detail.js?v=8")
 
