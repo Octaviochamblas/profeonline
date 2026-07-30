@@ -4655,16 +4655,27 @@ body.quiz-open .whatsapp-float {
 /* ===================================================================== */
 .resource-view {
     max-width: 760px;
+    width: 100%;
     margin: 0 auto;
     gap: 1.25rem;
     /* .stack es grid; fija la columna para que ningún hijo ancho (título con
        "/", contenido largo) provoque scroll horizontal en móvil. */
     grid-template-columns: minmax(0, 1fr);
 }
+.resource-view > *,
+.resource-view__content,
+.resource-content-block,
+.resource-editorial-figure,
+.resource-reading-checkpoint {
+    min-width: 0;
+    max-width: 100%;
+}
 .resource-view__title {
     overflow-wrap: anywhere;
 }
 .resource-view__content {
+    width: 100%;
+    overflow-x: clip;
     overflow-wrap: break-word;
 }
 .resource-view__back {
@@ -4789,6 +4800,21 @@ body.quiz-open .whatsapp-float {
 }
 .resource-view__content li + li {
     margin-top: 0.35rem;
+}
+.resource-view__content .katex-display {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.15rem 0 0.35rem;
+    -webkit-overflow-scrolling: touch;
+}
+.resource-view__content :not(.katex-display) > .katex {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    vertical-align: -0.2em;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Secciones pedagógicas: el Markdown sigue limpio y JS agrupa cada encabezado ##. */
@@ -4974,13 +5000,16 @@ body.quiz-open .whatsapp-float {
 }
 @media (max-width: 560px) {
     .resource-content-block {
-        padding: 1rem;
+        padding: 0.9rem;
     }
     .resource-reading-checkpoint {
-        padding: 1rem;
+        padding: 0.9rem;
     }
     .resource-reading-checkpoint__choices {
         grid-template-columns: 1fr;
+    }
+    .resource-view__content .katex {
+        font-size: 0.95em;
     }
 }
 
