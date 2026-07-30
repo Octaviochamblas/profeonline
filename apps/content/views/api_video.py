@@ -577,7 +577,6 @@ def refresh_direct_resource_editorial(request, slug):
 
     publication_item = (
         PublicationItem.objects.select_for_update()
-        .select_related("canonical_guide")
         .filter(resource=resource)
         .order_by("-updated_at")
         .first()
