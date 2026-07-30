@@ -34,6 +34,18 @@ La validación vive en:
 El perfil no se persiste en `Resource`: identifica y valida el contrato del paquete.
 Las comprobaciones normalizadas se guardan en `Resource.reading_checkpoints`.
 
+## Orden visible de alternativas
+
+El orden de autoría o persistencia de las alternativas no tiene significado
+pedagógico y nunca debe permitir inferir la respuesta correcta. La interfaz
+baraja las cuatro alternativas una sola vez al cargar cada comprobación,
+práctica o evaluación. Una recarga genera un orden nuevo, pero el orden se
+mantiene estable mientras el estudiante responde.
+
+El barajado sólo mueve elementos visuales: conserva el identificador y el valor
+de cada alternativa, por lo que la corrección y el historial continúan
+asociándose a la opción seleccionada, no a las letras A, B, C o D.
+
 Los paquetes históricos sin perfil continúan aceptándose para mantenimiento. Un
 perfil desconocido se rechaza. No se debe eliminar esta compatibilidad sin una
 migración editorial explícita del catálogo.

@@ -114,6 +114,17 @@
     });
   }
 
+  function shuffledCopy(items) {
+    var result = Array.prototype.slice.call(items || []);
+    for (var i = result.length - 1; i > 0; i -= 1) {
+      var randomIndex = Math.floor(Math.random() * (i + 1));
+      var current = result[i];
+      result[i] = result[randomIndex];
+      result[randomIndex] = current;
+    }
+    return result;
+  }
+
   function checkpointCard(checkpoint, index) {
     var card = document.createElement("section");
     card.className = "resource-reading-checkpoint";
@@ -149,7 +160,9 @@
     retry.textContent = "Intentar nuevamente";
     retry.hidden = true;
 
-    var buttons = checkpoint.choices.map(function (choice, choiceIndex) {
+    // El orden editorial no debe revelar la respuesta: se baraja una vez por carga.
+    var orderedChoices = shuffledCopy(checkpoint.choices);
+    var buttons = orderedChoices.map(function (choice, choiceIndex) {
       var button = document.createElement("button");
       button.type = "button";
       button.className = "resource-reading-checkpoint__choice";

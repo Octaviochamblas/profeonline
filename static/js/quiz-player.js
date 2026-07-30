@@ -54,6 +54,23 @@
       .some(answerIsPresent);
   }
 
+  function shuffleChoiceGroups(player) {
+    player.querySelectorAll(".quiz-choices").forEach(function (group) {
+      if (group.dataset.choiceOrderReady === "1") return;
+      var choices = Array.prototype.slice
+        .call(group.children)
+        .filter(function (element) { return element.classList.contains("quiz-choice"); });
+      for (var i = choices.length - 1; i > 0; i -= 1) {
+        var randomIndex = Math.floor(Math.random() * (i + 1));
+        var current = choices[i];
+        choices[i] = choices[randomIndex];
+        choices[randomIndex] = current;
+      }
+      choices.forEach(function (choice) { group.appendChild(choice); });
+      group.dataset.choiceOrderReady = "1";
+    });
+  }
+
   /* ---- Apertura / cierre ---- */
 
   function openPlayer() {
@@ -185,6 +202,8 @@
 
     var player = getPlayer();
     if (player && getSlides(player).length) {
+      // Conserva IDs y valores; sólo cambia la posición visible en cada carga.
+      shuffleChoiceGroups(player);
       player.setAttribute("data-quiz-index", "0");
       render(player);
     } else {
