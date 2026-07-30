@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Resource
+from apps.content.models import PublicationItem, QuizGuide, Resource
 from apps.content.services.reading_checkpoint_service import (
     normalize_reading_checkpoints,
 )
@@ -140,6 +140,52 @@ class ReadingCheckpointTests(TestCase):
         self.assertEqual(self.resource.description, "Descripción renovada.")
         self.assertEqual(len(self.resource.reading_checkpoints), 3)
         self.assertEqual(response.json()["questions"], "preserved")
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    def test_direct_editorial_api_synchronizes_publication_canonical_guide(self):
+        old_guide = QuizGuide.objects.create(
+            title="Guía antigua",
+            description="Descripción antigua.",
+            content_text="## Resumen inicial\nContenido antiguo.",
+            canonical_resource=self.resource,
+        )
+        item = PublicationItem.objects.create(
+            batch_id="checkpoint-sync",
+            source_filename="video.mp4",
+            resource=self.resource,
+            canonical_guide=old_guide,
+            state=PublicationItem.STATE_PUBLISHED,
+            metadata={"resource_title": "Título antiguo"},
+        )
+
+        response = self.client.post(
+            reverse(
+                "content:api_resource_editorial_refresh_by_slug",
+                kwargs={"slug": self.resource.slug},
+            ),
+            data=json.dumps(
+                {
+                    "replace_questions": False,
+                    "metadata": {
+                        "resource_title": "Valor absoluto renovado",
+                        "resource_description": "Descripción renovada.",
+                        "guide_title": "Guía renovada",
+                    },
+                    "guide": {"content": _guide(), "checkpoints": _checkpoints()},
+                }
+            ),
+            content_type="application/json",
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.resource.refresh_from_db()
+        old_guide.refresh_from_db()
+        item.refresh_from_db()
+        self.assertEqual(self.resource.content, _guide())
+        self.assertEqual(old_guide.content_text, _guide())
+        self.assertEqual(old_guide.title, "Guía renovada")
+        self.assertEqual(item.metadata["resource_title"], "Valor absoluto renovado")
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
     def test_direct_editorial_api_dry_run_does_not_write(self):

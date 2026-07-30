@@ -575,6 +575,34 @@ def refresh_direct_resource_editorial(request, slug):
             }
         )
 
+    publication_item = (
+        PublicationItem.objects.select_for_update()
+        .select_related("canonical_guide")
+        .filter(resource=resource)
+        .order_by("-updated_at")
+        .first()
+    )
+    if publication_item and publication_item.canonical_guide_id:
+        guide = publication_item.canonical_guide
+        guide.title = package["metadata"]["guide_title"][:200]
+        guide.description = package["metadata"]["resource_description"][:300]
+        guide.content_text = content
+        guide.canonical_resource = resource
+        guide.save(
+            update_fields=[
+                "title",
+                "description",
+                "content_text",
+                "canonical_resource",
+                "updated_at",
+            ]
+        )
+        publication_item.metadata = {
+            **(publication_item.metadata or {}),
+            **package["metadata"],
+        }
+        publication_item.save(update_fields=["metadata", "updated_at"])
+
     created_questions = []
     if replace_questions:
         Question.objects.filter(resource=resource).delete()
