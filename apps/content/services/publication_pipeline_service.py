@@ -67,12 +67,34 @@ PROSE_IN_MATH = re.compile(
     r"\b(?:y|o|otra|saldo|cuenta|tiene)\b",
     re.IGNORECASE,
 )
+JOINED_LATEX_COMMAND = re.compile(
+    r"\\(?:partial|Delta|nabla|cdot|times|div|int|oint|sqrt)[A-Za-z]\b"
+    r"|\\(?:barv|impliest|impliesx|impliesy|qquadt|qquadv)\b"
+)
+MOJIBAKE_PATTERN = re.compile(r"(?:\ufffd|Ã.|Â.|â(?:€|€™|€œ|€|€“|€”))")
+INTERNAL_EDITORIAL_LABEL_PATTERN = re.compile(
+    r"^\s*(?:respuesta|distractor|alternativa\s+(?:correcta|incorrecta)|"
+    r"opci[oó]n\s+(?:correcta|incorrecta)|correcta|incorrecta)\b",
+    re.IGNORECASE | re.MULTILINE,
+)
+GENERIC_META_QUESTION_PATTERNS = (
+    re.compile(r"qué rol cumple la notación formal", re.IGNORECASE),
+    re.compile(r"qué lectura conceptual debe preceder al cálculo", re.IGNORECASE),
+    re.compile(r"qué señal indica que el planteamiento .* es coherente", re.IGNORECASE),
+    re.compile(
+        r"qué control final separa una respuesta plausible de una respuesta correcta",
+        re.IGNORECASE,
+    ),
+    re.compile(r"qué explicación muestra comprensión profunda", re.IGNORECASE),
+)
 
 
 def has_malformed_math(value):
     """Revisa cada bloque inline sin confundir el cierre de uno con el inicio de otro."""
     normalized = normalize_text(value)
     if re.search(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", normalized):
+        return True
+    if JOINED_LATEX_COMMAND.search(normalized):
         return True
     for match in INLINE_MATH_SPAN.finditer(normalized):
         body = match.group(1)
@@ -99,6 +121,8 @@ def _normalized_reading_checkpoints(guide):
                 *(choice["text"] for choice in checkpoint["choices"]),
             ]
         )
+    for index, value in enumerate(fields, start=1):
+        _validate_editorial_language(value, f"Comprobación intermedia, campo {index}")
     if any(has_malformed_math(value) for value in fields):
         raise PipelineError("Una comprobación intermedia contiene notación KaTeX inválida.")
     return checkpoints
@@ -135,10 +159,34 @@ def _validate_theoretical_visual_briefs(payload, profile):
         raise PipelineError(
             "La infografía del perfil teórico debe cubrir el recurso completo en el orden canónico."
         )
+    if (
+        concept_image.get("generation_method") != "ai-image-generation"
+        or infographic.get("generation_method") != "ai-image-generation"
+    ):
+        raise PipelineError(
+            "Las imágenes del perfil teórico deben declarar generation_method=ai-image-generation; "
+            "los renders de plantilla o script local no son activos finales."
+        )
 
 
 class PipelineError(RuntimeError):
     pass
+
+
+def _validate_editorial_language(value, label, *, question=False):
+    normalized = normalize_text(value)
+    if MOJIBAKE_PATTERN.search(normalized):
+        raise PipelineError(f"{label}: contiene texto con codificación dañada (mojibake).")
+    if INTERNAL_EDITORIAL_LABEL_PATTERN.search(normalized):
+        raise PipelineError(
+            f"{label}: contiene una etiqueta editorial interna visible como "
+            "Respuesta/Distractor/Correcta."
+        )
+    if question and any(pattern.search(normalized) for pattern in GENERIC_META_QUESTION_PATTERNS):
+        raise PipelineError(
+            f"{label}: usa un enunciado metacognitivo genérico de plantilla; "
+            "debe evaluar contenido matemático concreto."
+        )
 
 
 def editorial_quiz_counts():
@@ -191,6 +239,9 @@ def validate_editorial_package(payload):
         raise PipelineError(f"Metadata incompleta: {', '.join(missing)}.")
     if not isinstance(guide, dict) or not normalize_text(guide.get("content", "")):
         raise PipelineError("La guía editorial debe incluir content.")
+    for key in required_metadata:
+        _validate_editorial_language(metadata[key], f"Metadata {key}")
+    _validate_editorial_language(guide["content"], "Guía editorial")
     if has_malformed_math(guide["content"]):
         raise PipelineError(
             "La guia contiene un comando KaTeX sin barra o prosa dentro de delimitadores matematicos."
@@ -228,6 +279,8 @@ def validate_editorial_package(payload):
             raise PipelineError(f"Pregunta {index}: nivel o modo inválido.")
         if not text or not explanation:
             raise PipelineError(f"Pregunta {index}: faltan enunciado o explicación.")
+        _validate_editorial_language(text, f"Pregunta {index}, enunciado", question=True)
+        _validate_editorial_language(explanation, f"Pregunta {index}, explicación")
         fingerprint = _question_fingerprint(text)
         if fingerprint in seen:
             raise PipelineError(f"Pregunta {index}: enunciado duplicado.")
@@ -256,6 +309,10 @@ def validate_editorial_package(payload):
                     f"Pregunta {index}: alternativas vacías o duplicadas."
                 )
             choice_texts.add(choice_text.lower())
+            _validate_editorial_language(
+                choice_text,
+                f"Pregunta {index}, alternativa {choice_index}",
+            )
             correct_count += int(is_correct)
             normalized_choices.append(
                 {"text": choice_text, "is_correct": is_correct}
@@ -340,6 +397,9 @@ def validate_editorial_content(payload):
         raise PipelineError(f"Metadata incompleta: {', '.join(missing)}.")
     if not isinstance(guide, dict) or not normalize_text(guide.get("content", "")):
         raise PipelineError("La guía editorial debe incluir content.")
+    for key in required_metadata:
+        _validate_editorial_language(metadata[key], f"Metadata {key}")
+    _validate_editorial_language(guide["content"], "Guía editorial")
     content = normalize_text(guide["content"])
     if has_malformed_math(content):
         raise PipelineError(

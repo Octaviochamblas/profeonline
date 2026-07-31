@@ -22,6 +22,7 @@ from apps.content.services.publication_pipeline_service import (
     _generated_text,
     finalize_publication,
     process_publication_item,
+    validate_editorial_package,
 )
 
 TOKEN = "pipeline-test-token"
@@ -91,6 +92,7 @@ def _editorial_package():
     for level in (1, 2, 3):
         for number in range(1, 11):
             mode = "ambas"
+            correct_text = f"Relacionar las magnitudes del caso {level}-{number} con la regla aplicable"
             questions.append({
                     "level": level,
                     "mode": mode,
@@ -98,14 +100,14 @@ def _editorial_package():
                     "explanation": "Explicación suficiente y verificable.",
                     "cognitive_type": "comprension" if level == 1 else "aplicacion",
                     "choices": [
-                        {"text": f"Correcta {level}-{mode}-{number}", "is_correct": True},
-                        {"text": f"Distractor A {level}-{mode}-{number}", "is_correct": False},
-                        {"text": f"Distractor B {level}-{mode}-{number}", "is_correct": False},
-                        {"text": f"Distractor C {level}-{mode}-{number}", "is_correct": False},
+                        {"text": correct_text, "is_correct": True},
+                        {"text": f"Intercambiar las magnitudes del caso {level}-{number}", "is_correct": False},
+                        {"text": f"Omitir la condición de validez del caso {level}-{number}", "is_correct": False},
+                        {"text": f"Usar una unidad incompatible en el caso {level}-{number}", "is_correct": False},
                     ],
             })
             questions[-1]["explanation"] = (
-                f"La alternativa correcta es Correcta {level}-{mode}-{number}."
+                f"La alternativa correcta es {correct_text}."
             )
     return {
         "metadata": {
@@ -543,6 +545,26 @@ class PublicationPipelineApiTests(TestCase):
         )
         self.assertEqual(response.status_code, 409)
         self.assertIn("alternativa correcta", response.json()["error"])
+
+    def test_editorial_package_rejects_visible_template_artifacts(self):
+        package = _editorial_package()
+        package["questions"][0]["choices"][1]["text"] = (
+            "Distractor 1.1.1: aplicar una fórmula sin revisar condiciones"
+        )
+        with self.assertRaisesRegex(PipelineError, "etiqueta editorial interna"):
+            validate_editorial_package(package)
+
+        package = _editorial_package()
+        package["questions"][0]["text"] = (
+            "¿Qué rol cumple la notación formal en derivadas parciales?"
+        )
+        with self.assertRaisesRegex(PipelineError, "metacognitivo genérico"):
+            validate_editorial_package(package)
+
+        package = _editorial_package()
+        package["metadata"]["resource_description"] = "ExplicaciÃ³n con codificación dañada."
+        with self.assertRaisesRegex(PipelineError, "mojibake"):
+            validate_editorial_package(package)
 
     @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": TOKEN})
     def test_editorial_package_rejects_incomplete_matrix_without_writes(self):

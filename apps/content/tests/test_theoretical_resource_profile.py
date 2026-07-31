@@ -17,9 +17,9 @@ def _checkpoint(placement, number):
         "question": f"¿Qué opción aplica correctamente el criterio {number}?",
         "choices": [
             {"text": correct, "is_correct": True},
-            {"text": f"Distractor A {number}", "is_correct": False},
-            {"text": f"Distractor B {number}", "is_correct": False},
-            {"text": f"Distractor C {number}", "is_correct": False},
+            {"text": f"Aplicar el criterio opuesto en el caso {number}", "is_correct": False},
+            {"text": f"Omitir la condición principal en el caso {number}", "is_correct": False},
+            {"text": f"Usar un dato que no interviene en el caso {number}", "is_correct": False},
         ],
         "explanation": f"La alternativa correcta es {correct}, porque respeta la condición indicada.",
         "reinforcement_section": "Explicación formal",
@@ -144,10 +144,12 @@ def _package():
             ],
         },
         "concept_image": {
+            "generation_method": "ai-image-generation",
             "formal_summary": "Representa la definición formal, sus variables y todas las condiciones exactas de aplicación.",
             "plain_language_summary": "Muestra la misma relación mediante una situación sencilla para interpretar claramente cada elemento.",
         },
         "infographic": {
+            "generation_method": "ai-image-generation",
             "coverage": [
                 "resumen",
                 "definiciones",
@@ -174,6 +176,7 @@ class TheoreticalResourceProfileTests(SimpleTestCase):
         self.assertTrue(has_malformed_math(r"$2{,}6cdot0{,}4$"))
         self.assertTrue(has_malformed_math("$2{,}6\x0crac{4}{10}$"))
         self.assertFalse(has_malformed_math(r"$2{,}6\cdot0{,}4$"))
+        self.assertTrue(has_malformed_math(r"$\frac{\partialf}{\partialx}$"))
 
     def test_accepts_complete_theoretical_profile(self):
         normalized = validate_editorial_content(_package())
@@ -193,6 +196,13 @@ class TheoreticalResourceProfileTests(SimpleTestCase):
         del package["concept_image"]
 
         with self.assertRaisesRegex(PipelineError, "briefs completos"):
+            validate_editorial_content(package)
+
+    def test_rejects_template_render_as_final_visual_asset(self):
+        package = _package()
+        package["concept_image"]["generation_method"] = "local-template-render"
+
+        with self.assertRaisesRegex(PipelineError, "ai-image-generation"):
             validate_editorial_content(package)
 
     def test_legacy_content_without_profile_remains_supported(self):
