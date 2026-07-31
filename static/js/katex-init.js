@@ -32,10 +32,26 @@
     throwOnError: false,
   };
 
+  // KaTeX agrega "struts" internos para alinear sub/superíndices que
+  // desbordan 1-2px incluso en fórmulas cortas; eso no debe activar scroll.
+  // Solo marcamos como desbordada una fórmula que realmente no cabe.
+  var OVERFLOW_THRESHOLD_PX = 6;
+
+  function markOverflowingFormulas(root) {
+    if (!root || root.nodeType !== 1) return;
+    var nodes = root.querySelectorAll(".katex-display, :not(.katex-display) > .katex");
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      var overflows = el.scrollWidth - el.clientWidth > OVERFLOW_THRESHOLD_PX;
+      el.classList.toggle("katex-scroll", overflows);
+    }
+  }
+
   function renderMath(el) {
     if (el && el.nodeType === 1 && typeof window.renderMathInElement === "function") {
       try {
         window.renderMathInElement(el, OPTIONS);
+        markOverflowingFormulas(el);
       } catch (e) {
         /* nunca bloquear el render del resto de la página */
       }

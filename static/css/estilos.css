@@ -4806,10 +4806,9 @@ body.quiz-open .whatsapp-float {
 }
 .resource-view__content .katex-display {
     max-width: 100%;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
     padding: 0.15rem 0 0.35rem;
-    -webkit-overflow-scrolling: touch;
 }
 .resource-view__content :not(.katex-display) > .katex {
     display: inline-block;
@@ -4817,6 +4816,15 @@ body.quiz-open .whatsapp-float {
     overflow-x: hidden;
     overflow-y: hidden;
     vertical-align: -0.2em;
+}
+/* KaTeX deja ~1-2px de desborde interno (struts de alineación) incluso en
+   fórmulas cortas; overflow-x:auto incondicional mostraba la scrollbar
+   nativa del navegador ahí. JS (katex-init.js) mide el desborde real tras
+   renderizar y solo agrega esta clase cuando la fórmula de verdad no cabe. */
+.resource-view__content .katex-display.katex-scroll,
+.resource-view__content :not(.katex-display) > .katex.katex-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Secciones pedagógicas: el Markdown sigue limpio y JS agrupa cada encabezado ##. */
