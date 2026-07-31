@@ -145,6 +145,21 @@ class KatexWiringTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "vendor/katex/katex.min.css")
 
+    def test_short_katex_formulas_do_not_get_unconditional_scrollbars(self):
+        css = (settings.BASE_DIR / "static" / "css" / "estilos.css").read_text(
+            encoding="utf-8"
+        )
+        script = (settings.BASE_DIR / "static" / "js" / "katex-init.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn(":not(.katex-display) > .katex {", css)
+        self.assertIn("overflow-x: hidden;", css)
+        self.assertIn(".katex.katex-scroll {", css)
+        self.assertIn("OVERFLOW_THRESHOLD_PX = 6", script)
+        self.assertIn("el.scrollWidth - el.clientWidth > OVERFLOW_THRESHOLD_PX", script)
+        self.assertIn('el.classList.toggle("katex-scroll", overflows)', script)
+
 
 class AdminNavigationTests(TestCase):
     def setUp(self):
