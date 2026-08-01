@@ -238,7 +238,7 @@ class ResourceInfographicTests(TestCase):
         questions = []
         for level in (1, 2, 3):
             for number in range(1, 11):
-                correct = f"Respuesta correcta N{level}-{number}"
+                correct = f"Valor correcto N{level}-{number}"
                 questions.append(
                     {
                         "level": level,
@@ -248,9 +248,9 @@ class ResourceInfographicTests(TestCase):
                         "cognitive_type": "comprension",
                         "choices": [
                             {"text": correct, "is_correct": True},
-                            {"text": f"Distractor A N{level}-{number}", "is_correct": False},
-                            {"text": f"Distractor B N{level}-{number}", "is_correct": False},
-                            {"text": f"Distractor C N{level}-{number}", "is_correct": False},
+                            {"text": f"Valor plausible A N{level}-{number}", "is_correct": False},
+                            {"text": f"Valor plausible B N{level}-{number}", "is_correct": False},
+                            {"text": f"Valor plausible C N{level}-{number}", "is_correct": False},
                         ],
                     }
                 )
