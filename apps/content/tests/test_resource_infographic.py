@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.content.models import Choice, Question, Resource
+from apps.content.models import Choice, PublicationItem, Question, Resource
 from apps.content.services.editorial_guide_service import (
     insert_concept_image_after_explanations,
 )
@@ -158,6 +158,56 @@ class ResourceInfographicTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["resource_id"], self.resource.id)
+        self.assertTrue(response.json()["concept_image_ready"])
+        store.assert_called_once()
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    @mock.patch("apps.content.views.api_video._store_infographic_for_resource")
+    def test_infographic_upload_locks_publication_item_without_nullable_join(self, store):
+        item = PublicationItem.objects.create(
+            batch_id="batch-images",
+            source_filename="equilibrio.mp4",
+            resource=self.resource,
+        )
+        response = self.client.post(
+            reverse("content:api_publication_infographic_upload", kwargs={"item_id": item.id}),
+            data={
+                "image": SimpleUploadedFile(
+                    "infografia.png",
+                    b"\x89PNG\r\n\x1a\ncontenido",
+                    content_type="image/png",
+                ),
+                "alt_text": "Resumen visual",
+            },
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["infographic_ready"])
+        store.assert_called_once()
+
+    @mock.patch.dict(os.environ, {"API_SECRET_TOKEN": "test-token"})
+    @mock.patch("apps.content.views.api_video._store_concept_image_for_resource")
+    def test_concept_upload_locks_publication_item_without_nullable_join(self, store):
+        item = PublicationItem.objects.create(
+            batch_id="batch-concept-images",
+            source_filename="equilibrio.mp4",
+            resource=self.resource,
+        )
+        response = self.client.post(
+            reverse("content:api_publication_concept_image_upload", kwargs={"item_id": item.id}),
+            data={
+                "image": SimpleUploadedFile(
+                    "concepto.png",
+                    b"\x89PNG\r\n\x1a\ncontenido",
+                    content_type="image/png",
+                ),
+                "alt_text": "Explicación visual",
+            },
+            HTTP_X_API_TOKEN="test-token",
+        )
+
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["concept_image_ready"])
         store.assert_called_once()
 

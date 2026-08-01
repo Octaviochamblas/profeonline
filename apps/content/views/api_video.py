@@ -415,7 +415,7 @@ def _store_concept_image_for_resource(resource, uploaded_file, alt_text):
 def upload_publication_infographic(request, item_id):
     if not _has_valid_api_token(request):
         return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
-    item = PublicationItem.objects.select_for_update().select_related("resource").filter(id=item_id).first()
+    item = PublicationItem.objects.select_for_update().filter(id=item_id).first()
     if item is None or item.resource is None:
         return JsonResponse({"ok": False, "error": "Ítem o recurso no encontrado"}, status=404)
     image = request.FILES.get("image")
@@ -454,7 +454,7 @@ def upload_resource_infographic(request, resource_id=None, slug=None):
 def upload_publication_concept_image(request, item_id):
     if not _has_valid_api_token(request):
         return JsonResponse({"ok": False, "error": "No autorizado"}, status=401)
-    item = PublicationItem.objects.select_for_update().select_related("resource").filter(id=item_id).first()
+    item = PublicationItem.objects.select_for_update().filter(id=item_id).first()
     if item is None or item.resource is None:
         return JsonResponse({"ok": False, "error": "Ítem o recurso no encontrado"}, status=404)
     image = request.FILES.get("image")
