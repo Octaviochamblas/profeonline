@@ -500,3 +500,41 @@ class NodeListCrossLinkTests(TestCase):
         self.assertContains(response, "Ver material Audiovisual")
         self.assertContains(response, "Enteros")
         self.assertContains(response, "Video puntual sobre enteros")
+
+
+class NodeCheckpointRenderTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+
+    def test_no_checkpoints_no_section(self):
+        NodeContent.objects.create(node=self.recurso, estado=NodeContent.ESTADO_PUBLICADO)
+        response = self.client.get(self.url)
+        self.assertNotContains(response, "Comprueba tu avance")
+
+    def test_checkpoint_after_formal_explanation_renders_with_choices(self):
+        NodeContent.objects.create(
+            node=self.recurso,
+            estado=NodeContent.ESTADO_PUBLICADO,
+            checkpoints=[
+                {
+                    "placement": "after_explicacion_formal",
+                    "question": "¿Cuál es el opuesto de -5?",
+                    "choices": [
+                        {"text": "5", "is_correct": True},
+                        {"text": "-5", "is_correct": False},
+                        {"text": "0", "is_correct": False},
+                        {"text": "10", "is_correct": False},
+                    ],
+                    "explanation": "La correcta es 5.",
+                    "reinforcement_section": "Explicación formal",
+                },
+            ],
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, "Comprueba tu avance")
+        self.assertContains(response, "¿Cuál es el opuesto de -5?")
+        self.assertContains(response, 'data-answer="5"')

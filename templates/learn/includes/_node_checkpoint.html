@@ -1,0 +1,20 @@
+{% load markdown_tags %}
+{% if checkpoint %}
+<div class="learn-ejemplo-card learn-exercise" data-format="multiple_choice" data-answer="{{ checkpoint.correct_answer }}">
+    <div class="learn-ejemplo-card__header">
+        <span class="learn-ejemplo-card__num">Comprueba tu avance</span>
+        <span class="learn-ejemplo-card__titulo">{{ checkpoint.question }}</span>
+    </div>
+    <div class="learn-ejemplo-card__body">
+        <ul class="learn-exercise__mc">
+            {% for ch in checkpoint.choices %}
+            <li><button type="button" class="ex-choice" data-value="{{ ch }}">{{ ch }}</button></li>
+            {% endfor %}
+        </ul>
+        <div class="learn-exercise__feedback" hidden>
+            <div class="learn-exercise__verdict"></div>
+            <div class="learn-exercise__explanation">{{ checkpoint.explanation|markdown }}</div>
+        </div>
+    </div>
+</div>
+{% endif %}

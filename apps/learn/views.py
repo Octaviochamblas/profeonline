@@ -11,6 +11,7 @@ from apps.content.models import (
     NodeMedia,
     NodePrerequisite,
 )
+from apps.content.services.node_checkpoint_service import correct_choice_text
 
 
 def _youtube_id(url):
@@ -167,11 +168,27 @@ def _build_practice_bank(node):
     ]
 
 
+def _checkpoint_context(content, placement):
+    if content is None:
+        return None
+    for checkpoint in content.checkpoints:
+        if checkpoint.get("placement") == placement:
+            return {
+                "question": checkpoint["question"],
+                "choices": [choice["text"] for choice in checkpoint["choices"]],
+                "explanation": checkpoint["explanation"],
+                "correct_answer": correct_choice_text(checkpoint),
+            }
+    return None
+
+
 def _recurso_view(request, node, breadcrumbs, prerequisites):
     from apps.content.services.node_assessment_service import get_node_mastery
 
     content = getattr(node, "content", None)
     noindex = not node.is_published or content is None or content.is_draft
+    checkpoint_after_formal = _checkpoint_context(content, "after_explicacion_formal")
+    checkpoint_after_ejemplo = _checkpoint_context(content, "after_ejemplo_guiado")
 
     youtube_id = None
     other_media = []
@@ -217,5 +234,7 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "related_items": _related_items(node, request.user),
             "previous_node": previous_node,
             "next_node": next_node,
+            "checkpoint_after_formal": checkpoint_after_formal,
+            "checkpoint_after_ejemplo": checkpoint_after_ejemplo,
         },
     )

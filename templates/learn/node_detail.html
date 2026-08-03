@@ -318,13 +318,18 @@
 
     {% else %}
 
+    {% if content.resumen_inicial %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Resumen inicial</h2>
+        <div class="resource-view__content">{{ content.resumen_inicial|markdown }}</div>
+    </section>
+    {% elif content.objetivo or content.introduccion %}
     {% if content.objetivo %}
     <div class="learn-objetivo-card">
         <span class="learn-objetivo-card__label">Objetivo</span>
         <p>{{ content.objetivo }}</p>
     </div>
     {% endif %}
-
     {% if content.introduccion %}
     <section class="learn-section learn-intro">
         <div class="learn-intro__body">
@@ -332,8 +337,21 @@
         </div>
     </section>
     {% endif %}
+    {% endif %}
 
-    {% if content.explicacion %}
+    {% if content.explicacion_simple %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Explicación en palabras simples</h2>
+        <div class="resource-view__content">{{ content.explicacion_simple|markdown }}</div>
+    </section>
+    {% endif %}
+
+    {% if content.explicacion_formal %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Explicación formal</h2>
+        <div class="resource-view__content">{{ content.explicacion_formal|markdown }}</div>
+    </section>
+    {% elif not content.explicacion_simple and content.explicacion %}
     <section class="learn-section">
         <h2 class="learn-section__title">Explicación</h2>
         <div class="resource-view__content">
@@ -342,14 +360,51 @@
     </section>
     {% endif %}
 
+    {% include "learn/includes/_node_checkpoint.html" with checkpoint=checkpoint_after_formal %}
+
+    {% if content.definiciones_clave %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Definiciones clave</h2>
+        <div class="resource-view__content">{{ content.definiciones_clave|markdown }}</div>
+    </section>
+    {% endif %}
+
+    {% if content.propiedades_relaciones %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Propiedades y relaciones importantes</h2>
+        <div class="resource-view__content">{{ content.propiedades_relaciones|markdown }}</div>
+    </section>
+    {% endif %}
+
+    {% if content.ejemplo_guiado.enunciado %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Ejemplo guiado</h2>
+        <p class="resource-view__content">{{ content.ejemplo_guiado.enunciado|markdown }}</p>
+        <ul class="learn-procedure">
+            {% for paso in content.ejemplo_guiado.pasos %}
+            <li class="learn-procedure__step">{{ paso|bold_step }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    {% include "learn/includes/_node_checkpoint.html" with checkpoint=checkpoint_after_ejemplo %}
+
     {% if content.procedimiento %}
     <section class="learn-section">
-        <h2 class="learn-section__title">Cómo hacerlo paso a paso</h2>
+        <h2 class="learn-section__title">Procedimiento</h2>
         <ul class="learn-procedure">
             {% for paso in content.procedimiento %}
             <li class="learn-procedure__step">{{ paso|bold_step }}</li>
             {% endfor %}
         </ul>
+    </section>
+    {% endif %}
+
+    {% if content.errores_correccion %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Errores frecuentes y cómo corregirlos</h2>
+        <div class="resource-view__content">{{ content.errores_correccion|markdown }}</div>
     </section>
     {% endif %}
 
@@ -456,6 +511,13 @@
             </div>
             {% endfor %}
         </div>
+    </section>
+    {% endif %}
+
+    {% if content.al_terminar_debes_poder %}
+    <section class="learn-section">
+        <h2 class="learn-section__title">Al terminar debes poder</h2>
+        <div class="resource-view__content">{{ content.al_terminar_debes_poder|markdown }}</div>
     </section>
     {% endif %}
 
