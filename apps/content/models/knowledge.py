@@ -193,6 +193,44 @@ class NodeContent(models.Model):
     errores_frecuentes = models.JSONField(
         default=list, blank=True, verbose_name="errores frecuentes"
     )
+    resumen_inicial = models.TextField(
+        blank=True, verbose_name="resumen inicial"
+    )
+    explicacion_simple = models.TextField(
+        blank=True, verbose_name="explicación en palabras simples"
+    )
+    explicacion_formal = models.TextField(
+        blank=True, verbose_name="explicación formal"
+    )
+    definiciones_clave = models.TextField(
+        blank=True, verbose_name="definiciones clave"
+    )
+    propiedades_relaciones = models.TextField(
+        blank=True, verbose_name="propiedades y relaciones importantes"
+    )
+    ejemplo_guiado = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name="ejemplo guiado",
+        help_text='Forma: {"enunciado": str, "pasos": [str, ...]}',
+    )
+    errores_correccion = models.TextField(
+        blank=True,
+        verbose_name="errores frecuentes y cómo corregirlos",
+        help_text="Texto explicativo; no reemplaza errores_frecuentes (fuente del V/F).",
+    )
+    al_terminar_debes_poder = models.TextField(
+        blank=True, verbose_name="al terminar debes poder"
+    )
+    checkpoints = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name="comprobaciones intermedias",
+        help_text=(
+            "Exactamente 2 checkpoints ('Comprueba tu avance'), validados por "
+            "node_checkpoint_service."
+        ),
+    )
     estado = models.CharField(
         max_length=12,
         choices=ESTADO_CHOICES,
