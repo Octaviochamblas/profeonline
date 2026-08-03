@@ -141,6 +141,85 @@ class LoadNodeContentCommandTests(TestCase):
 
         self.assertEqual(NodeContent.objects.count(), 1)
 
+    def test_loads_new_structure_fields_and_checkpoints(self):
+        _make_node()
+        yaml_with_new_fields = SAMPLE_YAML + """
+resumen_inicial: "Resumen inicial de prueba."
+explicacion_simple: "Explicacion simple de prueba."
+explicacion_formal: "Explicacion formal de prueba."
+definiciones_clave: "Termino: definicion."
+propiedades_relaciones: "Propiedad: enunciado."
+ejemplo_guiado:
+  enunciado: "Calcula X."
+  pasos:
+    - "Paso 1"
+    - "Paso 2"
+errores_correccion: "Error comun: como corregirlo."
+al_terminar_debes_poder: "Resolver el procedimiento completo."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "Pregunta 1?"
+    choices:
+      - {text: "A", is_correct: true}
+      - {text: "B", is_correct: false}
+      - {text: "C", is_correct: false}
+      - {text: "D", is_correct: false}
+    explanation: "La correcta es A porque si."
+    reinforcement_section: "Explicacion formal"
+  - placement: after_ejemplo_guiado
+    question: "Pregunta 2?"
+    choices:
+      - {text: "A", is_correct: false}
+      - {text: "B", is_correct: true}
+      - {text: "C", is_correct: false}
+      - {text: "D", is_correct: false}
+    explanation: "La correcta es B porque si."
+    reinforcement_section: "Ejemplo guiado"
+"""
+        with tempfile.TemporaryDirectory() as d:
+            self._write(d, "naturales.yaml", yaml_with_new_fields)
+            call_command("load_node_content", dir=d, verbosity=0)
+
+        content = NodeContent.objects.first()
+        self.assertEqual(content.resumen_inicial, "Resumen inicial de prueba.")
+        self.assertEqual(content.ejemplo_guiado["pasos"], ["Paso 1", "Paso 2"])
+        self.assertEqual(len(content.checkpoints), 2)
+        self.assertEqual(content.checkpoints[0]["placement"], "after_explicacion_formal")
+
+    def test_rejects_invalid_checkpoints(self):
+        _make_node()
+        yaml_with_bad_checkpoints = SAMPLE_YAML + """
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "Pregunta 1?"
+    choices:
+      - {text: "A", is_correct: true}
+      - {text: "B", is_correct: true}
+      - {text: "C", is_correct: false}
+      - {text: "D", is_correct: false}
+    explanation: "La correcta es A porque si."
+    reinforcement_section: "Explicacion formal"
+  - placement: after_ejemplo_guiado
+    question: "Pregunta 2?"
+    choices:
+      - {text: "A", is_correct: false}
+      - {text: "B", is_correct: true}
+      - {text: "C", is_correct: false}
+      - {text: "D", is_correct: false}
+    explanation: "La correcta es B porque si."
+    reinforcement_section: "Ejemplo guiado"
+"""
+        with tempfile.TemporaryDirectory() as d:
+            self._write(d, "naturales.yaml", yaml_with_bad_checkpoints)
+            import io
+            from contextlib import redirect_stderr
+
+            buf = io.StringIO()
+            call_command("load_node_content", dir=d, verbosity=0, stderr=buf)
+
+        self.assertEqual(NodeContent.objects.count(), 0)
+        self.assertIn("exactamente una alternativa correcta", buf.getvalue())
+
 
 class NodeContentTimestampTests(TestCase):
     def test_published_sets_published_at(self):

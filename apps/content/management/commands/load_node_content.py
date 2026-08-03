@@ -10,6 +10,7 @@ import yaml
 from django.core.management.base import BaseCommand
 
 from apps.content.models import KnowledgeNode, NodeContent, NodeMedia
+from apps.content.services.node_checkpoint_service import normalize_node_checkpoints
 
 
 class Command(BaseCommand):
@@ -57,6 +58,14 @@ class Command(BaseCommand):
                 not_found += 1
                 continue
 
+            checkpoints = data.get("checkpoints") or []
+            if checkpoints:
+                try:
+                    checkpoints = normalize_node_checkpoints(checkpoints)
+                except ValueError as exc:
+                    self.stderr.write(f"{path.name}: checkpoints inválidos — {exc}")
+                    continue
+
             defaults = {
                 "objetivo": data.get("objetivo", ""),
                 "introduccion": data.get("introduccion", ""),
@@ -67,6 +76,15 @@ class Command(BaseCommand):
                 "errores_frecuentes": data.get("errores_frecuentes") or [],
                 "estado": data.get("estado", NodeContent.ESTADO_BORRADOR),
                 "fuente": data.get("fuente", ""),
+                "resumen_inicial": data.get("resumen_inicial", ""),
+                "explicacion_simple": data.get("explicacion_simple", ""),
+                "explicacion_formal": data.get("explicacion_formal", ""),
+                "definiciones_clave": data.get("definiciones_clave", ""),
+                "propiedades_relaciones": data.get("propiedades_relaciones", ""),
+                "ejemplo_guiado": data.get("ejemplo_guiado") or {},
+                "errores_correccion": data.get("errores_correccion", ""),
+                "al_terminar_debes_poder": data.get("al_terminar_debes_poder", ""),
+                "checkpoints": checkpoints,
             }
 
             _, is_new = NodeContent.objects.update_or_create(node=node, defaults=defaults)
