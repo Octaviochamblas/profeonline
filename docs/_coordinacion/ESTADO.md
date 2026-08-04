@@ -31,6 +31,18 @@
   vacías de `errores_frecuentes` en varios recursos de Divisibilidad y Números primos, y
   un bug de escape LaTeX (`\\text` duplicado) en `problema-mcd-reparto`. Detalle en
   `reportes-sesion/2026-08-04.md`.
+- **Nodos: V/F mezclado + alternativas aleatorias — CERRADO por 🏛️ Claude 🟢
+  (2026-08-04):** el usuario detectó que "Ejemplos Verdadero/Falso" siempre daba
+  "Falso" (se construía solo desde `errores_frecuentes`) y que la alternativa correcta
+  de checkpoints/ejemplos quedaba casi siempre primera. Campo nuevo
+  `afirmaciones_verdaderas` (migración `0051`) mezclado con `errores_frecuentes` y
+  desordenado por request en `apps/learn/views.py`; alternativas de checkpoints y
+  ejemplos también desordenadas ahí mismo (comparación por texto, no por índice). Los 76
+  recursos de la campaña de 12 secciones actualizados con 2 afirmaciones verdaderas
+  c/u. `docs/conocimiento/pauta-contenido.md` reescrita para que el pipeline de
+  construcción de recursos nuevos use la estructura de 12 secciones (antes documentaba
+  el formato legado de 4 campos) e incluya `checkpoints` y `afirmaciones_verdaderas`
+  como obligatorios. PR #190. Detalle en `reportes-sesion/2026-08-04.md`.
 - **KaTeX scrollbar falsa — CERRADO por 🏛️ Claude + 🧩 Codex 🟢 (2026-08-01):** causa
   real era el desborde interno de ~1-2 px de KaTeX (struts) con `overflow-x:auto`
   incondicional; se cambió a `overflow-x:hidden` por defecto + medición real en
