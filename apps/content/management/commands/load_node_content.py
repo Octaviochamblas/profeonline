@@ -74,6 +74,7 @@ class Command(BaseCommand):
                 "procedimiento": data.get("procedimiento") or [],
                 "ejemplos": data.get("ejemplos") or [],
                 "errores_frecuentes": data.get("errores_frecuentes") or [],
+                "afirmaciones_verdaderas": data.get("afirmaciones_verdaderas") or [],
                 "estado": data.get("estado", NodeContent.ESTADO_BORRADOR),
                 "fuente": data.get("fuente", ""),
                 "resumen_inicial": data.get("resumen_inicial", ""),
