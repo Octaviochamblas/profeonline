@@ -30,22 +30,56 @@ docs/conocimiento/contenido/<semantic_id_en_kebab>.yaml
 ```
 Ejemplo: `mat-num-enteros-conjunto-pares.yaml`
 
-### Estructura completa
+### Estructura completa (estándar vigente desde 2026-08-04 — 12 secciones)
+
+> **Historial:** hasta 2026-08-04 la estructura era de 4 campos de texto libre
+> (`objetivo`, `introduccion`, `resumen`, `explicacion`). Esa estructura sigue
+> existiendo como *fallback* de renderizado para los nodos aún no migrados
+> (`node_detail.html` cae a ella si faltan los campos nuevos), pero **ya no es
+> el estándar para contenido nuevo**. Todo recurso nuevo debe usar los 12
+> campos de abajo.
 
 ```yaml
 semantic_id: MAT.NUM.<BLOQUE>.<RECURSO>
-objetivo: "Una sola frase que describe qué logrará el alumno al terminar."
-introduccion: |
-  Texto muy simple, como para un alumno de 10 años.
-  Sin LaTeX ni tecnicismos. Usa analogías concretas.
-  Máximo 3 párrafos cortos.
-explicacion: |
-  Texto técnico completo en Markdown (soporta **negrita**, $LaTeX$, listas).
-  Aquí sí se espera profundidad. Puede ser largo.
+resumen_inicial: "Una sola frase con la idea central del recurso, sin jerga."
+explicacion_simple: |
+  Texto muy simple, como para un alumno de 10 años, con una analogía concreta
+  del mundo real. Sin LaTeX ni tecnicismos. 3-4 frases.
+explicacion_formal: |
+  Texto técnico en Markdown + LaTeX ($...$). Aquí sí se espera profundidad y
+  precisión matemática. Puede incluir la definición formal y por qué funciona.
+definiciones_clave: |
+  Términos nuevos del recurso, en **negrita**, con su definición precisa.
+propiedades_relaciones: |
+  Cómo se relaciona este concepto con otros ya vistos (qué implica, qué lo
+  implica, casos especiales).
+ejemplo_guiado:
+  enunciado: "Un problema concreto que se resuelve paso a paso."
+  pasos:
+    - "Paso 1 del razonamiento, con el cálculo explícito."
+    - "Paso 2."
+    - "Conclusión con el resultado final."
+checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
+  - placement: after_explicacion_formal
+    question: "Pregunta conceptual sobre lo explicado arriba."
+    choices:                       # Exactamente 4, 1 sola con is_correct: true
+      - {text: "Alternativa correcta", is_correct: true}
+      - {text: "Distractor 1", is_correct: false}
+      - {text: "Distractor 2", is_correct: false}
+      - {text: "Distractor 3", is_correct: false}
+    explanation: "La correcta es Alternativa correcta: por qué."  # debe MENCIONAR el texto de la correcta
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Pregunta que reutiliza el mismo procedimiento del ejemplo guiado con otro número."
+    choices: [...]                 # mismo formato, 4 alternativas
+    explanation: "..."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - "Paso 1: descripción concisa del primer paso (puede tener $LaTeX$)."
   - "Paso 2: ..."
-  - "Paso 3: ..."
+errores_correccion: |
+  Texto explicativo (1-2 frases) sobre los 1-2 errores más frecuentes y cómo
+  evitarlos. NO reemplaza `errores_frecuentes` (ese es el que alimenta el V/F).
 ejemplos:
   # TIPO A — Selección múltiple, 3 alternativas (estándar desde 2026-08-03)
   - titulo: "Ejemplo 1"
@@ -69,6 +103,11 @@ errores_frecuentes:
   - "Tercera afirmación falsa."
   - "Cuarta afirmación falsa."
   - "Quinta afirmación falsa."
+afirmaciones_verdaderas:           # NUEVO desde 2026-08-04 — ver nota abajo
+  - "Afirmación cierta sobre el tema, breve y verificable."
+  - "Segunda afirmación cierta."
+al_terminar_debes_poder: |
+  1-2 frases: qué debe saber hacer el alumno al terminar este recurso.
 fuente: "Libro / apunte de referencia con página si aplica"
 estado: publicado    # o borrador
 ```
@@ -78,14 +117,33 @@ estado: publicado    # o borrador
 | Campo | Obligatorio | Notas |
 |---|---|---|
 | `semantic_id` | Sí | Debe existir en la DB (`KnowledgeNode`). Formato: `MAT.NUM.BLOQUE.RECURSO` |
-| `objetivo` | Sí | Una frase. Empieza con verbo infinitivo ("Identificar…", "Calcular…"). |
-| `introduccion` | Sí | Lenguaje de 10 años. Sin LaTeX pesado. Usa analogías del mundo real. |
-| `explicacion` | Sí | Markdown + LaTeX. Puede ser denso — es para el alumno que quiere profundidad. |
+| `resumen_inicial` | Sí | Una frase, sin jerga. Es lo primero que lee el alumno. |
+| `explicacion_simple` | Sí | Lenguaje de 10 años, con analogía concreta. Sin LaTeX pesado. |
+| `explicacion_formal` | Sí | Markdown + LaTeX. Definición precisa y por qué funciona. |
+| `definiciones_clave` | Sí | Términos nuevos en **negrita** con su definición. |
+| `propiedades_relaciones` | Sí | Cómo se conecta con otros conceptos ya vistos. |
+| `ejemplo_guiado` | Sí | Objeto `{enunciado, pasos}`. Un solo problema resuelto paso a paso. |
+| `checkpoints` | Sí | **Exactamente 2** (`after_explicacion_formal` y `after_ejemplo_guiado`), 4 alternativas cada uno, 1 sola correcta, `explanation` debe mencionar el texto exacto de la correcta. Validado por `node_checkpoint_service.normalize_node_checkpoints`; si es inválido, `load_node_content` rechaza el archivo completo. |
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. |
+| `errores_correccion` | Sí | Texto breve sobre 1-2 errores típicos. No sustituye `errores_frecuentes`. |
 | `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple, 3 alternativas) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. |
-| `errores_frecuentes` | Sí | **Exactamente 5**. Son las afirmaciones de la sección "Ejemplos Verdadero/Falso". Siempre falsas. |
+| `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas (errores típicos). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
+| `afirmaciones_verdaderas` | Sí | **Mínimo 2**. Afirmaciones ciertas sobre el tema, breves y verificables. Sin ellas, la sección V/F muestra solo "Falso" siempre (comportamiento legado, ver nota abajo). |
+| `al_terminar_debes_poder` | Sí | 1-2 frases con la meta de aprendizaje del recurso. |
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
+
+> **Nota — por qué existe `afirmaciones_verdaderas` (2026-08-04):** la sección
+> "Ejemplos Verdadero/Falso" se construía únicamente desde `errores_frecuentes`,
+> así que la respuesta correcta era siempre "Falso". La vista
+> (`apps/learn/views.py::_true_false_items`) ahora mezcla ambos campos y los
+> presenta en orden aleatorio por cada carga de página. Mismo motivo por el
+> que las alternativas de `checkpoints` y de `ejemplos` (Tipo A) también se
+> aleatorizan en la vista (`_checkpoint_context`, `_shuffled_ejemplos`): antes
+> la alternativa correcta quedaba casi siempre primera porque así se redactó.
+> **No hace falta variar el orden al escribir el YAML** — pon la alternativa
+> correcta donde te resulte más natural redactar; la vista se encarga de
+> desordenarla en cada visita.
 
 ### Sobre `ejemplos`: Tipo A vs Tipo B
 
@@ -212,13 +270,18 @@ Cada recurso debe tener **exactamente 10 ejercicios**: uno por celda de esta tab
 ## 4. Cómo se conecta con la gamificación
 
 ```
-YAML (NodeContent)           JSONL (NodeExercise)
-──────────────────           ────────────────────
-introduccion  ──→ comprensión inicial
-explicacion   ──→ conocimiento de fondo
-procedimiento ──→ pasos memorizables
-ejemplos      ──→ práctica no medida (UI interactiva, sin XP)
-errores_frecuentes ──→ Ejemplos Verdadero/Falso (UI, sin XP)
+YAML (NodeContent)                        JSONL (NodeExercise)
+──────────────────                        ────────────────────
+resumen_inicial + explicacion_simple  ──→ comprensión inicial
+explicacion_formal + definiciones_clave
+  + propiedades_relaciones            ──→ conocimiento de fondo
+ejemplo_guiado                        ──→ modelo resuelto paso a paso
+checkpoints (2)                       ──→ "Comprueba tu avance" (UI, sin XP)
+procedimiento                         ──→ pasos memorizables
+ejemplos                              ──→ práctica no medida (UI interactiva, sin XP)
+errores_frecuentes + afirmaciones_verdaderas
+  ──→ Ejemplos Verdadero/Falso, mezclados y aleatorizados (UI, sin XP)
+al_terminar_debes_poder               ──→ cierre / meta de aprendizaje
 
                              conceptuales + reconocimiento
                                ──→ QuizAttempt nivel 1 → ⭐
@@ -237,10 +300,12 @@ del banco. Un recurso sin JSONL se puede leer, pero no se puede "ganar" en él.
 ## 5. Checklist antes de cargar un recurso nuevo
 
 - [ ] `semantic_id` existe en la DB (`KnowledgeNode`)
-- [ ] YAML tiene los 8 campos obligatorios completos
-- [ ] `introduccion` usa lenguaje simple (sin jerga, analogías concretas)
+- [ ] YAML tiene los 12 campos obligatorios completos (ver tabla arriba)
+- [ ] `explicacion_simple` usa lenguaje simple (sin jerga, analogía concreta)
+- [ ] `checkpoints`: exactamente 2 (`after_explicacion_formal`, `after_ejemplo_guiado`), 4 alternativas c/u, 1 sola correcta, `explanation` menciona el texto de la correcta
 - [ ] `ejemplos`: mínimo 2 Tipo A + 2 Tipo B (al final)
 - [ ] `errores_frecuentes`: exactamente 5 afirmaciones falsas
+- [ ] `afirmaciones_verdaderas`: mínimo 2 afirmaciones ciertas
 - [ ] `estado: publicado`
 - [ ] JSONL tiene 10 ejercicios por recurso: 3+1+3+3
 - [ ] `correct_answer` en multiple_choice coincide letra a letra con uno de `choices`
