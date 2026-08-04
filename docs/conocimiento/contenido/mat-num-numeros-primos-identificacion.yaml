@@ -1,35 +1,62 @@
 semantic_id: MAT.NUM.NUMEROS_PRIMOS.PRIMO_IDENTIFICACION
-objetivo: Identificar números primos utilizando métodos como la criba de Eratóstenes o la verificación de divisores hasta la raíz cuadrada del número.
-introduccion: |-
-  Imagínate que tienes un colador gigante para números y quieres separar los números primos de los demás. Hace más de 2000 años, un sabio griego llamado Eratóstenes inventó un "colador de números" de papel.
-
-  El truco consiste en escribir los números del 1 al 100 e ir tachando los múltiplos de 2, de 3, de 5, de 7... ¡y así sucesivamente! Al final, los números que quedan sin tachar son los números primos.
-
-  En esta lección descubrirás este y otros métodos para encontrar los números primos.
-resumen: La identificación de números primos se puede realizar tachando de forma sistemática los múltiplos de números menores en una lista (Criba de Eratóstenes) o bien verificando que el número no sea divisible por ningún número primo menor o igual a su raíz cuadrada.
-explicacion: |-
-  Para identificar si un número $N$ es primo, existen varios métodos:
-
-  1. **La Criba de Eratóstenes:** Es un algoritmo antiguo y eficiente para encontrar todos los números primos menores que un número dado. Consiste en listar los números y tachar consecutivamente los múltiplos de cada primo encontrado (empezando por los múltiplos de 2, luego los de 3, 5, etc.). Los números que permanecen sin tachar son primos.
-
-  2. **Prueba de Divisibilidad Acotada:** Para comprobar si un número específico $N$ es primo, no es necesario dividirlo por todos los números menores a él. Basta con comprobar que no sea divisible por ningún número primo menor o igual a su raíz cuadrada ($\sqrt{N}$).
-
-  *Por ejemplo*, para verificar si $97$ es primo:
-  - Calculamos $\sqrt{97} \approx 9.85$.
-  - Los primos menores o iguales a $9.85$ son $2, 3, 5, 7$.
-  - Probamos la divisibilidad de $97$ por cada uno:
-    - $97$ no termina en par (no divisible por $2$).
-    - $9+7=16$, no es múltiplo de 3 (no divisible por $3$).
-    - $97$ no termina en $0$ ni en $5$ (no divisible por $5$).
-    - $97 \div 7 = 13$ con residuo $6$ (no divisible por $7$).
-  - Como no es divisible por ninguno de estos primos, $97$ es un número primo.
+resumen_inicial: "Para identificar si un número es primo, basta con comprobar que no sea divisible por ningún primo menor o igual a su raíz cuadrada."
+explicacion_simple: |
+  Imagínate que tienes un colador gigante para números. Hace más de 2000 años, un sabio
+  griego llamado Eratóstenes inventó un "colador de números" de papel: se escriben los
+  números del 1 al 100 y se van tachando los múltiplos de 2, de 3, de 5, de 7... Los
+  números que quedan sin tachar son los primos.
+explicacion_formal: |
+  Para comprobar si $N$ es primo, no es necesario dividirlo por todos los números menores
+  a él: basta con comprobar que no sea divisible por ningún primo menor o igual a
+  $\sqrt{N}$. Esto ocurre porque si $N$ tuviera un divisor mayor que $\sqrt{N}$, también
+  tendría un divisor complementario menor que $\sqrt{N}$, que ya habría sido detectado.
+definiciones_clave: |
+  **Criba de Eratóstenes**: algoritmo que tacha sistemáticamente los múltiplos de cada
+  primo para encontrar todos los primos menores que un número dado.
+propiedades_relaciones: |
+  Cuantos más primos pequeños se descarten primero (2, 3, 5, 7...), más rápido se llega a
+  la conclusión, ya que muchos números compuestos son detectados por los primeros primos.
+ejemplo_guiado:
+  enunciado: "Determina si 79 es primo usando la regla de la raíz cuadrada."
+  pasos:
+    - "Como $8^2=64$ y $9^2=81$, $\\sqrt{79}$ está entre 8 y 9."
+    - "Primos menores o iguales a 8: $2,3,5,7$. Ninguno divide a 79 de forma exacta."
+    - "Conclusión: 79 es un número primo."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Por qué basta con probar divisores hasta la raíz cuadrada de N?"
+    choices:
+      - {text: "Porque un divisor mayor que la raíz tendría un complementario menor que ya se habría detectado", is_correct: true}
+      - {text: "Porque los números grandes nunca son primos", is_correct: false}
+      - {text: "Es solo una convención práctica sin razón matemática", is_correct: false}
+      - {text: "Porque la raíz cuadrada siempre es un divisor", is_correct: false}
+    explanation: "La correcta es Porque un divisor mayor que la raíz tendría un complementario menor que ya se habría detectado: los divisores de N vienen en pares que se cruzan en $\\sqrt{N}$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿es 77 un número primo?"
+    choices:
+      - {text: "No, es divisible por 7", is_correct: true}
+      - {text: "Sí, no es divisible por 2, 3 ni 5", is_correct: false}
+      - {text: "Sí, porque es impar", is_correct: false}
+      - {text: "No se puede saber", is_correct: false}
+    explanation: "La correcta es No, es divisible por 7: $77=7\\times11$, por lo que no es primo."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
 - 'Paso 1: Estima la raíz cuadrada entera o aproximada del número $N$ que quieres evaluar.'
 - 'Paso 2: Haz una lista de todos los números primos que sean menores o iguales a esa raíz cuadrada.'
 - 'Paso 3: Divide el número $N$ por cada uno de los primos de la lista. Si alguna división es exacta, el número no es primo. Si ninguna división es exacta, el número es primo.'
+errores_correccion: |
+  Un error frecuente es olvidar probar la divisibilidad con 7, clasificando erróneamente
+  números como 91 como primos. Otro error es confundir la raíz cuadrada con la mitad del
+  número al definir el límite de búsqueda.
 ejemplos:
 - titulo: Ejemplo 1
   enunciado: Identifica si el número $53$ es primo usando la regla de la raíz cuadrada.
+  alternativas:
+    - "Sí, no es divisible por 2, 3, 5 ni 7"
+    - "No, es divisible por 3"
+    - "No se puede determinar"
+  respuesta: "Sí, no es divisible por 2, 3, 5 ni 7"
   solucion_pasos:
   - 'Paso a: Estimamos la raíz cuadrada de $53$. Como $7^2 = 49$ y $8^2 = 64$, entonces $\sqrt{53}$ está entre $7$ y $8$ (es aproximadamente $7.28$).'
   - 'Paso b: Listamos los números primos menores o iguales a $7$, que son: $2, 3, 5, 7$.'
@@ -37,6 +64,11 @@ ejemplos:
   - 'Paso d: Al no ser divisible por ninguno de ellos, $53$ es un número primo.'
 - titulo: Ejemplo 2
   enunciado: Determina si el número $91$ es primo o no.
+  alternativas:
+    - "No, es divisible por 7"
+    - "Sí, no es divisible por 2, 3 ni 5"
+    - "No se puede determinar"
+  respuesta: "No, es divisible por 7"
   solucion_pasos:
   - 'Paso a: Calculamos la raíz cuadrada aproximada de $91$. Como $9^2 = 81$ y $10^2 = 100$, $\sqrt{91}$ es aproximadamente $9.54$.'
   - 'Paso b: Los primos menores o iguales a $9$ son: $2, 3, 5, 7$.'
@@ -62,5 +94,8 @@ errores_frecuentes:
 - No usar correctamente los criterios de divisibilidad básicos al verificar los posibles divisores.
 - Asumir que un número que termina en 1, 3, 7 o 9 es automáticamente primo sin verificar divisores.
 - Confundir la raíz cuadrada con la mitad del número en la regla del límite de búsqueda.
+al_terminar_debes_poder: |
+  Identificar si un número es primo probando su divisibilidad solo hasta la raíz cuadrada
+  del número.
 fuente: Teoría de Números
 estado: publicado
