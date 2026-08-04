@@ -1,9 +1,13 @@
 name: Pipeline
 
-# Gate de auditoría IA + etiquetado automático de PRs sensibles.
-# - audit-gate: check REQUERIDO. Pasa si el PR es solo docs / Dependabot, o si una IA
-#   distinta a la que construyó añadió el label `audit:aprobado`.
+# Etiquetado automático de PRs sensibles.
 # - etiquetas: marca PRs que tocan superficie sensible con `seguridad:requiere-claude`.
+#
+# Historial: hasta 2026-08-04 este workflow incluía `audit-gate`, un check REQUERIDO
+# que bloqueaba el merge sin auditoría de una IA distinta a la que construyó (label
+# `audit:aprobado`). Se eliminó a pedido explícito del usuario junto con el required
+# status check en la protección de `main`, para que los PRs se mergeen solo con CI
+# verde, sin necesitar aprobación de otra IA o persona.
 
 on:
   pull_request:
@@ -14,32 +18,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  audit-gate:
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
-      PR: ${{ github.event.pull_request.number }}
-      AUTHOR: ${{ github.event.pull_request.user.login }}
-    steps:
-      - name: Evaluar gate de auditoría IA
-        run: |
-          files=$(gh pr diff "$PR" --name-only)
-          echo "Archivos cambiados:"; echo "$files"
-          if [ -n "$files" ] && ! echo "$files" | grep -qvE '^docs/'; then
-            echo "::notice::PR solo de documentación → gate auto-aprobado."; exit 0
-          fi
-          if [ "$AUTHOR" = "dependabot[bot]" ]; then
-            echo "::notice::PR de Dependabot → gate auto-aprobado."; exit 0
-          fi
-          labels=$(gh pr view "$PR" --json labels --jq '.labels[].name')
-          if echo "$labels" | grep -qx 'audit:aprobado'; then
-            echo "::notice::Auditoría IA aprobada (label audit:aprobado)."; exit 0
-          fi
-          echo "::error::Falta auditoría de una IA distinta a la que construyó."
-          echo "Codex/Claude debe revisar y añadir el label 'audit:aprobado' (o el usuario, 1 clic)."
-          exit 1
-
   etiquetas-sensibles:
     if: github.event.action == 'opened' || github.event.action == 'synchronize' || github.event.action == 'reopened'
     runs-on: ubuntu-latest
