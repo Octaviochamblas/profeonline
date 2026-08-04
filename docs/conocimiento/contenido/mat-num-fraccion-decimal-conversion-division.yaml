@@ -1,67 +1,98 @@
 semantic_id: MAT.NUM.FRACCION_DECIMAL.CONVERSION_DIVISION
-titulo: Conversión de fracción a decimal mediante división
-objetivo: Obtener la expresión decimal de una fracción dividiendo el numerador por el denominador.
-introduccion: Toda fracción representa una división pendiente entre numerador y denominador; realizar
-  esa división es el camino directo para obtener su expresión decimal.
-resumen: Para convertir una fracción \(\frac{a}{b}\) a decimal se divide el numerador \(a\) por el denominador
-  \(b\).
-explicacion: '### Definición formal
-
-
-  La expresión decimal de \(\frac{a}{b}\) es el resultado de la división \(a\div b\), ya que la fracción
-  es por definición el cociente entre \(a\) y \(b\).
-
-
-  ### Desarrollo didáctico
-
-
-  \(\frac{3}{8}\): se divide 3 entre 8, obteniendo \(3\div8=0.375\).'
+resumen_inicial: "Toda fracción se convierte a su representación decimal equivalente al dividir el numerador entre el denominador mediante el algoritmo estándar de división."
+explicacion_simple: |
+  Una fracción como $\frac{3}{4}$ no es más que una **división indicada**: el numerador dividido por el denominador ($3 \div 4$). Para convertir cualquier fracción a número decimal, simplemente realizas la división entera. Si el numerador es más pequeño que el denominador, escribes $0.$ en el cociente, le agregas un cero al numerador ($30 \div 4$) y continúas dividiendo. Si la división se termina obteniendo residuo 0, obtienes un **decimal finito** ($0.75$). Si los residuos empiezan a repetirse en bucle, obtienes un **decimal periódico**.
+explicacion_formal: |
+  Formalmente, dada una fracción $\frac{a}{b} \in \mathbb{Q}$ con $a \in \mathbb{Z}$ y $b \in \mathbb{Z}^+$, la representación decimal equivalente se obtiene mediante la aplicación del algoritmo de división posicional en base 10:
+  $$\frac{a}{b} = a \div b = q_0 + \sum_{k=1}^{\infty} d_k \cdot 10^{-k}$$
+  donde $q_0 = \lfloor a/b \rfloor$ representa el cociente entero y los dígitos decimales $d_k \in \{0, 1, \dots, 9\}$ se determinan de forma recurrente mediante las relaciones del residuo:
+  $$r_0 = a \bmod b, \quad d_k = \lfloor (10 \cdot r_{k-1}) / b \rfloor, \quad r_k = (10 \cdot r_{k-1}) \bmod b$$
+definiciones_clave: |
+  - **Conversión por división**: Algoritmo universal que transforma la expresión fraccionaria $\frac{a}{b}$ en su desarrollo decimal efectuando $a \div b$.
+  - **Secuencia de residuos ($r_k$)**: Sucesión de los restos de la división que determina si el decimal es finito ($r_k = 0$) o periódico ($r_k = r_j$ para algún $j < k$).
+  - **División posicional continuada**: Proceso de agregar ceros a la derecha del residuo para obtener décimas, centésimas y milésimas.
+propiedades_relaciones: |
+  - **Universalidad del método**: La división $a \div b$ funciona para absolutamente cualquier fracción en $\mathbb{Q}$, ya sea propia, impropia o número mixto.
+  - **Dicotomía de resultados**: Todo cociente $a \div b$ da como resultado exclusivamente un decimal finito o un decimal infinito periódico. Nunca genera un decimal irracional.
+  - **Preservación del valor cuantitativo**: $\frac{a}{b}$ y su decimal $a \div b$ ocupan exactamente el mismo punto sobre la recta numérica.
+ejemplo_guiado:
+  enunciado: 'Convierte la fracción $\frac{5}{8}$ a número decimal efectuando la división posicional $5 \div 8$ hasta obtener residuo cero.'
+  pasos:
+    - 'Identificar la división: $5 \div 8$. Como $5 < 8$, se coloca $0.$ en el cociente.'
+    - 'Agregar un cero al dividendo para obtener décimas: $50 \div 8 = 6$ con residuo $2$ (cociente hasta ahora: $0.6$).'
+    - 'Agregar un cero al residuo $2$ para obtener centésimas: $20 \div 8 = 2$ con residuo $4$ (cociente hasta ahora: $0.62$).'
+    - 'Agregar un cero al residuo $4$ para obtener milésimas: $40 \div 8 = 5$ con residuo $0$.'
+    - 'Concluir: el decimal finito equivalente a $\frac{5}{8}$ es $0.625$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué ocurre con la expansión decimal de una fracción si durante el proceso de división se obtiene un residuo igual a cero?"
+    choices:
+      - {text: "El desarrollo decimal termina, obteniéndose un decimal finito exacto.", is_correct: true}
+      - {text: "Se convierte en un decimal semiperiódico.", is_correct: false}
+      - {text: "El número deja de ser racional.", is_correct: false}
+      - {text: "Debes multiplicar por 9 el resultado.", is_correct: false}
+    explanation: "La correcta es El desarrollo decimal termina, obteniéndose un decimal finito exacto.: un residuo cero indica la finalización exacta del algoritmo."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es la representación decimal equivalente a la fracción $\frac{3}{5}$?'
+    choices:
+      - {text: "0.6", is_correct: true}
+      - {text: "0.35", is_correct: false}
+      - {text: "1.6", is_correct: false}
+      - {text: "0.53", is_correct: false}
+    explanation: 'La correcta es 0.6: dividiendo $3 \div 5$, como $3 < 5$, agregamos cero $\implies 30 \div 5 = 6$, dando $0.6$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Comprueba que el denominador sea distinto de cero.'
-- 'Paso 2: Divide el numerador por el denominador agregando ceros cuando sea necesario.'
-- 'Paso 3: Observa si el residuo llega a cero o comienza a repetirse.'
+  - "Paso 1: Escribir el numerador como dividendo y el denominador como divisor."
+  - "Paso 2: Calcular el cociente de la parte entera. Si el numerador es menor que el denominador, escribir $0.$ en el cociente."
+  - "Paso 3: Colocar una coma en el cociente y agregar un cero al residuo para formar décimas."
+  - "Paso 4: Dividir nuevamente y registrar la cifra decimal resultante."
+  - "Paso 5: Repetir el proceso agregando un cero a cada residuo parcial hasta alcanzar residuo $0$ o hasta detectar la repetición del período."
+errores_correccion: |
+  Un error clásico es dividir el denominador entre el numerador en lugar del numerador entre el denominador (por ejemplo en $\frac{1}{4}$, hacer $4 \div 1 = 4$ en vez de $1 \div 4 = 0.25$). **Recuerda siempre: EL NUMERADOR VA ADENTRO y el denominador va afuera** ($a \div b$).
 ejemplos:
-- titulo: Aplicación razonada — Conversión de fracción a decimal mediante división
-  enunciado: \(\frac{3}{8}=3\div 8 = 0.375\).
-  solucion_pasos:
-  - Comprueba que el denominador sea distinto de cero.
-  - Divide el numerador por el denominador agregando ceros cuando sea necesario.
-  - Observa si el residuo llega a cero o comienza a repetirse.
-- titulo: Revisión de una solución — Conversión de fracción a decimal mediante división
-  enunciado: Una solución aplica “Divide el numerador por el denominador agregando ceros cuando sea necesario.”,
-    pero termina sin comprobar que la escritura decimal de una fracción se obtiene con la división asociada.
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define conversión de fracción a decimal mediante división: una fracción
-    puede convertirse a decimal efectuando la división del numerador entre el denominador.'
-  - Comprueba que el denominador sea distinto de cero.
-  - 'Completa la revisión con este control: Observa si el residuo llega a cero o comienza a repetirse.'
-- titulo: ¿Se cumple que la escritura decimal de una fracción se obtiene con la división asociada? — Conversión
-    de fracción a decimal mediante división
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que una fracción puede convertirse a decimal efectuando la
-    división del numerador entre el denominador.
-  - El caso “\(\frac{3}{8}=3\div 8 = 0.375\)” satisface esa condición.
-  - Observa si el residuo llega a cero o comienza a repetirse.
-- titulo: ¿Es válido omitir el paso “Comprueba que el denominador sea distinto de cero”? — Conversión
-    de fracción a decimal mediante división
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de conversión de fracción a decimal mediante división.
-  - 'Omitirlo puede volver inválida la acción siguiente: Divide el numerador por el denominador agregando
-    ceros cuando sea necesario.'
-  - 'La solución debe terminar de este modo: Observa si el residuo llega a cero o comienza a repetirse.'
+  - titulo: "Ejemplo 1"
+    enunciado: 'Convierte $\frac{7}{2}$ a decimal.'
+    alternativas:
+      - "3.5"
+      - "0.35"
+      - "2.7"
+    respuesta: "3.5"
+    solucion_pasos:
+      - '$7 \div 2 = 3$ con residuo $1$.'
+      - 'Poner coma en cociente ($3.$) y agregar cero al residuo $\implies 10$.'
+      - '$10 \div 2 = 5$ con residuo $0$.'
+      - "Resultado: $3.5$."
+  - titulo: "Ejemplo 2"
+    enunciado: 'Convierte $\frac{1}{3}$ a decimal.'
+    alternativas:
+      - '0.\overline{3}'
+      - "0.3"
+      - "0.33"
+    respuesta: '0.\overline{3}'
+    solucion_pasos:
+      - '$1 \div 3 = 0.$ con residuo $1$.'
+      - 'Agregamos cero: $10 \div 3 = 3$ con residuo $1$.'
+      - 'El residuo $1$ se repite infinitas veces.'
+      - 'Resultado: $0.\overline{3}$.'
+  - titulo: "¿Se puede convertir un número mixto a decimal dividiendo la fracción y sumándole la parte entera?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, por ejemplo $2 \frac{1}{4} = 2 + (1 \div 4) = 2 + 0.25 = 2.25$.'
+  - titulo: "¿Se obtiene siempre un decimal infinito si la división no da residuo cero en los 3 primeros pasos?"
+    respuesta: "No necesariamente, puede ser un decimal finito de varias cifras."
+    solucion_pasos:
+      - "Por ejemplo $\frac{1}{16} = 0.0625$ requiere 4 pasos pero sigue siendo finito."
 errores_frecuentes:
-- 'Empezar conversión de fracción a decimal mediante división sin realizar este control inicial: Comprueba
-  que el denominador sea distinto de cero.'
-- Memorizar “\(\frac{3}{8}=3\div 8 = 0.375\)” como respuesta aislada, sin reconstruir la definición que
-  lo justifica.
-- Convertir en receta el paso “Divide el numerador por el denominador agregando ceros cuando sea necesario.”
-  y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre conversión de fracción a decimal mediante división que contradice
-  el criterio “La escritura decimal de una fracción se obtiene con la división asociada”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Observa si el residuo llega a cero o comienza
-  a repetirse.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Invertir los términos al dividir (hacer denominador dividido por numerador)."
+  - "Olvidar escribir el cero coma ($0.$) cuando el numerador es menor que el denominador."
+  - "Confundir un decimal finito de muchos decimales con uno periódico."
+  - "Truncar la división en la primera cifra decimal sin verificar si continúa o si es exacta."
+  - "Creer que las fracciones impropias dan decimales que comienzan con cero."
+afirmaciones_verdaderas:
+  - "Toda fracción equivale al cociente de dividir su numerador entre su denominador."
+  - "La división de dos números enteros produce siempre un decimal finito o un decimal infinito periódico."
+al_terminar_debes_ponder: |
+  Debes ser capaz de transformar cualquier fracción propia, impropia o número mixto a su representación decimal mediante el algoritmo de división posicional.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

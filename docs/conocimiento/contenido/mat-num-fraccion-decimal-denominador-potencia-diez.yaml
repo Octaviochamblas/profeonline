@@ -1,69 +1,98 @@
 semantic_id: MAT.NUM.FRACCION_DECIMAL.DENOMINADOR_POTENCIA_DIEZ
-titulo: Conversión de fracción con denominador potencia de diez
-objetivo: Convertir directamente a decimal una fracción cuyo denominador es una potencia de 10.
-introduccion: 'Cuando el denominador de una fracción ya es 10, 100, 1000, etc., no es necesario dividir:
-  basta con desplazar la coma decimal según la cantidad de ceros del denominador.'
-resumen: Si el denominador de una fracción es una potencia de 10 (\(10^n\)), su valor decimal se obtiene
-  ubicando la coma \(n\) lugares desde la derecha del numerador.
-explicacion: '### Definición formal
+resumen_inicial: "Una fracción decimal es aquella cuyo denominador es una potencia de 10, permitiendo su conversión directa a número decimal moviendo la coma del numerador a la izquierda tantos lugares como ceros tenga el denominador."
+explicacion_simple: |
+  Una **fracción decimal** es una fracción que tiene un $10, 100, 1000$ (potencias de 10) en el denominador, como $\frac{47}{100}$. Convertir este tipo de fracciones a decimal es facilísimo y **no requiere hacer una división larga**: simplemente tomas el numerador ($47$) y mueves la coma hacia la izquierda **tantos puestos como ceros tenga el denominador**. Como $100$ tiene dos ceros, mueves la coma dos posiciones a la izquierda desde el final: $0.47$.
+explicacion_formal: |
+  Formalmente, una **fracción decimal** es una fracción de la forma:
+  $$\frac{a}{10^k}, \quad \text{con } a \in \mathbb{Z} \text{ y } k \in \mathbb{N}_0$$
 
-
-  \(\frac{a}{10^n}\) equivale a desplazar la coma decimal de \(a\) exactamente \(n\) posiciones hacia
-  la izquierda, porque dividir por \(10^n\) reduce el valor posicional de cada cifra en \(n\) lugares.
-
-
-  ### Desarrollo didáctico
-
-
-  \(\frac{47}{100}\): como \(100=10^2\), se desplaza la coma 2 lugares desde la derecha de 47, obteniendo
-  \(0.47\).'
+  Su representación en el sistema posicional decimal se define mediante el producto por la potencia negativa de 10:
+  $$\frac{a}{10^k} = a \cdot 10^{-k}$$
+  lo que equivale rigurosamente a desplazar la coma decimal del entero $a$ exactamente $k$ posiciones hacia la izquierda.
+definiciones_clave: |
+  - **Fracción decimal**: Fracción cuyo denominador es una potencia entera positiva de 10 ($10^1 = 10$, $10^2 = 100$, $10^3 = 1000$, etc.).
+  - **Desplazamiento directo de coma**: Método directo de conversión que evita la división larga mediante el conteo de ceros.
+  - **Amplificación a base 10**: Proceso de multiplicar numerador y denominador de una fracción común por un factor para transformar su denominador en una potencia de 10.
+propiedades_relaciones: |
+  - **Conversión inversa inmediata**: Pasar un decimal finito a fracción decimal consiste en escribir el número sin coma en el numerador y $10^k$ en el denominador (donde $k$ es la cantidad de decimales).
+  - **Criterio de divisores primes 2 y 5**: Toda fracción cuyo denominador simplificado solo tenga factores primos 2 y 5 se puede amplificar a una fracción decimal.
+  - **Equivalencia posicional**: $\frac{35}{1000} = 0.035$.
+ejemplo_guiado:
+  enunciado: 'Convierte la fracción decimal $\frac{128}{100}$ a número decimal y la fracción $\frac{3}{25}$ amplificándola previamente a denominador potencia de 10.'
+  pasos:
+    - 'Parte 1 ($\frac{128}{100}$): el denominador $100$ tiene $2$ ceros.'
+    - 'Escribir el numerador $128$ y mover la coma $2$ lugares a la izquierda desde el final: $1.28$.'
+    - 'Parte 2 ($\frac{3}{25}$): el denominador $25$ no es potencia de 10, pero $25 \cdot 4 = 100$.'
+    - 'Amplificar por $4$: $\frac{3 \cdot 4}{25 \cdot 4} = \frac{12}{100}$.'
+    - 'Mover la coma $2$ lugares a la izquierda: $0.12$.'
+    - 'Concluir: $\frac{128}{100} = 1.28$ y $\frac{3}{25} = 0.12$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuántas posiciones a la izquierda se debe desplazar la coma del numerador al convertir la fracción decimal $\\frac{a}{10^k}$ a número decimal?"
+    choices:
+      - {text: "Tantas posiciones como indique la cantidad de ceros del denominador ($k$ posiciones).", is_correct: true}
+      - {text: "Siempre 1 posición independientemente del denominador.", is_correct: false}
+      - {text: "Tantas posiciones como dígitos tenga el numerador.", is_correct: false}
+      - {text: "No se desplaza la coma, se agregan ceros a la derecha.", is_correct: false}
+    explanation: "La correcta es Tantas posiciones como indique la cantidad de ceros del denominador ($k$ posiciones).: por definición de multiplicación por potencias de $10^{-k}$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el número decimal equivalente a la fracción $\frac{7}{1000}$?'
+    choices:
+      - {text: "0.007", is_correct: true}
+      - {text: "0.07", is_correct: false}
+      - {text: "0.7", is_correct: false}
+      - {text: "7.000", is_correct: false}
+    explanation: 'La correcta es 0.007: el denominador $1000$ tiene 3 ceros; desplazando la coma 3 lugares en $7$ da $0.007$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Simplifica la fracción y factoriza su denominador.'
-- 'Paso 2: Busca el factor que completa \(10\), \(100\), \(1000\) u otra potencia de diez.'
-- 'Paso 3: Amplifica numerador y denominador por el mismo factor y lee el decimal resultante.'
+  - "Paso 1: Contar la cantidad de ceros $k$ que posee el denominador de la fracción decimal ($10^k$)."
+  - "Paso 2: Escribir las cifras del numerador $a$."
+  - "Paso 3: Ubicarse al final del numerador a la derecha y mover la coma decimal $k$ lugares hacia la izquierda."
+  - "Paso 4: Si al contar los $k$ lugares faltan dígitos, anteponer ceros a la izquierda."
+  - "Paso 5: Escribir un $0$ delante de la coma si esta queda ubicada antes del primer dígito."
+errores_correccion: |
+  Un error frecuente al contar los ceros es mover la coma hacia la DERECHA en lugar de la IZQUIERDA (por ejemplo decir que $\frac{5}{10} = 50$). ¡Dividir achica el número! **La coma SIEMPRE se mueve a la IZQUIERDA al dividir por potencias de 10**.
 ejemplos:
-- titulo: Aplicación razonada — Conversión de fracción decimal a número decimal
-  enunciado: \(\frac{47}{100}=0.47\).
-  solucion_pasos:
-  - Simplifica la fracción y factoriza su denominador.
-  - Busca el factor que completa \(10\), \(100\), \(1000\) u otra potencia de diez.
-  - Amplifica numerador y denominador por el mismo factor y lee el decimal resultante.
-- titulo: Revisión de una solución — Conversión de fracción decimal a número decimal
-  enunciado: Una solución aplica “Busca el factor que completa \(10\), \(100\), \(1000\) u otra potencia
-    de diez.”, pero termina sin comprobar que los denominadores 10, 100 y 1000 facilitan la lectura decimal.
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define conversión de fracción decimal a número decimal: si una fracción
-    tiene denominador potencia de 10, su forma decimal se lee directamente por valor posicional.'
-  - Simplifica la fracción y factoriza su denominador.
-  - 'Completa la revisión con este control: Amplifica numerador y denominador por el mismo factor y lee
-    el decimal resultante.'
-- titulo: ¿Se cumple que los denominadores 10, 100 y 1000 facilitan la lectura decimal? — Conversión de
-    fracción decimal a número decimal
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que si una fracción tiene denominador potencia de 10, su forma
-    decimal se lee directamente por valor posicional.
-  - El caso “\(\frac{47}{100}=0.47\)” satisface esa condición.
-  - Amplifica numerador y denominador por el mismo factor y lee el decimal resultante.
-- titulo: ¿Es válido omitir el paso “Simplifica la fracción y factoriza su denominador”? — Conversión
-    de fracción decimal a número decimal
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de conversión de fracción decimal a número decimal.
-  - 'Omitirlo puede volver inválida la acción siguiente: Busca el factor que completa \(10\), \(100\),
-    \(1000\) u otra potencia de diez.'
-  - 'La solución debe terminar de este modo: Amplifica numerador y denominador por el mismo factor y lee
-    el decimal resultante.'
+  - titulo: "Ejemplo 1"
+    enunciado: 'Convierte $\frac{45}{10}$ a decimal.'
+    alternativas:
+      - "4.5"
+      - "0.45"
+      - "45.0"
+    respuesta: "4.5"
+    solucion_pasos:
+      - 'Denominador $10$ tiene $1$ cero.'
+      - 'Mover coma $1$ lugar a la izquierda en $45 \implies 4.5$.'
+  - titulo: "Ejemplo 2"
+    enunciado: 'Convierte $\frac{9}{50}$ a decimal amplificando a fracción decimal.'
+    alternativas:
+      - "0.18"
+      - "0.9"
+      - "0.09"
+    respuesta: "0.18"
+    solucion_pasos:
+      - 'Amplificar por $2$: $\frac{9 \cdot 2}{50 \cdot 2} = \frac{18}{100}$.'
+      - 'Denominador $100$ tiene $2$ ceros.'
+      - 'Mover coma $2$ lugares en $18 \implies 0.18$.'
+  - titulo: "¿Se puede convertir la fracción $\\frac{1}{8}$ a fracción decimal amplificando por 125?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, $\frac{1 \cdot 125}{8 \cdot 125} = \frac{125}{1000} = 0.125$.'
+  - titulo: "¿Es $\\frac{10}{10}$ una fracción decimal que equivale a 1?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, $10 \div 10 = 1.0 = 1$.'
 errores_frecuentes:
-- 'Empezar conversión de fracción decimal a número decimal sin realizar este control inicial: Simplifica
-  la fracción y factoriza su denominador.'
-- Memorizar “\(\frac{47}{100}=0.47\)” como respuesta aislada, sin reconstruir la definición que lo justifica.
-- Convertir en receta el paso “Busca el factor que completa \(10\), \(100\), \(1000\) u otra potencia
-  de diez.” y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre conversión de fracción decimal a número decimal que contradice el
-  criterio “Los denominadores 10, 100 y 1000 facilitan la lectura decimal”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Amplifica numerador y denominador por el mismo
-  factor y lee el decimal resultante.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Desplazar la coma a la derecha en lugar de la izquierda."
+  - "Contar mal la cantidad de ceros del denominador."
+  - "Olvidar escribir los ceros de relleno a la izquierda cuando el numerador tiene menos cifras que ceros el denominador."
+  - "Pensar que un número como $20$ es una potencia de 10 (las potencias son $10, 100, 1000$, etc.)."
+  - "Intentar amplificar a base 10 una fracción con denominadores como 3 u 7 (es imposible obtener potencia de 10)."
+afirmaciones_verdaderas:
+  - "Las fracciones con denominadores $10, 100, 1000$ se convierten a decimal directamente moviendo la coma a la izquierda."
+  - "Una fracción común puede transformarse en fracción decimal si su denominador es divisor de una potencia de 10."
+al_terminar_debes_ponder: |
+  Debes ser capaz de convertir fracciones decimales y fracciones amplificables a potencias de 10 en números decimales mediante el desplazamiento directo de coma.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
