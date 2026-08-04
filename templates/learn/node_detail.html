@@ -66,6 +66,23 @@
   margin: 0 0 1rem;
 }
 
+/* ── Tarjetas de texto (Resumen inicial, Explicaciones, Definiciones, etc.) ── */
+.learn-text-card {
+  background: #fff;
+  border: 1px solid #eef1f6;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, .07);
+  padding: 1.6rem 1.85rem;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.learn-text-card.is-visible { opacity: 1; transform: translateY(0); }
+.learn-text-card .learn-section__title { font-size: 2.05rem; margin-bottom: .85rem; }
+@media (prefers-reduced-motion: reduce) {
+  .learn-text-card { opacity: 1; transform: none; transition: none; }
+}
+
 /* ── Tarjeta resumen ────────────────────────────── */
 .learn-resumen-card {
   background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
@@ -322,7 +339,7 @@
     {% else %}
 
     {% if content.resumen_inicial %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Resumen inicial</h2>
         <div class="resource-view__content">{{ content.resumen_inicial|markdown }}</div>
     </section>
@@ -343,14 +360,14 @@
     {% endif %}
 
     {% if content.explicacion_simple %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Explicación en palabras simples</h2>
         <div class="resource-view__content">{{ content.explicacion_simple|markdown }}</div>
     </section>
     {% endif %}
 
     {% if content.explicacion_formal %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Explicación formal</h2>
         <div class="resource-view__content">{{ content.explicacion_formal|markdown }}</div>
     </section>
@@ -366,21 +383,21 @@
     {% include "learn/includes/_node_checkpoint.html" with checkpoint=checkpoint_after_formal %}
 
     {% if content.definiciones_clave %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Definiciones clave</h2>
         <div class="resource-view__content">{{ content.definiciones_clave|markdown }}</div>
     </section>
     {% endif %}
 
     {% if content.propiedades_relaciones %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Propiedades y relaciones importantes</h2>
         <div class="resource-view__content">{{ content.propiedades_relaciones|markdown }}</div>
     </section>
     {% endif %}
 
     {% if content.ejemplo_guiado.enunciado %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Ejemplo guiado</h2>
         <p class="resource-view__content">{{ content.ejemplo_guiado.enunciado|markdown }}</p>
         <ul class="learn-procedure">
@@ -394,7 +411,7 @@
     {% include "learn/includes/_node_checkpoint.html" with checkpoint=checkpoint_after_ejemplo %}
 
     {% if content.procedimiento %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Procedimiento</h2>
         <ul class="learn-procedure">
             {% for paso in content.procedimiento %}
@@ -405,7 +422,7 @@
     {% endif %}
 
     {% if content.errores_correccion %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Errores frecuentes y cómo corregirlos</h2>
         <div class="resource-view__content">{{ content.errores_correccion|markdown }}</div>
     </section>
@@ -542,7 +559,7 @@
     {% endif %}
 
     {% if content.al_terminar_debes_poder %}
-    <section class="learn-section">
+    <section class="learn-section learn-text-card">
         <h2 class="learn-section__title">Al terminar debes poder</h2>
         <div class="resource-view__content">{{ content.al_terminar_debes_poder|markdown }}</div>
     </section>
@@ -835,6 +852,21 @@
           });
         }
       });
+
+      /* Aparición/desaparición de las tarjetas de texto al hacer scroll */
+      var revealCards = document.querySelectorAll(".learn-text-card");
+      if (revealCards.length) {
+        if ("IntersectionObserver" in window) {
+          var revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              entry.target.classList.toggle("is-visible", entry.isIntersecting);
+            });
+          }, { threshold: 0.12 });
+          revealCards.forEach(function (card) { revealObserver.observe(card); });
+        } else {
+          revealCards.forEach(function (card) { card.classList.add("is-visible"); });
+        }
+      }
     })();
     </script>
 
