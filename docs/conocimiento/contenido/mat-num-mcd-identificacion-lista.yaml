@@ -1,40 +1,62 @@
 semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.IDENTIFICACION_LISTA
-objetivo: Calcular el MCD de dos o más números identificando y listando todos sus divisores individuales.
-introduccion: |-
-  ¿Cómo encuentras algo cuando tienes muchas cosas mezcladas? ¡Haces una lista!
-
-  Si quieres saber cuál es el mayor divisor común de dos números, una de las formas más sencillas y seguras de hacerlo es escribir dos listas: una con todos los divisores del primer número, y otra con todos los divisores del segundo número.
-
-  Una vez que tengas las dos listas preparadas, simplemente buscas los números que aparecen en ambas listas y eliges el más grande de todos. Este método es excelente para números pequeños porque te permite ver claramente todos los candidatos antes de tomar la decisión final.
-resumen: El método de listado para calcular el MCD consiste en escribir ordenadamente el conjunto completo de divisores de cada número por separado, identificar los divisores que se repiten en todos los conjuntos (divisores comunes) y seleccionar el de mayor valor como el MCD.
-explicacion: |-
-  Para calcular el Máximo Común Divisor (MCD) de dos números $a$ y $b$ mediante el **método de listado**, procedemos a determinar todos los divisores de cada número de forma independiente.
-
-  Definimos el conjunto de divisores de un número natural $n$, denotado como $D(n)$, como todos los números naturales $d$ tales que $n \pmod d = 0$.
-
-  **Pasos del método:**
-  1. Encontrar el conjunto de divisores del primer número, $D(a)$.
-  2. Encontrar el conjunto de divisores del segundo número, $D(b)$.
-  3. Determinar la intersección de ambos conjuntos, que representa los divisores comunes:
-     $$D(a) \cap D(b)$$
-  4. Seleccionar el elemento más grande de la intersección. Este elemento es el $\text{MCD}(a, b)$.
-
-  **Ejemplo detallado:**
-  Para calcular el $\text{MCD}(24, 36)$:
-  - Divisores de $24$: $D(24) = \{1, 2, 3, 4, 6, 8, 12, 24\}$
-  - Divisores de $36$: $D(36) = \{1, 2, 3, 4, 6, 9, 12, 18, 36\}$
-  - Divisores comunes: $D(24) \cap D(36) = \{1, 2, 3, 4, 6, 12\}$
-  - El mayor de ellos es $12$, por lo tanto, $\text{MCD}(24, 36) = 12$.
-
-  Este método es ideal cuando los números son pequeños ($< 100$) y sus divisores son fáciles de enumerar. Sin embargo, para números grandes puede resultar ineficiente o propenso a omitir divisores.
+resumen_inicial: "El método de listado calcula el MCD escribiendo los divisores de cada número y eligiendo el mayor divisor común."
+explicacion_simple: |
+  ¿Cómo encuentras algo cuando tienes muchas cosas mezcladas? ¡Haces una lista! Si quieres
+  saber el mayor divisor común de dos números, escribe dos listas: una con los divisores
+  del primer número y otra con los del segundo. Luego busca los números que aparecen en
+  ambas listas y elige el más grande.
+explicacion_formal: |
+  El conjunto de divisores de $n$, denotado $D(n)$, contiene todos los números que dividen
+  exactamente a $n$. Para el MCD de $a$ y $b$: se calcula $D(a)$, $D(b)$, se toma la
+  intersección $D(a)\cap D(b)$ (los divisores comunes), y se elige el mayor elemento. Para
+  $\text{MCD}(24,36)$: $D(24)\cap D(36)=\{1,2,3,4,6,12\}$, por lo que $\text{MCD}=12$.
+definiciones_clave: |
+  **Intersección de divisores**: conjunto de números que dividen exactamente a la vez a
+  dos o más números; el MCD es el mayor elemento de esa intersección.
+propiedades_relaciones: |
+  Este método es ideal para números pequeños (menores a 100); para números grandes resulta
+  ineficiente y propenso a omitir divisores.
+ejemplo_guiado:
+  enunciado: "Calcula el MCD entre 20 y 30 listando sus divisores."
+  pasos:
+    - "Divisores de 20: $\\{1,2,4,5,10,20\\}$. Divisores de 30: $\\{1,2,3,5,6,10,15,30\\}$."
+    - "Divisores comunes: $\\{1,2,5,10\\}$."
+    - "Conclusión: el mayor es 10, por lo que $\\text{MCD}(20,30)=10$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué representa la intersección de las listas de divisores de dos números?"
+    choices:
+      - {text: "El conjunto de divisores comunes a ambos", is_correct: true}
+      - {text: "El conjunto de múltiplos comunes", is_correct: false}
+      - {text: "Solo el divisor 1", is_correct: false}
+      - {text: "El producto de todos los divisores", is_correct: false}
+    explanation: "La correcta es El conjunto de divisores comunes a ambos: el MCD es el mayor elemento de esa intersección."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCD entre 12 y 8?"
+    choices:
+      - {text: "4", is_correct: true}
+      - {text: "2", is_correct: false}
+      - {text: "24", is_correct: false}
+      - {text: "No se puede saber", is_correct: false}
+    explanation: "La correcta es 4: divisores de 12 son $1,2,3,4,6,12$ y de 8 son $1,2,4,8$; el mayor común es 4."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Escribe la lista completa de los divisores del primer número, comenzando por el 1 y terminando en el número mismo.'
   - 'Paso 2: Escribe la lista completa de los divisores del segundo número de la misma manera.'
   - 'Paso 3: Identifica y subraya todos los números que aparecen en ambas listas (divisores comunes).'
   - 'Paso 4: Elige el número más grande de los divisores comunes identificados; este será el MCD.'
+errores_correccion: |
+  Un error frecuente es omitir divisores al escribir la lista (por ejemplo, olvidar el 1
+  o el propio número). Otro error es listar múltiplos en vez de divisores.
 ejemplos:
   - titulo: Ejemplo 1
     enunciado: Calcula el MCD de $16$ y $24$ listando sus divisores.
+    alternativas:
+      - "8"
+      - "4"
+      - "48"
+    respuesta: "8"
     solucion_pasos:
       - 'Paso a: Listamos los divisores de $16$: $D(16) = \{1, 2, 4, 8, 16\}$.'
       - 'Paso b: Listamos los divisores de $24$: $D(24) = \{1, 2, 3, 4, 6, 8, 12, 24\}$.'
@@ -42,6 +64,11 @@ ejemplos:
       - 'Paso d: Seleccionamos el mayor, que es $8$. Por ende, $\text{MCD}(16, 24) = 8$.'
   - titulo: Ejemplo 2
     enunciado: Determina el MCD de $18$ y $27$ listando sus divisores.
+    alternativas:
+      - "9"
+      - "3"
+      - "54"
+    respuesta: "9"
     solucion_pasos:
       - 'Paso a: Los divisores de $18$ son $D(18) = \{1, 2, 3, 6, 9, 18\}$.'
       - 'Paso b: Los divisores de $27$ son $D(27) = \{1, 3, 9, 27\}$.'
@@ -65,5 +92,8 @@ errores_frecuentes:
   - Seleccionar un divisor que solo pertenece a uno de los números pero no es común a ambos.
   - Elegir el menor divisor común positivo (que siempre es 1) en lugar de elegir el mayor (MCD).
   - Dividir incorrectamente al comprobar si un número es divisor, lo que altera la lista resultante.
+al_terminar_debes_poder: |
+  Calcular el MCD de dos o más números mediante el método de comparación de listas de
+  divisores.
 fuente: Teoría de Números
 estado: publicado
