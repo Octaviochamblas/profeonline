@@ -1,71 +1,98 @@
 semantic_id: MAT.NUM.DECIMALES_CLASIFICACION.PERIODO_IDENTIFICACION
-titulo: Identificación del período de un decimal
-objetivo: Identificar correctamente qué bloque de cifras constituye el período en un decimal periódico.
-introduccion: Para trabajar con decimales periódicos —por ejemplo, al convertirlos a fracción— es esencial
-  identificar con precisión cuál es el bloque de cifras que se repite, marcado usualmente con una línea
-  sobre las cifras.
-resumen: El período de un decimal periódico es el bloque de cifras que se repite indefinidamente, indicado
-  con una línea sobre esas cifras.
-explicacion: '### Definición formal
+resumen_inicial: "El período de un número decimal infinito es el bloque mínimo de cifras decimales que se repite indefinidamente en el mismo orden a la derecha de la coma."
+explicacion_simple: |
+  El **período** es el 'patrón repetitivo' de un decimal infinito. Es la secuencia exacta de números que vuelve y vuelve a aparecer sin detenerse jamás. Por ejemplo:
+  - En $0.4444\dots$, el período es el número $4$ (longitud 1).
+  - En $2.151515\dots$, el período es el bloque $15$ (longitud 2).
+  - En $0.0123123123\dots$, el período es el bloque $123$ (longitud 3).
+  En matemática, colocamos la barrita encima del período para delimitarlo con precisión: $2.\overline{15}$.
+explicacion_formal: |
+  Formalmente, dado un número racional $d \in \mathbb{Q}$ con expansión decimal infinita, el **período** $P$ se define como la subsecuencia mínima de dígitos $P = (p_1, p_2, \dots, p_m)$ de longitud $m \in \mathbb{Z}^+$ tal que existe un índice $N \in \mathbb{N}_0$ donde para todo $k \ge N$:
+  $$b_k = p_{((k - N) \bmod m) + 1}$$
 
-
-  En la notación \(0.\overline{c_1c_2\ldots c_k}\), el período es el bloque \(c_1c_2\ldots c_k\) que se
-  repite de forma indefinida e idéntica después de la coma.
-
-
-  ### Desarrollo didáctico
-
-
-  En \(0.\overline{27}\), el período es 27: la línea cubre las cifras 2 y 7, indicando que el bloque "27"
-  se repite indefinidamente, \(0.272727\ldots\)'
+  Criterio de minimalidad: la longitud $m$ del período debe ser el menor entero positivo que satisface la periodicidad (evitando secuencias compuestas redundantes como considerar $44$ en lugar de $4$).
+definiciones_clave: |
+  - **Período ($P$)**: Bloque mínimo de cifras decimales que se repite infinitamente.
+  - **Longitud del período ($m$)**: Número de dígitos que forman la secuencia repetitiva del período.
+  - **Barra de periodicidad ($\overline{\quad}$)**: Símbolo que cubre exactamente las $m$ cifras del período.
+propiedades_relaciones: |
+  - **Relación con los nueves del denominador**: La longitud $m$ del período determina exactamente la cantidad de nueves ($99\dots9$) en el denominador de su representación fraccionaria.
+  - **Teorema de la longitud máxima del período**: Para una fracción irreductible $\frac{a}{b}$, la longitud del período $m$ es siempre estrictamente menor que el denominador: $m \le b - 1$.
+  - **Independencia del anteperíodo**: La identificación del período es independiente de que exista o no anteperíodo previo.
+ejemplo_guiado:
+  enunciado: "Identifica el período y su longitud en los siguientes decimales: $d_1 = 0.555\\dots$, $d_2 = 3.4121212\\dots$ y $d_3 = 0.009009009\\dots$."
+  pasos:
+    - "Analizar $d_1 = 0.555\\dots$: el bloque que se repite es $5$. Período: $5$. Longitud: $1$ cifra ($0.\\overline{5}$)."
+    - "Analizar $d_2 = 3.4121212\\dots$: tras el anteperíodo $4$, la secuencia repetida es $12$. Período: $12$. Longitud: $2$ cifras ($3.4\\overline{12}$)."
+    - "Analizar $d_3 = 0.009009009\\dots$: el bloque repetido tras la coma es $009$. Período: $009$. Longitud: $3$ cifras ($0.\\overline{009}$)."
+    - "Concluir: la correcta notación con barra delimita exactamente el período de cada decimal."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué es el período de un decimal infinito?"
+    choices:
+      - {text: "El bloque mínimo de cifras decimales que se repite infinitas veces en el mismo orden.", is_correct: true}
+      - {text: "Las cifras decimales que no se repiten tras la coma.", is_correct: false}
+      - {text: "La parte entera del número decimal.", is_correct: false}
+      - {text: "El número de ceros del denominador.", is_correct: false}
+    explanation: "La correcta es El bloque mínimo de cifras decimales que se repite infinitas veces en el mismo orden.: define el período de forma rigurosa y minimal."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es el período del decimal $5.0232323\\dots$?"
+    choices:
+      - {text: "23", is_correct: true}
+      - {text: "023", is_correct: false}
+      - {text: "02", is_correct: false}
+      - {text: "232", is_correct: false}
+    explanation: "La correcta es 23: el anteperíodo es $0$ y el bloque repetitivo que aparece de forma ilimitada es $23$ ($5.0\\overline{23}$)."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Descarta la parte entera y cualquier anteperíodo.'
-- 'Paso 2: Localiza el bloque mínimo de cifras que se repite sin fin.'
-- 'Paso 3: Comprueba que repetir solo ese bloque reconstruya la cola decimal.'
+  - "Paso 1: Observar la expansión decimal extendida a la derecha de la coma."
+  - "Paso 2: Localizar el punto donde comienza a repetirse un patrón regular idéntico."
+  - "Paso 3: Extraer la secuencia más corta de dígitos que forma ese patrón repetitivo (período)."
+  - "Paso 4: Contar la cantidad de dígitos $m$ del período."
+  - "Paso 5: Escribir el número decimal utilizando la barra de período colocada estrictamente sobre esas cifras."
+errores_correccion: |
+  Un error frecuente es incluir cifras del anteperíodo dentro del período (por ejemplo, en $0.1666\dots$ decir que el período es $16$ en lugar de $6$). Recuerda: **el anteperíodo NO se repite**; el período es ÚNICAMENTE la parte que se repite infinitamente. En $0.1666\dots$, el período es solo el $6$ ($0.1\overline{6}$).
 ejemplos:
-- titulo: Aplicación razonada — Identificación del período decimal
-  enunciado: En \(0.\overline{27}\), el período es 27.
-  solucion_pasos:
-  - Descarta la parte entera y cualquier anteperíodo.
-  - Localiza el bloque mínimo de cifras que se repite sin fin.
-  - Comprueba que repetir solo ese bloque reconstruya la cola decimal.
-- titulo: Revisión de una solución — Identificación del período decimal
-  enunciado: Una solución aplica “Localiza el bloque mínimo de cifras que se repite sin fin.”, pero termina
-    sin comprobar que para identificar el período hay que ubicar la parte que se repite una y otra vez.
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define identificación del período decimal: el período es el bloque mínimo
-    de cifras que se repite indefinidamente en un decimal periódico.'
-  - Descarta la parte entera y cualquier anteperíodo.
-  - 'Completa la revisión con este control: Comprueba que repetir solo ese bloque reconstruya la cola
-    decimal.'
-- titulo: ¿Se cumple que para identificar el período hay que ubicar la parte que se repite una y otra
-    vez? — Identificación del período decimal
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que el período es el bloque mínimo de cifras que se repite
-    indefinidamente en un decimal periódico.
-  - El caso “En \(0.\overline{27}\), el período es 27” satisface esa condición.
-  - Comprueba que repetir solo ese bloque reconstruya la cola decimal.
-- titulo: ¿Es válido omitir el paso “Descarta la parte entera y cualquier anteperíodo”? — Identificación
-    del período decimal
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de identificación del período decimal.
-  - 'Omitirlo puede volver inválida la acción siguiente: Localiza el bloque mínimo de cifras que se repite
-    sin fin.'
-  - 'La solución debe terminar de este modo: Comprueba que repetir solo ese bloque reconstruya la cola
-    decimal.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Identifica el período y exprésalo con barra para $d = 0.272727\\dots$"
+    alternativas:
+      - "$0.\\overline{27}$, período = $27$"
+      - "$0.2\\overline{7}$, período = $7$"
+      - "$0.\\overline{272}$, período = $272$"
+    respuesta: "$0.\\overline{27}$, período = $27$"
+    solucion_pasos:
+      - "La secuencia repetida tras la coma es $27$."
+      - "Período = $27$ (longitud 2)."
+      - "Notación: $0.\\overline{27}$."
+  - titulo: "Ejemplo 2"
+    enunciado: "¿Cuál es la longitud del período en la fracción $\\frac{1}{7} = 0.142857142857\\dots$?"
+    alternativas:
+      - "6 cifras ($142857$)"
+      - "3 cifras ($142$)"
+      - "1 cifra ($7$)"
+    respuesta: "6 cifras ($142857$)"
+    solucion_pasos:
+      - "El bloque repetido es $142857$."
+      - "Tiene $6$ dígitos, por lo que la longitud del período es $6$."
+  - titulo: "¿Se incluyen los ceros iniciales del período si están bajo la barra (como en $0.\\overline{03}$)?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, en $0.\\overline{03}$ el período es $03$ de longitud 2."
+  - titulo: "¿Puede la longitud del período de $\\frac{a}{b}$ ser mayor o igual que el denominador $b$?"
+    respuesta: "No"
+    solucion_pasos:
+      - 'No, los residuos posibles en la división entre $b$ son a lo sumo $b-1$, lo que limita la longitud del período a $m \le b - 1$.'
 errores_frecuentes:
-- 'Empezar identificación del período decimal sin realizar este control inicial: Descarta la parte entera
-  y cualquier anteperíodo.'
-- Memorizar “En \(0.\overline{27}\), el período es 27” como respuesta aislada, sin reconstruir la definición
-  que lo justifica.
-- Convertir en receta el paso “Localiza el bloque mínimo de cifras que se repite sin fin.” y usarlo aunque
-  cambien las condiciones del problema.
-- Dar por válida una conclusión sobre identificación del período decimal que contradice el criterio “Para
-  identificar el período hay que ubicar la parte que se repite una y otra vez”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Comprueba que repetir solo ese bloque reconstruya
-  la cola decimal.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Confundir el anteperíodo con el período."
+  - 'Tomar un período compuesto redundante (como decir que el período de $0.333\dots$ es $33$ en vez de $3$).'
+  - "Colocar la barra de período sobre dígitos que están antes de la coma."
+  - "Olvidar los ceros internos que forman parte de la secuencia del período."
+  - "Asumir que todos los decimales infinitos tienen período (los irracionales no tienen período)."
+afirmaciones_verdaderas:
+  - "El período es el bloque mínimo de cifras decimales que se repite infinitamente."
+  - "La barra de período se coloca únicamente sobre los dígitos repetitivos."
+al_terminar_debes_ponder: |
+  Debes ser capaz de identificar el período y su longitud en cualquier decimal periódico o semiperiódico y representarlo con la notación correcta.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
