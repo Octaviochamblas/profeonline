@@ -502,6 +502,51 @@ class NodeListCrossLinkTests(TestCase):
         self.assertContains(response, "Video puntual sobre enteros")
 
 
+class NodeEjemploMultipleChoiceRenderTests(TestCase):
+    def setUp(self):
+        self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()
+        self.url = (
+            f"/aprender/{self.asig.slug}/{self.eje.slug}/"
+            f"{self.bloque.slug}/{self.tema.slug}/{self.recurso.slug}/"
+        )
+
+    def test_ejemplo_with_alternativas_renders_as_multiple_choice(self):
+        NodeContent.objects.create(
+            node=self.recurso,
+            estado=NodeContent.ESTADO_PUBLICADO,
+            ejemplos=[
+                {
+                    "titulo": "Ejemplo 1",
+                    "enunciado": "¿Cuál es el sucesor de 4?",
+                    "alternativas": ["5", "3", "4"],
+                    "respuesta": "5",
+                    "solucion_pasos": ["4 + 1 = 5."],
+                }
+            ],
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, 'data-format="multiple_choice"')
+        self.assertContains(response, 'data-answer="5"')
+        self.assertContains(response, "¿Cuál es el sucesor de 4?")
+        self.assertNotContains(response, 'class="ex-submit">Ver solución')
+
+    def test_ejemplo_without_alternativas_keeps_open_answer(self):
+        NodeContent.objects.create(
+            node=self.recurso,
+            estado=NodeContent.ESTADO_PUBLICADO,
+            ejemplos=[
+                {
+                    "titulo": "Ejemplo 1",
+                    "enunciado": "Demuestra que 4 es par.",
+                    "solucion_pasos": ["4 / 2 = 2, resto 0."],
+                }
+            ],
+        )
+        response = self.client.get(self.url)
+        self.assertContains(response, 'data-format="open_answer"')
+        self.assertContains(response, "Ver solución")
+
+
 class NodeCheckpointRenderTests(TestCase):
     def setUp(self):
         self.asig, self.eje, self.bloque, self.tema, self.recurso = _build_tree()

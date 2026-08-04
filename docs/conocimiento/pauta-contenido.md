@@ -47,9 +47,14 @@ procedimiento:
   - "Paso 2: ..."
   - "Paso 3: ..."
 ejemplos:
-  # TIPO A — Ejemplo abierto (se muestra solución al hacer clic)
+  # TIPO A — Selección múltiple, 3 alternativas (estándar desde 2026-08-03)
   - titulo: "Ejemplo 1"
     enunciado: "La pregunta o situación real que el alumno debe analizar."
+    alternativas:
+      - "Alternativa correcta"
+      - "Distractor 1"
+      - "Distractor 2"
+    respuesta: "Alternativa correcta"   # debe calzar EXACTO (texto) con una de `alternativas`
     solucion_pasos:
       - "Explicación del primer paso."
       - "Explicación del segundo paso."
@@ -77,7 +82,7 @@ estado: publicado    # o borrador
 | `introduccion` | Sí | Lenguaje de 10 años. Sin LaTeX pesado. Usa analogías del mundo real. |
 | `explicacion` | Sí | Markdown + LaTeX. Puede ser denso — es para el alumno que quiere profundidad. |
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. |
-| `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (abiertos) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. |
+| `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple, 3 alternativas) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. |
 | `errores_frecuentes` | Sí | **Exactamente 5**. Son las afirmaciones de la sección "Ejemplos Verdadero/Falso". Siempre falsas. |
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
@@ -85,10 +90,12 @@ estado: publicado    # o borrador
 ### Sobre `ejemplos`: Tipo A vs Tipo B
 
 ```yaml
-# TIPO A — Pregunta abierta
-- titulo: "Ejemplo 1"          # Siempre "Ejemplo N" para los abiertos
+# TIPO A — Selección múltiple, 3 alternativas
+- titulo: "Ejemplo 1"          # Siempre "Ejemplo N"
   enunciado: "La pregunta real que el alumno lee y piensa."
-  solucion_pasos: [...]        # Se oculta hasta hacer clic en "Ver solución"
+  alternativas: [...]          # Exactamente 3, únicas, sin repetir
+  respuesta: "..."             # Debe calzar EXACTO (mismo texto) con una de `alternativas`
+  solucion_pasos: [...]        # Se muestra como argumento al responder (correcto o no)
 
 # TIPO B — Pregunta de Sí/No (interactiva)
 - titulo: "¿La pregunta va aquí directamente?"   # El título ES la pregunta
@@ -96,8 +103,16 @@ estado: publicado    # o borrador
   solucion_pasos: [...]        # Se muestra al responder
 ```
 
-El Tipo B aparece como botones Sí/No en la UI. El alumno responde y recibe
-feedback inmediato. **No generar `enunciado` en Tipo B** — el `titulo` ya es la pregunta.
+Ambos tipos aparecen como botones en la UI (3 alternativas en Tipo A, Sí/No en Tipo B). El
+alumno responde y recibe feedback inmediato (correcto/incorrecto) junto con `solucion_pasos`
+como argumento. **No generar `enunciado` en Tipo B** — el `titulo` ya es la pregunta.
+
+> **Historial:** hasta 2026-08-03 el Tipo A era una pregunta abierta sin alternativas, resuelta
+> con un botón "Ver solución" sin corrección. Se reemplazó por selección múltiple de 3
+> alternativas para que el alumno reciba feedback de correcto/incorrecto, igual que el Tipo B.
+> Un `ejemplos` sin `alternativas` ni `respuesta` en {Sí, No, Verdadero, Falso} sigue
+> renderizando como el formato abierto legado — no se rompe nada, pero ya no es el estándar
+> para contenido nuevo.
 
 ---
 

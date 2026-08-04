@@ -222,7 +222,8 @@
 /* ── Ejercicios interactivos ─────────────────────── */
 .learn-exercise-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.25rem; }
 .learn-exercise__tf { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem; }
-.learn-exercise__mc { list-style:none; padding:0; margin:.6rem 0 0; display:flex; flex-direction:column; gap:.4rem; }
+.learn-exercise__mc { list-style:none; padding:0; margin:.6rem 0 0; display:flex; flex-direction:row; flex-wrap:wrap; gap:.5rem; }
+.learn-exercise__mc > li { display:flex; }
 .ex-choice {
   padding:.45rem 1.05rem; border:2px solid #d0d5dd; border-radius:8px;
   background:#fff; cursor:pointer; font-size:.91rem; font-family:inherit;
@@ -450,6 +451,30 @@
                         <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
                         <button type="button" class="ex-choice" data-value="Falso">Falso</button>
                     </div>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% elif ej.alternativas %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="multiple_choice"
+                 data-answer="{{ ej.respuesta }}">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    <ul class="learn-exercise__mc">
+                        {% for alt in ej.alternativas %}
+                        <li><button type="button" class="ex-choice" data-value="{{ alt }}">{{ alt }}</button></li>
+                        {% endfor %}
+                    </ul>
                     <div class="learn-exercise__feedback" hidden>
                         <div class="learn-exercise__verdict"></div>
                         {% if ej.solucion_pasos %}
