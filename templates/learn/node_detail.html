@@ -428,12 +428,12 @@
     </section>
     {% endif %}
 
-    {% if content.ejemplos %}
+    {% if ejemplos %}
     <section class="learn-section">
         <h2 class="learn-section__title">Ejemplos</h2>
         <p class="learn-section__hint">Responde los siguientes ejercicios para poner a prueba lo que acabas de aprender.</p>
         <div class="learn-ejemplos-list">
-            {% for ej in content.ejemplos %}
+            {% for ej in ejemplos %}
             {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
             <div class="learn-ejemplo-card learn-exercise"
                  data-format="true_false"
@@ -530,16 +530,16 @@
     </section>
     {% endif %}
 
-    {% if content.errores_frecuentes %}
+    {% if vf_items %}
     <section class="learn-section conceptual-section">
         <h2 class="learn-section__title">Ejemplos Verdadero/Falso</h2>
         <p class="learn-section__hint">Decide si cada afirmación es verdadera o falsa antes de ver la explicación.</p>
         <div class="conceptual-list">
-            {% for error in content.errores_frecuentes %}
+            {% for item in vf_items %}
             <div class="conceptual-item learn-exercise"
                 data-format="true_false"
-                data-answer="Falso">
-                <div class="conceptual-item__claim"><span>"{{ error }}"</span></div>
+                data-answer="{{ item.answer }}">
+                <div class="conceptual-item__claim"><span>"{{ item.text }}"</span></div>
                 <div class="conceptual-item__body">
                     <div class="learn-exercise__tf">
                         <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
@@ -548,7 +548,7 @@
                     <div class="learn-exercise__feedback" hidden>
                         <div class="learn-exercise__verdict"></div>
                         <p style="margin-top:.4rem;font-size:.9rem;color:#374151;">
-                            Esta afirmación describe un error frecuente: es <strong>incorrecta</strong>.
+                            {% if item.answer == "Falso" %}Esta afirmación describe un error frecuente: es <strong>incorrecta</strong>.{% else %}Esta afirmación es <strong>correcta</strong>.{% endif %}
                         </p>
                     </div>
                 </div>

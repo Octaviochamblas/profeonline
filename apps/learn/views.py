@@ -1,3 +1,4 @@
+import random
 import re
 
 from django.db.models import Prefetch
@@ -168,14 +169,41 @@ def _build_practice_bank(node):
     ]
 
 
+def _shuffled_ejemplos(content):
+    if content is None:
+        return []
+    ejemplos = []
+    for ej in content.ejemplos:
+        ej = dict(ej)
+        if ej.get("alternativas"):
+            alternativas = list(ej["alternativas"])
+            random.shuffle(alternativas)
+            ej["alternativas"] = alternativas
+        ejemplos.append(ej)
+    return ejemplos
+
+
+def _true_false_items(content):
+    if content is None:
+        return []
+    items = [{"text": e, "answer": "Falso"} for e in content.errores_frecuentes]
+    items += [
+        {"text": a, "answer": "Verdadero"} for a in content.afirmaciones_verdaderas
+    ]
+    random.shuffle(items)
+    return items
+
+
 def _checkpoint_context(content, placement):
     if content is None:
         return None
     for checkpoint in content.checkpoints:
         if checkpoint.get("placement") == placement:
+            choices = [choice["text"] for choice in checkpoint["choices"]]
+            random.shuffle(choices)
             return {
                 "question": checkpoint["question"],
-                "choices": [choice["text"] for choice in checkpoint["choices"]],
+                "choices": choices,
                 "explanation": checkpoint["explanation"],
                 "correct_answer": correct_choice_text(checkpoint),
             }
@@ -189,6 +217,8 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
     noindex = not node.is_published or content is None or content.is_draft
     checkpoint_after_formal = _checkpoint_context(content, "after_explicacion_formal")
     checkpoint_after_ejemplo = _checkpoint_context(content, "after_ejemplo_guiado")
+    vf_items = _true_false_items(content)
+    ejemplos = _shuffled_ejemplos(content)
 
     youtube_id = None
     other_media = []
@@ -236,5 +266,7 @@ def _recurso_view(request, node, breadcrumbs, prerequisites):
             "next_node": next_node,
             "checkpoint_after_formal": checkpoint_after_formal,
             "checkpoint_after_ejemplo": checkpoint_after_ejemplo,
+            "vf_items": vf_items,
+            "ejemplos": ejemplos,
         },
     )

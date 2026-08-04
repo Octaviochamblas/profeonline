@@ -193,6 +193,15 @@ class NodeContent(models.Model):
     errores_frecuentes = models.JSONField(
         default=list, blank=True, verbose_name="errores frecuentes"
     )
+    afirmaciones_verdaderas = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name="afirmaciones verdaderas",
+        help_text=(
+            "Enunciados ciertos sobre el tema, usados para mezclar con "
+            "errores_frecuentes en la sección Verdadero/Falso."
+        ),
+    )
     resumen_inicial = models.TextField(
         blank=True, verbose_name="resumen inicial"
     )
