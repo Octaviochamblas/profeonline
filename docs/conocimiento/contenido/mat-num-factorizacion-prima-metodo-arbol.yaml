@@ -1,52 +1,65 @@
 semantic_id: MAT.NUM.FACTORIZACION_PRIMA.METODO_ARBOL
-objetivo: 'Aplicar el método del árbol de factores para descomponer un número compuesto en un producto de números primos.'
-introduccion: |
-  ¿Te gustan los árboles genealógicos o los mapas mentales con ramas? En matemáticas tenemos el método del árbol de factores, que funciona igual.
-
-  Empiezas con el número que quieres desarmar en el tronco superior y dibujas dos 'ramas' que representan a dos números que al multiplicarse dan el original. Si alguna de las ramas llega a un número que no es primo, ¡le dibujas más ramas! Pero si la rama llega a un número primo, esa rama da un fruto (un primo) y se detiene ahí.
-
-  Es un método muy visual e intuitivo que te permite ver claramente cómo un número se va ramificando hasta que solo quedan sus factores primos en los extremos de las ramas.
-resumen: |
-  El método del árbol consiste en descomponer un número en dos factores (ramas), repitiendo el proceso con los números compuestos resultantes hasta que todos los extremos de las ramas sean números primos.
-explicacion: |
-  El **Método del Árbol de Factores** es una técnica gráfica para encontrar la descomposición prima de un número. Su ventaja radica en que es muy visual y no requiere seguir un orden estricto de divisores primos.
-
-  **Cómo construir el árbol:**
-  1. Escribe el número original en la parte superior.
-  2. Dibuja dos ramas hacia abajo que apunten a dos números enteros cuyo producto sea el número original (ninguno de los dos puede ser 1).
-  3. Para cada uno de estos nuevos números:
-     - Si es un **número primo**, lo encerramos en un círculo (representa una hoja o fruto terminal; la rama termina aquí).
-     - Si es un **número compuesto**, dibujamos dos nuevas ramas y lo descomponemos en otro par de factores.
-  4. Repetimos el proceso hasta que todos los extremos de las ramas contengan números primos encerrados en círculos.
-
-  **Ejemplo para el número $36$:**
-  Podemos partir el $36$ de varias maneras. Veamos una:
-  - Dividimos $36$ en $6 \cdot 6$.
-  - Ahora descomponemos el primer $6$ en $2 \cdot 3$. Como $2$ y $3$ son primos, los encerramos en un círculo.
-  - Descomponemos el segundo $6$ en $2 \cdot 3$. Como $2$ y $3$ son primos, los encerramos en un círculo.
-
-  Gráficamente:
-  ```
-       36
-      /  \
-     6    6
-    / \  / \
-   (2)(3)(2)(3)
-  ```
-  Los extremos del árbol son: $2, 3, 2, 3$.
-  Multiplicando todos los extremos obtenemos la descomposición:
-  $$36 = 2 \cdot 3 \cdot 2 \cdot 3 = 2^2 \cdot 3^2$$
-
-  Nota que si hubiéramos partido con $4 \cdot 9$, el árbol habría sido diferente en su forma intermedia, pero al final los extremos habrían sido los mismos: $2, 2$ de las ramas de $4$, y $3, 3$ de las ramas de $9$.
+resumen_inicial: "El método del árbol de factores descompone un número en dos factores (ramas), repitiendo el proceso hasta que todos los extremos son primos."
+explicacion_simple: |
+  ¿Te gustan los árboles genealógicos o los mapas mentales con ramas? El método del árbol
+  de factores funciona igual: empiezas con el número en el tronco superior y dibujas dos
+  ramas que representan dos números que al multiplicarse dan el original. Si una rama
+  llega a un número primo, ahí se detiene; si llega a uno compuesto, sigue ramificándose.
+explicacion_formal: |
+  El **Método del Árbol de Factores** es una técnica gráfica para encontrar la
+  descomposición prima. Se escribe el número original arriba, se dibujan dos ramas hacia
+  dos factores cuyo producto sea el número (ninguno puede ser 1), y se repite con cada
+  factor compuesto hasta que todos los extremos sean primos. Para $N=36$: $36=6\cdot6$,
+  cada $6=2\cdot3$; los extremos son $2,3,2,3$, dando $36=2^2\cdot3^2$.
+definiciones_clave: |
+  **Extremo del árbol**: número primo encerrado en un círculo donde termina una rama; el
+  producto de todos los extremos es la descomposición prima.
+propiedades_relaciones: |
+  Sin importar con qué par de factores se empiece a ramificar, los extremos finales
+  siempre son los mismos, por la unicidad de la factorización prima.
+ejemplo_guiado:
+  enunciado: "Usa el método del árbol para descomponer 48, comenzando con 6 y 8."
+  pasos:
+    - "$48=6\\cdot8$. El 6 se descompone en $2\\cdot3$ (ambos primos)."
+    - "El 8 se descompone en $2\\cdot4$; el 4 se descompone en $2\\cdot2$."
+    - "Extremos: $2,3,2,2,2$. Conclusión: $48=2^4\\cdot3$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué se hace cuando una rama del árbol llega a un número compuesto?"
+    choices:
+      - {text: "Se sigue ramificando en dos nuevos factores", is_correct: true}
+      - {text: "Se encierra en un círculo y se detiene", is_correct: false}
+      - {text: "Se descarta esa rama", is_correct: false}
+      - {text: "Se suman sus dígitos", is_correct: false}
+    explanation: "La correcta es Se sigue ramificando en dos nuevos factores: solo los números primos detienen una rama."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuáles son los extremos del árbol de 50 empezando con 5 y 10?"
+    choices:
+      - {text: "5, 2 y 5", is_correct: true}
+      - {text: "5 y 10", is_correct: false}
+      - {text: "2, 5 y 10", is_correct: false}
+      - {text: "No se puede saber", is_correct: false}
+    explanation: "La correcta es 5, 2 y 5: el 5 es primo (se detiene), y el 10 se descompone en $2\\cdot5$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Escribe el número compuesto en la parte superior de tu hoja.'
   - 'Paso 2: Dibuja dos ramas hacia abajo y escribe dos factores enteros cuyo producto sea igual al número del cual nacen las ramas (ambos factores mayores que 1).'
   - 'Paso 3: Identifica si los factores obtenidos son primos. Si alguno es primo, enciérralo en un círculo y detén el ramificado por ese lado. Si es compuesto, vuelve al Paso 2 con ese número.'
   - 'Paso 4: Continúa ramificando hasta que todos los extremos del árbol sean números primos.'
   - 'Paso 5: Escribe la descomposición multiplicando todos los números que quedaron encerrados en círculos en los extremos.'
+errores_correccion: |
+  Un error frecuente es usar el número 1 como una de las ramas, lo que genera un bucle
+  infinito. Otro error es olvidar seguir ramificando algún número compuesto intermedio,
+  dejándolo como si fuera un extremo primo.
 ejemplos:
   - titulo: 'Ejemplo 1'
     enunciado: 'Usa el método del árbol para descomponer el número $24$, comenzando por los factores $4$ y $6$.'
+    alternativas:
+      - "$2^3\\cdot3$"
+      - "$2^2\\cdot3^2$"
+      - "$4\\cdot6$"
+    respuesta: "$2^3\\cdot3$"
     solucion_pasos:
       - 'Paso a: Escribimos el $24$ arriba y sacamos dos ramas: una hacia el $4$ y otra hacia el $6$.'
       - 'Paso b: Descomponemos el $4$ en dos ramas: $2$ y $2$. Como el $2$ es primo, encerramos ambos en un círculo y terminamos por ese lado.'
@@ -54,6 +67,11 @@ ejemplos:
       - 'Paso d: Juntamos todos los extremos rodeados con un círculo: $2, 2, 2$ y $3$. Así, la descomposición prima es $24 = 2^3 \cdot 3$.'
   - titulo: 'Ejemplo 2'
     enunciado: 'Descompón el número $30$ con el método del árbol empezando con los factores $3$ y $10$.'
+    alternativas:
+      - "$2\\cdot3\\cdot5$"
+      - "$3\\cdot10$"
+      - "$2^2\\cdot5$"
+    respuesta: "$2\\cdot3\\cdot5$"
     solucion_pasos:
       - 'Paso a: Colocamos el $30$ arriba y abrimos dos ramas: una hacia el $3$ y otra hacia el $10$.'
       - 'Paso b: El factor $3$ es un número primo, así que lo encerramos en un círculo. Esta rama se detiene.'
@@ -76,5 +94,8 @@ errores_frecuentes:
   - 'Escribir dos números cuyas ramas sumen el número superior en lugar de que lo multipliquen (por ejemplo, ramificar 10 en 5 y 5).'
   - 'No encerar en un círculo los números primos finales, lo que lleva a confundir los números compuestos intermedios con los factores primos finales.'
   - 'Multiplicar incorrectamente los factores de las ramas durante el proceso de ramificación.'
+al_terminar_debes_poder: |
+  Aplicar el método del árbol de factores para obtener la descomposición prima de
+  cualquier número compuesto.
 fuente: 'Teoría de Números'
 estado: publicado
