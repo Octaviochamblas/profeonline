@@ -1,75 +1,116 @@
 semantic_id: MAT.NUM.DECIMAL_FRACCION.SEMIPERIODICO
-titulo: Conversión de decimal semiperiódico a fracción
-objetivo: Convertir un decimal semiperiódico a fracción separando el efecto del anteperíodo y del período.
-introduccion: 'Cuando el decimal tiene un anteperíodo además del período, se necesita un paso adicional:
-  multiplicar primero por una potencia de 10 que desplace la coma hasta el inicio del período, y luego
-  aplicar el método de resta.'
-resumen: Para convertir un decimal semiperiódico a fracción se multiplica \(x\) por dos potencias de 10
-  distintas —una que ubique la coma al inicio del período y otra al final de un ciclo del período— y se
-  restan ambas expresiones para cancelar la parte periódica.
-explicacion: '### Definición formal
+resumen_inicial: "Para convertir un decimal semiperiódico a fracción, se resta a todo el número sin coma toda la parte no periódica en el numerador, y en el denominador se coloca una cadena de nueves (por el período) seguida de ceros (por el anteperíodo)."
+explicacion_simple: |
+  Convertir un decimal **semiperiódico** (el que tiene anteperíodo antes del período, como $0.1\overline{6}$ o $2.4\overline{35}$) a fracción es combinar las dos reglas anteriores:
+  1. **Numerador**: Tomas todo el número sin coma y le **restas TODO lo que NO está bajo la barra** (parte entera + anteperíodo sin coma). Por ejemplo, para $0.1\overline{6}$ haces $16 - 1 = 15$.
+  2. **Denominador**: Escribes **nueves** por el período y **ceros** por el anteperíodo:
+     - Tantos **nueves (9)** como cifras tenga la barra ($6$ tiene $1$ cifra $\implies 9$).
+     - Tantos **ceros (0)** como cifras tenga el anteperíodo ($1$ tiene $1$ cifra $\implies 0$).
+     - Denominador $= 90$ ($\frac{15}{90}$).
+  3. **Simplificación**: Simplificas la fracción hasta hacerla irreductible ($\frac{15 \div 15}{90 \div 15} = \frac{1}{6}$).
+explicacion_formal: |
+  Formalmente, sea $d = E , A \overline{P}$ un decimal infinito semiperiódico con parte entera $E$, anteperíodo $A = a_1 \dots a_n$ de $n \ge 1$ cifras y período $P = p_1 \dots p_m$ de $m \ge 1$ cifras.
 
-
-  Si \(x=0.a_1\ldots a_m\overline{c_1\ldots c_k}\), se calculan \(10^{m+k}x\) y \(10^m x\); ambas comparten
-  la misma cola periódica, así que al restarlas \((10^{m+k}-10^m)x\) es un entero, y se despeja \(x\)
-  como fracción.
-
-
-  ### Desarrollo didáctico
-
-
-  Si \(x=0.1\overline{6}\), se usan \(10x=1.\overline{6}\) y \(100x=16.\overline{6}\); al restar, \(100x-10x=15\),
-  es decir \(90x=15\), por lo tanto \(x=\frac{15}{90}=\frac{1}{6}\).'
+  Demostración por resta de ecuaciones algebraicas:
+  $$\text{Sea } x = E.A\overline{P}$$
+  Multiplicando por $10^{n+m}$ (para mover coma tras período):
+  $$10^{n+m} \cdot x = EAP . \overline{P}$$
+  Multiplicando por $10^n$ (para mover coma tras anteperíodo):
+  $$10^n \cdot x = EA . \overline{P}$$
+  Restando ambas ecuaciones:
+  $$(10^{n+m} - 10^n) \cdot x = (EAP . \overline{P}) - (EA . \overline{P})$$
+  $$10^n (10^m - 1) \cdot x = EAP - EA$$
+  $$x = \frac{EAP - EA}{10^n (10^m - 1)} = \frac{\text{Número sin coma} - \text{Parte no periódica}}{\underbrace{99\dots9}_{m \text{ nueves}} \underbrace{00\dots0}_{n \text{ ceros}}}$$
+definiciones_clave: |
+  - **Parte no periódica ($EA$)**: Número formado por la unión de la parte entera $E$ y el anteperíodo $A$ sin la coma.
+  - **Cadena de nueves y ceros ($99\dots00$)**: Estructura del denominador compuesta por $m$ nueves a la izquierda por el período, seguidos de $n$ ceros a la derecha por el anteperíodo.
+  - **Diferencia del numerador ($EAP - EA$)**: Resta entre la expresión entera completa sin coma y la porción no periódica completa.
+propiedades_relaciones: |
+  - **Orden estricto en el denominador**: Los nueves van obligatoriamente primero a la izquierda y los ceros a la derecha ($90$, $990$, $900$, etc.). Jamás se escriben ceros antes de los nueves.
+  - **Pertenencia a $\mathbb{Q}$**: Garantiza que todo desarrollo semiperiódico es 100% representable como fracción de enteros.
+  - **Equivalencia fraccionaria**: $0.a\overline{bc} = \frac{abc - a}{990}$.
+ejemplo_guiado:
+  enunciado: 'Convierte el decimal semiperiódico $1.2\overline{6}$ a fracción irreductible utilizando la regla de los nueves y ceros, y mediante la demostración por ecuaciones.'
+  pasos:
+    - 'Identificar partes: parte entera $E = 1$, anteperíodo $A = 2$ ($n = 1$), período $P = 6$ ($m = 1$).'
+    - 'Método 1 (Regla):'
+    - '   Numerador: todo sin coma menos no periódico $= 126 - 12 = 114$.'
+    - '   Denominador: $1$ nueve (por período) y $1$ cero (por anteperíodo) $= 90$.'
+    - '   Fracción: $\frac{114}{90}$.'
+    - '   Simplificar entre $\gcd(114, 90) = 6$: $\frac{114 \div 6}{90 \div 6} = \frac{19}{15}$.'
+    - 'Método 2 (Algebraico): sea $x = 1.26666\dots$'
+    - '   Multiplicar por $100$: $100x = 126.6666\dots$'
+    - '   Multiplicar por $10$: $10x = 12.6666\dots$'
+    - '   Restar: $90x = 114 \implies x = \frac{114}{90} = \frac{19}{15}$.'
+    - 'Concluir: $1.2\overline{6} = \frac{19}{15}$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué cantidad de ceros y nueves debe llevar el denominador al convertir un decimal semiperiódico con 2 cifras de período y 3 cifras de anteperíodo?"
+    choices:
+      - {text: "2 nueves seguidos de 3 ceros ($99000$).", is_correct: true}
+      - {text: "3 nueves seguidos de 2 ceros ($99900$).", is_correct: false}
+      - {text: "3 ceros seguidos de 2 nueves ($00099$).", is_correct: false}
+      - {text: "5 nueves ($99999$).", is_correct: false}
+    explanation: "La correcta es 2 nueves seguidos de 3 ceros ($99000$).: 2 nueves por las 2 cifras de período y 3 ceros a la derecha por las 3 cifras de anteperíodo."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es la fracción irreductible equivalente a $0.1\overline{6}$?'
+    choices:
+      - {text: "\\frac{1}{6}", is_correct: true}
+      - {text: "\\frac{15}{90}", is_correct: false}
+      - {text: "\\frac{16}{90}", is_correct: false}
+      - {text: "\\frac{1}{5}", is_correct: false}
+    explanation: 'La correcta es \frac{1}{6}: $\frac{16 - 1}{90} = \frac{15}{90} = \frac{15 \div 15}{90 \div 15} = \frac{1}{6}$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Llama \(x\) al decimal y cuenta cifras de anteperíodo y período.'
-- 'Paso 2: Forma dos ecuaciones con potencias de diez que alineen la parte repetitiva y réstalas.'
-- 'Paso 3: Despeja, simplifica y comprueba que la fracción reproduce anteperíodo y período.'
+  - "Paso 1: Identificar las cifras de la parte entera $E$, del anteperíodo $A$ (contar $n$ dígitos) y del período $P$ (contar $m$ dígitos)."
+  - "Paso 2: Escribir el número completo sin la coma decimal ($EAP$)."
+  - "Paso 3: Restar a ese número completo toda la parte no periódica ($EA$) para formar el numerador."
+  - 'Paso 4: Formar el denominador escribiendo $m$ nueves seguidos de $n$ ceros ($99\dots00\dots$).'
+  - "Paso 5: Simplificar la fracción dividiendo numerador y denominador entre su máximo común divisor."
+errores_correccion: |
+  Un error grave al armar el denominador es poner los ceros ANTES de los nueves (por ejemplo escribir $090$ o $0099$). ¡Eso destruye el número! **Los NUEVES SIEMPRE VAN PRIMERO A LA IZQUIERDA y los ceros van a la derecha** ($90$, $990$, $900$).
 ejemplos:
-- titulo: Aplicación razonada — Conversión de decimal semiperiódico a fracción
-  enunciado: Si \(x=0.1\overline{6}\), se usan \(10x\) y \(100x\) para cancelar la repetición y hallar
-    la fracción.
-  solucion_pasos:
-  - Llama \(x\) al decimal y cuenta cifras de anteperíodo y período.
-  - Forma dos ecuaciones con potencias de diez que alineen la parte repetitiva y réstalas.
-  - Despeja, simplifica y comprueba que la fracción reproduce anteperíodo y período.
-- titulo: Revisión de una solución — Conversión de decimal semiperiódico a fracción
-  enunciado: Una solución aplica “Forma dos ecuaciones con potencias de diez que alineen la parte repetitiva
-    y réstalas.”, pero termina sin comprobar que en un semiperiódico hay que considerar por separado anteperíodo
-    y período. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define conversión de decimal semiperiódico a fracción: un decimal semiperiódico
-    se convierte a fracción aislando el anteperíodo y el período con potencias de 10 adecuadas.'
-  - Llama \(x\) al decimal y cuenta cifras de anteperíodo y período.
-  - 'Completa la revisión con este control: Despeja, simplifica y comprueba que la fracción reproduce
-    anteperíodo y período.'
-- titulo: ¿Se cumple que en un semiperiódico hay que considerar por separado anteperíodo y período? —
-    Conversión de decimal semiperiódico a fracción
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que un decimal semiperiódico se convierte a fracción aislando
-    el anteperíodo y el período con potencias de 10 adecuadas.
-  - El caso “Si \(x=0.1\overline{6}\), se usan \(10x\) y \(100x\) para cancelar la repetición y hallar
-    la fracción” satisface esa condición.
-  - Despeja, simplifica y comprueba que la fracción reproduce anteperíodo y período.
-- titulo: ¿Es válido omitir el paso “Llama \(x\) al decimal y cuenta cifras de anteperíodo y período”?
-    — Conversión de decimal semiperiódico a fracción
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de conversión de decimal semiperiódico a fracción.
-  - 'Omitirlo puede volver inválida la acción siguiente: Forma dos ecuaciones con potencias de diez que
-    alineen la parte repetitiva y réstalas.'
-  - 'La solución debe terminar de este modo: Despeja, simplifica y comprueba que la fracción reproduce
-    anteperíodo y período.'
+  - titulo: "Ejemplo 1"
+    enunciado: 'Convierte $0.2\overline{3}$ a fracción irreductible.'
+    alternativas:
+      - "\\frac{7}{30}"
+      - "\\frac{21}{90}"
+      - "\\frac{23}{90}"
+    respuesta: "\\frac{7}{30}"
+    solucion_pasos:
+      - 'Numerador: $23 - 2 = 21$.'
+      - 'Denominador: $1$ nueve y $1$ cero $= 90$.'
+      - 'Fracción: $\frac{21}{90} = \frac{21 \div 3}{90 \div 3} = \frac{7}{30}$.'
+  - titulo: "Ejemplo 2"
+    enunciado: 'Convierte $2.0\overline{5}$ a fracción irreductible.'
+    alternativas:
+      - "\\frac{37}{18}"
+      - "\\frac{185}{90}"
+      - "\\frac{205}{90}"
+    respuesta: "\\frac{37}{18}"
+    solucion_pasos:
+      - 'Numerador: $205 - 20 = 185$.'
+      - 'Denominador: $1$ nueve y $1$ cero $= 90$.'
+      - 'Fracción: $\frac{185}{90} = \frac{185 \div 5}{90 \div 5} = \frac{37}{18}$.'
+  - titulo: '¿Se incluye el cero del anteperíodo al contar los ceros del denominador en $0.0\overline{7}$?'
+    respuesta: "Sí, el cero es una cifra decimal de anteperíodo."
+    solucion_pasos:
+      - 'En $0.0\overline{7}$, el anteperíodo es $0$ (1 cifra) $\implies$ denominador $90$. Fracción: $\frac{7 - 0}{90} = \frac{7}{90}$.'
+  - titulo: "¿Se resta la parte entera aunque el número sea cero?"
+    respuesta: "Sí, pero restar cero no altera el valor del numerador."
+    solucion_pasos:
+      - 'En $0.1\overline{6}$, resta $16 - 1 = 15$.'
 errores_frecuentes:
-- 'Empezar conversión de decimal semiperiódico a fracción sin realizar este control inicial: Llama \(x\)
-  al decimal y cuenta cifras de anteperíodo y período.'
-- Memorizar “Si \(x=0.1\overline{6}\), se usan \(10x\) y \(100x\) para cancelar la repetición y hallar
-  la fracción” como respuesta aislada, sin reconstruir la definición que lo justifica.
-- Convertir en receta el paso “Forma dos ecuaciones con potencias de diez que alineen la parte repetitiva
-  y réstalas.” y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre conversión de decimal semiperiódico a fracción que contradice el
-  criterio “En un semiperiódico hay que considerar por separado anteperíodo y período”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Despeja, simplifica y comprueba que la fracción
-  reproduce anteperíodo y período.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Colocar ceros antes de los nueves en el denominador."
+  - "Restar solo la parte entera en lugar de toda la parte no periódica."
+  - "Confundir las cifras del anteperíodo con la parte entera al contar la cantidad de ceros."
+  - "Olvidar simplificar la fracción resultante."
+  - "Contar el número de nueves según el anteperíodo y los ceros según el período (invertir la regla)."
+afirmaciones_verdaderas:
+  - "En el denominador de un decimal semiperiódico, los nueves representan el período y los ceros representan el anteperíodo."
+  - "El numerador de un decimal semiperiódico se obtiene restando todo lo que está antes del período al número completo sin coma."
+al_terminar_debes_ponder: |
+  Debes ser capaz de convertir cualquier decimal infinito semiperiódico a su fracción irreductible correspondiente estructurando correctamente el numerador y denominador.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
