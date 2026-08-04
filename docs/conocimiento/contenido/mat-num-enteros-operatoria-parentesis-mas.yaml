@@ -1,42 +1,72 @@
 semantic_id: MAT.NUM.ENTEROS_OPERATORIA.PARENTESIS_MAS
-objetivo: "Aplicar la regla de eliminación de paréntesis precedidos por un signo positivo (+) en operaciones con enteros."
-introduccion: |
-  ¿Qué pasa cuando tienes un signo de suma ($+$) justo antes de un paréntesis?
-  ¡Buenas noticias! El signo más es muy amigable y "bueno". Te dice: "puedes borrar el paréntesis y dejar todos los números que están adentro exactamente como están, con sus mismos signos".
-  Por ejemplo, si tienes $10 + (-3)$, puedes eliminar el paréntesis y escribirlo simplemente como $10 - 3$, lo que da $7$.
-  El signo más no obliga a cambiar nada, actúa como un puente directo.
-resumen: |
-  Cuando un paréntesis está precedido por un signo positivo ($+$), se puede eliminar el paréntesis manteniendo el valor y el signo de cada uno de los números enteros que se encuentran en su interior: $a + (+b) = a + b$ y $a + (-b) = a - b$.
-explicacion: |
-  En el conjunto de los enteros ($\mathbb{Z}$), la suma de un número entero equivale a aplicar la identidad aditiva. Cuando un paréntesis tiene un signo más ($+$) delante, estamos realizando una adición directa de la expresión interior.
-
-  Matemáticamente, para dos enteros cualesquiera $a$ y $b$:
-  1. Paréntesis con término positivo interior:
-     $$a + (+b) = a + b$$
-  2. Paréntesis con término negativo interior:
-     $$a + (-b) = a - b$$
-
-  Si el paréntesis contiene una suma o resta de varios términos, por ejemplo $a + (b - c + d)$, el signo más exterior se distribuye a cada término sin alterar sus signos originales:
-  $$a + b - c + d$$
-
-  **Justificación mediante distributividad:**
-  Tener un signo positivo delante de un paréntesis equivale a multiplicar toda la expresión interior por el elemento neutro multiplicativo $+1$:
-  $$a + (b - c) = a + 1 \cdot (b - c) = a + 1 \cdot b + 1 \cdot (-c) = a + b - c$$
-  Como multiplicar por 1 conserva la identidad de los números, los signos interiores no sufren ningún cambio.
+resumen_inicial: "Un paréntesis precedido por signo $+$ se elimina sin cambiar los signos de los términos interiores."
+explicacion_simple: |
+  Cuando hay un signo más ($+$) justo antes de un paréntesis, puedes borrar el paréntesis
+  dejando todos los números de adentro exactamente como están, con sus mismos signos. Por
+  ejemplo, $10+(-3)$ se convierte en $10-3=7$. El signo más no obliga a cambiar nada.
+explicacion_formal: |
+  Para $a,b\in\mathbb{Z}$: $a+(+b)=a+b$ y $a+(-b)=a-b$. Si el paréntesis agrupa varios
+  términos, $a+(b-c+d)=a+b-c+d$: el signo positivo exterior equivale a multiplicar por
+  $+1$, que no altera ningún signo interior.
+definiciones_clave: |
+  **Eliminación de paréntesis con signo $+$**: se retira el paréntesis y el signo $+$
+  exterior, conservando los signos originales de cada término interior.
+propiedades_relaciones: |
+  Un signo $+$ antes de un paréntesis equivale a multiplicar la expresión interior por el
+  elemento neutro multiplicativo ($+1$), por eso los signos internos no cambian.
+ejemplo_guiado:
+  enunciado: "Elimina el paréntesis en $-9 + (4 - 6)$."
+  pasos:
+    - "El paréntesis está precedido por $+$: se elimina sin cambiar signos internos."
+    - "Queda: $-9+4-6$."
+    - "Se resuelve de izquierda a derecha: $-9+4=-5$, luego $-5-6=-11$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "Al eliminar un paréntesis precedido por signo $+$, ¿qué pasa con los signos interiores?"
+    choices:
+      - {text: "Se mantienen igual", is_correct: true}
+      - {text: "Se invierten todos", is_correct: false}
+      - {text: "Solo se invierte el primero", is_correct: false}
+      - {text: "Se vuelven todos positivos", is_correct: false}
+    explanation: "La correcta es Se mantienen igual: un signo $+$ delante del paréntesis no altera ningún signo interior."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuánto es $-5 + (2 - 9)$?"
+    choices:
+      - {text: "$-12$", is_correct: true}
+      - {text: "$12$", is_correct: false}
+      - {text: "$-2$", is_correct: false}
+      - {text: "$2$", is_correct: false}
+    explanation: "La correcta es $-12$: se elimina el paréntesis sin cambiar signos, quedando $-5+2-9=-12$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Localiza el paréntesis en la expresión y observa el signo inmediatamente anterior a él.'
   - 'Paso 2: Si el signo es positivo ($+$), retira el paréntesis y el signo $+$ exterior.'
   - 'Paso 3: Escribe los términos interiores manteniendo su signo original (el primer término si no tiene signo visible se asume positivo).'
   - 'Paso 4: Realiza las sumas o restas resultantes.'
+errores_correccion: |
+  Un error frecuente es cambiar de signo a los términos del paréntesis a pesar de estar
+  precedido por un signo más. Otro error es olvidar que el primer término dentro del
+  paréntesis tiene signo implícito positivo si no se escribe.
 ejemplos:
   - titulo: 'Ejemplo 1'
     enunciado: 'Elimina los paréntesis y resuelve la expresión: $-15 + (-8 + 12)$'
+    alternativas:
+      - "$-11$"
+      - "$11$"
+      - "$-35$"
+    respuesta: "$-11$"
     solucion_pasos:
       - 'Paso a: Identificamos que el paréntesis está precedido por un signo positivo ($+$).'
       - 'Paso b: Eliminamos el paréntesis y el signo $+$ exterior, conservando los signos interiores: $-15 - 8 + 12$.'
       - 'Paso c: Resolvemos de izquierda a derecha: $-15 - 8 = -23$. Luego $-23 + 12 = -11$.'
   - titulo: 'Ejemplo 2'
     enunciado: 'Simplifica la expresión: $7 + (5 - 3 + (-2))$'
+    alternativas:
+      - "$7$"
+      - "$17$"
+      - "$3$"
+    respuesta: "$7$"
     solucion_pasos:
       - 'Paso a: Vemos un paréntesis grande precedido por $+$. Lo eliminamos manteniendo signos: $7 + 5 - 3 + (-2)$.'
       - 'Paso b: Vemos otro paréntesis pequeño precedido por $+$. Lo eliminamos conservando el signo negativo: $7 + 5 - 3 - 2$.'
@@ -57,5 +87,8 @@ errores_frecuentes:
   - 'Olvidar que el primer término dentro del paréntesis tiene un signo implícito positivo si no se escribe (ej: $+ ( 5 - 3 )$ se convierte en $+5 - 3$, no en $-5 - 3$).'
   - 'Confundir un signo más de adición con un signo de multiplicación.'
   - 'Creer que un paréntesis precedido por $+$ desaparece junto con su contenido, en lugar de conservar el contenido con sus signos originales.'
+al_terminar_debes_poder: |
+  Eliminar paréntesis precedidos por signo $+$ sin alterar los signos internos, para
+  simplificar expresiones combinadas.
 fuente: "Matemática 7° Básico Tomo 1 — Enteros, p. 50"
 estado: publicado
