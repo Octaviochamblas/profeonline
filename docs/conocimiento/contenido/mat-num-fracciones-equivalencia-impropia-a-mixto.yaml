@@ -1,70 +1,96 @@
 semantic_id: MAT.NUM.FRACCIONES_EQUIVALENCIA.IMPROPIA_A_MIXTO
-titulo: Transformación de fracción impropia a número mixto
-objetivo: Convertir una fracción impropia en un número mixto equivalente.
-introduccion: Cuando el numerador supera al denominador, la fracción representa más de un entero completo;
-  expresarla como número mixto separa esa parte entera de la fracción restante.
-resumen: 'Para convertir una fracción impropia \(\frac{a}{b}\) a número mixto se divide \(a\) entre \(b\):
-  el cociente es la parte entera y el resto sobre \(b\) es la parte fraccionaria.'
-explicacion: '### Definición formal
+resumen_inicial: "La conversión de fracción impropia a número mixto consiste en extraer los enteros completos dividiendo el numerador entre el denominador y expresando el residuo como fracción propia."
+explicacion_simple: |
+  Si tienes una fracción impropia como $\frac{13}{5}$, significa que tienes 13 partes de algo que se dividió en quintos. Para saber cuántas unidades enteras tienes, divides 13 entre 5: cabe 2 veces enteras y te sobran 3 partes. Esos 2 enteros más los 3 quintos sobrantes se escriben juntos como el número mixto $2\frac{3}{5}$. El **cociente de la división es tu entero**, el **residuo es tu nuevo numerador** y mantienes el mismo denominador.
+explicacion_formal: |
+  Formalmente, dada una fracción impropia $\frac{N}{c}$ con $N, c \in \mathbb{Z}^+$ y $N > c$, su conversión al **número mixto equivalente** $A\frac{r}{c}$ se fundamenta en el Algoritmo de la División Entera:
+  $$N = c \cdot A + r \quad \text{con } 0 \le r < c$$
 
-
-  Si \(a=b\cdot n+r\) con \(0\le r<b\) (división entera de \(a\) por \(b\)), entonces \(\frac{a}{b}=n\frac{r}{b}\).
-
-
-  ### Desarrollo didáctico
-
-
-  \(\frac{17}{4}\): al dividir 17 entre 4 se obtiene cociente 4 y resto 1, porque \(4\cdot4+1=17\). Por
-  lo tanto \(\frac{17}{4}=4\frac{1}{4}\).'
+  Dividiendo toda la ecuación entre el denominador $c$:
+  $$\frac{N}{c} = \frac{c \cdot A + r}{c} = \frac{c \cdot A}{c} + \frac{r}{c} = A + \frac{r}{c} = A\frac{r}{c}$$
+  donde $A = \lfloor N / c \rfloor \in \mathbb{Z}^+$ es el cociente (parte entera) y $r = N \bmod c$ es el residuo (numerador de la fracción propia remanente).
+definiciones_clave: |
+  - **Conversión a número mixto**: Descomposición de $\frac{N}{c}$ en parte entera $A$ y fracción propia $\frac{r}{c}$.
+  - **Cociente entero ($A$)**: Resultado entero de $N \div c$ que indica la cantidad de unidades completas.
+  - **Residuo ($r$)**: Cantidad sobrante $N - c \cdot A$ que forma el numerador de la fracción propia remanente ($r < c$).
+propiedades_relaciones: |
+  - **Caso residuo nulo ($r = 0$)**: Si $r = 0$, la fracción impropia es una **fracción aparente** y equivale exactamente a un entero puro $A$, sin parte fraccionaria.
+  - **Comprensión intuitiva de magnitud**: La forma mixta $A\frac{r}{c}$ permite ubicar de manera inmediata la fracción entre los enteros consecutivos $A$ y $A+1$.
+  - **Reversibilidad biunívoca**: La conversión es la operación inversa exacta de pasar de número mixto a fracción impropia ($N = A \cdot c + r$).
+ejemplo_guiado:
+  enunciado: "Convierte la fracción impropia $\\frac{29}{6}$ a número mixto aplicando el algoritmo de la división entera y ubícala en la recta numérica."
+  pasos:
+    - "Identificar numerador $N = 29$ y denominador $c = 6$."
+    - 'Efectuar la división entera $29 \div 6$: $29 = 6 \cdot 4 + 5$ (cociente $A = 4$, residuo $r = 5$).'
+    - "Comprobar que el residuo sea menor que el denominador: $5 < 6$ (cumple para formar una fracción propia)."
+    - "Armar el número mixto: parte entera $4$, numerador $5$, denominador $6$, resultando $4\\frac{5}{6}$."
+    - "Ubicar en la recta: se encuentra entre los enteros $4$ y $5$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'En el algoritmo de conversión de una fracción impropia $\frac{N}{c}$ a número mixto mediante $N = c \cdot A + r$, ¿qué rol cumple el residuo $r$?'
+    choices:
+      - {text: "El residuo $r$ se convierte en el numerador de la parte fraccionaria propia $\\frac{r}{c}$.", is_correct: true}
+      - {text: "El residuo $r$ se convierte en la parte entera del número mixto.", is_correct: false}
+      - {text: "El residuo $r$ se convierte en el nuevo denominador.", is_correct: false}
+      - {text: "El residuo $r$ se descarta por no tener valor matemático.", is_correct: false}
+    explanation: "La correcta es El residuo $r$ se convierte en el numerador de la parte fraccionaria propia $\\frac{r}{c}$.: representa las unidades fraccionarias sobrantes que no alcanzaron a formar otro entero."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Al convertir la fracción impropia $\\frac{38}{7}$ a número mixto, ¿cuál es el resultado correcto?"
+    choices:
+      - {text: "5\\frac{3}{7}", is_correct: true}
+      - {text: "7\\frac{3}{5}", is_correct: false}
+      - {text: "4\\frac{10}{7}", is_correct: false}
+      - {text: "5\\frac{7}{3}", is_correct: false}
+    explanation: 'La correcta es 5\frac{3}{7}: dividimos $38 \div 7 = 5$ con residuo $3$ ($38 = 7 \cdot 5 + 3$), formando $5\frac{3}{7}$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Divide el numerador por el denominador.'
-- 'Paso 2: Usa el cociente como parte entera y el resto como nuevo numerador.'
-- 'Paso 3: Conserva el denominador y verifica que parte entera más fracción recupere la impropia.'
+  - "Paso 1: Dividir el numerador $N$ entre el denominador $c$ mediante división entera."
+  - "Paso 2: Registrar el cociente entero $A$ como la parte entera del número mixto."
+  - "Paso 3: Registrar el residuo $r$ como el numerador de la parte fraccionaria."
+  - "Paso 4: Conservar el denominador $c$ original para formar $A\frac{r}{c}$."
+errores_correccion: |
+  Un error clásico es poner el cociente como numerador y el residuo como parte entera (invertirlos). Recuerda siempre: **el cociente (cuántas veces cabe) es el entero grande**, y **el residuo (lo que sobra) va arriba en la fracción**.
 ejemplos:
-- titulo: Aplicación razonada — Conversión de fracción impropia a número mixto
-  enunciado: \(\frac{17}{4}=4\frac{1}{4}\).
-  solucion_pasos:
-  - Divide el numerador por el denominador.
-  - Usa el cociente como parte entera y el resto como nuevo numerador.
-  - Conserva el denominador y verifica que parte entera más fracción recupere la impropia.
-- titulo: Revisión de una solución — Conversión de fracción impropia a número mixto
-  enunciado: Una solución aplica “Usa el cociente como parte entera y el resto como nuevo numerador.”,
-    pero termina sin comprobar que la parte fraccionaria del número mixto debe quedar como fracción propia.
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define conversión de fracción impropia a número mixto: para convertir una
-    fracción impropia a número mixto se divide el numerador por el denominador y se usa el resto como
-    numerador de la parte fraccionaria.'
-  - Divide el numerador por el denominador.
-  - 'Completa la revisión con este control: Conserva el denominador y verifica que parte entera más fracción
-    recupere la impropia.'
-- titulo: ¿Se cumple que la parte fraccionaria del número mixto debe quedar como fracción propia? — Conversión
-    de fracción impropia a número mixto
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que para convertir una fracción impropia a número mixto se
-    divide el numerador por el denominador y se usa el resto como numerador de la parte fraccionaria.
-  - El caso “\(\frac{17}{4}=4\frac{1}{4}\)” satisface esa condición.
-  - Conserva el denominador y verifica que parte entera más fracción recupere la impropia.
-- titulo: ¿Es válido omitir el paso “Divide el numerador por el denominador”? — Conversión de fracción
-    impropia a número mixto
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de conversión de fracción impropia a número mixto.
-  - 'Omitirlo puede volver inválida la acción siguiente: Usa el cociente como parte entera y el resto
-    como nuevo numerador.'
-  - 'La solución debe terminar de este modo: Conserva el denominador y verifica que parte entera más fracción
-    recupere la impropia.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Convierte $\\frac{19}{4}$ a número mixto."
+    alternativas:
+      - "4\\frac{3}{4}"
+      - "3\\frac{4}{4}"
+      - "4\\frac{1}{4}"
+    respuesta: "4\\frac{3}{4}"
+    solucion_pasos:
+      - "Dividimos $19 \\div 4 = 4$ con residuo $3$ ($19 = 4 \\cdot 4 + 3$)."
+      - "El cociente es 4 y el residuo es 3."
+      - "Obtenemos el número mixto $4\\frac{3}{4}$."
+  - titulo: "Ejemplo 2"
+    enunciado: "Un carpintero tiene $\\frac{23}{5}$ metros de madera. ¿Cómo expresa esa longitud en metros enteros y fracción sobrante?"
+    alternativas:
+      - "Tiene 4\\frac{3}{5} metros de madera."
+      - "Tiene 5\\frac{3}{4} metros de madera."
+      - "Tiene 3\\frac{4}{5} metros de madera."
+    respuesta: "Tiene 4\\frac{3}{5} metros de madera."
+    solucion_pasos:
+      - "Dividimos $23 \\div 5 = 4$ con residuo $3$ ($23 = 5 \\cdot 4 + 3$)."
+      - "Corresponde a $4$ metros enteros más $\\frac{3}{5}$ de metro: $4\\frac{3}{5}$."
+  - titulo: "¿Qué ocurre al convertir a número mixto una fracción impropia donde el residuo es cero (como $\\frac{20}{5}$)?"
+    respuesta: "Resulta en un número entero puro (en este caso 4) sin parte fraccionaria."
+    solucion_pasos:
+      - "Si el residuo es 0, la fracción es aparente y equivale directamente a la parte entera $A$."
+  - titulo: "¿El denominador se mantiene idéntico al convertir de fracción impropia a número mixto?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, el tamaño de la parte fraccionaria (el denominador) no cambia durante la conversión."
 errores_frecuentes:
-- 'Empezar conversión de fracción impropia a número mixto sin realizar este control inicial: Divide el
-  numerador por el denominador.'
-- Memorizar “\(\frac{17}{4}=4\frac{1}{4}\)” como respuesta aislada, sin reconstruir la definición que
-  lo justifica.
-- Convertir en receta el paso “Usa el cociente como parte entera y el resto como nuevo numerador.” y usarlo
-  aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre conversión de fracción impropia a número mixto que contradice el
-  criterio “La parte fraccionaria del número mixto debe quedar como fracción propia”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Conserva el denominador y verifica que parte
-  entera más fracción recupere la impropia.'
-fuente: Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales.
+  - "Invertir la parte entera y el numerador al armar el número mixto."
+  - "Olvidar que el residuo debe ser estrictamente menor que el denominador."
+  - "Intentar convertir una fracción propia a número mixto."
+  - "Cambiar el denominador original por el cociente de la división."
+  - "Creer que si la división es exacta no se puede expresar el resultado como entero."
+afirmaciones_verdaderas:
+  - 'Al convertir una fracción impropia $\frac{N}{c}$ a número mixto, el cociente de $N \div c$ es la parte entera y el residuo es el nuevo numerador.'
+  - 'Si el residuo de $N \div c$ es cero, la fracción es aparente y equivale a un número entero exacto.'
+al_terminar_debes_ponder: |
+  Debes ser capaz de convertir cualquier fracción impropia a número mixto mediante la división entera, identificando con claridad la parte entera y la porción fraccionaria sobrante.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
