@@ -1,70 +1,100 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.ADICION
-titulo: Adición de números decimales
-objetivo: Sumar números decimales alineando correctamente las cifras según su valor posicional.
-introduccion: 'Sumar decimales exige respetar el valor posicional de cada cifra: unidades con unidades,
-  décimas con décimas, y así sucesivamente, lo que se logra alineando las comas decimales.'
-resumen: Para sumar números decimales se alinean las comas decimales (completando con ceros si es necesario)
-  y se suma como si fueran números enteros, respetando el valor posicional.
-explicacion: '### Definición formal
-
-
-  Sumar decimales equivale a sumar sus expresiones como fracciones con denominador potencia de 10 común:
-  se alinean las comas para que cada columna represente la misma potencia de 10 en ambos números.
-
-
-  ### Desarrollo didáctico
-
-
-  \(3.45+0.8\): se completa \(0.8\) con un cero para igualar cifras decimales, \(0.80\); se alinean las
-  comas y se suma como enteros: \(3.45+0.80=4.25\).'
+resumen_inicial: "La adición de números decimales se realiza alineando verticalmente las comas de los sumandos para sumar cifras del mismo valor posicional."
+explicacion_simple: |
+  Para sumar números decimales, la regla de oro es **alinear las comas en una misma columna vertical**. Al poner las comas una debajo de la otra, aseguras que estás sumando unidades con unidades, décimas con décimas y centésimas con centésimas. Si un número tiene menos cifras decimales que otro, simplemente puedes agregar ceros a la derecha para emparejar el largo (por ejemplo, escribir $3.5$ como $3.50$). Luego sumas columna por columna exactamente igual que con los números enteros y bajas la coma a la misma posición.
+explicacion_formal: |
+  Formalmente, sean dos números racionales en expansión decimal finita:
+  $$d_1 = \sum_{i=-n}^{k} a_i \cdot 10^i, \quad d_2 = \sum_{i=-m}^{l} b_i \cdot 10^i$$
+  La adición $d_1 + d_2$ satisface la propiedad distributiva del valor posicional en base 10:
+  $$d_1 + d_2 = \sum_{i=-\max(n,m)}^{\max(k,l)} (a_i + b_i + c_i) \cdot 10^i$$
+  donde $c_i \in \{0, 1\}$ representa la reserva (carry) transferida desde la posición $i-1$ hacia la posición $i$.
+definiciones_clave: |
+  - **Alineación vertical de comas**: Disposición espacial de los sumandos en columnas donde todas las comas ocupan la misma recta vertical.
+  - **Valor posicional decimal**: Valor de cada dígito según su lugar respecto de la coma (décimas $10^{-1}$, centésimas $10^{-2}$, milésimas $10^{-3}$).
+  - **Completación con ceros a la derecha**: Adición de ceros no significativos a la derecha de la parte decimal para igualar el número de columnas sin alterar el valor cuantitativo.
+propiedades_relaciones: |
+  - **Conmutatividad y Asociatividad**: Cumple plenamente $d_1 + d_2 = d_2 + d_1$ y $(d_1 + d_2) + d_3 = d_1 + (d_2 + d_3)$ en $\mathbb{Q}$.
+  - **Invarianza por ceros a la derecha**: Para cualquier número decimal finito, $a.b = a.b0 = a.b00$.
+  - **Equivalencia fraccionaria**: Sumar $3.25 + 1.4$ equivale a sumar $\frac{325}{100} + \frac{140}{100} = \frac{465}{100} = 4.65$.
+ejemplo_guiado:
+  enunciado: "Calcula la suma entre los decimales $d_1 = 14.85$ y $d_2 = 3.672$ alineando correctamente las comas y completando las posiciones vacías."
+  pasos:
+    - "Igualar la cantidad de cifras decimales agregando un cero a $14.85$: $14.850$."
+    - "Alinear verticalmente por las comas:"
+    - "   14.850"
+    - "+   3.672"
+    - "---------"
+    - "Sumar desde la derecha: milésimas ($0+2=2$), centésimas ($5+7=12 \\implies 2$ y reserva $1$), décimas ($8+6+1=15 \\implies 5$ y reserva $1$)."
+    - "Sumar unidades ($4+3+1=8$) y decenas ($1+0=1$)."
+    - "Colocar la coma alineada: $18.522$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuál es el paso fundamental para sumar dos o más números decimales de forma correcta?"
+    choices:
+      - {text: "Alinear verticalmente las comas decimales para sumar cifras del mismo valor posicional.", is_correct: true}
+      - {text: "Alinear todos los números a la derecha sin importar la coma.", is_correct: false}
+      - {text: "Sumar siempre los denominadores.", is_correct: false}
+      - {text: "Multiplicar los números por 10.", is_correct: false}
+    explanation: "La correcta es Alinear verticalmente las comas decimales para sumar cifras del mismo valor posicional.: garantiza la coherencia del valor posicional en base 10."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es el resultado exacto de la suma $2.4 + 0.15 + 12$?"
+    choices:
+      - {text: "14.55", is_correct: true}
+      - {text: "14.7", is_correct: false}
+      - {text: "0.39", is_correct: false}
+      - {text: "145.5", is_correct: false}
+    explanation: "La correcta es 14.55: alineando comas $2.40 + 0.15 + 12.00 = 14.55$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Alinea los sumandos haciendo coincidir sus comas decimales.'
-- 'Paso 2: Completa con ceros si ayuda y suma columna por columna.'
-- 'Paso 3: Coloca la coma en la misma columna y estima para controlar el resultado.'
+  - "Paso 1: Escribir los sumandos uno debajo del otro, haciendo coincidir las comas decimales en una misma columna."
+  - "Paso 2: Rellenar con ceros a la derecha en la parte decimal si los números tienen distinta cantidad de dígitos decimales."
+  - "Paso 3: Realizar la adición columna por columna de derecha a izquierda, llevando la reserva (carry) a la columna izquierda."
+  - "Paso 4: Colocar la coma decimal en el resultado exactamente en la misma posición vertical de los sumandos."
+errores_correccion: |
+  El error más común es alinear los números a la derecha como si fueran enteros (por ejemplo sumar $2.5 + 1.23$ poniendo el 5 sobre el 3). ¡Eso mezcla décimas con centésimas! **Alinea SIEMPRE las comas**, no el borde derecho del número.
 ejemplos:
-- titulo: Aplicación razonada — Adición de decimales mediante alineación de coma
-  enunciado: \(3.45 + 0.8 = 3.45 + 0.80 = 4.25\).
-  solucion_pasos:
-  - Alinea los sumandos haciendo coincidir sus comas decimales.
-  - Completa con ceros si ayuda y suma columna por columna.
-  - Coloca la coma en la misma columna y estima para controlar el resultado.
-- titulo: Revisión de una solución — Adición de decimales mediante alineación de coma
-  enunciado: Una solución aplica “Completa con ceros si ayuda y suma columna por columna.”, pero termina
-    sin comprobar que alinear la coma mantiene unidades, décimas y centésimas en su lugar correcto. Determina
-    qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define adición de decimales mediante alineación de coma: para sumar decimales
-    se alinean las comas y se suman cifras del mismo valor posicional.'
-  - Alinea los sumandos haciendo coincidir sus comas decimales.
-  - 'Completa la revisión con este control: Coloca la coma en la misma columna y estima para controlar
-    el resultado.'
-- titulo: ¿Se cumple que alinear la coma mantiene unidades, décimas y centésimas en su lugar correcto?
-    — Adición de decimales mediante alineación de coma
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que para sumar decimales se alinean las comas y se suman cifras
-    del mismo valor posicional.
-  - El caso “\(3.45 + 0.8 = 3.45 + 0.80 = 4.25\)” satisface esa condición.
-  - Coloca la coma en la misma columna y estima para controlar el resultado.
-- titulo: ¿Es válido omitir el paso “Alinea los sumandos haciendo coincidir sus comas decimales”? — Adición
-    de decimales mediante alineación de coma
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de adición de decimales mediante alineación de coma.
-  - 'Omitirlo puede volver inválida la acción siguiente: Completa con ceros si ayuda y suma columna por
-    columna.'
-  - 'La solución debe terminar de este modo: Coloca la coma en la misma columna y estima para controlar
-    el resultado.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Resuelve la suma $0.75 + 3.4$."
+    alternativas:
+      - "4.15"
+      - "1.09"
+      - "4.150"
+    respuesta: "4.15"
+    solucion_pasos:
+      - "Igualamos cifras: $0.75 + 3.40$."
+      - "Sumamos centésimas: $5 + 0 = 5$."
+      - "Sumamos décimas: $7 + 4 = 11 \\implies 1$ y reserva $1$."
+      - "Sumamos enteros: $0 + 3 + 1 = 4$."
+      - "Resultado: $4.15$."
+  - titulo: "Ejemplo 2"
+    enunciado: "Calcula $5 + 0.08 + 1.2$."
+    alternativas:
+      - "6.28"
+      - "5.28"
+      - "6.8"
+    respuesta: "6.28"
+    solucion_pasos:
+      - "Expresamos los enteros con coma: $5.00 + 0.08 + 1.20$."
+      - "Suma alineada: $6.28$."
+  - titulo: "¿Se modifica el resultado de una suma decimal si se agregan ceros al final de la parte decimal?"
+    respuesta: "No"
+    solucion_pasos:
+      - "No, agregarle ceros a la derecha de la última cifra decimal no cambia su valor cuantitativo ($3.5 = 3.50$)."
+  - titulo: "¿Se cumple la propiedad conmutativa en la adición de decimales?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, $a.b + c.d = c.d + a.b$."
 errores_frecuentes:
-- 'Empezar adición de decimales mediante alineación de coma sin realizar este control inicial: Alinea
-  los sumandos haciendo coincidir sus comas decimales.'
-- Memorizar “\(3.45 + 0.8 = 3.45 + 0.80 = 4.25\)” como respuesta aislada, sin reconstruir la definición
-  que lo justifica.
-- Convertir en receta el paso “Completa con ceros si ayuda y suma columna por columna.” y usarlo aunque
-  cambien las condiciones del problema.
-- Dar por válida una conclusión sobre adición de decimales mediante alineación de coma que contradice
-  el criterio “Alinear la coma mantiene unidades, décimas y centésimas en su lugar correcto”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Coloca la coma en la misma columna y estima para
-  controlar el resultado.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Alinear los números a la derecha sin hacer coincidir las comas."
+  - "Olvidar que un número entero tiene una coma implícita a su derecha ($5 = 5.0$)."
+  - "No llevar la reserva (carry) a la columna de las unidades al sumar las décimas."
+  - "Cambiar la posición de la coma en el resultado final."
+  - "Mezclar números decimales con números mixtos sin convertirlos primero a un mismo formato."
+afirmaciones_verdaderas:
+  - "Para sumar números decimales se deben alinear verticalmente las comas."
+  - "Agregar ceros a la derecha del último dígito decimal no altera el valor del número."
+al_terminar_debes_ponder: |
+  Debes ser capaz de sumar números decimales finitos alineando correctamente sus valores posicionales y resolviendo reservas en base 10.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

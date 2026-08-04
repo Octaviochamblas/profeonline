@@ -1,67 +1,103 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.SUSTRACCION
-titulo: Sustracción de números decimales
-objetivo: Restar números decimales alineando correctamente las cifras según su valor posicional.
-introduccion: Al igual que en la suma, restar decimales requiere alinear las comas para que cada columna
-  reste cifras del mismo valor posicional.
-resumen: Para restar números decimales se alinean las comas decimales (completando con ceros si es necesario)
-  y se resta como si fueran números enteros, respetando el valor posicional.
-explicacion: '### Definición formal
+resumen_inicial: "La sustracción de números decimales se realiza alineando verticalmente las comas del minuendo y sustraendo, igualando previamente las cifras decimales con ceros."
+explicacion_simple: |
+  Para restar decimales, lo más importante es poner el minuendo arriba, el sustraendo abajo y **alinear perfectamente las comas**. Además, hay un paso OBLIGATORIO que no debes olvidar: si el número de arriba tiene menos cifras decimales que el de abajo, **TIENES que rellenar con ceros a la derecha**. Por ejemplo, para hacer $5 - 1.25$, debes escribir el 5 como $5.00$ y luego restar normalmente pidiendo 'prestado' a la columna izquierda cuando haga falta.
+explicacion_formal: |
+  Formalmente, la resta entre dos racionales en formato decimal finito $d_1, d_2 \in \mathbb{Q}$ se define como la adición del inverso aditivo:
+  $$d_1 - d_2 = d_1 + (-d_2)$$
 
-
-  Restar decimales equivale a restar sus expresiones como fracciones con denominador potencia de 10 común:
-  se alinean las comas para que cada columna represente la misma potencia de 10 en ambos números.
-
-
-  ### Desarrollo didáctico
-
-
-  \(5.20-1.37\): se alinean las comas y se resta columna por columna como con enteros, obteniendo \(5.20-1.37=3.83\).'
+  Evaluación posicional:
+  $$d_1 - d_2 = \sum_{i=-\max(n,m)}^{\max(k,l)} (a_i - b_i - r_i) \cdot 10^i$$
+  donde $r_i \in \{0, 1\}$ es el canje o préstamo (borrow) realizado desde la columna inmediata superior de orden $10^{i+1}$.
+definiciones_clave: |
+  - **Alineación de coma en resta**: Disposición vertical obligatoria de las comas del minuendo y sustraendo en la misma columna.
+  - **Relleno obligatorio con ceros**: Agregado de ceros al minuendo para poder sustraer cifras cuando el sustraendo tiene más decimales.
+  - **Canje o préstamo (Borrow)**: Resta en base 10 de $1$ unidad de la columna superior que equivale a $+10$ unidades en la columna inferior actual.
+propiedades_relaciones: |
+  - **No conmutatividad**: $d_1 - d_2 \neq d_2 - d_1$ (salvo que $d_1 = d_2$).
+  - **Resta con resultado negativo**: Si $d_1 < d_2$, se resta el mayor menos el menor $|d_2| - |d_1|$ y se antepone el signo negativo.
+  - **Equivalencia fraccionaria**: Restar $4.5 - 2.15$ es equivalente a $\frac{450}{100} - \frac{215}{100} = \frac{235}{100} = 2.35$.
+ejemplo_guiado:
+  enunciado: "Resta los decimales $d_1 = 8.3$ y $d_2 = 2.74$ completando las cifras faltantes con ceros y efectuando los canjes posicionales."
+  pasos:
+    - "Igualar decimales rellenando $8.3$ con un cero: $8.30$."
+    - "Alinear verticalmente por la coma:"
+    - "   8.30"
+    - "-  2.74"
+    - "--------"
+    - "Restar milésimas/centésimas: $0 - 4$ no se puede; pedir prestado $1$ a la décima $3$ (queda en $2$), transformando la centésima en $10$: $10 - 4 = 6$."
+    - "Restar décimas: $2 - 7$ no se puede; pedir prestado $1$ al entero $8$ (queda en $7$), transformando la décima en $12$: $12 - 7 = 5$."
+    - "Restar enteros: $7 - 2 = 5$."
+    - "Bajar la coma alineada: $5.56$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Por qué es estrictamente obligatorio rellenar con ceros a la derecha del minuendo si tiene menos cifras decimales que el sustraendo?"
+    choices:
+      - {text: "Porque permite realizar correctamente los préstamos o canjes de valor posicional en las columnas vacías.", is_correct: true}
+      - {text: "Porque cambia el valor del número haciéndolo 10 veces mayor.", is_correct: false}
+      - {text: "No es obligatorio, se pueden ignorar las cifras del sustraendo.", is_correct: false}
+      - {text: "Porque los ceros convierten el número en una fracción periódica.", is_correct: false}
+    explanation: "La correcta es Porque permite realizar correctamente los préstamos o canjes de valor posicional en las columnas vacías.: sin los ceros no habría cifra a la cual sustraer los dígitos del sustraendo."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es el resultado de la resta $10 - 4.35$?"
+    choices:
+      - {text: "5.65", is_correct: true}
+      - {text: "6.35", is_correct: false}
+      - {text: "5.75", is_correct: false}
+      - {text: "6.65", is_correct: false}
+    explanation: "La correcta es 5.65: $10.00 - 4.35 = 5.65$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Alinea minuendo y sustraendo por la coma y completa posiciones con ceros.'
-- 'Paso 2: Resta por columnas respetando los préstamos.'
-- 'Paso 3: Mantén la coma alineada y usa una estimación para revisar signo y magnitud.'
+  - "Paso 1: Escribir el minuendo arriba y el sustraendo abajo alineando verticalmente sus comas decimales."
+  - "Paso 2: Rellenar obligatoriamente con ceros a la derecha en la parte decimal del minuendo hasta igualar la cantidad de dígitos del sustraendo."
+  - "Paso 3: Restar columna por columna de derecha a izquierda, ejecutando canjes o préstamos desde la columna izquierda si el dígito superior es menor que el inferior."
+  - "Paso 4: Colocar la coma decimal en la misma posición vertical."
+errores_correccion: |
+  Un error grave en la resta es 'bajar directo' la cifra del sustraendo cuando arriba no hay nada (por ejemplo en $5 - 0.4$, poner $5.4$). ¡Eso es un error destructivo! Debes poner $5.0 - 0.4 = 4.6$. **Rellena siempre con ceros antes de restar**.
 ejemplos:
-- titulo: Aplicación razonada — Sustracción de decimales mediante alineación de coma
-  enunciado: \(5.20 - 1.37 = 3.83\).
-  solucion_pasos:
-  - Alinea minuendo y sustraendo por la coma y completa posiciones con ceros.
-  - Resta por columnas respetando los préstamos.
-  - Mantén la coma alineada y usa una estimación para revisar signo y magnitud.
-- titulo: Revisión de una solución — Sustracción de decimales mediante alineación de coma
-  enunciado: Una solución aplica “Resta por columnas respetando los préstamos.”, pero termina sin comprobar
-    que completar con ceros puede ayudar a ordenar la sustracción. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define sustracción de decimales mediante alineación de coma: para restar
-    decimales se alinean las comas y se restan cifras del mismo valor posicional.'
-  - Alinea minuendo y sustraendo por la coma y completa posiciones con ceros.
-  - 'Completa la revisión con este control: Mantén la coma alineada y usa una estimación para revisar
-    signo y magnitud.'
-- titulo: ¿Se cumple que completar con ceros puede ayudar a ordenar la sustracción? — Sustracción de decimales
-    mediante alineación de coma
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que para restar decimales se alinean las comas y se restan
-    cifras del mismo valor posicional.
-  - El caso “\(5.20 - 1.37 = 3.83\)” satisface esa condición.
-  - Mantén la coma alineada y usa una estimación para revisar signo y magnitud.
-- titulo: ¿Es válido omitir el paso “Alinea minuendo y sustraendo por la coma y completa posiciones con
-    ceros”? — Sustracción de decimales mediante alineación de coma
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de sustracción de decimales mediante alineación de
-    coma.
-  - 'Omitirlo puede volver inválida la acción siguiente: Resta por columnas respetando los préstamos.'
-  - 'La solución debe terminar de este modo: Mantén la coma alineada y usa una estimación para revisar
-    signo y magnitud.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Calcula $7.2 - 3.85$."
+    alternativas:
+      - "3.35"
+      - "3.65"
+      - "4.35"
+    respuesta: "3.35"
+    solucion_pasos:
+      - "Rellenar con cero: $7.20 - 3.85$."
+      - "$0 - 5 \\implies 10 - 5 = 5$ (prestó 1 a la décima, queda 1)."
+      - "$1 - 8 \\implies 11 - 8 = 3$ (prestó 1 al entero, queda 6)."
+      - "$6 - 3 = 3$."
+      - "Resultado: $3.35$."
+  - titulo: "Ejemplo 2"
+    enunciado: "Resta $0.9 - 0.125$."
+    alternativas:
+      - "0.775"
+      - "0.825"
+      - "0.785"
+    respuesta: "0.775"
+    solucion_pasos:
+      - "Rellenar con ceros: $0.900 - 0.125$."
+      - "Restar $900 - 125 = 775$."
+      - "Resultado: $0.775$."
+  - titulo: "¿Se pueden restar dos números decimales donde el sustraendo sea mayor que el minuendo?"
+    respuesta: "Sí, el resultado será un número decimal negativo."
+    solucion_pasos:
+      - "Se calcula la diferencia en valor absoluto del mayor menos el menor y se antepone el signo negativo."
+  - titulo: "¿Es la sustracción de números decimales una operación conmutativa?"
+    respuesta: "No"
+    solucion_pasos:
+      - "No, $a.b - c.d \neq c.d - a.b$."
 errores_frecuentes:
-- 'Empezar sustracción de decimales mediante alineación de coma sin realizar este control inicial: Alinea
-  minuendo y sustraendo por la coma y completa posiciones con ceros.'
-- Memorizar “\(5.20 - 1.37 = 3.83\)” como respuesta aislada, sin reconstruir la definición que lo justifica.
-- Convertir en receta el paso “Resta por columnas respetando los préstamos.” y usarlo aunque cambien las
-  condiciones del problema.
-- Dar por válida una conclusión sobre sustracción de decimales mediante alineación de coma que contradice
-  el criterio “Completar con ceros puede ayudar a ordenar la sustracción”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Mantén la coma alineada y usa una estimación
-  para revisar signo y magnitud.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "No agregar ceros al minuendo al restar números con distinta cantidad de decimales."
+  - "Bajar directamente los dígitos sobrantes del sustraendo sin realizar el canje."
+  - "Alinear los números a la derecha sin respetar la posición de la coma."
+  - "Olvidar descontar la unidad prestada en la columna superior."
+  - "Restar el número de arriba del de abajo cuando el de arriba es menor sin pedir prestado."
+afirmaciones_verdaderas:
+  - "Para restar decimales es obligatorio alinear las comas y rellenar los espacios vacíos del minuendo con ceros."
+  - "La resta de números decimales no cumple la propiedad conmutativa."
+al_terminar_debes_ponder: |
+  Debes ser capaz de efectuar sustracciones de números decimales con alineación de coma, completación con ceros y préstamos entre columnas posicionales.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
