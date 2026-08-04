@@ -13,6 +13,80 @@
   Técnicas de Conteo y Distribución Binomial 44/44, `05.07` Distribución Normal 41/41.
   Redacción manual (sin API externa de IA) en todos los recursos. Reporte de cierre en
   `docs/reportes-sesion/2026-07-12-claude.md`.
+- **Nodos: estructura de 12 secciones + selección múltiple — CERRADO por 🏛️ Claude 🟢
+  (2026-08-04):** infraestructura completa construida de cero (modelo `NodeContent` +9
+  campos, `node_checkpoint_service.py`, vista, `node_detail.html`, loader) para migrar
+  el contenido de nodos (`/aprender/`) del formato antiguo (objetivo/introducción/
+  resumen/explicación) a la misma estructura de 12 secciones que usan los recursos
+  audiovisuales, con 2 checkpoints "Comprueba tu avance" por recurso y ejemplos "Ver
+  solución" convertidos a selección múltiple de 3 alternativas con feedback inmediato.
+  Se eliminó el gate de auditoría cruzada de IA en PRs (#178) para que el pipeline
+  mergee solo con CI en verde. Campaña completa de reescritura bajo Números > Enteros y
+  Números > Teoría de Números, 7 bloques / 61 recursos, cargados en local y producción,
+  con PR y merge por bloque: `ENTEROS_CONJUNTO` 15 (#176 infraestructura + contenido
+  inicial), `ENTEROS_OPERATORIA` 21 (#182), `DIVISIBILIDAD` 15 (#183),
+  `NUMEROS_PRIMOS` 5 (#184), `FACTORIZACION_PRIMA` 6 (#185),
+  `MINIMO_COMUN_MULTIPLO` 4 (#186), `MAXIMO_COMUN_DIVISOR` 6 (#187),
+  `APLICACIONES_MCM_MCD` 4 (#188). De paso se corrigieron datos preexistentes: entradas
+  vacías de `errores_frecuentes` en varios recursos de Divisibilidad y Números primos, y
+  un bug de escape LaTeX (`\\text` duplicado) en `problema-mcd-reparto`. Detalle en
+  `reportes-sesion/2026-08-04.md`.
+- **KaTeX scrollbar falsa — CERRADO por 🏛️ Claude + 🧩 Codex 🟢 (2026-08-01):** causa
+  real era el desborde interno de ~1-2 px de KaTeX (struts) con `overflow-x:auto`
+  incondicional; se cambió a `overflow-x:hidden` por defecto + medición real en
+  `katex-init.js` (`scrollWidth - clientWidth > 6px`) para agregar `katex-scroll` solo
+  cuando corresponde, en inline y en bloque. Codex agregó regresión
+  (`eb91c07d`). Detalle en `reportes-sesion/2026-08-01.md`.
+- **Lenguaje Algebraico — auditoría de calidad CERRADA por 🏛️ Claude 🟢 (2026-08-01):**
+  17/19 recursos con nivel 1 de lenguaje de plantilla, reescrito a mano y anclado al
+  contenido real; recurso `56` excluido por historial real de alumnos; `112`/`113`
+  necesitaron el camino `PublicationItem` (script puntual, no versionado). Verificado
+  17/17 con `30` preguntas `10/10/10` en producción. **Pendiente anotado por el
+  usuario:** Ángulos en la Circunferencia, Ángulos y Triángulos y Estadística (8
+  recursos) deben **cortarse en clases más pequeñas antes de reescribirse** — no
+  iniciar sin esa definición. Detalle en `reportes-sesion/2026-08-01.md`.
+- **Auditoría YouTube vs. sitio + población Física Escolar — 🏛️ Claude 🟡 (2026-08-01):**
+  292 videos del canal cruzados contra 137 recursos del sitio (0 huérfanos, 155 sin
+  recurso, 14 sin playlist). De los 22 videos del grupo "Física", **18/20 publicados**
+  en `dinamica`/`cinematica`/`mecanica-circular`/`energia-y-trabajo`/`centro-de-masa-y-torque`
+  (2 saltados por transcripción degradada; 2 de "Ondas" sin tema asignado por el
+  usuario). **Bug real encontrado y documentado, sin corregir:** el camino de
+  autogeneración IA de `publication_pipeline_service.py` nunca escribe
+  `question_distribution`, así que `finalize_publication` cae a un cálculo de
+  respaldo que duplica el conteo esperado (75 en vez de 45) y **bloquea
+  permanentemente** la publicación por esa vía; se usó en su lugar el camino de
+  paquete editorial (`apply_editorial_package`, el mismo de Lenguaje Algebraico).
+  Detalle completo en `reportes-sesion/2026-08-01.md`.
+- **Química orgánica, recurso 131 (radicales) nivel 3 — CORREGIDO por 🏛️ Claude 🟢
+  (2026-08-01):** pendiente del reporte anterior. Las 30 preguntas eran genéricas de
+  plantilla y, dentro de cada modo, solo 5 de las 10 "situaciones" eran realmente
+  distintas. Sin historial real (0 intentos, 0 reportes) → se archivaron las 30 y se
+  redactaron 10 preguntas nuevas ancladas al contenido real (metil/etil/propil/
+  isopropil, variantes de butilo, distinción sec-/tert- por carbono de unión),
+  replicadas en los 3 modos igual que niveles 1 y 2. Verificado en producción:
+  30 `publicada`, 10 únicas por modo, `4`/`1`. Detalle en
+  `reportes-sesion/2026-08-01.md`.
+- **Física Universitaria (ex "Mecánica"), 4 recursos sin tema — CERRADO por 🏛️
+  Claude 🟢 (2026-08-01):** el usuario creía que el tema ya estaba asignado; se
+  re-verificó y se confirmó `topic=None` en 4 de 5 recursos con 0 preguntas (el 5º,
+  `28`, sí tenía tema). Se detectó que un actor externo renombró la asignatura
+  `mecanica` a "Física Universitaria" y creó un tema nuevo "Cinemática"
+  (`cinematica-1`, id 19), distinto del ya existente en Física Escolar (id 12). El
+  usuario asignó `53`/`54`/`55` → Cinemática y `78` → Fuerzas, y pidió generar el
+  contenido completo de los 4. Publicados vía paquete editorial (guía + 30
+  preguntas `10/10/10` cada uno): `53` alcance y persecución de móviles, `54`
+  gráfico de aceleración por tramos, `55` interpretación conceptual de gráficos
+  cinemáticos, `78` coeficiente de roce estático entre cuerpos apilados (enfoque
+  distinto al recurso `148`, que ya cubre la tensión del mismo tipo de sistema).
+  Script nuevo reutilizable: `scratch/process_existing_resource.py` (aplica
+  paquete editorial a un `Resource` ya existente). Verificado en producción: 4/4
+  `publicada=True`, 30 preguntas cada uno. **Auditoría de catálogo completo**
+  hecha en paralelo (a pedido del usuario): faltan por poblar Química
+  Universitaria (11 recursos, 0 preguntas) y Mecánica de Fluidos (1 recurso, 0
+  preguntas); faltan por auditar Cálculo III, Electromagnetismo, Física Escolar y
+  Matemática Escolar; anomalía detectada en recurso `56` (90 preguntas
+  publicadas, debería ser 30), sin corregir. Detalle en
+  `reportes-sesion/2026-08-01.md`.
 - **03.02 Álgebra, lenguaje y valorización — CERRADO por Codex 🟢 (2026-07-11):** verificado directamente en Railway: `36/36` recursos del bloque tienen `21` preguntas publicadas cada uno (`7/7/7`). En la continuación quedaron completos y verificados `03.02.02.09`–`03.02.02.16` y `03.02.03.01`–`03.02.03.08`, con redacción manual en Codex y carga directa a producción sin APIs externas de IA. Siguiente frente activo: `03.10`.
 - **03.08 Ecuaciones de Primer Grado y Sistemas — CERRADO por Codex 🟢 (2026-07-12):** verificado directamente en Railway: `53/53` recursos del bloque tienen `21` preguntas publicadas cada uno (`7/7/7`). En las tandas finales quedaron completos y verificados `03.08.05.01`–`03.08.05.05`, `03.08.06.01`–`03.08.06.09` y `03.08.07.01`–`03.08.07.08`, manteniendo redacción manual en Codex, validación previa de `4` alternativas y `1` correcta, control de duplicados por recurso y por prefijo temático, y carga directa a producción sin APIs externas de IA. Siguiente frente aún pausado según coordinación: `03.10`.
 - **03.09.05–03.09.07 Desigualdades e inecuaciones — CERRADO por Codex 🟢 (2026-07-12):** verificado directamente en Railway: `19/19` recursos de estos tres temas tienen `21` preguntas publicadas cada uno (`7/7/7`). Quedaron completos y verificados `03.09.05.01`–`03.09.05.06`, `03.09.06.01`–`03.09.06.07` y `03.09.07.01`–`03.09.07.06`, con redacción manual en Codex, validación previa de `4` alternativas y `1` correcta, control de duplicados por recurso y por prefijo temático, y carga directa a producción sin APIs externas de IA.
