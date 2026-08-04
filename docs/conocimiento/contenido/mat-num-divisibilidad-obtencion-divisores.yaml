@@ -1,47 +1,65 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.OBTENCION_DIVISORES
-objetivo: "Obtener la lista completa de divisores de un número natural usando divisiones sucesivas y la estrategia de pares complementarios."
-introduccion: |
-  Imagina que tienes 24 baldosas y quieres formar un rectángulo con todas ellas.
-  ¿De cuántas formas distintas puedes hacerlo? Podrías hacer uno de 1 × 24, otro
-  de 2 × 12, otro de 3 × 8, otro de 4 × 6... Cada combinación usa exactamente
-  24 baldosas sin que sobre ni una.
-
-  Los divisores de 24 son exactamente los números que aparecen en esas combinaciones:
-  1, 2, 3, 4, 6, 8, 12 y 24. El truco es que los divisores siempre vienen en parejas
-  que al multiplicarse dan 24. Eso nos permite encontrarlos todos sin probar todos
-  los números: solo hay que llegar hasta $\sqrt{24} \approx 4{,}9$, es decir, hasta el 4.
-resumen: |
-  Los divisores de $n$ se obtienen probando si 1, 2, 3, ..., $\sqrt{n}$ dividen exactamente
-  a $n$. Cada divisor $d$ encontrado viene acompañado de su complementario $n/d$.
-  Todo número natural tiene al menos dos divisores: 1 y él mismo.
-explicacion: |
-  El conjunto de **todos los divisores** de $n$, denotado $D(n)$, se obtiene identificando
-  todos los naturales que dividen exactamente a $n$.
-
-  **Estrategia de pares complementarios:**
-  Si $d \mid n$, entonces $n/d$ también es divisor de $n$. Los divisores se organizan en pares
-  $(d,\; n/d)$ tales que $d \cdot (n/d) = n$. Esto implica que solo es necesario probar
-  divisores desde 1 hasta $\lfloor\sqrt{n}\rfloor$:
-
-  - Si $d < \sqrt{n}$: el par es $(d,\; n/d)$ con $d \neq n/d$ — dos divisores distintos.
-  - Si $d = \sqrt{n}$: el par colapsa a $(d, d)$ — un solo divisor que se cuenta una vez.
-
-  **Consecuencia sobre la cantidad de divisores:**
-  - Si $n$ **no es cuadrado perfecto**, $|D(n)|$ es un número **par** (los divisores vienen de a dos).
-  - Si $n$ **es cuadrado perfecto**, $|D(n)|$ es un número **impar** (la raíz forma un par consigo misma).
-
-  Ejemplos:
-  - $D(12) = \{1, 2, 3, 4, 6, 12\}$ — 6 divisores (par, pues 12 no es cuadrado perfecto).
-  - $D(36) = \{1, 2, 3, 4, 6, 9, 12, 18, 36\}$ — 9 divisores (impar, pues $36 = 6^2$).
+resumen_inicial: "Para hallar todos los divisores de $n$, basta probar hasta $\\sqrt{n}$: cada divisor encontrado trae su complementario."
+explicacion_simple: |
+  Tienes 24 baldosas y quieres formar un rectángulo con todas. Podrías hacer uno de
+  1×24, otro de 2×12, otro de 3×8, otro de 4×6. Los divisores de 24 son los números que
+  aparecen en esas combinaciones: 1, 2, 3, 4, 6, 8, 12 y 24. Los divisores siempre vienen
+  en parejas que al multiplicarse dan 24, así que solo hay que probar hasta
+  $\sqrt{24}\approx4{,}9$, es decir, hasta el 4.
+explicacion_formal: |
+  Si $d\mid n$, entonces $n/d$ también es divisor de $n$: los divisores forman pares
+  $(d, n/d)$ con $d\cdot(n/d)=n$. Basta probar $d$ desde 1 hasta $\lfloor\sqrt{n}\rfloor$.
+  Si $n$ no es cuadrado perfecto, $|D(n)|$ es par; si $n$ es cuadrado perfecto, $|D(n)|$
+  es impar (la raíz se empareja consigo misma).
+definiciones_clave: |
+  **Pares complementarios**: $(d, n/d)$ tales que $d\cdot(n/d)=n$. **Cuadrado perfecto**:
+  número de la forma $k^2$, cuya raíz es divisor de sí mismo sin complementario distinto.
+propiedades_relaciones: |
+  Todo número natural tiene al menos dos divisores (1 y él mismo). La cantidad total de
+  divisores es par, salvo que el número sea un cuadrado perfecto, en cuyo caso es impar.
+ejemplo_guiado:
+  enunciado: "Encuentra todos los divisores de 28."
+  pasos:
+    - "$\\sqrt{28}\\approx5{,}3$, se prueba desde 1 hasta 5."
+    - "$1\\mid28$ (par 1 y 28); $2\\mid28$ (par 2 y 14); $4\\mid28$ (par 4 y 7); $3$ y $5$ no dividen a 28."
+    - "$D(28)=\\{1,2,4,7,14,28\\}$ — 6 divisores (par, 28 no es cuadrado perfecto)."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Hasta qué valor basta probar divisores para encontrar todos los de $n$?"
+    choices:
+      - {text: "Hasta $n$", is_correct: false}
+      - {text: "Hasta $\\sqrt{n}$", is_correct: true}
+      - {text: "Hasta $n/2$", is_correct: false}
+      - {text: "Hasta $2n$", is_correct: false}
+    explanation: "La correcta es Hasta $\\sqrt{n}$: cada divisor menor tiene su complementario mayor, ya cubierto."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuántos divisores tiene 25?"
+    choices:
+      - {text: "3 (impar, porque 25 es cuadrado perfecto)", is_correct: true}
+      - {text: "2 (par)", is_correct: false}
+      - {text: "25", is_correct: false}
+      - {text: "5", is_correct: false}
+    explanation: "La correcta es 3 (impar, porque 25 es cuadrado perfecto): $D(25)=\\{1,5,25\\}$, y el 5 se empareja consigo mismo."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Calcular $\lfloor\sqrt{n}\rfloor$ para conocer hasta dónde probar.'
   - 'Paso 2: Probar si 1, 2, 3, ..., $\lfloor\sqrt{n}\rfloor$ dividen exactamente a $n$.'
   - "Paso 3: Por cada divisor $d$ encontrado, agregar también el complementario $n/d$."
   - 'Paso 4: Si $d = \sqrt{n}$, contar ese divisor una sola vez.'
   - "Paso 5: Ordenar todos los divisores encontrados de menor a mayor."
+errores_correccion: |
+  Un error frecuente es probar todos los números hasta $n$ en vez de detenerse en
+  $\sqrt{n}$, haciendo el trabajo innecesariamente largo. Otro error es olvidar agregar
+  el complementario $n/d$ cada vez que se encuentra un divisor $d$.
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Encuentra todos los divisores de 36."
+    alternativas:
+      - "$\\{1,2,3,4,6,9,12,18,36\\}$"
+      - "$\\{1,2,3,4,6,12,18,36\\}$"
+      - "$\\{1,3,6,9,12,36\\}$"
+    respuesta: "$\\{1,2,3,4,6,9,12,18,36\\}$"
     solucion_pasos:
       - '$\sqrt{36} = 6$, así que probamos divisores desde 1 hasta 6.'
       - '$1 \mid 36$ (par: 1 y 36); $2 \mid 36$ (par: 2 y 18); $3 \mid 36$ (par: 3 y 12).'
@@ -49,6 +67,11 @@ ejemplos:
       - '$D(36) = \{1, 2, 3, 4, 6, 9, 12, 18, 36\}$ — 9 divisores (impar: 36 es cuadrado perfecto).'
   - titulo: "Ejemplo 2"
     enunciado: "Encuentra todos los divisores de 48."
+    alternativas:
+      - "$\\{1,2,3,4,6,8,12,16,24,48\\}$"
+      - "$\\{1,2,4,6,8,12,24,48\\}$"
+      - "$\\{2,3,4,6,8,12,16,24\\}$"
+    respuesta: "$\\{1,2,3,4,6,8,12,16,24,48\\}$"
     solucion_pasos:
       - '$\sqrt{48} \approx 6{,}9$, así que probamos divisores desde 1 hasta 6.'
       - '$1 \mid 48$ (par: 1 y 48); $2 \mid 48$ (par: 2 y 24); $3 \mid 48$ (par: 3 y 16).'
@@ -72,5 +95,8 @@ errores_frecuentes:
   - "Si $n$ es par, todos sus divisores también son pares."
   - "Los cuadrados perfectos tienen un número par de divisores."
   - "Un número con más divisores que otro siempre es el más grande de los dos."
+al_terminar_debes_poder: |
+  Obtener el conjunto completo de divisores de cualquier número natural usando la
+  estrategia de pares complementarios hasta $\sqrt{n}$.
 fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
 estado: publicado

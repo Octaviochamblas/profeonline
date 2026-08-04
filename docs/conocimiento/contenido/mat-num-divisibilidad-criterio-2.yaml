@@ -1,53 +1,72 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.CRITERIO_2
-objetivo: "Identificar si un número natural es divisible por 2 aplicando el criterio de divisibilidad sin realizar la división."
-introduccion: |
-  Imagina que tienes una gran cantidad de cartas y quieres repartirlas en partes iguales
-  entre tú y un amigo, de modo que a ninguno le sobre ninguna carta. Esto es lo mismo
-  que saber si un número se puede dividir por 2 de forma exacta.
-
-  Para no tener que repartir una por una o hacer una división larga, solo necesitas
-  mirar la última cifra del número. Si esa última cifra es par (0, 2, 4, 6 u 8), entonces
-  ¡seguro que puedes repartirlas todas sin que sobre nada! Por ejemplo, con 124 cartas
-  puedes hacerlo porque termina en 4, pero con 125 no, porque termina en 5.
-resumen: |
-  Un número natural es divisible por 2 si y solo si su última cifra (la cifra de las unidades)
-  es par, es decir, termina en 0, 2, 4, 6 u 8. Esto permite verificar la divisibilidad por 2
-  de forma inmediata sin importar el tamaño del número.
-explicacion: |
-  El criterio de divisibilidad por 2 establece que un número natural es divisible por 2 si
-  su última cifra de la derecha es una cifra par. Las cifras pares son:
-  $$0,\; 2,\; 4,\; 6,\; 8$$
-
-  Matemáticamente, cualquier número natural $N$ se puede expresar en base 10 como:
-  $$N = 10 \cdot d + u$$
-  Donde $u$ es la cifra de las unidades (la última cifra) y $d$ es el número formado por las
-  demás cifras.
-
-  Como $10$ es divisible por $2$ ($10 = 2 \cdot 5$), el término $10 \cdot d$ siempre es divisible
-  por $2$. Por lo tanto, la divisibilidad de $N$ depende exclusivamente de la última cifra $u$.
-  Si $u$ es divisible por 2 (par), entonces todo el número $N$ es divisible por 2.
-
-  **Ejemplos de números divisibles por 2:**
-  - $348$: termina en $8$, que es par.
-  - $1.020$: termina en $0$, que es par.
-  - $7.994$: termina en $4$, que es par.
-
-  **Ejemplos de números NO divisibles por 2:**
-  - $57$: termina en $7$, que es impar.
-  - $1.403$: termina en $3$, que es impar.
+resumen_inicial: "Un número es divisible por 2 si su última cifra es par: 0, 2, 4, 6 u 8."
+explicacion_simple: |
+  Si quieres repartir cartas en partes iguales entre dos personas sin que sobre ninguna,
+  solo necesitas mirar la última cifra del número. Si esa cifra es par (0, 2, 4, 6 u 8),
+  ¡seguro que puedes repartirlas todas! Con 124 cartas puedes hacerlo porque termina en 4,
+  pero con 125 no, porque termina en 5.
+explicacion_formal: |
+  Cualquier natural $N$ se escribe como $N=10\cdot d+u$, donde $u$ es la cifra de las
+  unidades. Como $10$ es divisible por $2$, el término $10\cdot d$ siempre lo es. Por lo
+  tanto, la divisibilidad de $N$ por 2 depende solo de que $u$ sea par.
+definiciones_clave: |
+  **Cifra de las unidades**: la última cifra de un número. **Cifras pares**: $0, 2, 4, 6,
+  8$.
+propiedades_relaciones: |
+  El criterio depende únicamente de la última cifra, sin importar cuántas cifras tenga el
+  número ni cuáles sean las demás.
+ejemplo_guiado:
+  enunciado: "Determina si 2.318 es divisible por 2."
+  pasos:
+    - "La última cifra de 2.318 es $8$."
+    - "$8$ es una cifra par."
+    - "Conclusión: 2.318 es divisible por 2."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿De qué depende únicamente la divisibilidad por 2 de un número?"
+    choices:
+      - {text: "De su última cifra", is_correct: true}
+      - {text: "De la suma de todas sus cifras", is_correct: false}
+      - {text: "De su primera cifra", is_correct: false}
+      - {text: "De cuántas cifras tiene", is_correct: false}
+    explanation: "La correcta es De su última cifra: el resto de las cifras siempre forman un múltiplo de 2 ($10\\cdot d$)."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿es 7.451 divisible por 2?"
+    choices:
+      - {text: "No, termina en 1 (impar)", is_correct: true}
+      - {text: "Sí, termina en cifra par", is_correct: false}
+      - {text: "No se puede saber sin dividir todo", is_correct: false}
+      - {text: "Sí, porque es un número grande", is_correct: false}
+    explanation: "La correcta es No, termina en 1 (impar): la última cifra 1 no es par."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - "Paso 1: Identificar la última cifra (la cifra de las unidades) del número dado."
   - "Paso 2: Comprobar si esa cifra es 0, 2, 4, 6 u 8."
   - "Paso 3: Si la cifra es una de ellas, el número es divisible por 2. En caso contrario, no lo es."
+errores_correccion: |
+  Un error frecuente es pensar que un número no es divisible por 2 si contiene dígitos
+  impares en otras posiciones distintas a la última. Otro error es creer que el 0 no
+  cuenta como cifra par, cuando en realidad sí lo es.
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Determina si el número 5.736 es divisible por 2."
+    alternativas:
+      - "Sí, termina en 6 (par)"
+      - "No, termina en cifra impar"
+      - "No se puede determinar"
+    respuesta: "Sí, termina en 6 (par)"
     solucion_pasos:
       - "Identificamos la última cifra del número 5.736, que es $6$."
       - 'Comprobamos si $6$ es una cifra par. Sí lo es, ya que pertenece al conjunto $\{0, 2, 4, 6, 8\}$.'
       - "Conclusión: El número 5.736 es divisible por 2."
   - titulo: "Ejemplo 2"
     enunciado: "Determina si el número 943 es divisible por 2."
+    alternativas:
+      - "No, termina en 3 (impar)"
+      - "Sí, termina en cifra par"
+      - "No se puede determinar"
+    respuesta: "No, termina en 3 (impar)"
     solucion_pasos:
       - "Identificamos la última cifra del número 943, que es $3$."
       - "Comprobamos si $3$ es par. No lo es, es una cifra impar."
@@ -70,5 +89,8 @@ errores_frecuentes:
   - "Dividir todo el número por 2 en papel cuando solo basta con mirar la última cifra."
   - "Confundir divisibilidad por 2 con que la mitad del número deba terminar en cifra par."
   - "Pensar que un número muy grande siempre es divisible por 2 solo por su tamaño."
+al_terminar_debes_poder: |
+  Determinar la divisibilidad por 2 de cualquier número con solo observar su última
+  cifra, sin necesidad de dividir.
 fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
 estado: publicado

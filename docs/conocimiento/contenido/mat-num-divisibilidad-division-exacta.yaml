@@ -1,48 +1,73 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.DIVISION_EXACTA
-objetivo: "Aplicar la definición de divisibilidad como condición de división exacta para determinar si un número divide a otro."
-introduccion: |
-  Repartir chocolates entre amigos puede salir perfecto o puede sobrar. Si tienes
-  20 chocolates y los repartes entre 4 personas, cada una recibe 5 exactos: sin sobras.
-  Eso es una división exacta. Pero si los repartes entre 6, a cada una le tocan 3 y sobran 2.
-
-  La **divisibilidad** trata justamente de eso: ¿se puede repartir un número en grupos
-  iguales sin que sobre nada? Si la respuesta es sí, decimos que el primer número
-  "divide" al segundo. Es un concepto simple pero fundamental para entender los números.
-resumen: |
-  Se dice que $a$ divide a $b$ (se escribe $a \mid b$) cuando la división $b \div a$
-  tiene resto igual a 0. Equivalentemente, existe un número natural $k$ tal que $b = a \cdot k$.
-  La divisibilidad es reflexiva ($n \mid n$) y transitiva: si $a \mid b$ y $b \mid c$,
-  entonces $a \mid c$, pero NO es simétrica en general.
-explicacion: |
-  La **divisibilidad** es una relación entre números naturales. Se dice que $a$ **divide a** $b$,
-  y se escribe $a \mid b$, cuando existe un número natural $k$ tal que:
-  $$b = a \cdot k \quad \Longleftrightarrow \quad \text{resto}(b \div a) = 0$$
-
-  La notación $a \nmid b$ indica que $a$ **no divide a** $b$.
-
-  **Propiedades de la divisibilidad:**
-
-  - **Reflexividad:** Todo número se divide a sí mismo: $n \mid n$ (ya que $n = n \cdot 1$).
-  - **Transitividad:** Si $a \mid b$ y $b \mid c$, entonces $a \mid c$.
-    (Ejemplo: $3 \mid 6$ y $6 \mid 18$, entonces $3 \mid 18$.)
-  - **No simetría:** Si $a \mid b$, no necesariamente $b \mid a$.
-    (Ejemplo: $4 \mid 12$, pero $12 \nmid 4$.)
-  - **División por 1:** $1 \mid b$ para todo número natural $b$.
-  - **Relación con el cero:** $a \mid 0$ para todo $a \neq 0$ (ya que $0 = a \cdot 0$).
-  - **Linealidad:** Si $a \mid b$ y $a \mid c$, entonces $a \mid (b + c)$ y $a \mid (b - c)$.
+resumen_inicial: "$a$ divide a $b$ ($a\\mid b$) cuando $b\\div a$ tiene resto cero: existe $k$ natural tal que $b=a\\cdot k$."
+explicacion_simple: |
+  Si tienes 20 chocolates y los repartes entre 4 personas, cada una recibe 5 exactos, sin
+  sobras: eso es una división exacta. Pero si los repartes entre 6, a cada una le tocan 3
+  y sobran 2. La divisibilidad trata justamente de eso: ¿se puede repartir un número en
+  grupos iguales sin que sobre nada? Si sí, decimos que el primer número "divide" al
+  segundo.
+explicacion_formal: |
+  $a$ divide a $b$ ($a\mid b$) si existe $k$ natural tal que $b=a\cdot k$, equivalente a
+  $\text{resto}(b\div a)=0$. Es reflexiva ($n\mid n$) y transitiva (si $a\mid b$ y
+  $b\mid c$, entonces $a\mid c$), pero NO simétrica en general.
+definiciones_clave: |
+  **$a\mid b$**: "$a$ divide a $b$". **$a\nmid b$**: "$a$ no divide a $b$". **Reflexividad,
+  transitividad**: propiedades que sí cumple la divisibilidad; la simetría, no.
+propiedades_relaciones: |
+  $1\mid b$ para todo $b$. $a\mid0$ para todo $a\neq0$. Si $a\mid b$ y $a\mid c$, entonces
+  $a\mid(b+c)$ y $a\mid(b-c)$ (linealidad).
+ejemplo_guiado:
+  enunciado: "Determina si 9 divide a 108."
+  pasos:
+    - "Se calcula $108\\div9=12$ con resto $0$."
+    - "Existe $k=12$ tal que $108=9\\cdot12$."
+    - "Conclusión: $9\\mid108$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuál propiedad NO cumple la divisibilidad en general?"
+    choices:
+      - {text: "Reflexividad", is_correct: false}
+      - {text: "Transitividad", is_correct: false}
+      - {text: "Simetría", is_correct: true}
+      - {text: "Ninguna, cumple todas", is_correct: false}
+    explanation: "La correcta es Simetría: si $a\\mid b$, no necesariamente $b\\mid a$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿divide 6 a 92?"
+    choices:
+      - {text: "No, el resto es 2", is_correct: true}
+      - {text: "Sí, el resto es 0", is_correct: false}
+      - {text: "Sí, porque 92 es par", is_correct: false}
+      - {text: "No se puede saber", is_correct: false}
+    explanation: "La correcta es No, el resto es 2: $92\\div6=15$ con resto $2$ ($6\\cdot15=90$)."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Plantear la división $b \div a$.'
   - "Paso 2: Calcular el cociente y el resto."
   - 'Paso 3: Si el resto es 0, entonces $a \mid b$. Si el resto es distinto de 0, $a \nmid b$.'
+errores_correccion: |
+  Un error frecuente es creer que la divisibilidad es simétrica: si $a\mid b$ no implica
+  $b\mid a$. Otro error es pensar que el símbolo $a\mid b$ significa "$a$ dividido por
+  $b$", cuando en realidad significa "$a$ divide a $b$".
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Determina si 12 divide a 96."
+    alternativas:
+      - "Sí, $96=12\\times8$"
+      - "No, sobra 4"
+      - "No se puede determinar"
+    respuesta: "Sí, $96=12\\times8$"
     solucion_pasos:
       - 'Se calcula $96 \div 12 = 8$ con resto $0$.'
       - 'Existe $k = 8$ tal que $96 = 12 \cdot 8$.'
       - 'Conclusión: $12 \mid 96$.'
   - titulo: "Ejemplo 2"
     enunciado: "Determina si 7 divide a 58."
+    alternativas:
+      - "No, sobra 2"
+      - "Sí, $58=7\\times8$"
+      - "No se puede determinar"
+    respuesta: "No, sobra 2"
     solucion_pasos:
       - 'Se calcula $58 \div 7 = 8$ con resto $2$ (ya que $7 \cdot 8 = 56$ y $58 - 56 = 2$).'
       - 'El resto es $2 \neq 0$, así que no existe $k$ natural con $58 = 7 \cdot k$.'
@@ -65,5 +90,8 @@ errores_frecuentes:
   - 'Si $a \mid b$, el valor de $b$ es siempre mayor que $a$.'
   - 'Si $a \mid b$ y $a \mid c$, entonces $a$ no divide a $b + c$.'
   - "La divisibilidad es una relación simétrica entre números naturales."
+al_terminar_debes_poder: |
+  Determinar si un número divide a otro y explicar cuáles propiedades (reflexividad,
+  transitividad, simetría) cumple y cuáles no la relación de divisibilidad.
 fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
 estado: publicado

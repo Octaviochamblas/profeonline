@@ -1,48 +1,72 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.OBTENCION_MULTIPLOS
-objetivo: "Calcular los múltiplos de un número natural dado multiplicando por naturales consecutivos y contar cuántos múltiplos caen en un intervalo."
-introduccion: |
-  Imagina que cada vez que pisas un escalón subes 4 peldaños. Empiezas en 0, luego
-  estás en 4, después en 8, luego 12, 16... Estás generando los múltiplos de 4
-  simplemente sumando 4 una y otra vez.
-
-  Para obtener los múltiplos de cualquier número, multiplicas ese número por
-  0, 1, 2, 3, 4... La lista sigue sin parar. Lo útil de esto es que puedes
-  predecir fácilmente en qué "escalón" estás: el décimo múltiplo de 4 es
-  $4 \times 10 = 40$, sin tener que contar uno por uno.
-resumen: |
-  Los múltiplos de $n$ se obtienen calculando $n \times 0,\; n \times 1,\; n \times 2,\;\ldots$
-  Para hallar el $k$-ésimo múltiplo (sin contar el 0), se calcula $n \times k$.
-  La cantidad de múltiplos positivos de $n$ que hay entre 1 y $m$ es $\lfloor m/n \rfloor$
-  (la parte entera del cociente $m \div n$).
-explicacion: |
-  Los **múltiplos de $n$** se generan multiplicando $n$ por cada número natural:
-  $$M(n) = \{0,\; n,\; 2n,\; 3n,\; 4n,\; \ldots,\; kn,\; \ldots\}$$
-
-  Para **listar los múltiplos** de $n$:
-  - Se calcula $n \times 0 = 0$, luego $n \times 1 = n$, luego $n \times 2 = 2n$, y así.
-  - Cada múltiplo se obtiene sumando $n$ al anterior: la diferencia entre
-    múltiplos consecutivos es siempre $n$.
-
-  Para **contar múltiplos de $n$ en el intervalo $[1, m]$**:
-  $$\text{cantidad} = \left\lfloor \frac{m}{n} \right\rfloor$$
-  (la parte entera del cociente $m \div n$, ignorando el resto).
-
-  **Ejemplo:** ¿Cuántos múltiplos de 7 hay entre 1 y 50?
-  $50 \div 7 = 7$ con resto $1$, luego hay $\lfloor 50/7 \rfloor = 7$ múltiplos:
-  $\{7, 14, 21, 28, 35, 42, 49\}$.
+resumen_inicial: "Los múltiplos de $n$ se obtienen calculando $n\\times0, n\\times1, n\\times2,\\ldots$ El $k$-ésimo múltiplo positivo es $n\\times k$."
+explicacion_simple: |
+  Imagina que cada vez que pisas un escalón subes 4 peldaños: 0, luego 4, luego 8, luego
+  12, 16... Estás generando los múltiplos de 4 sumando 4 una y otra vez. Para obtener
+  los múltiplos de cualquier número, lo multiplicas por 0, 1, 2, 3... Puedes predecir el
+  décimo múltiplo de 4 directamente: $4\times10=40$, sin contar uno por uno.
+explicacion_formal: |
+  $M(n) = \{0, n, 2n, 3n, \ldots, kn, \ldots\}$. El $k$-ésimo múltiplo positivo es
+  $n\times k$. La cantidad de múltiplos positivos de $n$ entre 1 y $m$ es
+  $\lfloor m/n \rfloor$ (la parte entera del cociente).
+definiciones_clave: |
+  **$k$-ésimo múltiplo**: el que se obtiene con $n\times k$. **Parte entera** ($\lfloor
+  \cdot \rfloor$): el cociente de una división, ignorando el resto.
+propiedades_relaciones: |
+  La diferencia entre dos múltiplos consecutivos de $n$ es siempre $n$. El conjunto de
+  múltiplos de $n$ nunca termina: siempre existe uno mayor.
+ejemplo_guiado:
+  enunciado: "¿Cuántos múltiplos de 5 hay entre 1 y 42?"
+  pasos:
+    - "Se calcula $42\\div5=8$ con resto $2$."
+    - "La parte entera del cociente es $8$."
+    - "Hay 8 múltiplos de 5 en ese rango: $\\{5,10,15,20,25,30,35,40\\}$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cómo se calcula el $k$-ésimo múltiplo positivo de $n$?"
+    choices:
+      - {text: "$n \\times k$", is_correct: true}
+      - {text: "$n + k$", is_correct: false}
+      - {text: "$n \\div k$", is_correct: false}
+      - {text: "$k \\div n$", is_correct: false}
+    explanation: "La correcta es $n \\times k$: multiplicar $n$ por $k$ da directamente el $k$-ésimo múltiplo."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuántos múltiplos de 6 hay entre 1 y 40?"
+    choices:
+      - {text: "6", is_correct: true}
+      - {text: "7", is_correct: false}
+      - {text: "40", is_correct: false}
+      - {text: "4", is_correct: false}
+    explanation: "La correcta es 6: $40\\div6=6$ con resto $4$, y la parte entera es 6."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Para listar los primeros $k$ múltiplos positivos, calcular $n \times 1, n \times 2, \ldots, n \times k$.'
   - 'Paso 2: Para el $k$-ésimo múltiplo positivo, usar directamente la fórmula $n \times k$.'
   - 'Paso 3: Para contar múltiplos de $n$ entre 1 y $m$, calcular $\lfloor m \div n \rfloor$ (cociente entero).'
+errores_correccion: |
+  Un error frecuente es ignorar que $0=n\times0$ también es múltiplo, pensando que el
+  primer múltiplo de $n$ siempre es $n$. Otro error es asumir que todos los múltiplos de
+  un número impar son impares (por ejemplo, $3\times2=6$ es par).
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Escribe los primeros 6 múltiplos positivos de 9."
+    alternativas:
+      - "$\\{9,18,27,36,45,54\\}$"
+      - "$\\{9,19,29,39,49,59\\}$"
+      - "$\\{0,9,18,27,36,45\\}$"
+    respuesta: "$\\{9,18,27,36,45,54\\}$"
     solucion_pasos:
       - 'Se multiplica $9 \times 1 = 9$, $9 \times 2 = 18$, $9 \times 3 = 27$.'
       - 'Continúa: $9 \times 4 = 36$, $9 \times 5 = 45$, $9 \times 6 = 54$.'
       - 'Los primeros 6 múltiplos positivos de 9 son: $\{9, 18, 27, 36, 45, 54\}$.'
   - titulo: "Ejemplo 2"
     enunciado: "¿Cuántos múltiplos de 4 hay entre 1 y 30?"
+    alternativas:
+      - "7"
+      - "8"
+      - "30"
+    respuesta: "7"
     solucion_pasos:
       - 'Se calcula $30 \div 4 = 7$ con resto $2$.'
       - "La parte entera es 7, luego hay 7 múltiplos de 4 en ese rango."
@@ -65,5 +89,8 @@ errores_frecuentes:
   - "La diferencia entre múltiplos consecutivos de $n$ varía según su posición."
   - "Un número solo puede ser múltiplo de un único número natural."
   - "Si $m$ es múltiplo de $n$, entonces $m + 1$ también es múltiplo de $n$."
+al_terminar_debes_poder: |
+  Listar los primeros $k$ múltiplos positivos de un número y contar cuántos múltiplos
+  caen dentro de un intervalo dado.
 fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
 estado: publicado
