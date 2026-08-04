@@ -1,70 +1,95 @@
 semantic_id: MAT.NUM.FRACCIONES_OPERATORIA.ADICION_IGUAL_DENOMINADOR
-titulo: Adición de fracciones con igual denominador
-objetivo: Sumar fracciones que comparten el mismo denominador.
-introduccion: Cuando dos fracciones dividen el entero en la misma cantidad de partes, sumarlas consiste
-  solo en juntar las partes que cada una aporta, sin modificar el tamaño de esas partes.
-resumen: Para sumar fracciones con igual denominador se suman los numeradores y se conserva el denominador
-  común.
-explicacion: '### Definición formal
+resumen_inicial: "Para sumar fracciones con igual denominador, se suman directamente los numeradores y se conserva el mismo denominador común."
+explicacion_simple: |
+  Imagina que tienes dos platos. En el primero hay 2 rebanadas de pizza cortadas en octavos ($\frac{2}{8}$) y en el segundo hay 3 rebanadas también cortadas en octavos ($\frac{3}{8}$). Si juntas ambas en un solo plato, tienes $2 + 3 = 5$ rebanadas de octavos ($\frac{5}{8}$). Como el tamaño de cada rebanada es el mismo (el denominador no cambia), **solo sumas los números de arriba y mantienes el número de abajo**.
+explicacion_formal: |
+  Formalmente, dadas dos fracciones $\frac{a}{c}$ y $\frac{b}{c}$ con denominador común $c \in \mathbb{Z} \setminus \{0\}$ y numeradores $a, b \in \mathbb{Z}$:
+  $$\frac{a}{c} + \frac{b}{c} = \frac{a + b}{c}$$
 
-
-  \(\frac{a}{c}+\frac{b}{c}=\frac{a+b}{c}\), pues ambas fracciones cuentan partes del mismo tamaño \(\frac{1}{c}\),
-  y sumarlas es sumar cuántas partes de ese tamaño se tienen en total.
-
-
-  ### Desarrollo didáctico
-
-
-  \(\frac{2}{7}+\frac{3}{7}\): ambas fracciones cuentan séptimos, así que se suman los numeradores, \(2+3=5\),
-  y se conserva el denominador: \(\frac{5}{7}\).'
+  Demostración basada en la propiedad distributiva del producto respecto de la suma sobre $\mathbb{Q}$:
+  $$\frac{a}{c} + \frac{b}{c} = a \cdot \left(\frac{1}{c}\right) + b \cdot \left(\frac{1}{c}\right) = (a + b) \cdot \left(\frac{1}{c}\right) = \frac{a + b}{c}$$
+definiciones_clave: |
+  - **Adición de igual denominador**: Suma donde se mantiene el denominador $c$ y se calcula $a + b$.
+  - **Denominador común ($c$)**: Término inferior idéntico que actúa como unidad de medida compartida.
+  - **Numerador resultante ($a + b$)**: Suma aritmética de las partes acumuladas.
+propiedades_relaciones: |
+  - **Conservación de la unidad fraccionaria**: La operación preserva la escala $\frac{1}{c}$ sin modificar el tamaño de las partes.
+  - **Conmutatividad**: $\frac{a}{c} + \frac{b}{c} = \frac{b}{c} + \frac{a}{c}$.
+  - **Simplificación posterior**: El resultado final $\frac{a+b}{c}$ debe simplificarse a su forma irreductible si $a+b$ y $c$ comparten divisores comunes.
+ejemplo_guiado:
+  enunciado: "Suma las fracciones $\\frac{4}{15}$ y $\\frac{8}{15}$ y simplifica el resultado si es posible."
+  pasos:
+    - "Verificar que los denominadores sean iguales: $c = 15$."
+    - "Sumar los numeradores: $4 + 8 = 12$."
+    - "Escribir la fracción resultante conservando el denominador: $\\frac{12}{15}$."
+    - "Simplificar por el común divisor $3$: $\\frac{12 \\div 3}{15 \\div 3} = \\frac{4}{5}$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuál es la regla correcta para resolver la adición $\\frac{a}{c} + \\frac{b}{c}$ entre dos fracciones de igual denominador?"
+    choices:
+      - {text: "Sumar los numeradores y mantener el mismo denominador: $\\frac{a+b}{c}$.", is_correct: true}
+      - {text: "Sumar los numeradores y sumar los denominadores: $\\frac{a+b}{c+c}$.", is_correct: false}
+      - {text: "Multiplicar los numeradores en diagonal.", is_correct: false}
+      - {text: "Restar el denominador del numerador.", is_correct: false}
+    explanation: "La correcta es Sumar los numeradores y mantener el mismo denominador: $\\frac{a+b}{c}$.: al compartir la misma unidad fraccionaria, solo se acumulan los numeradores."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Al sumar $\\frac{5}{12} + \\frac{1}{12}$, ¿cuál es la fracción simplificada irreductible del resultado?"
+    choices:
+      - {text: "\\frac{1}{2}", is_correct: true}
+      - {text: "\\frac{6}{12}", is_correct: false}
+      - {text: "\\frac{6}{24}", is_correct: false}
+      - {text: "\\frac{1}{4}", is_correct: false}
+    explanation: "La correcta es \\frac{1}{2}: $\\frac{5+1}{12} = \\frac{6}{12}$, que simplificada por $6$ resulta $\\frac{1}{2}$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Comprueba que los denominadores sean iguales y distintos de cero.'
-- 'Paso 2: Suma los numeradores y conserva el denominador común.'
-- 'Paso 3: Simplifica la fracción resultante y estima si su tamaño es razonable.'
+  - "Paso 1: Confirmar que las fracciones tengan el mismo denominador $c$."
+  - "Paso 2: Sumar los numeradores $a + b$."
+  - "Paso 3: Escribir el nuevo numerador sobre el denominador común $c$."
+  - 'Paso 4: Simplificar la fracción resultante dividiendo por $\gcd(a+b, c)$ si es mayor que 1.'
+errores_correccion: |
+  El error más destructivo es sumar también los denominadores (hacer $\frac{2}{5} + \frac{1}{5} = \frac{3}{10}$). Recuerda: **los denominadores no se suman cuando son iguales**, solo representan de qué tamaño es la tajada.
 ejemplos:
-- titulo: Aplicación razonada — Adición de fracciones de igual denominador
-  enunciado: \(\frac{2}{7}+\frac{3}{7}=\frac{5}{7}\).
-  solucion_pasos:
-  - Comprueba que los denominadores sean iguales y distintos de cero.
-  - Suma los numeradores y conserva el denominador común.
-  - Simplifica la fracción resultante y estima si su tamaño es razonable.
-- titulo: Revisión de una solución — Adición de fracciones de igual denominador
-  enunciado: Una solución aplica “Suma los numeradores y conserva el denominador común.”, pero termina
-    sin comprobar que el denominador común indica el tamaño de las partes y no cambia en esta suma. Determina
-    qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define adición de fracciones de igual denominador: para sumar fracciones
-    de igual denominador se suman los numeradores y se conserva el denominador.'
-  - Comprueba que los denominadores sean iguales y distintos de cero.
-  - 'Completa la revisión con este control: Simplifica la fracción resultante y estima si su tamaño es
-    razonable.'
-- titulo: ¿Se cumple que el denominador común indica el tamaño de las partes y no cambia en esta suma?
-    — Adición de fracciones de igual denominador
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que para sumar fracciones de igual denominador se suman los
-    numeradores y se conserva el denominador.
-  - El caso “\(\frac{2}{7}+\frac{3}{7}=\frac{5}{7}\)” satisface esa condición.
-  - Simplifica la fracción resultante y estima si su tamaño es razonable.
-- titulo: ¿Es válido omitir el paso “Comprueba que los denominadores sean iguales y distintos de cero”?
-    — Adición de fracciones de igual denominador
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de adición de fracciones de igual denominador.
-  - 'Omitirlo puede volver inválida la acción siguiente: Suma los numeradores y conserva el denominador
-    común.'
-  - 'La solución debe terminar de este modo: Simplifica la fracción resultante y estima si su tamaño es
-    razonable.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Calcula $\\frac{3}{7} + \\frac{2}{7}$."
+    alternativas:
+      - "\\frac{5}{7}"
+      - "\\frac{5}{14}"
+      - "\\frac{6}{7}"
+    respuesta: "\\frac{5}{7}"
+    solucion_pasos:
+      - "Mantenemos el denominador 7."
+      - "Sumamos numeradores: $3 + 2 = 5$."
+      - "Obtenemos $\\frac{5}{7}$."
+  - titulo: "Ejemplo 2"
+    enunciado: "Una botella contiene $\\frac{3}{10}$ L de agua y se le vierten $\\frac{4}{10}$ L más. ¿Qué fracción de litro contiene ahora?"
+    alternativas:
+      - "\\frac{7}{10} L"
+      - "\\frac{7}{20} L"
+      - "\\frac{12}{10} L"
+    respuesta: "\\frac{7}{10} L"
+    solucion_pasos:
+      - "Denominador común 10."
+      - "Sumamos los litros: $3 + 4 = 7$ décimos."
+      - "Total: $\\frac{7}{10}$ L."
+  - titulo: "¿Es $\\frac{1}{4} + \\frac{3}{4} = 1$ entero completo?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, $\\frac{1+3}{4} = \\frac{4}{4} = 1$."
+  - titulo: "¿Se conserva esta misma regla para sumar más de dos fracciones de igual denominador?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, $\\frac{a}{c} + \\frac{b}{c} + \\frac{d}{c} = \\frac{a+b+d}{c}$."
 errores_frecuentes:
-- 'Empezar adición de fracciones de igual denominador sin realizar este control inicial: Comprueba que
-  los denominadores sean iguales y distintos de cero.'
-- Memorizar “\(\frac{2}{7}+\frac{3}{7}=\frac{5}{7}\)” como respuesta aislada, sin reconstruir la definición
-  que lo justifica.
-- Convertir en receta el paso “Suma los numeradores y conserva el denominador común.” y usarlo aunque
-  cambien las condiciones del problema.
-- Dar por válida una conclusión sobre adición de fracciones de igual denominador que contradice el criterio
-  “El denominador común indica el tamaño de las partes y no cambia en esta suma”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Simplifica la fracción resultante y estima si
-  su tamaño es razonable.'
-fuente: Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales.
+  - "Sumar los denominadores entre sí (ejemplo: $\\frac{1}{3} + \\frac{1}{3} = \\frac{2}{6}$)."
+  - "Olvidar simplificar el resultado final cuando no es irreductible."
+  - "Multiplicar los numeradores en lugar de sumarlos."
+  - "Convertir innecesariamente a números decimales dificultando el cálculo."
+  - "Cambiar el denominador durante la suma."
+afirmaciones_verdaderas:
+  - "Para sumar fracciones de igual denominador, se suman únicamente los numeradores y se conserva el denominador común."
+  - "La suma $\\frac{a}{c} + \\frac{b}{c}$ equivale a la fracción $\\frac{a+b}{c}$."
+al_terminar_debes_ponder: |
+  Debes ser capaz de sumar fracciones de igual denominador y simplificar el resultado obtenido a su representación irreductible.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
