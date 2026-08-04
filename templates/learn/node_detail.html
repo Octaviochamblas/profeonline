@@ -460,6 +460,30 @@
                     </div>
                 </div>
             </div>
+            {% elif ej.alternativas %}
+            <div class="learn-ejemplo-card learn-exercise"
+                 data-format="multiple_choice"
+                 data-answer="{{ ej.respuesta }}">
+                <div class="learn-ejemplo-card__header">
+                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
+                </div>
+                <div class="learn-ejemplo-card__body">
+                    <ul class="learn-exercise__mc">
+                        {% for alt in ej.alternativas %}
+                        <li><button type="button" class="ex-choice" data-value="{{ alt }}">{{ alt }}</button></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="learn-exercise__feedback" hidden>
+                        <div class="learn-exercise__verdict"></div>
+                        {% if ej.solucion_pasos %}
+                        <ol class="learn-procedure" style="margin-top:.5rem">
+                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
+                        </ol>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
             {% else %}
             <div class="learn-ejemplo-card learn-exercise"
                  data-format="open_answer"
