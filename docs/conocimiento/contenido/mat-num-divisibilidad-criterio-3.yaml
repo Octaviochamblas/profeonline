@@ -1,54 +1,74 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.CRITERIO_3
-objetivo: "Identificar si un número natural es divisible por 3 aplicando la suma de sus cifras."
-introduccion: |
-  Imagina que tienes caramelos y quieres repartirlos en 3 bolsas idénticas sin que sobre
-  ninguno. ¿Cómo saber si puedes hacerlo con 156 caramelos sin tener que dividirlos uno
-  por uno?
-
-  Existe un truco sorprendente: si sumas las cifras individuales del número y el resultado
-  se puede dividir por 3 de forma exacta, ¡el número completo también se puede dividir por 3!
-  Por ejemplo, para 156 sumamos $1 + 5 + 6 = 12$. Como 12 está en la tabla del 3 ($3 \cdot 4 = 12$),
-  sabemos inmediatamente que sí podemos repartir los 156 caramelos en 3 grupos exactos.
-resumen: |
-  Un número natural es divisible por 3 si y solo si la suma de todas sus cifras es un múltiplo
-  de 3 (es decir, pertenece a la secuencia $0, 3, 6, 9, 12, 15, \ldots$). Este método simplifica
-  la verificación reduciendo números grandes a sumas muy sencillas.
-explicacion: |
-  El criterio de divisibilidad por 3 establece que un número es divisible por 3 si la suma de
-  sus cifras es un múltiplo de 3.
-
-  **Explicación matemática:**
-  Cualquier número de tres cifras, por ejemplo $abc$, se puede escribir en forma desarrollada
-  utilizando potencias de 10:
-  $$N = 100a + 10b + c$$
-
-  Podemos reescribir $100$ como $99 + 1$ y $10$ como $9 + 1$:
-  $$N = (99 + 1)a + (9 + 1)b + c$$
-  $$N = 99a + a + 9b + b + c$$
-  $$N = (99a + 9b) + (a + b + c)$$
-
-  El término $(99a + 9b)$ es claramente divisible por 3, porque tanto $99$ como $9$ lo son.
-  Por lo tanto, para que todo el número $N$ sea divisible por 3, la suma restante
-  $(a + b + c)$ (que es la suma de las cifras) debe ser divisible por 3.
-
-  Este razonamiento es válido para números de cualquier cantidad de cifras.
-
-  **Ejemplos:**
-  - $228$: la suma de sus cifras es $2 + 2 + 8 = 12$, que es divisible por 3 ($3 \cdot 4 = 12$). Sí es divisible.
-  - $1.405$: la suma de sus cifras es $1 + 4 + 0 + 5 = 10$, que no es divisible por 3. No es divisible.
+resumen_inicial: "Un número es divisible por 3 si la suma de sus cifras es múltiplo de 3."
+explicacion_simple: |
+  Tienes 156 caramelos y quieres repartirlos en 3 bolsas idénticas sin que sobre ninguno.
+  Existe un truco: si sumas las cifras del número y el resultado se puede dividir por 3,
+  ¡el número completo también! Para 156: $1+5+6=12$. Como 12 está en la tabla del 3, sí
+  puedes repartir los 156 caramelos en 3 grupos exactos.
+explicacion_formal: |
+  Para $N=100a+10b+c$: se puede reescribir como $N=(99a+9b)+(a+b+c)$. Como $99$ y $9$ son
+  múltiplos de 3, el término $(99a+9b)$ siempre es divisible por 3. Por lo tanto, $N$ es
+  divisible por 3 si y solo si $(a+b+c)$ (la suma de cifras) lo es. El razonamiento se
+  extiende a cualquier cantidad de cifras.
+definiciones_clave: |
+  **Suma de cifras**: sumar todos los dígitos de un número. **Múltiplo de 3**: número que
+  pertenece a la secuencia $0, 3, 6, 9, 12, 15,\ldots$
+propiedades_relaciones: |
+  Si la suma de cifras sigue siendo grande, se puede volver a sumar sus dígitos para
+  simplificar (por ejemplo, de 9.999 a 36 y luego a 9).
+ejemplo_guiado:
+  enunciado: "Determina si 4.512 es divisible por 3."
+  pasos:
+    - "Se suman las cifras: $4+5+1+2=12$."
+    - "$12$ es múltiplo de 3 ($3\\times4=12$)."
+    - "Conclusión: 4.512 es divisible por 3."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué se debe comprobar según el criterio de divisibilidad por 3?"
+    choices:
+      - {text: "Que la última cifra sea múltiplo de 3", is_correct: false}
+      - {text: "Que la suma de todas las cifras sea múltiplo de 3", is_correct: true}
+      - {text: "Que el número termine en 3", is_correct: false}
+      - {text: "Que el número sea par", is_correct: false}
+    explanation: "La correcta es Que la suma de todas las cifras sea múltiplo de 3."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿es 2.740 divisible por 3?"
+    choices:
+      - {text: "No, la suma de cifras es 13", is_correct: true}
+      - {text: "Sí, la suma de cifras es 12", is_correct: false}
+      - {text: "Sí, porque termina en 0", is_correct: false}
+      - {text: "No se puede saber", is_correct: false}
+    explanation: "La correcta es No, la suma de cifras es 13: $2+7+4+0=13$, que no es múltiplo de 3."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - "Paso 1: Sumar todos los dígitos que forman el número."
   - "Paso 2: Si el resultado es un número de varias cifras, se puede volver a sumar sus dígitos para simplificar."
   - "Paso 3: Verificar si el resultado final es un múltiplo de 3 (como 0, 3, 6 o 9). Si lo es, el número original es divisible por 3."
+errores_correccion: |
+  Un error frecuente es creer que un número es divisible por 3 solo porque termina en 3,
+  6 o 9 (por ejemplo, 13 no es divisible por 3). Otro error es pensar que un número con
+  cifras individuales no múltiplos de 3 no puede serlo en total (por ejemplo, 252 sí es
+  divisible por 3 aunque 2 y 5 no lo sean).
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Determina si el número 8.415 es divisible por 3."
+    alternativas:
+      - "Sí, la suma de cifras es 18"
+      - "No, la suma de cifras es 17"
+      - "No se puede determinar"
+    respuesta: "Sí, la suma de cifras es 18"
     solucion_pasos:
       - "Sumamos las cifras de 8.415: $8 + 4 + 1 + 5 = 18$."
       - 'Comprobamos si 18 es múltiplo de 3. Sí, ya que $3 \cdot 6 = 18$ (o sumando de nuevo: $1 + 8 = 9$).'
       - "Conclusión: El número 8.415 es divisible por 3."
   - titulo: "Ejemplo 2"
     enunciado: "Determina si el número 704 es divisible por 3."
+    alternativas:
+      - "No, la suma de cifras es 11"
+      - "Sí, la suma de cifras es 12"
+      - "No se puede determinar"
+    respuesta: "No, la suma de cifras es 11"
     solucion_pasos:
       - "Sumamos las cifras de 704: $7 + 0 + 4 = 11$."
       - "Comprobamos si 11 es múltiplo de 3. No, los múltiplos de 3 cercanos son 9 y 12."
@@ -71,5 +91,8 @@ errores_frecuentes:
   - "Sumar mal los dígitos por hacer la operación demasiado rápido."
   - "Olvidar que se puede repetir la suma de cifras si el primer resultado sigue siendo grande (por ejemplo, de 9.999 pasar a 36 y luego a 9)."
   - "Confundir este criterio con el del 9 y pensar que si la suma es divisible por 3, también debe ser divisible por 9 obligatoriamente."
+al_terminar_debes_poder: |
+  Determinar la divisibilidad por 3 de cualquier número sumando sus cifras, sin
+  necesidad de hacer la división completa.
 fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
 estado: publicado

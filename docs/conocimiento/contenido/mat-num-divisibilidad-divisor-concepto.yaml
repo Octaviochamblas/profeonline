@@ -1,48 +1,73 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.DIVISOR_CONCEPTO
-objetivo: "Identificar qué es un divisor de un número natural y verificar si un número dado es divisor de otro."
-introduccion: |
-  ¿Alguna vez has repartido dulces entre amigos intentando que a todos les toque
-  la misma cantidad y no sobre ninguno? Si tienes 12 dulces y los repartes entre
-  3 amigos, a cada uno le tocan 4 exactos. Eso significa que 3 es **divisor** de 12.
-
-  Un divisor de un número es cualquier número natural que lo divide exactamente,
-  sin dejar nada sobrando. El 12 tiene varios divisores: 1, 2, 3, 4, 6 y 12.
-  A diferencia de los múltiplos (que son infinitos), los divisores de un número
-  siempre son finitos — hay una cantidad limitada de formas de repartir exacto.
-resumen: |
-  Un número $a$ es divisor de $b$ cuando $b \div a$ da cociente exacto (resto = 0).
-  Equivalentemente, existe $k$ natural tal que $b = a \cdot k$. Todo número natural
-  tiene al menos dos divisores: el 1 y el propio número.
-explicacion: |
-  Se dice que $a$ es **divisor de $b$** (o que $a$ **divide a** $b$, notación $a \mid b$) cuando
-  existe un número natural $k$ tal que:
-  $$b = a \cdot k \quad \Longleftrightarrow \quad b \div a \text{ es exacto (resto} = 0\text{)}$$
-
-  El conjunto de todos los divisores de $b$ se denota $D(b)$, por ejemplo:
-  $$D(12) = \{1,\; 2,\; 3,\; 4,\; 6,\; 12\}$$
-
-  **Propiedades fundamentales:**
-  - **1 es divisor de todo número natural**: $b = 1 \cdot b$.
-  - **Todo número es divisor de sí mismo**: $b = b \cdot 1$.
-  - **Todo divisor de $b$ es menor o igual que $b$**: si $a \mid b$, entonces $a \leq b$.
-  - El conjunto $D(b)$ es **finito**: a diferencia de los múltiplos, los divisores son limitados.
-  - Si $a \mid b$, el número $b/a$ también es divisor de $b$ (**divisores complementarios**).
-
-  El número de divisores de $b$ depende de su estructura de factores primos. Los números
-  primos tienen exactamente 2 divisores: 1 y el propio número.
+resumen_inicial: "Un divisor de $b$ es un número que lo divide exactamente, sin resto. A diferencia de los múltiplos, los divisores de un número son finitos."
+explicacion_simple: |
+  Si tienes 12 dulces y los repartes entre 3 amigos, a cada uno le tocan 4 exactos: eso
+  significa que 3 es divisor de 12. Un divisor de un número es cualquier número que lo
+  divide exactamente, sin que sobre nada. El 12 tiene varios divisores: 1, 2, 3, 4, 6 y
+  12. A diferencia de los múltiplos (infinitos), los divisores de un número son limitados.
+explicacion_formal: |
+  $a$ es divisor de $b$ ($a \mid b$) si existe un natural $k$ tal que $b=a\cdot k$, es
+  decir, si $b\div a$ es exacto. El conjunto $D(b)$ de todos los divisores de $b$ es
+  finito, a diferencia del conjunto de múltiplos.
+definiciones_clave: |
+  **Divisor**: número que divide exactamente a otro. **$D(b)$**: conjunto finito de todos
+  los divisores de $b$. **Notación** $a\mid b$: "$a$ divide a $b$".
+propiedades_relaciones: |
+  El $1$ es divisor de todo número natural. Todo número es divisor de sí mismo. Todo
+  divisor de $b$ es menor o igual que $b$. Si $a\mid b$, el complementario $b/a$ también
+  es divisor de $b$.
+ejemplo_guiado:
+  enunciado: "Determina si 7 es divisor de 84."
+  pasos:
+    - "Se calcula $84\\div7=12$ con resto $0$."
+    - "El cociente es exacto y $84=7\\cdot12$."
+    - "Conclusión: 7 sí es divisor de 84, es decir, $7\\mid84$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuál de estas afirmaciones sobre el conjunto de divisores $D(b)$ es correcta?"
+    choices:
+      - {text: "Es siempre infinito", is_correct: false}
+      - {text: "Es siempre finito", is_correct: true}
+      - {text: "Solo tiene un elemento", is_correct: false}
+      - {text: "Nunca incluye al 1", is_correct: false}
+    explanation: "La correcta es Es siempre finito: a diferencia de los múltiplos, el conjunto de divisores de cualquier número es limitado."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿es 11 divisor de 88?"
+    choices:
+      - {text: "Sí, $88=11\\times8$", is_correct: true}
+      - {text: "No, sobra 1", is_correct: false}
+      - {text: "No se puede determinar", is_correct: false}
+      - {text: "Sí, porque 88 es par", is_correct: false}
+    explanation: "La correcta es Sí, $88=11\\times8$: la división $88\\div11=8$ es exacta."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Dividir $b \div a$ y calcular el resto.'
   - 'Paso 2: Si el resto es 0, entonces $a$ es divisor de $b$ ($a \mid b$).'
   - 'Paso 3: Si el resto es distinto de 0, $a$ no divide a $b$ ($a \nmid b$).'
+errores_correccion: |
+  Un error frecuente es creer que si $a$ es divisor de $b$, entonces $b$ también es
+  divisor de $a$; en general esto no se cumple. Otro error es olvidar que $1$ y el propio
+  número siempre son divisores (divisores triviales).
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Determina si 9 es divisor de 72."
+    alternativas:
+      - "Sí, $72=9\\times8$"
+      - "No, sobra 3"
+      - "No se puede determinar"
+    respuesta: "Sí, $72=9\\times8$"
     solucion_pasos:
       - 'Se calcula $72 \div 9 = 8$ con resto $0$.'
       - 'El cociente es exacto y $72 = 9 \cdot 8$.'
       - 'Conclusión: 9 sí es divisor de 72, es decir, $9 \mid 72$.'
   - titulo: "Ejemplo 2"
     enunciado: "Determina si 8 es divisor de 50."
+    alternativas:
+      - "No, sobra 2"
+      - "Sí, $50=8\\times6$"
+      - "No se puede determinar"
+    respuesta: "No, sobra 2"
     solucion_pasos:
       - 'Se calcula $50 \div 8 = 6$ con resto $2$ (ya que $8 \cdot 6 = 48$ y $50 - 48 = 2$).'
       - 'El resto es $2 \neq 0$.'
@@ -65,5 +90,8 @@ errores_frecuentes:
   - "El número 0 es divisor de cualquier número natural."
   - "Un número primo tiene exactamente un divisor."
   - "Todos los divisores de un número son siempre menores que ese número."
+al_terminar_debes_poder: |
+  Determinar si un número es divisor de otro, y explicar por qué el conjunto de divisores
+  de cualquier número natural es siempre finito, a diferencia del de múltiplos.
 fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
 estado: publicado
