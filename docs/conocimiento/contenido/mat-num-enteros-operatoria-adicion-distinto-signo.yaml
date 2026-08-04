@@ -1,41 +1,63 @@
 semantic_id: MAT.NUM.ENTEROS_OPERATORIA.ADICION_DISTINTO_SIGNO
-objetivo: "Sumar números enteros que tienen signos diferentes (uno positivo y uno negativo)."
-introduccion: |
-  Imagina que tienes una tarjeta con $10 de saldo a favor (+$10), pero haces una compra de $7 (-$7). Al pagar la compra, tu saldo disminuye pero sigues teniendo dinero a favor: te quedan $3 (+$3).
-
-  ¿Y qué pasa si tienes $4 de saldo (+$4) y quieres comprar algo de $6 (-$6)? Tu saldo no es suficiente, por lo que quedas debiendo $2 (-$2).
-
-  Sumar números con diferente signo es como una lucha entre lo que tienes (positivo) y lo que debes (negativo). El signo del que tenga más fuerza (mayor valor absoluto) es el que gana.
-resumen: |
-  Para sumar dos números enteros con diferente signo, se calcula la diferencia (resta) entre sus valores absolutos (el mayor menos el menor) y se conserva el signo del número que tiene el mayor valor absoluto.
-explicacion: |
-  Cuando sumamos enteros de distinto signo, combinamos un número positivo (que representa un avance a la derecha en la recta numérica) y un número negativo (que representa un avance a la izquierda). La combinación de ambos movimientos resulta en una cancelación parcial de sus magnitudes.
-
-  La regla formal para calcular la suma de $a$ y $b$ con distinto signo es:
-  1. Identificar cuál de los dos números tiene el mayor valor absoluto (es decir, cuál está más lejos del cero).
-  2. Restar el valor absoluto menor al valor absoluto mayor: $| \text{mayor} | - | \text{menor} |$.
-  3. Al resultado de la resta, asignarle el signo del número con mayor valor absoluto.
-
-  Por ejemplo:
-  - Para $(+8) + (-3)$:
-    - Valores absolutos: $|8| = 8$ y $|-3| = 3$.
-    - Como $8 > 3$, el número con mayor valor absoluto es el $+8$ (positivo).
-    - Restamos: $8 - 3 = 5$.
-    - El signo del resultado es positivo: $+5$.
-
-  - Para $(-9) + (+4)$:
-    - Valores absolutos: $|-9| = 9$ y $|4| = 4$.
-    - Como $9 > 4$, el número con mayor valor absoluto es $-9$ (negativo).
-    - Restamos: $9 - 4 = 5$.
-    - El signo del resultado es negativo: $-5$.
+resumen_inicial: "Para sumar dos enteros de distinto signo, se resta el valor absoluto menor del mayor y se conserva el signo del que tenga mayor valor absoluto."
+explicacion_simple: |
+  Si tienes $10 a favor (+10) y compras algo de $7 (-7), te quedan $3 a favor (+3). Si
+  tienes $4 (+4) y quieres comprar algo de $6 (-6), no te alcanza y quedas debiendo $2
+  (-2). Sumar signos distintos es una lucha entre lo que tienes y lo que debes: gana el
+  signo del que tenga más fuerza (mayor valor absoluto).
+explicacion_formal: |
+  Para sumar $a$ y $b$ de distinto signo: se identifica cuál tiene mayor valor absoluto,
+  se resta el menor del mayor ($|\text{mayor}| - |\text{menor}|$), y al resultado se le
+  asigna el signo del número con mayor valor absoluto.
+definiciones_clave: |
+  **Signos distintos**: un sumando positivo y otro negativo. **Cancelación parcial**: al
+  sumar signos opuestos, sus magnitudes se restan en vez de sumarse.
+propiedades_relaciones: |
+  Si los dos sumandos tienen el mismo valor absoluto, el resultado es siempre cero. El
+  resultado siempre tiene menor valor absoluto que el sumando de mayor magnitud.
+ejemplo_guiado:
+  enunciado: "Calcula $(-11) + (+19)$."
+  pasos:
+    - "Los signos son distintos: $-11$ y $+19$."
+    - "Valores absolutos: $|-11|=11$ y $|+19|=19$; como $19>11$, domina el positivo."
+    - "Se resta: $19-11=8$. El resultado es $+8$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "Al sumar dos enteros de distinto signo, ¿qué signo tiene el resultado?"
+    choices:
+      - {text: "Siempre positivo", is_correct: false}
+      - {text: "Siempre negativo", is_correct: false}
+      - {text: "El del sumando con mayor valor absoluto", is_correct: true}
+      - {text: "El del sumando con menor valor absoluto", is_correct: false}
+    explanation: "La correcta es El del sumando con mayor valor absoluto: ese signo 'domina' el resultado."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuánto es $(-25) + (+10)$?"
+    choices:
+      - {text: "$-15$", is_correct: true}
+      - {text: "$15$", is_correct: false}
+      - {text: "$-35$", is_correct: false}
+      - {text: "$35$", is_correct: false}
+    explanation: "La correcta es $-15$: $|-25|=25 > |10|=10$, se resta $25-10=15$ y se conserva el signo negativo."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - "Paso 1: Identificar que los dos números tienen signos diferentes."
   - "Paso 2: Calcular el valor absoluto de ambos números."
   - "Paso 3: Restar el valor absoluto menor del valor absoluto mayor."
   - "Paso 4: Colocar al resultado el signo del número original que tenía el mayor valor absoluto."
+errores_correccion: |
+  Un error frecuente es sumar los valores absolutos en vez de restarlos cuando los signos
+  son distintos. Otro error es aplicar la regla de signos de la multiplicación y asumir
+  que signos distintos siempre dan resultado negativo; en realidad el signo depende de
+  cuál sumando tiene mayor valor absoluto.
 ejemplos:
   - titulo: "Ejemplo 1"
     enunciado: "Calcular la suma: $(-15) + (+20)$."
+    alternativas:
+      - "$5$"
+      - "$-5$"
+      - "$35$"
+    respuesta: "$5$"
     solucion_pasos:
       - "Identificar los signos: $-15$ es negativo y $+20$ es positivo."
       - "Calcular valores absolutos: $|-15| = 15$ y $|+20| = 20$."
@@ -44,6 +66,11 @@ ejemplos:
       - "Asignar el signo del mayor: el resultado es $+5$ (o simplemente $5$)."
   - titulo: "Ejemplo 2"
     enunciado: "Calcular la suma: $(+7) + (-12)$."
+    alternativas:
+      - "$-5$"
+      - "$5$"
+      - "$-19$"
+    respuesta: "$-5$"
     solucion_pasos:
       - "Identificar los signos: $+7$ es positivo y $-12$ es negativo."
       - "Calcular valores absolutos: $|+7| = 7$ y $|-12| = 12$."
@@ -68,5 +95,8 @@ errores_frecuentes:
   - "Aplicar erróneamente la ley de signos de la multiplicación, asumiendo que como son signos distintos, el resultado siempre debe ser negativo."
   - "Creer que la suma de dos enteros de diferente signo nunca puede ser cero."
   - "Confundir cuál de los números tiene mayor valor absoluto al comparar números negativos (ej: creer que $-5$ tiene menor valor absoluto que $3$)."
+al_terminar_debes_poder: |
+  Sumar dos enteros de distinto signo aplicando correctamente la resta de valores
+  absolutos y el signo del sumando de mayor magnitud.
 fuente: "Enteros"
 estado: publicado
