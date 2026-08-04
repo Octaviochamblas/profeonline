@@ -1,69 +1,97 @@
 semantic_id: MAT.NUM.APROXIMACIONES.APROXIMACION_EXCESO
-titulo: Aproximación por exceso
-objetivo: Aproximar un número decimal aumentando en una unidad la cifra del orden pedido, para obtener
-  un valor mayor o igual al original.
-introduccion: Aproximar por exceso significa quedarse con el valor inmediatamente mayor o igual al número
-  original en el orden decimal indicado.
-resumen: Aproximar un número por exceso a un cierto orden consiste en aumentar en una unidad la última
-  cifra conservada de ese orden y eliminar las cifras siguientes.
-explicacion: '### Definición formal
+resumen_inicial: "La aproximación por exceso consiste en elegir un número con la cantidad de decimales deseada que sea estrictamente mayor o igual al valor real, incrementando en 1 la cifra del orden solicitado."
+explicacion_simple: |
+  Aproximar por **exceso** a cierto orden decimal (por ejemplo a las centésimas) significa reemplazar el número original por otro de menos decimales, pero **asegurándote de que el resultado sea mayor o igual que el número real**. Para lograrlo en números positivos con decimales no nulos eliminados, simplemente sumas $1$ a la última cifra que conservas. Por ejemplo, la aproximación por exceso de $3.14159$ a las centésimas es $3.15$ (porque $3.15 > 3.14159$).
+explicacion_formal: |
+  Formalmente, dada la expansión decimal de $x \in \mathbb{R}$, la **aproximación por exceso al orden $10^m$** ($m \in \mathbb{Z}$) es el número $x_{\text{exc}} \in \{k \cdot 10^m \mid k \in \mathbb{Z}\}$ que satisface:
+  $$x_{\text{exc}} - 10^m < x \le x_{\text{exc}}$$
 
-
-  Aproximar \(x\) por exceso al orden \(10^{-n}\) da el menor múltiplo de \(10^{-n}\) que es mayor o igual
-  a \(x\); si \(x\) no es ya un múltiplo exacto, se suma \(10^{-n}\) a la aproximación por defecto.
-
-
-  ### Desarrollo didáctico
-
-
-  Aproximar por exceso \(5.72\) a la décima: la aproximación por defecto sería \(5.7\); como \(5.72\)
-  no es múltiplo exacto de una décima, se suma una décima más, dando \(5.8\).'
+  Propiedad del error absoluto por exceso:
+  $$E_{\text{exc}} = x_{\text{exc}} - x \ge 0, \quad \text{con } 0 \le E_{\text{exc}} < 10^m$$
+definiciones_clave: |
+  - **Aproximación por exceso ($x_{\text{exc}}$)**: Estimación acotada superiormente que satisface $x_{\text{exc}} \ge x$.
+  - **Incremento de orden**: Suma de $+1$ en la posición del orden solicitado cuando existen dígitos no nulos a la derecha.
+  - **Cota superior en la recta numérica**: Ubicación posicional de $x_{\text{exc}}$ a la derecha o sobre el número exacto $x$.
+propiedades_relaciones: |
+  - **Relación con la aproximación por defecto**: $x_{\text{exc}} = x_{\text{def}} + 10^m$ si las cifras eliminadas contienen al menos un dígito no nulo.
+  - **Encuadramiento del valor real**: Todo número real no exacto al orden $10^m$ queda acotado entre su defecto y su exceso: $x_{\text{def}} < x < x_{\text{exc}}$.
+  - **Comportamiento en negativos**: Para $x < 0$, aproximar por exceso consiste en cortar las cifras sobrantes (coincidiendo con el truncamiento en negativos), garantizando $x_{\text{exc}} \ge x$.
+ejemplo_guiado:
+  enunciado: "Calcula la aproximación por exceso a las décimas y a las centésimas del número $d = 4.216$."
+  pasos:
+    - "Identificar posiciones: $4$ (entero), $2$ (décimas), $1$ (centésimas), $6$ (milésimas)."
+    - "Aproximación a las décimas ($10^{-1}$): sumar $+1$ a la décima $2 \\implies 4.3$."
+    - 'Verificar cota superior: $4.3 \ge 4.216$ (cumplido, $4.3 > 4.216$).'
+    - "Aproximación a las centésimas ($10^{-2}$): sumar $+1$ a la centésima $1 \\implies 4.22$."
+    - 'Verificar cota superior: $4.22 \ge 4.216$ (cumplido, $4.22 > 4.216$).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué relación de orden se cumple siempre entre un número real $x$ y su aproximación por exceso $x_{\\text{exc}}$?"
+    choices:
+      - {text: "$x_{\\text{exc}} \\ge x$", is_correct: true}
+      - {text: "$x_{\\text{exc}} < x$", is_correct: false}
+      - {text: "$x_{\\text{exc}} = x - 10^m$", is_correct: false}
+      - {text: "$x_{\\text{exc}} = 0$ siempre", is_correct: false}
+    explanation: "La correcta es $x_{\\text{exc}} \\ge x$: la aproximación por exceso acota siempre al valor real desde arriba."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es la aproximación por exceso a las centésimas del número $1.732$?"
+    choices:
+      - {text: "1.74", is_correct: true}
+      - {text: "1.73", is_correct: false}
+      - {text: "1.70", is_correct: false}
+      - {text: "1.80", is_correct: false}
+    explanation: "La correcta es 1.74: sumando $+1$ a la centésima $3$ se obtiene el valor mayor o igual $1.74$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Ubica el orden al que debes aproximar.'
-- 'Paso 2: Si hay cifras posteriores no nulas, aumenta en una unidad la última cifra conservada.'
-- 'Paso 3: Comprueba que el resultado sea mayor o igual que el número original.'
+  - "Paso 1: Identificar el orden de aproximación solicitado (décimas, centésimas, milésimas, etc.)."
+  - "Paso 2: Observar las cifras a la derecha del orden solicitado."
+  - "Paso 3: Para números positivos, si existe al menos una cifra no nula eliminada, sumar $+1$ al dígito del orden solicitado y eliminar el resto a la derecha."
+  - 'Paso 4: Para números negativos, conservar el dígito del orden (cortar cifras sobrantes) para asegurar $x_{\text{exc}} \ge x$.'
+  - "Paso 5: Comprobar que el valor aproximado sea mayor o igual al número original."
+errores_correccion: |
+  Un error frecuente es confundir la aproximación por exceso con el redondeo y dejar la cifra igual si la siguiente es menor a 5 (por ejemplo para $3.121$ a centésimas, poner $3.12$). ¡Eso sería por defecto! **En la aproximación por exceso de positivos SIEMPRE se sube la cifra** ($3.13 > 3.121$).
 ejemplos:
-- titulo: Aplicación razonada — Aproximación por exceso
-  enunciado: Aproximar por exceso \(5.72\) a la décima da \(5.8\).
-  solucion_pasos:
-  - Ubica el orden al que debes aproximar.
-  - Si hay cifras posteriores no nulas, aumenta en una unidad la última cifra conservada.
-  - Comprueba que el resultado sea mayor o igual que el número original.
-- titulo: Revisión de una solución — Aproximación por exceso
-  enunciado: Una solución aplica “Si hay cifras posteriores no nulas, aumenta en una unidad la última
-    cifra conservada.”, pero termina sin comprobar que la aproximación por exceso nunca queda por debajo
-    del valor original. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define aproximación por exceso: una aproximación por exceso es un valor
-    mayor o igual que el número original.'
-  - Ubica el orden al que debes aproximar.
-  - 'Completa la revisión con este control: Comprueba que el resultado sea mayor o igual que el número
-    original.'
-- titulo: ¿Se cumple que la aproximación por exceso nunca queda por debajo del valor original? — Aproximación
-    por exceso
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que una aproximación por exceso es un valor mayor o igual que
-    el número original.
-  - El caso “Aproximar por exceso \(5.72\) a la décima da \(5.8\)” satisface esa condición.
-  - Comprueba que el resultado sea mayor o igual que el número original.
-- titulo: ¿Es válido omitir el paso “Ubica el orden al que debes aproximar”? — Aproximación por exceso
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de aproximación por exceso.
-  - 'Omitirlo puede volver inválida la acción siguiente: Si hay cifras posteriores no nulas, aumenta en
-    una unidad la última cifra conservada.'
-  - 'La solución debe terminar de este modo: Comprueba que el resultado sea mayor o igual que el número
-    original.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Aproxima por exceso a las décimas el número $6.11$."
+    alternativas:
+      - "6.2"
+      - "6.1"
+      - "6.0"
+    respuesta: "6.2"
+    solucion_pasos:
+      - "Décima: $1$."
+      - "Sumar $+1$ a la décima: $6.2$."
+      - 'Verificación: $6.2 \ge 6.11$.'
+  - titulo: "Ejemplo 2"
+    enunciado: "¿Cuál es la aproximación por exceso a las unidades de $8.01$?"
+    alternativas:
+      - "9"
+      - "8"
+      - "8.1"
+    respuesta: "9"
+    solucion_pasos:
+      - "Unidad: $8$."
+      - "Como hay decimales no nulos ($01$), sumamos $+1$ a la unidad $\\implies 9$."
+      - "Verificación: $9 > 8.01$."
+  - titulo: "¿Se modifica la aproximación por exceso de un número que ya es exacto al orden solicitado (como $4.50$ a centésimas)?"
+    respuesta: "No, se mantiene igual."
+    solucion_pasos:
+      - 'Como las cifras eliminadas son cero, $4.50 \ge 4.50$, la aproximación por exceso de $4.50$ es $4.50$.'
+  - titulo: "¿Es $x_{\\text{exc}} - x_{\\text{def}} = 10^m$ para todo número no exacto al orden $10^m$?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, la diferencia entre el exceso y el defecto a un mismo orden siempre equivale a 1 unidad de ese orden."
 errores_frecuentes:
-- 'Empezar aproximación por exceso sin realizar este control inicial: Ubica el orden al que debes aproximar.'
-- Memorizar “Aproximar por exceso \(5.72\) a la décima da \(5.8\)” como respuesta aislada, sin reconstruir
-  la definición que lo justifica.
-- Convertir en receta el paso “Si hay cifras posteriores no nulas, aumenta en una unidad la última cifra
-  conservada.” y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre aproximación por exceso que contradice el criterio “La aproximación
-  por exceso nunca queda por debajo del valor original”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Comprueba que el resultado sea mayor o igual
-  que el número original.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Dejar la cifra igual cuando el siguiente dígito es menor que 5 (aplicar redondeo en vez de exceso)."
+  - "Restar en lugar de sumar $+1$ al aproximar números positivos por exceso."
+  - "Confundir el exceso en números negativos con el defecto."
+  - "Modificar la cifra cuando todas las cifras eliminadas a la derecha son exactamente cero."
+  - "Confundir la aproximación por exceso con la aproximación por defecto."
+afirmaciones_verdaderas:
+  - "La aproximación por exceso asigna un valor aproximado mayor o igual al número original."
+  - "Para números positivos no exactos, la aproximación por exceso incrementa en 1 la cifra del orden solicitado."
+al_terminar_debes_ponder: |
+  Debes ser capaz de calcular aproximaciones por exceso a cualquier orden decimal acotando superiormente valores numéricos en la recta.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

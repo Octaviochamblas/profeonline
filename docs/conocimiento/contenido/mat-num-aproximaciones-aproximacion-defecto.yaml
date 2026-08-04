@@ -1,71 +1,95 @@
 semantic_id: MAT.NUM.APROXIMACIONES.APROXIMACION_DEFECTO
-titulo: Aproximación por defecto
-objetivo: Aproximar un número decimal descartando las cifras posteriores al orden pedido, sin aumentar
-  la cifra retenida.
-introduccion: Aproximar por defecto significa quedarse con el valor inmediatamente menor o igual al número
-  original en el orden decimal indicado, ignorando simplemente lo que sigue.
-resumen: Aproximar un número por defecto a un cierto orden consiste en eliminar las cifras siguientes
-  a ese orden sin modificar la última cifra conservada.
-explicacion: '### Definición formal
+resumen_inicial: "La aproximación por defecto consiste en elegir un número con la cantidad de decimales deseada que sea menor o igual al valor real, conservando la cifra del orden solicitado."
+explicacion_simple: |
+  Aproximar por **defecto** a cierto orden decimal (por ejemplo a las centésimas) significa reemplazar el número original por otro más simple de menos decimales, pero **asegurándote de que el resultado sea menor o igual que el número real**. Para números positivos, la aproximación por defecto a una posición dada se obtiene simplemente cortando o eliminando todas las cifras que están después de esa posición (coincidiendo con el truncamiento). Por ejemplo, la aproximación por defecto de $3.14159$ a las centésimas es $3.14$.
+explicacion_formal: |
+  Formalmente, dada la representación decimal de un número real $x = \sum_{k=-\infty}^{N} a_k \cdot 10^k$, la **aproximación por defecto al orden $10^m$** ($m \in \mathbb{Z}$) es el número $x_{\text{def}} \in \{k \cdot 10^m \mid k \in \mathbb{Z}\}$ que satisface:
+  $$x_{\text{def}} \le x < x_{\text{def}} + 10^m$$
 
-
-  Aproximar \(x\) por defecto al orden \(10^{-n}\) da el mayor múltiplo de \(10^{-n}\) que es menor o
-  igual a \(x\), es decir, se conservan las primeras \(n\) cifras decimales sin alterarlas.
-
-
-  ### Desarrollo didáctico
-
-
-  Aproximar por defecto \(5.78\) a la décima: se conserva la cifra de las décimas (7) sin cambios y se
-  descarta el resto, obteniendo \(5.7\).'
+  Propiedad del error absoluto por defecto:
+  $$E_{\text{def}} = x - x_{\text{def}} \ge 0, \quad \text{con } 0 \le E_{\text{def}} < 10^m$$
+definiciones_clave: |
+  - **Aproximación por defecto ($x_{\text{def}}$)**: Estimación acotada inferiormente que satisface $x_{\text{def}} \le x$.
+  - **Orden de aproximación ($10^m$)**: Nivel de precisión posicional elegido (unidades $10^0$, décimas $10^{-1}$, centésimas $10^{-2}$, etc.).
+  - **Error por defecto ($x - x_{\text{def}}$)**: Diferencia no negativa entre el valor exacto y el valor aproximado por defecto.
+propiedades_relaciones: |
+  - **Coincidencia con truncamiento para números positivos**: Si $x > 0$, la aproximación por defecto a $10^m$ coincide exactamente con el truncamiento a dicho orden.
+  - **Comportamiento en negativos**: Para $x < 0$, aproximar por defecto exige disminuir la cifra del orden solicitado o ir hacia la izquierda en la recta numérica (por ejemplo, la aproximación por defecto a décimas de $-2.31$ es $-2.4$).
+  - **Cota inferior en la recta numérica**: $x_{\text{def}}$ se ubica a la izquierda o en la misma posición que $x$ sobre la recta.
+ejemplo_guiado:
+  enunciado: "Encuentra la aproximación por defecto a las décimas y a las centésimas del número $d = 5.874$."
+  pasos:
+    - "Identificar las posiciones decimales: $5$ (unidades), $8$ (décimas), $7$ (centésimas), $4$ (milésimas)."
+    - "Aproximación a las décimas ($10^{-1}$): conservar hasta la décima $8$ y acotar por abajo $\\implies 5.8$."
+    - "Aproximación a las centésimas ($10^{-2}$): conservar hasta la centésima $7$ y acotar por abajo $\\implies 5.87$."
+    - 'Verificar cota inferior: $5.8 \le 5.874$ y $5.87 \le 5.874$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué relación de orden se cumple siempre entre un número real $x$ y su aproximación por defecto $x_{\\text{def}}$?"
+    choices:
+      - {text: "$x_{\\text{def}} \\le x$", is_correct: true}
+      - {text: "$x_{\\text{def}} > x$", is_correct: false}
+      - {text: "$x_{\\text{def}} = x + 10^m$", is_correct: false}
+      - {text: "$x_{\\text{def}} < 0$ siempre", is_correct: false}
+    explanation: "La correcta es $x_{\\text{def}} \\le x$: por definición, la aproximación por defecto acota al valor exacto desde abajo."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es la aproximación por defecto a las centésimas del número $4.9281$?"
+    choices:
+      - {text: "4.92", is_correct: true}
+      - {text: "4.93", is_correct: false}
+      - {text: "4.90", is_correct: false}
+      - {text: "4.9", is_correct: false}
+    explanation: "La correcta es 4.92: conservando hasta la centésima $2$ sin aumentar, se obtiene el valor menor o igual $4.92$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Elige el orden decimal solicitado y conserva las cifras anteriores.'
-- 'Paso 2: Descarta las cifras posteriores sin aumentar la última conservada.'
-- 'Paso 3: Comprueba que la aproximación sea menor o igual que el valor original.'
+  - "Paso 1: Identificar el orden posicional solicitado para la aproximación (unidades, décimas, centésimas, etc.)."
+  - "Paso 2: Localizar el dígito ubicado en la posición del orden solicitado."
+  - "Paso 3: Para números positivos, mantener ese dígito y eliminar todas las cifras situadas a su derecha."
+  - 'Paso 4: Para números negativos, si hay cifras no nulas eliminadas a la derecha, restar $1$ al dígito del orden para asegurar que $x_{\text{def}} \le x$.'
+  - "Paso 5: Comprobar que el valor obtenido sea menor o igual al número original."
+errores_correccion: |
+  Un error clásico es aplicar las reglas del redondeo (subir la cifra si la siguiente es mayor a 5) al pedir aproxima por defecto. **En la aproximación por defecto NO se sube la cifra**, siempre se busca el valor acotado por abajo ($x_{\text{def}} \le x$).
 ejemplos:
-- titulo: Aplicación razonada — Aproximación por defecto
-  enunciado: Aproximar por defecto \(5.78\) a la décima da \(5.7\).
-  solucion_pasos:
-  - Elige el orden decimal solicitado y conserva las cifras anteriores.
-  - Descarta las cifras posteriores sin aumentar la última conservada.
-  - Comprueba que la aproximación sea menor o igual que el valor original.
-- titulo: Revisión de una solución — Aproximación por defecto
-  enunciado: Una solución aplica “Descarta las cifras posteriores sin aumentar la última conservada.”,
-    pero termina sin comprobar que la aproximación por defecto nunca supera el valor original. Determina
-    qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define aproximación por defecto: una aproximación por defecto es un valor
-    menor o igual que el número original.'
-  - Elige el orden decimal solicitado y conserva las cifras anteriores.
-  - 'Completa la revisión con este control: Comprueba que la aproximación sea menor o igual que el valor
-    original.'
-- titulo: ¿Se cumple que la aproximación por defecto nunca supera el valor original? — Aproximación por
-    defecto
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que una aproximación por defecto es un valor menor o igual
-    que el número original.
-  - El caso “Aproximar por defecto \(5.78\) a la décima da \(5.7\)” satisface esa condición.
-  - Comprueba que la aproximación sea menor o igual que el valor original.
-- titulo: ¿Es válido omitir el paso “Elige el orden decimal solicitado y conserva las cifras anteriores”?
-    — Aproximación por defecto
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de aproximación por defecto.
-  - 'Omitirlo puede volver inválida la acción siguiente: Descarta las cifras posteriores sin aumentar
-    la última conservada.'
-  - 'La solución debe terminar de este modo: Comprueba que la aproximación sea menor o igual que el valor
-    original.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Aproxima por defecto a las décimas el número $12.49$."
+    alternativas:
+      - "12.4"
+      - "12.5"
+      - "12.0"
+    respuesta: "12.4"
+    solucion_pasos:
+      - "Identificar décima: $4$."
+      - "Acotar por defecto a décimas: $12.4$."
+      - 'Verificación: $12.4 \le 12.49$.'
+  - titulo: "Ejemplo 2"
+    enunciado: "¿Cuál es la aproximación por defecto a las unidades de $7.89$?"
+    alternativas:
+      - "7"
+      - "8"
+      - "7.8"
+    respuesta: "7"
+    solucion_pasos:
+      - "Unidad: $7$."
+      - 'Valor acotado por abajo en enteros: $7$ ($7 \le 7.89$).'
+  - titulo: "¿Coincide la aproximación por defecto con el truncamiento para todo número positivo?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, para números positivos cortar las cifras sobrantes siempre produce un número menor o igual."
+  - titulo: "¿La aproximación por defecto a décimas de $-1.52$ es $-1.5$?"
+    respuesta: "No, es -1.6"
+    solucion_pasos:
+      - 'No, porque $-1.5 > -1.52$. Para que sea por defecto debe ser menor o igual, dando $-1.6$ ($-1.6 \le -1.52$).'
 errores_frecuentes:
-- 'Empezar aproximación por defecto sin realizar este control inicial: Elige el orden decimal solicitado
-  y conserva las cifras anteriores.'
-- Memorizar “Aproximar por defecto \(5.78\) a la décima da \(5.7\)” como respuesta aislada, sin reconstruir
-  la definición que lo justifica.
-- Convertir en receta el paso “Descarta las cifras posteriores sin aumentar la última conservada.” y usarlo
-  aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre aproximación por defecto que contradice el criterio “La aproximación
-  por defecto nunca supera el valor original”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Comprueba que la aproximación sea menor o igual
-  que el valor original.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Redondear hacia arriba cuando la cifra siguiente es 5 o mayor en lugar de acotar por abajo."
+  - "Confundir el comportamiento de la aproximación por defecto en números negativos."
+  - "Modificar la cifra del orden solicitado en números positivos en lugar de conservarla."
+  - "Olvidar especificar el orden posicional de aproximación."
+  - "Confundir aproximación por defecto con aproximación por exceso."
+afirmaciones_verdaderas:
+  - "La aproximación por defecto asigna un número aproximado menor o igual al valor real."
+  - "Para números positivos, la aproximación por defecto coincide con el truncamiento."
+al_terminar_debes_ponder: |
+  Debes ser capaz de acotar e inferir aproximaciones por defecto a cualquier orden decimal tanto en números positivos como negativos.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

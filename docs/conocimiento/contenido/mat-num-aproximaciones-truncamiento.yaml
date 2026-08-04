@@ -1,69 +1,96 @@
 semantic_id: MAT.NUM.APROXIMACIONES.TRUNCAMIENTO
-titulo: Truncamiento de números decimales
-objetivo: Aproximar un número decimal eliminando directamente las cifras posteriores al orden pedido,
-  sin aplicar ningún criterio de redondeo.
-introduccion: 'El truncamiento es la forma más simple de aproximar: se cortan las cifras sobrantes sin
-  observar su valor, a diferencia del redondeo, que sí decide según la cifra siguiente.'
-resumen: Truncar un número a un cierto orden consiste en eliminar todas las cifras posteriores a ese orden,
-  sin modificar la última cifra conservada, sin importar su valor.
-explicacion: '### Definición formal
+resumen_inicial: "El truncamiento es el método de aproximación que consiste en 'cortar' o eliminar directamente todas las cifras decimales a la derecha del orden solicitado sin modificar la cifra retenida."
+explicacion_simple: |
+  El **truncamiento** es la forma más fácil y rápida de aproximar un número. Imagina que tienes una tijera y **cortas de golpe el número en la posición deseada**, desechando por completo todo lo que está a la derecha sin mirar qué números eran. Por ejemplo, si quieres truncar $3.14159$ a las centésimas, ubicas la centésima ($4$), cortas todo lo demás y te queda $3.14$. ¡No importa si el número que seguía era un 9, un 8 o un 5; en el truncamiento nunca se suma nada!
+explicacion_formal: |
+  Formalmente, dada la representación decimal de $x = \sum_{k=-\infty}^{N} a_k \cdot 10^k$, el **truncamiento al orden $10^m$** ($m \in \mathbb{Z}$) se define mediante la función piso parcial $\text{trunc}_m(x)$:
+  $$\text{trunc}_m(x) = 10^m \cdot \lfloor x \cdot 10^{-m} \rfloor \quad (\text{para } x \ge 0)$$
 
-
-  Truncar \(x\) al orden \(10^{-n}\) da el mismo resultado que aproximar por defecto: se conservan las
-  primeras \(n\) cifras decimales y se descartan las siguientes, sin evaluar su magnitud.
-
-
-  ### Desarrollo didáctico
-
-
-  Truncar \(4.987\) a la décima: se conserva la cifra de las décimas (9) y se eliminan las cifras siguientes
-  (8 y 7) sin considerarlas, obteniendo \(4.9\), aunque el redondeo habría dado \(5.0\).'
+  Propiedad del corte de dígitos:
+  $$\text{trunc}_m(x) = \sum_{k=m}^{N} a_k \cdot 10^k$$
+  El operador elimina idénticamente los términos $\sum_{k=-\infty}^{m-1} a_k \cdot 10^k$ sin alterar la ponderación de los coeficientes $a_k$ con $k \ge m$.
+definiciones_clave: |
+  - **Operador de corte ($\text{trunc}_m$)**: Procedimiento directo de supresión de dígitos desde la posición $m-1$ hacia la derecha.
+  - **Invarianza de la cifra retenida**: La cifra $a_m$ preserva su valor original independientemente de los dígitos eliminados.
+  - **Simplificación algorítmica**: Método de aproximación con menor costo computacional al omitir comparaciones lógicas.
+propiedades_relaciones: |
+  - **Coincidencia con defecto para positivos**: Para todo $x \ge 0$, $\text{trunc}_m(x) = x_{\text{def}}$.
+  - **Diferencia con el redondeo**: En el truncamiento no existe la regla del 5 ni el incremento de cifras; el corte es mecánico.
+  - **Cota del error de truncamiento**: Para números positivos, el error de truncamiento satisface $0 \le x - \text{trunc}_m(x) < 10^m$.
+ejemplo_guiado:
+  enunciado: "Compara el truncamiento y el redondeo a las centésimas para el número $d = 2.7193$."
+  pasos:
+    - "Identificar la posición de las centésimas: $1$ (cifra en el orden $10^{-2}$)."
+    - "Aplicar truncamiento a las centésimas:"
+    - "   Cortar directamente tras el $1$: se eliminan $93$ $\\implies 2.71$."
+    - "Aplicar redondeo a las centésimas:"
+    - "   Cifra siguiente tras el $1$ es $9 \\ge 5 \\implies$ sumar $+1$ al $1 \\implies 2.72$."
+    - "Concluir: el truncamiento resulta $2.71$, mientras que el redondeo resulta $2.72$."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué ocurre con la cifra del orden posicional solicitado cuando se aplica el método de truncamiento?"
+    choices:
+      - {text: "Se mantiene intacta sin importar las cifras que están a su derecha.", is_correct: true}
+      - {text: "Se le suma 1 si la cifra siguiente es mayor a 5.", is_correct: false}
+      - {text: "Se convierte en cero.", is_correct: false}
+      - {text: "Se multiplica por 10.", is_correct: false}
+    explanation: "La correcta es Se mantiene intacta sin importar las cifras que están a su derecha.: el truncamiento es un corte mecánico sin evaluación del dígito subsiguiente."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es el truncamiento a las décimas del número $8.999$?"
+    choices:
+      - {text: "8.9", is_correct: true}
+      - {text: "9.0", is_correct: false}
+      - {text: "8.99", is_correct: false}
+      - {text: "8.0", is_correct: false}
+    explanation: "La correcta es 8.9: cortando todo lo que está a la derecha de la décima $9$ se obtiene mecánicamente $8.9$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Ubica la última posición decimal que se conservará.'
-- 'Paso 2: Elimina todas las cifras posteriores sin modificar la última conservada.'
-- 'Paso 3: Distingue el truncamiento del redondeo comparando ambos resultados.'
+  - "Paso 1: Localizar la cifra correspondiente al orden de aproximación solicitado."
+  - "Paso 2: Marcar una línea vertical de corte inmediatamente después de esa cifra."
+  - "Paso 3: Eliminar por completo todas las cifras decimales que quedan a la derecha de la línea de corte."
+  - "Paso 4: Escribir el número resultante manteniendo la parte entera y las cifras decimales no eliminadas sin realizar ningún cambio ni incremento."
+errores_correccion: |
+  Un error clásico es aplicar reglas de redondeo por inercia al pedir truncamiento (por ejemplo truncar $5.68$ a décimas y responder $5.7$). ¡No mires la cifra siguiente! **En el truncamiento SIMPLEMENTE CORTAS** ($5.68 \implies 5.6$).
 ejemplos:
-- titulo: Aplicación razonada — Aproximación por truncamiento
-  enunciado: Truncar \(4.987\) a la décima produce \(4.9\).
-  solucion_pasos:
-  - Ubica la última posición decimal que se conservará.
-  - Elimina todas las cifras posteriores sin modificar la última conservada.
-  - Distingue el truncamiento del redondeo comparando ambos resultados.
-- titulo: Revisión de una solución — Aproximación por truncamiento
-  enunciado: Una solución aplica “Elimina todas las cifras posteriores sin modificar la última conservada.”,
-    pero termina sin comprobar que el truncamiento no mira la cifra siguiente; simplemente elimina las
-    restantes. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define aproximación por truncamiento: truncar un número significa cortar
-    las cifras a partir de cierto orden sin redondear.'
-  - Ubica la última posición decimal que se conservará.
-  - 'Completa la revisión con este control: Distingue el truncamiento del redondeo comparando ambos resultados.'
-- titulo: ¿Se cumple que el truncamiento no mira la cifra siguiente; simplemente elimina las restantes?
-    — Aproximación por truncamiento
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que truncar un número significa cortar las cifras a partir
-    de cierto orden sin redondear.
-  - El caso “Truncar \(4.987\) a la décima produce \(4.9\)” satisface esa condición.
-  - Distingue el truncamiento del redondeo comparando ambos resultados.
-- titulo: ¿Es válido omitir el paso “Ubica la última posición decimal que se conservará”? — Aproximación
-    por truncamiento
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de aproximación por truncamiento.
-  - 'Omitirlo puede volver inválida la acción siguiente: Elimina todas las cifras posteriores sin modificar
-    la última conservada.'
-  - 'La solución debe terminar de este modo: Distingue el truncamiento del redondeo comparando ambos resultados.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Trunca a las centésimas el número $1.41421$."
+    alternativas:
+      - "1.41"
+      - "1.42"
+      - "1.40"
+    respuesta: "1.41"
+    solucion_pasos:
+      - "Centésima: $1$."
+      - "Cortar cifras posteriores a las centésimas: $1.41$."
+  - titulo: "Ejemplo 2"
+    enunciado: "¿Cuál es el truncamiento a las unidades del número $99.99$?"
+    alternativas:
+      - "99"
+      - "100"
+      - "99.9"
+    respuesta: "99"
+    solucion_pasos:
+      - "Unidad: $9$."
+      - "Cortar toda la parte decimal: $99$."
+  - titulo: "¿Puede el truncamiento de un número positivo ser mayor que el número original?"
+    respuesta: "No"
+    solucion_pasos:
+      - 'No, para números positivos $\text{trunc}_m(x) \le x$ siempre.'
+  - titulo: "¿Coinciden siempre el truncamiento y el redondeo si la primera cifra eliminada es un 2?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - "Sí, porque como $2 < 5$, el redondeo mantiene la cifra intacta exactamente igual que el truncamiento."
 errores_frecuentes:
-- 'Empezar aproximación por truncamiento sin realizar este control inicial: Ubica la última posición decimal
-  que se conservará.'
-- Memorizar “Truncar \(4.987\) a la décima produce \(4.9\)” como respuesta aislada, sin reconstruir la
-  definición que lo justifica.
-- Convertir en receta el paso “Elimina todas las cifras posteriores sin modificar la última conservada.”
-  y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre aproximación por truncamiento que contradice el criterio “El truncamiento
-  no mira la cifra siguiente; simplemente elimina las restantes”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Distingue el truncamiento del redondeo comparando
-  ambos resultados.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Sumar $+1$ a la cifra retenida al ver números altos (8 o 9) a la derecha (confundir con redondeo)."
+  - "Rellenar con ceros los espacios decimales cortados en lugar de eliminarlos."
+  - "Cortar en una posición posicional distinta a la solicitada."
+  - "Cambiar la parte entera al truncar."
+  - "Confundir truncamiento con aproximación por exceso."
+afirmaciones_verdaderas:
+  - "El truncamiento elimina todas las cifras decimales a la derecha del orden deseado sin modificar la última cifra retenida."
+  - "Para números positivos, el truncamiento equivale a la aproximación por defecto."
+al_terminar_debes_ponder: |
+  Debes ser capaz de aplicar truncamientos mecánicos a cualquier orden decimal distinguiéndolo claramente de los procedimientos de redondeo.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
