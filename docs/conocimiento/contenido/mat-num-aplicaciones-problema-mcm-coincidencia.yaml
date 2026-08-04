@@ -1,35 +1,65 @@
 semantic_id: MAT.NUM.APLICACIONES_MCM_MCD.PROBLEMA_MCM_COINCIDENCIA
-objetivo: Resolver problemas cotidianos que involucren situaciones de coincidencia o periodicidad mediante el cálculo del Mínimo Común Múltiplo (MCM).
-introduccion: |-
-  ¿Te has fijado en que las luces de emergencia o las alarmas a veces parpadean al mismo tiempo y luego se desfasan, para después volver a brillar juntas al cabo de unos segundos? O tal vez has tomado medicamentos que debes tomar cada 6 horas y otros cada 8 horas, y te preguntas: ¿cuándo me tocará tomarlos juntos otra vez?
-
-  Este tipo de preguntas sobre eventos que ocurren a diferentes ritmos y coinciden en el futuro se resuelven de forma exacta usando el **Mínimo Común Múltiplo (MCM)**.
-
-  El MCM nos permite calcular el menor tiempo o distancia en que dos o más eventos periódicos volverán a encontrarse en el mismo punto de partida. ¡Es súper útil para organizar horarios, rutas de transporte y música!
-resumen: Los problemas de coincidencia o periodicidad involucran eventos independientes que ocurren a intervalos regulares de tiempo, distancia o frecuencia. Se resuelven calculando el Mínimo Común Múltiplo (MCM) de dichos intervalos, el cual determina el menor valor en el que los eventos volverán a ocurrir al mismo tiempo.
-explicacion: |-
-  En los problemas de **coincidencia temporal o espacial**, tenemos elementos que repiten un ciclo de manera periódica.
-
-  Supongamos que un evento $A$ ocurre cada $t_A$ unidades de tiempo, y un evento $B$ ocurre cada $t_B$ unidades de tiempo. Si ambos eventos ocurren simultáneamente en el momento inicial ($t = 0$), las siguientes ocurrencias de cada uno serán:
-  - Evento $A$: $t_A, 2t_A, 3t_A, 4t_A, \dots$ (los múltiplos de $t_A$).
-  - Evento $B$: $t_B, 2t_B, 3t_B, 4t_B, \dots$ (los múltiplos de $t_B$).
-
-  Los instantes en que ambos eventos coinciden nuevamente corresponden a los múltiplos comunes de $t_A$ y $t_B$. La **primera coincidencia futura** (después de $t=0$) ocurrirá precisamente en el menor de estos múltiplos comunes, es decir, en el **Mínimo Común Múltiplo (MCM)** de los intervalos:
-  $$t_{\text{coincidencia}} = \text{MCM}(t_A, t_B)$$
-
-  **Palabras clave en los enunciados que sugieren el uso del MCM:**
-  - ¿Cuándo volverán a coincidir / encontrarse / partir juntos?
-  - Ocurre cada $x$ días, semanas, minutos...
-  - Eventos simultáneos repetitivos.
-  - La menor distancia / el menor tiempo posible para un reencuentro.
+resumen_inicial: "Los problemas de coincidencia entre eventos periódicos se resuelven calculando el Mínimo Común Múltiplo (MCM) de sus intervalos."
+explicacion_simple: |
+  ¿Te has fijado en que las luces de emergencia parpadean juntas y luego se desfasan, para
+  después volver a coincidir? O quizás tomas un medicamento cada 6 horas y otro cada 8
+  horas, y te preguntas cuándo coincidirán de nuevo. Este tipo de preguntas se resuelve de
+  forma exacta usando el Mínimo Común Múltiplo (MCM).
+explicacion_formal: |
+  Si un evento $A$ ocurre cada $t_A$ unidades y un evento $B$ cada $t_B$, y ambos coinciden
+  en $t=0$, sus siguientes ocurrencias son los múltiplos de $t_A$ y de $t_B$. La primera
+  coincidencia futura ocurre en el menor múltiplo común: $t_{\text{coincidencia}}
+  =\text{MCM}(t_A,t_B)$. Palabras clave: "¿cuándo volverán a coincidir?", "cada x días",
+  "el menor tiempo para un reencuentro".
+definiciones_clave: |
+  **Coincidencia periódica**: instante en que dos o más eventos que se repiten a
+  intervalos regulares vuelven a ocurrir simultáneamente; se calcula como el MCM de esos
+  intervalos.
+propiedades_relaciones: |
+  El resultado del MCM siempre es mayor o igual que los intervalos originales, nunca
+  menor: tiene sentido, porque la coincidencia ocurre después, no antes.
+ejemplo_guiado:
+  enunciado: "Dos alarmas suenan cada 10 y 15 minutos. Si sonaron juntas ahora, ¿en cuántos minutos volverán a sonar juntas?"
+  pasos:
+    - "Identificamos los intervalos: 10 y 15 minutos."
+    - "Calculamos $\\text{MCM}(10,15)$: descomponiendo, $10=2\\cdot5$, $15=3\\cdot5$, MCM$=2\\cdot3\\cdot5=30$."
+    - "Conclusión: volverán a sonar juntas en 30 minutos."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué operación se usa para resolver un problema de coincidencia de eventos periódicos?"
+    choices:
+      - {text: "El Mínimo Común Múltiplo de los intervalos", is_correct: true}
+      - {text: "El Máximo Común Divisor de los intervalos", is_correct: false}
+      - {text: "La suma de los intervalos", is_correct: false}
+      - {text: "El promedio de los intervalos", is_correct: false}
+    explanation: "La correcta es El Mínimo Común Múltiplo de los intervalos: la primera coincidencia futura ocurre en el menor múltiplo común."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Con el mismo procedimiento del ejemplo guiado, si dos buses salen cada 20 y 30 minutos, ¿en cuántos minutos volverán a salir juntos?"
+    choices:
+      - {text: "60", is_correct: true}
+      - {text: "10", is_correct: false}
+      - {text: "600", is_correct: false}
+      - {text: "No se puede saber", is_correct: false}
+    explanation: "La correcta es 60: $\\text{MCM}(20,30)=60$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
   - 'Paso 1: Identifica las magnitudes del problema y los intervalos de periodicidad o frecuencia de cada evento.'
   - 'Paso 2: Extrae los números correspondientes a estos intervalos regulares (por ejemplo, cada 4 días y cada 6 días).'
   - 'Paso 3: Calcula el Mínimo Común Múltiplo (MCM) de los números identificados.'
   - 'Paso 4: Interpreta el resultado del MCM en el contexto de la pregunta, sumándolo al momento inicial o respondiendo directamente la cantidad de unidades necesarias para la coincidencia.'
+errores_correccion: |
+  Un error frecuente es utilizar el MCD en lugar del MCM, obteniendo un número menor que
+  los intervalos individuales (sin sentido lógico para una coincidencia futura). Otro error
+  es sumar los intervalos en vez de calcular su mínimo común múltiplo.
 ejemplos:
   - titulo: Ejemplo 1
     enunciado: Dos buses salen del terminal. El bus A sale cada $12$ minutos y el bus B cada $18$ minutos. Si salieron juntos a las 08:00, ¿a qué hora volverán a salir juntos por primera vez?
+    alternativas:
+      - "08:36"
+      - "08:30"
+      - "09:12"
+    respuesta: "08:36"
     solucion_pasos:
       - 'Paso a: Identificamos los intervalos de tiempo: $12$ minutos y $18$ minutos.'
       - 'Paso b: Buscamos el MCM de $12$ y $18$. Descomponiendo: $12 = 2^2 \cdot 3^1$ y $18 = 2^1 \cdot 3^2$. El MCM es $2^2 \cdot 3^2 = 4 \cdot 9 = 36$ minutos.'
@@ -37,6 +67,11 @@ ejemplos:
       - 'Paso d: Concluimos que volverán a salir juntos a las 08:36.'
   - titulo: Ejemplo 2
     enunciado: Un faro emite una luz roja cada $8$ segundos y otra verde cada $12$ segundos. Si acaban de brillar juntas, ¿cuántos segundos pasarán para que coincidan de nuevo?
+    alternativas:
+      - "24"
+      - "20"
+      - "96"
+    respuesta: "24"
     solucion_pasos:
       - 'Paso a: Extraemos los intervalos de parpadeo: $8$ segundos y $12$ segundos.'
       - 'Paso b: Calculamos el MCM de $8$ y $12$. Los múltiplos de $8$ son $\{8, 16, 24, 32, \dots\}$. Los múltiplos de $12$ son $\{12, 24, 36, \dots\}$.'
@@ -61,5 +96,8 @@ errores_frecuentes:
   - No convertir adecuadamente las unidades de tiempo (por ejemplo, mezclar minutos con horas en el cálculo directo).
   - Olvidar sumar el intervalo del MCM a la hora inicial dada para responder con la hora exacta de la coincidencia.
   - Sumar los intervalos de tiempo ($12 + 18 = 30$) en vez de calcular el mínimo común múltiplo.
+al_terminar_debes_poder: |
+  Reconocer problemas de coincidencia periódica y resolverlos calculando el MCM de los
+  intervalos dados.
 fuente: Teoría de Números
 estado: publicado
