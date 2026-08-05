@@ -1,60 +1,90 @@
 semantic_id: MAT.NUM.IMAGINARIOS.POTENCIAS_DE_I
-titulo: Ciclo de potencias de la unidad imaginaria
-objetivo: Reducir cualquier potencia entera de \(i\).
-introduccion: Calcular una potencia enorme de \(i\) factor por factor sería inútil. La periodicidad convierte
-  el exponente en un problema de división con resto.
-resumen: 'Las potencias de \(i\) se repiten en un ciclo de cuatro: \(i,-1,-i,1\). El resto al dividir
-  el exponente por \(4\) determina el valo.'
-explicacion: 'Las potencias de \(i\) se repiten en un ciclo de cuatro: \(i,-1,-i,1\).
+resumen_inicial: 'Las potencias enteras de la unidad imaginaria $i^n$ siguen un ciclo
+  periódico de 4 valores: $i^1 = i$, $i^2 = -1$, $i^3 = -i$, $i^4 = 1$.'
+explicacion_simple: 'Las potencias de $i$ se repiten cada 4 pasos en un ciclo infinito:
 
+  1. $i^1 = i$
 
-  El cálculo “\(i^{23}=i^{4\cdot5+3}=i^3=-i\)” muestra por qué el resto al dividir el exponente por \(4\)
-  determina el valo'
+  2. $i^2 = -1$
+
+  3. $i^3 = -i$
+
+  4. $i^4 = 1$
+
+  Para calcular $i^n$ con un exponente grande (ejemplo $i^{23}$):
+
+  1. Divides el exponente $23$ por $4$.
+
+  2. Te fijas en el **resto** de la división ($23 = 4 \cdot 5 + 3 \implies \text{resto
+  } 3$).
+
+  3. El resultado es $i^3 = -i$.'
+explicacion_formal: Para todo $n \in \mathbb{N}_0$, se cumple $i^n = i^{r}$ donde
+  $r = n \bmod 4$ es el resto de la división de $n$ entre $4$ ($r \in \{0, 1, 2, 3\}$).
+  Se define $i^0 = 1$.
+definiciones_clave: '- **Ciclo de período 4**: Secuencia periódica $\{i, -1, -i, 1\}$
+  de las potencias de $i$.'
+propiedades_relaciones: '- **Criterio del resto**: $i^n$ depende exclusivamente del
+  resto de $n \div 4$.'
+ejemplo_guiado:
+  enunciado: Calcula el valor de $i^{105}$.
+  pasos:
+  - 'Dividir el exponente 105 entre 4: $105 = 4 \cdot 26 + 1$.'
+  - 'Identificar el resto de la división: $r = 1$.'
+  - Reemplazar $i^{105} = i^1$.
+  - Concluir que $i^{105} = i$.
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor de $i^{20}$?
+  choices:
+  - text: '1'
+    is_correct: true
+  - text: i
+    is_correct: false
+  - text: '-1'
+    is_correct: false
+  - text: -i
+    is_correct: false
+  explanation: 'La correcta es: 1. Como 20 es un múltiplo exacto de 4 (resto 0), $i^{20}
+    = i^0 = 1$.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Calcula $i^{15}$.
+  choices:
+  - text: -i
+    is_correct: true
+  - text: i
+    is_correct: false
+  - text: '-1'
+    is_correct: false
+  - text: '1'
+    is_correct: false
+  explanation: 'La correcta es: -i. $15 \div 4$ da resto $3 \implies i^{15} = i^3
+    = -i$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Divide el exponente por \(4\) y conserva el resto.'
-- 'Paso 2: Asocia los restos \(0,1,2,3\) con \(1,i,-1,-i\).'
-- 'Paso 3: Comprueba el signo recorriendo un ciclo cercano si existe duda.'
+- 'Paso 1: Dividir el exponente $n$ entre 4.'
+- 'Paso 2: Obtener el resto de la división $r \in \{0, 1, 2, 3\}$.'
+- 'Paso 3: Sustituir $i^n = i^r$.'
+- 'Paso 4: Evaluar según la tabla del ciclo: $i^0 = 1$, $i^1 = i$, $i^2 = -1$, $i^3
+  = -i$.'
+errores_correccion: Usa el resto de la división por 4, no el cociente. En $i^{14}$,
+  $14 \div 4 = 3$ con resto 2; el valor es $i^2 = -1$, no $i^3$.
 ejemplos:
-- titulo: Aplicación razonada — Ciclo de potencias de la unidad imaginaria
-  enunciado: \(i^{23}=i^{4\cdot5+3}=i^3=-i\).
+- titulo: Ejemplo 1
+  enunciado: Calcula $i^{42}$.
+  alternativas:
+  - '-1'
+  - '1'
+  - i
+  respuesta: '-1'
   solucion_pasos:
-  - Divide el exponente por \(4\) y conserva el resto.
-  - Asocia los restos \(0,1,2,3\) con \(1,i,-1,-i\).
-  - Comprueba el signo recorriendo un ciclo cercano si existe duda.
-- titulo: Revisión de una solución — Ciclo de potencias de la unidad imaginaria
-  enunciado: Una solución aplica “Asocia los restos \(0,1,2,3\) con \(1,i,-1,-i\).”, pero termina sin
-    comprobar que el resto al dividir el exponente por \(4\) determina el valo. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define ciclo de potencias de la unidad imaginaria: las potencias de \(i\)
-    se repiten en un ciclo de cuatro: \(i,-1,-i,1\).'
-  - Divide el exponente por \(4\) y conserva el resto.
-  - 'Completa la revisión con este control: Comprueba el signo recorriendo un ciclo cercano si existe
-    duda.'
-- titulo: ¿Se cumple que el resto al dividir el exponente por \(4\) determina el valo? — Ciclo de potencias
-    de la unidad imaginaria
-  respuesta: Sí
-  solucion_pasos:
-  - 'Sí. La definición pertinente establece que las potencias de \(i\) se repiten en un ciclo de cuatro:
-    \(i,-1,-i,1\).'
-  - El caso “\(i^{23}=i^{4\cdot5+3}=i^3=-i\)” satisface esa condición.
-  - Comprueba el signo recorriendo un ciclo cercano si existe duda.
-- titulo: ¿Es válido omitir el paso “Divide el exponente por \(4\) y conserva el resto”? — Ciclo de potencias
-    de la unidad imaginaria
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de ciclo de potencias de la unidad imaginaria.
-  - 'Omitirlo puede volver inválida la acción siguiente: Asocia los restos \(0,1,2,3\) con \(1,i,-1,-i\).'
-  - 'La solución debe terminar de este modo: Comprueba el signo recorriendo un ciclo cercano si existe
-    duda.'
+  - $42 = 4 \cdot 10 + 2 \implies \text{resto } 2 \implies i^2 = -1$.
 errores_frecuentes:
-- 'Confundir ciclo de potencias de la unidad imaginaria con otro concepto y omitir este inicio: Divide
-  el exponente por \(4\) y conserva el resto.'
-- Aplicar mecánicamente “Asocia los restos \(0,1,2,3\) con \(1,i,-1,-i\).” sin revisar las condiciones
-  de la definición.
-- Tomar “\(i^{23}=i^{4\cdot5+3}=i^3=-i\)” como una igualdad aislada, sin explicar por qué es válida.
-- Aceptar una respuesta que contradice la idea clave “el resto al dividir el exponente por \(4\) determina
-  el valo”.
-- 'Terminar el desarrollo sin realizar este control: Comprueba el signo recorriendo un ciclo cercano si
-  existe duda.'
-fuente: Currículum Nacional MINEDUC — Matemática, números reales, potencias, raíces, logaritmos y complejos.
+- Usar el cociente de la división en lugar del resto.
+afirmaciones_verdaderas:
+- $i^n = i^{n \bmod 4}$.
+al_terminar_debes_ponder: Calcular cualquier potencia entera de $i$ reduciendo el
+  exponente módulo 4.
+fuente: Texto escolar MINEDUC.
 estado: publicado
