@@ -59,6 +59,18 @@ ejemplo_guiado:
     - "Paso 1 del razonamiento, con el cálculo explícito."
     - "Paso 2."
     - "Conclusión con el resultado final."
+# ⚠️ REGLA DURA (agregada 2026-08-05 tras auditoría — ver
+# docs/auditorias/2026-08-05-auditoria-contenido-12-secciones.md): `enunciado` debe
+# traer datos propios (números, coeficientes o una expresión concreta) que el
+# alumno pueda seguir resolviendo. NUNCA describir el problema pegando el nombre
+# del recurso en una frase molde ni reusar los mismos 4 `pasos` genéricos
+# ("Identificar los datos...", "Aplicar la regla...", "Efectuar las
+# operaciones...", "Verificar...") de un recurso a otro solo cambiando el título.
+# Ejemplo MALO real (rechazar): enunciado "Simplifica o resuelve la expresión
+# aplicando concepto de m.c.d. algebraico." — no hay expresión que resolver.
+# Ejemplo BUENO real: enunciado "En un curso hay 15 hombres y 20 mujeres. Escribe
+# la razón entre la cantidad de hombres y mujeres en su forma simplificada." con
+# pasos que operan esos números concretos.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre lo explicado arriba."
@@ -122,7 +134,7 @@ estado: publicado    # o borrador
 | `explicacion_formal` | Sí | Markdown + LaTeX. Definición precisa y por qué funciona. |
 | `definiciones_clave` | Sí | Términos nuevos en **negrita** con su definición. |
 | `propiedades_relaciones` | Sí | Cómo se conecta con otros conceptos ya vistos. |
-| `ejemplo_guiado` | Sí | Objeto `{enunciado, pasos}`. Un solo problema resuelto paso a paso. |
+| `ejemplo_guiado` | Sí | Objeto `{enunciado, pasos}`. Un solo problema resuelto paso a paso **con datos concretos** (números/expresión propios del enunciado, no el nombre del recurso repetido en una frase molde — ver regla dura junto al YAML de ejemplo arriba). |
 | `checkpoints` | Sí | **Exactamente 2** (`after_explicacion_formal` y `after_ejemplo_guiado`), 4 alternativas cada uno, 1 sola correcta, `explanation` debe mencionar el texto exacto de la correcta. Validado por `node_checkpoint_service.normalize_node_checkpoints`; si es inválido, `load_node_content` rechaza el archivo completo. |
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. |
 | `errores_correccion` | Sí | Texto breve sobre 1-2 errores típicos. No sustituye `errores_frecuentes`. |
@@ -302,6 +314,10 @@ del banco. Un recurso sin JSONL se puede leer, pero no se puede "ganar" en él.
 - [ ] `semantic_id` existe en la DB (`KnowledgeNode`)
 - [ ] YAML tiene los 12 campos obligatorios completos (ver tabla arriba)
 - [ ] `explicacion_simple` usa lenguaje simple (sin jerga, analogía concreta)
+- [ ] `ejemplo_guiado.enunciado` trae datos concretos (números/expresión propios), no es una
+      frase genérica con el nombre del recurso pegado — ni repite los mismos 4 `pasos` molde de
+      otro recurso del mismo sub-tema
+- [ ] `al_terminar_debes_poder` no está vacío (1-2 frases con la meta de aprendizaje)
 - [ ] `checkpoints`: exactamente 2 (`after_explicacion_formal`, `after_ejemplo_guiado`), 4 alternativas c/u, 1 sola correcta, `explanation` menciona el texto de la correcta
 - [ ] `ejemplos`: mínimo 2 Tipo A + 2 Tipo B (al final)
 - [ ] `errores_frecuentes`: exactamente 5 afirmaciones falsas
