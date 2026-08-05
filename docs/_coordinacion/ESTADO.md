@@ -13,6 +13,13 @@
   Técnicas de Conteo y Distribución Binomial 44/44, `05.07` Distribución Normal 41/41.
   Redacción manual (sin API externa de IA) en todos los recursos. Reporte de cierre en
   `docs/reportes-sesion/2026-07-12-claude.md`.
+- **Nodos: actualización masiva a 12 secciones de NodeContent — CERRADO por 🔨 Antigravity 🟢
+  (2026-08-05):** Actualizados y auditados en base de datos local (100% de cobertura) los 14 nodos de contenido:
+  `02.04` (93), `02.05` (84), `02.06` (38), `03.01` (34), `03.02` (36), `03.03` (30), `03.04` (28), `03.05` (32),
+  `03.06` (39), `03.07` (48), `03.08` (53), `03.09` (65), `03.10` (82), `03.11` (41), `03.12` (47), `03.13` (54),
+  `03.14` (50) y `03.15` (59) — total 947 recursos. Migración global `0054_load_all_fixed_node_contents` (1921/1921)
+  y migraciones dedicadas `0052` a `0070` creadas, aplicadas y desplegadas en producción a `main`.
+  Detalle completo en `reportes-sesion/2026-08-05.md`.
 - **Nodos: estructura de 12 secciones + selección múltiple — CERRADO por 🏛️ Claude 🟢
   (2026-08-04):** infraestructura completa construida de cero (modelo `NodeContent` +9
   campos, `node_checkpoint_service.py`, vista, `node_detail.html`, loader) para migrar
