@@ -1,62 +1,86 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.DIVISION
-titulo: División de números en notación científica
-objetivo: Dividir números en notación científica.
-introduccion: En una división, la escala del divisor se resta de la del dividendo. Esta operación evita
-  desplegar números enormes antes de simplificarlos.
-resumen: Para dividir notación científica se dividen coeficientes y se restan exponentes. La normalización
-  final conserva un coeficiente de valor absoluto entre \(1\) y \(10\).
-explicacion: 'Para dividir notación científica se dividen coeficientes y se restan exponentes.
+resumen_inicial: Para dividir números en notación científica, se dividen los coeficientes
+  entre sí y se restan los exponentes de las potencias de 10 ($(a \cdot 10^m) \div
+  (b \cdot 10^n) = (a \div b) \cdot 10^{m-n}$), normalizando el resultado.
+explicacion_simple: 'Para dividir dos números en notación científica:
 
+  1. Divides el primer coeficiente por el segundo.
 
-  El cálculo “\((9\times10^7)/(3\times10^2)=3\times10^5\)” muestra por qué la normalización final conserva
-  un coeficiente de valor absoluto entre \(1\) y \(10\)'
+  2. Restas el exponente de abajo al de arriba.
+
+  3. Si el coeficiente queda menor a 1 (ej: $0{,}4$), corres la coma un lugar a la
+  derecha y restas 1 al exponente final.
+
+  Ejemplo: $\frac{8 \cdot 10^7}{2 \cdot 10^3} = (8 \div 2) \cdot 10^{7-3} = 4 \cdot
+  10^4$.'
+explicacion_formal: 'Dados $x = a \cdot 10^m$ y $y = b \cdot 10^n$ con $y \neq 0$,
+  su cociente es:
+
+  $$\frac{x}{y} = \left(\frac{a}{b}\right) \cdot 10^{m-n}$$
+
+  Si $\left|\frac{a}{b}\right| < 1$, se reescribe $\frac{a}{b} = c \cdot 10^{-1}$
+  con $1 \le |c| < 10$, dando $c \cdot 10^{m-n-1}$.'
+definiciones_clave: '- **División de coeficientes**: $\frac{a}{b}$ como mantisa primaria
+  del cociente.'
+propiedades_relaciones: '- **Resta de exponentes**: $m - n$ como exponente de la potencia
+  de 10.'
+ejemplo_guiado:
+  enunciado: Calcula $\frac{9 \cdot 10^8}{3 \cdot 10^2}$.
+  pasos:
+  - 'Dividir los coeficientes: $9 \div 3 = 3$.'
+  - 'Restar los exponentes: $8 - 2 = 6$.'
+  - 'Verificar normalización: $3$ está entre 1 y 10.'
+  - 'Escribir el resultado: $3 \cdot 10^6$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es el resultado de dividir $(8 \cdot 10^9) \div (4 \cdot 10^3)$?
+  choices:
+  - text: 2 · 10^6
+    is_correct: true
+  - text: 2 · 10^3
+    is_correct: false
+  - text: 4 · 10^6
+    is_correct: false
+  - text: 2 · 10^{12}
+    is_correct: false
+  explanation: 'La correcta es: 2 · 10^6. $8 \div 4 = 2$ y $9 - 3 = 6$.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Calcula $(1,2 \cdot 10^5) \div (3 \cdot 10^2)$.
+  choices:
+  - text: 4 · 10^2
+    is_correct: true
+  - text: 0,4 · 10^3
+    is_correct: false
+  - text: 4 · 10^3
+    is_correct: false
+  - text: 0,4 · 10^2
+    is_correct: false
+  explanation: 'La correcta es: 4 · 10^2. $1{,}2 \div 3 = 0{,}4$, luego $0{,}4 \cdot
+    10^3 = 4 \cdot 10^2$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Divide los coeficientes comprobando que el divisor no sea cero.'
-- 'Paso 2: Resta el exponente del divisor al del dividendo.'
-- 'Paso 3: Normaliza el coeficiente y verifica el orden mediante una estimación.'
+- 'Paso 1: Dividir el coeficiente del numerador entre el del denominador.'
+- 'Paso 2: Restar el exponente del denominador al del numerador.'
+- 'Paso 3: Si el coeficiente es menor que 1, ajustar corriendo la coma a la derecha
+  y restando 1 al exponente.'
+- 'Paso 4: Expresar el resultado normalizado.'
+errores_correccion: Si la división de coeficientes da menor que 1 (como $0{,}2$),
+  no lo dejes así. Transforma $0{,}2 \cdot 10^5$ a $2 \cdot 10^4$.
 ejemplos:
-- titulo: Aplicación razonada — División de números en notación científica
-  enunciado: \((9\times10^7)/(3\times10^2)=3\times10^5\).
+- titulo: Ejemplo 1
+  enunciado: Calcula $\frac{6 \cdot 10^4}{2 \cdot 10^{-2}}$.
+  alternativas:
+  - 3 · 10^6
+  - 3 · 10^2
+  - 3 · 10^{-8}
+  respuesta: 3 · 10^6
   solucion_pasos:
-  - Divide los coeficientes comprobando que el divisor no sea cero.
-  - Resta el exponente del divisor al del dividendo.
-  - Normaliza el coeficiente y verifica el orden mediante una estimación.
-- titulo: Revisión de una solución — División de números en notación científica
-  enunciado: Una solución aplica “Resta el exponente del divisor al del dividendo.”, pero termina sin
-    comprobar que la normalización final conserva un coeficiente de valor absoluto entre \(1\) y \(10\).
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define división de números en notación científica: para dividir notación
-    científica se dividen coeficientes y se restan exponentes.'
-  - Divide los coeficientes comprobando que el divisor no sea cero.
-  - 'Completa la revisión con este control: Normaliza el coeficiente y verifica el orden mediante una
-    estimación.'
-- titulo: ¿Se cumple que la normalización final conserva un coeficiente de valor absoluto entre \(1\)
-    y \(10\)? — División de números en notación científica
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que para dividir notación científica se dividen coeficientes
-    y se restan exponentes.
-  - El caso “\((9\times10^7)/(3\times10^2)=3\times10^5\)” satisface esa condición.
-  - Normaliza el coeficiente y verifica el orden mediante una estimación.
-- titulo: ¿Es válido omitir el paso “Divide los coeficientes comprobando que el divisor no sea cero”?
-    — División de números en notación científica
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de división de números en notación científica.
-  - 'Omitirlo puede volver inválida la acción siguiente: Resta el exponente del divisor al del dividendo.'
-  - 'La solución debe terminar de este modo: Normaliza el coeficiente y verifica el orden mediante una
-    estimación.'
+  - $6 \div 2 = 3$; $4 - (-2) = 6 \implies 3 \cdot 10^6$.
 errores_frecuentes:
-- 'Confundir división de números en notación científica con otro concepto y omitir este inicio: Divide
-  los coeficientes comprobando que el divisor no sea cero.'
-- Aplicar mecánicamente “Resta el exponente del divisor al del dividendo.” sin revisar las condiciones
-  de la definición.
-- Tomar “\((9\times10^7)/(3\times10^2)=3\times10^5\)” como una igualdad aislada, sin explicar por qué
-  es válida.
-- Aceptar una respuesta que contradice la idea clave “la normalización final conserva un coeficiente de
-  valor absoluto entre \(1\) y \(10\)”.
-- 'Terminar el desarrollo sin realizar este control: Normaliza el coeficiente y verifica el orden mediante
-  una estimación.'
-fuente: Currículum Nacional MINEDUC — Matemática, números reales, potencias, raíces, logaritmos y complejos.
+- Dividir los exponentes en lugar de restarlos.
+afirmaciones_verdaderas:
+- En la división, se dividen coeficientes y se restan exponentes.
+al_terminar_debes_ponder: Resolver divisiones en notación científica de forma fluida.
+fuente: Texto escolar MINEDUC.
 estado: publicado
