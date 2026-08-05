@@ -17,6 +17,7 @@ si procede, se mueve a `_archivo-AAAA-MM-DD/`.
 
 | Fecha | Alcance | Archivo | Estado |
 | --- | --- | --- | --- |
+| 2026-08-05 | Contenido de 12 secciones migrado por Antigravity (913 recursos, nodos 02.04-03.15) | [`2026-08-05-auditoria-contenido-12-secciones.md`](2026-08-05-auditoria-contenido-12-secciones.md) · [JSON](2026-08-05-auditoria-contenido-12-secciones.json) | vigente |
 | 2026-06-21 | Poblado y validación del banco de Lenguaje Algebraico | [`2026-06-21-lenguaje-algebraico-preguntas.md`](2026-06-21-lenguaje-algebraico-preguntas.md) | vigente |
 | 2026-06-20 | Contextualización de recursos, transcripciones y metadatos web/YouTube | [`2026-06-20-contextualizacion-recursos.md`](2026-06-20-contextualizacion-recursos.md) · [JSON](2026-06-20-contextualizacion-recursos.json) | vigente |
 | 2026-06-19 | Banco global de preguntas activas | [`2026-06-19-auditoria-global-preguntas.md`](2026-06-19-auditoria-global-preguntas.md) · [JSON](2026-06-19-auditoria-global-preguntas.json) | vigente |
