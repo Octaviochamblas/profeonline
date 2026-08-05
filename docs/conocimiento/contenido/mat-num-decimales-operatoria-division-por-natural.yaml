@@ -1,71 +1,104 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.DIVISION_POR_NATURAL
-titulo: División de un decimal por un número natural
-objetivo: Dividir un número decimal por un número natural manteniendo la coma en su posición correspondiente.
-introduccion: Dividir un decimal por un natural sigue el mismo algoritmo de la división de enteros, con
-  la particularidad de que la coma del cociente se ubica en el momento en que se "baja" la cifra decimal
-  del dividendo.
-resumen: Para dividir un decimal por un número natural se aplica la división habitual, ubicando la coma
-  en el cociente en cuanto se comienza a dividir la parte decimal del dividendo.
-explicacion: '### Definición formal
+resumen_inicial: "La división de un número decimal entre un número natural se realiza dividiendo normalmente la parte entera y colocando la coma en el cociente al bajar la primera cifra decimal del dividendo."
+explicacion_simple: |
+  Para dividir un decimal por un número natural (como $12.6 \div 3$), divides el número de la manera habitual comenzando por la parte entera. El truco clave es: **en el momento exacto en que tengas que bajar la primera cifra decimal (el número justo después de la coma), colocas inmediatamente una coma en tu resultado (cociente)** y continúas dividiendo como si nada más hubiera cambiado.
+explicacion_formal: |
+  Formalmente, sea $d = a + f$ un dividendo compuesto por su parte entera $a \in \mathbb{N}_0$ y su parte decimal $f = \sum_{j=1}^{n} b_j \cdot 10^{-j}$, y sea $n \in \mathbb{N}$ un divisor natural.
 
-
-  Dividir \(x\) (decimal) entre \(n\) (natural) equivale a dividir \(x\cdot10^m\) (entero, con \(m\) cifras
-  decimales de \(x\)) entre \(n\), y luego dividir el resultado por \(10^m\), lo que se logra ubicando
-  la coma al bajar la primera cifra decimal.
-
-
-  ### Desarrollo didáctico
-
-
-  \(4.8\div3\): se divide 4 entre 3, cociente 1 y resto 1; se baja el 8 formando 18, se coloca la coma
-  en el cociente, y \(18\div3=6\); el resultado es \(1.6\).'
+  Por el algoritmo de la división euclidiana:
+  $$d \div n = (a \div n) + (f \div n)$$
+  El cociente $q = q_e + q_d$ se construye agregando la coma al cociente en el instante preciso de la transición posicional de $10^0$ a $10^{-1}$, cumpliéndose:
+  $$d = q \cdot n + r$$
+  donde el residuo $r$ disminuye multiplicándose por 10 en cada paso posicional sucesivo hasta alcanzar el residuo $0$ o identificar la periodicidad.
+definiciones_clave: |
+  - **Transición posicional de la coma**: Momento exacto del algoritmo de división donde se traspasa la coma del dividendo al cociente.
+  - **Dividendo decimal**: Número con coma que se divide.
+  - **Divisor natural**: Número entero positivo sin parte decimal que efectúa la partición.
+propiedades_relaciones: |
+  - **Continuación por agregado de ceros al residuo**: Si la división entera deja un residuo diferente de cero, se le agrega un cero a la derecha para continuar dividiendo en décimas, centésimas, etc.
+  - **División por potencias de 10**: Dividir un decimal entre $10^k$ desplaza la coma $k$ lugares hacia la izquierda en el cociente.
+  - 'Equivalencia fraccionaria: $4.5 \div 2 = \frac{45}{10} \div 2 = \frac{45}{20} = \frac{225}{100} = 2.25$.'
+ejemplo_guiado:
+  enunciado: 'Resuelve la división $15.4 \div 4$ explicando la colocación de la coma y la resolución hasta obtener residuo cero.'
+  pasos:
+    - 'Dividir la parte entera $15$ entre $4$: $15 \div 4 = 3$ con residuo $3$.'
+    - 'Transición de coma: como el siguiente dígito a bajar es el $4$ (que está después de la coma), se escribe una coma en el cociente tras el $3$ ($3.$).'
+    - 'Bajar el $4$: se forma el número $34$.'
+    - 'Dividir $34 \div 4 = 8$ con residuo $2$. Cociente hasta ahora: $3.8$.'
+    - 'Agregar un cero al residuo $2$ para obtener centésimas: $20$.'
+    - 'Dividir $20 \div 4 = 5$ con residuo $0$.'
+    - 'Concluir: el cociente exacto es $3.85$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿En qué momento exacto se debe colocar la coma decimal en el cociente al dividir un decimal entre un número natural?"
+    choices:
+      - {text: "En el instante en que se baja la primera cifra decimal del dividendo.", is_correct: true}
+      - {text: "Al terminar completamente toda la división.", is_correct: false}
+      - {text: "Antes de empezar a dividir la parte entera.", is_correct: false}
+      - {text: "Cuando el residuo sea mayor que 10.", is_correct: false}
+    explanation: "La correcta es En el instante en que se baja la primera cifra decimal del dividendo.: marca el cambio de escala de unidades a décimas en el cociente."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el cociente exacto de $9.6 \div 3$?'
+    choices:
+      - {text: "3.2", is_correct: true}
+      - {text: "32", is_correct: false}
+      - {text: "0.32", is_correct: false}
+      - {text: "3.02", is_correct: false}
+    explanation: 'La correcta es 3.2: $9 \div 3 = 3$, se coloca coma, $6 \div 3 = 2$, dando $3.2$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Plantea la división y avanza por las cifras del dividendo.'
-- 'Paso 2: Al cruzar la coma del dividendo, coloca la coma en el cociente.'
-- 'Paso 3: Multiplica cociente por divisor para comprobar que recuperas el dividendo.'
+  - "Paso 1: Iniciar la división de la parte entera del dividendo entre el divisor natural."
+  - "Paso 2: Escribir el cociente entero y su residuo parcial."
+  - "Paso 3: Poner la coma decimal en el cociente inmediatamente antes de bajar el primer dígito decimal del dividendo."
+  - "Paso 4: Continuar dividiendo normalmente bajando la siguiente cifra decimal."
+  - "Paso 5: Si al bajar todas las cifras queda un residuo no nulo, agregar un cero al residuo y continuar la división hasta obtener residuo cero o identificar el período."
+errores_correccion: |
+  Un error frecuente es olvidar poner la coma en el cociente y dar como resultado un número entero enorme (por ejemplo decir que $12.6 \div 3 = 42$ en lugar de $4.2$). **Recuerda poner la coma apenas bajes el primer decimal**.
 ejemplos:
-- titulo: Aplicación razonada — División de decimal por número natural
-  enunciado: \(4.8 \div 3 = 1.6\).
-  solucion_pasos:
-  - Plantea la división y avanza por las cifras del dividendo.
-  - Al cruzar la coma del dividendo, coloca la coma en el cociente.
-  - Multiplica cociente por divisor para comprobar que recuperas el dividendo.
-- titulo: Revisión de una solución — División de decimal por número natural
-  enunciado: Una solución aplica “Al cruzar la coma del dividendo, coloca la coma en el cociente.”, pero
-    termina sin comprobar que la división por natural mantiene el valor posicional si se baja la coma
-    en el momento adecuado. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define división de decimal por número natural: al dividir un decimal por
-    un número natural se conserva la coma y se continúa la división cifra a cifra.'
-  - Plantea la división y avanza por las cifras del dividendo.
-  - 'Completa la revisión con este control: Multiplica cociente por divisor para comprobar que recuperas
-    el dividendo.'
-- titulo: ¿Se cumple que la división por natural mantiene el valor posicional si se baja la coma en el
-    momento adecuado? — División de decimal por número natural
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que al dividir un decimal por un número natural se conserva
-    la coma y se continúa la división cifra a cifra.
-  - El caso “\(4.8 \div 3 = 1.6\)” satisface esa condición.
-  - Multiplica cociente por divisor para comprobar que recuperas el dividendo.
-- titulo: ¿Es válido omitir el paso “Plantea la división y avanza por las cifras del dividendo”? — División
-    de decimal por número natural
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de división de decimal por número natural.
-  - 'Omitirlo puede volver inválida la acción siguiente: Al cruzar la coma del dividendo, coloca la coma
-    en el cociente.'
-  - 'La solución debe terminar de este modo: Multiplica cociente por divisor para comprobar que recuperas
-    el dividendo.'
+  - titulo: "Ejemplo 1"
+    enunciado: 'Calcula $7.5 \div 5$.'
+    alternativas:
+      - "1.5"
+      - "15"
+      - "0.15"
+    respuesta: "1.5"
+    solucion_pasos:
+      - '$7 \div 5 = 1$ con residuo $2$.'
+      - 'Poner coma en cociente ($1.$) y bajar el $5 \implies 25$.'
+      - '$25 \div 5 = 5$ con residuo $0$.'
+      - "Resultado: $1.5$."
+  - titulo: "Ejemplo 2"
+    enunciado: '¿Cuánto es $3 \div 4$ expresado en decimal?'
+    alternativas:
+      - "0.75"
+      - "0.7"
+      - "1.33"
+    respuesta: "0.75"
+    solucion_pasos:
+      - 'Como $3 < 4$, la parte entera es $0$. Ponemos $0.$ en el cociente y agregamos cero al 3 \implies 30.'
+      - '$30 \div 4 = 7$ con residuo $2$.'
+      - 'Agregamos cero al residuo $2 \implies 20$.'
+      - '$20 \div 4 = 5$ con residuo $0$.'
+      - "Resultado: $0.75$."
+  - titulo: "¿Se modifica el cociente al dividir un decimal por 10 si corremos la coma 1 lugar a la izquierda?"
+    respuesta: "No, es el método directo de división por potencias de 10."
+    solucion_pasos:
+      - 'Efectivamente, $25.4 \div 10 = 2.54$.'
+  - titulo: "¿Se puede continuar una división sin fin si el resultado es un decimal infinito periódico?"
+    respuesta: "Sí, la secuencia del residuo comenzará a repetirse cíclicamente."
+    solucion_pasos:
+      - "En ese caso se detiene el algoritmo al identificar el bloque periódico."
 errores_frecuentes:
-- 'Empezar división de decimal por número natural sin realizar este control inicial: Plantea la división
-  y avanza por las cifras del dividendo.'
-- Memorizar “\(4.8 \div 3 = 1.6\)” como respuesta aislada, sin reconstruir la definición que lo justifica.
-- Convertir en receta el paso “Al cruzar la coma del dividendo, coloca la coma en el cociente.” y usarlo
-  aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre división de decimal por número natural que contradice el criterio
-  “La división por natural mantiene el valor posicional si se baja la coma en el momento adecuado”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Multiplica cociente por divisor para comprobar
-  que recuperas el dividendo.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Olvidar la coma en el cociente al pasar a la parte decimal."
+  - "Colocar la coma en el cociente en una posición incorrecta."
+  - "No agregar ceros al residuo para continuar dividiendo la parte decimal."
+  - "Confundir la división por un natural con la división entre decimales."
+  - "Detener la división prematuramente dejando un residuo no nulo cuando se podía obtener un decimal finito."
+afirmaciones_verdaderas:
+  - "Al dividir un decimal por un natural, la coma se coloca en el cociente al bajar la primera cifra decimal del dividendo."
+  - "Si el dividendo es menor que el divisor, el cociente comienza obligatoriamente con cero coma ($0.$)."
+al_terminar_debes_ponder: |
+  Debes ser capaz de dividir números decimales por números naturales colocando oportunamente la coma en el cociente y extendiendo el algoritmo de división posicional.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

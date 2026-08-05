@@ -1,74 +1,106 @@
 semantic_id: MAT.NUM.FRACCION_DECIMAL.DETECCION_DECIMAL_PERIODICO
-titulo: Detección anticipada de decimal periódico a partir de una fracción
-objetivo: Predecir si una fracción producirá un decimal periódico sin necesidad de dividir, analizando
-  el denominador.
-introduccion: Cuando el denominador de una fracción irreductible tiene algún factor primo distinto de
-  2 y 5, la división nunca "cierra" exactamente, y el resultado es un decimal periódico.
-resumen: Una fracción irreductible \(\frac{a}{b}\) produce un decimal periódico si el denominador \(b\)
-  tiene al menos un factor primo distinto de 2 y de 5.
-explicacion: '### Definición formal
+resumen_inicial: "Una fracción irreductible origina un desarrollo decimal infinito periódico (puro o semiperiódico) si su denominador simplificado contiene al menos un factor primo distinto de 2 y 5."
+explicacion_simple: |
+  Para saber si una fracción se convertirá en un **decimal infinito periódico** (con barrita de repetición) sin tener que dividir, haz lo siguiente:
+  1. Simplifica la fracción hasta que sea irreductible.
+  2. Descompón el denominador en factores primos.
+  3. Si descubres **algún factor primo diferente de 2 y de 5** (por ejemplo $3, 7, 11, 13$, etc.):
+     - Si NINGÚN factor es 2 ni 5 $\implies$ será un **periódico puro** (ejemplo: $\frac{1}{3} = 0.\overline{3}$).
+     - Si COMBINA factores 2 o 5 con otros primos $\implies$ será un **semiperiódico** (ejemplo: $\frac{1}{6} = 0.1\overline{6}$).
+explicacion_formal: |
+  Formalmente, dada una fracción irreductible $\frac{a}{b} \in \mathbb{Q}$ ($\text{MCD}(a, b) = 1$), su desarrollo decimal es infinito periódico si y solo si en la descomposición del denominador $b = 2^{\alpha} \cdot 5^{\beta} \cdot p_1^{e_1} \dots p_k^{e_k}$ existe al menos un primo $p_i \notin \{2, 5\}$ con exponente $e_i \ge 1$.
 
-
-  Si \(b\) tiene un factor primo \(p\notin\{2,5\}\), no existe potencia de 10 divisible por \(b\), por
-  lo que la división \(a\div b\) nunca termina y los restos comienzan a repetirse, generando un período.
-
-
-  ### Desarrollo didáctico
-
-
-  \(\frac{1}{3}\) da decimal periódico porque 3 no divide ninguna potencia de 10 (3 no es 2 ni 5); al
-  dividir 1 entre 3 el resto se repite indefinidamente, dando \(0.\overline{3}\).'
+  Clasificación de periodicidad:
+  1. **Periódico puro**: $\alpha = 0$ y $\beta = 0$ (ningún factor 2 ni 5 en $b$). Cumple $\text{MCD}(b, 10) = 1$.
+  2. **Semiperiódico**: $\alpha + \beta \ge 1$ Y existe al menos un $p_i \notin \{2, 5\}$ (posee factores de 10 mezclados con otros primos).
+definiciones_clave: |
+  - **Primos generadores de período**: Números primos $3, 7, 11, 13, 17, \dots$ cuya falta de divisibilidad con la base 10 impide que la secuencia de residuos se anule.
+  - **Detección de periódico puro**: Condición $\text{MCD}(b, 10) = 1$ donde el denominador no tiene divisores comunes con 10.
+  - **Detección de semiperiódico**: Condición donde el denominador posee divisores de 10 ($2$ y/o $5$) junto a primos ajenos a 10.
+propiedades_relaciones: |
+  - **Teorema de Midy**: Propiedad aritmética de las cifras de los períodos generados por ciertos primos denominadores (como 7 o 13).
+  - **Finitud de residuos**: Como los residuos en la división entre $b$ son a lo sumo $b-1$, la periodicidad es matemáticamente INEVITABLE tras un máximo de $b-1$ divisiones.
+  - **Complementariedad**: Todo número en $\mathbb{Q}$ que no sea decimal finito es obligatoriamente decimal periódico.
+ejemplo_guiado:
+  enunciado: 'Clasifica el desarrollo decimal de las fracciones irreductibles $\frac{5}{21}$ y $\frac{7}{30}$ mediante el análisis de los factores primos de sus denominadores.'
+  pasos:
+    - 'Analizar $\frac{5}{21}$: $\text{MCD}(5, 21) = 1$, irreductible.'
+    - '   Denominador $21 = 3 \cdot 7$.'
+    - '   Factores primos: $3$ y $7$ (ninguno es $2$ ni $5$).'
+    - '   Conclusión: genera un decimal **infinito periódico puro** ($0.\overline{238095}$).'
+    - 'Analizar $\frac{7}{30}$: $\text{MCD}(7, 30) = 1$, irreductible.'
+    - '   Denominador $30 = 2 \cdot 3 \cdot 5$.'
+    - '   Factores primos: $2$ y $5$ (generadores de anteperíodo) Y $3$ (generador de período).'
+    - '   Conclusión: genera un decimal **infinito semiperiódico** ($0.2333\dots = 0.2\overline{3}$).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué tipo de desarrollo decimal genera una fracción irreductible cuyo denominador simplificado no tiene los primos 2 ni 5, sino únicamente el primo 3 o 7?"
+    choices:
+      - {text: "Un decimal infinito periódico puro.", is_correct: true}
+      - {text: "Un decimal finito de 2 cifras.", is_correct: false}
+      - {text: "Un decimal semiperiódico.", is_correct: false}
+      - {text: "Un número irracional.", is_correct: false}
+    explanation: "La correcta es Un decimal infinito periódico puro.: la ausencia total de factores 2 y 5 hace que el período comience inmediatamente tras la coma."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: '¿Qué tipo de decimal genera la fracción irreductible $\frac{1}{15}$?'
+    choices:
+      - {text: "Decimal infinito semiperiódico.", is_correct: true}
+      - {text: "Decimal infinito periódico puro.", is_correct: false}
+      - {text: "Decimal finito.", is_correct: false}
+      - {text: "Número entero.", is_correct: false}
+    explanation: 'La correcta es Decimal infinito semiperiódico.: el denominador $15 = 3 \cdot 5$ tiene el 5 (anteperíodo) y el 3 (período), dando $0.0\overline{6}$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Simplifica la fracción hasta hacerla irreductible.'
-- 'Paso 2: Factoriza el denominador y busca algún primo distinto de \(2\) y \(5\).'
-- 'Paso 3: Concluye que la expansión será periódica y comprueba el patrón por división.'
+  - 'Paso 1: Simplificar la fracción $\frac{a}{b}$ a su forma irreductible calculando $\text{MCD}(a,b)$.'
+  - "Paso 2: Tomar el denominador irreductible $b$ y descomponerlo en factores primos."
+  - 'Paso 3: Identificar la presencia de primos diferentes de 2 y 5 (como $3, 7, 11, \dots$).'
+  - "Paso 4: Si no hay ni 2 ni 5 entre los factores primos, clasificar como **Decimal Infinito Periódico Puro**."
+  - "Paso 5: Si coexisten los primos 2 y/o 5 junto con otros primos ajenos, clasificar como **Decimal Infinito Semiperiódico**."
+errores_correccion: |
+  Un error clásico es clasificar la fracción como periódica pura cuando su denominador tiene un 2 o un 5 junto a un 3 (por ejemplo en $\frac{1}{6}$, decir que es puro por tener el 3). ¡El 2 genera un anteperíodo de 1 cifra! **Si hay 2 o 5 combinados con otros primos, es SEMIPERIÓDICO**.
 ejemplos:
-- titulo: Aplicación razonada — Detección de decimal periódico desde la fracción irreductible
-  enunciado: \(\frac{1}{3}\) da decimal periódico porque 3 no divide ninguna potencia de 10.
-  solucion_pasos:
-  - Simplifica la fracción hasta hacerla irreductible.
-  - Factoriza el denominador y busca algún primo distinto de \(2\) y \(5\).
-  - Concluye que la expansión será periódica y comprueba el patrón por división.
-- titulo: Revisión de una solución — Detección de decimal periódico desde la fracción irreductible
-  enunciado: Una solución aplica “Factoriza el denominador y busca algún primo distinto de \(2\) y \(5\).”,
-    pero termina sin comprobar que la presencia de otros factores primos impide obtener un decimal finito.
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define detección de decimal periódico desde la fracción irreductible: una
-    fracción irreductible produce decimal periódico cuando su denominador tiene factores primos distintos
-    de 2 y 5.'
-  - Simplifica la fracción hasta hacerla irreductible.
-  - 'Completa la revisión con este control: Concluye que la expansión será periódica y comprueba el patrón
-    por división.'
-- titulo: ¿Se cumple que la presencia de otros factores primos impide obtener un decimal finito? — Detección
-    de decimal periódico desde la fracción irreductible
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que una fracción irreductible produce decimal periódico cuando
-    su denominador tiene factores primos distintos de 2 y 5.
-  - El caso “\(\frac{1}{3}\) da decimal periódico porque 3 no divide ninguna potencia de 10” satisface
-    esa condición.
-  - Concluye que la expansión será periódica y comprueba el patrón por división.
-- titulo: ¿Es válido omitir el paso “Simplifica la fracción hasta hacerla irreductible”? — Detección de
-    decimal periódico desde la fracción irreductible
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de detección de decimal periódico desde la fracción
-    irreductible.
-  - 'Omitirlo puede volver inválida la acción siguiente: Factoriza el denominador y busca algún primo
-    distinto de \(2\) y \(5\).'
-  - 'La solución debe terminar de este modo: Concluye que la expansión será periódica y comprueba el patrón
-    por división.'
+  - titulo: "Ejemplo 1"
+    enunciado: '¿Es $\frac{2}{33}$ un decimal periódico puro o semiperiódico?'
+    alternativas:
+      - "Periódico puro."
+      - "Semiperiódico."
+      - "Finito."
+    respuesta: "Periódico puro."
+    solucion_pasos:
+      - '$\text{MCD}(2, 33) = 1$, irreductible.'
+      - '$33 = 3 \cdot 11$.'
+      - 'Factores primos: $3$ y $11$ (ningún 2 ni 5).'
+      - 'Respuesta: Periódico puro ($0.\overline{06}$).'
+  - titulo: "Ejemplo 2"
+    enunciado: '¿Qué tipo de decimal genera $\frac{9}{12}$?'
+    alternativas:
+      - "Decimal finito."
+      - "Decimal periódico puro."
+      - "Decimal semiperiódico."
+    respuesta: "Decimal finito."
+    solucion_pasos:
+      - '¡Cuidado! Hay que simplificar primero: $\frac{9 \div 3}{12 \div 3} = \frac{3}{4}$.'
+      - '$4 = 2^2 \implies$ solo tiene el primo 2.'
+      - 'Resultado: Decimal finito ($0.75$).'
+  - titulo: "¿Por qué el residuo de una división de enteros debe empezar a repetirse obligatoriamente?"
+    respuesta: "Porque los residuos posibles al dividir por b son finitos (a lo sumo b-1 opciones distintas)."
+    solucion_pasos:
+      - "Por el principio del palomar, tras $b$ divisiones un residuo debe repetirse obligatoriamente."
+  - titulo: "¿Existe alguna fracción de enteros que dé un número decimal con cifras infinitas no periódicas?"
+    respuesta: "No"
+    solucion_pasos:
+      - "No, todas las fracciones de enteros son racionales y solo generan decimales finitos o periódicos."
 errores_frecuentes:
-- 'Empezar detección de decimal periódico desde la fracción irreductible sin realizar este control inicial:
-  Simplifica la fracción hasta hacerla irreductible.'
-- Memorizar “\(\frac{1}{3}\) da decimal periódico porque 3 no divide ninguna potencia de 10” como respuesta
-  aislada, sin reconstruir la definición que lo justifica.
-- Convertir en receta el paso “Factoriza el denominador y busca algún primo distinto de \(2\) y \(5\).”
-  y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre detección de decimal periódico desde la fracción irreductible que
-  contradice el criterio “La presencia de otros factores primos impide obtener un decimal finito”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Concluye que la expansión será periódica y comprueba
-  el patrón por división.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "No simplificar la fracción antes de descomponer el denominador."
+  - "Confundir decimales periódicos puros con semiperiódicos por no detectar la presencia del factor 2 o 5."
+  - "Creer que si la división no es exacta en las 2 primeras cifras el número es irracional."
+  - "Olvidar que los números primos son los únicos que deben analizarse en la descomposición."
+  - "Asumir que el numerador puede hacer que una fracción con denominador 7 sea un decimal finito sin simplificarse."
+afirmaciones_verdaderas:
+  - "Una fracción irreductible genera un decimal periódico si su denominador posee primos distintos de 2 y 5."
+  - "La presencia exclusiva de primos ajenos a 2 y 5 en el denominador irreductible determina un decimal periódico puro."
+al_terminar_debes_ponder: |
+  Debes ser capaz de predecir la periodicidad pura o semiperiódica del desarrollo decimal de cualquier fracción evaluando los factores primos de su denominador irreductible.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

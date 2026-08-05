@@ -1,70 +1,100 @@
 semantic_id: MAT.NUM.DECIMALES_CLASIFICACION.ANTEPERIODO_IDENTIFICACION
-titulo: Identificación del anteperíodo de un decimal
-objetivo: Identificar correctamente qué cifras forman el anteperíodo en un decimal semiperiódico.
-introduccion: 'En un decimal semiperiódico conviven dos bloques distintos: el anteperíodo, que no se repite,
-  y el período, que sí. Distinguirlos correctamente es clave para transformar el decimal a fracción.'
-resumen: El anteperíodo de un decimal semiperiódico es el bloque de cifras ubicado entre la coma y el
-  período, que no se repite.
-explicacion: '### Definición formal
+resumen_inicial: "El anteperíodo de un número decimal semiperiódico es el conjunto fijo de cifras decimales ubicadas inmediatamente después de la coma y antes del comienzo del período."
+explicacion_simple: |
+  El **anteperíodo** es la cifra o grupo de cifras que está 'atrapado' entre la coma y el período. No pertenece a la parte entera y **tampoco se repite**. Por ejemplo:
+  - En $0.16666\dots = 0.1\overline{6}$, el anteperíodo es el $1$ (longitud 1).
+  - En $3.45888\dots = 3.45\overline{8}$, el anteperíodo es el bloque $45$ (longitud 2).
+  - En $0.00777\dots = 0.00\overline{7}$, el anteperíodo es el bloque $00$ (longitud 2).
+  Si un decimal no tiene cifras entre la coma y la barra de período, decimos que su anteperíodo es nulo (es un decimal periódico puro).
+explicacion_formal: |
+  Formalmente, en un número decimal infinito semiperiódico $d = a_k \dots a_0 , a_1' a_2' \dots a_n' \overline{p_1 \dots p_m}$, el **anteperíodo** $A$ se define como la subsecuencia finita de dígitos decimales no repetidos:
+  $$A = (a_1', a_2', \dots, a_n'), \quad \text{con } n \in \mathbb{Z}^+$$
+  ubicada en las posiciones decimales de la $1$-ésima a la $n$-ésima tras la coma.
 
-
-  En la notación \(0.a_1a_2\ldots a_m\overline{c_1\ldots c_k}\), el anteperíodo es el bloque \(a_1a_2\ldots
-  a_m\), las cifras que aparecen antes de que comience la repetición marcada por la línea.
-
-
-  ### Desarrollo didáctico
-
-
-  En \(0.16\overline{4}\), el anteperíodo es 16: las cifras 1 y 6 no están bajo la línea, aparecen una
-  sola vez antes de que comience a repetirse el período 4.'
+  Su longitud $n$ representa la cantidad exacta de posiciones decimales fijas previas al inicio de la fase periódica $P$.
+definiciones_clave: |
+  - **Anteperíodo ($A$)**: Bloque finito de cifras decimales no repetitivas comprendidas entre la coma y la barra de período.
+  - **Longitud del anteperíodo ($n$)**: Cantidad de dígitos que forman el anteperíodo.
+  - **Decimales de anteperíodo**: Cifras que aportan ceros ($00\dots0$) al denominador en la conversión a fracción racional.
+propiedades_relaciones: |
+  - 'Relación con los ceros del denominador: La longitud $n$ del anteperíodo determina exactamente cuántos ceros acompañan a los nueves en el denominador de la fracción equivalente ($99\dots900\dots0$).'
+  - **Origen algebraico**: Se produce cuando el denominador de una fracción irreductible posee divisores de 10 (factores 2 y/o 5) combinados con otros primos no divisores de 10.
+  - **Diferenciación con la parte entera**: El anteperíodo se ubica obligatoriamente a la derecha de la coma. Los dígitos a la izquierda de la coma forman la parte entera, no el anteperíodo.
+ejemplo_guiado:
+  enunciado: 'Identifica el anteperíodo, su longitud y el período en los decimales: $d_1 = 0.13\overline{5}$, $d_2 = 12.004\overline{7}$ y $d_3 = 0.\overline{8}$.'
+  pasos:
+    - 'Analizar $d_1 = 0.13\overline{5}$: entre la coma y la barra está $13$. Anteperíodo: $13$ (longitud $2$). Período: $5$ (longitud $1$).'
+    - 'Analizar $d_2 = 12.004\overline{7}$: entre la coma y la barra está $004$. Anteperíodo: $004$ (longitud $3$). Período: $7$ (longitud $1$). La parte entera es $12$.'
+    - 'Analizar $d_3 = 0.\overline{8}$: la barra comienza inmediatamente tras la coma. Anteperíodo: no tiene ($n = 0$). Es periódico puro.'
+    - "Concluir: la correcta distinción entre anteperíodo y período permite estructurar la conversión fraccionaria."
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Dónde se ubica exactamente el anteperíodo en un número decimal?"
+    choices:
+      - {text: "Entre la coma decimal y el comienzo de la barra del período.", is_correct: true}
+      - {text: "A la izquierda de la coma decimal.", is_correct: false}
+      - {text: "Debajo de la barra de período.", is_correct: false}
+      - {text: "En el denominador de la fracción.", is_correct: false}
+    explanation: "La correcta es Entre la coma decimal y el comienzo de la barra del período.: define la posición exacta del anteperíodo en la parte decimal."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el anteperíodo del decimal semiperiódico $4.05\overline{12}$?'
+    choices:
+      - {text: "05", is_correct: true}
+      - {text: "405", is_correct: false}
+      - {text: "12", is_correct: false}
+      - {text: "5", is_correct: false}
+    explanation: "La correcta es 05: es el bloque de cifras ubicado entre la coma y la barra de período."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Ubica las cifras posteriores a la coma que aparecen antes de la repetición.'
-- 'Paso 2: Detén el anteperíodo justo donde comienza el bloque periódico.'
-- 'Paso 3: Comprueba que esas cifras iniciales no vuelvan a repetirse como parte del período.'
+  - "Paso 1: Localizar la coma decimal del número."
+  - "Paso 2: Localizar el inicio de la barra de período (o la cifra donde empieza la repetición infinita)."
+  - "Paso 3: Extraer todas las cifras decimales comprendidas en ese intervalo."
+  - "Paso 4: Registrar el valor del anteperíodo $A$ y contar su cantidad de dígitos $n$."
+  - "Paso 5: Usar $n$ para determinar el número de ceros en la conversión fraccionaria."
+errores_correccion: |
+  Un error clásico es incluir los números a la izquierda de la coma dentro del anteperíodo (por ejemplo, en $12.3\overline{4}$ decir que el anteperíodo es $123$). Recuerda: **la parte entera (12) NO es anteperíodo**. El anteperíodo está compuesto ÚNICAMENTE por las cifras a la derecha de la coma que no se repiten (en este caso, solo el $3$).
 ejemplos:
-- titulo: Aplicación razonada — Identificación del anteperíodo decimal
-  enunciado: En \(0.16\overline{4}\), el anteperíodo es 16.
-  solucion_pasos:
-  - Ubica las cifras posteriores a la coma que aparecen antes de la repetición.
-  - Detén el anteperíodo justo donde comienza el bloque periódico.
-  - Comprueba que esas cifras iniciales no vuelvan a repetirse como parte del período.
-- titulo: Revisión de una solución — Identificación del anteperíodo decimal
-  enunciado: Una solución aplica “Detén el anteperíodo justo donde comienza el bloque periódico.”, pero
-    termina sin comprobar que solo los decimales semiperiódicos tienen anteperíodo. Determina qué falta
-    justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define identificación del anteperíodo decimal: el anteperíodo es el conjunto
-    de cifras decimales que aparece antes de que empiece la repetición.'
-  - Ubica las cifras posteriores a la coma que aparecen antes de la repetición.
-  - 'Completa la revisión con este control: Comprueba que esas cifras iniciales no vuelvan a repetirse
-    como parte del período.'
-- titulo: ¿Se cumple que solo los decimales semiperiódicos tienen anteperíodo? — Identificación del anteperíodo
-    decimal
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que el anteperíodo es el conjunto de cifras decimales que aparece
-    antes de que empiece la repetición.
-  - El caso “En \(0.16\overline{4}\), el anteperíodo es 16” satisface esa condición.
-  - Comprueba que esas cifras iniciales no vuelvan a repetirse como parte del período.
-- titulo: ¿Es válido omitir el paso “Ubica las cifras posteriores a la coma que aparecen antes de la repetición”?
-    — Identificación del anteperíodo decimal
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de identificación del anteperíodo decimal.
-  - 'Omitirlo puede volver inválida la acción siguiente: Detén el anteperíodo justo donde comienza el
-    bloque periódico.'
-  - 'La solución debe terminar de este modo: Comprueba que esas cifras iniciales no vuelvan a repetirse
-    como parte del período.'
+  - titulo: "Ejemplo 1"
+    enunciado: '¿Cuántos ceros tendrá en el denominador la conversión a fracción del decimal $0.007\overline{89}$?'
+    alternativas:
+      - "3 ceros (porque el anteperíodo es $007$ y tiene 3 cifras)."
+      - "2 ceros."
+      - "5 ceros."
+    respuesta: "3 ceros (porque el anteperíodo es $007$ y tiene 3 cifras)."
+    solucion_pasos:
+      - "Anteperíodo = $007$, posee $3$ cifras."
+      - "Por cada cifra del anteperíodo se coloca un cero en el denominador."
+      - "Respuesta: 3 ceros (acompañando a 2 nueves: $99000$)."
+  - titulo: "Ejemplo 2"
+    enunciado: 'Identifica la parte entera, el anteperíodo y el período de $7.91\overline{45}$.'
+    alternativas:
+      - "Parte entera = 7, Anteperíodo = 91, Período = 45"
+      - "Parte entera = 791, Anteperíodo = 0, Período = 45"
+      - "Parte entera = 7, Anteperíodo = 9145, Período = 0"
+    respuesta: "Parte entera = 7, Anteperíodo = 91, Período = 45"
+    solucion_pasos:
+      - "A la izquierda de la coma: $7$ (parte entera)."
+      - "Entre la coma y la barra: $91$ (anteperíodo)."
+      - "Bajo la barra: $45$ (período)."
+  - titulo: "¿Un decimal periódico puro como $0.\\overline{6}$ tiene anteperíodo?"
+    respuesta: "No (su anteperíodo tiene longitud 0)"
+    solucion_pasos:
+      - "No tiene anteperíodo ya que el período comienza inmediatamente tras la coma."
+  - titulo: '¿Se incluyen los ceros iniciales del anteperíodo (como el 0 en $0.03\overline{4}$)?'
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, en $0.03\overline{4}$ el anteperíodo es $03$ de longitud 2.'
 errores_frecuentes:
-- 'Empezar identificación del anteperíodo decimal sin realizar este control inicial: Ubica las cifras
-  posteriores a la coma que aparecen antes de la repetición.'
-- Memorizar “En \(0.16\overline{4}\), el anteperíodo es 16” como respuesta aislada, sin reconstruir la
-  definición que lo justifica.
-- Convertir en receta el paso “Detén el anteperíodo justo donde comienza el bloque periódico.” y usarlo
-  aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre identificación del anteperíodo decimal que contradice el criterio
-  “Solo los decimales semiperiódicos tienen anteperíodo”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Comprueba que esas cifras iniciales no vuelvan
-  a repetirse como parte del período.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Confundir la parte entera con el anteperíodo."
+  - "Olvidar los ceros que están justo después de la coma como parte del anteperíodo."
+  - "Creer que el anteperíodo determina la cantidad de nueves en el denominador (determina los ceros)."
+  - "Incluir las cifras del período dentro del anteperíodo."
+  - "Asumir que los decimales finitos tienen anteperíodo."
+afirmaciones_verdaderas:
+  - "El anteperíodo está formado por las cifras decimales fijas entre la coma y el período."
+  - "La cantidad de cifras del anteperíodo determina el número de ceros a la derecha de los nueves en el denominador fraccionario."
+al_terminar_debes_ponder: |
+  Debes ser capaz de identificar con precisión el anteperíodo de un decimal semiperiódico, determinar su longitud y calcular la cantidad de ceros correspondiente en el denominador fraccionario.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

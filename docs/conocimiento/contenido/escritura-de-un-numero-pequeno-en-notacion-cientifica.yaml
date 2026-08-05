@@ -1,62 +1,86 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.ESCRITURA_NUMERO_PEQUENO
-titulo: Escritura de un número pequeño en notación científica
-objetivo: Convertir números pequeños a notación científica.
-introduccion: Los ceros iniciales no aportan cifras significativas, pero sí indican escala. Un exponente
-  negativo conserva esa información de forma compacta.
-resumen: Un número entre cero y uno usa exponente negativo en notación científica. El exponente negativo
-  indica cuántos lugares debe moverse la coma hacia la izquierda al reconstrui.
-explicacion: 'Un número entre cero y uno usa exponente negativo en notación científica.
+resumen_inicial: Para escribir un número pequeño ($0 < N < 1$) en notación científica,
+  la coma se desplaza a la derecha hasta lograr un coeficiente entre 1 y 10, asociando
+  un exponente negativo ($-n$).
+explicacion_simple: 'Para escribir números decimales muy pequeños como $0{,}000037$:
 
+  1. Mueves la coma a la derecha hasta quedar detrás del primer dígito distinto de
+  cero: $3{,}7$.
 
-  El cálculo “\(0.000072=7.2\times10^{-5}\)” muestra por qué el exponente negativo indica cuántos lugares
-  debe moverse la coma hacia la izquierda al reconstrui'
+  2. Cuentas cuántas posiciones se movió la coma a la derecha (5 posiciones).
+
+  3. Pones un **exponente negativo**: $3{,}7 \cdot 10^{-5}$.'
+explicacion_formal: 'Sea $0 < N < 1$. El desplazamiento de la coma $n$ lugares a la
+  derecha equivale a multiplicar por $10^n$, por lo que para compensar se multiplica
+  por $10^{-n}$:
+
+  $$N = (N \cdot 10^n) \cdot 10^{-n} = k \cdot 10^{-n}$$
+
+  Donde $n \in \mathbb{Z}^+$ es la cantidad de desplazamientos a la derecha y $k \in
+  [1, 10[$.'
+definiciones_clave: '- **Exponente negativo ($-n$)**: Indica el número de posiciones
+  que la coma se movió a la derecha para expresar un número decimal cercano a cero.'
+propiedades_relaciones: '- **Pequeñez y negatividad**: A mayor cantidad de ceros entre
+  la coma y la primera cifra no nula, mayor es el valor absoluto del exponente negativo.'
+ejemplo_guiado:
+  enunciado: Escribe $0{,}00042$ en notación científica.
+  pasos:
+  - 'Identificar la primera cifra distinta de cero: 4. El coeficiente será $4{,}2$.'
+  - 'Contar cuántos lugares corremos la coma a la derecha hasta quedar entre el 4
+    y el 2: 4 lugares.'
+  - 'Expresar con exponente negativo: $4{,}2 \cdot 10^{-4}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es la notación científica de $0{,}000081$?
+  choices:
+  - text: 8,1 · 10^{-5}
+    is_correct: true
+  - text: 8,1 · 10^5
+    is_correct: false
+  - text: 81 · 10^{-6}
+    is_correct: false
+  - text: 0,81 · 10^{-4}
+    is_correct: false
+  explanation: 'La correcta es: 8,1 · 10^{-5}. Desplazamos la coma 5 lugares hacia
+    la derecha.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Expresa $0{,}005$ en notación científica.
+  choices:
+  - text: 5 · 10^{-3}
+    is_correct: true
+  - text: 5 · 10^3
+    is_correct: false
+  - text: 0,5 · 10^{-2}
+    is_correct: false
+  - text: 50 · 10^{-4}
+    is_correct: false
+  explanation: 'La correcta es: 5 · 10^{-3}. Mover la coma 3 lugares a la derecha
+    nos da $5 \cdot 10^{-3}$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Mueve la coma a la derecha hasta obtener un coeficiente entre \(1\) y \(10\).'
-- 'Paso 2: Cuenta los lugares y escribe el exponente con signo negativo.'
-- 'Paso 3: Devuelve la coma hacia la izquierda para confirmar el valor original.'
+- 'Paso 1: Identificar el primer dígito diferente de cero después de la coma.'
+- 'Paso 2: Mover la coma a la derecha hasta ubicarla inmediatamente después de ese
+  primer dígito no nulo.'
+- 'Paso 3: Contar los espacios $n$ recorridos hacia la derecha.'
+- 'Paso 4: Escribir la mantisa multiplicada por $10^{-n}$.'
+errores_correccion: No olvides el signo menos en el exponente. $0{,}004 = 4 \cdot
+  10^{-3}$, mientras que $4 \cdot 10^3 = 4000$.
 ejemplos:
-- titulo: Aplicación razonada — Escritura de un número pequeño en notación científica
-  enunciado: \(0.000072=7.2\times10^{-5}\).
+- titulo: Ejemplo 1
+  enunciado: Expresa $0{,}000009$ en notación científica.
+  alternativas:
+  - 9 · 10^{-6}
+  - 9 · 10^6
+  - 0,9 · 10^{-5}
+  respuesta: 9 · 10^{-6}
   solucion_pasos:
-  - Mueve la coma a la derecha hasta obtener un coeficiente entre \(1\) y \(10\).
-  - Cuenta los lugares y escribe el exponente con signo negativo.
-  - Devuelve la coma hacia la izquierda para confirmar el valor original.
-- titulo: Revisión de una solución — Escritura de un número pequeño en notación científica
-  enunciado: Una solución aplica “Cuenta los lugares y escribe el exponente con signo negativo.”, pero
-    termina sin comprobar que el exponente negativo indica cuántos lugares debe moverse la coma hacia
-    la izquierda al reconstrui. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define escritura de un número pequeño en notación científica: un número
-    entre cero y uno usa exponente negativo en notación científica.'
-  - Mueve la coma a la derecha hasta obtener un coeficiente entre \(1\) y \(10\).
-  - 'Completa la revisión con este control: Devuelve la coma hacia la izquierda para confirmar el valor
-    original.'
-- titulo: ¿Se cumple que el exponente negativo indica cuántos lugares debe moverse la coma hacia la izquierda
-    al reconstrui? — Escritura de un número pequeño en notación científica
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que un número entre cero y uno usa exponente negativo en notación
-    científica.
-  - El caso “\(0.000072=7.2\times10^{-5}\)” satisface esa condición.
-  - Devuelve la coma hacia la izquierda para confirmar el valor original.
-- titulo: ¿Es válido omitir el paso “Mueve la coma a la derecha hasta obtener un coeficiente entre \(1\)
-    y \(10\)”? — Escritura de un número pequeño en notación científica
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de escritura de un número pequeño en notación científica.
-  - 'Omitirlo puede volver inválida la acción siguiente: Cuenta los lugares y escribe el exponente con
-    signo negativo.'
-  - 'La solución debe terminar de este modo: Devuelve la coma hacia la izquierda para confirmar el valor
-    original.'
+  - $0{,}000009 = 9 \cdot 10^{-6}$.
 errores_frecuentes:
-- 'Confundir escritura de un número pequeño en notación científica con otro concepto y omitir este inicio:
-  Mueve la coma a la derecha hasta obtener un coeficiente entre \(1\) y \(10\).'
-- Aplicar mecánicamente “Cuenta los lugares y escribe el exponente con signo negativo.” sin revisar las
-  condiciones de la definición.
-- Tomar “\(0.000072=7.2\times10^{-5}\)” como una igualdad aislada, sin explicar por qué es válida.
-- Aceptar una respuesta que contradice la idea clave “el exponente negativo indica cuántos lugares debe
-  moverse la coma hacia la izquierda al reconstrui”.
-- 'Terminar el desarrollo sin realizar este control: Devuelve la coma hacia la izquierda para confirmar
-  el valor original.'
-fuente: Currículum Nacional MINEDUC — Matemática, números reales, potencias, raíces, logaritmos y complejos.
+- Olvidar el signo menos del exponente al mover la coma a la derecha.
+afirmaciones_verdaderas:
+- Los números entre 0 y 1 tienen exponente negativo en notación científica.
+al_terminar_debes_ponder: Convertir números pequeños a notación científica con exponente
+  negativo.
+fuente: Texto escolar MINEDUC.
 estado: publicado

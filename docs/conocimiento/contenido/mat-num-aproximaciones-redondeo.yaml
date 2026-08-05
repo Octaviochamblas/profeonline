@@ -1,72 +1,105 @@
 semantic_id: MAT.NUM.APROXIMACIONES.REDONDEO
-titulo: Redondeo de números decimales
-objetivo: Aproximar un número decimal al valor más cercano en el orden indicado, según la cifra siguiente.
-introduccion: 'El redondeo combina la aproximación por defecto y por exceso: se elige la que esté más
-  cerca del número original, observando la cifra inmediatamente posterior al orden pedido.'
-resumen: 'Para redondear un número al orden pedido se observa la cifra siguiente: si es 5 o mayor, se
-  aumenta en una unidad la cifra conservada (redondeo por exceso); si es menor que 5, se mantiene sin
-  cambios (redondeo por defecto).'
-explicacion: '### Definición formal
+resumen_inicial: "El redondeo es el método de aproximación que elige el valor posicional más cercano al número original observando la primera cifra que se va a eliminar."
+explicacion_simple: |
+  El **redondeo** es la forma más común de aproximar números en la vida cotidiana. Busca la cifra más cercana al número real. Para redondear un número a una cierta posición (por ejemplo a las centésimas):
+  1. Miras la **cifra que está justo a la derecha** de esa posición.
+  2. Si esa cifra es **menor que 5** ($0, 1, 2, 3, 4$), mantienes la cifra del orden intacta (redondeo por defecto).
+  3. Si esa cifra es **mayor o igual a 5** ($5, 6, 7, 8, 9$), le sumas $+1$ a la cifra del orden (redondeo por exceso).
+explicacion_formal: |
+  Formalmente, dada la representación decimal de $x = \sum_{k=-\infty}^{N} a_k \cdot 10^k$, el **redondeo al orden $10^m$** ($m \in \mathbb{Z}$) es el número $x_{\text{red}} \in \{k \cdot 10^m \mid k \in \mathbb{Z}\}$ que minimiza el error absoluto $|x - x_{\text{red}}|$:
+  $$x_{\text{red}} = \arg\min_{y \in \{k \cdot 10^m\}} |x - y|$$
 
-
-  Redondear \(x\) al orden \(10^{-n}\) consiste en tomar la aproximación por defecto si la cifra en la
-  posición \(n+1\) es menor que 5, o la aproximación por exceso si esa cifra es 5 o mayor, obteniendo
-  así el múltiplo de \(10^{-n}\) más cercano a \(x\).
-
-
-  ### Desarrollo didáctico
-
-
-  Redondear \(12.46\) a la décima: la cifra siguiente a la décima es 6 (centésima), que es mayor que 5,
-  así que se redondea por exceso, aumentando la décima de 4 a 5: resultado \(12.5\).'
+  Criterio del dígito subsiguiente $a_{m-1}$:
+  - Si $a_{m-1} < 5 \implies x_{\text{red}} = x_{\text{def}}$ (mantener cifra $a_m$).
+  - Si $a_{m-1} \ge 5 \implies x_{\text{red}} = x_{\text{exc}}$ (incrementar cifra $a_m + 1$).
+definiciones_clave: |
+  - **Cifra decisiva ($a_{m-1}$)**: Primer dígito eliminado a la derecha del orden de aproximación que determina si se mantiene o se incrementa la cifra del orden.
+  - **Minimización de error $|x - x_{\text{red}}|$**: Criterio de cercanía que garantiza que el redondeo genera la menor diferencia posible con el valor real.
+  - **Redondeo simétrico**: Convención estándar donde la cifra $5$ redondea hacia arriba en valor absoluto.
+propiedades_relaciones: |
+  - **Cota del error absoluto**: El error absoluto de un redondeo al orden $10^m$ es siempre estrictamente menor o igual a la mitad del orden: $|x - x_{\text{red}}| \le \frac{1}{2} \cdot 10^m$.
+  - **Diferencia con el truncamiento**: El truncamiento corta siempre sin mirar el dígito subsiguiente; el redondeo examina el dígito subsiguiente para reducir el error.
+  - **Conexión con defecto y exceso**: Todo redondeo equivale o bien a la aproximación por defecto o bien a la aproximación por exceso.
+ejemplo_guiado:
+  enunciado: "Redondea a las centésimas los números $d_1 = 7.423$ y $d_2 = 7.428$ explicando el análisis del dígito decisivo."
+  pasos:
+    - "Analizar $d_1 = 7.423$ a centésimas ($10^{-2}$):"
+    - "   Cifra del orden centésimas: $2$."
+    - "   Cifra decisiva (siguiente a la derecha, milésimas): $3$."
+    - '   Como $3 < 5$, la centésima se mantiene intacta $\implies 7.42$.'
+    - "Analizar $d_2 = 7.428$ a centésimas ($10^{-2}$):"
+    - "   Cifra del orden centésimas: $2$."
+    - "   Cifra decisiva (siguiente a la derecha, milésimas): $8$."
+    - '   Como $8 \ge 5$, se suma $+1$ a la centésima $2 \implies 7.43$.'
+    - 'Concluir: $7.423 \approx 7.42$ y $7.428 \approx 7.43$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué norma rige el redondeo al orden $10^m$ cuando el primer dígito eliminado a la derecha ($a_{m-1}$) es mayor o igual a 5?"
+    choices:
+      - {text: "Se suma 1 a la cifra ubicada en el orden de aproximación ($10^m$).", is_correct: true}
+      - {text: "Se mantiene la cifra igual y se elimina el resto.", is_correct: false}
+      - {text: "Se resta 1 a la cifra del orden.", is_correct: false}
+      - {text: "Se convierte todo el número a cero.", is_correct: false}
+    explanation: "La correcta es Se suma 1 a la cifra ubicada en el orden de aproximación ($10^m$).: es la regla estándar de aproximación al vecino más cercano."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál es el redondeo a las décimas del número $15.651$?"
+    choices:
+      - {text: "15.7", is_correct: true}
+      - {text: "15.6", is_correct: false}
+      - {text: "15.65", is_correct: false}
+      - {text: "16.0", is_correct: false}
+    explanation: 'La correcta es 15.7: la cifra de las décimas es $6$ y la siguiente es $5 \ge 5$, por lo que $6 + 1 = 7 \implies 15.7$.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Marca la cifra que quieres conservar y observa inmediatamente la siguiente.'
-- 'Paso 2: Conserva si la siguiente es menor que \(5\); aumenta una unidad si es \(5\) o mayor.'
-- 'Paso 3: Elimina las cifras restantes y compara la distancia al valor original.'
+  - "Paso 1: Identificar la cifra ubicada en el orden de aproximación solicitado."
+  - "Paso 2: Observar ÚNICAMENTE la primera cifra que está inmediatamente a su derecha (dígito decisivo)."
+  - "Paso 3: Si el dígito decisivo es $0, 1, 2, 3$ o $4$, dejar la cifra del orden tal como está."
+  - "Paso 4: Si el dígito decisivo es $5, 6, 7, 8$ o $9$, sumar $+1$ a la cifra del orden."
+  - "Paso 5: Eliminar todas las cifras decimales que quedan a la derecha del orden aproximado."
+errores_correccion: |
+  Un error clásico es 'mirar todas las cifras de la derecha en cadena' (por ejemplo para redondear $3.146$ a décimas, redondear primero el 6 a 5 y luego el 5 a 2). ¡Eso provoca un error en cadena! **Mira ÚNICAMENTE la primera cifra inmediatamente a la derecha del orden solicitado**. En $3.146$ a décimas, como la cifra siguiente es 4 ($4 < 5$), queda $3.1$.
 ejemplos:
-- titulo: Aplicación razonada — Aproximación por redondeo
-  enunciado: Redondear \(12.46\) a la décima da \(12.5\).
-  solucion_pasos:
-  - Marca la cifra que quieres conservar y observa inmediatamente la siguiente.
-  - Conserva si la siguiente es menor que \(5\); aumenta una unidad si es \(5\) o mayor.
-  - Elimina las cifras restantes y compara la distancia al valor original.
-- titulo: Revisión de una solución — Aproximación por redondeo
-  enunciado: Una solución aplica “Conserva si la siguiente es menor que \(5\); aumenta una unidad si es
-    \(5\) o mayor.”, pero termina sin comprobar que el redondeo busca un valor cercano y fácil de usar
-    conservando una precisión dada. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define aproximación por redondeo: redondear consiste en reemplazar un número
-    por otro cercano según una cifra de referencia.'
-  - Marca la cifra que quieres conservar y observa inmediatamente la siguiente.
-  - 'Completa la revisión con este control: Elimina las cifras restantes y compara la distancia al valor
-    original.'
-- titulo: ¿Se cumple que el redondeo busca un valor cercano y fácil de usar conservando una precisión
-    dada? — Aproximación por redondeo
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que redondear consiste en reemplazar un número por otro cercano
-    según una cifra de referencia.
-  - El caso “Redondear \(12.46\) a la décima da \(12.5\)” satisface esa condición.
-  - Elimina las cifras restantes y compara la distancia al valor original.
-- titulo: ¿Es válido omitir el paso “Marca la cifra que quieres conservar y observa inmediatamente la
-    siguiente”? — Aproximación por redondeo
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de aproximación por redondeo.
-  - 'Omitirlo puede volver inválida la acción siguiente: Conserva si la siguiente es menor que \(5\);
-    aumenta una unidad si es \(5\) o mayor.'
-  - 'La solución debe terminar de este modo: Elimina las cifras restantes y compara la distancia al valor
-    original.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Redondea $8.97$ a las décimas."
+    alternativas:
+      - "9.0"
+      - "8.9"
+      - "9.7"
+    respuesta: "9.0"
+    solucion_pasos:
+      - 'Décima: $9$. Siguiente cifra: $7 \ge 5$.'
+      - '$9 + 1 = 10 \implies 0$ y reserva de $+1$ a las unidades ($8 + 1 = 9$).'
+      - "Resultado: $9.0$."
+  - titulo: "Ejemplo 2"
+    enunciado: "Redondea a las unidades el número $14.399$."
+    alternativas:
+      - "14"
+      - "15"
+      - "14.4"
+    respuesta: "14"
+    solucion_pasos:
+      - "Unidad: $4$. Siguiente cifra: $3$ (décimas)."
+      - "Como $3 < 5$, la unidad se mantiene en $4$."
+      - "Resultado: $14$."
+  - titulo: "¿Es cierto que el error de un redondeo al orden de centésimas nunca supera $0.005$?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, el error máximo en redondeo a $10^{-2}$ es $\frac{1}{2} \cdot 10^{-2} = 0.005$.'
+  - titulo: "¿Se propaga la reserva al entero si se redondea un $9$ a la derecha por una cifra $\\ge 5$?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, como en el redondeo a décimas de $0.96 \implies 1.0$.'
 errores_frecuentes:
-- 'Empezar aproximación por redondeo sin realizar este control inicial: Marca la cifra que quieres conservar
-  y observa inmediatamente la siguiente.'
-- Memorizar “Redondear \(12.46\) a la décima da \(12.5\)” como respuesta aislada, sin reconstruir la definición
-  que lo justifica.
-- Convertir en receta el paso “Conserva si la siguiente es menor que \(5\); aumenta una unidad si es \(5\)
-  o mayor.” y usarlo aunque cambien las condiciones del problema.
-- Dar por válida una conclusión sobre aproximación por redondeo que contradice el criterio “El redondeo
-  busca un valor cercano y fácil de usar conservando una precisión dada”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Elimina las cifras restantes y compara la distancia
-  al valor original.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Redondear en cadena mirando más de una cifra a la derecha."
+  - "Olvidar sumar la reserva al dígito de la izquierda cuando una cifra $9$ se incrementa a $10$."
+  - "Confundir el redondeo con el truncamiento cuando la cifra subsiguiente es mayor o igual a 5."
+  - "Mirar el dígito del orden en lugar del dígito inmediatamente posterior para decidir si se sube."
+  - "Mantener las cifras de la derecha transformadas en ceros en lugar de eliminarlas."
+afirmaciones_verdaderas:
+  - "El redondeo selecciona la aproximación más cercana al número original en el orden solicitado."
+  - "Si la cifra inmediatamente siguiente al orden es mayor o igual a 5, la cifra del orden se incrementa en 1."
+al_terminar_debes_ponder: |
+  Debes ser capaz de redondear cualquier número decimal a unidades, décimas, centésimas o milésimas analizando la cifra subsiguiente y gestionando las reservas posicionales.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

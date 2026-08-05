@@ -1,61 +1,82 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.CONVERSION_A_DECIMAL
-titulo: Conversión de notación científica a número decimal
-objetivo: Pasar una escritura científica a decimal.
-introduccion: La potencia de diez contiene una instrucción de escala. Leer su signo y magnitud permite
-  reconstruir el decimal sin contar ceros a ciegas.
-resumen: Convertir desde notación científica consiste en escalar el coeficiente por la potencia de diez.
-  Un exponente positivo mueve la coma a la derecha y uno negativo a la izquierda.
-explicacion: 'Convertir desde notación científica consiste en escalar el coeficiente por la potencia de
-  diez.
+resumen_inicial: 'Para pasar de notación científica a forma decimal, se desplaza la
+  coma del coeficiente tantas posiciones como indique el exponente: a la derecha si
+  es positivo, a la izquierda si es negativo.'
+explicacion_simple: 'Para expandir un número de notación científica a su forma habitual:
 
+  - Si el exponente es positivo (ej: $3{,}2 \cdot 10^4$), mueves la coma **a la derecha**
+  4 lugares $\implies 32.000$.
 
-  Al analizar “\(3.07\times10^{-4}=0.000307\)” conviene observar la conexión siguiente: un exponente positivo
-  mueve la coma a la derecha y uno negativo a la izquierda'
+  - Si el exponente es negativo (ej: $5{,}1 \cdot 10^{-3}$), mueves la coma **a la
+  izquierda** 3 lugares $\implies 0{,}0051$.'
+explicacion_formal: 'La conversión de $k \cdot 10^n$ a forma estándar consiste en
+  efectuar la multiplicación por $10^n$:
+
+  - Si $n > 0$, equivale a multiplicar por $10^n$ (desplazamiento a la derecha).
+
+  - Si $n < 0$, equivale a dividir por $10^{|n|}$ (desplazamiento a la izquierda).'
+definiciones_clave: '- **Desplazamiento según el signo del exponente**: $+n \to \text{derecha}$;
+  $-n \to \text{izquierda}$.'
+propiedades_relaciones: '- **Relleno de ceros**: Las posiciones vacías generadas por
+  el desplazamiento se completan con ceros.'
+ejemplo_guiado:
+  enunciado: Convierte a número decimal A) $4{,}8 \cdot 10^5$ y B) $2{,}7 \cdot 10^{-4}$.
+  pasos:
+  - 'Para A: exponente $+5$. Mover la coma de $4{,}8$ cinco lugares a la derecha $\implies
+    480.000$.'
+  - 'Para B: exponente $-4$. Mover la coma de $2{,}7$ cuatro lugares a la izquierda
+    $\implies 0{,}00027$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor decimal de $6{,}3 \cdot 10^{-3}$?
+  choices:
+  - text: 0,0063
+    is_correct: true
+  - text: 0,063
+    is_correct: false
+  - text: '6300'
+    is_correct: false
+  - text: 0,00063
+    is_correct: false
+  explanation: 'La correcta es: 0,0063. Desplazamos la coma 3 lugares a la izquierda
+    desde 6,3.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿A qué número equivale $9{,}1 \cdot 10^3$?
+  choices:
+  - text: '9100'
+    is_correct: true
+  - text: '91000'
+    is_correct: false
+  - text: '910'
+    is_correct: false
+  - text: 0,0091
+    is_correct: false
+  explanation: 'La correcta es: 9100. Desplazamos la coma 3 lugares a la derecha desde
+    9,1.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Lee el signo y el valor absoluto del exponente.'
-- 'Paso 2: Desplaza la coma del coeficiente en la dirección y cantidad indicadas.'
-- 'Paso 3: Completa posiciones con ceros y verifica el orden de magnitud.'
+- 'Paso 1: Observar el valor y signo del exponente $n$.'
+- 'Paso 2: Si $n > 0$, mover la coma $n$ lugares hacia la derecha llenando con ceros.'
+- 'Paso 3: Si $n < 0$, mover la coma $|n|$ lugares hacia la izquierda agregando $0,$
+  si corresponde.'
+errores_correccion: No confundas la dirección. Exponente positivo empuja la coma a
+  la **derecha**; exponente negativo a la **izquierda**.
 ejemplos:
-- titulo: Aplicación razonada — Conversión de notación científica a número decimal
-  enunciado: \(3.07\times10^{-4}=0.000307\).
+- titulo: Ejemplo 1
+  enunciado: Expresa $1{,}5 \cdot 10^2$ en forma decimal.
+  alternativas:
+  - '150'
+  - '1500'
+  - '15'
+  respuesta: '150'
   solucion_pasos:
-  - Lee el signo y el valor absoluto del exponente.
-  - Desplaza la coma del coeficiente en la dirección y cantidad indicadas.
-  - Completa posiciones con ceros y verifica el orden de magnitud.
-- titulo: Revisión de una solución — Conversión de notación científica a número decimal
-  enunciado: Una solución aplica “Desplaza la coma del coeficiente en la dirección y cantidad indicadas.”,
-    pero termina sin comprobar que un exponente positivo mueve la coma a la derecha y uno negativo a la
-    izquierda. Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define conversión de notación científica a número decimal: convertir desde
-    notación científica consiste en escalar el coeficiente por la potencia de diez.'
-  - Lee el signo y el valor absoluto del exponente.
-  - 'Completa la revisión con este control: Completa posiciones con ceros y verifica el orden de magnitud.'
-- titulo: ¿Se cumple que un exponente positivo mueve la coma a la derecha y uno negativo a la izquierda?
-    — Conversión de notación científica a número decimal
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que convertir desde notación científica consiste en escalar
-    el coeficiente por la potencia de diez.
-  - El caso “\(3.07\times10^{-4}=0.000307\)” satisface esa condición.
-  - Completa posiciones con ceros y verifica el orden de magnitud.
-- titulo: ¿Es válido omitir el paso “Lee el signo y el valor absoluto del exponente”? — Conversión de
-    notación científica a número decimal
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de conversión de notación científica a número decimal.
-  - 'Omitirlo puede volver inválida la acción siguiente: Desplaza la coma del coeficiente en la dirección
-    y cantidad indicadas.'
-  - 'La solución debe terminar de este modo: Completa posiciones con ceros y verifica el orden de magnitud.'
+  - 'Mover coma 2 lugares a la derecha: $150$.'
 errores_frecuentes:
-- 'Confundir conversión de notación científica a número decimal con otro concepto y omitir este inicio:
-  Lee el signo y el valor absoluto del exponente.'
-- Aplicar mecánicamente “Desplaza la coma del coeficiente en la dirección y cantidad indicadas.” sin revisar
-  las condiciones de la definición.
-- Tomar “\(3.07\times10^{-4}=0.000307\)” como una igualdad aislada, sin explicar por qué es válida.
-- Aceptar una respuesta que contradice la idea clave “un exponente positivo mueve la coma a la derecha
-  y uno negativo a la izquierda”.
-- 'Terminar el desarrollo sin realizar este control: Completa posiciones con ceros y verifica el orden
-  de magnitud.'
-fuente: Currículum Nacional MINEDUC — Matemática, números reales, potencias, raíces, logaritmos y complejos.
+- Mover la coma en dirección contraria al signo del exponente.
+afirmaciones_verdaderas:
+- $k \cdot 10^n$ se expande moviendo la coma según el signo de $n$.
+al_terminar_debes_ponder: Convertir fluidamente de notación científica a desarrollo
+  decimal estándar.
+fuente: Texto escolar MINEDUC.
 estado: publicado

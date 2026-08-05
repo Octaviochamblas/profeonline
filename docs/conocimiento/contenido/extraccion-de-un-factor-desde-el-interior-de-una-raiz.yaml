@@ -1,63 +1,82 @@
 semantic_id: MAT.NUM.RAICES_PROPIEDADES.EXTRACCION_FACTOR_SUBRADICAL
-titulo: Extracción de un factor desde el interior de una raíz
-objetivo: Extraer factores perfectos desde un radical.
-introduccion: Simplificar un radical consiste en separar dentro del radicando la mayor potencia perfecta
-  posible. El factor extraído conserva la exactitud.
-resumen: Un factor que forma una potencia perfecta puede salir del radical. Solo salen grupos completos
-  de tantos factores como indique el índice.
-explicacion: 'Un factor que forma una potencia perfecta puede salir del radical.
+resumen_inicial: Consiste en sacar fuera del radical a los factores del radicando
+  cuyo exponente sea mayor o igual que el índice de la raíz.
+explicacion_simple: 'Para sacar un número de la raíz, se divide su exponente por el
+  índice:
 
+  - Lo que da en el cociente **sale fuera de la raíz**.
 
-  La situación “\(\sqrt{72}=\sqrt{36\cdot2}=6\sqrt2\)” permite comprobar, y no solo memorizar, que solo
-  salen grupos completos de tantos factores como indique el índice'
+  - Lo que da en el resto **se queda dentro de la raíz**.
+
+  Ejemplo en $\sqrt{x^5}$: el exponente $5$ dividido entre el índice $2$ da cociente
+  $2$ y resto $1$. Por ende sale $x^2$ y queda $x^1$: $x^2 \sqrt{x}$.'
+explicacion_formal: 'Para $\sqrt[n]{a^m}$ con $a \ge 0$ y $m \ge n$, por el algoritmo
+  de la división $m = n \cdot q + r$ con $0 \le r < n$. Por tanto:
+
+  $$\sqrt[n]{a^m} = \sqrt[n]{a^{n \cdot q + r}} = a^q \cdot \sqrt[n]{a^r}$$'
+definiciones_clave: '- **Factor extraído ($a^q$)**: Potencia que sale multiplicando
+  al radical exterior.'
+propiedades_relaciones: '- **Resto subradical ($a^r$)**: Potencia que no se pudo extraer
+  completamente por tener exponente menor que el índice.'
+ejemplo_guiado:
+  enunciado: Extrae factores de la raíz $\sqrt{x^7}$ con $x \ge 0$.
+  pasos:
+  - Identificar índice $2$ y exponente $7$.
+  - 'Dividir el exponente entre el índice: $7 \div 2 = 3$ con resto $1$.'
+  - El cociente $3$ indica que sale $x^3$. El resto $1$ indica que queda $x^1$ dentro.
+  - 'Escribir el resultado: $x^3 \sqrt{x}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es la expresión equivalente tras extraer factores de $\sqrt{a^9}$
+    ($a \ge 0$)?
+  choices:
+  - text: a^4 \sqrt{a}
+    is_correct: true
+  - text: a^3 \sqrt{a}
+    is_correct: false
+  - text: a^4 \sqrt{a^2}
+    is_correct: false
+  - text: a^8 \sqrt{a}
+    is_correct: false
+  explanation: 'La correcta es: a^4 \sqrt{a}. Dividimos $9 \div 2 = 4$ con resto $1
+    \implies a^4 \sqrt{a}$.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Extrae factores de $\sqrt[3]{y^7}$.
+  choices:
+  - text: y^2 \sqrt[3]{y}
+    is_correct: true
+  - text: y^3 \sqrt[3]{y}
+    is_correct: false
+  - text: y^2 \sqrt[3]{y^2}
+    is_correct: false
+  - text: y \sqrt[3]{y^4}
+    is_correct: false
+  explanation: 'La correcta es: y^2 \sqrt[3]{y}. Dividimos $7 \div 3 = 2$ con resto
+    $1 \implies y^2 \sqrt[3]{y}$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Factoriza el radicando y forma grupos según el índice.'
-- 'Paso 2: Extrae un factor por cada grupo completo y deja los restantes dentro.'
-- 'Paso 3: Eleva o vuelve a ingresar el factor para comprobar que recuperas el radicando.'
+- 'Paso 1: Dividir el exponente del factor entre el índice de la raíz.'
+- 'Paso 2: Colocar el factor fuera de la raíz elevado al cociente.'
+- 'Paso 3: Dejar el factor dentro de la raíz elevado al resto.'
+- 'Paso 4: Repetir el proceso con cada factor si hay más de uno.'
+errores_correccion: No sumes los exponentes al sacar factores. En $\sqrt{x^5}$, el
+  exponente $5 \div 2$ es cociente 2 y resto 1 ($x^2 \sqrt{x}$), no $x^3 \sqrt{x}$.
 ejemplos:
-- titulo: Aplicación razonada — Extracción de un factor desde el interior de una raíz
-  enunciado: \(\sqrt{72}=\sqrt{36\cdot2}=6\sqrt2\).
+- titulo: Ejemplo 1
+  enunciado: Extrae factores de $\sqrt{x^3}$.
+  alternativas:
+  - x \sqrt{x}
+  - x^2 \sqrt{x}
+  - \sqrt{x}
+  respuesta: x \sqrt{x}
   solucion_pasos:
-  - Factoriza el radicando y forma grupos según el índice.
-  - Extrae un factor por cada grupo completo y deja los restantes dentro.
-  - Eleva o vuelve a ingresar el factor para comprobar que recuperas el radicando.
-- titulo: Revisión de una solución — Extracción de un factor desde el interior de una raíz
-  enunciado: Una solución aplica “Extrae un factor por cada grupo completo y deja los restantes dentro.”,
-    pero termina sin comprobar que solo salen grupos completos de tantos factores como indique el índice.
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define extracción de un factor desde el interior de una raíz: un factor
-    que forma una potencia perfecta puede salir del radical.'
-  - Factoriza el radicando y forma grupos según el índice.
-  - 'Completa la revisión con este control: Eleva o vuelve a ingresar el factor para comprobar que recuperas
-    el radicando.'
-- titulo: ¿Se cumple que solo salen grupos completos de tantos factores como indique el índice? — Extracción
-    de un factor desde el interior de una raíz
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que un factor que forma una potencia perfecta puede salir del
-    radical.
-  - El caso “\(\sqrt{72}=\sqrt{36\cdot2}=6\sqrt2\)” satisface esa condición.
-  - Eleva o vuelve a ingresar el factor para comprobar que recuperas el radicando.
-- titulo: ¿Es válido omitir el paso “Factoriza el radicando y forma grupos según el índice”? — Extracción
-    de un factor desde el interior de una raíz
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de extracción de un factor desde el interior de una
-    raíz.
-  - 'Omitirlo puede volver inválida la acción siguiente: Extrae un factor por cada grupo completo y deja
-    los restantes dentro.'
-  - 'La solución debe terminar de este modo: Eleva o vuelve a ingresar el factor para comprobar que recuperas
-    el radicando.'
+  - $3 \div 2 = 1$ resto $1 \implies x\sqrt{x}$.
 errores_frecuentes:
-- 'Confundir extracción de un factor desde el interior de una raíz con otro concepto y omitir este inicio:
-  Factoriza el radicando y forma grupos según el índice.'
-- Aplicar mecánicamente “Extrae un factor por cada grupo completo y deja los restantes dentro.” sin revisar
-  las condiciones de la definición.
-- Tomar “\(\sqrt{72}=\sqrt{36\cdot2}=6\sqrt2\)” como una igualdad aislada, sin explicar por qué es válida.
-- Aceptar una respuesta que contradice la idea clave “solo salen grupos completos de tantos factores como
-  indique el índice”.
-- 'Terminar el desarrollo sin realizar este control: Eleva o vuelve a ingresar el factor para comprobar
-  que recuperas el radicando.'
-fuente: Currículum Nacional MINEDUC — Matemática, números reales, potencias, raíces, logaritmos y complejos.
+- Confundir el cociente (lo que sale) con el resto (lo que queda).
+afirmaciones_verdaderas:
+- $\sqrt[n]{a^{nq+r}} = a^q \sqrt[n]{a^r}$.
+al_terminar_debes_ponder: Extraer factores de un radical dividiendo exponente entre
+  índice.
+fuente: Texto escolar MINEDUC.
 estado: publicado

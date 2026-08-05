@@ -1,63 +1,87 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.MULTIPLICACION
-titulo: Multiplicación de números en notación científica
-objetivo: Multiplicar números expresados científicamente.
-introduccion: 'El producto separa dos tareas independientes: operar las cifras significativas y combinar
-  las escalas. Al final ambas partes vuelven a reunirse.'
-resumen: Para multiplicar notación científica se multiplican coeficientes y se suman exponentes. El resultado
-  debe normalizarse si el nuevo coeficiente queda fuera de \([1,10)\).
-explicacion: 'Para multiplicar notación científica se multiplican coeficientes y se suman exponentes.
+resumen_inicial: Para multiplicar números en notación científica, se multiplican los
+  coeficientes entre sí y se suman los exponentes de las potencias de 10 ($(a \cdot
+  10^m) \cdot (b \cdot 10^n) = (a \cdot b) \cdot 10^{m+n}$), reajustando la mantisa
+  si es necesario.
+explicacion_simple: 'Para multiplicar dos números en notación científica:
 
+  1. Multiplicas los dos coeficientes números normales entre sí.
 
-  En el caso “\((2\times10^3)(4\times10^5)=8\times10^8\)” esta idea se hace visible: el resultado debe
-  normalizarse si el nuevo coeficiente queda fuera de \([1,10)\)'
+  2. Sumas los exponentes de los 10.
+
+  3. Si el resultado del coeficiente queda de $10$ o más, corres la coma un lugar
+  a la izquierda y sumas $1$ al exponente final.
+
+  Ejemplo: $(3 \cdot 10^4) \cdot (4 \cdot 10^5) = (3 \cdot 4) \cdot 10^{4+5} = 12
+  \cdot 10^9 = 1{,}2 \cdot 10^{10}$.'
+explicacion_formal: 'Dados $x = a \cdot 10^m$ y $y = b \cdot 10^n$, su producto es:
+
+  $$x \cdot y = (a \cdot b) \cdot 10^{m+n}$$
+
+  Si $|a \cdot b| \ge 10$, se reescribe $a \cdot b = c \cdot 10^1$ con $1 \le |c|
+  < 10$, resultando en $c \cdot 10^{m+n+1}$.'
+definiciones_clave: '- **Reajuste / Normalización**: Ajuste del coeficiente resultante
+  para garantizar que cumpla $1 \le |k| < 10$.'
+propiedades_relaciones: '- **Asociatividad y conmutatividad**: Permiten agrupar los
+  coeficientes por un lado y las potencias por otro.'
+ejemplo_guiado:
+  enunciado: Multiplica $(2 \cdot 10^5) \cdot (4 \cdot 10^3)$.
+  pasos:
+  - 'Multiplicar los coeficientes: $2 \cdot 4 = 8$.'
+  - 'Sumar los exponentes: $5 + 3 = 8$.'
+  - 'Verificar normalización: $8$ está entre 1 y 10.'
+  - 'Escribir el resultado final: $8 \cdot 10^8$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es el resultado de $(3 \cdot 10^4) \cdot (2 \cdot 10^6)$?
+  choices:
+  - text: 6 · 10^{10}
+    is_correct: true
+  - text: 6 · 10^{24}
+    is_correct: false
+  - text: 5 · 10^{10}
+    is_correct: false
+  - text: 6 · 10^2
+    is_correct: false
+  explanation: 'La correcta es: 6 · 10^{10}. Multiplicamos coeficientes ($3 \cdot
+    2 = 6$) y sumamos exponentes ($4 + 6 = 10$).'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Calcula $(5 \cdot 10^3) \cdot (4 \cdot 10^2)$ en notación científica estándar.
+  choices:
+  - text: 2 · 10^6
+    is_correct: true
+  - text: 20 · 10^5
+    is_correct: false
+  - text: 2 · 10^5
+    is_correct: false
+  - text: 9 · 10^5
+    is_correct: false
+  explanation: 'La correcta es: 2 · 10^6. $5 \cdot 4 = 20$, luego $20 \cdot 10^5 =
+    2 \cdot 10^6$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Multiplica los coeficientes y suma los exponentes de diez.'
-- 'Paso 2: Normaliza el coeficiente moviendo la coma si es necesario.'
-- 'Paso 3: Compensa cada movimiento en el exponente y estima el orden de magnitud.'
+- 'Paso 1: Multiplicar los coeficientes $a \cdot b$.'
+- 'Paso 2: Sumar los exponentes $m + n$.'
+- 'Paso 3: Si el coeficiente $a \cdot b \ge 10$, dividir entre 10 y sumar 1 al exponente.'
+- 'Paso 4: Expresar en notación científica final.'
+errores_correccion: No olvides normalizar la respuesta final. Dejar $15 \cdot 10^6$
+  no es correcto; debes poner $1{,}5 \cdot 10^7$.
 ejemplos:
-- titulo: Aplicación razonada — Multiplicación de números en notación científica
-  enunciado: \((2\times10^3)(4\times10^5)=8\times10^8\).
+- titulo: Ejemplo 1
+  enunciado: Calcula $(2 \cdot 10^{-3}) \cdot (3 \cdot 10^7)$.
+  alternativas:
+  - 6 · 10^4
+  - 6 · 10^{-21}
+  - 5 · 10^4
+  respuesta: 6 · 10^4
   solucion_pasos:
-  - Multiplica los coeficientes y suma los exponentes de diez.
-  - Normaliza el coeficiente moviendo la coma si es necesario.
-  - Compensa cada movimiento en el exponente y estima el orden de magnitud.
-- titulo: Revisión de una solución — Multiplicación de números en notación científica
-  enunciado: Una solución aplica “Normaliza el coeficiente moviendo la coma si es necesario.”, pero termina
-    sin comprobar que el resultado debe normalizarse si el nuevo coeficiente queda fuera de \([1,10)\).
-    Determina qué falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define multiplicación de números en notación científica: para multiplicar
-    notación científica se multiplican coeficientes y se suman exponentes.'
-  - Multiplica los coeficientes y suma los exponentes de diez.
-  - 'Completa la revisión con este control: Compensa cada movimiento en el exponente y estima el orden
-    de magnitud.'
-- titulo: ¿Se cumple que el resultado debe normalizarse si el nuevo coeficiente queda fuera de \([1,10)\)?
-    — Multiplicación de números en notación científica
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que para multiplicar notación científica se multiplican coeficientes
-    y se suman exponentes.
-  - El caso “\((2\times10^3)(4\times10^5)=8\times10^8\)” satisface esa condición.
-  - Compensa cada movimiento en el exponente y estima el orden de magnitud.
-- titulo: ¿Es válido omitir el paso “Multiplica los coeficientes y suma los exponentes de diez”? — Multiplicación
-    de números en notación científica
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de multiplicación de números en notación científica.
-  - 'Omitirlo puede volver inválida la acción siguiente: Normaliza el coeficiente moviendo la coma si
-    es necesario.'
-  - 'La solución debe terminar de este modo: Compensa cada movimiento en el exponente y estima el orden
-    de magnitud.'
+  - $2 \cdot 3 = 6$; $-3 + 7 = 4 \implies 6 \cdot 10^4$.
 errores_frecuentes:
-- 'Confundir multiplicación de números en notación científica con otro concepto y omitir este inicio:
-  Multiplica los coeficientes y suma los exponentes de diez.'
-- Aplicar mecánicamente “Normaliza el coeficiente moviendo la coma si es necesario.” sin revisar las condiciones
-  de la definición.
-- Tomar “\((2\times10^3)(4\times10^5)=8\times10^8\)” como una igualdad aislada, sin explicar por qué es
-  válida.
-- Aceptar una respuesta que contradice la idea clave “el resultado debe normalizarse si el nuevo coeficiente
-  queda fuera de \([1,10)\)”.
-- 'Terminar el desarrollo sin realizar este control: Compensa cada movimiento en el exponente y estima
-  el orden de magnitud.'
-fuente: Currículum Nacional MINEDUC — Matemática, números reales, potencias, raíces, logaritmos y complejos.
+- Multiplicar los exponentes en lugar de sumarlos.
+afirmaciones_verdaderas:
+- En la multiplicación, se multiplican coeficientes y se suman exponentes.
+al_terminar_debes_ponder: Resolver multiplicaciones en notación científica aplicando
+  normalización.
+fuente: Texto escolar MINEDUC.
 estado: publicado

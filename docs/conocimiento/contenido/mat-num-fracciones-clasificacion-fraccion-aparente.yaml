@@ -1,68 +1,92 @@
 semantic_id: MAT.NUM.FRACCIONES_CLASIFICACION.FRACCION_APARENTE
-titulo: Fracción aparente
-objetivo: Reconocer una fracción aparente, cuyo valor equivale exactamente a un número entero.
-introduccion: 'Algunas fracciones, aunque tengan aspecto de fracción, en realidad representan un número
-  entero exacto: cuando el numerador es múltiplo del denominador, la fracción es aparente.'
-resumen: Una fracción \(\frac{a}{b}\) es aparente si \(a\) es múltiplo de \(b\), de modo que \(\frac{a}{b}\)
-  es un número entero.
-explicacion: '### Definición formal
+resumen_inicial: "Una fracción aparente es aquella cuyo numerador es un múltiplo exacto del denominador, por lo que representa en realidad un número entero."
+explicacion_simple: |
+  Imagina que tienes alfajores divididos a la mitad (en 2 partes). Si sirves 6 de esas mitades, la fracción es $\frac{6}{2}$. Aunque está escrita como fracción, si agrupas las mitades de a dos, descubres que tienes exactamente 3 alfajores enteros completos ($6 \div 2 = 3$). A estas fracciones se les llama 'aparentes' porque aparentan ser una parte o fracción, pero en realidad ocultan una cantidad exacta de enteros.
+explicacion_formal: |
+  Formalmente, una fracción $\frac{a}{b}$ con $a \in \mathbb{Z}$ y $b \in \mathbb{Z} \setminus \{0\}$ es una **fracción aparente** si el numerador $a$ es un múltiplo entero del denominador $b$:
+  $$\exists k \in \mathbb{Z} \quad \text{tal que} \quad a = k \cdot b$$
 
-
-  Una fracción \(\frac{a}{b}\) es aparente si existe \(k\in\mathbb{Z}\) tal que \(a=k\cdot b\), de modo
-  que \(\frac{a}{b}=k\in\mathbb{Z}\). Es un caso particular de fracción impropia (o igual a \(1\)) cuyo
-  valor coincide exactamente con un entero.
-
-
-  ### Desarrollo didáctico
-
-
-  \(\frac{12}{3}=4\), porque \(12\) es múltiplo de \(3\) (\(12=4\cdot3\)): aunque está escrita como fracción,
-  su valor es el número entero \(4\).'
+  Bajo esta condición, al efectuar la división exacta $a \div b$, el residuo es cero ($r = 0$), y la fracción se simplifica exactamente a un número entero:
+  $\frac{a}{b} = k \in \mathbb{Z}$
+  Casos destacados incluyen la fracción unitaria $\frac{b}{b} = 1$ y la fracción nula $\frac{0}{b} = 0$.
+definiciones_clave: |
+  - **Fracción aparente**: Fracción cuyo numerador es divisible de forma exacta por el denominador, representando un entero.
+  - **Múltiplo del denominador**: Condición $a = k \cdot b$ donde $k \in \mathbb{Z}$.
+  - **Reducción entera**: Simplificación directa de $\frac{a}{b}$ a la constante entera $k$.
+propiedades_relaciones: |
+  - **Residuo nulo**: Al realizar el algoritmo de la división $a = b \cdot q + r$, la fracción es aparente si y solo si $r = 0$.
+  - **Inclusión en los enteros**: El conjunto de valores de las fracciones aparentes es idéntico al conjunto de los números enteros ($\mathbb{Z} \subset \mathbb{Q}$).
+  - **Forma racional del número entero**: Todo entero $n \in \mathbb{Z}$ puede escribirse como una fracción aparente infinitas veces ($\frac{n}{1}, \frac{2n}{2}, \frac{3n}{3}, \dots$).
+ejemplo_guiado:
+  enunciado: "Dada la expresión $\\frac{24}{6}$, verifica si corresponde a una fracción aparente, calcula su valor entero equivalente y demuestra qué ocurre si el numerador pasa a ser $25$."
+  pasos:
+    - 'Verificar la divisibilidad de $24$ entre $6$: $24 \div 6 = 4$ exacto (residuo $0$). Como $24 = 4 \cdot 6$, es una fracción aparente.'
+    - 'Expresar su valor entero equivalente: $\frac{24}{6} = 4$.'
+    - 'Analizar el caso con $25$: $25 \div 6 = 4$ con residuo $1$. Como el residuo no es cero, $\frac{25}{6}$ deja de ser aparente y pasa a ser una fracción impropia no entera ($4\frac{1}{6}$).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Qué condición matemática define formalmente que la fracción $\\frac{a}{b}$ sea una fracción aparente?"
+    choices:
+      - {text: "El numerador $a$ es un múltiplo entero exacto del denominador $b$ ($a = k \\cdot b$).", is_correct: true}
+      - {text: "El numerador $a$ es menor que el denominador $b$ ($a < b$).", is_correct: false}
+      - {text: "El denominador $b$ es un número primo mayor que $a$.", is_correct: false}
+      - {text: "La suma de $a$ y $b$ debe dar como resultado un número par.", is_correct: false}
+    explanation: "La correcta es El numerador $a$ es un múltiplo entero exacto del denominador $b$ ($a = k \\cdot b$).: la divisibilidad exacta sin residuo caracteriza a las fracciones aparentes."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Cuál de las siguientes fracciones es una fracción aparente cuyo valor numérico equivale al entero $5$?"
+    choices:
+      - {text: '\$\frac{35}{7}$', is_correct: true}
+      - {text: '\$\frac{35}{6}$', is_correct: false}
+      - {text: '\$\frac{5}{35}$', is_correct: false}
+      - {text: '\$\frac{30}{7}$', is_correct: false}
+    explanation: 'La correcta es$ \frac{35}{7}$: al dividir $35 \div 7$, el resultado exacto es $5$ sin residuo.'
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Revisa que el denominador sea distinto de cero.'
-- 'Paso 2: Comprueba si el numerador es múltiplo del denominador.'
-- 'Paso 3: Efectúa la división exacta para obtener el entero representado.'
+  - 'Paso 1: Tomar la fracción $\frac{a}{b}$ e identificar el numerador $a$ y el denominador $b$.'
+  - 'Paso 2: Realizar la división $a \div b$.'
+  - "Paso 3: Si el residuo es $0$ (división exacta), concluir que la fracción es aparente y anotar el cociente como un entero."
+errores_correccion: |
+  Un error habitual es pensar que por tener forma de fracción ($\frac{a}{b}$), el número no es un entero. Recuerda que toda fracción aparente es simplemente un número entero 'disfrazado' de división.
 ejemplos:
-- titulo: Aplicación razonada — Identificación de fracción aparente
-  enunciado: \(\frac{12}{3}=4\), por eso es una fracción aparente.
-  solucion_pasos:
-  - Revisa que el denominador sea distinto de cero.
-  - Comprueba si el numerador es múltiplo del denominador.
-  - Efectúa la división exacta para obtener el entero representado.
-- titulo: Revisión de una solución — Identificación de fracción aparente
-  enunciado: Una solución aplica “Comprueba si el numerador es múltiplo del denominador.”, pero termina
-    sin comprobar que toda fracción aparente puede simplificarse hasta obtener un entero. Determina qué
-    falta justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define identificación de fracción aparente: una fracción aparente es una
-    fracción cuyo numerador es múltiplo del denominador y equivale a un número entero.'
-  - Revisa que el denominador sea distinto de cero.
-  - 'Completa la revisión con este control: Efectúa la división exacta para obtener el entero representado.'
-- titulo: ¿Se cumple que toda fracción aparente puede simplificarse hasta obtener un entero? — Identificación
-    de fracción aparente
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que una fracción aparente es una fracción cuyo numerador es
-    múltiplo del denominador y equivale a un número entero.
-  - El caso “\(\frac{12}{3}=4\), por eso es una fracción aparente” satisface esa condición.
-  - Efectúa la división exacta para obtener el entero representado.
-- titulo: ¿Es válido omitir el paso “Revisa que el denominador sea distinto de cero”? — Identificación
-    de fracción aparente
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de identificación de fracción aparente.
-  - 'Omitirlo puede volver inválida la acción siguiente: Comprueba si el numerador es múltiplo del denominador.'
-  - 'La solución debe terminar de este modo: Efectúa la división exacta para obtener el entero representado.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Determina cuál de las siguientes expresiones corresponde a una fracción aparente."
+    alternativas:
+      - '\$\frac{18}{3}$'
+      - '\$\frac{18}{4}$'
+      - '\$\frac{3}{18}$'
+    respuesta: '\$\frac{18}{3}$'
+    solucion_pasos:
+      - 'Evaluamos las divisiones: $18 \div 3 = 6$ de forma exacta.'
+      - 'Como el residuo es cero, $\frac{18}{3}$ representa el entero 6 y es una fracción aparente.'
+  - titulo: "Ejemplo 2"
+    enunciado: "En un taller se cortan alambres en trozos de $\\frac{1}{4}$ de metro. Si se utilizan 32 trozos, ¿cuántos metros enteros de alambre se usaron en total?"
+    alternativas:
+      - 'Se usaron 8 metros enteros, porque \$\frac{32}{4}$ = 8 es una fracción aparente.'
+      - "Se usaron 32 metros enteros."
+      - "Se usaron 4 metros enteros."
+    respuesta: 'Se usaron 8 metros enteros, porque \$\frac{32}{4}$ = 8 es una fracción aparente.'
+    solucion_pasos:
+      - 'La fracción total es $\frac{32}{4}$ metros.'
+      - 'Como $32 \div 4 = 8$ de manera exacta, corresponde a la fracción aparente equivalente a 8 metros.'
+  - titulo: "¿La fracción $\\frac{0}{7}$ es una fracción aparente que equivale al entero 0?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, $0$ es múltiplo de cualquier entero no nulo ($0 = 0 \cdot 7$), resultando $\frac{0}{7} = 0$.'
+  - titulo: "¿Cualquier número entero $n$ se puede representar como una fracción aparente?"
+    respuesta: "Sí"
+    solucion_pasos:
+      - 'Sí, basta escribir $\frac{n}{1}$ o amplificar por cualquier constante $c \neq 0$ obteniendo $\frac{n \cdot c}{c}$.'
 errores_frecuentes:
-- 'Empezar identificación de fracción aparente sin realizar este control inicial: Revisa que el denominador
-  sea distinto de cero.'
-- Memorizar “\(\frac{12}{3}=4\), por eso es una fracción aparente” como respuesta aislada, sin reconstruir
-  la definición que lo justifica.
-- Convertir en receta el paso “Comprueba si el numerador es múltiplo del denominador.” y usarlo aunque
-  cambien las condiciones del problema.
-- Dar por válida una conclusión sobre identificación de fracción aparente que contradice el criterio “Toda
-  fracción aparente puede simplificarse hasta obtener un entero”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Efectúa la división exacta para obtener el entero
-  representado.'
-fuente: Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales.
+  - "Creer que las fracciones aparentes forman un conjunto aparte fuera de los números enteros."
+  - "Confundir fracción aparente con fracción propia cuando el numerador es menor."
+  - 'Asumir que $\frac{7}{7}$ no es aparente porque el numerador no es estrictamente mayor que el denominador.'
+  - "Intentar escribir una fracción aparente como número mixto con fracción propia remanente."
+  - "Olvidar que $0$ dividido por cualquier entero distinto de cero resulta en la fracción aparente $0$."
+afirmaciones_verdaderas:
+  - "Una fracción aparente representa exactamente un número entero porque su división no deja residuo."
+  - 'Toda expresión de la forma $\frac{b}{b}$ con $b \neq 0$ es una fracción aparente equivalente a $1$.'
+al_terminar_debes_ponder: |
+  Debes ser capaz de reconocer cuándo una fracción representa en realidad un número entero (fracción aparente), efectuar la división exacta y representar cualquier entero como fracción aparente.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado

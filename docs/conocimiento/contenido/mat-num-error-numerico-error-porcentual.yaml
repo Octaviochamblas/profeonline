@@ -1,65 +1,99 @@
 semantic_id: MAT.NUM.ERROR_NUMERICO.ERROR_PORCENTUAL
-titulo: Error porcentual de una aproximación
-objetivo: Expresar el error relativo de una aproximación como porcentaje.
-introduccion: El error relativo suele expresarse como porcentaje para facilitar su interpretación y comparación
-  entre distintas mediciones o cálculos.
-resumen: El error porcentual es el error relativo multiplicado por 100, expresado con el símbolo \(\%\).
-explicacion: '### Definición formal
+resumen_inicial: "El error porcentual expresa el error relativo en forma de porcentaje, indicando el impacto proporcional del error por cada 100 unidades del valor exacto."
+explicacion_simple: |
+  El **error porcentual** es sencillamente el error relativo **expresado en porcentaje (%)**. Te dice qué porcentaje del valor real representa tu equivocación. Es la forma más fácil de comunicar la precisión de una medición en la práctica diaria, la ciencia y la ingeniería. Para calcularlo, primero hallas el error relativo (dividiendo el error absoluto por el valor real) y luego **multiplicas el resultado por $100$**, agregando el símbolo $\%$.
+explicacion_formal: |
+  Formalmente, dado un valor exacto $X \in \mathbb{R}$ ($X \neq 0$) y un valor aproximado $X_{\text{aprox}} \in \mathbb{R}$, el **error porcentual** $E_p$ se define como:
+  $E_p = E_r \cdot 100\% = \frac{|X - X_{\text{aprox}}|}{|X|} \cdot 100\%$
 
-
-  Si \(E_r\) es el error relativo, el error porcentual es \(E_p=E_r\cdot100\%\).
-
-
-  ### Desarrollo didáctico
-
-
-  Si el error relativo es 0.03, el error porcentual es \(0.03\cdot100\%=3\%\).'
+  Propiedades fundamentales:
+  1. **Escala porcentual**: $E_p$ transforma la razón adimensional $E_r \in [0, \infty)$ a la escala estandarizada de base 100.
+  2. **Invarianza de escala**: Expresa el margen de imprecisión porcentual universal independientemente del sistema de unidades utilizado.
+  3. **Cota de tolerancia industrial**: En aplicaciones de ingeniería, un margen de error tolerado se especifica habitualmente como $E_p \le \delta\%$.
+definiciones_clave: |
+  - **Error porcentual ($E_p$)**: Representación porcentual del error relativo dada por la relación $E_r \cdot 100\%$.
+  - **Margen de error porcentual ($\delta\%$)**: Límite superior máximo tolerado de imprecisión en procesos de fabricación, cálculo o medición.
+  - **Conversión a base 100**: Multiplicación del cociente adimensional $E_r$ por el factor escalar $100\%$.
+propiedades_relaciones: |
+  - **Relación directa con error relativo**: $E_p = 100 \cdot E_r$. Si $E_r = 0.05 \implies E_p = 5\%$.
+  - **Comparación de tolerancias**: Permite evaluar de forma inmediata si un cálculo cumple con un estándar de calidad preestablecido (por ejemplo, tener un error porcentual menor al $1\%$).
+  - **Sensibilidad al tamaño del valor real**: Valores reales pequeños hacen que el error porcentual sea sumamente sensible a pequeñas variaciones absolutas.
+ejemplo_guiado:
+  enunciado: "Se calcula la masa de una sustancia dando un valor real $X = 250$ g, mientras que una balanza registra $X_{\\text{aprox}} = 245$ g. Calcula el error absoluto, el error relativo y el error porcentual del proceso de pesaje."
+  pasos:
+    - "Paso 1: Calcular el error absoluto: $E_a = |250 - 245| = 5$ g."
+    - 'Paso 2: Calcular el error relativo: $E_r = \frac{5}{250} = \frac{1}{50} = 0.02$.'
+    - 'Paso 3: Convertir a error porcentual multiplicando por $100\%$:'
+    - '   $E_p = 0.02 \cdot 100\% = 2\%$.'
+    - 'Concluir: el error porcentual cometido en la medición de la masa es del $2\%$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cómo se obtiene el error porcentual a partir del error relativo?"
+    choices:
+      - {text: "Multiplicando el error relativo por $100\\%$.", is_correct: true}
+      - {text: "Dividiendo el error relativo por 100.", is_correct: false}
+      - {text: "Restando 100 al error absoluto.", is_correct: false}
+      - {text: "Sumando 100 al valor real.", is_correct: false}
+    explanation: "La correcta es Multiplicando el error relativo por $100\\%$.: por definición de conversión de proporción adimensional a formato de porcentaje."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Si el error relativo de una aproximación es $0.004$, ¿cuál es su error porcentual?"
+    choices:
+      - {text: "0.4%", is_correct: true}
+      - {text: "4%", is_correct: false}
+      - {text: "40%", is_correct: false}
+      - {text: "0.04%", is_correct: false}
+    explanation: "La correcta es 0.4%: $E_p = 0.004 \\cdot 100\\% = 0.4\\%$."
+    reinforcement_section: "Ejemplo guiado"
 procedimiento:
-- 'Paso 1: Obtén el error relativo a partir del valor exacto y el aproximado.'
-- 'Paso 2: Multiplica el error relativo por \(100\).'
-- 'Paso 3: Añade el símbolo \(\%\) e interpreta el porcentaje respecto del valor exacto.'
+  - 'Paso 1: Obtener el error absoluto $E_a = |X - X_{\text{aprox}}|$.'
+  - 'Paso 2: Obtener el error relativo dividiendo entre el valor exacto $E_r = \frac{E_a}{|X|}$.'
+  - "Paso 3: Multiplicar la fracción o decimal obtenido por $100$."
+  - 'Paso 4: Adjuntar la notación del símbolo de porcentaje ($\%$) al número final.'
+  - "Paso 5: Interpretar el porcentaje obtenido en relación con la tolerancia requerida."
+errores_correccion: |
+  Un error frecuente es olvidar multiplicar por 100 y decir que el error porcentual es $0.02$ en vez de $2\%$. **Recuerda que el error porcentual requiere MULTIPLICAR POR 100 y llevar el símbolo de $\%$.**
 ejemplos:
-- titulo: Aplicación razonada — Cálculo del error porcentual
-  enunciado: Si el error relativo es 0.03, el error porcentual es \(3\%\).
-  solucion_pasos:
-  - Obtén el error relativo a partir del valor exacto y el aproximado.
-  - Multiplica el error relativo por \(100\).
-  - Añade el símbolo \(\%\) e interpreta el porcentaje respecto del valor exacto.
-- titulo: Revisión de una solución — Cálculo del error porcentual
-  enunciado: Una solución aplica “Multiplica el error relativo por \(100\).”, pero termina sin comprobar
-    que multiplicar el error relativo por 100 permite interpretarlo como porcentaje. Determina qué falta
-    justificar.
-  solucion_pasos:
-  - 'Vuelve a la condición que define cálculo del error porcentual: el error porcentual es el error relativo
-    expresado en porcentaje.'
-  - Obtén el error relativo a partir del valor exacto y el aproximado.
-  - 'Completa la revisión con este control: Añade el símbolo \(\%\) e interpreta el porcentaje respecto
-    del valor exacto.'
-- titulo: ¿Se cumple que multiplicar el error relativo por 100 permite interpretarlo como porcentaje?
-    — Cálculo del error porcentual
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La definición pertinente establece que el error porcentual es el error relativo expresado en porcentaje.
-  - El caso “Si el error relativo es 0.03, el error porcentual es \(3\%\)” satisface esa condición.
-  - Añade el símbolo \(\%\) e interpreta el porcentaje respecto del valor exacto.
-- titulo: ¿Es válido omitir el paso “Obtén el error relativo a partir del valor exacto y el aproximado”?
-    — Cálculo del error porcentual
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Ese paso comprueba una condición necesaria de cálculo del error porcentual.
-  - 'Omitirlo puede volver inválida la acción siguiente: Multiplica el error relativo por \(100\).'
-  - 'La solución debe terminar de este modo: Añade el símbolo \(\%\) e interpreta el porcentaje respecto
-    del valor exacto.'
+  - titulo: "Ejemplo 1"
+    enunciado: "Si un valor real es $20$ y el valor aproximado es $19$, calcula el error porcentual."
+    alternativas:
+      - "5%"
+      - "1%"
+      - "0.05%"
+    respuesta: "5%"
+    solucion_pasos:
+      - "$E_a = |20 - 19| = 1$."
+      - '$E_r = \frac{1}{20} = 0.05$.'
+      - '$E_p = 0.05 \cdot 100\% = 5\%$.'
+  - titulo: "Ejemplo 2"
+    enunciado: "Se redondea $3.1416$ a las centésimas ($3.14$). ¿Cuál es el error porcentual aproximado?"
+    alternativas:
+      - "0.051%"
+      - "0.51%"
+      - "5.1%"
+    respuesta: "0.051%"
+    solucion_pasos:
+      - "$E_a = |3.1416 - 3.14| = 0.0016$."
+      - '$E_r = \frac{0.0016}{3.1416} \approx 0.0005093$.'
+      - '$E_p = 0.0005093 \cdot 100\% \approx 0.051\%$.'
+  - titulo: "¿Se conserva la unidad de medida original en el error porcentual?"
+    respuesta: "No, se expresa en notación de porcentaje (%)."
+    solucion_pasos:
+      - "Las unidades se cancelan en el error relativo; el resultado final se expresa exclusivamente como un porcentaje."
+  - titulo: "¿Puede el error porcentual superar el 100%?"
+    respuesta: "Sí, si el error absoluto es superior al valor real original."
+    solucion_pasos:
+      - 'Por ejemplo, si el valor real es 10 y se aproxima por 30, $E_a = 20$, $E_r = 2 \implies E_p = 200\%$.'
 errores_frecuentes:
-- 'Empezar cálculo del error porcentual sin realizar este control inicial: Obtén el error relativo a partir
-  del valor exacto y el aproximado.'
-- Memorizar “Si el error relativo es 0.03, el error porcentual es \(3\%\)” como respuesta aislada, sin
-  reconstruir la definición que lo justifica.
-- Convertir en receta el paso “Multiplica el error relativo por \(100\).” y usarlo aunque cambien las
-  condiciones del problema.
-- Dar por válida una conclusión sobre cálculo del error porcentual que contradice el criterio “Multiplicar
-  el error relativo por 100 permite interpretarlo como porcentaje”.
-- 'Cerrar el ejercicio sin esta comprobación específica: Añade el símbolo \(\%\) e interpreta el porcentaje
-  respecto del valor exacto.'
-fuente: Texto escolar MINEDUC — Matemática 7°-8° Básico, decimales, aproximaciones y error.
+  - "Olvidar multiplicar por 100 al pasar de error relativo a error porcentual."
+  - 'Olvidar añadir el símbolo $\%$ en el resultado final.'
+  - "Calcular el porcentaje respecto del valor aproximado en vez del valor real."
+  - "Confundir el error porcentual con el error absoluto."
+  - "Dividir por 100 en lugar de multiplicar al calcular $E_p$."
+afirmaciones_verdaderas:
+  - "El error porcentual es el error relativo multiplicado por 100%."
+  - "Permite comparar márgenes de error de forma estandarizada e independiente de las unidades de medida."
+al_terminar_debes_ponder: |
+  Debes ser capaz de calcular e interpretar el error porcentual en estimaciones cuantitativas evaluando el impacto relativo sobre la escala de base 100.
+fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
 estado: publicado
