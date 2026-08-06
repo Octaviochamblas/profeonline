@@ -2,6 +2,9 @@
 
 - **Estado:** Por iniciar
 - **Creado:** 2026-08-05
+- **Nota 2026-08-05 (noche):** `al_terminar_debes_poder` salió del alcance — era un typo de
+  clave (`_ponder`→`_poder`), ya corregido globalmente sin necesitar redacción. Quedan 3 campos,
+  no 4.
 - **Prioridad:** P1 · **Cartera:** educativa
 - **Tipo:** pedagogía
 - **Dueño sugerido:** 🏛️ Claude (redacción manual; no automatizable con plantilla — ver "Propuesta")
@@ -27,11 +30,10 @@ para completar, **sin plantilla genérica** (esa es justamente la causa del prob
 1. **`ejemplo_guiado`** (309 de 333, 78-100% según nodo): redactar un problema concreto con datos
    propios (función/ecuación específica con coeficientes reales, no el nombre del recurso pegado
    en una frase molde) y resolverlo en 3-4 pasos reales.
-2. **`al_terminar_debes_poder`** (333 recursos, 100%): 1-2 frases con la meta de aprendizaje.
-3. **`afirmaciones_verdaderas`** (333 recursos, 100%): agregar hasta llegar a mínimo 2
+2. **`afirmaciones_verdaderas`** (333 recursos, 100%): agregar hasta llegar a mínimo 2
    afirmaciones ciertas, breves y verificables (hoy todos tienen solo 1).
-4. **`errores_frecuentes`** (330 de 333): completar hasta exactamente 5 afirmaciones falsas.
-5. Cargar en DB local (`load_node_content`) y crear una migración de datos nueva, siguiendo el
+3. **`errores_frecuentes`** (330 de 333): completar hasta exactamente 5 afirmaciones falsas.
+4. Cargar en DB local (`load_node_content`) y crear una migración de datos nueva, siguiendo el
    patrón de las migraciones `0052`-`0070`.
 
 ## No-objetivos (qué queda FUERA)
@@ -44,13 +46,13 @@ para completar, **sin plantilla genérica** (esa es justamente la causa del prob
 ## Criterios de aceptación (verificables)
 - [ ] Barrera verde: `test` · `check` · `makemigrations --check --dry-run`
 - [ ] Script de verificación (adaptar `scratch/audit_antigravity_12secciones.py`) da 0 fallas
-      para los 333 recursos de `03.10`–`03.15` en los 4 campos de la tabla de la auditoría.
+      para los 333 recursos de `03.10`–`03.15` en los 3 campos de la tabla de la auditoría.
 - [ ] `ejemplo_guiado.enunciado` de cada recurso contiene datos numéricos/coeficientes concretos
       (no solo el nombre del recurso).
 - [ ] Migración de datos nueva creada, aplicada en local y desplegada.
 
 ## Plan de pruebas
-- Verificación DB con script adaptado de la auditoría (0 fallas en los 4 campos).
+- Verificación DB con script adaptado de la auditoría (0 fallas en los 3 campos).
 - Lectura manual de una muestra (5-10 recursos) para confirmar que `ejemplo_guiado` resuelve un
   problema real y no repite el patrón de plantilla detectado.
 - Suite completa (`python manage.py test`) antes de pushear, según regla del proyecto.
