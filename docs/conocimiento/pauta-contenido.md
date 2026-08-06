@@ -71,6 +71,16 @@ ejemplo_guiado:
 # Ejemplo BUENO real: enunciado "En un curso hay 15 hombres y 20 mujeres. Escribe
 # la razón entre la cantidad de hombres y mujeres en su forma simplificada." con
 # pasos que operan esos números concretos.
+#
+# ⚠️ SEGUNDA REGLA DURA (agregada 2026-08-05, tras auditar Geometría): tener números
+# concretos NO basta. `enunciado` + `pasos` deben ser ÚNICOS para ESTE recurso — está
+# PROHIBIDO copiar el mismo ejemplo_guiado en varios recursos del mismo sub-tema
+# (aunque tenga datos numéricos reales). Caso real rechazado: "Calcula el área de un
+# círculo de radio r=5cm" se copió sin cambios en 30 recursos de Geometría, incluyendo
+# uno sobre ángulo exterior entre secantes — sin relación con el área. El ejemplo debe
+# resolver específicamente EL CONCEPTO de ESTE recurso, no un tema genérico de la
+# familia. Antes de cargar, verificar que ningún otro YAML del mismo sub-tema tenga
+# el mismo `enunciado`.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre lo explicado arriba."
@@ -317,6 +327,8 @@ del banco. Un recurso sin JSONL se puede leer, pero no se puede "ganar" en él.
 - [ ] `ejemplo_guiado.enunciado` trae datos concretos (números/expresión propios), no es una
       frase genérica con el nombre del recurso pegado — ni repite los mismos 4 `pasos` molde de
       otro recurso del mismo sub-tema
+- [ ] `ejemplo_guiado.enunciado` es distinto (no copiado) del de cualquier otro recurso del
+      mismo sub-tema, y resuelve el concepto específico de ESTE recurso
 - [ ] `al_terminar_debes_poder` no está vacío (1-2 frases con la meta de aprendizaje)
 - [ ] `checkpoints`: exactamente 2 (`after_explicacion_formal`, `after_ejemplo_guiado`), 4 alternativas c/u, 1 sola correcta, `explanation` menciona el texto de la correcta
 - [ ] `ejemplos`: mínimo 2 Tipo A + 2 Tipo B (al final)
