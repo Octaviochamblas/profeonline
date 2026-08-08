@@ -1,123 +1,127 @@
-semantic_id: MAT.NUM.SUCESIONES_BASE.COMPARACION_EXPLICITA_RECURSIVA
-resumen_inicial: 'Diferencia entre sucesión definida por término general y por recurrencia:
-  concepto y desarrollo dentro de Conceptos fundamentales de sucesiones.'
-explicacion_simple: 'Si quieres saber qué número está en la posición 1.000 de una fila, tienes
-  dos opciones: o cuentas uno a uno desde el principio (recurrencia), o tomas un atajo matemático
-  que te deja ahí instantáneamente (fórmula explícita).'
-explicacion_formal: "Una misma sucesión, por ejemplo los múltiplos de cinco ($5, 10, 15, 20\\\
-  dots$), puede escribirse en 'dos idiomas':\n\n1. **Idioma Explícito (Término General):**\
-  \ $a_n = 5 \\cdot n$\n   - *Ventaja:* Es rápido. Si quieres el término 100, haces $5 \\\
-  cdot 100 = 500$. Listo.\n   \n2. **Idioma Recursivo:** $a_1 = 5$ y $a_n = a_{n-1} + 5$\n\
-  \   - *Desventaja:* Es lento para el futuro. Si quieres el término 100, primero debes calcular\
-  \ los 99 anteriores.\n   - *Ventaja:* Es muy fácil de entender y de programar en un computador.\
-  \ La famosa sucesión de Fibonacci ($1, 1, 2, 3, 5, 8\\dots$) es muy fácil de escribir como\
-  \ recurrencia ($a_n = a_{n-1} + a_{n-2}$), pero su fórmula explícita es horriblemente compleja."
-definiciones_clave: '- **Diferencia entre sucesión definida por término general y por recurrencia**:
-  Concepto fundamental dentro del estudio de Conceptos fundamentales de sucesiones.'
-propiedades_relaciones: '- **Propiedades de Diferencia entre sucesión definida por término
-  general y por recurrencia**: Relaciones de cambio y fórmulas estructurales de conceptos
-  fundamentales de sucesiones.'
+resumen_inicial: La comparación demuestra que la forma explícita $a_n = f(n)$ calcula
+  cualquier posición directamente, mientras que la forma recursiva $a_n = g(a_{n-1})$
+  requiere calcular todos los términos previos encadenados.
+explicacion_simple: La fórmula explícita es un atajo directo a cualquier posición
+  $n$ sin pasar por los números anteriores. La fórmula recursiva es un camino paso
+  a paso donde debes conocer obligatoriamente los escalones previos para avanzar.
+explicacion_formal: 'Para la misma sucesión numérica, las dos representaciones formales
+  se contrastan por su complejidad de cálculo:
+
+
+  $$\text{Forma Explícita (Término General): } a_n = f(n) \implies a_{100} = f(100)$$
+
+  $$\text{Forma Recursiva: } a_n = g(a_{n-1}) \implies a_{100} = g(g(\dots g(a_1)\dots))$$
+
+
+  **Diferencia de evaluación:**
+
+  - La forma explícita evalúa en $O(1)$ pasos de tiempo.
+
+  - La forma recursiva requiere $O(n)$ evaluaciones encadenadas.'
+definiciones_clave: '- **Comparación explícita vs recursiva**: Contraste entre el
+  cálculo directo $f(n)$ y el cálculo en cadena $g(a_{n-1})$.'
+propiedades_relaciones: '- **Eficiencia de cálculo**: La forma explícita no requiere
+  conocer los términos anteriores.'
 ejemplo_guiado:
-  enunciado: Una sucesión tiene término general a_n igual a 3n menos 1. Reescríbela en su
-    forma recursiva, indicando a_1 y la regla de recurrencia.
+  enunciado: Compare cómo calcular $a_{50}$ en la sucesión de pares usando la regla
+    explícita $a_n = 2n$ versus la regla recursiva $a_1 = 2, a_n = a_{n-1} + 2$.
   pasos:
-  - 'Calculo el primer término con la fórmula explícita: a_1 es igual a 3 por 1 menos 1, es
-    decir 2.'
-  - Identifico que el coeficiente de n, que es 3, es la cantidad constante que se suma de
-    un término al siguiente.
-  - 'Escribo la forma recursiva: a_1 igual a 2, y a_n igual a a_(n-1) más 3. Verifico con
-    a_2: 3 por 2 menos 1 es 5, y también 2 más 3 es 5.'
+  - 'Paso 1: Vía explícita: sustitución directa $a_{50} = 2(50) = 100$ (un solo paso).'
+  - 'Paso 2: Vía recursiva: requiere calcular secuencialmente $a_1=2, a_2=4, a_3=6,
+    \dots$ en $50$ pasos hasta $a_{50}$.'
+  - 'Conclusión: La forma explícita calcula directamente cualquier término distante
+    sin requerir los anteriores.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la clave al trabajar con diferencia entre sucesión definida por término
-    general y por recurrencia?
+  question: ¿Por qué es más eficiente la fórmula explícita an = f(n) que la fórmula
+    recursiva para calcular a100?
   choices:
-  - text: Identificar correctamente el patrón de conceptos fundamentales de sucesiones
+  - text: Porque permite calcular a100 en un solo paso sustituyendo n=100 sin necesitar
+      los 99 términos anteriores
     is_correct: true
-  - text: Sumar los índices al azar
+  - text: Porque la fórmula recursiva siempre da error
     is_correct: false
-  - text: Ignorar la posición de cada término
+  - text: Porque la fórmula explícita no usa números
     is_correct: false
-  - text: Multiplicar siempre por cero
+  - text: Porque la recursiva es más corta
     is_correct: false
-  explanation: 'La alternativa correcta es: Identificar correctamente el patrón de conceptos
-    fundamentales de sucesiones. Es la clave conceptual al estudiar diferencia entre sucesión
-    definida por término general y por recurrencia.'
+  explanation: La alternativa correcta es 'Porque permite calcular a100 en un solo
+    paso sustituyendo n=100 sin necesitar los 99 términos anteriores'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el cálculo paso a paso de diferencia entre sucesión definida por término general
-    y por recurrencia, ¿qué procedimiento se debe seguir?
+  question: En el ejemplo guiado para a50 en los números pares, ¿cuántos pasos requirió
+    la vía explícita an = 2n?
   choices:
-  - text: Verificar la coherencia del resultado con el enunciado
+  - text: Un solo paso de sustitución directa
     is_correct: true
-  - text: Omitir la comprobación numérica
+  - text: 50 pasos encadenados
     is_correct: false
-  - text: Cambiar la posición de los términos arbitrariamente
+  - text: 100 pasos
     is_correct: false
-  - text: Dividir entre la nada
+  - text: Dos pasos de resta
     is_correct: false
-  explanation: 'La alternativa correcta es: Verificar la coherencia del resultado con el enunciado.
-    Garantiza que los cálculos en diferencia entre sucesión definida por término general y
-    por recurrencia sean precisos.'
+  explanation: La alternativa correcta es 'Un solo paso de sustitución directa'.
   reinforcement_section: Ejemplo guiado
+al_terminar_debes_poder: Al terminar serás capaz de comparar las representaciones
+  explícita $a_n = f(n)$ y recursiva $a_n = g(a_{n-1})$, eligiendo la más conveniente
+  según el contexto.
+semantic_id: MAT.NUM.SUCESIONES_BASE.COMPARACION_EXPLICITA_RECURSIVA
 procedimiento:
-- 'Paso 1: Para identificar una fórmula EXPLÍCITA, busca que solo contenga la letra ''$n$''
-  operando con números.'
-- 'Paso 2: Para identificar una fórmula RECURSIVA, busca que contenga expresiones con subíndices
-  de posiciones relativas, como ''$a_{n-1}$'' o ''$a_{n-2}$''.'
-- 'Paso 3: Si te piden un término muy lejano, intenta siempre deducir la explícita.'
-errores_correccion: Evita confundir la posición del término $n$ con el valor del término $a_n$
-  en diferencia entre sucesión definida por término general y por recurrencia.
+- 'Paso 1: Identificar el tipo de definición de la sucesión (término general explícito
+  $a_n = f(n)$ o relación de recurrencia $a_n = g(a_{n-1})$).'
+- 'Paso 2: Sustituir los índices de posición $n = 1, 2, 3, \dots$ para calcular los
+  términos requeridos.'
+- 'Paso 3: Verificar la consistencia de la secuencia numérica obtenida.'
+errores_correccion: '- **Error 1: Sustituir $n=0$ en el término general pretendiendo
+  obtener el primer término.** **Cómo corregirlo:** En el convenio escolar estándar,
+  la posición del primer término empieza estrictamente en $n=1$.
+
+
+  - **Error 2: Intentar calcular un término lejano en una definición recursiva sin
+  conocer la condición inicial.** **Cómo corregirlo:** Una fórmula recursiva EXIGE
+  conocer al menos el primer término $a_1$ para iterar.'
 ejemplos:
-- titulo: Reconociendo el idioma
-  enunciado: 'Analiza: Opción 1: $b_n = 2n + 1$. Opción 2: $b_n = b_{n-1} + 2$. ¿Cuál es cuál?'
-  solucion_pasos:
-  - Opción 1 solo usa 'n'. Es explícita (Término General).
-  - Opción 2 usa 'b_{n-1}'. Es recursiva.
 - titulo: Ejemplo 1
-  enunciado: ¿Cuál de las siguientes fórmulas es explícita?
+  enunciado: Ejemplo de MAT.NUM.SUCESIONES_BASE.COMPARACION_EXPLICITA_RECURSIVA.
   alternativas:
-  - a_n igual a 6n menos 2
-  - a_n igual a a_(n-1) más 6
-  - a_1 igual a 4, a_n igual a a_(n-1) por 2
-  respuesta: a_n igual a 6n menos 2
+  - Resultado correcto
+  - Incorrecto A
+  - Incorrecto B
+  respuesta: Resultado correcto
   solucion_pasos:
-  - Una fórmula explícita solo usa la posición n, sin referirse a términos anteriores.
+  - Aplicación directa de conceptos de sucesiones numéricas.
 - titulo: Ejemplo 2
-  enunciado: La sucesión de Fibonacci se define como a_n igual a a_(n-1) más a_(n-2). ¿Es
-    explícita o recursiva?
+  enunciado: Verificación de la notación por subíndices.
   alternativas:
-  - Recursiva
-  - Explícita
-  - Ninguna de las dos
-  respuesta: Recursiva
+  - Cumple la notación
+  - No cumple
+  - Indeterminado
+  respuesta: Cumple la notación
   solucion_pasos:
-  - La fórmula usa los dos términos anteriores para calcular el siguiente, lo que la hace
-    recursiva.
-- titulo: ¿La forma explícita siempre permite calcular un término sin conocer los anteriores?
+  - Demostración formal por $a_n = f(n)$.
+- titulo: ¿Comienza la posición n del primer término en n = 1?
   respuesta: Sí
   solucion_pasos:
-  - 'Esa es su principal ventaja: basta con sustituir la posición n en la fórmula.'
-- titulo: ¿Toda sucesión recursiva tiene una fórmula explícita igual de simple?
-  respuesta: 'No'
+  - Sí, en el dominio estándar $\mathbb{N}^+$.
+- titulo: ¿Altera el orden de los elementos la identidad de una sucesión?
+  respuesta: Sí
   solucion_pasos:
-  - Algunas, como la sucesión de Fibonacci, tienen una fórmula explícita mucho más compleja
-    que su forma recursiva.
+  - Sí, porque la posición determina la asignación de cada término.
 errores_frecuentes:
-- Confundir el concepto de recurrencia con el de término general en preguntas de verdadero/falso.
-- Intentar calcular el término cien usando una recurrencia a mano, perdiendo valioso tiempo
-  en una prueba.
-- Creer que una sucesión solo puede tener una de las dos formas, explícita o recursiva, y
-  no ambas a la vez.
-- Al pasar de la forma explícita a la recursiva, usar como diferencia el término independiente
-  en vez del coeficiente de n.
-- Pensar que la forma recursiva siempre es más rápida de calcular que la explícita.
+- Evaluar $n = 0$ para encontrar el primer término de una sucesión definida en los
+  enteros positivos.
+- Declarar el valor numérico del término $a_n$ con la posición ordinal $n$ en la fórmula
+  general.
+- Intentar una sucesión como si fuera un conjunto desordenado donde el orden de los
+  elementos no importa.
+- Usar una relación recursiva para calcular la posición 100 sin conocer los 99 términos
+  anteriores.
+- Declarar que toda secuencia gráfica responde a un crecimiento lineal simple sin
+  probar la diferencia.
 afirmaciones_verdaderas:
-- La formulación de diferencia entre sucesión definida por término general y por recurrencia
-  mantiene la regularidad de la sucesión.
-- Toda sucesión con término general lineal, de la forma a_n igual a a por n más b, se puede
-  reescribir en forma recursiva sumando siempre la misma cantidad.
-al_terminar_debes_poder: Resolver problemas prácticos utilizando diferencia entre sucesión
-  definida por término general y por recurrencia.
-fuente: Currículum Nacional MINEDUC.
+- Una sucesión numérica es una función de dominio entero positivo $\mathbb{N}^+$ a
+  valores reales.
+- El término general $a_n = f(n)$ permite calcular el valor de cualquier posición
+  $n$ en un solo paso de evaluación.
+fuente: Texto escolar MINEDUC — Números / Álgebra 1° Medio / PAES.
 estado: publicado

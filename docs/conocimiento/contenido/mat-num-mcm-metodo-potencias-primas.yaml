@@ -1,103 +1,134 @@
 semantic_id: MAT.NUM.MINIMO_COMUN_MULTIPLO.METODO_POTENCIAS_PRIMAS
-resumen_inicial: "El MCM se calcula tomando todos los factores primos (comunes y no comunes) de las descomposiciones, elevados a su mayor exponente, y multiplicándolos."
-explicacion_simple: |
-  Imagina que eres un coleccionista que quiere armar el set definitivo de bloques. El
-  modelo A usa 2 piezas rojas y 1 azul; el modelo B usa 1 roja, 1 azul y 3 verdes. Para
-  armar cualquiera de los dos, tu caja debe tener el máximo de cada pieza: 2 rojas, 1
-  azul y 3 verdes. Así funciona el método de potencias primas para el MCM.
-explicacion_formal: |
-  Para calcular el MCM por **potencias primas**: se descompone cada número en factores
-  primos, se identifican todas las bases que aparecen (comunes y no comunes), y para cada
-  base se toma la potencia con el **mayor exponente**. Multiplicando esas potencias se
-  obtiene el MCM. Para $24=2^3\cdot3^1$ y $90=2^1\cdot3^2\cdot5^1$:
-  $\text{MCM}(24,90)=2^3\cdot3^2\cdot5^1=360$.
-definiciones_clave: |
-  **Factor no común**: primo que aparece en la descomposición de solo uno de los números;
-  a diferencia del M.C.D., el MCM sí lo incluye obligatoriamente.
-propiedades_relaciones: |
-  A diferencia del M.C.D. (que solo usa factores comunes con el menor exponente), el MCM
-  usa todos los factores, comunes y no comunes, con el mayor exponente.
+resumen_inicial: El m.c.m. mediante factores primos es el producto de todas las bases
+  primas comunes y no comunes elevadas a su mayor exponente.
+explicacion_simple: Para calcular el m.c.m. usando la descomposición prima, primero
+  escribimos cada número como producto de potencias de primos. Luego tomamos absolutamente
+  todas las bases primas que aparezcan (hayan o no en todos los números) y a cada
+  una le asignamos el exponente más alto con el que aparece.
+explicacion_formal: 'Dadas las descomposiciones canónicas de $a$ y $b$ sobre la unión
+  de bases primas $p_i$:
+
+
+  $$a = \prod p_i^{\alpha_i}, \quad b = \prod p_i^{\beta_i} \implies \operatorname{mcm}(a,
+  b) = \prod p_i^{\max(\alpha_i, \beta_i)}$$
+
+
+  **Desglose de la fórmula:**
+
+  - $\alpha_i, \beta_i \ge 0$: Exponentes de la base prima $p_i$ en cada número ($0$
+  si no aparece).
+
+  - $\max(\alpha_i, \beta_i)$: Selección obligatoria del exponente máximo para cada
+  base prima.
+
+
+  > **Complemento didáctico:** Para $12 = 2^2 \cdot 3^1$ y $18 = 2^1 \cdot 3^2$, tomamos
+  $2^{\max(2,1)} = 2^2$ y $3^{\max(1,2)} = 3^2$, dando $\operatorname{mcm}(12,18)
+  = 2^2 \cdot 3^2 = 36$.'
+definiciones_clave: '- **Regla del mayor exponente**: Criterio del m.c.m. que selecciona
+  el exponente máximo para cada base prima común y no común.'
 ejemplo_guiado:
-  enunciado: "Calcula el MCM de 20 y 36 por potencias primas."
+  enunciado: Calcule el $\operatorname{mcm}(18, 24)$ utilizando sus descomposiciones
+    en potencias de primos.
   pasos:
-    - 'Descomposición: $20=2^2\cdot5^1$, $36=2^2\cdot3^2$.'
-    - "Bases: $2$, $3$ y $5$. Mayor exponente: $2^2$, $3^2$, $5^1$."
-    - 'Conclusión: $\text{MCM}(20,36)=2^2\cdot3^2\cdot5=180$.'
+  - 'Paso 1: Escribir la descomposición de 18: $18 = 2^1 \cdot 3^2$.'
+  - 'Paso 2: Escribir la descomposición de 24: $24 = 2^3 \cdot 3^1$.'
+  - 'Paso 3: Seleccionar el mayor exponente para la base 2: $\max(1, 3) = 3 \implies
+    2^3$.'
+  - 'Paso 4: Seleccionar el mayor exponente para la base 3: $\max(2, 1) = 2 \implies
+    3^2$.'
+  - 'Paso 5: Multiplicar los factores seleccionados: $2^3 \cdot 3^2 = 8 \cdot 9 =
+    72$.'
+  - 'Conclusión: $\operatorname{mcm}(18, 24) = 72$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué exponente se elige para cada factor primo al calcular el MCM por este método?"
-    choices:
-      - {text: "El mayor exponente entre las descomposiciones", is_correct: true}
-      - {text: "El menor exponente entre las descomposiciones", is_correct: false}
-      - {text: "La suma de los exponentes", is_correct: false}
-      - {text: "Siempre el exponente 1", is_correct: false}
-    explanation: "La correcta es El mayor exponente entre las descomposiciones: eso asegura que el resultado sea múltiplo de todos los números."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCM de 12 ($2^2\\cdot3$) y 18 ($2\\cdot3^2$)?"
-    choices:
-      - {text: "36", is_correct: true}
-      - {text: "6", is_correct: false}
-      - {text: "216", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 36: $2^2\\cdot3^2=4\\cdot9=36$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué regla de exponentes se aplica para hallar el m.c.m. a partir de las
+    descomposiciones primas?
+  choices:
+  - text: Tomar todas las bases primas elevadas a su MAYOR exponente
+    is_correct: true
+  - text: Tomar solo las bases comunes elevadas a su menor exponente
+    is_correct: false
+  - text: Sumar los exponentes de todas las bases
+    is_correct: false
+  - text: Multiplicar los exponentes sin usar las bases
+    is_correct: false
+  explanation: La alternativa correcta es 'Tomar todas las bases primas elevadas a
+    su MAYOR exponente'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 18 = 2^1 · 3^2 y 24 = 2^3 · 3^1, ¿cuál fue el
+    m.c.m. resultante?
+  choices:
+  - text: '72'
+    is_correct: true
+  - text: '6'
+    is_correct: false
+  - text: '432'
+    is_correct: false
+  - text: '36'
+    is_correct: false
+  explanation: La alternativa correcta es '72'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Descompón cada número por separado en factores primos y escríbelos usando potencias.'
-  - 'Paso 2: Haz una lista de todas las bases de números primos distintas que aparecen en cualquiera de las descomposiciones (factores comunes y no comunes).'
-  - 'Paso 3: Para cada base de la lista, busca en cuál de las descomposiciones tiene el exponente más alto y escribe la potencia con ese exponente.'
-  - 'Paso 4: Multiplica todas las potencias seleccionadas en el Paso 3 para obtener el MCM.'
-errores_correccion: |
-  Un error frecuente es elegir el menor exponente en lugar del mayor. Otro error es
-  olvidar incluir los factores primos no comunes, dejando el resultado incompleto.
+- 'Paso 1: Escribir la descomposición prima canónica de cada uno de los números.'
+- 'Paso 2: Identificar todas las bases primas que aparezcan en al menos una de las
+  descomposiciones.'
+- 'Paso 3: Asignar a cada base prima el mayor exponente con el que aparezca y multiplicar
+  el conjunto de potencias.'
+errores_correccion: '- **Error 1: Elegir el menor exponente en lugar del mayor.**
+  **Cómo corregirlo:** El m.c.m. utiliza el MAYOR exponente ($\max(\alpha_i, \beta_i)$);
+  el menor exponente se usa en el M.C.D.
+
+
+  - **Error 2: Omitir los primos que no son comunes a todos los números.** **Cómo
+  corregirlo:** El m.c.m. incluye TODAS las bases primas, sean comunes o no comunes.'
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: 'Calcula el MCM de $18$ y $30$ mediante el método de potencias primas.'
-    alternativas:
-      - "90"
-      - "6"
-      - "540"
-    respuesta: "90"
-    solucion_pasos:
-      - 'Paso a: Obtenemos las descomposiciones: $18 = 2^1 \cdot 3^2$ y $30 = 2^1 \cdot 3^1 \cdot 5^1$.'
-      - 'Paso b: Listamos todas las bases que aparecen: $2, 3$ y $5$.'
-      - 'Paso c: Seleccionamos el mayor exponente para cada una: para $2$ es $2^1$, para $3$ es $3^2$, y para $5$ es $5^1$.'
-      - 'Paso d: Multiplicamos: $\text{MCM} = 2^1 \cdot 3^2 \cdot 5^1 = 2 \cdot 9 \cdot 5 = 90$.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Encuentra el MCM de $12$ y $16$ por potencias primas.'
-    alternativas:
-      - "48"
-      - "4"
-      - "192"
-    respuesta: "48"
-    solucion_pasos:
-      - 'Paso a: Descomponemos: $12 = 2^2 \cdot 3^1$ y $16 = 2^4$.'
-      - 'Paso b: Las bases presentes son $2$ y $3$.'
-      - 'Paso c: Tomamos el mayor exponente: para la base $2$ es $2^4$ (ya que $4 > 2$), y para la base $3$ es $3^1$.'
-      - 'Paso d: Multiplicamos: $\text{MCM} = 2^4 \cdot 3^1 = 16 \cdot 3 = 48$.'
-  - titulo: 'Si las descomposiciones de dos números son $2^3 \cdot 5$ y $2 \cdot 5^2$, ¿es $2^3 \cdot 5^2$ la expresión del MCM?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Las bases que aparecen son $2$ y $5$.'
-      - 'El mayor exponente para la base $2$ es $3$ (de $2^3$).'
-      - 'El mayor exponente para la base $5$ es $2$ (de $5^2$).'
-      - 'Multiplicando estas potencias de mayor exponente obtenemos $2^3 \cdot 5^2$ (que es $8 \cdot 25 = 200$).'
-  - titulo: 'En el método de potencias primas para el MCM, ¿debemos descartar los factores primos que no son comunes (los que aparecen en un solo número)?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'Al contrario que en el Máximo Común Divisor (MCD) donde solo se consideran los factores comunes, para el MCM se deben incluir obligatoriamente todos los factores primos, sean comunes o no comunes.'
-      - 'Si los descartáramos, el resultado no sería múltiplo de todos los números originales.'
+- titulo: Ejemplo 1
+  enunciado: Si $a = 2^2 \cdot 5$ y $b = 2 \cdot 3 \cdot 5$, halle el m.c.m.(a, b).
+  alternativas:
+  - 2^2 · 3 · 5 = 60
+  - 2 · 5 = 10
+  - 2^3 · 3 · 5 = 120
+  respuesta: 2^2 · 3 · 5 = 60
+  solucion_pasos:
+  - 'Bases: 2, 3, 5. Exponentes mayores: $2^2$, $3^1$, $5^1$. mcm $= 4 \cdot 3 \cdot
+    5 = 60$.'
+- titulo: Ejemplo 2
+  enunciado: ¿Qué exponente se elige para la base 2 entre $2^4$ y $2^2$ al calcular
+    el m.c.m.?
+  alternativas:
+  - 2^4 (el mayor exponente)
+  - 2^2 (el menor exponente)
+  - 2^6 (la suma)
+  respuesta: 2^4 (el mayor exponente)
+  solucion_pasos:
+  - El m.c.m. exige la potencia de mayor exponente ($2^4$).
+- titulo: ¿Se deben incluir las bases primas no comunes al calcular el m.c.m. por
+    potencias?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el m.c.m. toma todas las bases primas comunes y no comunes.
+- titulo: ¿Utiliza el m.c.m. los menores exponentes de las bases primas?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, utiliza los mayores exponentes. Los menores se usan en el M.C.D.
 errores_frecuentes:
-  - 'Elegir el menor exponente en lugar del mayor para cada factor primo.'
-  - 'Olvidar incluir los factores primos no comunes.'
-  - 'Multiplicar los exponentes entre sí o sumar las bases.'
-  - 'No escribir las descomposiciones usando potencias.'
-  - 'Multiplicar todas las potencias de ambas descomposiciones directamente sin comparar los exponentes de los factores repetidos.'
+- Al calcular el m.c.m. por potencias primas se deben seleccionar los menores exponentes
+  de cada base.
+- Las bases primas que no son comunes a todos los números deben descartarse de la
+  multiplicación del m.c.m.
+- El m.c.m. por potencias se obtiene multiplicando los exponentes entre sí sin usar
+  las bases.
+- Si un número no tiene una base prima se asume que su exponente es infinito.
+- El producto de los mayores exponentes es siempre igual al máximo común divisor.
 afirmaciones_verdaderas:
-  - "Para calcular el MCM por potencias primas, se toma cada factor con su mayor exponente."
-  - "El método de potencias primas incluye tanto los factores comunes como los no comunes."
-al_terminar_debes_poder: |
-  Calcular el MCM de dos o más números mediante el método de factores primos con mayor
+- El m.c.m. se calcula multiplicando todas las bases primas comunes y no comunes elevadas
+  a su mayor exponente.
+- La regla de potencias primas del m.c.m. selecciona $\max(\alpha_i, \beta_i)$ para
+  cada primo $p_i$.
+al_terminar_debes_poder: Al terminar serás capaz de calcular el m.c.m. mediante las
+  descomposiciones primas, seleccionando todas las bases primas elevadas a su mayor
   exponente.
-fuente: 'Teoría de Números'
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

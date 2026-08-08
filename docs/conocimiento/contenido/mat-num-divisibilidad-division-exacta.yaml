@@ -1,100 +1,127 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.DIVISION_EXACTA
-resumen_inicial: "$a$ divide a $b$ ($a\\mid b$) cuando $b\\div a$ tiene resto cero: existe $k$ natural tal que $b=a\\cdot k$."
-explicacion_simple: |
-  Si tienes 20 chocolates y los repartes entre 4 personas, cada una recibe 5 exactos, sin
-  sobras: eso es una división exacta. Pero si los repartes entre 6, a cada una le tocan 3
-  y sobran 2. La divisibilidad trata justamente de eso: ¿se puede repartir un número en
-  grupos iguales sin que sobre nada? Si sí, decimos que el primer número "divide" al
+resumen_inicial: La divisibilidad entre dos enteros exige que la división tenga residuo
+  cero en el algoritmo de Euclides.
+explicacion_simple: La divisibilidad es la propiedad que nos indica si un número se
+  deja dividir por otro sin dejar ningún resto sobrante. Cuando al hacer la división
+  formal el resto final es cero, afirmamos que el primer número es divisible por el
   segundo.
-explicacion_formal: |
-  $a$ divide a $b$ ($a\mid b$) si existe $k$ natural tal que $b=a\cdot k$, equivalente a
-  $\text{resto}(b\div a)=0$. Es reflexiva ($n\mid n$) y transitiva (si $a\mid b$ y
-  $b\mid c$, entonces $a\mid c$), pero NO simétrica en general.
-definiciones_clave: |
-  **$a\mid b$**: "$a$ divide a $b$". **$a\nmid b$**: "$a$ no divide a $b$". **Reflexividad,
-  transitividad**: propiedades que sí cumple la divisibilidad; la simetría, no.
-propiedades_relaciones: |
-  $1\mid b$ para todo $b$. $a\mid0$ para todo $a\neq0$. Si $a\mid b$ y $a\mid c$, entonces
-  $a\mid(b+c)$ y $a\mid(b-c)$ (linealidad).
+explicacion_formal: 'En el **Algoritmo de la División de Euclides**, para $a, b \in
+  \mathbb{Z}$ con $b \neq 0$, existen únicos $q, r \in \mathbb{Z}$ tales que:
+
+
+  $$a = b \cdot q + r \quad \text{con } 0 \le r < |b|$$
+
+
+  **Definición de Divisibilidad:**
+
+  $$a \text{ es divisible por } b \iff r = 0 \iff a = b \cdot q$$
+
+
+  **Desglose de la fórmula:**
+
+  - $q$: Cociente entero de la división.
+
+  - $r$: Residuo de la división ($r=0 \implies$ divisibilidad exacta).
+
+
+  > **Complemento didáctico:** Si $r > 0$, la división es inexacta y el residuo indica
+  cuánto le falta o sobrepasa la cantidad para ser un múltiplo exacto.'
+definiciones_clave: '- **Divisibilidad**: Propiedad matemática de producir un residuo
+  nulo ($r = 0$) en el algoritmo euclidiano.
+
+  - **Residuo ($r$)**: Cantidad sobrante $0 \le r < |b|$ tras dividir entero entre
+  entero.'
+propiedades_relaciones: '- **Aritmética modular**: $a$ es divisible por $b \iff a
+  \equiv 0 \pmod b$.'
 ejemplo_guiado:
-  enunciado: "Determina si 9 divide a 108."
+  enunciado: Determine si $45$ es divisible por $6$ aplicando el algoritmo de la división
+    euclidiana.
   pasos:
-    - 'Se calcula $108\div9=12$ con resto $0$.'
-    - 'Existe $k=12$ tal que $108=9\cdot12$.'
-    - 'Conclusión: $9\mid108$.'
+  - 'Paso 1: Plantear la división euclidiana: $45 = 6 \cdot q + r$.'
+  - 'Paso 2: Calcular el cociente entero máximo: $q = 7$ ($6 \cdot 7 = 42$).'
+  - 'Paso 3: Obtener el residuo: $r = 45 - 42 = 3$.'
+  - 'Conclusión: Como el residuo $r = 3 \neq 0$, $45$ NO es divisible por $6$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Cuál propiedad NO cumple la divisibilidad en general?"
-    choices:
-      - {text: "Reflexividad", is_correct: false}
-      - {text: "Transitividad", is_correct: false}
-      - {text: "Simetría", is_correct: true}
-      - {text: "Ninguna, cumple todas", is_correct: false}
-    explanation: "La correcta es Simetría: si $a\\mid b$, no necesariamente $b\\mid a$."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿divide 6 a 92?"
-    choices:
-      - {text: "No, el resto es 2", is_correct: true}
-      - {text: "Sí, el resto es 0", is_correct: false}
-      - {text: "Sí, porque 92 es par", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es No, el resto es 2: $92\\div6=15$ con resto $2$ ($6\\cdot15=90$)."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué valor debe tener el residuo r para que una división sea exacta y
+    exista divisibilidad?
+  choices:
+  - text: r = 0
+    is_correct: true
+  - text: r = 1
+    is_correct: false
+  - text: r = b
+    is_correct: false
+  - text: Cualquier valor menor que 10
+    is_correct: false
+  explanation: La alternativa correcta es 'r = 0'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: 'En el ejemplo guiado 45 : 6, ¿cuál fue el residuo r obtenido?'
+  choices:
+  - text: '3'
+    is_correct: true
+  - text: '0'
+    is_correct: false
+  - text: '7'
+    is_correct: false
+  - text: '1'
+    is_correct: false
+  explanation: La alternativa correcta es '3', por lo que no es divisible.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Plantear la división $b \div a$.'
-  - "Paso 2: Calcular el cociente y el resto."
-  - 'Paso 3: Si el resto es 0, entonces $a \mid b$. Si el resto es distinto de 0, $a \nmid b$.'
-errores_correccion: |
-  Un error frecuente es creer que la divisibilidad es simétrica: si $a\mid b$ no implica
-  $b\mid a$. Otro error es pensar que el símbolo $a\mid b$ significa "$a$ dividido por
-  $b$", cuando en realidad significa "$a$ divide a $b$".
+- 'Paso 1: Aplicar la división de $a$ por $b$ para obtener el cociente $q$ y el resto
+  $r$.'
+- 'Paso 2: Evaluar si el resto $r$ es exactamente igual a cero.'
+- 'Paso 3: Declarar divisibilidad si $r=0$, o falta de divisibilidad si $r>0$.'
+errores_correccion: '- **Error 1: Confundir divisibilidad con obtener un resultado
+  decimal.** **Cómo corregirlo:** La divisibilidad exige que el cociente sea ENTERO
+  sin decimales y el resto nulo.
+
+
+  - **Error 2: Aceptar residuos negativos en la división euclidiana.** **Cómo corregirlo:**
+  El residuo debe ser estrictamente no negativo ($0 \le r < |b|$).'
 ejemplos:
-  - titulo: "Ejemplo 1"
-    enunciado: "Determina si 12 divide a 96."
-    alternativas:
-      - 'Sí, $96=12\times8$'
-      - "No, sobra 4"
-      - "No se puede determinar"
-    respuesta: "Sí, $96=12\\times8$"
-    solucion_pasos:
-      - 'Se calcula $96 \div 12 = 8$ con resto $0$.'
-      - 'Existe $k = 8$ tal que $96 = 12 \cdot 8$.'
-      - 'Conclusión: $12 \mid 96$.'
-  - titulo: "Ejemplo 2"
-    enunciado: "Determina si 7 divide a 58."
-    alternativas:
-      - "No, sobra 2"
-      - 'Sí, $58=7\times8$'
-      - "No se puede determinar"
-    respuesta: "No, sobra 2"
-    solucion_pasos:
-      - 'Se calcula $58 \div 7 = 8$ con resto $2$ (ya que $7 \cdot 8 = 56$ y $58 - 56 = 2$).'
-      - 'El resto es $2 \neq 0$, así que no existe $k$ natural con $58 = 7 \cdot k$.'
-      - 'Conclusión: $7 \nmid 58$.'
-  - titulo: "¿Todo número natural divide al 0?"
-    respuesta: "Sí"
-    solucion_pasos:
-      - 'Para cualquier $a \neq 0$, se tiene $0 = a \cdot 0$.'
-      - 'El cociente $0 \div a = 0$ con resto 0: la división es exacta.'
-      - 'Por lo tanto, $a \mid 0$ para todo $a$ natural distinto de 0.'
-  - titulo: "¿La divisibilidad es una relación simétrica?"
-    respuesta: "No"
-    solucion_pasos:
-      - 'Si fuera simétrica, $a \mid b$ implicaría $b \mid a$ siempre.'
-      - 'Contraejemplo: $3 \mid 15$ (ya que $15 = 3 \cdot 5$), pero $15 \nmid 3$ porque $3 < 15$.'
-      - "La divisibilidad es reflexiva y transitiva, pero NO simétrica."
+- titulo: Ejemplo 1
+  enunciado: ¿Es 56 divisible por 8?
+  alternativas:
+  - Sí, porque 56 = 8 · 7 con residuo 0
+  - No, el residuo es 1
+  - No, porque es impar
+  respuesta: Sí, porque 56 = 8 · 7 con residuo 0
+  solucion_pasos:
+  - '$56 : 8 = 7$ exacto con residuo $r = 0$.'
+- titulo: Ejemplo 2
+  enunciado: Al dividir 29 entre 4, ¿cuál es el cociente $q$ y el residuo $r$?
+  alternativas:
+  - q = 7, r = 1
+  - q = 6, r = 5
+  - q = 7, r = 0
+  respuesta: q = 7, r = 1
+  solucion_pasos:
+  - $29 = 4 \cdot 7 + 1$.
+- titulo: ¿Si una división tiene residuo 0 se cumple que el dividendo es divisible
+    por el divisor?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por definición de divisibilidad en Euclides.
+- titulo: ¿Es 33 divisible por 5?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, $33 = 5 \cdot 6 + 3$ (residuo $r = 3 \neq 0$).
 errores_frecuentes:
-  - 'El símbolo $a \mid b$ significa $a$ dividido por $b$.'
-  - 'Si $a \mid b$, entonces $b \mid a$ también.'
-  - 'Si $a \mid b$, el valor de $b$ es siempre mayor que $a$.'
-  - 'Si $a \mid b$ y $a \mid c$, entonces $a$ no divide a $b + c$.'
-  - "La divisibilidad es una relación simétrica entre números naturales."
+- Una división es exacta aun cuando deje un residuo decimal en la calculadora.
+- El residuo en el algoritmo de Euclides puede tomar valores negativos arbitrarios.
+- Un número $a$ es divisible por $b$ si la división da como resultado un número racional
+  no entero.
+- El cociente de una división exacta entre dos enteros puede ser indeterminado.
+- Si el residuo de $a:b$ es 2, significa que $a$ es un múltiplo exacto de $b$.
 afirmaciones_verdaderas:
-  - "Una división exacta tiene resto igual a 0."
-  - "20 dividido por 5 es una división exacta."
-al_terminar_debes_poder: |
-  Determinar si un número divide a otro y explicar cuáles propiedades (reflexividad,
-  transitividad, simetría) cumple y cuáles no la relación de divisibilidad.
-fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
+- La divisibilidad exige que el residuo en el algoritmo euclidiano sea idénticamente
+  cero.
+- Si $a = b \cdot q$, entonces $a$ es divisible por $b$ y por $q$.
+al_terminar_debes_poder: Al terminar serás capaz de verificar la divisibilidad entre
+  dos enteros mediante el algoritmo euclidiano, comprobando si el residuo de la división
+  es estrictamente cero.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

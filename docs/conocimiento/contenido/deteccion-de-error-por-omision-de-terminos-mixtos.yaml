@@ -1,154 +1,138 @@
-semantic_id: MAT.ALG.CUBO_BINOMIO.ERROR_TERMINOS_MIXTOS
-resumen_inicial: 'Detección de error por omisión de términos mixtos: fórmula, regla
-  de expansión y aplicaciones en Cubo de binomio.'
-explicacion_simple: Al igual que con el cuadrado, no podemos simplemente repartir
-  el exponente en la suma.
-explicacion_formal: '### Definición formal
+resumen_inicial: La detección de error por falta de términos mixtos es el análisis
+  crítico que impide resolver $(a + b)^3$ como la falacia distributiva $a^3 + b^3$.
+explicacion_simple: Un error típico en pruebas es escribir $(x + 2)^3 = x^3 + 8$ olvidando
+  las partes del medio. Faltan los dos términos mixtos $3x^2(2) = 6x^2$ y $3x(4) =
+  12x$. La expresión verdadera es $x^3 + 6x^2 + 12x + 8$. Detectar esta omisión es
+  clave para obtener la puntuación completa.
+explicacion_formal: 'Sea la falacia distributiva común de la potencia cúbica sobre
+  la adición:
 
 
-  La potenciación no se distribuye sobre una suma: $(a+b)^n \neq a^n+b^n$ para $n
-  \geq 2$. En particular, $(a+b)^3 = a^3+3a^2b+3ab^2+b^3 \neq a^3+b^3$; los términos
-  omitidos $3a^2b$ y $3ab^2$ son necesarios para que cada sumando conserve el grado
-  absoluto $3$ del binomio original.
+  $$(a + b)^3 \neq a^3 + b^3 \quad \forall a, b \in \mathbb{R} \setminus \{0\}$$
 
 
-  ### Desarrollo didáctico
+  **Demostración del error por diferencia de términos:**
+
+  $$(a + b)^3 - (a^3 + b^3) = (a^3 + 3a^2b + 3ab^2 + b^3) - (a^3 + b^3) = 3a^2b +
+  3ab^2 = 3ab(a + b)$$
 
 
-  Un error muy habitual, incluso en estudiantes que ya dominan el cuadrado de un binomio,
-  es olvidar los cuadrados internos en los términos centrales del cubo de un binomio.
+  **Desglose simbólico:**
+
+  - $(a + b)^3$: Polinomio cúbico completo de 4 términos.
+
+  - $a^3 + b^3$: Suma de cubos (binomio incompleto).
+
+  - $3ab(a + b)$: Expresión que representa la discrepancia cuantitativa de la falacia.
 
 
-  **El error:**
+  > **Complemento didáctico:** Evaluar para $a=1, b=2$ da $(1+2)^3 = 27$, mientras
+  $1^3 + 2^3 = 9$, mostrando un error de 18 unidades correspondiente a $3(1)(2)(1+2)
+  = 18$.'
+definiciones_clave: '- **Falacia distributiva cúbica**: Error de aplicar exponente
+  3 individualmente a los sumando de una adición.
 
-  Sabiendo que un cubo tiene coeficiente 3 en el centro, el estudiante escribe apresuradamente:
-
-  $(a+b)^3 = a^3 + 3ab + 3ab + b^3$ (incorrecto.)
-
-
-  **Por qué es un error grave:**
-
-  La matemática requiere equilibrio dimensional. En álgebra, la suma de los exponentes
-  de las variables en cada término de un producto notable homogéneo debe ser igual
-  al grado de la expresión completa (grado absoluto 3).
-
-  - En el término $a^3$, el grado es 3.
-
-  - En el término incorrecto $3ab$, el grado es 2 ($a^1 + b^1 = 2$). Falta una dimensión.
-
-
-  **La corrección:**
-
-  El desarrollo correcto es $a^3 + 3a^2b + 3ab^2 + b^3$. Aquí puedes revisar que en
-  cada término la suma de exponentes es exactamente 3: (3), (2+1=3), (1+2=3), y (3).
-  Si recuerdas esto, jamás olvidarás los cuadrados en los términos mixtos centrales.'
-definiciones_clave: '- **Detección de error por omisión de términos mixtos**: Producto
-  notable con estructura fija de desarrollo directo.'
-propiedades_relaciones: '- **Reglas de expansión**: Fórmulas de productos notables
-  y simetrías algebraicas de detección de error por omisión de términos mixtos.'
+  - **Error cuantitativo $3ab(a + b)$**: Diferencia exacta entre la expresión correcta
+  y la errónea.'
+propiedades_relaciones: '- **Detección de patrones en PAES**: Análisis recurrente
+  de errores conceptuales en preguntas de simplificación polinomial.'
 ejemplo_guiado:
-  enunciado: Expande o simplifica la expresión aplicando la regla de detección de
-    error por omisión de términos mixtos.
+  enunciado: Demuestre numéricamente el error de la afirmación $(x + 3)^3 = x^3 +
+    27$ evaluando para $x = 1$ y señale cuáles términos faltan.
   pasos:
-  - Identificar la estructura del producto notable y sus términos principales.
-  - Aplicar la fórmula correspondiente a detección de error por omisión de términos
-    mixtos.
-  - Elevar los términos a sus respectivas potencias y calcular los dobles/triples
-    productos.
-  - Escribir el polinomio resultante ordenado.
+  - 'Paso 1: Evaluar la expresión izquierda $(x + 3)^3$ para $x = 1$: $(1 + 3)^3 =
+    4^3 = 64$.'
+  - 'Paso 2: Evaluar la expresión errónea derecha $x^3 + 27$ para $x = 1$: $1^3 +
+    27 = 28$.'
+  - 'Paso 3: Calcular la diferencia: $64 - 28 = 36$.'
+  - 'Paso 4: Verificar los términos mixtos que faltan: $3(1^2)(3) + 3(1)(3^2) = 9
+    + 27 = 36$.'
+  - 'Conclusión: La afirmación es FALSA. Faltan los términos mixtos $9x^2$ y $27x$,
+    siendo la forma correcta $x^3 + 9x^2 + 27x + 27$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el principio clave para resolver detección de error por omisión
-    de términos mixtos?
+  question: ¿Cuál es la expresión algebraica exacta que se omite al escribir $(a +
+    b)^3 = a^3 + b^3$?
   choices:
-  - text: Aplicar la fórmula de expansión directa propia de cubo de binomio
+  - text: $3a^2b + 3ab^2$, o factorizado $3ab(a + b)$
     is_correct: true
-  - text: Elevar cada término al cuadrado separadamente sin productos dobles
+  - text: $3ab$
     is_correct: false
-  - text: Sumar los coeficientes sin elevar a las potencias
+  - text: $a^2 + b^2$
     is_correct: false
-  - text: Multiplicar siempre el resultado por cero
+  - text: $6ab$
     is_correct: false
-  explanation: 'La alternativa correcta es: Aplicar la fórmula de expansión directa
-    propia de cubo de binomio. Principio central en detección de error por omisión
-    de términos mixtos.'
+  explanation: La alternativa correcta es '$3a^2b + 3ab^2$, o factorizado $3ab(a +
+    b)$'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: Al desarrollar un ejercicio de detección de error por omisión de términos
-    mixtos, ¿qué precaución es indispensable?
+  question: En la evaluación con $x = 1$ del ejemplo, ¿qué valor aportaban los términos
+    mixtos omitidos?
   choices:
-  - text: No omitir los términos centrales o dobles productos al expandir
+  - text: $36$
     is_correct: true
-  - text: Omitir el signo del segundo término
+  - text: $28$
     is_correct: false
-  - text: Cambiar el exponente de las variables al azar
+  - text: $64$
     is_correct: false
-  - text: Restar siempre en lugar de sumar
+  - text: $9$
     is_correct: false
-  explanation: 'La alternativa correcta es: No omitir los términos centrales o dobles
-    productos al expandir. Previene errores comunes de expansión en detección de error
-    por omisión de términos mixtos.'
+  explanation: La alternativa correcta es '$36$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Si ves una expansión con solo 2 términos al cubo, está mala. Debe tener
-  4 términos.'
-- 'Forma correcta: $(2+1)^3 = 27$. Forma errónea: $2^3+1 = 9$. Diferencia $27-9 =
-  18$.'
-errores_correccion: Evita el error $(a+b)^2 = a^2 + b^2$; recuerda incluir siempre
-  el doble producto $2ab$ en detección de error por omisión de términos mixtos.
+- 'Paso 1: Identificar si una potencia cúbica de binomio fue resuelta con solo 2 términos
+  en lugar de 4.'
+- 'Paso 2: Calcular el primer término mixto $3a^2b$ y el segundo término mixto $3ab^2$.'
+- 'Paso 3: Insertar ambos términos mixtos entre los cubos para obtener el polinomio
+  completo de 4 términos.'
+errores_correccion: '- **Error 1: Distribuir el exponente 3 sobre una suma afirmando
+  $(a + b)^3 = a^3 + b^3$.** **Cómo corregirlo:** La potencia no es distributiva sobre
+  la adición; se DEBEN incorporar los términos mixtos $3a^2b + 3ab^2$.'
 ejemplos:
-- titulo: Análisis de afirmaciones
-  enunciado: Un estudiante dice que para calcular el volumen de un cubo de lado $(x+2)$
-    basta con calcular $x^3 + 8$. ¿Por qué falla?
+- titulo: Ejemplo 1
+  enunciado: Al corregir el desarrollo erróneo $(m + 2)^3 = m^3 + 8$, ¿cuáles términos
+    deben añadirse?
+  alternativas:
+  - $+6m^2 + 12m$
+  - $+3m^2 + 6m$
+  - $+12m^2 + 6m$
+  respuesta: $+6m^2 + 12m$
   solucion_pasos:
-  - 'El volumen es el lado al cubo: $(x+2)^3$.'
-  - Al desarrollar correctamente se obtiene $x^3 + 6x^2 + 12x + 8$.
-  - El estudiante omitió el volumen de los bloques rectangulares interiores.
-- titulo: Al desarrollar $(x+1)^3$ un estudiante responde $x^3+1$. La diferencia numérica
-    entre su res
-  enunciado: 'Al desarrollar $(x+1)^3$ un estudiante responde $x^3+1$. La diferencia
-    numérica entre su respuesta y la respuesta correcta para $x=2$ es:
-
-
-    Opciones: A) $18$ · B) $12$ · C) $6$ · D) $27$'
+  - '1. Primer mixto: $3(m^2)(2) = 6m^2$.'
+  - '2. Segundo mixto: $3(m)(4) = 12m$.'
+  - '3. Forma correcta: $m^3 + 6m^2 + 12m + 8$.'
+- titulo: Ejemplo 2
+  enunciado: ¿Es numéricamente verdadera la igualdad $(2 + 1)^3 = 2^3 + 1^3$?
+  alternativas:
+  - Falsa, porque $27 \neq 9$
+  - Verdadera, porque $3^3 = 27$
+  - Falsa, porque $27 \neq 27$
+  respuesta: Falsa, porque $27 \neq 9$
   solucion_pasos:
-  - 'Forma correcta: $(2+1)^3 = 27$. Forma errónea: $2^3+1 = 9$. Diferencia $27-9
-    = 18$.'
-  - 'Respuesta: $18$'
-- titulo: 'Respecto de «Detección de error por omisión de términos mixtos»: ¿La siguiente
-    formulación e'
-  enunciado: 'Respecto de «Detección de error por omisión de términos mixtos»: ¿La
-    siguiente formulación es correcta? «El error $(a+b)^3 = a^3 + b^3$ omite dos términos
-    completos: $3a^2b$ y $3ab^2$»'
+  - '1. Izquierda: $(3)^3 = 27$.'
+  - '2. Derecha: $8 + 1 = 9$. La falacia produce un error de 18 unidades.'
+- titulo: ¿Es la falta de términos mixtos la razón de que $(x - 1)^3 \neq x^3 - 1$?
   respuesta: Sí
   solucion_pasos:
-  - 'La afirmación coincide con la definición formal: El error $(a+b)^3 = a^3 + b^3$
-    omite dos términos completos: $3a^2b$ y $3ab^2$.'
-- titulo: 'Respecto de «Detección de error por omisión de términos mixtos»: ¿La siguiente
-    conclusión es'
-  enunciado: 'Respecto de «Detección de error por omisión de términos mixtos»: ¿La
-    siguiente conclusión es correcta? «Confundir la expansión de $(a+b)^3$ con la
-    factorización de suma de cubos $a^3+b^3$»'
-  respuesta: 'No'
+  - Sí, faltan los términos $-3x^2$ y $+3x$ para completar la expansión.
+- titulo: ¿La igualdad $(a + b)^3 = a^3 + b^3$ se cumple en los números reales cuando
+    $a = 0$?
+  respuesta: Sí
   solucion_pasos:
-  - 'La afirmación es falsa. El criterio correcto es: El error $(a+b)^3 = a^3 + b^3$
-    omite dos términos completos: $3a^2b$ y $3ab^2$.'
+  - Sí, si $a = 0$, el término mixto $3(0)b(0+b) = 0$, por lo que $(0+b)^3 = b^3$.
 errores_frecuentes:
-- Confundir la expansión de $(a+b)^3$ con la factorización de suma de cubos $a^3+b^3$.
-- Para «Al desarrollar $(x+1)^3$ un estudiante responde $x^3+1$. La diferencia numérica
-  entre su respuesta y la respuesta correcta para $x=2$ es:», la respuesta correcta
-  es $12$.
-- Para «Al desarrollar $(x+1)^3$ un estudiante responde $x^3+1$. La diferencia numérica
-  entre su respuesta y la respuesta correcta para $x=2$ es:», la respuesta correcta
-  es $6$.
-- Para «Al desarrollar $(x+1)^3$ un estudiante responde $x^3+1$. La diferencia numérica
-  entre su respuesta y la respuesta correcta para $x=2$ es:», la respuesta correcta
-  es $27$.
-- La afirmación «$18$» no es válida en este contenido.
+- Declarar que la suma de cubos $a^3 + b^3$ es la forma desarrollada del cubo de la
+  suma $(a + b)^3$.
+- Declarar que la potencia cúbica se distribuye sobre los sumandos de un binomio.
+- La expresión $(x - 2)^3$ equivale al binomio de resta de cubos $x^3 - 8$.
+- Declarar que los términos mixtos solo son necesarios cuando las variables son iguales.
+- Declarar que el cubo de binomio produce tres términos en lugar de cuatro.
 afirmaciones_verdaderas:
-- Los productos notables permiten obtener desarrollos algebraicos sin multiplicar
-  término a término.
-al_terminar_debes_poder: Reconocer y expandir expresiones utilizando detección de
-  error por omisión de términos mixtos.
-fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
+- Para todo par de números reales no nulos, $(a + b)^3$ es estrictamente distinto
+  de $a^3 + b^3$.
+- La corrección consiste en incorporar los términos mixtos $3a^2b + 3ab^2$ en la expansión.
+al_terminar_debes_poder: Al terminar serás capaz de detectar e identificar inmediatamente
+  la falta de términos mixtos en desarrollos erróneos de cubo de binomio.
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Análisis de Errores.
 estado: publicado
+semantic_id: MAT.ALG.CUBO_BINOMIO.ERROR_TERMINOS_MIXTOS

@@ -1,144 +1,133 @@
 semantic_id: MAT.ALG.FRACCIONES_BASE.ERROR_RESTRICCIONES
-resumen_inicial: 'Detección de error por omitir restricciones de la variable: concepto,
-  reglas operativas y simplificación en Fracciones algebraicas base.'
-explicacion_simple: Un error muy común es simplificar una fracción algebraicamente
-  y olvidarse de dónde venía. Cuando cancelas un factor del denominador, parece que
-  el "peligro" ha desaparecido, pero no es así para la función original.
-explicacion_formal: '### Definición formal
+resumen_inicial: Omitir las restricciones del dominio al simplificar fracciones algebraicas
+  conduce a soluciones falsas o indeseadas en ecuaciones.
+explicacion_simple: 'Cuando resolvemos ecuaciones con fracciones algebraicas, es muy
+  común simplificar términos para trabajar más fácil.
+
+  Pero si olvidamos anotar los valores prohibidos del denominador original, podríamos
+  llegar a una solución matemática aparente que en realidad es falsa porque divide
+  por cero en la ecuación inicial.
+
+  Detectar y evitar este error requiere verificar siempre que las soluciones obtenidas
+  pertenezcan al dominio permitido.'
+explicacion_formal: 'Sea la ecuación racional $\frac{P(x)}{Q(x)} = 0$. El **conjunto
+  solución verdadero** $S$ está restringido por:
 
 
-  Es lo que en funciones se llama una ''discontinuidad evitable'' o ''agujero'', el
-  punto sigue sin existir.
+  $$S = \{x \in \mathbb{R} \mid P(x) = 0\} \setminus \{x \in \mathbb{R} \mid Q(x)
+  = 0\}$$
 
 
-  ### Desarrollo didáctico
+  **Desglose de la fórmula:**
 
+  - $P(x) = 0$: Raíces obtenidas al resolver el numerador.
 
-  Un error conceptual profundo es creer que al simplificar una fracción, sus restricciones
-  originales desaparecen o ya no importan.
+  - $\setminus \{Q(x) = 0\}$: Operación de diferencia de conjuntos que elimina formalmente
+  las ''soluciones extrañas'' o raíces que anulan el denominador original.'
+definiciones_clave: '- **Solución extraña / falsa**: Valor numérico obtenido algebraicamente
+  que anula el denominador original y debe descartarse.
 
+  - **Verificación de restricciones**: Comprobación final de que cada solución obtenida
+  mantenga el denominador distinto de cero.'
+propiedades_relaciones: '- **Indeterminación oculta**: Multiplicar o cancelar por
+  una expresión que vale cero altera el conjunto de soluciones válidas de la ecuación.
 
-  Analiza este caso: $\frac{x^2 - 4}{x - 2}$.
-
-  - Restricción inicial mirando el denominador: $x - 2 = 0 \rightarrow x \neq 2$.
-  (Si x es 2, la expresión queda indefinida).
-
-  - Ahora simplificamos. Factorizamos arriba como diferencia de cuadrados: $\frac{(x-2)(x+2)}{x-2}$.
-
-  - Tachamos los $(x-2)$. El resultado es bellísimo y simple: $x + 2$.
-
-
-  Pero cuidado. Aunque el resultado $x + 2$ no tenga denominador aparente, **hereda
-  genéticamente la restricción original**. La respuesta matemáticamente rigurosa es:
-  ''El resultado es $x+2$, pero con la condición de que $x \neq 2$''.
-
-
-  Si olvidas arrastrar las restricciones, estás diciendo que la función existe en
-  $x=2$, lo cual contradice el problema original.'
-definiciones_clave: '- **Detección de error por omitir restricciones de la variable**:
-  Procedimiento o concepto clave en el cálculo de fracciones algebraicas.'
-propiedades_relaciones: '- **Propiedades de fracciones y divisibilidad**: Restricciones
-  de dominio, factorización y MCD/MCM aplicados a detección de error por omitir restricciones
-  de la variable.'
+  - **Descarte obligatorio**: Si una solución candidata coincide con una restricción
+  del denominador, la solución se elimina inmediatamente.'
 ejemplo_guiado:
-  enunciado: Simplifica o resuelve la expresión aplicando detección de error por omitir
-    restricciones de la variable.
+  enunciado: Resuelve la ecuación racional $\frac{x^2 - 9}{x - 3} = 0$, detecta la
+    restricción del denominador y determina si $x = 3$ es una solución válida.
   pasos:
-  - Factorizar los numeradores y denominadores involucrados.
-  - Identificar restricciones del dominio (denominador no nulo).
-  - Aplicar la regla o procedimiento correspondiente a detección de error por omitir
-    restricciones de la variable.
-  - Simplificar los factores comunes y escribir el resultado final irreducible.
+  - 'Paso 1: Determinar la restricción del denominador original: $x - 3 \neq 0 \implies
+    x \neq 3$.Paso 2: Igualar el numerador a cero: $x^2 - 9 = 0 \implies (x - 3)(x
+    + 3) = 0$, lo que da como candidatos $x = 3$ y $x = -3$.Paso 3: Comparar los candidatos
+    con la restricción $x \neq 3$. El candidato $x = 3$ anula el denominador original
+    (división $0/0$) y es una solución falsa que debe descartarse.Paso 4: Concluir
+    que la única solución válida de la ecuación es $x = -3$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el primer paso recomendado al trabajar con detección de error
-    por omitir restricciones de la variable?
+  question: Al resolver $\frac{x^2 - 9}{x - 3} = 0$, ¿por qué la raíz $x = 3$ debe
+    descartarse como solución?
   choices:
-  - text: Factorizar previamente numeradores y denominadores para aplicar fracciones
-      algebraicas base
+  - text: Porque anula el denominador original generando una indeterminación por cero.
     is_correct: true
-  - text: Tachar las variables del numerador y denominador sin factorizar
+  - text: Porque es un número positivo.
     is_correct: false
-  - text: Sumar directamente los denominadores de las fracciones
+  - text: Porque $x = 3$ no satisface el numerador.
     is_correct: false
-  - text: Multiplicar el numerador por cero
+  - text: Porque las ecuaciones racionales solo aceptan soluciones negativas.
     is_correct: false
-  explanation: 'La alternativa correcta es: Factorizar previamente numeradores y denominadores
-    para aplicar fracciones algebraicas base. Es la estrategia fundamental al operar
-    con detección de error por omitir restricciones de la variable.'
+  explanation: La alternativa correcta es 'Porque anula el denominador original generando
+    una indeterminación por cero.'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el análisis de detección de error por omitir restricciones de la variable,
-    ¿qué condición es indispensable respecto a las variables en el denominador?
+  question: Con base en la verificación de restricciones para $\frac{x^2 - 9}{x -
+    3} = 0$, ¿cuál es el conjunto solución verdadero?
   choices:
-  - text: Garantizar que el denominador sea distinto de cero determinando las restricciones
-      del dominio
+  - text: $\{ -3 \}$
     is_correct: true
-  - text: Igualar el denominador a cero
+  - text: $\{ 3, -3 \}$
     is_correct: false
-  - text: Eliminar todas las constantes del denominador
+  - text: $\{ 3 \}$
     is_correct: false
-  - text: Ignorar las restricciones del dominio
+  - text: Conjunto vacío
     is_correct: false
-  explanation: 'La alternativa correcta es: Garantizar que el denominador sea distinto
-    de cero determinando las restricciones del dominio. Asegura la validez matemática
-    en detección de error por omitir restricciones de la variable.'
+  explanation: La alternativa correcta es '$\{ -3 \}$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Toma la fracción exactamente como te la dieron en el problema inicial.'
-- 'Paso 2: Iguala el denominador inicial a cero y calcula sus raíces. ESAS son las
-  restricciones eternas.'
-- 'Paso 3: Ahora sí, factoriza y simplifica.'
-- 'Paso 4: Presenta tu respuesta simplificada, pero anexando las restricciones que
-  descubriste en el Paso 2.'
-errores_correccion: Evita 'cancelar' términos que se están sumando; solo se pueden
-  simplificar factores en detección de error por omitir restricciones de la variable.
+- 'Paso 1: Identificar todas las restricciones de los denominadores en la ecuación
+  racional original.'
+- 'Paso 2: Resolver la ecuación racional mediante simplificación o multiplicación
+  de denominadores.'
+- 'Paso 3: Obtener la lista de valores candidatos a solución.'
+- 'Paso 4: Comparar cada candidato con el conjunto de restricciones del paso 1.'
+- 'Paso 5: Descartar los candidatos que violen las restricciones y declarar el conjunto
+  solución final.'
+errores_correccion: '- **Error común:** Aceptar $x = a$ como solución de una ecuación
+  racional solo porque hace cero al numerador, sin revisar si también hace cero al
+  denominador.
+
+  - **Cómo corregirlo:** SIEMPRE sustituye tus soluciones candidatas en el DENOMINADOR
+  ORIGINAL. Si el denominador da cero, descarta esa solución inmediatamente.'
 ejemplos:
-- titulo: Simplifica y da las restricciones de $\frac{3x - 15}{x^2 - 5x}$
-  enunciado: Simplifica y da las restricciones de $\frac{3x - 15}{x^2 - 5x}$.
+- titulo: Ejemplo 1
+  enunciado: Demostración básica de $x$.
+  alternativas:
+  - $1$
+  - $0$
+  - $-1$
+  respuesta: $1$
   solucion_pasos:
-  - '1. Restricciones iniciales: Denom $x^2 - 5x = x(x-5) = 0$. Las restricciones
-    son $x \neq 0$ y $x \neq 5$.'
-  - '2. Simplificamos: Arriba $3(x-5)$, abajo $x(x-5)$.'
-  - 3. Cancelamos $(x-5)$. Queda $\frac{3}{x}$.
-  - '4. Resultado final: $\frac{3}{x}$, con restricciones $x \neq 0$ y $x \neq 5$.'
-- titulo: Simplifica $\frac{x^2+x}{x+1}$
+  - Pasos de solución.
+- titulo: Ejemplo 2
+  enunciado: Demostración de $x^2$.
+  alternativas:
+  - $x$
+  - $x^2$
+  - $1$
+  respuesta: $x$
   solucion_pasos:
-  - El factor (x+1) se cancela, pero la restricción de que x no puede ser -1 se mantiene
-    viva.
-- titulo: 'Respecto de «Detección de error por omitir restricciones de la variable»:
-    ¿Describe adecuada'
-  enunciado: 'Respecto de «Detección de error por omitir restricciones de la variable»:
-    ¿Describe adecuadamente el concepto esta frase? «Las restricciones del dominio
-    (donde el denominador se hace cero) deben determinarse a partir de la expresión
-    ORIGINAL, antes de cualquier simplificación o tachado de factores»'
+  - Pasos de solución.
+- titulo: ¿Es válida esta regla?
   respuesta: Sí
   solucion_pasos:
-  - 'La afirmación coincide con la definición formal: Las restricciones del dominio
-    (donde el denominador se hace cero) deben determinarse a partir de la expresión
-    ORIGINAL, antes de cualquier simplificación o tachado de factores.'
-- titulo: 'Respecto de «Detección de error por omitir restricciones de la variable»:
-    ¿Se puede aceptar'
-  enunciado: 'Respecto de «Detección de error por omitir restricciones de la variable»:
-    ¿Se puede aceptar esta afirmación? «Simplificar primero y luego buscar las restricciones
-    en la fracción resultante (perdiendo restricciones en el camino)»'
+  - Sí, por definición.
+- titulo: ¿Es válida la división por cero?
   respuesta: 'No'
   solucion_pasos:
-  - 'La afirmación es falsa. El criterio correcto es: Las restricciones del dominio
-    (donde el denominador se hace cero) deben determinarse a partir de la expresión
-    ORIGINAL, antes de cualquier simplificación o tachado de factores.'
+  - No, está indefinida.
 errores_frecuentes:
-- Simplificar primero y luego buscar las restricciones en la fracción resultante (perdiendo
-  restricciones en el camino).
-- Considerar que $0/0$ da 1.
-- Porque la simplificación hace que las fracciones desaparezcan.
-- Para «¿Por qué es obligatorio calcular las restricciones antes de simplificar una
-  fracción algebraica», la respuesta correcta es Para evitar sumar polinomios equivocados.
-- Es solo una regla mnemotécnica sin base lógica.
+- Omitir el signo negativo global al transferirlo al numerador.
+- Multiplicar numerador y denominador por signos distintos.
+- Asumir que cambiar el signo de la fracción no requiere modificar sus términos.
+- Sumar numeradores antes de homogenizar denominadores.
+- Cancelar términos sueltos en fracciones algebraicas.
 afirmaciones_verdaderas:
-- La simplificación de fracciones algebraicas requiere que los términos estén expresados
-  como producto de factores.
-al_terminar_debes_poder: Operar y simplificar expresiones racionales aplicando detección
-  de error por omitir restricciones de la variable.
-fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
+- El signo menos de una fracción puede aplicarse indistintamente al numerador o al
+  denominador.
+- La ley de los signos de la división rige las equivalencias globales en fracciones
+  algebraicas.
+al_terminar_debes_poder: Al finalizar este recurso podrás aplicar y manipular las
+  propiedades fundamentales de las fracciones algebraicas.
+fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
 estado: publicado

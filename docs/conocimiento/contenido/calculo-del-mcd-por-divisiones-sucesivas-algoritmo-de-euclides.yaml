@@ -1,150 +1,171 @@
 semantic_id: MAT.ALG.MCD_ALGEBRAICO.ALGORITMO_EUCLIDES
-resumen_inicial: 'Cálculo del M.C.D. por divisiones sucesivas (algoritmo de Euclides):
-  concepto, reglas operativas y simplificación en M.C.D. algebraico.'
-explicacion_simple: '¿Qué pasa si te topas con dos polinomios extensoscos que no sabes
-  cómo factorizar? Euclides, hace miles de años, inventó un truco brillante para números,
-  que resulta que también funciona con polinomios: las divisiones sucesivas.'
-explicacion_formal: '### Definición formal
+resumen_inicial: El algoritmo de Euclides permite hallar el M.C.D. entre polinomios
+  mediante divisiones sucesivas sin necesidad de factorizar.
+explicacion_simple: 'Cuando dos polinomios son de grado alto o difíciles de factorizar
+  directamente, se utiliza el Algoritmo de Euclides (divisiones sucesivas):
+
+  1. Se divide el polinomio de mayor grado entre el de menor grado, obteniendo un
+  cociente y un resto.
+
+  2. Si el resto es cero, el divisor actual es el M.C.D.
+
+  3. Si el resto no es cero, se reemplaza el dividendo por el divisor anterior y el
+  divisor por el resto obtenido, y se vuelve a dividir.
+
+  4. El proceso se repite hasta obtener un resto igual a cero. El último divisor no
+  nulo (normalizado para que su coeficiente principal sea 1) es el M.C.D.'
+explicacion_formal: 'Dados dos polinomios $P(x)$ y $Q(x)$ con $\operatorname{gr}(P)
+  \ge \operatorname{gr}(Q)$, el **Algoritmo de Euclides para polinomios** genera una
+  secuencia de divisiones con resto:
 
 
-  Factorizar polinomios de grado 5 o superior puede ser analíticamente imposible.
-  Euclides siempre funciona porque usa división matemática básica.
+  $$P(x) = Q(x) \cdot q_1(x) + R_1(x) \quad \text{con } \operatorname{gr}(R_1) < \operatorname{gr}(Q)$$
+
+  $$Q(x) = R_1(x) \cdot q_2(x) + R_2(x) \quad \text{con } \operatorname{gr}(R_2) <
+  \operatorname{gr}(R_1)$$
+
+  $$\dots$$
+
+  $$R_{k-2}(x) = R_{k-1}(x) \cdot q_k(x) + R_k(x) \quad \text{con } R_k(x) = 0$$
 
 
-  ### Desarrollo didáctico
+  **Propiedades fundamentales:**
+
+  - $\operatorname{gcd}(P, Q) = \operatorname{gcd}(Q, R_1) = \operatorname{gcd}(R_1,
+  R_2) = \dots = \operatorname{gcd}(R_{k-2}, R_{k-1}) = c \cdot R_{k-1}(x)$, donde
+  $c$ es una constante para hacer el polinomio mónico.
+
+  - El último resto no nulo $R_{k-1}(x)$ es, salvo un factor constante, el **M.C.D.
+  algebraico** entre $P(x)$ y $Q(x)$.
 
 
-  El Algoritmo de Euclides es un método legendario y avanzado para encontrar el MCD
-  entre dos polinomios que son muy difíciles de factorizar a simple vista. Se basa
-  en divisiones sucesivas.
+  > **Complemento didáctico:** Este algoritmo garantiza encontrar el M.C.D. incluso
+  cuando los polinomios no pueden ser factorizados mediante inspección simple ni raíces
+  racionales.'
+definiciones_clave: '- **Divisiones sucesivas**: Algoritmo iterativo donde cada nuevo
+  divisor es el resto no nulo obtenido en la división inmediatamente anterior.
 
+  - **Polinomio mónico**: Polinomio cuyo coeficiente principal (el que acompaña a
+  la máxima potencia) es igual a $1$.'
+propiedades_relaciones: '- **Invarianza del M.C.D. por resto**: En cada paso de división
+  $P = Q \cdot q + R$, se cumple que todo divisor común de $P$ y $Q$ divide a $R$,
+  y todo divisor común de $Q$ y $R$ divide a $P$.
 
-  La lógica detrás de Euclides es simple: Si un término divide a $A$ y a $B$, también
-  debe dividir al resto (residuo) de la división entre $A$ y $B$.
-
-
-  **Pasos del algoritmo:**
-
-  1. Se divide el polinomio de mayor grado ($P_1$) por el de menor grado ($P_2$).
-
-  2. Si el residuo es cero, el MCD es $P_2$.
-
-  3. Si hay un residuo ($R_1$), se divide $P_2$ por $R_1$.
-
-  4. Se repite el proceso (dividiendo el divisor anterior por el residuo actual) hasta
-  que el residuo sea cero.
-
-  5. El **último divisor no nulo** es el MCD.
-
-
-  Este método es muy mecánico, pero requiere dominar a la perfección la división larga
-  de polinomios.'
-definiciones_clave: '- **Cálculo del M.C.D. por divisiones sucesivas (algoritmo de
-  Euclides)**: Procedimiento o concepto clave en el cálculo de fracciones algebraicas.'
-propiedades_relaciones: '- **Propiedades de fracciones y divisibilidad**: Restricciones
-  de dominio, factorización y MCD/MCM aplicados a cálculo del m.c.d. por divisiones
-  sucesivas (algoritmo de euclides).'
+  - **Multiplicación por constantes**: Se pueden multiplicar o dividir los restos
+  por constantes numéricas en cualquier paso sin alterar el M.C.D. polinomial final.'
 ejemplo_guiado:
-  enunciado: Simplifica o resuelve la expresión aplicando cálculo del m.c.d. por divisiones
-    sucesivas (algoritmo de euclides).
+  enunciado: Aplica el algoritmo de Euclides para hallar el M.C.D. entre $P(x) = x^3
+    - 2x^2 - x + 2$ y $Q(x) = x^2 - 3x + 2$. Realiza la primera división obteniendo
+    residuo cero $(x - 2)$ y evalúa su valor para $x = 6$.
   pasos:
-  - Factorizar los numeradores y denominadores involucrados.
-  - Identificar restricciones del dominio (denominador no nulo).
-  - Aplicar la regla o procedimiento correspondiente a cálculo del m.c.d. por divisiones
-    sucesivas (algoritmo de euclides).
-  - Simplificar los factores comunes y escribir el resultado final irreducible.
+  - 'Paso 1: Dividir $P(x) = x^3 - 2x^2 - x + 2$ por $Q(x) = x^2 - 3x + 2$. Al realizar
+    la división sintética o larga: $(x^3 - 2x^2 - x + 2) = (x^2 - 3x + 2)(x + 1) +
+    0$.'
+  - 'Paso 2: Como el residuo obtenido en el primer paso es $0$, el divisor $Q(x) =
+    x^2 - 3x + 2$ es un divisor común. Factorizando $Q(x) = (x - 1)(x - 2)$ se identifican
+    sus factores.'
+  - 'Paso 3: El factor común de menor grado que actúa como divisor de menor orden
+    o factor irreducible buscado es $(x - 2)$.'
+  - 'Paso 4: Evaluar para $x = 6$: $6 - 2 = 4$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el primer paso recomendado al trabajar con cálculo del m.c.d.
-    por divisiones sucesivas (algoritmo de euclides)?
+  question: En el algoritmo de Euclides para polinomios, ¿cuál es el elemento que
+    determina el M.C.D. final?
   choices:
-  - text: Factorizar previamente numeradores y denominadores para aplicar m.c.d. algebraico
+  - text: El último resto no nulo obtenido en la secuencia de divisiones.
     is_correct: true
-  - text: Tachar las variables del numerador y denominador sin factorizar
+  - text: El primer cociente de la división.
     is_correct: false
-  - text: Sumar directamente los denominadores de las fracciones
+  - text: La suma de todos los restos de la secuencia.
     is_correct: false
-  - text: Multiplicar el numerador por cero
+  - text: El resto final igual a cero.
     is_correct: false
-  explanation: 'La alternativa correcta es: Factorizar previamente numeradores y denominadores
-    para aplicar m.c.d. algebraico. Es la estrategia fundamental al operar con cálculo
-    del m.c.d. por divisiones sucesivas (algoritmo de euclides).'
+  explanation: La alternativa correcta es 'El último resto no nulo obtenido en la
+    secuencia de divisiones.'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el análisis de cálculo del m.c.d. por divisiones sucesivas (algoritmo
-    de euclides), ¿qué condición es indispensable respecto a las variables en el denominador?
+  question: Al evaluar el factor M.C.D. $(x - 2)$ para $x = 6$, ¿cuál es el valor
+    numérico obtenido?
   choices:
-  - text: Garantizar que el denominador sea distinto de cero determinando las restricciones
-      del dominio
+  - text: $4$
     is_correct: true
-  - text: Igualar el denominador a cero
+  - text: $8$
     is_correct: false
-  - text: Eliminar todas las constantes del denominador
+  - text: $2$
     is_correct: false
-  - text: Ignorar las restricciones del dominio
+  - text: $12$
     is_correct: false
-  explanation: 'La alternativa correcta es: Garantizar que el denominador sea distinto
-    de cero determinando las restricciones del dominio. Asegura la validez matemática
-    en cálculo del m.c.d. por divisiones sucesivas (algoritmo de euclides).'
+  explanation: La alternativa correcta es '$4$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identifica el polinomio de mayor grado como Dividendo y el menor como Divisor.'
-- 'Paso 2: Realiza la división larga polinomial.'
-- 'Paso 3: Si el residuo es 0, el divisor actual es el MCD.'
-- 'Paso 4: Si el residuo no es 0, toma tu divisor actual y divídelo entre el residuo
-  que acabas de encontrar.'
-- 'Paso 5: Repite hasta obtener residuo 0.'
-errores_correccion: Evita 'cancelar' términos que se están sumando; solo se pueden
-  simplificar factores en cálculo del m.c.d. por divisiones sucesivas (algoritmo de
-  euclides).
+- 'Paso 1: Ordenar los dos polinomios $P(x)$ y $Q(x)$ en forma decreciente según sus
+  exponentes, asegurando $\operatorname{gr}(P) \ge \operatorname{gr}(Q)$.'
+- 'Paso 2: Dividir $P(x)$ por $Q(x)$ para obtener el cociente $q_1(x)$ y el resto
+  $R_1(x)$.'
+- 'Paso 3: Si $R_1(x) = 0$, el M.C.D. es $Q(x)$ (normalizado a mónico). Si $R_1(x)
+  \neq 0$, dividir $Q(x)$ entre $R_1(x)$.'
+- 'Paso 4: Repetir el proceso dividiendo el divisor anterior por el resto obtenido
+  hasta que el resto sea igual a $0$.'
+- 'Paso 5: Tomar el último resto distinto de cero y ajustarlo para que su coeficiente
+  principal sea $1$.'
+errores_correccion: '- **Error común:** Confundir el último resto no nulo con el cociente
+  de la división final.
+
+  - **Cómo corregirlo:** Recuerda que el M.C.D. proviene de la serie de restos no
+  nulos ($R_{k-1}(x)$), no de los cocientes ($q(x)$) generados durante la división.'
 ejemplos:
-- titulo: 'Concepto en números: MCD de 1071 y 462'
-  enunciado: 'Concepto en números: MCD de 1071 y 462.'
+- titulo: 'Ejemplo 1: División con resto no nulo en el primer paso'
+  enunciado: Calcula el M.C.D. entre $P(x) = x^3 - x^2 - x + 1$ y $Q(x) = x^2 - 1$
+    aplicando divisiones.
+  alternativas:
+  - $x^2 - 1$
+  - $x - 1$
+  - $x + 1$
+  respuesta: $x^2 - 1$
   solucion_pasos:
-  - 1071 / 462 = 2, resto 147.
-  - 462 / 147 = 3, resto 21.
-  - 147 / 21 = 7, resto 0.
-  - El último divisor fue 21. El MCD es 21. El álgebra polinomial usa la misma lógica
-    exacta.
-- titulo: ¿Qué se hace cuando el resto de la primera división de P(x) / Q(x) no es
-    cero?
+  - '1. Dividir $P(x)$ entre $Q(x)$: $(x^3 - x^2 - x + 1) \div (x^2 - 1) = (x - 1)$
+    con residuo $0$.'
+  - 2. Como el resto es $0$ desde el primer paso, el divisor $Q(x) = x^2 - 1$ es el
+    M.C.D.
+- titulo: 'Ejemplo 2: Algoritmo con dos pasos de división'
+  enunciado: Si al dividir $P(x)$ por $Q(x)$ se obtiene resto $R_1(x) = 3x - 6$, y
+    al dividir $Q(x)$ por $R_1(x)$ el resto es $0$, ¿cuál es el M.C.D. mónico?
+  alternativas:
+  - $x - 2$
+  - $3x - 6$
+  - $x + 2$
+  respuesta: $x - 2$
   solucion_pasos:
-  - 'La regla es empujar los términos: el divisor se convierte en dividendo, y el
-    resto en divisor.'
-- titulo: 'Respecto de «Cálculo del M.C.D. por divisiones sucesivas (algoritmo de
-    Euclides)»: ¿Se ajust'
-  enunciado: 'Respecto de «Cálculo del M.C.D. por divisiones sucesivas (algoritmo
-    de Euclides)»: ¿Se ajusta a la definición esta afirmación? «El Algoritmo de Euclides
-    halla el MCD de dos polinomios dividiendo el de mayor grado entre el de menor
-    grado»'
+  - 1. El último resto no nulo es $R_1(x) = 3x - 6$.
+  - '2. Factorizar el coeficiente principal: $3(x - 2)$.'
+  - 3. Al normalizar a polinomio mónico (coeficiente principal $1$), el M.C.D. es
+    $x - 2$.
+- titulo: ¿Se puede multiplicar un resto por un número constante durante el algoritmo
+    de Euclides sin cambiar el M.C.D. final?
   respuesta: Sí
   solucion_pasos:
-  - 'La afirmación coincide con la definición formal: El Algoritmo de Euclides halla
-    el MCD de dos polinomios dividiendo el de mayor grado entre el de menor grado.'
-- titulo: 'Respecto de «Cálculo del M.C.D. por divisiones sucesivas (algoritmo de
-    Euclides)»: ¿Es compa'
-  enunciado: 'Respecto de «Cálculo del M.C.D. por divisiones sucesivas (algoritmo
-    de Euclides)»: ¿Es compatible con el procedimiento esta afirmación? «Confundir
-    quién se divide por quién en las iteraciones siguientes (siempre es el divisor
-    viejo entre el resto nuevo)»'
-  respuesta: 'No'
+  - Sí. Las constantes numéricas no alteran los factores polinomiales ni el grado
+    del M.C.D. resultante.
+- titulo: ¿El algoritmo de Euclides se detiene únicamente cuando se obtiene un resto
+    igual a cero?
+  respuesta: Sí
   solucion_pasos:
-  - 'La afirmación es falsa. El criterio correcto es: El Algoritmo de Euclides halla
-    el MCD de dos polinomios dividiendo el de mayor grado entre el de menor grado.'
+  - Sí. El resto cero indica que el divisor del paso anterior es el último divisor
+    común exacto.
 errores_frecuentes:
-- Confundir quién se divide por quién en las iteraciones siguientes (siempre es el
-  divisor viejo entre el resto nuevo).
-- Olvidar que los coeficientes pueden multiplicarse o simplificarse por constantes
-  durante el proceso sin alterar el MCD algebraico esencial.
-- Es más corto que factorizar.
-- Para «¿Cuál es la principal ventaja del Algoritmo de Euclides para polinomios»,
-  la respuesta correcta es Siempre da como resultado 1.
-- Para «¿Cuál es la principal ventaja del Algoritmo de Euclides para polinomios»,
-  la respuesta correcta es Funciona para el MCM.
+- El M.C.D. en el algoritmo de Euclides es el cociente obtenido cuando el resto es
+  cero.
+- Si en el primer paso el resto no es cero, los polinomios no tienen M.C.D.
+- Multiplicar un resto por un entero negativo altera la validez del algoritmo de Euclides.
+- El resto cero es el M.C.D. entre dos polinomios.
+- El algoritmo de Euclides solo funciona cuando los polinomios son de grado 1.
 afirmaciones_verdaderas:
-- La simplificación de fracciones algebraicas requiere que los términos estén expresados
-  como producto de factores.
-al_terminar_debes_poder: Operar y simplificar expresiones racionales aplicando cálculo
-  del m.c.d. por divisiones sucesivas (algoritmo de euclides).
-fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
+- El algoritmo de Euclides permite hallar el M.C.D. de dos polinomios mediante divisiones
+  sucesivas sin necesidad de factorizarlos.
+- El M.C.D. de dos polinomios según el algoritmo de Euclides corresponde al último
+  resto no nulo normalizado a mónico.
+al_terminar_debes_poder: Al finalizar este recurso podrás aplicar el algoritmo de
+  Euclides de divisiones sucesivas para calcular el M.C.D. entre polinomios de cualquier
+  grado.
+fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
 estado: publicado

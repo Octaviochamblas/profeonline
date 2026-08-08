@@ -1,106 +1,134 @@
 semantic_id: MAT.NUM.FRACCION_DECIMAL.DETECCION_DECIMAL_PERIODICO
-resumen_inicial: "Una fracción irreductible origina un desarrollo decimal infinito periódico (puro o semiperiódico) si su denominador simplificado contiene al menos un factor primo distinto de 2 y 5."
-explicacion_simple: |
-  Para saber si una fracción se convertirá en un **decimal infinito periódico** (con barrita de repetición) sin tener que dividir, haz lo siguiente:
-  1. Simplifica la fracción hasta que sea irreductible.
-  2. Descompón el denominador en factores primos.
-  3. Si descubres **algún factor primo diferente de 2 y de 5** (por ejemplo $3, 7, 11, 13$, etc.):
-     - Si NINGÚN factor es 2 ni 5 $\implies$ será un **periódico puro** (ejemplo: $\frac{1}{3} = 0.\overline{3}$).
-     - Si COMBINA factores 2 o 5 con otros primos $\implies$ será un **semiperiódico** (ejemplo: $\frac{1}{6} = 0.1\overline{6}$).
-explicacion_formal: |
-  Formalmente, dada una fracción irreductible $\frac{a}{b} \in \mathbb{Q}$ ($\text{MCD}(a, b) = 1$), su desarrollo decimal es infinito periódico si y solo si en la descomposición del denominador $b = 2^{\alpha} \cdot 5^{\beta} \cdot p_1^{e_1} \dots p_k^{e_k}$ existe al menos un primo $p_i \notin \{2, 5\}$ con exponente $e_i \ge 1$.
+resumen_inicial: Una fracción irreductible $\frac{a}{b}$ genera un decimal periódico
+  puro si $b$ carece de factores primos $2$ y $5$, y semiperiódico si $b$ combina
+  factores de $\{2,5\}$ con otros primos.
+explicacion_simple: Mirando los factores primos del denominador irreductible podemos
+  predecir si el decimal será periódico o semiperiódico. Si el denominador no tiene
+  ni al 2 ni al 5 (solo primos como 3, 7 u 11), el decimal será periódico puro. Si
+  combina al 2 o al 5 junto a otros primos, será semiperiódico.
+explicacion_formal: 'Dada $\frac{a}{b} \in \mathbb{Q}$ irreductible con $\operatorname{MCD}(a,
+  b) = 1$, la **Detección Estructural del Decimal Infinito** establece:
 
-  Clasificación de periodicidad:
-  1. **Periódico puro**: $\alpha = 0$ y $\beta = 0$ (ningún factor 2 ni 5 en $b$). Cumple $\text{MCD}(b, 10) = 1$.
-  2. **Semiperiódico**: $\alpha + \beta \ge 1$ Y existe al menos un $p_i \notin \{2, 5\}$ (posee factores de 10 mezclados con otros primos).
-definiciones_clave: |
-  - **Primos generadores de período**: Números primos $3, 7, 11, 13, 17, \dots$ cuya falta de divisibilidad con la base 10 impide que la secuencia de residuos se anule.
-  - **Detección de periódico puro**: Condición $\text{MCD}(b, 10) = 1$ donde el denominador no tiene divisores comunes con 10.
-  - **Detección de semiperiódico**: Condición donde el denominador posee divisores de 10 ($2$ y/o $5$) junto a primos ajenos a 10.
-propiedades_relaciones: |
-  - **Teorema de Midy**: Propiedad aritmética de las cifras de los períodos generados por ciertos primos denominadores (como 7 o 13).
-  - **Finitud de residuos**: Como los residuos en la división entre $b$ son a lo sumo $b-1$, la periodicidad es matemáticamente INEVITABLE tras un máximo de $b-1$ divisiones.
-  - **Complementariedad**: Todo número en $\mathbb{Q}$ que no sea decimal finito es obligatoriamente decimal periódico.
+
+  $$1. \operatorname{MCD}(b, 10) = 1 \iff \text{Decimal Infinito Periódico Puro}$$
+
+
+  $$2. \exists p \in \operatorname{Primos}(b) \setminus \{2,5\} \text{ Y } \exists
+  q \in \operatorname{Primos}(b) \cap \{2,5\} \iff \text{Decimal Infinito Semiperiódico}$$
+
+
+  **Desglose del teorema:**
+
+  - Sin factores 2 ni 5: Garantiza la ausencia de anteperíodo (periódico puro).
+
+  - Factores mixtos: Los factores 2 y 5 generan las posiciones no repetitivas del
+  anteperíodo, mientras que el primo extraño genera la barra del período.
+
+
+  > **Complemento didáctico:** El criterio permite clasificar cualquier racional sin
+  necesidad de efectuar la división de números larga.'
+definiciones_clave: '- **Teorema de clasificación de expansión decimal en $\mathbb{Q}$**:
+  Regla basada en los factores primos de $b$ en la fracción simplificada.'
+propiedades_relaciones: '- **Discriminación completa**: Clasifica en periódico puro
+  o semiperiódico según la presencia de los primos 2 o 5.'
 ejemplo_guiado:
-  enunciado: 'Clasifica el desarrollo decimal de las fracciones irreductibles $\frac{5}{21}$ y $\frac{7}{30}$ mediante el análisis de los factores primos de sus denominadores.'
+  enunciado: Clasifique sin dividir las expansiones decimales de $\frac{5}{21}$ y
+    $\frac{7}{30}$.
   pasos:
-    - 'Analizar $\frac{5}{21}$: $\text{MCD}(5, 21) = 1$, irreductible.'
-    - '   Denominador $21 = 3 \cdot 7$.'
-    - '   Factores primos: $3$ y $7$ (ninguno es $2$ ni $5$).'
-    - '   Conclusión: genera un decimal **infinito periódico puro** ($0.\overline{238095}$).'
-    - 'Analizar $\frac{7}{30}$: $\text{MCD}(7, 30) = 1$, irreductible.'
-    - '   Denominador $30 = 2 \cdot 3 \cdot 5$.'
-    - '   Factores primos: $2$ y $5$ (generadores de anteperíodo) Y $3$ (generador de período).'
-    - '   Conclusión: genera un decimal **infinito semiperiódico** ($0.2333\dots = 0.2\overline{3}$).'
+  - 'Paso 1: Analizar $\frac{5}{21}$ irreductible: $21 = 3 \cdot 7$. No tiene factores
+    $2$ ni $5 \implies$ **Decimal Infinito Periódico Puro**.'
+  - 'Paso 2: Analizar $\frac{7}{30}$ irreductible: $30 = 2 \cdot 3 \cdot 5$. Tiene
+    factores de $\{2,5\}$ Y el factor $3 \implies$ **Decimal Infinito Semiperiódico**.'
+  - 'Conclusión: $\frac{5}{21}$ es periódico puro y $\frac{7}{30}$ es semiperiódico.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué tipo de desarrollo decimal genera una fracción irreductible cuyo denominador simplificado no tiene los primos 2 ni 5, sino únicamente el primo 3 o 7?"
-    choices:
-      - {text: "Un decimal infinito periódico puro.", is_correct: true}
-      - {text: "Un decimal finito de 2 cifras.", is_correct: false}
-      - {text: "Un decimal semiperiódico.", is_correct: false}
-      - {text: "Un número irracional.", is_correct: false}
-    explanation: "La correcta es Un decimal infinito periódico puro.: la ausencia total de factores 2 y 5 hace que el período comience inmediatamente tras la coma."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: '¿Qué tipo de decimal genera la fracción irreductible $\frac{1}{15}$?'
-    choices:
-      - {text: "Decimal infinito semiperiódico.", is_correct: true}
-      - {text: "Decimal infinito periódico puro.", is_correct: false}
-      - {text: "Decimal finito.", is_correct: false}
-      - {text: "Número entero.", is_correct: false}
-    explanation: 'La correcta es Decimal infinito semiperiódico.: el denominador $15 = 3 \cdot 5$ tiene el 5 (anteperíodo) y el 3 (período), dando $0.0\overline{6}$.'
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué condición en el denominador irreductible b caracteriza a un decimal
+    infinito periódico puro?
+  choices:
+  - text: Que b no contenga ningún factor primo 2 ni 5 (MCD(b, 10) = 1)
+    is_correct: true
+  - text: Que b sea divisible por 10
+    is_correct: false
+  - text: Que b contenga únicamente el factor 2
+    is_correct: false
+  - text: Que a y b sean pares
+    is_correct: false
+  explanation: La alternativa correcta es 'Que b no contenga ningún factor primo 2
+    ni 5 (MCD(b, 10) = 1)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 7/30 (con 30 = 2 · 3 · 5), ¿por qué fue clasificado
+    como semiperiódico?
+  choices:
+  - text: Porque combina los primos 2 y 5 (que generan anteperíodo) con el primo 3
+      (que genera período)
+    is_correct: true
+  - text: Porque 30 es un número entero par
+    is_correct: false
+  - text: Because es una fracción propia
+    is_correct: false
+  - text: No es semiperiódico
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque combina los primos 2 y 5 (que generan
+    anteperíodo) con el primo 3 (que genera período)'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Simplificar la fracción $\frac{a}{b}$ a su forma irreductible calculando $\text{MCD}(a,b)$.'
-  - "Paso 2: Tomar el denominador irreductible $b$ y descomponerlo en factores primos."
-  - 'Paso 3: Identificar la presencia de primos diferentes de 2 y 5 (como $3, 7, 11, \dots$).'
-  - "Paso 4: Si no hay ni 2 ni 5 entre los factores primos, clasificar como **Decimal Infinito Periódico Puro**."
-  - "Paso 5: Si coexisten los primos 2 y/o 5 junto con otros primos ajenos, clasificar como **Decimal Infinito Semiperiódico**."
-errores_correccion: |
-  Un error clásico es clasificar la fracción como periódica pura cuando su denominador tiene un 2 o un 5 junto a un 3 (por ejemplo en $\frac{1}{6}$, decir que es puro por tener el 3). ¡El 2 genera un anteperíodo de 1 cifra! **Si hay 2 o 5 combinados con otros primos, es SEMIPERIÓDICO**.
+- 'Paso 1: Simplificar la fracción al máximo hasta obtener $\frac{a}{b}$ irreductible.'
+- 'Paso 2: Descomponer el denominador $b$ en sus factores primos.'
+- 'Paso 3: Si no incluye $2$ ni $5$, es periódico puro. Si incluye $2$ o $5$ combinados
+  con otros primos, es semiperiódico.'
+errores_correccion: '- **Error 1: Clasificar $\frac{3}{15}$ como decimal periódico
+  por ver el $15 = 3 \cdot 5$.** **Cómo corregirlo:** Se DEBE simplificar primero:
+  $\frac{3}{15} = \frac{1}{5}$, cuyo denominador $5$ da un decimal FINITO ($0,2$).
+
+
+  - **Error 2: Confundir cuál tipo de factor produce el anteperíodo.** **Cómo corregirlo:**
+  Los primos $2$ y $5$ en presencia de otros primos son los responsables de crear
+  la longitud del anteperíodo.'
 ejemplos:
-  - titulo: "Ejemplo 1"
-    enunciado: '¿Es $\frac{2}{33}$ un decimal periódico puro o semiperiódico?'
-    alternativas:
-      - "Periódico puro."
-      - "Semiperiódico."
-      - "Finito."
-    respuesta: "Periódico puro."
-    solucion_pasos:
-      - '$\text{MCD}(2, 33) = 1$, irreductible.'
-      - '$33 = 3 \cdot 11$.'
-      - 'Factores primos: $3$ y $11$ (ningún 2 ni 5).'
-      - 'Respuesta: Periódico puro ($0.\overline{06}$).'
-  - titulo: "Ejemplo 2"
-    enunciado: '¿Qué tipo de decimal genera $\frac{9}{12}$?'
-    alternativas:
-      - "Decimal finito."
-      - "Decimal periódico puro."
-      - "Decimal semiperiódico."
-    respuesta: "Decimal finito."
-    solucion_pasos:
-      - '¡Cuidado! Hay que simplificar primero: $\frac{9 \div 3}{12 \div 3} = \frac{3}{4}$.'
-      - '$4 = 2^2 \implies$ solo tiene el primo 2.'
-      - 'Resultado: Decimal finito ($0.75$).'
-  - titulo: "¿Por qué el residuo de una división de enteros debe empezar a repetirse obligatoriamente?"
-    respuesta: "Porque los residuos posibles al dividir por b son finitos (a lo sumo b-1 opciones distintas)."
-    solucion_pasos:
-      - "Por el principio del palomar, tras $b$ divisiones un residuo debe repetirse obligatoriamente."
-  - titulo: "¿Existe alguna fracción de enteros que dé un número decimal con cifras infinitas no periódicas?"
-    respuesta: "No"
-    solucion_pasos:
-      - "No, todas las fracciones de enteros son racionales y solo generan decimales finitos o periódicos."
+- titulo: Ejemplo 1
+  enunciado: ¿Qué tipo de decimal genera 2/7?
+  alternativas:
+  - Decimal infinito periódico puro
+  - Decimal finito
+  - Decimal semiperiódico
+  respuesta: Decimal infinito periódico puro
+  solucion_pasos:
+  - $7$ no contiene factores $2$ ni $5 \implies$ periódico puro.
+- titulo: Ejemplo 2
+  enunciado: ¿Qué tipo de decimal representa 5/6?
+  alternativas:
+  - Decimal infinito semiperiódico
+  - Decimal finito
+  - Decimal periódico puro
+  respuesta: Decimal infinito semiperiódico
+  solucion_pasos:
+  - $6 = 2 \cdot 3 \implies$ combina el primo 2 y el primo 3 $\implies$ semiperiódico
+    ($0,8333...$).
+- titulo: ¿Genera 4/11 un decimal periódico puro?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $11$ no tiene ni 2 ni 5 en sus factores $\implies 0,\overline{36}$.
+- titulo: ¿Es 1/12 un decimal semiperiódico?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $12 = 2^2 \cdot 3 \implies$ combina 2 con el primo 3 $\implies 0,08\overline{3}$.
 errores_frecuentes:
-  - "No simplificar la fracción antes de descomponer el denominador."
-  - "Confundir decimales periódicos puros con semiperiódicos por no detectar la presencia del factor 2 o 5."
-  - "Creer que si la división no es exacta en las 2 primeras cifras el número es irracional."
-  - "Olvidar que los números primos son los únicos que deben analizarse en la descomposición."
-  - "Asumir que el numerador puede hacer que una fracción con denominador 7 sea un decimal finito sin simplificarse."
+- Clasificar la expansión decimal de una fracción antes de reducirla a su forma irreductible.
+- Afirmar que un denominador sin factores 2 ni 5 produce un decimal finito de dos
+  cifras.
+- Declarar la condición del decimal periódico puro con la del decimal finito.
+- Las fracciones con denominador 7 generan decimales finitos cuando el numerador es
+  par.
+- La presencia del factor primo 5 en un denominador impide que exista un período con
+  barra.
 afirmaciones_verdaderas:
-  - "Una fracción irreductible genera un decimal periódico si su denominador posee primos distintos de 2 y 5."
-  - "La presencia exclusiva de primos ajenos a 2 y 5 en el denominador irreductible determina un decimal periódico puro."
-al_terminar_debes_poder: |
-  Debes ser capaz de predecir la periodicidad pura o semiperiódica del desarrollo decimal de cualquier fracción evaluando los factores primos de su denominador irreductible.
-fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
+- Una fracción irreductible cuyo denominador no tiene ni al 2 ni al 5 genera un decimal
+  periódico puro.
+- Una fracción irreductible cuyo denominador combina primos de {2,5} con otros primos
+  genera un decimal semiperiódico.
+al_terminar_debes_poder: Al terminar serás capaz de clasificar preventivamente si
+  una fracción genera un decimal periódico puro o semiperiódico analizando la estructura
+  de primos de su denominador irreductible.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

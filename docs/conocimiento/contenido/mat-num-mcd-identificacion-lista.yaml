@@ -1,102 +1,114 @@
 semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.IDENTIFICACION_LISTA
-resumen_inicial: "El método de listado calcula el MCD escribiendo los divisores de cada número y eligiendo el mayor divisor común."
-explicacion_simple: |
-  ¿Cómo encuentras algo cuando tienes muchas cosas mezcladas? ¡Haces una lista! Si quieres
-  saber el mayor divisor común de dos números, escribe dos listas: una con los divisores
-  del primer número y otra con los del segundo. Luego busca los números que aparecen en
-  ambas listas y elige el más grande.
-explicacion_formal: |
-  El conjunto de divisores de $n$, denotado $D(n)$, contiene todos los números que dividen
-  exactamente a $n$. Para el MCD de $a$ y $b$: se calcula $D(a)$, $D(b)$, se toma la
-  intersección $D(a)\cap D(b)$ (los divisores comunes), y se elige el mayor elemento. Para
-  $\text{MCD}(24,36)$: $D(24)\cap D(36)=\{1,2,3,4,6,12\}$, por lo que $\text{MCD}=12$.
-definiciones_clave: |
-  **Intersección de divisores**: conjunto de números que dividen exactamente a la vez a
-  dos o más números; el MCD es el mayor elemento de esa intersección.
-propiedades_relaciones: |
-  Este método es ideal para números pequeños (menores a 100); para números grandes resulta
-  ineficiente y propenso a omitir divisores.
+resumen_inicial: El M.C.D. por listas se encuentra enumerando los divisores de cada
+  número y seleccionando el mayor divisor coincidente.
+explicacion_simple: Este método consiste en encontrar y listar por separado todos
+  los divisores de cada número dado. Después observamos ambas listas, buscamos todos
+  los números que se repiten en ellas y encerramos el valor más grande de esa selección.
+explicacion_formal: 'Dada la colección de conjuntos finitos de divisores $D^+(a_i)
+  = \{ d \in \mathbb{N} \mid d \mid a_i \}$, el **Algoritmo de Intersección de Listas**
+  determina:
+
+
+  $$d^* = \max \left( D^+(a_1) \cap D^+(a_2) \cap \dots \cap D^+(a_k) \right)$$
+
+
+  **Desglose de la fórmula:**
+
+  - $D^+(a_i)$: Lista completa y finita de los divisores positivos de $a_i$.
+
+  - $d^*$: El número de mayor valor presente de forma simultánea en todas las listas.
+
+
+  > **Complemento didáctico:** Es un procedimiento muy claro y seguro que garantiza
+  no cometer errores siempre que se listen correctamente todos los divisores de cada
+  número.'
+definiciones_clave: '- **Método de listas de divisores**: Búsqueda del M.C.D. mediante
+  la comparación directa de los conjuntos de divisores de cada número.'
 ejemplo_guiado:
-  enunciado: "Calcula el MCD entre 20 y 30 listando sus divisores."
+  enunciado: Halle el M.C.D.(16, 24) enumerando sus listas de divisores.
   pasos:
-    - 'Divisores de 20: $\{1,2,4,5,10,20\}$. Divisores de 30: $\{1,2,3,5,6,10,15,30\}$.'
-    - 'Divisores comunes: $\{1,2,5,10\}$.'
-    - 'Conclusión: el mayor es 10, por lo que $\text{MCD}(20,30)=10$.'
+  - 'Paso 1: Listar divisores de 16: $\{1, 2, 4, 8, 16\}$.'
+  - 'Paso 2: Listar divisores de 24: $\{1, 2, 3, 4, 6, 8, 12, 24\}$.'
+  - 'Paso 3: Identificar los divisores coincidentes: $\{1, 2, 4, 8\}$.'
+  - 'Conclusión: El mayor coincidente es $8$, por lo que $\operatorname{MCD}(16, 24)
+    = 8$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué representa la intersección de las listas de divisores de dos números?"
-    choices:
-      - {text: "El conjunto de divisores comunes a ambos", is_correct: true}
-      - {text: "El conjunto de múltiplos comunes", is_correct: false}
-      - {text: "Solo el divisor 1", is_correct: false}
-      - {text: "El producto de todos los divisores", is_correct: false}
-    explanation: "La correcta es El conjunto de divisores comunes a ambos: el MCD es el mayor elemento de esa intersección."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCD entre 12 y 8?"
-    choices:
-      - {text: "4", is_correct: true}
-      - {text: "2", is_correct: false}
-      - {text: "24", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 4: divisores de 12 son $1,2,3,4,6,12$ y de 8 son $1,2,4,8$; el mayor común es 4."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuál es el M.C.D. entre 16 y 24 obtenido por comparación de listas?
+  choices:
+  - text: '8'
+    is_correct: true
+  - text: '4'
+    is_correct: false
+  - text: '16'
+    is_correct: false
+  - text: '48'
+    is_correct: false
+  explanation: La alternativa correcta es '8'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿cuáles fueron todos los divisores comunes entre
+    16 y 24?
+  choices:
+  - text: '{1, 2, 4, 8}'
+    is_correct: true
+  - text: '{1, 2, 3}'
+    is_correct: false
+  - text: '{8, 16, 24}'
+    is_correct: false
+  - text: No tienen divisores comunes
+    is_correct: false
+  explanation: La alternativa correcta es '{1, 2, 4, 8}'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Escribe la lista completa de los divisores del primer número, comenzando por el 1 y terminando en el número mismo.'
-  - 'Paso 2: Escribe la lista completa de los divisores del segundo número de la misma manera.'
-  - 'Paso 3: Identifica y subraya todos los números que aparecen en ambas listas (divisores comunes).'
-  - 'Paso 4: Elige el número más grande de los divisores comunes identificados; este será el MCD.'
-errores_correccion: |
-  Un error frecuente es omitir divisores al escribir la lista (por ejemplo, olvidar el 1
-  o el propio número). Otro error es listar múltiplos en vez de divisores.
+- 'Paso 1: Escribir el conjunto de divisores de cada uno de los números dados.'
+- 'Paso 2: Marcar los números que pertenezcan simultáneamente a todos los conjuntos.'
+- 'Paso 3: Seleccionar el número de mayor valor numérico como el M.C.D.'
+errores_correccion: '- **Error 1: Omitir algún divisor al armar las listas de los
+  números.** **Cómo corregirlo:** Usar la búsqueda por pares conjugados para asegurar
+  la lista completa.
+
+
+  - **Error 2: Seleccionar el menor divisor común en lugar del mayor.** **Cómo corregirlo:**
+  El M.C.D. busca el MAYOR de los divisores comunes compartidos.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Calcula el MCD de $16$ y $24$ listando sus divisores.
-    alternativas:
-      - "8"
-      - "4"
-      - "48"
-    respuesta: "8"
-    solucion_pasos:
-      - 'Paso a: Listamos los divisores de $16$: $D(16) = \{1, 2, 4, 8, 16\}$.'
-      - 'Paso b: Listamos los divisores de $24$: $D(24) = \{1, 2, 3, 4, 6, 8, 12, 24\}$.'
-      - 'Paso c: Identificamos los divisores comunes entre ambas listas: $\{1, 2, 4, 8\}$.'
-      - 'Paso d: Seleccionamos el mayor, que es $8$. Por ende, $\text{MCD}(16, 24) = 8$.'
-  - titulo: Ejemplo 2
-    enunciado: Determina el MCD de $18$ y $27$ listando sus divisores.
-    alternativas:
-      - "9"
-      - "3"
-      - "54"
-    respuesta: "9"
-    solucion_pasos:
-      - 'Paso a: Los divisores de $18$ son $D(18) = \{1, 2, 3, 6, 9, 18\}$.'
-      - 'Paso b: Los divisores de $27$ son $D(27) = \{1, 3, 9, 27\}$.'
-      - 'Paso c: Intersecamos las dos listas para obtener los divisores comunes: $\{1, 3, 9\}$.'
-      - 'Paso d: Elegimos el mayor valor, que es $9$. Por ende, $\text{MCD}(18, 27) = 9$.'
-  - titulo: '¿El MCD de $14$ y $35$ es $7$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Los divisores de $14$ son $\{1, 2, 7, 14\}$.'
-      - 'Los divisores de $35$ son $\{1, 5, 7, 35\}$.'
-      - 'Los divisores comunes son $\{1, 7\}$, de los cuales el mayor es $7$. Así, $\text{MCD}(14, 35) = 7$.'
-  - titulo: 'Al listar los divisores de $20$ y $30$, ¿es el divisor común más grande igual a $5$?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'Los divisores de $20$ son $\{1, 2, 4, 5, 10, 20\}$.'
-      - 'Los divisores de $30$ son $\{1, 2, 3, 5, 6, 10, 15, 30\}$.'
-      - 'Los divisores comunes son $\{1, 2, 5, 10\}$. El mayor común es $10$, no $5$.'
+- titulo: Ejemplo 1
+  enunciado: Halle el M.C.D.(15, 20) por listas.
+  alternativas:
+  - '5'
+  - '10'
+  - '60'
+  respuesta: '5'
+  solucion_pasos:
+  - 'Divisores 15: 1, 3, 5, 15. Divisores 20: 1, 2, 4, 5, 10, 20. MCD = 5.'
+- titulo: Ejemplo 2
+  enunciado: ¿Cuál es el M.C.D.(14, 28) por el método de listas?
+  alternativas:
+  - '14'
+  - '7'
+  - '28'
+  respuesta: '14'
+  solucion_pasos:
+  - 'Divisores de 14: 1, 2, 7, 14. Divisores de 28: 1, 2, 4, 7, 14, 28. MCD = 14.'
+- titulo: ¿Se puede usar la lista de divisores para encontrar el M.C.D. de tres números?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, intersectando los conjuntos de divisores de los tres números.
+- titulo: ¿Es el M.C.D.(9, 12) igual a 3?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, divisores 9: {1,3,9}; divisores 12: {1,2,3,4,6,12}. El mayor común es 3.'
 errores_frecuentes:
-  - Omitir divisores al escribir la lista (por ejemplo, olvidar el 1 o el propio número).
-  - Listar los múltiplos del número en lugar de sus divisores.
-  - Seleccionar un divisor que solo pertenece a uno de los números pero no es común a ambos.
-  - Elegir el menor divisor común positivo (que siempre es 1) en lugar de elegir el mayor (MCD).
-  - Dividir incorrectamente al comprobar si un número es divisor, lo que altera la lista resultante.
+- El método de listas exige seleccionar el menor divisor común distinto de 1.
+- Si dos números no son pares es imposible construir una lista de divisores comunes.
+- El M.C.D. obtenido por listas es igual al producto de todos los divisores comunes.
+- La lista de divisores de un número compuesto contiene infinitos elementos.
+- El número 1 debe descartarse de la lista de divisores de los enteros.
 afirmaciones_verdaderas:
-  - "El método de listado es útil para calcular el MCD de números pequeños."
-  - "El MCD entre 16 y 24 es 8."
-al_terminar_debes_poder: |
-  Calcular el MCD de dos o más números mediante el método de comparación de listas de
-  divisores.
-fuente: Teoría de Números
+- El M.C.D. por listas identifica el mayor número común en los conjuntos de divisores
+  de los números.
+- Si $a$ divide a $b$, entonces $\operatorname{MCD}(a, b) = a$.
+al_terminar_debes_poder: Al terminar serás capaz de hallar el M.C.D. mediante la lista
+  de divisores comunes, seleccionando el mayor divisor coincidente.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

@@ -1,106 +1,136 @@
 semantic_id: MAT.NUM.MINIMO_COMUN_MULTIPLO.METODO_TABLA_SIMULTANEA
-resumen_inicial: "El método de la tabla simultánea calcula el MCM dividiendo varios números a la vez por factores primos, hasta que todos llegan a 1."
-explicacion_simple: |
-  ¿Qué pasaría si tuvieras que calcular el MCM de números grandes como 24, 36 y 40?
-  Hacer listas de múltiplos tomaría horas. Para evitarlo, los matemáticos inventaron un
-  súper truco: poner todos los números juntos en una tabla y dividirlos al mismo tiempo
-  por números primos. Cuando todos llegan a 1, multiplicas los primos de la derecha y
-  tienes tu MCM.
-explicacion_formal: |
-  En el **Método de la Tabla de Divisiones Simultáneas**, se escriben los números en fila,
-  se busca un primo que divida a al menos uno de ellos, se dividen los que sean
-  divisibles (los demás se copian igual), y se repite hasta que todos lleguen a $1$. Para
-  $12,18,20$: dividiendo por $2,2,3,3,5$ se obtiene
-  $\text{MCM}(12,18,20)=2^2\cdot3^2\cdot5=180$.
-definiciones_clave: |
-  **División simultánea**: se dividen todos los números de una fila por el mismo primo a
-  la vez; los que no son divisibles por ese primo se copian sin cambio a la fila
-  siguiente.
-propiedades_relaciones: |
-  Este método es más eficiente que el de listas cuando hay tres o más números o cuando los
-  números son grandes, porque evita generar listas largas.
+resumen_inicial: El m.c.m. por tabla simultánea divide progresivamente los números
+  por primos hasta reducir todas las columnas a 1.
+explicacion_simple: El método de la tabla simultánea nos permite calcular el m.c.m.
+  de varios números al mismo tiempo. Escribimos los números en fila a la izquierda,
+  los vamos dividiendo entre números primos a la derecha (si un número no es divisible,
+  se baja igual), y al llegar a puros unos abajo, multiplicamos todos los primos de
+  la derecha.
+explicacion_formal: 'En la **Tabla de Factorización Simultánea**, para un vector de
+  números $(a_1, a_2, \dots, a_k)$, se aplican divisiones por primos $p_j$ produciendo
+  la matriz de cocientes hasta que:
+
+
+  $$\text{Fila final: } (1, 1, \dots, 1) \implies \operatorname{mcm}(a_1, \dots, a_k)
+  = \prod_{j=1}^m p_j$$
+
+
+  **Desglose de la fórmula:**
+
+  - $p_j$: Primo que divide a al menos una de las entradas de la fila actual.
+
+  - Regla de descenso: Si $p_j \nmid a_i$, el valor $a_i$ se copia intacto a la siguiente
+  fila.
+
+  - $\prod p_j$: El m.c.m. es la multiplicación de todos los primos anotados en la
+  columna derecha.
+
+
+  > **Complemento didáctico:** No se exige que el primo divida a todos los números
+  a la vez; basta que divida a al menos uno de ellos.'
+definiciones_clave: '- **Tabla simultánea de m.c.m.**: Algoritmo que reduce todos
+  los números a 1 en paralelo dividiendo por primos.'
 ejemplo_guiado:
-  enunciado: "Calcula el MCM de 10 y 15 con la tabla de divisiones simultáneas."
+  enunciado: Calcule el $\operatorname{mcm}(12, 15)$ mediante la tabla de descomposición
+    simultánea.
   pasos:
-    - 'Dividimos por 5: $10\to2$, $15\to3$.'
-    - 'Dividimos por 2: $2\to1$, el 3 se baja igual. Dividimos por 3: $3\to1$.'
-    - 'Multiplicamos la columna derecha: $5\cdot2\cdot3=30$. Conclusión: $\text{MCM}(10,15)=30$.'
+  - 'Paso 1: Fila 1 (12, 15). Dividir por 2: 12 da 6, 15 baja igual $\implies$ Fila
+    2 (6, 15). Primo: 2.'
+  - 'Paso 2: Fila 2 (6, 15). Dividir por 2: 6 da 3, 15 baja igual $\implies$ Fila
+    3 (3, 15). Primo: 2.'
+  - 'Paso 3: Fila 3 (3, 15). Dividir por 3: 3 da 1, 15 da 5 $\implies$ Fila 4 (1,
+    5). Primo: 3.'
+  - 'Paso 4: Fila 4 (1, 5). Dividir por 5: 1 baja igual, 5 da 1 $\implies$ Fila 5
+    (1, 1). Primo: 5.'
+  - 'Paso 5: Multiplicar los primos anotados a la derecha: $2 \cdot 2 \cdot 3 \cdot
+    5 = 60$.'
+  - 'Conclusión: $\operatorname{mcm}(12, 15) = 60$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué se hace con un número que no es divisible por el primo elegido en una fila de la tabla?"
-    choices:
-      - {text: "Se copia igual en la fila de abajo", is_correct: true}
-      - {text: "Se elimina de la tabla", is_correct: false}
-      - {text: "Se reemplaza por 1", is_correct: false}
-      - {text: "Se divide igual, dando un decimal", is_correct: false}
-    explanation: "La correcta es Se copia igual en la fila de abajo: solo se dividen los números que son exactamente divisibles por el primo elegido."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCM de 6 y 14?"
-    choices:
-      - {text: "42", is_correct: true}
-      - {text: "84", is_correct: false}
-      - {text: "2", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 42: dividiendo por 2, 3 y 7 se obtiene $2\\cdot3\\cdot7=42$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: En la tabla simultánea para el m.c.m., ¿qué se hace con un número que
+    no es divisible exactamente por el primo elegido?
+  choices:
+  - text: Se baja igual a la siguiente fila sin modificarlo
+    is_correct: true
+  - text: Se convierte en cero
+    is_correct: false
+  - text: Se elimina de la tabla
+    is_correct: false
+  - text: Se divide por decimales
+    is_correct: false
+  explanation: La alternativa correcta es 'Se baja igual a la siguiente fila sin modificarlo'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 12 y 15, ¿cuál fue el resultado final del m.c.m.?
+  choices:
+  - text: '60'
+    is_correct: true
+  - text: '180'
+    is_correct: false
+  - text: '30'
+    is_correct: false
+  - text: '15'
+    is_correct: false
+  explanation: La alternativa correcta es '60'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Coloca los números a la izquierda de una línea vertical, separados por un espacio.'
-  - 'Paso 2: Escribe a la derecha de la línea el menor número primo que divida exactamente a al menos uno de los números de la izquierda.'
-  - 'Paso 3: Divide los números correspondientes y escribe los cocientes abajo. Copia igual aquellos números que no se dividieron de forma exacta.'
-  - 'Paso 4: Repite los pasos 2 y 3 hasta que todos los números de la columna izquierda se conviertan en 1.'
-  - 'Paso 5: Multiplica todos los factores primos de la derecha para obtener el MCM final.'
-errores_correccion: |
-  Un error frecuente es olvidar bajar o copiar un número que no fue dividido en un paso.
-  Otro error es detener la tabla cuando solo uno de los números ha llegado a 1, en vez de
-  esperar a que todos lleguen.
+- 'Paso 1: Colocar los números en fila separados por comas.'
+- 'Paso 2: Dividir por un primo que divida a al menos uno de los números; bajar igual
+  a los que no sean divisibles.'
+- 'Paso 3: Continuar dividiendo hasta que todas las columnas contengan el valor 1.'
+- 'Paso 4: Multiplicar todos los primos de la columna derecha para obtener el m.c.m.'
+errores_correccion: '- **Error 1: Exigir que el primo divida a TODOS los números para
+  poder usarlo.** **Cómo corregirlo:** En el m.c.m. basta con que el primo divida
+  a AL MENOS UNO de los números.
+
+
+  - **Error 2: Olvidar bajar un número que no se dividió.** **Cómo corregirlo:** Si
+  un número no es divisible, se escribe exactamente igual en la fila inferior.'
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: 'Calcula el MCM de $8$ y $12$ utilizando la tabla de divisiones simultáneas.'
-    alternativas:
-      - "24"
-      - "96"
-      - "4"
-    respuesta: "24"
-    solucion_pasos:
-      - 'Paso a: Escribimos $8$ y $12$ a la izquierda. Dividimos por el primo $2$: los cocientes son $4$ y $6$. Escribimos $2$ a la derecha.'
-      - 'Paso b: Dividimos $4$ y $6$ por el primo $2$: los cocientes son $2$ y $3$. Escribimos $2$ a la derecha.'
-      - 'Paso c: Dividimos por el primo $2$: el $2$ queda en $1$, y el $3$ se baja igual por no ser divisible. Escribimos $2$ a la derecha.'
-      - 'Paso d: Dividimos por el primo $3$: el $3$ queda en $1$. Escribimos $3$ a la derecha. Ahora todos son $1$.'
-      - 'Paso e: Multiplicamos los factores de la derecha: $2 \cdot 2 \cdot 2 \cdot 3 = 2^3 \cdot 3 = 24$. Así, $\text{MCM}(8, 12) = 24$.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Determina el MCM entre $15$ y $25$ usando divisiones simultáneas.'
-    alternativas:
-      - "75"
-      - "5"
-      - "375"
-    respuesta: "75"
-    solucion_pasos:
-      - 'Paso a: Colocamos $15$ and $25$ a la izquierda. Ninguno es divisible por $2$. Dividimos por $3$: el $15$ pasa a $5$ y el $25$ se baja igual. Escribimos $3$ a la derecha.'
-      - 'Paso b: Ahora tenemos $5$ y $25$. Dividimos por el primo $5$: quedan en $1$ y $5$, respectivamente. Escribimos $5$ a la derecha.'
-      - 'Paso c: Volvemos a dividir por $5$: el $5$ pasa a $1$. Escribimos $5$ a la derecha. Ambos llegaron a $1$.'
-      - 'Paso d: Multiplicamos la columna derecha: $3 \cdot 5 \cdot 5 = 3 \cdot 5^2 = 75$. El MCM es $75$.'
-  - titulo: 'En la tabla de divisiones simultáneas para calcular el MCM, ¿debemos bajar igual los números que no son divisibles por el factor primo elegido?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'En las divisiones simultáneas, solo se dividen aquellos números que tienen división exacta por el número primo elegido.'
-      - 'Si un número no es divisible exactamente, simplemente se copia igual en la línea de abajo para ser dividido en los siguientes pasos.'
-  - titulo: 'Si al calcular el MCM de $9$ y $15$, la columna de la derecha tiene los números $3$, $3$ y $5$, ¿es $45$ el MCM?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'El producto de los números primos obtenidos en la columna derecha es $3 \cdot 3 \cdot 5 = 9 \cdot 5 = 45$.'
-      - 'Como este producto representa al MCM de los números, el resultado efectivamente es $45$.'
+- titulo: Ejemplo 1
+  enunciado: Calcule el m.c.m.(8, 10) usando la tabla simultánea.
+  alternativas:
+  - '40'
+  - '80'
+  - '18'
+  respuesta: '40'
+  solucion_pasos:
+  - 'Primos usados: 2, 2, 2, 5. Producto: $2 \cdot 2 \cdot 2 \cdot 5 = 40$.'
+- titulo: Ejemplo 2
+  enunciado: ¿Qué se obtiene al multiplicar la columna derecha de la tabla simultánea?
+  alternativas:
+  - El mínimo común múltiplo (m.c.m.)
+  - El máximo común divisor
+  - La suma de los números
+  respuesta: El mínimo común múltiplo (m.c.m.)
+  solucion_pasos:
+  - El producto de todos los primos utilizados en la tabla da el m.c.m.
+- titulo: ¿Finaliza la tabla simultánea cuando todos los números de la izquierda se
+    reducen a 1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la fila final debe ser $(1, 1, \dots, 1)$.
+- titulo: ¿Se pueden usar números compuestos en la columna derecha de la tabla simultánea?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, se deben utilizar únicamente números primos.
 errores_frecuentes:
-  - 'Olvidar bajar o copiar un número que no fue dividido en un paso determinado, perdiéndolo en la tabla.'
-  - 'Colocar números compuestos en la columna de la derecha (como dividir por 6 en lugar de dividir por 2 y por 3 por separado).'
-  - 'Dividir un número de forma inexacta dando decimales en lugar de bajar el número entero tal cual.'
-  - 'Detener la tabla cuando solo uno de los números ha llegado a 1, en lugar de esperar a que todos se reduzcan a 1.'
-  - 'Multiplicar incorrectamente los factores primos de la derecha al final del procedimiento.'
+- En la tabla simultánea del m.c.m. el primo elegido debe dividir obligatoriamente
+  a todos los números.
+- Si un número no es divisible por el primo actual debe reemplazarse por el número
+  cero.
+- La tabla simultánea finaliza cuando el producto de los números de la izquierda es
+  igual a 100.
+- Colocar números compuestos en la columna de división de la tabla mantiene correcto
+  el m.c.m.
+- El m.c.m. se obtiene sumando los primos anotados en la columna derecha de la tabla.
 afirmaciones_verdaderas:
-  - "En la tabla simultánea del MCM, los números no divisibles por el primo elegido se copian igual."
-  - "El proceso termina cuando todos los números de la fila llegan a 1."
-al_terminar_debes_poder: |
-  Calcular el MCM de dos o más números usando el método de la tabla de divisiones
-  simultáneas.
-fuente: 'Teoría de Números'
+- El método de la tabla simultánea requiere reducir todas las columnas al valor 1
+  dividiendo por primos.
+- Multiplicar todos los factores primos utilizados en la columna derecha calcula el
+  m.c.m.
+al_terminar_debes_poder: Al terminar serás capaz de calcular el m.c.m. mediante la
+  tabla de descomposición simultánea por primos, reduciendo todas las columnas a 1
+  y multiplicando los divisores.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

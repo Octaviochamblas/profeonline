@@ -1,106 +1,134 @@
 semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.METODO_TABLA_FACTORES_COMUNES
-resumen_inicial: "El método de la tabla de factores comunes calcula el MCD dividiendo simultáneamente varios números por sus factores primos comunes, hasta que ya no comparten ninguno."
-explicacion_simple: |
-  ¿Te imaginas simplificar el trabajo de calcular divisores para varios números a la vez?
-  Existe un método ordenado que consiste en colocar los números en una tabla y dividirlos
-  al mismo tiempo. El secreto es que solo podemos usar divisores primos que sirvan para
-  todos los números a la vez. En cuanto uno ya no comparta el mismo factor primo, nos
-  detenemos y multiplicamos los divisores usados.
-explicacion_formal: |
-  En el **Método de la Tabla de Factores Comunes**, se colocan los números en fila, se
-  busca el menor factor primo que divida a **todos** simultáneamente, se dividen y se
-  repite hasta que los cocientes ya no compartan ningún factor primo (sean coprimos entre
-  sí). El MCD es el producto de los factores usados. Para $60,90$: dividiendo por $2,3,5$
-  se llega a $2,3$ (coprimos), y $\text{MCD}(60,90)=2\cdot3\cdot5=30$.
-definiciones_clave: |
-  **Factor primo común**: primo que divide a la vez a todos los números de la fila; el
-  proceso se detiene cuando ya no existe ninguno.
-propiedades_relaciones: |
-  A diferencia de la tabla simultánea del MCM (que copia los números no divisibles), aquí
-  solo se usan factores que dividen a TODOS los números a la vez; si un factor no divide a
-  uno de ellos, no se usa.
+resumen_inicial: El M.C.D. por tabla simultánea divide los números ÚNICAMENTE por
+  primos que dividan a TODOS los números a la vez.
+explicacion_simple: Para calcular el M.C.D. en una tabla simultánea, dividimos los
+  números en paralelo usando únicamente factores primos que dividan exactamente a
+  TODOS los números de la fila al mismo tiempo. Cuando ya no exista ningún primo que
+  los divida a todos, nos detenemos y multiplicamos los primos anotados.
+explicacion_formal: 'En la **Tabla de Factores Primos Comunes**, las divisiones se
+  aplican sobre la fila $(a_1, a_2, \dots, a_k)$ exigiendo estrictamente:
+
+
+  $$p_j \in \text{Primos} \quad \text{tal que } \forall i \in \{1, \dots, k\}, \,
+  p_j \mid a_i$$
+
+
+  **Desglose de la fórmula:**
+
+  - Condición de detención: $\operatorname{MCD}\left( \frac{a_1}{\prod p_j}, \dots,
+  \frac{a_k}{\prod p_j} \right) = 1$ (cocientes coprimos).
+
+  - $\operatorname{MCD}(a_1, \dots, a_k) = \prod_{j=1}^m p_j$: Multiplicación exclusiva
+  de los primos comunes aplicados.
+
+
+  > **Complemento didáctico:** A diferencia del m.c.m. (donde se dividía si al menos
+  uno era divisible), en el M.C.D. es OBLIGATORIO que el primo divida a TODOS los
+  números de la fila simultáneamente.'
+definiciones_clave: '- **Tabla de factores comunes (M.C.D.)**: Algoritmo de división
+  colectiva por primos comunes hasta obtener cocientes coprimos.'
 ejemplo_guiado:
-  enunciado: "Calcula el MCD de 28 y 42 con la tabla de factores comunes."
+  enunciado: Calcule el $\operatorname{MCD}(36, 48)$ mediante la tabla de factores
+    primos comunes.
   pasos:
-    - 'Ambos son divisibles por 2: $28\to14$, $42\to21$.'
-    - 'Ambos son divisibles por 7: $14\to2$, $21\to3$. El 2 y el 3 ya no comparten factores.'
-    - 'Conclusión: $\text{MCD}(28,42)=2\cdot7=14$.'
+  - 'Paso 1: Fila 1 (36, 48). Ambos son divisibles por 2: $36:2=18, 48:2=24 \implies$
+    Fila 2 (18, 24). Primo: 2.'
+  - 'Paso 2: Fila 2 (18, 24). Ambos son divisibles por 2: $18:2=9, 24:2=12 \implies$
+    Fila 3 (9, 12). Primo: 2.'
+  - 'Paso 3: Fila 3 (9, 12). 9 no es divisible por 2, probamos con 3: $9:3=3, 12:3=4
+    \implies$ Fila 4 (3, 4). Primo: 3.'
+  - 'Paso 4: Fila 4 (3, 4). No existe ningún primo que divida a 3 y a 4 al mismo tiempo
+    ($\operatorname{MCD}(3,4)=1$). Detener la tabla.'
+  - 'Paso 5: Multiplicar los primos comunes anotados: $2 \cdot 2 \cdot 3 = 12$.'
+  - 'Conclusión: $\operatorname{MCD}(36, 48) = 12$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Cuándo se detiene el proceso de la tabla de factores comunes?"
-    choices:
-      - {text: "Cuando los cocientes obtenidos ya no comparten ningún factor primo", is_correct: true}
-      - {text: "Cuando uno de los cocientes llega a 1", is_correct: false}
-      - {text: "Después de exactamente tres divisiones", is_correct: false}
-      - {text: "Cuando los cocientes son todos pares", is_correct: false}
-    explanation: "La correcta es Cuando los cocientes obtenidos ya no comparten ningún factor primo: en ese punto son coprimos entre sí."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCD de 18 y 24?"
-    choices:
-      - {text: "6", is_correct: true}
-      - {text: "2", is_correct: false}
-      - {text: "72", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 6: dividiendo por 2 y luego por 3 se llega a cocientes coprimos, y $2\\cdot3=6$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuándo se detiene la tabla simultánea de factores primos para el M.C.D.?
+  choices:
+  - text: Cuando ya no existe ningún primo que divida a TODOS los números de la fila
+      a la vez
+    is_correct: true
+  - text: Cuando el primer número llega a 1
+    is_correct: false
+  - text: Cuando se hacen 3 divisiones
+    is_correct: false
+  - text: Cuando el resultado da negativo
+    is_correct: false
+  explanation: La alternativa correcta es 'Cuando ya no existe ningún primo que divida
+    a TODOS los números de la fila a la vez'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 36 y 48, ¿cuál fue el M.C.D. obtenido?
+  choices:
+  - text: '12'
+    is_correct: true
+  - text: '144'
+    is_correct: false
+  - text: '6'
+    is_correct: false
+  - text: '24'
+    is_correct: false
+  explanation: La alternativa correcta es '12'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Coloca los números en una fila horizontal y traza una línea vertical a la derecha de ellos.'
-  - 'Paso 2: Divide todos los números de la fila simultáneamente por un factor primo común (como 2, 3, 5, etc.) que los divida exactamente.'
-  - 'Paso 3: Escribe los cocientes obtenidos debajo de sus respectivos números y coloca el factor primo utilizado a la derecha de la línea vertical.'
-  - 'Paso 4: Repite el proceso con los nuevos cocientes hasta que ya no exista ningún factor primo que sea común a todos ellos.'
-  - 'Paso 5: Multiplica todos los factores primos anotados a la derecha de la línea vertical. El resultado es el MCD.'
-errores_correccion: |
-  Un error frecuente es continuar dividiendo un número de forma individual cuando el
-  factor no es común a todos los demás (confundiéndose con el cálculo del MCM). Otro error
-  es olvidar multiplicar los factores primos anotados al final.
+- 'Paso 1: Colocar los números en fila.'
+- 'Paso 2: Buscar un primo que divida a TODOS los números de la fila y anotar el resultado
+  en la fila siguiente.'
+- 'Paso 3: Repetir hasta que los cocientes de la fila no compartan divisores primos
+  comunes.'
+- 'Paso 4: Multiplicar los primos de la columna derecha para calcular el M.C.D.'
+errores_correccion: '- **Error 1: Dividir por un primo que solo divide a uno de los
+  números (confundir con m.c.m.).** **Cómo corregirlo:** En el M.C.D., el primo DEBE
+  dividir a TODOS los números de la fila obligatoriamente.
+
+
+  - **Error 2: Continuar dividiendo cuando los números de la fila son coprimos.**
+  **Cómo corregirlo:** Si $\operatorname{MCD}(a,b)=1$, la tabla se detiene de inmediato.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Calcula el MCD de $36$ y $48$ usando el método de la tabla de factores comunes.
-    alternativas:
-      - "12"
-      - "6"
-      - "144"
-    respuesta: "12"
-    solucion_pasos:
-      - 'Paso a: Escribimos los números $36$ y $48$. Ambos son pares, así que dividimos por el factor primo común $2$. Nos quedan $18$ y $24$ a la izquierda, y anotamos $2$ a la derecha.'
-      - 'Paso b: $18$ y $24$ también son pares, así que dividimos nuevamente por $2$. Nos quedan $9$ y $12$ a la izquierda, y anotamos otro $2$ a la derecha.'
-      - 'Paso c: $9$ y $12$ no son ambos pares, pero ambos son divisibles por $3$. Dividimos por $3$, obteniendo cocientes $3$ y $4$ a la izquierda, y anotando $3$ a la derecha.'
-      - 'Paso d: Los cocientes $3$ y $4$ no tienen divisores comunes distintos de $1$. Detenemos el proceso.'
-      - 'Paso e: Multiplicamos los factores de la derecha: $2 \cdot 2 \cdot 3 = 12$. Por ende, $\text{MCD}(36, 48) = 12$.'
-  - titulo: Ejemplo 2
-    enunciado: Encuentra el MCD de $30, 45$ y $75$ mediante la tabla de divisiones simultáneas.
-    alternativas:
-      - "15"
-      - "5"
-      - "3"
-    respuesta: "15"
-    solucion_pasos:
-      - 'Paso a: Escribimos $30$, $45$ y $75$. No todos son pares, pero todos son divisibles por el factor primo $3$. Dividimos por $3$, obteniendo $10$, $15$ y $25$. Anotamos $3$ a la derecha.'
-      - 'Paso b: $10$, $15$ y $25$ no son divisibles por $3$ simultáneamente. Sin embargo, todos terminan en $0$ o $5$, por lo que son divisibles por $5$. Dividimos por $5$, obteniendo cocientes $2$, $3$ y $5$. Anotamos $5$ a la derecha.'
-      - 'Paso c: Los cocientes $2$, $3$ y $5$ no tienen divisores comunes mayores que $1$. Detenemos el proceso.'
-      - 'Paso d: Multiplicamos los factores de la derecha: $3 \cdot 5 = 15$. Por ende, $\text{MCD}(30, 45, 75) = 15$.'
-  - titulo: 'Si usamos el método de la tabla de factores comunes para $24$ y $36$, ¿el primer cociente que obtenemos al dividir por $2$ es $12$ y $18$ respectivamente?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Colocamos los números $24$ y $36$ y dividimos entre el factor común $2$.'
-      - 'Al realizar $24 \div 2$ obtenemos $12$, y al realizar $36 \div 2$ obtenemos $18$.'
-      - 'Por lo tanto, la afirmación es correcta.'
-  - titulo: '¿Debemos continuar dividiendo en la tabla de factores comunes de $12$ y $18$ si llegamos a los cocientes $2$ y $3$?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'Los cocientes obtenidos son $2$ y $3$.'
-      - 'Dado que $2$ y $3$ son números primos entre sí (coprimos) y no comparten factores comunes mayores que $1$, el proceso se detiene en este paso.'
+- titulo: Ejemplo 1
+  enunciado: Calcule el M.C.D.(24, 60) por la tabla de factores comunes.
+  alternativas:
+  - '12'
+  - '120'
+  - '6'
+  respuesta: '12'
+  solucion_pasos:
+  - 'Fila 1: (24, 60) : 2 -> (12, 30) : 2 -> (6, 15) : 3 -> (2, 5). MCD = $2 \cdot
+    2 \cdot 3 = 12$.'
+- titulo: Ejemplo 2
+  enunciado: En la tabla de factores comunes para M.C.D., ¿qué ocurre cuando se llega
+    a los cocientes (3, 5)?
+  alternativas:
+  - Se detiene el proceso porque 3 y 5 son coprimos
+  - Se sigue dividiendo por 3
+  - Se multiplican por 0
+  respuesta: Se detiene el proceso porque 3 y 5 son coprimos
+  solucion_pasos:
+  - Al no haber primos que dividan a 3 y 5 al mismo tiempo, el algoritmo termina.
+- titulo: ¿Se diferencia la tabla del M.C.D. de la del m.c.m. en que exige división
+    a todos los números?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es la diferencia metodológica clave entre ambos.
+- titulo: ¿Es el M.C.D.(16, 20) igual a 4 usando la tabla de factores comunes?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $16:2=8, 20:2=10 \implies 8:2=4, 10:2=5 \implies MCD = 2 \cdot 2 = 4$.
 errores_frecuentes:
-  - Continuar dividiendo un número de forma individual cuando el factor no es común a todos los demás números de la fila (este es un error típico al confundirse con el cálculo del MCM).
-  - Olvidar multiplicar los factores primos anotados al final a la derecha para obtener el MCD, dejando solo la lista de factores.
-  - Usar números compuestos a la derecha en lugar de factores primos (aunque funciona si se hace con cuidado, es propenso a errores de división).
-  - No detectar que un factor común existe y detener la tabla antes de tiempo, obteniendo un MCD menor al real.
-  - Colocar factores en la columna derecha que no dividen de manera exacta a alguno de los números del conjunto a la izquierda.
+- En la tabla del M.C.D. se puede dividir por un primo aunque solo divida a uno de
+  los números.
+- El algoritmo de la tabla del M.C.D. exige llegar siempre a unos en todas las columnas.
+- Si un primo divide a dos de tres números se debe aplicar la división en la tabla
+  del M.C.D.
+- El M.C.D. se calcula sumando todos los números de la columna de división.
+- La tabla del M.C.D. produce el mismo resultado que multiplicar directamente los
+  números.
 afirmaciones_verdaderas:
-  - "En la tabla de factores comunes, solo se usan primos que dividen a todos los números a la vez."
-  - "El proceso se detiene cuando los cocientes ya no comparten ningún factor primo."
-al_terminar_debes_poder: |
-  Calcular el MCD de dos o más números mediante el método de la tabla de factores comunes.
-fuente: Teoría de Números
+- La tabla del M.C.D. exige que los divisores primos dividan simultáneamente a todos
+  los números de la fila.
+- El algoritmo se detiene cuando los cocientes obtenidos son primos entre sí (coprimos).
+al_terminar_debes_poder: Al terminar serás capaz de calcular el M.C.D. mediante la
+  tabla de factores comunes, dividiendo por primos que afecten a todos los números
+  simultáneamente.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

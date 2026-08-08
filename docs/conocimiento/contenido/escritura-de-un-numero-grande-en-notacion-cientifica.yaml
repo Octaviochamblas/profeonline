@@ -1,107 +1,123 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.ESCRITURA_NUMERO_GRANDE
-resumen_inicial: Para escribir un número grande ($>10$) en notación científica, la coma se
-  desplaza hacia la izquierda hasta obtener un coeficiente entre 1 y 10, y el número de lugares
-  movidos pasa a ser un exponente positivo ($n > 0$).
-explicacion_simple: 'Para convertir un número grande como $45.000.000$:
+resumen_inicial: Para escribir un número grande ($|x| \ge 10$) en notación científica,
+  la coma se desplaza $n$ posiciones hacia la izquierda hasta tener un coeficiente
+  $1 \le |k| < 10$, asignando un exponente entero positivo $+n$.
+explicacion_simple: Al convertir un número grande a notación científica, corremos
+  la coma hacia la izquierda hasta dejar un solo dígito diferente de cero antes de
+  ella. La cantidad de saltos que dimos hacia la izquierda será el exponente positivo
+  de nuestra potencia de diez.
+explicacion_formal: 'Sea $x \ge 10$, la representación $x = k \cdot 10^n$ se construye
+  mediante la traslación de la coma:
 
-  1. Colocas la coma después de la primera cifra distinta de cero: $4{,}5$.
 
-  2. Cuentas cuántas posiciones se movió la coma hacia la izquierda (en este caso, 7 posiciones).
+  $$x = (a_0 a_1 \dots a_p) \implies k = a_0, a_1 \dots a_p \quad \text{con } n =
+  p > 0$$
 
-  3. Escribes el resultado como $4{,}5 \cdot 10^7$.'
-explicacion_formal: 'Sea $N > 10$. El desplazamiento de la coma $n$ lugares a la izquierda
-  equivale a dividir por $10^n$, por lo que para mantener el valor se multiplica por $10^n$:
 
-  $$N = (N \cdot 10^{-n}) \cdot 10^n = k \cdot 10^n$$
+  **Desglose del algoritmo:**
 
-  Donde $n \in \mathbb{Z}^+$ es la cantidad de desplazamientos a la izquierda y $k = N \cdot
-  10^{-n} \in [1, 10[$.'
-definiciones_clave: '- **Exponente positivo ($n > 0$)**: Indica el número de posiciones que
-  la coma se desplazó a la izquierda para comprimir un número grande.'
-propiedades_relaciones: '- **Relación directa**: A mayor cantidad de ceros/cifras enteras,
-  mayor es el exponente positivo de la potencia de 10.'
+  - Dirección de desplazamiento: Izquierda $\implies$ Exponente positivo $+n$.
+
+  - Equivalencia de potencia: Multiplicar $k \cdot 10^n$ restablece la escala original
+  expandiendo ceros hacia la derecha.
+
+
+  > **Complemento didáctico:** Ejemplo: $3.800.000 = 3,8 \cdot 10^6$ (se corrió la
+  coma $6$ lugares a la izquierda).'
+definiciones_clave: '- **Escritura de números grandes**: Conversión con traslación
+  de coma a la izquierda y exponente positivo $+n$.'
+propiedades_relaciones: '- **Exponente positivo**: Representa la cantidad de traslaciones
+  a la izquierda.'
 ejemplo_guiado:
-  enunciado: Escribe $150.000.000$ (distancia aproximada Tierra-Sol en km) en notación científica.
+  enunciado: Escriba el número grande $45.000.000$ en notación científica.
   pasos:
-  - 'Ubicar la primera cifra no nula: 1. La mantisa será $1{,}5$.'
-  - 'Contar los espacios desde el final del número hasta quedar después del 1: son 8 espacios.'
-  - Escribir como $1{,}5 \cdot 10^8\text{ km}$.
+  - 'Paso 1: Colocar la coma tras la primera cifra no nula: $4,5$.'
+  - 'Paso 2: Contar los lugares desde $4,5$ hasta el final del número original: $7$
+    posiciones a la izquierda.'
+  - 'Paso 3: Asignar exponente $+7$ a la potencia de diez: $10^7$.'
+  - 'Conclusión: $45.000.000 = 4,5 \cdot 10^7$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la expresión en notación científica de $3.200.000$?
+  question: ¿Qué signo tiene el exponente de la potencia de diez al escribir un número
+    grande (>= 10) en notación científica?
   choices:
-  - text: 3,2 · 10^6
+  - text: Signo positivo (+n)
     is_correct: true
-  - text: 32 · 10^5
+  - text: Signo negativo (-n)
     is_correct: false
-  - text: 0,32 · 10^7
+  - text: Es siempre cero
     is_correct: false
-  - text: 3,2 · 10^{-6}
+  - text: Es indeterminado
     is_correct: false
-  explanation: 'La correcta es: 3,2 · 10^6. La coma se desplaza 6 lugares hacia la izquierda.'
+  explanation: La alternativa correcta es 'Signo positivo (+n)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: Escribe $85.000$ en notación científica.
+  question: En el ejemplo guiado para 45.000.000, ¿cuál fue la expresión final?
   choices:
-  - text: 8,5 · 10^4
+  - text: 4,5 · 10^7
     is_correct: true
-  - text: 8,5 · 10^3
+  - text: 45 · 10^6
     is_correct: false
-  - text: 85 · 10^3
+  - text: 4,5 · 10^{-7}
     is_correct: false
-  - text: 8,5 · 10^5
+  - text: 0,45 · 10^8
     is_correct: false
-  explanation: 'La correcta es: 8,5 · 10^4. La coma se desplaza 4 lugares hacia la izquierda.'
+  explanation: La alternativa correcta es '4,5 · 10^7'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Ubicar la coma decimal al final del número entero.'
-- 'Paso 2: Mover la coma hacia la izquierda hasta dejar solo un dígito no nulo a su izquierda.'
-- 'Paso 3: Contar el número de lugares $n$ desplazados.'
-- 'Paso 4: Escribir la mantisa obtenida multiplicada por $10^n$.'
-errores_correccion: No uses exponentes negativos para números grandes. $300.000 = 3 \cdot
-  10^5$, NO $3 \cdot 10^{-5}$.
+- 'Paso 1: Mover la coma decimal hacia la izquierda hasta dejar un único dígito entero
+  entre 1 y 9.'
+- 'Paso 2: Contar el número de saltos $n$ realizados a la izquierda.'
+- 'Paso 3: Multiplicar la mantisa por la potencia $10^n$ con exponente positivo $+n$.'
+errores_correccion: '- **Error 1: Asignar exponente negativo a un número grande ($5.000
+  = 5 \cdot 10^{-3}$).** **Cómo corregirlo:** Los números grandes llevan exponente
+  POSITIVO ($5 \cdot 10^3$).
+
+
+  - **Error 2: Errar en el conteo de la última cifra.** **Cómo corregirlo:** Contar
+  meticulosamente cada posición que cruza la coma hasta situarse a la derecha del
+  primer dígito.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Expresa $600.000$ en notación científica.
+  enunciado: Escriba $600.000$ en notación científica.
   alternativas:
   - 6 · 10^5
-  - 6 · 10^6
+  - 6 · 10^{-5}
   - 60 · 10^4
   respuesta: 6 · 10^5
   solucion_pasos:
   - $600.000 = 6 \cdot 10^5$.
 - titulo: Ejemplo 2
-  enunciado: ¿Cuál es la notación científica de 7.200.000?
+  enunciado: Escriba $123.000.000$ en notación científica.
   alternativas:
-  - 7,2 · 10^6
-  - 72 · 10^5
-  - 7,2 · 10^7
-  respuesta: 7,2 · 10^6
+  - 1,23 · 10^8
+  - 12,3 · 10^7
+  - 1,23 · 10^{-8}
+  respuesta: 1,23 · 10^8
   solucion_pasos:
-  - La coma se desplaza 6 lugares a la izquierda.
-- titulo: Ejemplo 3
-  enunciado: ¿Cuál es la notación científica de 920.000?
-  alternativas:
-  - 9,2 · 10^5
-  - 9,2 · 10^6
-  - 0,92 · 10^6
-  respuesta: 9,2 · 10^5
+  - $123.000.000 = 1,23 \cdot 10^8$.
+- titulo: ¿Es 7.000 igual a 7 · 10^3?
+  respuesta: Sí
   solucion_pasos:
-  - La coma se desplaza 5 lugares a la izquierda.
-- titulo: ¿Es correcto escribir 250.000 como 25 · 10^4?
-  respuesta: 'No'
+  - Sí, $7 \cdot 1000 = 7000$.
+- titulo: ¿Requiere un número grande un exponente positivo en la potencia de 10?
+  respuesta: Sí
   solucion_pasos:
-  - El coeficiente 25 no está entre 1 y 10; la forma correcta es 2,5 · 10^5.
+  - Sí, por desplazar la coma a la izquierda.
 errores_frecuentes:
-- Colocar exponente negativo en vez de positivo.
-- Contar mal la cantidad de posiciones que se desplaza la coma.
-- Dejar el coeficiente fuera del rango 1 ≤ |k| < 10 al no seguir desplazando la coma.
-- Usar un exponente negativo para un número mayor que 10.
-- Olvidar contar el dígito donde queda ubicada la coma como punto de partida del desplazamiento.
+- Escribir números grandes asignando un exponente negativo a la potencia de diez.
+- Dejar dos o más cifras enteras antes de la coma al convertir un número grande.
+- Contar incorrectamente las posiciones decimales confundiendo el número de ceros
+  con los saltos.
+- El número $200.000$ expresado en notación científica equivale a $2 \cdot 10^{-5}$.
+- Multiplicar la mantisa por un exponente par sin modificar el coeficiente.
 afirmaciones_verdaderas:
-- Números mayores a 10 tienen exponente positivo en notación científica.
-- Mientras más ceros tenga un número grande, mayor es el exponente positivo de su notación
-  científica.
-al_terminar_debes_poder: Convertir números grandes a notación científica con exponente positivo.
-fuente: Texto escolar MINEDUC.
+- La conversión de un número grande ($|x| \ge 10$) requiere mover la coma a la izquierda
+  y usar un exponente positivo $+n$.
+- El exponente $+n$ representa la cantidad de posiciones decimales recorridas hasta
+  lograr $1 \le |k| < 10$.
+al_terminar_debes_poder: Al terminar serás capaz de convertir números grandes a notación
+  científica $k \cdot 10^n$, moviendo la coma a la izquierda y asignando un exponente
+  positivo $+n$.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

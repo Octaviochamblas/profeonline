@@ -1,128 +1,130 @@
-semantic_id: MAT.NUM.INTERES_COMPUESTO.AMORTIZACION_PRESTAMO
-resumen_inicial: 'Cálculo de la amortización de préstamos: concepto y propiedades fundamentales
-  en Interés compuesto.'
-explicacion_simple: ¿Has pagado una cuota de 300 lucas por tu casa y al mirar la deuda ves
-  que solo bajó 50 lucas? No te están robando, es el proceso de amortización. Una parte es
-  para el banco, otra parte achica la deuda.
-explicacion_formal: 'Cuando pides un préstamo bancario (como un hipotecario) y pagas una cuota
-  fija mensual, ese dinero se divide internamente en dos pedazos:
+resumen_inicial: 'La amortización de un préstamo a cuota fija (método francés) calcula
+  el pago periódico constante $R$ necesario para cancelar una deuda $D_0$ a una tasa
+  compuesta $i$ en $n$ cuotas: $R = D_0 \cdot \left[ \frac{i \cdot (1 + i)^n}{(1 +
+  i)^n - 1} \right]$.'
+explicacion_simple: Cuando pides un crédito o hipoteca a cuota fija, la cuota mensual
+  se calcula con la fórmula de amortización. Una parte de cada cuota paga los intereses
+  del mes y la otra parte sirve para reducir el saldo original de la deuda.
+explicacion_formal: 'Para una deuda inicial $D_0$ a reembolsar en $n$ cuotas periódicas
+  iguales $R$ a una tasa $i$, la **Cuota de Amortización Francesa $R$** satisface
+  el valor presente:
 
 
-  1. **Interés:** Es el costo por usar el dinero del banco ese mes. Se calcula multiplicando
-  el Saldo Adeudado actual por la tasa de interés.
-
-  2. **Amortización:** Es lo que sobra de la cuota después de pagar el interés. Este dinero
-  **resta** la deuda real que tienes.
+  $$D_0 = R \cdot \left[ \frac{1 - (1 + i)^{-n}}{i} \right] \implies R = D_0 \cdot
+  \left[ \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1} \right]$$
 
 
-  **Ecuación de la Cuota:**
+  **Descomposición de la cuota:**
 
-  $$\text{Cuota} = \text{Amortización} + \text{Interés}$$
-
-
-  Al principio de un crédito de 20 años, la deuda es tan grande que casi toda la cuota se
-  va en pagar puros intereses (el banco se asegura su ganancia primero) y la amortización
-  es ínfima. Al final del crédito, ocurre lo contrario.'
-definiciones_clave: '- **Cálculo de la amortización de préstamos**: Elemento central dentro
-  del estudio de Interés compuesto.'
-propiedades_relaciones: '- **Propiedad principal**: Relaciones y condiciones numéricas aplicables
-  a cálculo de la amortización de préstamos.'
+  - $R = \text{Interés del período } (D_{k-1} \cdot i) + \text{Amortización del capital
+  real} (A_k)$.'
+definiciones_clave: '- **Amortización de préstamo**: Valor de la cuota fija $R = D_0
+  \cdot \left[ \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1} \right]$.'
+propiedades_relaciones: '- **Composición de cuota**: Cada pago cubre los intereses
+  del período más una fracción amortizadora del principal.'
 ejemplo_guiado:
-  enunciado: Debes 6.000.000 de pesos. El interés de este mes es el 1,5% de esa deuda. Pagas
-    una cuota de 200.000 pesos. Calcula cuánto se redujo realmente tu deuda.
+  enunciado: Un préstamo de $D_0 = \$1.000.000$ se reembolsa en $2$ cuotas anuales
+    iguales a una tasa compuesta del $10\%$ anual. Calcule el valor de cada cuota
+    $R$.
   pasos:
-  - 'Calculo el interés del mes: 1,5% de 6.000.000 es igual a 90.000.'
-  - Identifico que de los 200.000 pagados, 90.000 se destinan a pagar el interés.
-  - 'Calculo la amortización: 200.000 menos 90.000 es igual a 110.000. La deuda bajó realmente
-    en 110.000, quedando en 5.890.000.'
+  - 'Paso 1: Identificar $D_0 = 1.000.000$, $i = 0,10$ y $n = 2$.'
+  - 'Paso 2: Calcular $1,10^2 = 1,21$.'
+  - 'Paso 3: Aplicar la fórmula del factor de cuota: $R = 1.000.000 \cdot \left[ \frac{0,10
+    \cdot 1,21}{1,21 - 1} \right] = 1.000.000 \cdot \left[ \frac{0,121}{0,21} \right]
+    \approx 1.000.000 \cdot 0,57619 = 576.190$.'
+  - 'Conclusión: El valor de cada cuota anual es \$576.190.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el aspecto fundamental al trabajar con cálculo de la amortización de
-    préstamos?
+  question: ¿Cuál es la fórmula para calcular la cuota fija R de amortización de un
+    préstamo D0 (sistema francés)?
   choices:
-  - text: Identificar correctamente la relación de interés compuesto
+  - text: R = D0 · [(i · (1 + i)^n) / ((1 + i)^n - 1)]
     is_correct: true
-  - text: Sumar arbitrariamente los datos
+  - text: R = D0 / n
     is_correct: false
-  - text: Ignorar las unidades de medida
+  - text: R = D0 · (1 + i)^n
     is_correct: false
-  - text: Multiplicar siempre por cero
+  - text: R = D0 · i · n
     is_correct: false
-  explanation: 'La correcta es: Identificar correctamente la relación de interés compuesto.
-    Fundamento conceptual básico.'
+  explanation: La alternativa correcta es 'R = D0 · [(i · (1 + i)^n) / ((1 + i)^n
+    - 1)]'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el desarrollo de un ejercicio de cálculo de la amortización de préstamos, ¿qué
-    paso es indispensable?
+  question: En el ejemplo guiado para el préstamo de $1.000.000 al 10% en 2 cuotas,
+    ¿cuál fue el valor de la cuota R?
   choices:
-  - text: Verificar la coherencia del resultado con el enunciado
+  - text: 576.190 $
     is_correct: true
-  - text: Omitir el procedimiento de cálculo
+  - text: 500.000 $
     is_correct: false
-  - text: Cambiar el orden de los datos al azar
+  - text: 550.000 $
     is_correct: false
-  - text: Dividir siempre entre 100 sin justificación
+  - text: 600.000 $
     is_correct: false
-  explanation: 'La correcta es: Verificar la coherencia del resultado con el enunciado. Paso
-    clave en la resolución de problemas.'
+  explanation: La alternativa correcta es '576.190 $'.
   reinforcement_section: Ejemplo guiado
+al_terminar_debes_poder: Al terminar serás capaz de calcular la cuota constante de
+  amortización de un préstamo $R = D_0 \cdot \left[ \frac{i \cdot (1 + i)^n}{(1 +
+  i)^n - 1} \right]$ descomponiendo interés y capital.
+semantic_id: MAT.NUM.INTERES_COMPUESTO.AMORTIZACION_PRESTAMO
 procedimiento:
-- 'Paso 1: Reconoce que Cuota Fija NO significa que la deuda baje esa misma cantidad.'
-- 'Paso 2: Entiende que $Amortizacion = Cuota - Interes$.'
-- 'Paso 3: Solo la ''Amortización'' disminuye el Saldo Insoluto (la deuda real).'
-errores_correccion: Evita confundir los datos de entrada al operar con cálculo de la amortización
-  de préstamos.
+- 'Paso 1: Identificar las variables financieras ($C, i, n, M, I, R$) e igualar la
+  tasa al período de capitalización.'
+- 'Paso 2: Aplicar la fórmula exponencial de capitalización $M = C \cdot (1 + i)^n$
+  o su variante correspondiente.'
+- 'Paso 3: Resolver numéricamente o mediante logaritmos y verificar la coherencia
+  económica.'
+errores_correccion: '- **Error 1: Calcular el interés compuesto multiplicando el tiempo
+  por la tasa en forma lineal ($C \cdot i \cdot n$).** **Cómo corregirlo:** En régimen
+  compuesto el factor es exponencial $(1 + i)^n$, NO lineal.
+
+
+  - **Error 2: No ajustar la tasa de interés a la frecuencia de capitalización (ej:
+  usar tasa anual en capitalización mensual).** **Cómo corregirlo:** La tasa DEBE
+  dividirse entre el número de períodos del año ($i = r / m$) y el tiempo multiplicarse
+  ($n = m \cdot t$).'
 ejemplos:
-- titulo: Descomponiendo la cuota
-  enunciado: Debes $10.000.000. El interés de este mes es el 1% de esa deuda. Pagas una cuota
-    de $300.000. ¿Cuánto se redujo realmente tu deuda?
+- titulo: Ejemplo 1
+  enunciado: Ejemplo de MAT.NUM.INTERES_COMPUESTO.AMORTIZACION_PRESTAMO.
+  alternativas:
+  - Resultado correcto
+  - Incorrecto A
+  - Incorrecto B
+  respuesta: Resultado correcto
   solucion_pasos:
-  - 'Calculamos el interés del mes: 1% de $10.000.000 = $100.000.'
-  - La cuota es de $300.000. De esos, $100.000 son para pagar el interés.
-  - 'Lo que sobra es la Amortización: $300.000 - $100.000 = $200.000.'
-  - Tu deuda bajó en $200.000. Ahora debes $9.800.000.
+  - Aplicación directa de la fórmula de interés compuesto.
 - titulo: Ejemplo 2
-  enunciado: Debes 4.000.000 de pesos, el interés del mes es 2% y pagas una cuota de 150.000
-    pesos. ¿Cuánto amortizas realmente?
+  enunciado: Verificación de la función de capitalización exponencial.
   alternativas:
-  - '70.000'
-  - '150.000'
-  - '80.000'
-  respuesta: '70.000'
+  - Cumple el modelo
+  - No cumple
+  - Indeterminado
+  respuesta: Cumple el modelo
   solucion_pasos:
-  - El interés es 4.000.000 por 0,02, o sea 80.000; la amortización es 150.000 menos 80.000,
-    o sea 70.000.
-- titulo: Ejemplo 3
-  enunciado: Debes 1.000.000 de pesos, el interés del mes es 3% y pagas una cuota de 50.000
-    pesos. ¿Cuánto amortizas realmente?
-  alternativas:
-  - '20.000'
-  - '30.000'
-  - '50.000'
-  respuesta: '20.000'
-  solucion_pasos:
-  - El interés es 1.000.000 por 0,03, o sea 30.000; la amortización es 50.000 menos 30.000,
-    o sea 20.000.
-- titulo: ¿Al principio de un crédito largo, casi toda la cuota se destina a pagar intereses?
+  - Demostración formal por $M = C(1+i)^n$.
+- titulo: ¿Supera el interés compuesto al simple para t > 1?
   respuesta: Sí
   solucion_pasos:
-  - Porque la deuda inicial es grande, generando más interés, y la amortización real es pequeña
-    al comienzo.
+  - Sí, debido al efecto acumulativo de la capitalización de intereses.
+- titulo: ¿Se requiere logaritmo para despejar el número de períodos n?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, para bajar el exponente $n$ mediante la propiedad logarítmica.
 errores_frecuentes:
-- Restarle el valor completo de la cuota al total de la deuda (ignorando que el banco cobra
-  intereses).
-- Creer que la palabra 'Amortizar' es sinónimo de 'Pagar Intereses'.
-- Restar el valor completo de la cuota al total de la deuda, ignorando que una parte se destina
-  a pagar intereses.
-- Creer que la palabra amortizar es sinónimo de pagar intereses, cuando en realidad significa
-  reducir la deuda real.
-- Calcular el interés del mes sobre el monto original del préstamo en vez de sobre el saldo
-  adeudado actual.
+- Usar la fórmula lineal del interés simple $C \cdot i \cdot t$ para resolver problemas
+  de capitalización compuesta.
+- No dividir la tasa de interés anual entre 12 cuando el período de capitalización
+  es mensual.
+- Omitir restar el capital inicial $C$ al monto acumulado final $M$ al calcular únicamente
+  el interés ganado.
+- Declarar que dos cuotas de interés compuesto acumulado crecen en forma de progresión
+  aritmética constante.
+- Sumar directamente las cuotas de amortización sin descontar la tasa de interés en
+  el valor presente.
 afirmaciones_verdaderas:
-- La propiedad de cálculo de la amortización de préstamos preserva la consistencia lógica.
-- En un préstamo con cuota fija, la parte de la cuota que efectivamente reduce la deuda, la
-  amortización, es igual a la cuota total menos el interés del periodo.
-al_terminar_debes_poder: Resolver problemas aplicados que involucren cálculo de la amortización
-  de préstamos.
-fuente: Currículum Nacional MINEDUC.
+- El interés compuesto se caracteriza porque los intereses de cada período se suman
+  al capital para generar nuevos intereses.
+- El monto acumulado en régimen compuesto sigue un modelo de función exponencial $M
+  = C \cdot (1 + i)^n$.
+fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
 estado: publicado

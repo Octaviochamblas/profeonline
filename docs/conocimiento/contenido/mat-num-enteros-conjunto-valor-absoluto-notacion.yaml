@@ -1,105 +1,129 @@
 semantic_id: MAT.NUM.ENTEROS_CONJUNTO.VALOR_ABSOLUTO_NOTACION
-resumen_inicial: "El valor absoluto se escribe con dos barras verticales: $|a|$. Significa 'la distancia de $a$ al cero', y por eso nunca da negativo."
-explicacion_simple: |
-  Para escribir el valor absoluto usamos dos barritas verticales alrededor del número: $|$número$|$.
-  Es como decirle al número "olvídate del signo, solo dame la distancia al cero". Por ejemplo,
-  $|5|=5$ y $|-5|=5$, porque ambos están a 5 pasos del cero.
-explicacion_formal: |
-  Formalmente, $|x| = x$ si $x \geq 0$, y $|x| = -x$ si $x < 0$ (donde $-x$ es el opuesto positivo
-  del negativo). El resultado de $|x|$ es siempre positivo o cero: las barras extraen la magnitud
-  del número sin conservar su signo.
-definiciones_clave: |
-  **Notación de valor absoluto**: $|a|$, se lee "valor absoluto de $a$". **Definición por casos**:
-  $|x|=x$ si $x\geq 0$; $|x|=-x$ si $x<0$.
-propiedades_relaciones: |
-  $|0| = 0$ es el único caso donde el resultado no es estrictamente positivo. Las barras $|\,|$ no
-  son intercambiables con paréntesis ni corchetes: son un operador específico para la distancia al
-  origen.
+resumen_inicial: Las barras $|x|$ son un operador prioritario; los signos externos
+  como $-|x|$ operan al final.
+explicacion_simple: El valor absoluto se escribe colocando el número dentro de dos
+  barras verticales paralelas, como $|x|$. Las barras actúan como un operador que
+  elimina el signo negativo del contenido interior, dejando únicamente su magnitud
+  escalar positiva o cero.
+explicacion_formal: 'La **Notación Operativa de Barras** $|P(x)|$ opera como un operador
+  algebraico prioritario sobre el bloque interior $P(x)$:
+
+
+  $$|-a| = |a| = a \quad \forall a \in \mathbb{Z}_{\ge 0} \qquad \text{mientras que
+  } -|x| \le 0$$
+
+
+  **Desglose de la fórmula:**
+
+  - $|x|$: Notación con barras envolventes que exige resolver prioritariamente el
+  contenido interior.
+
+  - $-|x|$: Opuesto del valor absoluto, el cual coloca un signo menos fuera de las
+  barras garantizando un resultado $\le 0$.
+
+  - $|-a| = a$: Eliminación del signo negativo interno para obtener el módulo no negativo.
+
+
+  > **Complemento didáctico:** Un signo menos fuera de las barras, $-|x|$, se aplica
+  únicamente después de calcular el valor absoluto positivo interior.'
+definiciones_clave: '- **Barras verticales**: Símbolo $|\cdot|$ que delimita la operación
+  de valor absoluto.
+
+  - **Opuesto del valor absoluto**: Expresión $-|x|$ cuyo resultado es siempre no
+  positivo ($\le 0$).'
+propiedades_relaciones: '- **Prioridad de barras**: Lo que está dentro de $|\dots|$
+  se resuelve antes de aplicar operadores externos.'
 ejemplo_guiado:
-  enunciado: "Calcula el valor de la expresión $|-6| + |9|$."
+  enunciado: Evalúe la expresión $-|-7|$ explicando el orden de aplicación de los
+    signos.
   pasos:
-    - "Se resuelve el primer valor absoluto: $|-6| = 6$."
-    - "Se resuelve el segundo valor absoluto: $|9| = 9$."
-    - "Se suman los resultados: $6 + 9 = 15$."
+  - 'Paso 1: Resolver el valor absoluto del interior de las barras: $|-7| = 7$.'
+  - 'Paso 2: Aplicar el signo menos antecedente ubicado fuera de las barras: $-(7)
+    = -7$.'
+  - 'Conclusión: El resultado de $-|-7|$ es $-7$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "Según la definición por casos, ¿cuánto vale $|x|$ cuando $x < 0$?"
-    choices:
-      - {text: "$x$", is_correct: false}
-      - {text: "$-x$", is_correct: true}
-      - {text: "$0$", is_correct: false}
-      - {text: "No está definido", is_correct: false}
-    explanation: "La correcta es $-x$: cuando $x$ es negativo, su valor absoluto es su opuesto positivo, es decir $-x$."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuánto vale $|-3| + |-11|$?"
-    choices:
-      - {text: "$-14$", is_correct: false}
-      - {text: "$8$", is_correct: false}
-      - {text: "$14$", is_correct: true}
-      - {text: "$-8$", is_correct: false}
-    explanation: "La correcta es $14$, porque $|-3|=3$, $|-11|=11$, y $3+11=14$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuál es el resultado de la expresión -|-7|?
+  choices:
+  - text: '-7'
+    is_correct: true
+  - text: '7'
+    is_correct: false
+  - text: '0'
+    is_correct: false
+  - text: '14'
+    is_correct: false
+  explanation: La alternativa correcta es '-7', pues $|-7|=7$ y el menos exterior
+    lo convierte en -7.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En la evaluación de -|-7|, ¿qué operación se realiza primero?
+  choices:
+  - text: El valor absoluto dentro de las barras
+    is_correct: true
+  - text: Multiplicar el menos externo por el interno
+    is_correct: false
+  - text: Restar 7 a cero
+    is_correct: false
+  - text: Cancelar las barras
+    is_correct: false
+  explanation: La alternativa correcta es 'El valor absoluto dentro de las barras'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Escribir el número entero entre dos barras verticales ($|\,|$).'
-  - "Paso 2: Evaluar el signo del número contenido."
-  - "Paso 3: Si el número es negativo, escribir su valor positivo correspondiente (su opuesto)."
-  - "Paso 4: Si el número es positivo o cero, el resultado es el mismo número."
-errores_correccion: |
-  Un error frecuente es escribir $|-9| = -9$: las barras siempre entregan un resultado positivo o
-  cero, nunca conservan el signo negativo del interior. Otro error es confundir las barras de valor
-  absoluto con paréntesis o corchetes normales; son un operador distinto que calcula distancia, no
-  solo agrupa.
+- 'Paso 1: Resolver las operaciones dentro de las barras $|\dots|$.'
+- 'Paso 2: Convertir el resultado interior a su valor no negativo.'
+- 'Paso 3: Aplicar los signos o multiplicadores que se encuentren fuera de las barras.'
+errores_correccion: '- **Error 1: Confundir barras de valor absoluto con paréntesis
+  ordinarios.** **Cómo corregirlo:** Las barras transforman todo resultado negativo
+  interno a positivo.
 
+
+  - **Error 2: Omitir la prioridad de las barras al evaluar $-|-5|$.** **Cómo corregirlo:**
+  Se calcula primero $|-5| = 5$, y luego se aplica el menos exterior dando $-5$.'
 ejemplos:
-  - titulo: "Ejemplo 1"
-    enunciado: "Calcule el valor de la expresión $|-15| + |4|$."
-    alternativas:
-      - "$19$"
-      - "$-19$"
-      - "$11$"
-    respuesta: "$19$"
-    solucion_pasos:
-      - "Se resuelve el primer valor absoluto: $|-15| = 15$."
-      - "Se resuelve el segundo valor absoluto: $|4| = 4$."
-      - "Se suman los resultados: $15 + 4 = 19$."
-      - "Resultado: $19$."
-  - titulo: "Ejemplo 2"
-    enunciado: "Indique la veracidad de la afirmación: $|-8| = -8$."
-    alternativas:
-      - "Falsa, porque $|-8| = 8$"
-      - "Verdadera, porque el signo se mantiene"
-      - "Verdadera, porque las barras no cambian el signo"
-    respuesta: "Falsa, porque $|-8| = 8$"
-    solucion_pasos:
-      - "Se identifica la notación de valor absoluto en el lado izquierdo."
-      - "Se aplica la definición: la distancia de $-8$ al origen es 8 positivo; $|-8| = 8$."
-      - "Se compara $8$ con $-8$: son distintos."
-      - "Conclusión: La afirmación es falsa; el resultado de un valor absoluto nunca puede ser negativo."
-  - titulo: "¿Es verdad que $|-6| = 6$?"
-    respuesta: "Sí"
-    solucion_pasos:
-      - "$-6$ es un número negativo, por lo que su valor absoluto es su opuesto."
-      - "Aplicando la definición: $|-6| = -(-6) = 6$."
-      - "Por lo tanto, $|-6| = 6$ es una afirmación verdadera."
-  - titulo: "¿Puede escribirse $|{-3}| = -3$?"
-    respuesta: "No"
-    solucion_pasos:
-      - "Las barras de valor absoluto extraen la magnitud del número, eliminando el signo negativo."
-      - "$|-3| = 3$, no $-3$: el resultado siempre es positivo o cero."
-      - "Por lo tanto, no puede escribirse $|-3| = -3$."
+- titulo: Ejemplo 1
+  enunciado: Calcule $-|-10| + |4|$.
+  alternativas:
+  - '-6'
+  - '14'
+  - '-14'
+  respuesta: '-6'
+  solucion_pasos:
+  - $-|-10| = -10$ y $|4| = 4$. Su suma es $-10 + 4 = -6$.
+- titulo: Ejemplo 2
+  enunciado: ¿Qué signo tiene siempre el resultado de la expresión $-|x|$ para $x
+    \neq 0$?
+  alternativas:
+  - Negativo
+  - Positivo
+  - Neutro
+  respuesta: Negativo
+  solucion_pasos:
+  - $|x|$ es positivo, por ende $-|x|$ resulta siempre en un valor negativo.
+- titulo: ¿Es lo mismo escribir -(-5) que -|-5|?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, $-(-5) = +5$, mientras que $-|-5| = -5$.
+- titulo: ¿Las barras de valor absoluto tienen jerarquía prioritaria sobre multiplicaciones
+    externas?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el contenido dentro de las barras se evalúa en primer lugar.
 errores_frecuentes:
-  - "$|-9|$ es igual a $-9$ porque el número dentro lleva signo negativo."
-  - "Las barras de valor absoluto son lo mismo que los paréntesis o los corchetes."
-  - "$|0| = 1$ porque el valor absoluto convierte todo en positivo."
-  - "La expresión $|a|$ siempre entrega un resultado distinto de $a$."
-  - "El valor absoluto de un número positivo grande es menor que el de un negativo pequeño."
+- La expresión $-|-7|$ evalúa al número entero positivo $+7$.
+- Las barras de valor absoluto $|x|$ se comportan exactamente como paréntesis $(-x)$.
+- Multiplicar un número por barras de valor absoluto invierte siempre su signo a positivo.
+- El signo menos ubicado fuera de las barras $-|x|$ es eliminado por el operador valor
+  absoluto.
+- La expresión $|x - y|$ equivale a la resta directa de los valores absolutos $|x|
+  - |y|$.
 afirmaciones_verdaderas:
-  - "El valor absoluto se representa con dos barras verticales."
-  - "|5| se lee como 'el valor absoluto de 5'."
-al_terminar_debes_poder: |
-  Evaluar correctamente expresiones con notación de valor absoluto, incluyendo sumas y combinaciones
-  de varios términos con barras.
-
-fuente: "Matemática Moraleja Tomo 1 p.21"
+- Un signo menos fuera de las barras de valor absoluto $-|x|$ produce un resultado
+  menor o igual a cero.
+- El valor dentro de las barras $|x|$ se calcula prioritariamente antes de operar
+  los signos externos.
+al_terminar_debes_poder: Al terminar serás capaz de evaluar expresiones con la notación
+  $|x|$, distinguiendo los signos dentro de las barras de los signos ubicados fuera
+  de las barras.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

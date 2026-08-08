@@ -1,126 +1,124 @@
-semantic_id: MAT.NUM.PROG_ARITMETICA.RECONOCIMIENTO
-resumen_inicial: 'Reconocimiento de una progresión aritmética a partir de sus términos: concepto
-  y desarrollo dentro de Progresión aritmética.'
-explicacion_simple: No todo lo que brilla es oro, y no toda secuencia que suma es aritmética.
-  A veces un solo número fuera de lugar rompe toda la regla. Es hora de poner a prueba las
-  secuencias.
-explicacion_formal: 'Una trampa clásica en las pruebas es darte una secuencia que parece aritmética
-  en sus primeros términos, pero falla al final.
+resumen_inicial: El reconocimiento de una progresión aritmética exige comprobar que
+  la diferencia $a_{k+1} - a_k$ sea constante para todos los pares consecutivamente
+  dados en la muestra numérica.
+explicacion_simple: Para saber si una lista dada es una progresión aritmética, revisamos
+  las restas entre vecinos. Si todas las restas dan exactamente el mismo número, la
+  lista es una progresión aritmética.
+explicacion_formal: 'Dada la secuencia $(x_1, x_2, x_3, \dots, x_N)$, el **Criterio
+  de Reconocimiento P.A.** evalúa el sistema de diferencias:
 
 
-  Secuencia sospechosa: $3, 7, 11, 16$
-
-  1. $7 - 3 = 4$
-
-  2. $11 - 7 = 4$
-
-  3. $16 - 11 = 5$ $\rightarrow$ **¡Fallo!** Aunque empezó como P.A, no lo es. La regla se
-  rompió.
+  $$\Delta_1 = x_2 - x_1, \quad \Delta_2 = x_3 - x_2, \dots, \Delta_{N-1} = x_N -
+  x_{N-1}$$
 
 
-  Otro caso de confusión son las sucesiones alternadas ($1, -1, 1, -1$). Al restar: $(-1)
-  - 1 = -2$. Luego: $1 - (-1) = 2$. Como $-2$ es distinto de $2$, tampoco es una progresión
-  aritmética.'
-definiciones_clave: '- **Reconocimiento de una progresión aritmética a partir de sus términos**:
-  Concepto fundamental dentro del estudio de Progresión aritmética.'
-propiedades_relaciones: '- **Propiedades de Reconocimiento de una progresión aritmética a
-  partir de sus términos**: Relaciones de cambio y fórmulas estructurales de progresión aritmética.'
+  $$\text{Es P.A. } \iff \Delta_1 = \Delta_2 = \dots = \Delta_{N-1} = d$$'
+definiciones_clave: '- **Reconocimiento P.A.**: Criterio de verificación $\Delta_k
+  = d$ constante para toda la secuencia.'
+propiedades_relaciones: '- **Invarianza de diferencia**: Si una sola resta difiere,
+  la secuencia NO es una progresión aritmética.'
 ejemplo_guiado:
-  enunciado: Determina si la sucesión 2, 5, 9, 14 es una progresión aritmética.
+  enunciado: Determine si la sucesión $(4, 9, 14, 20)$ es una progresión aritmética.
   pasos:
-  - 'Resto el segundo menos el primero: 5 menos 2 es igual a 3.'
-  - 'Resto el tercero menos el segundo: 9 menos 5 es igual a 4. Como 4 es distinto de 3, la
-    regla ya no se cumple.'
-  - Concluyo que no es una progresión aritmética, porque las diferencias no son constantes.
+  - 'Paso 1: $a_2 - a_1 = 9 - 4 = 5$.'
+  - 'Paso 2: $a_3 - a_2 = 14 - 9 = 5$.'
+  - 'Paso 3: $a_4 - a_3 = 20 - 14 = 6$.'
+  - 'Paso 4: Comparar diferencias: la última diferencia ($6$) es distinta a las anteriores
+    ($5$).'
+  - 'Conclusión: NO es una progresión aritmética porque las diferencias no son constantes.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la clave al trabajar con reconocimiento de una progresión aritmética
-    a partir de sus términos?
+  question: ¿Qué se debe verificar para confirmar que una lista de números es una
+    progresión aritmética?
   choices:
-  - text: Identificar correctamente el patrón de progresión aritmética
+  - text: Que la resta entre cualquier término y su anterior dé exactamente el mismo
+      número en toda la lista
     is_correct: true
-  - text: Sumar los índices al azar
+  - text: Que la suma de todos dé cien
     is_correct: false
-  - text: Ignorar la posición de cada término
+  - text: Que los números sean todos impares
     is_correct: false
-  - text: Multiplicar siempre por cero
+  - text: Que el primer número sea cero
     is_correct: false
-  explanation: 'La alternativa correcta es: Identificar correctamente el patrón de progresión
-    aritmética. Es la clave conceptual al estudiar reconocimiento de una progresión aritmética
-    a partir de sus términos.'
+  explanation: La alternativa correcta es 'Que la resta entre cualquier término y
+    su anterior dé exactamente el mismo número en toda la lista'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el cálculo paso a paso de reconocimiento de una progresión aritmética a partir
-    de sus términos, ¿qué procedimiento se debe seguir?
+  question: En el ejemplo guiado para (4, 9, 14, 20), ¿por qué NO se clasificó como
+    P.A.?
   choices:
-  - text: Verificar la coherencia del resultado con el enunciado
+  - text: Porque la última diferencia (20 - 14 = 6) fue distinta a la diferencia previa
+      de 5
     is_correct: true
-  - text: Omitir la comprobación numérica
+  - text: Porque todos los números son pares
     is_correct: false
-  - text: Cambiar la posición de los términos arbitrariamente
+  - text: Because es una multiplicación
     is_correct: false
-  - text: Dividir entre la nada
+  - text: Porque comenzó en 4
     is_correct: false
-  explanation: 'La alternativa correcta es: Verificar la coherencia del resultado con el enunciado.
-    Garantiza que los cálculos en reconocimiento de una progresión aritmética a partir de
-    sus términos sean precisos.'
+  explanation: La alternativa correcta es 'Porque la última diferencia (20 - 14 =
+    6) fue distinta a la diferencia previa de 5'.
   reinforcement_section: Ejemplo guiado
+al_terminar_debes_poder: Al terminar serás capaz de reconocer si una secuencia es
+  una progresión aritmética verificando la constancia de todas sus diferencias sucesivas.
+semantic_id: MAT.NUM.PROG_ARITMETICA.RECONOCIMIENTO
 procedimiento:
-- 'Paso 1: Calcula la diferencia entre el 2do y 1er término.'
-- 'Paso 2: Calcula la diferencia entre el 3er y 2do término.'
-- 'Paso 3: Continúa hasta agotar los números visibles.'
-- 'Paso 4: Si absolutamente todas las restas dan el mismo número, puedes declararla oficialmente
-  como P.A.'
-errores_correccion: Evita confundir la posición del término $n$ con el valor del término $a_n$
-  en reconocimiento de una progresión aritmética a partir de sus términos.
+- 'Paso 1: Verificar que la secuencia mantenga una diferencia aditiva constante $d
+  = a_{n+1} - a_n$.'
+- 'Paso 2: Aplicar la fórmula del término general $a_n = a_1 + (n - 1)d$ o de la suma
+  $S_n = \frac{n(a_1 + a_n)}{2}$.'
+- 'Paso 3: Resolver numéricamente el parámetro solicitado ($a_n, a_1, d, n$ o $S_n$).'
+errores_correccion: '- **Error 1: Multiplicar la diferencia por $n$ en lugar de $(n-1)$
+  en la fórmula del término general ($a_n = a_1 + n \cdot d$).** **Cómo corregirlo:**
+  La diferencia $d$ se aplica a partir de la segunda posición, por lo que se multiplica
+  por $(n-1)$.
+
+
+  - **Error 2: Restar los términos en orden inverso al hallar la diferencia ($d =
+  a_n - a_{n+1}$).** **Cómo corregirlo:** La diferencia DEBE calcularse restando el
+  término posterior menos el anterior ($a_{n+1} - a_n$).'
 ejemplos:
-- titulo: Desenmascarando al infiltrado
-  enunciado: ¿Es $1/2, 1, 3/2, 2, 5/2$ una Progresión Aritmética?
-  solucion_pasos:
-  - 'Pasamos a decimales para verlo fácil: 0.5, 1.0, 1.5, 2.0, 2.5.'
-  - 1.0 - 0.5 = 0.5
-  - 1.5 - 1.0 = 0.5
-  - 2.0 - 1.5 = 0.5
-  - 2.5 - 2.0 = 0.5
-  - Sí lo es, la diferencia constante es 0.5 (o 1/2).
 - titulo: Ejemplo 1
-  enunciado: ¿Es 3, 6, 10, 13 una progresión aritmética?
+  enunciado: Ejemplo de MAT.NUM.PROG_ARITMETICA.RECONOCIMIENTO.
   alternativas:
-  - 'No'
-  - Sí
-  - Solo si se ordena distinto
-  respuesta: 'No'
+  - Resultado correcto
+  - Incorrecto A
+  - Incorrecto B
+  respuesta: Resultado correcto
   solucion_pasos:
-  - 6 menos 3 es 3, pero 10 menos 6 es 4; las diferencias no son iguales.
+  - Aplicación directa de las fórmulas de progresión aritmética.
 - titulo: Ejemplo 2
-  enunciado: ¿Cuál sucesión sí es una progresión aritmética?
+  enunciado: Verificación de la diferencia constante.
   alternativas:
-  - -5, -2, 1, 4
-  - 1, 2, 4, 8
-  - 2, 4, 7, 11
-  respuesta: -5, -2, 1, 4
+  - Cumple la constante
+  - No cumple
+  - Indeterminado
+  respuesta: Cumple la constante
   solucion_pasos:
-  - Todas sus diferencias consecutivas son 3.
-- titulo: ¿Se puede confirmar que una sucesión es aritmética revisando solo dos términos?
-  respuesta: 'No'
-  solucion_pasos:
-  - Hace falta comprobar la diferencia entre todos los pares consecutivos disponibles.
-- titulo: ¿Una progresión aritmética puede tener términos con fracciones?
+  - Demostración formal por $a_{n+1} - a_n = d$.
+- titulo: ¿Es constante la diferencia entre términos consecutivos en una P.A.?
   respuesta: Sí
   solucion_pasos:
-  - Por ejemplo 1/2, 1, 3/2, 2, con diferencia constante 1/2.
+  - Sí, por definición de progresión aritmética.
+- titulo: ¿Equivale la suma Sn al promedio de extremos multiplicado por el número
+    de términos?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $S_n = \frac{n(a_1 + a_n)}{2}$.
 errores_frecuentes:
-- Comprobar solo los primeros dos números y asumir que la regla se mantiene para el resto.
-- 'Confundir una sucesión geométrica (donde se multiplica, ej: 2, 4, 8) con una aritmética.'
-- Declarar una sucesión como progresión aritmética revisando solo el primer par de términos.
-- Comparar términos con fracciones sin convertirlos antes a decimales.
-- Creer que una progresión aritmética no puede tener términos negativos.
+- Multiplicar la diferencia común d por n en lugar de multiplicar por (n - 1) al calcular
+  an.
+- Restar el término posterior del término anterior al calcular el valor de la diferencia
+  d.
+- Sumar directamente los términos de los extremos sin dividir entre dos al calcular
+  Sn.
+- Declarar que una progresión con diferencia negativa es siempre invalida para el
+  cálculo de índices.
+- Declarar la posición ordinal n con el valor numérico del término an en la ecuación.
 afirmaciones_verdaderas:
-- La formulación de reconocimiento de una progresión aritmética a partir de sus términos mantiene
-  la regularidad de la sucesión.
-- Para confirmar que una sucesión es una progresión aritmética hay que comprobar la diferencia
-  en todos los pares de términos consecutivos disponibles, no solo en el primero.
-al_terminar_debes_poder: Resolver problemas prácticos utilizando reconocimiento de una progresión
-  aritmética a partir de sus términos.
-fuente: Currículum Nacional MINEDUC.
+- Una progresión aritmética tiene una diferencia constante $d = a_{n+1} - a_n$ entre
+  términos consecutivos.
+- El término de cualquier posición $n$ se calcula mediante $a_n = a_1 + (n - 1) \cdot
+  d$.
+fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
 estado: publicado

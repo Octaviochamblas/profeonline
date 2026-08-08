@@ -1,104 +1,128 @@
 semantic_id: MAT.NUM.APROXIMACIONES.REGLA_DEL_CINCO
-resumen_inicial: "La regla del cinco establece que cuando la primera cifra que se elimina en un redondeo es exactamente un 5, la cifra del orden solicitado se incrementa en 1 si la norma aplica redondeo hacia arriba."
-explicacion_simple: |
-  En el redondeo clásico, cuando la cifra decisiva es un **5** (por ejemplo en $3.25$ a las décimas), el 5 se encuentra **justo a la mitad** de camino entre $3.2$ y $3.3$. Para evitar ambigüedades, la regla estándar en la escuela (redondeo simétrico al alejar del cero) dice que el 5 **SIEMPRE sube**: se le suma $+1$ a la cifra del orden. Por lo tanto, $3.25$ redondeado a las décimas se convierte en $3.3$.
-explicacion_formal: |
-  Formalmente, en la aproximación por redondeo al orden $10^m$, la **regla del cinco** especifica la resolución de la frontera intermedia cuando el valor relativo de la cola eliminada es exactamente $0.5 \cdot 10^m$.
+resumen_inicial: La regla del cinco en el redondeo establece que cuando la primera
+  cifra a descartar es un 5 (o mayor), se incrementa en una unidad la cifra de la
+  posición retenida.
+explicacion_simple: La regla del cinco es la norma central del redondeo que resuelve
+  el punto medio exacto. Si la cifra que eliminamos empieza con un 5, el sistema matemático
+  considera que estamos a mitad de camino y promueve la cifra conservada al entero
+  o decimal inmediatamente superior.
+explicacion_formal: 'Dada la expansión $x = \dots a_k, a_{k+1} \dots$ con $a_{k+1}
+  = 5$, el **Criterio de la Regla del Cinco** exige:
 
-  Criterio de desempate en la regla estándar (Half-up):
-  $$\text{Si } x = x_0 + 5 \cdot 10^{m-1} \implies x_{\text{red}} = x_{\text{def}} + 10^m = x_{\text{exc}}$$
 
-  Variante estadística (Half-even o redondeo bancario):
-  $$\text{Si } a_{m-1} = 5 \text{ y cifras posteriores son } 0 \implies x_{\text{red}} = \begin{cases} a_m & \text{si } a_m \text{ es par} \\ a_m + 1 & \text{si } a_m \text{ es impar} \end{cases}$$
-definiciones_clave: |
-  - **Dígito de frontera ($5$)**: Valor exacto medio del intervalo de dígitos $[0, 9]$ que requiere una convención formal de desempate.
-  - **Redondeo hacia arriba (Half-up)**: Regla escolar estándar donde el dígito $5$ incrementa invariablemente en $+1$ la cifra del orden.
-  - **Redondeo al par más cercano (Half-even / Bancario)**: Norma científica y financiera que redondea el $5$ al entero par más próximo para anular sesgos acumulativos.
-propiedades_relaciones: |
-  - **Simetría del error**: En la regla escolar, la distancia $|x - x_{\text{red}}|$ para $a_{m-1}=5$ es idéntica tanto al defecto como al exceso ($0.5 \cdot 10^m$).
-  - **Convenio pedagógico de la educación escolar**: En la currícula nacional MINEDUC, el 5 se trata como la frontera inferior del grupo $\{5, 6, 7, 8, 9\}$ e incrementa la cifra previa.
-  - **Impacto en operaciones en cadena**: Comprender el 5 evita discrepancias en pruebas de selección múltiple (PAES).
+  $$a_{k+1} \ge 5 \implies a_k \longrightarrow a_k + 1$$
+
+
+  **Desglose del criterio:**
+
+  - Umbral de redondeo: $5$ marca la frontera simétrica en el sistema de numeración
+  decimal base 10 (con dígitos $\{0,1,2,3,4\}$ hacia abajo y $\{5,6,7,8,9\}$ hacia
+  arriba).
+
+  - Efecto en cadena: Si $a_k = 9$, la suma $9 + 1 = 10$ transforma la cifra en $0$
+  y genera un acarreo de $+1$ a la posición $a_{k-1}$.
+
+
+  > **Complemento didáctico:** El redondeo de $2,95$ a la décima resulta en $3,0$
+  por el efecto en cadena del acarreo sobre el dígito 9.'
+definiciones_clave: '- **Regla del cinco**: Convenio matemático que incrementa la
+  cifra a aproximar cuando el primer dígito eliminado es mayor o igual a 5.'
+propiedades_relaciones: '- **Efecto de acarreo**: Genera cambio de $9 \to 0$ con avance
+  de $+1$ a la cifra superior.'
 ejemplo_guiado:
-  enunciado: "Redondea a las décimas los números $d_1 = 4.35$ y $d_2 = 8.95$ aplicando la regla estándar escolar del cinco."
+  enunciado: Aplique la regla del cinco para redondear $7,35$ a las décimas y $1,95$
+    a las décimas.
   pasos:
-    - "Analizar $d_1 = 4.35$ a décimas:"
-    - "   Cifra del orden: $3$ (décimas)."
-    - "   Cifra decisiva a la derecha: $5$."
-    - '   Aplicar regla del 5: el $5$ incrementa la décima en $+1 \implies 3 + 1 = 4$.'
-    - "   Resultado: $4.4$."
-    - "Analizar $d_2 = 8.95$ a décimas:"
-    - "   Cifra del orden: $9$ (décimas)."
-    - "   Cifra decisiva a la derecha: $5$."
-    - '   Aplicar regla del 5: $9 + 1 = 10 \implies 0$ y reserva $+1$ a las unidades ($8 + 1 = 9$).'
-    - "   Resultado: $9.0$."
+  - 'Paso 1: Para $7,35$, la centésima es $5 \ge 5$. Se incrementa la décima $3 \to
+    4 \implies 7,4$.'
+  - 'Paso 2: Para $1,95$, la centésima es $5 \ge 5$. Se incrementa la décima $9 +
+    1 = 10 \implies 0$ con acarreo de $+1$ a las unidades ($1+1=2$).'
+  - 'Paso 3: Escribir el resultado con el cero decimal retenido: $2,0$.'
+  - 'Conclusión: $7,35 \to 7,4$ y $1,95 \to 2,0$ por regla del cinco.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué ocurre con la cifra del orden posicional en el redondeo escolar estándar cuando la primera cifra eliminada a su derecha es exactamente un 5?"
-    choices:
-      - {text: "Se incrementa en 1 unidad.", is_correct: true}
-      - {text: "Se mantiene exactamente igual sin cambios.", is_correct: false}
-      - {text: "Se elimina junto con el 5.", is_correct: false}
-      - {text: "Se le resta 1 unidad.", is_correct: false}
-    explanation: "La correcta es Se incrementa en 1 unidad.: es la convención escolar estándar (Half-up) para la cifra de frontera 5."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "¿Cuál es el redondeo a las centésimas de $2.145$ bajo la regla estándar?"
-    choices:
-      - {text: "2.15", is_correct: true}
-      - {text: "2.14", is_correct: false}
-      - {text: "2.10", is_correct: false}
-      - {text: "2.20", is_correct: false}
-    explanation: "La correcta es 2.15: la centésima es $4$ y la cifra siguiente es $5$, por lo que $4 + 1 = 5 \\implies 2.15$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué acción se debe tomar sobre la cifra a retener cuando la primera cifra
+    descartada es exactamente igual a 5?
+  choices:
+  - text: Sumarle 1 unidad a la cifra retenida
+    is_correct: true
+  - text: Dejar la cifra retenida sin cambios
+    is_correct: false
+  - text: Restarle 1 unidad a la cifra retenida
+    is_correct: false
+  - text: Multiplicarla por 5
+    is_correct: false
+  explanation: La alternativa correcta es 'Sumarle 1 unidad a la cifra retenida'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 1,95 redondeado a las décimas, ¿cuál fue el
+    resultado con acarreo?
+  choices:
+  - text: 2,0
+    is_correct: true
+  - text: 1,9
+    is_correct: false
+  - text: 1,90
+    is_correct: false
+  - text: 2,9
+    is_correct: false
+  explanation: La alternativa correcta es '2,0'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - "Paso 1: Localizar la cifra situada en el orden de aproximación deseado."
-  - "Paso 2: Observar la cifra inmediatamente a su derecha."
-  - "Paso 3: Si dicha cifra es un $5$ (o un $5$ seguido de otros dígitos), aplicar el incremento de $+1$ a la cifra del orden."
-  - "Paso 4: Si la cifra del orden es un $9$, transformar en $0$ y llevar la reserva de $+1$ a la posición izquierda inmediata."
-  - "Paso 5: Truncar y eliminar todas las cifras situadas a la derecha del orden aproximado."
-errores_correccion: |
-  Un error común es dudar si el 5 sube o se queda igual y dejarlo igual creyendo que 'es menor a 5'. **El 5 FORMA PARTE del grupo que sube** ($\{5, 6, 7, 8, 9\}$). Por lo tanto, el 5 siempre suma $+1$ a la cifra anterior en el redondeo escolar.
+- 'Paso 1: Constatar que la primera cifra eliminada en el redondeo sea mayor o igual
+  a $5$.'
+- 'Paso 2: Sumar $1$ a la cifra de la posición decimal que se está reteniendo.'
+- 'Paso 3: Si la cifra retenida es $9$, transformarla en $0$ y acarrear $+1$ a la
+  posición izquierda inmediata.'
+errores_correccion: '- **Error 1: Omitir el cero en el acarreo al redondear dígitos
+  9 (escribir $1,95 \to 2$ sin indicar $2,0$).** **Cómo corregirlo:** La precisión
+  pedida debe conservarse escribiendo la cifra cero en las décimas ($2,0$).
+
+
+  - **Error 2: Pensar que si la cifra es exactamente 5 no se suma 1.** **Cómo corregirlo:**
+  El número 5 se incluye en el grupo de incremento ($a_{k+1} \ge 5$).'
 ejemplos:
-  - titulo: "Ejemplo 1"
-    enunciado: "Redondea a las unidades el número $17.5$."
-    alternativas:
-      - "18"
-      - "17"
-      - "17.0"
-    respuesta: "18"
-    solucion_pasos:
-      - "Unidad: $7$. Siguiente cifra: $5$."
-      - "Regla del 5: $7 + 1 = 8$."
-      - "Resultado: $18$."
-  - titulo: "Ejemplo 2"
-    enunciado: "Redondea a las décimas el número $0.05$."
-    alternativas:
-      - "0.1"
-      - "0.0"
-      - "0.5"
-    respuesta: "0.1"
-    solucion_pasos:
-      - "Décima: $0$. Siguiente cifra: $5$."
-      - "Regla del 5: $0 + 1 = 1$."
-      - "Resultado: $0.1$."
-  - titulo: "¿Está el número 2.5 a la misma distancia de 2 que de 3?"
-    respuesta: "Sí, a 0.5 unidades de ambos."
-    solucion_pasos:
-      - "Efectivamente, $|2.5 - 2| = 0.5$ y $|2.5 - 3| = 0.5$, por lo que la regla del 5 es un convenio de desempate."
-  - titulo: "¿Afectan las cifras posteriores al 5 (como en 2.451) si se redondea a las décimas?"
-    respuesta: "No, porque con o sin cifras posteriores la cifra 5 ya provoca el incremento."
-    solucion_pasos:
-      - "En $2.451$, la cifra de las centésimas es $5$, lo que asegura que suba a $2.5$."
+- titulo: Ejemplo 1
+  enunciado: Redondee 4,25 a la décima.
+  alternativas:
+  - 4,3
+  - 4,2
+  - 4,5
+  respuesta: 4,3
+  solucion_pasos:
+  - La centésima es $5 \implies 4,2 + 0,1 = 4,3$.
+- titulo: Ejemplo 2
+  enunciado: Redondee 0,05 a la décima.
+  alternativas:
+  - 0,1
+  - 0,0
+  - 0,5
+  respuesta: 0,1
+  solucion_pasos:
+  - La centésima es $5 \implies 0,0 + 0,1 = 0,1$.
+- titulo: ¿Aplica la regla del cinco la suma de +1 a la cifra retenida al evaluar
+    el dígito 5?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es la norma estándar de redondeo en base 10.
+- titulo: ¿Es 3,95 redondeado a las décimas igual a 4,0?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la décima $9 + 1 = 10 \implies 4,0$.
 errores_frecuentes:
-  - "Tratar el 5 como si perteneciera al grupo de las cifras que se mantienen ($0$ a $4$)."
-  - "No aplicar la reserva a las unidades cuando se redondea un $9$ seguido de $5$."
-  - "Confundir la regla escolar del 5 con el truncamiento por defecto."
-  - "Mirar cifras posteriores al 5 antes de aplicar el criterio."
-  - "Asumir que el 5 redondea hacia abajo si el número es impar."
+- Cuando la cifra a evaluar es exactamente 5 la cifra retenida debe permanecer inalterada.
+- La regla del cinco aplica exclusivamente a la parte entera de los números racionales.
+- Sumar 1 a una cifra 9 elimina la coma decimal transformando el número en entero
+  positivo.
+- El redondeo por regla del cinco de $0,15$ a las décimas entrega como resultado $0,1$.
+- La regla del cinco invierte los signos si la cifra se encuentra en los centésimos.
 afirmaciones_verdaderas:
-  - "En el redondeo escolar estándar, si la primera cifra eliminada es 5, se suma 1 a la cifra del orden solicitado."
-  - "El número 5 representa el punto medio exacto de equidistancia posicional en base 10."
-al_terminar_debes_poder: |
-  Debes ser capaz de aplicar la regla del 5 en el redondeo de decimales resolviendo la convención de frontera y gestionando acarreo posicionales.
-fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
+- La regla del cinco exige sumar 1 a la cifra de corte cuando la primera cifra descartada
+  es $\ge 5$.
+- Si la cifra a incrementar es un 9, se convierte en 0 y se acarrea 1 a la posición
+  inmediatamente a su izquierda.
+al_terminar_debes_poder: Al terminar serás capaz de aplicar la regla del cinco en
+  el redondeo, gestionando adecuadamente los incrementos y acarreos cuando la cifra
+  descartada es igual o mayor a 5.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

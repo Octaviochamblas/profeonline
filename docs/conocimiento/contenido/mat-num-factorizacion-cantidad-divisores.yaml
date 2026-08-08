@@ -1,106 +1,133 @@
 semantic_id: MAT.NUM.FACTORIZACION_PRIMA.CANTIDAD_DIVISORES
-resumen_inicial: "La cantidad de divisores de un número se calcula sumando 1 a cada exponente de su descomposición prima y multiplicando los resultados."
-explicacion_simple: |
-  Imagina que tienes una gran colección de figuritas y quieres guardarlas en cajas de
-  igual cantidad. Para saber de cuántas formas distintas puedes organizarlas, necesitas
-  conocer la cantidad de divisores del total. Si el número es grande, listar todos los
-  divisores uno por uno toma tiempo. ¡Por suerte hay una fórmula mágica usando la
-  descomposición prima!
-explicacion_formal: |
-  Si $N=p_1^{a_1}\cdot p_2^{a_2}\cdots p_k^{a_k}$ es la descomposición prima de $N$,
-  cualquier divisor de $N$ se forma eligiendo un exponente entre $0$ y $a_i$ para cada
-  primo $p_i$. Por el principio multiplicativo, la cantidad total de divisores es
-  $d(N)=(a_1+1)(a_2+1)\cdots(a_k+1)$. Por ejemplo, para $N=12=2^2\cdot3^1$:
-  $d(12)=(2+1)(1+1)=6$.
-definiciones_clave: |
-  **$d(N)$**: notación para la cantidad total de divisores positivos de $N$, calculada a
-  partir de los exponentes de su descomposición prima.
-propiedades_relaciones: |
-  Si un factor primo no aparece con exponente explícito, su exponente es 1 (por ejemplo,
-  en $2^2\cdot3$, el exponente de 3 es 1, no 0).
+resumen_inicial: 'La cantidad total de divisores positivos de $n = p_1^{e_1} \cdot
+  p_2^{e_2} \dots p_k^{e_k}$ se calcula sumando 1 a cada exponente y multiplicando
+  los resultados: $N(n) = (e_1 + 1)(e_2 + 1)\dots(e_k + 1)$.'
+explicacion_simple: Para saber exactamente cuántos divisores positivos tiene un número
+  sin necesidad de buscarlos y contarlos uno por uno, primero escribimos su descomposición
+  prima. Luego le sumamos 1 a cada uno de los exponentes de esa descomposición y multiplicamos
+  todos esos resultados entre sí.
+explicacion_formal: 'Sea $n > 1$ con descomposición canónica $n = p_1^{e_1} \cdot
+  p_2^{e_2} \cdot \ldots \cdot p_k^{e_k}$. La **Función Número de Divisores** $N(n)
+  = |D(n)|$ se calcula formalmente como:
+
+
+  $$N(n) = (e_1 + 1) \cdot (e_2 + 1) \cdot \ldots \cdot (e_k + 1) = \prod_{i=1}^k
+  (e_i + 1)$$
+
+
+  **Desglose de la fórmula:**
+
+  - $e_i$: Exponente de la potencia del primo $p_i$ en la descomposición canónica.
+
+  - $(e_i + 1)$: Número de combinaciones posibles para el primo $p_i$ (desde elegir
+  $p_i^0$ hasta $p_i^{e_i}$).
+
+  - $N(n)$: Total de divisores positivos únicos del entero $n$.
+
+
+  > **Complemento didáctico:** Para $12 = 2^2 \cdot 3^1$, los exponentes son $e_1
+  = 2$ y $e_2 = 1$. Cantidad de divisores: $N(12) = (2+1)(1+1) = 3 \cdot 2 = 6$ divisores.'
+definiciones_clave: '- **Fórmula de la cantidad de divisores**: Producto $N(n) = \prod
+  (e_i + 1)$ derivado del principio multiplicativo del conteo.
+
+  - **Combinatoria de factores**: Selección independiente del exponente para cada
+  base prima.'
+propiedades_relaciones: '- **Caracterización de cuadrados perfectos**: $N(n)$ es impar
+  si y solo si $n$ es un cuadrado perfecto (todos los $e_i$ son pares).'
 ejemplo_guiado:
-  enunciado: "Calcula cuántos divisores tiene el número 20."
+  enunciado: Calcule la cantidad total de divisores positivos del número $72$ aplicando
+    la fórmula de los exponentes.
   pasos:
-    - 'Descomposición prima: $20=2^2\cdot5^1$.'
-    - "Sumamos 1 a cada exponente: $2+1=3$ y $1+1=2$."
-    - 'Multiplicamos: $3\cdot2=6$. Conclusión: 20 tiene 6 divisores.'
+  - 'Paso 1: Obtener la descomposición prima de 72: $72 = 8 \cdot 9 = 2^3 \cdot 3^2$.'
+  - 'Paso 2: Identificar los exponentes de las bases primas: $e_1 = 3$ (para la base
+    2) y $e_2 = 2$ (para la base 3).'
+  - 'Paso 3: Sumar 1 a cada exponente: $(3 + 1) = 4$ y $(2 + 1) = 3$.'
+  - 'Paso 4: Multiplicar las sumas: $N(72) = 4 \cdot 3 = 12$.'
+  - 'Conclusión: El número 72 posee exactamente $12$ divisores positivos.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué se debe hacer con los exponentes de la descomposición prima para calcular la cantidad de divisores?"
-    choices:
-      - {text: "Sumarles 1 a cada uno y multiplicar los resultados", is_correct: true}
-      - {text: "Multiplicarlos directamente sin modificarlos", is_correct: false}
-      - {text: "Sumarlos todos", is_correct: false}
-      - {text: "Restarles 1 a cada uno", is_correct: false}
-    explanation: "La correcta es Sumarles 1 a cada uno y multiplicar los resultados: cada exponente aporta $(a_i+1)$ opciones de divisor."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuántos divisores tiene 50 ($50=2\\cdot5^2$)?"
-    choices:
-      - {text: "6", is_correct: true}
-      - {text: "3", is_correct: false}
-      - {text: "10", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 6: $(1+1)(2+1)=2\\cdot3=6$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuál es la fórmula para calcular la cantidad de divisores positivos a
+    partir de la descomposición prima n = p1^e1 · p2^e2?
+  choices:
+  - text: N(n) = (e1 + 1) · (e2 + 1)
+    is_correct: true
+  - text: N(n) = e1 + e2
+    is_correct: false
+  - text: N(n) = p1 · p2
+    is_correct: false
+  - text: N(n) = e1 · e2
+    is_correct: false
+  explanation: La alternativa correcta es 'N(n) = (e1 + 1) · (e2 + 1)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 72 = 2^3 · 3^2, ¿cuántos divisores se calcularon?
+  choices:
+  - text: 12 divisores
+    is_correct: true
+  - text: 6 divisores
+    is_correct: false
+  - text: 5 divisores
+    is_correct: false
+  - text: 24 divisores
+    is_correct: false
+  explanation: La alternativa correcta es '12 divisores', calculando $(3+1)(2+1) =
+    4 \cdot 3 = 12$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Encuentra la descomposición en factores primos del número dado.'
-  - 'Paso 2: Identifica todos los exponentes de los factores primos en la descomposición (si un factor primo no tiene exponente escrito, su exponente es 1).'
-  - 'Paso 3: Suma 1 a cada uno de los exponentes identificados.'
-  - 'Paso 4: Multiplica todos los resultados obtenidos en el Paso 3. El producto final es la cantidad de divisores del número.'
-errores_correccion: |
-  Un error frecuente es multiplicar los exponentes originales sin sumarles 1 primero.
-  Otro error es olvidar que un factor primo sin exponente explícito tiene exponente 1.
+- 'Paso 1: Escribir la descomposición prima del número en potencias de primos distintos.'
+- 'Paso 2: Identificar los exponentes $e_1, e_2, \dots, e_k$ de cada base prima.'
+- 'Paso 3: Sumar 1 a cada exponente y multiplicar los resultados para obtener $N(n)$.'
+errores_correccion: '- **Error 1: Olvidar considerar el exponente 1 cuando un primo
+  no lleva exponente explícito.** En $20 = 2^2 \cdot 5^1$, no contar el exponente
+  de 5. **Cómo corregirlo:** Si no hay exponente explícito, el exponente vale 1, sumando
+  $(1+1)=2$.
+
+
+  - **Error 2: Sumar 1 a las bases primas en lugar de a los exponentes.** **Cómo corregirlo:**
+  Se suma 1 ÚNICAMENTE a los exponentes $e_i$, no a las bases $p_i$.'
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: 'Calcula cuántos divisores positivos tiene el número $18$.'
-    alternativas:
-      - "6"
-      - "2"
-      - "9"
-    respuesta: "6"
-    solucion_pasos:
-      - 'Paso a: Encontramos la descomposición prima de $18$: $18 = 2^1 \cdot 3^2$.'
-      - 'Paso b: Identificamos los exponentes, que son $1$ y $2$.'
-      - 'Paso c: Sumamos $1$ a cada exponente: $1+1 = 2$ y $2+1 = 3$.'
-      - 'Paso d: Multiplicamos los resultados: $2 \cdot 3 = 6$. El número $18$ tiene $6$ divisores positivos.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Determina la cantidad de divisores positivos de $40$.'
-    alternativas:
-      - "8"
-      - "4"
-      - "3"
-    respuesta: "8"
-    solucion_pasos:
-      - 'Paso a: Obtenemos la descomposición prima de $40$: $40 = 2^3 \cdot 5^1$.'
-      - 'Paso b: Los exponentes son $3$ y $1$.'
-      - 'Paso c: Sumamos $1$ a cada exponente: $3+1 = 4$ y $1+1 = 2$.'
-      - 'Paso d: Multiplicamos: $4 \cdot 2 = 8$. Por lo tanto, $40$ tiene $8$ divisores positivos.'
-  - titulo: '¿Tiene el número $25$ exactamente $3$ divisores positivos?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Descomponemos $25$ en factores primos: $25 = 5^2$.'
-      - 'El único exponente es $2$.'
-      - 'Sumamos $1$ a este exponente: $2 + 1 = 3$.'
-      - 'Como no hay más exponentes que multiplicar, la cantidad de divisores es $3$ (los cuales son $1$, $5$ y $25$).'
-  - titulo: 'Si la descomposición prima de un número es $2^2 \cdot 3^2$, ¿significa que tiene exactamente $4$ divisores?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'Los exponentes en la descomposición $2^2 \cdot 3^2$ son $2$ y $2$.'
-      - 'Sumamos $1$ a cada uno: $2+1 = 3$ y $2+1 = 3$.'
-      - 'Multiplicamos los resultados: $3 \cdot 3 = 9$ divisores.'
-      - 'Por lo tanto, la cantidad de divisores es $9$ y no $4$ (el error común es multiplicar los exponentes originales $2 \cdot 2 = 4$ sin sumarles 1).'
+- titulo: Ejemplo 1
+  enunciado: Calcule cuántos divisores tiene el número $50 = 2^1 \cdot 5^2$.
+  alternativas:
+  - 6 divisores
+  - 3 divisores
+  - 10 divisores
+  respuesta: 6 divisores
+  solucion_pasos:
+  - 'Exponentes: 1 y 2. Fórmula: $(1+1) \cdot (2+1) = 2 \cdot 3 = 6$ divisores.'
+- titulo: Ejemplo 2
+  enunciado: ¿Cuántos divisores tiene el número primo 13 sabiendo que $13 = 13^1$?
+  alternativas:
+  - 2 divisores
+  - 1 divisor
+  - 14 divisores
+  respuesta: 2 divisores
+  solucion_pasos:
+  - 'Exponente $e=1$. Fórmula: $(1+1) = 2$ divisores.'
+- titulo: ¿Si un número es un cuadrado perfecto su cantidad total de divisores es
+    un número impar?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque al ser $e_i$ pares, todos los $(e_i+1)$ son impares, dando un producto
+    impar.
+- titulo: ¿La fórmula N(n) exige que las bases de las potencias sean números primos?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, las bases deben ser primos distintos en descomposición canónica.
 errores_frecuentes:
-  - 'Multiplicar los exponentes originales directamente sin sumarles 1 primero.'
-  - 'Olvidar que cuando un factor primo no tiene exponente explícito, este es igual a 1.'
-  - 'Multiplicar las bases de los factores primos en lugar de sus exponentes modificados.'
-  - 'No descomponer por completo el número antes de aplicar la regla (como usar bases compuestas).'
-  - 'Olvidar incluir el divisor 1 y el propio número en el conteo total.'
+- Para calcular la cantidad de divisores se deben sumar 1 a las bases primas y no
+  a sus exponentes.
+- Un primo sin exponente escrito se considera con exponente cero al aplicar la fórmula.
+- La cantidad total de divisores de un número se obtiene multiplicando directamente
+  las bases primas.
+- Los cuadrados perfectos tienen siempre una cantidad par de divisores totales.
+- Sumar los exponentes de la descomposición da como resultado el número de divisores.
 afirmaciones_verdaderas:
-  - "El número 12 tiene 6 divisores positivos."
-  - "Para calcular la cantidad de divisores, se suma 1 a cada exponente y se multiplican los resultados."
-al_terminar_debes_poder: |
-  Calcular la cantidad total de divisores de un número entero a partir de su
-  descomposición prima.
-fuente: 'Teoría de Números'
+- La cantidad total de divisores positivos se obtiene multiplicando $(e_i + 1)$ para
+  cada exponente primo.
+- Un número posee una cantidad impar de divisores si y solo si es un cuadrado perfecto.
+al_terminar_debes_poder: Al terminar serás capaz de calcular la cantidad total de
+  divisores positivos de cualquier entero, aplicando la fórmula $N(n) = \prod (e_i
+  + 1)$ sobre los exponentes de su descomposición prima.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

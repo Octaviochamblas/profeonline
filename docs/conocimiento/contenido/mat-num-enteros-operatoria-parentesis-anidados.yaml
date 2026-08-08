@@ -1,103 +1,139 @@
 semantic_id: MAT.NUM.ENTEROS_OPERATORIA.PARENTESIS_ANIDADOS
-resumen_inicial: "Para resolver paréntesis dentro de paréntesis, se trabaja desde el más interno hacia el más externo."
-explicacion_simple: |
-  A veces los números se protegen con capas de paréntesis, como muñecas rusas: paréntesis
-  $(\ )$, corchetes $[\ ]$ y llaves $\{\ \}$. La regla de oro es empezar desde adentro
-  hacia afuera: primero abres la muñeca más pequeña, y vas saliendo capa por capa hasta
-  llegar a la más grande.
-explicacion_formal: |
-  Se resuelve el nivel de agrupación más interno primero (usualmente paréntesis redondos),
-  aplicando la regla del signo precedente al eliminarlo. Se continúa con el siguiente nivel
-  (corchetes) y se termina con el más externo (llaves), repitiendo el proceso en cada capa.
-definiciones_clave: |
-  **Paréntesis anidados**: agrupaciones dentro de otras agrupaciones, típicamente en el
-  orden $(\ )$, $[\ ]$, $\{\ \}$ de adentro hacia afuera.
-propiedades_relaciones: |
-  En cada nivel se aplican las mismas reglas de eliminación de paréntesis con signo $+$ o
-  $-$; resolver de afuera hacia adentro es la causa más común de errores de signo.
+resumen_inicial: En expresiones con paréntesis anidados $(\{[]\})$, se resuelve o
+  elimina de adentro hacia afuera.
+explicacion_simple: Cuando una expresión matemática contiene paréntesis dentro de
+  otros paréntesis (como corchetes y llaves), el procedimiento más seguro es resolver
+  o suprimir primero los paréntesis que se encuentran en el nivel más profundo o interno,
+  y avanzar progresivamente hacia los niveles exteriores.
+explicacion_formal: 'Dada una jerarquía de agrupamiento con niveles $L_1 \subset L_2
+  \subset L_3$, la **Eliminación de Paréntesis Anidados** impone la resolución recursiva:
+
+
+  $$\text{Evaluar o eliminar desde } L_{\text{interno}} \longrightarrow L_{\text{externo}}$$
+
+
+  **Desglose de la fórmula:**
+
+  - Paréntesis redondos $( )$: Generalmente representan el nivel más interno $L_1$.
+
+  - Corchetes $[ ]$: Representan el nivel intermedio $L_2$.
+
+  - Llaves $\{ \}$: Representan el nivel exterior $L_3$.
+
+
+  > **Complemento didáctico:** En $5 - [3 + (2 - 7)]$, resolvemos primero el interno
+  $(2 - 7) = -5$, quedando $5 - [3 - 5] = 5 - [-2] = 5 + 2 = 7$.'
+definiciones_clave: '- **Paréntesis anidados**: Estructura de símbolos de agrupación
+  contenidos unos dentro de otros $(\{[]\})$.
+
+  - **Resolución de adentro hacia afuera**: Algoritmo recursivo de supresión de agrupamientos
+  desde el interior al exterior.'
+propiedades_relaciones: '- **Sincronización de signos**: El signo que antecede a cada
+  nivel de paréntesis opera sobre los términos de ese nivel al eliminarlo.'
 ejemplo_guiado:
-  enunciado: "Resuelve $12 - [ -4 + ( 5 - 8 ) ]$."
+  enunciado: Calcule la expresión con paréntesis anidados $10 - [4 + 2 \cdot (3 -
+    8)]$ trabajando de adentro hacia afuera.
   pasos:
-    - "Se resuelve el paréntesis más interno: $5-8=-3$. Queda $12-[-4+(-3)]$."
-    - "Se elimina el paréntesis redondo (precedido por $+$): $12-[-4-3]$."
-    - "Se resuelve el corchete: $-4-3=-7$. Se elimina precedido por $-$: $12+7=19$."
+  - 'Paso 1: Resolver el paréntesis más interno $(3 - 8) = -5$. La expresión queda
+    $10 - [4 + 2 \cdot (-5)]$.'
+  - 'Paso 2: Resolver la multiplicación dentro del corchete: $2 \cdot (-5) = -10$.
+    Queda $10 - [4 - 10]$.'
+  - 'Paso 3: Resolver la suma dentro del corchete: $4 - 10 = -6$. Queda $10 - [-6]$.'
+  - 'Paso 4: Eliminar el corchete antecedido por el signo $-$$: 10 + 6 = 16$.'
+  - 'Conclusión: El resultado final es $16$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿En qué orden se deben resolver los paréntesis anidados?"
-    choices:
-      - {text: "De afuera hacia adentro", is_correct: false}
-      - {text: "De adentro hacia afuera", is_correct: true}
-      - {text: "En cualquier orden, da igual", is_correct: false}
-      - {text: "Solo el más externo importa", is_correct: false}
-    explanation: "La correcta es De adentro hacia afuera: resolver de afuera hacia adentro suele producir errores de signo."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuánto es $10 - [ -2 + ( 3 - 7 ) ]$?"
-    choices:
-      - {text: "$16$", is_correct: true}
-      - {text: "$-16$", is_correct: false}
-      - {text: "$4$", is_correct: false}
-      - {text: "$-4$", is_correct: false}
-    explanation: "La correcta es $16$: $3-7=-4$, luego $-2+(-4)=-6$, y $10-(-6)=16$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿En qué orden se deben resolver o eliminar los paréntesis anidados ([],
+    {}, ())?
+  choices:
+  - text: Desde el paréntesis más interno hacia el más externo
+    is_correct: true
+  - text: Desde el paréntesis más externo hacia el más interno
+    is_correct: false
+  - text: De izquierda a derecha ignorando los niveles
+    is_correct: false
+  - text: En cualquier orden arbitrario
+    is_correct: false
+  explanation: La alternativa correcta es 'Desde el paréntesis más interno hacia el
+    más externo'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿cuál fue el resultado final de la expresión 10
+    - [4 + 2 · (3 - 8)]?
+  choices:
+  - text: '16'
+    is_correct: true
+  - text: '4'
+    is_correct: false
+  - text: '-16'
+    is_correct: false
+  - text: '0'
+    is_correct: false
+  explanation: La alternativa correcta es '16'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Localiza el nivel de paréntesis más interno (usualmente los paréntesis redondos).'
-  - 'Paso 2: Resuelve las operaciones aritméticas que estén dentro de este paréntesis o elimínalo usando la regla del signo delantero.'
-  - 'Paso 3: Pasa al siguiente nivel exterior de agrupación (corchetes) y repite el proceso.'
-  - 'Paso 4: Resuelve el nivel más externo (llaves) y calcula el resultado final.'
-errores_correccion: |
-  Un error frecuente es intentar eliminar todos los niveles de paréntesis al mismo tiempo,
-  confundiendo los signos. Otro error es resolver de afuera hacia adentro, lo que altera
-  las operaciones jerárquicas.
+- 'Paso 1: Identificar el nivel de paréntesis más interno.'
+- 'Paso 2: Calcular el resultado del nivel interno o eliminar sus barras aplicando
+  la regla de signos antecedente.'
+- 'Paso 3: Repetir el proceso hacia los niveles exteriores hasta eliminar todas las
+  agrupaciones.'
+errores_correccion: '- **Error 1: Intentar eliminar los corchetes exteriores antes
+  de resolver los paréntesis interiores.** **Cómo corregirlo:** Avanzar siempre desde
+  el nivel más interno hacia afuera para evitar multiplicar signos de forma errónea.
+
+
+  - **Error 2: Olvidar distribuir el signo negativo exterior a los términos internos
+  ya simplificados.** **Cómo corregirlo:** Mantener los paréntesis hasta que la regla
+  de signo haya sido aplicada al resultado final del bloque.'
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: 'Resuelve la expresión: $15 - [ -2 - ( 6 - 9 ) ]$'
-    alternativas:
-      - "$14$"
-      - "$-14$"
-      - "$10$"
-    respuesta: "$14$"
-    solucion_pasos:
-      - 'Paso a: Identificamos el paréntesis más interno: $(6 - 9)$.'
-      - 'Paso b: Resolvemos su interior: $6 - 9 = -3$. La expresión queda: $15 - [ -2 - (-3) ]$.'
-      - 'Paso c: Eliminamos el paréntesis redondo precedido por $-$, cambiando su signo a $+3$: $15 - [ -2 + 3 ]$.'
-      - 'Paso d: Resolvemos el corchete: $-2 + 3 = 1$. Nos queda $15 - [ 1 ]$.'
-      - 'Paso e: Eliminamos el corchete precedido por $-$, dando $15 - 1 = 14$.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Resuelve: $-2 + \{ -5 - [ -4 + ( 3 - 3 ) ] \}$'
-    alternativas:
-      - "$-3$"
-      - "$3$"
-      - "$-7$"
-    respuesta: "$-3$"
-    solucion_pasos:
-      - 'Paso a: Resolvemos el paréntesis redondo interno: $3 - 3 = 0$. Expresión: $-2 + \{ -5 - [ -4 + 0 ] \}$.'
-      - 'Paso b: Resolvemos el corchete: $-4 + 0 = -4$. Expresión: $-2 + \{ -5 - [ -4 ] \}$.'
-      - 'Paso c: Quitamos el corchete precedido por $-$, lo que da $+4$: $-2 + \{ -5 + 4 \}$.'
-      - 'Paso d: Resolvemos la llave: $-5 + 4 = -1$. Expresión: $-2 + \{ -1 \}$.'
-      - 'Paso e: Quitamos la llave precedida por $+$, dando $-2 - 1 = -3$.'
-  - titulo: '¿Se debe resolver siempre de afuera hacia adentro en paréntesis anidados?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'El orden correcto y más seguro es siempre trabajar desde el paréntesis más interno hacia afuera.'
-      - 'Resolver de afuera hacia adentro suele inducir a errores en los signos acumulados.'
-  - titulo: '¿Es correcto resolver la expresión $-[ -( -5 ) ]$ comenzando por el corchete exterior?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'El procedimiento correcto es comenzar por el paréntesis redondo más interno: $-(-5) = 5$.'
-      - 'Luego se elimina el corchete: $-[ 5 ] = -5$.'
-      - 'Comenzar por el corchete sin resolver el paréntesis interior produce errores de signo.'
+- titulo: Ejemplo 1
+  enunciado: Calcule $6 - [2 - (5 - 9)]$.
+  alternativas:
+  - '0'
+  - '12'
+  - '-4'
+  respuesta: '0'
+  solucion_pasos:
+  - 'Interno: $(5-9) = -4$. Corchete: $[2 - (-4)] = [2 + 4] = 6$. Final: $6 - 6 =
+    0$.'
+- titulo: Ejemplo 2
+  enunciado: Evalúe $-\{ -[ -( -3 ) ] \}$.
+  alternativas:
+  - '-3'
+  - '3'
+  - '0'
+  respuesta: '-3'
+  solucion_pasos:
+  - 'Cada signo menos invierte la polaridad: 4 signos menos resultan en positivo $+3$,
+    pero contándolos bien: $-(-(-(-3))) = -3$.'
+- titulo: ¿Se debe resolver el paréntesis más interno en primer lugar al trabajar
+    con paréntesis anidados?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el algoritmo exige trabajar de adentro hacia afuera.
+- titulo: ¿Es lo mismo resolver de afuera hacia adentro que de adentro hacia afuera?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, resolver de afuera hacia adentro suele generar errores graves en la aplicación
+    de signos.
 errores_frecuentes:
-  - 'Intentar eliminar todos los paréntesis (redondos, corchetes y llaves) al mismo tiempo en un solo paso, confundiendo los signos.'
-  - 'Resolver de afuera hacia adentro, lo que altera las operaciones jerárquicas y los signos.'
-  - 'Olvidar cambiar el signo de todos los términos dentro de un corchete o llave cuando está precedido por un signo menos.'
-  - 'Confundir corchetes y llaves con operaciones de multiplicación adicionales.'
-  - 'Asumir que una expresión con tres niveles de agrupación requiere tres pasos de signo, cuando cada nivel se resuelve de forma independiente de adentro hacia afuera.'
+- Los paréntesis anidados deben eliminarse obligatoriamente desde el nivel más externo
+  hacia el interior.
+- Eliminar corchetes exteriores permite borrar los paréntesis interiores sin calcular
+  su resultado.
+- El signo negativo frente a una llave exterior no afecta a los paréntesis que están
+  en su interior.
+- Los paréntesis anidados se resuelven de derecha a izquierda ignorando la jerarquía
+  de niveles.
+- Sumar todos los números dentro de los distintos niveles sin considerar las agrupaciones
+  da el mismo resultado.
 afirmaciones_verdaderas:
-  - "Para resolver paréntesis anidados, se comienza por el más interno."
-  - "Un paréntesis dentro de otro paréntesis se llama paréntesis anidado."
-al_terminar_debes_poder: |
-  Resolver expresiones con paréntesis, corchetes y llaves anidados trabajando siempre de
-  adentro hacia afuera y aplicando correctamente la regla del signo en cada nivel.
-fuente: "Matemática 7° Básico Tomo 1 — Enteros, p. 51"
+- Los paréntesis anidados se resuelven o eliminan progresivamente de adentro hacia
+  afuera.
+- El signo que precede a un nivel de paréntesis afecta a todo el bloque que está dentro
+  de él.
+al_terminar_debes_poder: Al terminar serás capaz de resolver expresiones con paréntesis
+  anidados $(\{[]\})$, trabajando sistemáticamente de adentro hacia afuera y aplicando
+  las reglas de signos correspondientes en cada nivel.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

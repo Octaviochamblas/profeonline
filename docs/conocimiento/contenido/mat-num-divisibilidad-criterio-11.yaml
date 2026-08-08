@@ -1,106 +1,117 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.CRITERIO_11
-resumen_inicial: "Un número es divisible por 11 si la diferencia entre la suma de cifras en posición impar y la suma de cifras en posición par es 0 o un múltiplo de 11."
-explicacion_simple: |
-  Imagínate que las cifras de un número están haciendo un juego de tira y afloja. Las
-  cifras que están en las posiciones impares (1ª, 3ª, 5ª...) tiran para un lado y sumamos
-  sus fuerzas. Las cifras en las posiciones pares (2ª, 4ª, 6ª...) tiran para el otro lado y
-  también sumamos sus fuerzas. Al final, restamos ambas fuerzas. Si el resultado es cero o
-  un número de la tabla del 11 (como 11, 22, 33...), ¡el número completo es divisible por
-  11!
-explicacion_formal: |
-  Un número $N=d_k d_{k-1}\ldots d_1 d_0$ es divisible por 11 si y solo si la suma alternada
-  de sus cifras $S=(d_0+d_2+d_4+\ldots)-(d_1+d_3+d_5+\ldots)$ tiene valor absoluto 0 o
-  múltiplo de 11. Esto ocurre porque $10\equiv-1\pmod{11}$, por lo que
-  $10^n\equiv(-1)^n\pmod{11}$: cada cifra queda multiplicada por $+1$ o $-1$ de forma
-  alternada.
-definiciones_clave: |
-  **Posición de una cifra**: se cuenta desde la derecha comenzando en 1. Las posiciones
-  impares y pares forman dos grupos cuyas sumas se restan entre sí.
-propiedades_relaciones: |
-  A diferencia de los criterios del 3 y del 9, este no suma todas las cifras juntas, sino
-  que las resta según su posición. El resultado 0 también es válido como múltiplo de 11.
+resumen_inicial: Un número es divisible por 11 si la diferencia entre la suma de las
+  cifras de posición par e impar es 0 o un múltiplo de 11.
+explicacion_simple: El criterio de divisibilidad por 11 nos permite determinar rápidamente
+  si un número entero se puede dividir exactamente por dicho valor sin necesidad de
+  realizar la división larga completa. Aplicamos una regla sobre las cifras del número.
+explicacion_formal: 'Un entero $n$ es divisible por $11$ si y solo si la suma alterna
+  de sus dígitos $S_a = a_0 - a_1 + a_2 - a_3 + \dots$ es divisible por $11$.
+
+
+  $$S_a = \sum_{i=0}^k (-1)^i a_i \equiv 0 \pmod{11}$$
+
+
+  > **Complemento didáctico:** Los criterios de divisibilidad son simplificaciones
+  algebraicas basadas en la aritmética modular sobre las potencias de 10.'
+definiciones_clave: '- **Criterio de divisibilidad**: Regla rápida sobre las cifras
+  de un número para verificar si la división es exacta.'
+propiedades_relaciones: '- **Aritmética modular**: Simplificación de cálculos al trabajar
+  con residuos de potencias de 10.'
 ejemplo_guiado:
-  enunciado: "Determina si 9.361 es divisible por 11."
+  enunciado: Aplique el criterio de divisibilidad por 11 para verificar si la cifra
+    dada cumple la condición.
   pasos:
-    - "Posiciones desde la derecha: 1(pos1), 6(pos2), 3(pos3), 9(pos4)."
-    - "Suma posiciones impares: $1+3=4$. Suma posiciones pares: $6+9=15$."
-    - "Diferencia: $|4-15|=11$, múltiplo de 11. Conclusión: 9.361 es divisible por 11."
+  - 'Paso 1: Identificar el procedimiento del criterio: calcular la suma alterna de
+    cifras.'
+  - 'Paso 2: Aplicar la prueba: 2.816 es divisible por 11 porque $(6 + 8) - (1 + 2)
+    = 14 - 3 = 11$, y 11 es múltiplo de 11..'
+  - 'Conclusión: El número cumple el criterio de divisibilidad.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Cómo se agrupan las cifras en el criterio de divisibilidad por 11?"
-    choices:
-      - {text: "Según su posición (impar o par) contada desde la derecha", is_correct: true}
-      - {text: "Según sean pares o impares como cifra", is_correct: false}
-      - {text: "Todas juntas, sumándolas", is_correct: false}
-      - {text: "Solo se usa la primera y la última cifra", is_correct: false}
-    explanation: "La correcta es Según su posición (impar o par) contada desde la derecha: se calcula la diferencia entre ambas sumas."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿es 1.331 divisible por 11?"
-    choices:
-      - {text: "Sí, la diferencia es 0", is_correct: true}
-      - {text: "No, la diferencia es 4", is_correct: false}
-      - {text: "Sí, porque es capicúa", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es Sí, la diferencia es 0: posiciones impares $1+3=4$, posiciones pares $3+1=4$, diferencia $0$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuál de los siguientes números cumple el criterio de divisibilidad por
+    11?
+  choices:
+  - text: '2.816'
+    is_correct: true
+  - text: '2.817'
+    is_correct: false
+  - text: '2.810'
+    is_correct: false
+  - text: Ninguno de los anteriores
+    is_correct: false
+  explanation: La alternativa correcta es '2.816'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el beneficio de utilizar el criterio de divisibilidad por 11?
+  choices:
+  - text: Determinar la divisibilidad exacta sin necesidad de hacer la división larga
+    is_correct: true
+  - text: Calcular la raíz cuadrada del número
+    is_correct: false
+  - text: Cambiar el signo del número
+    is_correct: false
+  - text: Convertir el número a entero negativo
+    is_correct: false
+  explanation: La alternativa correcta es 'Determinar la divisibilidad exacta sin
+    necesidad de hacer la división larga'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Suma las cifras que ocupan las posiciones impares del número (1ª cifra, 3ª cifra, 5ª cifra, etc., contando de derecha a izquierda o de izquierda a derecha).'
-- 'Paso 2: Suma las cifras que ocupan las posiciones pares del número (2ª cifra, 4ª cifra, etc.).'
-- 'Paso 3: Resta el menor de los dos resultados obtenidos al mayor (o calcula la diferencia entre ambos).'
-- 'Paso 4: Si el resultado de la resta es 0 o un múltiplo de 11 (como 11, 22, 33...), el número es divisible por 11. En caso contrario, no lo es.'
-errores_correccion: |
-  Un error frecuente es numerar las cifras de izquierda a derecha en vez de desde la
-  derecha, lo que puede invertir los grupos. Otro error es sumar todas las cifras juntas,
-  como en el criterio del 3 o del 9, en vez de separarlas por posición.
+- 'Paso 1: Aplicar la regla específica del criterio: calcular la suma alterna de cifras.'
+- 'Paso 2: Evaluar el resultado simplificado obtenido.'
+- 'Paso 3: Concluir que el número es divisible si el resultado simplificado cumple
+  la norma.'
+errores_correccion: '- **Error 1: Un número es divisible por 11 si sus dos últimas
+  cifras son 11.** **Cómo corregirlo:** Aplicar estrictamente la regla del criterio
+  sobre las cifras especificadas en la definición formal.
+
+
+  - **Error 2: Confundir los criterios de distintos números.** **Cómo corregirlo:**
+  Memorizar la regla específica de cada divisor.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Determina si el número $121$ es divisible por $11$.
+  enunciado: ¿Cuál número es divisible según este criterio?
   alternativas:
-    - "Sí, la diferencia es 0"
-    - "No, la diferencia es 2"
-    - "No se puede determinar"
-  respuesta: "Sí, la diferencia es 0"
+  - '2.816'
+  - '2.817'
+  - '2.810'
+  respuesta: '2.816'
   solucion_pasos:
-  - 'Paso a: Identificamos las posiciones de las cifras de derecha a izquierda: la 1ª cifra (impar) es $1$, la 2ª cifra (par) es $2$, y la 3ª cifra (impar) es $1$.'
-  - 'Paso b: Sumamos las cifras en posiciones impares: $1 + 1 = 2$. La única cifra en posición par es $2$.'
-  - 'Paso c: Restamos ambos valores: $2 - 2 = 0$. Como el resultado es $0$, el número $121$ es divisible por $11$.'
+  - Aplicando el criterio se verifica que 2.816 cumple la propiedad.
 - titulo: Ejemplo 2
-  enunciado: Comprueba si el número $8,294$ es divisible por $11$.
+  enunciado: Verifique si la afirmación 'El número 1.331 es divisible por 11.' es
+    verdadera o falsa.
   alternativas:
-    - "Sí, la diferencia es 11"
-    - "No, la diferencia es 6"
-    - "No se puede determinar"
-  respuesta: "Sí, la diferencia es 11"
+  - Verdadera
+  - Falsa
+  - Depende del día
+  respuesta: Verdadera
   solucion_pasos:
-  - 'Paso a: Sumamos las cifras en posiciones impares (1ª y 3ª desde la derecha): $4 + 2 = 6$.'
-  - 'Paso b: Sumamos las cifras en posiciones pares (2ª y 4ª desde la derecha): $9 + 8 = 17$.'
-  - 'Paso c: Restamos el menor del mayor: $17 - 6 = 11$. Como $11$ es múltiplo de $11$, concluimos que $8,294$ es divisible por $11$.'
-- titulo: ¿Es el número $3,185$ divisible por $11$?
-  respuesta: No
-  solucion_pasos:
-  - 'Sumamos las cifras en posiciones impares (5 y 1): $5 + 1 = 6$.'
-  - 'Sumamos las cifras en posiciones pares (8 y 3): $8 + 3 = 11$.'
-  - 'Restamos los resultados: $11 - 6 = 5$.'
-  - 'Como $5$ no es $0$ ni múltiplo de $11$, el número $3,185$ no es divisible por $11$.'
-- titulo: ¿Es el número $918,082$ divisible por $11$?
+  - Se aplica el criterio para corroborar la validez de la proposición.
+- titulo: ¿Permite este criterio evaluar la divisibilidad sin realizar la división
+    larga?
   respuesta: Sí
   solucion_pasos:
-  - 'Sumamos las cifras en posiciones impares contando desde la derecha ($2$, $0$, $1$): $2 + 0 + 1 = 3$.'
-  - 'Sumamos las cifras en posiciones pares contando desde la derecha ($8$, $8$, $9$): $8 + 8 + 9 = 25$.'
-  - 'Restamos la suma menor de la suma mayor: $25 - 3 = 22$.'
-  - 'Como $22$ es múltiplo de $11$ ($11 \cdot 2 = 22$), el número $918,082$ es divisible por $11$.'
+  - Sí, los criterios simplifican el proceso de verificación de divisibilidad.
+- titulo: ¿Aplica la regla de sumar dígitos para el criterio de divisibilidad por
+    2?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, el criterio del 2 evalúa únicamente la última cifra par, no la suma de dígitos.
 errores_frecuentes:
-- Confundir las posiciones pares e impares con el valor par o impar de las cifras (por ejemplo, sumar cifras que son números pares en lugar de cifras en posiciones pares).
-- Contar de manera desordenada las posiciones, mezclando cifras contiguas.
-- Realizar mal la resta final o confundirse con el signo (recordar que se puede tomar la diferencia positiva o el valor absoluto).
-- Olvidar que el 0 es un resultado válido que demuestra la divisibilidad por 11.
-- Pensar que este criterio solo sirve para números de tres o cuatro cifras; se puede aplicar a números de cualquier longitud.
+- Un número es divisible por 11 si sus dos últimas cifras son 11.
+- Los criterios de divisibilidad se pueden aplicar únicamente a números enteros de
+  dos dígitos.
+- El criterio de divisibilidad por 11 requiere realizar la división larga completa
+  en todos los casos.
+- Un número impar puede ser divisible por un número par según los criterios de divisibilidad.
+- Aplicar un criterio de divisibilidad cambia el valor numérico del número original.
 afirmaciones_verdaderas:
-  - "Un número es divisible por 11 si la diferencia entre sus sumas de cifras alternas es 0 o múltiplo de 11."
-  - "El número 121 es divisible por 11."
-al_terminar_debes_poder: |
-  Determinar la divisibilidad por 11 de cualquier número separando sus cifras por
-  posición y calculando la diferencia de sumas.
-fuente: Teoría de Números
+- Un número es divisible por 11 si la diferencia entre la suma de sus dígitos en posiciones
+  pares e impares es 0 o múltiplo de 11.
+- Los criterios de divisibilidad permiten verificar la divisibilidad exacta de forma
+  rápida sin hacer la división larga.
+al_terminar_debes_ponder: Al terminar serás capaz de aplicar el criterio de divisibilidad
+  por 11, calculando la diferencia entre la suma de cifras en posiciones pares e impares
+  y verificando que sea 0 o múltiplo de 11.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

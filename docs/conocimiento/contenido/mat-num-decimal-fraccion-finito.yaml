@@ -1,159 +1,126 @@
 semantic_id: MAT.NUM.DECIMAL_FRACCION.FINITO
 resumen_inicial: Para convertir un decimal finito a fracción, se escribe en el numerador
-  el número sin coma y en el denominador la potencia de 10 correspondiente a la cantidad
-  de cifras decimales, simplificando al final.
-explicacion_simple: 'Convertir un número decimal finito (exacto) a fracción es muy
-  sencillo:
+  el número completo sin coma y en el denominador la potencia de 10 con tantos ceros
+  como cifras decimales tenga el número.
+explicacion_simple: Para pasar un decimal finito a fracción, escribimos arriba el
+  número completo ignorando la coma. Abajo colocamos un 1 seguido de tantos ceros
+  como dígitos haya después de la coma decimal. Por último, simplificamos la fracción
+  obtenida dividiendo numerador y denominador entre sus divisores comunes.
+explicacion_formal: 'Sea el decimal finito $d = a_0, a_1 a_2 \dots a_k$ con $k$ cifras
+  decimales, su **Fracción Generatriz Finita** se construye mediante la fórmula:
 
-  1. **Numerador**: Escribes el número completo exactamente como es, pero **quitándole
-  la coma** (por ejemplo, para $2.45$ escribes $245$).
 
-  2. **Denominador**: Escribes un $1$ seguido de **tantos ceros como cifras haya a
-  la derecha de la coma**. Como $2.45$ tiene $2$ cifras decimales, pones un $100$
-  abajo ($\frac{245}{100}$).
+  $$d = \frac{N}{10^k} = \frac{a_0 a_1 a_2 \dots a_k}{10^k}$$
 
-  3. **Simplificación**: Simplificas la fracción hasta hacerla irreductible ($\frac{245
-  \div 5}{100 \div 5} = \frac{49}{20}$).
 
-  '
-explicacion_formal: 'Formalmente, dado un número decimal finito $d = a_k \dots a_0
-  , b_1 \dots b_n$ con $n \in \mathbb{N}_0$ posiciones decimales, su conversión a
-  fracción racional $\frac{P}{Q} \in \mathbb{Q}$ se define por:
+  **Desglose de la fórmula:**
 
-  $$P = a_k \dots a_0 b_1 \dots b_n = d \cdot 10^n \in \mathbb{Z}$$
+  - $N = a_0 a_1 a_2 \dots a_k \in \mathbb{Z}$: Número entero formado al omitir la
+  coma decimal.
 
-  $$Q = 10^n \in \mathbb{Z}^+$$
+  - $10^k$: Potencia de diez donde $k \in \mathbb{N}$ es la cantidad exacta de posiciones
+  decimales a la derecha de la coma.
 
-  $\frac{P}{Q} = \frac{d \cdot 10^n}{10^n} = \frac{N}{\text{MCD}(N, 10^n)} \Big/ \frac{10^n}{\text{MCD}(N,
-  10^n)}$
 
-  donde $N = d \cdot 10^n$ es la representación entera del número sin coma.
-
-  '
-definiciones_clave: '- **Numerador entero sin coma**: Valor entero resultante de eliminar
-  la coma decimal del número original ($d \cdot 10^n$).
-
-  - **Denominador potencia de 10 ($10^n$)**: Potencia de base 10 cuyo exponente $n$
-  es la cantidad de dígitos decimales del número.
-
-  - **Irreductibilidad por simplificación**: Reducción obligatoria dividiendo numerador
-  y denominador por su máximo común divisor $\text{MCD}(N, 10^n)$.
-
-  '
-propiedades_relaciones: '- **Unicidad de la fracción irreductible**: Todo decimal
-  finito tiene una y solo una representación en fracción irreductible $\frac{a}{b}$.
-
-  - **Factores del denominador simplificado**: El denominador de la fracción irreductible
-  resultante solo contendrá factores primos 2 y/o 5.
-
-  - **Identidad decimal**: $\frac{a \cdot 10^n}{10^n} = d$.
-
-  '
+  > **Complemento didáctico:** La fracción $\frac{N}{10^k}$ debe simplificarse dividiendo
+  por el $\operatorname{MCD}(N, 10^k)$ para llevarla a su forma irreductible en $\mathbb{Q}$.'
+definiciones_clave: '- **Fracción generatriz de un decimal finito**: Expresión de
+  la forma $\frac{N}{10^k}$ simplificada a su forma irreductible.'
+propiedades_relaciones: '- **Equivalencia posicional**: Refleja de forma exacta la
+  descomposición decimal $a_0 + a_1/10 + a_2/100 + \dots$'
 ejemplo_guiado:
-  enunciado: Convierte el decimal finito $3.625$ a fracción irreductible detallando
-    el armado del numerador, denominador y simplificación posicional.
+  enunciado: Convierta el decimal finito $2,75$ a fracción irreductible.
   pasos:
-  - 'Identificar la cantidad de cifras decimales: $3.625$ posee $3$ cifras a la derecha
-    de la coma ($n = 3$).'
-  - 'Construir el numerador sin coma: $3625$.'
-  - 'Construir el denominador con $3$ ceros: $10^3 = 1000$.'
-  - 'Formar la fracción decimal: $\frac{3625}{1000}$.'
-  - 'Simplificar dividiendo numerador y denominador entre el $\text{MCD}(3625, 1000)
-    = 125$:'
-  - '   $\frac{3625 \div 125}{1000 \div 125} = \frac{29}{8}$.'
-  - 'Concluir: $3.625 = \frac{29}{8}$ en forma irreductible.'
+  - 'Paso 1: Escribir el numerador sin coma: $275$.'
+  - 'Paso 2: Contar las cifras decimales: $2,75$ tiene $2$ cifras decimales $\implies$
+    denominador $10^2 = 100$.'
+  - 'Paso 3: Formar la fracción generatriz: $\frac{275}{100}$.'
+  - 'Paso 4: Simplificar dividiendo numerador y denominador entre $25$: $\frac{275
+    : 25}{100 : 25} = \frac{11}{4}$.'
+  - 'Conclusión: $2,75 = \frac{11}{4}$ (o $2 \frac{3}{4}$).'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cómo se determina el denominador de la fracción equivalente a un número
-    decimal finito de $n$ decimales antes de simplificar?
+  question: ¿Qué valor se coloca en el denominador al convertir un decimal finito
+    a fracción?
   choices:
-  - text: Colocando un 1 seguido de $n$ ceros ($10^n$).
+  - text: Una potencia de 10 (10, 100, 1000...) con tantos ceros como cifras decimales
+      tenga el número
     is_correct: true
-  - text: Colocando una cadena de $n$ nueves.
+  - text: Un número formado por nueves (9, 99, 999...)
     is_correct: false
-  - text: Escribiendo la cantidad de decimales en el denominador.
+  - text: El número 1 siempre
     is_correct: false
-  - text: Multiplicando la parte entera por 10.
+  - text: La suma de los dígitos del número
     is_correct: false
-  explanation: 'La correcta es Colocando un 1 seguido de $n$ ceros ($10^n$).: por
-    definición de notación posicional en base 10.'
+  explanation: La alternativa correcta es 'Una potencia de 10 (10, 100, 1000...) con
+    tantos ceros como cifras decimales tenga el número'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: ¿Cuál es la fracción irreductible equivalente a $0.8$?
+  question: En el ejemplo guiado para 2,75, ¿cuál fue la fracción irreductible obtenida?
   choices:
-  - text: \$\frac{4}{5}$
+  - text: 11/4
     is_correct: true
-  - text: \$\frac{8}{10}$
+  - text: 275/100
     is_correct: false
-  - text: \$\frac{8}{9}$
+  - text: 27/5
     is_correct: false
-  - text: \$\frac{4}{9}$
+  - text: 75/100
     is_correct: false
-  explanation: 'La alternativa correcta es: \$\frac{4}{5}$. La correcta es$ \frac{4}{5}$:
-    $\frac{8}{10} = \frac{8 \div 2}{10 \div 2} = \frac{4}{5}$.'
+  explanation: La alternativa correcta es '11/4'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Contar el número de dígitos $n$ que están a la derecha de la coma decimal.'
-- 'Paso 2: Formar el numerador escribiendo todo el número sin la coma decimal.'
-- 'Paso 3: Formar el denominador escribiendo el número $1$ seguido de $n$ ceros ($10^n$).'
-- 'Paso 4: Calcular el máximo común divisor ($\text{MCD}$) entre el numerador y el
-  denominador.'
-- 'Paso 5: Dividir ambos términos entre dicho $\text{MCD}$ para obtener la fracción
-  irreductible final.'
-errores_correccion: 'Un error clásico es poner en el denominador el número de decimales
-  en vez de la potencia de 10 (por ejemplo para $0.4$, poner $\frac{4}{1}$ en lugar
-  de $\frac{4}{10}$). **Cada cifra decimal agrega un CERO al 1 en el denominador**
-  ($10, 100, 1000$).
+- 'Paso 1: Escribir como numerador el número decimal completo sin la coma.'
+- 'Paso 2: Escribir como denominador un $1$ seguido de tantos ceros como cifras decimales
+  tenga el número original.'
+- 'Paso 3: Simplificar la fracción hasta obtener su expresión irreductible.'
+errores_correccion: '- **Error 1: Poner nueves en el denominador de un decimal finito.**
+  **Cómo corregirlo:** Los nueves se usan en los decimales PERIÓDICOS; los finitos
+  usan exclusivamente potencias de $10$.
 
-  '
+
+  - **Error 2: Olvidar simplificar la fracción hasta su forma irreductible.** **Cómo
+  corregirlo:** Se debe simplificar el resultado dividiendo por el $\operatorname{MCD}(N,
+  10^k)$.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Convierte $0.75$ a fracción irreductible.
+  enunciado: Convierta 0,6 a fracción irreductible.
   alternativas:
-  - \$\frac{3}{4}$
-  - \$\frac{75}{100}$
-  - \$\frac{3}{5}$
-  respuesta: \$\frac{3}{4}$
+  - 3/5
+  - 6/10
+  - 6/9
+  respuesta: 3/5
   solucion_pasos:
-  - 'Numerador: $75$. Denominador: $100$ ($2$ decimales).'
-  - 'Fracción: $\frac{75}{100}$.'
-  - 'Simplificar entre $25$: $\frac{75 \div 25}{100 \div 25} = \frac{3}{4}$.'
+  - $0,6 = 6/10 = 3/5$.
 - titulo: Ejemplo 2
-  enunciado: Convierte $1.5$ a fracción irreductible.
+  enunciado: Convierta 0,125 a fracción irreductible.
   alternativas:
-  - \$\frac{3}{2}$
-  - \$\frac{15}{10}$
-  - \$\frac{5}{2}$
-  respuesta: \$\frac{3}{2}$
+  - 1/8
+  - 125/100
+  - 1/4
+  respuesta: 1/8
   solucion_pasos:
-  - 'Numerador: $15$. Denominador: $10$.'
-  - 'Fracción: $\frac{15}{10}$.'
-  - 'Simplificar entre $5$: $\frac{15 \div 5}{10 \div 5} = \frac{3}{2}$.'
-- titulo: ¿Se puede convertir el decimal $0.004$ a fracción irreductible?
-  respuesta: Sí, es \$\frac{1}{250}$.
+  - $0,125 = 125/1000 = 1/8$.
+- titulo: ¿Equivale 0,5 a la fracción irreductible 1/2?
+  respuesta: Sí
   solucion_pasos:
-  - $\frac{4}{1000} = \frac{4 \div 4}{1000 \div 4} = \frac{1}{250}$.
-- titulo: ¿Cambia la fracción irreductible si se agregan ceros al final del decimal
-    (como $0.5$ y $0.50$)?
-  respuesta: 'No'
+  - Sí, $0,5 = 5/10 = 1/2$.
+- titulo: ¿Es 1,5 igual a 3/2?
+  respuesta: Sí
   solucion_pasos:
-  - No, $\frac{5}{10} = \frac{1}{2}$ y $\frac{50}{100} = \frac{1}{2}$.
+  - Sí, $1,5 = 15/10 = 3/2$.
 errores_frecuentes:
-- Olvidar simplificar la fracción resultante.
-- Colocar nueves en el denominador en lugar de potencias de 10.
-- Contar la parte entera como un dígito decimal más.
-- Conservar los ceros a la izquierda en el numerador (escribir $075$ en vez de $75$).
-- Dividir el numerador por 10 en lugar del denominador.
+- Usar números nueves en el denominador al transformar un decimal finito a fracción.
+- Contar las cifras de la parte entera para definir los ceros del denominador.
+- Omisión del proceso de simplificación dejando la fracción en su forma no irreductible.
+- Convertir un decimal finito en una fracción de denominador cero.
+- El número decimal $0,4$ equivale a la fracción irreductible $4/9$.
 afirmaciones_verdaderas:
-- Para convertir un decimal finito a fracción se coloca como denominador una potencia
-  de 10 según sus decimales.
-- Toda fracción equivalente a un decimal finito se reduce a una forma irreductible
-  cuyo denominador solo contiene primos 2 y 5.
-al_terminar_debes_poder: 'Debes ser capaz de transformar cualquier decimal finito
-  a su correspondiente fracción irreductible expresando el denominador en potencias
-  de 10 y simplificando.
-
-  '
-fuente: Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números
-  racionales.
+- Para convertir un decimal finito a fracción se coloca el número sin coma en el numerador
+  y $10^k$ en el denominador.
+- La fracción generatriz de todo decimal finito se debe simplificar dividiendo por
+  el m.c.d. entre el numerador y el denominador.
+al_terminar_debes_poder: Al terminar serás capaz de convertir cualquier decimal finito
+  a su fracción generatriz irreductible, usando el denominador potencia de 10 según
+  la cantidad de cifras decimales.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

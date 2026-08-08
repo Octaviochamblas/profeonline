@@ -1,114 +1,125 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.MULTIPLICACION
-resumen_inicial: Para multiplicar números en notación científica, se multiplican los coeficientes
-  entre sí y se suman los exponentes de las potencias de 10 ($(a \cdot 10^m) \cdot (b \cdot
-  10^n) = (a \cdot b) \cdot 10^{m+n}$), reajustando la mantisa si es necesario.
-explicacion_simple: 'Para multiplicar dos números en notación científica:
+resumen_inicial: 'Para multiplicar números en notación científica $(a \cdot 10^m)
+  \cdot (b \cdot 10^n)$, se multiplican los coeficientes $(a \cdot b)$ y se suman
+  los exponentes de las potencias de diez: $(a \cdot b) \cdot 10^{m+n}$.'
+explicacion_simple: 'Al multiplicar dos cantidades en notación científica, agrupamos
+  el trabajo en dos partes: por un lado multiplicamos los números decimales de adelante,
+  y por otro lado sumamos los exponentes de los 10. Si el resultado decimal se pasa
+  de 10, reajustamos la coma.'
+explicacion_formal: 'Dados $x = a \cdot 10^m$ y $y = b \cdot 10^n$, el **Producto
+  en Notación Científica** utiliza la conmutatividad del producto real:
 
-  1. Multiplicas los dos coeficientes números normales entre sí.
-
-  2. Sumas los exponentes de los 10.
-
-  3. Si el resultado del coeficiente queda de $10$ o más, corres la coma un lugar a la izquierda
-  y sumas $1$ al exponente final.
-
-  Ejemplo: $(3 \cdot 10^4) \cdot (4 \cdot 10^5) = (3 \cdot 4) \cdot 10^{4+5} = 12 \cdot 10^9
-  = 1{,}2 \cdot 10^{10}$.'
-explicacion_formal: 'Dados $x = a \cdot 10^m$ y $y = b \cdot 10^n$, su producto es:
 
   $$x \cdot y = (a \cdot b) \cdot 10^{m+n}$$
 
-  Si $|a \cdot b| \ge 10$, se reescribe $a \cdot b = c \cdot 10^1$ con $1 \le |c| < 10$, resultando
-  en $c \cdot 10^{m+n+1}$.'
-definiciones_clave: '- **Reajuste / Normalización**: Ajuste del coeficiente resultante para
-  garantizar que cumpla $1 \le |k| < 10$.'
-propiedades_relaciones: '- **Asociatividad y conmutatividad**: Permiten agrupar los coeficientes
-  por un lado y las potencias por otro.'
+
+  **Desglose del reajuste:**
+
+  - Si el producto de coeficientes $(a \cdot b) \ge 10$, se reescribe como $(a \cdot
+  b) = k'' \cdot 10^1 \implies k'' \cdot 10^{m+n+1}$.
+
+
+  > **Complemento didáctico:** Ejemplo: $(4 \cdot 10^5) \cdot (3 \cdot 10^4) = 12
+  \cdot 10^9 = 1,2 \cdot 10^{10}$.'
+definiciones_clave: '- **Multiplicación en notación científica**: Operación $(a \cdot
+  b) \cdot 10^{m+n}$ seguida del reajuste de mantisa si es necesario.'
+propiedades_relaciones: '- **Agrupación doble**: Multiplica coeficientes y suma exponentes.'
 ejemplo_guiado:
-  enunciado: Multiplica $(2 \cdot 10^5) \cdot (4 \cdot 10^3)$.
+  enunciado: Multiplique $(3 \cdot 10^4) \cdot (4 \cdot 10^5)$ y exprese el resultado
+    en notación científica estándar.
   pasos:
-  - 'Multiplicar los coeficientes: $2 \cdot 4 = 8$.'
-  - 'Sumar los exponentes: $5 + 3 = 8$.'
-  - 'Verificar normalización: $8$ está entre 1 y 10.'
-  - 'Escribir el resultado final: $8 \cdot 10^8$.'
+  - 'Paso 1: Multiplicar los coeficientes: $3 \cdot 4 = 12$.'
+  - 'Paso 2: Sumar los exponentes de diez: $10^{4+5} = 10^9$. Expresión intermedia:
+    $12 \cdot 10^9$.'
+  - 'Paso 3: Reajustar la mantisa $12$ a formato estándar ($1,2 \cdot 10^1$): $(1,2
+    \cdot 10^1) \cdot 10^9 = 1,2 \cdot 10^{10}$.'
+  - 'Conclusión: El producto es $1,2 \cdot 10^{10}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el resultado de $(3 \cdot 10^4) \cdot (2 \cdot 10^6)$?
+  question: ¿Qué se hace con los coeficientes y exponentes al multiplicar dos números
+    en notación científica?
   choices:
-  - text: 6 · 10^{10}
+  - text: Se multiplican los coeficientes y se suman los exponentes de las potencias
+      de diez
     is_correct: true
-  - text: 6 · 10^{24}
+  - text: Se suman los coeficientes y se multiplican los exponentes
     is_correct: false
-  - text: 5 · 10^{10}
+  - text: Se restan los coeficientes
     is_correct: false
-  - text: 6 · 10^2
+  - text: Se dividen entre 10
     is_correct: false
-  explanation: 'La correcta es: 6 · 10^{10}. Multiplicamos coeficientes ($3 \cdot 2 = 6$)
-    y sumamos exponentes ($4 + 6 = 10$).'
+  explanation: La alternativa correcta es 'Se multiplican los coeficientes y se suman
+    los exponentes de las potencias de diez'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: Calcula $(5 \cdot 10^3) \cdot (4 \cdot 10^2)$ en notación científica estándar.
+  question: En el ejemplo guiado para (3 · 10^4) · (4 · 10^5), ¿cuál fue el resultado
+    estándar final?
   choices:
-  - text: 2 · 10^6
+  - text: 1,2 · 10^{10}
     is_correct: true
-  - text: 20 · 10^5
+  - text: 12 · 10^9
     is_correct: false
-  - text: 2 · 10^5
+  - text: 1,2 · 10^9
     is_correct: false
-  - text: 9 · 10^5
+  - text: 7 · 10^9
     is_correct: false
-  explanation: 'La correcta es: 2 · 10^6. $5 \cdot 4 = 20$, luego $20 \cdot 10^5 = 2 \cdot
-    10^6$.'
+  explanation: La alternativa correcta es '1,2 · 10^{10}'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
 - 'Paso 1: Multiplicar los coeficientes $a \cdot b$.'
-- 'Paso 2: Sumar los exponentes $m + n$.'
-- 'Paso 3: Si el coeficiente $a \cdot b \ge 10$, dividir entre 10 y sumar 1 al exponente.'
-- 'Paso 4: Expresar en notación científica final.'
-errores_correccion: No olvides normalizar la respuesta final. Dejar $15 \cdot 10^6$ no es
-  correcto; debes poner $1{,}5 \cdot 10^7$.
+- 'Paso 2: Sumar los exponentes de las potencias de diez ($m + n$).'
+- 'Paso 3: Si el coeficiente resultante no cumple $1 \le |k| < 10$, reajustar la coma
+  y modificar el exponente.'
+errores_correccion: '- **Error 1: Dejar el coeficiente mayor a 10 en la respuesta
+  final ($12 \cdot 10^9$).** **Cómo corregirlo:** Se DEBE reajustar el coeficiente
+  a $1,2$ y subir 1 al exponente ($1,2 \cdot 10^{10}$).
+
+
+  - **Error 2: Multiplicar los exponentes en lugar de sumarlos.** **Cómo corregirlo:**
+  En la multiplicación de potencias de diez los exponentes se SUMAN ($m+n$).'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcula $(2 \cdot 10^{-3}) \cdot (3 \cdot 10^7)$.
+  enunciado: Calcule $(2 \cdot 10^3) \cdot (3 \cdot 10^2)$.
   alternativas:
-  - 6 · 10^4
-  - 6 · 10^{-21}
-  - 5 · 10^4
-  respuesta: 6 · 10^4
+  - 6 · 10^5
+  - 6 · 10^6
+  - 5 · 10^5
+  respuesta: 6 · 10^5
   solucion_pasos:
-  - $2 \cdot 3 = 6$; $-3 + 7 = 4 \implies 6 \cdot 10^4$.
+  - $(2 \cdot 3) \cdot 10^{3+2} = 6 \cdot 10^5$.
 - titulo: Ejemplo 2
-  enunciado: ¿Cuál es el resultado de (6 · 10^2) · (3 · 10^4)?
+  enunciado: Calcule $(5 \cdot 10^4) \cdot (4 \cdot 10^{-2})$.
   alternativas:
-  - 1,8 · 10^7
-  - 18 · 10^6
-  - 1,8 · 10^6
-  respuesta: 1,8 · 10^7
+  - 2 · 10^3
+  - 20 · 10^2
+  - 2 · 10^2
+  respuesta: 2 · 10^3
   solucion_pasos:
-  - 6·3=18, 2+4=6, luego 18 · 10^6 se renormaliza a 1,8 · 10^7.
-- titulo: Ejemplo 3
-  enunciado: ¿Cuál es el resultado de (2 · 10^{-2}) · (5 · 10^3)?
-  alternativas:
-  - 1 · 10^2
-  - 1 · 10^1
-  - 10 · 10^1
-  respuesta: 1 · 10^2
+  - $(5 \cdot 4) \cdot 10^{4-2} = 20 \cdot 10^2 = 2 \cdot 10^3$.
+- titulo: ¿Es (1 · 10^2) · (1 · 10^3) igual a 1 · 10^5?
+  respuesta: Sí
   solucion_pasos:
-  - 2·5=10, -2+3=1, luego 10 · 10^1 se renormaliza a 1 · 10^2.
-- titulo: ¿Es correcto sumar los coeficientes al multiplicar números en notación científica?
-  respuesta: 'No'
+  - Sí, $1 \cdot 1 = 1$ y $2+3 = 5$.
+- titulo: ¿Requiere un coeficiente resultante de 15 reajustar el exponente sumándole
+    1?
+  respuesta: Sí
   solucion_pasos:
-  - Los coeficientes se multiplican, no se suman; los exponentes son los que se suman.
+  - Sí, $15 \cdot 10^n = 1,5 \cdot 10^{n+1}$.
 errores_frecuentes:
-- Multiplicar los exponentes en lugar de sumarlos.
-- Sumar los coeficientes en lugar de multiplicarlos.
-- Multiplicar los exponentes en lugar de sumarlos.
-- Olvidar renormalizar el resultado cuando el producto de los coeficientes es mayor o igual
-  a 10.
-- Aplicar la suma de exponentes a números que no comparten la misma base 10.
+- Omitir el reajuste estándar cuando el producto de los coeficientes supera el valor
+  10.
+- Multiplicar los exponentes de diez entre sí en lugar de efectuar su adición.
+- Sumar los coeficientes numéricos al realizar la multiplicación en notación científica.
+- La multiplicación $(2 \cdot 10^3) \cdot (4 \cdot 10^3)$ es igual a $8 \cdot 10^9$
+  por multiplicación de exponentes.
+- Dividir el exponente por 10 al mover la coma un lugar a la izquierda.
 afirmaciones_verdaderas:
-- En la multiplicación, se multiplican coeficientes y se suman exponentes.
-- Si el producto de los coeficientes es mayor o igual a 10, es necesario renormalizar sumando
-  1 al exponente final.
-al_terminar_debes_poder: Resolver multiplicaciones en notación científica aplicando normalización.
-fuente: Texto escolar MINEDUC.
+- 'Al multiplicar en notación científica se multiplican los coeficientes y se suman
+  los exponentes de diez: $(a \cdot b) \cdot 10^{m+n}$.'
+- Si el producto de coeficientes es $\ge 10$, se reajusta la coma corriendo 1 posición
+  a la izquierda e incrementando $1$ al exponente.
+al_terminar_debes_poder: Al terminar serás capaz de multiplicar números en notación
+  científica, multiplicando coeficientes, sumando exponentes y reajustando la mantisa
+  al intervalo $1 \le |k| < 10$.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

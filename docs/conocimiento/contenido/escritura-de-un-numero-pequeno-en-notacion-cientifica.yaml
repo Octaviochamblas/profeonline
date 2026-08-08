@@ -1,109 +1,124 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.ESCRITURA_NUMERO_PEQUENO
-resumen_inicial: Para escribir un número pequeño ($0 < N < 1$) en notación científica, la
-  coma se desplaza a la derecha hasta lograr un coeficiente entre 1 y 10, asociando un exponente
-  negativo ($-n$).
-explicacion_simple: 'Para escribir números decimales muy pequeños como $0{,}000037$:
+resumen_inicial: Para escribir un número pequeño ($0 < |x| < 1$) en notación científica,
+  la coma se desplaza $n$ posiciones hacia la derecha hasta encontrar la primera cifra
+  no nula, asignando un exponente entero negativo $-n$.
+explicacion_simple: Al convertir un número muy pequeño (como $0,00045$) a notación
+  científica, corremos la coma hacia la derecha hasta sobrepasar la primera cifra
+  distinta de cero. El número de pasos dados a la derecha será el exponente negativo
+  de la potencia de diez.
+explicacion_formal: 'Sea $0 < x < 1$, la representación $x = k \cdot 10^{-n}$ se construye
+  mediante:
 
-  1. Mueves la coma a la derecha hasta quedar detrás del primer dígito distinto de cero: $3{,}7$.
 
-  2. Cuentas cuántas posiciones se movió la coma a la derecha (5 posiciones).
+  $$x = 0,\underbrace{00\dots0}_{n-1 \text{ ceros}} a_1 a_2 \dots \implies k = a_1,
+  a_2 \dots \quad \text{con exponente } -n < 0$$
 
-  3. Pones un **exponente negativo**: $3{,}7 \cdot 10^{-5}$.'
-explicacion_formal: 'Sea $0 < N < 1$. El desplazamiento de la coma $n$ lugares a la derecha
-  equivale a multiplicar por $10^n$, por lo que para compensar se multiplica por $10^{-n}$:
 
-  $$N = (N \cdot 10^n) \cdot 10^{-n} = k \cdot 10^{-n}$$
+  **Desglose del algoritmo:**
 
-  Donde $n \in \mathbb{Z}^+$ es la cantidad de desplazamientos a la derecha y $k \in [1, 10[$.'
-definiciones_clave: '- **Exponente negativo ($-n$)**: Indica el número de posiciones que la
-  coma se movió a la derecha para expresar un número decimal cercano a cero.'
-propiedades_relaciones: '- **Pequeñez y negatividad**: A mayor cantidad de ceros entre la
-  coma y la primera cifra no nula, mayor es el valor absoluto del exponente negativo.'
+  - Dirección de desplazamiento: Derecha $\implies$ Exponente negativo $-n$.
+
+  - Orden de magnitud: $-n$ indica la posición decimal donde aparece el primer dígito
+  significativo no nulo.
+
+
+  > **Complemento didáctico:** Ejemplo: $0,000072 = 7,2 \cdot 10^{-5}$ (la coma avanzó
+  $5$ lugares a la derecha).'
+definiciones_clave: '- **Escritura de números pequeños**: Conversión con traslación
+  de coma a la derecha y exponente negativo $-n$.'
+propiedades_relaciones: '- **Exponente negativo**: Indica la cantidad de traslaciones
+  a la derecha para un número $|x| < 1$.'
 ejemplo_guiado:
-  enunciado: Escribe $0{,}00042$ en notación científica.
+  enunciado: Escriba el número decimal pequeño $0,000038$ en notación científica.
   pasos:
-  - 'Identificar la primera cifra distinta de cero: 4. El coeficiente será $4{,}2$.'
-  - 'Contar cuántos lugares corremos la coma a la derecha hasta quedar entre el 4 y el 2:
-    4 lugares.'
-  - 'Expresar con exponente negativo: $4{,}2 \cdot 10^{-4}$.'
+  - 'Paso 1: Identificar el primer dígito diferente de cero: $3$. Colocar la coma
+    a su derecha: $3,8$.'
+  - 'Paso 2: Contar los lugares que avanzó la coma hacia la derecha: $5$ posiciones.'
+  - 'Paso 3: Asignar exponente negativo $-5$ a la potencia de diez: $10^{-5}$.'
+  - 'Conclusión: $0,000038 = 3,8 \cdot 10^{-5}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la notación científica de $0{,}000081$?
+  question: ¿Qué signo tiene el exponente al convertir un número menor a 1 (0 < |x|
+    < 1) a notación científica?
   choices:
-  - text: 8,1 · 10^{-5}
+  - text: Signo negativo (-n)
     is_correct: true
-  - text: 8,1 · 10^5
+  - text: Signo positivo (+n)
     is_correct: false
-  - text: 81 · 10^{-6}
+  - text: Es siempre cero
     is_correct: false
-  - text: 0,81 · 10^{-4}
+  - text: Es indeterminado
     is_correct: false
-  explanation: 'La correcta es: 8,1 · 10^{-5}. Desplazamos la coma 5 lugares hacia la derecha.'
+  explanation: La alternativa correcta es 'Signo negativo (-n)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: Expresa $0{,}005$ en notación científica.
+  question: En el ejemplo guiado para 0,000038, ¿cuál fue el resultado?
   choices:
-  - text: 5 · 10^{-3}
+  - text: 3,8 · 10^{-5}
     is_correct: true
-  - text: 5 · 10^3
+  - text: 3,8 · 10^5
     is_correct: false
-  - text: 0,5 · 10^{-2}
+  - text: 38 · 10^{-6}
     is_correct: false
-  - text: 50 · 10^{-4}
+  - text: 0,38 · 10^{-4}
     is_correct: false
-  explanation: 'La correcta es: 5 · 10^{-3}. Mover la coma 3 lugares a la derecha nos da $5
-    \cdot 10^{-3}$.'
+  explanation: La alternativa correcta es '3,8 · 10^{-5}'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar el primer dígito diferente de cero después de la coma.'
-- 'Paso 2: Mover la coma a la derecha hasta ubicarla inmediatamente después de ese primer
-  dígito no nulo.'
-- 'Paso 3: Contar los espacios $n$ recorridos hacia la derecha.'
-- 'Paso 4: Escribir la mantisa multiplicada por $10^{-n}$.'
-errores_correccion: No olvides el signo menos en el exponente. $0{,}004 = 4 \cdot 10^{-3}$,
-  mientras que $4 \cdot 10^3 = 4000$.
+- 'Paso 1: Mover la coma hacia la derecha hasta situarla inmediatamente después de
+  la primera cifra no nula.'
+- 'Paso 2: Contar las posiciones $n$ recorridas a la derecha.'
+- 'Paso 3: Multiplicar la mantisa por la potencia $10^{-n}$ con exponente negativo
+  $-n$.'
+errores_correccion: '- **Error 1: Asignar exponente positivo a un decimal pequeño
+  ($0,005 = 5 \cdot 10^3$).** **Cómo corregirlo:** Los números menores a 1 llevan
+  exponente NEGATIVO ($5 \cdot 10^{-3}$).
+
+
+  - **Error 2: Dejar la coma antes de la primera cifra no nula ($0,005 = 0,5 \cdot
+  10^{-2}$).** **Cómo corregirlo:** El coeficiente debe ser $\ge 1$, por lo que la
+  coma debe pasar la primera cifra no nula ($5 \cdot 10^{-3}$).'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Expresa $0{,}000009$ en notación científica.
+  enunciado: Escriba $0,0009$ en notación científica.
   alternativas:
-  - 9 · 10^{-6}
-  - 9 · 10^6
-  - 0,9 · 10^{-5}
-  respuesta: 9 · 10^{-6}
+  - 9 · 10^{-4}
+  - 9 · 10^4
+  - 0,9 · 10^{-3}
+  respuesta: 9 · 10^{-4}
   solucion_pasos:
-  - $0{,}000009 = 9 \cdot 10^{-6}$.
+  - $0,0009 = 9 \cdot 10^{-4}$.
 - titulo: Ejemplo 2
-  enunciado: ¿Cuál es la notación científica de 0,00058?
+  enunciado: Escriba $0,0000012$ en notación científica.
   alternativas:
-  - 5,8 · 10^{-4}
-  - 5,8 · 10^4
-  - 0,58 · 10^{-3}
-  respuesta: 5,8 · 10^{-4}
+  - 1,2 · 10^{-6}
+  - 1,2 · 10^6
+  - 12 · 10^{-7}
+  respuesta: 1,2 · 10^{-6}
   solucion_pasos:
-  - La coma se desplaza 4 lugares a la derecha.
-- titulo: Ejemplo 3
-  enunciado: ¿Cuál es la notación científica de 0,0007?
-  alternativas:
-  - 7 · 10^{-4}
-  - 7 · 10^4
-  - 0,7 · 10^{-3}
-  respuesta: 7 · 10^{-4}
+  - $0,0000012 = 1,2 \cdot 10^{-6}$.
+- titulo: ¿Es 0,01 igual a 1 · 10^{-2}?
+  respuesta: Sí
   solucion_pasos:
-  - La coma se desplaza 4 lugares a la derecha.
-- titulo: ¿Es correcto escribir 0,003 como 3 · 10^3?
-  respuesta: 'No'
+  - Sí, $1 / 100 = 10^{-2}$.
+- titulo: ¿Requiere un número pequeño mover la coma hacia la derecha?
+  respuesta: Sí
   solucion_pasos:
-  - '0,003 es menor que 1, el exponente debe ser negativo: 3 · 10^{-3}.'
+  - Sí, para dejar una cifra entera entre 1 y 9.
 errores_frecuentes:
-- Olvidar el signo menos del exponente al mover la coma a la derecha.
-- Contar mal la cantidad de posiciones que se desplaza la coma hacia la derecha.
-- Usar un exponente positivo para un número menor que 1.
-- Dejar el coeficiente fuera del rango 1 ≤ |k| < 10.
-- Confundir el conteo de ceros con el conteo de posiciones desplazadas.
+- Usar exponentes positivos al representar números decimales pequeños menores a 1.
+- Dejar ceros a la izquierda de la coma al expresar un decimal pequeño en notación
+  científica.
+- Contar las posiciones ignorando la primera cifra distinta de cero.
+- El decimal $0,007$ en notación científica equivale a $7 \cdot 10^3$.
+- Invertir los signos de la mantisa al mover la coma hacia la derecha.
 afirmaciones_verdaderas:
-- Los números entre 0 y 1 tienen exponente negativo en notación científica.
-- Mientras más ceros haya entre la coma y la primera cifra significativa, mayor es el valor
-  absoluto del exponente negativo.
-al_terminar_debes_poder: Convertir números pequeños a notación científica con exponente negativo.
-fuente: Texto escolar MINEDUC.
+- Para expresar un número pequeño ($0 < |x| < 1$) en notación científica se desplaza
+  la coma a la derecha y se usa un exponente negativo $-n$.
+- El exponente negativo refleja la división por potencias de diez necesarias para
+  reconstruir el decimal pequeño.
+al_terminar_debes_poder: Al terminar serás capaz de convertir números pequeños a notación
+  científica $k \cdot 10^{-n}$, desplazando la coma hacia la derecha y asignando un
+  exponente negativo $-n$.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

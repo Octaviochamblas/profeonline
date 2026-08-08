@@ -1,157 +1,132 @@
 semantic_id: MAT.NUM.FRACCIONES_EQUIVALENCIA.IMPROPIA_A_MIXTO
-resumen_inicial: La conversión de fracción impropia a número mixto consiste en extraer
-  los enteros completos dividiendo el numerador entre el denominador y expresando
-  el residuo como fracción propia.
-explicacion_simple: 'Si tienes una fracción impropia como $\frac{13}{5}$, significa
-  que tienes 13 partes de algo que se dividió en quintos. Para saber cuántas unidades
-  enteras tienes, divides 13 entre 5: cabe 2 veces enteras y te sobran 3 partes. Esos
-  2 enteros más los 3 quintos sobrantes se escriben juntos como el número mixto $2\frac{3}{5}$.
-  El **cociente de la división es tu entero**, el **residuo es tu nuevo numerador**
-  y mantienes el mismo denominador.
-
-  '
-explicacion_formal: 'Formalmente, dada una fracción impropia $\frac{N}{c}$ con $N,
-  c \in \mathbb{Z}^+$ y $N > c$, su conversión al **número mixto equivalente** $A\frac{r}{c}$
-  se fundamenta en el Algoritmo de la División Entera:
-
-  $$N = c \cdot A + r \quad \text{con } 0 \le r < c$$
+resumen_inicial: 'Para convertir una fracción impropia $\frac{a}{b}$ a número mixto,
+  se divide $a$ entre $b$: el cociente es el entero $C$ y el residuo es el numerador
+  $r$.'
+explicacion_simple: Para pasar una fracción impropia a un número mixto, realizamos
+  la división entera del número de arriba entre el de abajo. El resultado entero de
+  la división será nuestro número grande, el residuo que sobra será el numerador de
+  la fracción y conservamos el denominador original.
+explicacion_formal: 'Dada la fracción impropia $\frac{a}{b}$ con $a > b > 0$, el **Algoritmo
+  de la División Euclidiana** $a = b \cdot C + r$ con $0 \le r < b$ genera la representación
+  mixta:
 
 
-  Dividiendo toda la ecuación entre el denominador $c$:
+  $$\frac{a}{b} = \frac{b \cdot C + r}{b} = C + \frac{r}{b} = C \frac{r}{b}$$
 
-  $\frac{N}{c} = \frac{c \cdot A + r}{c} = \frac{c \cdot A}{c} + \frac{r}{c} = A +
-  \frac{r}{c} = A$\frac{r}{c}$
 
-  donde $A = \lfloor N / c \rfloor \in \mathbb{Z}^+$ es el cociente (parte entera)
-  y $r = N \bmod c$ es el residuo (numerador de la fracción propia remanente).
+  **Desglose de la fórmula:**
 
-  '
-definiciones_clave: '- **Conversión a número mixto**: Descomposición de $\frac{N}{c}$
-  en parte entera $A$ y fracción propia $\frac{r}{c}$.
+  - $C = \lfloor a/b \rfloor$: Parte entera (cociente de la división).
 
-  - **Cociente entero ($A$)**: Resultado entero de $N \div c$ que indica la cantidad
-  de unidades completas.
+  - $r = a \bmod b$: Residuo de la división ($0 \le r < b$).
 
-  - **Residuo ($r$)**: Cantidad sobrante $N - c \cdot A$ que forma el numerador de
-  la fracción propia remanente ($r < c$).
+  - $b$: Denominador de la fracción propia remanente.
 
-  '
-propiedades_relaciones: '- **Caso residuo nulo ($r = 0$)**: Si $r = 0$, la fracción
-  impropia es una **fracción aparente** y equivale exactamente a un entero puro $A$,
-  sin parte fraccionaria.
 
-  - **Comprensión intuitiva de magnitud**: La forma mixta $A\frac{r}{c}$ permite ubicar
-  de manera inmediata la fracción entre los enteros consecutivos $A$ y $A+1$.
-
-  - **Reversibilidad biunívoca**: La conversión es la operación inversa exacta de
-  pasar de número mixto a fracción impropia ($N = A \cdot c + r$).
-
-  '
+  > **Complemento didáctico:** Para $\frac{19}{4}$, calculamos $19 : 4 = 4$ con residuo
+  $3$, dando el mixto $4 \frac{3}{4}$.'
+definiciones_clave: '- **Algoritmo de impropia a mixto**: División $a = b \cdot C
+  + r$ para descomponer en parte entera $C$ y remanente $\frac{r}{b}$.'
+propiedades_relaciones: '- **Reciprocidad algorítmica**: Es la operación inversa de
+  transformar un número mixto en fracción impropia.'
 ejemplo_guiado:
-  enunciado: Convierte la fracción impropia $\frac{29}{6}$ a número mixto aplicando
-    el algoritmo de la división entera y ubícala en la recta numérica.
+  enunciado: Convierta la fracción impropia $\frac{23}{5}$ a número mixto mediante
+    la división entera.
   pasos:
-  - Identificar numerador $N = 29$ y denominador $c = 6$.
-  - 'Efectuar la división entera $29 \div 6$: $29 = 6 \cdot 4 + 5$ (cociente $A =
-    4$, residuo $r = 5$).'
-  - 'Comprobar que el residuo sea menor que el denominador: $5 < 6$ (cumple para formar
-    una fracción propia).'
-  - 'Armar el número mixto: parte entera $4$, numerador $5$, denominador $6$, resultando
-    $4\frac{5}{6}$.'
-  - 'Ubicar en la recta: se encuentra entre los enteros $4$ y $5$.'
+  - 'Paso 1: Dividir $23$ entre $5$: $23 : 5 = 4$ con residuo $3$ (pues $5 \cdot 4
+    = 20$).'
+  - 'Paso 2: Identificar los componentes: cociente $C = 4$, residuo $r = 3$ y denominador
+    $b = 5$.'
+  - 'Paso 3: Armar el número mixto: entero $4$ y fracción propia $\frac{3}{5} \implies
+    4 \frac{3}{5}$.'
+  - 'Conclusión: $\frac{23}{5} = 4 \frac{3}{5}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: En el algoritmo de conversión de una fracción impropia $\frac{N}{c}$ a
-    número mixto mediante $N = c \cdot A + r$, ¿qué rol cumple el residuo $r$?
+  question: '¿Qué rol juegan el cociente y el residuo de la división a : b al convertir
+    a/b en mixto?'
   choices:
-  - text: El residuo $r$ se convierte en el numerador de la parte fraccionaria propia
-      $\frac{r}{c}$.
+  - text: El cociente es la parte entera y el residuo es el numerador de la fracción
+      propia
     is_correct: true
-  - text: El residuo $r$ se convierte en la parte entera del número mixto.
+  - text: El residuo es la parte entera y el cociente es el denominador
     is_correct: false
-  - text: El residuo $r$ se convierte en el nuevo denominador.
+  - text: Ambos se multiplican para formar el entero
     is_correct: false
-  - text: El residuo $r$ se descarta por no tener valor matemático.
+  - text: No se realiza división
     is_correct: false
-  explanation: 'La correcta es El residuo $r$ se convierte en el numerador de la parte
-    fraccionaria propia $\frac{r}{c}$.: representa las unidades fraccionarias sobrantes
-    que no alcanzaron a formar otro entero.'
+  explanation: La alternativa correcta es 'El cociente es la parte entera y el residuo
+    es el numerador de la fracción propia'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: Al convertir la fracción impropia $\frac{38}{7}$ a número mixto, ¿cuál
-    es el resultado correcto?
+  question: En el ejemplo guiado para 23/5, ¿cuál fue el número mixto resultante?
   choices:
-  - text: 5\$\frac{3}{7}$
+  - text: 4 3/5
     is_correct: true
-  - text: 7\$\frac{3}{5}$
+  - text: 5 3/4
     is_correct: false
-  - text: 4\$\frac{10}{7}$
+  - text: 3 4/5
     is_correct: false
-  - text: 5\$\frac{7}{3}$
+  - text: 4 5/3
     is_correct: false
-  explanation: 'La alternativa correcta es: 5\$\frac{3}{7}$. La correcta es $5\frac{3}{7}$:
-    dividimos $38 \div 7 = 5$ con residuo $3$ ($38 = 7 \cdot 5 + 3$), formando $5\frac{3}{7}$.'
+  explanation: La alternativa correcta es '4 3/5'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Dividir el numerador $N$ entre el denominador $c$ mediante división entera.'
-- 'Paso 2: Registrar el cociente entero $A$ como la parte entera del número mixto.'
-- 'Paso 3: Registrar el residuo $r$ como el numerador de la parte fraccionaria.'
-- 'Paso 4: Conservar el denominador $c$ original para formar $A\frac{r}{c}$.'
-errores_correccion: 'Un error clásico es poner el cociente como numerador y el residuo
-  como parte entera (invertirlos). Recuerda siempre: **el cociente (cuántas veces
-  cabe) es el entero grande**, y **el residuo (lo que sobra) va arriba en la fracción**.
+- 'Paso 1: Realizar la división entera del numerador entre el denominador ($a : b$).'
+- 'Paso 2: Tomar el cociente entero $C$ como el número grande de la parte entera.'
+- 'Paso 3: Tomar el residuo $r$ como nuevo numerador y conservar el denominador original
+  $b$.'
+errores_correccion: '- **Error 1: Usar la parte decimal del cociente en lugar del
+  resto entero.** **Cómo corregirlo:** La conversión a mixto requiere el RESIDUO ENTERO
+  $r = a \bmod b$, no decimales.
 
-  '
+
+  - **Error 2: Invertir el cociente y el residuo en la estructura del mixto.** **Cómo
+  corregirlo:** El cociente $C$ es el entero principal; el residuo $r$ va en el numerador
+  superior de la fracción remanente.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Convierte $\frac{19}{4}$ a número mixto.
+  enunciado: Convierta 17/3 a número mixto.
   alternativas:
-  - 4\$\frac{3}{4}$
-  - 3\$\frac{4}{4}$
-  - 4\$\frac{1}{4}$
-  respuesta: 4\$\frac{3}{4}$
+  - 5 2/3
+  - 3 2/5
+  - 5 3/2
+  respuesta: 5 2/3
   solucion_pasos:
-  - Dividimos $19 \div 4 = 4$ con residuo $3$ ($19 = 4 \cdot 4 + 3$).
-  - El cociente es 4 y el residuo es 3.
-  - Obtenemos el número mixto $4\frac{3}{4}$.
+  - '$17 : 3 = 5$ resto $2 \implies 5 \frac{2}{3}$.'
 - titulo: Ejemplo 2
-  enunciado: Un carpintero tiene $\frac{23}{5}$ metros de madera. ¿Cómo expresa esa
-    longitud en metros enteros y fracción sobrante?
+  enunciado: ¿Qué número mixto representa a 31/6?
   alternativas:
-  - Tiene 4\$\frac{3}{5}$ metros de madera.
-  - Tiene 5\$\frac{3}{4}$ metros de madera.
-  - Tiene 3\$\frac{4}{5}$ metros de madera.
-  respuesta: Tiene 4\$\frac{3}{5}$ metros de madera.
+  - 5 1/6
+  - 6 1/5
+  - 5 6/1
+  respuesta: 5 1/6
   solucion_pasos:
-  - Dividimos $23 \div 5 = 4$ con residuo $3$ ($23 = 5 \cdot 4 + 3$).
-  - 'Corresponde a $4$ metros enteros más $\frac{3}{5}$ de metro: $4\frac{3}{5}$.'
-- titulo: ¿Qué ocurre al convertir a número mixto una fracción impropia donde el residuo
-    es cero (como $\frac{20}{5}$)?
-  respuesta: Resulta en un número entero puro (en este caso 4) sin parte fraccionaria.
+  - '$31 : 6 = 5$ resto $1 \implies 5 \frac{1}{6}$.'
+- titulo: ¿Se pueden convertir las fracciones aparentes en números mixtos con fracción
+    propia?
+  respuesta: 'No'
   solucion_pasos:
-  - Si el residuo es 0, la fracción es aparente y equivale directamente a la parte
-    entera $A$.
-- titulo: ¿El denominador se mantiene idéntico al convertir de fracción impropia a
-    número mixto?
+  - No, al dar residuo cero las fracciones aparentes se convierten en enteros puros.
+- titulo: ¿Es 13/4 equivalente a 3 1/4?
   respuesta: Sí
   solucion_pasos:
-  - Sí, el tamaño de la parte fraccionaria (el denominador) no cambia durante la conversión.
+  - 'Sí, $13 : 4 = 3$ resto $1 \implies 3 \frac{1}{4}$.'
 errores_frecuentes:
-- Invertir la parte entera y el numerador al armar el número mixto.
-- Olvidar que el residuo debe ser estrictamente menor que el denominador.
-- Intentar convertir una fracción propia a número mixto.
-- Cambiar el denominador original por el cociente de la división.
-- Creer que si la división es exacta no se puede expresar el resultado como entero.
+- El residuo de la división del numerador entre el denominador representa la parte
+  entera del número mixto.
+- Si una fracción impropia tiene residuo cero se debe colocar el residuo cero como
+  numerador del mixto.
+- Convertir una fracción impropia a número mixto modifica la posición decimal del
+  número.
+- El cociente de la división entera se debe colocar como denominador de la parte fraccionaria.
+- Las fracciones impropias negativas no admiten conversión a representación mixta.
 afirmaciones_verdaderas:
-- Al convertir una fracción impropia $\frac{N}{c}$ a número mixto, el cociente de
-  $N \div c$ es la parte entera y el residuo es el nuevo numerador.
-- Si el residuo de $N \div c$ es cero, la fracción es aparente y equivale a un número
-  entero exacto.
-al_terminar_debes_poder: 'Debes ser capaz de convertir cualquier fracción impropia
-  a número mixto mediante la división entera, identificando con claridad la parte
-  entera y la porción fraccionaria sobrante.
-
-  '
-fuente: Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números
-  racionales.
+- La conversión de $\frac{a}{b}$ a número mixto utiliza el cociente $C = \lfloor a/b
+  \rfloor$ y el residuo $r = a \bmod b$.
+- Una fracción impropia no aparente se expresa como $C \frac{r}{b}$ con parte fraccionaria
+  estrictamente propia.
+al_terminar_debes_poder: Al terminar serás capaz de convertir cualquier fracción impropia
+  no entera en un número mixto equivalente, dividiendo numerador entre denominador
+  para determinar la parte entera y el residuo.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

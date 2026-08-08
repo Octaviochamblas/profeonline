@@ -1,95 +1,132 @@
 semantic_id: MAT.NUM.APROXIMACIONES.APROXIMACION_DEFECTO
-resumen_inicial: "La aproximación por defecto consiste en elegir un número con la cantidad de decimales deseada que sea menor o igual al valor real, conservando la cifra del orden solicitado."
-explicacion_simple: |
-  Aproximar por **defecto** a cierto orden decimal (por ejemplo a las centésimas) significa reemplazar el número original por otro más simple de menos decimales, pero **asegurándote de que el resultado sea menor o igual que el número real**. Para números positivos, la aproximación por defecto a una posición dada se obtiene simplemente cortando o eliminando todas las cifras que están después de esa posición (coincidiendo con el truncamiento). Por ejemplo, la aproximación por defecto de $3.14159$ a las centésimas es $3.14$.
-explicacion_formal: |
-  Formalmente, dada la representación decimal de un número real $x = \sum_{k=-\infty}^{N} a_k \cdot 10^k$, la **aproximación por defecto al orden $10^m$** ($m \in \mathbb{Z}$) es el número $x_{\text{def}} \in \{k \cdot 10^m \mid k \in \mathbb{Z}\}$ que satisface:
-  $$x_{\text{def}} \le x < x_{\text{def}} + 10^m$$
+resumen_inicial: Una aproximación por defecto (o por cota inferior) es un valor cercano
+  al número real o racional $x$ tal que la aproximación $x_{\text{def}}$ es estrictamente
+  menor o igual al valor exacto ($x_{\text{def}} \le x$).
+explicacion_simple: Aproximar un número por defecto significa elegir un valor cercano
+  que se quede por debajo o 'corto' con respecto al valor exacto del número original.
+  Es una aproximación que garantiza no pasarse de la cantidad real, siendo muy útil
+  cuando se busca estimar un piso o límite inferior seguro.
+explicacion_formal: 'Sea $x \in \mathbb{R}$, una **Aproximación por Defecto a nivel
+  $10^{-k}$** se define como el valor $x_{\text{def}}$ que satisface la cota unilateral
+  estricta:
 
-  Propiedad del error absoluto por defecto:
-  $$E_{\text{def}} = x - x_{\text{def}} \ge 0, \quad \text{con } 0 \le E_{\text{def}} < 10^m$$
-definiciones_clave: |
-  - **Aproximación por defecto ($x_{\text{def}}$)**: Estimación acotada inferiormente que satisface $x_{\text{def}} \le x$.
-  - **Orden de aproximación ($10^m$)**: Nivel de precisión posicional elegido (unidades $10^0$, décimas $10^{-1}$, centésimas $10^{-2}$, etc.).
-  - **Error por defecto ($x - x_{\text{def}}$)**: Diferencia no negativa entre el valor exacto y el valor aproximado por defecto.
-propiedades_relaciones: |
-  - **Coincidencia con truncamiento para números positivos**: Si $x > 0$, la aproximación por defecto a $10^m$ coincide exactamente con el truncamiento a dicho orden.
-  - **Comportamiento en negativos**: Para $x < 0$, aproximar por defecto exige disminuir la cifra del orden solicitado o ir hacia la izquierda en la recta numérica (por ejemplo, la aproximación por defecto a décimas de $-2.31$ es $-2.4$).
-  - **Cota inferior en la recta numérica**: $x_{\text{def}}$ se ubica a la izquierda o en la misma posición que $x$ sobre la recta.
+
+  $$x_{\text{def}} \le x < x_{\text{def}} + 10^{-k}$$
+
+
+  **Desglose de la fórmula:**
+
+  - $x_{\text{def}} \le x$: La aproximación nunca supera al valor exacto $x$.
+
+  - $10^{-k}$: Nivel de precisión prefijado (décimas $k=1$, centésimas $k=2$, etc.).
+
+  - Para números positivos, el **truncamiento** a la $k$-ésima cifra decimal coincide
+  exactamente con la aproximación por defecto.
+
+
+  > **Complemento didáctico:** El error de aproximación $E = x - x_{\text{def}} \ge
+  0$ es siempre no negativo.'
+definiciones_clave: '- **Aproximación por defecto**: Estimación numérica $x_{\text{def}}$
+  que satisface $x_{\text{def}} \le x$.'
+propiedades_relaciones: '- **Coincidencia positiva con truncamiento**: Para números
+  positivos, la aproximación por defecto coincide con cortar (truncar) los decimales
+  sobrantes.'
 ejemplo_guiado:
-  enunciado: "Encuentra la aproximación por defecto a las décimas y a las centésimas del número $d = 5.874$."
+  enunciado: Aproxime el número $3,786$ por defecto a las centésimas ($k=2$).
   pasos:
-    - "Identificar las posiciones decimales: $5$ (unidades), $8$ (décimas), $7$ (centésimas), $4$ (milésimas)."
-    - 'Aproximación a las décimas ($10^{-1}$): conservar hasta la décima $8$ y acotar por abajo $\implies 5.8$.'
-    - 'Aproximación a las centésimas ($10^{-2}$): conservar hasta la centésima $7$ y acotar por abajo $\implies 5.87$.'
-    - 'Verificar cota inferior: $5.8 \le 5.874$ y $5.87 \le 5.874$.'
+  - 'Paso 1: Identificar las centésimas (segunda cifra tras la coma): en $3,786$ es
+    la cifra $8$.'
+  - 'Paso 2: Como es por defecto y el número es positivo, se toma el valor exacto
+    cortando en la segunda cifra decimal: $3,78$.'
+  - 'Paso 3: Verificar que $3,78 \le 3,786 < 3,79$.'
+  - 'Conclusión: La aproximación por defecto a la centésima de $3,786$ es $3,78$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué relación de orden se cumple siempre entre un número real $x$ y su aproximación por defecto $x_{\\text{def}}$?"
-    choices:
-      - {text: "$x_{\\text{def}} \\le x$", is_correct: true}
-      - {text: "$x_{\\text{def}} > x$", is_correct: false}
-      - {text: "$x_{\\text{def}} = x + 10^m$", is_correct: false}
-      - {text: "$x_{\\text{def}} < 0$ siempre", is_correct: false}
-    explanation: "La correcta es $x_{\\text{def}} \\le x$: por definición, la aproximación por defecto acota al valor exacto desde abajo."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "¿Cuál es la aproximación por defecto a las centésimas del número $4.9281$?"
-    choices:
-      - {text: "4.92", is_correct: true}
-      - {text: "4.93", is_correct: false}
-      - {text: "4.90", is_correct: false}
-      - {text: "4.9", is_correct: false}
-    explanation: "La correcta es 4.92: conservando hasta la centésima $2$ sin aumentar, se obtiene el valor menor o igual $4.92$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué relación de desigualdad cumple la aproximación por defecto x_def
+    con respecto al número exacto x?
+  choices:
+  - text: x_def <= x (la aproximación es menor o igual al valor exacto)
+    is_correct: true
+  - text: x_def > x obligatoriamente
+    is_correct: false
+  - text: x_def = x + 10
+    is_correct: false
+  - text: x_def < 0 siempre
+    is_correct: false
+  explanation: La alternativa correcta es 'x_def <= x (la aproximación es menor o
+    igual al valor exacto)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 3,786 aproximado por defecto a la centésima,
+    ¿cuál fue el resultado?
+  choices:
+  - text: 3,78
+    is_correct: true
+  - text: 3,79
+    is_correct: false
+  - text: 3,70
+    is_correct: false
+  - text: 3,80
+    is_correct: false
+  explanation: La alternativa correcta es '3,78'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - "Paso 1: Identificar el orden posicional solicitado para la aproximación (unidades, décimas, centésimas, etc.)."
-  - "Paso 2: Localizar el dígito ubicado en la posición del orden solicitado."
-  - "Paso 3: Para números positivos, mantener ese dígito y eliminar todas las cifras situadas a su derecha."
-  - 'Paso 4: Para números negativos, si hay cifras no nulas eliminadas a la derecha, restar $1$ al dígito del orden para asegurar que $x_{\text{def}} \le x$.'
-  - "Paso 5: Comprobar que el valor obtenido sea menor o igual al número original."
-errores_correccion: |
-  Un error clásico es aplicar las reglas del redondeo (subir la cifra si la siguiente es mayor a 5) al pedir aproxima por defecto. **En la aproximación por defecto NO se sube la cifra**, siempre se busca el valor acotado por abajo ($x_{\text{def}} \le x$).
+- 'Paso 1: Identificar la posición o unidad decimal requerida para la aproximación.'
+- 'Paso 2: Seleccionar el número más cercano que no supere el valor original exacto.'
+- 'Paso 3: Verificar que la diferencia $x - x_{\text{def}}$ sea no negativa ($E \ge
+  0$).'
+errores_correccion: '- **Error 1: Redondear hacia arriba cuando se pide por defecto.**
+  **Cómo corregirlo:** En por defecto NUNCA se sube la cifra; el valor resultante
+  debe quedar igual o menor que el número original.
+
+
+  - **Error 2: Confundir por defecto en números negativos.** **Cómo corregirlo:**
+  En negativos, el valor por defecto se ubica más a la izquierda en la recta numérica
+  ($-2,4$ es la aproximación por defecto a la décima de $-2,35$ porque $-2,4 < -2,35$).'
 ejemplos:
-  - titulo: "Ejemplo 1"
-    enunciado: "Aproxima por defecto a las décimas el número $12.49$."
-    alternativas:
-      - "12.4"
-      - "12.5"
-      - "12.0"
-    respuesta: "12.4"
-    solucion_pasos:
-      - "Identificar décima: $4$."
-      - "Acotar por defecto a décimas: $12.4$."
-      - 'Verificación: $12.4 \le 12.49$.'
-  - titulo: "Ejemplo 2"
-    enunciado: "¿Cuál es la aproximación por defecto a las unidades de $7.89$?"
-    alternativas:
-      - "7"
-      - "8"
-      - "7.8"
-    respuesta: "7"
-    solucion_pasos:
-      - "Unidad: $7$."
-      - 'Valor acotado por abajo en enteros: $7$ ($7 \le 7.89$).'
-  - titulo: "¿Coincide la aproximación por defecto con el truncamiento para todo número positivo?"
-    respuesta: "Sí"
-    solucion_pasos:
-      - "Sí, para números positivos cortar las cifras sobrantes siempre produce un número menor o igual."
-  - titulo: "¿La aproximación por defecto a décimas de $-1.52$ es $-1.5$?"
-    respuesta: "No, es -1.6"
-    solucion_pasos:
-      - 'No, porque $-1.5 > -1.52$. Para que sea por defecto debe ser menor o igual, dando $-1.6$ ($-1.6 \le -1.52$).'
+- titulo: Ejemplo 1
+  enunciado: Aproxime 5,492 por defecto a la décima.
+  alternativas:
+  - 5,4
+  - 5,5
+  - 5,0
+  respuesta: 5,4
+  solucion_pasos:
+  - $5,4 \le 5,492 \implies$ por defecto a la décima es $5,4$.
+- titulo: Ejemplo 2
+  enunciado: Aproxime 0,819 por defecto a la centésima.
+  alternativas:
+  - 0,81
+  - 0,82
+  - 0,80
+  respuesta: 0,81
+  solucion_pasos:
+  - $0,81 \le 0,819 \implies$ por defecto a la centésima es $0,81$.
+- titulo: ¿Es la aproximación por defecto de 4,12 a la décima igual a 4,1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $4,1 \le 4,12$.
+- titulo: ¿Es la aproximación por defecto de un número positivo mayor que el número
+    original?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, por definición la aproximación por defecto es menor o igual ($x_{\text{def}}
+    \le x$).
 errores_frecuentes:
-  - "Redondear hacia arriba cuando la cifra siguiente es 5 o mayor en lugar de acotar por abajo."
-  - "Confundir el comportamiento de la aproximación por defecto en números negativos."
-  - "Modificar la cifra del orden solicitado en números positivos en lugar de conservarla."
-  - "Olvidar especificar el orden posicional de aproximación."
-  - "Confundir aproximación por defecto con aproximación por exceso."
+- La aproximación por defecto de un número positivo entrega un resultado mayor que
+  el valor original.
+- Aproximar por defecto exige redondear hacia arriba la última cifra si el dígito
+  siguiente es mayor que 5.
+- La aproximación por defecto de $-3,14$ a las décimas es $-3,1$.
+- El error de aproximación en una estimación por defecto es siempre un número negativo.
+- Para los números positivos la aproximación por defecto entrega el mismo resultado
+  que la aproximación por exceso.
 afirmaciones_verdaderas:
-  - "La aproximación por defecto asigna un número aproximado menor o igual al valor real."
-  - "Para números positivos, la aproximación por defecto coincide con el truncamiento."
-al_terminar_debes_poder: |
-  Debes ser capaz de acotar e inferir aproximaciones por defecto a cualquier orden decimal tanto en números positivos como negativos.
-fuente: "Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números racionales."
+- La aproximación por defecto satisface la relación de orden $x_{\text{def}} \le x$.
+- Para números positivos, la aproximación por defecto a $k$ decimales coincide exactamente
+  con el truncamiento a $k$ decimales.
+al_terminar_debes_poder: Al terminar serás capaz de aproximar cualquier número por
+  defecto a una posición decimal requerida, verificando que el resultado $x_{\text{def}}
+  \le x$ se mantenga menor o igual al valor exacto.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

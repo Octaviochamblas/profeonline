@@ -1,105 +1,135 @@
 semantic_id: MAT.NUM.APLICACIONES_MCM_MCD.PROBLEMA_MCD_REPARTO
-resumen_inicial: "Los problemas de reparto equitativo sin desperdicios se resuelven calculando el Máximo Común Divisor (MCD) de las cantidades dadas."
-explicacion_simple: |
-  Imagina que organizas un campamento escolar. Te entregan 40 latas de atún y 64 paquetes
-  de fideos, y debes preparar cajas idénticas sin que sobre nada. Esta clase de
-  situaciones, donde necesitas dividir cantidades en partes iguales lo más grandes
-  posibles, se resuelven usando el Máximo Común Divisor (MCD).
-explicacion_formal: |
-  En problemas de reparto, corte o división máxima, se busca fragmentar cantidades $a,b,c$
-  en partes iguales, sin desperdicios (resto $0$), maximizando el tamaño de cada parte o el
-  número de grupos. El valor óptimo es $\text{MCD}(a,b)$. Palabras clave: "repartir
-  equitativamente", "cortar en trozos del mayor largo posible", "el mayor número de cajas".
-  Ejemplo: repartiendo 24 lápices azules y 36 rojos, $\text{MCD}(24,36)=12$ estuches, con 2
-  azules y 3 rojos cada uno.
-definiciones_clave: |
-  **Reparto máximo sin desperdicio**: distribución de cantidades en partes iguales,
-  utilizando todo el recurso, maximizando el tamaño de cada parte o el número de grupos.
-propiedades_relaciones: |
-  El resultado del MCD siempre es menor o igual que las cantidades originales, nunca
-  mayor: tiene sentido, porque es un divisor de ellas.
+resumen_inicial: Los problemas de división en partes iguales de máximo tamaño se resuelven
+  calculando el M.C.D. de las cantidades.
+explicacion_simple: Cuando un problema pide dividir, cortar o repartir varios grupos
+  de objetos de diferentes tamaños en paquetes, cajas o tiras de igual cantidad sin
+  que sobre nada, y exige que ese tamaño sea el 'mayor posible', la herramienta matemática
+  adecuada para resolverlo es el máximo común divisor.
+explicacion_formal: 'En la **Modelación de Partición Óptima**, para cantidades $Q_1,
+  Q_2, \dots, Q_k$, la **Medida de Corte o Reparto Máximo** $S_{\max}$ se define por:
+
+
+  $$S_{\max} = \operatorname{MCD}(Q_1, Q_2, \dots, Q_k)$$
+
+
+  **Desglose de la fórmula:**
+
+  - $S_{\max}$: Tamaño o capacidad máxima común de cada grupo de división.
+
+  - Número de grupos formados de tipo $i$: $N_i = \frac{Q_i}{S_{\max}}$.
+
+
+  > **Complemento didáctico:** Palabras clave en el enunciado como ''dividir en partes
+  iguales'', ''el mayor tamaño posible'', ''paquetes idénticos sin sobrantes'' o ''corta
+  de longitud máxima'' indican el uso del M.C.D.'
+definiciones_clave: '- **Problema de reparto equitativo**: Contexto donde varias cantidades
+  se dividen en grupos homogéneos máximos.
+
+  - **Divisor de máxima capacidad**: El valor del M.C.D. que fija el tamaño óptimo
+  de la división.'
 ejemplo_guiado:
-  enunciado: "Se quieren armar bolsas con 18 caramelos de menta y 30 de limón, con la misma cantidad de cada tipo en cada bolsa, sin que sobre nada. ¿Cuántas bolsas como máximo se pueden armar?"
+  enunciado: Se tienen 24 manzanas y 36 naranjas. Se quieren armar bolsas iguales
+    con la mayor cantidad de frutas posibles sin mezclar tipos ni dejar sobras. ¿Cuántas
+    frutas habrá en cada bolsa y cuántas bolsas se armarán?
   pasos:
-    - 'Calculamos $\text{MCD}(18,30)$: $18=2\cdot3^2$, $30=2\cdot3\cdot5$, MCD$=2\cdot3=6$.'
-    - "Se pueden armar 6 bolsas."
-    - 'Conclusión: cada bolsa tendrá $18\div6=3$ caramelos de menta y $30\div6=5$ de limón.'
+  - 'Paso 1: Identificar que se trata de un reparto equitativo en grupos del mayor
+    tamaño posible.'
+  - 'Paso 2: Calcular el M.C.D. de las cantidades: $\operatorname{MCD}(24, 36) = 12$.'
+  - 'Paso 3: Cada bolsa contendrá $12$ frutas.'
+  - 'Paso 4: Calcular la cantidad de bolsas: $24:12 = 2$ bolsas de manzana, $36:12
+    = 3$ bolsas de naranja. Total = $5$ bolsas.'
+  - 'Conclusión: Habrá $12$ frutas en cada bolsa y se armarán $5$ bolsas en total.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué operación se usa para resolver un problema de reparto equitativo máximo sin desperdicios?"
-    choices:
-      - {text: "El Máximo Común Divisor de las cantidades", is_correct: true}
-      - {text: "El Mínimo Común Múltiplo de las cantidades", is_correct: false}
-      - {text: "La resta de las cantidades", is_correct: false}
-      - {text: "El promedio de las cantidades", is_correct: false}
-    explanation: "La correcta es El Máximo Común Divisor de las cantidades: el MCD da el mayor tamaño de parte o número de grupos posible sin que sobre nada."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, si tienes 16 lápices y 24 gomas, ¿cuántos estuches iguales como máximo puedes armar?"
-    choices:
-      - {text: "8", is_correct: true}
-      - {text: "4", is_correct: false}
-      - {text: "48", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 8: $\\text{MCD}(16,24)=8$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué herramienta matemática se utiliza para resolver problemas de corte
+    o reparto en partes iguales de máximo tamaño?
+  choices:
+  - text: El máximo común divisor (M.C.D.)
+    is_correct: true
+  - text: El mínimo común múltiplo (m.c.m.)
+    is_correct: false
+  - text: La multiplicación de cantidades
+    is_correct: false
+  - text: La elevación a potencia
+    is_correct: false
+  explanation: La alternativa correcta es 'El máximo común divisor (M.C.D.)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado de las frutas, ¿cuántas frutas se colocaron en cada
+    bolsa?
+  choices:
+  - text: 12 frutas (el MCD)
+    is_correct: true
+  - text: 5 frutas
+    is_correct: false
+  - text: 72 frutas
+    is_correct: false
+  - text: 60 frutas
+    is_correct: false
+  explanation: La alternativa correcta es '12 frutas (el MCD)'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identifica las cantidades de los diferentes elementos que se desean repartir o cortar.'
-  - 'Paso 2: Extrae los números correspondientes a estas cantidades.'
-  - 'Paso 3: Calcula el Máximo Común Divisor (MCD) de dichos números.'
-  - 'Paso 4: Interpreta el resultado del MCD: si representa el tamaño de cada trozo o el número total de grupos, y realiza divisiones simples si se te solicita la composición de cada grupo.'
-errores_correccion: |
-  Un error frecuente es calcular el MCM en lugar del MCD, obteniendo un valor gigante
-  imposible de usar para repartir. Otro error es confundir el número de grupos (MCD) con
-  el contenido de cada grupo (resultado de dividir cada cantidad por el MCD).
+- 'Paso 1: Identificar las cantidades iniciales a dividir o repartir.'
+- 'Paso 2: Calcular el M.C.D. de las cantidades para obtener el tamaño máximo de cada
+  grupo.'
+- 'Paso 3: Dividir cada cantidad inicial entre el M.C.D. para saber la cantidad de
+  grupos obtenidos.'
+errores_correccion: '- **Error 1: Usar el m.c.m. en problemas que piden dividir o
+  cortar.** **Cómo corregirlo:** Si se busca fraccionar en partes más pequeñas sin
+  residuos, se usa el M.C.D.
+
+
+  - **Error 2: Confundir el tamaño de cada bolsa (M.C.D.) con el número total de bolsas
+  (suma de cocientes).** **Cómo corregirlo:** El M.C.D. da el tamaño del grupo; para
+  el número de grupos se divide cada cantidad por el M.C.D.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Un artesano tiene dos alambres de $45$ cm y $60$ cm de largo. Quiere cortarlos en pedazos iguales del mayor tamaño posible, sin desperdiciar nada. ¿Cuánto medirá cada trozo?
-    alternativas:
-      - "15 cm"
-      - "5 cm"
-      - "180 cm"
-    respuesta: "15 cm"
-    solucion_pasos:
-      - 'Paso a: Extraemos las longitudes de los alambres: $45$ y $60$.'
-      - 'Paso b: Buscamos el MCD de $45$ y $60$.'
-      - 'Paso c: Calculamos: $45 = 3^2 \cdot 5$ y $60 = 2^2 \cdot 3 \cdot 5$. El MCD es $3^1 \cdot 5^1 = 15$.'
-      - 'Paso d: Concluimos que cada pedazo debe medir $15$ cm.'
-  - titulo: Ejemplo 2
-    enunciado: Se desean armar bolsas de regalo con $24$ autitos de juguete y $32$ pelotas. Cada bolsa debe contener la misma cantidad de autitos y pelotas, sin que sobre nada. ¿Cuál es el número máximo de bolsas que se pueden armar y cuántos autitos tendrá cada una?
-    alternativas:
-      - "8 bolsas, con 3 autitos cada una"
-      - "4 bolsas, con 6 autitos cada una"
-      - "8 bolsas, con 4 autitos cada una"
-    respuesta: "8 bolsas, con 3 autitos cada una"
-    solucion_pasos:
-      - 'Paso a: Las cantidades son $24$ y $32$.'
-      - 'Paso b: Calculamos el $\text{MCD}(24, 32) = 8$. Se pueden armar como máximo $8$ bolsas.'
-      - 'Paso c: Dividimos el número de autitos por el total de bolsas: $24 \div 8 = 3$.'
-      - 'Paso d: Concluimos que se armarán $8$ bolsas, y cada una tendrá $3$ autitos (y $4$ pelotas).'
-  - titulo: '¿Si tienes $20$ kg de arroz y $28$ kg de azúcar, y quieres envasarlos en sacos iguales de peso máximo entero, medirá cada saco $4$ kg?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Buscamos el MCD de las cantidades $20$ y $28$.'
-      - 'Los divisores de $20$ son $\{1, 2, 4, 5, 10, 20\}$ y de $28$ son $\{1, 2, 4, 7, 14, 28\}$.'
-      - 'El mayor divisor común es $4$, por lo tanto, el peso de cada saco será de $4$ kg.'
-  - titulo: '¿Si cortas dos cintas de $18$ cm y $24$ cm en trozos del mayor largo posible, obtendrás en total $6$ trozos?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'Calculamos el $\text{MCD}(18, 24) = 6$ cm de largo para cada trozo.'
-      - 'Para saber el total de trozos, dividimos cada cinta por el largo: $18 \div 6 = 3$ trozos y $24 \div 6 = 4$ trozos.'
-      - 'En total se obtienen $3 + 4 = 7$ trozos, no $6$ trozos.'
+- titulo: Ejemplo 1
+  enunciado: Se quieren cortar dos cintas de 40 cm y 60 cm en trozos iguales de la
+    mayor longitud posible. ¿Cuánto mide cada trozo?
+  alternativas:
+  - 20 cm
+  - 120 cm
+  - 10 cm
+  respuesta: 20 cm
+  solucion_pasos:
+  - $\operatorname{MCD}(40, 60) = 20$ cm.
+- titulo: Ejemplo 2
+  enunciado: En el ejemplo de las cintas de 40 cm y 60 cm cortadas en trozos de 20
+    cm, ¿cuántos trozos se obtienen en total?
+  alternativas:
+  - 5 trozos
+  - 100 trozos
+  - 3 trozos
+  respuesta: 5 trozos
+  solucion_pasos:
+  - '$40 : 20 = 2$ trozos y $60 : 20 = 3$ trozos. Total = $2 + 3 = 5$ trozos.'
+- titulo: ¿Se aplica el M.C.D. para dividir cantidades distintas en grupos del mayor
+    tamaño posible?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es la aplicación principal del M.C.D. en problemas reales.
+- titulo: ¿El M.C.D. calcula cuántas veces cabe una cifra en el futuro?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, eso se calcula con el m.c.m. El M.C.D. calcula la división máxima.
 errores_frecuentes:
-  - Calcular el MCM en lugar del MCD, obteniendo un valor gigante que no se puede usar para repartir o cortar (por ejemplo, decir que los trozos deben medir 180 cm cuando el alambre original mide 45 cm).
-  - Confundir el número de grupos (MCD) con el contenido de cada grupo (resultado de dividir cada cantidad por el MCD).
-  - Dejar residuos en el reparto por no calcular el divisor común exacto más alto.
-  - Restar las cantidades en lugar de calcular su MCD.
-  - Pensar que la mayor longitud posible para cortar es siempre el menor de los dos números dados, sin comprobar si es divisor del mayor.
+- Los problemas de cortar o repartir en partes del mayor tamaño posible se resuelven
+  con el m.c.m.
+- El valor del M.C.D. indica el número total de grupos formados en lugar de la cantidad
+  por grupo.
+- Dividir tres cantidades en partes iguales exige que todas las cantidades sean números
+  impares.
+- El M.C.D. en un problema de reparto puede ser un número mayor que todas las cantidades
+  dadas.
+- Para calcular el número de paquetes formados se debe multiplicar el M.C.D. por el
+  total de objetos.
 afirmaciones_verdaderas:
-  - "Los problemas de reparto equitativo sin desperdicios se resuelven con el MCD."
-  - "El resultado del MCD siempre es menor o igual que las cantidades originales."
-al_terminar_debes_poder: |
-  Reconocer problemas de reparto equitativo máximo sin desperdicios y resolverlos
-  calculando el MCD de las cantidades dadas.
-fuente: Teoría de Números
+- Los problemas de reparto o división en partes iguales de máximo tamaño se resuelven
+  mediante el M.C.D.
+- El M.C.D. indica la medida o capacidad de cada grupo; al dividir las cantidades
+  por el M.C.D. se obtiene el número de grupos.
+al_terminar_debes_poder: Al terminar serás capaz de resolver problemas de reparto
+  y división en partes iguales de máximo tamaño, aplicando el M.C.D. para hallar la
+  capacidad y la cantidad de grupos.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

@@ -1,155 +1,131 @@
 semantic_id: MAT.NUM.DECIMALES_CLASIFICACION.DECIMAL_FINITO
-resumen_inicial: Un decimal finito es aquel número racional que posee una cantidad
-  limitada de cifras decimales después de la coma, originado por fracciones cuyo denominador
-  simplificado solo tiene factores primos 2 y/o 5.
-explicacion_simple: 'Un **decimal finito** (o exacto) es un número con coma que ''se
-  termina'' rápidamente después de unas cuantas cifras. Por ejemplo, $0.5$, $1.25$
-  o $3.1416$ son decimales finitos porque sus decimales no siguen infinitamente. Si
-  divides el numerador entre el denominador de una fracción y en algún momento obtienes
-  un residuo igual a cero, la división terminó y la fracción representa un decimal
-  finito.
-
-  '
-explicacion_formal: 'Formalmente, un **número decimal finito** es una representación
-  posicional en base 10 de la forma:
-
-  $$d = a_k a_{k-1} \dots a_0 , b_1 b_2 \dots b_n = \sum_{i=0}^{k} a_i \cdot 10^i
-  + \sum_{j=1}^{n} b_j \cdot 10^{-j}$$
-
-  donde $n \in \mathbb{N}_0$ representa la cantidad finita de dígitos decimales.
+resumen_inicial: Un decimal finito posee una cantidad limitada de cifras decimales
+  después de la coma. Una fracción irreductible $\frac{a}{b}$ genera un decimal finito
+  si los únicos factores primos de $b$ son $2$ y/o $5$.
+explicacion_simple: Un número decimal finito es aquel cuya parte decimal termina en
+  algún momento, es decir, tiene un número exacto y contado de dígitos después de
+  la coma (como 0,75 o 3,125). Al realizar la división entre el numerador y el denominador
+  de su fracción, se obtiene resto cero.
+explicacion_formal: 'Sea $d \in \mathbb{Q}$, se clasifica como **Decimal Finito**
+  si su representación posicional en base 10 es de la forma:
 
 
-  Criterio de existencia fraccionaria: una fracción irreductible $\frac{a}{b} \in
-  \mathbb{Q}$ genera un desarrollo decimal finito si y solo si los únicos divisores
-  primos de su denominador $b$ son $2$ y/o $5$:
+  $$d = a_0, a_1 a_2 a_3 \dots a_n = a_0 + \sum_{k=1}^{n} a_k \cdot 10^{-k} \quad
+  (n \in \mathbb{N}_0, \, a_k \in \{0,1,\dots,9\})$$
 
-  $$b = 2^{\alpha} \cdot 5^{\beta}, \quad \text{con } \alpha, \beta \in \mathbb{N}_0$$
 
-  '
-definiciones_clave: '- **Decimal finito (exacto)**: Número racional con un número
-  determinado y finito $n$ de dígitos a la derecha de la coma.
+  **Desglose de la fórmula:**
 
-  - **Factores primos 2 y 5**: Únicos factores primos del denominador $10$ de la base
-  decimal que garantizan la cancelación exacta de residuos.
+  - $n \in \mathbb{N}_0$: Número finito de posiciones decimales después de la coma.
 
-  - **Residuo cero**: Condición algorítmica de parada en la división entera $a \div
-  b$ que produce el desarrollo finito.
+  - Criterio de la fracción irreductible: $\frac{a}{b}$ con $\operatorname{MCD}(a,b)=1$
+  es finito $\iff b = 2^m \cdot 5^k$ para $m, k \ge 0$.
 
-  '
-propiedades_relaciones: '- **Conversión directa a fracción decimal**: Todo decimal
-  finito con $n$ cifras decimales equivale a una fracción cuyo numerador es el número
-  sin coma y cuyo denominador es la potencia $10^n$.
 
-  - **Densidad y representación en $\mathbb{Q}$**: Todo decimal finito es un número
-  racional estricto ($d \in \mathbb{Q}$).
+  > **Complemento didáctico:** Si el denominador simplificado tiene cualquier factor
+  primo distinto de 2 o 5 (como 3, 7 u 11), el decimal NUNCA será finito.'
+definiciones_clave: '- **Decimal finito**: Expresión decimal con un número finito
+  $n$ de cifras a la derecha de la coma.
 
-  - **Operaciones algebraicas**: La suma, resta y multiplicación de decimales finitos
-  produce siempre otro decimal finito.
-
-  '
+  - **Criterio de divisibilidad del denominador**: Condición $b = 2^m \cdot 5^k$ para
+  fracciones irreductibles.'
+propiedades_relaciones: '- **Conversión directa**: Se transforma a fracción escribiendo
+  en el denominador la potencia $10^n$.'
 ejemplo_guiado:
-  enunciado: Determina si la fracción $\frac{7}{40}$ genera un decimal finito utilizando
-    el criterio de factorización del denominador y calcula su valor decimal.
+  enunciado: Determine si la fracción $\frac{7}{40}$ genera un decimal finito analizando
+    los factores de su denominador.
   pasos:
-  - 'Verificar irreductibilidad: $\text{MCD}(7, 40) = 1$, la fracción es irreductible.'
-  - 'Factorizar el denominador $40$: $40 = 8 \cdot 5 = 2^3 \cdot 5^1$.'
-  - 'Aplicar el criterio: como los únicos factores primos son $2$ y $5$, la fracción
-    genera obligatoriamente un decimal finito.'
-  - 'Efectuar la división $7 \div 40$: $7.0 \div 40 = 0.175$ con residuo $0$.'
-  - 'Concluir: $0.175$ es un decimal finito con $3$ cifras decimales.'
+  - 'Paso 1: Comprobar si $\frac{7}{40}$ es irreductible: $\operatorname{MCD}(7, 40)
+    = 1$ (sí lo es).'
+  - 'Paso 2: Descomponer el denominador $40$ en factores primos: $40 = 8 \cdot 5 =
+    2^3 \cdot 5^1$.'
+  - 'Paso 3: Analizar los factores primos: solo contiene los primos $2$ y $5$.'
+  - 'Paso 4: Realizar la división $7 : 40 = 0,175$ (resto 0).'
+  - 'Conclusión: $\frac{7}{40}$ es un decimal finito con 3 cifras decimales.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la condición necesaria y suficiente sobre el denominador de una
-    fracción irreductible $\frac{a}{b}$ para que su desarrollo decimal sea finito?
+  question: ¿Qué condición debe cumplir el denominador b de una fracción irreductible
+    a/b para ser un decimal finito?
   choices:
-  - text: Que los únicos factores primos de su denominador $b$ sean 2 y/o 5.
+  - text: Sus únicos factores primos deben ser 2 y/o 5 (b = 2^m · 5^k)
     is_correct: true
-  - text: Que el denominador sea un número primo mayor que 10.
+  - text: Debe ser un número impar obligatoriamente
     is_correct: false
-  - text: Que el numerador sea un múltiplo de 3.
+  - text: Debe ser divisible por 3 y por 7
     is_correct: false
-  - text: Que la fracción tenga denominador igual a 7.
+  - text: Debe ser menor que el numerador a
     is_correct: false
-  explanation: 'La correcta es Que los únicos factores primos de su denominador $b$
-    sean 2 y/o 5.: en base 10, solo los divisores de 10 (2 y 5) permiten un residuo
-    cero al dividir.'
+  explanation: La alternativa correcta es 'Sus únicos factores primos deben ser 2
+    y/o 5 (b = 2^m · 5^k)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: ¿Cuál de las siguientes fracciones se convierte en un decimal finito?
+  question: En el ejemplo guiado para 7/40, ¿por qué fue un decimal finito?
   choices:
-  - text: \$\frac{9}{20}$
+  - text: Porque 40 = 2^3 · 5^1 contiene únicamente los factores primos 2 y 5
     is_correct: true
-  - text: \$\frac{1}{3}$
+  - text: Because es un número mayor que 1
     is_correct: false
-  - text: \$\frac{5}{7}$
+  - text: Porque dio infinitos tres
     is_correct: false
-  - text: \$\frac{4}{11}$
+  - text: Porque 7 es impar
     is_correct: false
-  explanation: 'La alternativa correcta es: \$\frac{9}{20}$. La correcta es \frac{9}{20}:
-    el denominador $20 = 2^2 \cdot 5^1$ solo tiene factores primos 2 y 5, dando $0.45$
-    (finito).'
+  explanation: La alternativa correcta es 'Porque 40 = 2^3 · 5^1 contiene únicamente
+    los factores primos 2 y 5'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Simplificar la fracción dada $\frac{a}{b}$ hasta que sea irreductible.'
+- 'Paso 1: Simplificar la fracción $\frac{a}{b}$ a su forma irreductible.'
 - 'Paso 2: Descomponer el denominador $b$ en factores primos.'
-- 'Paso 3: Si los factores primos son exclusivamente $2$ y/o $5$, confirmar que es
-  un decimal finito.'
-- 'Paso 4: Dividir el numerador $a$ entre el denominador $b$ hasta obtener residuo
-  $0$.'
-errores_correccion: 'Un error grave es aplicar el criterio de divisores primos 2 y
-  5 sin haber simplificado la fracción primero. Por ejemplo, en $\frac{21}{30}$, el
-  denominador es $30 = 2 \cdot 3 \cdot 5$. ¡Parece que no fuera finito por el 3! Pero
-  al simplificar dividiendo entre 3 queda $\frac{7}{10}$, cuyo denominador $10$ sí
-  es finito ($0.7$). **Siempre simplifica la fracción primero**.
+- 'Paso 3: Si los únicos factores primos son $2$ y/o $5$, declarar la expresión como
+  decimal finito.'
+errores_correccion: '- **Error 1: Analizar la descomposición del denominador sin simplificar
+  la fracción primero.** **Cómo corregirlo:** Se DEBE reducir la fracción antes; por
+  ejemplo $\frac{21}{30} = \frac{7}{10}$ da decimal finito a pesar de que $30$ incluye
+  el $3$.
 
-  '
+
+  - **Error 2: Creer que un decimal finito tiene infinitas cifras repetidas.** **Cómo
+  corregirlo:** Los decimales finitos terminan exactamente con resto cero.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Convierte el decimal finito $2.35$ a fracción irreductible.
+  enunciado: ¿Es 3/25 un decimal finito?
   alternativas:
-  - \$\frac{47}{20}$
-  - \$\frac{235}{10}$
-  - \$\frac{235}{99}$
-  respuesta: \$\frac{47}{20}$
+  - Sí, porque 25 = 5^2
+  - No, es un decimal periódico
+  - Solo si se amplifica
+  respuesta: Sí, porque 25 = 5^2
   solucion_pasos:
-  - 'Expresar sobre potencia de 10: $2.35 = \frac{235}{100}$.'
-  - 'Simplificar dividiendo numerador y denominador entre 5: $\frac{235 \div 5}{100
-    \div 5} = \frac{47}{20}$.'
+  - $25 = 5^2 \implies 3/25 = 0,12$ (finito).
 - titulo: Ejemplo 2
-  enunciado: ¿Es la división $3 \div 8$ un decimal finito?
+  enunciado: ¿Es 1/6 un decimal finito?
   alternativas:
-  - Sí, es $0.375$.
-  - No, es infinito periódico.
-  - No, es un número irracional.
-  respuesta: Sí, es $0.375$.
+  - No, porque 6 = 2 · 3 incluye al factor primo 3
+  - Sí, porque 6 es par
+  - Sí, porque es menor a 1
+  respuesta: No, porque 6 = 2 · 3 incluye al factor primo 3
   solucion_pasos:
-  - $8 = 2^3$.
-  - 'División: $3.000 \div 8 = 0.375$ (finito de 3 cifras).'
-- titulo: ¿Posee el número $0.12345$ un desarrollo decimal finito?
+  - El factor $3$ en el denominador irreductible impide que sea finito ($1/6 = 0,1666...$).
+- titulo: ¿Es 0,375 un número decimal finito?
   respuesta: Sí
   solucion_pasos:
-  - Sí, tiene exactamente 5 cifras decimales limitadas.
-- titulo: ¿Se puede expresar todo decimal finito como una fracción con denominador
-    potencia de 10?
+  - Sí, tiene exactamente 3 cifras decimales post-coma.
+- titulo: ¿Genera la fracción 9/12 un decimal finito?
   respuesta: Sí
   solucion_pasos:
-  - Sí, por definición $0.a_1 a_2 \dots a_n = \frac{a_1 a_2 \dots a_n}{10^n}$.
+  - Sí, simplificada es $3/4$, y $4 = 2^2 \implies 0,75$.
 errores_frecuentes:
-- No simplificar la fracción antes de factorizar el denominador.
-- Confundir decimales finitos con decimales periódicos de periodo muy largo.
-- Creer que contar ceros en la división reemplaza el criterio de divisores primos
-  2 y 5.
-- Colocar el número de decimales como ceros en una resta de nueves.
-- Pensar que un decimal finito no pertenece al conjunto $\mathbb{Q}$.
+- Analizar los factores primos del denominador sin simplificar la fracción conduce
+  a clasificar mal el decimal.
+- Un decimal finito se caracteriza por tener infinitas cifras repetidas hacia la derecha.
+- Toda fracción con un denominador par genera de forma automática un decimal periódico.
+- El número $0,125$ no es un decimal finito porque contiene el dígito 5 al final.
+- Las fracciones impropias jamás pueden generar decimales finitos.
 afirmaciones_verdaderas:
-- Un decimal finito posee un número limitado de cifras decimales tras la coma.
-- Una fracción irreductible da origen a un decimal finito si y solo si su denominador
-  solo contiene divisores primos 2 y/o 5.
-al_terminar_debes_poder: 'Debes ser capaz de clasificar decimales finitos, justificar
-  su existencia mediante la descomposición prima del denominador y convertirlos a
-  fracciones irreductibles.
-
-  '
-fuente: Texto escolar MINEDUC — Matemática 7° Básico, unidad de fracciones y números
-  racionales.
+- Una fracción irreductible $a/b$ genera un decimal finito si y solo si los factores
+  primos de $b$ son exclusivamente 2 y/o 5.
+- Los decimales finitos poseen una cantidad limitada de dígitos decimales a la derecha
+  de la coma.
+al_terminar_debes_poder: Al terminar serás capaz de identificar y clasificar decimales
+  finitos, comprobando la presencia exclusiva de los factores primos 2 y 5 en el denominador
+  irreductible de su fracción.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

@@ -1,101 +1,115 @@
 semantic_id: MAT.NUM.DIVISIBILIDAD.CRITERIO_3
-resumen_inicial: "Un número es divisible por 3 si la suma de sus cifras es múltiplo de 3."
-explicacion_simple: |
-  Tienes 156 caramelos y quieres repartirlos en 3 bolsas idénticas sin que sobre ninguno.
-  Existe un truco: si sumas las cifras del número y el resultado se puede dividir por 3,
-  ¡el número completo también! Para 156: $1+5+6=12$. Como 12 está en la tabla del 3, sí
-  puedes repartir los 156 caramelos en 3 grupos exactos.
-explicacion_formal: |
-  Para $N=100a+10b+c$: se puede reescribir como $N=(99a+9b)+(a+b+c)$. Como $99$ y $9$ son
-  múltiplos de 3, el término $(99a+9b)$ siempre es divisible por 3. Por lo tanto, $N$ es
-  divisible por 3 si y solo si $(a+b+c)$ (la suma de cifras) lo es. El razonamiento se
-  extiende a cualquier cantidad de cifras.
-definiciones_clave: |
-  **Suma de cifras**: sumar todos los dígitos de un número. **Múltiplo de 3**: número que
-  pertenece a la secuencia $0, 3, 6, 9, 12, 15,\ldots$
-propiedades_relaciones: |
-  Si la suma de cifras sigue siendo grande, se puede volver a sumar sus dígitos para
-  simplificar (por ejemplo, de 9.999 a 36 y luego a 9).
+resumen_inicial: Un número es divisible por 3 si la suma de todos sus dígitos es un
+  múltiplo de 3.
+explicacion_simple: El criterio de divisibilidad por 3 nos permite determinar rápidamente
+  si un número entero se puede dividir exactamente por dicho valor sin necesidad de
+  realizar la división larga completa. Aplicamos una regla sobre las cifras del número.
+explicacion_formal: 'Un entero $n = \sum_{i=0}^k a_i 10^i$ es divisible por $3$ si
+  y solo si la suma de sus dígitos $S = \sum a_i$ es divisible por $3$.
+
+
+  $$n \equiv S \pmod 3 \quad \text{donde } S = a_k + a_{k-1} + \dots + a_0$$
+
+
+  > **Complemento didáctico:** Los criterios de divisibilidad son simplificaciones
+  algebraicas basadas en la aritmética modular sobre las potencias de 10.'
+definiciones_clave: '- **Criterio de divisibilidad**: Regla rápida sobre las cifras
+  de un número para verificar si la división es exacta.'
+propiedades_relaciones: '- **Aritmética modular**: Simplificación de cálculos al trabajar
+  con residuos de potencias de 10.'
 ejemplo_guiado:
-  enunciado: "Determina si 4.512 es divisible por 3."
+  enunciado: Aplique el criterio de divisibilidad por 3 para verificar si la cifra
+    dada cumple la condición.
   pasos:
-    - "Se suman las cifras: $4+5+1+2=12$."
-    - '$12$ es múltiplo de 3 ($3\times4=12$).'
-    - "Conclusión: 4.512 es divisible por 3."
+  - 'Paso 1: Identificar el procedimiento del criterio: sumar todos los dígitos.'
+  - 'Paso 2: Aplicar la prueba: 471 es divisible por 3 porque $4+7+1=12$, y 12 es
+    múltiplo de 3..'
+  - 'Conclusión: El número cumple el criterio de divisibilidad.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué se debe comprobar según el criterio de divisibilidad por 3?"
-    choices:
-      - {text: "Que la última cifra sea múltiplo de 3", is_correct: false}
-      - {text: "Que la suma de todas las cifras sea múltiplo de 3", is_correct: true}
-      - {text: "Que el número termine en 3", is_correct: false}
-      - {text: "Que el número sea par", is_correct: false}
-    explanation: "La correcta es Que la suma de todas las cifras sea múltiplo de 3."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿es 2.740 divisible por 3?"
-    choices:
-      - {text: "No, la suma de cifras es 13", is_correct: true}
-      - {text: "Sí, la suma de cifras es 12", is_correct: false}
-      - {text: "Sí, porque termina en 0", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es No, la suma de cifras es 13: $2+7+4+0=13$, que no es múltiplo de 3."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuál de los siguientes números cumple el criterio de divisibilidad por
+    3?
+  choices:
+  - text: '471'
+    is_correct: true
+  - text: '472'
+    is_correct: false
+  - text: '473'
+    is_correct: false
+  - text: Ninguno de los anteriores
+    is_correct: false
+  explanation: La alternativa correcta es '471'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el beneficio de utilizar el criterio de divisibilidad por 3?
+  choices:
+  - text: Determinar la divisibilidad exacta sin necesidad de hacer la división larga
+    is_correct: true
+  - text: Calcular la raíz cuadrada del número
+    is_correct: false
+  - text: Cambiar el signo del número
+    is_correct: false
+  - text: Convertir el número a entero negativo
+    is_correct: false
+  explanation: La alternativa correcta es 'Determinar la divisibilidad exacta sin
+    necesidad de hacer la división larga'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - "Paso 1: Sumar todos los dígitos que forman el número."
-  - "Paso 2: Si el resultado es un número de varias cifras, se puede volver a sumar sus dígitos para simplificar."
-  - "Paso 3: Verificar si el resultado final es un múltiplo de 3 (como 0, 3, 6 o 9). Si lo es, el número original es divisible por 3."
-errores_correccion: |
-  Un error frecuente es creer que un número es divisible por 3 solo porque termina en 3,
-  6 o 9 (por ejemplo, 13 no es divisible por 3). Otro error es pensar que un número con
-  cifras individuales no múltiplos de 3 no puede serlo en total (por ejemplo, 252 sí es
-  divisible por 3 aunque 2 y 5 no lo sean).
+- 'Paso 1: Aplicar la regla específica del criterio: sumar todos los dígitos.'
+- 'Paso 2: Evaluar el resultado simplificado obtenido.'
+- 'Paso 3: Concluir que el número es divisible si el resultado simplificado cumple
+  la norma.'
+errores_correccion: '- **Error 1: Un número es divisible por 3 si su última cifra
+  es un 3.** **Cómo corregirlo:** Aplicar estrictamente la regla del criterio sobre
+  las cifras especificadas en la definición formal.
+
+
+  - **Error 2: Confundir los criterios de distintos números.** **Cómo corregirlo:**
+  Memorizar la regla específica de cada divisor.'
 ejemplos:
-  - titulo: "Ejemplo 1"
-    enunciado: "Determina si el número 8.415 es divisible por 3."
-    alternativas:
-      - "Sí, la suma de cifras es 18"
-      - "No, la suma de cifras es 17"
-      - "No se puede determinar"
-    respuesta: "Sí, la suma de cifras es 18"
-    solucion_pasos:
-      - "Sumamos las cifras de 8.415: $8 + 4 + 1 + 5 = 18$."
-      - 'Comprobamos si 18 es múltiplo de 3. Sí, ya que $3 \cdot 6 = 18$ (o sumando de nuevo: $1 + 8 = 9$).'
-      - "Conclusión: El número 8.415 es divisible por 3."
-  - titulo: "Ejemplo 2"
-    enunciado: "Determina si el número 704 es divisible por 3."
-    alternativas:
-      - "No, la suma de cifras es 11"
-      - "Sí, la suma de cifras es 12"
-      - "No se puede determinar"
-    respuesta: "No, la suma de cifras es 11"
-    solucion_pasos:
-      - "Sumamos las cifras de 704: $7 + 0 + 4 = 11$."
-      - "Comprobamos si 11 es múltiplo de 3. No, los múltiplos de 3 cercanos son 9 y 12."
-      - "Conclusión: El número 704 no es divisible por 3."
-  - titulo: "¿Es divisible por 3 el número 111.111?"
-    respuesta: "Sí"
-    solucion_pasos:
-      - "Sumamos las cifras del número: $1 + 1 + 1 + 1 + 1 + 1 = 6$."
-      - 'Dado que 6 es divisible por 3 ($3 \cdot 2 = 6$), la suma cumple la propiedad.'
-      - "Conclusión: 111.111 es divisible por 3."
-  - titulo: "¿Es divisible por 3 el número 253?"
-    respuesta: "No"
-    solucion_pasos:
-      - "Sumamos las cifras de 253: $2 + 5 + 3 = 10$."
-      - "Como 10 no es divisible por 3 (al dividir por 3 sobra 1), la suma no cumple el criterio."
-      - "Conclusión: 253 no es divisible por 3."
+- titulo: Ejemplo 1
+  enunciado: ¿Cuál número es divisible según este criterio?
+  alternativas:
+  - '471'
+  - '472'
+  - '473'
+  respuesta: '471'
+  solucion_pasos:
+  - Aplicando el criterio se verifica que 471 cumple la propiedad.
+- titulo: Ejemplo 2
+  enunciado: Verifique si la afirmación 'El número 513 es divisible por 3.' es verdadera
+    o falsa.
+  alternativas:
+  - Verdadera
+  - Falsa
+  - Depende del día
+  respuesta: Falsa
+  solucion_pasos:
+  - Se aplica el criterio para corroborar la validez de la proposición.
+- titulo: ¿Permite este criterio evaluar la divisibilidad sin realizar la división
+    larga?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, los criterios simplifican el proceso de verificación de divisibilidad.
+- titulo: ¿Aplica la regla de sumar dígitos para el criterio de divisibilidad por
+    2?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, el criterio del 2 evalúa únicamente la última cifra par, no la suma de dígitos.
 errores_frecuentes:
-  - "Creer que un número es divisible por 3 solo porque termina en 3, 6 o 9 (por ejemplo, 13 no es divisible por 3)."
-  - "Pensar que un número que contiene cifras que no son múltiplos de 3 no puede ser divisible por 3 (como 252, donde 2 y 5 no son divisibles por 3 pero el número sí lo es)."
-  - "Sumar mal los dígitos por hacer la operación demasiado rápido."
-  - "Olvidar que se puede repetir la suma de cifras si el primer resultado sigue siendo grande (por ejemplo, de 9.999 pasar a 36 y luego a 9)."
-  - "Confundir este criterio con el del 9 y pensar que si la suma es divisible por 3, también debe ser divisible por 9 obligatoriamente."
+- Un número es divisible por 3 si su última cifra es un 3.
+- Los criterios de divisibilidad se pueden aplicar únicamente a números enteros de
+  dos dígitos.
+- El criterio de divisibilidad por 3 requiere realizar la división larga completa
+  en todos los casos.
+- Un número impar puede ser divisible por un número par según los criterios de divisibilidad.
+- Aplicar un criterio de divisibilidad cambia el valor numérico del número original.
 afirmaciones_verdaderas:
-  - "Si la suma de las cifras de un número es múltiplo de 3, el número es divisible por 3."
-  - "El número 27 es divisible por 3."
-al_terminar_debes_poder: |
-  Determinar la divisibilidad por 3 de cualquier número sumando sus cifras, sin
-  necesidad de hacer la división completa.
-fuente: "Matemática 7° Básico Tomo 1 — Teoría de Números"
+- Un número es divisible por 3 si la suma de sus dígitos resulta en un múltiplo de
+  3.
+- Los criterios de divisibilidad permiten verificar la divisibilidad exacta de forma
+  rápida sin hacer la división larga.
+al_terminar_debes_ponder: Al terminar serás capaz de aplicar el criterio de divisibilidad
+  por 3, sumando sus dígitos y comprobando que el resultado sea un múltiplo de 3.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

@@ -1,106 +1,136 @@
 semantic_id: MAT.NUM.APLICACIONES_MCM_MCD.SELECCION_MCM_O_MCD
-resumen_inicial: "Se usa el MCD cuando el problema pide repartir o cortar en partes iguales; se usa el MCM cuando pide encontrar una coincidencia futura de eventos periódicos."
-explicacion_simple: |
-  Cuando un problema matemático usa palabras en vez de solo números, la parte difícil no
-  es calcular, ¡sino saber qué operación usar! Si el problema habla de dividir, cortar o
-  repartir cosas en partes más pequeñas, la pista apunta al MCD. Pero si habla de eventos
-  que se repiten y pregunta cuándo volverán a coincidir, la pista apunta al MCM.
-explicacion_formal: |
-  Para elegir entre MCM y MCD se analiza el objetivo del problema: el MCM se usa para
-  encontrar un momento de coincidencia o repetición futura, y su resultado es siempre
-  mayor o igual que los números del enunciado; el MCD se usa para repartir, cortar o
-  agrupar cantidades en partes iguales, y su resultado es siempre menor o igual que los
-  números del enunciado. Ejemplo: "dos alarmas suenan cada 15 y 20 minutos, ¿cuándo
-  coincidirán?" usa MCM (resultado $60$); "cortar cuerdas de 15 y 20 metros en trozos
-  iguales lo más largos posible" usa MCD (resultado $5$).
-definiciones_clave: |
-  **Palabras clave del MCM**: coincidir, encontrarse, cada x días, menor tiempo futuro.
-  **Palabras clave del MCD**: repartir, cortar, mayor tamaño posible, sin que sobre nada.
-propiedades_relaciones: |
-  Una forma rápida de verificar la elección: si el resultado esperado debe ser mayor que
-  los datos del problema, es MCM; si debe ser menor, es MCD.
+resumen_inicial: La decisión entre m.c.m. o M.C.D. depende de si el problema requiere
+  amplificar ciclos futuros (m.c.m.) o fragmentar en partes máximas (M.C.D.).
+explicacion_simple: 'Para decidir correctamente si un problema de la vida real se
+  resuelve con m.c.m. o con M.C.D., debemos hacernos una pregunta simple: ¿buscamos
+  un resultado más grande donde las cantidades se repitan hacia adelante (m.c.m.),
+  o buscamos dividir o acortar las cantidades en partes iguales más pequeñas (M.C.D.)?'
+explicacion_formal: 'La **Criterio de Selección de Herramienta** analiza la orientación
+  del modelo algebraico:
+
+
+  $$\text{Objetivo} = \begin{cases} \text{Amplificación / Coincidencia periódica }
+  \implies \text{Usar } \operatorname{mcm} \ge \max(a_i) \\ \text{Fraccionamiento
+  / Reparto máximo común } \implies \text{Usar } \operatorname{MCD} \le \min(a_i)
+  \end{cases}$$
+
+
+  **Desglose de la fórmula:**
+
+  - Si el resultado esperado debe ser mayor o igual que las cantidades originales
+  $\implies \operatorname{mcm}$.
+
+  - Si el resultado esperado debe ser menor o igual que las cantidades originales
+  $\implies \operatorname{MCD}$.
+
+
+  > **Complemento didáctico:** Analizar si el resultado del problema debe ser más
+  grande que los datos (m.c.m.) o más pequeño que los datos (M.C.D.) es la estrategia
+  más infalible.'
+definiciones_clave: '- **Criterio de escala**: Regla que compara el resultado buscado
+  respecto a la magnitud de los datos de entrada.'
 ejemplo_guiado:
-  enunciado: "Analiza qué método usarías: \"Se tienen 40 chocolates y 60 caramelos, y se quieren armar bolsas iguales con la misma cantidad de cada uno, maximizando el número de bolsas.\""
+  enunciado: 'Analice el problema: ''Un carpintero tiene listones de 120 cm y 180
+    cm y desea cortarlos en trozos iguales sin desperdiciar nada y del mayor tamaño
+    posible''. Determine si se usa m.c.m. o M.C.D.'
   pasos:
-    - "Identificamos la acción: repartir cantidades en partes iguales sin que sobre nada."
-    - "El resultado debe ser menor que los números originales: corresponde al MCD."
-    - 'Conclusión: se usa $\text{MCD}(40,60)=20$; se pueden armar 20 bolsas.'
+  - 'Paso 1: Analizar la acción requerida: ''cortar en trozos sin desperdiciar''.Paso
+    2: Analizar la restricción: ''del mayor tamaño posible''.Paso 3: Evaluar la magnitud
+    del resultado: el trozo cortado debe ser MENOR que 120 cm y 180 cm.'
+  - 'Conclusión: Se trata de un problema de división máxima, por lo que se debe usar
+    el M.C.D.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué característica del resultado ayuda a distinguir si un problema requiere MCM o MCD?"
-    choices:
-      - {text: "Si el resultado debe ser mayor (MCM) o menor (MCD) que los números del enunciado", is_correct: true}
-      - {text: "Si el enunciado menciona la palabra 'número'", is_correct: false}
-      - {text: "Si los números del enunciado son pares o impares", is_correct: false}
-      - {text: "No hay ninguna forma de distinguirlos", is_correct: false}
-    explanation: "La correcta es Si el resultado debe ser mayor (MCM) o menor (MCD) que los números del enunciado: esa es la pista clave de tamaño."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo razonamiento del ejemplo guiado, ¿qué método usarías para \"dos trenes pasan por una estación cada 18 y 24 minutos, ¿cuándo volverán a pasar juntos?\"?"
-    choices:
-      - {text: "MCM, porque se busca una coincidencia futura", is_correct: true}
-      - {text: "MCD, porque se busca repartir cantidades", is_correct: false}
-      - {text: "Cualquiera de los dos da el mismo resultado", is_correct: false}
-      - {text: "Ninguno de los dos aplica", is_correct: false}
-    explanation: "La correcta es MCM, porque se busca una coincidencia futura: el resultado debe ser mayor que 18 y 24."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cómo se decide si un problema exige m.c.m. o M.C.D.?
+  choices:
+  - text: Usar m.c.m. si se busca una coincidencia/acumulación futura mayor; usar
+      M.C.D. si se busca dividir en partes máximas menores
+    is_correct: true
+  - text: Usar siempre m.c.m. si los números son pares
+    is_correct: false
+  - text: Usar siempre M.C.D. si hay tres números
+    is_correct: false
+  - text: Es completamente indistinto usar cualquiera
+    is_correct: false
+  explanation: La alternativa correcta es 'Usar m.c.m. si se busca una coincidencia/acumulación
+    futura mayor; usar M.C.D. si se busca dividir en partes máximas menores'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado del carpintero que corta listones, ¿por qué se eligió
+    el M.C.D.?
+  choices:
+  - text: Porque el problema requiere cortar/dividir en trozos menores del mayor tamaño
+      posible
+    is_correct: true
+  - text: Porque habla de tiempo futuro
+    is_correct: false
+  - text: Porque sumó las longitudes
+    is_correct: false
+  - text: Porque los números eran impares
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el problema requiere cortar/dividir
+    en trozos menores del mayor tamaño posible'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Lee atentamente el enunciado del problema e identifica cuál es la acción principal requerida (¿se trata de dividir recursos o de buscar una coincidencia en el tiempo?).'
-  - 'Paso 2: Evalúa si el resultado lógico del problema debe ser una cantidad más pequeña que las del enunciado (sugiere MCD) o una cantidad más grande (sugiere MCM).'
-  - 'Paso 3: Identifica palabras clave como repartir, cortar, mayor tamaño (MCD) o coincidir, volver a encontrarse, menor tiempo (MCM).'
-  - 'Paso 4: Selecciona la herramienta correcta, realiza el cálculo matemático y redacta la respuesta contextualizada.'
-errores_correccion: |
-  Un error frecuente es guiarse ciegamente por palabras aisladas como "mínimo" o "máximo"
-  sin entender el contexto. Otro error es aplicar el MCM en problemas de corte, obteniendo
-  pedazos más largos que el material original.
+- 'Paso 1: Leer el enunciado e identificar la pregunta principal.'
+- 'Paso 2: Determinar si se busca repetir/coincidir hacia adelante (m.c.m.) o dividir/repartir
+  hacia abajo (M.C.D.).'
+- 'Paso 3: Aplicar el algoritmo correspondiente para resolver el problema.'
+errores_correccion: '- **Error 1: Guiarse solo por la palabra ''máximo'' para aplicar
+  M.C.D. sin entender la acción.** **Cómo corregirlo:** Si pide ''máxima coincidencia
+  en tiempo'', se usa m.c.m.; la palabra debe analizarse en el contexto de la acción
+  (dividir vs repetir).
+
+
+  - **Error 2: Aplicar cualquier técnica al azar.** **Cómo corregirlo:** Comparar
+  si el resultado esperado es mayor que los datos (m.c.m.) o menor que los datos (M.C.D.).'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: 'Analiza qué método usarías para resolver el siguiente problema: "Un médico receta a un paciente una pastilla cada $6$ horas y un jarabe cada $8$ horas. Si se toma ambos a las 12:00, ¿en cuántas horas se los volverá a tomar juntos?" Justifica y resuelve.'
-    alternativas:
-      - "MCM, en 24 horas"
-      - "MCD, en 2 horas"
-      - "MCM, en 48 horas"
-    respuesta: "MCM, en 24 horas"
-    solucion_pasos:
-      - 'Paso a: Identificamos la acción: se busca una coincidencia futura de dos eventos periódicos ($6$ y $8$ horas).'
-      - 'Paso b: Como buscamos un momento de reencuentro temporal, el resultado debe ser un múltiplo común. Por lo tanto, debemos seleccionar el MCM.'
-      - 'Paso c: Calculamos el MCM de $6$ y $8$: los múltiplos comunes son $24, 48, \dots$, y el menor es $24$.'
-      - 'Paso d: Concluimos que el método es el MCM y la respuesta es que se los volverá a tomar juntos en $24$ horas.'
-  - titulo: Ejemplo 2
-    enunciado: 'Analiza qué método usarías para resolver: "Se tienen $30$ bombones blancos y $45$ negros. Se quieren colocar en platos de modo que todos tengan la misma cantidad de bombones de cada tipo, maximizando el número de platos sin que sobre nada." Justifica y resuelve.'
-    alternativas:
-      - "MCD, 15 platos"
-      - "MCM, 90 platos"
-      - "MCD, 5 platos"
-    respuesta: "MCD, 15 platos"
-    solucion_pasos:
-      - 'Paso a: Identificamos la acción: se trata de repartir o agrupar cantidades en partes iguales sin residuos.'
-      - 'Paso b: Dado que estamos dividiendo el total de bombones en platos, el resultado debe ser un divisor común menor que las cantidades iniciales. Seleccionamos el MCD.'
-      - 'Paso c: Calculamos el MCD de $30$ y $45$: los divisores comunes son $\{1, 3, 5, 15\}$, de los cuales el mayor es $15$.'
-      - 'Paso d: Concluimos que el método es el MCD y la respuesta es que se pueden preparar como máximo $15$ platos.'
-  - titulo: '¿Si un problema pregunta por la mayor longitud posible para cortar dos vigas de madera de $8$ y $12$ metros, se debe seleccionar el MCM para resolverlo?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'El problema pide "cortar" en trozos de la "mayor longitud posible".'
-      - 'Cortar implica división, y el resultado debe ser menor o igual a las longitudes originales.'
-      - 'Por ende, se debe usar el Máximo Común Divisor (MCD), no el MCM.'
-  - titulo: '¿Es el MCM el método correcto para saber cuándo volverán a coincidir en el paradero tres líneas de buses que pasan cada $10$, $15$ y $20$ minutos respectivamente?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'El problema describe eventos repetitivos (los buses pasan a intervalos fijos).'
-      - 'Busca determinar un punto de coincidencia futura (cuándo coincidirán de nuevo).'
-      - 'Esto requiere encontrar el menor múltiplo común de los intervalos, lo cual corresponde exactamente al Mínimo Común Múltiplo (MCM).'
+- titulo: Ejemplo 1
+  enunciado: 'Si el problema dice: ''¿Cuándo volverán a sonar juntas tres campanas?'',
+    ¿qué se calcula?'
+  alternativas:
+  - El m.c.m.
+  - El M.C.D.
+  - La promedio de tiempos
+  respuesta: El m.c.m.
+  solucion_pasos:
+  - Coincidencia de repetición periódica $\implies$ m.c.m.
+- titulo: Ejemplo 2
+  enunciado: 'Si el problema dice: ''¿Cuál es la menor cantidad de baldosas cuadradas
+    iguales para cubrir una pared?'', ¿qué se calcula?'
+  alternativas:
+  - El M.C.D. para el tamaño de baldosa
+  - El m.c.m. para el área
+  - La resta
+  respuesta: El M.C.D. para el tamaño de baldosa
+  solucion_pasos:
+  - Menor cantidad de baldosas $\implies$ mayor tamaño por baldosa $\implies$ M.C.D.
+- titulo: ¿Si el resultado buscado debe ser mayor que los datos originales se debe
+    usar el m.c.m.?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, los múltiplos son de mayor o igual magnitud.
+- titulo: ¿Si el resultado buscado es la longitud de un trozo cortado de una barra
+    se debe usar el M.C.D.?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, cortar en partes es una división $\implies$ M.C.D.
 errores_frecuentes:
-  - Guiarse ciegamente por palabras aisladas como "mínimo" o "máximo" sin entender el contexto general del problema (a veces "el mínimo tiempo" requiere calcular el MCM, y "el máximo reparto" requiere el MCD).
-  - Aplicar el MCM en problemas de corte, obteniendo pedazos más largos que el material original.
-  - Aplicar el MCD en problemas de coincidencia, obteniendo tiempos anteriores a la partida inicial.
-  - No comprobar si la respuesta obtenida tiene sentido físico o matemático dentro del problema.
-  - Intentar sumar o restar los números dados en lugar de analizar su estructura de divisibilidad y multiplicidad.
+- La presencia de la palabra 'máximo' en el enunciado implica siempre calcular el
+  M.C.D. sin importar la acción.
+- El m.c.m. produce resultados menores que los datos originales del problema.
+- La elección entre m.c.m. o M.C.D. depende únicamente de si los números dados son
+  pares o impares.
+- Cualquier problema de aplicación en aritmética se puede resolver usando indistintamente
+  m.c.m. o M.C.D.
+- Dividir varias cantidades en partes iguales exige calcular obligatoriamente el m.c.m.
 afirmaciones_verdaderas:
-  - "Si el resultado esperado debe ser mayor que los datos del problema, corresponde usar el MCM."
-  - "Si el resultado esperado debe ser menor que los datos del problema, corresponde usar el MCD."
-al_terminar_debes_poder: |
-  Analizar un problema verbal e identificar razonadamente si su resolución requiere el
-  MCM o el MCD.
-fuente: Teoría de Números
+- Se utiliza el m.c.m. cuando el problema involucra coincidencias o repeticiones periódicas
+  en el tiempo.
+- Se utiliza el M.C.D. cuando el problema involucra cortar, fraccionar o repartir
+  en partes iguales de máximo tamaño.
+al_terminar_debes_poder: Al terminar serás capaz de decidir de forma justificada si
+  un problema requiere m.c.m. o M.C.D., analizando si exige acumular repeticiones
+  periódicas o fraccionar en partes máximas.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

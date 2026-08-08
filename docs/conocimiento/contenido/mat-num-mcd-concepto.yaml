@@ -1,101 +1,133 @@
 semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.CONCEPTO
-resumen_inicial: "El Máximo Común Divisor (MCD) de dos o más números enteros es el mayor número que los divide a todos de forma exacta."
-explicacion_simple: |
-  Imagina que tienes 12 chocolates de frutilla y 18 de vainilla, y quieres armar bolsas de
-  regalo sin mezclar sabores ni que sobre ningún chocolate. Necesitas encontrar un número
-  que divida exactamente a 12 y a 18; y si quieres el mayor número posible de bolsas,
-  necesitas el mayor divisor que tengan en común. Ese número especial es el MCD.
-explicacion_formal: |
-  El **Máximo Común Divisor (MCD)** de un conjunto de números es el mayor de sus divisores
-  comunes positivos. Por ejemplo, para $12$ y $18$: divisores de $12=\{1,2,3,4,6,12\}$,
-  divisores de $18=\{1,2,3,6,9,18\}$; los comunes son $\{1,2,3,6\}$, y el mayor es $6$, por
-  lo que $\text{MCD}(12,18)=6$. Si $a$ es divisor de $b$, entonces $\text{MCD}(a,b)=a$.
-definiciones_clave: |
-  **Divisor común**: número que divide exactamente a dos o más números a la vez. El MCD es
-  el mayor de esos divisores comunes.
-propiedades_relaciones: |
-  El MCD de cualquier par de números naturales siempre existe y es al menos 1. El MCD de
-  dos números primos distintos es siempre 1.
+resumen_inicial: El máximo común divisor (M.C.D.) de dos o más enteros es el mayor
+  entero positivo que los divide a todos exactamente sin residuo.
+explicacion_simple: El máximo común divisor representa el tamaño más grande posible
+  que podemos usar para dividir o agrupar varias cantidades diferentes en partes exactamente
+  iguales sin que sobre nada. Por ejemplo, al cortar dos piezas de tela de distinto
+  largo en tiras iguales lo más grandes posible, la longitud buscada es el M.C.D.
+explicacion_formal: 'Para un conjunto de enteros $a_1, a_2, \ldots, a_k \in \mathbb{Z}
+  \setminus \{0\}$, el **Máximo Común Divisor** $\operatorname{MCD}(a_1, \dots, a_k)$
+  se define formalmente como:
+
+
+  $$\operatorname{MCD}(a_1, \dots, a_k) = \max \left( \bigcap_{i=1}^k D^+(a_i) \right)$$
+
+
+  **Desglose de la fórmula:**
+
+  - $D^+(a_i)$: Conjunto finito de los divisores enteros positivos del número $a_i$.
+
+  - $\bigcap_{i=1}^k$: Intersección de los conjuntos de divisores (divisores comunes
+  a todos).
+
+  - $\max(\dots)$: Selección del mayor entero positivo de dicha intersección.
+
+
+  > **Complemento didáctico:** El M.C.D. es como mínimo igual a 1 (para números sin
+  divisores primos compartidos) y como máximo igual al menor de los números dados.'
+definiciones_clave: '- **Máximo común divisor (M.C.D.)**: El mayor divisor compartido
+  que divide exactamente a varios enteros.
+
+  - **Intersección de divisores**: Colección de factores que dividen simultáneamente
+  a todas las cantidades.'
+propiedades_relaciones: '- **Acotamiento superior**: $\operatorname{MCD}(a, b) \le
+  \min(|a|, |b|)$.
+
+  - **Identidad de Bezout**: Existen enteros $x, y$ tales que $a x + b y = \operatorname{MCD}(a,
+  b)$.'
 ejemplo_guiado:
-  enunciado: "Encuentra el MCD entre 10 y 15."
+  enunciado: Halle el máximo común divisor entre $12$ y $18$ comparando sus divisores
+    positivos.
   pasos:
-    - 'Divisores de 10: $\{1,2,5,10\}$. Divisores de 15: $\{1,3,5,15\}$.'
-    - 'Divisores comunes: $\{1,5\}$.'
-    - 'Conclusión: el mayor es 5, por lo que $\text{MCD}(10,15)=5$.'
+  - 'Paso 1: Obtener divisores de 12: $D^+(12) = \{1, 2, 3, 4, 6, 12\}$.'
+  - 'Paso 2: Obtener divisores de 18: $D^+(18) = \{1, 2, 3, 6, 9, 18\}$.'
+  - 'Paso 3: Intersectar los divisores comunes: $D^+(12) \cap D^+(18) = \{1, 2, 3,
+    6\}$.'
+  - 'Paso 4: Seleccionar el mayor divisor común: $\max(\{1, 2, 3, 6\}) = 6$.'
+  - 'Conclusión: $\operatorname{MCD}(12, 18) = 6$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué es el Máximo Común Divisor de dos números?"
-    choices:
-      - {text: "El mayor de los divisores comunes a ambos números", is_correct: true}
-      - {text: "El menor múltiplo común a ambos números", is_correct: false}
-      - {text: "La suma de los divisores comunes", is_correct: false}
-      - {text: "El producto de ambos números", is_correct: false}
-    explanation: "La correcta es El mayor de los divisores comunes a ambos números: esa es la definición del MCD."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCD entre 6 y 18?"
-    choices:
-      - {text: "6, porque 6 es divisor de 18", is_correct: true}
-      - {text: "18, el mayor de los dos números", is_correct: false}
-      - {text: "1, porque no comparten factores", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 6, porque 6 es divisor de 18: cuando un número es divisor del otro, ese menor número es directamente el MCD."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué representa el máximo común divisor de dos enteros a y b?
+  choices:
+  - text: El mayor entero positivo que divide exactamente tanto a a como a b
+    is_correct: true
+  - text: La suma de a + b
+    is_correct: false
+  - text: El menor múltiplo positivo común
+    is_correct: false
+  - text: El producto a · b
+    is_correct: false
+  explanation: La alternativa correcta es 'El mayor entero positivo que divide exactamente
+    tanto a a como a b'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado entre 12 y 18, ¿cuál fue el mayor divisor común obtenido?
+  choices:
+  - text: '6'
+    is_correct: true
+  - text: '3'
+    is_correct: false
+  - text: '12'
+    is_correct: false
+  - text: '36'
+    is_correct: false
+  explanation: La alternativa correcta es '6'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identifica los números a los cuales deseas calcularles el Máximo Común Divisor (MCD).'
-  - 'Paso 2: Encuentra los divisores comunes de dichos números (números que los dividen a todos de manera exacta).'
-  - 'Paso 3: Identifica cuál es el mayor de todos esos divisores comunes. Ese valor es el MCD.'
-errores_correccion: |
-  Un error frecuente es confundir el MCD con el MCM, buscando un número mayor que los
-  originales en vez de un divisor. Otro error es olvidar que el MCD siempre debe ser menor
-  o igual al menor de los números dados.
+- 'Paso 1: Calcular la lista de divisores de cada uno de los números dados.'
+- 'Paso 2: Encontrar los divisores en los que coinciden todas las listas.'
+- 'Paso 3: Seleccionar el divisor más grande de la intersección común como el $\operatorname{MCD}$.'
+errores_correccion: '- **Error 1: Confundir el M.C.D. con el m.c.m. calculando un
+  número más grande.** **Cómo corregirlo:** El M.C.D. es un DIVISOR, por lo que es
+  MENOR o igual que el menor de los números dados.
+
+
+  - **Error 2: Pensar que si los números son impares el M.C.D. no existe.** **Cómo
+  corregirlo:** El M.C.D. siempre existe y vale al menos 1.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Encuentra el Máximo Común Divisor (MCD) entre $8$ y $12$.
-    alternativas:
-      - "4"
-      - "2"
-      - "24"
-    respuesta: "4"
-    solucion_pasos:
-      - 'Paso a: Listamos los divisores de $8$: $\{1, 2, 4, 8\}$.'
-      - 'Paso b: Listamos los divisores de $12$: $\{1, 2, 3, 4, 6, 12\}$.'
-      - 'Paso c: Buscamos los divisores que tienen en común: $\{1, 2, 4\}$.'
-      - 'Paso d: Seleccionamos el mayor de ellos, que es $4$. Por lo tanto, $\text{MCD}(8, 12) = 4$.'
-  - titulo: Ejemplo 2
-    enunciado: Encuentra el MCD entre $15$ y $20$.
-    alternativas:
-      - "5"
-      - "1"
-      - "300"
-    respuesta: "5"
-    solucion_pasos:
-      - 'Paso a: Listamos los divisores de $15$: $\{1, 3, 5, 15\}$.'
-      - 'Paso b: Listamos los divisores de $20$: $\{1, 2, 4, 5, 10, 20\}$.'
-      - 'Paso c: Buscamos los divisores comunes, los cuales son $\{1, 5\}$.'
-      - 'Paso d: El mayor de los divisores comunes es $5$. Por lo tanto, $\text{MCD}(15, 20) = 5$.'
-  - titulo: '¿Es el Máximo Común Divisor (MCD) de $9$ y $15$ igual a $3$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Los divisores de $9$ son $\{1, 3, 9\}$.'
-      - 'Los divisores de $15$ son $\{1, 3, 5, 15\}$.'
-      - 'Los divisores en común son $\{1, 3\}$, y el mayor es $3$. Por ende, $\text{MCD}(9, 15) = 3$.'
-  - titulo: '¿El Máximo Común Divisor de $6$ y $18$ es $18$?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'El número $18$ es divisor de $18$, pero no divide de manera exacta a $6$ (ya que $18 > 6$).'
-      - 'De hecho, como $6$ divide a $18$, el $\text{MCD}(6, 18) = 6$.'
+- titulo: Ejemplo 1
+  enunciado: Calcule el M.C.D. entre 20 y 30.
+  alternativas:
+  - '10'
+  - '60'
+  - '5'
+  respuesta: '10'
+  solucion_pasos:
+  - 'Divisores de 20: 1, 2, 4, 5, 10, 20. Divisores de 30: 1, 2, 3, 5, 6, 10, 15,
+    30. MCD = 10.'
+- titulo: Ejemplo 2
+  enunciado: Queremos cortar dos cuerdas de 15 m y 25 m en trozos iguales del mayor
+    tamaño posible. ¿Cuánto medirá cada trozo?
+  alternativas:
+  - 5 metros
+  - 75 metros
+  - 15 metros
+  respuesta: 5 metros
+  solucion_pasos:
+  - $\operatorname{MCD}(15, 25) = 5$ metros.
+- titulo: ¿El M.C.D. de cualquier pareja de números enteros es siempre mayor o igual
+    a 1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el 1 es divisor universal de todos los enteros.
+- titulo: ¿Puede el M.C.D. de 8 y 12 ser igual a 24?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, 24 es un múltiplo (m.c.m.), el M.C.D. debe ser menor o igual a 8 ($MCD=4$).
 errores_frecuentes:
-  - Confundir el MCD con el Mínimo Común Múltiplo (MCM), buscando un número más grande que los originales en lugar de un divisor.
-  - Pensar que el MCD de dos números siempre debe ser un número primo.
-  - Creer que el MCD puede ser mayor que el menor de los números dados (el MCD siempre es menor o igual al menor de los números).
-  - Olvidar que el 1 es siempre un divisor común de todos los números naturales.
-  - No considerar que el MCD debe dividir a todos los números del conjunto simultáneamente, no solo a algunos de ellos.
+- El máximo común divisor de dos números enteros puede ser un valor mayor que ambos
+  números.
+- El número cero se clasifica como el máximo común divisor de los enteros positivos.
+- Dos números enteros impares no poseen ningún divisor común en la recta numérica.
+- El máximo común divisor es equivalente a la suma de los factores primos no comunes.
+- El M.C.D. de dos números primos distintos da como resultado cero.
 afirmaciones_verdaderas:
-  - "El MCD siempre es menor o igual que el menor de los números comparados."
-  - "El MCD entre 8 y 12 es 4."
-al_terminar_debes_poder: |
-  Definir el concepto de Máximo Común Divisor y calcularlo por comparación de divisores
-  comunes.
-fuente: Teoría de Números
+- El máximo común divisor es el mayor entero positivo que divide exactamente a dos
+  o más números.
+- El M.C.D. de cualquier pareja de enteros positivos es siempre menor o igual que
+  el menor de ellos.
+al_terminar_debes_poder: Al terminar serás capaz de definir y calcular el máximo común
+  divisor entre varios enteros, identificando el mayor divisor compartido que divide
+  a todos exactamente.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

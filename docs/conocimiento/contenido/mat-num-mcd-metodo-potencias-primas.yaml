@@ -1,107 +1,129 @@
 semantic_id: MAT.NUM.MAXIMO_COMUN_DIVISOR.METODO_POTENCIAS_PRIMAS
-resumen_inicial: "El MCD se calcula tomando solo los factores primos comunes de las descomposiciones, elevados a su menor exponente, y multiplicándolos."
-explicacion_simple: |
-  ¿Sabías que todos los números enteros mayores que 1 se pueden desarmar en piezas
-  básicas llamadas números primos, como bloques de Lego? Si desarmamos dos números y
-  miramos cuáles bloques tienen en común, podemos encontrar su MCD: comparamos los
-  bloques compartidos y nos quedamos con la menor cantidad de cada uno.
-explicacion_formal: |
-  Para calcular el MCD por **potencias primas**: se descompone cada número en factores
-  primos, se identifican las bases comunes a todas las descomposiciones, y para cada una
-  se toma el **menor exponente**. Multiplicando esas potencias se obtiene el MCD. Para
-  $72=2^3\cdot3^2$ y $120=2^3\cdot3^1\cdot5^1$: factores comunes $2$ y $3$ (el 5 no es
-  común), $\text{MCD}(72,120)=2^3\cdot3^1=24$.
-definiciones_clave: |
-  **Factor primo común**: base que aparece en la descomposición de todos los números
-  comparados; solo estos se incluyen en el cálculo del MCD.
-propiedades_relaciones: |
-  A diferencia del MCM (que usa todos los factores con el mayor exponente), el MCD solo
-  usa los factores comunes con el menor exponente, descartando los no comunes.
+resumen_inicial: El M.C.D. mediante factores primos es el producto de las bases primas
+  COMUNES elevadas a su MENOR exponente.
+explicacion_simple: Para calcular el M.C.D. con la descomposición prima, escribimos
+  cada número como producto de potencias de primos. Seleccionamos únicamente las bases
+  primas que aparezcan en TODOS los números y le asignamos a cada una el exponente
+  más pequeño con el que figure.
+explicacion_formal: 'Dadas las descomposiciones canónicas de $a$ y $b$ sobre las bases
+  primas comunes $p_i \in \operatorname{Bases}(a) \cap \operatorname{Bases}(b)$:
+
+
+  $$a = \prod p_i^{\alpha_i}, \quad b = \prod p_i^{\beta_i} \implies \operatorname{MCD}(a,
+  b) = \prod_{p_i \text{ común}} p_i^{\min(\alpha_i, \beta_i)}$$
+
+
+  **Desglose de la fórmula:**
+
+  - $p_i \text{ común}$: Solo se incluyen las bases primas presentes simultáneamente
+  en todas las descomposiciones.
+
+  - $\min(\alpha_i, \beta_i)$: Selección del MENOR exponente entre las potencias correspondientes.
+
+
+  > **Complemento didáctico:** Para $24 = 2^3 \cdot 3^1$ y $36 = 2^2 \cdot 3^2$, las
+  bases comunes son 2 y 3. Tomamos $2^{\min(3,2)} = 2^2$ y $3^{\min(1,2)} = 3^1$,
+  dando $\operatorname{MCD}(24,36) = 2^2 \cdot 3^1 = 12$.'
+definiciones_clave: '- **Regla del menor exponente común**: Criterio del M.C.D. que
+  multiplica únicamente primos compartidos con su exponente mínimo.'
 ejemplo_guiado:
-  enunciado: "Calcula el MCD de 48 y 60 por potencias primas."
+  enunciado: Calcule el $\operatorname{MCD}(40, 60)$ usando la descomposición prima
+    y la regla del menor exponente.
   pasos:
-    - 'Descomposición: $48=2^4\cdot3^1$, $60=2^2\cdot3^1\cdot5^1$.'
-    - "Factores comunes: $2$ y $3$. Menor exponente: $2^2$ y $3^1$."
-    - 'Conclusión: $\text{MCD}(48,60)=2^2\cdot3=12$.'
+  - 'Paso 1: Descomposición de 40: $40 = 2^3 \cdot 5^1$.'
+  - 'Paso 2: Descomposición de 60: $60 = 2^2 \cdot 3^1 \cdot 5^1$.'
+  - 'Paso 3: Identificar bases primas comunes a ambos: el 2 y el 5 (el 3 no es común).'
+  - 'Paso 4: Seleccionar el menor exponente para la base 2: $\min(3, 2) = 2 \implies
+    2^2$.'
+  - 'Paso 5: Seleccionar el menor exponente para la base 5: $\min(1, 1) = 1 \implies
+    5^1$.'
+  - 'Paso 6: Multiplicar las potencias seleccionadas: $2^2 \cdot 5^1 = 4 \cdot 5 =
+    20$.'
+  - 'Conclusión: $\operatorname{MCD}(40, 60) = 20$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué exponente se elige para cada factor primo común al calcular el MCD por este método?"
-    choices:
-      - {text: "El menor exponente entre las descomposiciones", is_correct: true}
-      - {text: "El mayor exponente entre las descomposiciones", is_correct: false}
-      - {text: "La suma de los exponentes", is_correct: false}
-      - {text: "Siempre el exponente 1", is_correct: false}
-    explanation: "La correcta es El menor exponente entre las descomposiciones: eso asegura que el resultado divida exactamente a todos los números."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es el MCD de 18 ($2\\cdot3^2$) y 24 ($2^3\\cdot3$)?"
-    choices:
-      - {text: "6", is_correct: true}
-      - {text: "2", is_correct: false}
-      - {text: "72", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es 6: factor común 2 (menor exponente 1) y 3 (menor exponente 1), $2\\cdot3=6$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Qué bases y exponentes se seleccionan para el M.C.D. a partir de las
+    descomposiciones primas?
+  choices:
+  - text: Solo las bases primas COMUNES elevadas a su MENOR exponente
+    is_correct: true
+  - text: Todas las bases primas elevadas a su mayor exponente
+    is_correct: false
+  - text: Todas las bases comunes y no comunes al cuadrado
+    is_correct: false
+  - text: Solo la base prima más grande
+    is_correct: false
+  explanation: La alternativa correcta es 'Solo las bases primas COMUNES elevadas
+    a su MENOR exponente'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado para 40 y 60, ¿por qué se descartó la base prima
+    3?
+  choices:
+  - text: Porque el 3 no es una base prima común a ambos números
+    is_correct: true
+  - text: Porque 3 es un número impar
+    is_correct: false
+  - text: Because 3 es mayor que 2
+    is_correct: false
+  - text: Por error de cálculo
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el 3 no es una base prima común
+    a ambos números'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Realiza la descomposición factorial en números primos de cada uno de los números por separado.'
-  - 'Paso 2: Escribe la descomposición de cada número expresada como producto de potencias de bases primas.'
-  - 'Paso 3: Identifica los factores primos que sean comunes a todas las descomposiciones.'
-  - 'Paso 4: Para cada factor primo común, elige la potencia que tenga el menor exponente.'
-  - 'Paso 5: Multiplica los factores primos comunes con sus menores exponentes obtenidos en el Paso 4 para hallar el MCD.'
-errores_correccion: |
-  Un error frecuente es tomar los mayores exponentes en lugar de los menores (eso calcula
-  el MCM, no el MCD). Otro error es incluir factores primos no comunes en el producto
-  final.
+- 'Paso 1: Escribir la descomposición prima canónica de todos los números.'
+- 'Paso 2: Seleccionar únicamente las bases primas que aparezcan en todas las descomposiciones.'
+- 'Paso 3: Asignar a cada base prima común el menor exponente y multiplicar los resultados.'
+errores_correccion: '- **Error 1: Incluir primos que no son comunes a todos los números.**
+  **Cómo corregirlo:** Para el M.C.D. se descartan las bases que no estén compartidas
+  por TODOS.
+
+
+  - **Error 2: Tomar el mayor exponente en lugar del menor.** **Cómo corregirlo:**
+  El M.C.D. utiliza el MENOR exponente ($\min(\alpha_i, \beta_i)$).'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Halla el MCD de $36$ y $90$ usando descomposiciones en factores primos.
-    alternativas:
-      - "18"
-      - "6"
-      - "180"
-    respuesta: "18"
-    solucion_pasos:
-      - 'Paso a: Descomponemos $36$: $36 = 2^2 \cdot 3^2$.'
-      - 'Paso b: Descomponemos $90$: $90 = 2^1 \cdot 3^2 \cdot 5^1$.'
-      - 'Paso c: Los factores primos comunes son $2$ y $3$.'
-      - 'Paso d: Tomamos los menores exponentes: para el $2$ es $1$ ($2^1$) y para el $3$ es $2$ ($3^2$).'
-      - 'Paso e: Multiplicamos: $\text{MCD}(36, 90) = 2^1 \cdot 3^2 = 2 \cdot 9 = 18$.'
-  - titulo: Ejemplo 2
-    enunciado: Calcula el MCD de $40$ y $56$ mediante el método de potencias primas.
-    alternativas:
-      - "8"
-      - "4"
-      - "280"
-    respuesta: "8"
-    solucion_pasos:
-      - 'Paso a: Descomponemos $40$: $40 = 2^3 \cdot 5^1$.'
-      - 'Paso b: Descomponemos $56$: $56 = 2^3 \cdot 7^1$.'
-      - 'Paso c: El único factor primo en común es el $2$.'
-      - 'Paso d: El menor exponente para el factor $2$ es $3$, por lo que tomamos $2^3$.'
-      - 'Paso e: Por lo tanto, el MCD es $2^3 = 8$.'
-  - titulo: 'Si $A = 2^3 \cdot 3^2 \cdot 5^1$ y $B = 2^2 \cdot 3^4$, ¿es el $\text{MCD}(A, B) = 2^2 \cdot 3^2$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Los factores primos comunes a $A$ y $B$ son $2$ y $3$.'
-      - 'El menor exponente de la base $2$ es $\min(3, 2) = 2$, es decir, $2^2$.'
-      - 'El menor exponente de la base $3$ es $\min(2, 4) = 2$, es decir, $3^2$.'
-      - 'Multiplicamos los factores comunes con su menor exponente: $2^2 \cdot 3^2$. La afirmación es correcta.'
-  - titulo: '¿Debemos incluir el factor $5$ en el cálculo del MCD entre $2^2 \cdot 5$ y $2^3 \cdot 3$?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'El factor primo $5$ solo aparece en la descomposición del primer número, mientras que el factor $3$ solo aparece en el segundo.'
-      - 'El cálculo del MCD solo contempla los factores primos comunes (en este caso, solo el $2$).'
+- titulo: Ejemplo 1
+  enunciado: Si $a = 2^3 \cdot 3^2$ y $b = 2^2 \cdot 3^4 \cdot 5$, halle $\operatorname{MCD}(a,
+    b)$.
+  alternativas:
+  - 2^2 · 3^2 = 36
+  - 2^3 · 3^4 · 5 = 3240
+  - 2 · 3 = 6
+  respuesta: 2^2 · 3^2 = 36
+  solucion_pasos:
+  - 'Bases comunes: 2 y 3. Menores exponentes: $2^2$ y $3^2$. MCD $= 4 \cdot 9 = 36$.'
+- titulo: Ejemplo 2
+  enunciado: ¿Cuál es el M.C.D. entre $2^5 \cdot 7$ y $3^2 \cdot 11$?
+  alternativas:
+  - 1 (no tienen bases primas comunes)
+  - '0'
+  - 2^5 · 3^2
+  respuesta: 1 (no tienen bases primas comunes)
+  solucion_pasos:
+  - Al no compartir ninguna base prima, su M.C.D. es 1 (son coprimos).
+- titulo: ¿Se descartan las bases primas no comunes en el cálculo del M.C.D.?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el M.C.D. exige trabajar únicamente con las bases primas comunes.
+- titulo: ¿Es el M.C.D.(2^3, 2^5) igual a 2^3?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, se elige el menor exponente $\min(3, 5) = 3$.
 errores_frecuentes:
-  - Tomar los mayores exponentes de los factores en lugar de los menores (esta acción calcula el MCM, no el MCD).
-  - Incluir factores primos no comunes en el producto final (por ejemplo, agregar factores que solo están en un número).
-  - Multiplicar las bases sin considerar sus exponentes correspondientes en la fórmula.
-  - Realizar una descomposición incorrecta de los números originales en factores que no son primos (por ejemplo, descomponer $12 = 4 \cdot 3$ y usar el 4 como base prima).
-  - Confundir la base con el exponente al momento de realizar la comparación de potencias menores.
+- Al calcular el M.C.D. por potencias se deben elegir los mayores exponentes de cada
+  base prima.
+- Las bases primas no comunes deben incluirse siempre en el cálculo del M.C.D.
+- El M.C.D. de dos descomposiciones primas es la suma de todas las bases elevadas
+  a 1.
+- Si dos números no comparten bases primas comunes se concluye que su M.C.D. es cero.
+- La regla de los menores exponentes se aplica únicamente a los números pares.
 afirmaciones_verdaderas:
-  - "Para calcular el MCD por potencias primas, se toma cada factor común con su menor exponente."
-  - "El MCD solo incluye los factores primos comunes, nunca los no comunes."
-al_terminar_debes_poder: |
-  Calcular el MCD de dos o más números mediante el método de factores primos con menor
+- El M.C.D. se obtiene multiplicando las bases primas comunes elevadas a su menor
   exponente.
-fuente: Teoría de Números
+- Si no existen bases primas comunes entre dos números, su M.C.D. es igual a 1.
+al_terminar_debes_poder: Al terminar serás capaz de calcular el M.C.D. mediante las
+  descomposiciones primas, seleccionando las bases primas comunes elevadas a su menor
+  exponente.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

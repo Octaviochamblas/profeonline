@@ -1,104 +1,130 @@
 semantic_id: MAT.NUM.FACTORIZACION_PRIMA.METODO_TABLA
-resumen_inicial: "El método de la tabla descompone un número en factores primos dividiéndolo sucesivamente por primos, organizados en dos columnas, hasta llegar a 1."
-explicacion_simple: |
-  Imagina que estás bajando por una escalera de caracol muy alta. Cada escalón te lleva a
-  un nivel más bajo hasta que finalmente llegas al suelo firme (el número 1). El método de
-  la tabla es precisamente esa escalera: colocas tu número en una columna y lo vas
-  dividiendo paso a paso por números primos, anotando los resultados abajo.
-explicacion_formal: |
-  El **Método de la Tabla** traza una línea vertical: a la izquierda se escribe el número
-  a descomponer, y a la derecha los primos que lo dividen exactamente. Se repite la
-  división con cada cociente hasta llegar a $1$. Para $N=60$: $60\div2=30$, $30\div2=15$,
-  $15\div3=5$, $5\div5=1$. La columna derecha da la descomposición: $60=2^2\cdot3\cdot5$.
-definiciones_clave: |
-  **Columna izquierda**: sucesión de cocientes, comenzando por el número original y
-  terminando en 1. **Columna derecha**: los divisores primos usados en cada paso.
-propiedades_relaciones: |
-  Este método es equivalente al del árbol de factores; ambos producen la misma
-  descomposición prima final, por la unicidad de la factorización.
+resumen_inicial: El método de la tabla realiza divisiones sucesivas entre primos hasta
+  reducir el número a la unidad.
+explicacion_simple: El método de la tabla es un procedimiento organizado en columnas
+  para descomponer un número en primos. Escribimos el número a la izquierda, dividimos
+  por el menor primo posible a la derecha, anotamos el cociente abajo y repetimos
+  el proceso hasta llegar a 1.
+explicacion_formal: 'El **Algoritmo de Divisiones Sucesivas en Tabla** genera la secuencia
+  de cocientes $n_0, n_1, \dots, n_k$ y divisores primos $p_1, p_2, \dots, p_k$ tal
+  que:
+
+
+  $$n_0 = n, \quad n_i = \frac{n_{i-1}}{p_i} \quad \text{con } p_i = \min \{ p \in
+  \text{Primos} \mid p \mid n_{i-1} \}$$
+
+
+  **Desglose de la fórmula:**
+
+  - Condición de parada: $n_k = 1$.
+
+  - Reconstrucción de la descomposición: $n = \prod_{i=1}^k p_i$.
+
+
+  > **Complemento didáctico:** La columna de la derecha contiene la lista completa
+  de factores primos que al multiplicarse forman el número original.'
+definiciones_clave: '- **Método de la tabla (divisiones sucesivas)**: Algoritmo vertical
+  de división por primos menores hasta llegar al cociente 1.'
+propiedades_relaciones: '- **Estructura algorítmica**: Garantiza no saltarse ningún
+  factor primo al probar siempre desde el menor primo $2, 3, 5, \dots$'
 ejemplo_guiado:
-  enunciado: "Usa el método de la tabla para descomponer 44."
+  enunciado: Descomponga el número $36$ en factores primos utilizando el método de
+    la tabla.
   pasos:
-    - '$44\div2=22$.'
-    - '$22\div2=11$.'
-    - '$11\div11=1$.'
-    - 'Conclusión: $44=2^2\cdot11$.'
+  - 'Paso 1: $36$ es divisible por 2: $36 : 2 = 18$ (anotar 2 a la derecha, 18 abajo).'
+  - 'Paso 2: $18$ es divisible por 2: $18 : 2 = 9$ (anotar 2 a la derecha, 9 abajo).'
+  - 'Paso 3: $9$ es divisible por 3: $9 : 3 = 3$ (anotar 3 a la derecha, 3 abajo).'
+  - 'Paso 4: $3$ es divisible por 3: $3 : 3 = 1$ (anotar 3 a la derecha, 1 abajo).
+    Proceso finalizado.'
+  - 'Conclusión: La multiplicación de la columna derecha da $36 = 2 \cdot 2 \cdot
+    3 \cdot 3 = 2^2 \cdot 3^2$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué contiene la columna derecha al finalizar el método de la tabla?"
-    choices:
-      - {text: "Los factores primos del número original", is_correct: true}
-      - {text: "Los residuos de cada división", is_correct: false}
-      - {text: "Los cocientes de cada división", is_correct: false}
-      - {text: "Todos los divisores del número, primos y compuestos", is_correct: false}
-    explanation: "La correcta es Los factores primos del número original: multiplicándolos se obtiene la descomposición prima."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuál es la descomposición prima de 63?"
-    choices:
-      - {text: "$3^2\\cdot7$", is_correct: true}
-      - {text: "$3\\cdot7^2$", is_correct: false}
-      - {text: "$9\\cdot7$", is_correct: false}
-      - {text: "No se puede saber", is_correct: false}
-    explanation: "La correcta es $3^2\\cdot7$: $63\\div3=21$, $21\\div3=7$, $7\\div7=1$, factores $3,3,7$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: ¿Cuándo finaliza el procedimiento del método de la tabla de división por
+    primos?
+  choices:
+  - text: Cuando el cociente de la izquierda llega a 1
+    is_correct: true
+  - text: Cuando se llega al número 0
+    is_correct: false
+  - text: Cuando se hacen 10 divisiones
+    is_correct: false
+  - text: Cuando se dividió por un número par
+    is_correct: false
+  explanation: La alternativa correcta es 'Cuando el cociente de la izquierda llega
+    a 1'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado con 36, ¿cuál fue la descomposición prima obtenida?
+  choices:
+  - text: 2^2 · 3^2
+    is_correct: true
+  - text: 2 · 3
+    is_correct: false
+  - text: 4 · 9
+    is_correct: false
+  - text: 6^2
+    is_correct: false
+  explanation: La alternativa correcta es '2^2 · 3^2'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Dibuja una línea vertical. Escribe el número original arriba a la izquierda.'
-  - 'Paso 2: Encuentra el menor número primo ($2, 3, 5, 7, \dots$) que divida al número de la izquierda de forma exacta. Escríbelo a la derecha de la línea.'
-  - 'Paso 3: Divide el número de la izquierda por el primo de la derecha. Escribe el resultado de la división (cociente) inmediatamente debajo del número anterior a la izquierda.'
-  - 'Paso 4: Repite los pasos 2 y 3 usando el nuevo número de la izquierda, hasta obtener un cociente de 1.'
-  - 'Paso 5: Escribe la descomposición multiplicando todos los números de la columna derecha, agrupando los repetidos con exponentes.'
-errores_correccion: |
-  Un error frecuente es colocar números compuestos en la columna derecha (como dividir
-  por 4 en lugar de dividir por 2 dos veces). Otro error es escribir el residuo en vez del
-  cociente en la columna izquierda.
+- 'Paso 1: Escribir el número en la columna izquierda de la tabla.'
+- 'Paso 2: Dividir por el menor primo que lo divida exactamente y anotar el primo
+  a la derecha y el cociente abajo.'
+- 'Paso 3: Repetir el proceso con los cocientes sucesivos hasta llegar al cociente
+  final 1.'
+errores_correccion: '- **Error 1: Dividir por números compuestos en la columna derecha
+  (ej: poner un 4 o un 9).** **Cómo corregirlo:** La columna derecha debe contener
+  ÚNICAMENTE números primos.
+
+
+  - **Error 2: Detener la tabla antes de llegar al cociente 1.** **Cómo corregirlo:**
+  La tabla finaliza obligatoriamente cuando el cociente izquierdo llega a 1.'
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: 'Utiliza el método de la tabla para descomponer el número $28$.'
-    alternativas:
-      - '$2^2\cdot7$'
-      - '$2\cdot7^2$'
-      - '$4\cdot7$'
-    respuesta: "$2^2\\cdot7$"
-    solucion_pasos:
-      - 'Paso a: Escribimos $28$ a la izquierda. Su menor divisor primo es $2$. Escribimos $2$ a la derecha y dividimos: $28 \div 2 = 14$. Escribimos $14$ abajo a la izquierda.'
-      - 'Paso b: Para $14$, el menor divisor primo sigue siendo $2$. Escribimos $2$ a la derecha y dividimos: $14 \div 2 = 7$. Escribimos $7$ abajo a la izquierda.'
-      - 'Paso c: Para $7$, como es primo, su único divisor primo es $7$. Escribimos $7$ a la derecha y dividimos: $7 \div 7 = 1$. Llegamos a $1$.'
-      - 'Paso d: Tomamos los números de la derecha y expresamos el resultado: $28 = 2 \cdot 2 \cdot 7 = 2^2 \cdot 7$.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Descompón el número $45$ usando el método de la tabla.'
-    alternativas:
-      - '$3^2\cdot5$'
-      - '$3\cdot5^2$'
-      - '$9\cdot5$'
-    respuesta: "$3^2\\cdot5$"
-    solucion_pasos:
-      - 'Paso a: Colocamos $45$ a la izquierda. Como termina en cifra impar, no es divisible por $2$. Probamos con el primo $3$ (la suma de sus cifras es $4+5=9$, que es múltiplo de $3$). Escribimos $3$ a la derecha y dividimos: $45 \div 3 = 15$.'
-      - 'Paso b: Colocamos $15$ abajo a la izquierda. Volvemos a dividir por $3$: $15 \div 3 = 5$. Escribimos $5$ abajo a la izquierda y $3$ a la derecha.'
-      - 'Paso c: Colocamos $5$ a la izquierda. Su único divisor primo es $5$. Escribimos $5$ a la derecha y dividimos: $5 \div 5 = 1$.'
-      - 'Paso d: La columna de la derecha tiene los factores $\{3, 3, 5\}$. Así, la descomposición de $45$ es $3^2 \cdot 5$.'
-  - titulo: 'En la tabla de divisiones sucesivas de un número, ¿se deben colocar números compuestos en la columna de la derecha?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'La columna de la derecha está reservada exclusivamente para los divisores que son números primos.'
-      - 'Si se colocan números compuestos (como 4, 6 o 9), el resultado final no será una descomposición en factores primos.'
-  - titulo: 'Si al aplicar el método de la tabla para el número $30$ se obtiene la columna derecha con los valores $2$, $3$ y $5$, ¿es $2 \cdot 3 \cdot 5$ su descomposición prima?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Los valores obtenidos a la derecha ($2, 3$ y $5$) son todos números primos.'
-      - 'El producto de estos factores es $2 \cdot 3 \cdot 5 = 30$.'
-      - 'Por lo tanto, la descomposición prima es correcta y coincide con los valores de la columna derecha.'
+- titulo: Ejemplo 1
+  enunciado: Descomponga el número 40 usando el método de la tabla.
+  alternativas:
+  - 2^3 · 5
+  - 4 · 10
+  - 2^2 · 10
+  respuesta: 2^3 · 5
+  solucion_pasos:
+  - '$40 : 2 = 20$, $20 : 2 = 10$, $10 : 2 = 5$, $5 : 5 = 1$. Resultado: $2^3 \cdot
+    5$.'
+- titulo: Ejemplo 2
+  enunciado: ¿Qué números se deben colocar en la columna de la derecha en el método
+    de la tabla?
+  alternativas:
+  - Únicamente números primos
+  - Cualquier número entero
+  - Solo números pares
+  respuesta: Únicamente números primos
+  solucion_pasos:
+  - La descomposición exige usar exclusivamente factores primos.
+- titulo: ¿Finaliza el método de la tabla cuando el cociente obtenido es 1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el 1 indica la detención del algoritmo.
+- titulo: ¿Se puede usar el número 6 en la columna derecha de la tabla?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, el 6 es un número compuesto.
 errores_frecuentes:
-  - 'Colocar números compuestos en la columna de la derecha (como dividir por 4 en lugar de dividir por 2 dos veces).'
-  - 'Escribir el residuo en lugar del cociente en la columna de la izquierda.'
-  - 'No empezar o no intentar dividir por los primos más pequeños primero, lo que puede causar desorden o saltarse divisores primos.'
-  - 'Olvidar que el proceso termina únicamente cuando se llega al número 1 en la columna izquierda.'
-  - 'Realizar mal las divisiones mentales, arrastrando el error durante todo el resto de la tabla.'
+- En la columna de la derecha del método de la tabla se pueden usar números compuestos
+  como 4 u 8.
+- El algoritmo de la tabla finaliza cuando el cociente resultante llega a cero.
+- Realizar las divisiones en la tabla exige dividir siempre por el primo más grande
+  en primer lugar.
+- Multiplicar los cocientes de la columna izquierda entrega la descomposición prima
+  del número.
+- La tabla de descomposición no se puede aplicar a números impares.
 afirmaciones_verdaderas:
-  - "El método de la tabla termina cuando el cociente llega a 1."
-  - "Solo se pueden colocar números primos en la columna derecha de la tabla."
-al_terminar_debes_poder: |
-  Aplicar el método de la tabla de divisiones sucesivas para obtener la descomposición
-  prima de cualquier número compuesto.
-fuente: 'Teoría de Números'
+- El método de la tabla realiza divisiones sucesivas por factores primos hasta obtener
+  el cociente 1.
+- Todos los divisores colocados en la columna derecha de la tabla deben ser estrictamente
+  números primos.
+al_terminar_debes_ponder: Al terminar serás capaz de factorizar cualquier número usando
+  el método de la tabla de divisiones sucesivas por primos hasta reducir la cantidad
+  a 1.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

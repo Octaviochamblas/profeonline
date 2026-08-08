@@ -1,107 +1,139 @@
 semantic_id: MAT.NUM.ENTEROS_OPERATORIA.PAPOMUDAS_ORDEN
-resumen_inicial: "PAPOMUDAS fija el orden para resolver operaciones combinadas: Paréntesis, Potencias, Multiplicación/División (izq. a der.), Adición/Sustracción (izq. a der.)."
-explicacion_simple: |
-  Si armas un mueble sin seguir el orden de las instrucciones, ¡puede quedar cojo! En
-  matemáticas pasa lo mismo al combinar sumas, restas, multiplicaciones, divisiones y
-  paréntesis: necesitamos un orden para que todos lleguemos al mismo resultado. Ese orden
-  se recuerda con PAPOMUDAS: PArale-ntesis, POtencias, MUltiplicación, División, Adición,
-  Sustracción.
-explicacion_formal: |
-  El orden de prioridad es: 1) Paréntesis (del más interno al más externo), 2) Potencias,
-  3) Multiplicación y División —misma prioridad, se resuelven de izquierda a derecha—,
-  4) Adición y Sustracción —misma prioridad, de izquierda a derecha—. El orden de las
-  letras en "PAPOMUDAS" no implica que la multiplicación siempre vaya antes que la
-  división: ambas tienen igual jerarquía.
-definiciones_clave: |
-  **PAPOMUDAS**: acrónimo para el orden de prioridad de operaciones. **Prioridad igual**:
-  multiplicación/división entre sí, y adición/sustracción entre sí, se resuelven en el
-  orden en que aparecen (izquierda a derecha), no por tipo de operación.
-propiedades_relaciones: |
-  Multiplicación y división NO se resuelven "primero todas las multiplicaciones y luego
-  todas las divisiones"; se resuelven en el orden de aparición. Lo mismo aplica para suma
-  y resta.
+resumen_inicial: 'La prioridad de operaciones sigue el orden PAPOMUDAS: Paréntesis,
+  Potencias, Multiplicación/División y Adición/Sustracción.'
+explicacion_simple: 'Cuando en una misma expresión aparecen varias operaciones combinadas,
+  existe una jerarquía estricta que debemos respetar para obtener el resultado correcto.
+  El acrónimo PAPOMUDAS nos recuerda el orden obligatorio: primero los paréntesis,
+  luego las potencias, después las multiplicaciones y divisiones (de izquierda a derecha),
+  y finalmente las sumas y restas.'
+explicacion_formal: 'La **Jerarquía de Operaciones Combinadas** establece el orden
+  de evaluación unívoco sobre el árbol de sintaxis de una expresión $E$:
+
+
+  $$\text{Orden Estricto: } \text{Paréntesis} \to \text{Potencias} \to \text{Multiplicación
+  / División} \to \text{Adición / Sustracción}$$
+
+
+  **Desglose de la fórmula:**
+
+  - $\text{Paréntesis (PA)}$: Bloques delimitados $(), [], \{\}$ resueltos prioritariamente
+  desde el nivel más interno.
+
+  - $\text{Potencias (PO)}$: Evaluación de exponentes sobre sus bases correspondientes.
+
+  - $\text{Multiplicación / División (MU - D)}$: Operadores de igual jerarquía ejecutados
+  en orden de aparición de izquierda a derecha.
+
+  - $\text{Adición / Sustracción (A - S)}$: Operadores finales de menor jerarquía
+  ejecutados de izquierda a derecha.
+
+
+  > **Complemento didáctico:** En $5 + 3 \cdot 4$, se multiplica primero $3 \cdot
+  4 = 12$ y luego se suma $5 + 12 = 17$ (calcular $5+3=8$ y luego $8 \cdot 4=32$ es
+  un error grave).'
+definiciones_clave: '- **PAPOMUDAS**: Acrónimo mnemotécnico que fija la jerarquía
+  operativa en expresiones combinadas.
+
+  - **Igual jerarquía**: Multiplicación y división comparten nivel y se resuelven
+  en orden de lectura (izquierda a derecha).'
+propiedades_relaciones: '- **Lectura de izquierda a derecha**: En operadores de idéntica
+  jerarquía ($a : b \cdot c$), se resuelve la primera operación que aparece.'
 ejemplo_guiado:
-  enunciado: "Resuelve $20 \\div (-4) \\cdot 3$."
+  enunciado: 'Calcule la expresión combinada $10 - 2 \cdot (8 - 3)^2 : 5$ aplicando
+    PAPOMUDAS.'
   pasos:
-    - "División y multiplicación tienen igual prioridad: se resuelven de izquierda a derecha."
-    - 'Primero la división: $20\div(-4)=-5$.'
-    - 'Luego la multiplicación: $-5\cdot3=-15$.'
+  - 'Paso 1: Paréntesis: $(8 - 3) = 5$. La expresión queda $10 - 2 \cdot 5^2 : 5$.'
+  - 'Paso 2: Potencia: $5^2 = 25$. La expresión queda $10 - 2 \cdot 25 : 5$.'
+  - 'Paso 3: Multiplicación y División de izquierda a derecha: $2 \cdot 25 = 50$,
+    luego $50 : 5 = 10$. La expresión queda $10 - 10$.'
+  - 'Paso 4: Adición y Sustracción: $10 - 10 = 0$.'
+  - 'Conclusión: El resultado final es $0$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Es correcto resolver siempre todas las multiplicaciones antes que las divisiones?"
-    choices:
-      - {text: "Sí, siempre", is_correct: false}
-      - {text: "No, tienen igual prioridad y se resuelven de izquierda a derecha", is_correct: true}
-      - {text: "No, la división siempre va primero", is_correct: false}
-      - {text: "Depende del signo de los números", is_correct: false}
-    explanation: "La correcta es No, tienen igual prioridad y se resuelven de izquierda a derecha: el orden de las letras en PAPOMUDAS no indica prioridad entre ellas."
-    reinforcement_section: "Explicación formal"
-  - placement: after_ejemplo_guiado
-    question: "Con el mismo procedimiento del ejemplo guiado, ¿cuánto es $18 \\div (-3) \\cdot 2$?"
-    choices:
-      - {text: "$-12$", is_correct: true}
-      - {text: "$12$", is_correct: false}
-      - {text: "$-3$", is_correct: false}
-      - {text: "$3$", is_correct: false}
-    explanation: "La correcta es $-12$: primero $18\\div(-3)=-6$, luego $-6\\cdot2=-12$."
-    reinforcement_section: "Ejemplo guiado"
+- placement: after_explicacion_formal
+  question: En la expresión 6 + 4 · 3, ¿qué operación se debe realizar primero?
+  choices:
+  - text: La multiplicación 4 · 3
+    is_correct: true
+  - text: La suma 6 + 4
+    is_correct: false
+  - text: Es indiferente el orden
+    is_correct: false
+  - text: Restar 3 a 6
+    is_correct: false
+  explanation: La alternativa correcta es 'La multiplicación 4 · 3' por la jerarquía
+    PAPOMUDAS.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿cuál fue el resultado final de la expresión combinada?
+  choices:
+  - text: '0'
+    is_correct: true
+  - text: '10'
+    is_correct: false
+  - text: '80'
+    is_correct: false
+  - text: '-10'
+    is_correct: false
+  explanation: La alternativa correcta es '0'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Examina la expresión y resuelve primero las operaciones dentro de los paréntesis (PA).'
-  - 'Paso 2: Resuelve las potencias (PO) presentes.'
-  - 'Paso 3: Identifica las multiplicaciones y divisiones (MU-D) y resuélvelas en el orden en que aparecen de izquierda a derecha.'
-  - 'Paso 4: Identifica las sumas y restas (A-S) y resuélvelas de izquierda a derecha.'
-errores_correccion: |
-  Un error frecuente es resolver todas las multiplicaciones antes que todas las
-  divisiones (o viceversa) por el orden de las letras del acrónimo; en realidad tienen
-  igual prioridad y van en orden de aparición. Otro error es resolver de izquierda a
-  derecha ignorando por completo la jerarquía.
+- 'Paso 1: Resolver las operaciones dentro de los paréntesis más internos.'
+- 'Paso 2: Calcular el valor de todas las potencias.'
+- 'Paso 3: Resolver multiplicaciones y divisiones en orden de aparición de izquierda
+  a derecha.'
+- 'Paso 4: Resolver sumas y restas en orden de aparición de izquierda a derecha.'
+errores_correccion: '- **Error 1: Sumar antes de multiplicar en expresiones sin paréntesis
+  ($5 + 2 \cdot 3$).** **Cómo corregirlo:** La multiplicación tiene mayor jerarquía;
+  se hace $2 \cdot 3 = 6$ y luego $5 + 6 = 11$.
+
+
+  - **Error 2: Resolver multiplicaciones antes que divisiones cuando la división está
+  a la izquierda ($12 : 3 \cdot 2$).** **Cómo corregirlo:** Multiplicación y división
+  tienen la misma jerarquía; se resuelven de izquierda a derecha ($12 : 3 = 4 \implies
+  4 \cdot 2 = 8$).'
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: 'Resuelve la operación combinada: $5 + (-3) \cdot 4 - 12 \div (-6)$'
-    alternativas:
-      - "$-5$"
-      - "$5$"
-      - "$-9$"
-    respuesta: "$-5$"
-    solucion_pasos:
-      - 'Paso a: Buscamos paréntesis con operaciones dentro. No hay (los paréntesis solo protegen los signos negativos).'
-      - 'Paso b: Resolvemos multiplicaciones y divisiones de izquierda a derecha. Primero la multiplicación: $(-3) \cdot 4 = -12$. La expresión queda: $5 + (-12) - 12 \div (-6)$.'
-      - 'Paso c: Resolvemos la división: $12 \div (-6) = -2$. La expresión queda: $5 + (-12) - (-2)$.'
-      - 'Paso d: Resolvemos sumas y restas de izquierda a derecha: $5 - 12 = -7$. Luego $-7 - (-2) = -7 + 2 = -5$.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Resuelve la expresión: $24 \div (-4) \cdot 2$'
-    alternativas:
-      - "$-12$"
-      - "$12$"
-      - "$-3$"
-    respuesta: "$-12$"
-    solucion_pasos:
-      - 'Paso a: Identificamos que la división y la multiplicación tienen la misma prioridad.'
-      - 'Paso b: Resolvemos estrictamente de izquierda a derecha, comenzando con la división: $24 \div (-4) = -6$.'
-      - 'Paso c: Multiplicamos el resultado por 2: $-6 \cdot 2 = -12$.'
-  - titulo: '¿Da el mismo resultado resolver $(8 + 2) \cdot 3$ que $8 + 2 \cdot 3$?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'En $(8 + 2) \cdot 3$, el paréntesis tiene prioridad: $10 \cdot 3 = 30$.'
-      - 'En $8 + 2 \cdot 3$, la multiplicación tiene prioridad: $8 + 6 = 14$.'
-      - 'Los resultados son distintos ($30$ y $14$), lo que resalta la importancia de la jerarquía.'
-  - titulo: '¿Es correcto resolver siempre las multiplicaciones antes que las divisiones?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'La multiplicación y la división tienen exactamente el mismo nivel de prioridad.'
-      - 'Deben resolverse en el orden en que aparecen de izquierda a derecha.'
+- titulo: Ejemplo 1
+  enunciado: 'Calcule $18 - 6 : 2 + 5$.'
+  alternativas:
+  - '20'
+  - '11'
+  - '10'
+  respuesta: '20'
+  solucion_pasos:
+  - 'División primero: $6 : 2 = 3$. Luego resta y suma: $18 - 3 + 5 = 20$.'
+- titulo: Ejemplo 2
+  enunciado: 'Calcule $16 : 4 \cdot 2$.'
+  alternativas:
+  - '8'
+  - '2'
+  - '1'
+  respuesta: '8'
+  solucion_pasos:
+  - 'Igual jerarquía, de izquierda a derecha: $16 : 4 = 4 \implies 4 \cdot 2 = 8$.'
+- titulo: ¿Se debe resolver la multiplicación antes que la suma en una expresión combinada?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la multiplicación tiene mayor jerarquía que la adición.
+- titulo: '¿En la expresión 12 : 4 · 3 se debe hacer la multiplicación 4 · 3 antes
+    que la división?'
+  respuesta: 'No'
+  solucion_pasos:
+  - No, al tener igual jerarquía se resuelve de izquierda a derecha ($12:4=3 \implies
+    3·3=9$).
 errores_frecuentes:
-  - 'Resolver las operaciones en el orden físico de lectura (de izquierda a derecha) sin respetar las prioridades (ej: en $2 + 3 \cdot 4$, calcular primero $2 + 3 = 5$ y luego $5 \cdot 4 = 20$).'
-  - 'Realizar siempre las multiplicaciones antes que las divisiones por el orden de las letras en PAPOMUDAS.'
-  - 'Ignorar la prioridad de los paréntesis y resolver primero lo que está fuera.'
-  - 'Aplicar mal las reglas de signos al juntar los resultados intermedios.'
-  - 'Olvidar resolver de izquierda a derecha cuando quedan operaciones del mismo nivel (como restas consecutivas).'
+- En una expresión sin paréntesis se deben resolver las adiciones antes que las multiplicaciones.
+- La multiplicación tiene siempre una jerarquía estrictamente superior a la división
+  en PAPOMUDAS.
+- Resolver operaciones de izquierda a derecha se aplica únicamente cuando hay paréntesis.
+- Las potencias se calculan al final después de resolver todas las sumas y restas.
+- Los paréntesis se deben eliminar resolviendo las sumas exteriores en primer lugar.
 afirmaciones_verdaderas:
-  - "En PAPOMUDAS, los paréntesis se resuelven antes que las potencias."
-  - "Las multiplicaciones y divisiones se resuelven de izquierda a derecha en PAPOMUDAS."
-al_terminar_debes_poder: |
-  Resolver operaciones combinadas de enteros respetando estrictamente la jerarquía
-  PAPOMUDAS, incluyendo el orden de izquierda a derecha entre operaciones de igual
-  prioridad.
-fuente: "Matemática 7° Básico Tomo 1 — Enteros, p. 50"
+- El orden PAPOMUDAS exige resolver paréntesis, potencias, multiplicaciones/divisiones
+  y sumas/restas.
+- Multiplicación y división tienen la misma jerarquía y se resuelven en orden de izquierda
+  a derecha.
+al_terminar_debes_poder: Al terminar serás capaz de resolver operaciones combinadas
+  con enteros aplicando la jerarquía PAPOMUDAS, resolviendo paréntesis, potencias,
+  multiplicaciones/divisiones y sumas/restas en el orden correspondiente.
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
