@@ -87,6 +87,30 @@ def _auditor(_item, _level, _mode, candidates):
     }
 
 
+def _candidate_generator_many(count=1, level=1, **_kwargs):
+    return [
+        {
+            "text": f"Pregunta N{level} numero {index}",
+            "explanation": f"Explicación suficiente para la pregunta N{level} numero {index}.",
+            "cognitive_type": "aplicacion",
+            "choices": [
+                {"text": f"Opción correcta {index}", "is_correct": True},
+                {"text": f"Distractor A {index}", "is_correct": False},
+                {"text": f"Distractor B {index}", "is_correct": False},
+                {"text": f"Distractor C {index}", "is_correct": False},
+            ],
+        }
+        for index in range(1, count + 1)
+    ]
+
+
+def _auditor_many(_item, _level, _mode, candidates):
+    return candidates, {
+        index: {"accepted": True, "cognitive_type": "aplicacion", "audited_by": "test"}
+        for index in range(len(candidates))
+    }
+
+
 def _editorial_package():
     questions = []
     for level in (1, 2, 3):
@@ -232,6 +256,39 @@ class PublicationPipelineServiceTests(TestCase):
             Question.objects.get(publication_item=self.item).status,
             "publicada",
         )
+
+    def test_finalize_uses_shared_ambas_bucket_not_practice_plus_eval(self):
+        """Regresión: practice/eval comparten un único banco 'ambas' (PIPELINE_MODES),
+        así que la generación real deja el banco en max(practice, eval) por nivel, no en
+        su suma. `finalize_publication` exigía la suma cuando `question_distribution` no
+        venía en los metadatos (ruta de IA autónoma) y quedaba bloqueada para siempre."""
+        self.item.target_counts = {
+            "1": {"practice": {"pool": 3, "shown": 1}, "eval": {"pool": 2, "shown": 1}},
+            "2": {"practice": {"pool": 0, "shown": 0}, "eval": {"pool": 0, "shown": 0}},
+            "3": {"practice": {"pool": 0, "shown": 0}, "eval": {"pool": 0, "shown": 0}},
+        }
+        self.item.save(update_fields=["target_counts"])
+
+        process_publication_item(
+            self.item,
+            metadata_generator=_canonical,
+            candidate_generator=_candidate_generator_many,
+            auditor=_auditor_many,
+        )
+        self.item.refresh_from_db()
+        self.assertEqual(self.item.state, PublicationItem.STATE_QUESTIONS_READY)
+        self.assertEqual(
+            self.item.metadata["question_distribution"],
+            {"1": {"ambas": 3}, "2": {"ambas": 0}, "3": {"ambas": 0}},
+        )
+        # El banco es compartido: 3 preguntas en total (el pool más grande), no 3+2=5.
+        self.assertEqual(self.item.questions.filter(level=1, mode="ambas").count(), 3)
+
+        self.item.youtube_privacy = "public"
+        self.item.save(update_fields=["youtube_privacy"])
+        finalize_publication(self.item)  # antes del fix: PipelineError (esperaba 5, había 3)
+        self.item.refresh_from_db()
+        self.assertEqual(self.item.state, PublicationItem.STATE_PUBLISHED)
 
     def test_pipeline_prompts_request_latex_notation(self):
         """El documento canónico y el auditor saben que el formato es LaTeX (KaTeX)."""

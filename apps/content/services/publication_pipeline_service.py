@@ -845,6 +845,18 @@ def prepare_context_and_metadata(item, generator=None):
         )
         guide.resources.add(resource)
         target_counts = _target_counts(item)
+        # practice/eval comparten un único banco "ambas" (ver PIPELINE_MODES): la
+        # generación deja de crecer el banco de un nivel apenas alcanza el pool más
+        # grande entre ambos modos, así que lo esperado es ese máximo, no la suma.
+        document["question_distribution"] = {
+            str(level): {
+                "ambas": max(
+                    int(target_counts.get(str(level), {}).get("practice", {}).get("pool", 0)),
+                    int(target_counts.get(str(level), {}).get("eval", {}).get("pool", 0)),
+                )
+            }
+            for level in (1, 2, 3)
+        }
         item.canonical_guide = guide
         item.metadata = document
         item.target_counts = target_counts

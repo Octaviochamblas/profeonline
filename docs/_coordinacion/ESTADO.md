@@ -13,6 +13,20 @@
   Técnicas de Conteo y Distribución Binomial 44/44, `05.07` Distribución Normal 41/41.
   Redacción manual (sin API externa de IA) en todos los recursos. Reporte de cierre en
   `docs/reportes-sesion/2026-07-12-claude.md`.
+- **Fix del bug de `question_distribution` (pipeline de publicación por video) — CORREGIDO
+  por 🏛️ Claude 🟢 (2026-08-10):** causa raíz del bug documentado el 2026-08-01 (ver más
+  abajo): `practice`/`eval` comparten un único banco `"ambas"` (`PIPELINE_MODES`), así que
+  la generación real deja el banco en `max(practice, eval)` por nivel — pero
+  `finalize_publication` exigía la **suma** de ambos cuando `question_distribution` no
+  venía en los metadatos (ruta de IA autónoma, la única que nunca la escribía), bloqueando
+  la publicación automática para siempre (75 esperado vs. 45 real, con conteos por
+  defecto). Fix en la fuente: `prepare_context_and_metadata` ahora escribe
+  `question_distribution` en los metadatos con la misma semántica de banco compartido
+  (`máximo` por nivel, no suma) que ya usaba el camino de paquete editorial — una sola
+  fórmula de verdad en vez de dos que podían desincronizarse. Test de regresión nuevo en
+  `test_publication_pipeline.py`
+  (`test_finalize_uses_shared_ambas_bucket_not_practice_plus_eval`). El camino de paquete
+  editorial no cambia (seguirá funcionando igual).
 - **Nodos: actualización masiva a 12 secciones — CERRADO por 🔨 Antigravity 🟢
   (2026-08-07):** Actualizados y auditados en base de datos local al 100% de excelencia 129 recursos de contenido:
   `03.09.07` (6/6), Bloque `03.10` completo (82/82 recursos en 9 subtemas) y Bloque `03.11` completo (41/41 recursos en 6 subtemas).
@@ -73,12 +87,12 @@
   recurso, 14 sin playlist). De los 22 videos del grupo "Física", **18/20 publicados**
   en `dinamica`/`cinematica`/`mecanica-circular`/`energia-y-trabajo`/`centro-de-masa-y-torque`
   (2 saltados por transcripción degradada; 2 de "Ondas" sin tema asignado por el
-  usuario). **Bug real encontrado y documentado, sin corregir:** el camino de
-  autogeneración IA de `publication_pipeline_service.py` nunca escribe
-  `question_distribution`, así que `finalize_publication` cae a un cálculo de
-  respaldo que duplica el conteo esperado (75 en vez de 45) y **bloquea
-  permanentemente** la publicación por esa vía; se usó en su lugar el camino de
-  paquete editorial (`apply_editorial_package`, el mismo de Lenguaje Algebraico).
+  usuario). **Bug real encontrado y documentado; corregido el 2026-08-10** (ver entrada
+  arriba): el camino de autogeneración IA de `publication_pipeline_service.py` nunca
+  escribía `question_distribution`, así que `finalize_publication` caía a un cálculo de
+  respaldo que duplicaba el conteo esperado (75 en vez de 45) y **bloqueaba
+  permanentemente** la publicación por esa vía; en su momento se usó en su lugar el camino
+  de paquete editorial (`apply_editorial_package`, el mismo de Lenguaje Algebraico).
   Detalle completo en `reportes-sesion/2026-08-01.md`.
 - **Química orgánica, recurso 131 (radicales) nivel 3 — CORREGIDO por 🏛️ Claude 🟢
   (2026-08-01):** pendiente del reporte anterior. Las 30 preguntas eran genéricas de
