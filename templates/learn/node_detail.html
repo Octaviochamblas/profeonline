@@ -16,44 +16,106 @@
   padding: 0;
 }
 
-/* ── Objetivo ──────────────────────────────────────── */
-.learn-objetivo-card {
-  background: #eff6ff;
-  border-left: 4px solid #3b82f6;
-  border-radius: 10px;
-  padding: .85rem 1.1rem;
+/* ── Ícono de título, mismo lenguaje visual que los hitos ────────────── */
+.node-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
 }
-.learn-objetivo-card__label {
+.node-title-row__icon {
+  flex: 0 0 auto;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #14b8a6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.node-title-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  min-width: 0;
+  padding-top: .3rem;
+}
+
+/* ── Ruta de aprendizaje: rail vertical de hitos ─────────────────────── */
+.node-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.node-rail-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.node-rail-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 1.2rem;
+  top: 2.4rem;
+  bottom: -1.4rem;
+  width: 2px;
+  background: color-mix(in srgb, var(--primary) 25%, var(--border));
+  transform: translateX(-50%);
+}
+.node-rail-item__dot {
+  flex: 0 0 auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+.node-rail-item__dot--final {
+  background: linear-gradient(135deg, var(--primary), #14b8a6);
+}
+.node-rail-item__card {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgb(15 118 110 / 8%);
+  padding: 1.5rem 1.7rem;
+}
+.node-rail-item__card--final {
+  background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+  border-color: #99e6d5;
+}
+
+/* ── Objetivo / Introducción ──────────────────────────────────────── */
+.learn-objetivo-card__label,
+.learn-resumen-card__label {
   font-size: .68rem;
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: #3b82f6;
+  color: var(--primary);
   display: block;
   margin-bottom: .3rem;
 }
-.learn-objetivo-card p { margin: 0; color: #1e3a5f; font-size: .96rem; }
-
-/* ── Introducción ───────────────────────────────── */
-.learn-intro__body {
-  background: #f0fdf4;
-  border-left: 4px solid #22c55e;
-  border-radius: 10px;
-  padding: 1rem 1.2rem;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #14532d;
-}
-.learn-intro__body p { margin: 0 0 .6rem; }
+.learn-objetivo-card p { margin: 0; color: var(--text); font-size: .96rem; }
+.learn-intro__body p { margin: 0 0 .6rem; line-height: 1.7; }
 .learn-intro__body p:last-child { margin-bottom: 0; }
 
 /* ── Títulos de sección ─────────────────────────── */
-.learn-section { margin-top: 2rem; }
 .learn-section__title {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   letter-spacing: -.01em;
-  color: #3b6de0;
+  color: var(--primary);
   display: block;
   margin: 0 0 1rem;
 }
@@ -66,45 +128,23 @@
   margin: 0 0 1rem;
 }
 
-/* ── Tarjetas de texto (Resumen inicial, Explicaciones, Definiciones, etc.) ── */
+/* ── Reveal-on-scroll (comportamiento, sin caja propia: la caja la da .node-rail-item__card) ── */
 .learn-text-card {
-  background: #fff;
-  border: 1px solid #eef1f6;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, .07);
-  padding: 1.6rem 1.85rem;
   opacity: 0;
   transform: translateY(18px);
   transition: opacity .55s ease, transform .55s ease;
 }
 .learn-text-card.is-visible { opacity: 1; transform: translateY(0); }
-.learn-text-card .learn-section__title { font-size: 2.05rem; margin-bottom: .85rem; }
 @media (prefers-reduced-motion: reduce) {
   .learn-text-card { opacity: 1; transform: none; transition: none; }
 }
 
-/* ── Tarjeta resumen ────────────────────────────── */
-.learn-resumen-card {
-  background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
-  border: 1.5px solid #c4b5fd;
-  border-radius: 14px;
-  padding: 1.15rem 1.4rem;
-  margin-top: 2rem;
-}
-.learn-resumen-card__label {
-  font-size: .68rem;
-  font-weight: 800;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: #7c3aed;
-  display: block;
-  margin-bottom: .35rem;
-}
+/* ── Resumen final ──────────────────────────────── */
 .learn-resumen-card__obj { margin: 0 0 .5rem; font-size: 1.02rem; font-weight: 500; line-height: 1.55; color: #1e293b; }
 .learn-resumen-card__steps {
   margin: 0;
   font-size: .88rem;
-  color: #6d28d9;
+  color: var(--primary);
   font-weight: 600;
   line-height: 1.5;
 }
@@ -184,14 +224,14 @@
 }
 .learn-procedure__step {
   padding: .6rem .95rem;
-  background: #faf5ff;
-  border-left: 3px solid #7c3aed;
+  background: #f0fdfa;
+  border-left: 3px solid var(--primary);
   border-radius: 0 8px 8px 0;
   line-height: 1.55;
   color: #1e293b;
 }
 .learn-procedure__step-label {
-  color: #6d28d9;
+  color: var(--primary);
   font-weight: 800;
   margin-right: .15rem;
 }
@@ -290,6 +330,14 @@
 .ex-catbtn.cat-ok    { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d !important; font-weight:700; }
 .ex-catbtn.cat-err   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c !important; }
 .ex-catbtn:disabled  { cursor:default; opacity:.85; }
+
+@media (max-width: 700px) {
+  .node-title-row__icon { width: 2.6rem; height: 2.6rem; font-size: 1.3rem; }
+  .node-rail-item__dot { width: 2rem; height: 2rem; font-size: 1rem; }
+  .node-rail-item:not(:last-child)::before { left: 1rem; top: 2rem; }
+  .node-rail-item__card { padding: 1.1rem 1.25rem; }
+  .node-rail { gap: 1.1rem; }
+}
 </style>
 {% endblock %}
 
@@ -320,13 +368,18 @@
     </nav>
 
     <header class="resource-view__header">
-        <h1 class="resource-view__title">{{ node.name }}</h1>
-        {% if node.competencia %}
-        <div class="resource-view__meta">
-            <span class="resource-view__tag">{{ node.get_competencia_display }}</span>
-            {% if node.dificultad %}<span class="resource-view__tag">{{ node.get_dificultad_display }}</span>{% endif %}
+        <div class="node-title-row">
+            <span class="node-title-row__icon" aria-hidden="true">📚</span>
+            <div class="node-title-row__text">
+                <h1 class="resource-view__title">{{ node.name }}</h1>
+                {% if node.competencia %}
+                <div class="resource-view__meta">
+                    <span class="resource-view__tag resource-view__tag--level">{{ node.get_competencia_display }}</span>
+                    {% if node.dificultad %}<span class="resource-view__tag resource-view__tag--level">{{ node.get_dificultad_display }}</span>{% endif %}
+                </div>
+                {% endif %}
+            </div>
         </div>
-        {% endif %}
     </header>
 
     {% include "learn/_prereqs.html" %}
@@ -337,253 +390,276 @@
     </div>
 
     {% else %}
+    <div class="node-rail">
 
     {% if content.resumen_inicial %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Resumen inicial</h2>
-        <div class="resource-view__content">{{ content.resumen_inicial|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">🎯</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Resumen inicial</h2>
+            <div class="resource-view__content">{{ content.resumen_inicial|markdown }}</div>
+        </section>
+    </div>
     {% elif content.objetivo or content.introduccion %}
     {% if content.objetivo %}
-    <div class="learn-objetivo-card">
-        <span class="learn-objetivo-card__label">Objetivo</span>
-        <p>{{ content.objetivo }}</p>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">🎯</span>
+        <div class="learn-objetivo-card node-rail-item__card">
+            <span class="learn-objetivo-card__label">Objetivo</span>
+            <p>{{ content.objetivo }}</p>
+        </div>
     </div>
     {% endif %}
     {% if content.introduccion %}
-    <section class="learn-section learn-intro">
-        <div class="learn-intro__body">
-            {{ content.introduccion|markdown }}
-        </div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">📘</span>
+        <section class="learn-section learn-intro node-rail-item__card">
+            <div class="learn-intro__body">
+                {{ content.introduccion|markdown }}
+            </div>
+        </section>
+    </div>
     {% endif %}
     {% endif %}
 
     {% if content.explicacion_simple %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Explicación en palabras simples</h2>
-        <div class="resource-view__content">{{ content.explicacion_simple|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">💡</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Explicación en palabras simples</h2>
+            <div class="resource-view__content">{{ content.explicacion_simple|markdown }}</div>
+        </section>
+    </div>
     {% endif %}
 
     {% if content.explicacion_formal %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Explicación formal</h2>
-        <div class="resource-view__content">{{ content.explicacion_formal|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">💡</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Explicación formal</h2>
+            <div class="resource-view__content">{{ content.explicacion_formal|markdown }}</div>
+        </section>
+    </div>
     {% elif not content.explicacion_simple and content.explicacion %}
-    <section class="learn-section">
-        <h2 class="learn-section__title">Explicación</h2>
-        <div class="resource-view__content">
-            {{ content.explicacion|markdown }}
-        </div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">💡</span>
+        <section class="learn-section node-rail-item__card">
+            <h2 class="learn-section__title">Explicación</h2>
+            <div class="resource-view__content">
+                {{ content.explicacion|markdown }}
+            </div>
+        </section>
+    </div>
     {% endif %}
 
     {% include "learn/includes/_node_checkpoint.html" with checkpoint=checkpoint_after_formal %}
 
     {% if content.definiciones_clave %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Definiciones clave</h2>
-        <div class="resource-view__content">{{ content.definiciones_clave|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">📖</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Definiciones clave</h2>
+            <div class="resource-view__content">{{ content.definiciones_clave|markdown }}</div>
+        </section>
+    </div>
     {% endif %}
 
     {% if content.propiedades_relaciones %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Propiedades y relaciones importantes</h2>
-        <div class="resource-view__content">{{ content.propiedades_relaciones|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">🔗</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Propiedades y relaciones importantes</h2>
+            <div class="resource-view__content">{{ content.propiedades_relaciones|markdown }}</div>
+        </section>
+    </div>
     {% endif %}
 
     {% if content.ejemplo_guiado.enunciado %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Ejemplo guiado</h2>
-        <p class="resource-view__content">{{ content.ejemplo_guiado.enunciado|markdown }}</p>
-        <ul class="learn-procedure">
-            {% for paso in content.ejemplo_guiado.pasos %}
-            <li class="learn-procedure__step">{{ paso|bold_step }}</li>
-            {% endfor %}
-        </ul>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">✏️</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Ejemplo guiado</h2>
+            <p class="resource-view__content">{{ content.ejemplo_guiado.enunciado|markdown }}</p>
+            <ul class="learn-procedure">
+                {% for paso in content.ejemplo_guiado.pasos %}
+                <li class="learn-procedure__step">{{ paso|bold_step }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
     {% endif %}
 
     {% include "learn/includes/_node_checkpoint.html" with checkpoint=checkpoint_after_ejemplo %}
 
     {% if content.procedimiento %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Procedimiento</h2>
-        <ul class="learn-procedure">
-            {% for paso in content.procedimiento %}
-            <li class="learn-procedure__step">{{ paso|bold_step }}</li>
-            {% endfor %}
-        </ul>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">🔢</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Procedimiento</h2>
+            <ul class="learn-procedure">
+                {% for paso in content.procedimiento %}
+                <li class="learn-procedure__step">{{ paso|bold_step }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
     {% endif %}
 
     {% if content.errores_correccion %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Errores frecuentes y cómo corregirlos</h2>
-        <div class="resource-view__content">{{ content.errores_correccion|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">⚠️</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Errores frecuentes y cómo corregirlos</h2>
+            <div class="resource-view__content">{{ content.errores_correccion|markdown }}</div>
+        </section>
+    </div>
     {% endif %}
 
     {% if ejemplos %}
-    <section class="learn-section">
-        <h2 class="learn-section__title">Ejemplos</h2>
-        <p class="learn-section__hint">Responde los siguientes ejercicios para poner a prueba lo que acabas de aprender.</p>
-        <div class="learn-ejemplos-list">
-            {% for ej in ejemplos %}
-            {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
-            <div class="learn-ejemplo-card learn-exercise"
-                 data-format="true_false"
-                 data-answer="{{ ej.respuesta }}">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </div>
-                <div class="learn-ejemplo-card__body">
-                    <div class="learn-exercise__tf">
-                        <button type="button" class="ex-choice" data-value="Sí">Sí</button>
-                        <button type="button" class="ex-choice" data-value="No">No</button>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">💡</span>
+        <section class="learn-section node-rail-item__card">
+            <h2 class="learn-section__title">Ejemplos</h2>
+            <p class="learn-section__hint">Responde los siguientes ejercicios para poner a prueba lo que acabas de aprender.</p>
+            <div class="learn-ejemplos-list">
+                {% for ej in ejemplos %}
+                {% if ej.respuesta == "Sí" or ej.respuesta == "No" %}
+                <div class="learn-ejemplo-card learn-exercise"
+                     data-format="true_false"
+                     data-answer="{{ ej.respuesta }}">
+                    <div class="learn-ejemplo-card__header">
+                        <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                        <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo|markdown_inline }}</span>
                     </div>
-                    <div class="learn-exercise__feedback" hidden>
-                        <div class="learn-exercise__verdict"></div>
-                        {% if ej.solucion_pasos %}
-                        <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
-                        </ol>
-                        {% endif %}
+                    <div class="learn-ejemplo-card__body">
+                        <div class="learn-exercise__tf">
+                            <button type="button" class="ex-choice" data-value="Sí">Sí</button>
+                            <button type="button" class="ex-choice" data-value="No">No</button>
+                        </div>
+                        <div class="learn-exercise__feedback" hidden>
+                            <div class="learn-exercise__verdict"></div>
+                            {% if ej.solucion_pasos %}
+                            <ol class="learn-procedure" style="margin-top:.5rem">
+                                {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
+                            </ol>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
+                {% elif ej.alternativas %}
+                <div class="learn-ejemplo-card learn-exercise"
+                     data-format="multiple_choice"
+                     data-answer="{{ ej.respuesta }}">
+                    <div class="learn-ejemplo-card__header">
+                        <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                        <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo|markdown_inline }}</span>
+                    </div>
+                    <div class="learn-ejemplo-card__body">
+                        <ul class="learn-exercise__mc">
+                            {% for alt in ej.alternativas %}
+                            <li><button type="button" class="ex-choice" data-value="{{ alt }}">{{ alt|markdown_inline }}</button></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="learn-exercise__feedback" hidden>
+                            <div class="learn-exercise__verdict"></div>
+                            {% if ej.solucion_pasos %}
+                            <ol class="learn-procedure" style="margin-top:.5rem">
+                                {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
+                            </ol>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="learn-ejemplo-card learn-exercise"
+                     data-format="open_answer"
+                     data-answer="">
+                    <div class="learn-ejemplo-card__header">
+                        <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
+                        <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo|markdown_inline }}</span>
+                    </div>
+                    <div class="learn-ejemplo-card__body">
+                        <button type="button" class="ex-submit">Ver solución</button>
+                        <div class="learn-exercise__feedback" hidden>
+                            <div class="learn-exercise__verdict"></div>
+                            {% if ej.solucion_pasos %}
+                            <ol class="learn-procedure" style="margin-top:.5rem">
+                                {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
+                            </ol>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
             </div>
-            {% elif ej.respuesta == "Verdadero" or ej.respuesta == "Falso" %}
-            <div class="learn-ejemplo-card learn-exercise"
-                 data-format="true_false"
-                 data-answer="{{ ej.respuesta }}">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </div>
-                <div class="learn-ejemplo-card__body">
-                    <div class="learn-exercise__tf">
-                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
-                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
-                    </div>
-                    <div class="learn-exercise__feedback" hidden>
-                        <div class="learn-exercise__verdict"></div>
-                        {% if ej.solucion_pasos %}
-                        <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
-                        </ol>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% elif ej.alternativas %}
-            <div class="learn-ejemplo-card learn-exercise"
-                 data-format="multiple_choice"
-                 data-answer="{{ ej.respuesta }}">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </div>
-                <div class="learn-ejemplo-card__body">
-                    <ul class="learn-exercise__mc">
-                        {% for alt in ej.alternativas %}
-                        <li><button type="button" class="ex-choice" data-value="{{ alt }}">{{ alt|markdown_inline }}</button></li>
-                        {% endfor %}
-                    </ul>
-                    <div class="learn-exercise__feedback" hidden>
-                        <div class="learn-exercise__verdict"></div>
-                        {% if ej.solucion_pasos %}
-                        <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
-                        </ol>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% else %}
-            <div class="learn-ejemplo-card learn-exercise"
-                 data-format="open_answer"
-                 data-answer="">
-                <div class="learn-ejemplo-card__header">
-                    <span class="learn-ejemplo-card__num">{{ forloop.counter }}</span>
-                    <span class="learn-ejemplo-card__titulo">{{ ej.enunciado|default:ej.titulo }}</span>
-                </div>
-                <div class="learn-ejemplo-card__body">
-                    <button type="button" class="ex-submit">Ver solución</button>
-                    <div class="learn-exercise__feedback" hidden>
-                        <div class="learn-exercise__verdict"></div>
-                        {% if ej.solucion_pasos %}
-                        <ol class="learn-procedure" style="margin-top:.5rem">
-                            {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso }}</li>{% endfor %}
-                        </ol>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    </section>
+        </section>
+    </div>
     {% endif %}
 
     {% if vf_items %}
-    <section class="learn-section conceptual-section">
-        <h2 class="learn-section__title">Ejemplos Verdadero/Falso</h2>
-        <p class="learn-section__hint">Decide si cada afirmación es verdadera o falsa antes de ver la explicación.</p>
-        <div class="conceptual-list">
-            {% for item in vf_items %}
-            <div class="conceptual-item learn-exercise"
-                data-format="true_false"
-                data-answer="{{ item.answer }}">
-                <div class="conceptual-item__claim"><span>"{{ item.text }}"</span></div>
-                <div class="conceptual-item__body">
-                    <div class="learn-exercise__tf">
-                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
-                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
-                    </div>
-                    <div class="learn-exercise__feedback" hidden>
-                        <div class="learn-exercise__verdict"></div>
-                        <p style="margin-top:.4rem;font-size:.9rem;color:#374151;">
-                            {% if item.answer == "Falso" %}Esta afirmación describe un error frecuente: es <strong>incorrecta</strong>.{% else %}Esta afirmación es <strong>correcta</strong>.{% endif %}
-                        </p>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">✅</span>
+        <section class="learn-section conceptual-section node-rail-item__card">
+            <h2 class="learn-section__title">Ejemplos Verdadero/Falso</h2>
+            <p class="learn-section__hint">Decide si cada afirmación es verdadera o falsa antes de ver la explicación.</p>
+            <div class="conceptual-list">
+                {% for item in vf_items %}
+                <div class="conceptual-item learn-exercise"
+                    data-format="true_false"
+                    data-answer="{{ item.answer }}">
+                    <div class="conceptual-item__claim"><span>"{{ item.text|markdown_inline }}"</span></div>
+                    <div class="conceptual-item__body">
+                        <div class="learn-exercise__tf">
+                            <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                            <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                        </div>
+                        <div class="learn-exercise__feedback" hidden>
+                            <div class="learn-exercise__verdict"></div>
+                            <p style="margin-top:.4rem;font-size:.9rem;color:#374151;">
+                                {% if item.answer == "Falso" %}Esta afirmación describe un error frecuente: es <strong>incorrecta</strong>.{% else %}Esta afirmación es <strong>correcta</strong>.{% endif %}
+                            </p>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-    </section>
+        </section>
+    </div>
     {% endif %}
 
     {% if content.al_terminar_debes_poder %}
-    <section class="learn-section learn-text-card">
-        <h2 class="learn-section__title">Al terminar debes poder</h2>
-        <div class="resource-view__content">{{ content.al_terminar_debes_poder|markdown }}</div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">📌</span>
+        <section class="learn-section learn-text-card node-rail-item__card">
+            <h2 class="learn-section__title">Al terminar debes poder</h2>
+            <div class="resource-view__content">{{ content.al_terminar_debes_poder|markdown }}</div>
+        </section>
+    </div>
     {% endif %}
 
     {% if other_media %}
-    <section class="learn-section">
-        <h2 class="learn-section__title">Material adicional</h2>
-        <ul class="learn-media-list">
-            {% for m in other_media %}
-            <li>
-                {% if m.url %}
-                <a href="{{ m.url }}" target="_blank" rel="noopener">
-                    {{ m.get_video_kind_display|default:m.get_kind_display }}
-                </a>
-                {% elif m.file %}
-                <a href="{{ m.file.url }}" download>
-                    {{ m.get_kind_display }}
-                </a>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">📎</span>
+        <section class="learn-section node-rail-item__card">
+            <h2 class="learn-section__title">Material adicional</h2>
+            <ul class="learn-media-list">
+                {% for m in other_media %}
+                <li>
+                    {% if m.url %}
+                    <a href="{{ m.url }}" target="_blank" rel="noopener">
+                        {{ m.get_video_kind_display|default:m.get_kind_display }}
+                    </a>
+                    {% elif m.file %}
+                    <a href="{{ m.file.url }}" download>
+                        {{ m.get_kind_display }}
+                    </a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
     {% endif %}
 
     {% if content.fuente %}
@@ -593,98 +669,109 @@
     {% endif %}
 
     {% if content and content.resumen %}
-    <div class="learn-resumen-card">
-        <span class="learn-resumen-card__label">Resumen</span>
-        <p class="learn-resumen-card__obj">{{ content.resumen }}</p>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot node-rail-item__dot--final" aria-hidden="true">🏁</span>
+        <div class="learn-resumen-card node-rail-item__card node-rail-item__card--final">
+            <span class="learn-resumen-card__label">Resumen</span>
+            <p class="learn-resumen-card__obj">{{ content.resumen }}</p>
+        </div>
     </div>
     {% endif %}
 
     {% endif %}{# end if content #}
 
     {% if practice_bank %}
-    <section class="learn-section learn-practice">
-        <h2 class="learn-section__title">Practica</h2>
-        {% for block in practice_bank %}
-        <details class="learn-itemgroup">
-            <summary class="learn-itemgroup__titulo">{{ block.group.title }}</summary>
-            {% if block.group.purpose %}
-            <p class="learn-itemgroup__purpose">{{ block.group.purpose }}</p>
-            {% endif %}
-            <ol class="learn-exercise-list">
-                {% for ex in block.exercises %}
-                <li class="learn-exercise" id="ex-{{ ex.id }}"
-                    data-format="{{ ex.format }}"
-                    data-answer="{{ ex.correct_answer }}">
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">📝</span>
+        <section class="learn-section learn-practice node-rail-item__card">
+            <h2 class="learn-section__title">Practica</h2>
+            {% for block in practice_bank %}
+            <details class="learn-itemgroup">
+                <summary class="learn-itemgroup__titulo">{{ block.group.title }}</summary>
+                {% if block.group.purpose %}
+                <p class="learn-itemgroup__purpose">{{ block.group.purpose }}</p>
+                {% endif %}
+                <ol class="learn-exercise-list">
+                    {% for ex in block.exercises %}
+                    <li class="learn-exercise" id="ex-{{ ex.id }}"
+                        data-format="{{ ex.format }}"
+                        data-answer="{{ ex.correct_answer }}">
 
-                    <div class="learn-exercise__prompt">{{ ex.prompt|markdown }}</div>
+                        <div class="learn-exercise__prompt">{{ ex.prompt|markdown }}</div>
 
-                    {% if ex.format == "true_false" %}
-                    <div class="learn-exercise__tf">
-                        <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
-                        <button type="button" class="ex-choice" data-value="Falso">Falso</button>
-                    </div>
+                        {% if ex.format == "true_false" %}
+                        <div class="learn-exercise__tf">
+                            <button type="button" class="ex-choice" data-value="Verdadero">Verdadero</button>
+                            <button type="button" class="ex-choice" data-value="Falso">Falso</button>
+                        </div>
 
-                    {% elif ex.format == "multiple_choice" %}
-                    <ul class="learn-exercise__mc">
-                        {% for ch in ex.choices %}
-                        <li><button type="button" class="ex-choice" data-value="{{ ch }}">{{ ch|markdown_inline }}</button></li>
-                        {% endfor %}
-                    </ul>
+                        {% elif ex.format == "multiple_choice" %}
+                        <ul class="learn-exercise__mc">
+                            {% for ch in ex.choices %}
+                            <li><button type="button" class="ex-choice" data-value="{{ ch }}">{{ ch|markdown_inline }}</button></li>
+                            {% endfor %}
+                        </ul>
 
-                    {% elif ex.format == "matching" and ex.pattern.items and ex.pattern.categories %}
-                    <div class="learn-exercise__classify"
-                         data-answers="{{ ex.pattern.answer|to_json }}">
-                      <div class="classify-grid">
-                        {% for item in ex.pattern.items %}
-                        <div class="classify-row" data-item="{{ item }}">
-                          <span class="classify-row__label">{{ item }}</span>
-                          <div class="classify-row__cats">
-                            {% for cat in ex.pattern.categories %}
-                            <button type="button" class="ex-catbtn" data-cat="{{ cat }}">{{ cat }}</button>
+                        {% elif ex.format == "matching" and ex.pattern.items and ex.pattern.categories %}
+                        <div class="learn-exercise__classify"
+                             data-answers="{{ ex.pattern.answer|to_json }}">
+                          <div class="classify-grid">
+                            {% for item in ex.pattern.items %}
+                            <div class="classify-row" data-item="{{ item }}">
+                              <span class="classify-row__label">{{ item }}</span>
+                              <div class="classify-row__cats">
+                                {% for cat in ex.pattern.categories %}
+                                <button type="button" class="ex-catbtn" data-cat="{{ cat }}">{{ cat }}</button>
+                                {% endfor %}
+                              </div>
+                            </div>
                             {% endfor %}
                           </div>
+                          <button type="button" class="ex-submit classify-verify" disabled
+                                  style="margin-top:.75rem">Verificar</button>
                         </div>
-                        {% endfor %}
-                      </div>
-                      <button type="button" class="ex-submit classify-verify" disabled
-                              style="margin-top:.75rem">Verificar</button>
-                    </div>
 
-                    {% else %}
-                    <div class="learn-exercise__open">
-                        <textarea class="ex-input" rows="2"
-                            placeholder="Escribe tu respuesta aquí…"></textarea>
-                        <button type="button" class="ex-submit">Ver corrección</button>
-                    </div>
-                    {% endif %}
+                        {% else %}
+                        <div class="learn-exercise__open">
+                            <textarea class="ex-input" rows="2"
+                                placeholder="Escribe tu respuesta aquí…"></textarea>
+                            <button type="button" class="ex-submit">Ver corrección</button>
+                        </div>
+                        {% endif %}
 
-                    <div class="learn-exercise__feedback" hidden>
-                        <div class="learn-exercise__verdict"></div>
-                        {% if ex.solution_steps %}
-                        <div class="learn-exercise__steps">{{ ex.solution_steps|markdown }}</div>
-                        {% endif %}
-                        {% if ex.correct_answer %}
-                        <p class="learn-exercise__answer"><strong>Respuesta:</strong> {{ ex.correct_answer }}</p>
-                        {% endif %}
-                        {% if ex.explanation %}
-                        <div class="learn-exercise__explanation">{{ ex.explanation|markdown }}</div>
-                        {% endif %}
-                    </div>
-                </li>
-                {% endfor %}
-            </ol>
-        </details>
-        {% endfor %}
-    </section>
+                        <div class="learn-exercise__feedback" hidden>
+                            <div class="learn-exercise__verdict"></div>
+                            {% if ex.solution_steps %}
+                            <div class="learn-exercise__steps">{{ ex.solution_steps|markdown }}</div>
+                            {% endif %}
+                            {% if ex.correct_answer %}
+                            <p class="learn-exercise__answer"><strong>Respuesta:</strong> {{ ex.correct_answer }}</p>
+                            {% endif %}
+                            {% if ex.explanation %}
+                            <div class="learn-exercise__explanation">{{ ex.explanation|markdown }}</div>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </details>
+            {% endfor %}
+        </section>
+    </div>
     {% endif %}
 
     <!-- Sección de Evaluación de Dominio (Fase 4) -->
-    <section class="learn-section learn-assessment-section" id="assessment-section-root">
-        <h2 class="learn-section__title">Evaluación de dominio</h2>
-        <div id="assessment-container">
-            {% include "learn/includes/assessment_section.html" with node=node mastery=mastery %}
-        </div>
-    </section>
+    <div class="node-rail-item">
+        <span class="node-rail-item__dot" aria-hidden="true">🏆</span>
+        <section class="learn-section learn-assessment-section node-rail-item__card" id="assessment-section-root">
+            <h2 class="learn-section__title">Evaluación de dominio</h2>
+            <div id="assessment-container">
+                {% include "learn/includes/assessment_section.html" with node=node mastery=mastery %}
+            </div>
+        </section>
+    </div>
+
+    </div>{# .node-rail #}
 
     {% if previous_node or next_node %}
         <nav class="resource-navigation" aria-label="Navegación entre nodos">
