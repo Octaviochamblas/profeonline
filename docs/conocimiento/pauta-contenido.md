@@ -43,11 +43,19 @@ Ejemplo: `mat-num-enteros-conjunto-pares.yaml`
 semantic_id: MAT.NUM.<BLOQUE>.<RECURSO>
 resumen_inicial: "Una sola frase con la idea central del recurso, sin jerga."
 explicacion_simple: |
-  Texto muy simple, como para un alumno de 10 años, con una analogía concreta
-  del mundo real. Sin LaTeX ni tecnicismos. 3-4 frases.
+  Texto explicativo claro y didáctico que transmite la lógica intuitiva, el propósito
+  y el sentido del procedimiento algebraico. Sin adelantarse a resolver un ejemplo
+  numérico o algebraico particular (eso pertenece a `ejemplo_guiado`). 3-4 frases.
 explicacion_formal: |
-  Texto técnico en Markdown + LaTeX ($...$). Aquí sí se espera profundidad y
-  precisión matemática. Puede incluir la definición formal y por qué funciona.
+  Texto técnico en Markdown + LaTeX ($...$). Aquí se exige precisión matemática,
+  el desglose simbólico y didáctico de las fórmulas presentadas. Debe incluir:
+  1. Definición formal en LaTeX ($...$ o $$...$$). **IMPORTANTE:** Usar notación
+     algebraica escolar/PAES ($\mathbb{R}, \mathbb{Z}^+$, conjuntos, polinomios).
+     Está **estrictamente prohibido** usar herramientas de cálculo avanzado
+     (derivadas, derivadas parciales, integrales, límites) salvo que el tema lo
+     exija expresamente (ej. tasa de cambio instantánea en física/cálculo).
+  2. **Desglose simbólico**: Explicación de qué significa cada elemento, variable o notación (ej. $\prod$, $\min$, $\operatorname{gcd}$).
+  3. **Complemento didáctico**: Una síntesis al final que explique en lenguaje accesible qué asegura esa fórmula en la práctica.
 definiciones_clave: |
   Términos nuevos del recurso, en **negrita**, con su definición precisa.
 propiedades_relaciones: |
@@ -81,23 +89,29 @@ ejemplo_guiado:
 # resolver específicamente EL CONCEPTO de ESTE recurso, no un tema genérico de la
 # familia. Antes de cargar, verificar que ningún otro YAML del mismo sub-tema tenga
 # el mismo `enunciado`.
+#
+# ⚠️ TERCERA REGLA DURA (agregada 2026-08-07): Expresiones matemáticas en LaTeX
+# TODAS las expresiones matemáticas (variables, ecuaciones, polinomios, números con exponentes,
+# alternativas, enunciados) en las secciones `checkpoints` ("Comprueba tu avance"), `ejemplos` ("Ejemplos")
+# y `errores_frecuentes` / `afirmaciones_verdaderas` ("Ejemplos Verdadero/Falso") DEBEN estar encerradas
+# obligatoriamente entre signos de dólar ($...$ o $$...$$) para su renderizado profesional mediante KaTeX.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
-    question: "Pregunta conceptual sobre lo explicado arriba."
+    question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."
     choices:                       # Exactamente 4, 1 sola con is_correct: true
-      - {text: "Alternativa correcta", is_correct: true}
-      - {text: "Distractor 1", is_correct: false}
-      - {text: "Distractor 2", is_correct: false}
-      - {text: "Distractor 3", is_correct: false}
-    explanation: "La correcta es Alternativa correcta: por qué."  # debe MENCIONAR el texto de la correcta
+      - {text: "$(a + b)^2 = a^2 + 2ab + b^2$", is_correct: true}
+      - {text: "$a^2 + b^2$", is_correct: false}
+      - {text: "$a^2 - 2ab + b^2$", is_correct: false}
+      - {text: "$2a + 2b$", is_correct: false}
+    explanation: "La alternativa correcta es '$(a + b)^2 = a^2 + 2ab + b^2$'."  # debe MENCIONAR el texto de la correcta
     reinforcement_section: "Explicación formal"
   - placement: after_ejemplo_guiado
-    question: "Pregunta que reutiliza el mismo procedimiento del ejemplo guiado con otro número."
-    choices: [...]                 # mismo formato, 4 alternativas
-    explanation: "..."
+    question: "Pregunta que reutiliza el procedimiento con $(x + 5)^2$."
+    choices: [...]                 # mismo formato, 4 alternativas en LaTeX
+    explanation: "La alternativa correcta es '$...$'."
     reinforcement_section: "Ejemplo guiado"
 procedimiento:
-  - "Paso 1: descripción concisa del primer paso (puede tener $LaTeX$)."
+  - "Paso 1: descripción concisa del primer paso con $LaTeX$."
   - "Paso 2: ..."
 errores_correccion: |
   Texto explicativo (1-2 frases) sobre los 1-2 errores más frecuentes y cómo
@@ -105,29 +119,30 @@ errores_correccion: |
 ejemplos:
   # TIPO A — Selección múltiple, 3 alternativas (estándar desde 2026-08-03)
   - titulo: "Ejemplo 1"
-    enunciado: "La pregunta o situación real que el alumno debe analizar."
+    enunciado: "¿Cuál es el desarrollo de $(x + 3)^2$?"
     alternativas:
-      - "Alternativa correcta"
-      - "Distractor 1"
-      - "Distractor 2"
-    respuesta: "Alternativa correcta"   # debe calzar EXACTO (texto) con una de `alternativas`
+      - "$x^2 + 6x + 9$"
+      - "$x^2 + 9$"
+      - "$x^2 + 3x + 9$"
+    respuesta: "$x^2 + 6x + 9$"   # debe calzar EXACTO (texto) con una de `alternativas`
     solucion_pasos:
-      - "Explicación del primer paso."
-      - "Explicación del segundo paso."
+      - "1. Cuadrado del primero: $x^2$."
+      - "2. Doble producto: $2(x)(3) = 6x$."
+      - "3. Cuadrado del segundo: $3^2 = 9$. Resultado: $x^2 + 6x + 9$."
   # TIPO B — Ejemplo Sí/No interactivo (True/False en la UI)
-  - titulo: "¿Texto de la pregunta directamente en el título?"
+  - titulo: "¿Es $(x + 4)^2 = x^2 + 8x + 16$ una identidad correcta?"
     respuesta: "Sí"          # o "No"
     solucion_pasos:
-      - "Por qué la respuesta es Sí/No."
+      - "Sí, aplicando el producto notable se obtiene $x^2 + 8x + 16$."
 errores_frecuentes:
-  - "Afirmación falsa que un alumno podría creer (sin LaTeX o mínimo)."
-  - "Segunda afirmación falsa."
-  - "Tercera afirmación falsa."
-  - "Cuarta afirmación falsa."
-  - "Quinta afirmación falsa."
-afirmaciones_verdaderas:           # NUEVO desde 2026-08-04 — ver nota abajo
-  - "Afirmación cierta sobre el tema, breve y verificable."
-  - "Segunda afirmación cierta."
+  - "El desarrollo de $(a + b)^2$ equivale a la suma de cuadrados $a^2 + b^2$ sin término central."
+  - "Segunda afirmación falsa con expresiones en $LaTeX$."
+  - "Tercera afirmación falsa con expresiones en $LaTeX$."
+  - "Cuarta afirmación falsa con expresiones en $LaTeX$."
+  - "Quinta afirmación falsa con expresiones en $LaTeX$."
+afirmaciones_verdaderas:           # NUEVO desde 2026-08-04
+  - "El desarrollo del cuadrado de binomio $(a + b)^2$ genera un trinomio $a^2 + 2ab + b^2$."
+  - "Segunda afirmación cierta con expresiones en $LaTeX$."
 al_terminar_debes_poder: |
   1-2 frases: qué debe saber hacer el alumno al terminar este recurso.
 fuente: "Libro / apunte de referencia con página si aplica"
@@ -141,17 +156,17 @@ estado: publicado    # o borrador
 | `semantic_id` | Sí | Debe existir en la DB (`KnowledgeNode`). Formato: `MAT.NUM.BLOQUE.RECURSO` |
 | `resumen_inicial` | Sí | Una frase, sin jerga. Es lo primero que lee el alumno. |
 | `explicacion_simple` | Sí | Lenguaje de 10 años, con analogía concreta. Sin LaTeX pesado. |
-| `explicacion_formal` | Sí | Markdown + LaTeX. Definición precisa y por qué funciona. |
+| `explicacion_formal` | Sí | Markdown + LaTeX. Definición precisa con desglose de simbología de fórmulas y complemento didáctico final. |
 | `definiciones_clave` | Sí | Términos nuevos en **negrita** con su definición. |
 | `propiedades_relaciones` | Sí | Cómo se conecta con otros conceptos ya vistos. |
 | `ejemplo_guiado` | Sí | Objeto `{enunciado, pasos}`. Un solo problema resuelto paso a paso **con datos concretos** (números/expresión propios del enunciado, no el nombre del recurso repetido en una frase molde — ver regla dura junto al YAML de ejemplo arriba). |
-| `checkpoints` | Sí | **Exactamente 2** (`after_explicacion_formal` y `after_ejemplo_guiado`), 4 alternativas cada uno, 1 sola correcta, `explanation` debe mencionar el texto exacto de la correcta. Validado por `node_checkpoint_service.normalize_node_checkpoints`; si es inválido, `load_node_content` rechaza el archivo completo. |
-| `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. |
-| `errores_correccion` | Sí | Texto breve sobre 1-2 errores típicos. No sustituye `errores_frecuentes`. |
-| `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple, 3 alternativas) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. |
-| `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas (errores típicos). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
-| `afirmaciones_verdaderas` | Sí | **Mínimo 2**. Afirmaciones ciertas sobre el tema, breves y verificables. Sin ellas, la sección V/F muestra solo "Falso" siempre (comportamiento legado, ver nota abajo). |
-| `al_terminar_debes_poder` | Sí | 1-2 frases con la meta de aprendizaje del recurso. |
+| `checkpoints` | Sí | **Exactamente 2** (`after_explicacion_formal` y `after_ejemplo_guiado`), 4 alternativas cada uno, 1 sola correcta. **Obligatorio:** todas las expresiones matemáticas en preguntas, alternativas y explicaciones deben usar $LaTeX$. `explanation` debe comenzar literalmente por "La alternativa correcta es '...'" mencionando la opción correcta. Validado por `node_checkpoint_service.normalize_node_checkpoints`. |
+| `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. Expresiones matemáticas escritas en $LaTeX$. |
+| `errores_correccion` | Sí | Texto en Markdown que se muestra directamente en la sección visual **"Errores frecuentes y cómo corregirlos"**. Debe detallar 2-3 errores específicos del concepto y su respectiva forma de corregirlos (ej: `- **Error 1:** ... **Cómo corregirlo:** ...`). |
+| `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple, 3 alternativas) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. **Obligatorio:** enunciados, alternativas y pasos de solución deben expresar las fórmulas y términos en $LaTeX$. |
+| `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas particularizadas en $LaTeX$. Deben ser **afirmaciones matemáticas declarativas directas pero FALSAS** que un alumno pudiera dar por verdaderas. Está **estrictamente prohibido** usar muletillas o aseveraciones como *"Confundir..."*, *"Pensar que..."*, *"Olvidar..."*, *"Creer..."*, *"Asumir..."*, *"Omitir..."*, *"Errar..."* o aseveraciones sobre *omitir* elementos (ya que delatan de inmediato que la frase es falsa sin leer la matemática). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
+| `afirmaciones_verdaderas` | Sí | **Mínimo 2**. Afirmaciones ciertas sobre el tema en $LaTeX$, breves y verificables. Sin ellas, la sección V/F muestra solo "Falso" siempre. |
+| `al_terminar_debes_poder` | Sí | 1-2 frases que indiquen explícitamente **QUÉ** podrá hacer el alumno y **CÓMO** lo ejecutará (el criterio, algoritmo o verificación explícita). |
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
 
@@ -159,40 +174,7 @@ estado: publicado    # o borrador
 > "Ejemplos Verdadero/Falso" se construía únicamente desde `errores_frecuentes`,
 > así que la respuesta correcta era siempre "Falso". La vista
 > (`apps/learn/views.py::_true_false_items`) ahora mezcla ambos campos y los
-> presenta en orden aleatorio por cada carga de página. Mismo motivo por el
-> que las alternativas de `checkpoints` y de `ejemplos` (Tipo A) también se
-> aleatorizan en la vista (`_checkpoint_context`, `_shuffled_ejemplos`): antes
-> la alternativa correcta quedaba casi siempre primera porque así se redactó.
-> **No hace falta variar el orden al escribir el YAML** — pon la alternativa
-> correcta donde te resulte más natural redactar; la vista se encarga de
-> desordenarla en cada visita.
-
-### Sobre `ejemplos`: Tipo A vs Tipo B
-
-```yaml
-# TIPO A — Selección múltiple, 3 alternativas
-- titulo: "Ejemplo 1"          # Siempre "Ejemplo N"
-  enunciado: "La pregunta real que el alumno lee y piensa."
-  alternativas: [...]          # Exactamente 3, únicas, sin repetir
-  respuesta: "..."             # Debe calzar EXACTO (mismo texto) con una de `alternativas`
-  solucion_pasos: [...]        # Se muestra como argumento al responder (correcto o no)
-
-# TIPO B — Pregunta de Sí/No (interactiva)
-- titulo: "¿La pregunta va aquí directamente?"   # El título ES la pregunta
-  respuesta: "Sí"              # "Sí" o "No" — respuesta correcta
-  solucion_pasos: [...]        # Se muestra al responder
-```
-
-Ambos tipos aparecen como botones en la UI (3 alternativas en Tipo A, Sí/No en Tipo B). El
-alumno responde y recibe feedback inmediato (correcto/incorrecto) junto con `solucion_pasos`
-como argumento. **No generar `enunciado` en Tipo B** — el `titulo` ya es la pregunta.
-
-> **Historial:** hasta 2026-08-03 el Tipo A era una pregunta abierta sin alternativas, resuelta
-> con un botón "Ver solución" sin corrección. Se reemplazó por selección múltiple de 3
-> alternativas para que el alumno reciba feedback de correcto/incorrecto, igual que el Tipo B.
-> Un `ejemplos` sin `alternativas` ni `respuesta` en {Sí, No, Verdadero, Falso} sigue
-> renderizando como el formato abierto legado — no se rompe nada, pero ya no es el estándar
-> para contenido nuevo.
+> presenta en orden aleatorio por cada carga de página.
 
 ---
 
@@ -235,140 +217,12 @@ Cada recurso debe tener **exactamente 10 ejercicios**: uno por celda de esta tab
   "competencia": "M1",                 // M1 | M2 | U (según PAES)
   "prompt": "Texto de la pregunta (soporta $LaTeX$).",
   "choices": [
-    "Alternativa A",
-    "Alternativa B",
-    "Alternativa C",
-    "Alternativa D"
+    "Alternativa A en $LaTeX$",
+    "Alternativa B en $LaTeX$",
+    "Alternativa C en $LaTeX$",
+    "Alternativa D en $LaTeX$"
   ],
-  "correct_answer": "Alternativa A",   // debe coincidir EXACTAMENTE con uno de choices
-  "solution_steps": "Explicación breve de por qué esa es la correcta.",
-  "status": "ready",
-  "source_kind": "manual"
-}
-
-// true_false (procedimiento_basico)
-{
-  "stable_id": "ABBR-GEN-PROC-N",
-  "semantic_id": "MAT.NUM.BLOQUE.RECURSO",
-  "item_group": "procedimiento_basico",
-  "format": "true_false",
-  "difficulty": "basica",
-  "prompt": "¿Afirmación que el alumno evalúa como verdadera o falsa?",
-  "correct_answer": "Verdadero",       // "Verdadero" o "Falso"
-  "solution_steps": "Explicación.",
-  "status": "ready",
-  "source_kind": "manual"
-}
-
-// tipo_paes — igual que multiple_choice pero con paes_style: true
-{
-  ...
-  "item_group": "tipo_paes",
-  "difficulty": "media",
-  "paes_style": true,
-  "prompt": "Enunciado con contexto aplicado (situación real o matemática compleja).",
-  ...
+  "correct_choice_index": 0,           // 0, 1, 2 o 3
+  "explanation": "Paso 1: ...\nPaso 2: ... (soporta $LaTeX$ y saltos de línea con \n)"
 }
 ```
-
-### Convención de `stable_id`
-
-```
-{ABBR}-GEN-{GROUP}-{N}
-```
-
-| Segmento | Descripción | Ejemplo |
-|---|---|---|
-| `ABBR` | Abreviatura del recurso (3-6 letras) | `NAT`, `CARD`, `TRIC`, `VADEF` |
-| `GEN` | Indica que fue generado como banco general | fijo |
-| `GROUP` | Código del grupo | `CONC`, `REC`, `PROC`, `PAES` |
-| `N` | Número secuencial dentro del grupo | `1`, `2`, `3` |
-
-**El `stable_id` debe ser globalmente único.** Si un recurso ya tiene ejercicios con
-`ABBR-CONC-1` etc. (sin `GEN`), los nuevos van con `ABBR-GEN-CONC-1`.
-
----
-
-## 4. Cómo se conecta con la gamificación
-
-```
-YAML (NodeContent)                        JSONL (NodeExercise)
-──────────────────                        ────────────────────
-resumen_inicial + explicacion_simple  ──→ comprensión inicial
-explicacion_formal + definiciones_clave
-  + propiedades_relaciones            ──→ conocimiento de fondo
-ejemplo_guiado                        ──→ modelo resuelto paso a paso
-checkpoints (2)                       ──→ "Comprueba tu avance" (UI, sin XP)
-procedimiento                         ──→ pasos memorizables
-ejemplos                              ──→ práctica no medida (UI interactiva, sin XP)
-errores_frecuentes + afirmaciones_verdaderas
-  ──→ Ejemplos Verdadero/Falso, mezclados y aleatorizados (UI, sin XP)
-al_terminar_debes_poder               ──→ cierre / meta de aprendizaje
-
-                             conceptuales + reconocimiento
-                               ──→ QuizAttempt nivel 1 → ⭐
-                             procedimiento_basico
-                               ──→ QuizAttempt nivel 2 → ⭐⭐
-                             tipo_paes
-                               ──→ QuizAttempt nivel 3 → ⭐⭐⭐
-                             Aprobar nivel 3 → XP + skill desbloqueada
-```
-
-Los campos del YAML no generan XP por sí solos. El XP viene de los ejercicios
-del banco. Un recurso sin JSONL se puede leer, pero no se puede "ganar" en él.
-
----
-
-## 5. Checklist antes de cargar un recurso nuevo
-
-- [ ] `semantic_id` existe en la DB (`KnowledgeNode`)
-- [ ] YAML tiene los 12 campos obligatorios completos (ver tabla arriba)
-- [ ] `explicacion_simple` usa lenguaje simple (sin jerga, analogía concreta)
-- [ ] `ejemplo_guiado.enunciado` trae datos concretos (números/expresión propios), no es una
-      frase genérica con el nombre del recurso pegado — ni repite los mismos 4 `pasos` molde de
-      otro recurso del mismo sub-tema
-- [ ] `ejemplo_guiado.enunciado` es distinto (no copiado) del de cualquier otro recurso del
-      mismo sub-tema, y resuelve el concepto específico de ESTE recurso
-- [ ] `al_terminar_debes_poder` no está vacío (1-2 frases con la meta de aprendizaje)
-- [ ] `checkpoints`: exactamente 2 (`after_explicacion_formal`, `after_ejemplo_guiado`), 4 alternativas c/u, 1 sola correcta, `explanation` menciona el texto de la correcta
-- [ ] `ejemplos`: mínimo 2 Tipo A + 2 Tipo B (al final)
-- [ ] `errores_frecuentes`: exactamente 5 afirmaciones falsas
-- [ ] `afirmaciones_verdaderas`: mínimo 2 afirmaciones ciertas
-- [ ] `estado: publicado`
-- [ ] JSONL tiene 10 ejercicios por recurso: 3+1+3+3
-- [ ] `correct_answer` en multiple_choice coincide letra a letra con uno de `choices`
-- [ ] `stable_id` es único en todo el banco
-- [ ] Cargado con `python manage.py load_node_content` y `load_exercise_bank --file`
-
----
-
-## 6. Comandos de carga
-
-```bash
-# Cargar / actualizar contenido pedagógico de un recurso
-python manage.py load_node_content --file docs/conocimiento/contenido/mi-recurso.yaml
-
-# Cargar / actualizar ejercicios del banco
-python manage.py load_exercise_bank --file docs/conocimiento/ejercicios/mi-banco.jsonl
-
-# Cargar todo el contenido de una vez
-python manage.py load_node_content
-
-# Regenerar resúmenes con IA (requiere cuota Gemini disponible)
-python manage.py generate_node_summaries --all
-```
-
----
-
-## 7. Referencia rápida de campos LaTeX
-
-Usar `$...$` para inline y `$$...$$` para bloque en los campos de texto.
-Los YAMLs literales (`|`) preservan los backslashes: escribir `\\mathbb{Z}` en YAML.
-En JSONL (JSON), usar doble escape también: `"$\\\\mathbb{Z}$"`.
-
-| Lo que quieres escribir | YAML | JSONL |
-|---|---|---|
-| `ℤ` | `$\\mathbb{Z}$` | `"$\\\\mathbb{Z}$"` |
-| `|x|` | `$\|x\|$` | `"$\\|x\\|$"` |
-| `2n+1` | `$2n+1$` | `"$2n+1$"` |
-| `n ∈ ℤ` | `$n \\in \\mathbb{Z}$` | `"$n \\\\in \\\\mathbb{Z}$"` |
