@@ -63,6 +63,7 @@ contextualizados y de varios pasos donde el dato relevante deba extraerse del pr
 3. Las 3 alternativas incorrectas (distractores) deben ser plausibles: errores típicos de
    estudiante, nunca disparates obvios que se puedan descartar sin pensar.
 4. Sin alternativas "todas las anteriores" / "ninguna de las anteriores".
+5. **PROHIBICIÓN DURA DE MULETILLAS REVELADORAS:** Está estrictamente prohibido usar palabras como *"Confundir..."*, *"Asumir..."*, *"Pensar que..."*, *"Creer..."*, *"Olvidar..."*, *"Omitir..."*, *"Errar..."* ni ninguna palabra o forma de redacción que sugiera o delate que lo que se dice es falso solo por la forma de decirlo (meta-lenguaje). Toda alternativa incorrecta debe redactarse como una declaración matemática o conceptual directa.
 
 ## Reglas de la explicación
 

@@ -1,123 +1,106 @@
-resumen_inicial: El cálculo de una parte desconocida en un reparto proporcional determina
-  el valor $x_i$ de una de las tajadas o del total $T$ a partir de la constante de
-  proporcionalidad $k$ conocida.
-explicacion_simple: Si en un reparto nos dan como pista cuánto le tocó a una de las
-  personas, podemos descubrir el valor de la constante $k$ dividiendo esa tajada entre
-  su número de participación. Con esa constante $k$, podemos hallar cuánto les tocó
-  a las demás y el total sumado.
-explicacion_formal: 'Dada la relación de reparto $x_i = k \cdot a_i$, si se conoce
-  el valor de la parte $x_j$ y su índice $a_j$, la **Determinación de la Parte Desconóe
-  $x_i$ o del Total $T$** se obtiene mediante:
-
-
-  $$k = \frac{x_j}{a_j} \implies x_i = k \cdot a_i = \left( \frac{x_j}{a_j} \right)
-  \cdot a_i \quad \text{y} \quad T = k \cdot \sum a_i$$'
-definiciones_clave: '- **Parte desconocida en reparto**: Determinación de un sumando
-  o total mediante la constante $k = x_j / a_j$.'
-propiedades_relaciones: '- **Despeje por parte conocida**: $k = \frac{\text{Tajada
-  conocida}}{\text{Índice conocido}}$.'
-ejemplo_guiado:
-  enunciado: 'Tres socios se reparten ganancias en la razón $3 : 5 : 7$. Si al segundo
-    socio le corresponden \$250.000, halle el total de ganancias repartidas.'
-  pasos:
-  - 'Paso 1: Usar los datos del segundo socio ($x_2 = 250.000$, índice $a_2 = 5$)
-    para hallar $k$: $k = \frac{250.000}{5} = 50.000$.'
-  - 'Paso 2: Calcular la suma total de índices: $3 + 5 + 7 = 15$.'
-  - 'Paso 3: Calcular el total repartido $T = k \cdot \sum a_i = 50.000 \cdot 15 =
-    750.000$.'
-  - 'Conclusión: El total repartido fue \$750.000.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se calcula la constante de reparto k a partir de una tajada conocida
-    xj y su índice aj?
-  choices:
-  - text: Dividiendo el valor de la tajada conocida entre su índice correspondiente
-      (k = xj / aj)
-    is_correct: true
-  - text: Multiplicando k = xj · aj
-    is_correct: false
-  - text: Restando k = xj - aj
-    is_correct: false
-  - text: Sumando todos los coeficientes
-    is_correct: false
-  explanation: La alternativa correcta es 'Dividiendo el valor de la tajada conocida
-    entre su índice correspondiente (k = xj / aj)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para el segundo socio con $250.000 (índice 5), ¿cuál
-    fue el total de ganancias T?
-  choices:
-  - text: 750.000 $
-    is_correct: true
-  - text: 500.000 $
-    is_correct: false
-  - text: 1.000.000 $
-    is_correct: false
-  - text: 350.000 $
-    is_correct: false
-  explanation: La alternativa correcta es '750.000 $'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular partes desconocidas o
-  el total repartido $T$ despejando la constante $k = \frac{x_j}{a_j}$ a partir de
-  un dato conocido.
 semantic_id: MAT.NUM.REPARTO_ESCALAS.PARTE_DESCONOCIDA
+resumen_inicial: 'El cálculo de una parte desconocida en un reparto proporcional determina el valor de una asignación específica o de un índice desconocido a partir de una cuota parcial ya conocida.'
+explicacion_simple: |
+  En muchos problemas de reparto no te dan la suma total desde el inicio, sino que te dicen cuánto recibió uno de los beneficiarios. Para encontrar la cuota de los demás o el total repartido:
+  1. Usas la cuota conocida para calcular la constante de reparto $k = \frac{\text{Cuota Conocida}}{\text{Su Índice}}$.
+  2. Una vez que tienes el valor de $k$, la utilizas para calcular cualquier otra parte multiplicando $k \cdot \text{Índice Desconocido}$.
+explicacion_formal: |
+  ### Definición formal
+  En un sistema de reparto proporcional directo con cuotas $\{x_1, x_2, \dots, x_n\}$ e índices $\{a_1, a_2, \dots, a_n\}$, si se conoce únicamente la cuota asignada $x_j$ correspondiente al índice $a_j$:
+  - La **constante de reparto unívoca $k$** viene dada por:
+    $$k = \frac{x_j}{a_j}$$
+
+  ### Determinación de otra cuota $x_i$
+  Con la constante $k$ calculada, la cuota correspondiente a cualquier otro índice conocido $a_i$ se obtiene mediante:
+  $$x_i = k \cdot a_i = \left(\frac{x_j}{a_j}\right) \cdot a_i$$
+
+  ### Determinación del índice desconocido $a_m$ dada su cuota $x_m$
+  Si se conoce la cuota $x_m$ recibida por un participante pero se desconoce su índice $a_m$:
+  $$a_m = \frac{x_m}{k} = \frac{x_m \cdot a_j}{x_j}$$
+
+  ### Determinación de la cantidad total repartida $C$
+  La suma total de todas las partes asignadas es:
+  $$C = \sum_{i=1}^n x_i = k \cdot \sum_{i=1}^n a_i = \left(\frac{x_j}{a_j}\right) \cdot S_{\text{total}}$$
+
+  ### Síntesis didáctica
+  - Paso 1: Hallar $k = \frac{x_{\text{conocido}}}{a_{\text{conocido}}}$.
+  - Paso 2: Calcular la incógnita como $x_{\text{buscado}} = k \cdot a_{\text{buscado}}$ o $a = \frac{x}{k}$.
+definiciones_clave: |
+  - **Cuota de referencia $x_j$**: Asignación parcial conocida que permite deducir la constante global de repartición $k$.
+  - **Índice incógnito $a_m$**: Coeficiente o mérito desconocido que se calcula dividiendo la cuota parcial entre $k$.
+  - **Deducción por razón unitaria**: Método que calcula el valor correspondiente a 1 unidad de índice antes de hallar la parte buscada.
+propiedades_relaciones: |
+  - **Proporción de partes individuales**: La razón entre dos partes asignadas es igual a la razón entre sus respectivos índices: $\frac{x_i}{x_j} = \frac{a_i}{a_j}$.
+  - **Independencia del total $C$**: No se requiere conocer el monto total $C$ para calcular una parte desconocida si se dispone de una cuota y su índice.
+ejemplo_guiado:
+  enunciado: 'En un reparto proporcional directo según los índices $3, 5$ y $8$, la persona con índice $5$ recibe $\$25.000$. Calcula cuánto dinero recibe la persona con índice $8$ y cuál fue la suma total repartida.'
+  pasos:
+    - 'Paso 1: Calculamos la constante de reparto $k$ dividiendo la cuota conocida por su índice: $k = \frac{25.000}{5} = 5.000$.'
+    - 'Paso 2: Calculamos la parte buscada para el índice $8$: $x_3 = k \cdot 8 = 5.000 \cdot 8 = \$40.000$.'
+    - 'Paso 3: Calculamos la parte para el primer índice $3$: $x_1 = 5.000 \cdot 3 = \$15.000$.'
+    - 'Paso 4: Sumamos todas las partes para hallar el total repartido: $C = 15.000 + 25.000 + 40.000 = \$80.000$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'Si se conoce que la cuota de un beneficiario es $\$12.000$ y su índice de reparto es $4$, ¿cuál es el valor de la constante $k$ y cuánto recibe la persona con índice $7$?'
+    choices:
+      - {text: '$k = 3.000$ (dividiendo $12.000 / 4$), y la parte para índice $7$ es $\$21.000$ ($3.000 \cdot 7 = 21.000$)', is_correct: true}
+      - {text: '$k = 48.000$, y recibe $\$336.000$', is_correct: false}
+      - {text: '$k = 3.000$, y recibe $\$12.000$', is_correct: false}
+      - {text: '$k = 8.000$, y recibe $\$56.000$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$k = 3.000$ (dividiendo $12.000 / 4$), y la parte para índice $7$ es $\$21.000$ ($3.000 \cdot 7 = 21.000$)''. $k = 12.000 / 4 = 3.000$; cuota para 7: $7 \cdot 3.000 = 21.000$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si dos partes de un reparto proporcional directo están en razón $3 : 5$ y la parte mayor es $\$35.000$, ¿cuál es el valor de la parte menor?'
+    choices:
+      - {text: '$\$21.000$, pues la constante es $k = 35.000 / 5 = 7.000$, y $3 \cdot 7.000 = 21.000$', is_correct: true}
+      - {text: '$\$15.000$, restando $20.000$', is_correct: false}
+      - {text: '$\$30.000$, aproximando la cifra', is_correct: false}
+      - {text: '$\$7.000$, que es la constante', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$21.000$, pues la constante es $k = 35.000 / 5 = 7.000$, y $3 \cdot 7.000 = 21.000$''. $k = 35.000/5 = 7.000 \implies x_1 = 3 \cdot 7.000 = 21.000$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar el tipo de problema (reparto proporcional directo/inverso o
-  cálculo de escalas).'
-- 'Paso 2: Convertir unidades de medida a un sistema homogéneo común (en el caso de
-  escalas).'
-- 'Paso 3: Calcular la constante de proporcionalidad $k$ o la escala $E$ y resolver
-  la incógnita solicitada.'
-errores_correccion: '- **Error 1: Calcular la escala dividiendo medidas en distintas
-  unidades (ej: metros entre centímetros directamente).** **Cómo corregirlo:** Se
-  DEBEN convertir ambas distancias a la MISMA unidad de medida antes de calcular $n
-  = R / d$.
-
-
-  - **Error 2: Tratar un reparto inverso como si fuera directo dividiendo el total
-  por los índices sin invertirlos.** **Cómo corregirlo:** En el reparto inverso se
-  DEBEN invertir previamente los coeficientes ($1/a_i$).'
+  - 'Paso 1: Identificar la cuota asignada conocida $x_j$ y su correspondiente índice $a_j$.'
+  - 'Paso 2: Calcular la constante de reparto dividiendo la cuota entre su índice ($k = \frac{x_j}{a_j}$).'
+  - 'Paso 3: Para hallar una parte desconocida $x_i$, multiplicar la constante $k$ por el índice $a_i$.'
+  - 'Paso 4: Para hallar un índice desconocido $a_m$, dividir la cuota $x_m$ entre la constante $k$.'
+errores_correccion: |
+  - **Error 1:** Multiplicar la cuota conocida por el nuevo índice sin haber dividido primero entre su índice correspondiente. **Cómo corregirlo:** Primero debes calcular la constante unitaria **$k = \frac{x_{\text{conocida}}}{a_{\text{conocido}}}$** antes de multiplicar por el nuevo índice.
+  - **Error 2:** Confundir qué número es la cuota de dinero y qué número es el índice del beneficiario. **Cómo corregirlo:** La cuota $x$ tiene unidades de dinero o cantidad repartida, mientras que el índice $a$ es la proporción de puntos, horas o boletos.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.REPARTO_ESCALAS.PARTE_DESCONOCIDA.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa del reparto proporcional o escalas.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la constante k o escala E.
-  alternativas:
-  - Cumple la constante
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la constante
-  solucion_pasos:
-  - Demostración formal de equivalencia proporcional.
-- titulo: ¿Conserva el reparto proporcional la suma del total T?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, la suma de las partes repartidas equivale a $T$.
-- titulo: ¿Exige la escala expresarse en las mismas unidades de medida?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para obtener una razón adimensional $1:n$.
+  - titulo: 'Cálculo de cuota desconocida a partir de una parte'
+    enunciado: 'Si el índice $2$ recibe $\$14.000$ ($k=7.000$), ¿cuánto recibe el índice $6$?'
+    alternativas:
+      - 'Recibe $\$42.000$, pues $6 \cdot 7.000 = 42.000$'
+      - 'Recibe $\$28.000$'
+      - 'Recibe $\$84.000$'
+    respuesta: 'Recibe $\$42.000$, pues $6 \cdot 7.000 = 42.000$'
+    solucion_pasos:
+      - '1. Constante: $k = 14.000 / 2 = 7.000$.'
+      - '2. Cuota para índice 6: $6 \cdot 7.000 = \$42.000$.'
+  - titulo: 'Cálculo del total sin conocerlo inicialmente'
+    enunciado: 'En el reparto con índices $2, 5, 6$ donde índice $2$ recibe $\$14.000$, ¿el total es $\$91.000$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Suma de índices $= 2 + 5 + 6 = 13 \implies C = 13 \cdot 7.000 = \$91.000$.'
+  - titulo: 'Cálculo de un índice desconocido'
+    enunciado: 'Si $k = 5.000$ y una persona recibe $\$35.000$, ¿su índice de reparto es $7$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Índice $a = 35.000 / 5.000 = 7$.'
+  - titulo: 'Diferencia entre dos partes'
+    enunciado: 'Si los índices son $3$ y $7$ con $k=4.000$, ¿la diferencia entre las dos partes es de $\$16.000$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Diferencia de índices $= 7 - 3 = 4 \implies 4 \cdot 4.000 = \$16.000$.'
 errores_frecuentes:
-- Calcular una escala dividiendo la distancia en metros entre los centímetros del
-  plano sin convertir unidades.
-- Realizar un reparto proporcional inverso sumando los coeficientes directamente como
-  si fuera un reparto directo.
-- Invertir el orden de la escala dividiendo la medida del plano por la medida real
-  ($d / R$) para la constante $n$.
-- Omitir multiplicar la constante de reparto $k$ por cada uno de los coeficientes
-  individuales al finalizar.
-- Restar los coeficientes al calcular el total repartido en una serie de razones.
+  - 'Multiplicar la cuota conocida directamente por el nuevo índice sin calcular previamente la constante $k$.'
+  - 'Dividir el nuevo índice entre la cuota en lugar de utilizar la constante de reparto.'
+  - 'Invertir la posición de la cuota y el índice al determinar $k = x / a$.'
+  - 'Es obligatorio conocer la cantidad total repartida $C$ para poder hallar una cuota parcial.'
+  - 'Las unidades del índice de reparto coinciden numéricamente con las unidades monetarias de la cuota.'
 afirmaciones_verdaderas:
-- El reparto proporcional directo distribuye un total multiplicando la constante $k
-  = \frac{T}{\sum a_i}$ por cada índice.
-- 'La escala de un plano $E = \frac{d}{R} = 1 : n$ relaciona la distancia dibujada
-  y la real expresadas en idéntica unidad.'
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+  - 'Dada una cuota asignada $x_j$ y su índice $a_j$, la constante de reparto es $k = \frac{x_j}{a_j}$.'
+  - 'La razón entre dos partes asignadas en un reparto directo es igual a la razón entre sus respectivos índices ($\frac{x_i}{x_j} = \frac{a_i}{a_j}$).'
+al_terminar_debes_poder: 'Calcular partes e índices desconocidos en un reparto proporcional a partir de una asignación parcial dada.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

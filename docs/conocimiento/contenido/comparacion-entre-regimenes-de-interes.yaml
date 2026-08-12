@@ -1,134 +1,111 @@
-resumen_inicial: La comparación entre regímenes demuestra que para $t = 1$ ambos devuelven
-  el mismo monto, pero para $t > 1$ el interés compuesto supera estrictamente al simple
-  debido a la capitalización periódica.
-explicacion_simple: Si comparamos el interés simple y el compuesto en el primer período,
-  ambos dan exactamente la misma ganancia. Sin embargo, a partir del segundo período
-  en adelante, el interés compuesto siempre le gana al simple porque calcula intereses
-  sobre los intereses ya ganados.
-explicacion_formal: 'Para un capital $C$ y tasa $i$, la **Comparación entre Montos
-  $M_s(t)$ y $M_c(t)$** satisface las tres condiciones de dominio:
-
-
-  1. Para $t = 0$: $M_s(0) = M_c(0) = C$.
-
-  2. Para $t = 1$: $M_s(1) = M_c(1) = C(1 + i)$.
-
-  3. Para $t > 1$: $M_c(t) > M_s(t) \iff C(1+i)^t > C(1+i \cdot t)$.'
-definiciones_clave: '- **Comparación de regímenes**: Demostración de dominancia del
-  interés compuesto $M_c > M_s$ para $t > 1$.'
-propiedades_relaciones: '- **Punto de corte en $t=1$**: Coincidencia exacta de rendimientos
-  al final del primer período.'
-ejemplo_guiado:
-  enunciado: Compare el monto alcanzado por \$100.000 al $10\%$ anual en régimen simple
-    vs compuesto para $t=1$ y $t=3$ años.
-  pasos:
-  - 'Paso 1: Para $t=1$ año:
-
-    - Simple: $M_s = 100.000 \cdot (1 + 0,10) = 110.000$.
-
-    - Compuesto: $M_c = 100.000 \cdot (1 + 0,10)^1 = 110.000$.
-
-    - Resultado: $M_s = M_c = 110.000$.'
-  - 'Paso 2: Para $t=3$ años:
-
-    - Simple: $M_s = 100.000 \cdot (1 + 0,30) = 130.000$.
-
-    - Compuesto: $M_c = 100.000 \cdot 1,10^3 = 133.100$.
-
-    - Resultado: $M_c > M_s$ (ganancia adicional de \$3.100 en compuesto).'
-  - 'Conclusión: Coinciden en $t=1$, pero el compuesto domina para $t > 1$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿En qué momento temporal coinciden exactamente los montos acumulados por
-    el interés simple y el compuesto?
-  choices:
-  - text: Al finalizar el primer período de capitalización (t = 1)
-    is_correct: true
-  - text: Al cabo de 10 años
-    is_correct: false
-  - text: Nunca coinciden
-    is_correct: false
-  - text: Siempre coinciden en todos los períodos
-    is_correct: false
-  explanation: La alternativa correcta es 'Al finalizar el primer período de capitalización
-    (t = 1)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para $100.000 al 10% a 3 años, ¿cuál fue la diferencia
-    a favor del interés compuesto?
-  choices:
-  - text: 3.100 $ adicionales (133.100 $ vs 130.000 $)
-    is_correct: true
-  - text: 10.000 $ adicionales
-    is_correct: false
-  - text: Cero diferencia
-    is_correct: false
-  - text: 30.000 $ adicionales
-    is_correct: false
-  explanation: La alternativa correcta es '3.100 $ adicionales (133.100 $ vs 130.000
-    $)'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de comparar numéricamente y gráficamente
-  los regímenes de interés simple y compuesto evaluando la dominancia para $t > 1$.
 semantic_id: MAT.NUM.INTERES_COMPUESTO.COMPARACION_REGIMENES
+resumen_inicial: 'La comparación entre regímenes de interés contrasta el modelo de crecimiento lineal del interés simple ($M_S = C(1 + i \cdot n)$) frente al modelo de crecimiento exponencial del interés compuesto ($M_C = C(1 + i)^n$).'
+explicacion_simple: |
+  Para entender cuál régimen te conviene más al ahorrar o pedir prestado:
+  - **Interés Simple**: Es una **recta**. Los intereses de cada año son idénticos porque no se suman al capital.
+  - **Interés Compuesto**: Es una **curva exponencial**. Los intereses de cada año aumentan porque se calculan sobre un total cada vez mayor.
+  - En el primer año ($n=1$), ambos dan **exactamente el mismo resultado**.
+  - A partir del segundo año ($n>1$), el **interés compuesto siempre produce más dinero** que el interés simple.
+explicacion_formal: |
+  ### Definición formal
+  Sean $M_S(n)$ y $M_C(n)$ las funciones de acumulación del monto para un capital $C$ y una tasa periódica $i > 0$:
+  - **Régimen de Interés Simple (Modelo Lineal/Afín)**:
+    $$M_S(n) = C \cdot (1 + i \cdot n)$$
+  - **Régimen de Interés Compuesto (Modelo Exponencial)**:
+    $$M_C(n) = C \cdot (1 + i)^n$$
+
+  ### Teorema de Comparación de Regímenes
+  1. **Para $n = 0$ (Instante inicial)**:
+     $$M_S(0) = M_C(0) = C$$
+  2. **Para $n = 1$ (Primer período de capitalización)**:
+     $$M_S(1) = C(1 + i) = M_C(1) \quad (\text{Coincidencia de valores})$$
+  3. **Para $0 < n < 1$ (Fracción del primer período)**:
+     $$M_S(n) > M_C(n) \quad (\text{El régimen simple supera al compuesto})$$
+  4. **Para $n > 1$ (Múltiples períodos)**:
+     $$M_C(n) > M_S(n) \quad (\text{El régimen compuesto domina estrictamente al simple})$$
+
+  ### Brecha de Rendimiento Acumulado ($\Delta M$)
+  $$\Delta M(n) = M_C(n) - M_S(n) = C \cdot \left[(1 + i)^n - (1 + i \cdot n)\right] > 0 \quad (\forall n > 1)$$
+
+  ### Síntesis didáctica
+  - Coincidencia: En $n=1$, $M_S = M_C$.
+  - Dominancia a largo plazo: En $n>1$, $M_C > M_S$.
+definiciones_clave: |
+  - **Crecimiento lineal**: Modelo de acumulación por suma constante ($+C \cdot i$ por período).
+  - **Crecimiento exponencial**: Modelo de acumulación por producto continuado ($\cdot (1+i)$ por período).
+  - **Punto de intersección ($n=1$)**: Instante donde el rendimiento simple y compuesto se equiparan.
+propiedades_relaciones: |
+  - **Efecto bola de nieve**: La brecha $\Delta M(n)$ crece a un ritmo acelerado a medida que aumenta el plazo $n$.
+  - **Preferencia financiera**: Los inversionistas prefieren interés compuesto; los deudores prefieren interés simple para plazos largos.
+ejemplo_guiado:
+  enunciado: 'Un capital de $\$100.000$ se coloca durante $3$ años al $10\%$ anual. Compara el monto final obtenido bajo interés simple vs bajo interés compuesto y calcula la diferencia a favor del régimen compuesto.'
+  pasos:
+    - 'Paso 1: Calculamos el monto simple: $M_S = 100.000 \cdot (1 + 0,10 \cdot 3) = 100.000 \cdot 1,30 = \$130.000$.'
+    - 'Paso 2: Calculamos el monto compuesto: $M_C = 100.000 \cdot (1,10)^3 = 100.000 \cdot 1,331 = \$133.100$.'
+    - 'Paso 3: Calculamos la diferencia: $\Delta M = 133.100 - 130.000 = \$3.100$.'
+    - 'Paso 4: Conclusión: El interés compuesto genera **$\$3.100$ más de ganancia** que el interés simple.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿En qué momento o período de capitalización el interés simple y el interés compuesto entregan exactamente el mismo monto acumulado?'
+    choices:
+      - {text: 'En el primer período completo de capitalización ($n = 1$)', is_correct: true}
+      - {text: 'En el décimo período de capitalización', is_correct: false}
+      - {text: 'Nunca se equiparan en ningún período', is_correct: false}
+      - {text: 'En el punto medio del plazo total', is_correct: false}
+    explanation: 'La alternativa correcta es ''En el primer período completo de capitalización ($n = 1$)''. Para $n=1$, $1+i \cdot 1 = (1+i)^1$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Para un plazo de $4$ años ($n > 1$), ¿cuál régimen de interés genera una mayor suma de dinero?'
+    choices:
+      - {text: 'El régimen de interés compuesto, debido al crecimiento exponencial de los intereses acumulados', is_correct: true}
+      - {text: 'El régimen de interés simple, debido a la suma constante', is_correct: false}
+      - {text: 'Ambos regímenes entregan exactamente el mismo monto', is_correct: false}
+      - {text: 'Depende de la moneda empleada', is_correct: false}
+    explanation: 'La alternativa correcta es ''El régimen de interés compuesto, debido al crecimiento exponencial de los intereses acumulados''. Para $n > 1$, $M_C > M_S$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar las variables financieras ($C, i, n, M, I, R$) e igualar la
-  tasa al período de capitalización.'
-- 'Paso 2: Aplicar la fórmula exponencial de capitalización $M = C \cdot (1 + i)^n$
-  o su variante correspondiente.'
-- 'Paso 3: Resolver numéricamente o mediante logaritmos y verificar la coherencia
-  económica.'
-errores_correccion: '- **Error 1: Calcular el interés compuesto multiplicando el tiempo
-  por la tasa en forma lineal ($C \cdot i \cdot n$).** **Cómo corregirlo:** En régimen
-  compuesto el factor es exponencial $(1 + i)^n$, NO lineal.
-
-
-  - **Error 2: No ajustar la tasa de interés a la frecuencia de capitalización (ej:
-  usar tasa anual en capitalización mensual).** **Cómo corregirlo:** La tasa DEBE
-  dividirse entre el número de períodos del año ($i = r / m$) y el tiempo multiplicarse
-  ($n = m \cdot t$).'
+  - 'Paso 1: Calcular el monto a interés simple $M_S = C(1 + i \cdot n)$.'
+  - 'Paso 2: Calcular el monto a interés compuesto $M_C = C(1 + i)^n$.'
+  - 'Paso 3: Comparar ambos resultados verificando que para $n=1$ coinciden y para $n>1$ se cumple $M_C > M_S$.'
+  - 'Paso 4: Restar $M_C - M_S$ para cuantificar la ganancia adicional por el efecto de capitalización.'
+errores_correccion: |
+  - **Error 1:** Creer que el interés compuesto siempre es mayor que el simple para cualquier valor de $n$. **Cómo corregirlo:** Para $n = 1$ **son exactamente iguales**, y para fracciones del primer período ($0 < n < 1$), el interés simple es ligeramente mayor.
+  - **Error 2:** Restar las tasas en lugar de evaluar las fórmulas del monto final. **Cómo corregirlo:** La comparación correcta exige **evaluar $M_S = C(1+in)$ y $M_C = C(1+i)^n$**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.INTERES_COMPUESTO.COMPARACION_REGIMENES.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de la fórmula de interés compuesto.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la función de capitalización exponencial.
-  alternativas:
-  - Cumple el modelo
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple el modelo
-  solucion_pasos:
-  - Demostración formal por $M = C(1+i)^n$.
-- titulo: ¿Supera el interés compuesto al simple para t > 1?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, debido al efecto acumulativo de la capitalización de intereses.
-- titulo: ¿Se requiere logaritmo para despejar el número de períodos n?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para bajar el exponente $n$ mediante la propiedad logarítmica.
+  - titulo: 'Comparación a 1 año'
+    enunciado: 'Para $\$100.000$ al $10\%$ en 1 año, ¿$M_S = \$110.000$ y $M_C = \$110.000$ son idénticos?'
+    alternativas:
+      - 'Sí, en el período 1 coinciden'
+      - 'No, el compuesto es mayor'
+      - 'No, el simple es mayor'
+    respuesta: 'Sí, en el período 1 coinciden'
+    solucion_pasos:
+      - '1. $M_S = 100.000 \cdot (1 + 0,10) = 110.000$.'
+      - '2. $M_C = 100.000 \cdot (1,10)^1 = 110.000$.'
+  - titulo: 'Comparación a 2 años'
+    enunciado: 'Para $\$100.000$ al $10\%$ en 2 años, ¿$M_S = \$120.000$ y $M_C = \$121.000$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $M_C - M_S = 121.000 - 120.000 = \$1.000$ a favor de compuesto.'
+  - titulo: 'Graficación de modelos'
+    enunciado: '¿La gráfica del interés simple es una línea recta y la del compuesto una curva ascendente?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Modelo afín vs. modelo exponencial.'
+  - titulo: 'Efecto del plazo largo'
+    enunciado: 'A mayor plazo $n$, ¿la diferencia $M_C - M_S$ se hace cada vez más grande?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Debido a la aceleración exponencial del término $(1+i)^n$.'
 errores_frecuentes:
-- Usar la fórmula lineal del interés simple $C \cdot i \cdot t$ para resolver problemas
-  de capitalización compuesta.
-- No dividir la tasa de interés anual entre 12 cuando el período de capitalización
-  es mensual.
-- Omitir restar el capital inicial $C$ al monto acumulado final $M$ al calcular únicamente
-  el interés ganado.
-- Declarar que dos cuotas de interés compuesto acumulado crecen en forma de progresión
-  aritmética constante.
-- Sumar directamente las cuotas de amortización sin descontar la tasa de interés en
-  el valor presente.
+  - 'Considerar que el interés compuesto es mayor que el simple incluso en el primer período de capitalización.'
+  - 'Graficar el interés compuesto como una línea recta paralela al interés simple.'
+  - 'El monto a interés simple supera al compuesto para plazos superiores a 10 años.'
+  - 'Sumar los montos de ambos regímenes para obtener la rentabilidad total.'
+  - 'Usar la misma pendiente lineal para describir el comportamiento de ambos modelos.'
 afirmaciones_verdaderas:
-- El interés compuesto se caracteriza porque los intereses de cada período se suman
-  al capital para generar nuevos intereses.
-- El monto acumulado en régimen compuesto sigue un modelo de función exponencial $M
-  = C \cdot (1 + i)^n$.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+  - 'Para un plazo $n = 1$, los regímenes de interés simple y compuesto entregan el mismo monto acumulado.'
+  - 'Para plazos superiores a un período ($n > 1$), el régimen de interés compuesto genera un monto estrictamente mayor que el simple ($M_C > M_S$).'
+al_terminar_debes_poder: 'Comparar analítica y gráficamente los regímenes de interés simple y compuesto identificando la coincidencia en $n=1$ y la dominancia exponencial en $n>1$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

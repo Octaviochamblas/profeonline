@@ -1,117 +1,97 @@
 semantic_id: MAT.ALG.FUNC_LOGARITMICA_BASE.VERIFICACION_RESTRICCIONES
-resumen_inicial: 'Verificación de restricciones de dominio en soluciones logarítmicas:
-  conceptos, asíntotas, propiedades e inversidad en Análisis de la función logarítmica.'
-explicacion_simple: Resolver la ecuación es solo la mitad del trabajo. Antes de dar
-  por válida una solución, hay que confirmar que el argumento del logaritmo original
-  quede positivo.
-explicacion_formal: '### Definición formal
+resumen_inicial: 'La verificación de restricciones en ecuaciones logarítmicas evalúa las soluciones obtenidas en la ecuación original para descartar soluciones extrañas que originen argumentos no positivos.'
+explicacion_simple: |
+  Al resolver ecuaciones logarítmicas (especialmente cuando elevamos al cuadrado o multiplicamos términos), la álgebra a veces nos entrega soluciones "tramposas" llamadas soluciones extrañas. Estas soluciones funcionan en la ecuación algebraica simplificada, pero si las reemplazamos en la ecuación original convierten el argumento dentro del logaritmo en cero o en un número negativo. Por eso, el último paso obligatorio de toda ecuación logarítmica es probar cada candidato y descartar los que rompan las reglas.
+explicacion_formal: |
+  ### Definición formal
+  El **protocolo de validación de soluciones extrañas** en el conjunto de verdad de una ecuación logarítmica $\sum_{i} \alpha_i \log_{b_i}(P_i(x)) = k$ consiste en filtrar el conjunto de candidatos algebraicos $S_{\text{alg}} = \{x_1, x_2, \dots, x_m\}$ mediante la intersección con el dominio conjunto de definición $D_{\text{orig}}$:
+  $$S_{\text{real}} = S_{\text{alg}} \cap D_{\text{orig}} = \left\{x_k \in S_{\text{alg}} \;\middle|\; \bigwedge_{i} P_i(x_k) > 0\right\}$$
 
+  ### Desglose simbólico
+  - Criterio de Aceptación: Un candidato $x_k$ es **válido** $\iff P_i(x_k) > 0$ para todos los argumentos $P_i$ presentes en la ecuación original.
+  - Criterio de Rechazo (Solución Extraña): Un candidato $x_k$ es **falso / extraño** $\iff \exists i: P_i(x_k) \le 0$.
+  - Origen de soluciones extrañas: Propiedades de compresión como $\log(u) + \log(v) = \log(u \cdot v)$ amplían el dominio implícito, admitiendo valores donde tanto $u < 0$ como $v < 0$ simultáneamente (pues $(-u)(-v) > 0$), los cuales eran inválidos en los términos individuales originales.
 
-  Si $x_0$ es una solución obtenida al resolver $\log_b(g(x))=c$, entonces $x_0$ es
-  una solución válida solo si $g(x_0)>0$. Cuando $g(x_0)\leq0$, la expresión $\log_b(g(x_0))$
-  no está definida y $x_0$ debe descartarse del conjunto solución.
-
-
-  ### Desarrollo didáctico
-
-
-  Al resolver $\log_2(x-3)=2$ se obtiene $x-3=2^2=4$, es decir $x=7$. Se verifica
-  reemplazando: $x-3=7-3=4>0$, por lo que la solución es válida. Si en cambio se hubiese
-  obtenido un valor que hiciera $x-3\leq0$, esa solución debería descartarse aunque
-  el despeje algebraico fuera correcto.'
-definiciones_clave: '- **Verificación de restricciones de dominio en soluciones logarítmicas**:
-  Concepto fundamental en el estudio del crecimiento/decaimiento exponencial y logarítmico.'
-propiedades_relaciones: '- **Relación de inversidad y asíntotas**: $y = b^x \iff x
-  = \log_b(y)$, asíntota horizontal $y=0$ (exponencial) y vertical $x=0$ (logarítmica)
-  aplicadas a verificación de restricciones de dominio en soluciones logarítmicas.'
+  ### Síntesis didáctica
+  Probar siempre en los términos SEPARADOS de la ecuación original: Nunca verificar en la ecuación comprimida o simplificada, sino en los logaritmos individuales tal como aparecían en el enunciado inicial del problema.
+definiciones_clave: |
+  - **Solución extraña / falsa**: Candidato algebraico $x_k$ que no satisface la restricción de argumento positivo en la ecuación original.
+  - **Conjunto de verdad real $S_{\text{real}}$**: Subconjunto de soluciones válidas que pertenecen al dominio de definición de la ecuación.
+  - **Ampliación de dominio por compresión**: Fenómeno algebraico donde multiplicar dos negativos $(-u)(-v) = +w > 0$ genera un argumento aparentemente válido.
+propiedades_relaciones: |
+  - **Inexistencia de solución (Conjunto vacío $S = \emptyset$)**: Si todos los candidatos algebraicos resultan ser soluciones extrañas, la ecuación logarítmica carece de solución real.
+  - **Preservación del rigor en PAES/M2**: Preguntas de resolución de ecuaciones logarítmicas evalúan con alta frecuencia la capacidad del estudiante para identificar y descartar soluciones extrañas.
 ejemplo_guiado:
-  enunciado: Evalúa o resuelve la expresión aplicando las propiedades de verificación
-    de restricciones de dominio en soluciones logarítmicas.
+  enunciado: 'Resuelve la ecuación logarítmica $\log_2(x + 3) + \log_2(x - 1) = 5$, realiza el protocolo de verificación de restricciones y determina el conjunto de soluciones válidas.'
   pasos:
-  - Identificar la base $b > 0, b \neq 1$ y las restricciones del argumento o exponente.
-  - Aplicar las propiedades operatorias o definición de verificación de restricciones
-    de dominio en soluciones logarítmicas.
-  - Efectuar la conversión entre forma exponencial y logarítmica si es necesario.
-  - Verificar que la solución cumpla las restricciones del dominio.
+    - 'Paso 1: Comprimimos la suma en un producto: $\log_2((x + 3)(x - 1)) = 5$.'
+    - 'Paso 2: Aplicamos la definición: $(x + 3)(x - 1) = 2^5 = 32 \implies x^2 + 2x - 3 = 32 \implies x^2 + 2x - 35 = 0$.'
+    - 'Paso 3: Factorizamos para hallar candidatos: $(x + 7)(x - 5) = 0 \implies x_1 = -7$ y $x_2 = 5$.'
+    - 'Paso 4: Verificamos $x_1 = -7$ en la ecuación ORIGINAL: primer argumento $-7 + 3 = -4 \le 0$ (Inválido). Se rechaza $x_1 = -7$ por ser solución extraña.'
+    - 'Paso 5: Verificamos $x_2 = 5$ en la ecuación ORIGINAL: primer argumento $5 + 3 = 8 > 0$, segundo argumento $5 - 1 = 4 > 0$ (Válidos). Solución única real: $S = \{5\}$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la condición indispensable respecto a la base b al trabajar con
-    verificación de restricciones de dominio en soluciones logarítmicas?
-  choices:
-  - text: Garantizar que la base sea positiva y distinta de uno en análisis de la
-      función logarítmica
-    is_correct: true
-  - text: Permitir bases negativas para cualquier exponente
-    is_correct: false
-  - text: Fijar la base siempre igual a cero
-    is_correct: false
-  - text: Ignorar la restricción del argumento logarítmico
-    is_correct: false
-  explanation: 'La alternativa correcta es: Garantizar que la base sea positiva y
-    distinta de uno en análisis de la función logarítmica. Es la condición de existencia
-    para funciones exponenciales y logarítmicas.'
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Cómo se relacionan funcionalmente las expresiones exponenciales y logarítmicas
-    en verificación de restricciones de dominio en soluciones logarítmicas?
-  choices:
-  - text: Utilizar la equivalencia y = b^x <=> x = log_b(y) para convertir entre ambas
-      formas
-    is_correct: true
-  - text: Multiplicando la base por el exponente sin usar logaritmos
-    is_correct: false
-  - text: Restando la base de la variable
-    is_correct: false
-  - text: Igualando siempre el exponente a cero
-    is_correct: false
-  explanation: 'La alternativa correcta es: Utilizar la equivalencia y = b^x <=> x
-    = log_b(y) para convertir entre ambas formas. Las funciones exponencial y logarítmica
-    son mutuamente inversas.'
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Al resolver una ecuación logarítmica mediante compresión, se obtienen los candidatos algebraicos $x = 6$ y $x = -2$. Al evaluar en los términos separados de la ecuación original, $x = -2$ produce un argumento negativo $\log_3(-4)$. ¿Qué acción se debe tomar?'
+    choices:
+      - {text: 'Descartar la solución $x = -2$ por ser una solución extraña que indefine la ecuación original, conservando únicamente $x = 6$', is_correct: true}
+      - {text: 'Conservar ambas soluciones convirtiendo el resultado negativo en positivo', is_correct: false}
+      - {text: 'Descartar ambas soluciones y declarar que la ecuación no tiene solución', is_correct: false}
+      - {text: 'Multiplicar la solución $-2$ por $-1$ para hacerla válida', is_correct: false}
+    explanation: 'La alternativa correcta es ''Descartar la solución $x = -2$ por ser una solución extraña que indefine la ecuación original, conservando únicamente $x = 6$''. Los logaritmos de números negativos no están definidos en $\mathbb{R}$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Por qué la compresión $\log_2(x - 3) + \log_2(x - 5) = \log_2((x - 3)(x - 5))$ puede generar soluciones extrañas como $x = 1$?'
+    choices:
+      - {text: 'Porque al multiplicar dos términos negativos $(1 - 3)(1 - 5) = (-2)(-2) = +4 > 0$, la versión comprimida parece válida aunque los logaritmos individuales originales sean indefinidos', is_correct: true}
+      - {text: 'Porque el número 1 no se puede usar como solución de ecuaciones', is_correct: false}
+      - {text: 'Porque la base 2 es un número par', is_correct: false}
+      - {text: 'Porque se debe usar logaritmo natural en lugar de base 2', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque al multiplicar dos términos negativos $(1 - 3)(1 - 5) = (-2)(-2) = +4 > 0$, la versión comprimida parece válida aunque los logaritmos individuales originales sean indefinidos''. Esto demuestra por qué siempre hay que probar en los términos originales.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Resuelve la ecuación logarítmica aplicando la definición o las propiedades
-  correspondientes.'
-- 'Paso 2: Reemplaza cada solución obtenida en el argumento del logaritmo original.'
-- 'Paso 3: Descarta toda solución que haga el argumento menor o igual a $0$.'
-- 'Paso 4: Declara como conjunto solución únicamente los valores que superan la verificación.'
-errores_correccion: Evita evaluar un logaritmo con argumento negativo o nulo en verificación
-  de restricciones de dominio en soluciones logarítmicas.
+  - 'Paso 1: Resolver la ecuación logarítmica mediante propiedades y obtener el conjunto de candidatos algebraicos $S_{\text{alg}}$.'
+  - 'Paso 2: Tomar cada candidato $x_k$ de forma individual.'
+  - 'Paso 3: Sustituir $x_k$ en CADA UNO de los argumentos presentes en la ecuación ORIGINAL no comprimida.'
+  - 'Paso 4: Si todos los argumentos resultan estrictamente mayores que cero ($> 0$), declarar la solución como VÁLIDA.'
+  - 'Paso 5: Si al menos un argumento resulta nulo o negativo ($\le 0$), RECHAZAR el candidato como solución extraña.'
+errores_correccion: |
+  - **Error 1:** Verificar las soluciones en la ecuación ya comprimida o simplificada. **Cómo corregirlo:** La compresión oculta las indefiniciones individuales porque $(-a)(-b) = +ab > 0$. La verificación debe hacerse siempre en la ecuación inicial del enunciado.
+  - **Error 2:** Descartar una solución simplemente por ser un número negativo (ej: descartar $x = -3$ sin evaluar el argumento). **Cómo corregirlo:** Un valor de $x$ negativo sí puede ser válido si al sustituirlo en el argumento da positivo (ej: en $\log(5 - x)$, para $x = -3$ el argumento da $5 - (-3) = 8 > 0$). Lo que no puede ser negativo es el **argumento**, no necesariamente la variable $x$.
 ejemplos:
-- titulo: Verificación de una solución válida
-  enunciado: Verifica si $x=7$ es solución válida de $\log_2(x-3)=2$.
-  solucion_pasos:
-  - Se reemplaza en el argumento: $x-3=7-3=4$.
-  - Como $4>0$, la solución $x=7$ es válida.
-- titulo: Descarte de una solución inválida
-  enunciado: Al resolver $\log_3(x-5)=1$ se obtiene algebraicamente $x=8$; ¿qué ocurre
-    si en otra ecuación similar el despeje diera $x=4$ para el mismo argumento $x-5$?
-  solucion_pasos:
-  - Se reemplaza en el argumento: $x-5=4-5=-1$.
-  - Como $-1\leq0$, esa solución debería descartarse por no cumplir el dominio del
-    logaritmo.
-- titulo: ¿Puede una ecuación logarítmica tener soluciones que se deben descartar?
-  enunciado: ¿Es posible que el despeje algebraico de una ecuación logarítmica entregue
-    una solución que deba rechazarse?
-  respuesta: Sí
-  solucion_pasos:
-  - Si la solución hace el argumento del logaritmo menor o igual a $0$, no es válida
-    y debe descartarse.
-- titulo: ¿Basta con resolver la ecuación algebraicamente sin más pasos?
-  enunciado: ¿Es suficiente despejar la incógnita para garantizar que la solución
-    sea correcta?
-  respuesta: 'No'
-  solucion_pasos:
-  - Siempre debe verificarse que el argumento del logaritmo original quede positivo
-    con esa solución.
+  - titulo: 'Verificación con candidato negativo válido'
+    enunciado: 'En la ecuación $\log_2(1 - x) = 3$, ¿el candidato $x = -7$ es una solución válida?'
+    alternativas:
+      - 'Sí, es una solución válida'
+      - 'No, debe ser rechazada por ser negativa'
+      - 'No está definida'
+    respuesta: 'Sí, es una solución válida'
+    solucion_pasos:
+      - '1. Evaluamos $x = -7$ en el argumento: $1 - (-7) = 8 > 0$.'
+      - '2. Calculamos $\log_2(8) = 3$. La solución $x = -7$ es totalmente VÁLIDA.'
+  - titulo: 'Descarte de candidato que anula argumento'
+    enunciado: 'En $\log(x - 2) + \log(x + 1) = 1$, si un candidato da $x = 2$, ¿es válido?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No. En $x = 2$, el primer argumento da $2 - 2 = 0$. Dado que $\log(0)$ no existe, $x = 2$ es una solución extraña.'
+  - titulo: 'Ecuación sin solución real'
+    enunciado: 'Si todos los candidatos algebraicos de una ecuación logarítmica producen argumentos negativos, ¿el conjunto solución es el conjunto vacío $\emptyset$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Al no existir ningún candidato válido en el dominio, la ecuación carece de solución real ($S = \emptyset$).'
+  - titulo: 'Importancia del dominio inicial'
+    enunciado: '¿Determinar previamente el dominio conjunto de la ecuación ayuda a filtrar soluciones extrañas?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Hallar el dominio inicial establece los límites permitidos para aceptar o rechazar soluciones.'
 errores_frecuentes:
-- Aceptar como válida cualquier solución del despeje algebraico sin comprobar el dominio.
-- Verificar el signo de la incógnita en vez del signo del argumento completo del logaritmo.
-- Omitir que un argumento igual a $0$ también invalida la solución, no solo los negativos.
-- No repetir la verificación cuando la ecuación tiene más de una solución candidata.
+  - 'Una solución $x = -5$ debe descartarse automáticamente sin evaluar el argumento de la ecuación.'
+  - 'La comprobación de soluciones en ecuaciones logarítmicas se realiza evaluando en la ecuación comprimida.'
+  - 'Si un candidato algebraico satisface la ecuación $x^2 - 4 = 0$, es obligatorio aceptarlo como solución del logaritmo.'
+  - 'Un argumento igual a cero $\log_b(0)$ es aceptado como válido durante la verificación.'
+  - 'Las soluciones extrañas aparecen únicamente cuando se cometen errores de cálculo aritmético.'
 afirmaciones_verdaderas:
-- La función logarítmica de base $b$ es la función inversa de la función exponencial
-  de base $b$.
-al_terminar_debes_poder: Resolver y modelar problemas exponenciales y logarítmicos
-  aplicando verificación de restricciones de dominio en soluciones logarítmicas.
-fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
+  - 'La verificación de soluciones en la ecuación logarítmica original es un paso obligatorio para descartar soluciones extrañas que generen argumentos no positivos.'
+  - 'Un valor de la variable $x$ negativo es una solución válida si al sustituirlo en todos los argumentos originales produce números estrictamente positivos.'
+al_terminar_debes_poder: 'Ejecutar el protocolo de verificación de restricciones para filtrar y validar el conjunto solución real de ecuaciones logarítmicas.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

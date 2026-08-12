@@ -164,9 +164,9 @@ estado: publicado    # o borrador
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. Expresiones matemáticas escritas en $LaTeX$. |
 | `errores_correccion` | Sí | Texto en Markdown que se muestra directamente en la sección visual **"Errores frecuentes y cómo corregirlos"**. Debe detallar 2-3 errores específicos del concepto y su respectiva forma de corregirlos (ej: `- **Error 1:** ... **Cómo corregirlo:** ...`). |
 | `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple, 3 alternativas) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. **Obligatorio:** enunciados, alternativas y pasos de solución deben expresar las fórmulas y términos en $LaTeX$. |
-| `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas particularizadas en $LaTeX$. Deben ser **afirmaciones matemáticas declarativas directas pero FALSAS** que un alumno pudiera dar por verdaderas. Está **estrictamente prohibido** usar muletillas o aseveraciones como *"Confundir..."*, *"Pensar que..."*, *"Olvidar..."*, *"Creer..."*, *"Asumir..."*, *"Omitir..."*, *"Errar..."* o aseveraciones sobre *omitir* elementos (ya que delatan de inmediato que la frase es falsa sin leer la matemática). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
+| `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas particularizadas en $LaTeX$. Deben ser **afirmaciones matemáticas declarativas directas pero FALSAS** que un alumno pudiera dar por verdaderas. Está **estrictamente prohibido** usar palabras como *"Confundir..."*, *"Pensar que..."*, *"Olvidar..."*, *"Creer..."*, *"Asumir..."*, *"Omitir..."*, *"Errar..."* ni ninguna palabra o forma de redacción que haga referencia o delate que lo que se está diciendo es falso solo por la forma de decirlo (meta-lenguaje). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
 | `afirmaciones_verdaderas` | Sí | **Mínimo 2**. Afirmaciones ciertas sobre el tema en $LaTeX$, breves y verificables. Sin ellas, la sección V/F muestra solo "Falso" siempre. |
-| `al_terminar_debes_poder` | Sí | 1-2 frases que indiquen explícitamente **QUÉ** podrá hacer el alumno y **CÓMO** lo ejecutará (el criterio, algoritmo o verificación explícita). |
+| `al_terminar_debes_poder` | Sí | 1-2 frases que expliquen orgánicamente **QUÉ** sabrá hacer el alumno y **CÓMO** lo ejecutará (el mecanismo, algoritmo o criterio matemático explícito de resolución propio del nodo, sin usar plantillas genéricas vacías). |
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
 
@@ -175,6 +175,11 @@ estado: publicado    # o borrador
 > así que la respuesta correcta era siempre "Falso". La vista
 > (`apps/learn/views.py::_true_false_items`) ahora mezcla ambos campos y los
 > presenta en orden aleatorio por cada carga de página.
+
+> **Nota — redacción del campo `al_terminar_debes_poder`:** Este campo no debe ser una frase genérica ni un molde de relleno. Debe responder siempre a dos aspectos integrados:
+> 1. **QUÉ (Objetivo):** Acción o capacidad que logrará el alumno (ej: *determinar el dominio*, *graficar la traslación*, *modelar la potencia eólica*).
+> 2. **CÓMO (Mecanismo explícito):** El procedimiento matemático o criterio específico para resolverlo (ej: *igualando a cero el binomio interno $(x-h)=0$*, *excluyendo la raíz del denominador*, *multiplicando el factor de escala por $c^n$*).
+
 
 ---
 

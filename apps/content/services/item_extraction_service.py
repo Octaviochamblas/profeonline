@@ -124,7 +124,7 @@ def _build_item_prompt(quiz_guide, topic, education_level) -> str:
     "difficulty": "intermedia",
     "objective": "Identificar el valor de la pendiente $m$ a partir de la ecuación explícita $y = mx + n$.",
     "recommendation": "Comenzar con ejemplos de coeficiente entero y luego introducir fracciones.",
-    "common_errors": "Confundir la pendiente $m$ con el coeficiente de posición $n$.",
+    "common_errors": "Intercambiar la pendiente $m$ con el coeficiente de posición $n$.",
     "suggested_resource_ids": [10, 15],
     "detected_exercise_count": 5
   }

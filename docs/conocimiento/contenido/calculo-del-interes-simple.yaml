@@ -1,125 +1,107 @@
-resumen_inicial: 'El cálculo del interés simple $I$ multiplica el capital inicial
-  $C$, la tasa de interés en decimal $i$ y el número de períodos de tiempo $t$: $I
-  = C \cdot i \cdot t$.'
-explicacion_simple: Para calcular cuánta plata de ganancia genera un préstamo o depósito
-  en interés simple, multiplicamos el capital invertido por la tasa de interés dividida
-  entre 100 y por la cantidad de períodos de tiempo.
-explicacion_formal: 'La **Fórmula del Interés Simple Ganado $I$** establece la multiplicación
-  directa de los tres parámetros financieros:
-
-
+semantic_id: MAT.NUM.INTERES_SIMPLE.CALCULO_INTERES
+resumen_inicial: 'El cálculo del interés simple evalúa la ganancia o costo $I$ aplicando la fórmula $I = C \cdot i \cdot t$, adecuando el tiempo $t$ a la unidad de la tasa (en años $t = a$, en meses $t = \frac{m}{12}$, en días $t = \frac{d}{360}$).'
+explicacion_simple: |
+  Para calcular exactamente cuánto interés ganas o pagas en un período:
+  1. Tomas la cantidad inicial $C$.
+  2. La multiplicas por la tasa en decimal ($i = r / 100$).
+  3. La multiplicas por el tiempo $t$.
+  ¡Ojo con el tiempo! Si la tasa es **anual** pero el tiempo te lo dan en **meses**, debes dividir los meses entre 12. Por ejemplo, 6 meses son $\frac{6}{12} = 0,5$ años. Si te lo dan en **días**, en finanzas comerciales se divide entre 360 (año comercial).
+explicacion_formal: |
+  ### Definición formal
+  El **cálculo del interés simple acumulado** $I$ para un capital $C$ a una tasa de interés nominal anual $r\%$ viene dado por la expresión:
   $$I = C \cdot \left(\frac{r}{100}\right) \cdot t$$
 
+  ### Variaciones por unidad de tiempo
+  1. **Tiempo en años ($t = a$)**:
+     $$I = \frac{C \cdot r \cdot a}{100}$$
+  2. **Tiempo en meses ($t = \frac{m}{12}$)**:
+     $$I = \frac{C \cdot r \cdot m}{1.200}$$
+  3. **Tiempo en días (Año comercial de 360 días, $t = \frac{d}{360}$)**:
+     $$I = \frac{C \cdot r \cdot d}{36.000}$$
 
-  **Homogeneidad temporal estricta:**
+  ### Proporcionalidad del interés simple
+  Dado un capital fijo $C$ y una tasa fija $r\%$, el interés generado en un lapso de $n$ meses es exactamente igual a $n$ veces el interés generado en un solo mes: $I(m) = m \cdot I(1)$.
 
-  - Si la tasa $r$ es anual, el tiempo $t$ DEBE ingresarse obligatoriamente en años.
-
-  - Si la tasa $r$ es mensual, el tiempo $t$ DEBE ingresarse obligatoriamente en meses.'
-definiciones_clave: '- **Cálculo de interés $I$**: Producto $I = C \cdot i \cdot t$
-  expresado en unidades monetarias.'
-propiedades_relaciones: '- **Homogeneidad de unidades de tiempo**: La unidad de $t$
-  debe coincidir con el período de la tasa $i$.'
+  ### Síntesis didáctica
+  - Tiempo en años: $I = \frac{C \cdot r \cdot a}{100}$.
+  - Tiempo en meses: $I = \frac{C \cdot r \cdot m}{1.200}$.
+  - Tiempo en días: $I = \frac{C \cdot r \cdot d}{36.000}$.
+definiciones_clave: |
+  - **Tasa nominal anual ($r\%$)**: Porcentaje de interés fijado con referencia a un período completo de 12 meses.
+  - **Año comercial**: Convención financiera que estandariza la duración del año en 360 días (12 meses de 30 días).
+  - **Conversión de período**: Ajuste algebraico del divisor para homologar las unidades temporales de la tasa y el plazo.
+propiedades_relaciones: |
+  - **Escalamiento lineal por plazo**: Duplicar los meses de permanencia manteniendo el capital duplica exactamente el monto del interés obtenido.
+  - **Independencia de períodos intermedios**: Calcular el interés total por 3 años da el mismo resultado exacto que sumar 3 cálculos individuales de 1 año.
 ejemplo_guiado:
-  enunciado: Calcule el interés generado por un capital de \$400.000 colocado al $6\%$
-    anual de interés simple durante $2,5$ años.
+  enunciado: 'Un préstamo de $\$500.000$ se otorga a una tasa de interés simple anual del $12\%$ durante $9$ meses. Calcula el interés cobrado.'
   pasos:
-  - 'Paso 1: Convertir la tasa a decimal: $i = 6/100 = 0,06$ (anual).'
-  - 'Paso 2: Verificar tiempo en años: $t = 2,5$ años.'
-  - 'Paso 3: Multiplicar $I = 400.000 \cdot 0,06 \cdot 2,5 = 24.000 \cdot 2,5 = 60.000$.'
-  - 'Conclusión: El interés generado es \$60.000.'
+    - 'Paso 1: Identificamos $C = 500.000$, tasa anual $r = 12\%$ e intervalo $m = 9\text{ meses}$.'
+    - 'Paso 2: Como el tiempo está en meses y la tasa es anual, usamos la fórmula $I = \frac{C \cdot r \cdot m}{1.200}$.'
+    - 'Paso 3: Sustituimos los valores: $I = \frac{500.000 \cdot 12 \cdot 9}{1.200}$.'
+    - 'Paso 4: Simplificamos $12 / 1.200 = 1/100$: $I = \frac{500.000 \cdot 9}{100} = 5.000 \cdot 9 = 45.000$. El interés es de **$\$45.000$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Qué condición fundamental debe cumplirse respecto a la unidad del tiempo
-    t y la tasa de interés i?
-  choices:
-  - text: La unidad del tiempo t debe ser exactamente idéntica al período de la tasa
-      de interés i
-    is_correct: true
-  - text: El tiempo siempre debe estar en días
-    is_correct: false
-  - text: La tasa siempre debe dividirse entre 12
-    is_correct: false
-  - text: No importa la unidad del tiempo
-    is_correct: false
-  explanation: La alternativa correcta es 'La unidad del tiempo t debe ser exactamente
-    idéntica al período de la tasa de interés i'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para $400.000 al 6% anual durante 2,5 años, ¿cuál
-    fue el interés generado?
-  choices:
-  - text: 60.000 $
-    is_correct: true
-  - text: 24.000 $
-    is_correct: false
-  - text: 100.000 $
-    is_correct: false
-  - text: 460.000 $
-    is_correct: false
-  explanation: La alternativa correcta es '60.000 $'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular el interés acumulado
-  $I = C \cdot i \cdot t$ garantizando la coincidencia de unidades de tiempo entre
-  $i$ y $t$.
-semantic_id: MAT.NUM.INTERES_SIMPLE.CALCULO_INTERES
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la fórmula correcta para calcular el interés simple si la tasa es anual y el tiempo está expresado en meses ($m$)?'
+    choices:
+      - {text: 'Dividir el producto por 1.200 ($I = \frac{C \cdot r \cdot m}{1.200}$)', is_correct: true}
+      - {text: 'Multiplicar el producto por 12 ($I = C \cdot r \cdot m \cdot 12$)', is_correct: false}
+      - {text: 'Dividir siempre por 100 sin importar si son meses o años', is_correct: false}
+      - {text: 'Dividir entre 360', is_correct: false}
+    explanation: 'La alternativa correcta es ''Dividir el producto por 1.200 ($I = \frac{C \cdot r \cdot m}{1.200}$)''. Se multiplica $100 \cdot 12 = 1.200$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuánto interés simple genera un capital de $\$100.000$ colocado al $6\%$ anual durante $6$ meses?'
+    choices:
+      - {text: '$\$3.000$, calculando $\frac{100.000 \cdot 6 \cdot 6}{1.200} = 3.000$', is_correct: true}
+      - {text: '$\$6.000$, calculando un año entero', is_correct: false}
+      - {text: '$\$36.000$, multiplicando sin dividir', is_correct: false}
+      - {text: '$\$300$, dividiendo por 12.000', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$3.000$, calculando $\frac{100.000 \cdot 6 \cdot 6}{1.200} = 3.000$''. 6 meses es medio año ($0.5$), $100.000 \cdot 0.06 \cdot 0.5 = 3.000$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar los parámetros conocidos ($C, i, t, I, M$) e igualar las unidades
-  de tiempo de la tasa y el plazo.'
-- 'Paso 2: Sustituir en la fórmula fundamental del interés simple $I = C \cdot i \cdot
-  t$ o del monto $M = C \cdot (1 + i \cdot t)$.'
-- 'Paso 3: Despejar algebraicamente la variable buscada y comprobar el resultado numérico.'
-errores_correccion: '- **Error 1: Ingresar el tiempo en meses cuando la tasa de interés
-  es anual sin convertir unidades.** **Cómo corregirlo:** Se DEBE convertir el tiempo
-  a años dividiendo entre 12 ($18\text{ meses} = 1,5\text{ años}$) o convertir la
-  tasa anual a mensual dividiendo entre 12.
-
-
-  - **Error 2: Sumar los intereses acumulados al capital inicial en cada período (tratarlo
-  como interés compuesto).** **Cómo corregirlo:** En el interés simple el capital
-  inicial $C$ permanece CONSTANTE en todos los períodos.'
+  - 'Paso 1: Identificar el capital $C$, la tasa $r\%$ y el plazo.'
+  - 'Paso 2: Seleccionar el divisor según la unidad del plazo: 100 para años, 1.200 para meses, 36.000 para días.'
+  - 'Paso 3: Multiplicar $C \cdot r \cdot \text{plazo}$ en el numerador.'
+  - 'Paso 4: Dividir el producto entre el divisor correspondiente para obtener $I$.'
+errores_correccion: |
+  - **Error 1:** Introducir directamente el número de meses en la fórmula $I = \frac{C \cdot r \cdot t}{100}$ creyendo que $t$ son meses. **Cómo corregirlo:** Si $t$ está en meses, **debes usar el divisor $1.200$** para convertir los meses a su fracción anual ($m/12$).
+  - **Error 2:** Usar 365 días en el año comercial estándar sin verificar el enunciado. **Cómo corregirlo:** En la gran mayoría de los problemas de matemática comercial **el año se estandariza en 360 días (divisor 36.000)**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.INTERES_SIMPLE.CALCULO_INTERES.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de la fórmula de interés simple.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la función de capitalización lineal.
-  alternativas:
-  - Cumple la fórmula
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la fórmula
-  solucion_pasos:
-  - Demostración formal por $M = C(1 + it)$.
-- titulo: ¿Son idénticos los intereses ganados en cada período en el interés simple?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, porque se calculan siempre sobre el mismo capital inicial $C$.
-- titulo: ¿Debe coincidir la unidad de tiempo del plazo t con la unidad de la tasa
-    de interés i?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para mantener la homogeneidad dimensional temporal.
+  - titulo: 'Cálculo de interés por meses'
+    enunciado: '¿El interés de $\$200.000$ al $10\%$ anual en 6 meses es $\$10.000$?'
+    alternativas:
+      - 'Sí, pues $(200.000 \cdot 10 \cdot 6) / 1.200 = 10.000$'
+      - 'No, es $\$20.000$'
+      - 'No, es $\$5.000$'
+    respuesta: 'Sí, pues $(200.000 \cdot 10 \cdot 6) / 1.200 = 10.000$'
+    solucion_pasos:
+      - '1. Aplicamos $I = (C \cdot r \cdot m) / 1.200$.'
+      - '2. $I = (200.000 \cdot 10 \cdot 6) / 1.200 = 10.000$.'
+  - titulo: 'Cálculo de interés por días comerciales'
+    enunciado: '¿El interés de $\$360.000$ al $5\%$ anual en 90 días comerciales es $\$4.500$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $(360.000 \cdot 5 \cdot 90) / 36.000 = 4.500$.'
+  - titulo: 'Cálculo de interés por 2 años'
+    enunciado: '¿El interés de $\$400.000$ al $8\%$ anual en 2 años es $\$64.000$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $400.000 \cdot 0.08 \cdot 2 = \$64.000$.'
+  - titulo: 'Interés mensual directo'
+    enunciado: 'Si la tasa es $1\%$ mensual y el plazo es 5 meses sobre $\$100.000$, ¿el interés es $\$5.000$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Como tasa y tiempo están en meses: $100.000 \cdot 0.01 \cdot 5 = 5.000$.'
 errores_frecuentes:
-- Ingresar el tiempo en meses manteniendo una tasa de interés expresada en términos
-  anuales.
-- Recapitalizar los intereses ganados al final de cada período sobre el capital inicial
-  en régimen simple.
-- Multiplicar por el número entero de la tasa de interés sin dividir previamente por
-  cien.
-- Declarar el valor del interés ganado $I$ con el monto final total acumulado $M$.
-- Dividir el capital entre el tiempo sin incorporar la tasa de interés en el cálculo
-  del saldo.
+  - 'Utilizar los meses directamente en el numerador dividiendo únicamente entre 100.'
+  - 'Usar 365 en lugar de 360 días para el cálculo del interés comercial estándar.'
+  - 'Multiplicar por la tasa porcentual entera sin efectuar la conversión a decimal o dividir entre 100.'
+  - 'Considerar que el interés calculado incluye también la devolución del capital inicial.'
+  - 'Invertir los términos dividiendo la tasa entre el capital prestado.'
 afirmaciones_verdaderas:
-- El interés simple se caracteriza por generar ganancias periódicas constantes calculadas
-  sobre el capital inicial $C$.
-- El monto acumulado final en interés simple es una función lineal del tiempo $M =
-  C \cdot (1 + i \cdot t)$.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+  - 'El interés simple para un plazo en meses $m$ a una tasa anual $r\%$ se calcula mediante $I = \frac{C \cdot r \cdot m}{1.200}$.'
+  - 'El año comercial estandarizado en finanzas consta de 360 días.'
+al_terminar_debes_poder: 'Calcular el interés simple aplicando la fórmula adecuada al plazo en años ($100$), meses ($1.200$) o días ($36.000$).'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

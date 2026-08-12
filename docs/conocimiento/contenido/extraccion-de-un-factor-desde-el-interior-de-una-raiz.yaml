@@ -1,112 +1,98 @@
-resumen_inicial: 'Para extraer un factor de una raíz $\sqrt[n]{a^n \cdot b}$, se saca
-  la base $a$ fuera del radical dividiendo su exponente por el índice: $a \cdot \sqrt[n]{b}$.'
-explicacion_simple: Cuando dentro de una raíz hay un factor con un exponente igual
-  o mayor que el índice de afuera, ese factor puede 'salir' de la raíz perdiendo su
-  exponente al dividirse por el índice.
-explicacion_formal: 'Para todo $a, b \ge 0$ e índice $n \ge 2$, la **Extracción de
-  Factores** utiliza la distributividad del producto:
-
-
-  $$\sqrt[n]{a^n \cdot b} = \sqrt[n]{a^n} \cdot \sqrt[n]{b} = a \cdot \sqrt[n]{b}$$
-
-
-  > **Complemento didáctico:** El exponente interno se divide por el índice: el cociente
-  entero sale y el resto queda dentro.'
-definiciones_clave: '- **Extracción de factores**: Operación $a \cdot \sqrt[n]{b}$
-  que simplifica el radicando extrayendo potencias $n$-ésimas perfectas.'
-propiedades_relaciones: '- **Simplificación radical**: Extrae el factor base dividiendo
-  su exponente por el índice.'
-ejemplo_guiado:
-  enunciado: Extraiga factores del radical $\sqrt{12}$.
-  pasos:
-  - 'Paso 1: Descomponer el radicando $12$ en un producto con un cuadrado perfecto:
-    $12 = 4 \cdot 3 = 2^2 \cdot 3$.'
-  - 'Paso 2: Aplicar la raíz a la descomposición: $\sqrt{2^2 \cdot 3} = \sqrt{2^2}
-    \cdot \sqrt{3}$.'
-  - 'Paso 3: Extraer el número $2$ fuera de la raíz: $2\sqrt{3}$.'
-  - 'Conclusión: $\sqrt{12} = 2\sqrt{3}$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se extrae una potencia perfecta a^n fuera de una raíz enésima sqrt[n]{a^n
-    · b}?
-  choices:
-  - text: Sale como el factor a multiplicando por fuera a la raíz residual (a · sqrt[n]{b})
-    is_correct: true
-  - text: Sale como a^n fuera de la raíz
-    is_correct: false
-  - text: Se divide b entre a
-    is_correct: false
-  - text: Se elimina b del interior
-    is_correct: false
-  explanation: La alternativa correcta es 'Sale como el factor a multiplicando por
-    fuera a la raíz residual (a · sqrt[n]{b})'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para sqrt(12), ¿cuál fue la forma simplificada final?
-  choices:
-  - text: 2 · sqrt(3)
-    is_correct: true
-  - text: 4 · sqrt(3)
-    is_correct: false
-  - text: 3 · sqrt(2)
-    is_correct: false
-  - text: 6 · sqrt(2)
-    is_correct: false
-  explanation: La alternativa correcta es '2 · sqrt(3)'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de extraer factores subradicales
-  $a \cdot \sqrt[n]{b}$, reduciendo la complejidad del radicando.
 semantic_id: MAT.NUM.RAICES_PROPIEDADES.EXTRACCION_FACTOR_SUBRADICAL
+resumen_inicial: 'La extracción de factores de un radical permite simplificar una raíz sacando fuera aquellos factores cuyo exponente sea mayor o igual al índice: $\sqrt[n]{a^n \cdot b} = a \cdot \sqrt[n]{b}$.'
+explicacion_simple: |
+  Extraer un factor de una raíz es como "darle permiso de salida" a un número que tiene la potencia suficiente para pagar el costo de la raíz. Si dentro de una raíz cuadrada tienes un factor elevado al cuadrado (como $3^2$), ese número puede "cancelar" su potencia con la raíz y salir multiplicando por fuera. Lo que no tiene exponente suficiente se queda adentro. Por ejemplo, $\sqrt{12} = \sqrt{2^2 \cdot 3} = 2\sqrt{3}$.
+explicacion_formal: |
+  ### Definición formal
+  La **extracción de un factor subradical** consiste en descomponer el radicando en un producto donde uno de los factores es una potencia $n$-ésima exacta $a^n$, aplicando la propiedad distributiva de la raíz sobre el producto:
+  $$\sqrt[n]{a^n \cdot b} = \sqrt[n]{a^n} \cdot \sqrt[n]{b} = a \cdot \sqrt[n]{b} \quad (a, b \ge 0)$$
+
+  ### Algoritmo de división de exponentes
+  Para una potencia arbitraria $x^m$ dentro de $\sqrt[n]{x^m}$ con $m \ge n$:
+  1. Se realiza la división entera: $m = q \cdot n + r$ (donde $q$ es el cociente y $r$ el resto).
+  2. El factor extraído por fuera lleva exponente $q$: $x^q$.
+  3. El factor residual dentro del radical lleva exponente $r$: $\sqrt[n]{x^r}$.
+  $$\sqrt[n]{x^m} = \sqrt[n]{x^{q \cdot n + r}} = x^q \cdot \sqrt[n]{x^r}$$
+
+  ### Síntesis didáctica
+  - Coeficiente exterior $x^q$: Resulta de la división entera del exponente entre el índice ($q = \lfloor m/n \rfloor$).
+  - Radicando interior $x^r$: Corresponde al resto o residuo de la división ($r = m \pmod n$).
+definiciones_clave: |
+  - **Extracción de factores**: Proceso de simplificación de radicales trasladando potencias perfectas fuera de la raíz.
+  - **Coeficiente exterior $a$**: Factor constante o variable que sale del radical tras simplificar su exponente.
+  - **Radicando residual $b$**: Expresión restante dentro del radical cuyo exponente es estrictamente menor que el índice.
+propiedades_relaciones: |
+  - **Relación con la simplificación máxima**: Una raíz está en su forma más simplificada cuando ningún factor del radicando tiene un exponente mayor o igual al índice.
+  - **Operación inversa**: La operación inversa es el ingreso de un factor al radical ($a \cdot \sqrt[n]{b} = \sqrt[n]{a^n \cdot b}$).
+ejemplo_guiado:
+  enunciado: 'Extrae todos los factores posibles de la raíz cuadrada $E = \sqrt{72}$ descomponiendo su radicando.'
+  pasos:
+    - 'Paso 1: Descomponemos el número $72$ en factores primos buscando el mayor cuadrado perfecto: $72 = 36 \cdot 2 = 6^2 \cdot 2$.'
+    - 'Paso 2: Escribimos el radical descomponiendo el producto: $E = \sqrt{6^2 \cdot 2}$.'
+    - 'Paso 3: Aplicamos la propiedad distributiva separando el cuadrado perfecto: $E = \sqrt{6^2} \cdot \sqrt{2}$.'
+    - 'Paso 4: Extraemos la raíz de $6^2$ dejando el factor $6$ fuera del radical: $E = 6\sqrt{2}$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué ocurre con un factor subradical $a^n$ al ser extraído de una raíz de índice $n$ ($\sqrt[n]{a^n \cdot b}$)?'
+    choices:
+      - {text: 'Sale como el factor $a$ multiplicando por fuera a la raíz residual ($a \cdot \sqrt[n]{b}$)', is_correct: true}
+      - {text: 'Sale como $a^n$ sin cambiar su exponente', is_correct: false}
+      - {text: 'Permanece dentro de la raíz y se elimina el factor $b$', is_correct: false}
+      - {text: 'Sale como un sumando exterior ($a + \sqrt[n]{b}$)', is_correct: false}
+    explanation: 'La alternativa correcta es ''Sale como el factor $a$ multiplicando por fuera a la raíz residual ($a \cdot \sqrt[n]{b}$)''. Al dividir el exponente $n$ por el índice $n$ resulta exponente 1 por fuera.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es la forma simplificada al extraer factores de la raíz cuadrada $\sqrt{50}$?'
+    choices:
+      - {text: '$5\sqrt{2}$, ya que $\sqrt{25 \cdot 2} = \sqrt{25} \cdot \sqrt{2} = 5\sqrt{2}$', is_correct: true}
+      - {text: '$2\sqrt{5}$, invirtiendo los factores', is_correct: false}
+      - {text: '$25\sqrt{2}$, sin extraer la raíz a 25', is_correct: false}
+      - {text: '$10\sqrt{5}$, multiplicando por 2', is_correct: false}
+    explanation: 'La alternativa correcta es ''$5\sqrt{2}$, ya que $\sqrt{25 \cdot 2} = \sqrt{25} \cdot \sqrt{2} = 5\sqrt{2}$''. Descomponemos $50 = 25 \cdot 2$ y extraemos $\sqrt{25} = 5$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Verificar las condiciones de los radicales e índices.'
-- 'Paso 2: Aplicar la ley algebraica correspondiente a la propiedad.'
-- 'Paso 3: Escribir el radical resultante en forma simplificada.'
-errores_correccion: '- **Error 1: Distribuir la raíz sobre la suma ($\sqrt{a+b} =
-  \sqrt{a} + \sqrt{b}$).** **Cómo corregirlo:** La radicación NO es distributiva sobre
-  la adición (ej: $\sqrt{9+16} = 5 \neq 3+4=7$).
-
-
-  - **Error 2: Sumar o restar los índices durante las operaciones.** **Cómo corregirlo:**
-  Los índices se MANTIENEN o multiplican según la ley específica.'
+  - 'Paso 1: Descomponer el radicando en factores primos o buscar cuadrados/potencias perfectas.'
+  - 'Paso 2: Expresar los factores con exponentes múltiplos del índice del radical.'
+  - 'Paso 3: Dividir los exponentes de los factores seleccionados por el índice de la raíz.'
+  - 'Paso 4: Colocar los factores resultantes multiplicando por fuera del radical y conservar el resto adentro.'
+errores_correccion: |
+  - **Error 1:** Sacar el factor conservando su exponente original (ej: escribir $\sqrt{3^2 \cdot 5} = 3^2 \sqrt{5} = 9\sqrt{5}$). **Cómo corregirlo:** Al salir del radical, el exponente del factor se **divide** entre el índice de la raíz: $2 / 2 = 1 \implies 3^1 \sqrt{5} = 3\sqrt{5}$.
+  - **Error 2:** Sumar el factor extraído a la raíz en lugar de multiplicarlo (ej: $\sqrt{4 \cdot 3} = 2 + \sqrt{3}$). **Cómo corregirlo:** Los factores extraídos salen a **multiplicar** a la raíz residual: $2 \cdot \sqrt{3} = 2\sqrt{3}$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.RAICES_PROPIEDADES.EXTRACCION_FACTOR_SUBRADICAL.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de la propiedad de raíces.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la regla.
-  alternativas:
-  - Cumple la regla
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la regla
-  solucion_pasos:
-  - Evaluación formal del radical.
-- titulo: ¿Conserva el resultado la equivalencia en los reales?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por las leyes algebraicas de los radicales.
-- titulo: ¿Es distributiva la raíz respecto a la suma?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, $\sqrt{a+b} \neq \sqrt{a} + \sqrt{b}$.
+  - titulo: 'Extracción en raíz cuadrada'
+    enunciado: '¿La extracción de factores de $\sqrt{48}$ equivale a $4\sqrt{3}$?'
+    alternativas:
+      - 'Sí, pues $\sqrt{16 \cdot 3} = 4\sqrt{3}$'
+      - 'No, equivale a $2\sqrt{12}$'
+      - 'No, equivale a $16\sqrt{3}$'
+    respuesta: 'Sí, pues $\sqrt{16 \cdot 3} = 4\sqrt{3}$'
+    solucion_pasos:
+      - '1. Descomponemos $48 = 16 \cdot 3 = 4^2 \cdot 3$.'
+      - '2. Extraemos $\sqrt{4^2} = 4 \implies 4\sqrt{3}$.'
+  - titulo: 'Extracción en raíz cúbica'
+    enunciado: '¿Al simplificar $\sqrt[3]{54}$ se obtiene $3\sqrt[3]{2}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $\sqrt[3]{27 \cdot 2} = \sqrt[3]{3^3 \cdot 2} = 3\sqrt[3]{2}$.'
+  - titulo: 'Extracción con variables'
+    enunciado: 'Para $x > 0$, ¿la expresión $\sqrt{x^5}$ equivale a $x^2 \sqrt{x}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Dividimos $5 / 2 = 2$ con resto $1 \implies x^2 \sqrt{x^1}$.'
+  - titulo: 'Condición de extracción'
+    enunciado: '¿Se puede extraer un factor de una raíz si su exponente subradical es menor que el índice?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No. Sólo se pueden extraer factores cuyo exponente sea mayor o igual al índice del radical.'
 errores_frecuentes:
-- Distribuir la raíz sobre los términos de una adición o sustracción de la forma $\sqrt{a+b}
-  = \sqrt{a} + \sqrt{b}$.
-- Sumar los índices de las raíces al realizar operaciones de multiplicación o división.
-- Sumar los radicandos al realizar la adición de radicales semejantes.
-- Ingresar un factor a una raíz multiplicándolo por el índice en lugar de elevarlo
-  a él.
-- Declarar como semejantes a dos raíces que tienen radicandos diferentes.
+  - 'Al extraer un factor $a^2$ de una raíz cuadrada, sale fuera de la raíz manteniendo el exponente cuadrático $a^2$.'
+  - 'El factor extraído de un radical se coloca sumando por fuera a la raíz residual.'
+  - 'Se puede extraer el número 3 de la expresión $\sqrt{3 + x}$ aplicando la raíz a cada sumando.'
+  - 'La simplificación de $\sqrt{20}$ equivale a $10\sqrt{2}$.'
+  - 'Extraer factores de un radical altera el valor numérico final del número real.'
 afirmaciones_verdaderas:
-- Las propiedades de las raíces permiten transformar y simplificar expresiones radicales
-  en $\mathbb{R}$.
-- La radicación se distribuye sobre la multiplicación y la división, pero no sobre
-  la suma o la resta.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+  - 'La extracción de factores de un radical simplifica la expresión sacando fuera los factores cuyo exponente sea divisible o mayor al índice del radical.'
+  - 'Para extraer un factor subradical de la forma $\sqrt[n]{x^m}$, se realiza la división entera $m / n$: el cociente pasa como exponente exterior y el resto queda dentro de la raíz.'
+al_terminar_debes_poder: 'Extraer factores subradicales dividiendo sus exponentes por el índice para expresar raíces en su forma simplificada.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

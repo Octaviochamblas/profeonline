@@ -10,6 +10,7 @@ from django.urls import reverse
 from apps.content.admin import ResourceAdmin
 from apps.content.models import Choice, Question, Resource, Subject, Topic
 from apps.content.services.ai_generation_service import (
+    _build_node_assessment_prompt,
     _build_prompt,
     _loads_ai_json,
     generate_questions_for_resource,
@@ -110,6 +111,20 @@ class AIGenerationTests(TestCase):
         self.assertIn("Transferencia y aplicación en contextos reales", prompt)
         # Guía de distractores por nivel (rasgo de la nueva versión).
         self.assertIn("distractores", prompt)
+
+    def test_prompt_prohibits_confundir_and_asumir(self):
+        """El prompt maestro prohíbe explícitamente palabras como 'Confundir' o 'Asumir'."""
+        prompt = _build_prompt(self.resource, level=1, mode="ambas", count=3)
+        self.assertIn("PROHIBICIÓN DURA DE MULETILLAS REVELADORAS", prompt)
+        self.assertIn('"Confundir"', prompt)
+        self.assertIn('"Asumir"', prompt)
+
+        from apps.content.models import KnowledgeNode
+        node = KnowledgeNode(name="Nodo Test", semantic_id="MAT.NUM.TEST")
+        node_prompt = _build_node_assessment_prompt(node, level=1, count=3)
+        self.assertIn("PROHIBICIÓN DURA DE MULETILLAS REVELADORAS", node_prompt)
+        self.assertIn('"Confundir"', node_prompt)
+        self.assertIn('"Asumir"', node_prompt)
 
     def test_mock_generation_science_level_3(self):
         """Verifica la generación simulada para ciencias/general nivel 3."""

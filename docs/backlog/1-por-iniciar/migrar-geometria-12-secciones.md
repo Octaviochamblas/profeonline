@@ -1,8 +1,9 @@
 # Migrar Geometría (04) al estándar de 12 secciones
 
-- **Estado:** En construcción (asignada directamente a 🔨 Antigravity, 2026-08-05 — handoff
-  completo en esta tarjeta, sin paso previo por `2-arquitectura/`)
-- **Creado:** 2026-08-05
+- **Estado:** 🔴 Vuelve a `1-por-iniciar/` (2026-08-11) — la migración anterior (484/484 verificada
+  localmente, ver "Qué se hizo" más abajo, ahora obsoleto) no cumple lo que se necesita y se
+  descarta. 🔨 Antigravity está repoblando los 482 recursos de cero en este momento.
+- **Creado:** 2026-08-05 · **Reabierto:** 2026-08-11
 - **Prioridad:** P1 · **Cartera:** educativa
 - **Tipo:** pedagogía
 - **Dueño:** 🔨 Antigravity (construcción) — en paralelo con la remediación de 02.04-03.15 a
@@ -83,7 +84,7 @@ paralelo por la remediación de 🏛️ Claude en otra rama; renumerar si hay ch
 
 ---
 
-## Qué se hizo
+## Qué se hizo (intento anterior, descartado el 2026-08-11 — no repetir tal cual)
 - **Migración masiva de Geometría (`04.01`–`04.13`):** Se actualizaron los **484 recursos** de Geometría (`MAT.GEO.*`) al estándar editorial de 12 secciones de `NodeContent`.
 - **Ejemplos Guiados Únicos (Remediación Segunda Regla Dura 2026-08-05):** Se corrigieron los `ejemplo_guiado` de los 484 recursos de `MAT.GEO.*` para garantizar que **cada recurso tenga un enunciado y desarrollo 100% ÚNICO** específico de su concepto.
 - **Verificación de Duplicados:** Se ejecutó la prueba de verificación de duplicados de `ejemplo_guiado`:

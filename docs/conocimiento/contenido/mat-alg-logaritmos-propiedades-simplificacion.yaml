@@ -1,117 +1,100 @@
 semantic_id: MAT.ALG.LOGARITMOS_PROPIEDADES.SIMPLIFICACION
-resumen_inicial: 'Simplificación de expresiones logarítmicas usando propiedades: conceptos,
-  asíntotas, propiedades e inversidad en Logaritmos y sus propiedades.'
-explicacion_simple: Las expresiones logarítmicas más complejas no se resuelven con
-  una sola propiedad, sino aplicando varias en el orden adecuado, igual que al simplificar
-  cualquier expresión algebraica.
-explicacion_formal: '### Definición formal
+resumen_inicial: 'La simplificación de expresiones logarítmicas combina sistemáticamente las propiedades del producto, cociente, potencia e identidades de base para reducir expresiones complejas a su forma mínima.'
+explicacion_simple: |
+  Simplificar una expresión logarítmica es como desarmar un nudo aplicando las reglas del juego paso a paso. Primero introducimos o sacamos coeficientes usando la regla de la potencia, luego juntamos o separamos términos usando las reglas de la suma (multiplicación) y la resta (división), y finalmente aplicamos las cancelaciones obvias (como $\log_b(1) = 0$ o $\log_b(b) = 1$). El objetivo final es reducir toda la expresión a un número simple o a un solo logaritmo comprimido.
+explicacion_formal: |
+  ### Definición formal
+  La **simplificación analítica de expresiones logarítmicas** es la aplicación iterativa de las transformaciones equivalentes en el álgebra de logaritmos para reducir un término multivariable o multinumérico $E(x)$ a una expresión canónica compacta:
+  $$\text{Expresión Compleja } E(x) \xrightarrow{\text{Propiedades algebraicas}} \text{Forma Canónica } \log_b(M(x)) \text{ o Valor Constante } K$$
 
+  ### Desglose simbólico
+  - Algoritmo de Compresión (de múltiples logaritmos a uno solo):
+    1. Reingresar coeficientes multiplicativos exteriores como exponentes de los argumentos: $n \cdot \log_b(x) \to \log_b(x^n)$.
+    2. Agrupar sumas de logaritmos de igual base en el numerador: $\log_b(u) + \log_b(v) \to \log_b(u \cdot v)$.
+    3. Agrupar restas de logaritmos de igual base en el denominador: $\log_b(P) - \log_b(Q) \to \log_b\left(\frac{P}{Q}\right)$.
+  - Algoritmo de Expansión (desglose de un solo logaritmo en términos simples):
+    1. Separar cocientes en restas: $\log_b\left(\frac{A}{B}\right) \to \log_b(A) - \log_b(B)$.
+    2. Separar productos en sumas: $\log_b(C \cdot D) \to \log_b(C) + \log_b(D)$.
+    3. Extraer exponentes de los argumentos multiplicando libremente por fuera: $\log_b(x^k) \to k \cdot \log_b(x)$.
 
-  Dada una expresión logarítmica con varios factores, cocientes y potencias dentro
-  de un mismo logaritmo, se simplifica aplicando en cualquier orden válido las propiedades
-  $\log_b(xy)=\log_b(x)+\log_b(y)$, $\log_b(x/y)=\log_b(x)-\log_b(y)$ y $\log_b(x^n)=n\log_b(x)$,
-  siempre respetando las restricciones de dominio de cada argumento involucrado.
-
-
-  ### Desarrollo didáctico
-
-
-  Para simplificar $\log_b\!\left(\dfrac{x^2y}{z}\right)$: primero se separa el cociente,
-  $\log_b(x^2y)-\log_b(z)$; luego se separa el producto, $\log_b(x^2)+\log_b(y)-\log_b(z)$;
-  finalmente se baja el exponente, obteniendo $2\log_b(x)+\log_b(y)-\log_b(z)$.'
-definiciones_clave: '- **Simplificación de expresiones logarítmicas usando propiedades**:
-  Concepto fundamental en el estudio del crecimiento/decaimiento exponencial y logarítmico.'
-propiedades_relaciones: '- **Relación de inversidad y asíntotas**: $y = b^x \iff x
-  = \log_b(y)$, asíntota horizontal $y=0$ (exponencial) y vertical $x=0$ (logarítmica)
-  aplicadas a simplificación de expresiones logarítmicas usando propiedades.'
+  ### Síntesis didáctica
+  Dominio estricto de prioridades de operaciones: Antes de agrupar o restar dos logaritmos con la propiedad del producto o del cociente, es **obligatorio** eliminar los coeficientes que antecedan a los logaritmos, convirtiéndolos en exponentes de sus respectivos argumentos.
+definiciones_clave: |
+  - **Forma canónica de compresión**: Representación de una suma/resta de logaritmos en la estructura de un único logaritmo $\log_b(M)$.
+  - **Forma expandida**: Descomposición de un logaritmo complejo en suma/resta de logaritmos de variables elementales.
+  - **Prioridad de transformación**: Regla secuencial que exige resolver potencias antes de aplicar productos o cocientes.
+propiedades_relaciones: |
+  - **Identidad de cancelación combinada**: Expresiones de la forma $b^{a \log_b(x)}$ se simplifican introduciendo $a$: $b^{\log_b(x^a)} = x^a$.
+  - **Requisitos de equivalencia**: Toda simplificación logarítmica presupone que las variables respeten las restricciones de argumento positivo ($x > 0$) y base válida.
 ejemplo_guiado:
-  enunciado: Evalúa o resuelve la expresión aplicando las propiedades de simplificación
-    de expresiones logarítmicas usando propiedades.
+  enunciado: 'Simplifica a su mínima expresión las siguientes expresiones algebraicas: A) $E = 2 \log(5) + \log(4)$, B) $F = 3 \ln(x) + 2 \ln(y) - \frac{1}{2} \ln(z)$, C) $G = \log_2(48) - \log_2(3) + \log_2(1)$.'
   pasos:
-  - Identificar la base $b > 0, b \neq 1$ y las restricciones del argumento o exponente.
-  - Aplicar las propiedades operatorias o definición de simplificación de expresiones
-    logarítmicas usando propiedades.
-  - Efectuar la conversión entre forma exponencial y logarítmica si es necesario.
-  - Verificar que la solución cumpla las restricciones del dominio.
+    - 'Paso 1: Para $E = 2 \log(5) + \log(4)$, primero subimos el coeficiente $2$: $\log(5^2) + \log(4) = \log(25) + \log(4)$. Luego comprimimos sumando: $\log(25 \cdot 4) = \log(100) = 2$.'
+    - 'Paso 2: Para $F = 3 \ln(x) + 2 \ln(y) - \frac{1}{2} \ln(z)$, subimos los coeficientes como exponentes: $\ln(x^3) + \ln(y^2) - \ln(z^{1/2})$. Agrupamos positivos en el numerador y restados en el denominador: $\ln\left(\frac{x^3 y^2}{\sqrt{z}}\right)$.'
+    - 'Paso 3: Para $G = \log_2(48) - \log_2(3) + \log_2(1)$, como $\log_2(1) = 0$, nos queda $\log_2\left(\frac{48}{3}\right) = \log_2(16) = 4$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la condición indispensable respecto a la base b al trabajar con
-    simplificación de expresiones logarítmicas usando propiedades?
-  choices:
-  - text: Garantizar que la base sea positiva y distinta de uno en logaritmos y sus
-      propiedades
-    is_correct: true
-  - text: Permitir bases negativas para cualquier exponente
-    is_correct: false
-  - text: Fijar la base siempre igual a cero
-    is_correct: false
-  - text: Ignorar la restricción del argumento logarítmico
-    is_correct: false
-  explanation: 'La alternativa correcta es: Garantizar que la base sea positiva y
-    distinta de uno en logaritmos y sus propiedades. Es la condición de existencia
-    para funciones exponenciales y logarítmicas.'
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Cómo se relacionan funcionalmente las expresiones exponenciales y logarítmicas
-    en simplificación de expresiones logarítmicas usando propiedades?
-  choices:
-  - text: Utilizar la equivalencia y = b^x <=> x = log_b(y) para convertir entre ambas
-      formas
-    is_correct: true
-  - text: Multiplicando la base por el exponente sin usar logaritmos
-    is_correct: false
-  - text: Restando la base de la variable
-    is_correct: false
-  - text: Igualando siempre el exponente a cero
-    is_correct: false
-  explanation: 'La alternativa correcta es: Utilizar la equivalencia y = b^x <=> x
-    = log_b(y) para convertir entre ambas formas. Las funciones exponencial y logarítmica
-    son mutuamente inversas.'
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la forma comprimida en un solo logaritmo de la expresión $A = 2 \log_3(x) - \log_3(y)$?'
+    choices:
+      - {text: '$\log_3\left(\frac{x^2}{y}\right)$', is_correct: true}
+      - {text: '$\log_3(2x - y)$', is_correct: false}
+      - {text: '$\log_3\left(\frac{2x}{y}\right)$', is_correct: false}
+      - {text: '$\frac{2 \log_3(x)}{\log_3(y)}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\log_3\left(\frac{x^2}{y}\right)$''. Primero subimos el coeficiente $2$ como exponente $\log_3(x^2)$, y luego aplicamos la propiedad del cociente $\log_3\left(\frac{x^2}{y}\right)$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Al calcular el valor numérico exacto de $B = \log_2(12) + \log_2(2/3)$, ¿cuál es el resultado simplificado?'
+    choices:
+      - {text: '$3$, porque $\log_2\left(12 \cdot \frac{2}{3}\right) = \log_2(8) = 3$', is_correct: true}
+      - {text: '$8$, porque $12 - (2/3) = 8$', is_correct: false}
+      - {text: '$0$, porque las fracciones se anulan', is_correct: false}
+      - {text: '$12$, porque se conserva el valor inicial', is_correct: false}
+    explanation: 'La alternativa correcta es ''$3$, porque $\log_2\left(12 \cdot \frac{2}{3}\right) = \log_2(8) = 3$''. Multiplicamos los argumentos: $12 \cdot \frac{2}{3} = \frac{24}{3} = 8 \implies \log_2(8) = 3$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identifica todas las operaciones (producto, cociente, potencia) presentes
-  dentro del argumento.'
-- 'Paso 2: Aplica primero la propiedad del cociente si existe una división principal.'
-- 'Paso 3: Aplica la propiedad del producto sobre los factores restantes.'
-- 'Paso 4: Aplica la propiedad de la potencia para bajar los exponentes de cada factor.'
-- 'Paso 5: Verifica que cada argumento individual cumpla las restricciones de dominio.'
-errores_correccion: Evita evaluar un logaritmo con argumento negativo o nulo en simplificación
-  de expresiones logarítmicas usando propiedades.
+  - 'Paso 1: Reingresar todos los coeficientes multiplicativos exteriores como exponentes de los argumentos internos ($n \log_b(x) \to \log_b(x^n)$).'
+  - 'Paso 2: Convertir los radicales a exponentes fraccionarios.'
+  - 'Paso 3: Identificar los términos con signo positivo para situar sus argumentos multiplicados en el numerador.'
+  - 'Paso 4: Identificar los términos con signo negativo para situar sus argumentos multiplicados en el denominador.'
+  - 'Paso 5: Simplificar algebraicamente la fracción resultante dentro del logaritmo unificado.'
+errores_correccion: |
+  - **Error 1:** Agrupar con la propiedad del cociente o producto sin haber eliminado antes los coeficientes exteriores (ej: en $2\log(x) - \log(y)$ escribir $\frac{2x}{y}$). **Cómo corregirlo:** Es obligatorio reingresar primero el coeficiente como exponente ($x^2$) antes de aplicar la resta: $\log\left(\frac{x^2}{y}\right)$.
+  - **Error 2:** Olvidar que las propiedades de compresión exigen que todos los logaritmos tengan exactamente la misma base. **Cómo corregirlo:** Si hay bases distintas, utilizar la fórmula de cambio de base antes de intentar comprimir la expresión.
 ejemplos:
-- titulo: Simplificación de una expresión con producto y potencia
-  enunciado: Simplifica $\log_2(x^3y)$.
-  solucion_pasos:
-  - Se separa el producto: $\log_2(x^3)+\log_2(y)$.
-  - 'Se baja el exponente: $3\log_2(x)+\log_2(y)$.'
-- titulo: Simplificación de una expresión con cociente y potencia
-  enunciado: Simplifica $\log_3\!\left(\dfrac{x^2}{y^3}\right)$.
-  solucion_pasos:
-  - Se separa el cociente: $\log_3(x^2)-\log_3(y^3)$.
-  - 'Se bajan los exponentes: $2\log_3(x)-3\log_3(y)$.'
-- titulo: ¿El orden en que se aplican las propiedades afecta el resultado final?
-  enunciado: ¿Cambia el resultado final si se aplica primero la propiedad del producto
-    o primero la de la potencia?
-  respuesta: 'No'
-  solucion_pasos:
-  - Mientras se respeten las restricciones de dominio, cualquier orden válido de aplicación
-    lleva al mismo resultado simplificado.
-- titulo: ¿Es necesario verificar el dominio en cada paso de una simplificación combinada?
-  enunciado: ¿Debe verificarse que cada argumento sea positivo en cada paso al simplificar
-    una expresión con varias propiedades?
-  respuesta: Sí
-  solucion_pasos:
-  - Cada separación introduce nuevos argumentos que deben cumplir individualmente
-    la condición de positividad.
+  - titulo: 'Compresión con tres términos y coeficientes'
+    enunciado: '¿A qué equivale $2\log(3) + 3\log(2) - \log(12)$?'
+    alternativas:
+      - '$\log(6) \approx 0.778$'
+      - '$\log(12)$'
+      - '$\log(1)$'
+    respuesta: '$\log(6) \approx 0.778$'
+    solucion_pasos:
+      - '1. Subimos exponentes: $\log(3^2) + \log(2^3) - \log(12) = \log(9) + \log(8) - \log(12)$.'
+      - '2. Comprimimos: $\log\left(\frac{9 \cdot 8}{12}\right) = \log\left(\frac{72}{12}\right) = \log(6)$.'
+  - titulo: 'Simplificación con exponente en base e'
+    enunciado: '¿La expresión $e^{\ln(5) + \ln(2)}$ es igual a 10?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Comprimimos el exponente: $\ln(5) + \ln(2) = \ln(10) \implies e^{\ln(10)} = 10$.'
+  - titulo: 'Descomposición completa de una fracción'
+    enunciado: '¿La expresión $\log_b\left(\frac{x^3 \sqrt{y}}{z^4}\right)$ se expande como $3\log_b(x) + \frac{1}{2}\log_b(y) - 4\log_b(z)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Separamos cociente en resta, productos en suma y extraemos exponentes $3, 1/2, 4$.'
+  - titulo: 'Cancelación con términos nulos'
+    enunciado: '¿Al simplificar $\log_5(25) + \log_5(1) - \log_5(5)$ se obtiene $1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $\log_5(25) = 2$, $\log_5(1) = 0$, $\log_5(5) = 1 \implies 2 + 0 - 1 = 1$.'
 errores_frecuentes:
-- Aplicar las propiedades en un orden que ignora las restricciones de dominio de pasos
-  intermedios.
-- Omitir bajar todos los exponentes presentes en una expresión con múltiples factores.
-- Mezclar erróneamente la propiedad del producto con la del cociente en un mismo paso.
-- Dejar la simplificación incompleta, sin reducir todos los términos posibles.
+  - 'En la expresión $2 \log(x) - \log(y)$, se agrupan los argumentos como $\log\left(\frac{2x}{y}\right)$.'
+  - 'La compresión de la suma $3\log(a) + 2\log(b)$ produce el resultado $\log(6ab)$.'
+  - 'Es correcto simplificar la expresión $\log_2(x) + \log_3(y)$ multiplicando los argumentos como $\log_2(xy)$.'
+  - 'La expresión $e^{2\ln(x)}$ se simplifica directamente como $2x$.'
+  - 'Al simplificar $\log(A - B)$, se aplica la regla del cociente obteniendo $\log(A) / \log(B)$.'
 afirmaciones_verdaderas:
-- La función logarítmica de base $b$ es la función inversa de la función exponencial
-  de base $b$.
-al_terminar_debes_poder: Resolver y modelar problemas exponenciales y logarítmicos
-  aplicando simplificación de expresiones logarítmicas usando propiedades.
-fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
+  - 'La simplificación logarítmica exige reingresar primero todos los coeficientes exteriores como exponentes de los argumentos antes de comprimir sumas y restas.'
+  - 'Los términos con signo positivo aportan factores al numerador del argumento unificado, mientras que los términos con signo negativo aportan factores al denominador.'
+al_terminar_debes_poder: 'Simplificar y comprimir expresiones logarítmicas complejas aplicando sistemáticamente el conjunto de propiedades de logaritmos.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

@@ -1,125 +1,105 @@
-resumen_inicial: El método de reducción por variable constante aísla los efectos parciales
-  descomponiendo un problema compuesto en dos o más etapas de proporcionalidad simple
-  consecutivas.
-explicacion_simple: Una forma fácil de resolver proporcionalidad compuesta es hacerlo
-  por pasos de dos en dos. Primero dejamos congelada una variable y calculamos el
-  cambio con las otras dos; luego usamos ese resultado intermedio para calcular el
-  paso final.
-explicacion_formal: 'Dadas las magnitudes $A, B, C$, el **Método de Reducción por
-  Variable Constante** efectúa la resolución en dos pasos de proporcionalidad simple:
-
-
-  $$\text{Paso 1: Resolver } A \to A'' \text{ variando } B \text{ con } C = cst$$
-
-  $$\text{Paso 2: Resolver } A'' \to A'''' \text{ variando } C \text{ con } B = cst$$
-
-
-  El valor final $A''''$ es la solución exacta del problema compuesto.'
-definiciones_clave: '- **Reducción por variable constante**: Estrategia de resolución
-  por etapas encadenadas de proporcionalidad simple.'
-propiedades_relaciones: '- **Descomposición por etapas**: Resuelve $A(B, C)$ descomponiendo
-  en $A_1(B)$ y luego $A_2(C)$.'
-ejemplo_guiado:
-  enunciado: Si $2$ costureras hacen $10$ vestidos en $5$ días, ¿cuántos vestidos
-    harán $4$ costureras en $5$ días?
-  pasos:
-  - 'Paso 1: Identificar que los días se mantienen constantes ($5$ días).'
-  - 'Paso 2: Aplicar proporción directa simple entre Costureras y Vestidos: si $2$
-    costureras hacen $10$, el doble ($4$) hará el doble de vestidos.'
-  - 'Paso 3: Calcular $10 \cdot 2 = 20$ vestidos.'
-  - 'Conclusión: Harán $20$ vestidos (manteniendo constantes los días).'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿En qué consiste la estrategia de reducción por variable constante?
-  choices:
-  - text: En descomponer el problema compuesto en etapas sucesivas de regla de tres
-      simple fijando variables
-    is_correct: true
-  - text: En borrar una variable de la tabla
-    is_correct: false
-  - text: En sumar todos los datos de la tabla
-    is_correct: false
-  - text: En multiplicar todo por 100
-    is_correct: false
-  explanation: La alternativa correcta es 'En descomponer el problema compuesto en
-    etapas sucesivas de regla de tres simple fijando variables'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado de las costureras con días constantes, ¿cuántos vestidos
-    hicieron 4 costureras?
-  choices:
-  - text: 20 vestidos
-    is_correct: true
-  - text: 10 vestidos
-    is_correct: false
-  - text: 40 vestidos
-    is_correct: false
-  - text: 15 vestidos
-    is_correct: false
-  explanation: La alternativa correcta es '20 vestidos'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de resolver problemas de proporcionalidad
-  compuesta descomponiendo la situación en etapas de proporcionalidad simple mediante
-  el congelamiento de variables.
 semantic_id: MAT.NUM.PROP_COMPUESTA.VARIABLE_CONSTANTE
+resumen_inicial: 'El método de variable constante (o reducción por pasos) resuelve problemas de proporcionalidad compuesta dividiendo el cálculo en dos o más reglas de tres simples consecutivas, manteniendo fija una variable a la vez.'
+explicacion_simple: |
+  Si te resulta confuso resolver un problema de tres magnitudes de un solo golpe, puedes usar el **método de variable constante paso a paso**. Consiste en descomponer el problema complejo en dos etapas simples:
+  1. En la primera etapa, mantienes una variable congelada y usas una regla de tres simple para calcular un valor intermedio.
+  2. En la segunda etapa, usas ese valor intermedio y calculas el resultado final aplicando otra regla de tres simple con la otra variable.
+explicacion_formal: |
+  ### Definición formal
+  El **método de desacoplamiento por variable constante** transforma una proporcionalidad compuesta trivariada de estado $(X_1^{(1)}, X_2^{(1)}, Y^{(1)}) \to (X_1^{(2)}, X_2^{(2)}, Y^{(2)})$ en una secuencia de dos transformaciones bivariadas consecutivas pasando por un **estado intermedio hipotético** $(X_1^{(2)}, X_2^{(1)}, Y^{(\text{int})})$:
+
+  ### Etapa 1: Transformación de $X_1$ a $X_1^{(2)}$ manteniendo $X_2 = X_2^{(1)}$ constante
+  Se aplica la regla de tres simple (directa o inversa) entre $X_1$ e $Y$:
+  $$Y^{(\text{int})} = Y^{(1)} \cdot \left(\text{Razón de } X_1\right)$$
+
+  ### Etapa 2: Transformación de $X_2$ a $X_2^{(2)}$ manteniendo $X_1 = X_1^{(2)}$ constante
+  Se aplica la regla de tres simple entre $X_2$ e $Y$ tomando como punto de partida el valor intermedio $Y^{(\text{int})}$:
+  $$Y^{(2)} = Y^{(\text{int})} \cdot \left(\text{Razón de } X_2\right)$$
+
+  ### Justificación matemática
+  Por el principio de asociatividad de las transformaciones lineales escalares:
+  $$Y^{(2)} = Y^{(1)} \cdot \left(\text{Razón de } X_1\right) \cdot \left(\text{Razón de } X_2\right)$$
+  demostrando que resolver por pasos da exactamente el mismo resultado numérico que la fórmula compuesta directa.
+
+  ### Síntesis didáctica
+  - Paso 1: Hallar respuesta intermedia $Y^{(\text{int})}$ congelando $X_2$.
+  - Paso 2: Hallar respuesta final $Y^{(2)}$ usando $Y^{(\text{int})}$ y variando $X_2$.
+definiciones_clave: |
+  - **Estado intermedio hipotético**: Punto medio de cálculo donde solo una de las variables independientes ha cambiado su valor.
+  - **Desacoplamiento secuencial**: Descomposición de un problema multivariable en etapas de dos variables simples.
+  - **Reducción por pasos**: Estrategia pedagógica para evitar errores de cálculo agrupando reglas de tres de forma consecutiva.
+propiedades_relaciones: |
+  - **Conmutatividad del orden de pasos**: El resultado final $Y^{(2)}$ es independiente de cuál variable se mantenga constante en la primera etapa.
+  - **Equivalencia estricta**: Cada paso individual preserva la constante de proporcionalidad simple del subsistema evaluado.
+ejemplo_guiado:
+  enunciado: 'Si $3$ impresoras imprimen $1.200$ páginas en $2\text{ horas}$, ¿cuántas páginas ($Y$) imprimirán $5$ impresoras en $4\text{ horas}$? Resuelve por el método de variable constante.'
+  pasos:
+    - 'Paso 1 (Etapa 1): Mantenemos constante el tiempo en $2\text{ horas}$ y cambiamos las impresoras de $3$ a $5$. Como es proporción directa ($1.200 \cdot \frac{5}{3}$), calculamos el valor intermedio: $Y^{(\text{int})} = \frac{1.200 \cdot 5}{3} = 2.000\text{ páginas}$.'
+    - 'Paso 2 (Etapa 2): Tomamos las $2.000$ páginas impresas por las $5$ impresoras en $2\text{ horas}$ y variamos el tiempo de $2$ a $4\text{ horas}$.'
+    - 'Paso 3: Como tiempo y páginas son directamente proporcionales, calculamos el resultado final: $Y^{(2)} = \frac{2.000 \cdot 4}{2} = 4.000\text{ páginas}$.'
+    - 'Paso 4: Concluimos que las $5$ impresoras en $4\text{ horas}$ imprimirán **4.000 páginas**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿En qué consiste la estrategia de resolución por variable constante en proporcionalidad compuesta?'
+    choices:
+      - {text: 'Descomponer el problema en dos reglas de tres simples consecutivas calculando un valor intermedio mientras una variable no cambia', is_correct: true}
+      - {text: 'Eliminar una de las variables del problema para no tener que calcularla', is_correct: false}
+      - {text: 'Sumar los valores de la variable constante al resultado final', is_correct: false}
+      - {text: 'Convertir todas las variables inversas en cero', is_correct: false}
+    explanation: 'La alternativa correcta es ''Descomponer el problema en dos reglas de tres simples consecutivas calculando un valor intermedio mientras una variable no cambia''. Es la esencia del método por pasos.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si en el primer paso de un problema $4$ obreros hacen $20\text{ metros}$ en $5$ días, ¿cuántos metros harán $8$ obreros en los mismos $5$ días?'
+    choices:
+      - {text: '$40\text{ metros}$, duplicando la producción al duplicar los obreros con días constantes', is_correct: true}
+      - {text: '$10\text{ metros}$, reduciendo a la mitad', is_correct: false}
+      - {text: '$25\text{ metros}$, sumando 5', is_correct: false}
+      - {text: '$80\text{ metros}$, quadruplicando', is_correct: false}
+    explanation: 'La alternativa correcta es ''$40\text{ metros}$, duplicando la producción al duplicar los obreros con días constantes''. A días constantes, duplicar obreros duplica los metros ($20 \cdot 2 = 40$).'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar la variable incógnita y comparar individualmente cada magnitud
-  auxiliar con ella (fijando las demás).'
-- 'Paso 2: Clasificar cada magnitud como directamente proporcional (mantener razón)
-  o inversamente proporcional (invertir razón).'
-- 'Paso 3: Formar la ecuación generalizada y calcular la respuesta reduciendo los
-  factores multiplicativos.'
-errores_correccion: '- **Error 1: Comparar las magnitudes auxiliares entre sí en lugar
-  de compararlas con la variable incógnita.** **Cómo corregirlo:** La comparación
-  de proporcionalidad directa o inversa se DEBE hacer siempre respecto a la columna
-  de la INCÓGNITA.
-
-
-  - **Error 2: No invertir la razón de las magnitudes inversas al armar la fórmula.**
-  **Cómo corregirlo:** Las magnitudes inversas cambian su posición $\frac{a_1}{a_2}
-  \to \frac{a_2}{a_1}$ al multiplicar.'
+  - 'Paso 1: Escribir los datos del estado inicial y del estado final deseado.'
+  - 'Paso 2: Definir un estado intermedio donde solo cambia la primera variable independiente y la segunda permanece fija.'
+  - 'Paso 3: Resolver la primera regla de tres simple para hallar el valor intermedio $Y^{(\text{int})}$.'
+  - 'Paso 4: Resolver la segunda regla de tres simple usando $Y^{(\text{int})}$ y variando la segunda variable para hallar el resultado final $Y^{(2)}$.'
+errores_correccion: |
+  - **Error 1:** Olvidar utilizar el valor intermedio $Y^{(\text{int})}$ en la segunda etapa y volver a usar el valor inicial $Y^{(1)}$. **Cómo corregirlo:** La segunda regla de tres se aplica sobre la **respuesta intermedia ya transformada**, no sobre el número original.
+  - **Error 2:** Cambiar el tipo de relación (directa o inversa) entre las etapas. **Cómo corregirlo:** Mantén el análisis de proporcionalidad específico para cada variable independiente involucrada.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROP_COMPUESTA.VARIABLE_CONSTANTE.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las leyes de proporcionalidad compuesta.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la fórmula del producto de razones.
-  alternativas:
-  - Cumple la fórmula
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la fórmula
-  solucion_pasos:
-  - Demostración formal por producto de razones.
-- titulo: ¿Se invierten las razones de las magnitudes inversas en la fórmula generalizada?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para compensar la variación inversamente proporcional.
-- titulo: ¿Es necesario congelar las otras variables al clasificar una magnitud?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para aislar el efecto puro de esa variable sobre la incógnita.
+  - titulo: 'Reducción en dos pasos para obreros y días'
+    enunciado: 'Si 2 obreros hacen 10m en 3 días. Paso 1 (4 obreros en 3 días) $\implies 20\text{m}$. Paso 2 (4 obreros en 6 días) $\implies 40\text{m}$. ¿Es correcto?'
+    alternativas:
+      - 'Sí, se resolvieron dos reglas simples consecutivas'
+      - 'No, el resultado final es 30m'
+      - 'No se puede dividir en pasos'
+    respuesta: 'Sí, se resolvieron dos reglas simples consecutivas'
+    solucion_pasos:
+      - '1. Paso 1: Duplicar obreros $\implies 10 \cdot 2 = 20\text{m}$.'
+      - '2. Paso 2: Duplicar días $\implies 20 \cdot 2 = 40\text{m}$.'
+  - titulo: 'Independencia del orden de pasos'
+    enunciado: 'Si en el problema anterior se cambia primero el tiempo y después los obreros, ¿se llega exactamente al mismo valor de $40\text{m}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Por propiedad conmutativa: $(1.200 \cdot \frac{5}{3}) \cdot \frac{4}{2} = (1.200 \cdot \frac{4}{2}) \cdot \frac{5}{3} = 4.000$.'
+  - titulo: 'Paso intermedio con variable inversa'
+    enunciado: 'Si 6 obreros tardan 12 días a 8 h/día. Paso 1 (12 obreros a 8 h/día) $\implies 6$ días. ¿Es correcto?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Al duplicar obreros a horas constantes, los días se reducen a la mitad ($12 / 2 = 6$).'
+  - titulo: 'Validación del resultado por fórmula global'
+    enunciado: '¿El método por pasos da siempre el mismo resultado que la fórmula generalizada?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Demostrado algebraicamente por producto de factores.'
 errores_frecuentes:
-- Comparar dos magnitudes auxiliares entre sí en lugar de analizar su relación individual
-  con la incógnita.
-- Mantener sin invertir la fracción correspondiente a una magnitud de relación inversamente
-  proporcional.
-- Multiplicar todos los datos numéricos del problema sin distinguir su carácter directo
-  o inverso.
-- Omitir congelar mentalmente las demás variables al determinar si una relación es
-  directa o inversa.
-- Declarar que si participan más de tres variables la relación es siempre directamente
-  proporcional.
+  - 'Usar el valor inicial $Y^{(1)}$ en el segundo paso en lugar de utilizar el resultado intermedio $Y^{(\text{int})}$.'
+  - 'Modificar dos variables al mismo tiempo en la primera etapa arruinando el congelamiento de variables.'
+  - 'El orden en que se eligen las variables para resolver por pasos altera el resultado final numérico.'
+  - 'Aplicar la regla directa en una etapa donde la variable es inversamente proporcional.'
+  - 'Sumar los resultados de los dos pasos en lugar de encadenar las multiplicaciones.'
 afirmaciones_verdaderas:
-- La proporcionalidad compuesta combina tres o más magnitudes analizando la relación
-  directa o inversa de cada una con la incógnita.
-- En la fórmula generalizada de resolución, la razón de una magnitud inversa se invierte
-  respecto a su estado inicial.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+  - 'El método de variable constante descompone un problema compuesto en etapas consecutivas de reglas de tres simples.'
+  - 'El resultado final obtenido al resolver por pasos es idéntico al obtenido mediante la fórmula generalizada de proporción compuesta.'
+al_terminar_debes_poder: 'Resolver problemas de proporcionalidad compuesta mediante la técnica de reducción en pasos manteniendo una variable constante.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

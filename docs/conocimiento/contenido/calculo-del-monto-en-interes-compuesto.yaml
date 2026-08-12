@@ -1,122 +1,110 @@
-resumen_inicial: 'El cálculo del monto final $M$ en interés compuesto eleva el factor
-  $(1 + i)$ al número de períodos $n$ y lo multiplica por el capital inicial: $M =
-  C \cdot (1 + i)^n$.'
-explicacion_simple: Para saber cuánto dinero acumularemos en total tras varios períodos
-  en interés compuesto, tomamos la tasa en decimal, le sumamos 1, la elevamos al número
-  de períodos $n$ y multiplicamos ese resultado por el dinero depositado al principio.
-explicacion_formal: 'La **Fórmula del Monto Compuesto $M$** para una tasa periódica
-  $i$ y $n$ períodos de capitalización es:
-
-
-  $$M = C \cdot (1 + i)^n = C \cdot \left(1 + \frac{r}{100}\right)^n$$
-
-
-  **Capitalización subanual:**
-
-  - Si la tasa anual es $r\%$ y se capitaliza $m$ veces al año durante $t$ años: $M
-  = C \cdot \left(1 + \frac{r}{100 \cdot m}\right)^{m \cdot t}$.'
-definiciones_clave: '- **Monto compuesto $M$**: Valor acumulado $M = C \cdot (1 +
-  i)^n$.'
-propiedades_relaciones: '- **Frecuencia de capitalización**: Eleva el número total
-  de períodos $n = m \cdot t$ adaptando la tasa periódica $i = r / m$.'
-ejemplo_guiado:
-  enunciado: Calcule el monto acumulado por un capital de \$200.000 depositado al
-    $5\%$ compuesto anual durante $3$ años.
-  pasos:
-  - 'Paso 1: Identificar $C = 200.000$, $i = 0,05$ y $n = 3$.'
-  - 'Paso 2: Calcular el factor $(1 + 0,05)^3 = 1,05^3 = 1,157625$.'
-  - 'Paso 3: Multiplicar $M = 200.000 \cdot 1,157625 = 231.525$.'
-  - 'Conclusión: El monto final acumulado es \$231.525.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la fórmula para calcular el monto final M en régimen de interés
-    compuesto?
-  choices:
-  - text: M = C · (1 + i)^n
-    is_correct: true
-  - text: M = C · (1 + i · n)
-    is_correct: false
-  - text: M = C · i · n
-    is_correct: false
-  - text: M = C / (1 + i)^n
-    is_correct: false
-  explanation: La alternativa correcta es 'M = C · (1 + i)^n'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para $200.000 al 5% compuesto durante 3 años, ¿cuál
-    fue el monto final M?
-  choices:
-  - text: 231.525 $
-    is_correct: true
-  - text: 230.000 $
-    is_correct: false
-  - text: 215.000 $
-    is_correct: false
-  - text: 250.000 $
-    is_correct: false
-  explanation: La alternativa correcta es '231.525 $'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular el monto acumulado $M
-  = C \cdot (1 + i)^n$ aplicando la tasa periódica y el exponente de períodos.
 semantic_id: MAT.NUM.INTERES_COMPUESTO.CALCULO_MONTO
+resumen_inicial: 'El cálculo del monto final a interés compuesto evalúa la acumulación exponencial $M = C \cdot \left(1 + \frac{r}{k}\right)^{t \cdot k}$, ajustando la tasa anual $r\%$ y los años $t$ según la frecuencia de capitalización $k$.'
+explicacion_simple: |
+  Para calcular el valor futuro $M$ cuando los intereses se capitalizan con cierta frecuencia (mensual, trimestral, semestral):
+  1. Divides la tasa anual $r\%$ entre el número de períodos que hay en un año $k$ (ej: si es semestral, $k=2$; si es mensual, $k=12$).
+  2. Multiplicas los años $t$ por $k$ para tener el número total de capitalizaciones $n = t \cdot k$.
+  3. Calculas $M = C \cdot (1 + i)^n$.
+  Por ejemplo, al $12\%$ anual capitalizable mensualmente durante 1 año: la tasa mensual es $12\% \div 12 = 1\%$ ($i = 0,01$) y hay $n = 12$ meses.
+explicacion_formal: |
+  ### Definición formal
+  El **monto compuesto con frecuencia de capitalización $k$** es el valor futuro $M$ producido por un principal $C$ en un lapso de $t$ años a una tasa nominal anual $r\%$:
+  $$M = C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{t \cdot k}$$
+  donde:
+  - $k$ es el **número de períodos de capitalización por año**:
+    - Anual: $k = 1$.
+    - Semestral: $k = 2$.
+    - Trimestral: $k = 4$.
+    - Mensual: $k = 12$.
+    - Diaria: $k = 360$ (o $365$).
+  - $i = \frac{r}{100 \cdot k}$ es la **tasa efectiva por período de capitalización**.
+  - $n = t \cdot k$ es el **número total de capitalizaciones**.
+
+  ### Propiedad del Límite de Capitalización Continua
+  Cuando la frecuencia de capitalización $k$ tiende a infinito ($k \to \infty$), el monto acumulado converge al modelo de crecimiento continuo:
+  $$\lim_{k \to \infty} C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{t \cdot k} = C \cdot e^{\left(\frac{r}{100}\right) \cdot t}$$
+
+  ### Síntesis didáctica
+  - Ajuste de tasa periódica: $i = \frac{r}{100 \cdot k}$.
+  - Ajuste de exponente: $n = t \cdot k$.
+  - Fórmula del monto: $M = C \cdot (1 + i)^n$.
+definiciones_clave: |
+  - **Frecuencia de capitalización ($k$)**: Número de subperíodos dentro de un año en los que se liquidan los intereses.
+  - **Tasa periódica efectiva ($i$)**: Tasa correspondiente a un solo subperíodo de capitalización ($i = r / k$).
+  - **Capitalización continua**: Límite matemático donde los intereses se componen de manera ininterrumpida ($e^{rt}$).
+propiedades_relaciones: |
+  - **Efecto de la frecuencia $k$**: Para una misma tasa nominal anual $r\%$, a mayor frecuencia $k$, mayor resulta el monto final $M$.
+  - **Invariancia proporcional**: Si el capital inicial $C$ se duplica, el monto final $M$ se duplica exactamente manteniendo la misma tasa y plazo.
+ejemplo_guiado:
+  enunciado: 'Calcula el monto acumulado por un capital de $\$400.000$ al $12\%$ anual con capitalización semestral durante $1,5$ años.'
+  pasos:
+    - 'Paso 1: Identificamos $C = 400.000$, tasa anual $r = 12\%$, tiempo $t = 1,5\text{ años}$ y frecuencia semestral $k = 2$.'
+    - 'Paso 2: Calculamos la tasa semestral $i = \frac{12\%}{2} = 6\% \implies 0,06$.'
+    - 'Paso 3: Calculamos los períodos totales $n = 1,5 \cdot 2 = 3\text{ semestres}$.'
+    - 'Paso 4: Evaluamos el monto: $M = 400.000 \cdot (1,06)^3 = 400.000 \cdot 1,191016 = 476.406,4$. El monto final es de **$\$476.406$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'Si una tasa anual del $12\%$ se capitaliza mensualmente ($k=12$), ¿cuál es la tasa periódica $i$ que se debe ingresar en la fórmula?'
+    choices:
+      - {text: 'La tasa mensual $i = 1\% = 0,01$, dividiendo $12\% / 12$', is_correct: true}
+      - {text: 'La tasa entera $12\% = 0,12$ sin dividir', is_correct: false}
+      - {text: 'La tasa del $144\%$, multiplicando por 12', is_correct: false}
+      - {text: 'La tasa del $0,5\%$, dividiendo por 24', is_correct: false}
+    explanation: 'La alternativa correcta es ''La tasa mensual $i = 1\% = 0,01$, dividiendo $12\% / 12$''. $i = r / k = 12 / 12 = 1\% = 0,01$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuántas capitalizaciones $n$ ocurren en $2$ años si la inversión tiene capitalización trimestral ($k=4$)?'
+    choices:
+      - {text: '$8$ capitalizaciones, multiplicando $2 \cdot 4 = 8$', is_correct: true}
+      - {text: '$2$ capitalizaciones, considerando solo los años', is_correct: false}
+      - {text: '$4$ capitalizaciones, tomando $k$', is_correct: false}
+      - {text: '$24$ capitalizaciones, contando meses', is_correct: false}
+    explanation: 'La alternativa correcta es ''$8$ capitalizaciones, multiplicando $2 \cdot 4 = 8$''. $n = t \cdot k = 2 \cdot 4 = 8$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar las variables financieras ($C, i, n, M, I, R$) e igualar la
-  tasa al período de capitalización.'
-- 'Paso 2: Aplicar la fórmula exponencial de capitalización $M = C \cdot (1 + i)^n$
-  o su variante correspondiente.'
-- 'Paso 3: Resolver numéricamente o mediante logaritmos y verificar la coherencia
-  económica.'
-errores_correccion: '- **Error 1: Calcular el interés compuesto multiplicando el tiempo
-  por la tasa en forma lineal ($C \cdot i \cdot n$).** **Cómo corregirlo:** En régimen
-  compuesto el factor es exponencial $(1 + i)^n$, NO lineal.
-
-
-  - **Error 2: No ajustar la tasa de interés a la frecuencia de capitalización (ej:
-  usar tasa anual en capitalización mensual).** **Cómo corregirlo:** La tasa DEBE
-  dividirse entre el número de períodos del año ($i = r / m$) y el tiempo multiplicarse
-  ($n = m \cdot t$).'
+  - 'Paso 1: Identificar el capital $C$, la tasa nominal anual $r\%$, el tiempo en años $t$ y la frecuencia de capitalización $k$.'
+  - 'Paso 2: Calcular la tasa periódica $i = \frac{r}{100 \cdot k}$ y el número total de períodos $n = t \cdot k$.'
+  - 'Paso 3: Calcular el factor $(1 + i)^n$.'
+  - 'Paso 4: Multiplicar $C \cdot (1 + i)^n$ para obtener el monto acumulado $M$.'
+errores_correccion: |
+  - **Error 1:** Elevar la tasa nominal anual al exponente de años sin dividir por la frecuencia de capitalización $k$. **Cómo corregirlo:** Si la capitalización no es anual, **DEBES adaptar la tasa ($i = r/k$) y el exponente ($n = t \cdot k$)**.
+  - **Error 2:** Multiplicar el capital por la tasa en lugar de aplicar la potencia del factor $(1+i)^n$. **Cómo corregirlo:** La fórmula del monto es **multiplicativa exponencial: $M = C \cdot (1+i)^n$**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.INTERES_COMPUESTO.CALCULO_MONTO.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de la fórmula de interés compuesto.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la función de capitalización exponencial.
-  alternativas:
-  - Cumple el modelo
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple el modelo
-  solucion_pasos:
-  - Demostración formal por $M = C(1+i)^n$.
-- titulo: ¿Supera el interés compuesto al simple para t > 1?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, debido al efecto acumulativo de la capitalización de intereses.
-- titulo: ¿Se requiere logaritmo para despejar el número de períodos n?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para bajar el exponente $n$ mediante la propiedad logarítmica.
+  - titulo: 'Monto con capitalización semestral'
+    enunciado: 'Para $\$100.000$ al $10\%$ anual semestral ($i=0,05, n=2$), ¿el monto final al año es $\$110.250$?'
+    alternativas:
+      - 'Sí, pues $100.000 \cdot (1,05)^2 = 110.250$'
+      - 'No, es $\$110.000$'
+      - 'No, es $\$120.000$'
+    respuesta: 'Sí, pues $100.000 \cdot (1,05)^2 = 110.250$'
+    solucion_pasos:
+      - '1. Tasa semestral $i = 10\% / 2 = 5\% \implies 0,05$.'
+      - '2. Períodos en 1 año: $n = 2$.'
+      - '3. Monto: $100.000 \cdot 1,05^2 = \$110.250$.'
+  - titulo: 'Monto con capitalización trimestral'
+    enunciado: 'Para $\$200.000$ al $8\%$ anual trimestral ($i=0,02$) por 1 año ($n=4$), ¿el monto es $\$216.486,4$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $200.000 \cdot (1,02)^4 = 200.000 \cdot 1,082432 = 216.486,4$.'
+  - titulo: 'Comparación de frecuencias'
+    enunciado: '¿La capitalización mensual produce un monto final mayor que la capitalización anual para una misma tasa nominal?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. A mayor frecuencia $k$, mayor es el rendimiento acumulado.'
+  - titulo: 'Monto a 5 años'
+    enunciado: 'Para $\$50.000$ al $6\%$ anual compuesto por 5 años ($i=0,06, n=5$), ¿el monto es $\$66.911,27$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $50.000 \cdot (1,06)^5 = 50.000 \cdot 1,3382255 = 66.911,27$.'
 errores_frecuentes:
-- Usar la fórmula lineal del interés simple $C \cdot i \cdot t$ para resolver problemas
-  de capitalización compuesta.
-- No dividir la tasa de interés anual entre 12 cuando el período de capitalización
-  es mensual.
-- Omitir restar el capital inicial $C$ al monto acumulado final $M$ al calcular únicamente
-  el interés ganado.
-- Declarar que dos cuotas de interés compuesto acumulado crecen en forma de progresión
-  aritmética constante.
-- Sumar directamente las cuotas de amortización sin descontar la tasa de interés en
-  el valor presente.
+  - 'Utilizar la tasa nominal anual directa en la fórmula sin dividir por la frecuencia de capitalización.'
+  - 'Mantener el número de años en el exponente sin multiplicar por la frecuencia de capitalización por año.'
+  - 'El monto acumulado con capitalización mensual resulta menor que con capitalización anual.'
+  - 'Elevar el capital inicial al exponente $n$ en lugar de elevar el factor $(1+i)$.'
+  - 'Restar la constante 1 al factor de acumulación al calcular el valor futuro total.'
 afirmaciones_verdaderas:
-- El interés compuesto se caracteriza porque los intereses de cada período se suman
-  al capital para generar nuevos intereses.
-- El monto acumulado en régimen compuesto sigue un modelo de función exponencial $M
-  = C \cdot (1 + i)^n$.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+  - 'El monto a interés compuesto se calcula mediante $M = C \cdot (1 + i)^n$, donde $i$ es la tasa periódica y $n$ el número total de períodos.'
+  - 'Para una misma tasa nominal anual, a mayor frecuencia de capitalización $k$, mayor es el monto final acumulado.'
+al_terminar_debes_poder: 'Calcular el monto final $M$ a interés compuesto adaptando la tasa y el número de períodos a la frecuencia de capitalización.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

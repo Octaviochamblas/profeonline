@@ -226,6 +226,8 @@ Tu tarea es generar exactamente {count} preguntas de opción múltiple de alta c
 
 REGLA CRÍTICA: Las preguntas deben evaluar si el estudiante comprendió los conceptos, NO mencionar nunca "el recurso", "la lección", "el texto", "el documento" ni ningún título. Redacta como si el estudiante ya hubiera estudiado el tema y le estuvieras evaluando directamente.
 
+PROHIBICIÓN DURA DE MULETILLAS REVELADORAS Y MARCADORES DE FALSEDAD: Está estrictamente prohibido usar palabras como "Confundir", "Asumir", "Pensar que", "Creer", "Olvidar", "Omitir", "Errar" o cualquier frase que sugiera o delate que lo que se dice es falso por la sola forma de decirlo. Las alternativas incorrectas (distractores) y afirmaciones falsas deben expresarse como declaraciones directas y afirmativas, con la misma estructura y tono que las correctas, diferenciándose únicamente por el error matemático o conceptual intrínseco.
+
 {notation_block}
 
 CONTENIDO EDUCATIVO:
@@ -248,8 +250,9 @@ utilizan y cuál es su lógica básica. Las preguntas deben evaluar que pueda ex
 contenido con sus propias palabras, reconocer su utilidad y distinguir un concepto de
 otro: significado, propósito, condiciones de uso y relaciones entre ideas. NO pidas
 resolución numérica ni cálculos en este nivel. Los distractores deben reflejar
-confusiones conceptuales típicas (confundir dos términos parecidos, atribuir mal una
-propiedad, equivocarse en "cuándo se aplica").
+errores conceptuales típicos (por ejemplo, atribuir una propiedad a un objeto distinto o
+aplicar una regla en condiciones no válidas), expresados siempre como afirmaciones directas
+sin usar palabras de juicio como "confundir" o similares.
 
 Nivel 2 — Dominio procedimental y resolución técnica.
 El estudiante aplica fórmulas, reglas, algoritmos o procedimientos para resolver
@@ -885,6 +888,8 @@ Tu tarea es generar exactamente {count} preguntas de opción múltiple de alta c
 
 REGLA CRÍTICA: Las preguntas deben evaluar si el estudiante comprendió los conceptos, NO mencionar nunca "el recurso", "la lección", "el texto", "el documento" ni ningún título. Redacta como si el estudiante ya hubiera estudiado el tema y le estuvieras evaluando directamente.
 
+PROHIBICIÓN DURA DE MULETILLAS REVELADORAS Y MARCADORES DE FALSEDAD: Está estrictamente prohibido usar palabras como "Confundir", "Asumir", "Pensar que", "Creer", "Olvidar", "Omitir", "Errar" o cualquier frase que sugiera o delate que lo que se dice es falso por la sola forma de decirlo. Las alternativas incorrectas (distractores) y afirmaciones falsas deben expresarse como declaraciones directas y afirmativas, con la misma estructura y tono que las correctas, diferenciándose únicamente por el error matemático o conceptual intrínseco.
+
 {notation_block}
 
 CONTENIDO EDUCATIVO:
@@ -906,7 +911,7 @@ progresión; respeta el alcance del nivel solicitado y no lo mezcles con los otr
 Nivel 1 — Comprensión conceptual y funcional (Definición).
 El estudiante identifica los conceptos centrales, comprende para qué sirven, cuándo se
 utilizan y cuál es su lógica básica. NO pidas resolución numérica ni cálculos en este nivel.
-Los distractores deben reflejar confusiones conceptuales típicas.
+Los distractores deben reflejar errores conceptuales típicos expresados siempre como afirmaciones directas sin usar palabras de juicio como "confundir" o similares.
 
 Nivel 2 — Dominio procedimental y resolución técnica (Ejercicios simples).
 El estudiante aplica fórmulas, reglas, algoritmos o procedimientos para resolver
