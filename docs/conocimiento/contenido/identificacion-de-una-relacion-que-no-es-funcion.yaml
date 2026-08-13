@@ -1,125 +1,86 @@
 semantic_id: MAT.ALG.FUNCION_CONCEPTOS.RELACION_NO_FUNCION
-resumen_inicial: Una relación no es una función si al menos un elemento del dominio
-  carece de imagen o si posee múltiples imágenes asignadas.
-explicacion_simple: 'Para identificar una relación que **NO ES FUNCIÓN** buscamos
-  cualquiera de estos dos fallos:
+resumen_inicial: Identificar una relación que no es función consiste en detectar violaciones a las reglas de existencia o unicidad de imagen.
+explicacion_simple: |
+  Una relación entre dos conjuntos **NO es una función** si ocurre alguna de estas dos fallas:
 
-  1. **Fallo de asignación múltiple:** Una entrada $x$ tiene dos o más salidas (ejemplo:
-  en un diagrama de flechas, de un punto salen 2 flechas).
+  1. **Falla de unicidad**: Un elemento del conjunto de partida se conecta con dos o más elementos del conjunto de llegada (en una gráfica, una línea vertical corta al dibujo en 2 o más puntos).
+  2. **Falla de existencia**: Un elemento del conjunto de partida se queda solo y sin ninguna conexión asignada.
+explicacion_formal: |
+  Una relación $R \subseteq A \times B$ **no es una función** si y solo si se verifica la negación del axioma de función:
 
-  2. **Fallo de existencia:** Un elemento del conjunto de partida se queda sin asignar
-  (no tiene flecha de salida).'
-explicacion_formal: 'Una relación $R \subset A \times B$ **NO es una función** si
-  se cumple la negación de la definición de función:
-
-
-  $$\exists x \in A \quad \text{tal que} \quad |\{y \in B \mid (x, y) \in R\}| \neq
-  1$$
-
+  $$\exists x_0 \in A \mid (\nexists y \in B, (x_0, y) \in R) \quad \lor \quad (\exists y_1, y_2 \in B, y_1 \neq y_2 \land (x_0, y_1) \in R \land (x_0, y_2) \in R)$$
 
   **Desglose de la fórmula:**
-
-  - $|\{y \in B \mid (x, y) \in R\}| = 0$: Elemento de $A$ sin imagen (falla la existencia).
-
-  - $|\{y \in B \mid (x, y) \in R\}| \ge 2$: Elemento de $A$ con múltiples imágenes
-  (falla la unicidad).'
-definiciones_clave: '- **Relación no funcional**: Subconjunto de pares ordenados $A
-  \times B$ que infringe los criterios formales de existencia o unicidad.'
-propiedades_relaciones: '- **Visualización de falla**: Gráfica que es cortada por
-  una línea vertical en dos o más puntos.'
+  - Caso 1: $x_0$ no tiene imagen en $B$.
+  - Caso 2: $x_0$ tiene dos imágenes distintas $y_1$ e $y_2$ en $B$.
+definiciones_clave: |
+  - **Prueba de la recta vertical**: Método gráfico según el cual si existe al menos una recta vertical que corta a la gráfica en más de un punto, dicha gráfica no representa una función.
+propiedades_relaciones: |
+  - **Relaciones no funcionales comunes**: Las circunferencias $x^2 + y^2 = r^2$ o parábolas horizontales $y^2 = x$ no son funciones en $\mathbb{R}$.
 ejemplo_guiado:
-  enunciado: Dada la ecuación $x^2 + y^2 = 9$ (circunferencia de radio 3 centrada
-    en el origen), demuestra que no define a $y$ como función de $x$.
+  enunciado: Considera el gráfico de la circunferencia $x^2 + y^2 = 25$. Determina si corresponde a una función de $x$ en $y$.
   pasos:
-  - 'Paso 1: Tomar un valor del dominio, por ejemplo $x = 0$.Paso 2: Sustituir $x
-    = 0$ en la ecuación: $0^2 + y^2 = 9 \implies y^2 = 9$.Paso 3: Resolver para $y$:
-    $y = \pm \sqrt{9} \implies y_1 = 3 \quad \text{e} \quad y_2 = -3$.Paso 4: Notar
-    que a la entrada $x = 0$ le corresponden dos salidas distintas ($3$ y $-3$).Paso
-    5: Concluir que la relación $x^2 + y^2 = 9$ NO es una función de $x$.'
+    - 'Paso 1: Aplicar la prueba de la recta vertical trazando la recta $x = 0$.'
+    - 'Paso 2: Observar las intersecciones: la recta corta a la gráfica en $(0, 5)$ y en $(0, -5)$.'
+    - 'Paso 3: Evaluar la unicidad: a la preimagen $x = 0$ le corresponden dos imágenes distintas ($y = 5$ e $y = -5$).'
+    - 'Paso 4: Concluir que la relación $x^2 + y^2 = 25$ NO es una función.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al evaluar $x = 0$ en la ecuación $x^2 + y^2 = 9$, ¿por qué la relación
-    NO es una función de $x$?
-  choices:
-  - text: Porque a $x = 0$ le corresponden dos imágenes distintas ($y = 3$ e $y =
-      -3$).
-    is_correct: true
-  - text: Porque 9 es un número impar.
-    is_correct: false
-  - text: Porque la gráfica es un círculo perfecto.
-    is_correct: false
-  - text: Porque no contiene variables.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque a $x = 0$ le corresponden dos imágenes
-    distintas ($y = 3$ e $y = -3$).'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué método gráfico permite identificar si una curva en el plano cartesiano
-    NO es una función?
-  choices:
-  - text: Si una recta vertical corta a la curva en dos o más puntos.
-    is_correct: true
-  - text: Si la curva pasa por el origen $(0,0)$.
-    is_correct: false
-  - text: Si una recta horizontal corta a la curva en un punto.
-    is_correct: false
-  - text: Si la curva es una línea recta inclinada.
-    is_correct: false
-  explanation: La alternativa correcta es 'Si una recta vertical corta a la curva
-    en dos o más puntos.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: ¿Por qué la ecuación de la circunferencia $x^2 + y^2 = 25$ no representa una función $y = f(x)$?
+    choices:
+      - {text: Porque existen valores de $x$ que poseen dos imágenes distintas $y$., is_correct: true}
+      - {text: Porque es una figura cerrada., is_correct: false}
+      - {text: Porque incluye números negativos., is_correct: false}
+      - {text: Porque su dominio es finito., is_correct: false}
+    explanation: La alternativa correcta es 'Porque existen valores de $x$ que poseen dos imágenes distintas $y$.'.
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: ¿En qué consiste la prueba de la recta vertical para identificar gráficas que no son funciones?
+    choices:
+      - {text: Si una recta vertical corta a la gráfica en más de un punto, la gráfica no es función., is_correct: true}
+      - {text: Si una recta vertical no corta a la gráfica, siempre es función., is_correct: false}
+      - {text: Si las rectas horizontales cortan en un punto, no es función., is_correct: false}
+      - {text: Si la gráfica pasa por el origen $(0,0)$, es función., is_correct: false}
+    explanation: La alternativa correcta es 'Si una recta vertical corta a la gráfica en más de un punto, la gráfica no es función.'.
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Seleccionar un valor de entrada $x$.Paso 2: Calcular sus salidas posibles
-  $y$.Paso 3: Si se obtienen 2 o más respuestas $y$ distintas, o ninguna, declarar
-  que la relación no es función.'
-errores_correccion: '- **Error común:** Creer que las circunferencias o elipses son
-  funciones.
-
-  - **Cómo corregirlo:** Las curvas cerradas como la circunferencia NO son funciones
-  porque una recta vertical las corta en dos puntos.'
+  - 'Paso 1: Examinar la relación en diagrama sagital, tabla o plano cartesiano.'
+  - 'Paso 2: Verificar si algún elemento de entrada posee múltiples flechas/puntos verticales.'
+  - 'Paso 3: Verificar si algún elemento del conjunto de partida carece de salida.'
+  - 'Paso 4: Declarar que la relación NO es una función argumentando la falla encontrada.'
+errores_correccion: |
+  - **Error común:** Confundir la prueba de la recta vertical (para ser función) con la prueba de la recta horizontal (para inyectividad).
+  - **Cómo corregirlo:** Para saber si una gráfica ES FUNCIÓN, se usan siempre RECTAS VERTICALES.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de conceptos de función.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de conceptos de función.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función asigna a cada elemento del dominio una única imagen?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la propiedad fundamental de unicidad.
-- titulo: ¿El dominio corresponde al conjunto de todas las preimágenes válidas?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es el conjunto de valores de entrada del dominio real.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de funciones.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de funciones.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la notación funcional $f(x)$ con una multiplicación algebraica de $f$
-  por $x$.
-- Creer que dos preimágenes distintas no pueden compartir la misma imagen.
-- Confundir el codominio (conjunto de llegada declarado) con el recorrido (imágenes
-  efectivamente alcanzadas).
-- Olvidar buscar restricciones de división por cero o raíces pares al determinar el
-  dominio.
-- Intercambiar la variable independiente ($x$) con la variable dependiente ($y$).
+  - 'Una recta vertical en el plano cartesiano representa el gráfico de una función lineal bien definida.'
+  - 'Si un elemento del dominio tiene dos imágenes distintas en el codominio, la relación sigue siendo una función.'
+  - 'Una prueba de la recta vertical que interseca a una gráfica en dos puntos demuestra que la gráfica es una función.'
+  - 'Toda relación entre dos conjuntos es automáticamente una función matemática.'
+  - 'Un diagrama sagital donde un elemento de partida no tiene flecha asignada representa una función completa.'
 afirmaciones_verdaderas:
-- Una función asigna a cada elemento de su dominio una única imagen bien definida
-  en su conjunto de llegada.
-- El recorrido de una función es siempre un subconjunto de su codominio ($\operatorname{Rec}(f)
-  \subset \text{Cod}(f)$).
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, distinguir e interpretar
-  los conceptos fundamentales de función, dominio, codominio, recorrido, preimagen
-  e imagen.
-fuente: Texto escolar MINEDUC — Álgebra / Conceptos Base de Función
+  - 'Una relación entre dos conjuntos no es función si existe al menos un elemento del dominio con dos o más imágenes, o sin imagen asignada.'
+  - 'En el plano cartesiano, si una recta vertical corta al gráfico en dos o más puntos, la gráfica no corresponde a una función.'
+al_terminar_debes_poder: |
+  QUÉ: Reconocer e identificar relaciones que no cumplen con el concepto de función.
+  CÓMO: Aplicar la prueba de la recta vertical en gráficas o verificar la existencia de múltiple imagen/ausencia de imagen en diagramas.
+fuente: 'Texto escolar MINEDUC — Álgebra / Conceptos Base de Función'
 estado: publicado

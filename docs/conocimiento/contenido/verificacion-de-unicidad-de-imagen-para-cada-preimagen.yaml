@@ -1,125 +1,87 @@
 semantic_id: MAT.ALG.FUNCION_CONCEPTOS.UNICIDAD_IMAGEN
-resumen_inicial: La unicidad de imagen es la prueba lógica que confirma que ninguna
-  preimagen tiene más de un valor asignado.
-explicacion_simple: 'Para verificar la **unicidad de imagen**:
+resumen_inicial: La verificación de unicidad exige comprobar que ningún elemento del dominio posea más de un valor de imagen asignado.
+explicacion_simple: |
+  Para comprobar si una regla representa una función válida:
 
-  Tomamos cada elemento $x$ del conjunto de partida y revisamos sus flechas o pares
-  ordenados.
+  - Tomamos cualquier valor del dominio $x$.
+  - Si al aplicar la regla $x$ puede dar origen a dos respuestas distintas (por ejemplo $y = 2$ e $y = -2$), **falla la unicidad** y no es función.
+  - Gráficamente, ninguna recta vertical debe tocar el gráfico en más de un punto.
+explicacion_formal: |
+  Una relación $f \subseteq A \times B$ cumple el **criterio de unicidad de imagen** si:
 
-  - Si a algún elemento $x$ le salen $2$ o más flechas a valores de salida distintos,
-  la relación **NO ES UNA FUNCIÓN**.
-
-  - Si a cada elemento $x$ le sale exactamente $1$ flecha, la condición de unicidad
-  se cumple.'
-explicacion_formal: 'Dada una relación $R \subset A \times B$, la **unicidad de imagen**
-  se formula formalmente como:
-
-
-  $$(x, y_1) \in R \quad \land \quad (x, y_2) \in R \implies y_1 = y_2$$
-
+  $$\forall x \in A, \quad f(x) = y_1 \ \land \ f(x) = y_2 \implies y_1 = y_2$$
 
   **Desglose de la fórmula:**
-
-  - Si un mismo elemento $x$ estuviera relacionado con dos salidas $y_1$ e $y_2$,
-  ambas salidas están obligadas a ser idénticas.'
-definiciones_clave: '- **Unicidad de imagen**: Principio lógico por el cual un punto
-  del dominio no puede estar asociado a dos valores de salida distintos.'
-propiedades_relaciones: '- **Criterio de la línea vertical**: En una gráfica, la unicidad
-  se cumple si cualquier línea vertical corta a la gráfica a lo sumo en un punto.'
+  - Imposibilidad de ramificación: Un único punto de entrada $x$ genera a lo sumo un punto de salida $y$.
+definiciones_clave: |
+  - **Criterio de unicidad**: Principio matemático que excluye las asignaciones multívocas en la definición de función.
+propiedades_relaciones: |
+  - **Evaluación implícita vs explícita**: Ecuaciones como $y^2 = x \implies y = \pm \sqrt{x}$ muestran explícitamente la falla de unicidad al generar dos soluciones $y$ para cada $x > 0$.
 ejemplo_guiado:
-  enunciado: Verifica la unicidad de imagen en los conjuntos de pares ordenados $R_1
-    = \{(1, 4), (2, 5), (3, 5)\}$ y $R_2 = \{(1, 4), (1, 6), (2, 5)\}$.
+  enunciado: Comprueba si la relación $y^2 = x$ definida para $x \ge 0$ satisface el principio de unicidad de imagen.
   pasos:
-  - 'Paso 1: Analizar $R_1$: las entradas son $1, 2, 3$. Sus salidas son $4, 5, 5$.
-    Cada entrada tiene exactamente 1 salida $\implies R_1$ cumple unicidad (ES FUNCIÓN).Paso
-    2: Analizar $R_2$: la entrada $x = 1$ tiene dos salidas diferentes ($y = 4$ e
-    $y = 6$) $\implies R_2$ viola la unicidad (NO ES FUNCIÓN).Paso 3: Concluir que
-    $R_1$ es función y $R_2$ no es función.'
+    - 'Paso 1: Tomar un valor de entrada arbitrario, por ejemplo $x = 9$.'
+    - 'Paso 2: Sustituir en la relación: $y^2 = 9$.'
+    - 'Paso 3: Resolver para $y$: $y = \sqrt{9} = 3$ o $y = -\sqrt{9} = -3$.'
+    - 'Paso 4: Observar que la preimagen $x = 9$ tiene dos imágenes distintas ($3$ y $-3$).'
+    - 'Paso 5: Concluir que no cumple el principio de unicidad de imagen (no es función).'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Por qué la relación $R_2 = \{(1, 4), (1, 6), (2, 5)\}$ NO es una función?
-  choices:
-  - text: Porque a la preimagen $x = 1$ le corresponden dos imágenes distintas ($4$
-      y $6$).
-    is_correct: true
-  - text: Porque contiene el número 5.
-    is_correct: false
-  - text: Porque el número 2 no tiene preimagen.
-    is_correct: false
-  - text: Porque tiene tres pares ordenados.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque a la preimagen $x = 1$ le corresponden
-    dos imágenes distintas ($4$ y $6$).'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En $R_1 = \{(1, 4), (2, 5), (3, 5)\}$, ¿viola la condición de función
-    el hecho de que $2$ y $3$ compartan la misma salida $5$?
-  choices:
-  - text: No, porque cada entrada sigue teniendo una sola salida única.
-    is_correct: true
-  - text: Sí, está prohibido repetir imágenes.
-    is_correct: false
-  - text: Sí, los pares ordenados deben ser disjuntos.
-    is_correct: false
-  - text: Depende de si $x$ es positivo.
-    is_correct: false
-  explanation: La alternativa correcta es 'No, porque cada entrada sigue teniendo
-    una sola salida única.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: ¿Por qué la relación $y^2 = x$ no cumple la unicidad de imagen para $x = 9$?
+    choices:
+      - {text: Porque al valor $x = 9$ le corresponden dos imágenes distintas ($y = 3$ e $y = -3$)., is_correct: true}
+      - {text: Porque 9 no es un número real., is_correct: false}
+      - {text: Porque las raíces cuadradas son negativas., is_correct: false}
+      - {text: Porque es una función inyectiva., is_correct: false}
+    explanation: La alternativa correcta es 'Porque al valor $x = 9$ le corresponden dos imágenes distintas ($y = 3$ e $y = -3$).'.
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: ¿Qué ocurre geométricamente con la recta vertical $x = a$ cuando una gráfica no cumple unicidad de imagen?
+    choices:
+      - {text: Corta a la gráfica en dos o más puntos distintos., is_correct: true}
+      - {text: Corta a la gráfica en un único punto., is_correct: false}
+      - {text: Es paralela al eje $X$., is_correct: false}
+      - {text: Coincide con la asíntota vertical., is_correct: false}
+    explanation: La alternativa correcta es 'Corta a la gráfica en dos o más puntos distintos.'.
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Listar todas las primeras componentes (preimágenes $x$) de los pares ordenados.'
-- 'Paso 2: Verificar si alguna preimagen $x$ aparece repetida asociada a segundas
-  componentes $y$ distintas.'
-- 'Paso 3: Si no hay repeticiones con distintas salidas, declarar que la relación
-  satisface unicidad.'
-errores_correccion: '- **Error común:** Confundir la repetición de $x$ con la repetición
-  de $y$.
-
-  - **Cómo corregirlo:** Que se repita la $y$ SI se permite en una función. Lo que
-  NO se permite es que se repita la $x$ con distintas $y$.'
+  - 'Paso 1: Despejar la variable dependiente $y$ en la ecuación dada.'
+  - 'Paso 2: Observar si el despeje produce un doble signo ($\pm$).'
+  - 'Paso 3: Probar con un número concreto de entrada $x = a$.'
+  - 'Paso 4: Si se obtienen dos o más valores $y$, declarar que se viola la unicidad.'
+errores_correccion: |
+  - **Error común:** Olvidar el doble signo ($\pm$) al despejar potencias pares como $y^2 = x$.
+  - **Cómo corregirlo:** Al tomar raíz cuadrada a ambos lados de $y^2 = x$, resulta $y = \pm \sqrt{x}$, lo que genera dos salidas para un mismo $x$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de conceptos de función.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de conceptos de función.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función asigna a cada elemento del dominio una única imagen?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la propiedad fundamental de unicidad.
-- titulo: ¿El dominio corresponde al conjunto de todas las preimágenes válidas?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es el conjunto de valores de entrada del dominio real.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de funciones.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de funciones.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la notación funcional $f(x)$ con una multiplicación algebraica de $f$
-  por $x$.
-- Creer que dos preimágenes distintas no pueden compartir la misma imagen.
-- Confundir el codominio (conjunto de llegada declarado) con el recorrido (imágenes
-  efectivamente alcanzadas).
-- Olvidar buscar restricciones de división por cero o raíces pares al determinar el
-  dominio.
-- Intercambiar la variable independiente ($x$) con la variable dependiente ($y$).
+  - 'Una relación donde $x = 4$ tiene asociadas las imágenes $y = 2$ e $y = -2$ cumple con la propiedad de unicidad.'
+  - 'La unicidad de imagen exige que dos preimágenes distintas no puedan compartir la misma imagen.'
+  - 'La relación implícita $x^2 + y^2 = 9$ representa una función que satisface la unicidad de imagen para todo $x \in [-3, 3]$.'
+  - 'Verificar la unicidad de imagen consiste en demostrar que el recorrido es igual al codominio.'
+  - 'En un gráfico cartesiano, la unicidad de imagen se verifica trazando rectas horizontales paralelas al eje $X$.'
 afirmaciones_verdaderas:
-- Una función asigna a cada elemento de su dominio una única imagen bien definida
-  en su conjunto de llegada.
-- El recorrido de una función es siempre un subconjunto de su codominio ($\operatorname{Rec}(f)
-  \subset \text{Cod}(f)$).
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, distinguir e interpretar
-  los conceptos fundamentales de función, dominio, codominio, recorrido, preimagen
-  e imagen.
-fuente: Texto escolar MINEDUC — Álgebra / Conceptos Base de Función
+  - 'La unicidad de imagen establece que a cada elemento $x$ del dominio le corresponde una sola imagen $y$ en el codominio.'
+  - 'La prueba de la recta vertical verifica gráficamente la unicidad de imagen: cada recta vertical corta la gráfica a lo sumo en un punto.'
+al_terminar_debes_poder: |
+  QUÉ: Verificar la condición de unicidad de imagen para determinar si una relación es función.
+  CÓMO: Evaluar si a cada elemento del dominio le corresponde exactamente un único valor de salida mediante análisis algebraico, sagital o gráfico.
+fuente: 'Texto escolar MINEDUC — Álgebra / Conceptos Base de Función'
 estado: publicado
