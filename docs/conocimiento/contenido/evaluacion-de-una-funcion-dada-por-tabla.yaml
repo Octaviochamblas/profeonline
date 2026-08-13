@@ -1,133 +1,91 @@
 semantic_id: MAT.ALG.FUNCION_EVALUACION.EVALUACION_DESDE_TABLA
-resumen_inicial: Evaluar una función dada por una tabla de valores consiste en ubicar
-  la preimagen $x$ en la primera fila o columna y leer su correspondiente imagen $f(x)$.
-explicacion_simple: 'Cuando una función se presenta como una **tabla de valores**:
+resumen_inicial: Evaluar una función desde una tabla de valores consiste en buscar el registro de la preimagen $x$ y extraer su correspondiente valor de imagen $y$.
+explicacion_simple: |
+  Una **tabla de valores** nos muestra directamente las parejas de entrada y salida:
 
-  - Buscamos el número $x$ deseado en la fila de las entradas (preimágenes).
+  | $x$ | $f(x)$ |
+  | :---: | :---: |
+  | $-1$ | $5$ |
+  | $0$ | $2$ |
+  | $3$ | $-4$ |
 
-  - Leemos de forma directa el número que está justo al lado o abajo en la fila de
-  $f(x)$ (las imágenes).
+  Si te piden hallar $f(3)$, buscas $3$ en la columna de las $x$ y lees el valor de al lado: $f(3) = -4$.
+explicacion_formal: |
+  Dada una función representada discretamente por una tabla de pares ordenados $T = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\}$, la evaluación funcional $f(x_k)$ se define por la correspondencia exacta de su fila/columna:
 
-  Por ejemplo, si la tabla muestra que al $x = 4$ le corresponde el valor $9$, entonces
-  $f(4) = 9$.'
-explicacion_formal: 'Dada una función finita descrita por la tabla de pares $T = \{(x_1,
-  y_1), (x_2, y_2), \dots, (x_n, y_n)\}$:
+  $$x = x_k \implies f(x_k) = y_k$$
 
-
-  $$f(x_i) = y_i \quad \forall (x_i, y_i) \in T$$
-
-
-  **Desglose de la fórmula:**
-
-  - Mapeo directo tabular donde la búsqueda del argumento $x_i$ retorna de forma inmediata
-  el valor $y_i$.'
-definiciones_clave: '- **Tabla de valores**: Representación tabular ordenada de pares
-  de entrada-salida $(x, f(x))$.'
-propiedades_relaciones: '- **Lectura directa**: No requiere cálculos algebraicos;
-  consiste en la extracción directa de datos ordenados.'
+  **Desglose de la tabla:**
+  - Primera fila/columna: Variable independiente $x$.
+  - Segunda fila/columna: Variable dependiente $y = f(x)$.
+definiciones_clave: |
+  - **Tabla de valores de una función**: Matriz de datos discretos que relaciona explícitamente preimágenes con sus respectivas imágenes.
+propiedades_relaciones: |
+  - **Identificación de la imagen de cero**: La evaluación $f(0)$ corresponde al valor de $y$ emparejado con $x = 0$ en la tabla.
 ejemplo_guiado:
-  enunciado: 'Dada la tabla de valores de la función $h(x)$:
-
-
-    | $x$ | $-1$ | $0$ | $2$ | $5$ |
-
-    |---|---|---|---|---|
-
-    | $h(x)$ | $7$ | $3$ | $-4$ | $10$ |
-
-
-    Evalúa las imágenes $h(0)$ y $h(5)$, y determina la preimagen de $y = -4$.'
+  enunciado: "Dada la siguiente tabla de valores de una función $g(x)$, calcula el valor de la expresión $2g(-2) + g(1)$:"
   pasos:
-  - 'Paso 1: Para $h(0)$: buscar $x = 0$ en la primera fila y leer su imagen en la
-    segunda fila $\implies h(0) = 3$.Paso 2: Para $h(5)$: buscar $x = 5$ en la primera
-    fila y leer su imagen $\implies h(5) = 10$.Paso 3: Para la preimagen de $y = -4$:
-    buscar $-4$ en la segunda fila ($h(x)$) y leer su $x$ correspondiente arriba $\implies
-    x = 2$.'
+    - 'Paso 1: Para $g(-2)$, buscar $x = -2$ en la tabla; si la tabla indica $y = 7$, entonces $g(-2) = 7$.'
+    - 'Paso 2: Para $g(1)$, buscar $x = 1$ en la tabla; si la tabla indica $y = -3$, entonces $g(1) = -3$.'
+    - 'Paso 3: Sustituir en la expresión solicitada: $2(7) + (-3) = 14 - 3 = 11$.'
+    - 'Paso 4: Concluir que el valor de la expresión es 11.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: A partir de la tabla dada, ¿cuál es el valor de la imagen $h(0)$?
-  choices:
-  - text: $h(0) = 3$
-    is_correct: true
-  - text: $h(0) = 7$
-    is_correct: false
-  - text: $h(0) = -4$
-    is_correct: false
-  - text: $h(0) = 10$
-    is_correct: false
-  explanation: La alternativa correcta es '$h(0) = 3$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: A partir de la tabla, ¿cuál es la preimagen $x$ correspondiente a la imagen
-    $h(x) = -4$?
-  choices:
-  - text: $x = 2$
-    is_correct: true
-  - text: $x = 0$
-    is_correct: false
-  - text: $x = 5$
-    is_correct: false
-  - text: $x = -1$
-    is_correct: false
-  explanation: La alternativa correcta es '$x = 2$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: "En una tabla funcional, al valor $x = -2$ le corresponde $y = 7$ y al valor $x = 1$ le corresponde $y = -3$. ¿Cuál es el valor de $g(-2)$?"
+    choices:
+      - {text: "$7$", is_correct: true}
+      - {text: "$-2$", is_correct: false}
+      - {text: "$-3$", is_correct: false}
+      - {text: "$5$", is_correct: false}
+    explanation: "La alternativa correcta es '$7$'. Es el valor asignado a la preimagen $x = -2$ en la tabla."
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: "Con los mismos datos ($g(-2) = 7$ y $g(1) = -3$), ¿cuál es el resultado de $2g(-2) + g(1)$?"
+    choices:
+      - {text: "$11$", is_correct: true}
+      - {text: "$8$", is_correct: false}
+      - {text: "$17$", is_correct: false}
+      - {text: "$-1$", is_correct: false}
+    explanation: "La alternativa correcta es '$11$'. $2(7) + (-3) = 14 - 3 = 11$."
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Ubicar la fila o columna correspondiente a la variable independiente $x$.'
-- 'Paso 2: Buscar el número concreto a evaluar.'
-- 'Paso 3: Mirar en la misma posición de la fila o columna de $f(x)$ para obtener
-  la imagen.'
-- 'Paso 4: Escribir la respuesta $f(a) = b$.'
-errores_correccion: '- **Error común:** Buscar el valor de la imagen en la fila de
-  $x$ en lugar de la fila de $f(x)$.
-
-  - **Cómo corregirlo:** La fila superior/izquierda siempre contiene las entradas
-  ($x$), y la fila inferior/derecha contiene las salidas ($f(x)$).'
+  - 'Paso 1: Localizar la columna o fila asignada a la variable de entrada $x$.'
+  - 'Paso 2: Buscar la celda que contiene el valor específico de la preimagen $x = a$.'
+  - 'Paso 3: Moverse a la celda contigua correspondiente a la variable de salida $y$.'
+  - 'Paso 4: Extraer dicho valor y declarar $f(a) = y$.'
+errores_correccion: |
+  - **Error común:** Confundir la columna $x$ con la columna $y$ al buscar el valor solicitado.
+  - **Cómo corregirlo:** La clave de búsqueda inicial SIEMPRE debe buscarse en la columna $X$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de evaluación de funciones.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de evaluación de funciones.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Evaluar una función consiste en reemplazar la preimagen x en la fórmula
-    y calcular y?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de valorización funcional.
-- titulo: ¿Se debe verificar que el número pertenezca al dominio antes de evaluar
-    una raíz par?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para evitar raíces de números negativos en $\\mathbb{R}$.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de evaluación funcional.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de evaluación funcional.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Olvidar usar paréntesis al sustituir números negativos al elevar a potencias pares.
-- Confundir la búsqueda de una imagen (evaluar $f(a)$) con la búsqueda de una preimagen
-  (igualar $f(x) = b$).
-- Pensar que la notación $f(x+3)$ equivale simplemente a sumar $3$ al resultado final
-  de $f(x)$.
-- Intentar evaluar valores que no pertenecen al dominio provocando divisiones por
-  cero o raíces pares negativas.
-- Buscar preimágenes en el eje vertical $Y$ o imágenes en el eje horizontal $X$ al
-  interpretar un gráfico.
+  - 'Para hallar $f(2)$ en una tabla de valores, se busca la fila o columna donde la segunda componente sea $2$.'
+  - 'Si una tabla asigna a $x = 1$ el valor $y = 4$, la preimagen de $x = 1$ es $4$.'
+  - 'Evaluar una función en una tabla exige calcular el promedio de todos los valores de la columna $Y$.'
+  - 'En una tabla de valores, las filas pueden contener pares $(x, y)$ que no respeten la unicidad de imagen de una función.'
+  - 'Si el valor $x = a$ no figura en la tabla, se concluye que $f(a)$ es obligatoriamente cero.'
 afirmaciones_verdaderas:
-- Para evaluar una función $f(x)$ se reemplaza la variable $x$ por el valor dado respetando
-  la jerarquía operacional.
-- Para hallar la preimagen $x$ correspondiente a una imagen $y_0$ se debe resolver
-  la ecuación $f(x) = y_0$.
-al_terminar_debes_poder: Al finalizar este recurso podrás evaluar funciones a partir
-  de fórmulas, tablas o gráficos, y determinar preimágenes respetando las restricciones
-  del dominio.
-fuente: Texto escolar MINEDUC — Álgebra / Evaluación de Funciones
+  - 'Evaluar una función en una tabla consiste en identificar la fila o columna correspondiente a la entrada $x$ y extraer su valor pareado $y = f(x)$.'
+  - 'En una tabla funcional bien definida, a cada valor de la primera columna ($X$) le corresponde un único registro en la segunda columna ($Y$).'
+al_terminar_debes_poder: |
+  QUÉ: Evaluar y extraer valores funcionales a partir de tablas de datos pareados.
+  CÓMO: Localizar la preimagen $x$ en la fila/columna de entrada, ubicar el valor $y$ pareado correspondiente y declarar $f(x) = y$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Evaluación de Funciones'
 estado: publicado
