@@ -1,120 +1,107 @@
 semantic_id: MAT.ALG.SISTEMAS_2X2.VERIFICACION_SOLUCION
-resumen_inicial: La verificación de un sistema 2x2 prueba que el par ordenado $(x,
-  y)$ satisface ambas ecuaciones simultáneamente.
-explicacion_simple: 'Para comprobar que las respuestas $(x, y)$ que obtuviste son
-  100% correctas, realizamos una **doble verificación**:
+resumen_inicial: La verificación de la solución de un sistema 2x2 consiste en comprobar mediante sustitución directa que el par ordenado $(x, y)$ satisface ambas ecuaciones simultáneamente.
+explicacion_simple: |
+  Para confirmar con certeza que el par de valores $(x, y)$ calculado es la solución verdadera de un sistema $2 \times 2$, efectuamos un procedimiento de **doble verificación**.
 
-  Reemplazamos $x$ e $y$ en la primera ecuación y confirmamos que se cumple la igualdad.
+  Sustituimos $x$ e $y$ en el primer miembro de la primera ecuación y confirmamos que el resultado sea numéricamente idéntico al término constante del segundo miembro.
 
-  Luego, reemplazamos $x$ e $y$ en la segunda ecuación y confirmamos que también se
-  cumple.
+  A continuación, sustituimos $x$ e $y$ en la segunda ecuación y confirmamos que también se satisfaga esa igualdad. Solo si ambas igualdades resultan ser verdaderas, la solución queda validada.
+explicacion_formal: |
+  ### Definición formal
+  Dado el sistema $\begin{cases} a_1 x + b_1 y = c_1 \\ a_2 x + b_2 y = c_2 \end{cases}$ y la solución candidata $(x_0, y_0)$, el **algoritmo de verificación estricta** requiere comprobar las igualdades:
 
-  Si se cumplen ambas igualdades, la solución está garantizada.'
-explicacion_formal: 'Dado el sistema $\begin{cases} A_1(x, y) = c_1 \\ A_2(x, y) =
-  c_2 \end{cases}$ y la solución $(x_0, y_0)$, el **algoritmo de comprobación estricta**
-  exige comprobar:
+  $$\text{Comprobación 1: } a_1 x_0 + b_1 y_0 = c_1 \quad \text{y} \quad \text{Comprobación 2: } a_2 x_0 + b_2 y_0 = c_2$$
 
+  $$\text{Si ambos enunciados resultan verdaderos } \implies (x_0, y_0) \in \text{Conjunto Solución}$$
 
-  $$\text{Comprobar 1: } A_1(x_0, y_0) = c_1$$
+  ### Desglose de la fórmula
+  - $a_1 x_0 + b_1 y_0 = c_1$: Evaluación numérica directa de la primera relación.
+  - $a_2 x_0 + b_2 y_0 = c_2$: Evaluación numérica directa de la segunda relación.
 
-  $$\text{Comprobar 2: } A_2(x_0, y_0) = c_2$$
-
-
-  $$\text{Si ambas son verdaderas } \implies (x_0, y_0) \in \operatorname{CS}$$'
-definiciones_clave: '- **Doble verificación**: Comprobación obligatoria de una solución
-  propuesta en las dos ecuaciones del sistema.'
-propiedades_relaciones: '- **Detección de errores**: Evita errores por signos o transposición
-  cometidos durante la resolución por reducción, sustitución o igualación.'
+  ### Síntesis didáctica
+  Probar el par ordenado en ambas ecuaciones previene aceptar respuestas con errores de signos o de cálculo cometidos durante la resolución.
+definiciones_clave: |
+  - **Doble verificación**: Procedimiento de sustitución obligatoria del par ordenado $(x, y)$ en las dos ecuaciones del sistema.
+  - **Satisfecho simultáneo**: Condición matemática en la que el par sustituido convierte a las dos oraciones algebraicas en identidades numéricas.
+propiedades_relaciones: |
+  - **Detección de errores operativos**: Un par numérico invalida el sistema si genera una contradicción en cualquiera de las dos ecuaciones.
+  - **Invariancia al método utilizado**: La verificación por sustitución funciona como control independiente independientemente de si se usó reducción, igualación o sustitución.
 ejemplo_guiado:
-  enunciado: Verifica si el par ordenado $(x, y) = (4, 1)$ es la solución correcta
-    para el sistema $\begin{cases} 3x - 2y = 10 \\ x + 4y = 8 \end{cases}$.
+  enunciado: 'Verifica si el par ordenado $(x, y) = (4, 1)$ es la solución correcta para el sistema $\begin{cases} 3x - 2y = 10 \\ x + 4y = 8 \end{cases}$.'
   pasos:
-  - 'Paso 1: Evaluar el par $(4, 1)$ en la primera ecuación: $3(4) - 2(1) = 12 - 2
-    = 10$ (se verifica $10 = 10$).Paso 2: Evaluar el par $(4, 1)$ en la segunda ecuación:
-    $4 + 4(1) = 4 + 4 = 8$ (se verifica $8 = 8$).Paso 3: Concluir que el par $(4,
-    1)$ es la solución verificada del sistema.'
+    - 'Paso 1: Evaluar el par $(4, 1)$ en la primera ecuación: $3(4) - 2(1) = 12 - 2 = 10$ (se verifica la igualdad $10 = 10$).'
+    - 'Paso 2: Evaluar el par $(4, 1)$ en la segunda ecuación: $4 + 4(1) = 4 + 4 = 8$ (se verifica la igualdad $8 = 8$).'
+    - 'Paso 3: Concluir que el par $(4, 1)$ es la solución verificada del sistema por cumplir simultáneamente ambas ecuaciones.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Por qué es obligatorio verificar la solución en AMBAS ecuaciones de un
-    sistema 2x2?
-  choices:
-  - text: Porque una solución puede satisfacer una ecuación pero violar la otra.
-    is_correct: true
-  - text: Porque la primera ecuación no influye en la respuesta.
-    is_correct: false
-  - text: Porque los sistemas 2x2 solo admiten soluciones enteras.
-    is_correct: false
-  - text: Porque el segundo miembro siempre debe dar cero.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque una solución puede satisfacer una
-    ecuación pero violar la otra.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al verificar el par $(4, 1)$ en la segunda ecuación $x + 4y = 8$, ¿cuál
-    es el resultado obtenido?
-  choices:
-  - text: $8$
-    is_correct: true
-  - text: $10$
-    is_correct: false
-  - text: $12$
-    is_correct: false
-  - text: $4$
-    is_correct: false
-  explanation: La alternativa correcta es '$8$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Por qué es obligatorio verificar la solución candidata en AMBAS ecuaciones de un sistema $2 \times 2$?'
+    choices:
+      - {text: 'Porque un par ordenado puede satisfacer la primera ecuación pero romper la igualdad de la segunda.', is_correct: true}
+      - {text: 'Porque la primera ecuación no afecta la validez del sistema.', is_correct: false}
+      - {text: 'Porque los sistemas de ecuaciones solo aceptan coordenadas enteras positivas.', is_correct: false}
+      - {text: 'Porque el término constante del segundo miembro debe ser cero.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque un par ordenado puede satisfacer la primera ecuación pero romper la igualdad de la segunda.''.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Al sustituir el par $(4, 1)$ en la segunda ecuación $x + 4y = 8$, ¿cuál es el resultado numérico del primer miembro?'
+    choices:
+      - {text: '$8$', is_correct: true}
+      - {text: '$10$', is_correct: false}
+      - {text: '$12$', is_correct: false}
+      - {text: '$4$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$8$''.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Tomar el par ordenado candidato $(x_0, y_0)$.'
-- 'Paso 2: Sustituir $x_0$ e $y_0$ en el primer miembro de la primera ecuación y comprobar
-  que iguale al primer término constante.'
-- 'Paso 3: Sustituir $x_0$ e $y_0$ en el primer miembro de la segunda ecuación y comprobar
-  que iguale al segundo término constante.'
-- 'Paso 4: Validar la solución si ambas igualdades son verdaderas.'
-errores_correccion: '- **Error común:** Probar la solución en una sola ecuación y
-  dar el trabajo por terminado.
-
-  - **Cómo corregirlo:** Prueba SIEMPRE el par ordenado en LAS DOS ECUACIONES.'
+  - 'Paso 1: Tomar el par ordenado candidato $(x_0, y_0)$ obtenido tras el despeje.'
+  - 'Paso 2: Sustituir $x_0$ e $y_0$ en la primera ecuación del sistema original y calcular el valor del primer miembro.'
+  - 'Paso 3: Verificar que el resultado numérico sea idéntico al término constante del segundo miembro de la primera ecuación.'
+  - 'Paso 4: Sustituir $x_0$ e $y_0$ en la segunda ecuación del sistema y repetir la evaluación.'
+  - 'Paso 5: Declarar la validez absoluta de la solución si y solo si ambas comprobaciones resultan ser ciertas.'
+errores_correccion: |
+  - **Error 1:** Sustituir la solución únicamente en una de las dos ecuaciones y dar por concluida la verificación. **Cómo corregirlo:** La comprobación de un sistema **DEBE EJECUTARSE OBLIGATORIAMENTE EN LAS DOS ECUACIONES DEL SISTEMA**.
+  - **Error 2:** Realizar la verificación sustituyendo en una ecuación manipulada en lugar de las ecuaciones del sistema original. **Cómo corregirlo:** Para detectar errores de transposición, **LA COMPROBACIÓN DEBE HACERSE SIEMPRE SOBRE EL SISTEMA ENUNCIADO ORIGINALMENTE**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de sistemas 2x2.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de sistemas 2x2.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una solución de un sistema 2x2 debe satisfacer ambas ecuaciones?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la definición de solución de un sistema de ecuaciones.
-- titulo: ¿La regla de Cramer requiere que el determinante del sistema sea distinto
-    de cero?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para evitar la división entre cero.
+  - titulo: 'Ejemplo 1'
+    enunciado: 'Verifica si $(2, 3)$ es solución del sistema $\begin{cases} 2x + y = 7 \\ x - y = -1 \end{cases}$.'
+    alternativas:
+      - 'Sí, verifica ambas igualdades ($7 = 7$ y $-1 = -1$)'
+      - 'No, solo verifica la primera'
+      - 'No, solo verifica la segunda'
+    respuesta: 'Sí, verifica ambas igualdades ($7 = 7$ y $-1 = -1$)'
+    solucion_pasos:
+      - '1. Ecuación 1: $2(2) + 3 = 4 + 3 = 7$ (Verdad).'
+      - '2. Ecuación 2: $2 - 3 = -1$ (Verdad).'
+  - titulo: 'Ejemplo 2'
+    enunciado: 'Evalúa el par $(5, 0)$ en el sistema $\begin{cases} x + 2y = 5 \\ 3x - y = 10 \end{cases}$.'
+    alternativas:
+      - 'No es solución pues la segunda ecuación resulta $15 \neq 10$'
+      - 'Sí es la solución del sistema'
+      - 'Ambas ecuaciones resultan falsas'
+    respuesta: 'No es solución pues la segunda ecuación resulta $15 \neq 10$'
+    solucion_pasos:
+      - '1. Ecuación 1: $5 + 2(0) = 5$ (Verdad).'
+      - '2. Ecuación 2: $3(5) - 0 = 15 \neq 10$ (Falso).'
+  - titulo: 'Importancia de la verificación'
+    enunciado: '¿La verificación por sustitución directa permite detectar si cometiste un error de signos al despejar?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, expondrá inmediatamente cualquier contradicción numérica.'
+  - titulo: 'Ecuaciones originales'
+    enunciado: '¿La comprobación debe efectuarse sobre las ecuaciones originales escritas en el enunciado?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, previene arrastrar posibles errores de amplificación o despeje.'
 errores_frecuentes:
-- Verificar la solución $(x, y)$ únicamente en la primera ecuación del sistema.
-- Sustituir la expresión despejada en la misma ecuación de donde fue extraída al usar
-  sustitución.
-- Despejar variables distintas en cada ecuación antes de aplicar el método de igualación.
-- Multiplicar solo el primer miembro al aplicar reducción olvidando el término constante.
-- Calcular el determinante $2 \times 2$ sumando las diagonales en lugar de restarlas.
+  - 'Comprobar el par ordenado en una sola ecuación y omitir la segunda.'
+  - 'Efectuar la verificación sobre ecuaciones modificadas algebraicamente en vez del enunciado inicial.'
+  - 'Ignorar los signos negativos de las coordenadas al realizar los productos numéricos.'
+  - 'Dar por buena una solución que produce igualdades numéricas falsas.'
+  - 'Asumir que si la suma de las coordenadas es correcta no se requiere verificar por separado.'
 afirmaciones_verdaderas:
-- Un sistema de ecuaciones 2x2 tiene como solución el par ordenado que satisface simultáneamente
-  ambas ecuaciones.
-- El método de reducción elimina una de las variables sumando combinaciones lineales
-  de las ecuaciones.
-al_terminar_debes_poder: Al finalizar este recurso podrás resolver, verificar y modelar
-  sistemas de ecuaciones lineales 2x2 mediante los métodos algebraicos y matriciales.
-fuente: Texto escolar MINEDUC — Álgebra / Sistemas de Ecuaciones 2x2
+  - 'La verificación por sustitución exige que el par ordenado $(x,y)$ transforme ambas ecuaciones en identidades numéricas.'
+  - 'Probar una solución en el sistema original es la forma definitiva de validar la corrección del cálculo algebraico.'
+al_terminar_debes_poder: |
+  QUÉ: Verificar la exactitud de la solución de un sistema de ecuaciones lineales 2x2.
+  CÓMO: Sustituir las coordenadas $(x_0, y_0)$ en las dos ecuaciones originales y confirmar numéricamente el cumplimiento de las dos igualdades.
+fuente: 'Texto escolar MINEDUC — Álgebra 1° Medio / Sistemas de Ecuaciones 2x2.'
 estado: publicado

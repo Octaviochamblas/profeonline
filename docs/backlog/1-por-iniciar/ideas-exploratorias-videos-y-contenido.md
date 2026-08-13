@@ -171,3 +171,60 @@ ilustración y animación propias, en vez de un video 100% en vivo o 100% animad
 la Idea A (cuento ilustrado) y la Idea 1 (video+IA) **juntas**, ya que comparten el
 mismo insumo de fondo (ilustración por concepto) — en vez de diseñarlas por separado y
 descubrir la sinergia después.
+
+---
+
+## Idea 1b — Mapa conceptual por escenas como guion, en formato Reel de Instagram
+
+**De dónde salió:** al profundizar la Idea 1, se aclaró que el "mega mapa conceptual"
+que el usuario quiere para explicar y mostrar cada cosa es, específicamente, una
+**herramienta de planificación de video** (no algo que viva en la página web) — la IA
+propone el mapa a partir del `NodeContent` ya existente de un recurso, agrupado en
+escenas. Se construyó un demo concreto con contenido real (no inventado) para validar la
+idea antes de diseñarla formalmente:
+
+**Demo (Artifact):** https://claude.ai/code/artifact/f11575f9-1566-45fa-b201-6c08b2620e2b
+— mapa conceptual de "Identificación de los Números Naturales (ℕ)"
+(`MAT.NUM.ENTEROS_CONJUNTO.NATURALES`), agrupado automáticamente en 4 escenas (Plantear
+la idea → Formalizar → Ejemplo resuelto → Error común), cada subconcepto etiquetado con
+el campo exacto de `NodeContent` del que sale.
+
+**El giro nuevo (esta conversación):** el usuario propone usar esa misma estructura de
+escenas como **formato de Reel para Instagram** — contenido corto vertical, no la clase
+completa. Cada "escena" del mapa (que ya está pensada como un tramo autocontenido y
+visualmente constante, ver Idea 1) calza naturalmente con la duración y el ritmo de un
+Reel (uno de los 4 tramos = un Reel de ~15-30s, o los 4 encadenados = un Reel de tema
+completo).
+
+### Por qué tiene sentido (lo bueno)
+
+- **Reusa el mismo insumo que la Idea 1 y la Idea A** — no es una cuarta idea aislada,
+  es una salida de distribución más para el mismo mapa/guion generado por IA. Un mapa,
+  tres consumos posibles: clase larga (Idea 1), fondo de página web (Idea A), Reel corto
+  (esta idea).
+- Los Reels premian justo lo que ya exige la Idea 1: escenas cortas, visualmente
+  constantes, con una sola idea por tramo — no hay que replanificar el formato desde
+  cero para adaptarlo a IG.
+- Sirve como **marketing/adquisición** (visibilidad, tráfico hacia el sitio) más que
+  como el contenido educativo principal — un objetivo de negocio distinto y
+  complementario al de la Idea 1 (que es contenido de clase completo).
+
+### Lo malo / a tener en cuenta
+
+- Formato verticalidad (9:16) — la composición del croma + escena animada de la Idea 1
+  probablemente necesite encuadre distinto al de un video horizontal de clase; no es
+  un simple recorte automático.
+- Un Reel vive de gancho/ritmo (primeros 1-2 segundos) más que de precisión pedagógica
+  completa — puede tentar a simplificar de más un concepto matemático hasta perder
+  exactitud; conviene revisión de contenido igual que cualquier otro material (ver
+  Idea B, aunque no aplica directo a video).
+- Es otro canal de producción/publicación (Instagram) que no tiene hoy ningún pipeline
+  de recepción en este repo (a diferencia de YouTube, que sí entra por
+  `publication_pipeline_service.py`) — si se quiere trazabilidad (qué Reel corresponde a
+  qué nodo), habría que decidir cómo/si se registra en el sitio.
+
+### Relación con las demás ideas
+
+Refuerza aún más la sinergia entre A y 1 ya detectada: ahora hay **tres** salidas
+posibles del mismo mapa conceptual generado por IA (clase larga, fondo de página, Reel),
+no dos. No cambia la relación con la Idea B (auditoría) — sigue sin sinergia directa.

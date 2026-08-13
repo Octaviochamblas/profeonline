@@ -1,134 +1,110 @@
 semantic_id: MAT.ALG.SISTEMAS_2X2.METODO_CRAMER
-resumen_inicial: La regla de Cramer resuelve sistemas 2x2 mediante determinantes de
-  matrices de coeficientes y constantes.
-explicacion_simple: 'La **regla de Cramer** es un método matricial para resolver sistemas
-  2x2 usando determinantes $2 \times 2$.
+resumen_inicial: La regla de Cramer resuelve sistemas 2x2 mediante el cálculo de determinantes de matrices formadas por los coeficientes y términos constantes del sistema.
+explicacion_simple: |
+  La **regla de Cramer** es un método matricial para resolver sistemas $2 \times 2$ empleando determinantes de orden $2$.
 
-  Calculamos tres determinantes sencillos (multiplicando en diagonal y restando):
+  Calculamos tres determinantes escalares sencillos (multiplicando en diagonal y restando los productos):
 
-  - Determinante del sistema $\Delta$.
-
+  - Determinante general del sistema $\Delta$.
   - Determinante de la incógnita $x$ ($\Delta_x$).
-
   - Determinante de la incógnita $y$ ($\Delta_y$).
 
-  Las soluciones se obtienen dividiendo: $x = \frac{\Delta_x}{\Delta}$ e $y = \frac{\Delta_y}{\Delta}$
-  (siempre que $\Delta \neq 0$).'
-explicacion_formal: 'Dado el sistema $\begin{cases} a_1 x + b_1 y = c_1 \\ a_2 x +
-  b_2 y = c_2 \end{cases}$, los **determinantes de Cramer** se definen como:
+  Las componentes de la solución se obtienen dividiendo: $x = \frac{\Delta_x}{\Delta}$ e $y = \frac{\Delta_y}{\Delta}$ (siempre que $\Delta \neq 0$).
+explicacion_formal: |
+  ### Definición formal
+  Dado el sistema en forma canónica $\begin{cases} a_1 x + b_1 y = c_1 \\ a_2 x + b_2 y = c_2 \end{cases}$, los **determinantes de Cramer** se definen según:
 
+  $$\Delta = \begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix} = a_1 b_2 - a_2 b_1$$
 
-  $$\Delta = \begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix} = a_1 b_2 - a_2
-  b_1$$
+  $$\Delta_x = \begin{vmatrix} c_1 & b_1 \\ c_2 & b_2 \end{vmatrix} = c_1 b_2 - c_2 b_1 \quad \text{y} \quad \Delta_y = \begin{vmatrix} a_1 & c_1 \\ a_2 & c_2 \end{vmatrix} = a_1 c_2 - a_2 c_1$$
 
+  $$x = \frac{\Delta_x}{\Delta} \quad \text{e} \quad y = \frac{\Delta_y}{\Delta} \quad (\text{para } \Delta \neq 0)$$
 
-  $$\Delta_x = \begin{vmatrix} c_1 & b_1 \\ c_2 & b_2 \end{vmatrix} = c_1 b_2 - c_2
-  b_1, \quad \Delta_y = \begin{vmatrix} a_1 & c_1 \\ a_2 & c_2 \end{vmatrix} = a_1
-  c_2 - a_2 c_1$$
-
-
-  $$x = \frac{\Delta_x}{\Delta} \quad \text{e} \quad y = \frac{\Delta_y}{\Delta} \quad
-  (\text{para } \Delta \neq 0)$$'
-definiciones_clave: '- **Regla de Cramer**: Algoritmo determinante de resolución para
-  sistemas de ecuaciones lineales cuadradas.
-
-  - **Determinante del sistema ($\Delta$)**: Valor escalar $a_1 b_2 - a_2 b_1$ que
-  determina si el sistema tiene solución única ($\Delta \neq 0$).'
-propiedades_relaciones: '- **Condición de solución única**: El sistema posee una única
-  solución si y solo si el determinante del sistema es no nulo ($\Delta \neq 0$).'
+  ### Síntesis didáctica
+  Para calcular $\Delta_x$, la columna de coeficientes de $x$ se reemplaza por los términos independientes $c_1, c_2$; análogamente para $\Delta_y$.
+definiciones_clave: |
+  - **Regla de Cramer**: Algoritmo directo de resolución matricial para sistemas de ecuaciones lineales determinados.
+  - **Determinante del sistema ($\Delta$)**: Valor escalar $a_1 b_2 - a_2 b_1$ que condiciona la existencia de solución única ($\Delta \neq 0$).
+propiedades_relaciones: |
+  - **Condición de solución única**: El sistema posee una única solución en $\mathbb{R}^2$ si y solo si el determinante principal es no nulo ($\Delta \neq 0$).
+  - **Diagonal principal menos diagonal secundaria**: El determinante de $\begin{vmatrix} p & q \\ r & s \end{vmatrix}$ se evalúa estrictamente como $p \cdot s - r \cdot q$.
 ejemplo_guiado:
-  enunciado: Resuelve por la regla de Cramer el sistema $\begin{cases} 4x + 3y = 18
-    \\ 2x - y = 4 \end{cases}$ calculando $\Delta, \Delta_x, \Delta_y$.
+  enunciado: 'Resuelve por la regla de Cramer el sistema $\begin{cases} 4x + 3y = 18 \\ 2x - y = 4 \end{cases}$ calculando $\Delta, \Delta_x, \Delta_y$.'
   pasos:
-  - 'Paso 1: Calcular el determinante del sistema: $\Delta = \begin{vmatrix} 4 & 3
-    \\ 2 & -1 \end{vmatrix} = 4(-1) - (3)(2) = -4 - 6 = -10$.Paso 2: Calcular el determinante
-    de $x$: $\Delta_x = \begin{vmatrix} 18 & 3 \\ 4 & -1 \end{vmatrix} = 18(-1) -
-    (3)(4) = -18 - 12 = -30$.Paso 3: Calcular el determinante de $y$: $\Delta_y =
-    \begin{vmatrix} 4 & 18 \\ 2 & 4 \end{vmatrix} = 4(4) - (18)(2) = 16 - 36 = -20$.Paso
-    4: Calcular las variables: $x = \frac{-30}{-10} = 3$ e $y = \frac{-20}{-10} =
-    2$.Paso 5: Concluir la solución $(x, y) = (3, 2)$.'
+    - 'Paso 1: Calcular el determinante del sistema: $\Delta = \begin{vmatrix} 4 & 3 \\ 2 & -1 \end{vmatrix} = 4(-1) - (3)(2) = -4 - 6 = -10$.'
+    - 'Paso 2: Calcular el determinante de $x$ reemplazando su columna: $\Delta_x = \begin{vmatrix} 18 & 3 \\ 4 & -1 \end{vmatrix} = 18(-1) - (3)(4) = -18 - 12 = -30$.'
+    - 'Paso 3: Calcular el determinante de $y$ reemplazando su columna: $\Delta_y = \begin{vmatrix} 4 & 18 \\ 2 & 4 \end{vmatrix} = 4(4) - (18)(2) = 16 - 36 = -20$.'
+    - 'Paso 4: Calcular las coordenadas dividiendo por $\Delta$: $x = \frac{-30}{-10} = 3$ e $y = \frac{-20}{-10} = 2$.'
+    - 'Paso 5: Concluir que la solución del sistema es el par ordenado $(x, y) = (3, 2)$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al calcular el determinante del sistema $\Delta$ para $\begin{cases} 4x
-    + 3y = 18 \\ 2x - y = 4 \end{cases}$, ¿cuál es el valor obtenido?
-  choices:
-  - text: $\Delta = -10$
-    is_correct: true
-  - text: $\Delta = 10$
-    is_correct: false
-  - text: $\Delta = -2$
-    is_correct: false
-  - text: $\Delta = 0$
-    is_correct: false
-  explanation: La alternativa correcta es '$\Delta = -10$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Con los determinantes $\Delta = -10, \Delta_x = -30, \Delta_y = -20$,
-    ¿cuál es el par solución $(x, y)$?
-  choices:
-  - text: $(3, 2)$
-    is_correct: true
-  - text: $(2, 3)$
-    is_correct: false
-  - text: $(-3, -2)$
-    is_correct: false
-  - text: $(3, 10)$
-    is_correct: false
-  explanation: La alternativa correcta es '$(3, 2)$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Al calcular el determinante del sistema $\Delta$ para $\begin{cases} 4x + 3y = 18 \\ 2x - y = 4 \end{cases}$, ¿cuál es el valor escalar obtenido?'
+    choices:
+      - {text: '$\Delta = -10$', is_correct: true}
+      - {text: '$\Delta = 10$', is_correct: false}
+      - {text: '$\Delta = -2$', is_correct: false}
+      - {text: '$\Delta = 0$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\Delta = -10$''.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Con los determinantes evaluados $\Delta = -10, \Delta_x = -30, \Delta_y = -20$, ¿cuál es el par solución $(x, y)$?'
+    choices:
+      - {text: '$(3, 2)$', is_correct: true}
+      - {text: '$(2, 3)$', is_correct: false}
+      - {text: '$(-3, -2)$', is_correct: false}
+      - {text: '$(3, 10)$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$(3, 2)$''.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Escribir la matriz de coeficientes y calcular el determinante $\Delta =
-  a_1 b_2 - a_2 b_1$.'
-- 'Paso 2: Reemplazar la columna de $x$ por las constantes $c_1, c_2$ y calcular $\Delta_x$.'
-- 'Paso 3: Reemplazar la columna de $y$ por las constantes $c_1, c_2$ y calcular $\Delta_y$.'
-- 'Paso 4: Calcular $x = \frac{\Delta_x}{\Delta}$ e $y = \frac{\Delta_y}{\Delta}$
-  para $\Delta \neq 0$.'
-errores_correccion: '- **Error común:** Olvidar restar el producto de la diagonal
-  secundaria ($a_1 b_2 + a_2 b_1$ en vez de $a_1 b_2 - a_2 b_1$).
-
-  - **Cómo corregirlo:** La fórmula del determinante $2 \times 2$ es SIEMPRE diagonal
-  principal MENOS diagonal secundaria.'
+  - 'Paso 1: Escribir el sistema en forma canónica ordenando las incógnitas $x$ e $y$.'
+  - 'Paso 2: Calcular el determinante del sistema $\Delta = a_1 b_2 - a_2 b_1$ y verificar $\Delta \neq 0$.'
+  - 'Paso 3: Sustituir la columna de $x$ por las constantes $c_1, c_2$ y evaluar $\Delta_x = c_1 b_2 - c_2 b_1$.'
+  - 'Paso 4: Sustituir la columna de $y$ por las constantes $c_1, c_2$ y evaluar $\Delta_y = a_1 c_2 - a_2 c_1$.'
+  - 'Paso 5: Dividir $x = \frac{\Delta_x}{\Delta}$ e $y = \frac{\Delta_y}{\Delta}$ para armar el par ordenado $(x, y)$.'
+errores_correccion: |
+  - **Error 1:** Sumar los productos de las diagonales en lugar de restarlos al evaluar un determinante $2 \times 2$ (calcular $a_1 b_2 + a_2 b_1$). **Cómo corregirlo:** El valor de un determinante $2 \times 2$ **ES SIEMPRE EL PRODUCTO DE LA DIAGONAL PRINCIPAL MENOS EL PRODUCTO DE LA DIAGONAL SECUNDARIA ($a_1 b_2 - a_2 b_1$)**.
+  - **Error 2:** Colocar los términos constantes en una posición incorrecta al construir $\Delta_x$ o $\Delta_y$. **Cómo corregirlo:** Para $\Delta_x$, **LA COLUMNA DE LAS $x$ SE REEMPLAZA POR LAS CONSTANTES $\begin{pmatrix} c_1 \\ c_2 \end{pmatrix}$ CONSERVANDO LA COLUMNA DE LAS $y$**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de sistemas 2x2.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de sistemas 2x2.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una solución de un sistema 2x2 debe satisfacer ambas ecuaciones?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la definición de solución de un sistema de ecuaciones.
-- titulo: ¿La regla de Cramer requiere que el determinante del sistema sea distinto
-    de cero?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, para evitar la división entre cero.
+  - titulo: 'Ejemplo 1'
+    enunciado: 'En el sistema $\begin{cases} x + y = 5 \\ x - y = 1 \end{cases}$, calcula $\Delta$.'
+    alternativas:
+      - '$\Delta = -2$'
+      - '$\Delta = 2$'
+      - '$\Delta = 0$'
+    respuesta: '$\Delta = -2$'
+    solucion_pasos:
+      - '1. $\Delta = \begin{vmatrix} 1 & 1 \\ 1 & -1 \end{vmatrix} = 1(-1) - (1)(1) = -1 - 1 = -2$.'
+  - titulo: 'Ejemplo 2'
+    enunciado: 'Si $\Delta = 5, \Delta_x = 10, \Delta_y = 15$, ¿cuál es el par solución $(x, y)$?'
+    alternativas:
+      - '$(2, 3)$'
+      - '$(3, 2)$'
+      - '$(5, 10)$'
+    respuesta: '$(2, 3)$'
+    solucion_pasos:
+      - '1. $x = \frac{10}{5} = 2$.'
+      - '2. $y = \frac{15}{5} = 3$. Solución: $(2, 3)$.'
+  - titulo: 'Determinante no nulo'
+    enunciado: '¿La regla de Cramer exige estrictamente que el determinante del sistema $\Delta$ sea distinto de cero?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, previene la división por cero en las soluciones.'
+  - titulo: 'Diagonal secundaria'
+    enunciado: '¿El producto de la diagonal secundaria se resta del producto de la diagonal principal al evaluar determinantes 2x2?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, por definición de determinante de orden 2.'
 errores_frecuentes:
-- Verificar la solución $(x, y)$ únicamente en la primera ecuación del sistema.
-- Sustituir la expresión despejada en la misma ecuación de donde fue extraída al usar
-  sustitución.
-- Despejar variables distintas en cada ecuación antes de aplicar el método de igualación.
-- Multiplicar solo el primer miembro al aplicar reducción olvidando el término constante.
-- Calcular el determinante $2 \times 2$ sumando las diagonales en lugar de restarlas.
+  - 'Sumar el producto de las diagonales en lugar de restarlo al evaluar determinantes.'
+  - 'Invertir la posición de la columna de términos constantes al formar $\Delta_x$ o $\Delta_y$.'
+  - 'Aplicar la regla de Cramer cuando el determinante del sistema es cero ($\Delta = 0$).'
+  - 'Invertir los cocientes calculando $\frac{\Delta}{\Delta_x}$ en lugar de $\frac{\Delta_x}{\Delta}$.'
+  - 'Cometer errores de signos al multiplicar coeficientes negativos en las diagonales.'
 afirmaciones_verdaderas:
-- Un sistema de ecuaciones 2x2 tiene como solución el par ordenado que satisface simultáneamente
-  ambas ecuaciones.
-- El método de reducción elimina una de las variables sumando combinaciones lineales
-  de las ecuaciones.
-al_terminar_debes_poder: Al finalizar este recurso podrás resolver, verificar y modelar
-  sistemas de ecuaciones lineales 2x2 mediante los métodos algebraicos y matriciales.
-fuente: Texto escolar MINEDUC — Álgebra / Sistemas de Ecuaciones 2x2
+  - 'La regla de Cramer permite hallar directamente las coordenadas de la solución mediante el cálculo de tres determinantes $2 \times 2$.'
+  - 'Un sistema de ecuaciones 2x2 admite solución única mediante regla de Cramer si y solo si el determinante del sistema es no nulo ($\Delta \neq 0$).'
+al_terminar_debes_poder: |
+  QUÉ: Resolver sistemas de ecuaciones lineales 2x2 mediante la regla de Cramer.
+  CÓMO: Calcular el determinante del sistema $\Delta$, los determinantes de las incógnitas $\Delta_x$ y $\Delta_y$, y dividir $x = \frac{\Delta_x}{\Delta}$ e $y = \frac{\Delta_y}{\Delta}$.
+fuente: 'Texto escolar MINEDUC — Álgebra 1° Medio / Sistemas de Ecuaciones 2x2.'
 estado: publicado

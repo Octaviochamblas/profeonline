@@ -1,137 +1,105 @@
 semantic_id: MAT.ALG.MODELAMIENTO_LINEAL.RESTRICCION_SIGNO
-resumen_inicial: En problemas del mundo real se deben descartar las soluciones matemáticas
-  que sean incompatibles con la naturaleza física o discreta del contexto.
-explicacion_simple: 'A veces las matemáticas nos dan un resultado que es impecable
-  en el papel (como un número negativo o una fracción decimal), pero que no tiene
-  sentido en el mundo real.
+resumen_inicial: En problemas del mundo real se deben evaluar y descartar aquellas soluciones matemáticas que sean incompatibles con la naturaleza física o discreta del contexto.
+explicacion_simple: |
+  En ocasiones, la manipulación algebraica nos entrega una solución numérica impecable en el papel (como un número negativo o una fracción decimal), pero que resulta físicamente imposible en la realidad.
 
-  Por ejemplo, no podemos tener una cantidad negativa de personas ($-5$ alumnos),
-  ni un tiempo negativo, ni fraccionar objetos indivisibles (como $3{,}7$ personas).
+  Por ejemplo, en un contexto real no existen cantidades negativas de objetos o personas ($-5$ estudiantes), ni tiempos negativos, ni tampoco es posible fraccionar elementos indivisibles (como $3{,}7$ automóviles).
 
-  Cuando modelamos problemas reales, debemos verificar que la solución matemática
-  sea compatible con la realidad física del problema.'
-explicacion_formal: 'Sea el modelo lineal $A(x) = B(x)$ aplicado a un problema contextual
-  con **dominio físico / continuo / discreto** $\Omega \subset \mathbb{R}$. La solución
-  válida $x_{\text{val}}$ satisface:
+  Al modelar problemas aplicados, es obligatorio pasar la solución algebraica por un filtro de compatibilidad contextual y descartar respuestas incoherentes con el mundo real.
+explicacion_formal: |
+  ### Definición formal
+  Sea la ecuación $A(x) = B(x)$ aplicada a un problema verbal con **dominio práctico o contexto de pertenencia** $\Omega \subset \mathbb{R}$. La solución real válida $x_{\text{válida}}$ satisface:
 
+  $$x_{\text{válida}} \in S \cap \Omega \quad \text{donde } S = \{c \in \mathbb{R} \mid A(c) = B(c)\}$$
 
-  $$x_{\text{val}} \in S \cap \Omega$$
+  ### Filtros de compatibilidad contextual usuales
+  - **No-negatividad o positividad estricta** (edades, dimensiones métricas, precios, tiempo): $\Omega = \mathbb{R}^+ \cup \{0\} \implies x \ge 0$.
+  - **Dominio discreto entero** (conteo de personas, animales, objetos indivisibles): $\Omega = \mathbb{N}_0 \implies x \in \{0, 1, 2, 3, \dots\}$.
 
-
-  **Filtros de compatibilidad contextual usuales:**
-
-  - **Non-negatividad estricta** (edades, distancias, precios, objetos): $\Omega =
-  \mathbb{R}^+ \cup \{0\} \implies x \ge 0$.
-
-  - **Carácter discreto entero** (personas, animales, artículos indivisibles): $\Omega
-  = \mathbb{N}_0 \implies x \in \mathbb{Z}^+$.'
-definiciones_clave: '- **Incompatibilidad contextual**: Situación donde una solución
-  matemática matemáticamente correcta carece de sentido en la realidad del problema.
-
-  - **Dominio físico / práctico ($\Omega$)**: Conjunto de valores numéricos que son
-  físicamente posibles dentro del contexto del problema.'
-propiedades_relaciones: '- **Descarte de raíz incompatible**: Si el único valor de
-  $x$ obtenido al resolver la ecuación no pertenece a $\Omega$, el problema real no
-  tiene solución en la práctica.'
+  ### Síntesis didáctica
+  Si la única raíz algebraica $c$ no pertenece al dominio contextual $\Omega$, la ecuación no posee solución realizable en el problema aplicado.
+definiciones_clave: |
+  - **Incompatibilidad contextual**: Situación donde una solución algebraica numéricamente correcta carece de significado práctico o viabilidad física.
+  - **Dominio de validez contextual ($\Omega$)**: Conjunto de valores numéricos admisibles según la naturaleza física o económica del problema.
+propiedades_relaciones: |
+  - **Descarte de soluciones incoherentes**: Si $x \notin \Omega$, se concluye formalmente que el problema no tiene solución físicamente posible.
+  - **Prevalencia de la realidad sobre el cálculo**: Un cálculo algebraico correcto se supedita a las restricciones impuestas por las leyes del contexto.
 ejemplo_guiado:
-  enunciado: Un fabricante calcula la cantidad $n$ de cajas de mercadería que puede
-    empaquetar mediante la ecuación $4n + 15 = 3$. Resuelve para $n$, analiza la compatibilidad
-    del resultado con el contexto de conteo de cajas y concluye.
+  enunciado: 'Un fabricante calcula la cantidad $n$ de cajas de mercadería a empaquetar mediante la ecuación $4n + 15 = 3$. Resuelve para $n$, analiza su compatibilidad contextual y concluye.'
   pasos:
-  - 'Paso 1: Resolver la ecuación lineal: $4n = 3 - 15 \implies 4n = -12 \implies
-    n = -3$.Paso 2: Analizar la solución matemática $n = -3$.Paso 3: Aplicar el filtro
-    de compatibilidad contextual: la cantidad $n$ de cajas es una magnitud de conteo
-    discreta que debe ser un entero positivo ($n \in \mathbb{N}_0$).Paso 4: Concluir
-    que la solución $n = -3$ es **incompatible con el contexto real** (no existen
-    $-3$ cajas), por lo que el problema no tiene solución físicamente posible.'
+    - 'Paso 1: Resolver la ecuación lineal: $4n = 3 - 15 \implies 4n = -12 \implies n = -3$.'
+    - 'Paso 2: Evaluar la solución algebraica obtenida: $n = -3$.'
+    - 'Paso 3: Aplicar el filtro de compatibilidad contextual: la cantidad $n$ de cajas es una variable discreta de conteo que debe ser entera no negativa ($n \in \mathbb{N}_0$).'
+    - 'Paso 4: Concluir que la solución $n = -3$ es **incompatible con el contexto real** (no existen $-3$ cajas), declarando que el problema carece de solución realizable.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Por qué debe descartarse una solución matemática como $n = -3$ en un
-    problema sobre conteo de objetos físicos?
-  choices:
-  - text: Porque no es posible tener un número negativo de objetos físicos o discretos.
-    is_correct: true
-  - text: Porque el número 3 es un número primo.
-    is_correct: false
-  - text: Porque las ecuaciones de primer grado prohíben las soluciones negativas.
-    is_correct: false
-  - text: Porque la ecuación no se pudo despejar.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque no es posible tener un número negativo
-    de objetos físicos o discretos.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al descartar $n = -3$ por incompatibilidad con el contexto de empaquetado,
-    ¿cuál es la conclusión real del problema?
-  choices:
-  - text: El problema no tiene solución físicamente realizable.
-    is_correct: true
-  - text: La solución real es $n = +3$ cajas.
-    is_correct: false
-  - text: La solución es empaquetar 0 cajas.
-    is_correct: false
-  - text: Se pueden empaquetar 12 cajas.
-    is_correct: false
-  explanation: La alternativa correcta es 'El problema no tiene solución físicamente
-    realizable.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Por qué debe descartarse una solución matemática como $n = -3$ en un problema sobre empaquetado de objetos físicos?'
+    choices:
+      - {text: 'Porque una cantidad física o discreta de objetos no puede ser negativa.', is_correct: true}
+      - {text: 'Porque el número 3 es un número impar primo.', is_correct: false}
+      - {text: 'Porque las ecuaciones lineales de primer grado prohíben raíces negativas.', is_correct: false}
+      - {text: 'Porque la ecuación no admitió despeje algebraico.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque una cantidad física o discreta de objetos no puede ser negativa.''.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Al descartar $n = -3$ por incompatibilidad con el contexto real de cajas, ¿cuál es la conclusión del problema?'
+    choices:
+      - {text: 'El problema no posee una solución físicamente realizable.', is_correct: true}
+      - {text: 'La solución real consiste en empaquetar $+3$ cajas.', is_correct: false}
+      - {text: 'La solución consiste en empaquetar 0 cajas.', is_correct: false}
+      - {text: 'La solución consiste en empaquetar 12 cajas.', is_correct: false}
+    explanation: 'La alternativa correcta es ''El problema no posee una solución físicamente realizable.''.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Resolver la ecuación lineal matemática y obtener la solución numérica $x
-  = c$.'
-- 'Paso 2: Identificar las restricciones de la realidad del problema (¿puede ser negativo?,
-  ¿puede ser decimal?).'
-- 'Paso 3: Verificar si el número $c$ cumple con la naturaleza del contexto.'
-- 'Paso 4: Si $c$ es incompatible, descartarlo y declarar que el problema no tiene
-  solución en la práctica.'
-errores_correccion: '- **Error común:** Aceptar automáticamente un resultado negativo
-  o decimal en problemas sobre conteo de personas u objetos indivisibles.
-
-  - **Cómo corregirlo:** Pregúntate siempre: ''¿Tiene sentido este resultado en el
-  mundo real?''. Si la respuesta es no, descarta la solución.'
+  - 'Paso 1: Resolver la ecuación lineal matemática para obtener la solución numérica $x = c$.'
+  - 'Paso 2: Definir el conjunto de restricciones del contexto ($\Omega$: no negativos, enteros, positivos).'
+  - 'Paso 3: Comparar si la solución obtenida $c$ pertenece al conjunto admisible $\Omega$.'
+  - 'Paso 4: Si $c \notin \Omega$, descartar la solución y redactar la conclusión de irrealizabilidad.'
+errores_correccion: |
+  - **Error 1:** Aceptar ciegamente un valor negativo o decimal en problemas sobre conteo de personas u objetos indivisibles. **Cómo corregirlo:** Evaluar siempre **SI LA CANTIDAD PUEDE EXISTIR FÍSICAMENTE EN EL MUNDO REAL ($n \ge 0, n \in \mathbb{Z}$)**.
+  - **Error 2:** Cambiar arbitrariamente el signo negativo a positivo (decir "como dio $-3$, entonces la respuesta es $+3$"). **Cómo corregirlo:** Si la ecuación produce un resultado negativo incompatible, **NO SE CAMBIA EL SIGNO DE FORMA ARBITRARIA; SE DECLARA QUE EL PROBLEMA NO TIENE SOLUCIÓN**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de modelamiento.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de modelamiento.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿El primer paso para resolver un problema verbal es definir la incógnita?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, declarar la variable $x$ es indispensable.
-- titulo: ¿Pueden existir soluciones matemáticas que se descarten por ser incompatibles
-    con el contexto real?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, como edades o cantidades de objetos negativas.
+  - titulo: 'Ejemplo 1: Conteo de personas'
+    enunciado: 'Si una ecuación sobre número de estudiantes entrega $x = 14{,}5$, ¿cómo se interpreta esta solución?'
+    alternativas:
+      - 'La solución es incompatible pues el número de estudiantes debe ser un entero'
+      - 'Asisten 14 estudiantes y medio'
+      - 'Se redondea automáticamente a 15'
+    respuesta: 'La solución es incompatible pues el número de estudiantes debe ser un entero'
+    solucion_pasos:
+      - '1. Las personas forman un conjunto discreto $x \in \mathbb{N}_0$.'
+      - '2. $14{,}5 \notin \mathbb{N}_0$, la solución es incompatible.'
+  - titulo: 'Ejemplo 2: Edades negativas'
+    enunciado: 'Al resolver un problema de edades se obtiene $x = -5\text{ años}$. ¿Qué indica este resultado?'
+    alternativas:
+      - 'El problema está mal planteado o las condiciones son físicamente imposibles'
+      - 'La persona nació hace 5 años'
+      - 'La edad real es $+5\text{ años}$'
+    respuesta: 'El problema está mal planteado o las condiciones son físicamente imposibles'
+    solucion_pasos:
+      - '1. La edad debe ser una cantidad positiva.'
+      - '2. $-5 < 0$ implica una situación físicamente imposible.'
+  - titulo: 'Filtro de compatibilidad'
+    enunciado: '¿Toda solución numérica obtenida en un modelo lineal debe someterse a verificación de compatibilidad con la realidad?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, valida si el número pertenece al dominio admisible.'
+  - titulo: 'Fábrica de objetos'
+    enunciado: '¿Una cantidad de artículos producidos debe ser un entero no negativo?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, no se pueden producir objetos negativos ni fracciones de productos indivisibles.'
 errores_frecuentes:
-- Operar números del enunciado al azar sin definir la incógnita $x$.
-- Olvidar los paréntesis al traducir frases como 'el triple de un número aumentado
-  en 5'.
-- Dar por terminado el problema al despejar $x$ sin responder la pregunta específica
-  del enunciado.
-- Omitir las unidades de medida en la respuesta final del problema.
-- Aceptar soluciones negativas o decimales incompatibles con la realidad física del
-  contexto.
+  - 'Aceptar soluciones negativas o decimales en contextos discretos de objetos o personas.'
+  - 'Cambiar arbitrariamente el signo de una solución negativa para hacerla encajar en el contexto.'
+  - 'Redondear decimales en contextos donde se exige un resultado exacto no fraccionario.'
+  - 'Omitir la declaración de que el problema carece de solución realizable.'
+  - 'Confundir las restricciones del modelo algebraico con las restricciones de la realidad.'
 afirmaciones_verdaderas:
-- El modelamiento lineal traduce relaciones del lenguaje verbal a una ecuación de
-  primer grado.
-- Las soluciones obtenidas al modelar deben ser verificadas frente a las restricciones
-  físicas del contexto real.
-al_terminar_debes_poder: Al finalizar este recurso podrás identificar la incógnita,
-  plantear, resolver e interpretar problemas contextualizados mediante ecuaciones
-  lineales.
-fuente: Texto escolar MINEDUC — Álgebra / Modelamiento Lineal
+  - 'Las soluciones matemáticas obtenidas en un modelamiento deben ser compatibles con las restricciones físicas del contexto real.'
+  - 'Si una solución numérica viola las restricciones del dominio contextual, debe descartarse declarando que el problema no tiene solución aplicable.'
+al_terminar_debes_poder: |
+  QUÉ: Evaluar y descartar soluciones algebraicas incompatibles con el contexto en ecuaciones lineales.
+  CÓMO: Definir las restricciones del dominio real, verificar la pertenencia de la solución numérica a dicho dominio y redactar la conclusión contextual correspondiente.
+fuente: 'Texto escolar MINEDUC — Álgebra 7° y 8° Básico / Modelamiento Lineal.'
 estado: publicado

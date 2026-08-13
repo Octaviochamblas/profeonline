@@ -232,3 +232,18 @@ Cada recurso debe tener **exactamente 10 ejercicios**: uno por celda de esta tab
   "explanation": "Paso 1: ...\nPaso 2: ... (soporta $LaTeX$ y saltos de línea con \n)"
 }
 ```
+
+---
+
+## 4. Buenas prácticas de economía de tokens y gestión de contexto en la edición masiva
+
+> **Remedio de token bloat:** Agregado 2026-08-13 tras análisis de consumo de tokens durante actualizaciones por lotes.
+
+1. **Loteado acotado de actualizaciones (máximo 2-3 archivos por turno):**
+   - No realizar más de 3 reemplazos/actualizaciones masivas de contenido YAML en un mismo turno de la IA para prevenir que la acumulación de diffs infle exponencialmente el contexto activo (*prompt window*).
+2. **Pausas activas y confirmación entre subtemas:**
+   - Detener la llamada de herramientas al completar un subtema completo (ej. `03.08.06`), reportar el avance al usuario y continuar en un turno limpio para liberar memoria.
+3. **Delegación a scripts o subagentes para reescritura masiva:**
+   - Si se requiere actualizar decenas de archivos YAML con la misma pauta, preferir la creación de scripts de transformación (Python) o subagentes aislados (`invoke_subagent`) para aislar la manipulación de texto largo del hilo principal.
+4. **Respeto a las reglas de economía de tokens (`AGENTS.md`):**
+   - Si una tarea empieza a inflar el conteo de tokens por lecturas repetidas, avisar inmediatamente al usuario y proponer la alternativa de menor consumo antes de continuar.
