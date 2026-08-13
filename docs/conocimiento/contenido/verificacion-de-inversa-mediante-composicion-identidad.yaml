@@ -1,127 +1,88 @@
 semantic_id: MAT.ALG.FUNCION_TIPOS_INVERSA.VERIFICACION_COMPOSICION_IDENTIDAD
-resumen_inicial: Para verificar algebraicamente que $g(x)$ es la inversa de $f(x)$,
-  se debe comprobar que la composición $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$.
-explicacion_simple: 'Para comprobar de forma matemática 100% segura si dos funciones
-  $f(x)$ y $g(x)$ son inversas una de la otra:
+resumen_inicial: La verificación de la función inversa mediante composición exige comprobar formalmente que $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$.
+explicacion_simple: |
+  Para **demostrar que dos funciones $f(x)$ y $g(x)$ son inversas la una de la otra**:
 
-  - Introducimos $g(x)$ dentro de $f(x)$ y simplificamos. El resultado debe dar exactamente
-  **$x$** (la función identidad).
+  1. Tomas la fórmula de $g(x)$ y la metes dentro de $f$: calculas $f(g(x))$.
+  2. Simplificas el álgebra: si todo se cancela y te queda solo la **$x$**, vas por buen camino.
+  3. Ahora lo haces al revés: metes $f(x)$ dentro de $g$ para calcular $g(f(x))$.
+  4. Si en ambos sentidos el resultado da exactamente **$x$** (la identidad), **¡queda verificado que son funciones inversas!**
+explicacion_formal: |
+  Sean $f: A \to B$ y $g: B \to A$ dos funciones. $g$ es la **función inversa de $f$** ($g = f^{-1}$) si y solo si se verifican ambas ecuaciones de composición idéntica:
 
-  - Introducimos $f(x)$ dentro de $g(x)$ y simplificamos. El resultado debe dar nuevamente
-  **$x$**.
+  1. $(f \circ g)(x) = f(g(x)) = x \quad \forall x \in B$
+  2. $(g \circ f)(x) = g(f(x)) = x \quad \forall x \in A$
 
-  Si ambas composiciones dan $x$, confirmamos que $g(x) = f^{-1}(x)$.'
-explicacion_formal: 'Dos funciones $f: A \to B$ y $g: B \to A$ son **mutuamente inversas**
-  si y solo si satisfacen las dos condiciones de composición identidad:
-
-
-  $$(f \circ g)(x) = f(g(x)) = x \quad \forall x \in B$$
-
-  $$(g \circ f)(x) = g(f(x)) = x \quad \forall x \in A$$
-
-
-  **Desglose de la fórmula:**
-
-  - Cancelación funcional mutua que restituye el elemento original sin alteraciones.'
-definiciones_clave: '- **Composición identidad**: Prueba formal de que dos funciones
-  se anulan recíprocamente retornando el argumento neutro $x$.'
-propiedades_relaciones: '- **Unicidad de la inversa**: Si existe una función $g$ tal
-  que $f \circ g = \operatorname{id}$ y $g \circ f = \operatorname{id}$, entonces
-  $g$ es única.'
+  **Criterio de unicidad:**
+  Si una función admite inversa en ambos sentidos de composición, dicha inversa $f^{-1}$ es única.
+definiciones_clave: |
+  - **Verificación por composición**: Prueba formal que demuestra la relación de inversitud entre dos funciones comprobando $(f \circ f^{-1})(x) = x$.
+propiedades_relaciones: |
+  - **Identidad neutra**: La composición de una función con su inversa da como resultado la función identidad $I(x) = x$.
 ejemplo_guiado:
-  enunciado: Verifica mediante composición si la función $g(x) = \frac{x - 5}{2}$
-    es la inversa de $f(x) = 2x + 5$.
+  enunciado: "Verifica formalmente por composición que las funciones $f(x) = 2x - 6$ y $g(x) = \frac{x + 6}{2}$ son mutuamente inversas."
   pasos:
-  - 'Paso 1: Calcular $(f \circ g)(x) = f(g(x)) = 2\left(\frac{x - 5}{2}\right) +
-    5$.Paso 2: Simplificar cancelando el $2$: $(x - 5) + 5 = x$ (CUMPLE).Paso 3: Calcular
-    $(g \circ f)(x) = g(f(x)) = \frac{(2x + 5) - 5}{2} = \frac{2x}{2} = x$ (CUMPLE).Paso
-    4: Concluir que como $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$, la función $g(x)$
-    es efectivamente la inversa de $f(x)$.'
+    - 'Paso 1: Evaluar $f(g(x))$: $f\left(\frac{x + 6}{2}\right) = 2\left(\frac{x + 6}{2}\right) - 6$.'
+    - 'Paso 2: Simplificar $f(g(x))$: $(x + 6) - 6 = x$.'
+    - 'Paso 3: Evaluar $g(f(x))$: $g(2x - 6) = \frac{(2x - 6) + 6}{2} = \frac{2x}{2} = x$.'
+    - 'Paso 4: Como ambos sentidos resultaron en $x$, queda verificado que $g(x) = f^{-1}(x)$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al simplificar $(f \circ g)(x)$ para $f(x) = 2x + 5$ y $g(x) = \frac{x
-    - 5}{2}$, ¿qué resultado se obtiene?
-  choices:
-  - text: $(f \circ g)(x) = x$
-    is_correct: true
-  - text: $(f \circ g)(x) = 0$
-    is_correct: false
-  - text: $(f \circ g)(x) = 1$
-    is_correct: false
-  - text: $(f \circ g)(x) = 2x - 5$
-    is_correct: false
-  explanation: La alternativa correcta es '$(f \circ g)(x) = x$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué función resulta de componer una función biyectiva con su propia función
-    inversa $(f \circ f^{-1})(x)$?
-  choices:
-  - text: La función identidad $\operatorname{id}(x) = x$.
-    is_correct: true
-  - text: La función nula $f(x) = 0$.
-    is_correct: false
-  - text: La función constante $f(x) = 1$.
-    is_correct: false
-  - text: La función al cuadrado $f(x) = x^2$.
-    is_correct: false
-  explanation: La alternativa correcta es 'La función identidad $\operatorname{id}(x)
-    = x$.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: "¿Qué resultado debe obtenerse en la composición $f(g(x))$ para demostrar que $g$ es la inversa de $f$?"
+    choices:
+      - {text: "Debe dar exactamente la variable de entrada $x$.", is_correct: true}
+      - {text: "Debe dar cero.", is_correct: false}
+      - {text: "Debe dar 1.", is_correct: false}
+      - {text: "Debe dar el producto de las pendientes.", is_correct: false}
+    explanation: "La alternativa correcta es 'Debe dar exactamente la variable de entrada $x$.'."
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: "Si $f(g(x)) = x$, ¿basta únicamente ese sentido para garantizar completamente que $g = f^{-1}$?"
+    choices:
+      - {text: "Se deben verificar idealmente ambos sentidos ($f(g(x)) = x$ y $g(f(x)) = x$).", is_correct: true}
+      - {text: "Sí, con un solo sentido es suficiente en todos los universos matemáticos.", is_correct: false}
+      - {text: "No, la composición no sirve para probar inversas.", is_correct: false}
+      - {text: "Solo si $x$ es un número entero positivo.", is_correct: false}
+    explanation: "La alternativa correcta es 'Se deben verificar idealmente ambos sentidos ($f(g(x)) = x$ y $g(f(x)) = x$).'."
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Reemplazar la fórmula de $g(x)$ dentro de cada $x$ de la función $f(x)$.'
-- 'Paso 2: Desarrollar las operaciones algebraicas hasta simplificar a $x$.'
-- 'Paso 3: Reemplazar la fórmula de $f(x)$ dentro de cada $x$ de la función $g(x)$.'
-- 'Paso 4: Confirmar que ambas composiciones dan $x$ para validar que son inversas.'
-errores_correccion: '- **Error común:** Creer que la composición $f(g(x))$ debe ser
-  igual a cero o a uno.
-
-  - **Cómo corregirlo:** La composición de una función con su inversa da como resultado
-  la variable libre **$x$** (la función identidad).'
+  - 'Paso 1: Sustituir la expresión de $g(x)$ en cada lugar donde aparece $x$ en la fórmula de $f(x)$.'
+  - 'Paso 2: Realizar las simplificaciones algebraicas correspondientes hasta obtener $x$.'
+  - 'Paso 3: Sustituir la expresión de $f(x)$ en la fórmula de $g(x)$ y simplificar.'
+  - 'Paso 4: Si en ambos procesos se obtiene la función identidad $x$, declarar verificado el par como inversas.'
+errores_correccion: |
+  - **Error común:** Comprobar únicamente la multiplicación de funciones $f(x) \cdot g(x) = 1$ en lugar de la composición $f(g(x)) = x$.
+  - **Cómo corregirlo:** La inversa de funciones requiere **COMPOSICIÓN DE REGLAS** ($f(g(x)) = x$), no producto de expresiones algebraicas.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de tipos de funciones y función inversa.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de tipos de funciones y función inversa.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función debe ser biyectiva para admitir función inversa?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por el teorema fundamental de invertibilidad.
-- titulo: ¿Las gráficas de f y su inversa son simétricas respecto a la recta y = x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la propiedad de reflexión especular de pares ordenados (x, y) a (y, x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de función inversa.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de función inversa.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir el criterio de la línea horizontal (para inyectividad) con el criterio
-  de la línea vertical (para ser función).
-- Confundir la notación de función inversa $f^{-1}(x)$ con el recíproco o potencia
-  $\frac{1}{f(x)}$.
-- Intentar calcular la inversa de una función que no es biyectiva en los conjuntos
-  considerados.
-- Olvidar intercambiar las variables $x$ e $y$ al finalizar el algoritmo de despeje
-  algebraico.
-- Creer que la simetría gráfica de la función inversa es respecto al eje Y en lugar
-  de la recta bisectriz $y = x$.
+  - 'Comprobar que dos funciones son inversas requiere multiplicar sus expresiones algebraicas resultando en 1.'
+  - 'Si la composición de dos funciones entrega el resultado $f(g(x)) = 0$, las funciones son mutuamente inversas.'
+  - 'Verificar la inversa mediante composición exige derivar ambas expresiones antes de evaluar.'
+  - 'La composición de dos funciones afines inversas genera siempre una parábola cuadrática.'
+  - 'Evaluar la composición $f(g(x))$ en un punto particular como $x = 2$ demuestra rigurosamente la inversitud para todo el dominio.'
 afirmaciones_verdaderas:
-- Una función admite función inversa $f^{-1}$ si y solo si es biyectiva en sus conjuntos
-  de definición.
-- Las gráficas de una función $f$ y su inversa $f^{-1}$ son simétricas respecto a
-  la recta bisectriz del primer cuadrante $y = x$.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, distinguir e identificar
-  funciones inyectivas, sobreyectivas y biyectivas, calculando y verificando algebraicamente
-  y gráficamente la función inversa.
-fuente: Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa
+  - 'Dos funciones $f$ y $g$ son mutuamente inversas si y solo si sus composiciones satisfacen $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$ para todo elemento de sus dominios.'
+  - 'La verificación por composición demuestra que la aplicación sucesiva de $f$ y $f^{-1}$ equivale a aplicar la función identidad.'
+al_terminar_debes_poder: |
+  QUÉ: Verificar rigurosamente si dos funciones dadas son mutuamente inversas mediante composición.
+  CÓMO: Calcular $f(g(x))$ y $g(f(x))$, simplificar algebraicamente y comprobar la reducción a la función identidad $x$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa'
 estado: publicado

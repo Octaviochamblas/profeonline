@@ -1,121 +1,87 @@
 semantic_id: MAT.ALG.FUNCION_TIPOS_INVERSA.CONDICION_INVERTIBILIDAD
-resumen_inicial: Una función admite función inversa si y solo si es biyectiva en los
-  conjuntos considerados.
-explicacion_simple: 'No todas las funciones tienen inversa.
+resumen_inicial: El reconocimiento de la condición de invertibilidad establece que una función admite inversa si y solo si es biyectiva en los conjuntos considerados.
+explicacion_simple: |
+  Para saber si una función **TIENE INVERSA** (es invertible):
 
-  - Si una función no fuera inyectiva (dos entradas dan la misma salida, ej: $f(2)=4$
-  y $f(-2)=4$), al intentar volver hacia atrás el $4$ no sabría si regresar al $2$
-  o al $-2$ (fallaría la unicidad de función).
+  1. Debe ser **inyectiva**: No puede haber dos entradas distintas con la misma salida (supera la prueba de la línea horizontal).
+  2. Debe ser **sobreyectiva**: Su recorrido debe cubrir todo el codominio.
+  3. Si no es biyectiva originalmente (como $f(x) = x^2$), puedes **acotar el dominio** (por ejemplo a $x \ge 0$) para forzar a que sea invertible.
+explicacion_formal: |
+  Sea $f: A \to B$ una función real de variable real.
 
-  - Por eso, la **condición estricta de invertibilidad** es que la función sea **BIYECTIVA**.'
-explicacion_formal: 'Teorema fundamental de invertibilidad: Una función $f: A \to
-  B$ es **invertible** (posee inversa $f^{-1}: B \to A$) si y solo si:
+  **Teorema fundamental de invertibilidad:**
+  $$f \text{ admite función inversa } f^{-1}: B \to A \iff f \text{ es biyectiva}$$
 
-
-  $$f \text{ es biyectiva}$$
-
-
-  **Desglose de la fórmula:**
-
-  - Garantía de existencia y unicidad de la relación inversa $f^{-1} \subset B \times
-  A$ como función matemática bien definida.'
-definiciones_clave: '- **Condición de invertibilidad**: Requisito de biyectividad
-  que permite la construcción de la función inversa.'
-propiedades_relaciones: '- **Restricción para invertibilidad**: Funciones no inyectivas
-  como $f(x) = x^2$ se vuelven invertibles restringiendo su dominio (ejemplo a $\mathbb{R}^+$).'
+  **Estrategia de acotamiento de dominio (Restricción):**
+  Si $f: D \to \mathbb{R}$ no es inyectiva en $D$, se selecciona un subconjunto $A \subset D$ donde $f|_A$ sea estrictamente mónotona (creciente o decreciente), garantizando la existencia de $(f|_A)^{-1}: \text{Rec}(f|_A) \to A$.
+definiciones_clave: |
+  - **Invertibilidad de una función**: Propiedad algebraica y geométrica que permite definir la función inversa $f^{-1}$ en todo el recorrido.
+propiedades_relaciones: |
+  - **Prueba de la línea horizontal**: Una función es invertible si y solo si toda línea horizontal intersecta a su gráfica en exactamente un punto.
 ejemplo_guiado:
-  enunciado: 'Explica por qué la función $f: \mathbb{R} \to \mathbb{R}$ dada por $f(x)
-    = x^2$ NO es invertible y cómo se puede hacer invertible.'
+  enunciado: 'Explica por qué $f(x) = x^2$ definida de $\mathbb{R} \to \mathbb{R}$ no es invertible y propone una restricción de dominio para hacerla invertible.'
   pasos:
-  - 'Paso 1: Comprobar inyectividad: $f(2) = 4$ y $f(-2) = 4 \implies$ no es inyectiva.Paso
-    2: Concluir que al no ser inyectiva, NO es biyectiva y por lo tanto NO es invertible
-    en todo $\mathbb{R}$.Paso 3: Restringir el dominio a $\mathbb{R}^+ = [0, +\infty[$
-    y el codominio a $[0, +\infty[$.Paso 4: Comprobar que $f: [0, +\infty[ \to [0,
-    +\infty[$ es biyectiva y su inversa es $f^{-1}(x) = \sqrt{x}$.'
+    - 'Paso 1: $f(x) = x^2$ en $\mathbb{R}$ no es inyectiva porque $f(2) = 4$ y $f(-2) = 4$. Tampoco es sobreyectiva porque su recorrido $[0, +\infty[$ no cubre $\mathbb{R}$.'
+    - 'Paso 2: Acotar el dominio a los reales no negativos: $A = [0, +\infty[$.'
+    - 'Paso 3: Redefinir el codominio al recorrido real: $B = [0, +\infty[$.'
+    - 'Paso 4: Concluir que $g: [0, +\infty[ \to [0, +\infty[$ con $g(x) = x^2$ es biyectiva e invertible con $g^{-1}(x) = \sqrt{x}$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la condición matemática obligatoria para que una función posea
-    función inversa?
-  choices:
-  - text: Debe ser estrictamente biyectiva.
-    is_correct: true
-  - text: Debe ser una función constante.
-    is_correct: false
-  - text: Debe pasar por el origen de coordenadas.
-    is_correct: false
-  - text: Debe ser una parábola abierta hacia abajo.
-    is_correct: false
-  explanation: La alternativa correcta es 'Debe ser estrictamente biyectiva.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Cuál es la función inversa de $f(x) = x^2$ al restringir su dominio al
-    intervalo $[0, +\infty[$?
-  choices:
-  - text: $f^{-1}(x) = \sqrt{x}$
-    is_correct: true
-  - text: $f^{-1}(x) = \frac{1}{x^2}$
-    is_correct: false
-  - text: $f^{-1}(x) = -x^2$
-    is_correct: false
-  - text: $f^{-1}(x) = 2x$
-    is_correct: false
-  explanation: La alternativa correcta es '$f^{-1}(x) = \sqrt{x}$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Qué condición necesaria y suficiente garantiza que una función sea invertible?'
+    choices:
+      - {text: 'Que la función sea biyectiva en sus conjuntos de definición.', is_correct: true}
+      - {text: 'Que la función sea siempre positiva.', is_correct: false}
+      - {text: 'Que su gráfica pase por el punto $(0,0)$.', is_correct: false}
+      - {text: 'Que sea una función polinómica de grado 3.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Que la función sea biyectiva en sus conjuntos de definición.''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Al acotar el dominio de $f(x) = x^2$ a $[0, +\infty[$, ¿cuál es su función inversa resultante?'
+    choices:
+      - {text: '$f^{-1}(x) = \sqrt{x}$', is_correct: true}
+      - {text: '$f^{-1}(x) = -\sqrt{x}$', is_correct: false}
+      - {text: '$f^{-1}(x) = 1/x^2$', is_correct: false}
+      - {text: '$f^{-1}(x) = x^2$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$f^{-1}(x) = \sqrt{x}$''. Para $x \ge 0$, la inversa de $y = x^2$ es $x = \sqrt{y}$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Evaluar la inyectividad de la función.'
-- 'Paso 2: Evaluar la sobreyectividad de la función.'
-- 'Paso 3: Si ambas se cumplen, confirmar que es invertible.'
-- 'Paso 4: Si falla alguna, restringir el dominio o codominio para lograr invertibilidad.'
-errores_correccion: '- **Error común:** Intentar calcular la inversa de una función
-  no biyectiva (como una parábola completa en $\mathbb{R}$).
-
-  - **Cómo corregirlo:** Antes de despejar la inversa, debes verificar o aplicar las
-  restricciones para garantizar que sea biyectiva.'
+  - 'Paso 1: Evaluar la inyectividad de la función mediante la prueba de la línea horizontal o monotonía.'
+  - 'Paso 2: Evaluar la sobreyectividad verificando que el recorrido sea igual al codominio.'
+  - 'Paso 3: Si no es biyectiva, restringir el dominio a un intervalo monótono y el codominio al recorrido.'
+  - 'Paso 4: Declarar la condición de invertibilidad y calcular la función inversa en el dominio acotado.'
+errores_correccion: |
+  - **Error común:** Afirmar que las funciones cuadráticas como $f(x) = x^2$ "no tienen inversa nunca".
+  - **Cómo corregirlo:** SÍ tienen inversa cuando se **RESTRINGE EL DOMINIO** (por ejemplo a $x \ge 0$, dando $f^{-1}(x) = \sqrt{x}$).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de tipos de funciones y función inversa.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de tipos de funciones y función inversa.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función debe ser biyectiva para admitir función inversa?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por el teorema fundamental de invertibilidad.
-- titulo: ¿Las gráficas de f y su inversa son simétricas respecto a la recta y = x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la propiedad de reflexión especular de pares ordenados (x, y) a (y, x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de función inversa.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de función inversa.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir el criterio de la línea horizontal (para inyectividad) con el criterio
-  de la línea vertical (para ser función).
-- Confundir la notación de función inversa $f^{-1}(x)$ con el recíproco o potencia
-  $\frac{1}{f(x)}$.
-- Intentar calcular la inversa de una función que no es biyectiva en los conjuntos
-  considerados.
-- Olvidar intercambiar las variables $x$ e $y$ al finalizar el algoritmo de despeje
-  algebraico.
-- Creer que la simetría gráfica de la función inversa es respecto al eje Y en lugar
-  de la recta bisectriz $y = x$.
+  - 'Una función real es siempre invertible sin importar si es inyectiva o sobreyectiva.'
+  - 'La función cuadrática $f(x) = x^2$ definida en todo $\mathbb{R}$ es una función invertible sin restricciones.'
+  - 'Restringir el dominio de una función altera la fórmula funcional convirtiéndola en una recta horizontal.'
+  - 'El criterio de la línea vertical permite evaluar si una función es invertible.'
+  - 'Una función afín constante $f(x) = 5$ posee una función inversa lineal bien definida.'
 afirmaciones_verdaderas:
-- Una función admite función inversa $f^{-1}$ si y solo si es biyectiva en sus conjuntos
-  de definición.
-- Las gráficas de una función $f$ y su inversa $f^{-1}$ son simétricas respecto a
-  la recta bisectriz del primer cuadrante $y = x$.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, distinguir e identificar
-  funciones inyectivas, sobreyectivas y biyectivas, calculando y verificando algebraicamente
-  y gráficamente la función inversa.
-fuente: Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa
+  - 'Una función $f$ admite función inversa si y solo si es biyectiva (inyectiva y sobreyectiva a la vez).'
+  - 'Si una función no es invertible en su dominio original, se puede restringir dicho dominio a un intervalo monótono para garantizar su invertibilidad.'
+al_terminar_debes_poder: |
+  QUÉ: Reconocer las condiciones requeridas para que una función sea invertible y acotar dominios cuando sea necesario.
+  CÓMO: Verificar biyectividad, aplicar la prueba de la línea horizontal y restringir dominios a tramos monótonos.
+fuente: 'Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa'
 estado: publicado

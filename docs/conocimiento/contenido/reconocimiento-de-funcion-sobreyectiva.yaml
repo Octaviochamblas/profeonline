@@ -1,125 +1,86 @@
 semantic_id: MAT.ALG.FUNCION_TIPOS_INVERSA.SOBREYECTIVA_RECONOCIMIENTO
-resumen_inicial: Reconocer la sobreyectividad exige verificar la cobertura total del
-  codominio en diagramas sagitales, gráficos y definiciones explícitas.
-explicacion_simple: 'Para reconocer si una función es **sobreyectiva**:
+resumen_inicial: El reconocimiento de una función sobreyectiva verifica si la cobertura vertical de la gráfica abarca todo el conjunto codominio declarado.
+explicacion_simple: |
+  Para **reconocer si una función es sobreyectiva**:
 
-  - **En un diagrama sagital:** TODOS los elementos del óvalo de la derecha (codominio
-  $B$) tienen AL MENOS UNA flecha que llega a ellos (ningún número queda suelto).
+  - **Criterio gráfico**: Revisa la altura vertical de la gráfica (su recorrido).
+  - Si la gráfica cubre completamente el codominio $B$ (por ejemplo, todo el eje vertical $Y = \mathbb{R}$ sin dejar vacíos), la función es **sobreyectiva**.
+  - Si la curva tiene un tope inferior o superior (como una parábola $y \ge 0$) y el codominio declarado era todo $\mathbb{R}$, **NO es sobreyectiva** porque faltan los números negativos.
+explicacion_formal: |
+  Sea la función $f: A \to B$ con codominio explícito $B$. El **reconocimiento de sobreyectividad** exige verificar la validez de la inclusión recíproca de conjuntos:
 
-  - **En un gráfico en $\mathbb{R}$:** La curva cubre todo el eje vertical $Y$ de
-  arriba a abajo si el codominio es $\mathbb{R}$.'
-explicacion_formal: 'Sea $f: A \to B$. $f$ **NO es sobreyectiva** si se halla al menos
-  un elemento desatendido en $B$:
+  $$B \subseteq \text{Rec}(f) \iff \forall y \in B, \ \exists x \in A \text{ tal que } f(x) = y$$
 
-
-  $$\exists y_0 \in B \quad \text{tal que } f^{-1}(\{y_0\}) = \emptyset$$
-
-
-  **Desglose de la fórmula:**
-
-  - Existencia de un elemento $y_0$ en el conjunto de llegada que carece de preimagen
-  en el conjunto de partida.'
-definiciones_clave: '- **Elemento no alcanzado ($y_0 \notin \operatorname{Rec}(f)$)**:
-  Elemento del codominio que rompe la sobreyectividad.'
-propiedades_relaciones: '- **Sobreyectividad de funciones afines**: Toda función afín
-  o lineal no constante $f: \mathbb{R} \to \mathbb{R}$ es sobreyectiva.'
+  **Criterio de la proyección horizontal:**
+  Para todo elemento $y_0 \in B$, la recta horizontal $y = y_0$ intersecta a la gráfica de $f$ en **al menos un punto**.
+definiciones_clave: |
+  - **Reconocimiento de sobreyectividad**: Verificación analítica o gráfica de que la imagen proyectada de la función cubre sin omisiones todo el codominio $B$.
+propiedades_relaciones: |
+  - **Redefinición de codominio**: Toda función $f: A \to B$ no sobreyectiva puede volverse sobreyectiva acotando su conjunto de llegada al propio recorrido de la función.
 ejemplo_guiado:
-  enunciado: 'Analiza la sobreyectividad de la función lineal $f: \mathbb{R} \to \mathbb{R}$
-    dada por $f(x) = 3x - 5$.'
+  enunciado: 'Analiza si la función afín $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = -2x + 5$ es sobreyectiva.'
   pasos:
-  - 'Paso 1: Identificar el codominio declarado: $B = \mathbb{R}$.Paso 2: Despejar
-    $x$ para cualquier valor $y \in \mathbb{R}$: $y = 3x - 5 \implies 3x = y + 5 \implies
-    x = \frac{y + 5}{3}$.Paso 3: Observar que para CUALQUIER número real $y$, la expresión
-    $x = \frac{y + 5}{3}$ es un número real válido.Paso 4: Concluir que todo $y \in
-    \mathbb{R}$ tiene preimagen real, luego $f$ es sobreyectiva.'
+    - 'Paso 1: Identificar el codominio declarado: $B = \mathbb{R}$.'
+    - 'Paso 2: Hallar el recorrido de la recta afín: como la pendiente $m = -2 \neq 0$, la recta se extiende de $-\infty$ a $+\infty \implies \text{Rec}(f) = \mathbb{R}$.'
+    - 'Paso 3: Comparar $\text{Rec}(f) = \mathbb{R}$ con el codominio $B = \mathbb{R}$.'
+    - 'Paso 4: Concluir que $f$ es sobreyectiva.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: 'Al despejar $x = \frac{y + 5}{3}$ para la función afín $f: \mathbb{R}
-    \to \mathbb{R}$, ¿qué se demuestra sobre su sobreyectividad?'
-  choices:
-  - text: Que es sobreyectiva porque para todo $y \in \mathbb{R}$ existe una preimagen
-      real $x$.
-    is_correct: true
-  - text: Que no es sobreyectiva porque la fracción divide por 3.
-    is_correct: false
-  - text: Que la función no está definida en cero.
-    is_correct: false
-  - text: Que su recorrido es únicamente los números enteros.
-    is_correct: false
-  explanation: La alternativa correcta es 'Que es sobreyectiva porque para todo $y
-    \in \mathbb{R}$ existe una preimagen real $x$.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: 'En un diagrama sagital de $f: A \to B$, ¿qué se debe observar en el conjunto
-    $B$ para confirmar sobreyectividad?'
-  choices:
-  - text: Que todos los elementos de $B$ reciban al menos una flecha.
-    is_correct: true
-  - text: Que a los elementos de $B$ solo llegue una flecha exactamente.
-    is_correct: false
-  - text: Que algunos elementos de $B$ queden sin flecha.
-    is_correct: false
-  - text: Que del conjunto $B$ salgan flechas hacia $A$.
-    is_correct: false
-  explanation: La alternativa correcta es 'Que todos los elementos de $B$ reciban
-    al menos una flecha.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuándo una función $f: A \to B$ NO es sobreyectiva?'
+    choices:
+      - {text: 'Cuando existen elementos del codominio B que no son alcanzados por la función.', is_correct: true}
+      - {text: 'Cuando no se repiten valores de salida.', is_correct: false}
+      - {text: 'Cuando su pendiente es mayor a cero.', is_correct: false}
+      - {text: 'Cuando su gráfica es una recta inclinada.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cuando existen elementos del codominio B que no son alcanzados por la función.''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Si la función $f: \mathbb{R} \to \mathbb{R}$ dada por $f(x) = x^2$ se redefine como $g: \mathbb{R} \to [0, +\infty[$, ¿qué ocurre con su sobreyectividad?'
+    choices:
+      - {text: 'Pasa a ser sobreyectiva porque el codominio se igualó al recorrido $[0, +\infty[$.', is_correct: true}
+      - {text: 'Sigue no siendo sobreyectiva.', is_correct: false}
+      - {text: 'Se transforma en una función lineal.', is_correct: false}
+      - {text: 'Pierde su dominio original.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Pasa a ser sobreyectiva porque el codominio se igualó al recorrido $[0, +\infty[$.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Plantear la ecuación $y = f(x)$ con $y \in B$.'
-- 'Paso 2: Despejar la variable $x$ en función de $y$.'
-- 'Paso 3: Verificar si el despeje es siempre un elemento del dominio $A$ para todo
-  $y \in B$.'
-- 'Paso 4: Concluir si es o no sobreyectiva.'
-errores_correccion: '- **Error común:** Pensar que para ser sobreyectiva cada elemento
-  de $B$ debe recibir EXACTAMENTE una flecha.
-
-  - **Cómo corregirlo:** Para ser sobreyectiva basta con recibir AL MENOS una flecha.
-  Si recibe exactamente una y no queda ninguno suelto, es además inyectiva (biyectiva).'
+  - 'Paso 1: Identificar el codominio $B$ explicitado en la definición de la función.'
+  - 'Paso 2: Calcular la proyección de la gráfica sobre el eje vertical para determinar el recorrido $\text{Rec}(f)$.'
+  - 'Paso 3: Verificar si todo valor de $B$ es alcanzado por al menos un punto de la gráfica.'
+  - 'Paso 4: Declarar la validez de la sobreyectividad.'
+errores_correccion: |
+  - **Error común:** Evaluar la sobreyectividad sin considerar cuál es el codominio $B$ declarado en el problema.
+  - **Cómo corregirlo:** La sobreyectividad no se puede juzgar mirando solo la fórmula; debes **COMPARAR EL RECORRIDO CON EL CODOMINIO DECLARADO**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de tipos de funciones y función inversa.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de tipos de funciones y función inversa.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función debe ser biyectiva para admitir función inversa?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por el teorema fundamental de invertibilidad.
-- titulo: ¿Las gráficas de f y su inversa son simétricas respecto a la recta y = x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la propiedad de reflexión especular de pares ordenados (x, y) a (y, x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de función sobreyectiva.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de función sobreyectiva.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir el criterio de la línea horizontal (para inyectividad) con el criterio
-  de la línea vertical (para ser función).
-- Confundir la notación de función inversa $f^{-1}(x)$ con el recíproco o potencia
-  $\frac{1}{f(x)}$.
-- Intentar calcular la inversa de una función que no es biyectiva en los conjuntos
-  considerados.
-- Olvidar intercambiar las variables $x$ e $y$ al finalizar el algoritmo de despeje
-  algebraico.
-- Creer que la simetría gráfica de la función inversa es respecto al eje Y en lugar
-  de la recta bisectriz $y = x$.
+  - 'Una función es sobreyectiva si cada recta vertical corta a su gráfica en exactamente dos puntos.'
+  - 'La función $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = x^2 + 5$ es sobreyectiva en todo el conjunto $\mathbb{R}$.'
+  - 'Para que una función sea sobreyectiva es obligatorio que no existan elementos repetidos en las imágenes.'
+  - 'El recorrido de una función sobreyectiva es siempre un conjunto estrictamente finito de números enteros.'
+  - 'Redefinir el codominio de una función altera la pendiente de su representación gráfica.'
 afirmaciones_verdaderas:
-- Una función admite función inversa $f^{-1}$ si y solo si es biyectiva en sus conjuntos
-  de definición.
-- Las gráficas de una función $f$ y su inversa $f^{-1}$ son simétricas respecto a
-  la recta bisectriz del primer cuadrante $y = x$.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, distinguir e identificar
-  funciones inyectivas, sobreyectivas y biyectivas, calculando y verificando algebraicamente
-  y gráficamente la función inversa.
-fuente: Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa
+  - 'Una función $f: A \to B$ es sobreyectiva si toda recta horizontal trazada a la altura de cualquier $y \in B$ intersecta a su gráfica en al menos un punto.'
+  - 'Al restringir o redefinir el codominio de una función para que coincida exactamente con su recorrido ($B = \text{Rec}(f)$), la función se vuelve sobreyectiva.'
+al_terminar_debes_poder: |
+  QUÉ: Reconocer e identificar la sobreyectividad de funciones en diversos sistemas de representación.
+  CÓMO: Proyectar el recorrido de la función y comparar la igualdad de conjuntos $\text{Rec}(f) = B$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa'
 estado: publicado
