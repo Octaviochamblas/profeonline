@@ -1,123 +1,88 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.EVALUACION_NUMERICA
-resumen_inicial: Evaluar numéricamente $(f \circ g)(a)$ consiste en calcular el número
-  $b = g(a)$ y luego evaluar la función externa $f(b)$.
-explicacion_simple: 'Para evaluar $(f \circ g)(3)$ con números concretos:
+resumen_inicial: La evaluación numérica de una función compuesta calcula el valor final $f(g(a))$ sustituyendo secuencialmente el número dado.
+explicacion_simple: |
+  Para **evaluar $(f \circ g)(3)$ con un número específico $x = 3$**:
 
-  1. Reemplazamos $3$ en la función de adentro $g$, obteniendo por ejemplo $g(3) =
-  10$.
+  - **Camino de dos pasos**:
+    1. Reemplazas $3$ en la función interna $g$ y calculas el número resultado (por ejemplo, $g(3) = 7$).
+    2. Tomas ese resultado $7$ y lo reemplazas en la función externa $f$ (por ejemplo, $f(7) = 2 \cdot 7 = 14$).
+  - **Camino directo**: Encuentras la fórmula completa de $(f \circ g)(x)$ y reemplazas $x = 3$ directo al final. Ambos caminos entregan exactamente el mismo resultado.
+explicacion_formal: |
+  Sea el valor numérico $a \in \text{Dom}(f \circ g)$. El proceso de **evaluación numérica directa** de la composición $(f \circ g)(a)$ se realiza según el algoritmo secuencial de dos etapas:
 
-  2. Reemplazamos ese resultado $10$ en la función de afuera $f$, obteniendo por ejemplo
-  $f(10) = 45$.
+  $$\text{Etapa 1: } u = g(a) \in \text{Dom}(f)$$
+  $$\text{Etapa 2: } y = f(u) = f\big(g(a)\big)$$
 
-  3. El valor numérico final de $(f \circ g)(3)$ es $45$.'
-explicacion_formal: 'Dada una constante $a \in \operatorname{Dom}(f \circ g)$:
-
-
-  $$(f \circ g)(a) = \left. f(u) \right|_{u = g(a)}$$
-
-
-  **Desglose de la fórmula:**
-
-  - Proceso aritmético de dos etapas: 1) $u_0 = g(a)$, 2) $y_0 = f(u_0)$.'
-definiciones_clave: '- **Evaluación numérica puntual**: Obtención del valor numérico
-  final de una composición sin necesidad de construir la fórmula algebraica completa.'
-propiedades_relaciones: '- **Eficiencia de cálculo**: Evaluar numéricamente paso a
-  paso resulta más rápido que simplificar la fórmula algebraica de la composición.'
+  **Propiedad de consistencia:**
+  Sustituir $x = a$ en la expresión algebraica compuesta reducida $H(x) = (f \circ g)(x)$ produce el mismo escalar resultado $H(a) = f(g(a))$.
+definiciones_clave: |
+  - **Evaluación numérica compuesta**: Sustitución de un valor constante numérico en la secuencia de reglas funcionales enlazadas.
+propiedades_relaciones: |
+  - **Preservación de indeterminación**: Si en la Etapa 1 el cálculo $g(a)$ no está definido, o el valor $u = g(a)$ no pertenece al dominio de $f$, la evaluación compuesta no existe en $\mathbb{R}$.
 ejemplo_guiado:
-  enunciado: Dadas $f(x) = 3x - 4$ y $g(x) = x^2 + 2$, evalúa el valor de $(f \circ
-    g)(-1)$ y el valor de $(g \circ f)(-1)$.
+  enunciado: 'Dadas $f(x) = x^2 - 1$ y $g(x) = 3x + 2$, evalúa el valor numérico de $(f \circ g)(2)$ por el método secuencial y directo.'
   pasos:
-  - 'Paso 1: Para $(f \circ g)(-1)$: calcular $g(-1) = (-1)^2 + 2 = 1 + 2 = 3$.Paso
-    2: Evaluar $f$ en el resultado $3$: $f(3) = 3(3) - 4 = 9 - 4 = 5 \implies (f \circ
-    g)(-1) = 5$.Paso 3: Para $(g \circ f)(-1)$: calcular $f(-1) = 3(-1) - 4 = -3 -
-    4 = -7$.Paso 4: Evaluar $g$ en $-7$: $g(-7) = (-7)^2 + 2 = 49 + 2 = 51 \implies
-    (g \circ f)(-1) = 51$.Paso 5: Notar que $(f \circ g)(-1) = 5 \neq 51 = (g \circ
-    f)(-1)$.'
+    - 'Paso 1: Método secuencial: evaluar primero la función interna en $x = 2$: $g(2) = 3(2) + 2 = 6 + 2 = 8$.'
+    - 'Paso 2: Evaluar la función externa en la salida intermedia $8$: $f(8) = 8^2 - 1 = 64 - 1 = 63$.'
+    - 'Paso 3: Método directo: hallar $(f \circ g)(x) = f(3x + 2) = (3x + 2)^2 - 1$.'
+    - 'Paso 4: Sustituir $x = 2$: $(3(2) + 2)^2 - 1 = 8^2 - 1 = 64 - 1 = 63$, comprobando que $(f \circ g)(2) = 63$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al evaluar $(f \circ g)(-1)$ con $g(x) = x^2 + 2$ y $f(x) = 3x - 4$, ¿cuál
-    es el resultado numérico?
-  choices:
-  - text: $(f \circ g)(-1) = 5$
-    is_correct: true
-  - text: $(f \circ g)(-1) = 51$
-    is_correct: false
-  - text: $(f \circ g)(-1) = -5$
-    is_correct: false
-  - text: $(f \circ g)(-1) = 0$
-    is_correct: false
-  explanation: La alternativa correcta es '$(f \circ g)(-1) = 5$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al comparar los resultados de $(f \circ g)(-1) = 5$ y $(g \circ f)(-1)
-    = 51$, ¿qué propiedad se demuestra?
-  choices:
-  - text: Que la composición de funciones NO es una operación conmutativa en general.
-    is_correct: true
-  - text: Que las funciones no están bien definidas.
-    is_correct: false
-  - text: Que los números negativos cambian la ley de asociatividad.
-    is_correct: false
-  - text: Que la respuesta depende del día.
-    is_correct: false
-  explanation: La alternativa correcta es 'Que la composición de funciones NO es una
-    operación conmutativa en general.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Dadas $f(x) = x^2 - 1$ y $g(x) = 3x + 2$, ¿cuál es el valor de $(f \circ g)(2)$?'
+    choices:
+      - {text: '63', is_correct: true}
+      - {text: '25', is_correct: false}
+      - {text: '15', is_correct: false}
+      - {text: '48', is_correct: false}
+    explanation: 'La alternativa correcta es ''63''. $g(2) = 8 \implies f(8) = 8^2 - 1 = 63$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Para las mismas funciones $f(x) = x^2 - 1$ y $g(x) = 3x + 2$, ¿cuál es el valor de $(g \circ f)(2)$?'
+    choices:
+      - {text: '11', is_correct: true}
+      - {text: '63', is_correct: false}
+      - {text: '20', is_correct: false}
+      - {text: '8', is_correct: false}
+    explanation: 'La alternativa correcta es ''11''. $f(2) = 2^2 - 1 = 3 \implies g(3) = 3(3) + 2 = 11$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Evaluar la preimagen dada $a$ en la función interna $g(a)$.'
-- 'Paso 2: Registrar el número resultante de la primera evaluación.'
-- 'Paso 3: Sustituir ese número dentro de la función externa $f(\cdot)$.'
-- 'Paso 4: Resolver la aritmética final para obtener el resultado numérico.'
-errores_correccion: '- **Error común:** Evaluar la constante en la función externa
-  $f$ primero y luego meter el resultado en $g$.
-
-  - **Cómo corregirlo:** La preimagen se introduce SIEMPRE en la función que está
-  al lado derecho de la notación.'
+  - 'Paso 1: Reemplazar el número dado $a$ en la fórmula de la función interna $g(x)$ y calcular el resultado $b = g(a)$.'
+  - 'Paso 2: Reemplazar el número $b$ obtenido en la fórmula de la función externa $f(x)$.'
+  - 'Paso 3: Operar y calcular el resultado final $f(b)$.'
+  - 'Paso 4: Declarar $(f \circ g)(a) = f(b)$.'
+errores_correccion: |
+  - **Error común:** Evaluar ambas funciones por separado con la entrada $a$ y luego multiplicar o sumar los números resultantes.
+  - **Cómo corregirlo:** La evaluación es **SECUENCIAL**: el resultado numérico de la primera función es la **ENTRADA** de la segunda.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de composición de funciones.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de composición de funciones.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿La composición de funciones (f o g)(x) equivale a f(g(x))?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición notacional de composición de funciones.
-- titulo: ¿La composición de funciones es conmutativa en general?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, en general (f o g)(x) != (g o f)(x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de composición de funciones.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de composición de funciones.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la composición de funciones $(f \circ g)(x)$ con la multiplicación de
-  funciones $(f \cdot g)(x)$.
-- Evaluar primero la función externa de la izquierda en lugar de la función interna
-  de la derecha.
-- Asumir falsamente que la composición de funciones es conmutativa ($(f \circ g)(x)
-  = (g \circ f)(x)$).
-- Olvidar distribuir coeficientes al sustituir expresiones compuestas en el cálculo
-  algebraico.
-- Determinar el dominio únicamente desde la fórmula reducida final ignorando las restricciones
-  del proceso intermedio.
+  - 'Evaluar $(f \circ g)(2)$ equivale a calcular $f(2) \cdot g(2)$ y multiplicar los dos números obtenidos.'
+  - 'El valor numérico de $(f \circ g)(a)$ es siempre igual al valor numérico de $(g \circ f)(a)$ para cualquier entrada $a$.'
+  - 'Si la función interna produce un valor numérico negativo $g(a) = -5$, no se puede evaluar en $f(x) = x^3$.'
+  - 'Para evaluar una composición con un número es obligatorio calcular primero la derivada de la función.'
+  - 'Sustituir el número de entrada en la función externa antes de evaluar la interna genera el mismo valor final.'
 afirmaciones_verdaderas:
-- La composición de funciones $(f \circ g)(x) = f(g(x))$ consiste en evaluar la función
-  externa $f$ en el resultado de la función interna $g(x)$.
-- El dominio de la composición $\operatorname{Dom}(f \circ g)$ hereda todas las restricciones
-  de la función interna $g(x)$ y exige que $g(x) \in \operatorname{Dom}(f)$.
-al_terminar_debes_poder: Al finalizar este recurso podrás comprender, evaluar numéricamente
-  y calcular algebraicamente composiciones de funciones, reconociendo la no conmutatividad
-  y analizando sus dominios resultantes.
-fuente: Texto escolar MINEDUC — Álgebra / Composición de Funciones
+  - 'La evaluación numérica de $(f \circ g)(a)$ se realiza obteniendo primero la constante $b = g(a)$ y evaluando posteriormente $f(b)$.'
+  - 'Si $a \in \text{Dom}(f \circ g)$, la evaluación secuencial $f(g(a))$ y la sustitución directa en la regla reducida producen exactamente el mismo valor escalar.'
+al_terminar_debes_poder: |
+  QUÉ: Evaluar numéricamente una función compuesta para entradas constantes dadas.
+  CÓMO: Calcular $u = g(a)$, sustituir $u$ en la función externa $f(u)$ y determinar el resultado final.
+fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
 estado: publicado

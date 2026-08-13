@@ -1,113 +1,89 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.RESTRICCION_FUNCION_EXTERNA
-resumen_inicial: Las restricciones de la función externa $f$ deben aplicarse sobre
-  los valores producidos por la imagen intermedia $g(x)$.
-explicacion_simple: 'Incluso si una entrada $x$ es perfectamente válida para la función
-  interna $g$, si su resultado $g(x)$ viola las reglas de la función externa $f$ (provoca
-  divisiones por cero o raíces negativas), esa $x$ debe eliminarse.
+resumen_inicial: El análisis de la restricción del dominio de la función externa exige que las imágenes intermedias pertenezcan al dominio de dicha función.
+explicacion_simple: |
+  En una **composición $(f \circ g)(x) = f(g(x))$**:
 
-  - En $f(u) = \sqrt{u}$ y $g(x) = x - 5$:
+  1. La función de adentro $g(x)$ toma la entrada $x$ y calcula una salida intermedia.
+  2. Esa salida intermedia $g(x)$ entra a la máquina de afuera $f$.
+  3. Para que la máquina externa $f$ funcione, la salida intermedia **debe ser un valor válido para $f$** ($g(x) \in \text{Dom}(f)$).
+  4. Si $f(u) = \sqrt{u}$, la salida intermedia $g(x)$ debe ser un número mayor o igual a cero ($g(x) \ge 0$).
+explicacion_formal: |
+  Dadas las funciones $g: D_g \subseteq \mathbb{R} \to \mathbb{R}$ y $f: D_f \subseteq \mathbb{R} \to \mathbb{R}$, la condición de existencia para la evaluación compuesta $(f \circ g)(x) = f(g(x))$ requiere:
 
-  - $g(x)$ acepta cualquier $x$, pero la raíz de $f$ exige que su entrada sea $\ge
-  0$.
+  $$x \in \text{Dom}(f \circ g) \iff x \in \text{Dom}(g) \quad \land \quad g(x) \in \text{Dom}(f)$$
 
-  - Por lo tanto, exigimos $g(x) \ge 0 \implies x - 5 \ge 0 \implies x \ge 5$.'
-explicacion_formal: Definición formal de restricción en composición de funciones.
-definiciones_clave: '- **Restricción funcional**: Condición algebraica que limita
-  los valores de entrada de una composición.'
-propiedades_relaciones: '- **Heredabilidad de restricciones**: Las restricciones de
-  la función interna se transfieren íntegramente a la función compuesta.'
+  **Análisis de la restricción externa:**
+  Si $D_f \subset \mathbb{R}$ posee restricciones (por ejemplo divisiones por cero o raíces de índice par), se debe resolver la inecuación o ecuación de condición:
+
+  $$g(x) \in D_f \implies \text{restricción sobre las imágenes } g(x)$$
+definiciones_clave: |
+  - **Restricción de la función externa**: Condición algebraica que impone el dominio de $f$ sobre el conjunto de valores $g(x)$ producidos por la función interna.
+propiedades_relaciones: |
+  - **Filtrado en dos etapas**: El dominio de $(f \circ g)$ es un subconjunto estricto del dominio de $g$, filtrando aquellos valores de $x$ cuya salida $g(x)$ cae fuera del dominio de $f$.
 ejemplo_guiado:
-  enunciado: Análisis de restricciones en composición de funciones.
+  enunciado: 'Sean $g(x) = x - 4$ y $f(u) = \sqrt{u}$. Determina la restricción sobre $g(x)$ para que $(f \circ g)(x)$ esté bien definida.'
   pasos:
-  - 'Paso 1: Identificar las restricciones de la función interna.'
-  - 'Paso 2: Identificar las restricciones de la función externa.'
-  - 'Paso 3: Intersecar ambas condiciones.'
-  - 'Paso 4: Concluir el dominio restringido.'
+    - 'Paso 1: Identificar el dominio de la función externa $f(u) = \sqrt{u}$: se requiere $u \ge 0 \implies \text{Dom}(f) = [0, +\infty[$.'
+    - 'Paso 2: Exigir que la salida intermedia $g(x)$ pertenezca a $\text{Dom}(f)$: $g(x) \ge 0$.'
+    - 'Paso 3: Sustituir la expresión de $g(x)$: $x - 4 \ge 0$.'
+    - 'Paso 4: Despejar $x$: $x \ge 4 \implies \text{Dom}(f \circ g) = [4, +\infty[$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo afectan las restricciones de la función interna al dominio de la
-    composición?
-  choices:
-  - text: Se heredan directamente excluyendo dichos valores del dominio de la composición.
-    is_correct: true
-  - text: Se eliminan y desaparecen.
-    is_correct: false
-  - text: Se multiplican por dos.
-    is_correct: false
-  - text: No tienen ningún efecto.
-    is_correct: false
-  explanation: La alternativa correcta es 'Se heredan directamente excluyendo dichos
-    valores del dominio de la composición.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué condición debe cumplir la salida $g(x)$ para entrar en la función
-    externa $f(u) = \sqrt{u}$?
-  choices:
-  - text: La salida $g(x)$ debe ser mayor o igual a cero ($g(x) \ge 0$).
-    is_correct: true
-  - text: La salida debe ser strictly negativa.
-    is_correct: false
-  - text: La salida debe ser igual a cero obligatoriamente.
-    is_correct: false
-  - text: No requiere cumplir ninguna condición.
-    is_correct: false
-  explanation: La alternativa correcta es 'La salida $g(x)$ debe ser mayor o igual
-    a cero ($g(x) \ge 0$).'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'En la composición $(f \circ g)(x) = f(g(x))$, ¿qué condición debe cumplir la salida intermedia $g(x)$?'
+    choices:
+      - {text: 'Debe pertenecer al dominio de la función externa f.', is_correct: true}
+      - {text: 'Debe ser siempre igual a cero.', is_correct: false}
+      - {text: 'Debe pertenecer al conjunto codominio de g sin restricciones.', is_correct: false}
+      - {text: 'Debe ser un número entero negativo.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Debe pertenecer al dominio de la función externa f.''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Si $g(x) = x - 4$ y $f(u) = \sqrt{u}$, ¿cuál es el dominio resultante de $(f \circ g)(x)$?'
+    choices:
+      - {text: '$[4, +\infty[$', is_correct: true}
+      - {text: '$\\mathbb{R}$', is_correct: false}
+      - {text: '$]0, 4]$', is_correct: false}
+      - {text: '$]-\\infty, 4]$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$[4, +\infty[$''. Se requiere $g(x) \ge 0 \implies x - 4 \ge 0 \implies x \ge 4$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Analizar las restricciones de la función de entrada.'
-- 'Paso 2: Analizar las restricciones sobre la salida intermedia.'
-- 'Paso 3: Excluir los valores no permitidos.'
-errores_correccion: '- **Error común:** Ignorar la restricción de la función interna
-  si la fórmula simplificada la disimula.
-
-  - **Cómo corregirlo:** La restricción de la función interna nunca puede anularse
-  en la composición.'
+  - 'Paso 1: Identificar las condiciones de validez del dominio de la función externa $f$ ($D_f$).'
+  - 'Paso 2: Plantear la condición algebraica $g(x) \in D_f$.'
+  - 'Paso 3: Resolver la inecuación o restricción resultante para la variable $x$.'
+  - 'Paso 4: Intersectar el conjunto solución con el dominio inicial de $g$.'
+errores_correccion: |
+  - **Error común:** Analizar solo el dominio de la función $f$ reemplazada directamente en la fórmula sin verificar la salida de $g(x)$.
+  - **Cómo corregirlo:** La restricción externa se debe aplicar a las **IMÁGENES INTERMEDIAS $g(x)$**, no solo a la variable $x$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de composición de funciones.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de composición de funciones.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿La composición de funciones (f o g)(x) equivale a f(g(x))?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición notacional de composición de funciones.
-- titulo: ¿La composición de funciones es conmutativa en general?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, en general (f o g)(x) != (g o f)(x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de composición de funciones.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de composición de funciones.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la composición de funciones $(f \circ g)(x)$ con la multiplicación de
-  funciones $(f \cdot g)(x)$.
-- Evaluar primero la función externa de la izquierda en lugar de la función interna
-  de la derecha.
-- Asumir falsamente que la composición de funciones es conmutativa ($(f \circ g)(x)
-  = (g \circ f)(x)$).
-- Olvidar distribuir coeficientes al sustituir expresiones compuestas en el cálculo
-  algebraico.
-- Determinar el dominio únicamente desde la fórmula reducida final ignorando las restricciones
-  del proceso intermedio.
+  - 'En la composición $(f \circ g)(x)$, la función externa $f$ acepta cualquier número real como entrada independientemente de la salida de $g$.'
+  - 'La restricción del dominio de $f$ se aplica directamente sustituyendo el número cero en lugar de la función $g(x)$.'
+  - 'Si $f(u) = \frac{1}{u}$, la condición sobre $g(x)$ exige que la función interna sea estrictamente igual a cero.'
+  - 'El dominio de la composición $(f \circ g)$ se calcula simplemente uniendo los dominios individuales de ambas funciones.'
+  - 'La imagen intermedia $g(x)$ en una composición de funciones puede tomar valores fuera del dominio de $f$ sin afectar la evaluación.'
 afirmaciones_verdaderas:
-- La composición de funciones $(f \circ g)(x) = f(g(x))$ consiste en evaluar la función
-  externa $f$ en el resultado de la función interna $g(x)$.
-- El dominio de la composición $\operatorname{Dom}(f \circ g)$ hereda todas las restricciones
-  de la función interna $g(x)$ y exige que $g(x) \in \operatorname{Dom}(f)$.
-al_terminar_debes_poder: Al finalizar este recurso podrás comprender, evaluar numéricamente
-  y calcular algebraicamente composiciones de funciones, reconociendo la no conmutatividad
-  y analizando sus dominios resultantes.
-fuente: Texto escolar MINEDUC — Álgebra / Composición de Funciones
+  - 'Para que la composición $(f \circ g)(x) = f(g(x))$ esté definida, las imágenes generadas por la función interna deben pertenecer al dominio de la función externa ($g(x) \in \text{Dom}(f)$).'
+  - 'El dominio de $(f \circ g)$ se obtiene resolviendo la restricción $g(x) \in \text{Dom}(f)$ e intersectando con el dominio de $g$.'
+al_terminar_debes_poder: |
+  QUÉ: Analizar la restricción que impone la función externa sobre las imágenes intermedias en una composición.
+  CÓMO: Plantear la inecuación $g(x) \in \text{Dom}(f)$, despejar $x$ e intersectar con $\text{Dom}(g)$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
 estado: publicado

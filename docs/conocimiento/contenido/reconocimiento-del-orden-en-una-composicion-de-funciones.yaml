@@ -1,126 +1,87 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.ORDEN_COMPOSICION
-resumen_inicial: La composición de funciones NO es conmutativa ($f \circ g \neq g
-  \circ f$), por lo que el orden de las funciones altera el resultado final.
-explicacion_simple: 'A diferencia de la suma o la multiplicación donde $2 + 3 = 3
-  + 2$, en la composición de funciones **EL ORDEN IMPORTA ABSOLUTAMENTE**:
+resumen_inicial: El reconocimiento del orden en una composición distingue claramente entre $(f \circ g)(x)$ y $(g \circ f)(x)$, enfatizando que no son conmutativas.
+explicacion_simple: |
+  El **orden en la composición de funciones SÍ IMPORTA**:
 
-  - En general, **$(f \circ g)(x)$ NO ES IGUAL a $(g \circ f)(x)$**.
+  - En **$(f \circ g)(x) = f(g(x))$**: Primero le aplicas $g$ a la $x$, y al resultado le aplicas $f$.
+  - En **$(g \circ f)(x) = g(f(x))$**: Primero le aplicas $f$ a la $x$, y al resultado le aplicas $g$.
+  - **Ejemplo de la vida diaria**:
+    - Vestirse: ponerse calcetines y luego zapatos $\neq$ ponerse zapatos y luego calcetines. ¡El orden altera totalmente la respuesta final!
+explicacion_formal: |
+  La composición de funciones es una operación **no conmutativa** en la mayoría de las estructuras funcionales:
 
-  - Aplicar primero ''sumar 3'' y luego ''elevar al cuadrado'' a $x = 2$ da $(2+3)^2
-  = 25$.
+  $$(f \circ g)(x) \neq (g \circ f)(x) \quad \text{en general}$$
 
-  - Aplicar primero ''elevar al cuadrado'' y luego ''sumar 3'' a $x = 2$ da $2^2 +
-  3 = 7$.'
-explicacion_formal: 'En el álgebra de operadores funcionales, la propiedad conmutativa
-  no se cumple globalmente:
-
-
-  $$f \circ g \neq g \circ f \quad \text{en el caso general}$$
-
-
-  **Desglose de la fórmula:**
-
-  - La no conmutatividad implica que la sustitución $f(g(x))$ produce una regla y
-  dominio geométrico completamente distinto a $g(f(x))$.'
-definiciones_clave: '- **No conmutatividad**: Propiedad fundamental de la composición
-  por la cual el orden de ejecución altera el mapeo funcional.'
-propiedades_relaciones: '- **Excepción de conmutatividad**: $f \circ g = g \circ f$
-  ocurre de forma excepcional cuando una función se compone con la identidad o cuando
-  son funciones mutuamente inversas ($f \circ f^{-1} = f^{-1} \circ f = \operatorname{id}$).'
+  **Verificación de conmutatividad estricta:**
+  Para que dos funciones $f$ y $g$ conmuten bajo la composición (es decir $f \circ g = g \circ f$), se requiere que satisfagan condiciones algebraicas especiales (como ser funciones inversas mutuamente o poseer la misma estructura de parámetros).
+definiciones_clave: |
+  - **No conmutatividad de la composición**: Propiedad algebraica según la cual invertir la secuencia de aplicación de las funciones genera reglas funcionales distintas.
+propiedades_relaciones: |
+  - **Sensibilidad al orden**: Cambiar el orden de composición modifica el dominio resultante, la fórmula algebraica explícita y los valores numéricos evaluados.
 ejemplo_guiado:
-  enunciado: Compara las expresiones algebraicas de $(f \circ g)(x)$ y $(g \circ f)(x)$
-    para $f(x) = x^2$ y $g(x) = x + 3$.
+  enunciado: 'Dadas las funciones $f(x) = x^2$ y $g(x) = x + 3$, demuestra que el orden de composición cambia el resultado evaluando en $x = 2$.'
   pasos:
-  - 'Paso 1: Calcular $(f \circ g)(x) = f(g(x)) = f(x + 3) = (x + 3)^2 = x^2 + 6x
-    + 9$.Paso 2: Calcular $(g \circ f)(x) = g(f(x)) = g(x^2) = x^2 + 3$.Paso 3: Comparar
-    los resultados: $x^2 + 6x + 9 \neq x^2 + 3$.Paso 4: Concluir que el orden de composición
-    genera fórmulas algebraicas distintas.'
+    - 'Paso 1: Calcular $(f \circ g)(2) = f(g(2))$: primero $g(2) = 2 + 3 = 5$, luego $f(5) = 5^2 = 25$.'
+    - 'Paso 2: Calcular $(g \circ f)(2) = g(f(2))$: primero $f(2) = 2^2 = 4$, luego $g(4) = 4 + 3 = 7$.'
+    - 'Paso 3: Comparar los resultados: $25 \neq 7$.'
+    - 'Paso 4: Concluir que $(f \circ g)(2) \neq (g \circ f)(2)$, confirmando la importancia crítica del orden.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al calcular $(f \circ g)(x)$ y $(g \circ f)(x)$ para $f(x) = x^2$ y $g(x)
-    = x + 3$, ¿cuáles son las expresiones obtenidas?
-  choices:
-  - text: $(f \circ g)(x) = x^2 + 6x + 9$ y $(g \circ f)(x) = x^2 + 3$
-    is_correct: true
-  - text: $(f \circ g)(x) = x^2 + 3$ y $(g \circ f)(x) = x^2 + 6x + 9$
-    is_correct: false
-  - text: Ambas composiciones dan $x^2 + 3$.
-    is_correct: false
-  - text: Ambas composiciones dan $x^3 + 3$.
-    is_correct: false
-  explanation: La alternativa correcta es '$(f \circ g)(x) = x^2 + 6x + 9$ y $(g \circ
-    f)(x) = x^2 + 3$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿En qué caso excepcional se cumple que $(f \circ g)(x) = (g \circ f)(x)$?
-  choices:
-  - text: Cuando $g$ es la función inversa de $f$, o cuando una de ellas es la función
-      identidad.
-    is_correct: true
-  - text: Siempre se cumple en todas las funciones.
-    is_correct: false
-  - text: Cuando las dos funciones son negativas.
-    is_correct: false
-  - text: Nunca jamás se puede cumplir.
-    is_correct: false
-  explanation: La alternativa correcta es 'Cuando $g$ es la función inversa de $f$,
-    o cuando una de ellas es la función identidad.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Es la composición de funciones una operación conmutativa en general (es decir, $f \circ g = g \circ f$)?'
+    choices:
+      - {text: 'No, el orden de composición altera en general el resultado final.', is_correct: true}
+      - {text: 'Sí, siempre se obtiene exactamente la misma fórmula.', is_correct: false}
+      - {text: 'Solo si ambas funciones son cuadráticas.', is_correct: false}
+      - {text: 'Solo si la variable de entrada es un número negativo.', is_correct: false}
+    explanation: 'La alternativa correcta es ''No, el orden de composición altera en general el resultado final.''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Para $f(x) = x^2$ y $g(x) = x + 3$, ¿cuáles son los valores de $(f \circ g)(2)$ y $(g \circ f)(2)$ respectivamente?'
+    choices:
+      - {text: '$(f \circ g)(2) = 25$ y $(g \circ f)(2) = 7$', is_correct: true}
+      - {text: '$(f \circ g)(2) = 7$ y $(g \circ f)(2) = 25$', is_correct: false}
+      - {text: '$(f \circ g)(2) = 10$ y $(g \circ f)(2) = 10$', is_correct: false}
+      - {text: '$(f \circ g)(2) = 16$ y $(g \circ f)(2) = 16$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$(f \circ g)(2) = 25$ y $(g \circ f)(2) = 7$''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar con atención la notación pedida $(f \circ g)$ o $(g \circ f)$.'
-- 'Paso 2: Asegurar que la función situada a la derecha se introduzca dentro de la
-  situada a la izquierda.'
-- 'Paso 3: No asumir que invertir las funciones dará la misma respuesta.'
-errores_correccion: '- **Error común:** Asumir sin verificar que $(f \circ g)(x) =
-  (g \circ f)(x)$.
-
-  - **Cómo corregirlo:** La composición no conmuta. Para calcular $(f \circ g)(x)$
-  debes meter $g$ en $f$, y para $(g \circ f)(x)$ debes meter $f$ en $g$.'
+  - 'Paso 1: Identificar cuál es la función escrita más a la derecha (función interna).'
+  - 'Paso 2: Evaluar o sustituir la función interna primero.'
+  - 'Paso 3: Aplicar la función de la izquierda (función externa) sobre el resultado obtenido.'
+  - 'Paso 4: Evitar asumir que invertirá el orden sin cambiar el resultado.'
+errores_correccion: |
+  - **Error común:** Intercambiar libremente $f(g(x))$ por $g(f(x))$ pensando que la composición es conmutativa como la suma o la multiplicación.
+  - **Cómo corregirlo:** La composición **NO ES CONMUTATIVA**; siempre debes verificar qué función se aplica primero.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de composición de funciones.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de composición de funciones.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿La composición de funciones (f o g)(x) equivale a f(g(x))?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición notacional de composición de funciones.
-- titulo: ¿La composición de funciones es conmutativa en general?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, en general (f o g)(x) != (g o f)(x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de composición de funciones.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de composición de funciones.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la composición de funciones $(f \circ g)(x)$ con la multiplicación de
-  funciones $(f \cdot g)(x)$.
-- Evaluar primero la función externa de la izquierda en lugar de la función interna
-  de la derecha.
-- Asumir falsamente que la composición de funciones es conmutativa ($(f \circ g)(x)
-  = (g \circ f)(x)$).
-- Olvidar distribuir coeficientes al sustituir expresiones compuestas en el cálculo
-  algebraico.
-- Determinar el dominio únicamente desde la fórmula reducida final ignorando las restricciones
-  del proceso intermedio.
+  - 'La composición de cualquier par de funciones reales satisface la propiedad conmutativa $(f \circ g)(x) = (g \circ f)(x)$.'
+  - 'En la expresión $(g \circ f)(x)$, la función que se aplica primero sobre $x$ es la función $g$.'
+  - 'Cambiar el orden de composición de dos funciones afines no altera la pendiente del resultado.'
+  - 'Si $(f \circ g)(3) = 10$, entonces obligatoriamente $(g \circ f)(3) = 10$.'
+  - 'El orden de composición solo es relevante para funciones trigonométricas e irrelevante para funciones algebraicas.'
 afirmaciones_verdaderas:
-- La composición de funciones $(f \circ g)(x) = f(g(x))$ consiste en evaluar la función
-  externa $f$ en el resultado de la función interna $g(x)$.
-- El dominio de la composición $\operatorname{Dom}(f \circ g)$ hereda todas las restricciones
-  de la función interna $g(x)$ y exige que $g(x) \in \operatorname{Dom}(f)$.
-al_terminar_debes_poder: Al finalizar este recurso podrás comprender, evaluar numéricamente
-  y calcular algebraicamente composiciones de funciones, reconociendo la no conmutatividad
-  y analizando sus dominios resultantes.
-fuente: Texto escolar MINEDUC — Álgebra / Composición de Funciones
+  - 'La composición de funciones es una operación no conmutativa en general, lo que significa que $(f \circ g)(x)$ y $(g \circ f)(x)$ producen reglas y resultados distintos.'
+  - 'Reconocer el orden en una composición exige identificar la función interna (derecha), la cual actúa primeramente sobre la entrada $x$.'
+al_terminar_debes_poder: |
+  QUÉ: Reconocer y aplicar correctamente el orden de evaluación en compocisiones de funciones.
+  CÓMO: Identificar la función interna que actúa primero, calcular $(f \circ g)$ y $(g \circ f)$ por separado y verificar su no conmutatividad.
+fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
 estado: publicado

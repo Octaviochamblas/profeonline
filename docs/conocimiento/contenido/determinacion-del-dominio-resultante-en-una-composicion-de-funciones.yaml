@@ -1,129 +1,89 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.DOMINIO_RESULTANTE
-resumen_inicial: El dominio de la composición $(f \circ g)(x)$ consiste en todos los
-  $x$ del dominio de $g$ tales que su imagen $g(x)$ pertenece al dominio de $f$.
-explicacion_simple: 'Para que un número $x$ pueda entrar en la composición $(f \circ
-  g)(x)$, debe superar **DOS FILTROS DE SEGURIDAD**:
+resumen_inicial: La determinación del dominio resultante en una composición combina el filtro del dominio interno con la restricción de las imágenes intermedias.
+explicacion_simple: |
+  El **dominio de la composición $(f \circ g)(x)$** es el grupo de números $x$ que logran pasar exitosamente **dos aduanas o filtros**:
 
-  1. **Filtro 1:** El número $x$ debe ser una entrada válida para la primera función
-  $g$ ($x \in \operatorname{Dom}(g)$).
+  1. **Filtro 1**: El número $x$ debe ser aceptado por la función de adentro $g$ ($x \in \text{Dom}(g)$).
+  2. **Filtro 2**: La respuesta que produce $g(x)$ debe ser aceptada por la función de afuera $f$ ($g(x) \in \text{Dom}(f)$).
+  3. **Resultado**: El dominio de $(f \circ g)$ es la intersección de ambas condiciones.
+explicacion_formal: |
+  El **dominio de la función compuesta** $(f \circ g)$ se define mediante la intersección lógica de conjuntos de restricción:
 
-  2. **Filtro 2:** El resultado que produce $g(x)$ debe ser una entrada válida para
-  la segunda función $f$ ($g(x) \in \operatorname{Dom}(f)$).'
-explicacion_formal: 'El **dominio de la función compuesta** $f \circ g$ es el conjunto
-  intersecado de restricciones:
+  $$\text{Dom}(f \circ g) = \{x \in \mathbb{R} \mid x \in \text{Dom}(g) \quad \land \quad g(x) \in \text{Dom}(f)\}$$
 
-
-  $$\operatorname{Dom}(f \circ g) = \{x \in \mathbb{R} \mid x \in \operatorname{Dom}(g)
-  \quad \land \quad g(x) \in \operatorname{Dom}(f)\}$$
-
-
-  **Desglose de la fórmula:**
-
-  - Doble condición de existencia real: 1) Validez de la entrada $x$ en la función
-  interna $g$, 2) Validez de la imagen intermedia $g(x)$ en la función externa $f$.'
-definiciones_clave: '- **Dominio de la composición ($\operatorname{Dom}(f \circ g)$)**:
-  Subconjunto de entradas que garantizan que tanto la evaluación interna como la externa
-  existen en $\mathbb{R}$.'
-propiedades_relaciones: '- **Inclusión en el dominio interno**: $\operatorname{Dom}(f
-  \circ g) \subset \operatorname{Dom}(g)$ siempre.'
+  **Procedimiento analítico de construcción:**
+  1. Hallar $D_g = \text{Dom}(g)$.
+  2. Hallar $D_f = \text{Dom}(f)$.
+  3. Resolver el sistema de inecuaciones/ecuaciones para $x$:
+     $$x \in D_g \quad \text{y} \quad g(x) \in D_f$$
+definiciones_clave: |
+  - **Dominio de la función compuesta**: Conjunto de todos los valores reales de $x$ para los cuales la expresión de evaluación encadenada $f(g(x))$ está formalmente definida en $\mathbb{R}$.
+propiedades_relaciones: |
+  - **Inclusión estricta**: $\text{Dom}(f \circ g) \subseteq \text{Dom}(g)$. Nunca un elemento ajeno a $\text{Dom}(g)$ puede pertenecer al dominio compuesto.
 ejemplo_guiado:
-  enunciado: Determina el dominio de $(f \circ g)(x)$ para $g(x) = x - 2$ y $f(u)
-    = \frac{1}{u - 5}$.
+  enunciado: 'Determina el dominio resultante de $(f \circ g)(x)$ para $g(x) = \sqrt{x}$ y $f(u) = \frac{1}{u - 3}$.'
   pasos:
-  - 'Paso 1: Determinar el dominio de la función interna $g(x) = x - 2$: por ser lineal,
-    $\operatorname{Dom}(g) = \mathbb{R}$.Paso 2: Determinar la restricción de la función
-    externa $f(u)$: requiere $u \neq 5$.Paso 3: Imponer que la salida $g(x)$ no sea
-    igual a $5$: $g(x) \neq 5 \implies x - 2 \neq 5 \implies x \neq 7$.Paso 4: Intersecar
-    las condiciones: $x \in \mathbb{R}$ e $x \neq 7$.Paso 5: Concluir que $\operatorname{Dom}(f
-    \circ g) = \mathbb{R} \setminus \{7\}$.'
+    - 'Paso 1: Dominio de la función interna $g(x) = \sqrt{x}$: $x \ge 0 \implies D_g = [0, +\infty[$.'
+    - 'Paso 2: Dominio de la función externa $f(u) = \frac{1}{u - 3}$: $u \neq 3 \implies D_f = \mathbb{R} \setminus \{3\}$.'
+    - 'Paso 3: Exigir $g(x) \in D_f \implies \sqrt{x} \neq 3 \implies x \neq 9$.'
+    - 'Paso 4: Intersectar condiciones: $x \ge 0$ e $x \neq 9 \implies \text{Dom}(f \circ g) = [0, 9[ \ \cup \ ]9, +\infty[ = [0, +\infty[ \setminus \{9\}$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al determinar el dominio de $(f \circ g)(x)$ para $g(x) = x - 2$ y $f(u)
-    = \frac{1}{u - 5}$, ¿cuál es el conjunto solución?
-  choices:
-  - text: $\operatorname{Dom}(f \circ g) = \mathbb{R} \setminus \{7\}$
-    is_correct: true
-  - text: $\operatorname{Dom}(f \circ g) = \mathbb{R} \setminus \{5\}$
-    is_correct: false
-  - text: $\operatorname{Dom}(f \circ g) = \mathbb{R} \setminus \{2\}$
-    is_correct: false
-  - text: $\operatorname{Dom}(f \circ g) = \mathbb{R}$
-    is_correct: false
-  explanation: La alternativa correcta es '$\operatorname{Dom}(f \circ g) = \mathbb{R}
-    \setminus \{7\}$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Por qué el valor $x = 7$ debe ser excluido del dominio de la composición
-    $(f \circ g)(x)$?
-  choices:
-  - text: Porque al evaluar $g(7) = 5$, la salida es 5, lo que anula el denominador
-      de la función externa $f$.
-    is_correct: true
-  - text: Porque 7 es un número primo.
-    is_correct: false
-  - text: Porque $g(7) = 0$.
-    is_correct: false
-  - text: Porque la función interna se destruye.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque al evaluar $g(7) = 5$, la salida
-    es 5, lo que anula el denominador de la función externa $f$.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: "¿Cómo se define formalmente el conjunto dominio de la composición $(f \\circ g)(x)$?"
+    choices:
+      - {text: "$\\text{Dom}(f \\circ g) = \\{x \\in \\text{Dom}(g) \\mid g(x) \\in \\text{Dom}(f)\\}$", is_correct: true}
+      - {text: "$\\text{Dom}(f \\circ g) = \\text{Dom}(f) \\cup \\text{Dom}(g)$", is_correct: false}
+      - {text: "$\\text{Dom}(f \\circ g) = \\text{Rec}(f) \\cap \\text{Rec}(g)$", is_correct: false}
+      - {text: "$\\text{Dom}(f \\circ g) = \\mathbb{R}$ en todos los casos.", is_correct: false}
+    explanation: "La alternativa correcta es '$\\text{Dom}(f \\circ g) = \\{x \\in \\text{Dom}(g) \\mid g(x) \\in \\text{Dom}(f)\\}$'."
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: "Si $g(x) = \\sqrt{x}$ y $f(u) = \\frac{1}{u - 3}$, ¿qué valor no negativo queda excluido del dominio de $(f \\circ g)$?"
+    choices:
+      - {text: "$x = 9$", is_correct: true}
+      - {text: "$x = 3$", is_correct: false}
+      - {text: "$x = 0$", is_correct: false}
+      - {text: "$x = 1$", is_correct: false}
+    explanation: "La alternativa correcta es '$x = 9$'. Para $x = 9 \\implies g(9) = 3$, produciendo división por cero en $f(3)$."
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Hallar el dominio de la función interna $\operatorname{Dom}(g)$.'
-- 'Paso 2: Hallar las restricciones sobre la función externa $\operatorname{Dom}(f)$.'
-- 'Paso 3: Plantear la inecuación o ecuación de restricción imponiendo que $g(x)$
-  cumpla las restricciones de $f$.'
-- 'Paso 4: Excluir los valores no válidos de la variable $x$.'
-errores_correccion: '- **Error común:** Calcular el dominio observando únicamente
-  la fórmula simplificada final de la composición.
-
-  - **Cómo corregirlo:** La simplificación algebraica puede ''esconder'' restricciones;
-  debes analizar las restricciones del proceso paso a paso.'
+  - 'Paso 1: Determinar el dominio de la función interna $D_g$.'
+  - 'Paso 2: Determinar el dominio de la función externa $D_f$.'
+  - 'Paso 3: Plantear la restricción $g(x) \in D_f$ y despejar $x$.'
+  - 'Paso 4: Intersectar el conjunto solución del paso 3 con el dominio $D_g$ para obtener el dominio final.'
+errores_correccion: |
+  - **Error común:** Determinar el dominio observando únicamente la fórmula simplificada de $(f \circ g)(x)$.
+  - **Cómo corregirlo:** La simplificación algebraica puede **OCULTAR INDEFINICIONES** intermedias; el dominio debe calcularse evaluando las dos restricciones originales de $g(x)$ y $f(g(x))$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de composición de funciones.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de composición de funciones.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿La composición de funciones (f o g)(x) equivale a f(g(x))?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición notacional de composición de funciones.
-- titulo: ¿La composición de funciones es conmutativa en general?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, en general (f o g)(x) != (g o f)(x).
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de composición de funciones.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de composición de funciones.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la composición de funciones $(f \circ g)(x)$ con la multiplicación de
-  funciones $(f \cdot g)(x)$.
-- Evaluar primero la función externa de la izquierda en lugar de la función interna
-  de la derecha.
-- Asumir falsamente que la composición de funciones es conmutativa ($(f \circ g)(x)
-  = (g \circ f)(x)$).
-- Olvidar distribuir coeficientes al sustituir expresiones compuestas en el cálculo
-  algebraico.
-- Determinar el dominio únicamente desde la fórmula reducida final ignorando las restricciones
-  del proceso intermedio.
+  - 'El dominio resultante de $(f \circ g)$ se obtiene uniendo sin restricción los dominios de $f$ y $g$.'
+  - 'Si la fórmula simplificada de $(f \circ g)(x)$ es un polinomio, su dominio es $\mathbb{R}$ sin importar las restricciones iniciales de $g$.'
+  - 'Un valor $x$ que no pertenece al dominio de la función interna $g$ puede incluirse en el dominio de $(f \circ g)$ si $f$ es continua.'
+  - 'El dominio de la composición equivale al recorrido de la función externa $f$.'
+  - 'Determinar el dominio compuesto exige calcular derivadas de primer orden de ambas funciones.'
 afirmaciones_verdaderas:
-- La composición de funciones $(f \circ g)(x) = f(g(x))$ consiste en evaluar la función
-  externa $f$ en el resultado de la función interna $g(x)$.
-- El dominio de la composición $\operatorname{Dom}(f \circ g)$ hereda todas las restricciones
-  de la función interna $g(x)$ y exige que $g(x) \in \operatorname{Dom}(f)$.
-al_terminar_debes_poder: Al finalizar este recurso podrás comprender, evaluar numéricamente
-  y calcular algebraicamente composiciones de funciones, reconociendo la no conmutatividad
-  y analizando sus dominios resultantes.
-fuente: Texto escolar MINEDUC — Álgebra / Composición de Funciones
+  - 'El dominio resultante de una composición $(f \circ g)$ es el conjunto de valores $x \in \text{Dom}(g)$ tales que su imagen $g(x)$ pertenece al dominio de $f$.'
+  - 'Simplificar algebraicamente la regla de $(f \circ g)(x)$ no elimina las restricciones de dominio heredadas por las funciones componentes.'
+al_terminar_debes_poder: |
+  QUÉ: Determinar rigurosamente el dominio de una función compuesta $(f \circ g)(x)$.
+  CÓMO: Hallar $\text{Dom}(g)$, imponer la condición $g(x) \in \text{Dom}(f)$ e intersectar los conjuntos de restricciones.
+fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
 estado: publicado
