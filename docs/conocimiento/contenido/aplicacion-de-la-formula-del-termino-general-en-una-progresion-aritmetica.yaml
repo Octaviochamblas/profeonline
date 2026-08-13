@@ -1,120 +1,109 @@
-resumen_inicial: 'La fórmula del término general de una progresión aritmética $a_n$
-  permite calcular cualquier posición en función del primer término $a_1$ y la diferencia
-  común $d$: $a_n = a_1 + (n - 1) \cdot d$.'
-explicacion_simple: 'Para encontrar cualquier número de una progresión aritmética
-  sin tener que sumar paso a paso, usamos la fórmula: al primer número le sumamos
-  la diferencia multiplicada por la cantidad de pasos que faltan, que es $(n - 1)$.'
-explicacion_formal: 'Para una P.A. con primer término $a_1$ y diferencia $d$, la **Fórmula
-  del Término General $a_n$** es:
-
-
-  $$a_n = a_1 + (n - 1) \cdot d$$
-
-
-  **Fórmula generalizada respecto a la posición $m$:**
-
-  $$a_n = a_m + (n - m) \cdot d$$'
-definiciones_clave: '- **Término general P.A. $a_n$**: Expresión $a_n = a_1 + (n-1)d$.'
-propiedades_relaciones: '- **Estructura de función afín**: $a_n = d \cdot n + (a_1
-  - d)$ representa una función afín discreta de pendiente $d$.'
-ejemplo_guiado:
-  enunciado: En una P.A. con primer término $a_1 = 5$ y diferencia $d = 3$, halle
-    el término de posición $n = 20$.
-  pasos:
-  - 'Paso 1: Escribir la fórmula del término general: $a_{20} = a_1 + (20 - 1) \cdot
-    d$.'
-  - 'Paso 2: Sustituir los datos: $a_{20} = 5 + 19 \cdot 3$.'
-  - 'Paso 3: Calcular el producto y la suma: $a_{20} = 5 + 57 = 62$.'
-  - 'Conclusión: El vigésimo término es $a_{20} = 62$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la fórmula del término general an en función de a1 y la diferencia
-    d?
-  choices:
-  - text: an = a1 + (n - 1) · d
-    is_correct: true
-  - text: an = a1 · d^(n-1)
-    is_correct: false
-  - text: an = a1 + n · d
-    is_correct: false
-  - text: an = (a1 + d) / n
-    is_correct: false
-  explanation: La alternativa correcta es 'an = a1 + (n - 1) · d'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para a1 = 5 y d = 3, ¿cuál fue el valor del vigésimo
-    término a20?
-  choices:
-  - text: '62'
-    is_correct: true
-  - text: '65'
-    is_correct: false
-  - text: '57'
-    is_correct: false
-  - text: '60'
-    is_correct: false
-  explanation: La alternativa correcta es '62'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de aplicar la fórmula del término
-  general $a_n = a_1 + (n - 1) \cdot d$ para hallar cualquier posición.
 semantic_id: MAT.NUM.PROG_ARITMETICA.TERMINO_GENERAL
+resumen_inicial: 'La fórmula del término general de una progresión aritmética es $a_n = a_1 + (n - 1)d$, la cual calcula directamente el valor del término en la posición $n$ conociendo únicamente el primer término $a_1$ y la diferencia común $d$.'
+explicacion_simple: |
+  Para hallar cualquier término de una progresión aritmética (por ejemplo, el término $100$) sin tener que sumar uno por uno:
+  - Partes desde el **primer término ($a_1$)**.
+  - Como para llegar a la casilla $n$ debes dar **$(n - 1)$ saltos**, multiplicas la diferencia $d$ por $(n - 1)$.
+  - La fórmula es:
+    $$a_n = a_1 + (n - 1) \cdot d$$
+  Por ejemplo, si $a_1 = 10$ y $d = 3$, para saber el término $a_{50}$:
+  $a_{50} = 10 + (50 - 1) \cdot 3 = 10 + 49 \cdot 3 = 10 + 147 = 157$.
+explicacion_formal: |
+  ### Definición formal
+  El **término $n$-ésimo de una progresión aritmética** de primer término $a_1 \in \mathbb{R}$ y diferencia común $d \in \mathbb{R}$ viene dado por la expresión explícita:
+  $$a_n = a_1 + (n - 1)d \quad (\forall n \in \mathbb{N})$$
+
+  ### Demostración inductiva por desarrollo lineal
+  - $a_1 = a_1 + 0 \cdot d$
+  - $a_2 = a_1 + 1 \cdot d$
+  - $a_3 = a_2 + d = (a_1 + d) + d = a_1 + 2 \cdot d$
+  - $\dots$
+  - $a_n = a_1 + (n - 1)d$
+
+  ### Expresión equivalente en forma afín
+  Al distribuir la constante $d$:
+  $$a_n = d \cdot n + (a_1 - d)$$
+  donde $d$ actúa como la pendiente $m$ y $(a_1 - d)$ actúa como el coeficiente de posición $c$.
+
+  ### Síntesis didáctica
+  - Ecuación canónica: $a_n = a_1 + (n - 1)d$.
+  - Ecuación reducida: $a_n = dn + (a_1 - d)$.
+definiciones_clave: |
+  - **Fórmula del término general de P.A.**: $a_n = a_1 + (n - 1)d$.
+  - **Número de saltos o diferencias ($(n - 1)$)**: Cantidad de veces que se debe sumar la diferencia $d$ para avanzar desde $a_1$ hasta $a_n$.
+  - **Representación afín ($dn + c$)**: Forma simplificada de la fórmula tras aplicar la propiedad distributiva.
+propiedades_relaciones: |
+  - **Linealidad respecto a $n$**: El valor del término $a_n$ crece o decrece a una tasa constante de $d$ unidades por cada incremento unitario en la posición $n$.
+  - **Generalización entre posiciones distantes**: La fórmula general entre dos posiciones cualesquiera es $a_n = a_k + (n - k)d$.
+ejemplo_guiado:
+  enunciado: 'En la progresión aritmética $4, 9, 14, 19, \dots$, determina la fórmula de su término general $a_n$ y calcula el valor del término en la posición $n=30$.'
+  pasos:
+    - 'Paso 1: Identificamos el primer término $a_1 = 4$ y la diferencia $d = 9 - 4 = 5$.'
+    - 'Paso 2: Sustituimos $a_1=4$ y $d=5$ en la fórmula general: $a_n = 4 + (n - 1) \cdot 5$.'
+    - 'Paso 3: Simplificamos algebraicamente: $a_n = 4 + 5n - 5 \implies a_n = 5n - 1$.'
+    - 'Paso 4: Evaluamos para $n=30$: $a_{30} = 5(30) - 1 = 150 - 1 = 149$. El trigésimo término es **$149$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Por qué la fórmula del término general de una P.A. multiplica la diferencia $d$ por $(n - 1)$ en lugar de multiplicarla por $n$?'
+    choices:
+      - {text: 'Porque para llegar a la posición $n$ partiendo desde la posición 1 se dan exactamente $(n - 1)$ saltos de diferencia', is_correct: true}
+      - {text: 'Porque se debe restar 1 al resultado por regla matemática', is_correct: false}
+      - {text: 'Porque el primer término siempre es igual a 0', is_correct: false}
+      - {text: 'Porque la variable $n$ debe ser siempre un número impar', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque para llegar a la posición $n$ partiendo desde la posición 1 se dan exactamente $(n - 1)$ saltos de diferencia''. Desde $a_1$ hasta $a_n$ hay $n-1$ pasos.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si en una progresión aritmética $a_1 = 12$ y $d = -2$, ¿cuál es el valor del décimo término ($a_{10}$)?'
+    choices:
+      - {text: '$a_{10} = -6$, calculando $12 + (10 - 1)(-2) = 12 + 9(-2) = 12 - 18 = -6$', is_correct: true}
+      - {text: '$a_{10} = -8$, multiplicando por 10 en vez de 9', is_correct: false}
+      - {text: '$a_{10} = 30$, sumando 18 en lugar de restar', is_correct: false}
+      - {text: '$a_{10} = 0$, calculando $12 - 12$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_{10} = -6$, calculando $12 + (10 - 1)(-2) = 12 + 9(-2) = 12 - 18 = -6$''. $12 + 9(-2) = -6$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Verificar que la secuencia mantenga una diferencia aditiva constante $d
-  = a_{n+1} - a_n$.'
-- 'Paso 2: Aplicar la fórmula del término general $a_n = a_1 + (n - 1)d$ o de la suma
-  $S_n = \frac{n(a_1 + a_n)}{2}$.'
-- 'Paso 3: Resolver numéricamente el parámetro solicitado ($a_n, a_1, d, n$ o $S_n$).'
-errores_correccion: '- **Error 1: Multiplicar la diferencia por $n$ en lugar de $(n-1)$
-  en la fórmula del término general ($a_n = a_1 + n \cdot d$).** **Cómo corregirlo:**
-  La diferencia $d$ se aplica a partir de la segunda posición, por lo que se multiplica
-  por $(n-1)$.
-
-
-  - **Error 2: Restar los términos en orden inverso al hallar la diferencia ($d =
-  a_n - a_{n+1}$).** **Cómo corregirlo:** La diferencia DEBE calcularse restando el
-  término posterior menos el anterior ($a_{n+1} - a_n$).'
+  - 'Paso 1: Identificar el primer término $a_1$ y la diferencia común $d$.'
+  - 'Paso 2: Escribir la fórmula canónica $a_n = a_1 + (n - 1)d$.'
+  - 'Paso 3: Sustituir la posición $n$ requerida y restar $1$ para obtener $(n - 1)$.'
+  - 'Paso 4: Multiplicar $(n - 1) \cdot d$ y sumar $a_1$ para obtener la respuesta final.'
+errores_correccion: |
+  - **Error 1:** Multiplicar la diferencia $d$ por $n$ en lugar de $(n-1)$ en la fórmula canónica (ej: hacer $a_n = a_1 + n \cdot d$). **Cómo corregirlo:** La fórmula exige **multiplicar por $(n-1)$**: $a_n = a_1 + (n-1)d$.
+  - **Error 2:** Multiplicar $a_1 + (n-1)$ antes de multiplicar por $d$ violando la jerarquía de operaciones. **Cómo corregirlo:** Primero se resuelve el producto **$(n-1) \cdot d$**, y al resultado final se le suma $a_1$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROG_ARITMETICA.TERMINO_GENERAL.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de progresión aritmética.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la diferencia constante.
-  alternativas:
-  - Cumple la constante
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la constante
-  solucion_pasos:
-  - Demostración formal por $a_{n+1} - a_n = d$.
-- titulo: ¿Es constante la diferencia entre términos consecutivos en una P.A.?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición de progresión aritmética.
-- titulo: ¿Equivale la suma Sn al promedio de extremos multiplicado por el número
-    de términos?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, $S_n = \frac{n(a_1 + a_n)}{2}$.
+  - titulo: 'Cálculo de a20 en P.A. básica'
+    enunciado: 'Para $a_1 = 5$ y $d = 3$, ¿el término $a_{20}$ es $62$?'
+    alternativas:
+      - 'Sí, pues $5 + 19 \cdot 3 = 5 + 57 = 62$'
+      - 'No, es $65$'
+      - 'No, es $60$'
+    respuesta: 'Sí, pues $5 + 19 \cdot 3 = 5 + 57 = 62$'
+    solucion_pasos:
+      - '1. $a_{20} = 5 + (20 - 1) \cdot 3$.'
+      - '2. $a_{20} = 5 + 19 \cdot 3 = 5 + 57 = 62$.'
+  - titulo: 'Cálculo de a15 con diferencia negativa'
+    enunciado: 'Para $a_1 = 50$ y $d = -4$, ¿el término $a_{15}$ es $50 + 14(-4) = 50 - 56 = -6$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $50 + 14(-4) = -6$.'
+  - titulo: 'Forma afín reducida'
+    enunciado: 'Para $a_1 = 7$ y $d = 2$, ¿la fórmula reducida es $a_n = 2n + 5$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $a_n = 7 + (n-1)2 = 7 + 2n - 2 = 2n + 5$.'
+  - titulo: 'Término a100'
+    enunciado: 'Para $a_1 = 1$ y $d = 1$ (números naturales), ¿$a_{100} = 100$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $a_{100} = 1 + 99(1) = 100$.'
 errores_frecuentes:
-- Multiplicar la diferencia común d por n en lugar de multiplicar por (n - 1) al calcular
-  an.
-- Restar el término posterior del término anterior al calcular el valor de la diferencia
-  d.
-- Sumar directamente los términos de los extremos sin dividir entre dos al calcular
-  Sn.
-- Declarar que una progresión con diferencia negativa es siempre invalida para el
-  cálculo de índices.
-- Declarar la posición ordinal n con el valor numérico del término an en la ecuación.
+  - 'Multiplicar la diferencia $d$ por la posición $n$ sin restar la unidad en la fórmula canónica.'
+  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
+  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
+  - 'Sumar el primer término $a_1$ a la posición $n$ antes de efectuar la multiplicación por la diferencia $d$.'
+  - 'El producto $(n-1)d$ con diferencia negativa entrega siempre un resultado positivo.'
 afirmaciones_verdaderas:
-- Una progresión aritmética tiene una diferencia constante $d = a_{n+1} - a_n$ entre
-  términos consecutivos.
-- El término de cualquier posición $n$ se calcula mediante $a_n = a_1 + (n - 1) \cdot
-  d$.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
+  - 'La fórmula del término general de una progresión aritmética es $a_n = a_1 + (n - 1)d$.'
+  - 'La expresión reducida del término general de una P.A. es una función de primer grado $a_n = dn + c$.'
+al_terminar_debes_poder: 'Aplicar la fórmula $a_n = a_1 + (n - 1)d$ para hallar cualquier término de una progresión aritmética.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

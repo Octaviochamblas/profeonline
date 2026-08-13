@@ -1,124 +1,111 @@
-resumen_inicial: La interpolación de $m$ medios geométricos entre dos extremos positivos
-  $A$ y $B$ calcula los términos intermedios de una P.G. con razón $r = \sqrt[m+1]{\frac{B}{A}}$.
-explicacion_simple: Interpolar medios geométricos significa meter varios números entre
-  dos extremos de modo que la secuencia resultante sea una progresión geométrica.
-  Para encontrar la razón multiplicativa $r$, dividimos el último número entre el
-  primero y le sacamos la raíz de orden $(m + 1)$.
-explicacion_formal: 'Para insertar $m$ medios geométricos $\{y_1, y_2, \dots, y_m\}$
-  entre los extremos positivos $A$ y $B$, el número total de términos es $N = m +
-  2$. La **Razón de Interpolación Geométrica $r$** es:
-
-
-  $$B = A \cdot r^{m+1} \implies r^{m+1} = \frac{B}{A} \implies r = \sqrt[m+1]{\frac{B}{A}}$$
-
-
-  **Construcción de los términos intermedios:**
-
-  $$y_1 = A \cdot r, \quad y_2 = A \cdot r^2, \quad \dots, \quad y_m = A \cdot r^m$$'
-definiciones_clave: '- **Interpolación geométrica**: Inserción de $m$ números entre
-  $A$ y $B$ usando $r = \sqrt[m+1]{\frac{B}{A}}$.'
-propiedades_relaciones: '- **Razón multiplicativa de interpolación**: Raíz de orden
-  $(m+1)$ sobre el cociente de extremos $B/A$.'
-ejemplo_guiado:
-  enunciado: Interpole $2$ medios geométricos positivos entre los extremos $A = 3$
-    y $B = 192$.
-  pasos:
-  - 'Paso 1: Identificar $m = 2$ medios $\implies m + 1 = 3$ intervalos.'
-  - 'Paso 2: Calcular la razón de interpolación: $r = \sqrt[3]{\frac{192}{3}} = \sqrt[3]{64}
-    = 4$.'
-  - 'Paso 3: Construir los $2$ medios multiplicando por $r=4$: $y_1 = 3 \cdot 4 =
-    12$, $y_2 = 12 \cdot 4 = 48$.'
-  - 'Conclusión: Los medios geométricos interpolados son $(12, 48)$ (sucesión completa:
-    $3, 12, 48, 192$).'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la fórmula para calcular la razón r al interpolar m medios geométricos
-    entre A y B?
-  choices:
-  - text: r = (B / A)^(1 / (m + 1)) (raíz m+1 de B / A)
-    is_correct: true
-  - text: r = (B / A) / (m + 1)
-    is_correct: false
-  - text: r = (B - A) / m
-    is_correct: false
-  - text: r = B · A
-    is_correct: false
-  explanation: La alternativa correcta es 'r = (B / A)^(1 / (m + 1)) (raíz m+1 de
-    B / A)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para interpolar 2 medios entre 3 y 192, ¿cuáles fueron
-    los medios obtenidos?
-  choices:
-  - text: (12, 48)
-    is_correct: true
-  - text: (24, 96)
-    is_correct: false
-  - text: (6, 18)
-    is_correct: false
-  - text: (16, 64)
-    is_correct: false
-  explanation: La alternativa correcta es '(12, 48)'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de interpolar $m$ medios geométricos
-  entre dos extremos calculando la razón $r = \sqrt[m+1]{\frac{B}{A}}$.
 semantic_id: MAT.NUM.PROGRESIONES_COMPARACION.INTERPOLACION_GEOMETRICA
+resumen_inicial: 'La interpolación de $m$ medios geométricos entre dos extremos positivos $A$ y $B$ consiste en intercalar $m$ números intermedios tales que los $(m+2)$ términos formen una progresión geométrica de razón $r = \sqrt[m+1]{\frac{B}{A}}$.'
+explicacion_simple: |
+  **Interpolar medios geométricos** es meter números al medio para que la secuencia avance **multiplicando por una razón constante $r$**:
+  - Si tienes extremos $A = 3$ y $B = 48$, y deseas **interpolar 3 medios geométricos**:
+  - Buscas armar una P.G. de $5$ números: $3, \text{\_\_\_}, \text{\_\_\_}, \text{\_\_\_}, 48$.
+  - 1. Divides los extremos: $\frac{48}{3} = 16$.
+  - 2. Calculas la raíz con índice $(m+1) = 3+1 = 4$: $r = \sqrt[4]{16} = 2$.
+  - 3. Multiplicas sucesivamente por $2$:
+    - 1º medio: $3 \cdot 2 = 6$
+    - 2º medio: $6 \cdot 2 = 12$
+    - 3º medio: $12 \cdot 2 = 24$
+  - La secuencia completa es: **$3, 6, 12, 24, 48$**.
+explicacion_formal: |
+  ### Definición formal
+  Dados dos números reales positivos $A, B > 0$, la **interpolación de $m$ medios geométricos** consiste en encontrar el conjunto ordenado de $m$ valores $\{y_1, y_2, \dots, y_m\}$ tales que la secuencia ampliada:
+  $$(b_1, b_2, b_3, \dots, b_{m+1}, b_{m+2}) = (A, y_1, y_2, \dots, y_m, B)$$
+  sea una progresión geométrica de primer término $b_1 = A$ y término final $b_{m+2} = B$.
+
+  ### Fórmula de la razón geométrica $r$
+  Utilizando la fórmula del término general para el término final en la posición $n = m + 2$:
+  $$b_{m+2} = b_1 \cdot r^{(m + 2 - 1)} \implies B = A \cdot r^{m+1} \implies r^{m+1} = \frac{B}{A} \implies r = \sqrt[m+1]{\frac{B}{A}} = \left(\frac{B}{A}\right)^{\frac{1}{m+1}}$$
+
+  ### Construcción de los términos interpolados
+  - $y_1 = A \cdot r$
+  - $y_2 = A \cdot r^2$
+  - $\dots$
+  - $y_k = A \cdot r^k \quad (1 \le k \le m)$
+
+  ### Síntesis didáctica
+  - Número total de términos: $n = m + 2$.
+  - Razón geométrica de interpolación: $r = \sqrt[m+1]{\frac{B}{A}}$.
+definiciones_clave: |
+  - **Medios geométricos**: Términos intercalados entre dos extremos para formar una progresión geométrica.
+  - **Razón de interpolación ($r$)**: Raíz del cociente de extremos cuyo índice es la cantidad de medios más uno ($m + 1$).
+  - **Media geométrica simple ($\sqrt{A \cdot B}$)**: Único medio geométrico ($m=1$) interpolado entre dos números positivos.
+propiedades_relaciones: |
+  - **Propiedad de la media geométrica ($m=1$)**: Interpolar un único medio geométrico entre $A$ y $B$ devuelve el producto bajo raíz cuadrada $y_1 = \sqrt{A \cdot B}$.
+  - **Existencia en $\mathbb{R}$**: Para valores de $(m+1)$ pares, los extremos $A$ y $B$ deben tener el mismo signo para asegurar que el cociente $\frac{B}{A} > 0$ admita raíz real.
+ejemplo_guiado:
+  enunciado: 'Interpola $2$ medios geométricos entre los números $A = 5$ y $B = 135$.'
+  pasos:
+    - 'Paso 1: Identificamos los datos: $A = 5$, $B = 135$ y la cantidad de medios $m = 2$.'
+    - 'Paso 2: Calculamos el índice de la raíz: $m + 1 = 2 + 1 = 3$.'
+    - 'Paso 3: Calculamos la razón geométrica: $r = \sqrt[3]{\frac{135}{5}} = \sqrt[3]{27} = 3$.'
+    - 'Paso 4: Construimos los 2 medios multiplicando por $3$: $y_1 = 5 \cdot 3 = 15$, $y_2 = 15 \cdot 3 = 45$. La secuencia completa es **$5, 15, 45, 135$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la fórmula para calcular la razón geométrica $r$ al interpolar $m$ medios geométricos entre dos números positivos $A$ y $B$?'
+    choices:
+      - {text: 'Extraer la raíz $(m + 1)$-ésima al cociente de los extremos: $r = \sqrt[m+1]{\frac{B}{A}}$', is_correct: true}
+      - {text: 'Dividir la resta de extremos entre $m$', is_correct: false}
+      - {text: 'Multiplicar los extremos y elevar al cuadrado', is_correct: false}
+      - {text: 'Restar $m$ a la división de los extremos', is_correct: false}
+    explanation: 'La alternativa correcta es ''Extraer la raíz $(m + 1)$-ésima al cociente de los extremos: $r = \sqrt[m+1]{\frac{B}{A}}$''. Se despeja $r$ de $B/A = r^{m+1}$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si deseas interpolar un único medio geométrico ($m=1$) entre los números positivos $A = 4$ y $B = 36$, ¿cuál es el valor de dicho medio?'
+    choices:
+      - {text: '$y_1 = 12$, calculando la media geométrica $\sqrt{4 \cdot 36} = \sqrt{144} = 12$', is_correct: true}
+      - {text: '$y_1 = 20$, calculando el promedio aritmético', is_correct: false}
+      - {text: '$y_1 = 9$, dividiendo $36 / 4$', is_correct: false}
+      - {text: '$y_1 = 144$, multiplicando $4 \cdot 36$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$y_1 = 12$, calculando la media geométrica $\sqrt{4 \cdot 36} = \sqrt{144} = 12$''. $4 \cdot 3 = 12, 12 \cdot 3 = 36$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Analizar la dinámica de cambio de la sucesión (aditiva vs multiplicativa).'
-- 'Paso 2: Formular las ecuaciones de P.A. ($a_n = a_1 + (n-1)d$) o P.G. ($b_n = b_1
-  \cdot r^{n-1}$) según corresponda.'
-- 'Paso 3: Resolver numéricamente los parámetros despejados o interpolados y verificar
-  la consistencia.'
-errores_correccion: '- **Error 1: Dividir entre $m$ en lugar de $(m+1)$ al calcular
-  la diferencia o razón de interpolación.** **Cómo corregirlo:** Para insertar $m$
-  medios intermedios, la distancia se divide en $(m+1)$ intervalos.
-
-
-  - **Error 2: Usar un modelo aritmético para un problema con crecimiento de tasa
-  porcentual constante.** **Cómo corregirlo:** Las tasas de variación porcentual constante
-  DEBEN modelarse obligatoriamente con progresiones geométricas.'
+  - 'Paso 1: Identificar los extremos $A$ y $B$, y la cantidad de medios $m$ a interpolar.'
+  - 'Paso 2: Dividir el extremo final entre el inicial: $\frac{B}{A}$.'
+  - 'Paso 3: Extraer la raíz de índice $(m + 1)$ al cociente obtenido para hallar la razón $r = \sqrt[m+1]{\frac{B}{A}}$.'
+  - 'Paso 4: Multiplicar $A$ por $r$ sucesivamente para generar los $m$ medios y verificar que el paso $(m+1)$ dé exactamente $B$.'
+errores_correccion: |
+  - **Error 1:** Usar la resta $(B - A)$ en lugar de la división $\frac{B}{A}$ al buscar la razón geométrica. **Cómo corregirlo:** La razón geométrica se obtiene **DIVIDIENDO extremos: $\frac{B}{A}$** y extrayendo la raíz.
+  - **Error 2:** Restar las posiciones en lugar de sumar 1 a la cantidad de medios ($m+1$) para el índice de la raíz. **Cómo corregirlo:** El número de saltos multiplicativos es **$(m + 1)$**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROGRESIONES_COMPARACION.INTERPOLACION_GEOMETRICA.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa del modelo de progresiones.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la diferencia o razón de interpolación.
-  alternativas:
-  - Cumple la fórmula
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la fórmula
-  solucion_pasos:
-  - Demostración formal por interpolación.
-- titulo: ¿Dividen m medios de interpolación el intervalo en m + 1 partes?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, $m$ términos intermedios generan $m+1$ saltos.
-- titulo: ¿Supera el modelo geométrico al aritmético en el largo plazo?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la dominancia del crecimiento exponencial sobre el lineal.
+  - titulo: 'Interpolación de 2 medios geométricos'
+    enunciado: 'Para $A = 2, B = 54, m = 2$, ¿la razón es $r = \sqrt[3]{54/2} = \sqrt[3]{27} = 3$ y los medios son $6$ y $18$?'
+    alternativas:
+      - 'Sí, la P.G. es $2, 6, 18, 54$'
+      - 'No, la razón es 9'
+      - 'No, la razón es 6'
+    respuesta: 'Sí, la P.G. es $2, 6, 18, 54$'
+    solucion_pasos:
+      - '1. $r = \sqrt[3]{54/2} = \sqrt[3]{27} = 3$.'
+      - '2. Medios: $2 \cdot 3 = 6$, $6 \cdot 3 = 18$. P.G.: $2, 6, 18, 54$.'
+  - titulo: 'Medio geométrico único (m=1)'
+    enunciado: 'Entre $A = 2$ y $B = 32$, ¿el medio geométrico único es $y_1 = \sqrt{2 \cdot 32} = \sqrt{64} = 8$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $\sqrt{64} = 8$. P.G.: $2, 8, 32$ con $r=4$.'
+  - titulo: 'Interpolación de 3 medios entre 1 y 16'
+    enunciado: 'Entre $A = 1$ y $B = 16$, interpolar $m=3$ medios. ¿La razón es $r = \sqrt[4]{16} = 2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $r = 2$. Los medios son $2, 4, 8$.'
+  - titulo: 'Interpolación con razón fraccionaria'
+    enunciado: 'Entre $A = 81$ y $B = 1$, interpolar $m=3$ medios. ¿La razón es $r = \sqrt[4]{1/81} = 1/3$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $r = 1/3$. Los medios son $27, 9, 3$.'
 errores_frecuentes:
-- Dividir el intervalo entre m en lugar de (m + 1) al calcular la diferencia de interpolación
-  de m medios.
-- Modelar un incremento porcentual constante utilizando una progresión aritmética
-  de suma fija.
-- Declarar la razón multiplicativa r con la diferencia aditiva d al formular el término
-  general.
-- Declarar que la interpolación de medios geométricos exige que los extremos tengan
-  signos opuestos.
-- Restar los extremos en lugar de dividirlos al calcular la razón de interpolación
-  geométrica.
+  - 'La razón multiplicativa r equivale numéricamente a la diferencia aditiva d al formular el término general.'
+  - 'Restar el extremo inicial al final en lugar de dividirlos al calcular la razón de interpolación geométrica.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Usar el número de medios m como índice de la raíz sin sumar 1.'
+  - 'Calcular la raíz de un cociente negativo con índice par.'
 afirmaciones_verdaderas:
-- La progresión aritmética modela cambios aditivos constantes y la geométrica modela
-  cambios multiplicativos constantes.
-- Para interpolar $m$ medios entre $A$ y $B$, se divide el intervalo entre $(m+1)$
-  saltos.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
+  - 'La interpolación de $m$ medios geométricos entre dos números positivos $A$ y $B$ determina una P.G. de $(m+2)$ términos con razón $r = \sqrt[m+1]{\frac{B}{A}}$.'
+  - 'Interpolar un único medio geométrico entre dos números positivos $A$ y $B$ equivale a calcular su media geométrica $\sqrt{A \cdot B}$.'
+al_terminar_debes_poder: 'Interpolar $m$ medios geométricos entre dos extremos calculando la razón geométrica $r = \sqrt[m+1]{\frac{B}{A}}$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

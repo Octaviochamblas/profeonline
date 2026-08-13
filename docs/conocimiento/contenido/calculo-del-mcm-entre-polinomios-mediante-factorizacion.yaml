@@ -1,153 +1,109 @@
 semantic_id: MAT.ALG.MCM_ALGEBRAICO.FACTORIZACION_POLINOMIOS
-resumen_inicial: El m.c.m. entre polinomios mediante factorización se obtiene descomponiendo
-  los polinomios en factores irreductibles y multiplicando todos los factores a su
-  mayor exponente.
-explicacion_simple: 'Para calcular el Mínimo Común Múltiplo entre dos o más polinomios
-  utilizando factorización:
+resumen_inicial: 'El cálculo del m.c.m. entre polinomios mediante factorización consiste en descomponer los polinomios en factores primos e integrar el producto de todos los factores (comunes y no comunes) elevados a su mayor exponente.'
+explicacion_simple: |
+  Para hallar el **m.c.m. entre polinomios** (ej: $P(x) = x^2 - 9$ y $Q(x) = x^2 - 6x + 9$):
+  - **MÉTODO DE FACTORIZACIÓN EN 3 PASOS**:
+    1. **Factoriza por completo cada uno de los polinomios**:
+       - $P(x) = x^2 - 9 = \mathbf{(x + 3)(x - 3)}$ (¡Diferencia de cuadrados!).
+       - $Q(x) = x^2 - 6x + 9 = \mathbf{(x - 3)^2}$ (¡Trinomio cuadrado perfecto!).
+    2. **Reúne TODOS los factores binómicos (comunes y no comunes)**:
+       - El factor $(x - 3)$ aparece en ambos.
+       - El factor $(x + 3)$ sólo aparece en $P(x)$, ¡se incluye igual!
+    3. **Selecciona la potencia de MAYOR exponente**:
+       - Para $(x - 3)$: los exponentes son $1$ y $2 \implies$ mayor exponente = **$2$** ($(x - 3)^2$).
+       - Para $(x + 3)$: exponente único = **$1$** ($(x + 3)$).
+       - **m.c.m. final**: $\mathbf{(x + 3)(x - 3)^2}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $P_1(x), P_2(x), \dots, P_k(x) \in \mathbb{K}[x]$ polinomios no nulos sobre el Dominio de Factorización Única (DFU) $\mathbb{K}[x]$. Dada la descomposición canónica de cada polinomio en producto de factores primos irreducibles $P_i(x) = c_i \prod_{j=1}^m [F_j(x)]^{e_{i,j}}$, el **m.c.m. polinomial por factorización** es la estructura:
 
-  1. Factorizamos completamente cada polinomio en producto de factores simples (líneas,
-  trinomios, o monomios).
+  $$\operatorname{mcm}(P_1, P_2, \dots, P_k) = \operatorname{mcm}(|c_1|, \dots, |c_k|) \cdot \prod_{j=1}^m [F_j(x)]^{\max_i(e_{i,j})}$$
 
-  2. Hacemos una lista de todos los factores resultantes (comunes y no comunes).
+  ### Exponente Máximo e Inclusión de Factores No Comunes
+  Si un factor irreducible $F_m(x)$ figura en un único polinomio $P_r(x)$ con exponente $e_{r,m}$ y tiene exponente 0 en los demás, $\max(e_{1,m}, \dots, e_{r,m}, \dots, 0) = e_{r,m} > 0$, demostrando que **todos los factores primos no comunes quedan obligatoriamente incorporados en el m.c.m.**.
 
-  3. Tomamos cada factor de la lista elevado al mayor exponente con el que figura
-  entre las factorizaciones.
-
-  4. Multiplicamos esos factores para formar el polinomio m.c.m. final.'
-explicacion_formal: 'Sean $P(x)$ y $Q(x)$ dos polinomios descompuestos en factores
-  irreductibles sobre $\mathbb{R}[x]$:
-
-
-  $$P(x) = c_P \cdot \prod_{k} f_k(x)^{\alpha_k}, \quad Q(x) = c_Q \cdot \prod_{k}
-  f_k(x)^{\beta_k}$$
-
-
-  El **m.c.m. entre polinomios** es el polinomio mónico de menor grado $M(x)$ dado
-  por:
-
-
-  $$M(x) = \operatorname{lcm}(|c_P|, |c_Q|) \cdot \prod_{f_k \text{ en algún polinomio}}
-  f_k(x)^{\max(\alpha_k, \beta_k)}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $\operatorname{lcm}(|c_P|, |c_Q|)$: M.C.M. numérico de los coeficientes principales
-  factorizados fuera de los paréntesis.
-
-  - $f_k(x)$: Factores polinomiales irreductibles (por ejemplo $(x-a)$, $(x+b)$).
-
-  - $\max(\alpha_k, \beta_k)$: Exponente máximo asignado a cada factor polinomial
-  entre todos los polinomios.'
-definiciones_clave: '- **m.c.m. de polinomios**: Polinomio de menor grado divisible
-  por cada uno de los polinomios dados.
-
-  - **Factores polinomiales no comunes**: Paréntesis que aparecen en la factorización
-  de solo algunos polinomios y que deben incluirse en el m.c.m.'
-propiedades_relaciones: '- **Mínimo Común Denominador Polinomial**: El m.c.m. de los
-  denominadores polinomiales se usa como denominador común para sumar o restar fracciones
-  algebraicas compuestas.
-
-  - **Divisibilidad polinomial**: Cada polinomio original divide al m.c.m. polinomial
-  sin dejar resto.'
+  ### Síntesis didáctica
+  Descomponer totalmente los polinomios permite armar el m.c.m. multiplicando todos los factores compartidos y no compartidos a sus respectivas potencias máximas.
+definiciones_clave: |
+  - **m.c.m. de polinomios por factorización**: Algoritmo para encontrar el mínimo múltiplo común mediante la descomposición en factores primos.
+  - **Factores no comunes polinómicos**: Paréntesis o binomios primos que pertenecen a un solo polinomio y que deben incluirse en el m.c.m.
+  - **Exponentes máximos de binomios ($\max(e_j)$)**: Potencia más alta a la cual está elevado un paréntesis o factor primo en cualquiera de los polinomios.
+propiedades_relaciones: |
+  - **Divisibilidad de binomios**: El m.c.m. de dos polinomios es divisible exactamente por cada uno de los factores binómicos originales $P_i(x)$.
 ejemplo_guiado:
-  enunciado: Calcula el m.c.m. entre los polinomios $P(x) = x^2 - 4$ y $Q(x) = x^2
-    - 4x + 4$. Determina la expresión m.c.m. ($(x + 2)(x - 2)^2$) y evalúa su valor
-    para $x = 5$.
+  enunciado: 'Calcula el m.c.m. entre los polinomios $P(x) = x^3 - 4x$ y $Q(x) = x^2 - 4x + 4$.'
   pasos:
-  - 'Paso 1: Factorizar $P(x) = x^2 - 4 = (x + 2)(x - 2)$ mediante diferencia de cuadrados.'
-  - 'Paso 2: Factorizar $Q(x) = x^2 - 4x + 4 = (x - 2)^2$ mediante cuadrado de binomio.'
-  - 'Paso 3: Reunir todos los factores distintos: $(x + 2)$ y $(x - 2)$. Asignar a
-    cada uno su mayor exponente: para $(x + 2)$ es $1$, para $(x - 2)$ es $2$. El
-    m.c.m. es $(x + 2)(x - 2)^2$.'
-  - 'Paso 4: Evaluar para $x = 5$: $(5 + 2) \cdot (5 - 2)^2 = 7 \cdot (3)^2 = 7 \cdot
-    9 = 63$.'
+    - 'Paso 1: Factorizamos completamente el polinomio $P(x)$:
+       - $P(x) = x(x^2 - 4) = \mathbf{x(x + 2)(x - 2)}$.'
+    - 'Paso 2: Factorizamos completamente el polinomio $Q(x)$:
+       - $Q(x) = \mathbf{(x - 2)^2}$.'
+    - 'Paso 3: Reunimos todos los factores presentes (comunes y no comunes):
+       - Factor $x$ (en $P(x)$) $\implies$ **se incluye**.
+       - Factor $(x + 2)$ (en $P(x)$) $\implies$ **se incluye**.
+       - Factor $(x - 2)$ (en $P(x)$ y $Q(x)$) $\implies$ **se incluye**.'
+    - 'Paso 4: Asignamos a cada factor su **mayor exponente**:
+       - Para $x$: exponente $1 \implies x^1$.
+       - Para $(x + 2)$: exponente $1 \implies (x + 2)^1$.
+       - Para $(x - 2)$: exponentes $1$ y $2 \implies$ mayor exponente es **$2$** ($(x - 2)^2$).'
+    - 'Paso 5: Multiplicamos los factores: $x(x + 2)(x - 2)^2$.'
+    - 'Conclusión: El m.c.m. entre los dos polinomios es **$x(x + 2)(x - 2)^2$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es el m.c.m. entre los polinomios $x^2 - 4$ y $x^2 - 4x + 4$?
-  choices:
-  - text: $(x + 2)(x - 2)^2$
-    is_correct: true
-  - text: $x - 2$
-    is_correct: false
-  - text: $(x + 2)(x - 2)$
-    is_correct: false
-  - text: $(x + 2)^2(x - 2)^2$
-    is_correct: false
-  explanation: La alternativa correcta es '$(x + 2)(x - 2)^2$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar el m.c.m. $(x + 2)(x - 2)^2$ para $x = 5$, ¿cuál es el resultado
-    numérico?
-  choices:
-  - text: $63$
-    is_correct: true
-  - text: $21$
-    is_correct: false
-  - text: $147$
-    is_correct: false
-  - text: $35$
-    is_correct: false
-  explanation: La alternativa correcta es '$63$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el m.c.m. entre los polinomios $A(x) = x^2 - 1$ y $B(x) = x^2 + 2x + 1$?'
+    choices:
+      - {text: 'El m.c.m. es $(x - 1)(x + 1)^2$, factorizando $A(x)=(x+1)(x-1)$ y $B(x)=(x+1)^2$, reuniendo todos los factores con su mayor exponente', is_correct: true}
+      - {text: 'El m.c.m. es $(x + 1)$', is_correct: false}
+      - {text: 'El m.c.m. es $(x - 1)(x + 1)$', is_correct: false}
+      - {text: 'El m.c.m. es $(x^2 - 1)^2$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El m.c.m. es $(x - 1)(x + 1)^2$, factorizando $A(x)=(x+1)(x-1)$ y $B(x)=(x+1)^2$, reuniendo todos los factores con su mayor exponente''. $A(x)=(x+1)(x-1), B(x)=(x+1)^2 \implies \operatorname{mcm}=(x-1)(x+1)^2$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si dos polinomios no tienen ningún factor primo en común (son primos entre sí), ¿cuál es su m.c.m.?'
+    choices:
+      - {text: 'Su m.c.m. es el producto directo de ambos polinomios $A(x) \cdot B(x)$', is_correct: true}
+      - {text: 'Su m.c.m. es 1', is_correct: false}
+      - {text: 'Su m.c.m. es 0', is_correct: false}
+      - {text: 'No existe m.c.m.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Su m.c.m. es el producto directo de ambos polinomios $A(x) \cdot B(x)$''. Si $\operatorname{MCD}(A,B) = 1 \implies \operatorname{mcm}(A,B) = A(x) \cdot B(x)$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Factorizar completamente cada uno de los polinomios dados.'
-- 'Paso 2: Calcular el m.c.m. numérico de los coeficientes extraídos fuera de los
-  paréntesis.'
-- 'Paso 3: Hacer una lista con todos los paréntesis (factores polinomiales) distintos.'
-- 'Paso 4: Elevar cada paréntesis al mayor exponente con el que aparezca en los polinomios
-  factorizados y multiplicarlos.'
-errores_correccion: '- **Error común:** Tomar el menor exponente en lugar del mayor
-  al calcular el m.c.m. entre factores polinomiales repetidos como $(x-2)$ y $(x-2)^2$.
-
-  - **Cómo corregirlo:** Recuerda que el m.c.m. debe poder ser dividido por $(x-2)^2$,
-  por ende debe tener la mayor potencia disponible.'
+  - 'Paso 1: Factorizar completamente cada uno de los polinomios expresándolos en producto de factores primos irreducibles.'
+  - 'Paso 2: Elaborar una lista con todos los factores numéricos y binómicos que figuren en al menos uno de los polinomios.'
+  - 'Paso 3: Seleccionar para cada factor de la lista la potencia con el mayor exponente observado.'
+  - 'Paso 4: Multiplicar todos los factores elegidos para obtener el m.c.m. polinomial.'
+errores_correccion: |
+  - **Error 1:** Excluir del m.c.m. los factores que sólo aparecen en un polinomio. **Cómo corregirlo:** El m.c.m. **DEBE LLEVAR OBLIGATORIAMENTE TODOS LOS FACTORES QUE APAREZCAN EN CUALQUIERA DE LOS POLINOMIOS**.
+  - **Error 2:** Tomar el menor exponente de un paréntesis compartido en lugar del mayor. **Cómo corregirlo:** Para formar el m.c.m. **SE DEBE SELECCIONAR LA POTENCIA CON EL MAYOR EXPONENTE OBSERVADO**.
 ejemplos:
-- titulo: 'Ejemplo 1: Polinomios con factor común monomio y binomio'
-  enunciado: Calcula el m.c.m. entre $2x + 4$ y $x^2 - 4$.
-  alternativas:
-  - $2(x + 2)(x - 2)$
-  - $x + 2$
-  - $(x + 2)(x - 2)$
-  respuesta: $2(x + 2)(x - 2)$
-  solucion_pasos:
-  - '1. Factorizar $2x + 4 = 2(x + 2)$.2. Factorizar $x^2 - 4 = (x + 2)(x - 2)$.3.
-    Factores: número $2$, binomios $(x + 2)$ y $(x - 2)$.4. m.c.m. = $2(x + 2)(x -
-    2)$.'
-- titulo: 'Ejemplo 2: m.c.m. de trinomios factorizados'
-  enunciado: Determina el m.c.m. de $x^2 + 3x + 2$ y $x^2 + 4x + 3$.
-  alternativas:
-  - $(x + 1)(x + 2)(x + 3)$
-  - $x + 1$
-  - $(x + 2)(x + 3)$
-  respuesta: $(x + 1)(x + 2)(x + 3)$
-  solucion_pasos:
-  - '1. Factorizar $x^2 + 3x + 2 = (x + 1)(x + 2)$.2. Factorizar $x^2 + 4x + 3 = (x
-    + 1)(x + 3)$.3. Factores distintos: $(x + 1)$, $(x + 2)$, $(x + 3)$, cada uno
-    con exponente 1.4. m.c.m. = $(x + 1)(x + 2)(x + 3)$.'
-- titulo: ¿El m.c.m. entre $x - 1$ y $x + 1$ es el producto $(x - 1)(x + 1) = x^2
-    - 1$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Al ser factores lineales irreductibles distintos, el m.c.m. es el producto
-    de ambos.
-- titulo: ¿Es necesario factorizar totalmente los polinomios antes de armar el m.c.m.?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Si los polinomios no están totalmente factorizados se corre el riesgo de no
-    detectar factores comunes ocultos.
+  - titulo: 'Diferencia de cuadrados y TCP'
+    enunciado: 'Para $x^2 - 4$ y $x^2 - 4x + 4$, ¿es el m.c.m. $(x + 2)(x - 2)^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $(x+2)(x-2)$ y $(x-2)^2 \implies (x+2)(x-2)^2$.'
+  - titulo: 'Factor común exterior'
+    enunciado: 'Para $x^2 + x$ y $x^2 - 1$, ¿es el m.c.m. $x(x + 1)(x - 1)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $x(x+1)$ y $(x+1)(x-1) \implies x(x+1)(x-1)$.'
+  - titulo: 'Polinomios primos entre sí'
+    enunciado: 'Para $x + 1$ y $x - 2$, ¿es su m.c.m. $(x + 1)(x - 2)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, el producto directo.'
+  - titulo: 'Coeficiente numérico externo'
+    enunciado: 'Para $2(x - 3)$ y $3(x - 3)^2$, ¿es el m.c.m. $6(x - 3)^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\operatorname{mcm}(2,3)=6$ y $(x-3)^2$.'
 errores_frecuentes:
-- El m.c.m. entre $x^2 - 9$ y $x + 3$ es $x + 3$.
-- Para hallar el m.c.m. entre dos polinomios basta con multiplicar los términos independientes.
-- El m.c.m. entre $(x + 1)^2$ y $(x + 1)^3$ es $(x + 1)^2$.
-- Los factores que aparecen en un solo polinomio no se escriben en el m.c.m.
-- El m.c.m. de $x^2 - 1$ y $x - 1$ es $(x - 1)^2(x + 1)$.
+  - 'Excluir factores no comunes en la expresión final del m.c.m. polinomial.'
+  - 'Seleccionar la potencia de menor exponente en lugar de la de mayor exponente para los factores compartidos.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'La factorización de los polinomios hasta sus componentes primos irreducibles no es ejecutada antes de comparar.'
+  - 'Intercambiar las reglas de selección de factores del m.c.m. con las del M.C.D.'
 afirmaciones_verdaderas:
-- El m.c.m. entre polinomios se obtiene reuniendo todos los factores irreductibles
-  (comunes y no comunes) elevados a sus mayores exponentes.
-- El m.c.m. polinomial es divisible exactamente por cada uno de los polinomios originales.
-al_terminar_debes_poder: Al finalizar este recurso podrás calcular el m.c.m. entre
-  polinomios mediante factorización completa e identificar los múltiplos comunes de
-  menor grado.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El m.c.m. entre polinomios incluye todos los factores primos comunes y no comunes a su mayor exponente.'
+  - 'Si dos polinomios no comparten ningún factor primo, su m.c.m. es igual a su producto directo.'
+al_terminar_debes_poder: 'Calcular el m.c.m. entre polinomios factorizándolos completamente e integrando todos sus factores.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

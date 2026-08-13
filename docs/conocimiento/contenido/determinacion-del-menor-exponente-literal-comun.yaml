@@ -1,134 +1,99 @@
-resumen_inicial: La determinación del menor exponente literal común establece que,
-  para una variable presente en todos los términos, el factor común debe elevarse
-  estrictamente al exponente más pequeño con el que figura.
-explicacion_simple: 'Si tienes $x^7 + x^4 - x^2$, la variable $x$ aparece en los tres
-  términos con exponentes 7, 4 y 2. El exponente más pequeño es 2. Por lo tanto, el
-  factor común literal es $x^2$. Divides cada término por $x^2$ restando exponentes:
-  $x^2(x^5 + x^2 - 1)$.'
-explicacion_formal: 'Dada la expresión literal $P(x) = c_1 x^{a_1} + c_2 x^{a_2} +
-  \dots + c_n x^{a_n}$ con $a_i \in \mathbb{N}$, la **Determinación del Menor Exponente
-  Literal** exige seleccionar el grado $m$:
-
-
-  $$m = \min(a_1, a_2, \dots, a_n) \implies P(x) = x^m \cdot \sum_{i=1}^n c_i x^{a_i
-  - m}$$
-
-
-  **Desglose simbólico:**
-
-  - $x^m$: Monomio literal común de grado máximo divisor.
-
-  - $a_i - m \ge 0$: Garantiza que los exponentes resultantes dentro del paréntesis
-  sean enteros no negativos (polinomio bien definido en $\mathbb{R}[x]$).
-
-
-  > **Complemento didáctico:** Si se eligiera un exponente mayor que el mínimo, aparecerían
-  exponentes negativos ($x^{-k}$), violando la definición de polinomio.'
-definiciones_clave: '- **Menor exponente común**: Exponente mínimo de una variable
-  compartida por todos los sumandos.
-
-  - **Exponente entero no negativo**: Condición $a_i - m \ge 0$ necesaria para mantener
-  términos polinomiales.'
-propiedades_relaciones: '- **Invarianza de no-negatividad**: Elegir el menor exponente
-  asegura que ningún residuo quede como una fracción del tipo $\frac{1}{x^k}$.'
-ejemplo_guiado:
-  enunciado: Factorice el polinomio $x^8y^3 - x^5y^4 + x^3y^6$ seleccionando el menor
-    exponente de cada variable literal.
-  pasos:
-  - 'Paso 1: Analizar la variable $x$: exponentes son $8, 5, 3 \to \min = 3 \implies
-    x^3$.'
-  - 'Paso 2: Analizar la variable $y$: exponentes son $3, 4, 6 \to \min = 3 \implies
-    y^3$.'
-  - 'Paso 3: Formar el factor común literal: $x^3y^3$.'
-  - 'Paso 4: Dividir restando exponentes: $x^{8-3}y^{3-3} - x^{5-3}y^{4-3} + x^{3-3}y^{6-3}
-    = x^5 - x^2y + y^3$.'
-  - 'Paso 5: Escribir el polinomio factorizado: $x^3y^3(x^5 - x^2y + y^3)$.'
-  - 'Conclusión: El factor común literal con menor exponente es $x^3y^3$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Por qué es obligatorio elegir el menor exponente de la variable al extraer
-    un factor común literal en un polinomio?
-  choices:
-  - text: Para asegurar que los exponentes del paréntesis sean enteros no negativos
-      ($a_i - m \ge 0$)
-    is_correct: true
-  - text: Para que la variable se elimine por completo
-    is_correct: false
-  - text: Para obtener coeficientes racionales
-    is_correct: false
-  - text: Por convención sin justificación matemática
-    is_correct: false
-  explanation: La alternativa correcta es 'Para asegurar que los exponentes del paréntesis
-    sean enteros no negativos ($a_i - m \ge 0$)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el polinomio $x^8y^3 - x^5y^4 + x^3y^6$, ¿cuál es el factor común literal?
-  choices:
-  - text: $x^3y^3$
-    is_correct: true
-  - text: $x^8y^6$
-    is_correct: false
-  - text: $x^5y^4$
-    is_correct: false
-  - text: $x y$
-    is_correct: false
-  explanation: La alternativa correcta es '$x^3y^3$'.
-  reinforcement_section: Ejemplo guiado
-procedimiento:
-- 'Paso 1: Identificar las letras que aparecen en la totalidad de los sumandos.'
-- 'Paso 2: Comparar los exponentes de cada letra común y tomar el menor de ellos.'
-- 'Paso 3: Anteponer el monomio común y restar su exponente a cada término original.'
-errores_correccion: '- **Error 1: Extraer un exponente mayor que el mínimo dejando
-  exponentes negativos dentro del paréntesis.** **Cómo corregirlo:** Se DEBE seleccionar
-  el menor exponente para que los residuos tengan exponentes $\ge 0$.'
-ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Factorice $a^9 + a^6 + a^4$.
-  alternativas:
-  - $a^4(a^5 + a^2 + 1)$
-  - $a^6(a^3 + 1 + a^{-2})$
-  - $a(a^8 + a^5 + a^3)$
-  respuesta: $a^4(a^5 + a^2 + 1)$
-  solucion_pasos:
-  - '1. Menor exponente: $a^4$.'
-  - '2. Restando exponentes: $a^{9-4} + a^{6-4} + a^{4-4} = a^5 + a^2 + 1$.'
-  - '3. Resultado: $a^4(a^5 + a^2 + 1)$.'
-- titulo: Ejemplo 2
-  enunciado: ¿Cuál es el menor exponente común de la variable $m$ en $m^4n^2 - m^2n^5
-    + m^3n^3$?
-  alternativas:
-  - $m^2$
-  - $m^4$
-  - $m^3$
-  respuesta: $m^2$
-  solucion_pasos:
-  - '1. Exponentes de $m$: $4, 2, 3$. El menor es 2 $\to m^2$.'
-- titulo: ¿Es $y^2(y^4 - 1)$ la factorización correcta por menor exponente de $y^6
-    - y^2$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, el menor exponente es 2, dejando $y^{6-2} - y^{2-2} = y^4 - 1$.
-- titulo: Si el menor exponente de una variable es 1, ¿debe escribirse explícitamente
-    el exponente 1 en la variable extraída?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, por convención $x^1 = x$, no se requiere escribir el 1.
-errores_frecuentes:
-- Seleccionar el mayor exponente de una variable provocando exponentes negativos dentro
-  del paréntesis.
-- Sumar los exponentes de la misma variable en lugar de identificar el exponente mínimo.
-- Multiplicar los exponentes al realizar la división en lugar de restarlos.
-- Declarar que cuando una variable tiene exponente 1 no se puede extraer como factor
-  común.
-- Reemplazar por 0 el residuo de la división cuando la resta de exponentes resulta
-  cero ($x^0 = 1$).
-afirmaciones_verdaderas:
-- El factor común literal de una variable se forma únicamente con su menor exponente
-  en el polinomio.
-- Al dividir por la variable del menor exponente, los exponentes resultantes en el
-  paréntesis son siempre $\ge 0$.
-al_terminar_debes_poder: Al terminar serás capaz de seleccionar el menor exponente
-  literal para factorizar expresiones algebraicas.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / Factorización.
-estado: publicado
 semantic_id: MAT.ALG.FACTOR_COMUN.MENOR_EXPONENTE_LITERAL
+resumen_inicial: 'La determinación del menor exponente literal común consiste en auditar las potencias de cada variable repetida seleccionando el exponente mínimo absoluto para maximizar el grado del factor común monomio.'
+explicacion_simple: |
+  Cuando una variable aparece en varios términos con **distintos exponentes** (ej: $x^5, x^3, x^4$):
+  - **¿QUÉ EXPONENTE SE DEBE ELEGIR?**:
+    - El **MENOR EXPONENTE** de la lista.
+    - Entre $5$, $3$ y $4$, el menor es **$3$**.
+    - La componente literal del factor común es **$x^3$**.
+  - **¿POR QUÉ EL MENOR Y NO EL MAYOR?**:
+    - Porque $x^3$ cabe exactamente dentro de $x^5$ (queda $x^2$) y de $x^4$ (queda $x^1$).
+    - Si eligieras el mayor ($x^5$), ¡al dividir $x^3 / x^5 = x^{-2}$ te quedarían exponentes negativos descompuestos!
+explicacion_formal: |
+  ### Definición formal
+  Sea la familia de potencias monómicas de la variable $x$ presentes en un polinomio $\mathcal{P} = \{x^{\alpha_1}, x^{\alpha_2}, \dots, x^{\alpha_k}\}$ con $\alpha_i \in \mathbb{N}_0$. Se define el **exponente común maximal** $\alpha^*$ como el infimo entero de la familia de grado:
+
+  $$\alpha^* = \min_{1 \le i \le k} (\alpha_i) = \min(\alpha_1, \alpha_2, \dots, \alpha_k)$$
+
+  ### Justificación por Cierre en el Anillo de Polinomios
+  Para que el polinomio cociente $Q(x) = \sum_{i=1}^k x^{\alpha_i - \alpha^*}$ pertenezca estrictamente al anillo de polinomios $\mathbb{R}[x]$ (posea únicamente exponentes enteros no negativos), se requiere que:
+
+  $$\alpha_i - \alpha^* \ge 0 \quad \forall i \in \{1, \dots, k\} \iff \alpha^* \le \alpha_i \quad \forall i \iff \alpha^* = \min_i (\alpha_i)$$
+
+  ### Síntesis didáctica
+  Seleccionar el exponente mínimo garantiza que todas las divisiones de potencias resulten en exponentes positivos o nulos dentro del paréntesis factorizado.
+definiciones_clave: |
+  - **Menor exponente común ($\alpha^* = \min(\alpha_i)$)**: Valor numérico mínimo entre las potencias a las que aparece elevada una variable repetida.
+  - **Cierre en el anillo de polinomios**: Condición que exige que los exponentes del cociente sean números enteros no negativos.
+  - **Divisibilidad monomial exacta**: Principio que asegura que $x^{\alpha^*}$ divide exactamente a $x^{\alpha_i}$ en $\mathbb{R}[x]$.
+propiedades_relaciones: |
+  - **Exponente cero ($x^0 = 1$)**: Si el menor exponente de una variable es el exponente de un término donde aparece elevada a 1 y se le resta 1, la variable se convierte en $x^0 = 1$ en el cociente.
+ejemplo_guiado:
+  enunciado: 'Determina la parte literal del factor común para el polinomio $14a^6 b^4 - 21a^3 b^5 + 35a^5 b^2$.'
+  pasos:
+    - 'Paso 1: Examinamos los exponentes de la variable $a$: $\alpha_a \in \{6, 3, 5\}$.'
+    - 'Paso 2: Elegimos el mínimo exponente de $a$: $\min(6, 3, 5) = \mathbf{3} \implies a^3$.'
+    - 'Paso 3: Examinamos los exponentes de la variable $b$: $\alpha_b \in \{4, 5, 2\}$.'
+    - 'Paso 4: Elegimos el mínimo exponente de $b$: $\min(4, 5, 2) = \mathbf{2} \implies b^2$.'
+    - 'Paso 5: Multiplicamos las componentes literales mínimas: $a^3 b^2$.'
+    - 'Conclusión: La parte literal del factor común es **$a^3 b^2$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Por qué debe seleccionarse el MENOR exponente de una variable al determinar el factor común de un polinomio?'
+    choices:
+      - {text: 'Porque al dividir cada término por $x^{\min}$, los exponentes dentro del paréntesis se restan dando valores enteros no negativos ($\alpha_i - \min \ge 0$)', is_correct: true}
+      - {text: 'Porque las variables de menor exponente valen más', is_correct: false}
+      - {text: 'Porque se deben sumar los exponentes', is_correct: false}
+      - {text: 'Porque de esa forma se eliminan los coeficientes', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque al dividir cada término por $x^{\min}$, los exponentes dentro del paréntesis se restan dando valores enteros no negativos ($\alpha_i - \min \ge 0$)''. Cierre en el anillo de polinomios $\mathbb{R}[x]$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'En el polinomio $x^8 y^3 + x^4 y^6 + x^5 y^2$, ¿cuál es la parte literal del factor común monomio?'
+    choices:
+      - {text: 'La parte literal es $x^4 y^2$, seleccionando el menor exponente de $x$ (4) y el menor exponente de $y$ (2)', is_correct: true}
+      - {text: 'La parte literal es $x^8 y^6$', is_correct: false}
+      - {text: 'La parte literal es $x^5 y^3$', is_correct: false}
+      - {text: 'La parte literal es $xy$', is_correct: false}
+    explanation: 'La alternativa correcta es ''La parte literal es $x^4 y^2$, seleccionando el menor exponente de $x$ (4) y el menor exponente de $y$ (2)''. $\min(8,4,5)=4, \min(3,6,2)=2 \implies x^4 y^2$.'
+    reinforcement_section: 'Ejemplo guiado'
+procedimiento:
+  - 'Paso 1: Listar los exponentes de cada variable común en todos los sumandos.'
+  - 'Paso 2: Comparar los valores enteros de los exponentes de la lista.'
+  - 'Paso 3: Seleccionar el número de menor valor para cada variable.'
+  - 'Paso 4: Elevar la variable correspondiente a dicho menor exponente.'
+errores_correccion: |
+  - **Error 1:** Seleccionar el mayor exponente de las letras al extraer factor común (elegir $x^8$ en lugar de $x^4$). **Cómo corregirlo:** Se debe **SELECCIONAR EL MENOR EXPONENTES PARA QUE LA DIVISIÓN PRODUZCA POTENCIAS ENTERAS POSITIVAS**.
+  - **Error 2:** Promediar o sumar los exponentes de la variable en lugar de buscar el mínimo. **Cómo corregirlo:** La componente literal **TOMA EXCLUSIVAMENTE EL MENOR EXPONENTE ABSOLUTO DE LA LISTA**.
+ejemplos:
+  - titulo: 'Lista de exponentes de x'
+    enunciado: 'Para $x^7, x^3, x^5$, ¿es $3$ el menor exponente?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - '1. $\min(7, 3, 5) = 3$.'
+  - titulo: 'Exponente 1'
+    enunciado: 'En $y^4 + y^2 + y$, ¿es el menor exponente $y^1 = y$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, el último término tiene exponente 1.'
+  - titulo: 'Dos variables comunes'
+    enunciado: 'Para $a^3 b^4 + a^5 b^2$, ¿es $a^3 b^2$ la componente de menores exponentes?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\min(3,5)=3$ y $\min(4,2)=2$.'
+  - titulo: 'Exponente idéntico'
+    enunciado: 'Si todos los términos tienen la variable con el mismo exponente $m^2$, ¿es $m^2$ el menor exponente?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\min(2,2,2) = 2$.'
+errores_frecuentes:
+  - 'Elegir el exponente mayor de las variables para el factor común generando exponentes negativos en el paréntesis.'
+  - 'Promediar o sumar los exponentes de las letras en lugar de determinar el mínimo absoluto.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Intercambiar las variables comunes con las variables no comunes.'
+  - 'La presencia del exponente 1 en una variable sin exponente escrito no es considerada.'
+afirmaciones_verdaderas:
+  - 'La parte literal del factor común monomio toma para cada variable común su menor exponente en el polinomio.'
+  - 'Seleccionar el exponente mínimo evita la aparición de exponentes negativos en el cociente.'
+al_terminar_debes_poder: 'Determinar el menor exponente literal común de cualquier conjunto de monomios para armar la parte literal del factor común.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+estado: publicado

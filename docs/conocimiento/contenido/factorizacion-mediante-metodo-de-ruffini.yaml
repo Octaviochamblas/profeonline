@@ -1,132 +1,114 @@
-resumen_inicial: El Método de Ruffini utiliza la división sintética para probar ceros
-  candidatos y descomponer un polinomio de grado elevado en factores lineales e irreducibles.
-explicacion_simple: Es una técnica para factorizar polinomios difíciles probando los
-  divisores del término independiente. Si la división sintética da resto cero, se
-  obtiene un factor lineal $(x - c)$ y se continúa reduciendo el polinomio.
-explicacion_formal: 'Sea $P(x) = a_n x^n + \dots + a_0$ un polinomio con coeficientes
-  enteros.
-
-
-  El **Método de Ruffini para Factorización** aplica iterativamente la división sintética
-  utilizando los candidatos a raíces racionales dados por el Teorema de las Raíces
-  Racionales:
-
-
-  $$\text{Candidatos a raíces } c = \frac{p}{q} \quad \text{donde } p \mid a_0 \text{
-  y } q \mid a_n$$
-
-
-  **Algoritmo de Descomposición:**
-
-  1. Hallar un divisor $c$ tal que el resto de la división de Ruffini sea $R = 0$.
-
-  2. Escribir $P(x) = (x - c) Q(x)$.
-
-  3. Repetir el proceso sobre el cociente reducido $Q(x)$ hasta obtener factores lineales
-  o cuadráticos irreducibles en $\mathbb{R}$.'
-definiciones_clave: '- **Regla de Ruffini**: Algoritmo sintético de factorización
-  iterativa basado en la búsqueda de ceros racionales.
-
-  - **Polinomio reducido**: Cociente $Q(x)$ obtenido en cada etapa exitosa de división
-  con resto nulo.'
-propiedades_relaciones: '- **Criterio de los divisores**: Los posibles ceros enteros
-  de un polinomio mónico $P(x)$ se encuentran exclusivamente entre los divisores positivos
-  y negativos de su término independiente $a_0$.'
-ejemplo_guiado:
-  enunciado: Factorice el polinomio $P(x) = x^3 - 6x^2 + 11x - 6$ mediante el Método
-    de Ruffini.
-  pasos:
-  - 'Paso 1: Listar los divisores del término independiente $a_0 = -6$: $\pm 1, \pm
-    2, \pm 3, \pm 6$.'
-  - 'Paso 2: Probar el candidato $c = 1$ en la tabla de Ruffini con coeficientes $[1,
-    -6, 11, -6]$.'
-  - 'Paso 3: Bajar $1 \implies 1 \cdot 1 = 1 \implies -6 + 1 = -5 \implies -5 \cdot
-    1 = -5 \implies 11 - 5 = 6 \implies 6 \cdot 1 = 6 \implies -6 + 6 = 0$. Como $R
-    = 0$, $c = 1$ es raíz y $(x - 1)$ es factor.'
-  - 'Paso 4: El cociente reducido es $Q(x) = x^2 - 5x + 6$.'
-  - 'Paso 5: Factorizar $Q(x) = (x - 2)(x - 3)$.'
-  - 'Paso 6: Expresar la factorización final completa: $P(x) = (x - 1)(x - 2)(x -
-    3)$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: Al buscar ceros racionales para $x^3 - 3x - 2$, ¿cuáles son los posibles
-    candidatos a evaluar?
-  choices:
-  - text: $\pm 1, \pm 2$
-    is_correct: true
-  - text: $\pm 1, \pm 3$
-    is_correct: false
-  - text: $\pm 2, \pm 3$
-    is_correct: false
-  - text: $\pm 1, \pm 6$
-    is_correct: false
-  explanation: Para un polinomio mónico, los ceros enteros posibles son los divisores
-    de $-2$, correspondientes a la opción $\pm 1, \pm 2$.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Si la regla de Ruffini entrega coeficientes $[1, 3, 2]$ con residuo $0$
-    al probar $c = -1$ en un polinomio de grado 3, ¿cuál es su factorización parcial?
-  choices:
-  - text: $(x + 1)(x^2 + 3x + 2)$
-    is_correct: true
-  - text: $(x - 1)(x^2 + 3x + 2)$
-    is_correct: false
-  - text: $(x + 1)(x^2 - 3x + 2)$
-    is_correct: false
-  - text: $(x - 1)(x^2 - 3x - 2)$
-    is_correct: false
-  explanation: Como la raíz es $c = -1$, el factor es $(x + 1)$, formando la expresión
-    $(x + 1)(x^2 + 3x + 2)$.
-  reinforcement_section: Ejemplo guiado
-procedimiento:
-- 'Paso 1: Identificar los divisores del término independiente $a_0$ como candidatos
-  a raíces $c$.'
-- 'Paso 2: Construir la tabla de Ruffini con los coeficientes ordenados del polinomio.'
-- 'Paso 3: Ejecutar la regla de Ruffini probando candidatos hasta obtener un resto
-  igual a cero ($R = 0$).'
-- 'Paso 4: Escribir la factorización parcial $(x - c)Q(x)$ y continuar factorizando
-  el cociente reducido $Q(x)$.'
-errores_correccion: '- **Error 1: Continuar con un candidato cuyo resto $R \neq 0$.**
-  **Cómo corregirlo:** Descartar de inmediato el número y probar con otro divisor
-  de la lista.'
-ejemplos:
-- titulo: Factorización de polinomio cúbico con Ruffini
-  enunciado: Factorice $x^3 - 4x^2 + x + 6$.
-  respuesta: $(x + 1)(x - 2)(x - 3)$
-  solucion_pasos:
-  - '1. Divisores de $6$: $\pm 1, \pm 2, \pm 3, \pm 6$. Probar $c = -1$: Resto $0$,
-    factor $(x + 1)$.'
-  - '2. Cociente reducido: $x^2 - 5x + 6$.'
-  - 3. Factorizar $x^2 - 5x + 6 = (x - 2)(x - 3)$.
-  - '4. Resultado: $(x + 1)(x - 2)(x - 3)$.'
-- titulo: ¿Se puede usar Ruffini si el término independiente $a_0$ es cero?
-  respuesta: Sí, tras extraer factor común $x$
-  solucion_pasos:
-  - Sí; se extrae primero el factor común $x$ y luego se aplica el método de Ruffini
-    al polinomio restante.
-- titulo: ¿El método de Ruffini encuentra siempre raíces irracionales o complejas
-    sencillamente?
-  respuesta: 'No'
-  solucion_pasos:
-  - No; la prueba de divisores en Ruffini busca ceros racionales. Para raíces irracionales
-    o complejas se requieren otros métodos.
-errores_frecuentes:
-- Evaluación de valores numéricos que no forman parte de los divisores del término
-  independiente.
-- Escritura del binomio $(x - c)$ manteniendo el signo original de una raíz positiva.
-- Interrupción del cálculo tras hallar una sola raíz sin completar la factorización
-  del cociente restante.
-- Omisión de verificar la presencia de raíces de multiplicidad mayor a uno.
-- Aplicación del esquema numérico sobre polinomios incompletos sin ordenar previamente.
-afirmaciones_verdaderas:
-- Los posibles ceros enteros de un polinomio mónico son siempre divisores de su término
-  independiente.
-- Una prueba de Ruffini es exitosa para factorización solo si el residuo final es
-  exactamente cero.
-al_terminar_debes_poder: Al terminar serás capaz de factorizar polinomios de grado
-  3 o superior mediante el método iterativo de Ruffini.
-fuente: Texto escolar MINEDUC — Álgebra 2° Medio / Método de Ruffini.
-estado: publicado
 semantic_id: MAT.ALG.TEOREMA_FACTOR.METODO_RUFFINI
-code: 03.06.06.05
-nombre: Factorización mediante método de Ruffini
+resumen_inicial: 'La factorización mediante el método de Ruffini consiste en utilizar sucesivamente la división sintética con los ceros racionales encontrados para descomponer un polinomio de grado $n \ge 3$ en el producto de sus factores lineales y cuadráticos.'
+explicacion_simple: |
+  El **Método de Ruffini** es la herramienta definitiva para factorizar polinomios largos de grado 3 o superior (ej: $x^3 - 6x^2 + 11x - 6$):
+  - **PASOS DEL MÉTODO DE RUFFINI**:
+    1. **Busca candidatos a ceros**: Lista los divisores del último número constante ($-6 \implies \pm 1, \pm 2, \pm 3, \pm 6$).
+    2. **Prueba en la Tabla de Ruffini**:
+       - Coloca un candidato (ej: $1$).
+       - Ejecuta la división sintética.
+       - Si la última columna (el resto) te da **EXACTAMENTE 0**, ¡acabas de encontrar una raíz $r_1 = 1$ y un factor $(x - 1)$!
+    3. **Itera en cascada con la fila que te quedó**:
+       - Tomas los coeficientes que quedaron abajo y vuelves a probar con otro divisor (ej: $2$).
+       - Si vuelve a dar resto **0**, ¡tienes la segunda raíz $r_2 = 2$ y el factor $(x - 2)$!
+    4. **Ensambla la respuesta final**:
+       - Unes los factores: $\mathbf{(x - 1)(x - 2)(x - 3)}$.
+explicacion_formal: |
+  ### Definición formal
+  Sea $P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 \in \mathbb{Z}[x]$ un polinomio de grado $n \ge 3$. El **Método de Ruffini** es un algoritmo recursivo de factorización que encadena divisiones sintéticas sucesivas mediante el conjunto de ceros racionales $\{\alpha_1, \alpha_2, \dots, \alpha_k\} \subset \mathbb{Q}$ para obtener la forma factorizada sobre $\mathbb{R}[x]$:
+
+  $$P(x) = a_n (x - \alpha_1)(x - \alpha_2) \dots (x - \alpha_k) Q_{n-k}(x)$$
+
+  donde $Q_{n-k}(x)$ es un polinomio irreducible sobre el cuerpo $\mathbb{R}$.
+
+  ### Criterio de Parada
+  El algoritmo finaliza exitosamente cuando:
+  1. El cociente resultante $Q(x)$ es de grado 2 (cuadrático) y se factoriza mediante discriminante o trinomio.
+  2. El cociente resultante $Q(x)$ es de grado 1 (lineal).
+
+  ### Síntesis didáctica
+  Ruffini aplica en cadena la división sintética buscando restos iguales a cero para extraer uno a uno los paréntesis divisores $(x - \alpha_i)$.
+definiciones_clave: |
+  - **Método de Ruffini**: Técnica iterativa de descomposición polinomial que aplica división sintética sucesiva sobre los ceros del polinomio.
+  - **Cero de la regla de Ruffini**: Valor numérico $r$ probado en el margen de la tabla que logra un resto final $R = 0$.
+  - **Reducción de grado por iteración**: Disminución del grado del polinomio en 1 unidad tras cada división sintética exitosa.
+propiedades_relaciones: |
+  - **Preservación del coeficiente principal**: El coeficiente principal $a_n$ de la fila inicial se multiplica al conjunto de todos los binomios factores $(x - \alpha_i)$.
+ejemplo_guiado:
+  enunciado: 'Factoriza completamente el polinomio de tercer grado $P(x) = x^3 - 6x^2 + 11x - 6$ aplicando el Método de Ruffini.'
+  pasos:
+    - 'Paso 1: Listamos los divisores del término independiente $-6$: $\{\pm 1, \pm 2, \pm 3, \pm 6\}$.'
+    - 'Paso 2: Montamos la tabla con los coeficientes $1, -6, 11, -6$ y probamos la raíz $r = 1$:
+       - Bajamos $1$.
+       - $1 \cdot 1 = 1 \implies -6 + 1 = -5$.
+       - $-5 \cdot 1 = -5 \implies 11 + (-5) = 6$.
+       - $6 \cdot 1 = 6 \implies -6 + 6 = \mathbf{0}$ (¡Resto 0!).
+       - Primer factor: $(x - 1)$, cociente: $x^2 - 5x + 6$.'
+    - 'Paso 3: Sobre la nueva fila $1, -5, 6$, probamos la raíz $r = 2$:
+       - Bajamos $1$.
+       - $1 \cdot 2 = 2 \implies -5 + 2 = -3$.
+       - $-3 \cdot 2 = -6 \implies 6 + (-6) = \mathbf{0}$ (¡Resto 0!).
+       - Segundo factor: $(x - 2)$, cociente restante: $(x - 3)$.'
+    - 'Paso 4: Ensamblamos la multiplicación de todos los factores:
+       $(x - 1)(x - 2)(x - 3)$.'
+    - 'Conclusión: La factorización por Ruffini es **$(x - 1)(x - 2)(x - 3)$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'En la regla de Ruffini, ¿cuándo sabemos que un número probado en la tabla es una raíz que genera un factor válido?'
+    choices:
+      - {text: 'Cuando la última columna de la adición sintética resulta exactamente en un resto $R = 0$', is_correct: true}
+      - {text: 'Cuando la suma de la primera fila da 0', is_correct: false}
+      - {text: 'Cuando el número probado es positivo', is_correct: false}
+      - {text: 'Cuando se obtienen 4 términos en la fila de abajo', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cuando la última columna de la adición sintética resulta exactamente en un resto $R = 0$''. Condición de divisibilidad exacta de la Regla de Ruffini ($R = 0$).'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si al aplicar Ruffini a un polinomio $P(x)$ con coeficiente principal $a_3 = 2$ encontramos las raíces $r_1 = 1, r_2 = -2, r_3 = 3$, ¿cuál es la respuesta factorizada completa?'
+    choices:
+      - {text: 'La respuesta es $2(x - 1)(x + 2)(x - 3)$, incluyendo el coeficiente principal 2', is_correct: true}
+      - {text: 'La respuesta es $(x - 1)(x + 2)(x - 3)$', is_correct: false}
+      - {text: 'La respuesta es $(x + 1)(x - 2)(x + 3)$', is_correct: false}
+      - {text: 'La respuesta es $2(x + 1)(x - 2)(x + 3)$', is_correct: false}
+    explanation: 'La alternativa correcta es ''La respuesta es $2(x - 1)(x + 2)(x - 3)$, incluyendo el coeficiente principal 2''. Preservación del coeficiente principal $a_n$ en la descomposicón por raíces.'
+    reinforcement_section: 'Ejemplo guiado'
+procedimiento:
+  - 'Paso 1: Identificar el término libre $a_0$ del polinomio y enumerar sus divisores candidatos.'
+  - 'Paso 2: Colocar los coeficientes del polinomio en la tabla de Ruffini e intentar una división sintética con un candidato a raíz.'
+  - 'Paso 3: Si el residuo final es 0, registrar el factor $(x - r)$ y continuar dividiendo con la fila de coeficientes reducida.'
+  - 'Paso 4: Repetir el proceso hasta reducir el cociente a un polinomio de grado 2 o 1 y escribir el producto de todos los factores.'
+errores_correccion: |
+  - **Error 1:** Continuar dividiendo con coeficientes de una prueba donde el resto dio distinto de 0. **Cómo corregirlo:** Si el resto no da 0, **SE DEBE DESCARTAR LA FILA RESULTANTE Y PROBAR OTRO DIVISOR HASTA LOGRAR RESTO 0**.
+  - **Error 2:** Excluir el coeficiente principal $a_n$ en el producto final cuando $a_n \neq 1$. **Cómo corregirlo:** Si el coeficiente de mayor grado es distinto de 1, **SE DEBE MULTIPLICAR DICHO COEFICIENTE $a_n$ POR TODO EL PRODUCTO DE FACTORES**.
+ejemplos:
+  - titulo: 'Candidato con resto 0'
+    enunciado: 'Si el residuo final en Ruffini es 0 para $r=3$, ¿es $(x-3)$ un factor?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, divisibilidad exacta.'
+  - titulo: 'Candidato con resto 4'
+    enunciado: 'Si el residuo da 4 en Ruffini, ¿se invalida esa fila?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, se descarta y prueba otro.'
+  - titulo: 'Reducción de grado'
+    enunciado: 'Al encontrar una raíz en un polinomio de grado 3, ¿es la nueva fila de grado 2?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, reduce a cuadrática.'
+  - titulo: 'Tres factores lineales'
+    enunciado: 'Para $x^3 - 6x^2 + 11x - 6$, ¿es la solución $(x-1)(x-2)(x-3)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, las tres raíces son 1, 2 y 3.'
+errores_frecuentes:
+  - 'Aceptar una fila de la tabla de Ruffini cuyo resto final es diferente de cero.'
+  - 'El coeficiente principal an no es escrito delante del producto de factores lineales.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Probar candidatos a raíces que no son divisores enteros del término libre del polinomio.'
+  - 'Intercambiar el signo de la raíz r al transformar en el binomio factor (x - r).'
+afirmaciones_verdaderas:
+  - 'El método de Ruffini descompone polinomios mediante divisiones sintéticas sucesivas con resto cero.'
+  - 'Cada iteración exitosa de Ruffini reduce en 1 el grado del polinomio cociente restante.'
+al_terminar_debes_poder: 'Factorizar polinomios de grado 3 o superior mediante la aplicación iterativa del Método de Ruffini.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+estado: publicado

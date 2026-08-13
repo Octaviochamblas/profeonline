@@ -1,124 +1,108 @@
-resumen_inicial: La regularidad gráfica identifica patrones de variación espacial,
-  conteo de figuras o figuras geométricas ordenadas para traducirlas a una sucesión
-  numérica de término general $a_n$.
-explicacion_simple: En las secuencias gráficas nos dan dibujos que van creciendo (como
-  torres de fósforos o bloques). Contamos cuántos elementos tiene cada dibujo para
-  formar una lista de números y descubrir su regla.
-explicacion_formal: 'Dada una secuencia visual de figuras $\{F_1, F_2, F_3, \dots\}$,
-  el **Modelamiento de Regularidad Gráfica** construye la función de conteo $N(n)$:
-
-
-  $$N: F_n \to a_n \in \mathbb{N} \implies (a_n) = (N(F_1), N(F_2), N(F_3), \dots)$$
-
-
-  **Traducción de geometría a álgebra:**
-
-  - Convierte incrementos visuales de áreas, bordes o puntos en regularidades numéricas
-  aditivas o cuadráticas.'
-definiciones_clave: '- **Regularidad gráfica**: Traducción de patrones geométricos
-  o de conteo de figuras a sucesiones algebraicas.'
-propiedades_relaciones: '- **Función de conteo $N(n)$**: Asigna a la figura de posición
-  $n$ la cantidad entera de elementos.'
-ejemplo_guiado:
-  enunciado: Una secuencia de figuras formadas por fósforos tiene $3$ fósforos en
-    la figura 1, $5$ en la figura 2 y $7$ en la figura 3. Halle el término general
-    del número de fósforos.
-  pasos:
-  - 'Paso 1: Escribir la sucesión de conteo: $(3, 5, 7, \dots)$.'
-  - 'Paso 2: La regularidad es agregar $2$ fósforos en cada nueva figura ($d=2$).'
-  - 'Paso 3: Formular el término general: $a_n = 2n + 1$ (verificable: $a_1 = 3$,
-    $a_2 = 5$, $a_3 = 7$).'
-  - 'Conclusión: El número de fósforos en la figura $n$ es $a_n = 2n + 1$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la metodología para resolver un problema de regularidad gráfica
-    de figuras?
-  choices:
-  - text: Contar los elementos de las primeras figuras para formar una sucesión numérica
-      y deducir an
-    is_correct: true
-  - text: Medir con regla el tamaño del papel
-    is_correct: false
-  - text: Sumar los ángulos de los dibujos
-    is_correct: false
-  - text: Pintar las figuras de distinto color
-    is_correct: false
-  explanation: La alternativa correcta es 'Contar los elementos de las primeras figuras
-    para formar una sucesión numérica y deducir an'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado de las figuras con fósforos (3, 5, 7, ...), ¿cuál
-    fue el término general an?
-  choices:
-  - text: an = 2n + 1
-    is_correct: true
-  - text: an = 3n
-    is_correct: false
-  - text: an = n + 2
-    is_correct: false
-  - text: an = 2n
-    is_correct: false
-  explanation: La alternativa correcta es 'an = 2n + 1'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de traducir regularidades gráficas
-  y patrones de figuras en sucesiones numéricas algebraicas $a_n = f(n)$.
 semantic_id: MAT.NUM.SUCESIONES_BASE.REGULARIDAD_GRAFICA
+resumen_inicial: 'La identificación de regularidades en secuencias gráficas traduce patrones visuales de figuras geométricas continuas a secuencias numéricas discretas mediante tablas de conteo de elementos para formular el término general $a_n$.'
+explicacion_simple: |
+  En muchos problemas te muestran patrones de dibujos que van creciendo paso a paso (por ejemplo, figuras armadas con fósforos o cuadritos):
+  - **Paso 1 (Figura 1)**: Tiene $3$ fósforos (un triángulo).
+  - **Paso 2 (Figura 2)**: Tiene $5$ fósforos (dos triángulos unidos).
+  - **Paso 3 (Figura 3)**: Tiene $7$ fósforos (tres triángulos unidos).
+  Para saber cuántos fósforos tendrá la **Figura 100**:
+  1. Haces una tabla registrando los números: $3, 5, 7, 9, \dots$
+  2. Buscas la regularidad numérica: aumenta de $2$ en $2$ ($+2$).
+  3. Encuentras la fórmula: $a_n = 2n + 1$.
+  4. Para la Figura 100: $a_{100} = 2(100) + 1 = 201$ fósforos.
+explicacion_formal: |
+  ### Definición formal
+  La **regularidad gráfica** es la iteración espacial de un módulo o patrón geométrico $G_n$ según una regla de crecimiento construida sobre la posición $n \in \mathbb{N}$.
+
+  ### Metodología de Traducción Gráfico-Numérica
+  1. **Conteo cuantitativo discreto**: Definir una variable de interés $a_n$ (número de segmentos, puntos, vértices, polígonos, cuadrados sombreados).
+  2. **Tabulación orden-valor**:
+     $$\begin{array}{|c|c|c|c|c|} \hline \text{Figura } (n) & 1 & 2 & 3 & 4 \\ \hline \text{Elementos } (a_n) & a_1 & a_2 & a_3 & a_4 \\ \hline \end{array}$$
+  3. **Análisis de la diferencia espacial ($\Delta a_n$)**:
+     - Conteo de elementos añadidos en cada nueva etapa $n \to n+1$.
+  4. **Formulación explícita $a_n = f(n)$**:
+     - Estructurar el modelo algebraico (lineal, cuadrático) que rige la cantidad de elementos en función de la etapa $n$.
+
+  ### Síntesis didáctica
+  - Paso 1: Contar elementos en cada figura ($n=1, 2, 3$).
+  - Paso 2: Construir tabla de valores.
+  - Paso 3: Hallar el término general $a_n$.
+definiciones_clave: |
+  - **Secuencia gráfica**: Serie ordenada de figuras o patrones geométricos que evolucionan según una regla geométrica fija.
+  - **Módulo o figura base ($G_1$)**: Estructura visual inicial correspondiente a la posición $n=1$.
+  - **Patrón de adición espacial**: Cantidad fija o variable de elementos geométricos agregados en cada paso.
+propiedades_relaciones: |
+  - **Isomorfismo gráfico-numérico**: La secuencia de conteo numérico $a_n$ conserva exactamente el mismo comportamiento algebraico que el patrón geométrico.
+  - **Conservación de la regla estructural**: El modo en que se ensamblan los componentes en la figura $n$ debe aplicarse sistemáticamente a la figura $n+1$.
+ejemplo_guiado:
+  enunciado: 'Se construyen figuras con fósforos formando cuadrados en fila: la Figura 1 usa 4 fósforos (1 cuadrado), la Figura 2 usa 7 fósforos (2 cuadrados unidos), la Figura 3 usa 10 fósforos. Determina la fórmula para la Figura $n$ y calcula cuántos fósforos se necesitan para la Figura 15.'
+  pasos:
+    - 'Paso 1: Registramos la secuencia numérica de fósforos: $a_1 = 4$, $a_2 = 7$, $a_3 = 10$.'
+    - 'Paso 2: Calculamos la diferencia entre figuras consecutivas: $7-4 = 3$, $10-7 = 3$. La diferencia constante es $d = +3$ fósforos por figura.'
+    - 'Paso 3: Formamos la fórmula general $a_n = 3n + c$. Para $n=1 \implies 3(1) + c = 4 \implies c = 1$. La fórmula es **$a_n = 3n + 1$**.'
+    - 'Paso 4: Evaluamos para la Figura 15: $a_{15} = 3(15) + 1 = 45 + 1 = 46$. Se necesitan **$46$ fósforos**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la estrategia recomendada para determinar cuántos elementos tendrá la figura $n=50$ en una secuencia gráfica?'
+    choices:
+      - {text: 'Contar los elementos de las primeras figuras, armar una tabla de valores y deducir la fórmula del término general $a_n$', is_correct: true}
+      - {text: 'Dibujar a mano las 50 figuras una por una en el papel', is_correct: false}
+      - {text: 'Multiplicar el número de elementos de la Figura 1 por 50', is_correct: false}
+      - {text: 'Sumar el número de figura más el número de elementos inicial', is_correct: false}
+    explanation: 'La alternativa correcta es ''Contar los elementos de las primeras figuras, armar una tabla de valores y deducir la fórmula del término general $a_n$''. Es la estrategia de traducción gráfico-numérica.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si una secuencia gráfica de triángulos agrupados requiere $3, 5, 7, 9$ palitos en las figuras 1, 2, 3, 4, ¿cuál es la fórmula $a_n$ del número de palitos para la figura $n$?'
+    choices:
+      - {text: '$a_n = 2n + 1$, pues aumenta de 2 en 2 y para $n=1$ da $3$', is_correct: true}
+      - {text: '$a_n = 3n$, pues la primera figura tiene 3 palitos', is_correct: false}
+      - {text: '$a_n = n + 2$, sumando 2 a la posición', is_correct: false}
+      - {text: '$a_n = 4n - 1$, multiplicando por 4', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_n = 2n + 1$, pues aumenta de 2 en 2 y para $n=1$ da $3$''. Diferencia $+2 \implies 2n + 1$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar el tipo de definición de la sucesión (término general explícito
-  $a_n = f(n)$ o relación de recurrencia $a_n = g(a_{n-1})$).'
-- 'Paso 2: Sustituir los índices de posición $n = 1, 2, 3, \dots$ para calcular los
-  términos requeridos.'
-- 'Paso 3: Verificar la consistencia de la secuencia numérica obtenida.'
-errores_correccion: '- **Error 1: Sustituir $n=0$ en el término general pretendiendo
-  obtener el primer término.** **Cómo corregirlo:** En el convenio escolar estándar,
-  la posición del primer término empieza estrictamente en $n=1$.
-
-
-  - **Error 2: Intentar calcular un término lejano en una definición recursiva sin
-  conocer la condición inicial.** **Cómo corregirlo:** Una fórmula recursiva EXIGE
-  conocer al menos el primer término $a_1$ para iterar.'
+  - 'Paso 1: Contar cuidadosamente la cantidad de elementos de interés en las primeras 3 o 4 figuras.'
+  - 'Paso 2: Escribir la secuencia de números correspondiente a las posiciones $n=1, 2, 3, 4$.'
+  - 'Paso 3: Analizar el incremento o patrón entre los términos de la secuencia numérica.'
+  - 'Paso 4: Deducir el término general $a_n$ y evaluar en la posición deseada.'
+errores_correccion: |
+  - **Error 1:** Multiplicar el total de elementos de la Figura 1 directamente por $n$ (ej: si la Figura 1 tiene 4 fósforos, asumir que la Figura $n$ tiene $4n$). **Cómo corregirlo:** Las figuras suelen compartir lados o vértices; **debes analizar la diferencia de incremento real ($d$) entre etapas**.
+  - **Error 2:** Olvidar contar los elementos que son compartidos entre figuras adyacentes. **Cómo corregirlo:** Realiza un **conteo visual meticuloso** de cada componente geométrico.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.SUCESIONES_BASE.REGULARIDAD_GRAFICA.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de conceptos de sucesiones numéricas.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la notación por subíndices.
-  alternativas:
-  - Cumple la notación
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la notación
-  solucion_pasos:
-  - Demostración formal por $a_n = f(n)$.
-- titulo: ¿Comienza la posición n del primer término en n = 1?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, en el dominio estándar $\mathbb{N}^+$.
-- titulo: ¿Altera el orden de los elementos la identidad de una sucesión?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, porque la posición determina la asignación de cada término.
+  - titulo: 'Secuencia gráfica de cuadrados en grilla'
+    enunciado: 'Si la Figura 1 tiene 1 cuadrito, la Figura 2 tiene 4, la Figura 3 tiene 9, ¿la fórmula para la Figura $n$ es $a_n = n^2$?'
+    alternativas:
+      - 'Sí, representa el área de cuadrados de lado n'
+      - 'No, la fórmula es $3n - 2$'
+      - 'No, la fórmula es $2^n$'
+    respuesta: 'Sí, representa el área de cuadrados de lado n'
+    solucion_pasos:
+      - '1. Conteo: 1, 4, 9, 16.'
+      - '2. Patrón: $1^2, 2^2, 3^2, n^2$.'
+  - titulo: 'Construcción de hexágonos unidos'
+    enunciado: 'La Figura 1 usa 6 palitos (1 hexágono), la Figura 2 usa 11 palitos (2 hexágonos unidos con 1 lado común). ¿La fórmula es $a_n = 5n + 1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Incremento $+5$ palitos por cada nuevo hexágono unido $\implies a_n = 5n + 1$.'
+  - titulo: 'Secuencia de puntos perimetrales'
+    enunciado: 'Si los puntos en las figuras 1, 2, 3 son $4, 8, 12, 16$, ¿la fórmula para la figura $n$ es $a_n = 4n$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Incremento $+4 \implies a_n = 4n$.'
+  - titulo: 'Conteo en la Figura 10'
+    enunciado: 'En el patrón $a_n = 5n + 1$, ¿la Figura 10 requiere 51 elementos?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $a_{10} = 5(10) + 1 = 51$.'
 errores_frecuentes:
-- Evaluar $n = 0$ para encontrar el primer término de una sucesión definida en los
-  enteros positivos.
-- Declarar el valor numérico del término $a_n$ con la posición ordinal $n$ en la fórmula
-  general.
-- Intentar una sucesión como si fuera un conjunto desordenado donde el orden de los
-  elementos no importa.
-- Usar una relación recursiva para calcular la posición 100 sin conocer los 99 términos
-  anteriores.
-- Declarar que toda secuencia gráfica responde a un crecimiento lineal simple sin
-  probar la diferencia.
+  - 'Multiplicar la cantidad de elementos de la primera figura directamente por el número de etapa deseada.'
+  - 'El conteo de elementos en figuras adyacentes se efectúa ignorando los lados o vértices compartidos.'
+  - 'Las secuencias gráficas no admiten representación mediante expresiones algebraicas generales.'
+  - 'Todos los patrones geométricos secuenciales responden exclusivamente a modelos de crecimiento cuadrático.'
+  - 'Contar incorrectamente los elementos de la muestra inicial distorsionando la diferencia entre términos.'
 afirmaciones_verdaderas:
-- Una sucesión numérica es una función de dominio entero positivo $\mathbb{N}^+$ a
-  valores reales.
-- El término general $a_n = f(n)$ permite calcular el valor de cualquier posición
-  $n$ en un solo paso de evaluación.
-fuente: Texto escolar MINEDUC — Números / Álgebra 1° Medio / PAES.
+  - 'Las secuencias gráficas pueden traducirse a secuencias numéricas registrando la cantidad de elementos de cada figura en una tabla.'
+  - 'Si el incremento de elementos entre figura y figura es constante $d$, la fórmula del término general es lineal de la forma $a_n = dn + c$.'
+al_terminar_debes_poder: 'Traducir secuencias gráficas a secuencias numéricas y calcular la cantidad de elementos de cualquier figura $n$ mediante $a_n$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

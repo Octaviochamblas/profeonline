@@ -1,142 +1,100 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.INTERPRETACION_LIMITE
-resumen_inicial: 'Interpretación de la suma infinita como valor límite: concepto y
-  desarrollo dentro de Serie geométrica finita e infinita.'
-explicacion_simple: En la vida real, nadie puede sumar 'infinitas' veces. La paradoja
-  de Zenón decía que Aquiles nunca alcanzaría a la tortuga porque siempre habría una
-  distancia a la mitad que recorrer. Las matemáticas lo resolvieron con el concepto
-  de 'Límite'.
-explicacion_formal: 'Imagina que tienes una torta. El primer día comes la mitad (1/2).
-  El segundo día comes la mitad de lo que quedó (1/4). El tercero la mitad de eso
-  (1/8)....
+resumen_inicial: 'La interpretación de la suma infinita como valor límite establece que el resultado $S = \frac{a_1}{1 - r}$ representa la cota matemática a la que se aproxima arbitrariamente la suma acumulada cuando el número de términos tiende a infinito: $S = \lim_{n \to \infty} S_n$.'
+explicacion_simple: |
+  En el lenguaje cotidiano, decir "sumar infinitos números" puede sonar a que nunca terminarás de calcular:
+  - Sin embargo, en matemáticas, el valor $S$ de una serie infinita es su **LÍMITE**.
+  - Significa que a medida que sumas más y más términos ($n = 10, 100, 1.000, 1.000.000, \dots$), la suma de tus números se **acerca infinitesimalmente** al número $S$.
+  - La distancia entre tu suma parcial y el valor límite $S$ se vuelve **tan pequeña como desees**, aunque con una cantidad finita de pasos nunca toques el límite de forma exacta.
+explicacion_formal: |
+  ### Definición formal mediante Límite de Cauchy / Weierstrass
+  Sea $(S_n)_{n \in \mathbb{N}}$ la sucesión de sumas parciales de la serie geométrica $\sum_{k=1}^\infty a_1 r^{k-1}$ con $|r| < 1$.
+  Decir que la suma infinita es $S \in \mathbb{R}$ equivale formalmente a afirmar que:
+  $$\forall \varepsilon > 0, \quad \exists N \in \mathbb{N} \quad \text{tal que} \quad \forall n > N \implies |S_n - S| < \varepsilon$$
 
-  - Serie: $1/2 + 1/4 + 1/8 \dots$
+  ### Error de Truncamiento ($E_n$)
+  Si se aproxima la suma infinita $S$ usando únicamente los primeros $n$ términos (suma parcial $S_n$), la magnitud del error cometido viene dada por:
+  $$E_n = |S - S_n| = \left| \frac{a_1}{1 - r} - a_1 \cdot \frac{1 - r^n}{1 - r} \right| = \left| \frac{a_1 r^n}{1 - r} \right|$$
+  Como $|r| < 1$, el error $E_n \to 0$ exponencialmente a medida que $n \to \infty$.
 
-  - Cálculo: $S = \frac{1/2}{1 - 1/2} = \frac{1/2}{1/2} = 1$.
-
-
-  La fórmula dice que el total es ''1 torta entera''.
-
-  - ¿Te la comerás toda alguna vez en la realidad? **NO.** Siempre quedará una miguita
-  que partirás a la mitad al día siguiente.
-
-  - Entonces, ¿qué significa ese ''1''? Es tu **Techo Insuperable**. Significa que
-  jamás necesitarás ir a comprar una segunda torta, no importa cuántos días repitas
-  el proceso.
-
-
-  En PAES, las preguntas no siempre te pedirán calcular, sino interpretar qué significa
-  ese techo en el contexto del problema (capacidad máxima de un estanque, distancia
-  límite, etc).'
-definiciones_clave: '- **Interpretación de la suma infinita como valor límite**: Concepto
-  fundamental dentro del estudio de Serie geométrica finita e infinita.'
-propiedades_relaciones: '- **Propiedades de Interpretación de la suma infinita como
-  valor límite**: Relaciones de cambio y fórmulas estructurales de serie geométrica
-  finita e infinita.'
+  ### Síntesis didáctica
+  - Significado de $S$: Límite al que se aproximan las sumas parciales $S = \lim_{n \to \infty} S_n$.
+  - Error de truncamiento: $E_n = |S - S_n| = \frac{|a_1| \cdot |r|^n}{1 - r} \to 0$.
+definiciones_clave: |
+  - **Valor límite ($S$)**: Cota matemática asintótica a la que convergen las sumas parciales.
+  - **Suma parcial ($S_n$)**: Aproximación finita de la serie verdadera usando los $n$ primeros elementos.
+  - **Error de truncamiento ($E_n$)**: Diferencia absoluta entre la suma infinita verdadera $S$ y la aproximación $S_n$.
+propiedades_relaciones: |
+  - **Monotonía y cota superior**: Para $a_1 > 0$ y $0 < r < 1$, las sumas parciales $S_n$ son estrictamente crecientes y están acotadas superiormente por el valor límite $S$ ($S_n < S, \forall n$).
+  - **Aplicaciones físicas**: En la física, describe procesos de amortiguamiento, trayectorias de rebote de pelotas y modelos de difusión térmica.
 ejemplo_guiado:
-  enunciado: Una pelota cae desde 80 cm y en cada rebote alcanza la mitad de la altura
-    anterior. ¿A qué altura total tenderán a sumar todos los rebotes hacia arriba?
+  enunciado: 'Para la serie geométrica infinita de distancias $S = 10 + 5 + 2,5 + 1,25 + \dots$ (metros), calcula su valor límite $S$ y el error de truncamiento al aproximar usando sólo $n=3$ términos.'
   pasos:
-  - 'Identifico la serie de alturas de los rebotes: 40, 20, 10, 5, y así sucesivamente,
-    con a_1 igual a 40 y r igual a 0,5.'
-  - 'Aplico la fórmula: S infinito igual a 40 dividido entre (1 menos 0,5), es decir
-    40 dividido entre 0,5, igual a 80.'
-  - 'Interpreto el resultado: la suma de las alturas de todos los rebotes tenderá
-    a 80 centímetros, sin superarlo nunca.'
+    - 'Paso 1: Identificamos $a_1 = 10$ m y la razón $r = 0,5$. Verificamos $|0,5| < 1 \implies$ Converge.'
+    - 'Paso 2: Calculamos el valor límite exacto: $S = \frac{10}{1 - 0,5} = \frac{10}{0,5} = 20$ metros.'
+    - 'Paso 3: Calculamos la suma parcial con $n=3$ términos: $S_3 = 10 + 5 + 2,5 = 17,5$ metros.'
+    - 'Paso 4: Calculamos el error de truncamiento: $E_3 = |S - S_3| = |20 - 17,5| = 2,5$ metros. El valor límite es **$20$ m** y el error con 3 términos es **$2,5$ m**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la clave al trabajar con interpretación de la suma infinita como
-    valor límite?
-  choices:
-  - text: Identificar correctamente el patrón de serie geométrica finita e infinita
-    is_correct: true
-  - text: Sumar los índices al azar
-    is_correct: false
-  - text: Ignorar la posición de cada término
-    is_correct: false
-  - text: Multiplicar siempre por cero
-    is_correct: false
-  explanation: 'La alternativa correcta es: Identificar correctamente el patrón de
-    serie geométrica finita e infinita. Es la clave conceptual al estudiar interpretación
-    de la suma infinita como valor límite.'
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el cálculo paso a paso de interpretación de la suma infinita como valor
-    límite, ¿qué procedimiento se debe seguir?
-  choices:
-  - text: Verificar la coherencia del resultado con el enunciado
-    is_correct: true
-  - text: Omitir la comprobación numérica
-    is_correct: false
-  - text: Cambiar la posición de los términos arbitrariamente
-    is_correct: false
-  - text: Dividir entre la nada
-    is_correct: false
-  explanation: 'La alternativa correcta es: Verificar la coherencia del resultado
-    con el enunciado. Garantiza que los cálculos en interpretación de la suma infinita
-    como valor límite sean precisos.'
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Qué representa formalmente el valor $S = \frac{a_1}{1 - r}$ en una serie geométrica infinita convergente?'
+    choices:
+      - {text: 'El límite matemático al que se aproxima infinitesimalmente la secuencia de sumas parciales cuando $n \to \infty$', is_correct: true}
+      - {text: 'El valor exacto alcanzado al sumar los primeros 100 términos', is_correct: false}
+      - {text: 'El promedio de los dos primeros términos de la serie', is_correct: false}
+      - {text: 'El mayor término presente en la sucesión', is_correct: false}
+    explanation: 'La alternativa correcta es ''El límite matemático al que se aproxima infinitesimalmente la secuencia de sumas parciales cuando $n \to \infty$''. Definición de límite.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Una pelota rebota alcanzando en cada salto la mitad de la altura anterior ($r = 0,5$). Si cae inicialmente desde $8$ metros ($a_1 = 8$), ¿cuál es el límite de la suma de todas sus alturas de rebote?'
+    choices:
+      - {text: '$S = 16$ metros, calculando $\frac{8}{1 - 0,5} = \frac{8}{0,5} = 16$ metros', is_correct: true}
+      - {text: '$S = 8$ metros, igual a la altura inicial', is_correct: false}
+      - {text: '$S = 32$ metros, multiplicando $8 \cdot 4$', is_correct: false}
+      - {text: '$S = 12$ metros, sumando $8 + 4$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$S = 16$ metros, calculando $\frac{8}{1 - 0,5} = \frac{8}{0,5} = 16$ metros''. $8 / 0,5 = 16$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Calcula el valor de la serie infinita.'
-- 'Paso 2: Acompáñalo verbalmente con palabras clave como ''límite'', ''techo'', ''no
-  se superará'', o ''tiende a''.'
-- 'Paso 3: Aplica esta idea al contexto (Ej: ''La población de abejas no superará
-  los 1000 ejemplares'').'
-errores_correccion: Evita confundir la posición del término $n$ con el valor del término
-  $a_n$ en interpretación de la suma infinita como valor límite.
+  - 'Paso 1: Identificar la magnitud física o abstracta $a_1$ y la razón de atenuación $r$.'
+  - 'Paso 2: Calcular el valor límite exacto mediante $S = \frac{a_1}{1 - r}$.'
+  - 'Paso 3: Si se requiere una aproximación finita de $n$ pasos, calcular $S_n = a_1 \cdot \frac{1 - r^n}{1 - r}$.'
+  - 'Paso 4: Calcular el error de truncamiento $E_n = |S - S_n|$ e interpretar el resultado en las unidades del problema.'
+errores_correccion: |
+  - **Error 1:** Afirmar que el valor límite $S$ se alcanza de forma exacta en un término finito $n$. **Cómo corregirlo:** Las sumas parciales **se aproximan asintóticamente a $S$**, alcanzándolo de manera exacta únicamente en el **LÍMITE cuando $n \to \infty$**.
+  - **Error 2:** Olvidar indicar las unidades de medida en problemas aplicados de física o finanzas. **Cómo corregirlo:** La suma infinita conserva las **mismas unidades de medida que el término inicial $a_1$** (metros, segundos, pesos).
 ejemplos:
-- titulo: El estanque de químicos
-  enunciado: A un estanque se le vierten 100L de químico, luego 50L, luego 25L, al
-    infinito. Si el estanque hace 200L, ¿se rebalsará?
-  solucion_pasos:
-  - Calculamos S = 100 / (1 - 0.5) = 200.
-  - La serie infinita da 200.
-  - 'Interpretación: Al infinito, el volumen tenderá a 200L. Pero jamás los superará.
-    No se rebalsará.'
-- titulo: Ejemplo 1
-  enunciado: Una serie infinita da como resultado 50 metros. ¿Qué significa este valor?
-  alternativas:
-  - Es el límite que la suma acumulada nunca superará
-  - Es el valor del último término sumado
-  - Es el promedio de los términos
-  respuesta: Es el límite que la suma acumulada nunca superará
-  solucion_pasos:
-  - El resultado de una serie infinita convergente representa un techo insuperable,
-    no un término individual.
-- titulo: Ejemplo 2
-  enunciado: Un estanque recibe una serie infinita de líquido que suma 150 litros,
-    y su capacidad es 200 litros. ¿Se rebalsará?
-  alternativas:
-  - 'No'
-  - Sí
-  - Falta información
-  respuesta: 'No'
-  solucion_pasos:
-  - El acumulado tiende a 150 litros, que es menor que la capacidad de 200 litros.
-- titulo: ¿El valor límite de una suma infinita se alcanza en un paso n finito?
-  respuesta: 'No'
-  solucion_pasos:
-  - Nunca se alcanza exactamente en un paso finito, solo se aproxima cada vez más.
-- titulo: ¿Es correcto interpretar el valor límite como la capacidad máxima acumulada
-    del fenómeno modelado?
-  respuesta: Sí
-  solucion_pasos:
-  - Esa es la interpretación estándar del techo insuperable de una serie convergente.
+  - titulo: 'Límite de rebote de pelota'
+    enunciado: 'Si $a_1 = 4$ m y $r = 1/2$, ¿el límite acumulado de rebotes es $S = \frac{4}{1 - 1/2} = 8$ m?'
+    alternativas:
+      - 'Sí, el límite es 8 metros'
+      - 'No, el límite es 4 metros'
+      - 'No, el límite es infinito'
+    respuesta: 'Sí, el límite es 8 metros'
+    solucion_pasos:
+      - '1. $a_1 = 4, r = 1/2$.'
+      - '2. $S = 4 / (1/2) = 8$ m.'
+  - titulo: 'Error de truncamiento en n=2'
+    enunciado: 'Para $a_1 = 10, r = 0,5$, si $S = 20$ y $S_2 = 15$, ¿el error de truncamiento es $E_2 = 20 - 15 = 5$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $E_2 = |20 - 15| = 5$.'
+  - titulo: 'Límite de consumo de agua'
+    enunciado: 'Si un pozo pierde el 20% de su extracción por mes ($a_1 = 100$ L, $r = 0,80$), ¿el límite total extraído es $S = \frac{100}{1 - 0,80} = 500$ L?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $100 / 0,20 = 500$ litros.'
+  - titulo: 'Reducción del error a cero'
+    enunciado: '¿El error $E_n = |S - S_n|$ se aproxima a cero cuando $n$ se vuelve infinitamente grande?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Como $|r| < 1$, $\lim_{n \to \infty} E_n = 0$.'
 errores_frecuentes:
-- Afirmar que en algún paso específico 'n' se alcanza el valor de la serie infinita
-  (Nunca se alcanza en un paso 'n' finito).
-- Interpretar el límite como un promedio o un valor constante, en vez de entenderlo
-  como el 'acumulado tope'.
-- Afirmar que el valor límite se alcanza exactamente en algún término finito de la
-  suma.
-- Interpretar la suma infinita como un promedio de los términos, en vez de un acumulado
-  tope.
-- Omitir mencionar las unidades del contexto al interpretar el resultado.
+  - 'El valor límite de la suma infinita se alcanza exactamente en algún término finito de la suma.'
+  - 'La suma de una serie geométrica infinita siempre entrega un número entero positivo.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Ignorar las unidades de medida asociadas al término inicial en la interpretación del límite.'
+  - 'El error de truncamiento $E_n$ es numéricamente igual a la razón geométrica $r$ de la serie.'
 afirmaciones_verdaderas:
-- La formulación de interpretación de la suma infinita como valor límite mantiene
-  la regularidad de la sucesión.
-- El valor de una suma infinita convergente representa un techo o límite que la suma
-  acumulada nunca supera, aunque se acerque cada vez más.
-al_terminar_debes_poder: Resolver problemas prácticos utilizando interpretación de
-  la suma infinita como valor límite.
-fuente: Currículum Nacional MINEDUC.
+  - 'La suma infinita de una serie geométrica convergente $S = \frac{a_1}{1 - r}$ es el valor límite al que tienden sus sumas parciales $S_n$.'
+  - 'El error de truncamiento $E_n = |S - S_n|$ disminuye exponencialmente hacia cero a medida que el número de términos $n$ aumenta.'
+al_terminar_debes_poder: 'Interpretar la suma infinita de una serie geométrica como un valor límite y calcular su error de truncamiento.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

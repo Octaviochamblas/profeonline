@@ -1,125 +1,107 @@
-resumen_inicial: El modelamiento de crecimiento o decrecimiento porcentual compuesto
-  utiliza progresiones geométricas donde la razón es el factor $r = 1 \pm p$ ($p =
-  P/100$), generando el término general $a_n = a_1 \cdot (1 \pm p)^{n-1}$.
-explicacion_simple: Fenómenos como la reproducción de bacterias, el aumento compuesto
-  de un precio o la pérdida de valor de un vehículo por depreciación se modelan con
-  progresiones geométricas donde la razón es $1 + p$ para aumentos o $1 - p$ para
-  pérdidas.
-explicacion_formal: 'Para un proceso con variación porcentual constante $P\%$ por
-  período, el **Modelo de Progresión Geométrica** se estructura como:
-
-
-  $$a_n = a_1 \cdot (1 \pm p)^{n-1} \quad \text{donde } p = \frac{P}{100}$$
-
-
-  - Crecimiento porcentual: $r = 1 + p > 1$.
-
-  - Decrecimiento/Depreciación porcentual: $r = 1 - p < 1$.'
-definiciones_clave: '- **Modelo de crecimiento porcentual**: Aplicación $a_n = a_1
-  \cdot (1 \pm p)^{n-1}$ para variaciones compuestas.'
-propiedades_relaciones: '- **Factor de escala $1 \pm p$**: Razón de la P.G. derivada
-  del cambio porcentual periódico.'
-ejemplo_guiado:
-  enunciado: Una población inicial de $1.000$ bacterias crece un $20\%$ cada hora
-    ($r = 1,20$). Calcule la población al término de la cuarta hora ($n=5$ términos
-    en la secuencia $a_1, a_2, a_3, a_4, a_5$).
-  pasos:
-  - 'Paso 1: Identificar $a_1 = 1.000$, $r = 1,20$ y $n = 5$.'
-  - 'Paso 2: Calcular $a_5 = 1.000 \cdot 1,20^{5-1} = 1.000 \cdot 1,20^4$.'
-  - 'Paso 3: Resolver la potencia $1,20^4 = 2,0736 \implies a_5 = 1.000 \cdot 2,0736
-    = 2.073,6 \approx 2.074$.'
-  - 'Conclusión: La población al cabo de $4$ horas será de aproximadamente $2.074$
-    bacterias.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se determina la razón r en un modelo de crecimiento porcentual compuesto
-    del P%?
-  choices:
-  - text: 'Sumando 1 al porcentaje en decimal: r = 1 + (P / 100)'
-    is_correct: true
-  - text: Multiplicando r = P · 100
-    is_correct: false
-  - text: Restando r = P - 100
-    is_correct: false
-  - text: Dividiendo r = 100 / P
-    is_correct: false
-  explanation: 'La alternativa correcta es ''Sumando 1 al porcentaje en decimal: r
-    = 1 + (P / 100)''.'
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado de las 1.000 bacterias con crecimiento del 20%, ¿cuál
-    fue la población a la 4ta hora?
-  choices:
-  - text: Aproximadamente 2.074 bacterias
-    is_correct: true
-  - text: 1.800 bacterias
-    is_correct: false
-  - text: 2.000 bacterias
-    is_correct: false
-  - text: 3.000 bacterias
-    is_correct: false
-  explanation: La alternativa correcta es 'Aproximadamente 2.074 bacterias'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de construir modelos de crecimiento
-  o decrecimiento porcentual mediante $a_n = a_1 \cdot (1 \pm p)^{n-1}$ resolviendo
-  problemas prácticos.
 semantic_id: MAT.NUM.PROG_GEOMETRICA.MODELO_CRECIMIENTO_PORCENTUAL
+resumen_inicial: 'El modelamiento de crecimiento porcentual mediante progresiones geométricas traduce fenómenos reales de variación proporcional constante (interés compuesto, crecimiento bacteriano, devaluación) a ecuaciones $a_n = a_1 \cdot r^{n-1}$.'
+explicacion_simple: |
+  Cuando un fenómeno crece o disminuye en un **porcentaje fijo en cada período de tiempo** (variación porcentual constante), su comportamiento se modela con una **progresión geométrica**:
+  - **Crecimiento del $20\%$ mensual**: La cantidad se multiplica en cada paso por $r = 1 + 0,20 = 1,20$.
+  - **Duplicación de bacterias cada hora**: La cantidad se multiplica en cada paso por $r = 2$.
+  - **Descuento del $10\%$ anual (depreciación porcentual)**: La cantidad se multiplica en cada paso por $r = 1 - 0,10 = 0,90$.
+  La clave es hallar la **razón multiplicativa $r = 1 \pm \frac{P}{100}$**.
+explicacion_formal: |
+  ### Definición formal
+  Un fenómeno discreto de variación porcentual constante $P\%$ por período en el tiempo $n \in \mathbb{N}$ se define por una razón multiplicativa fija:
+  $$r = 1 \pm \frac{P}{100}$$
+  El modelo de evolución temporal del estado $y(n)$ viene dado por la progresión geométrica:
+  $$y(n) = a_n = a_1 \cdot \left(1 \pm \frac{P}{100}\right)^{n-1}$$
+  donde:
+  - $a_1$ es la cantidad inicial en el primer período ($n=1$).
+  - $r = 1 + \frac{P}{100}$ es el **factor de crecimiento** ($P\% > 0$).
+  - $r = 1 - \frac{P}{100}$ es el **factor de decrecimiento / decaimiento** ($P\% > 0$).
+  - $n$ representa la etapa o período discreto.
+
+  ### Dominio de aplicaciones
+  1. **Finanzas**: Interés compuesto discreto ($M = C(1+i)^t$).
+  2. **Biología**: Crecimiento de cultivos celulares / propagación de virus.
+  3. **Física**: Vida media y desintegración radiactiva ($r = 1/2$).
+
+  ### Síntesis didáctica
+  - Factor de aumento $+P\% \implies r = 1 + \frac{P}{100}$.
+  - Factor de rebaja $-P\% \implies r = 1 - \frac{P}{100}$.
+definiciones_clave: |
+  - **Factor multiplicativo de crecimiento ($1 + P/100$)**: Razón geométrica asociada a un aumento porcentual constante.
+  - **Factor multiplicativo de decaimiento ($1 - P/100$)**: Razón geométrica asociada a una disminución porcentual constante.
+  - **Crecimiento exponencial discreto**: Evolución donde la variación es proporcional a la cantidad acumulada en ese instante.
+propiedades_relaciones: |
+  - **No linealidad del efecto acumulado**: Un incremento del $10\%$ durante 2 períodos no equivale a sumar $20\%$, sino a multiplicar por $1,10^2 = 1,21$ ($+21\%$).
+  - **Invarianza de la escala**: La razón $r$ no depende de la masa o suma inicial $a_1$.
+ejemplo_guiado:
+  enunciado: 'Un cultivo de bacterias contiene $1.000$ microorganismos inicialmente ($n=1$) y la población aumenta un $20\%$ cada hora. Determina la fórmula de la P.G. y calcula la cantidad de bacterias al cabo de 4 horas.'
+  pasos:
+    - 'Paso 1: Identificamos $a_1 = 1.000$ bacterias.'
+    - 'Paso 2: Calculamos la razón multiplicativa para un aumento del 20%: $r = 1 + \frac{20}{100} = 1,20$.'
+    - 'Paso 3: Escribimos la fórmula del modelo: $a_n = 1.000 \cdot (1,20)^{n-1}$.'
+    - 'Paso 4: Evaluamos para la hora 4 ($n=4$): $a_4 = 1.000 \cdot (1,20)^{4-1} = 1.000 \cdot (1,20)^3 = 1.000 \cdot 1,728 = 1.728$. Al cabo de 4 horas habrá **$1.728$ bacterias**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la razón geométrica $r$ correspondiente a un fenómeno que disminuye un $15\%$ en cada período de tiempo?'
+    choices:
+      - {text: 'La razón multiplicativa $r = 0,85$, calculando $1 - \frac{15}{100} = 1 - 0,15 = 0,85$', is_correct: true}
+      - {text: 'La razón multiplicativa $r = -15$, expresando el porcentaje directo', is_correct: false}
+      - {text: 'La razón multiplicativa $r = 1,15$, sumando el porcentaje', is_correct: false}
+      - {text: 'La razón multiplicativa $r = -0,15$, conservando el decimal con signo negativo', is_correct: false}
+    explanation: 'La alternativa correcta es ''La razón multiplicativa $r = 0,85$, calculando $1 - \frac{15}{100} = 1 - 0,15 = 0,85$''. $r = 1 - 0,15 = 0,85$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si una población de peces de $2.000$ ejemplares se duplica cada año ($r = 2$), ¿cuántos peces habrá al cabo de 5 años ($n=5$)?'
+    choices:
+      - {text: '$a_5 = 32.000$ peces, calculando $2.000 \cdot 2^{5-1} = 2.000 \cdot 2^4 = 2.000 \cdot 16 = 32.000$', is_correct: true}
+      - {text: '$a_5 = 64.000$ peces, elevando a la potencia 5', is_correct: false}
+      - {text: '$a_5 = 20.000$ peces, multiplicando $2.000 \cdot 10$', is_correct: false}
+      - {text: '$a_5 = 10.000$ peces, multiplicando $2.000 \cdot 5$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_5 = 32.000$ peces, calculando $2.000 \cdot 2^{5-1} = 2.000 \cdot 2^4 = 2.000 \cdot 16 = 32.000$''. $2.000 \cdot 16 = 32.000$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Verificar que la secuencia mantenga una razón multiplicativa constante
-  $r = \frac{a_{n+1}}{a_n}$.'
-- 'Paso 2: Aplicar la fórmula del término general $a_n = a_1 \cdot r^{n-1}$ o de la
-  suma $S_n = a_1 \cdot \left[ \frac{r^n - 1}{r - 1} \right]$.'
-- 'Paso 3: Resolver numéricamente o con logaritmos el parámetro solicitado ($a_n,
-  a_1, r, n$ o $S_n$).'
-errores_correccion: '- **Error 1: Elevar la razón $r$ a la potencia $n$ en lugar de
-  $(n-1)$ en el término general ($a_n = a_1 \cdot r^n$).** **Cómo corregirlo:** La
-  razón $r$ se aplica a partir de la segunda posición, por lo que el exponente correcto
-  es $(n-1)$.
-
-
-  - **Error 2: Usar la fórmula de la suma de progresión aritmética en una progresión
-  geométrica.** **Cómo corregirlo:** En la P.G. la suma DEBE utilizar el factor multiplicativo
-  $S_n = a_1 \cdot \left[ \frac{r^n - 1}{r - 1} \right]$.'
+  - 'Paso 1: Identificar el valor inicial de la cantidad en la etapa 1 como $a_1$.'
+  - 'Paso 2: Convertir el porcentaje de cambio $P\%$ en el factor multiplicativo $r = 1 + P/100$ (aumento) o $r = 1 - P/100$ (disminución).'
+  - 'Paso 3: Construir el modelo funcional $a_n = a_1 \cdot r^{n-1}$.'
+  - 'Paso 4: Sustituir la etapa $n$ requerida, resolver la potencia $r^{n-1}$ y multiplicar por $a_1$.'
+errores_correccion: |
+  - **Error 1:** Usar el porcentaje decimal $0,20$ directamente como razón multiplicativa en lugar de $(1 + 0,20) = 1,20$. **Cómo corregirlo:** La razón de crecimiento incluye el 100% base: **$r = 1 + 0,20 = 1,20$**.
+  - **Error 2:** Sumar porcentajes en lugar de multiplicar factores para múltiples períodos (ej: creer que 2 años al 10% es +20%). **Cómo corregirlo:** En P.G. los factores se **multiplican en potencia: $1,10^2 = 1,21$ (+21%)**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROG_GEOMETRICA.MODELO_CRECIMIENTO_PORCENTUAL.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de progresión geométrica.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la razón constante.
-  alternativas:
-  - Cumple la constante
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la constante
-  solucion_pasos:
-  - Demostración formal por $a_{n+1} / a_n = r$.
-- titulo: ¿Es constante el cociente entre términos consecutivos en una P.G.?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición de progresión geométrica.
-- titulo: ¿Corresponde la P.G. a una función exponencial discreta?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, $a_n = a_1 \cdot r^{n-1}$ es una potencia de base $r$.
+  - titulo: 'Crecimiento de ahorro al 10%'
+    enunciado: 'Para $a_1 = \$100.000$ e incremento del $10\%$ anual ($r = 1,10$), ¿al año 3 ($n=3$) el monto es $100.000 \cdot (1,10)^2 = \$121.000$?'
+    alternativas:
+      - 'Sí, pues $100.000 \cdot 1,21 = 121.000$'
+      - 'No, es $\$120.000$'
+      - 'No, es $\$110.000$'
+    respuesta: 'Sí, pues $100.000 \cdot 1,21 = 121.000$'
+    solucion_pasos:
+      - '1. $a_1 = 100.000, r = 1,10, n = 3$.'
+      - '2. $a_3 = 100.000 \cdot 1,10^2 = 100.000 \cdot 1,21 = \$121.000$.'
+  - titulo: 'Desintegración radiactiva a la mitad'
+    enunciado: 'Si $100$ gramos de un elemento se reducen a la mitad cada año ($r = 0,5$), ¿al cabo de 4 años quedan $100 \cdot (0,5)^3 = 12,5$ gramos?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $100 \cdot 0,125 = 12,5$ g.'
+  - titulo: 'Crecimiento bacteriano al 50%'
+    enunciado: 'Si una población de 400 bacterias crece al 50% por hora ($r = 1,5$), ¿a las 3 horas hay $400 \cdot 1,5^2 = 900$ bacterias?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $400 \cdot 2,25 = 900$.'
+  - titulo: 'Depreciación de automóvil'
+    enunciado: 'Un auto de $\$10.000.000$ pierde 20% de valor por año ($r = 0,80$). ¿A los 3 años vale $10.000.000 \cdot 0,80^2 = \$6.400.000$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $10.000.000 \cdot 0,64 = \$6.400.000$.'
 errores_frecuentes:
-- Elevar la razón r al exponente n en lugar de multiplicar por r^(n-1) al calcular
-  an.
-- Restar los términos en lugar de calcular el cociente de división para determinar
-  la razón r.
-- Usar la fórmula del promedio de Gauss propia de la progresión aritmética en una
-  progresión geométrica.
-- Declarar que una razón geométrica menor que 1 genera términos negativos en la secuencia.
-- Declarar la razón porcentual P% con el factor multiplicativo r = 1 + P/100.
+  - 'Utilizar la tasa porcentual pura sin sumar ni restar la unidad base al construir el factor multiplicativo.'
+  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Sumar linealmente los porcentajes de variaciones consecutivas en lugar de elevar la razón a la potencia.'
+  - 'Un modelo de decaimiento porcentual alcanza el valor cero exacto en un número finito de pasos.'
 afirmaciones_verdaderas:
-- Una progresión geométrica tiene una razón constante $r = \frac{a_{n+1}}{a_n}$ entre
-  términos consecutivos.
-- El término general de una P.G. se calcula mediante la función exponencial $a_n =
-  a_1 \cdot r^{n-1}$.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
+  - 'Los fenómenos reales de variación porcentual constante se modelan mediante progresiones geométricas de razón $r = 1 \pm \frac{P}{100}$.'
+  - 'En un crecimiento porcentual de $P\%$, la cantidad en la etapa $n$ se calcula mediante $a_n = a_1 \cdot \left(1 + \frac{P}{100}\right)^{n-1}$.'
+al_terminar_debes_poder: 'Modelar y resolver situaciones reales de crecimiento o decrecimiento porcentual mediante progresiones geométricas.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

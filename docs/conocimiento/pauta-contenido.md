@@ -177,8 +177,9 @@ estado: publicado    # o borrador
 > presenta en orden aleatorio por cada carga de página.
 
 > **Nota — redacción del campo `al_terminar_debes_poder`:** Este campo no debe ser una frase genérica ni un molde de relleno. Debe responder siempre a dos aspectos integrados:
-> 1. **QUÉ (Objetivo):** Acción o capacidad que logrará el alumno (ej: *determinar el dominio*, *graficar la traslación*, *modelar la potencia eólica*).
-> 2. **CÓMO (Mecanismo explícito):** El procedimiento matemático o criterio específico para resolverlo (ej: *igualando a cero el binomio interno $(x-h)=0$*, *excluyendo la raíz del denominador*, *multiplicando el factor de escala por $c^n$*).
+> 1. **QUÉ (Objetivo):** Acción o capacidad concreta que logrará el alumno (ej: *determinar el dominio*, *graficar la traslación*, *modelar la potencia eólica*).
+> 2. **CÓMO (Mecanismo explícito):** El procedimiento matemático o algoritmo técnico específico para resolverlo (ej: *igualando a cero el binomio interno $(x-h)=0$*, *excluyendo las raíces del denominador*, *clasificando en orden decreciente de exponentes y sumando los coeficientes de los términos semejantes*).
+> 3. **SIN AMBIGÜEDAD (Precisión de objetos y operaciones):** El CÓMO debe especificar con claridad los objetos matemáticos involucrados (ej. *exponentes*, *grados*, *coeficientes numéricos*, *bases*) y la operación matemática exacta ejecutada, evitando abstracciones vagas.
 
 
 ---

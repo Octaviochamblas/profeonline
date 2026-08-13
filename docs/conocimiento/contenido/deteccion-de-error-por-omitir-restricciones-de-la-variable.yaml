@@ -1,133 +1,102 @@
 semantic_id: MAT.ALG.FRACCIONES_BASE.ERROR_RESTRICCIONES
-resumen_inicial: Omitir las restricciones del dominio al simplificar fracciones algebraicas
-  conduce a soluciones falsas o indeseadas en ecuaciones.
-explicacion_simple: 'Cuando resolvemos ecuaciones con fracciones algebraicas, es muy
-  común simplificar términos para trabajar más fácil.
+resumen_inicial: 'La detección de error por omitir restricciones de la variable consiste en identificar fallas algebraicas causadas por operar o evaluar fracciones sin considerar los valores prohibidos que anulan el denominador original.'
+explicacion_simple: |
+  **Omitir las restricciones de una variable** es una de las trampas matemáticas más peligrosas:
+  - **¿POR QUÉ ES UN ERROR GRAVE OMITIR LAS RESTRICCIONES?**:
+    1. **Genera paradojas falsas (demostraciones tramposas)**:
+       - Si no anotas que $x \neq 2$, alguien podría usar la simplificación $\frac{x(x - 2)}{x - 2} = x$ para evaluar en $x = 2$, ¡llegando al disparate de afirmar que $0 / 0 = 2$!
+    2. **Introduce "soluciones falsas" (raíces extrañas)**:
+       - En ecuaciones con fracciones, si una solución obtenida coincide con un valor prohibido del denominador original, **¡Esa solución DEBE SER DESCARTADA INMEDIATAMENTE!**
+  - **REGLA DE GOBERNANZA**:
+    $$\mathbf{\text{Toda fracción simplificada DEBE llevar adjuntas las restricciones de su versión original.}}$$
+explicacion_formal: |
+  ### Definición formal
+  Sea la ecuación racional $f(x) = g(x)$ donde $f(x) = \frac{P(x)}{Q(x)}$. El **Error de Omisión Dominial** se produce al sustituir el dominio real $\operatorname{Dom}(f) = \mathbb{R} \setminus Z(Q)$ por el conjunto universal $\mathbb{R}$, resolviendo $P(x) = g(x) Q(x)$ sin verificar el criterio de pertenencia:
 
-  Pero si olvidamos anotar los valores prohibidos del denominador original, podríamos
-  llegar a una solución matemática aparente que en realidad es falsa porque divide
-  por cero en la ecuación inicial.
+  $$r \in \text{Solución} \iff P(r) = g(r) Q(r) \quad \mathbf{\land \quad r \notin Z(Q)}$$
 
-  Detectar y evitar este error requiere verificar siempre que las soluciones obtenidas
-  pertenezcan al dominio permitido.'
-explicacion_formal: 'Sea la ecuación racional $\frac{P(x)}{Q(x)} = 0$. El **conjunto
-  solución verdadero** $S$ está restringido por:
+  ### Paradoja de División por Cero
+  Omitir restricciones permite operaciones inválidas en el cuerpo $\mathbb{R}$, tales como la cancelación del factor cero en identidades algebraicas falsas ($a \cdot 0 = b \cdot 0 \implies a = b$).
 
-
-  $$S = \{x \in \mathbb{R} \mid P(x) = 0\} \setminus \{x \in \mathbb{R} \mid Q(x)
-  = 0\}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $P(x) = 0$: Raíces obtenidas al resolver el numerador.
-
-  - $\setminus \{Q(x) = 0\}$: Operación de diferencia de conjuntos que elimina formalmente
-  las ''soluciones extrañas'' o raíces que anulan el denominador original.'
-definiciones_clave: '- **Solución extraña / falsa**: Valor numérico obtenido algebraicamente
-  que anula el denominador original y debe descartarse.
-
-  - **Verificación de restricciones**: Comprobación final de que cada solución obtenida
-  mantenga el denominador distinto de cero.'
-propiedades_relaciones: '- **Indeterminación oculta**: Multiplicar o cancelar por
-  una expresión que vale cero altera el conjunto de soluciones válidas de la ecuación.
-
-  - **Descarte obligatorio**: Si una solución candidata coincide con una restricción
-  del denominador, la solución se elimina inmediatamente.'
+  ### Síntesis didáctica
+  Omitir la verificación previa de las restricciones del denominador conduce a validar soluciones o evaluaciones imposibles generadas por división por cero.
+definiciones_clave: |
+  - **Error por omisión de restricciones**: Falla metodológica en la que se opera con fracciones ignorando los valores que anulan el denominador.
+  - **Solución extraña / falsa raíz**: Resultado numérico obtenido al resolver una ecuación racional que debe descartarse por anular el denominador.
+  - **Verificación de restricciones de dominio**: Comprobación final obligatoria que asegura que ninguna solución pertenezca al conjunto de valores prohibidos.
+propiedades_relaciones: |
+  - **Validación de soluciones**: Una solución de una ecuación fraccionaria es válida únicamente si no pertenece al conjunto de restricciones del denominador inicial.
 ejemplo_guiado:
-  enunciado: Resuelve la ecuación racional $\frac{x^2 - 9}{x - 3} = 0$, detecta la
-    restricción del denominador y determina si $x = 3$ es una solución válida.
+  enunciado: 'Detecta el error en la resolución de la ecuación $\frac{x^2 - 4}{x - 2} = 5$ y determina la solución real correcta.'
   pasos:
-  - 'Paso 1: Determinar la restricción del denominador original: $x - 3 \neq 0 \implies
-    x \neq 3$.Paso 2: Igualar el numerador a cero: $x^2 - 9 = 0 \implies (x - 3)(x
-    + 3) = 0$, lo que da como candidatos $x = 3$ y $x = -3$.Paso 3: Comparar los candidatos
-    con la restricción $x \neq 3$. El candidato $x = 3$ anula el denominador original
-    (división $0/0$) y es una solución falsa que debe descartarse.Paso 4: Concluir
-    que la única solución válida de la ecuación es $x = -3$.'
+    - 'Paso 1: **DETERMINAMOS LAS RESTRICCIONES DEL DENOMINADOR**:
+       - Denominador $x - 2 = 0 \implies \mathbf{x \neq 2}$.'
+    - 'Paso 2: Factorizamos y simplificamos la fracción para $x \neq 2$:
+       - $\frac{(x - 2)(x + 2)}{x - 2} = 5 \implies x + 2 = 5$.'
+    - 'Paso 3: Resolvemos la ecuación lineal resultante:
+       - $x + 2 = 5 \implies x = 3$.'
+    - 'Paso 4: **VERIFICAMOS LA SOLUCIÓN CONTRA LA RESTRICCIÓN**:
+       - La solución propuesta es $x = 3$.
+       - Comparamos con la restricción $x \neq 2$: Como $3 \neq 2$, la solución $x = 3$ **SÍ ES VÁLIDA**.'
+    - 'Paso 5: Si la solución obtenida hubiese sido $x = 2$, el error habría consistido en aceptarla a pesar de que anulaba el denominador.'
+    - 'Conclusión: La solución correcta es **$x = 3$**, habiendo validado la restricción $x \neq 2$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al resolver $\frac{x^2 - 9}{x - 3} = 0$, ¿por qué la raíz $x = 3$ debe
-    descartarse como solución?
-  choices:
-  - text: Porque anula el denominador original generando una indeterminación por cero.
-    is_correct: true
-  - text: Porque es un número positivo.
-    is_correct: false
-  - text: Porque $x = 3$ no satisface el numerador.
-    is_correct: false
-  - text: Porque las ecuaciones racionales solo aceptan soluciones negativas.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque anula el denominador original generando
-    una indeterminación por cero.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Con base en la verificación de restricciones para $\frac{x^2 - 9}{x -
-    3} = 0$, ¿cuál es el conjunto solución verdadero?
-  choices:
-  - text: $\{ -3 \}$
-    is_correct: true
-  - text: $\{ 3, -3 \}$
-    is_correct: false
-  - text: $\{ 3 \}$
-    is_correct: false
-  - text: Conjunto vacío
-    is_correct: false
-  explanation: La alternativa correcta es '$\{ -3 \}$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Al resolver una ecuación algebraica fraccionaria se obtiene la solución $x = 5$. Si el denominador original de la fracción era $(x - 5)$, ¿cuál es la conclusión correcta?'
+    choices:
+      - {text: 'La solución $x = 5$ debe ser descartada porque invalida el denominador ($5-5=0$), haciendo que la ecuación no tenga solución real', is_correct: true}
+      - {text: 'La solución $x = 5$ es correcta', is_correct: false}
+      - {text: 'La solución es $x = 0$', is_correct: false}
+      - {text: 'Se debe multiplicar por 5', is_correct: false}
+    explanation: 'La alternativa correcta es ''La solución $x = 5$ debe ser descartada porque invalida el denominador ($5-5=0$), haciendo que la ecuación no tenga solución real''. Descarte de raíces extrañas por violar la condición de existencia.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Qué consecuencia matemática ocurre si en un ejercicio o evaluación se omiten las restricciones de la variable?'
+    choices:
+      - {text: 'Se corrompe el dominio de la función, aceptando valores que producen divisiones por cero e induciendo a soluciones falsas', is_correct: true}
+      - {text: 'El ejercicio queda más corto y sin cambios', is_correct: false}
+      - {text: 'Se obtiene una fracción más grande', is_correct: false}
+      - {text: 'Aumenta el grado del polinomio', is_correct: false}
+    explanation: 'La alternativa correcta es ''Se corrompe el dominio de la función, aceptando valores que producen divisiones por cero e induciendo a soluciones falsas''. Consecuencia de la omisión dominial.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar todas las restricciones de los denominadores en la ecuación
-  racional original.'
-- 'Paso 2: Resolver la ecuación racional mediante simplificación o multiplicación
-  de denominadores.'
-- 'Paso 3: Obtener la lista de valores candidatos a solución.'
-- 'Paso 4: Comparar cada candidato con el conjunto de restricciones del paso 1.'
-- 'Paso 5: Descartar los candidatos que violen las restricciones y declarar el conjunto
-  solución final.'
-errores_correccion: '- **Error común:** Aceptar $x = a$ como solución de una ecuación
-  racional solo porque hace cero al numerador, sin revisar si también hace cero al
-  denominador.
-
-  - **Cómo corregirlo:** SIEMPRE sustituye tus soluciones candidatas en el DENOMINADOR
-  ORIGINAL. Si el denominador da cero, descarta esa solución inmediatamente.'
+  - 'Paso 1: Identificar todas las expresiones fraccionarias presentes en el problema y calcular sus restricciones iniciales ($Q(x) \neq 0$).'
+  - 'Paso 2: Resolver el problema o ecuación algebraica mediante simplificaciones y operaciones correspondientes.'
+  - 'Paso 3: Contrastar cada una de las soluciones numéricas obtenidas contra la lista de restricciones del Paso 1.'
+  - 'Paso 4: Descartar inmediatamente cualquier solución que coincida con una restricción y declarar únicamente las soluciones válidas.'
+errores_correccion: |
+  - **Error 1:** Aceptar como solución de una ecuación un valor que anula el denominador original. **Cómo corregirlo:** Se debe **VERIFICAR SIEMPRE CADA SOLUCIÓN CONTRA LAS RESTRICCIONES Y DESCARTAR AQUELLAS QUE HAGAN CERO EL DENOMINADOR**.
+  - **Error 2:** Excluir las restricciones de dominio al presentar una fracción simplificada. **Cómo corregirlo:** Al simplificar una fracción **SE DEBEN ADJUNTAR OBLIGATORIAMENTE LAS RESTRICCIONES DE LA VARIABLE PERTENECIENTES A LA FRACCIÓN DE ORIGEN**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de $x$.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración de $x^2$.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Es válida esta regla?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición.
-- titulo: ¿Es válida la división por cero?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, está indefinida.
+  - titulo: 'Solución extraña descartada'
+    enunciado: 'Si la ecuación $\frac{x^2-1}{x-1} = 2$ da $x=1$, ¿se descarta $x=1$ por restricción $x \neq 1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $1$ anula el denominador.'
+  - titulo: 'Ecuación sin solución'
+    enunciado: 'Si la única solución obtenida anula el denominador, ¿la ecuación carece de soluciones reales?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, se descarta la única raíz.'
+  - titulo: 'Verificación necesaria'
+    enunciado: '¿Es obligatorio contrastar las soluciones finales con las restricciones iniciales?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, para evitar contradicciones.'
+  - titulo: 'Paradoja 0/0'
+    enunciado: 'Omitir restricciones, ¿puede llevar a afirmar falsamente que $0/0 = 1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, es la falla metodológica clásica.'
 errores_frecuentes:
-- Omitir el signo negativo global al transferirlo al numerador.
-- Multiplicar numerador y denominador por signos distintos.
-- Asumir que cambiar el signo de la fracción no requiere modificar sus términos.
-- Sumar numeradores antes de homogenizar denominadores.
-- Cancelar términos sueltos en fracciones algebraicas.
+  - 'Aceptar como válidas soluciones numéricas que anulan el denominador original de la fracción.'
+  - 'Las restricciones de dominio no son anotadas al presentar la respuesta final de una simplificación.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Comprobar las restricciones en la fracción simplificada en lugar de comprobarlas en la expresión inicial.'
+  - 'Las raíces prohibidas no son descartadas al resolver ecuaciones con fracciones algebraicas.'
 afirmaciones_verdaderas:
-- El signo menos de una fracción puede aplicarse indistintamente al numerador o al
-  denominador.
-- La ley de los signos de la división rige las equivalencias globales en fracciones
-  algebraicas.
-al_terminar_debes_poder: Al finalizar este recurso podrás aplicar y manipular las
-  propiedades fundamentales de las fracciones algebraicas.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'Omitir restricciones puede conducir a aceptar soluciones falsas que producen división por cero.'
+  - 'Cualquier valor obtenido en una ecuación que anule un denominador debe ser descartado obligatoriamente.'
+al_terminar_debes_poder: 'Detectar errores por omisión de restricciones de dominio y validar soluciones en fracciones algebraicas.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

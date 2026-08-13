@@ -1,150 +1,114 @@
 semantic_id: MAT.ALG.MCD_ALGEBRAICO.COEFICIENTE_MONOMIOS
-resumen_inicial: El M.C.D. numérico de un grupo de monomios es el entero positivo
-  más grande que divide exactamente a todos sus coeficientes.
-explicacion_simple: 'Para hallar la parte numérica del M.C.D. entre monomios, nos
-  enfocamos exclusivamente en los coeficientes (los números que multiplican a las
-  letras) e ignoramos temporalmente las variables.
+resumen_inicial: 'La determinación del M.C.D. numérico entre monomios consiste en calcular el Máximo Común Divisor de sus coeficientes enteros mediante descomposición en factores primos.'
+explicacion_simple: |
+  Para hallar el **M.C.D. numérico** de los coeficientes de varios monomios (ej: $12x^2, 18y, 30z$):
+  - **PROCEDIMIENTO POR FACTORES PRIMOS**:
+    1. **Descompón cada coeficiente en factores primos**:
+       - $12 = 2^2 \cdot 3$.
+       - $18 = 2 \cdot 3^2$.
+       - $30 = 2 \cdot 3 \cdot 5$.
+    2. **Busca los primos que están en TODOS los coeficientes**:
+       - El primo $2$ está en los tres.
+       - El primo $3$ está en los tres.
+       - El primo $5$ sólo está en el $30$, ¡se elimina!
+    3. **Selecciona la menor potencia de cada primo común**:
+       - Para $2$: Menor exponente es $2^1 = 2$.
+       - Para $3$: Menor exponente es $3^1 = 3$.
+    4. **Multiplica los primos comunes elegidos**:
+       - $\mathbf{\text{M.C.D. numérico} = 2 \cdot 3 = 6}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean los coeficientes enteros de $k$ monomios dada la lista $c_1, c_2, \dots, c_k \in \mathbb{Z} \setminus \{0\}$. Puesto que $\mathbb{Z}$ es un **Dominio de Factorización Única (DFU)**, cada coeficiente positivo $|c_i|$ admite la representación canónica en primos:
 
-  El objetivo es encontrar el entero positivo más grande que pueda dividir a cada
-  uno de esos coeficientes numéricos sin dejar resto.
+  $$|c_i| = \prod_{p \in \mathbb{P}} p^{v_p(c_i)}$$
 
-  Este número corresponde al Máximo Común Divisor aritmético tradicional entre los
-  valores absolutos de los coeficientes.'
-explicacion_formal: 'Dado un conjunto de monomios con coeficientes enteros $\{c_1,
-  c_2, \dots, c_k\}$, el **M.C.D. numérico** $C_{\text{MCD}}$ se define como el Gran
-  Divisor Común sobre sus valores absolutos:
+  donde $v_p(c_i) \ge 0$ es la valoración $p$-ádica. El **Máximo Común Divisor numérico** viene determinado de forma unívoca por la intersección de potencias mínimas:
 
+  $$\operatorname{MCD}(|c_1|, |c_2|, \dots, |c_k|) = \prod_{p \in \mathbb{P}} p^{\min_i(v_p(c_i))}$$
 
-  $$C_{\text{MCD}} = \operatorname{gcd}(|c_1|, |c_2|, \dots, |c_k|) = \prod_{p} p^{\min_i(v_p(|c_i|))}$$
+  ### Algoritmo Euclidiano para Coeficientes
+  Alternativamente, para un par de coeficientes $c_1, c_2 \in \mathbb{Z}^+$, la división euclidiana recursiva $c_1 = q_1 c_2 + r_1$ garantiza que el último resto no nulo $r_k$ es idénticamente $\operatorname{MCD}(c_1, c_2)$.
 
-
-  **Desglose de la fórmula:**
-
-  - $\operatorname{gcd}(|c_1|, \dots, |c_k|)$: Denota la función M.C.D. sobre los
-  valores absolutos, asegurando un resultado entero positivo.
-
-  - $\prod_p p^{\dots}$: Expresa la multiplicación de todos los factores primos $p$
-  que dividen a todos los coeficientes.
-
-  - $v_p(|c_i|)$: Representa el exponente del primo $p$ en la descomposición de $|c_i|$,
-  tomando el valor mínimo $\min_i$ entre los monomios para garantizar divisibilidad
-  exacta simultánea.
-
-
-  > **Complemento didáctico:** El M.C.D. numérico extrae la mayor constante entera
-  escalar que se puede factorizar de cada uno de los términos de la expresión.'
-definiciones_clave: '- **M.C.D. de coeficientes**: El mayor número entero positivo
-  que divide exactamente a todos los coeficientes numéricos de un conjunto de monomios.
-
-  - **Descomposición en factores primos**: Expresión de un número entero como producto
-  de factores primos para calcular divisores comunes.'
-propiedades_relaciones: '- **Invarianza por signo**: El M.C.D. numérico se toma siempre
-  como un entero positivo, sin importar si los coeficientes originales son positivos
-  o negativos.
-
-  - **Independencia literal**: El cálculo del M.C.D. numérico es totalmente independiente
-  de las variables o exponentes presentes en la parte literal de los monomios.'
+  ### Síntesis didáctica
+  El M.C.D. numérico es el número entero más grande que divide a todos los coeficientes numéricos de los monomios sin dejar residuo.
+definiciones_clave: |
+  - **M.C.D. numérico**: Mayor número entero positivo que divide exactamente a los coeficientes de un conjunto de monomios.
+  - **Descomposición prima de un coeficiente**: Expresión de un número entero como producto de potencias de números primos.
+  - **Valoración $p$-ádica mínimna ($\min(v_p)$)**: Exponente menor de cada primo presente en la descomposición de todos los coeficientes.
+propiedades_relaciones: |
+  - **Independencia del signo**: $\operatorname{MCD}(c_1, c_2) = \operatorname{MCD}(|c_1|, |c_2|)$. El M.C.D. numérico entre monomios se toma siempre como una constante positiva.
 ejemplo_guiado:
-  enunciado: Tres servidores informáticos procesan cargas de datos representadas por
-    $24a^3$, $36a^2b$ y $60a^4$ gigabytes. Determina el M.C.D. numérico entre sus
-    coeficientes y evalúa el término común $12a^2$ para $a = 3$.
+  enunciado: 'Calcula el M.C.D. numérico entre los coeficientes de los monomios $-24a^3b$, $36a^2b^2$ y $60ab^4$.'
   pasos:
-  - 'Paso 1: Descomponer los coeficientes numéricos en factores primos: $24 = 2^3
-    \cdot 3$, $36 = 2^2 \cdot 3^2$ y $60 = 2^2 \cdot 3 \cdot 5$.'
-  - 'Paso 2: Tomar los factores primos comunes elevados a su menor exponente: $2^2
-    \cdot 3^1 = 4 \cdot 3 = 12$. El M.C.D. numérico es $12$.'
-  - 'Paso 3: Evaluar la expresión $12a^2$ para $a = 3$: $12 \cdot (3)^2 = 12 \cdot
-    9 = 108\text{ GB}$.'
+    - 'Paso 1: Tomamos los valores absolutos de los coeficientes: $24, 36$ y $60$.'
+    - 'Paso 2: Realizamos la descomposición en factores primos de cada número:
+       - $24 = 2^3 \cdot 3$.
+       - $36 = 2^2 \cdot 3^2$.
+       - $60 = 2^2 \cdot 3 \cdot 5$.'
+    - 'Paso 3: Identificamos los factores primos **comunes a los tres números**:
+       - Primo $2$: está en todos, menor exponente es **$2^2$**.
+       - Primo $3$: está en todos, menor exponente es **$3^1$**.
+       - Primo $5$: no es común (sólo está en 60), por lo que **se excluye**.'
+    - 'Paso 4: Multiplicamos los factores seleccionados:
+       $\text{M.C.D.} = 2^2 \cdot 3 = 4 \cdot 3 = \mathbf{12}$.'
+    - 'Conclusión: El M.C.D. numérico entre los coeficientes es **$12$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es el M.C.D. numérico de los coeficientes de los monomios $24a^3$,
-    $36a^2b$ y $60a^4$?
-  choices:
-  - text: $12$
-    is_correct: true
-  - text: $6$
-    is_correct: false
-  - text: $24$
-    is_correct: false
-  - text: $60$
-    is_correct: false
-  explanation: La alternativa correcta es '$12$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar la expresión $12a^2$ con $a = 3$, ¿cuál es el resultado numérico
-    obtenido?
-  choices:
-  - text: $108$
-    is_correct: true
-  - text: $36$
-    is_correct: false
-  - text: $144$
-    is_correct: false
-  - text: $324$
-    is_correct: false
-  explanation: La alternativa correcta es '$108$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el M.C.D. numérico entre los coeficientes de los monomios $15x^3$, $25y^2$ y $45z$?'
+    choices:
+      - {text: 'El M.C.D. numérico es 5, calculando los factores primos comunes $15=3 \cdot 5, 25=5^2, 45=3^2 \cdot 5 \implies \operatorname{MCD} = 5^1 = 5$', is_correct: true}
+      - {text: 'El M.C.D. numérico es 15', is_correct: false}
+      - {text: 'El M.C.D. numérico es 45', is_correct: false}
+      - {text: 'El M.C.D. numérico es 225', is_correct: false}
+    explanation: 'La alternativa correcta es ''El M.C.D. numérico es 5, calculando los factores primos comunes $15=3 \cdot 5, 25=5^2, 45=3^2 \cdot 5 \implies \operatorname{MCD} = 5^1 = 5$''. Factores primos comunes: menor exponente de 5 es $5^1=5$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si los coeficientes de dos monomios son $-14$ y $21$, ¿cuál es su M.C.D. numérico?'
+    choices:
+      - {text: 'El M.C.D. numérico es $+7$, tomando el valor absoluto de los coeficientes $14=2 \cdot 7, 21=3 \cdot 7 \implies \operatorname{MCD} = 7$', is_correct: true}
+      - {text: 'El M.C.D. numérico es -7', is_correct: false}
+      - {text: 'El M.C.D. numérico es 42', is_correct: false}
+      - {text: 'El M.C.D. numérico es 1', is_correct: false}
+    explanation: 'La alternativa correcta es ''El M.C.D. numérico es $+7$, tomando el valor absoluto de los coeficientes $14=2 \cdot 7, 21=3 \cdot 7 \implies \operatorname{MCD} = 7$''. $\operatorname{MCD}(|-14|, 21) = \operatorname{MCD}(14, 21) = 7$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Extraer los coeficientes numéricos de cada monomio y tomar sus valores
-  absolutos.'
-- 'Paso 2: Realizar la descomposición en factores primos de cada uno de los números.'
-- 'Paso 3: Identificar los factores primos compartidos por todos los coeficientes.'
-- 'Paso 4: Multiplicar dichos factores primos elevados a su menor exponente para obtener
-  el M.C.D. numérico.'
-errores_correccion: '- **Error común:** Confundir el M.C.D. numérico (mayor divisor
-  común) con el m.c.m. numérico (mínimo común múltiplo) al calcular los coeficientes.
-
-  - **Cómo corregirlo:** Para el M.C.D., toma únicamente los factores primos comunes
-  con el MENOR exponente. Para el m.c.m., tomarías comunes y no comunes al mayor exponente.'
+  - 'Paso 1: Extraer el valor absoluto de los coeficientes numéricos de cada monomio.'
+  - 'Paso 2: Descomponer cada coeficiente en el producto de sus factores primos.'
+  - 'Paso 3: Identificar los factores primos comunes a todos los coeficientes y elegir la potencia con menor exponente.'
+  - 'Paso 4: Multiplicar las potencias de primos comunes para obtener el M.C.D. numérico.'
+errores_correccion: |
+  - **Error 1:** Incluir el signo negativo en el M.C.D. numérico cuando uno de los coeficientes es negativo. **Cómo corregirlo:** El M.C.D. numérico de monomios **SE DEFINE SIEMPRE COMO UN ENTERO POSITIVO (usando el valor absoluto)**.
+  - **Error 2:** Calcular el m.c.m. numérico (el múltiplo) en lugar del M.C.D. **Cómo corregirlo:** El M.C.D. **DEBE DIVIDIR A TODOS LOS NÚMEROS (por ende es menor o igual al menor de los coeficientes)**.
 ejemplos:
-- titulo: 'Ejemplo 1: M.C.D. con coeficientes enteros positivos'
-  enunciado: ¿Cuál es el M.C.D. numérico entre los monomios $15x^2$, $30x^3$ y $45x$?
-  alternativas:
-  - $15$
-  - $5$
-  - $90$
-  respuesta: $15$
-  solucion_pasos:
-  - 1. Los coeficientes son $15$, $30$ y $45$.
-  - '2. Descomposición: $15 = 3 \cdot 5$, $30 = 2 \cdot 3 \cdot 5$, $45 = 3^2 \cdot
-    5$.'
-  - '3. Factores comunes con menor exponente: $3^1 \cdot 5^1 = 15$.'
-- titulo: 'Ejemplo 2: Coeficientes con signos negativos'
-  enunciado: Determina el M.C.D. numérico entre $-16a^3b$ y $24ab^2$.
-  alternativas:
-  - $8$
-  - $-8$
-  - $48$
-  respuesta: $8$
-  solucion_pasos:
-  - '1. Tomar los valores absolutos de los coeficientes: $|-16| = 16$ y $|24| = 24$.'
-  - 2. $16 = 2^4$ y $24 = 2^3 \cdot 3$.
-  - '3. Factor común: $2^3 = 8$. Por convención, el M.C.D. numérico es un entero positivo
-    ($8$).'
-- titulo: ¿El M.C.D. numérico entre coeficientes primos entre sí (como 7 y 10) es
-    igual a 1?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Cuando dos o más coeficientes no comparten factores primos comunes aparte
-    del 1, su M.C.D. numérico es 1.
-- titulo: ¿El M.C.D. numérico puede ser un número negativo si todos los coeficientes
-    de los monomios son negativos?
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Por definición estándar en álgebra, el M.C.D. numérico se define siempre como
-    un entero positivo.
+  - titulo: 'M.C.D. numérico simple'
+    enunciado: 'Para coeficientes 8 y 12, ¿es el M.C.D. numérico 4?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $2^2 = 4$.'
+  - titulo: 'Coeficientes primos entre sí'
+    enunciado: 'Para coeficientes 9 y 10, ¿es su M.C.D. numérico igual a 1?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, no comparten primos.'
+  - titulo: 'M.C.D. con coeficientes negativos'
+    enunciado: 'Para coeficientes $-16$ y $24$, ¿es el M.C.D. numérico $+8$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $|-16|=16 \implies \operatorname{MCD}(16,24)=8$.'
+  - titulo: 'MÚltiples coeficientes'
+    enunciado: 'Para 12, 18 y 24, ¿es el M.C.D. 6?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $2 \cdot 3 = 6$.'
 errores_frecuentes:
-- El M.C.D. numérico de $12x^2$ y $18x^3$ es $36$.
-- El M.C.D. numérico de $-14a$ y $21b$ es $-7$.
-- Si los coeficientes de dos monomios son $8$ y $12$, su M.C.D. numérico es $2$ porque
-  es un número par divisor.
-- El M.C.D. numérico de dos monomios se obtiene multiplicando todos los coeficientes.
-- Para hallar el M.C.D. numérico entre $15$ y $25$ se deben sumar sus valores absolutos.
+  - 'Asignar un signo negativo al M.C.D. numérico de monomios.'
+  - 'Calcular el mínimo común múltiplo numérico en lugar del máximo común divisor.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Incluir factores primos que no están presentes en todos los coeficientes.'
+  - 'Tomar la mayor potencia de los factores primos comunes en lugar de la menor.'
 afirmaciones_verdaderas:
-- El M.C.D. numérico entre monomios se calcula aplicando la función M.C.D. estándar
-  a los valores absolutos de sus coeficientes.
-- El M.C.D. numérico de dos monomios siempre es mayor que cero.
-al_terminar_debes_poder: Al finalizar este recurso podrás determinar con precisión
-  el M.C.D. numérico de cualquier conjunto de monomios mediante factorización prima.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El M.C.D. numérico entre monomios es el mayor entero positivo que divide a todos sus coeficientes.'
+  - 'Se obtiene multiplicando los factores primos comunes a todos los coeficientes elevados a su menor exponente.'
+al_terminar_debes_poder: 'Calcular el M.C.D. numérico entre los coeficientes de cualquier conjunto de monomios.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

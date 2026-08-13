@@ -1,121 +1,102 @@
-resumen_inicial: 'El cálculo del primer término $a_1$ despeja la condición inicial
-  dividiendo un término conocido $a_k$ entre la razón elevada a la $(k-1)$: $a_1 =
-  \frac{a_k}{r^{k-1}}$.'
-explicacion_simple: Si nos dan un término que está más adelante en la secuencia (por
-  ejemplo, el quinto término) y conocemos la razón multiplicativa, podemos regresar
-  al primer número dividiendo entre la razón acumulada.
-explicacion_formal: 'Dado el término $a_k$ en la posición $k$ y la razón $r \neq 0$,
-  el **Despeje del Primer Término $a_1$** se realiza mediante:
-
-
-  $$a_k = a_1 \cdot r^{k-1} \implies a_1 = \frac{a_k}{r^{k-1}}$$
-
-
-  **Interpretación de retroceso multiplicativo:**
-
-  - Se divide por la potencia del factor $r^{k-1}$ para retrotraer el valor al origen
-  posicional $n=1$.'
-definiciones_clave: '- **Cálculo del primer término $a_1$**: Despeje $a_1 = \frac{a_k}{r^{k-1}}$.'
-propiedades_relaciones: '- **Retroceso exponencial**: División por el factor multiplicativo
-  acumulado $r^{k-1}$.'
-ejemplo_guiado:
-  enunciado: En una P.G. con razón $r = 3$, el sexto término es $a_6 = 486$. Calcule
-    el primer término $a_1$.
-  pasos:
-  - 'Paso 1: Plantea la fórmula: $a_6 = a_1 \cdot r^5 \implies 486 = a_1 \cdot 3^5$.'
-  - 'Paso 2: Calcular la potencia: $3^5 = 243$.'
-  - 'Paso 3: Despejar $a_1 = \frac{486}{243} = 2$.'
-  - 'Conclusión: El primer término es $a_1 = 2$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se despeja el primer término a1 a partir de un término conocido
-    ak y la razón r en una P.G.?
-  choices:
-  - text: 'Dividiendo el término conocido ak entre la razón elevada a la (k - 1):
-      a1 = ak / r^(k - 1)'
-    is_correct: true
-  - text: Multiplicando a1 = ak · r^(k - 1)
-    is_correct: false
-  - text: Restando a1 = ak - r · k
-    is_correct: false
-  - text: Sumando a1 = ak + r
-    is_correct: false
-  explanation: 'La alternativa correcta es ''Dividiendo el término conocido ak entre
-    la razón elevada a la (k - 1): a1 = ak / r^(k - 1)''.'
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para a6 = 486 con r = 3, ¿cuál fue el primer término
-    a1?
-  choices:
-  - text: '2'
-    is_correct: true
-  - text: '6'
-    is_correct: false
-  - text: '3'
-    is_correct: false
-  - text: '9'
-    is_correct: false
-  explanation: La alternativa correcta es '2'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular el primer término $a_1
-  = \frac{a_k}{r^{k-1}}$ retrocediendo exponencialmente desde un término conocido.
 semantic_id: MAT.NUM.PROG_GEOMETRICA.CALCULO_PRIMER_TERMINO
+resumen_inicial: 'La determinación del primer término $a_1$ en una progresión geométrica retrocede dividiendo un término conocido $a_k$ entre la potencia $(k-1)$-ésima de la razón geométrica $r$: $a_1 = \frac{a_k}{r^{k-1}}$.'
+explicacion_simple: |
+  Si no conoces con qué número empieza la lista ($a_1$), pero sabes cuánto vale un término más adelante (por ejemplo, el término $4$ vale $40$) y la razón por la que se multiplica ($r = 2$):
+  - Sabes que para avanzar desde el término 1 hasta el término 4 se multiplicó por $2$ exactamente $3$ veces ($(4-1) = 3 \implies 2^3 = 8$).
+  - Por lo tanto, para **volver al inicio**, simplemente divides el término entre $8$:
+    $$a_1 = \frac{a_4}{2^{4-1}} = \frac{40}{8} = 5$$
+  El primer término $a_1$ de la lista es $5$.
+explicacion_formal: |
+  ### Definición formal
+  El **primer término $a_1$** de una progresión geométrica se despeja dividiendo la ecuación funcional del término $k$-ésimo entre la potencia del factor multiplicativo:
+  $$a_k = a_1 \cdot r^{k-1} \implies a_1 = \frac{a_k}{r^{k-1}} = a_k \cdot r^{-(k-1)}$$
+  donde:
+  - $a_k$ es el valor del término conocido en la posición $k$.
+  - $k$ es la posición ordinal del término conocido ($k \in \mathbb{N}$).
+  - $r$ es la razón geométrica no nula de la progresión ($r \neq 0$).
+
+  ### Caso con dos términos distantes sin conocer $r$
+  Si no se conoce $r$, se calcula primero $r = \sqrt[k-m]{\frac{a_k}{a_m}}$ y luego se sustituye en $a_1 = \frac{a_k}{r^{k-1}}$.
+
+  ### Síntesis didáctica
+  - Ecuación de despeje: $a_1 = \frac{a_k}{r^{k-1}}$.
+  - Principio: Retroceder en la sucesión divide por $r^{(k-1)}$.
+definiciones_clave: |
+  - **Término conocido ($a_k$)**: Cifra dada de la progresión asociada a la casilla $k$.
+  - **Factor de retroceso multiplicativo ($r^{k-1}$)**: Potencia acumulada por la cual se debe dividir para llegar a $a_1$.
+  - **Primer término despejado ($a_1$)**: Origen numérico de la progresión geométrica.
+propiedades_relaciones: |
+  - **Unicidad de la semilla**: El cálculo de $a_1$ entrega la misma cifra independiente de cuál término $a_k$ se utilice para el despeje.
+  - **Simetría operacional**: Avanzar en la P.G. multiplica por $r$; retroceder en la P.G. divide por $r$.
+ejemplo_guiado:
+  enunciado: 'El sexto término de una progresión geométrica es $a_6 = 96$ y la razón geométrica es $r = 2$. Calcula el valor del primer término $a_1$.'
+  pasos:
+    - 'Paso 1: Identificamos los datos: $k = 6$, $a_6 = 96$ y $r = 2$.'
+    - 'Paso 2: Escribimos la fórmula de despeje: $a_1 = \frac{a_6}{r^{6-1}} = \frac{96}{2^5}$.'
+    - 'Paso 3: Calculamos la potencia en el denominador: $2^5 = 32$.'
+    - 'Paso 4: Dividimos: $a_1 = \frac{96}{32} = 3$. El primer término es **$a_1 = 3$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la fórmula para calcular el primer término $a_1$ si se conoce el término $a_k$ en la posición $k$ y la razón geométrica $r$?'
+    choices:
+      - {text: 'Dividir el término conocido entre la razón elevada a la potencia $(k - 1)$: $a_1 = \frac{a_k}{r^{k-1}}$', is_correct: true}
+      - {text: 'Multiplicar el término conocido por la razón elevada a la potencia $k$', is_correct: false}
+      - {text: 'Restar la razón al término conocido', is_correct: false}
+      - {text: 'Dividir el término conocido entre el número de posición $k$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Dividir el término conocido entre la razón elevada a la potencia $(k - 1)$: $a_1 = \frac{a_k}{r^{k-1}}$''. Sale de despejar $a_1$ de $a_k = a_1 \cdot r^{k-1}$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si en una progresión geométrica $a_3 = 45$ y la razón es $r = 3$, ¿cuál es el valor del primer término $a_1$?'
+    choices:
+      - {text: '$a_1 = 5$, calculando $\frac{45}{3^{3-1}} = \frac{45}{3^2} = \frac{45}{9} = 5$', is_correct: true}
+      - {text: '$a_1 = 15$, dividiendo únicamente entre 3', is_correct: false}
+      - {text: '$a_1 = 405$, multiplicando en lugar de dividir', is_correct: false}
+      - {text: '$a_1 = 1$, calculando $45 - 44$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_1 = 5$, calculando $\frac{45}{3^{3-1}} = \frac{45}{3^2} = \frac{45}{9} = 5$''. $45 / 9 = 5$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Verificar que la secuencia mantenga una razón multiplicativa constante
-  $r = \frac{a_{n+1}}{a_n}$.'
-- 'Paso 2: Aplicar la fórmula del término general $a_n = a_1 \cdot r^{n-1}$ o de la
-  suma $S_n = a_1 \cdot \left[ \frac{r^n - 1}{r - 1} \right]$.'
-- 'Paso 3: Resolver numéricamente o con logaritmos el parámetro solicitado ($a_n,
-  a_1, r, n$ o $S_n$).'
-errores_correccion: '- **Error 1: Elevar la razón $r$ a la potencia $n$ en lugar de
-  $(n-1)$ en el término general ($a_n = a_1 \cdot r^n$).** **Cómo corregirlo:** La
-  razón $r$ se aplica a partir de la segunda posición, por lo que el exponente correcto
-  es $(n-1)$.
-
-
-  - **Error 2: Usar la fórmula de la suma de progresión aritmética en una progresión
-  geométrica.** **Cómo corregirlo:** En la P.G. la suma DEBE utilizar el factor multiplicativo
-  $S_n = a_1 \cdot \left[ \frac{r^n - 1}{r - 1} \right]$.'
+  - 'Paso 1: Identificar el valor del término conocido $a_k$, su posición $k$ y la razón geométrica $r$.'
+  - 'Paso 2: Calcular la potencia de retroceso $r^{k-1}$.'
+  - 'Paso 3: Dividir el valor del término conocido $a_k$ entre la potencia calculada: $a_1 = \frac{a_k}{r^{k-1}}$.'
+  - 'Paso 4: Simplificar la fracción resultante para expresar el primer término.'
+errores_correccion: |
+  - **Error 1:** Multiplicar por la razón en lugar de dividir al retroceder hacia $a_1$. **Cómo corregirlo:** Para **retroceder hacia el origen en una P.G. se debe DIVIDIR** entre $r^{k-1}$.
+  - **Error 2:** Usar la potencia $r^k$ completa en lugar de $r^{k-1}$. **Cómo corregirlo:** La cantidad de saltos multiplicativos entre la posición 1 y la posición $k$ es **$(k-1)$**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROG_GEOMETRICA.CALCULO_PRIMER_TERMINO.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de progresión geométrica.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la razón constante.
-  alternativas:
-  - Cumple la constante
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la constante
-  solucion_pasos:
-  - Demostración formal por $a_{n+1} / a_n = r$.
-- titulo: ¿Es constante el cociente entre términos consecutivos en una P.G.?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición de progresión geométrica.
-- titulo: ¿Corresponde la P.G. a una función exponencial discreta?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, $a_n = a_1 \cdot r^{n-1}$ es una potencia de base $r$.
+  - titulo: 'Cálculo de a1 desde a4'
+    enunciado: 'Si $a_4 = 54$ y $r = 3$, ¿el primer término es $a_1 = \frac{54}{3^3} = \frac{54}{27} = 2$?'
+    alternativas:
+      - 'Sí, pues $54 / 27 = 2$'
+      - 'No, es 6'
+      - 'No, es 18'
+    respuesta: 'Sí, pues $54 / 27 = 2$'
+    solucion_pasos:
+      - '1. $a_1 = 54 / 3^{4-1} = 54 / 3^3$.'
+      - '2. $3^3 = 27 \implies 54 / 27 = 2$.'
+  - titulo: 'Cálculo de a1 con razón fraccionaria'
+    enunciado: 'Si $a_3 = 10$ y $r = 1/2$, ¿el primer término es $a_1 = \frac{10}{(1/2)^2} = \frac{10}{1/4} = 40$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Dividir por $1/4$ equivale a multiplicar por 4: $10 \cdot 4 = 40$.'
+  - titulo: 'Cálculo de a1 desde a2'
+    enunciado: 'Si el segundo término $a_2 = 14$ y $r = 7$, ¿$a_1 = 14 / 7 = 2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $a_1 = a_2 / r = 14 / 7 = 2$.'
+  - titulo: 'Cálculo de a1 con razón negativa'
+    enunciado: 'Si $a_3 = 12$ y $r = -2$, ¿$a_1 = \frac{12}{(-2)^2} = \frac{12}{4} = 3$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $(-2)^2 = 4 \implies 12 / 4 = 3$.'
 errores_frecuentes:
-- Elevar la razón r al exponente n en lugar de multiplicar por r^(n-1) al calcular
-  an.
-- Restar los términos en lugar de calcular el cociente de división para determinar
-  la razón r.
-- Usar la fórmula del promedio de Gauss propia de la progresión aritmética en una
-  progresión geométrica.
-- Declarar que una razón geométrica menor que 1 genera términos negativos en la secuencia.
-- Declarar la razón porcentual P% con el factor multiplicativo r = 1 + P/100.
+  - 'Multiplicar el término conocido por la razón en lugar de dividir al retroceder hacia el primer término.'
+  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Elevar la razón al exponente $k$ completo sin restar 1 al número de posición.'
+  - 'Dividir por una fracción $1/k$ es algebraicamente idéntico a dividir por $k$.'
 afirmaciones_verdaderas:
-- Una progresión geométrica tiene una razón constante $r = \frac{a_{n+1}}{a_n}$ entre
-  términos consecutivos.
-- El término general de una P.G. se calcula mediante la función exponencial $a_n =
-  a_1 \cdot r^{n-1}$.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
+  - 'El primer término $a_1$ de una P.G. se calcula mediante la fórmula $a_1 = \frac{a_k}{r^{k-1}}$.'
+  - 'Para retroceder desde la posición $k$ hasta la posición 1 se debe dividir por la potencia $r^{k-1}$.'
+al_terminar_debes_poder: 'Calcular el primer término $a_1$ de una progresión geométrica a partir de un término conocido $a_k$ y la razón $r$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

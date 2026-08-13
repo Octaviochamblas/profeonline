@@ -1,122 +1,109 @@
-resumen_inicial: Una sucesión recursiva define sus términos $a_n$ en función de uno
-  o más términos anteriores, requiriendo indispensablemente uno o más términos iniciales
-  de partida (condición base).
-explicacion_simple: 'Una regla recursiva es como una cadena: para saber el número
-  de hoy necesitas conocer el número de ayer. Por ejemplo, decir que cada término
-  es el anterior más 5 ($a_n = a_{n-1} + 5$), sabiendo que el primero es 2.'
-explicacion_formal: 'Una **Sucesión Definida por Recurrencia** se especifica mediante
-  la relación funcional y la condición inicial:
-
-
-  $$a_n = g(a_{n-1}) \quad \text{con } a_1 = C_0 \quad \forall n \ge 2$$
-
-
-  **Proceso iterativo en cadena:**
-
-  - Para hallar $a_4$ se debe calcular previamente en orden encadenado $a_1 \to a_2
-  \to a_3 \to a_4$.'
-definiciones_clave: '- **Sucesión recursiva**: Definición $a_n = g(a_{n-1})$ condicionada
-  por un valor inicial $a_1$.'
-propiedades_relaciones: '- **Dependencia secuencial**: Exige calcular los términos
-  previos para obtener una posición lejana.'
-ejemplo_guiado:
-  enunciado: Dada la sucesión recursiva $a_1 = 4$ y $a_n = a_{n-1} + 3$ para $n \ge
-    2$, halle los primeros $4$ términos.
-  pasos:
-  - 'Paso 1: $a_1 = 4$ (dado por condición inicial).'
-  - 'Paso 2: $a_2 = a_1 + 3 = 4 + 3 = 7$.'
-  - 'Paso 3: $a_3 = a_2 + 3 = 7 + 3 = 10$.'
-  - 'Paso 4: $a_4 = a_3 + 3 = 10 + 3 = 13$.'
-  - 'Conclusión: Los primeros $4$ términos son $(4, 7, 10, 13)$.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Qué elemento es indispensable especificar para que una relación de recurrencia
-    an = g(an-1) pueda calcularse?
-  choices:
-  - text: Un término o condición inicial de partida (como a1)
-    is_correct: true
-  - text: La suma total de 100 términos
-    is_correct: false
-  - text: El límite en el infinito
-    is_correct: false
-  - text: Una constante de integración
-    is_correct: false
-  explanation: La alternativa correcta es 'Un término o condición inicial de partida
-    (como a1)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado con a1 = 4 y an = an-1 + 3, ¿cuál fue el cuarto término
-    a4?
-  choices:
-  - text: '13'
-    is_correct: true
-  - text: '10'
-    is_correct: false
-  - text: '12'
-    is_correct: false
-  - text: '16'
-    is_correct: false
-  explanation: La alternativa correcta es '13'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de definir y calcular términos de
-  sucesiones recursivas $a_n = g(a_{n-1})$ a partir de su término inicial.
 semantic_id: MAT.NUM.SUCESIONES_BASE.SUCESION_RECURSIVA
+resumen_inicial: 'Una sucesión definida por recurrencia simple expresa el valor de cada término $a_n$ en función del término o términos inmediatamente anteriores (por ejemplo $a_n = g(a_{n-1})$), requiriendo la especificación explícita de las condiciones iniciales.'
+explicacion_simple: |
+  En una **sucesión por recurrencia**, no te dan una fórmula directa en función de la posición $n$, sino una **instrucción para pasar de un término al siguiente**:
+  - Te deben dar obligatoriamente el **primer término** para empezar (por ejemplo $a_1 = 4$).
+  - Te dan la regla de paso: por ejemplo, *"cada término nuevo es el doble del anterior más 1"* ($a_n = 2a_{n-1} + 1$).
+  Para calcular los términos vas en cadena:
+  - $a_1 = 4$.
+  - $a_2 = 2(a_1) + 1 = 2(4) + 1 = 9$.
+  - $a_3 = 2(a_2) + 1 = 2(9) + 1 = 19$.
+explicacion_formal: |
+  ### Definición formal
+  Una **ecuación de recurrencia de primer orden** es una relación matemática de la forma:
+  $$a_n = g(a_{n-1}, n) \quad (\forall n \ge 2)$$
+  sujeta a una **condición inicial o semilla**:
+  $$a_1 = C \quad (C \in \mathbb{R})$$
+
+  ### Componentes de un Sistema Recursivo
+  1. **Condición inicial (Caso base)**: Valor fijo asignado al término $a_1$ (o $a_0$). Sin esta condición, la secuencia queda indeterminada.
+  2. **Ecuación de recurrencia (Paso inductivo)**: Regla que calcula $a_n$ utilizando el valor ya calculado de $a_{n-1}$.
+
+  ### Ejemplos notables de sistemas recursivos
+  - **Progresión aritmética recursiva**: $a_1 = c, \quad a_n = a_{n-1} + d$.
+  - **Progresión geométrica recursiva**: $a_1 = c, \quad a_n = a_{n-1} \cdot q$.
+  - **Sucesión de Fibonacci (Recurrencia de segundo orden)**: $F_1 = 1, F_2 = 1, \quad F_n = F_{n-1} + F_{n-2}$.
+
+  ### Síntesis didáctica
+  - Semilla: $a_1 = C$.
+  - Regla paso a paso: $a_n = g(a_{n-1})$.
+definiciones_clave: |
+  - **Recurrencia simple**: Relación donde un término depende del término inmediatamente anterior ($a_{n-1}$).
+  - **Condición inicial (semilla)**: Término o términos de partida indispensables para iniciar la iteración.
+  - **Iteración recursiva**: Proceso secuencial de calcular $a_2$ a partir de $a_1$, luego $a_3$ a partir de $a_2$, y así sucesivamente.
+propiedades_relaciones: |
+  - **Dependencia secuencial**: Para calcular $a_{10}$ en un sistema recursivo puro, se requiere haber calculado previamente $a_1, a_2, \dots, a_9$.
+  - **Sensibilidad a la condición inicial**: Cambiar el término inicial $a_1$ altera por completo los valores de todos los términos subsecuentes de la lista.
+ejemplo_guiado:
+  enunciado: 'Dada la sucesión definida recursivamente por $a_1 = 3$ y $a_n = 2a_{n-1} - 1$ para $n \ge 2$, determina el valor de los primeros cuatro términos.'
+  pasos:
+    - 'Paso 1: El primer término viene dado por la condición inicial: $a_1 = 3$.'
+    - 'Paso 2: Calculamos $a_2$ usando la regla con $n=2$: $a_2 = 2 a_1 - 1 = 2(3) - 1 = 6 - 1 = 5$.'
+    - 'Paso 3: Calculamos $a_3$ usando $a_2$: $a_3 = 2 a_2 - 1 = 2(5) - 1 = 10 - 1 = 9$.'
+    - 'Paso 4: Calculamos $a_4$ usando $a_3$: $a_4 = 2 a_3 - 1 = 2(9) - 1 = 18 - 1 = 17$. Los primeros cuatro términos son **$3, 5, 9, 17$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Por qué es indispensable contar con una condición inicial (como $a_1 = C$) en una sucesión definida por recurrencia?'
+    choices:
+      - {text: 'Porque sin el valor del primer término es imposible iniciar el proceso en cadena para calcular los términos siguientes', is_correct: true}
+      - {text: 'Porque la condición inicial indica la cantidad total de términos que tiene la sucesión', is_correct: false}
+      - {text: 'Porque transforma la fórmula de recurrencia en una ecuación cuadrática', is_correct: false}
+      - {text: 'Porque reemplaza la necesidad de aplicar operaciones aritméticas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque sin el valor del primer término es imposible iniciar el proceso en cadena para calcular los términos siguientes''. Sin semilla no hay punto de partida.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si $a_1 = 10$ y la regla de recurrencia es $a_n = a_{n-1} + 4$, ¿cuál es el valor del tercer término ($a_3$)?'
+    choices:
+      - {text: 'El número $18$, calculando $a_2 = 14$ y luego $a_3 = 14 + 4 = 18$', is_correct: true}
+      - {text: 'El número $14$, calculando únicamente $a_2$', is_correct: false}
+      - {text: 'El número $40$, multiplicando $10 \cdot 4$', is_correct: false}
+      - {text: 'El número $12$, sumando $10 + 2$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El número $18$, calculando $a_2 = 14$ y luego $a_3 = 14 + 4 = 18$''. $a_1=10, a_2=14, a_3=18$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar el tipo de definición de la sucesión (término general explícito
-  $a_n = f(n)$ o relación de recurrencia $a_n = g(a_{n-1})$).'
-- 'Paso 2: Sustituir los índices de posición $n = 1, 2, 3, \dots$ para calcular los
-  términos requeridos.'
-- 'Paso 3: Verificar la consistencia de la secuencia numérica obtenida.'
-errores_correccion: '- **Error 1: Sustituir $n=0$ en el término general pretendiendo
-  obtener el primer término.** **Cómo corregirlo:** En el convenio escolar estándar,
-  la posición del primer término empieza estrictamente en $n=1$.
-
-
-  - **Error 2: Intentar calcular un término lejano en una definición recursiva sin
-  conocer la condición inicial.** **Cómo corregirlo:** Una fórmula recursiva EXIGE
-  conocer al menos el primer término $a_1$ para iterar.'
+  - 'Paso 1: Identificar el término inicial $a_1$ dado como condición de borde.'
+  - 'Paso 2: Escribir la relación de recurrencia $a_n = g(a_{n-1})$.'
+  - 'Paso 3: Sustituir $a_1$ para calcular $a_2$.'
+  - 'Paso 4: Repetir el proceso en cadena (iteración) de forma secuencial hasta alcanzar la posición deseada.'
+errores_correccion: |
+  - **Error 1:** Reemplazar el número de posición $n$ directamente dentro de la fórmula en lugar del término anterior $a_{n-1}$ (ej: en $a_n = 2a_{n-1} + 1$ para $n=3$, calcular $2(3) + 1 = 7$ en vez de usar $a_2$). **Cómo corregirlo:** La variable **$a_{n-1}$ representa el VALOR DEL TÉRMINO ANTERIOR**, no la posición.
+  - **Error 2:** Intentar calcular términos lejanos sin haber calculado previamente los términos intermedios. **Cómo corregirlo:** En recurrencia **debes calcular término a término de forma ordenada**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.SUCESIONES_BASE.SUCESION_RECURSIVA.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de conceptos de sucesiones numéricas.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la notación por subíndices.
-  alternativas:
-  - Cumple la notación
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la notación
-  solucion_pasos:
-  - Demostración formal por $a_n = f(n)$.
-- titulo: ¿Comienza la posición n del primer término en n = 1?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, en el dominio estándar $\mathbb{N}^+$.
-- titulo: ¿Altera el orden de los elementos la identidad de una sucesión?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, porque la posición determina la asignación de cada término.
+  - titulo: 'Recurrencia aditiva simple'
+    enunciado: 'Si $a_1 = 2$ y $a_n = a_{n-1} + 5$, ¿los tres primeros términos son $2, 7, 12$?'
+    alternativas:
+      - 'Sí, pues $a_1=2, a_2=2+5=7, a_3=7+5=12$'
+      - 'No, son $2, 5, 10$'
+      - 'No, son $5, 10, 15$'
+    respuesta: 'Sí, pues $a_1=2, a_2=2+5=7, a_3=7+5=12$'
+    solucion_pasos:
+      - '1. $a_1 = 2$.'
+      - '2. $a_2 = a_1 + 5 = 2 + 5 = 7$.'
+      - '3. $a_3 = a_2 + 5 = 7 + 5 = 12$.'
+  - titulo: 'Recurrencia multiplicativa'
+    enunciado: 'Si $a_1 = 3$ y $a_n = 2 a_{n-1}$, ¿los términos son $3, 6, 12, 24$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Se va multiplicando el término anterior por 2.'
+  - titulo: 'Recurrencia alternante'
+    enunciado: 'Si $a_1 = 5$ y $a_n = -a_{n-1}$, ¿la sucesión es $5, -5, 5, -5, \dots$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $a_1=5, a_2=-5, a_3=-(-5)=5$.'
+  - titulo: 'Sucesión de Fibonacci inicial'
+    enunciado: 'Si $F_1 = 1, F_2 = 1$ y $F_n = F_{n-1} + F_{n-2}$, ¿el quinto término $F_5$ es $5$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $F_1=1, F_2=1, F_3=2, F_4=3, F_5=5$.'
 errores_frecuentes:
-- Evaluar $n = 0$ para encontrar el primer término de una sucesión definida en los
-  enteros positivos.
-- Declarar el valor numérico del término $a_n$ con la posición ordinal $n$ en la fórmula
-  general.
-- Intentar una sucesión como si fuera un conjunto desordenado donde el orden de los
-  elementos no importa.
-- Usar una relación recursiva para calcular la posición 100 sin conocer los 99 términos
-  anteriores.
-- Declarar que toda secuencia gráfica responde a un crecimiento lineal simple sin
-  probar la diferencia.
+  - 'Sustituir la variable de posición $n$ en lugar del valor numérico del término anterior $a_{n-1}$.'
+  - 'Intentar calcular un término lejano como $a_{50}$ mediante una fórmula de recurrencia en un solo paso.'
+  - 'Las ecuaciones de recurrencia pueden ser evaluadas sin especificar la condición inicial $a_1$.'
+  - 'La notación $a_{n-1}$ resta 1 tanto al índice de posición como al resultado del valor numérico.'
+  - 'Cualquier relación de recurrencia se convierte fácilmente en una fórmula explícita elemental.'
 afirmaciones_verdaderas:
-- Una sucesión numérica es una función de dominio entero positivo $\mathbb{N}^+$ a
-  valores reales.
-- El término general $a_n = f(n)$ permite calcular el valor de cualquier posición
-  $n$ en un solo paso de evaluación.
-fuente: Texto escolar MINEDUC — Números / Álgebra 1° Medio / PAES.
+  - 'En una sucesión definida por recurrencia, el valor de $a_n$ depende directamente de los términos anteriores como $a_{n-1}$.'
+  - 'Para definir unívocamente una sucesión por recurrencia es imprescindible indicar el valor inicial o semilla (ej: $a_1 = C$).'
+al_terminar_debes_poder: 'Calcular términos de una sucesión por recurrencia simple sustituyendo iterativamente el término anterior $a_{n-1}$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

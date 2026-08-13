@@ -1,148 +1,106 @@
 semantic_id: MAT.ALG.MCM_ALGEBRAICO.PARTE_LITERAL_MONOMIOS
-resumen_inicial: El m.c.m. de la parte literal entre monomios se obtiene multiplicando
-  todas las variables presentes (comunes y no comunes), elevadas a su mayor exponente.
-explicacion_simple: 'Para hallar únicamente la parte literal (las letras) del m.c.m.
-  entre varios monomios, seguimos dos reglas:
+resumen_inicial: 'La determinación del m.c.m. literal entre monomios consiste en reunir todas las variables presentes en cualquiera de los monomios, elevadas a su mayor exponente.'
+explicacion_simple: |
+  Para hallar el **m.c.m. literal** (de las letras) entre varios monomios (ej: $x^4y^2$, $x^2z^3$, $y^5w$):
+  - **DOS REGLAS DE ORO**:
+    1. **Incluye TODAS las letras que aparezcan** (comunes y no comunes):
+       - Aparecen las letras $x, y, z$ y $w$. ¡Las incluyes TODAS!
+    2. **Elige el MAYOR exponente de cada letra**:
+       - Para $x$: exponentes $4, 2 \implies$ mayor exponente es **$4$** ($x^4$).
+       - Para $y$: exponentes $2, 5 \implies$ mayor exponente es **$5$** ($y^5$).
+       - Para $z$: exponente unico $3 \implies$ mayor exponente es **$3$** ($z^3$).
+       - Para $w$: exponente unico $1 \implies$ mayor exponente es **$1$** ($w^1$).
+    3. **Respuesta final del m.c.m. literal**: $\mathbf{x^4y^5z^3w}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $M_1, M_2, \dots, M_k$ monomios en $n$ variables con partes literales $L_i = \prod_{j=1}^n x_j^{e_{i,j}}$ donde $e_{i,j} \ge 0$. El **m.c.m. de las partes literales** se define como la envolvente superior del retículo de potencias:
 
-  1. Recopilamos TODAS las variables que aparezcan al menos en uno de los monomios.
-  No descartamos ninguna letra aunque no esté repetida en los demás.
+  $$\operatorname{mcm}(L_1, L_2, \dots, L_k) = \prod_{j=1}^n x_j^{\max_i(e_{i,j})}$$
 
-  2. A cada letra de la lista le asignamos el exponente más alto con el que figura
-  entre todos los monomios.
+  ### Análisis del Exponente Máximo
+  Dado que $\max_i(e_{i,j}) \ge e_{i,j}$ para todo monomio $i \in \{1, 2, \dots, k\}$, la propiedad de orden exponencial garantiza que la división $\frac{\operatorname{mcm}(L_1, \dots, L_k)}{L_i} = x_j^{\max(e) - e_{i,j}}$ da exponentes enteros no negativos, asegurando la **divisibilidad exacta**.
 
-  De este modo nos aseguramos de que las letras del m.c.m. puedan ser divididas por
-  la parte literal de cada monomio original.'
-explicacion_formal: 'Dadas las partes literales de un conjunto de monomios $M_1, M_2,
-  \dots, M_k$, expresadas como $L_i = \prod_j x_j^{e_{i,j}}$, el **m.c.m. literal**
-  se define formalmente como:
-
-
-  $$\text{m.c.m.}_{\text{literal}} = \prod_{x_j \text{ en algún monomio}} x_j^{\max_i(e_{i,j})}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $\prod_{x_j \text{ en algún monomio}}$: Indica que el producto se realiza sobre
-  la unión de todas las variables $x_j$ presentes en el conjunto de monomios (comunes
-  y no comunes).
-
-  - $\max_i(e_{i,j})$: Señala que para cada variable $x_j$, se escoge el exponente
-  máximo entre todos los monomios $i$ donde aparece la variable.'
-definiciones_clave: '- **Unión de variables**: Conjunto formado por todas las letras
-  distintas que aparecen en cualquiera de los monomios.
-
-  - **Exponente máximo de variable**: La potencia más alta registrada para una determinada
-  letra entre todos los monomios analizados.'
-propiedades_relaciones: '- **Inclusión de variables no comunes**: Si una letra figura
-  en un solo monomio, entra en el m.c.m. literal conservando su exponente intacto.
-
-  - **Divisibilidad literal**: La parte literal del m.c.m. es divisible por la parte
-  literal de cualquiera de los monomios originales.'
+  ### Síntesis didáctica
+  La parte literal del m.c.m. reúne absolutamente todas las variables observadas en los monomios, elevando cada una a su exponente máximo.
+definiciones_clave: |
+  - **m.c.m. literal**: Producto de todas las variables (comunes y no comunes) elevadas a su mayor grado.
+  - **Variables no comunes**: Letras que figuran en algunos monomios pero no en todos, las cuales deben incluirse obligatoriamente en el m.c.m.
+  - **Exponente literal máximo ($\max(e_j)$)**: Potencia más grande observada para una variable determinada en la lista de monomios.
+propiedades_relaciones: |
+  - **Grado total del m.c.m.**: El grado total del m.c.m. literal es la suma de los exponentes máximos de todas las distintas variables presentes.
 ejemplo_guiado:
-  enunciado: Dos señales digitales tienen partes literales dadas por $a^3b^2$ y $a^2b^4c$.
-    Identifica la parte literal del m.c.m. entre ambas expresiones ($a^3b^4c$) y evalúa
-    su valor numérico para $a = 2$, $b = 1$ y $c = 5$.
+  enunciado: 'Calcula el m.c.m. literal entre los tres monomios $M_1 = a^3 b^2$, $M_2 = b^4 c^5$ y $M_3 = a^2 c^3 d$.'
   pasos:
-  - 'Paso 1: Listar todas las variables presentes en al menos uno de los términos:
-    $a$, $b$ y $c$.'
-  - 'Paso 2: Seleccionar los mayores exponentes para cada variable. Para $a$: $\max(3,
-    2) = 3$; para $b$: $\max(2, 4) = 4$; para $c$: $\max(0, 1) = 1$. La parte literal
-    del m.c.m. es $a^3b^4c$.'
-  - 'Paso 3: Sustituir $a = 2$, $b = 1$ y $c = 5$: $(2)^3 \cdot (1)^4 \cdot (5)^1
-    = 8 \cdot 1 \cdot 5 = 40$.'
+    - 'Paso 1: Listamos todas las letras presentes en cualquiera de los monomios:
+       - Letra $a$ (en $M_1$ y $M_3$).
+       - Letra $b$ (en $M_1$ y $M_2$).
+       - Letra $c$ (en $M_2$ y $M_3$).
+       - Letra $d$ (en $M_3$).
+       - **¡Incluimos las cuatro letras ($a, b, c, d$)!**'
+    - 'Paso 2: Comparamos los exponentes para cada una de las letras y elegimos el **mayor**:
+       - Para $a$: exponentes son $3$ y $2 \implies$ mayor es **$3$** ($a^3$).
+       - Para $b$: exponentes son $2$ y $4 \implies$ mayor es **$4$** ($b^4$).
+       - Para $c$: exponentes son $5$ y $3 \implies$ mayor es **$5$** ($c^5$).
+       - Para $d$: exponente único es **$1$** ($d^1$).'
+    - 'Paso 3: Multiplicamos todas las letras elegidas con su mayor exponente: $a^3 b^4 c^5 d$.'
+    - 'Conclusión: El m.c.m. literal es **$a^3 b^4 c^5 d$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se seleccionan los exponentes de las variables al calcular el m.c.m.
-    literal entre monomios?
-  choices:
-  - text: Se incluyen todas las variables (comunes y no comunes) elevadas a su mayor
-      exponente.
-    is_correct: true
-  - text: Se incluyen solo las variables comunes elevadas a su menor exponente.
-    is_correct: false
-  - text: Se multiplican los exponentes de las variables iguales.
-    is_correct: false
-  - text: Se omiten las variables que no aparecen en todos los monomios.
-    is_correct: false
-  explanation: La alternativa correcta es 'Se incluyen todas las variables (comunes
-    y no comunes) elevadas a su mayor exponente.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Para la parte literal m.c.m. igual a $a^3b^4c$ con $a = 2$, $b = 1$ y
-    $c = 5$, ¿cuál es el valor numérico resultante?
-  choices:
-  - text: $40$
-    is_correct: true
-  - text: $20$
-    is_correct: false
-  - text: $80$
-    is_correct: false
-  - text: $120$
-    is_correct: false
-  explanation: La alternativa correcta es '$40$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el m.c.m. literal entre los monomios $x^3 y^2$, $y^4 z^3$ y $x^5 z^2$?'
+    choices:
+      - {text: 'El m.c.m. literal es $x^5 y^4 z^3$, incluyendo todas las variables ($x, y, z$) elevadas a su mayor exponente ($5, 4, 3$)', is_correct: true}
+      - {text: 'El m.c.m. literal es $x^3 y^2 z^2$', is_correct: false}
+      - {text: 'El m.c.m. literal es 1', is_correct: false}
+      - {text: 'El m.c.m. literal es $x^8 y^6 z^5$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El m.c.m. literal es $x^5 y^4 z^3$, incluyendo todas las variables ($x, y, z$) elevadas a su mayor exponente ($5, 4, 3$)''. Mínimo común múltiplo literal: $\max(x)=5, \max(y)=4, \max(z)=3 \implies x^5 y^4 z^3$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si dos monomios son $a^4 b^2$ y $c^3$, ¿cuál es su m.c.m. literal?'
+    choices:
+      - {text: 'Su m.c.m. literal es $a^4 b^2 c^3$, porque deben incluirse todas las letras no comunes', is_correct: true}
+      - {text: 'Su m.c.m. literal es 1', is_correct: false}
+      - {text: 'Su m.c.m. literal es 0', is_correct: false}
+      - {text: 'No se puede determinar', is_correct: false}
+    explanation: 'La alternativa correcta es ''Su m.c.m. literal es $a^4 b^2 c^3$, porque deben incluirse todas las letras no comunes''. El m.c.m. incluye todas las variables presentes.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Hacer un inventario de todas las letras que aparezcan en cualquiera de
-  los monomios.'
-- 'Paso 2: Comparar las potencias de cada letra en todos los términos donde figura.'
-- 'Paso 3: Seleccionar para cada letra la mayor potencia registrada.'
-- 'Paso 4: Escribir el producto de todas las letras seleccionadas elevadas a sus respectivos
-  exponentes máximos.'
-errores_correccion: '- **Error común:** Descartar una variable porque solo aparece
-  en un monomio del grupo.
-
-  - **Cómo corregirlo:** Recuerda que para ser MÚLTIPLO de ese monomio, el m.c.m.
-  debe obligatoriamente contener la variable de dicho monomio.'
+  - 'Paso 1: Elaborar un inventario completo con cada una de las variables que aparezcan en los monomios.'
+  - 'Paso 2: Para cada variable del inventario, revisar los exponentes con los que figura en cada monomio.'
+  - 'Paso 3: Seleccionar la potencia más alta observada para cada variable.'
+  - 'Paso 4: Multiplicar las variables con sus mayores exponentes para formar el m.c.m. literal.'
+errores_correccion: |
+  - **Error 1:** Excluir las letras que aparecen en un solo monomio. **Cómo corregirlo:** En el m.c.m. literal **SE DEBEN INCLUIR TODAS LAS VARIABLES QUE APAREZCAN EN CUALQUIERA DE LOS MONOMIOS**.
+  - **Error 2:** Seleccionar el menor exponente en lugar del mayor. **Cómo corregirlo:** Para el m.c.m. **CADA VARIABLE DEBE ELEVARSE A SU MAYOR EXPONENTES OBSERVADO**.
 ejemplos:
-- titulo: 'Ejemplo 1: m.c.m. literal con tres monomios'
-  enunciado: Determina el m.c.m. literal de $x^4y$, $x^2y^3z$ y $y^2w^3$.
-  alternativas:
-  - $x^4y^3z w^3$
-  - $x^2y$
-  - $x^4y^3$
-  respuesta: $x^4y^3z w^3$
-  solucion_pasos:
-  - '1. Todas las variables presentes: $x, y, z, w$.'
-  - '2. Mayores exponentes: para $x$ es $4$, para $y$ es $3$, para $z$ es $1$, para
-    $w$ es $3$.'
-  - '3. m.c.m. literal: $x^4y^3z w^3$.'
-- titulo: 'Ejemplo 2: Variables comunes y no comunes'
-  enunciado: ¿Cuál es el m.c.m. literal entre $m^3n^2$ y $m^2p^4$?
-  alternativas:
-  - $m^3n^2p^4$
-  - $m^2$
-  - $m^5n^2p^4$
-  respuesta: $m^3n^2p^4$
-  solucion_pasos:
-  - '1. Variables presentes: $m$, $n$ y $p$.'
-  - '2. Mayor exponente para $m$: $3$. Para $n$: $2$. Para $p$: $4$.'
-  - '3. m.c.m. literal: $m^3n^2p^4$.'
-- titulo: ¿Si dos monomios son $x^3$ e $y^4$, su m.c.m. literal es el producto $x^3y^4$?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Sí. Al no compartir variables, el m.c.m. literal junta todas las letras a su
-    mayor exponente: $x^3y^4$.'
-- titulo: ¿El exponente de la variable $x$ en el m.c.m. literal entre $x^5$ y $x^2$
-    es igual a $5$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, en el m.c.m. literal se selecciona siempre el mayor exponente entre los términos
-    ($5$).
+  - titulo: 'Una sola variable'
+    enunciado: 'Para $x^2$, $x^6$ y $x^4$, ¿es el m.c.m. literal $x^6$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, el mayor exponente es 6.'
+  - titulo: 'Variables disjuntas'
+    enunciado: 'Para $a^3$ y $b^2$, ¿es el m.c.m. $a^3b^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, se unen todas las letras.'
+  - titulo: 'Variables mixtas'
+    enunciado: 'Para $x^3y$ y $xy^4$, ¿es el m.c.m. $x^3y^4$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, mayores exponentes 3 y 4.'
+  - titulo: 'Tres monomios'
+    enunciado: 'Para $a^2b$, $b^2c$ y $c^2a$, ¿es el m.c.m. $a^2b^2c^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, mayores exponentes de cada una.'
 errores_frecuentes:
-- El m.c.m. literal de $x^4y^2$ y $x^2y^5$ es $x^2y^2$ porque toma los exponentes
-  menores.
-- En el m.c.m. literal de $a^2b$ y $b^3c$, la variable $c$ no se incluye por no ser
-  común.
-- El m.c.m. literal de $m^3$ y $m^2$ es $m^6$ al multiplicar los exponentes.
-- Las variables no comunes en los monomios se reemplazan por un 1 en el m.c.m. literal.
-- El m.c.m. literal de $x^2$ y $x^3$ es $x$.
+  - 'Las variables no compartidas no son escritas en la expresión del m.c.m. literal.'
+  - 'Elegir el menor exponente de las letras en lugar de seleccionar el mayor exponente.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Sumar los exponentes de las letras iguales en lugar de elegir el máximo exponente.'
+  - 'Intercambiar las reglas del m.c.m. literal con las del M.C.D. literal.'
 afirmaciones_verdaderas:
-- El m.c.m. literal se construye con el producto de todas las variables distintas
-  presentes en los monomios, elevadas a sus mayores exponentes.
-- Cualquier monomio del conjunto divide exactamente a la parte literal del m.c.m.
-  obtenido.
-al_terminar_debes_poder: Al finalizar este recurso podrás hallar la parte literal
-  del m.c.m. de cualquier grupo de monomios seleccionando las variables y mayores
-  potencias requeridas.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El m.c.m. literal incluye todas las distintas variables observadas en los monomios.'
+  - 'Cada variable del m.c.m. literal se eleva a la mayor potencia con la que figura en los monomios.'
+al_terminar_debes_poder: 'Determinar el m.c.m. literal entre varios monomios reuniendo todas las variables con su mayor exponente.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

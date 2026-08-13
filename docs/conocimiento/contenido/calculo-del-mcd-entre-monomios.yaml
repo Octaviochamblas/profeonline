@@ -1,155 +1,108 @@
 semantic_id: MAT.ALG.MCD_ALGEBRAICO.MCD_MONOMIOS
-resumen_inicial: El M.C.D. completo entre monomios se obtiene multiplicando el M.C.D.
-  de sus coeficientes numéricos por el M.C.D. de sus partes literales.
-explicacion_simple: 'Para calcular el Máximo Común Divisor entre dos o más monomios
-  completos, combinamos los procedimientos numérico y literal:
+resumen_inicial: 'El cálculo del M.C.D. entre monomios consiste en combinar el M.C.D. de los coeficientes numéricos con el M.C.D. de las partes literales para formar el producto monómico total.'
+explicacion_simple: |
+  Para calcular el **M.C.D. total** entre dos o más monomios completos (ej: $12x^3y^2$ y $18x^2y^4z$):
+  - **FÓRMULA DE INTEGRACIÓN**:
+    $$\mathbf{\text{M.C.D. Total} = (\text{M.C.D. numérico}) \cdot (\text{M.C.D. literal})}$$
+  - **Integración en 3 Pasos**:
+    1. **Calcula el M.C.D. numérico de los coeficientes ($12$ y $18$)**:
+       - $\operatorname{MCD}(12, 18) = \mathbf{6}$.
+    2. **Calcula el M.C.D. literal de las variables comunes con menor exponente**:
+       - Letra $x$: $\min(3, 2) \implies \mathbf{x^2}$.
+       - Letra $y$: $\min(2, 4) \implies \mathbf{y^2}$.
+       - Letra $z$: sólo en el segundo $\implies$ ¡se descarta!
+       - Parte literal: $\mathbf{x^2y^2}$.
+    3. **Multiplica ambos resultados**:
+       - $\mathbf{\text{M.C.D. Total} = 6x^2y^2}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $M_1, M_2, \dots, M_k \in \mathbb{Z}[x_1, x_2, \dots, x_n]$ monomios representados como $M_i = c_i \prod_{j=1}^n x_j^{e_{i,j}}$ con $c_i \in \mathbb{Z} \setminus \{0\}$. El **Máximo Común Divisor monómico total** se define como el producto cartesiano del M.C.D. del grupo de coeficientes y el M.C.D. del retículo de partes literales:
 
-  1. Hallamos el M.C.D. de los coeficientes numéricos (el mayor entero positivo que
-  los divide a todos).
+  $$\operatorname{MCD}(M_1, M_2, \dots, M_k) = \operatorname{MCD}(|c_1|, |c_2|, \dots, |c_k|) \cdot \prod_{j=1}^n x_j^{\min_i(e_{i,j})}$$
 
-  2. Hallamos el M.C.D. de la parte literal (multiplicando solo las letras comunes
-  a todos los monomios, elevadas a sus menores exponentes).
+  ### Propiedad de Divisibilidad Exacta
+  El monomio resultante $D = \operatorname{MCD}(M_1, \dots, M_k)$ satisface que para cada $M_i$, la división $\frac{M_i}{D}$ es un monomio exacto con coeficientes enteros y exponentes no negativos ($\frac{M_i}{D} \in \mathbb{Z}[x_1, \dots, x_n]$).
 
-  3. Multiplicamos el número obtenido por el bloque literal resultando en un único
-  monomio divisor.'
-explicacion_formal: 'Dado un conjunto de monomios $\{M_1, M_2, \dots, M_k\}$ donde
-  $M_i = c_i \cdot \prod_j x_j^{e_{i,j}}$, el **M.C.D. de monomios** es la expresión
-  monomia $D$ definida por:
-
-
-  $$D = \operatorname{gcd}(|c_1|, |c_2|, \dots, |c_k|) \cdot \prod_{x_j \text{ común}}
-  x_j^{\min_i(e_{i,j})}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $\operatorname{gcd}(|c_1|, \dots, |c_k|)$: Representa el M.C.D. numérico sobre
-  los valores absolutos de los coeficientes.
-
-  - $\prod_{x_j \text{ común}} x_j^{\min_i(e_{i,j})}$: Corresponde al M.C.D. literal,
-  formado por las variables que figuran en la totalidad de los monomios, elevadas
-  a su menor exponente registrado $\min_i(e_{i,j})$.
-
-
-  > **Complemento didáctico:** El monomio resultante es el divisor común exacto de
-  mayor grado y coeficiente que se puede extraer de cada uno de los monomios dados
-  sin generar variables en el denominador ni coeficientes fraccionarios.'
-definiciones_clave: '- **M.C.D. de monomios**: Monomio formado por el producto del
-  M.C.D. de los coeficientes numéricos y la parte literal común con menores exponentes.
-
-  - **División de monomios**: Operación por la cual cada monomio original es dividido
-  entre el M.C.D. para obtener monomios enteros reducidos.'
-propiedades_relaciones: '- **Divisibilidad simultánea**: El M.C.D. calculado divide
-  a cada monomio del grupo dando como cociente otro monomio con coeficientes enteros.
-
-  - **Factor común monomio**: Coincide exactamente con el monomio que se extrae fuera
-  de paréntesis al factorizar un polinomio compuesto por dichos monomios.'
+  ### Síntesis didáctica
+  Integrar el M.C.D. de los coeficientes positivos con las letras compartidas de menor exponente produce el monomio divisor de mayor tamaño algebraico.
+definiciones_clave: |
+  - **M.C.D. entre monomios**: Monomio de máximo valor numérico y grado que divide exactamente a cada monomio dado.
+  - **Monomio divisor exacto**: Monomio cuyo cociente con cada uno de los monomios del conjunto no contiene variables en el denominador ni fracciones.
+  - **Producto de integración**: Multiplicación de la constante entera del M.C.D. numérico por las variables del M.C.D. literal.
+propiedades_relaciones: |
+  - **Factorización de expresiones algebraicas**: El M.C.D. entre monomios constituye el Factor Común Monomio ideal para simplificar polinomios.
 ejemplo_guiado:
-  enunciado: Un sistema mecánico opera con pares de fuerza representados por los monomios
-    $15a^3b^2c$ y $25a^2b^4$. Calcula el M.C.D. completo entre ambos monomios ($5a^2b^2$)
-    y evalúa su valor numérico para $a = 3$ y $b = 2$.
+  enunciado: 'Calcula el M.C.D. entre los tres monomios $M_1 = 24x^4y^3z^2$, $M_2 = -36x^3y^5$ y $M_3 = 60x^2y^2w^4$.'
   pasos:
-  - 'Paso 1: Calcular el M.C.D. numérico entre $15$ y $25$. Como $15 = 3 \cdot 5$
-    y $25 = 5^2$, tenemos $\operatorname{gcd}(15, 25) = 5$.'
-  - 'Paso 2: Calcular el M.C.D. literal. Las variables comunes a ambos monomios son
-    $a$ y $b$ (la variable $c$ no es común). Menores exponentes: para $a$ es $2$,
-    para $b$ es $2$. La parte literal es $a^2b^2$.'
-  - 'Paso 3: Unir el coeficiente y la parte literal: el M.C.D. completo es $5a^2b^2$.'
-  - 'Paso 4: Sustituir $a = 3$ y $b = 2$: $5 \cdot (3)^2 \cdot (2)^2 = 5 \cdot 9 \cdot
-    4 = 180\text{ N}\cdot\text{m}$.'
+    - 'Paso 1: Calculamos el M.C.D. numérico de los coeficientes en valor absoluto ($24, 36, 60$):
+       - $24 = 2^3 \cdot 3$.
+       - $36 = 2^2 \cdot 3^2$.
+       - $60 = 2^2 \cdot 3 \cdot 5$.
+       - $\operatorname{MCD}(24, 36, 60) = 2^2 \cdot 3 = \mathbf{12}$.'
+    - 'Paso 2: Calculamos el M.C.D. literal de las variables comunes:
+       - $x$: presente en los tres, menores exponentes $4, 3, 2 \implies \mathbf{x^2}$.
+       - $y$: presente en los tres, menores exponentes $3, 5, 2 \implies \mathbf{y^2}$.
+       - $z$ y $w$: no están en los tres $\implies$ **se descartan**.'
+    - 'Paso 3: Unimos la parte numérica y la parte literal:
+       $\text{M.C.D. Total} = 12 \cdot x^2y^2 = \mathbf{12x^2y^2}$.'
+    - 'Conclusión: El M.C.D. entre los tres monomios es **$12x^2y^2$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es el M.C.D. entre los monomios $15a^3b^2c$ y $25a^2b^4$?
-  choices:
-  - text: $5a^2b^2$
-    is_correct: true
-  - text: $5a^3b^4c$
-    is_correct: false
-  - text: $75a^3b^4c$
-    is_correct: false
-  - text: $15a^2b^2$
-    is_correct: false
-  explanation: La alternativa correcta es '$5a^2b^2$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar el M.C.D. $5a^2b^2$ para $a = 3$ y $b = 2$, ¿cuál es el valor
-    numérico obtenido?
-  choices:
-  - text: $180$
-    is_correct: true
-  - text: $90$
-    is_correct: false
-  - text: $360$
-    is_correct: false
-  - text: $60$
-    is_correct: false
-  explanation: La alternativa correcta es '$180$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el M.C.D. entre los monomios $16a^3b^2$ y $24a^2b^4c$?'
+    choices:
+      - {text: 'El M.C.D. es $8a^2b^2$, combinando $\operatorname{MCD}(16,24)=8$ y la parte literal $a^{\min(3,2)}b^{\min(2,4)} = a^2b^2$', is_correct: true}
+      - {text: 'El M.C.D. es $48a^3b^4c$', is_correct: false}
+      - {text: 'El M.C.D. es $8a^3b^4$', is_correct: false}
+      - {text: 'El M.C.D. es $4a^2b^2$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El M.C.D. es $8a^2b^2$, combinando $\operatorname{MCD}(16,24)=8$ y la parte literal $a^{\min(3,2)}b^{\min(2,4)} = a^2b^2$''. $\operatorname{MCD}(16, 24) = 8$ y menores exponentes $a^2b^2$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si al dividir un monomio de la lista por el M.C.D. obtenido el resultado da una fracción o deja letras en el denominador, ¿qué indica este hecho?'
+    choices:
+      - {text: 'Indica que se cometió un error al calcular el M.C.D., ya que la división por el M.C.D. debe ser siempre exacta y entera', is_correct: true}
+      - {text: 'Indica que el M.C.D. está bien calculado', is_correct: false}
+      - {text: 'Indica que el M.C.D. es negativo', is_correct: false}
+      - {text: 'Es un resultado normal', is_correct: false}
+    explanation: 'La alternativa correcta es ''Indica que se cometió un error al calcular el M.C.D., ya que la división por el M.C.D. debe ser siempre exacta y entera''. Definición de divisor exacto en $\mathbb{Z}[x_1, \dots, x_n]$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar el M.C.D. de los coeficientes numéricos de los monomios.'
-- 'Paso 2: Identificar las variables que están presentes en TODOS los monomios.'
-- 'Paso 3: Elevar cada variable común al menor exponente con el que figura en los
-  monomios dados.'
-- 'Paso 4: Multiplicar el coeficente M.C.D. numérico por el producto de las variables
-  comunes con sus menores exponentes.'
-errores_correccion: '- **Error común:** Incluir en el M.C.D. una variable que no aparece
-  en todos los monomios o tomar el mayor exponente en lugar del menor.
-
-  - **Cómo corregirlo:** Recuerda verificar término por término que la letra esté
-  presente en todos antes de incluirla, y asigna siempre la menor potencia disponible.'
+  - 'Paso 1: Calcular el M.C.D. numérico de los coeficientes usando sus valores absolutos.'
+  - 'Paso 2: Seleccionar las variables que aparezcan en todos los monomios elevadas a su menor exponente.'
+  - 'Paso 3: Multiplicar el coeficiente del M.C.D. numérico por las variables del M.C.D. literal.'
+  - 'Paso 4: Verificar que la expresión final divida exactamente a cada uno de los monomios originales.'
+errores_correccion: |
+  - **Error 1:** Multiplicar los coeficientes numéricos en lugar de hallar su M.C.D. **Cómo corregirlo:** Para la parte numérica **SE DEBE HALLAR EL M.C.D. MEDIANTE FACTORES PRIMOS O DIVISORES (no multiplicar los números)**.
+  - **Error 2:** Incluir letras que no son comunes a todos los monomios. **Cómo corregirlo:** La parte literal del M.C.D. **SOLO ADMITE VARIABLES COMPARTIDAS POR LA TOTALIDAD DE LOS MONOMIOS**.
 ejemplos:
-- titulo: 'Ejemplo 1: M.C.D. entre tres monomios completos'
-  enunciado: Calcula el M.C.D. entre $12x^3y^2z$, $18x^2y^4$ y $30x^4y^3z^2$.
-  alternativas:
-  - $6x^2y^2$
-  - $6x^2y^2z$
-  - $180x^4y^4z^2$
-  respuesta: $6x^2y^2$
-  solucion_pasos:
-  - '1. M.C.D. numérico: $\operatorname{gcd}(12, 18, 30) = 6$.'
-  - '2. Variables comunes a los tres monomios: solo $x$ e $y$ (la $z$ no está en el
-    segundo monomio).'
-  - '3. Menores exponentes: $x^2$ e $y^2$.'
-  - '4. M.C.D. completo: $6x^2y^2$.'
-- titulo: 'Ejemplo 2: Coeficiente común igual a 1'
-  enunciado: Determina el M.C.D. de $7a^2b^3$ y $5a^4b^2$.
-  alternativas:
-  - $a^2b^2$
-  - $35a^2b^2$
-  - $a^4b^3$
-  respuesta: $a^2b^2$
-  solucion_pasos:
-  - 1. Los coeficientes $7$ y $5$ son números primos entre sí, luego su M.C.D. numérico
-    es $1$.
-  - '2. Variables comunes: $a$ (menor exponente $2$) y $b$ (menor exponente $2$).'
-  - '3. M.C.D. completo: $1 \cdot a^2b^2 = a^2b^2$.'
-- titulo: ¿El M.C.D. de $8x^3y^2$ y $-12x^2y^4$ es un monomio con coeficiente positivo
-    $4x^2y^2$?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Sí. Por convención, el M.C.D. de coeficientes se toma positivo: $\operatorname{gcd}(8,
-    |-12|) = 4$, dando $4x^2y^2$.'
-- titulo: ¿Al dividir un monomio por su M.C.D. se obtiene siempre un término con exponentes
-    enteros no negativos?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. La propiedad de divisor común garantiza que la división da un monomio con
-    exponentes de variables mayores o iguales a cero.
+  - titulo: 'M.C.D. completo'
+    enunciado: 'Para $10x^2y$ y $15xy^3$, ¿es el M.C.D. igual a $5xy$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\operatorname{MCD}(10,15)=5$ y letras $xy$.'
+  - titulo: 'Variable descartada'
+    enunciado: 'Entre $6a^2b$ y $9a^3$, ¿se elimina la letra $b$ dando $3a^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $b$ no está en el segundo monomio.'
+  - titulo: 'Coeficientes primarios'
+    enunciado: 'Para $7x^3$ y $5x^2$, ¿es el M.C.D. $1x^2 = x^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\operatorname{MCD}(7,5)=1$.'
+  - titulo: 'Comprobación de división'
+    enunciado: 'Al dividir $12x^2y^2 \div 6x^2y^2$, ¿da el entero 2 sin variables?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, la división es exacta.'
 errores_frecuentes:
-- El M.C.D. entre $12x^3y^2$ y $18x^2y^4$ es $36x^3y^4$.
-- El M.C.D. entre $10a^3b$ y $15a^2c$ incluye a las variables $b$ y $c$.
-- Para calcular el M.C.D. de dos monomios se deben sumar los exponentes de las variables
-  iguales.
-- El M.C.D. entre $-8x^2$ y $12x^3$ es $-4x^3$.
-- Si el M.C.D. de los coeficientes de dos monomios es 1, entonces los monomios no
-  tienen M.C.D.
+  - 'Multiplicar los coeficientes numéricos en lugar de calcular su M.C.D.'
+  - 'Incluir variables no comunes en el monomio M.C.D. final.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Seleccionar el mayor exponente de las variables comunes como en el m.c.m.'
+  - 'Asignar un signo negativo al M.C.D. cuando hay monomios con coeficientes negativos.'
 afirmaciones_verdaderas:
-- El M.C.D. entre monomios combina el M.C.D. numérico de los coeficientes y las variables
-  comunes elevadas a su menor potencia.
-- Si una variable no aparece en todos los monomios dados, dicha variable no forma
-  parte del M.C.D. monomio.
-al_terminar_debes_poder: Al finalizar este recurso podrás calcular el M.C.D. completo
-  de cualquier conjunto de monomios integrando correctamente sus factores numéricos
-  y literales.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El M.C.D. entre monomios se obtiene multiplicando el M.C.D. numérico de los coeficientes por el M.C.D. de las partes literales.'
+  - 'Todo monomio original dividido entre su M.C.D. produce una expresión monómica exacta.'
+al_terminar_debes_poder: 'Calcular el M.C.D. completo entre dos o más monomios combinando coeficientes y variables.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

@@ -1,159 +1,108 @@
 semantic_id: MAT.ALG.MCD_ALGEBRAICO.PARTE_LITERAL_MONOMIOS
-resumen_inicial: El M.C.D. de la parte literal entre monomios se obtiene multiplicando
-  las variables compartidas por todos los términos, elevadas a su menor exponente.
-explicacion_simple: 'Para determinar únicamente la parte literal (las letras) del
-  M.C.D. entre varios monomios, seguimos dos pasos clave:
+resumen_inicial: 'La determinación del M.C.D. literal entre monomios consiste en seleccionar únicamente las variables que figuran en todos los monomios, elevadas a su menor exponente.'
+explicacion_simple: |
+  Para hallar el **M.C.D. literal** (de las letras) entre varios monomios (ej: $x^4y^3z^2$, $x^2y^5$, $x^3y^2w$):
+  - **DOS REGLAS DE ORO**:
+    1. **Identifica las letras COMUNES A TODOS los monomios**:
+       - La $x$ aparece en los 3 monomios. (¡Es común!).
+       - La $y$ aparece en los 3 monomios. (¡Es común!).
+       - La $z$ sólo aparece en el primero $\implies$ ¡Se elimina!
+       - La $w$ sólo aparece en el tercero $\implies$ ¡Se elimina!
+    2. **Elige el MENOR exponente de cada letra común**:
+       - Para $x$: exponentes son $4, 2, 3 \implies$ el menor exponente es **$2$** ($x^2$).
+       - Para $y$: exponentes son $3, 5, 2 \implies$ el menor exponente es **$2$** ($y^2$).
+    3. **Respuesta final del M.C.D. literal**: $\mathbf{x^2y^2}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $M_1, M_2, \dots, M_k$ $k$ monomios en $n$ variables con partes literales $L_i = \prod_{j=1}^n x_j^{e_{i,j}}$ donde $e_{i,j} \ge 0$. El **M.C.D. de las partes literales** se define algebraicamente como el producto monómico:
 
-  1. Identificamos solo aquellas variables que aparezcan en TODOS y cada uno de los
-  monomios analizados. Si una letra falta en al menos un término, queda descartada.
+  $$\operatorname{MCD}(L_1, L_2, \dots, L_k) = \prod_{j=1}^n x_j^{\min_i(e_{i,j})}$$
 
-  2. A cada letra común seleccionada le asignamos el menor exponente con el que figure
-  entre todos los monomios.
+  ### Análisis del Exponente Mínimo Cero
+  Si una variable $x_j$ no está presente en al menos uno de los monomios $M_m$, su exponente en dicho monomio es $e_{m,j} = 0$. Por propiedad de la función mínimo:
 
-  Esto garantiza que la expresión resultante sea capaz de dividir a cada monomio sin
-  dejar variables en el denominador.'
-explicacion_formal: 'Dadas las partes literales de un conjunto de monomios $M_1, M_2,
-  \dots, M_k$, expresadas en factorización de variables como $L_i = \prod_j x_j^{e_{i,j}}$,
-  el **M.C.D. literal** se define formalmente como:
+  $$\min(e_{1,j}, e_{2,j}, \dots, 0, \dots, e_{k,j}) = 0 \implies x_j^0 = 1$$
 
+  lo cual demuestra rigurosamente por qué las variables no compartidas **se anulan y no forman parte del M.C.D.**.
 
-  $$\text{M.C.D.}_{\text{literal}} = \prod_{x_j \text{ común}} x_j^{\min_i(e_{i,j})}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $\prod_{x_j \text{ común}}$: Indica que el producto se realiza exclusivamente
-  sobre las variables $x_j$ que pertenecen a la intersección de los conjuntos de variables
-  de todos los monomios.
-
-  - $\min_i(e_{i,j})$: Señala que para cada variable común $x_j$, el exponente seleccionado
-  corresponde al valor mínimo entre los exponentes $e_{i,j}$ presentes en cada monomio
-  $i$.
-
-
-  > **Complemento didáctico:** La condición de exponente mínimo asegura que al dividir
-  cualquier monomio original por el M.C.D. literal, el exponente de la variable resultante
-  sea siempre mayor o igual a cero ($e_{i,j} - \min_i(e_{i,j}) \ge 0$).'
-definiciones_clave: '- **Variable común**: Letra que figura explícitamente en la parte
-  literal de la totalidad de los monomios considerados.
-
-  - **Exponente mínimo común**: La potencia más pequeña asignada a una determinada
-  variable entre todos los monomios analizados.'
-propiedades_relaciones: '- **Exclusión de variables no comunes**: Si una variable
-  no está presente en la totalidad de los términos, su exponente implícito común es
-  $0$ ($x^0 = 1$), por lo que no figura en el producto final.
-
-  - **Grado literal del M.C.D.**: El grado de la parte literal del M.C.D. es la suma
-  de los exponentes mínimos de las variables comunes.'
+  ### Síntesis didáctica
+  La parte literal del M.C.D. es el producto de las letras comunes a todos los monomios, cada una elevada a su menor exponente.
+definiciones_clave: |
+  - **M.C.D. literal**: Componente del M.C.D. formada por el producto de las variables comunes con su menor grado.
+  - **Variable común**: Letra que posee un exponente estrictamente mayor que cero ($e_{i,j} \ge 1$) en todos los monomios considerados.
+  - **Exponente literal mínimo ($\min(e_j)$)**: Potencia más pequeña con la que figura una variable en el conjunto de monomios.
+propiedades_relaciones: |
+  - **Cero exponente para variables no comunes**: Las letras ausentes en algún monomio tienen exponente mínimo 0 y equivalen a multiplicar por 1.
 ejemplo_guiado:
-  enunciado: Dos tuberías industriales transportan caudales de fluido representados
-    por $8x^4y^3z^2$ y $12x^2y^5z^4$. Identifica la parte literal del M.C.D. entre
-    ambas expresiones ($x^2y^3z^2$) y evalúa su valor numérico para $x = 2$, $y =
-    1$ y $z = 3$.
+  enunciado: 'Calcula el M.C.D. literal entre los monomios $M_1 = a^5 b^3 c^2$, $M_2 = a^3 b^4 d$ y $M_3 = a^4 b^2 c^7$.'
   pasos:
-  - 'Paso 1: Identificar las variables comunes a ambos términos. Las letras $x$, $y$
-    y $z$ figuran en los dos monomios.'
-  - 'Paso 2: Determinar los menores exponentes para cada variable. Para $x$: $\min(4,
-    2) = 2$; para $y$: $\min(3, 5) = 3$; para $z$: $\min(2, 4) = 2$. La parte literal
-    del M.C.D. es $x^2y^3z^2$.'
-  - 'Paso 3: Sustituir $x = 2$, $y = 1$ y $z = 3$ en la parte literal obtenida: $(2)^2
-    \cdot (1)^3 \cdot (3)^2 = 4 \cdot 1 \cdot 9 = 36\text{ m}^3/\text{s}$.'
+    - 'Paso 1: Listamos las letras presentes y verificamos su presencia en los 3 monomios:
+       - Letra $a$: presente en $M_1, M_2, M_3 \implies$ **¡Es común!**
+       - Letra $b$: presente en $M_1, M_2, M_3 \implies$ **¡Es común!**
+       - Letra $c$: falta en $M_2 \implies$ **Se elimina.**
+       - Letra $d$: falta en $M_1$ y $M_3 \implies$ **Se elimina.**'
+    - 'Paso 2: Comparamos los exponentes de las letras comunes:
+       - Para $a$: exponentes son $5, 3, 4 \implies$ menor exponente es **$3$** ($a^3$).
+       - Para $b$: exponentes son $3, 4, 2 \implies$ menor exponente es **$2$** ($b^2$).'
+    - 'Paso 3: Multiplicamos las variables elegidas con su menor exponente: $a^3 b^2$.'
+    - 'Conclusión: El M.C.D. literal es **$a^3 b^2$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se seleccionan los exponentes de las variables comunes al calcular
-    el M.C.D. literal entre varios monomios?
-  choices:
-  - text: Se toma el menor exponente con el que figura la variable en todos los monomios.
-    is_correct: true
-  - text: Se toma el mayor exponente presente entre todos los monomios.
-    is_correct: false
-  - text: Se suman los exponentes de cada monomio.
-    is_correct: false
-  - text: Se promedian los exponentes de las expresiones.
-    is_correct: false
-  explanation: La alternativa correcta es 'Se toma el menor exponente con el que figura
-    la variable en todos los monomios.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Para la parte literal del M.C.D. igual a $x^2y^3z^2$, ¿cuál es su valor
-    numérico cuando $x = 2$, $y = 1$ y $z = 3$?
-  choices:
-  - text: $36$
-    is_correct: true
-  - text: $18$
-    is_correct: false
-  - text: $72$
-    is_correct: false
-  - text: $24$
-    is_correct: false
-  explanation: La alternativa correcta es '$36$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el M.C.D. literal de los monomios $x^4 y^6 z$, $x^2 y^3 w^2$ y $x^5 y^2 z^3$?'
+    choices:
+      - {text: 'El M.C.D. literal es $x^2 y^2$, porque sólo $x$ e $y$ están en los tres monomios, con menores exponentes 2 y 2', is_correct: true}
+      - {text: 'El M.C.D. literal es $x^5 y^6 z^3 w^2$', is_correct: false}
+      - {text: 'El M.C.D. literal es $x^2 y^3 z w$', is_correct: false}
+      - {text: 'El M.C.D. literal es $x y z$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El M.C.D. literal es $x^2 y^2$, porque sólo $x$ e $y$ están en los tres monomios, con menores exponentes 2 y 2''. Variables comunes $x, y$ con $\min(4,2,5)=2$ y $\min(6,3,2)=2$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si entre tres monomios no hay ninguna letra que aparezca simultáneamente en los tres, ¿cuál es su M.C.D. literal?'
+    choices:
+      - {text: 'Su M.C.D. literal es 1 (ó $x^0 = 1$)', is_correct: true}
+      - {text: 'Su M.C.D. literal es 0', is_correct: false}
+      - {text: 'Su M.C.D. literal es todas las letras juntas', is_correct: false}
+      - {text: 'No se puede calcular', is_correct: false}
+    explanation: 'La alternativa correcta es ''Su M.C.D. literal es 1 (ó $x^0 = 1$)''. Si no hay variables comunes, todos los exponentes mínimos son 0 $\implies \prod x_j^0 = 1$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Listar las variables presentes en la parte literal de cada uno de los monomios.'
-- 'Paso 2: Filtrar la lista conservando únicamente las variables que pertenezcan a
-  TODOS los monomios.'
-- 'Paso 3: Para cada variable conservada, comparar sus exponentes y seleccionar el
-  valor mínimo.'
-- 'Paso 4: Escribir el producto de las variables comunes elevadas a sus respectivos
-  exponentes mínimos.'
-errores_correccion: '- **Error común:** Incluir una variable en el M.C.D. literal
-  porque aparece con un exponente muy alto en uno de los términos, ignorando que falta
-  en los otros.
-
-  - **Cómo corregirlo:** Si una letra falta en tan solo uno de los monomios del grupo,
-  no es común y por ende su menor exponente disponible en el grupo es $0$.'
+  - 'Paso 1: Examinar la lista de monomios e identificar qué letras aparecen en absolutamente todos ellos.'
+  - 'Paso 2: Descartar cualquier letra que falte en al menos uno de los monomios.'
+  - 'Paso 3: Para cada letra común conservada, comparar sus exponentes y seleccionar el menor de ellos.'
+  - 'Paso 4: Escribir el producto de las letras comunes elevadas a su respectivo menor exponente.'
+errores_correccion: |
+  - **Error 1:** Incluir una letra que sólo está presente en algunos monomios pero no en todos. **Cómo corregirlo:** Para formar parte del M.C.D. **LA VARIABLE DEBE REPETIRSE OBLIGATORIAMENTE EN TODOS LOS MONOMIOS DADOS**.
+  - **Error 2:** Sumar los exponentes de las letras en lugar de seleccionar el menor. **Cómo corregirlo:** En el M.C.D. **SE ELIGE EL MENOR EXPONENTE INDIVIDUAL DE CADA VARIABLE COMÚN (no se suman)**.
 ejemplos:
-- titulo: 'Ejemplo 1: M.C.D. literal con tres monomios'
-  enunciado: Determina el M.C.D. literal de $x^3y^4$, $x^5y^2z$ y $x^2y^3w$.
-  alternativas:
-  - $x^2y^2$
-  - $x^5y^4z w$
-  - $x^3y^3$
-  respuesta: $x^2y^2$
-  solucion_pasos:
-  - 1. Las variables comunes a los tres monomios son solo $x$ e $y$ ($z$ y $w$ se
-    descartan por no ser comunes a todos).
-  - '2. Menor exponente de $x$: $\min(3, 5, 2) = 2$.'
-  - '3. Menor exponente de $y$: $\min(4, 2, 3) = 2$.'
-  - 4. El M.C.D. literal es $x^2y^2$.
-- titulo: 'Ejemplo 2: Monomios con exponentes iguales'
-  enunciado: ¿Cuál es el M.C.D. literal entre $a^4b^2$ y $a^4b^5$?
-  alternativas:
-  - $a^4b^2$
-  - $a^8b^7$
-  - $a^4b^5$
-  respuesta: $a^4b^2$
-  solucion_pasos:
-  - 1. Para la variable $a$, la menor potencia entre $4$ y $4$ es $a^4$.
-  - 2. Para la variable $b$, la menor potencia entre $2$ y $5$ es $b^2$.
-  - 3. El M.C.D. literal es $a^4b^2$.
-- titulo: ¿Si dos monomios no comparten ninguna variable en común, su M.C.D. literal
-    es igual a $1$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Al no existir variables comunes, el producto de variables elevadas a la menor
-    potencia resulta en $x^0 = 1$.
-- titulo: ¿La variable $z$ forma parte del M.C.D. literal de $x^2y^3z$ y $x^4y^2$?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, la variable $z$ no está presente en $x^4y^2$, por lo que no es una variable
-    común.
+  - titulo: 'M.C.D. de una variable'
+    enunciado: 'Para $x^5$, $x^3$ y $x^8$, ¿es el M.C.D. literal $x^3$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, el menor exponente es 3.'
+  - titulo: 'Dos variables comunes'
+    enunciado: 'Para $m^2 n^4$ y $m^3 n^2$, ¿es el M.C.D. $m^2 n^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, menores exponentes 2 y 2.'
+  - titulo: 'Exclusión de variable no común'
+    enunciado: 'En $a^2 b$ y $a^4 c$, ¿se descartan $b$ y $c$ dando M.C.D. $a^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $b$ y $c$ no son comunes.'
+  - titulo: 'Sin letras comunes'
+    enunciado: 'Entre $a^2$, $b^3$ y $c^4$, ¿es el M.C.D. literal igual a 1?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, no hay letras comunes.'
 errores_frecuentes:
-- El M.C.D. literal de $a^3b^2$ y $a^2b^4$ es $a^3b^4$ porque toma los exponentes
-  mayores.
-- En el M.C.D. literal de $x^3y$ y $x^2z$, la variable $z$ se incluye con exponente
-  $1$.
-- El M.C.D. literal de $m^4n^2$ y $m^2n^5$ es $m^6n^7$ al sumar los exponentes.
-- Las variables que no aparecen en todos los monomios se agregan con exponente negativo
-  al M.C.D. literal.
-- El M.C.D. literal entre $x^2$ e $y^2$ es $xy$.
+  - 'Incluir letras no comunes a todos los monomios en el M.C.D. literal.'
+  - 'Sumar los exponentes de las variables en lugar de seleccionar el menor exponente.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Seleccionar el mayor exponente de las letras comunes en lugar del menor exponente.'
+  - 'Declarar 0 en lugar de 1 cuando no existen letras compartidas entre los monomios.'
 afirmaciones_verdaderas:
-- La parte literal del M.C.D. se forma únicamente con el producto de las variables
-  que están presentes en todos los monomios.
-- El exponente de cada variable en el M.C.D. literal es siempre el menor exponente
-  con el que dicha variable figura en los monomios dados.
-al_terminar_debes_poder: Al finalizar este recurso podrás determinar la parte literal
-  del M.C.D. entre monomios identificando correctamente las variables comunes y sus
-  menores potencias.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'La parte literal del M.C.D. entre monomios está formada por las variables comunes elevadas a su menor exponente.'
+  - 'Si una variable no está en todos los monomios, se excluye del M.C.D. literal.'
+al_terminar_debes_poder: 'Determinar la parte literal del M.C.D. entre varios monomios seleccionando variables comunes con su menor exponente.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

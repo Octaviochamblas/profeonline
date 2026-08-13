@@ -1,123 +1,108 @@
-resumen_inicial: La interpolación de $m$ medios aritméticos entre dos extremos $A$
-  y $B$ calcula los términos intermedios de una P.A. con diferencia $d = \frac{B -
-  A}{m + 1}$.
-explicacion_simple: Interpolar medios aritméticos significa colocar números intermedios
-  entre dos valores dados de modo que toda la lista forme una progresión aritmética
-  perfecta. Para hallar el salto $d$, dividimos la distancia total entre los extremos
-  por la cantidad de huecos $(m + 1)$.
-explicacion_formal: 'Para insertar $m$ medios aritméticos $\{x_1, x_2, \dots, x_m\}$
-  entre los extremos $A$ y $B$, el número total de términos es $N = m + 2$. La **Diferencia
-  de Interpolación Aritmética $d$** es:
-
-
-  $$B = A + (m + 1) \cdot d \implies d = \frac{B - A}{m + 1}$$
-
-
-  **Construcción de los términos intermedios:**
-
-  $$x_1 = A + d, \quad x_2 = A + 2d, \quad \dots, \quad x_m = A + m \cdot d$$'
-definiciones_clave: '- **Interpolación aritmética**: Inserción de $m$ números entre
-  $A$ y $B$ usando $d = \frac{B - A}{m + 1}$.'
-propiedades_relaciones: '- **Número de intervalos**: $m$ medios aritméticos dividen
-  la distancia $B-A$ en $m+1$ intervalos iguales.'
-ejemplo_guiado:
-  enunciado: Interpole $3$ medios aritméticos entre los extremos $A = 5$ y $B = 21$.
-  pasos:
-  - 'Paso 1: Identificar $m = 3$ medios $\implies m + 1 = 4$ intervalos.'
-  - 'Paso 2: Calcular la diferencia de interpolación: $d = \frac{21 - 5}{3 + 1} =
-    \frac{16}{4} = 4$.'
-  - 'Paso 3: Construir los $3$ medios sumando $d=4$: $x_1 = 5+4=9$, $x_2 = 9+4=13$,
-    $x_3 = 13+4=17$.'
-  - 'Conclusión: Los medios aritméticos interpolados son $(9, 13, 17)$ (sucesión completa:
-    $5, 9, 13, 17, 21$).'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la fórmula para calcular la diferencia d al interpolar m medios
-    aritméticos entre A y B?
-  choices:
-  - text: d = (B - A) / (m + 1)
-    is_correct: true
-  - text: d = (B - A) / m
-    is_correct: false
-  - text: d = (B + A) / 2
-    is_correct: false
-  - text: d = B · A
-    is_correct: false
-  explanation: La alternativa correcta es 'd = (B - A) / (m + 1)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para interpolar 3 medios entre 5 y 21, ¿cuáles fueron
-    los medios obtenidos?
-  choices:
-  - text: (9, 13, 17)
-    is_correct: true
-  - text: (8, 12, 16)
-    is_correct: false
-  - text: (10, 15, 20)
-    is_correct: false
-  - text: (6, 11, 16)
-    is_correct: false
-  explanation: La alternativa correcta es '(9, 13, 17)'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de interpolar $m$ medios aritméticos
-  entre dos extremos calculando la diferencia $d = \frac{B - A}{m + 1}$.
 semantic_id: MAT.NUM.PROGRESIONES_COMPARACION.INTERPOLACION_ARITMETICA
+resumen_inicial: 'La interpolación de $m$ medios aritméticos entre dos extremos dados $A$ y $B$ consiste en intercalar $m$ números intermedios tales que los $(m+2)$ términos formen una progresión aritmética de diferencia $d = \frac{B - A}{m + 1}$.'
+explicacion_simple: |
+  **Interpolar** significa "meter números al medio" para armar una progresión:
+  - Si tienes dos extremos $A = 4$ y $B = 20$, y te piden **interpolar 3 medios aritméticos**:
+  - Significa que deseas armar una P.A. de $5$ números en total: $4, \text{\_\_\_}, \text{\_\_\_}, \text{\_\_\_}, 20$.
+  - Para hallar la diferencia constante $d$ divides la distancia total ($20 - 4 = 16$) entre la cantidad de espacios de separación ($3 + 1 = 4$ espacios):
+    $$d = \frac{20 - 4}{3 + 1} = \frac{16}{4} = 4$$
+  - Los números intercalados son: $4 + 4 = 8$, $8 + 4 = 12$, $12 + 4 = 16$.
+  - La secuencia completa es: **$4, 8, 12, 16, 20$**.
+explicacion_formal: |
+  ### Definición formal
+  Dados dos números reales $A, B \in \mathbb{R}$ con $A < B$, la **interpolación de $m$ medios aritméticos** consiste en encontrar el conjunto ordenado $\{x_1, x_2, \dots, x_m\}$ de $m$ valores tales que la secuencia ampliada:
+  $$(a_1, a_2, a_3, \dots, a_{m+1}, a_{m+2}) = (A, x_1, x_2, \dots, x_m, B)$$
+  sea una progresión aritmética de primer término $a_1 = A$ y término final $a_{m+2} = B$.
+
+  ### Fórmula de la diferencia común $d$
+  Utilizando la fórmula del término general para el término final en la posición $n = m + 2$:
+  $$a_{m+2} = a_1 + (m + 2 - 1)d \implies B = A + (m + 1)d \implies d = \frac{B - A}{m + 1}$$
+
+  ### Construcción de los términos interpolados
+  - $x_1 = A + d$
+  - $x_2 = A + 2d$
+  - $\dots$
+  - $x_k = A + k \cdot d \quad (1 \le k \le m)$
+
+  ### Síntesis didáctica
+  - Número total de términos: $n = m + 2$.
+  - Diferencia común de interpolación: $d = \frac{B - A}{m + 1}$.
+definiciones_clave: |
+  - **Medios aritméticos**: Términos intercalados entre dos extremos para formar una progresión aritmética.
+  - **Extremos ($A$ y $B$)**: Primer y último término de la P.A. ampliada.
+  - **Cantidad de espacios ($m + 1$)**: Número de intervalos iguales de longitud $d$ entre $A$ y $B$.
+propiedades_relaciones: |
+  - **Propiedad del medio aritmético simple ($m=1$)**: Interpolar un único medio entre $A$ y $B$ devuelve el promedio aritmético exacto $x_1 = \frac{A + B}{2}$.
+  - **Simetría de distancias**: Los términos interpolados se encuentran distribuidos a distancias numéricas idénticas sobre la recta real.
+ejemplo_guiado:
+  enunciado: 'Interpola $4$ medios aritméticos entre los números $A = 5$ y $B = 35$.'
+  pasos:
+    - 'Paso 1: Identificamos los datos: $A = 5$, $B = 35$ y la cantidad de medios $m = 4$.'
+    - 'Paso 2: Calculamos el número de intervalos: $m + 1 = 4 + 1 = 5$ espacios.'
+    - 'Paso 3: Calculamos la diferencia común: $d = \frac{35 - 5}{5} = \frac{30}{5} = 6$.'
+    - 'Paso 4: Construimos los 4 medios sumando $6$ sucesivamente a partir de $5$: $x_1 = 5+6 = 11$, $x_2 = 11+6 = 17$, $x_3 = 17+6 = 23$, $x_4 = 23+6 = 29$. La secuencia completa es **$5, 11, 17, 23, 29, 35$**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la fórmula para calcular la diferencia común $d$ al interpolar $m$ medios aritméticos entre $A$ y $B$?'
+    choices:
+      - {text: 'Dividir la resta de extremos entre $(m + 1)$: $d = \frac{B - A}{m + 1}$', is_correct: true}
+      - {text: 'Dividir la resta de extremos entre $m$: $d = \frac{B - A}{m}$', is_correct: false}
+      - {text: 'Multiplicar la suma de extremos por $m$', is_correct: false}
+      - {text: 'Restar $m$ a la suma de extremos', is_correct: false}
+    explanation: 'La alternativa correcta es ''Dividir la resta de extremos entre $(m + 1)$: $d = \frac{B - A}{m + 1}$''. El número de intervalos es $m+1$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si deseas interpolar un único medio aritmético ($m=1$) entre los números $A = 10$ y $B = 30$, ¿cuál es el valor de dicho medio?'
+    choices:
+      - {text: '$x_1 = 20$, calculando el promedio aritmético $\frac{10 + 30}{2} = 20$', is_correct: true}
+      - {text: '$x_1 = 15$, dividiendo $30 / 2$', is_correct: false}
+      - {text: '$x_1 = 25$, restando $30 - 5$', is_correct: false}
+      - {text: '$x_1 = 40$, sumando ambos extremos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$x_1 = 20$, calculando el promedio aritmético $\frac{10 + 30}{2} = 20$''. $10+20=30, 20+10=30$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Analizar la dinámica de cambio de la sucesión (aditiva vs multiplicativa).'
-- 'Paso 2: Formular las ecuaciones de P.A. ($a_n = a_1 + (n-1)d$) o P.G. ($b_n = b_1
-  \cdot r^{n-1}$) según corresponda.'
-- 'Paso 3: Resolver numéricamente los parámetros despejados o interpolados y verificar
-  la consistencia.'
-errores_correccion: '- **Error 1: Dividir entre $m$ en lugar de $(m+1)$ al calcular
-  la diferencia o razón de interpolación.** **Cómo corregirlo:** Para insertar $m$
-  medios intermedios, la distancia se divide en $(m+1)$ intervalos.
-
-
-  - **Error 2: Usar un modelo aritmético para un problema con crecimiento de tasa
-  porcentual constante.** **Cómo corregirlo:** Las tasas de variación porcentual constante
-  DEBEN modelarse obligatoriamente con progresiones geométricas.'
+  - 'Paso 1: Identificar los extremos $A$ y $B$, y la cantidad de medios $m$ a interpolar.'
+  - 'Paso 2: Calcular la diferencia común $d = \frac{B - A}{m + 1}$.'
+  - 'Paso 3: Obtener el primer medio sumando $x_1 = A + d$.'
+  - 'Paso 4: Continuar sumando $d$ a cada término generado hasta obtener los $m$ medios y verificar que el siguiente dé $B$.'
+errores_correccion: |
+  - **Error 1:** Dividir $(B - A)$ entre $m$ en lugar de $(m + 1)$. **Cómo corregirlo:** La cantidad de intervalos o saltos es **$(m + 1)$**, por lo que la fórmula correcta es **$d = \frac{B - A}{m + 1}$**.
+  - **Error 2:** Confundir el número de medios $m$ con el número total de términos de la P.A. ($n$). **Cómo corregirlo:** El número total de términos de la secuencia ampliada es **$n = m + 2$** (incluyendo ambos extremos).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROGRESIONES_COMPARACION.INTERPOLACION_ARITMETICA.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa del modelo de progresiones.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la diferencia o razón de interpolación.
-  alternativas:
-  - Cumple la fórmula
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la fórmula
-  solucion_pasos:
-  - Demostración formal por interpolación.
-- titulo: ¿Dividen m medios de interpolación el intervalo en m + 1 partes?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, $m$ términos intermedios generan $m+1$ saltos.
-- titulo: ¿Supera el modelo geométrico al aritmético en el largo plazo?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por la dominancia del crecimiento exponencial sobre el lineal.
+  - titulo: 'Interpolación de 2 medios aritméticos'
+    enunciado: 'Para $A = 6, B = 18$ e interpolar $m=2$ medios, ¿la diferencia es $d = \frac{18-6}{3} = 4$ y los medios son $10$ y $14$?'
+    alternativas:
+      - 'Sí, pues la P.A. es $6, 10, 14, 18$'
+      - 'No, la diferencia es 6'
+      - 'No, la P.A. es $6, 12, 18$'
+    respuesta: 'Sí, pues la P.A. es $6, 10, 14, 18$'
+    solucion_pasos:
+      - '1. $d = (18 - 6) / (2 + 1) = 12 / 3 = 4$.'
+      - '2. Medios: $6+4=10, 10+4=14$. P.A.: $6, 10, 14, 18$.'
+  - titulo: 'Medio aritmético único (m=1)'
+    enunciado: 'Entre $A = 12$ y $B = 28$, ¿el único medio aritmético es $x_1 = (12+28)/2 = 20$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $d = (28-12)/2 = 8 \implies 12 + 8 = 20$.'
+  - titulo: 'Interpolación con extremos negativos'
+    enunciado: 'Entre $A = -10$ y $B = 10$, interpolar $m=3$ medios. ¿La diferencia es $d = \frac{10 - (-10)}{4} = 5$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $d = 20 / 4 = 5$. Los medios son $-5, 0, 5$.'
+  - titulo: 'Interpolación de 4 medios entre 0 y 100'
+    enunciado: 'Entre $A = 0$ y $B = 100$, interpolar $m=4$ medios. ¿La diferencia es $d = 100 / 5 = 20$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Los medios son $20, 40, 60, 80$.'
 errores_frecuentes:
-- Dividir el intervalo entre m en lugar de (m + 1) al calcular la diferencia de interpolación
-  de m medios.
-- Modelar un incremento porcentual constante utilizando una progresión aritmética
-  de suma fija.
-- Declarar la razón multiplicativa r con la diferencia aditiva d al formular el término
-  general.
-- Declarar que la interpolación de medios geométricos exige que los extremos tengan
-  signos opuestos.
-- Restar los extremos en lugar de dividirlos al calcular la razón de interpolación
-  geométrica.
+  - 'La razón multiplicativa r equivale numéricamente a la diferencia aditiva d al formular el término general.'
+  - 'Dividir el intervalo entre la cantidad de medios m ignorando los dos extremos en el conteo de saltos.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Sumar la cantidad de medios al primer extremo sin calcular la diferencia común.'
+  - 'La interpolación de medios geométricos exige que los extremos tengan siempre signos opuestos.'
 afirmaciones_verdaderas:
-- La progresión aritmética modela cambios aditivos constantes y la geométrica modela
-  cambios multiplicativos constantes.
-- Para interpolar $m$ medios entre $A$ y $B$, se divide el intervalo entre $(m+1)$
-  saltos.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
+  - 'La interpolación de $m$ medios aritméticos entre $A$ y $B$ determina una P.A. de $(m+2)$ términos con diferencia $d = \frac{B - A}{m + 1}$.'
+  - 'Interpolar un único medio aritmético entre dos números $A$ y $B$ equivale a calcular su promedio aritmético $\frac{A + B}{2}$.'
+al_terminar_debes_poder: 'Interpolar $m$ medios aritméticos entre dos extremos calculando la diferencia común $d = \frac{B - A}{m + 1}$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

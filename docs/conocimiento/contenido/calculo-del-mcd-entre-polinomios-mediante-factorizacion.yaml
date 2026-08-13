@@ -1,170 +1,113 @@
 semantic_id: MAT.ALG.MCD_ALGEBRAICO.FACTORIZACION_POLINOMIOS
-resumen_inicial: El M.C.D. entre polinomios mediante factorización se halla descomponiendo
-  cada polinomio en sus factores irreductibles y multiplicando los factores comunes
-  elevados a su menor exponente.
-explicacion_simple: 'Para encontrar el Máximo Común Divisor de dos o más polinomios
-  utilizando factorización:
+resumen_inicial: 'El cálculo del M.C.D. entre polinomios mediante factorización consiste en descomponer cada polinomio en el producto de sus factores primos e identificar el producto de los factores compartidos elevados a su menor exponente.'
+explicacion_simple: |
+  Para hallar el **M.C.D. entre polinomios** (ej: $P(x) = x^2 - 9$ y $Q(x) = x^2 - 6x + 9$):
+  - **MÉTODO DE FACTORIZACIÓN EN 3 PASOS**:
+    1. **Factoriza por completo cada uno de los polinomios**:
+       - $P(x) = x^2 - 9 = \mathbf{(x + 3)(x - 3)}$ (¡Diferencia de cuadrados!).
+       - $Q(x) = x^2 - 6x + 9 = \mathbf{(x - 3)^2}$ (¡Trinomio cuadrado perfecto!).
+    2. **Busca los factores binómicos COMUNES A TODOS los polinomios**:
+       - El factor $(x - 3)$ está en $P(x)$ y en $Q(x)$.
+       - El factor $(x + 3)$ sólo está en $P(x) \implies$ ¡Se descarta!
+    3. **Selecciona la potencia de MENOR exponente**:
+       - En $P(x)$ la potencia de $(x - 3)$ es $1$.
+       - En $Q(x)$ la potencia de $(x - 3)$ es $2$.
+       - Menor exponente = $1 \implies \mathbf{\text{M.C.D.} = (x - 3)}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $P_1(x), P_2(x), \dots, P_k(x) \in \mathbb{K}[x]$ polinomios no nulos sobre un cuerpo $\mathbb{K}$. Puesto que $\mathbb{K}[x]$ es un **Dominio de Ideales Principales (DIP)** y un **Dominio de Factorización Única (DFU)**, cada polinomio $P_i(x)$ se descompone en producto de factores primos irreducibles:
 
-  1. Factorizamos completamente cada polinomio (usando factor común, productos notables,
-  trinomios o agrupación).
+  $$P_i(x) = c_i \prod_{j=1}^m [F_j(x)]^{e_{i,j}}$$
 
-  2. Identificamos qué binomios, trinomios o factores numéricos se repiten en TODAS
-  las factorizaciones.
+  donde $c_i \in \mathbb{K} \setminus \{0\}$, $F_j(x)$ son polinomios primos irreducibles mónicos y $e_{i,j} \ge 0$. El **M.C.D. polinomial por factorización** es el producto:
 
-  3. Elegimos cada factor repetido elevado al menor exponente con el que aparezca
-  en los polinomios factorizados.
+  $$\operatorname{MCD}(P_1, P_2, \dots, P_k) = \operatorname{MCD}(c_1, \dots, c_k) \cdot \prod_{j=1}^m [F_j(x)]^{\min_i(e_{i,j})}$$
 
-  4. Multiplicamos esos factores comunes para formar el polinomio M.C.D. final.'
-explicacion_formal: 'Sean $P(x)$ y $Q(x)$ dos polinomios descompuestos en factores
-  irreductibles sobre el cuerpo de los números reales $\mathbb{R}[x]$:
+  ### Criterio de Irreducibilidad
+  Los factores $F_j(x)$ seleccionados no admiten más simplificaciones sobre el cuerpo $\mathbb{K}$ (por ejemplo, trinomios con discriminante negativo sobre $\mathbb{R}$).
 
-
-  $$P(x) = c_P \cdot \prod_{k} f_k(x)^{\alpha_k}, \quad Q(x) = c_Q \cdot \prod_{k}
-  f_k(x)^{\beta_k}$$
-
-
-  El **M.C.D. entre polinomios** es el polinomio mónico de mayor grado $D(x)$ dado
-  por:
-
-
-  $$D(x) = \operatorname{gcd}(|c_P|, |c_Q|) \cdot \prod_{f_k \text{ común}} f_k(x)^{\min(\alpha_k,
-  \beta_k)}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $c_P, c_Q$: Coeficientes numéricos principales extraídos en la factorización.
-
-  - $f_k(x)$: Factores polinomiales irreductibles (por ejemplo, $(x-a)$, $(x^2+b)$).
-
-  - $\min(\alpha_k, \beta_k)$: Exponente mínimo al que aparece el factor $f_k(x)$
-  en la descomposición de cada polinomio.
-
-
-  > **Complemento didáctico:** La factorización transforma el problema de divisibilidad
-  polinomial en una comparación directa de factores lineales o cuadráticos irreductibles
-  simples.'
-definiciones_clave: '- **Factorización irreductible**: Expresión de un polinomio como
-  producto de factores que ya no pueden seguir factorizándose sobre un cuerpo determinado.
-
-  - **Factor polinomial común**: Paréntesis o polinomio irreducible que divide exactamente
-  a cada uno de los polinomios originales.'
-propiedades_relaciones: '- **Relación con simplificación de fracciones**: El M.C.D.
-  de numerador y denominador es la expresión exacta que se simplifica al reducir una
-  fracción algebraica a su forma irreducible.
-
-  - **Polinomios primos entre sí**: Si dos polinomios no comparten ningún factor polinomial
-  con grado $\ge 1$, su M.C.D. es $1$.'
+  ### Síntesis didáctica
+  Factorizar completamente los polinomios expone sus componentes irreducibles, permitiendo construir el M.C.D. seleccionando los bloques comunes con su menor exponente.
+definiciones_clave: |
+  - **M.C.D. de polinomios por factorización**: Algoritmo que calcula el M.C.D. descomponiendo los polinomios en factores irreducibles.
+  - **Factores irreducibles primos ($F_j(x)$)**: Polinomios que no pueden descomponerse en producto de factores de menor grado sobre el cuerpo dado.
+  - **Exponentes de factores polinómicos ($\min(e_j)$)**: Potencia mínima a la que aparece un paréntesis o factor primo en la descomposición de todos los polinomios.
+propiedades_relaciones: |
+  - **Conservación de la divisibilidad**: Todo polinomio factor que divide al M.C.D. divide automáticamente a cada uno de los polinomios originales $P_i(x)$.
 ejemplo_guiado:
-  enunciado: Dos áreas de parcelas de terreno vienen dadas por los polinomios $A_1(x)
-    = x^2 - 9$ y $A_2(x) = x^2 + 5x + 6$. Encuentra el factor común de sus lados dado
-    por el M.C.D. y calcula su valor numérico para una medida $x = 7\text{ metros}$.
+  enunciado: 'Calcula el M.C.D. entre los polinomios $P(x) = x^3 - 4x$ y $Q(x) = x^2 - 4x + 4$.'
   pasos:
-  - 'Paso 1: Factorizar $A_1(x) = x^2 - 9$ mediante diferencia de cuadrados: $A_1(x)
-    = (x + 3)(x - 3)$.'
-  - 'Paso 2: Factorizar $A_2(x) = x^2 + 5x + 6$ buscando dos números que multipliquen
-    $6$ y sumen $5$: $A_2(x) = (x + 3)(x + 2)$.'
-  - 'Paso 3: Identificar los factores comunes en ambas factorizaciones. El único factor
-    presente en ambos es $(x + 3)$ con exponente $1$. Por lo tanto, $\text{M.C.D.}
-    = x + 3$.'
-  - 'Paso 4: Evaluar para $x = 7$: $\text{M.C.D.}(7) = 7 + 3 = 10\text{ metros}$.'
+    - 'Paso 1: Factorizamos completamente el polinomio $P(x)$:
+       - Extraemos factor común $x$: $x(x^2 - 4)$.
+       - Factorizamos la diferencia de cuadrados: $P(x) = \mathbf{x(x + 2)(x - 2)}$.'
+    - 'Paso 2: Factorizamos completamente el polinomio $Q(x)$:
+       - Es un trinomio cuadrado perfecto: $Q(x) = \mathbf{(x - 2)^2}$.'
+    - 'Paso 3: Identificamos los factores comunes a ambos polinomios:
+       - Factor $x$: sólo en $P(x) \implies$ **se descarta**.
+       - Factor $(x + 2)$: sólo en $P(x) \implies$ **se descarta**.
+       - Factor $(x - 2)$: presente en $P(x)$ y $Q(x) \implies$ **¡Es común!**'
+    - 'Paso 4: Seleccionamos el menor exponente de $(x - 2)$:
+       - En $P(x)$ tiene exponente $1$.
+       - En $Q(x)$ tiene exponente $2$.
+       - Menor exponente = $1 \implies (x - 2)^1 = (x - 2)$.'
+    - 'Conclusión: El M.C.D. entre los dos polinomios es **$(x - 2)$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es el M.C.D. entre los polinomios $x^2 - 9$ y $x^2 + 5x + 6$?
-  choices:
-  - text: $x + 3$
-    is_correct: true
-  - text: $x - 3$
-    is_correct: false
-  - text: $x + 2$
-    is_correct: false
-  - text: $(x + 3)(x - 3)(x + 2)$
-    is_correct: false
-  explanation: La alternativa correcta es '$x + 3$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar el M.C.D. $(x + 3)$ para $x = 7$, ¿cuál es la longitud resultante
-    en metros?
-  choices:
-  - text: $10\text{ m}$
-    is_correct: true
-  - text: $4\text{ m}$
-    is_correct: false
-  - text: $12\text{ m}$
-    is_correct: false
-  - text: $9\text{ m}$
-    is_correct: false
-  explanation: La alternativa correcta es '$10\text{ m}$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el M.C.D. entre los polinomios $A(x) = x^2 - 1$ y $B(x) = x^2 + 2x + 1$?'
+    choices:
+      - {text: 'El M.C.D. es $(x + 1)$, factorizando $A(x) = (x+1)(x-1)$ y $B(x) = (x+1)^2$, tomando el común con menor exponente $(x+1)^1$', is_correct: true}
+      - {text: 'El M.C.D. es $(x - 1)$', is_correct: false}
+      - {text: 'El M.C.D. es $(x + 1)^2$', is_correct: false}
+      - {text: 'El M.C.D. es $(x^2 - 1)$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El M.C.D. es $(x + 1)$, factorizando $A(x) = (x+1)(x-1)$ y $B(x) = (x+1)^2$, tomando el común con menor exponente $(x+1)^1$''. $A(x)=(x+1)(x-1), B(x)=(x+1)^2 \implies \operatorname{MCD}=(x+1)$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si al factorar dos polinomios no se encuentra ningún factor en común entre ellos, ¿cuál es el resultado del M.C.D.?'
+    choices:
+      - {text: 'El M.C.D. es 1', is_correct: true}
+      - {text: 'El M.C.D. es 0', is_correct: false}
+      - {text: 'El M.C.D. es x', is_correct: false}
+      - {text: 'No se puede calcular', is_correct: false}
+    explanation: 'La alternativa correcta es ''El M.C.D. es 1''. Sin factores comunes compartidos, el único divisor común es la constante 1.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Factorizar completamente cada uno de los polinomios dados hasta obtener
-  factores irreductibles.'
-- 'Paso 2: Extraer el M.C.D. de los coeficientes numéricos que se hayan factorizado
-  fuera de los paréntesis.'
-- 'Paso 3: Identificar los factores polinomiales (entre paréntesis) que se repitan
-  en TODAS las factorizaciones.'
-- 'Paso 4: Asignar a cada factor común el menor exponente con el que figura y escribir
-  el producto final.'
-errores_correccion: '- **Error común:** Intentar calcular el M.C.D. entre polinomios
-  extrayendo términos término a término sin factorizar primero el polinomio completo.
-
-  - **Cómo corregirlo:** Jamás busques divisores en términos individuales sumandos;
-  la divisibilidad de polinomios exige factorizar primero la expresión completa en
-  producto de paréntesis.'
+  - 'Paso 1: Factorizar completamente cada uno de los polinomios dados utilizando técnicas de factor común, cuadrados, trinomios o Ruffini.'
+  - 'Paso 2: Listar todos los factores binómicos o polinómicos primos obtenidos en las descomposiciónes.'
+  - 'Paso 3: Seleccionar únicamente los factores que aparezcan en todos los polinomios.'
+  - 'Paso 4: Elevar cada factor común a su menor exponente y multiplicarlos para formar el M.C.D.'
+errores_correccion: |
+  - **Error 1:** Intentar calcular el M.C.D. antes de haber factorizado completamente los polinomios. **Cómo corregirlo:** Se debe **FACTORIZAR TOTALMENTE CADA POLINOMIO HASTA SUS FACTORES PRIMOS IRREDUCIBLES ANTES DE COMPARAR**.
+  - **Error 2:** Incluir en el M.C.D. un factor que sólo está en un polinomio pero no en todos. **Cómo corregirlo:** Para el M.C.D. **SE DESCARTAN TODOS LOS FACTORES QUE NO SEAN COMPARTIDOS POR LA TOTALIDAD DE LOS POLINOMIOS**.
 ejemplos:
-- titulo: 'Ejemplo 1: M.C.D. con factor común y diferencia de cuadrados'
-  enunciado: Calcula el M.C.D. entre $2x^2 - 8$ y $x^2 - 4x + 4$.
-  alternativas:
-  - $x - 2$
-  - $2(x - 2)$
-  - $(x - 2)^2$
-  respuesta: $x - 2$
-  solucion_pasos:
-  - '1. Factorizar el primer polinomio: $2x^2 - 8 = 2(x^2 - 4) = 2(x - 2)(x + 2)$.'
-  - '2. Factorizar el segundo polinomio: $x^2 - 4x + 4 = (x - 2)^2$.'
-  - '3. El único factor polinomial común es $(x - 2)$. Menor exponente: $\min(1, 2)
-    = 1$.'
-  - 4. El M.C.D. es $x - 2$.
-- titulo: 'Ejemplo 2: Polinomios con factor común monomio'
-  enunciado: Determina el M.C.D. entre $3x^3 + 6x^2$ y $6x^2 + 12x$.
-  alternativas:
-  - $3x(x + 2)$
-  - $3x^2(x + 2)$
-  - $6x(x + 2)$
-  respuesta: $3x(x + 2)$
-  solucion_pasos:
-  - 1. Factorizar $3x^3 + 6x^2 = 3x^2(x + 2)$.
-  - 2. Factorizar $6x^2 + 12x = 6x(x + 2) = 2 \cdot 3x(x + 2)$.
-  - '3. M.C.D. numérico: $\operatorname{gcd}(3, 6) = 3$.'
-  - '4. Monomio común: $x$ (menor potencia de $x^2$ y $x$). Factor binomio común:
-    $(x + 2)$.'
-  - '5. M.C.D. total: $3x(x + 2)$.'
-- titulo: ¿El M.C.D. entre $x + 1$ y $x + 2$ es igual a $1$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Al ser factores lineales distintos e irreductibles, no comparten ningún factor
-    en común, por ende su M.C.D. es 1.
-- titulo: ¿Al simplificar una fracción algebraica $\frac{P(x)}{Q(x)}$ se debe dividir
-    numerador y denominador por su M.C.D.?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Dividir el numerador y el denominador por su M.C.D. cancela todos los factores
-    comunes y deja la fracción en su forma irreductible.
+  - titulo: 'Diferencia de cuadrados y TCP'
+    enunciado: 'Para $x^2 - 4$ y $x^2 - 4x + 4$, ¿es el M.C.D. $(x - 2)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $(x+2)(x-2)$ y $(x-2)^2 \implies (x-2)$.'
+  - titulo: 'Factor común previo'
+    enunciado: 'Para $x^2 + x$ y $x^2 - 1$, ¿es el M.C.D. $(x + 1)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $x(x+1)$ y $(x+1)(x-1) \implies (x+1)$.'
+  - titulo: 'Polinomios sin factores comunes'
+    enunciado: 'Para $x^2 - 9$ y $x^2 + 4$, ¿es su M.C.D. igual a 1?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, son coprimos.'
+  - titulo: 'Monomio exterior común'
+    enunciado: 'Para $2x(x - 1)$ y $4x(x + 3)$, ¿es el M.C.D. $2x$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\operatorname{MCD}(2,4)=2$ y letra común $x$.'
 errores_frecuentes:
-- El M.C.D. de $x^2 - 9$ y $x + 3$ es $x^2 - 9$.
-- Para hallar el M.C.D. de dos polinomios basta con calcular el M.C.D. de sus términos
-  independientes.
-- El M.C.D. entre $(x - 1)^3$ y $(x - 1)^2$ es $(x - 1)^5$ al sumar los exponentes.
-- Si dos polinomios no tienen coeficientes numéricos divisibles, su M.C.D. es necesariamente
-  1.
-- El M.C.D. de $x^2 + 4$ y $x + 2$ es $x + 2$.
+  - 'Intentar hallar el M.C.D. observando los términos sin factorizar los polinomios previamente.'
+  - 'Incluir factores no comunes en la expresión final del M.C.D. polinomial.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Tomar la potencia con el mayor exponente de los factores comunes en lugar de la menor.'
+  - 'El factor común numérico o monómico no es extraído antes de factorizar el polinomio cuadrático.'
 afirmaciones_verdaderas:
-- Para calcular el M.C.D. entre polinomios es indispensable expresar previamente cada
-  polinomio como un producto de factores irreductibles.
-- El M.C.D. de dos o más polinomios está formado por el producto de los factores comunes
-  tomados con su menor exponente.
-al_terminar_debes_poder: Al finalizar este recurso podrás calcular el M.C.D. entre
-  polinomios mediante técnicas de factorización e identificar el divisor común de
-  mayor grado.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El M.C.D. entre polinomios exige factorizar cada expresión hasta sus factores primos irreducibles.'
+  - 'Se forma multiplicando los factores comunes elevados a su menor exponente.'
+al_terminar_debes_poder: 'Calcular el M.C.D. entre polinomios factorizándolos completamente en factores primos.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

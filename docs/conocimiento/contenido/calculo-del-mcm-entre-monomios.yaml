@@ -1,139 +1,112 @@
 semantic_id: MAT.ALG.MCM_ALGEBRAICO.MCM_MONOMIOS
-resumen_inicial: El m.c.m. completo entre monomios se obtiene multiplicando el m.c.m.
-  de sus coeficientes numéricos por el m.c.m. de sus partes literales.
-explicacion_simple: 'Para calcular el Mínimo Común Múltiplo entre dos o más monomios
-  completos, unimos la parte numérica y la parte literal:
+resumen_inicial: 'El cálculo del m.c.m. entre monomios consiste en multiplicar el m.c.m. de los coeficientes numéricos por el m.c.m. de las partes literales para integrar el monomio múltiplo común de menor grado.'
+explicacion_simple: |
+  Para calcular el **m.c.m. total** entre dos o más monomios completos (ej: $12x^3y^2$ y $18x^2y^4z$):
+  - **FÓRMULA DE INTEGRACIÓN**:
+    $$\mathbf{\text{m.c.m. Total} = (\text{m.c.m. numérico}) \cdot (\text{m.c.m. literal})}$$
+  - **Integración en 3 Pasos**:
+    1. **Calcula el m.c.m. numérico de los coeficientes ($12$ y $18$)**:
+       - $\operatorname{mcm}(12, 18) = \mathbf{36}$.
+    2. **Calcula el m.c.m. literal reuniendo TODAS las letras con el MAYOR exponente**:
+       - Letra $x$: $\max(3, 2) \implies \mathbf{x^3}$.
+       - Letra $y$: $\max(2, 4) \implies \mathbf{y^4}$.
+       - Letra $z$: sólo en el segundo, ¡se incluye igual! $\implies \mathbf{z^1}$.
+       - Parte literal: $\mathbf{x^3y^4z}$.
+    3. **Multiplica ambos resultados**:
+       - $\mathbf{\text{m.c.m. Total} = 36x^3y^4z}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $M_1, M_2, \dots, M_k \in \mathbb{Z}[x_1, x_2, \dots, x_n]$ monomios no nulos dados por $M_i = c_i \prod_{j=1}^n x_j^{e_{i,j}}$. El **Mínimo Común Múltiplo monómico total** es la estructura algebraica:
 
-  1. Obtenemos el m.c.m. numérico entre los coeficientes (menor múltiplo entero común
-  positivo).
+  $$\operatorname{mcm}(M_1, M_2, \dots, M_k) = \operatorname{mcm}(|c_1|, |c_2|, \dots, |c_k|) \cdot \prod_{j=1}^n x_j^{\max_i(e_{i,j})}$$
 
-  2. Obtenemos el m.c.m. literal (todas las variables presentes elevadas a su mayor
-  exponente).
+  ### Garantía de Divisibilidad
+  Para cada monomio $M_i$, la división $\frac{\operatorname{mcm}(M_1, \dots, M_k)}{M_i}$ resulta en un monomio exacto con coeficiente entero y exponentes enteros no negativos:
 
-  3. Multiplicamos el coeficiente numérico resultante por la parte literal m.c.m.'
-explicacion_formal: 'Dado un conjunto de monomios $\{M_1, M_2, \dots, M_k\}$ donde
-  $M_i = c_i \cdot \prod_j x_j^{e_{i,j}}$, el **m.c.m. de monomios** es la expresión
-  monomia $M$ dada por:
+  $$\frac{\operatorname{mcm}(M_1, \dots, M_k)}{M_i} = \left(\frac{\operatorname{mcm}(|c_1|, \dots, |c_k|)}{|c_i|}\right) \cdot \prod_{j=1}^n x_j^{\max_m(e_{m,j}) - e_{i,j}} \in \mathbb{Z}[x_1, \dots, x_n]$$
 
-
-  $$M = \operatorname{lcm}(|c_1|, |c_2|, \dots, |c_k|) \cdot \prod_{x_j \text{ en
-  algún monomio}} x_j^{\max_i(e_{i,j})}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $\operatorname{lcm}(|c_1|, \dots, |c_k|)$: Representa el m.c.m. de los coeficientes
-  numéricos.
-
-  - $\prod_{x_j} x_j^{\max_i(e_{i,j})}$: Representa el m.c.m. literal formado por
-  todas las variables presentes a su mayor exponente.'
-definiciones_clave: '- **m.c.m. de monomios**: Monomio de menor grado y coeficiente
-  positivo que es divisible por cada uno de los monomios originales.
-
-  - **Múltiplo común monomio**: Expresión monomia divisible entre varios monomios
-  de forma simultánea.'
-propiedades_relaciones: '- **Divisibilidad de monomios**: Al dividir el m.c.m. por
-  cualquiera de los monomios originales se obtiene otro monomio con exponentes enteros
-  no negativos.
-
-  - **Mínimo Común Denominador**: El m.c.m. de monomios constituye el mínimo común
-  denominador al sumar o restar fracciones algebraicas con denominadores monomios.'
+  ### Síntesis didáctica
+  Integrar el m.c.m. numérico de los coeficientes con todas las variables de mayor exponente genera el monomio múltiplo común de menor tamaño posible.
+definiciones_clave: |
+  - **m.c.m. entre monomios**: Monomio de menor coeficiente positivo y grado que es divisible exactamente por cada monomio del conjunto.
+  - **Monomio múltiplo exacto**: Monomio cuyo cociente con cada uno de los monomios evaluados es un monomio entero sin fracciones.
+  - **Integración monómica**: Ensamblaje del coeficiente del m.c.m. numérico con las variables del m.c.m. literal.
+propiedades_relaciones: |
+  - **Denominador común en suma de fracciones de monomios**: El m.c.m. entre monomios es el denominador común perfecto para sumar fracciones cuyos denominadores son monomios.
 ejemplo_guiado:
-  enunciado: Calcula el m.c.m. completo entre los monomios $12x^3y^2$ y $18xy^4z$
-    ($36x^3y^4z$) y evalúa su valor numérico para $x = 2$, $y = 1$ y $z = 3$.
+  enunciado: 'Calcula el m.c.m. entre los tres monomios $M_1 = 15x^4y^2$, $M_2 = -20x^2y^5z$ y $M_3 = 24x^3z^4w$.'
   pasos:
-  - 'Paso 1: m.c.m. numérico de $12$ y $18$: $12 = 2^2 \cdot 3$, $18 = 2 \cdot 3^2
-    \implies \operatorname{lcm}(12, 18) = 2^2 \cdot 3^2 = 36$.Paso 2: m.c.m. literal:
-    variables $x, y, z$. Mayores exponentes: $x^3$, $y^4$ y $z^1$. La parte literal
-    es $x^3y^4z$.'
-  - 'Paso 3: Unir coeficiente y parte literal: $m.c.m. = 36x^3y^4z$.'
-  - 'Paso 4: Sustituir $x = 2$, $y = 1$ y $z = 3$: $36 \cdot (2)^3 \cdot (1)^4 \cdot
-    (3) = 36 \cdot 8 \cdot 1 \cdot 3 = 864$.'
+    - 'Paso 1: Calculamos el m.c.m. numérico de los coeficientes en valor absoluto ($15, 20, 24$):
+       - $15 = 3 \cdot 5$.
+       - $20 = 2^2 \cdot 5$.
+       - $24 = 2^3 \cdot 3$.
+       - $\operatorname{mcm}(15, 20, 24) = 2^3 \cdot 3 \cdot 5 = 8 \cdot 3 \cdot 5 = \mathbf{120}$.'
+    - 'Paso 2: Calculamos el m.c.m. literal reuniendo todas las letras con su **mayor exponente**:
+       - $x$: exponentes $4, 2, 3 \implies \mathbf{x^4}$.
+       - $y$: exponentes $2, 5 \implies \mathbf{y^5}$.
+       - $z$: exponentes $1, 4 \implies \mathbf{z^4}$.
+       - $w$: exponente $1 \implies \mathbf{w^1}$.
+       - Parte literal: $\mathbf{x^4y^5z^4w}$.'
+    - 'Paso 3: Unimos el m.c.m. numérico con el m.c.m. literal:
+       $\text{m.c.m. Total} = 120 \cdot x^4y^5z^4w = \mathbf{120x^4y^5z^4w}$.'
+    - 'Conclusión: El m.c.m. entre los tres monomios es **$120x^4y^5z^4w$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es el m.c.m. entre los monomios $12x^3y^2$ y $18xy^4z$?
-  choices:
-  - text: $36x^3y^4z$
-    is_correct: true
-  - text: $6x^2y^2$
-    is_correct: false
-  - text: $36x^3y^4$
-    is_correct: false
-  - text: $72x^4y^6z$
-    is_correct: false
-  explanation: La alternativa correcta es '$36x^3y^4z$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar el m.c.m. $36x^3y^4z$ para $x = 2$, $y = 1$ y $z = 3$, ¿cuál
-    es el resultado numérico?
-  choices:
-  - text: $864$
-    is_correct: true
-  - text: $432$
-    is_correct: false
-  - text: $288$
-    is_correct: false
-  - text: $1728$
-    is_correct: false
-  explanation: La alternativa correcta es '$864$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el m.c.m. entre los monomios $18a^3b^2$ y $12a^2b^5c$?'
+    choices:
+      - {text: 'El m.c.m. es $36a^3b^5c$, combinando $\operatorname{mcm}(18,12)=36$ y la parte literal con mayores exponentes $a^3b^5c$', is_correct: true}
+      - {text: 'El m.c.m. es $6a^2b^2$', is_correct: false}
+      - {text: 'El m.c.m. es $216a^5b^7c$', is_correct: false}
+      - {text: 'El m.c.m. es $36a^2b^2$', is_correct: false}
+    explanation: 'La alternativa correcta es ''El m.c.m. es $36a^3b^5c$, combinando $\operatorname{mcm}(18,12)=36$ y la parte literal con mayores exponentes $a^3b^5c$''. $\operatorname{mcm}(18, 12) = 36$ y mayores exponentes $a^3b^5c$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si dividimos el m.c.m. total obtenido entre cualquiera de los monomios originales, ¿qué tipo de expresión debemos obtener siempre?'
+    choices:
+      - {text: 'Debemos obtener siempre un monomio entero con coeficientes enteros y exponentes no negativos', is_correct: true}
+      - {text: 'Debemos obtener una fracción irreductible con variables en el denominador', is_correct: false}
+      - {text: 'Debemos obtener siempre el número 0', is_correct: false}
+      - {text: 'Debemos obtener un número negativo', is_correct: false}
+    explanation: 'La alternativa correcta es ''Debemos obtener siempre un monomio entero con coeficientes enteros y exponentes no negativos''. Definición de divisibilidad de múltiplos comunes en $\mathbb{Z}[x_1, \dots, x_n]$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Hallar el Mínimo Común Múltiplo de los coeficientes numéricos.'
-- 'Paso 2: Reunir todas las variables distintas que aparezcan en los monomios.'
-- 'Paso 3: Elevar cada variable a su mayor exponente registrado.'
-- 'Paso 4: Multiplicar el m.c.m. numérico por el producto de las variables a su mayor
-  exponente.'
-errores_correccion: '- **Error común:** Confundir el m.c.m. completo con el M.C.D.
-  completo, mezclando menores y mayores exponentes.
-
-  - **Cómo corregirlo:** Recuerda: M.C.D. = Factores comunes al MENOR exponente. m.c.m.
-  = Todos los factores al MAYOR exponente.'
+  - 'Paso 1: Calcular el m.c.m. numérico de los coeficientes tomando sus valores absolutos y extrayendo las mayores potencias de sus factores primos.'
+  - 'Paso 2: Reunir todas las variables presentes en cualquier monomio e identificarlas con su mayor exponente.'
+  - 'Paso 3: Multiplicar el coeficiente del m.c.m. numérico por el producto de variables del m.c.m. literal.'
+  - 'Paso 4: Comprobar que el monomio m.c.m. sea divisible exactamente entre cada uno de los monomios de la lista.'
+errores_correccion: |
+  - **Error 1:** Calcular el M.C.D. numérico o literal en lugar del m.c.m. **Cómo corregirlo:** El m.c.m. **DEBE SER DIVISIBLE POR LOS MONOMIOS (por ende su coeficiente y exponentes son mayores o iguales a los originales)**.
+  - **Error 2:** Asignar un signo negativo al m.c.m. total cuando algún monomio es negativo. **Cómo corregirlo:** El coeficiente del m.c.m. entre monomios **SE TOMA OBLIGATORIAMENTE COMO UN VALOR ENTERO POSITIVO**.
 ejemplos:
-- titulo: 'Ejemplo 1: m.c.m. entre tres monomios'
-  enunciado: Calcula el m.c.m. entre $4a^2b$, $6ab^3$ y $10a^3c$.
-  alternativas:
-  - $60a^3b^3c$
-  - $2a$
-  - $120a^3b^3c$
-  respuesta: $60a^3b^3c$
-  solucion_pasos:
-  - '1. Coeficientes: $\operatorname{lcm}(4, 6, 10) = 60$.'
-  - '2. Variables: $a$ (mayor exponente $3$), $b$ (mayor exponente $3$), $c$ (mayor
-    exponente $1$).'
-  - '3. m.c.m. completo: $60a^3b^3c$.'
-- titulo: 'Ejemplo 2: Monomios con coeficientes negativos'
-  enunciado: Determina el m.c.m. entre $-5x^3y$ y $15x^2z^2$.
-  alternativas:
-  - $15x^3yz^2$
-  - $-15x^3yz^2$
-  - $5x^2$
-  respuesta: $15x^3yz^2$
-  solucion_pasos:
-  - '1. Coeficientes: $\operatorname{lcm}(|-5|, 15) = 15$.'
-  - '2. Variables: $x$ (mayor exp $3$), $y$ (mayor exp $1$), $z$ (mayor exp $2$).'
-  - '3. m.c.m. completo: $15x^3yz^2$.'
-- titulo: ¿El m.c.m. entre $3x^2$ y $4y^3$ es $12x^2y^3$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Coeficientes m.c.m.(3,4)=12 y variables al mayor exponente $x^2y^3$.
-- titulo: ¿El m.c.m. de dos monomios es siempre divisible por cada uno de los monomios
-    originales?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Por definición de múltiplo común, la división resulta en un monomio entero.
+  - titulo: 'm.c.m. completo'
+    enunciado: 'Para $6x^2y$ y $8xy^3$, ¿es el m.c.m. igual a $24x^2y^3$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\operatorname{mcm}(6,8)=24$ y letras $x^2y^3$.'
+  - titulo: 'Variable no común en m.c.m.'
+    enunciado: 'Entre $5a^2b$ y $10a^3c$, ¿se incluye la letra $c$ dando $10a^3bc$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $c$ se incluye en el m.c.m.'
+  - titulo: 'Comprobación por división'
+    enunciado: 'Al dividir $24x^2y^3 \div 6x^2y$, ¿resulta el monomio entero $4y^2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, la división es exacta.'
+  - titulo: 'Tres monomios'
+    enunciado: 'Para $2x$, $3y$ y $4z$, ¿es el m.c.m. $12xyz$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\operatorname{mcm}(2,3,4)=12$ y $xyz$.'
 errores_frecuentes:
-- El m.c.m. entre $10x^2y$ y $15xy^3$ es $5xy$.
-- El m.c.m. entre $8a^3$ y $12b^2$ omite la variable $b^2$ por no estar en el primer
-  monomio.
-- Para calcular el m.c.m. entre monomios se deben sumar sus coeficientes numéricos.
-- El m.c.m. entre $-4x^2$ y $6x$ es $-24x^3$.
-- El m.c.m. entre $x^3$ y $x^2$ es $x^6$.
+  - 'Calcular el M.C.D. de los coeficientes en lugar de calcular su m.c.m.'
+  - 'Las variables no comunes no son incluidas en el monomio m.c.m. final.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Seleccionar los menores exponentes de las variables en lugar de los mayores exponentes.'
+  - 'Asignar un coeficiente negativo al monomio m.c.m. resultante.'
 afirmaciones_verdaderas:
-- El m.c.m. entre monomios resulta de multiplicar el m.c.m. de sus coeficientes por
-  todas las variables presentes a su mayor exponente.
-- El m.c.m. de varios monomios contiene a cada uno de los monomios como factor divisor
-  exacto.
-al_terminar_debes_poder: Al finalizar este recurso podrás calcular el m.c.m. completo
-  de cualquier grupo de monomios unificando la parte numérica y la parte literal.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El m.c.m. entre monomios se obtiene multiplicando el m.c.m. numérico de los coeficientes por el m.c.m. de las partes literales.'
+  - 'El monomio m.c.m. resultante es exactamente divisible por cada uno de los monomios originales.'
+al_terminar_debes_poder: 'Calcular el m.c.m. completo entre cualquier conjunto de monomios integrando coeficientes y variables.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

@@ -1,141 +1,105 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.CONDICION_CONVERGENCIA
-resumen_inicial: 'Condición de convergencia de una serie geométrica infinita según
-  el valor absoluto de la razón: concepto y desarrollo dentro de Serie geométrica
-  finita e infinita.'
-explicacion_simple: Antes de lanzarte a usar la fórmula del infinito, tienes que pedirle
-  permiso a las matemáticas. Como un portero de discoteca, la 'Condición de Convergencia'
-  revisa tu razón 'r' y te dice si pasas o rebotas.
-explicacion_formal: 'Si te saltas este control de seguridad, la fórmula te mentirá.
+resumen_inicial: 'La condición de convergencia de una serie geométrica infinita establece que la suma de sus infinitos términos da un número real finito si y solo si el valor absoluto de su razón geométrica es estrictamente menor que la unidad: $|r| < 1$.'
+explicacion_simple: |
+  Para saber si una serie infinita se puede sumar y dar un resultado fijo, solo debes **mirar la razón $r$**:
+  - **Si $|r| < 1$ (es decir, $-1 < r < 1$)**: La serie **SÍ CONVERGE**. Cada número nuevo es más pequeño que el anterior, haciendo que la cola infinita no agregue nada significativo.
+    - Ejemplo: $r = \frac{1}{2} = 0,5 \implies$ Converge.
+    - Ejemplo: $r = -\frac{1}{3} \approx -0,33 \implies$ Converge.
+  - **Si $|r| \ge 1$ (es decir, $r \ge 1$ o $r \le -1$)**: La serie **DIVERGE**. Los números aumentan o se quedan del mismo tamaño, haciendo que la suma explote a infinito o no se detenga jamás.
+    - Ejemplo: $r = 2 \implies$ Diverge.
+    - Ejemplo: $r = -1 \implies$ Diverge (oscila).
+explicacion_formal: |
+  ### Definición formal del Criterio de Convergencia
+  Sea la serie geométrica infinita $\sum_{k=1}^\infty a_1 r^{k-1}$ con $a_1 \neq 0$. El comportamiento de la serie se rige por el valor absoluto $|r|$ de la razón geométrica:
 
+  1. **Región de Convergencia ($|r| < 1 \iff -1 < r < 1$)**:
+     $$\lim_{n \to \infty} r^n = 0 \implies \sum_{k=1}^\infty a_1 r^{k-1} = \frac{a_1}{1 - r} \in \mathbb{R}$$
+  2. **Región de Divergencia ($|r| \ge 1$)**:
+     - **Caso $r \ge 1$**: $\lim_{n \to \infty} S_n = \pm \infty$ (Divergencia a infinito).
+     - **Caso $r \le -1$**: $\lim_{n \to \infty} S_n$ no existe debido a oscilación de amplitud constante o creciente (Divergencia oscilatoria).
 
-  Ejemplo de desastre: Serie $1 + 2 + 4 + 8 + 16 \dots$ (Aquí $r = 2$).
+  ### Análisis por Valor Absoluto
+  El operador valor absoluto $|r| = \sqrt{r^2}$ mide la distancia de la razón al origen 0 en la recta real. Si dicha distancia es menor a 1 unidad, la serie es absolutamente convergente.
 
-  - Claramente la suma va hacia el infinito positivo.
-
-  - ¡Pero la fórmula $S = \frac{a_1}{1 - r}$ te dejaría usarla! Te daría $\frac{1}{1
-  - 2} = -1$.
-
-  - ¿Sumar números positivos infinitamente te dará $-1$? ¡ABSURDO!
-
-
-  Por eso el portero existe:
-
-  - ¿$r = 0.5$? PASE.
-
-  - ¿$r = -1/3$? PASE.
-
-  - ¿$r = -0.99$? PASE.
-
-  - ¿$r = 1.01$? ¡RECHAZADO! (La suma explota).
-
-  - ¿$r = -1$? ¡RECHAZADO! (La suma alterna infinitamente entre dos valores sin decidirse).'
-definiciones_clave: '- **Condición de convergencia de una serie geométrica infinita
-  según el valor absoluto de la razón**: Concepto fundamental dentro del estudio de
-  Serie geométrica finita e infinita.'
-propiedades_relaciones: '- **Propiedades de Condición de convergencia de una serie
-  geométrica infinita según el valor absoluto de la razón**: Relaciones de cambio
-  y fórmulas estructurales de serie geométrica finita e infinita.'
+  ### Síntesis didáctica
+  - Condición de convergencia: $-1 < r < 1 \iff |r| < 1$.
+  - Condición de divergencia: $r \le -1 \quad \text{o} \quad r \ge 1 \iff |r| \ge 1$.
+definiciones_clave: |
+  - **Valor absoluto de la razón ($|r|$)**: Magnitud numérica de la razón ignorando su signo positivo o negativo.
+  - **Serie convergente**: Serie cuyo límite de sumas parciales es un valor numérico bien definido $S \in \mathbb{R}$.
+  - **Serie divergente**: Serie cuya suma no tiende a ningún número finito.
+propiedades_relaciones: |
+  - **Criterio necesario y suficiente**: Para las series geométricas, la condición $|r| < 1$ es tanto necesaria como suficiente para la convergencia.
+  - **Convergencia absoluta**: Si una serie geométrica satisface $|r| < 1$, no solo converge sino que la serie de sus valores absolutos $\sum |a_k|$ también converge.
 ejemplo_guiado:
-  enunciado: Determina si la serie infinita 6 menos 18 más 54 menos 162, y así sucesivamente,
-    converge, y justifica.
+  enunciado: 'Analiza la convergencia de las siguientes tres series geométricas e indica cuáles poseen una suma infinita finita: A) $r = \frac{3}{4}$, B) $r = -\frac{5}{2}$, C) $r = -0,8$.'
   pasos:
-  - 'Calculo la razón: -18 dividido entre 6 es igual a -3.'
-  - 'Calculo el valor absoluto de la razón: el valor absoluto de -3 es 3.'
-  - Como 3 es mayor que 1, la serie no converge; no se puede calcular una suma finita.
+    - 'Paso 1: Para la serie A ($r = 3/4$), calculamos el valor absoluto: $|3/4| = 0,75 < 1$. Por lo tanto, la serie A **es convergente**.'
+    - 'Paso 2: Para la serie B ($r = -5/2$), calculamos el valor absoluto: $|-5/2| = 2,5 \ge 1$. Por lo tanto, la serie B **es divergente**.'
+    - 'Paso 3: Para la serie C ($r = -0,8$), calculamos el valor absoluto: $|-0,8| = 0,8 < 1$. Por lo tanto, la serie C **es convergente**.'
+    - 'Paso 4: Conclusión: Las series **A y C convergen**, mientras que la serie **B diverge**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la clave al trabajar con condición de convergencia de una serie
-    geométrica infinita según el valor absoluto de la razón?
-  choices:
-  - text: Identificar correctamente el patrón de serie geométrica finita e infinita
-    is_correct: true
-  - text: Sumar los índices al azar
-    is_correct: false
-  - text: Ignorar la posición de cada término
-    is_correct: false
-  - text: Multiplicar siempre por cero
-    is_correct: false
-  explanation: 'La alternativa correcta es: Identificar correctamente el patrón de
-    serie geométrica finita e infinita. Es la clave conceptual al estudiar condición
-    de convergencia de una serie geométrica infinita según el valor absoluto de la
-    razón.'
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el cálculo paso a paso de condición de convergencia de una serie geométrica
-    infinita según el valor absoluto de la razón, ¿qué procedimiento se debe seguir?
-  choices:
-  - text: Verificar la coherencia del resultado con el enunciado
-    is_correct: true
-  - text: Omitir la comprobación numérica
-    is_correct: false
-  - text: Cambiar la posición de los términos arbitrariamente
-    is_correct: false
-  - text: Dividir entre la nada
-    is_correct: false
-  explanation: 'La alternativa correcta es: Verificar la coherencia del resultado
-    con el enunciado. Garantiza que los cálculos en condición de convergencia de una
-    serie geométrica infinita según el valor absoluto de la razón sean precisos.'
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Dadas dos series geométricas de razones $r_1 = -0,6$ y $r_2 = 1,2$, ¿cuál de ellas es convergente?'
+    choices:
+      - {text: 'La serie de razón $r_1 = -0,6$, porque su valor absoluto $|-0,6| = 0,6$ es menor que 1', is_correct: true}
+      - {text: 'La serie de razón $r_2 = 1,2$, porque es un número positivo', is_correct: false}
+      - {text: 'Ambas series son convergentes por tener razones finitas', is_correct: false}
+      - {text: 'Ninguna de las dos converge porque tienen razones decimales', is_correct: false}
+    explanation: 'La alternativa correcta es ''La serie de razón $r_1 = -0,6$, porque su valor absoluto $|-0,6| = 0,6$ es menor que 1''. $|r|<1$ es la regla.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Qué ocurre con la serie geométrica infinita si la razón es $r = -1$?'
+    choices:
+      - {text: 'La serie diverge debido a que oscila indefinidamente entre dos valores y no se aproxima a un único número ($|-1| = 1 \ge 1$)', is_correct: true}
+      - {text: 'La serie converge al número 0 en todos los casos', is_correct: false}
+      - {text: 'La serie converge a la mitad del primer término', is_correct: false}
+      - {text: 'La serie se transforma en una progresión aritmética de diferencia 1', is_correct: false}
+    explanation: 'La alternativa correcta es ''La serie diverge debido a que oscila indefinidamente entre dos valores y no se aproxima a un único número ($|-1| = 1 \ge 1$)''. Para $r=-1$, la serie oscila $a_1 - a_1 + a_1 - a_1$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Calcula la razón ''r'' dividiendo el 2do término por el 1ro.'
-- 'Paso 2: Quítale el signo (toma su valor absoluto).'
-- 'Paso 3: Pregúntate: ¿Es estrictamente menor que 1?'
-- 'Paso 4: Si es Sí, la serie converge y puedes usar la fórmula. Si es No, la serie
-  diverge (su suma es infinito o no existe).'
-errores_correccion: Evita confundir la posición del término $n$ con el valor del término
-  $a_n$ en condición de convergencia de una serie geométrica infinita según el valor
-  absoluto de la razón.
+  - 'Paso 1: Identificar el valor de la razón geométrica $r$ de la serie.'
+  - 'Paso 2: Calcular el valor absoluto $|r|$.'
+  - 'Paso 3: Comparar $|r|$ con el número 1.'
+  - 'Paso 4: Si $|r| < 1$, declarar la serie como convergente; si $|r| \ge 1$, declarar la serie como divergente.'
+errores_correccion: |
+  - **Error 1:** Considerar que las razones negativas no pueden ser convergentes. **Cómo corregirlo:** La convergencia depende del **VALOR ABSOLUTO $|r|$**: si $r = -0,4$, $|-0,4| = 0,4 < 1$, por lo que **SÍ converge**.
+  - **Error 2:** Creer que $r = 1$ o $r = -1$ es convergente. **Cómo corregirlo:** Para que converja debe cumplirse una **desigualdad ESTRICTA: $|r| < 1$** ($r=1$ y $r=-1$ divergen).
 ejemplos:
-- titulo: El portero matemático
-  enunciado: Determina si la serie infinita 5 - 10 + 20 - 40... se puede sumar con
-    la fórmula.
-  solucion_pasos:
-  - 'Calculamos r: -10 / 5 = -2.'
-  - Valor absoluto de r es 2.
-  - Como 2 es mayor que 1, el portero la rechaza.
-  - 'Respuesta: NO converge, no se puede calcular un total fijo.'
-- titulo: Ejemplo 1
-  enunciado: ¿Cuál razón permite que una serie geométrica infinita converja?
-  alternativas:
-  - r igual a -0,4
-  - r igual a -2
-  - r igual a 5
-  respuesta: r igual a -0,4
-  solucion_pasos:
-  - Su valor absoluto, 0,4, es menor que 1.
-- titulo: Ejemplo 2
-  enunciado: ¿La serie con razón r igual a 1 converge?
-  alternativas:
-  - 'No'
-  - Sí
-  - Solo si a_1 es positivo
-  respuesta: 'No'
-  solucion_pasos:
-  - El valor absoluto de 1 no es estrictamente menor que 1, por lo tanto no converge.
-- titulo: ¿Una razón r igual a -0,9 permite que la serie converja?
-  respuesta: Sí
-  solucion_pasos:
-  - Su valor absoluto, 0,9, es menor que 1.
-- titulo: ¿El signo de la razón determina por sí solo si la serie converge?
-  respuesta: 'No'
-  solucion_pasos:
-  - Lo que determina la convergencia es el valor absoluto de la razón, no su signo.
+  - titulo: 'Convergencia de razón 0,2'
+    enunciado: 'Para $r = 0,2$, ¿la serie geométrica infinita converge pues $|0,2| < 1$?'
+    alternativas:
+      - 'Sí, pues 0,2 es menor que 1'
+      - 'No, las razones decimales divergen'
+      - 'No, la razón debe ser mayor que 1'
+    respuesta: 'Sí, pues 0,2 es menor que 1'
+    solucion_pasos:
+      - '1. $|r| = |0,2| = 0,2$.'
+      - '2. Como $0,2 < 1 \implies$ Converge.'
+  - titulo: 'Divergencia de razón 1,5'
+    enunciado: 'Para $r = 1,5$, ¿la serie geométrica infinita diverge pues $|1,5| \ge 1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $|1,5| = 1,5 \ge 1 \implies$ Diverge.'
+  - titulo: 'Convergencia con razón fraccionaria negativa'
+    enunciado: 'Para $r = -2/3$, ¿la serie es convergente?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $|-2/3| = 2/3 \approx 0,67 < 1 \implies$ Converge.'
+  - titulo: 'Divergencia por razón r = 1'
+    enunciado: 'Para $r = 1$, ¿la serie $a_1 + a_1 + a_1 + \dots$ es divergente?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. La suma crece linealmente como $n \cdot a_1 \to \infty$, por lo que diverge.'
 errores_frecuentes:
-- Afirmar que si la razón es negativa, automáticamente la serie diverge (Las razones
-  negativas pequeñas como -0.5 convergen perfectamente).
-- Forzar la fórmula con $r > 1$ y entregar ciegamente el resultado negativo como respuesta
-  válida.
-- Afirmar que toda razón negativa hace que la serie diverja, sin calcular su valor
-  absoluto.
-- Declarar 'converge' con 'crece', pensando que una serie que converge no puede tener
-  términos grandes al principio.
-- Aplicar la fórmula de suma infinita sin verificar antes la condición de convergencia.
+  - 'Una razón geométrica negativa genera automáticamente la divergencia de la serie.'
+  - 'La suma de una serie geométrica infinita siempre entrega un número entero positivo.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'La condición $|r| \le 1$ incluye la razón $r=1$ como convergente.'
+  - 'El concepto de serie convergente es equivalente en su comportamiento a una tasa de crecimiento lineal.'
 afirmaciones_verdaderas:
-- La formulación de condición de convergencia de una serie geométrica infinita según
-  el valor absoluto de la razón mantiene la regularidad de la sucesión.
-- La condición de convergencia depende únicamente del valor absoluto de la razón,
-  sin importar si esta es positiva o negativa.
-al_terminar_debes_poder: Resolver problemas prácticos utilizando condición de convergencia
-  de una serie geométrica infinita según el valor absoluto de la razón.
-fuente: Currículum Nacional MINEDUC.
+  - 'Una serie geométrica infinita es convergente si y solo si el valor absoluto de la razón cumple $|r| < 1$.'
+  - 'Si la razón de una serie geométrica infinita satisface $|r| \ge 1$, la serie es divergente y no posee una suma real finita.'
+al_terminar_debes_poder: 'Determinar la convergencia o divergencia de una serie geométrica infinita evaluando la condición $|r| < 1$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

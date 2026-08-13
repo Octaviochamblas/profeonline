@@ -26,7 +26,8 @@
   fórmula de verdad en vez de dos que podían desincronizarse. Test de regresión nuevo en
   `test_publication_pipeline.py`
   (`test_finalize_uses_shared_ambas_bucket_not_practice_plus_eval`). El camino de paquete
-  editorial no cambia (seguirá funcionando igual).
+  - **Nodos: actualización a 12 secciones Bloque 03.01 a 03.07 — CERRADO por 🔨 Antigravity 🟢
+  (2026-08-12):** Actualizados y auditados al 100% de excelencia los subtemas `03.01.03` (6/6), `03.01.04` (10/10), `03.01.05` (4/4), `03.02.01` (12/12), `03.02.02` (16/16), `03.02.03` (8/8), `03.03.01` (5/5), `03.03.02` (7/7), `03.03.03` (6/6), `03.03.04` (5/5), `03.03.05` (7/7), `03.04.01` (7/7), `03.04.02` (5/5), `03.04.03` (5/5), `03.04.04` (11/11), `03.05.01` (7/7), `03.05.02` (5/5), `03.05.03` (5/5), `03.05.04` (6/6), `03.05.05` (5/5), `03.05.06` (4/4), `03.06.01` (8/8), `03.06.02` (5/5), `03.06.03` (6/6), `03.06.04` (8/8), `03.06.05` (6/6), `03.06.06` (6/6), `03.07.01` (6/6), `03.07.02` (6/6), `03.07.03` (10/10) y `03.07.04` (4/4). **¡Bloques 03.04, 03.05 y 03.06 completos!** Todos cargados vía `load_node_content`, auditados sin palabras prohibidas de juicio y verificados con `manage.py check`. Detalle en `docs/reportes-sesion/2026-08-12.md`.
 - **Nodos: actualización masiva a 12 secciones — CERRADO por 🔨 Antigravity 🟢
   (2026-08-07):** Actualizados y auditados en base de datos local al 100% de excelencia 129 recursos de contenido:
   `03.09.07` (6/6), Bloque `03.10` completo (82/82 recursos en 9 subtemas) y Bloque `03.11` completo (41/41 recursos en 6 subtemas).

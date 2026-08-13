@@ -1,124 +1,103 @@
-resumen_inicial: El reconocimiento de una progresión aritmética exige comprobar que
-  la diferencia $a_{k+1} - a_k$ sea constante para todos los pares consecutivamente
-  dados en la muestra numérica.
-explicacion_simple: Para saber si una lista dada es una progresión aritmética, revisamos
-  las restas entre vecinos. Si todas las restas dan exactamente el mismo número, la
-  lista es una progresión aritmética.
-explicacion_formal: 'Dada la secuencia $(x_1, x_2, x_3, \dots, x_N)$, el **Criterio
-  de Reconocimiento P.A.** evalúa el sistema de diferencias:
-
-
-  $$\Delta_1 = x_2 - x_1, \quad \Delta_2 = x_3 - x_2, \dots, \Delta_{N-1} = x_N -
-  x_{N-1}$$
-
-
-  $$\text{Es P.A. } \iff \Delta_1 = \Delta_2 = \dots = \Delta_{N-1} = d$$'
-definiciones_clave: '- **Reconocimiento P.A.**: Criterio de verificación $\Delta_k
-  = d$ constante para toda la secuencia.'
-propiedades_relaciones: '- **Invarianza de diferencia**: Si una sola resta difiere,
-  la secuencia NO es una progresión aritmética.'
-ejemplo_guiado:
-  enunciado: Determine si la sucesión $(4, 9, 14, 20)$ es una progresión aritmética.
-  pasos:
-  - 'Paso 1: $a_2 - a_1 = 9 - 4 = 5$.'
-  - 'Paso 2: $a_3 - a_2 = 14 - 9 = 5$.'
-  - 'Paso 3: $a_4 - a_3 = 20 - 14 = 6$.'
-  - 'Paso 4: Comparar diferencias: la última diferencia ($6$) es distinta a las anteriores
-    ($5$).'
-  - 'Conclusión: NO es una progresión aritmética porque las diferencias no son constantes.'
-checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Qué se debe verificar para confirmar que una lista de números es una
-    progresión aritmética?
-  choices:
-  - text: Que la resta entre cualquier término y su anterior dé exactamente el mismo
-      número en toda la lista
-    is_correct: true
-  - text: Que la suma de todos dé cien
-    is_correct: false
-  - text: Que los números sean todos impares
-    is_correct: false
-  - text: Que el primer número sea cero
-    is_correct: false
-  explanation: La alternativa correcta es 'Que la resta entre cualquier término y
-    su anterior dé exactamente el mismo número en toda la lista'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para (4, 9, 14, 20), ¿por qué NO se clasificó como
-    P.A.?
-  choices:
-  - text: Porque la última diferencia (20 - 14 = 6) fue distinta a la diferencia previa
-      de 5
-    is_correct: true
-  - text: Porque todos los números son pares
-    is_correct: false
-  - text: Because es una multiplicación
-    is_correct: false
-  - text: Porque comenzó en 4
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque la última diferencia (20 - 14 =
-    6) fue distinta a la diferencia previa de 5'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de reconocer si una secuencia es
-  una progresión aritmética verificando la constancia de todas sus diferencias sucesivas.
 semantic_id: MAT.NUM.PROG_ARITMETICA.RECONOCIMIENTO
+resumen_inicial: 'El reconocimiento de una progresión aritmética exige comprobar que las restas entre pares de términos consecutivos adyacentes arrojen exactamente el mismo valor constante $d$.'
+explicacion_simple: |
+  Si te presentan una lista de números (por ejemplo: $4, 7, 10, 14, 17$) y te preguntan **si es o no una progresión aritmética**:
+  1. Restas el 2º término menos el 1º: $7 - 4 = 3$.
+  2. Restas el 3º término menos el 2º: $10 - 7 = 3$.
+  3. Restas el 4º término menos el 3º: $14 - 10 = 4$.
+  ¡Atención! Como la resta dio $3$ al principio pero luego dio $4$, el salto no es constante. Por lo tanto, esa lista **NO es una progresión aritmética**. Para serlo, absolutamente todos los saltos deben dar el mismo número.
+explicacion_formal: |
+  ### Definición formal
+  Dada una secuencia finita de términos $(a_1, a_2, a_3, \dots, a_k)$, es una **progresión aritmética** si y solo si el operador de diferencia primera $\Delta a_i$ satisface la condición de constancia estricta:
+  $$\Delta a_1 = \Delta a_2 = \dots = \Delta a_{k-1} = d$$
+  donde $\Delta a_i = a_{i+1} - a_i$.
+
+  ### Criterio de verificación paso a paso
+  1. Calcular $d_1 = a_2 - a_1$.
+  2. Calcular $d_2 = a_3 - a_2$.
+  3. Calcular $d_{k-1} = a_k - a_{k-1}$.
+  4. Si $d_1 = d_2 = \dots = d_{k-1} \implies$ Es una P.A. de diferencia $d = d_1$.
+  5. Si al menos una diferencia $d_i \neq d_j \implies$ No es una P.A.
+
+  ### Síntesis didáctica
+  - Test de constancia: $a_2 - a_1 = a_3 - a_2 = a_4 - a_3 = \dots = d$.
+  - Un solo salto diferente invalida la condición de P.A.
+definiciones_clave: |
+  - **Test de diferencia constante**: Evaluación sistemática de las restas de todos los pares adyacentes de una muestra.
+  - **Invarianza diferencial**: Propiedad por la cual la resta $a_{n+1} - a_n$ permanece inalterada a lo largo de toda la secuencia.
+  - **Secuencia no aritmética**: Lista de números cuyo patrón de crecimiento no es lineal o cuya diferencia cambia.
+propiedades_relaciones: |
+  - **Diferencia con progresiones geométricas**: En una P.A. se comprueba la constancia de la RESTA ($a_{n+1} - a_n = d$); en una P.G. se comprueba la constancia de la DIVISION ($\frac{a_{n+1}}{a_n} = q$).
+  - **Sensibilidad a la muestra completa**: No basta con que los primeros dos pares coincidan; se debe verificar toda la extensión de la lista conocida.
+ejemplo_guiado:
+  enunciado: 'Determina si la secuencia $12, 19, 26, 33, 40$ es una progresión aritmética.'
+  pasos:
+    - 'Paso 1: Evaluamos el primer par: $a_2 - a_1 = 19 - 12 = 7$.'
+    - 'Paso 2: Evaluamos el segundo par: $a_3 - a_2 = 26 - 19 = 7$.'
+    - 'Paso 3: Evaluamos el tercer par: $a_4 - a_3 = 33 - 26 = 7$.'
+    - 'Paso 4: Evaluamos el cuarto par: $a_5 - a_4 = 40 - 33 = 7$. Como todas las restas entregan exactamente el mismo valor constante ($d = 7$), la secuencia **sí es una progresión aritmética**.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué prueba matemática permite confirmar que una lista dada de 5 números forma una progresión aritmética?'
+    choices:
+      - {text: 'Calcular las restas $a_2 - a_1$, $a_3 - a_2$, $a_4 - a_3$ y $a_5 - a_4$ y verificar que todas sean iguales', is_correct: true}
+      - {text: 'Sumar los 5 números y verificar que el resultado sea un número par', is_correct: false}
+      - {text: 'Dividir el último número entre el primero y comprobar que sea un entero', is_correct: false}
+      - {text: 'Multiplicar el primer número por el quinto', is_correct: false}
+    explanation: 'La alternativa correcta es ''Calcular las restas $a_2 - a_1$, $a_3 - a_2$, $a_4 - a_3$ y $a_5 - a_4$ y verificar que todas sean iguales''. Es el test de diferencia constante.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Dada la lista $2, 4, 8, 16, 32$, ¿es una progresión aritmética?'
+    choices:
+      - {text: 'No, porque las restas no son constantes ($4-2=2$, mientras que $8-4=4$)', is_correct: true}
+      - {text: 'Sí, porque son todos números pares', is_correct: false}
+      - {text: 'Sí, porque van aumentando de forma constante', is_correct: false}
+      - {text: 'Sí, porque la diferencia es 2', is_correct: false}
+    explanation: 'La alternativa correcta es ''No, porque las restas no son constantes ($4-2=2$, mientras que $8-4=4$)''. Es una progresión geométrica, no aritmética.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Verificar que la secuencia mantenga una diferencia aditiva constante $d
-  = a_{n+1} - a_n$.'
-- 'Paso 2: Aplicar la fórmula del término general $a_n = a_1 + (n - 1)d$ o de la suma
-  $S_n = \frac{n(a_1 + a_n)}{2}$.'
-- 'Paso 3: Resolver numéricamente el parámetro solicitado ($a_n, a_1, d, n$ o $S_n$).'
-errores_correccion: '- **Error 1: Multiplicar la diferencia por $n$ en lugar de $(n-1)$
-  en la fórmula del término general ($a_n = a_1 + n \cdot d$).** **Cómo corregirlo:**
-  La diferencia $d$ se aplica a partir de la segunda posición, por lo que se multiplica
-  por $(n-1)$.
-
-
-  - **Error 2: Restar los términos en orden inverso al hallar la diferencia ($d =
-  a_n - a_{n+1}$).** **Cómo corregirlo:** La diferencia DEBE calcularse restando el
-  término posterior menos el anterior ($a_{n+1} - a_n$).'
+  - 'Paso 1: Tomar los elementos de la secuencia dada en su orden de aparición.'
+  - 'Paso 2: Restar consecutivamente cada término menos el que le antecede.'
+  - 'Paso 3: Comparar todos los resultados obtenidos.'
+  - 'Paso 4: Si todos los resultados son iguales, la lista es una P.A.; si algún resultado difiere, la lista no es una P.A.'
+errores_correccion: |
+  - **Error 1:** Declarar que es una P.A. revisando únicamente la resta entre los dos primeros términos. **Cómo corregirlo:** Se debe **verificar la diferencia en TODOS los pares de términos de la muestra**.
+  - **Error 2:** Confundir un patrón multiplicativo (geométrico) con uno aditivo (aritmético). **Cómo corregirlo:** La P.A. exige que la **RESTA sea constante**, no la multiplicación.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.PROG_ARITMETICA.RECONOCIMIENTO.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de progresión aritmética.
-- titulo: Ejemplo 2
-  enunciado: Verificación de la diferencia constante.
-  alternativas:
-  - Cumple la constante
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la constante
-  solucion_pasos:
-  - Demostración formal por $a_{n+1} - a_n = d$.
-- titulo: ¿Es constante la diferencia entre términos consecutivos en una P.A.?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición de progresión aritmética.
-- titulo: ¿Equivale la suma Sn al promedio de extremos multiplicado por el número
-    de términos?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, $S_n = \frac{n(a_1 + a_n)}{2}$.
+  - titulo: 'Verificación de P.A. válida'
+    enunciado: '¿La lista $100, 90, 80, 70, 60$ es una progresión aritmética?'
+    alternativas:
+      - 'Sí, todas las restas valen -10'
+      - 'No, porque es decreciente'
+      - 'No, porque termina en 60'
+    respuesta: 'Sí, todas las restas valen -10'
+    solucion_pasos:
+      - '1. Restas: $90-100 = -10, 80-90 = -10, 70-80 = -10, 60-70 = -10$.'
+      - '2. La diferencia $d = -10$ es constante $\implies$ Sí es P.A.'
+  - titulo: 'Verificación de secuencia no aritmética'
+    enunciado: '¿La secuencia $1, 3, 6, 10, 15$ es una P.A.?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No. Restas: $3-1=2, 6-3=3, 10-6=4$. Las restas cambian.'
+  - titulo: 'Verificación de P.A. fraccionaria'
+    enunciado: '¿La secuencia $1, \frac{4}{3}, \frac{5}{3}, 2$ es una P.A.?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. Restas: $4/3 - 1 = 1/3, 5/3 - 4/3 = 1/3, 2 - 5/3 = 1/3$. $d = 1/3$.'
+  - titulo: 'Verificación con trampa al final'
+    enunciado: '¿La secuencia $5, 10, 15, 20, 26$ es una P.A.?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No. Las primeras restas dan 5, pero la última da $26-20 = 6$. No es P.A.'
 errores_frecuentes:
-- Multiplicar la diferencia común d por n en lugar de multiplicar por (n - 1) al calcular
-  an.
-- Restar el término posterior del término anterior al calcular el valor de la diferencia
-  d.
-- Sumar directamente los términos de los extremos sin dividir entre dos al calcular
-  Sn.
-- Declarar que una progresión con diferencia negativa es siempre invalida para el
-  cálculo de índices.
-- Declarar la posición ordinal n con el valor numérico del término an en la ecuación.
+  - 'Validar que una secuencia es aritmética probando sólo los primeros dos números.'
+  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
+  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
+  - 'Una regla multiplicativa constante equivale algebraicamente a una regla aditiva en una P.A.'
+  - 'No considerar los signos negativos al restar términos en sucesiones decrecientes.'
 afirmaciones_verdaderas:
-- Una progresión aritmética tiene una diferencia constante $d = a_{n+1} - a_n$ entre
-  términos consecutivos.
-- El término de cualquier posición $n$ se calcula mediante $a_n = a_1 + (n - 1) \cdot
-  d$.
-fuente: Texto escolar MINEDUC — Álgebra 1° Medio / PAES.
+  - 'Una secuencia es una progresión aritmética si y solo si las restas de todos sus términos consecutivos adyacentes arrojan el mismo resultado.'
+  - 'Si una sola resta entre términos consecutivos es distinta de las demás, la secuencia no es una progresión aritmética.'
+al_terminar_debes_poder: 'Reconocer si una secuencia numérica dada es o no una progresión aritmética verificando la constancia de $a_{n+1} - a_n$.'
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

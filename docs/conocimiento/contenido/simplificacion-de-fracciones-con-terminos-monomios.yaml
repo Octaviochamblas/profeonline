@@ -1,135 +1,104 @@
 semantic_id: MAT.ALG.FRACCIONES_BASE.SIMPLIFICACION_MONOMIOS
-resumen_inicial: Simplificar una fracción de monomios consiste en dividir sus coeficientes
-  por el M.C.D. numérico y restar los exponentes de las variables iguales.
-explicacion_simple: 'Para simplificar una fracción formada por monomios en el numerador
-  y denominador:
+resumen_inicial: 'La simplificación de fracciones con términos monomios consiste en dividir el numerador y el denominador entre su M.C.D. monómico cancelando coeficientes numéricos y restando exponentes de variables comunes.'
+explicacion_simple: |
+  Para **simplificar una fracción formada por monomios** (ej: $\frac{12x^5y^3}{18x^2y^7}$):
+  - **PROCEDIMIENTO EN 2 PASOS**:
+    1. **Simplifica los coeficientes numéricos** dividiéndolos entre su M.C.D.:
+       - $\operatorname{MCD}(12, 18) = 6 \implies \frac{12 \div 6}{18 \div 6} = \mathbf{\frac{2}{3}}$.
+    2. **Aplica las propiedades de las potencias a las letras ($x^a \div x^b = x^{a-b}$)**:
+       - Para $x$: $x^{5-2} = \mathbf{x^3}$ (queda en el **numerador** porque el exponente mayor estaba arriba).
+       - Para $y$: $y^{7-3} = \mathbf{y^4}$ (queda en el **denominador** porque el exponente mayor estaba abajo).
+    3. **Ensambla el resultado final**:
+       $$\mathbf{\frac{2x^3}{3y^4}}$$
+explicacion_formal: |
+  ### Definición formal
+  Sean $M_1 = a \prod x_j^{e_{1,j}}$ y $M_2 = b \prod x_j^{e_{2,j}}$ dos monomios en $\mathbb{Z}[x_1, \dots, x_n]$. Sea $D = \operatorname{MCD}(M_1, M_2)$ su Máximo Común Divisor monómico. La **simplificación irreductible** de la fracción racional $\frac{M_1}{M_2}$ se define mediante la cancelación exacta:
 
-  1. Simplificamos los números como una fracción común (dividiendo arriba y abajo
-  por su divisor más grande).
+  $$\frac{M_1}{M_2} = \frac{M_1 / D}{M_2 / D} = \frac{a / \operatorname{MCD}(|a|,|b|)}{b / \operatorname{MCD}(|a|,|b|)} \cdot \prod_{j=1}^n x_j^{e_{1,j} - e_{2,j}}$$
 
-  2. Para las letras iguales, aplicamos la regla de cociente de potencias de igual
-  base: restamos los exponentes.
+  ### Ubicación Canónica de Exponentes Positivos
+  Para evitar exponentes negativos ($x_j^{-k}$), la ley de potencias se aplica situando la variable en la posición del exponente dominante:
 
-  3. Colocamos la variable simplificada en la posición (numerador o denominador) donde
-  estaba el exponente mayor.'
-explicacion_formal: 'Dada una fracción de monomios $\frac{a \cdot x^m y^p}{b \cdot
-  x^n y^q}$ con $b \neq 0, x \neq 0, y \neq 0$, su **forma irreducible** se calcula
-  mediante:
+  $$x_j^{e_{1,j} - e_{2,j}} = \begin{cases} x_j^{e_{1,j} - e_{2,j}} & \text{en el numerador si } e_{1,j} > e_{2,j} \\ \frac{1}{x_j^{e_{2,j} - e_{1,j}}} & \text{en el denominador si } e_{2,j} > e_{1,j} \end{cases}$$
 
-
-  $$\frac{a \cdot x^m y^p}{b \cdot x^n y^q} = \frac{\operatorname{gcd}(a,b)^{-1} \cdot
-  a}{\operatorname{gcd}(a,b)^{-1} \cdot b} \cdot x^{m-n} y^{p-q}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $\operatorname{gcd}(a,b)$: M.C.D. numérico utilizado para reducir la constante
-  $\frac{a}{b}$.
-
-  - $x^{m-n}$: Aplicación de la propiedad de potencias $\frac{x^m}{x^n} = x^{m-n}$.
-  Si $m < n$, se expresa convencionalmente como $\frac{1}{x^{n-m}}$ con exponente
-  positivo en el denominador.'
-definiciones_clave: '- **Simplificación de monomios**: Reducción de la fracción monomia
-  dividiendo coeficientes y restando exponentes de variables comunes.
-
-  - **Fracción monomia irreducible**: Fracción donde coeficientes son primos entre
-  sí y cada variable figura en una sola posición.'
-propiedades_relaciones: '- **Exponente positivo**: Si $m > n$, la variable queda en
-  el numerador $x^{m-n}$; si $n > m$, queda en el denominador $\frac{1}{x^{n-m}}$.
-
-  - **Cancelación total**: Si $m = n$, $x^{m-m} = x^0 = 1$ y la variable se elimina
-  por completo.'
+  ### Síntesis didáctica
+  Simplificar monomios reduce los números a su fracción irreductible y resta los exponentes de cada variable colocándola donde estaba su potencia más alta.
+definiciones_clave: |
+  - **Simplificación monómica**: Reducción de una fracción de monomios dividiendo por su M.C.D. común.
+  - **Restas de exponentes ($x^{a-b}$)**: Aplicación del cociente de potencias de igual base para eliminar variables redundantes.
+  - **Fracción monómica irreductible**: Expresión final donde los coeficientes son coprimos y cada variable aparece una sola vez con exponente positivo.
+propiedades_relaciones: |
+  - **Preservación del valor racional**: Dividir numerador y denominador entre la misma cantidad no nula preserva de forma exacta el valor de la fracción.
 ejemplo_guiado:
-  enunciado: Simplifica al máximo la fracción de monomios $\frac{12x^5y^2}{18x^2y^4}$
-    y evalúa el resultado irreducible para $x = 3$ e $y = 2$.
+  enunciado: 'Simplifica la fracción con términos monomios $\frac{-24a^4b^2c^5}{36a^7b^2c^3}$.'
   pasos:
-  - 'Paso 1: Simplificar los coeficientes $\frac{12}{18}$. El M.C.D. de $12$ y $18$
-    es $6$, luego $\frac{12 \div 6}{18 \div 6} = \frac{2}{3}$.Paso 2: Simplificar
-    la variable $x$: $\frac{x^5}{x^2} = x^{5-2} = x^3$ en el numerador.Paso 3: Simplificar
-    la variable $y$: $\frac{y^2}{y^4} = \frac{1}{y^{4-2}} = \frac{1}{y^2}$ en el denominador.Paso
-    4: Unir los términos: la fracción irreducible es $\frac{2x^3}{3y^2}$.Paso 5: Evaluar
-    para $x = 3, y = 2$: $\frac{2(3)^3}{3(2)^2} = \frac{2(27)}{3(4)} = \frac{54}{12}
-    = \frac{9}{2}$.'
+    - 'Paso 1: Simplificamos los coeficientes numéricos $\frac{-24}{36}$:
+       - $\operatorname{MCD}(24, 36) = 12$.
+       - Coeficiente simplificado: $\frac{-24 \div 12}{36 \div 12} = \mathbf{-\frac{2}{3}}$.'
+    - 'Paso 2: Simplificamos las variables aplicando cociente de potencias:
+       - Para $a$: el mayor exponente está en el denominador ($7 > 4$). Restamos $7 - 4 = 3 \implies \mathbf{a^3 \text{ abajo}}$.
+       - Para $b$: exponentes iguales ($2 = 2$). Se cancelan exactamente: $\frac{b^2}{b^2} = 1$.
+       - Para $c$: el mayor exponente está en el numerador ($5 > 3$). Restamos $5 - 3 = 2 \implies \mathbf{c^2 \text{ arriba}}$.'
+    - 'Paso 3: Unimos la parte numérica y las variables resultantes:
+       $-\frac{2c^2}{3a^3}$.'
+    - 'Conclusión: La fracción simplificada irreductible es **$-\frac{2c^2}{3a^3}$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la forma irreducible de la fracción de monomios $\frac{12x^5y^2}{18x^2y^4}$?
-  choices:
-  - text: $\frac{2x^3}{3y^2}$
-    is_correct: true
-  - text: $\frac{2x^7}{3y^6}$
-    is_correct: false
-  - text: $\frac{6x^3}{y^2}$
-    is_correct: false
-  - text: $\frac{2x^3y^2}{3}$
-    is_correct: false
-  explanation: La alternativa correcta es '$\frac{2x^3}{3y^2}$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar la expresión simplificada $\frac{2x^3}{3y^2}$ para $x = 3$
-    e $y = 2$, ¿cuál es el valor obtenido?
-  choices:
-  - text: $\frac{9}{2}$
-    is_correct: true
-  - text: $\frac{27}{4}$
-    is_correct: false
-  - text: $9$
-    is_correct: false
-  - text: $\frac{9}{4}$
-    is_correct: false
-  explanation: La alternativa correcta es '$\frac{9}{2}$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Al simplificar la fracción monómica $\frac{15x^2y^6}{25x^5y^2}$, ¿cuál es la expresión equivalente final?'
+    choices:
+      - {text: 'La expresión es $\frac{3y^4}{5x^3}$, dividiendo $15/25 = 3/5$, $y^{6-2}=y^4$ arriba y $x^{5-2}=x^3$ abajo', is_correct: true}
+      - {text: 'La expresión es $\frac{3x^3y^4}{5}$', is_correct: false}
+      - {text: 'La expresión es $\frac{15y^4}{25x^3}$', is_correct: false}
+      - {text: 'La expresión es $\frac{3}{5x^3y^4}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''La expresión es $\frac{3y^4}{5x^3}$, dividiendo $15/25 = 3/5$, $y^{6-2}=y^4$ arriba y $x^{5-2}=x^3$ abajo''. Coeficientes $15/25=3/5$, $y^{6-2}=y^4$ en el numerador y $x^{5-2}=x^3$ en el denominador.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Qué ocurre con una variable cuando su exponente en el numerador es exactamente igual a su exponente en el denominador (ej: $\frac{x^3}{x^3}$)?'
+    choices:
+      - {text: 'La variable se simplifica por completo resultando en 1 ($x^{3-3} = x^0 = 1$), desapareciendo de la expresión final', is_correct: true}
+      - {text: 'Queda $x^1$', is_correct: false}
+      - {text: 'Se convierte en 0', is_correct: false}
+      - {text: 'Permanece en el denominador', is_correct: false}
+    explanation: 'La alternativa correcta es ''La variable se simplifica por completo resultando en 1 ($x^{3-3} = x^0 = 1$), desapareciendo de la expresión final''. Propiedad $x^n / x^n = 1$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Dividir los coeficientes del numerador y denominador entre su M.C.D. numérico.'
-- 'Paso 2: Para cada variable común, comparar los exponentes del numerador ($m$) y
-  denominador ($n$).'
-- 'Paso 3: Si $m > n$, escribir $x^{m-n}$ en el numerador. Si $n > m$, escribir $x^{n-m}$
-  en el denominador.'
-- 'Paso 4: Conservar intactas las variables no comunes en su posición original.'
-- 'Paso 5: Multiplicar coeficientes reducidos y variables simplificadas.'
-errores_correccion: '- **Error común:** Sumar los exponentes de las variables al simplificar
-  una fracción en lugar de restarlos.
-
-  - **Cómo corregirlo:** La división de potencias de igual base exige RESTAR los exponentes
-  ($x^m / x^n = x^{m-n}$).'
+  - 'Paso 1: Simplificar la fracción numérica formada por los coeficientes dividiendo numerador y denominador por su M.C.D.'
+  - 'Paso 2: Comparar los exponentes de cada variable común en el numerador y el denominador.'
+  - 'Paso 3: Restar los exponentes y colocar la variable resultante con la diferencia de potencia en la posición (numerador o denominador) donde figuraba el mayor exponente.'
+  - 'Paso 4: Conservar en su posición original a las variables que aparezcan en una sola parte de la fracción.'
+errores_correccion: |
+  - **Error 1:** Sumar los exponentes de las variables en lugar de restarlos al simplificar un cociente. **Cómo corregirlo:** En la división de potencias de igual base **LOS EXPONENTES SE RESTAN ($x^a \div x^b = x^{a-b}$)**.
+  - **Error 2:** Colocar la variable resultante en el numerador cuando el mayor exponente estaba en el denominador (escribir $\frac{x^2}{x^5} = x^3$). **Cómo corregirlo:** La variable con el exponente restado **DEBE QUEDAR EN EL DENOMINADOR SI ALLÍ ESTABA EL MAYOR EXPONENTE ($\frac{x^2}{x^5} = \frac{1}{x^3}$)**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de $x$.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración de $x^2$.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Es válida esta regla?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición.
-- titulo: ¿Es válida la división por cero?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, está indefinida.
+  - titulo: 'Simplificación de números'
+    enunciado: 'Para $\frac{6x}{9x}$, ¿es el resultado $\frac{2}{3}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, las $x$ se cancelan y $6/9 = 2/3$.'
+  - titulo: 'Variable en denominador'
+    enunciado: 'Para $\frac{x^2}{x^6}$, ¿es el resultado $\frac{1}{x^4}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $6-2=4$ en el denominador.'
+  - titulo: 'Variables múltiples'
+    enunciado: 'Para $\frac{4a^3b}{2ab^2}$, ¿es el resultado $\frac{2a^2}{b}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $4/2=2$, $a^{3-1}=a^2$ arriba, $b^{2-1}=b$ abajo.'
+  - titulo: 'Cancelación total de variable'
+    enunciado: 'En $\frac{5x^2y}{10x^2}$, ¿da $\frac{y}{2}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $x^2$ se cancela y $5/10 = 1/2$.'
 errores_frecuentes:
-- Omitir el signo negativo global al transferirlo al numerador.
-- Multiplicar numerador y denominador por signos distintos.
-- Asumir que cambiar el signo de la fracción no requiere modificar sus términos.
-- Sumar numeradores antes de homogenizar denominadores.
-- Cancelar términos sueltos en fracciones algebraicas.
+  - 'Sumar los exponentes de las variables en lugar de restarlos al simplificar una fracción monómica.'
+  - 'Ubicar la variable resultante en el numerador a pesar de que el mayor exponente estaba en el denominador.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'La reducción de la fracción de los coeficientes numéricos a su forma irreductible no es ejecutada.'
+  - 'Declarar que la cancelación de una variable deja 0 en lugar de 1.'
 afirmaciones_verdaderas:
-- El signo menos de una fracción puede aplicarse indistintamente al numerador o al
-  denominador.
-- La ley de los signos de la división rige las equivalencias globales en fracciones
-  algebraicas.
-al_terminar_debes_poder: Al finalizar este recurso podrás aplicar y manipular las
-  propiedades fundamentales de las fracciones algebraicas.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'La simplificación de fracciones monómicas exige dividir los coeficientes entre su M.C.D. y restar los exponentes de variables iguales.'
+  - 'Toda variable simplificada permanece en la ubicación de la fracción donde se encontraba la potencia de mayor exponente.'
+al_terminar_debes_poder: 'Simplificar fracciones algebraicas con términos monomios utilizando la ley de exponentes y divisibilidad.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

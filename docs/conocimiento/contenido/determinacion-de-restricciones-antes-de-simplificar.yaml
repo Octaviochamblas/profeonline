@@ -1,140 +1,104 @@
 semantic_id: MAT.ALG.FRACCIONES_BASE.RESTRICCIONES_DOMINIO
-resumen_inicial: Las restricciones del dominio deben determinarse en la expresión
-  original antes de realizar cualquier simplificación o cancelación de factores.
-explicacion_simple: 'Cuando simplificamos una fracción algebraica cancelando factores
-  repetidos arriba y abajo, la expresión resultante parece más sencilla.
+resumen_inicial: 'La determinación de restricciones antes de simplificar establece la regla fundamental por la cual el dominio de una fracción algebraica debe calcularse obligatoriamente sobre la expresión original sin simplificar.'
+explicacion_simple: |
+  Existe un **REGLA DE ORO DE GOBERNANZA ALGEBRAICA** al trabajar con fracciones algebraicas:
+  - **RESTRICCIONES ANTES DE CANCELAR**:
+    $$\mathbf{\text{Las restricciones SE DETERMINAN SIEMPRE SOBRE EL DENOMINADOR ORIGINAL antes de simplificar.}}$$
+  - **¿Por qué es esto tan importante?**:
+    - Considera la fracción: $f(x) = \frac{(x - 2)(x + 3)}{x - 2}$.
+    - Si cancelas el factor $(x - 2)$ de inmediato, te queda la expresión simple: $x + 3$.
+    - ¡Si miras $x + 3$, parecería que $x = 2$ es un número perfectamente válido!
+    - **¡PERO NO LO ES!** En la fracción original, si $x = 2$, el denominador vale $0$ ($2 - 2 = 0$) y la fracción se rompe.
+    - Por lo tanto, la restricción **$x \neq 2$** debe conservarse para siempre.
+explicacion_formal: |
+  ### Definición formal
+  Sea la función racional $f(x) = \frac{P(x)}{Q(x)}$ con $Q(x) = D(x) \cdot K(x)$. Al simplificar el factor común $K(x)$, se obtiene la función reducida $g(x) = \frac{P_1(x)}{D(x)}$. El **Principio de Equivalencia de Dominio** establece que $f(x)$ y $g(x)$ son algebraicamente idénticas si y sólo si se restringe explícitamente el dominio de $g(x)$ al de $f(x)$:
 
-  Sin embargo, el dominio de la fracción depende del denominador ORIGINAL, no de la
-  versión simplificada.
+  $$\operatorname{Dom}(f) = \{x \in \mathbb{R} \mid D(x) \neq 0 \land K(x) \neq 0\} \neq \operatorname{Dom}(g)$$
 
-  Si cancelamos un factor antes de anotar su restricción, podríamos permitir por error
-  un valor de la variable que originalmente dividía por cero.'
-explicacion_formal: 'Dada una fracción algebraica $F(x) = \frac{P(x) \cdot C(x)}{Q(x)
-  \cdot C(x)}$, su simplificación es $G(x) = \frac{P(x)}{Q(x)}$. El **dominio válido**
-  para la equivalencia $F(x) = G(x)$ exige:
+  ### Paradoja de la Extensión Dominial
+  Simplificar sin registrar previamente las restricciones equivale a **extender artificialmente el dominio de la función original** ($\operatorname{Dom}(f) \subset \operatorname{Dom}(g)$), alterando la estructura del conjunto solución y generando agujeros de discontinuidad no detectados.
 
-
-  $$\operatorname{Dom}(F) = \{x \in \mathbb{R} \mid Q(x) \neq 0 \quad \land \quad
-  C(x) \neq 0\}$$
-
-
-  **Desglose de la fórmula:**
-
-  - $C(x)$: Factor común en numerador y denominador que se cancela en la simplificación.
-
-  - $C(x) \neq 0$: Restricción obligatoria derivada de la expresión original, que
-  debe conservarse aunque $C(x)$ haya desaparecido en la expresión reducida $G(x)$.'
-definiciones_clave: '- **Restricción previa**: Condición de existencia calculada sobre
-  el denominador inicial sin simplificar.
-
-  - **Dominio de equivalencia**: El conjunto de valores reales donde la fracción original
-  y su versión simplificada producen exactamente el mismo resultado.'
-propiedades_relaciones: '- **Pérdida de restricciones**: Cancelar factores sin registrar
-  restricciones altera el dominio verdadero de la función o expresión.
-
-  - **Discontinuidades evitables**: En análisis de funciones, los ceros cancelados
-  del denominador corresponden a puntos o ''huecos'' en la gráfica.'
+  ### Síntesis didáctica
+  Las restricciones de existencia son heredadas por la fracción original y deben fijarse sobre todos los factores del denominador antes de realizar cualquier cancelación.
+definiciones_clave: |
+  - **Restricciones iniciales del dominio**: Exclusión de raíces calculadas sobre el denominador antes de cualquier transformación o simplificación.
+  - **Extensión artificial del dominio**: Error algebraico consistente en permitir valores prohibidos tras cancelar un factor del denominador.
+  - **Discontinuidad evitable**: Punto $x = r$ que anula al denominador original y genera una restricción persistente tras la simplificación.
+propiedades_relaciones: |
+  - **Preservación de la equivalencia matemática**: Dos expresiones algebraicas sólo son idénticas si coinciden tanto en su forma simplificada como en su conjunto de restricciones.
 ejemplo_guiado:
-  enunciado: Dada la fracción $F(x) = \frac{(x - 3)(x + 2)}{x - 3}$, determina las
-    restricciones del dominio antes de simplificar y calcula su valor simplificado
-    en el dominio permitido.
+  enunciado: 'Determina las restricciones de dominio y simplifica la fracción algebraica $\frac{x^2 - 5x + 6}{x^2 - 9}$.'
   pasos:
-  - 'Paso 1: Analizar el denominador original $Q(x) = x - 3$. Exigir $x - 3 \neq 0
-    \implies x \neq 3$.Paso 2: Registrar la restricción $x \neq 3$ ANTES de cancelar
-    ningún factor.Paso 3: Cancelar el factor común $(x - 3)$ en numerador y denominador:
-    $\frac{(x - 3)(x + 2)}{x - 3} = x + 2$ para todo $x \neq 3$.Paso 4: Evaluar para
-    $x = 5$: $5 + 2 = 7$ (válido pues $5 \neq 3$).'
+    - 'Paso 1: Factorizamos completamente el numerador y el denominador originales:
+       - Numerador: $x^2 - 5x + 6 = (x - 2)(x - 3)$.
+       - Denominador: $x^2 - 9 = (x - 3)(x + 3)$.
+       - Fracción factorizada: $\frac{(x - 2)(x - 3)}{(x - 3)(x + 3)}$.'
+    - 'Paso 2: **DETERMINAMOS LAS RESTRICCIONES AHORA** (antes de simplificar):
+       - Igualamos el denominador completo a cero: $(x - 3)(x + 3) = 0$.
+       - Obtenemos las restricciones: **$x \neq 3$ y $x \neq -3$**.'
+    - 'Paso 3: Cancelamos el factor común $(x - 3)$ en el numerador y denominador:
+       $\frac{(x - 2)\cancel{(x - 3)}}{\cancel{(x - 3)}(x + 3)} = \mathbf{\frac{x - 2}{x + 3}}$.'
+    - 'Paso 4: Escribimos el resultado simplificado adjuntando TODAS las restricciones iniciales.'
+    - 'Conclusión: La expresión simplificada es **$\frac{x - 2}{x + 3}$ con $x \neq 3$ y $x \neq -3$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿En qué momento deben establecerse las restricciones del dominio al trabajar
-    con una fracción algebraica?
-  choices:
-  - text: En la fracción original, antes de cancelar cualquier factor común.
-    is_correct: true
-  - text: Después de simplificar totalmente la fracción al mínimo.
-    is_correct: false
-  - text: Solo al momento de resolver la ecuación final.
-    is_correct: false
-  - text: Únicamente si el numerador resulta ser constante.
-    is_correct: false
-  explanation: La alternativa correcta es 'En la fracción original, antes de cancelar
-    cualquier factor común.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Para la fracción $\frac{(x - 3)(x + 2)}{x - 3}$, ¿cuál es la restricción
-    que debe registrarse obligatoriamente antes de simplificar?
-  choices:
-  - text: $x \neq 3$
-    is_correct: true
-  - text: $x \neq -2$
-    is_correct: false
-  - text: $x \neq 0$
-    is_correct: false
-  - text: No tiene restricciones pues se cancela.
-    is_correct: false
-  explanation: La alternativa correcta es '$x \neq 3$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Dada la fracción $\frac{x^2 - 4x}{x - 4}$, si la simplificamos obteniendo la expresión $x$, ¿por qué debemos conservar la restricción $x \neq 4$?'
+    choices:
+      - {text: 'Porque en la fracción original $x = 4$ produce una división entre cero ($4-4=0$), por lo que las restricciones se determinan siempre antes de simplificar', is_correct: true}
+      - {text: 'Porque el número 4 es el resultado de la simplificación', is_correct: false}
+      - {text: 'Porque las restricciones cambian después de cancelar', is_correct: false}
+      - {text: 'No es necesario conservar la restricción', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque en la fracción original $x = 4$ produce una división entre cero ($4-4=0$), por lo que las restricciones se determinan siempre antes de simplificar''. Principio de conservación del dominio original.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿En qué momento exacto del procedimiento de simplificación se deben registrar los valores excluidos de la variable?'
+    choices:
+      - {text: 'Inmediatamente después de factorizar el denominador original y ANTES de cancelar cualquier factor común', is_correct: true}
+      - {text: 'Al final de todo el procedimiento sobre la expresión ya simplificada', is_correct: false}
+      - {text: 'Únicamente sobre el numerador', is_correct: false}
+      - {text: 'No importa el momento', is_correct: false}
+    explanation: 'La alternativa correcta es ''Inmediatamente después de factorizar el denominador original y ANTES de cancelar cualquier factor común''. Regla innegociable de cálculo de restricciones.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Escribir la fracción algebraica original completa.'
-- 'Paso 2: Factorizar el denominador original si es un polinomio compuesto.'
-- 'Paso 3: Igualar a cero cada factor del denominador original y declarar todas las
-  restricciones $x \neq \text{raíces}$.'
-- 'Paso 4: Proceder a cancelar factores comunes en el numerador y denominador.'
-- 'Paso 5: Escribir la expresión simplificada acompañada de sus restricciones originales.'
-errores_correccion: '- **Error común:** Simplificar $\frac{x^2 - 4}{x - 2}$ a $x +
-  2$ y afirmar que no hay restricciones porque el denominador final desapareció.
-
-  - **Cómo corregirlo:** La expresión simplificada $x + 2$ solo es equivalente a la
-  original si se añade la restricción $x \neq 2$.'
+  - 'Paso 1: Factorizar completamente tanto el numerador como el denominador de la fracción original.'
+  - 'Paso 2: Igualar a cero cada uno de los factores presentes en el denominador descompuesto.'
+  - 'Paso 3: Despejar la variable para hallar todas las raíces del denominador y declarar las restricciones ($x \neq r_i$).'
+  - 'Paso 4: Cancelar los factores comunes presentes en el numerador y denominador.'
+  - 'Paso 5: Presentar la fracción simplificada final acompañada de las restricciones calculadas en el Paso 3.'
+errores_correccion: |
+  - **Error 1:** Calcular las restricciones de existencia sobre la fracción que ya ha sido simplificada. **Cómo corregirlo:** Las restricciones de la variable **SE DEBEN DETERMINAR OBLIGATORIAMENTE SOBRE EL DENOMINADOR ORIGINAL FACTORIZADO, ANTES DE CANCELAR NINGÚN FACTOR**.
+  - **Error 2:** Descartar la restricción de un factor cancelado creyendo que ya no afecta a la expresión. **Cómo corregirlo:** La simplificación de un factor **NO ELIMINA SU RESTRICCIÓN DE EXISTENCIA EN EL DOMINIO DE LA FRACCIÓN DE ORIGEN**.
 ejemplos:
-- titulo: 'Ejemplo 1: Factor cancelado en el denominador'
-  enunciado: Determina el dominio de equivalencia al simplificar $\frac{x(x - 5)}{x
-    - 5}$.
-  alternativas:
-  - $x$ para todo $x \neq 5$
-  - $x$ para todo $x \in \mathbb{R}$
-  - $x - 5$ para todo $x \neq 0$
-  respuesta: $x$ para todo $x \neq 5$
-  solucion_pasos:
-  - '1. Denominador original $x - 5 \neq 0 \implies x \neq 5$.2. Cancelar $(x - 5)$:
-    resultado $x$ con la restricción $x \neq 5$.'
-- titulo: 'Ejemplo 2: Dos factores en el denominador'
-  enunciado: ¿Qué restricciones deben anotarse antes de simplificar $\frac{x - 1}{(x
-    - 1)(x + 4)}$?
-  alternativas:
-  - $x \neq 1$ y $x \neq -4$
-  - Solo $x \neq -4$
-  - Solo $x \neq 1$
-  respuesta: $x \neq 1$ y $x \neq -4$
-  solucion_pasos:
-  - 1. Denominador original $(x - 1)(x + 4)$.2. Factores nulos para $x = 1$ y $x =
-    -4$.3. Ambas restricciones $x \neq 1$ y $x \neq -4$ deben establecerse antes de
-    cancelar $(x - 1)$.
-- titulo: ¿La expresión $\frac{x^2 - 9}{x - 3}$ es equivalente a $x + 3$ para el valor
-    $x = 3$?
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Para $x = 3$, la fracción original indefine por división entre cero $0/0$,
-    por lo que no hay equivalencia en $x = 3$.
-- titulo: ¿Es necesario mantener la restricción $x \neq 0$ al simplificar $\frac{5x}{x^2}$
-    a $\frac{5}{x}$?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. El denominador original $x^2$ se anula en $x = 0$, por lo que la restricción
-    $x \neq 0$ debe conservarse.
+  - titulo: 'Simplificación con restricción heredada'
+    enunciado: 'Para $\frac{x(x-5)}{x-5} = x$, ¿se exige la restricción $x \neq 5$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $5$ anula la fracción inicial.'
+  - titulo: 'Factorización de denominador'
+    enunciado: 'En $\frac{x-2}{(x-2)(x+1)}$, ¿son las restricciones $x \neq 2$ y $x \neq -1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, ambas raíces del denominador.'
+  - titulo: 'Restricción sobre factor eliminado'
+    enunciado: 'Al simplificar $\frac{x-2}{(x-2)(x+1)} = \frac{1}{x+1}$, ¿se conserva $x \neq 2$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, la restricción pertenece a la fracción inicial.'
+  - titulo: 'Dominio de fracción constante'
+    enunciado: 'Para $\frac{2(x-3)}{x-3} = 2$, ¿sigue estando indefinida en $x=3$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $2(0)/0$ es indefinido.'
 errores_frecuentes:
-- Al simplificar $\frac{x(x-2)}{x-2}$ a $x$, la restricción $x \neq 2$ desaparece.
-- Las restricciones se calculan sobre el numerador simplificado.
-- Si un factor del denominador se cancela totalmente, la fracción se define para todos
-  los reales.
-- Las restricciones solo importan si la variable $x$ es un número negativo.
-- Simplificar una fracción algebraica no altera nunca su dominio original.
+  - 'Calcular las restricciones de existencia sobre la versión ya simplificada de la fracción.'
+  - 'Eliminar la restricción de un factor cancelado creyendo que deja de afectar al dominio.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Cancelar factores en el denominador antes de haber anotado los valores prohibidos.'
+  - 'La evaluación de todas las raíces del denominador no es ejecutada cuando está compuesto por un producto de factores.'
 afirmaciones_verdaderas:
-- Las restricciones del dominio deben determinarse sobre el denominador de la fracción
-  original antes de cualquier simplificación.
-- Una fracción simplificada solo es matemáticamente equivalente a la original si se
-  especifican las restricciones del denominador inicial.
-al_terminar_debes_poder: Al finalizar este recurso podrás determinar las restricciones
-  del dominio en la fracción original antes de efectuar cualquier simplificación.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'Las restricciones de una fracción algebraica se determinan sobre el denominador original antes de simplificar.'
+  - 'Cancelar un factor del denominador no elimina su restricción de existencia en el dominio.'
+al_terminar_debes_ponder: 'Determinar las restricciones de existencia sobre el denominador original antes de simplificar cualquier fracción.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

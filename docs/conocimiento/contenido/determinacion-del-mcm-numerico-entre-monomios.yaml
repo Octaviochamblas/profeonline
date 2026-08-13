@@ -1,145 +1,111 @@
 semantic_id: MAT.ALG.MCM_ALGEBRAICO.COEFICIENTE_MONOMIOS
-resumen_inicial: El m.c.m. numérico de un grupo de monomios es el menor entero positivo
-  que es divisible por cada uno de sus coeficientes.
-explicacion_simple: 'Para calcular el m.c.m. de los coeficientes de varios monomios,
-  aislamos los números que multiplican a las variables e ignoramos temporalmente las
-  letras.
+resumen_inicial: 'La determinación del m.c.m. numérico entre monomios consiste en calcular el Mínimo Común Múltiplo de sus coeficientes enteros mediante la descomposición en factores primos y la selección de potencias mayores.'
+explicacion_simple: |
+  Para hallar el **m.c.m. numérico** de los coeficientes de varios monomios (ej: $12x^2, 18y, 30z$):
+  - **PROCEDIMIENTO POR FACTORES PRIMOS**:
+    1. **Descompón cada coeficiente en factores primos**:
+       - $12 = 2^2 \cdot 3$.
+       - $18 = 2 \cdot 3^2$.
+       - $30 = 2 \cdot 3 \cdot 5$.
+    2. **Toma TODOS los factores primos que aparezcan** (comunes y no comunes):
+       - Los primos presentes son $2, 3$ y $5$. ¡Se toman los tres!
+    3. **Elige la MAYOR potencia de cada primo**:
+       - Para $2$: exponentes $2, 1, 1 \implies$ mayor exponente es $2^2 = 4$.
+       - Para $3$: exponentes $1, 2, 1 \implies$ mayor exponente es $3^2 = 9$.
+       - Para $5$: exponente $1 \implies$ mayor exponente es $5^1 = 5$.
+    4. **Multiplica las mayores potencias elegidas**:
+       - $\mathbf{\text{m.c.m. numérico} = 2^2 \cdot 3^2 \cdot 5 = 4 \cdot 9 \cdot 5 = 180}$.
+explicacion_formal: |
+  ### Definición formal
+  Sean $c_1, c_2, \dots, c_k \in \mathbb{Z} \setminus \{0\}$ los coeficientes enteros de $k$ monomios. Considerando sus descomposiciones canónicas en factores primos $|c_i| = \prod_{p \in \mathbb{P}} p^{v_p(c_i)}$, el **Mínimo Común Múltiplo numérico** se define formalmente en $\mathbb{Z}^+$ como:
 
-  Buscamos el número entero positivo más pequeño que sea múltiplo común de todos esos
-  coeficientes a la vez.
+  $$\operatorname{mcm}(|c_1|, |c_2|, \dots, |c_k|) = \prod_{p \in \mathbb{P}} p^{\max_i(v_p(c_i))}$$
 
-  Este valor corresponde al Mínimo Común Múltiplo aritmético tradicional entre los
-  valores absolutos de los coeficientes.'
-explicacion_formal: 'Dado un conjunto de monomios con coeficientes enteros $\{c_1,
-  c_2, \dots, c_k\}$, el **m.c.m. numérico** $C_{\text{mcm}}$ se calcula formalmente
-  como:
+  donde $\max_i(v_p(c_i))$ selecciona la mayor valoración $p$-ádica para cada primo $p \in \mathbb{P}$ presente en cualquiera de las descomposiciones.
 
+  ### Propiedad de Divisibilidad Entera
+  El entero positivo $M = \operatorname{mcm}(|c_1|, \dots, |c_k|)$ es el menor entero positivo tal que $\frac{M}{|c_i|} \in \mathbb{Z}^+$ para todo $i \in \{1, 2, \dots, k\}$.
 
-  $$C_{\text{mcm}} = \operatorname{lcm}(|c_1|, |c_2|, \dots, |c_k|) = \prod_{p} p^{\max_i(v_p(|c_i|))}$$
-
-
-  **Desglose de la fórmula:**
-
-  - \operatorname{lcm}(|c_1|, \dots, |c_k|): Representa la función Mínimo Común Múltiplo
-  sobre los valores absolutos de los coeficientes.
-
-  - \prod_p p^{\dots}: Es la multiplicación de todos los factores primos $p$ presentes
-  en la descomposición de al menos uno de los coeficientes.
-
-  - $v_p(|c_i|)$: Es el exponente del primo $p$ en el coeficiente $c_i$, tomando el
-  valor máximo $\max_i$ para asegurar que el resultado sea múltiplo de todos.'
-definiciones_clave: '- **m.c.m. de coeficientes**: El menor número entero positivo
-  que es múltiplo simultáneo de todos los coeficientes numéricos de un conjunto de
-  monomios.
-
-  - **Factores primos no comunes**: Factores numéricos que aparecen solo en algunos
-  coeficientes pero que deben incluirse en el m.c.m.'
-propiedades_relaciones: '- **Positividad**: Por convenio algebraico, el m.c.m. numérico
-  se expresa siempre como un número entero positivo.
-
-  - **Independencia literal**: Se calcula única y exclusivamente sobre los coeficientes
-  numéricos sin alterar ni considerar los exponentes de las letras.'
+  ### Síntesis didáctica
+  El m.c.m. numérico es el menor número positivo que contiene como factores exactos a todos los coeficientes numéricos de los monomios.
+definiciones_clave: |
+  - **m.c.m. numérico**: Menor entero positivo divisible por todos los coeficientes de un conjunto de monomios.
+  - **Factores primos no comunes**: Primos que aparecen en algunos coeficientes pero no en todos, los cuales deben ser incluidos en el m.c.m.
+  - **Valoración $p$-ádica máxima ($\max(v_p)$)**: Exponente más alto con el que figura cada primo entre todas las descomposiciones.
+propiedades_relaciones: |
+  - **Relación numérica fundamental**: $\operatorname{mcm}(a, b) \cdot \operatorname{MCD}(a, b) = |a \cdot b|$ para cualquier par de enteros $a, b \in \mathbb{Z}$.
 ejemplo_guiado:
-  enunciado: Tres tanques de almacenamiento recargan combustible en intervalos de
-    $15a^2$, $20ab$ y $30b^2$ minutos. Determina el m.c.m. numérico entre sus coeficientes
-    y evalúa el bloque común $60ab$ para $a = 2$ y $b = 5$.
+  enunciado: 'Calcula el m.c.m. numérico entre los coeficientes de los monomios $-15a^2$, $20b^3$ y $24c$.'
   pasos:
-  - 'Paso 1: Descomponer los coeficientes en factores primos: $15 = 3 \cdot 5$, $20
-    = 2^2 \cdot 5$ y $30 = 2 \cdot 3 \cdot 5$.'
-  - 'Paso 2: Seleccionar todos los factores primos al mayor exponente: $2^2 \cdot
-    3^1 \cdot 5^1 = 4 \cdot 3 \cdot 5 = 60$. El m.c.m. numérico es $60$.'
-  - 'Paso 3: Evaluar la expresión $60ab$ para $a = 2$ y $b = 5$: $60 \cdot 2 \cdot
-    5 = 600\text{ minutos}$.'
+    - 'Paso 1: Tomamos los valores absolutos de los coeficientes: $15, 20$ y $24$.'
+    - 'Paso 2: Descomponemos cada coeficiente en sus factores primos:
+       - $15 = 3 \cdot 5$.
+       - $20 = 2^2 \cdot 5$.
+       - $24 = 2^3 \cdot 3$.'
+    - 'Paso 3: Identificamos todos los primos presentes ($2, 3, 5$) y elegimos la **mayor potencia**:
+       - Primo $2$: mayor exponente es **$2^3 = 8$**.
+       - Primo $3$: mayor exponente es **$3^1 = 3$**.
+       - Primo $5$: mayor exponente es **$5^1 = 5$**.'
+    - 'Paso 4: Multiplicamos las potencias seleccionadas:
+       $\text{m.c.m.} = 2^3 \cdot 3 \cdot 5 = 8 \cdot 3 \cdot 5 = \mathbf{120}$.'
+    - 'Conclusión: El m.c.m. numérico entre los coeficientes es **$120$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es el m.c.m. numérico de los coeficientes de los monomios $15a^2$,
-    $20ab$ y $30b^2$?
-  choices:
-  - text: $60$
-    is_correct: true
-  - text: $30$
-    is_correct: false
-  - text: $5$
-    is_correct: false
-  - text: $120$
-    is_correct: false
-  explanation: La alternativa correcta es '$60$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar la expresión $60ab$ con $a = 2$ y $b = 5$, ¿cuál es el resultado
-    obtenido?
-  choices:
-  - text: $600$
-    is_correct: true
-  - text: $300$
-    is_correct: false
-  - text: $1200$
-    is_correct: false
-  - text: $150$
-    is_correct: false
-  explanation: La alternativa correcta es '$600$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el m.c.m. numérico entre los coeficientes $8, 12$ y $18$?'
+    choices:
+      - {text: 'El m.c.m. numérico es 72, factorizando $8=2^3, 12=2^2 \cdot 3, 18=2 \cdot 3^2 \implies 2^3 \cdot 3^2 = 8 \cdot 9 = 72$', is_correct: true}
+      - {text: 'El m.c.m. numérico es 2', is_correct: false}
+      - {text: 'El m.c.m. numérico es 24', is_correct: false}
+      - {text: 'El m.c.m. numérico es 1728', is_correct: false}
+    explanation: 'La alternativa correcta es ''El m.c.m. numérico es 72, factorizando $8=2^3, 12=2^2 \cdot 3, 18=2 \cdot 3^2 \implies 2^3 \cdot 3^2 = 8 \cdot 9 = 72$''. Mayores potencias de primos: $2^3 \cdot 3^2 = 72$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si dos coeficientes son $14$ y $35$, sabiendo que su $\operatorname{MCD}(14, 35) = 7$, ¿cuál es su m.c.m. numérico?'
+    choices:
+      - {text: 'El m.c.m. numérico es 70, calculando $\frac{14 \cdot 35}{7} = \frac{490}{7} = 70$', is_correct: true}
+      - {text: 'El m.c.m. numérico es 490', is_correct: false}
+      - {text: 'El m.c.m. numérico es 35', is_correct: false}
+      - {text: 'El m.c.m. numérico es 7', is_correct: false}
+    explanation: 'La alternativa correcta es ''El m.c.m. numérico es 70, calculando $\frac{14 \cdot 35}{7} = \frac{490}{7} = 70$''. Relación fundamental: $\operatorname{mcm} = \frac{a \cdot b}{\operatorname{MCD}} = \frac{490}{7} = 70$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Tomar los coeficientes numéricos de cada monomio y calcular sus valores
-  absolutos.'
-- 'Paso 2: Descomponer cada número en sus factores primos.'
-- 'Paso 3: Identificar todos los factores primos que aparezcan en cualquiera de los
-  números.'
-- 'Paso 4: Elevar cada factor primo a su mayor exponente registrado y multiplicarlos
-  entre sí para obtener el m.c.m. numérico.'
-errores_correccion: '- **Error común:** Tomar el menor exponente de los factores primos
-  en lugar del mayor exponente al calcular el m.c.m. de los coeficientes.
-
-  - **Cómo corregirlo:** Recuerda que el m.c.m. debe ser un múltiplo (un número más
-  grande), por lo que requiere los factores primos comunes y no comunes elevados al
-  MAYOR exponente.'
+  - 'Paso 1: Obtener el valor absoluto de cada coeficiente numérico.'
+  - 'Paso 2: Descomponer cada número en factores primos.'
+  - 'Paso 3: Reunir todos los primos que aparezcan y seleccionar para cada uno el exponente más alto.'
+  - 'Paso 4: Multiplicar las potencias obtenidas para calcular el m.c.m. numérico final.'
+errores_correccion: |
+  - **Error 1:** Seleccionar la menor potencia de los primos compartidos como si fuera el M.C.D. **Cómo corregirlo:** Para el m.c.m. **SE DEBEN TOMAR LAS MAYORES POTENCIAS DE TODOS LOS PRIMOS QUE APAREZCAN**.
+  - **Error 2:** Multiplicar todos los coeficientes directamente sin reducir factores comunes. **Cómo corregirlo:** Multiplicar directamente entrega un múltiplo muy grande pero **NO ES EL MÍNIMO COMÚN MÚLTIPLO**.
 ejemplos:
-- titulo: 'Ejemplo 1: m.c.m. con tres coeficientes'
-  enunciado: ¿Cuál es el m.c.m. numérico entre $8x^2$, $12x^3$ y $18x$?
-  alternativas:
-  - $72$
-  - $36$
-  - $2$
-  respuesta: $72$
-  solucion_pasos:
-  - '1. Factores primos: $8 = 2^3$, $12 = 2^2 \cdot 3$, $18 = 2 \cdot 3^2$.'
-  - '2. Mayores potencias de primos presentes: $2^3$ y $3^2$.'
-  - '3. m.c.m. numérico: $2^3 \cdot 3^2 = 8 \cdot 9 = 72$.'
-- titulo: 'Ejemplo 2: Coeficientes negativos'
-  enunciado: Determina el m.c.m. numérico entre $-9a^2$ y $15b^3$.
-  alternativas:
-  - $45$
-  - $-45$
-  - $135$
-  respuesta: $45$
-  solucion_pasos:
-  - '1. Valores absolutos: $|-9| = 9 = 3^2$ y $|15| = 15 = 3 \cdot 5$.'
-  - '2. Mayores potencias: $3^2 \cdot 5 = 9 \cdot 5 = 45$.'
-  - 3. Por convención el m.c.m. numérico es un entero positivo ($45$).
-- titulo: ¿El m.c.m. numérico de dos coeficientes primos entre sí (como 4 y 9) es
-    igual a su producto?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí. Al no compartir factores primos comunes, el m.c.m. numérico es simplemente
-    $4 \cdot 9 = 36$.
-- titulo: ¿El m.c.m. numérico entre dos coeficientes puede ser menor que el mayor
-    de los coeficientes dados?
-  respuesta: 'No'
-  solucion_pasos:
-  - No. Por ser un múltiplo común, el m.c.m. numérico siempre es mayor o igual a cualquiera
-    de los coeficientes originales.
+  - titulo: 'm.c.m. numérico simple'
+    enunciado: 'Para coeficientes 4 y 6, ¿es el m.c.m. numérico 12?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $2^2 \cdot 3 = 12$.'
+  - titulo: 'Coeficientes primos entre sí'
+    enunciado: 'Para coeficientes 5 y 7, ¿es su m.c.m. numérico $5 \cdot 7 = 35$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, son coprimos.'
+  - titulo: 'Coeficiente negativo'
+    enunciado: 'Para $-9$ y $12$, ¿es el m.c.m. $+36$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $|-9|=9 \implies \operatorname{mcm}(9,12)=36$.'
+  - titulo: 'Tres coeficientes'
+    enunciado: 'Para 6, 8 y 10, ¿es el m.c.m. 120?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $2^3 \cdot 3 \cdot 5 = 120$.'
 errores_frecuentes:
-- El m.c.m. numérico de $6x$ y $8y$ es $2$.
-- El m.c.m. numérico de $-10a$ y $15b$ es $-30$.
-- Para hallar el m.c.m. numérico se deben restar los coeficientes de los monomios.
-- El m.c.m. numérico de $4$ y $8$ es $32$ en lugar del menor múltiplo $8$.
-- Los factores primos no comunes se omiten al calcular el m.c.m. de los coeficientes.
+  - 'Tomar el menor exponente de los factores primos en lugar de seleccionar el mayor exponente.'
+  - 'Los factores primos que no son comunes a todos los coeficientes no son incluidos.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'Multiplicar directamente los coeficientes sin descomponer en factores primos.'
+  - 'Asignar un signo negativo al m.c.m. numérico final.'
 afirmaciones_verdaderas:
-- El m.c.m. numérico entre monomios se obtiene calculando el Mínimo Común Múltiplo
-  sobre los valores absolutos de sus coeficientes.
-- El m.c.m. numérico siempre es divisible exactamente por cada uno de los coeficientes
-  de los monomios dados.
-al_terminar_debes_poder: Al finalizar este recurso podrás determinar el m.c.m. numérico
-  entre monomios aplicando la factorización prima de sus coeficientes.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'El m.c.m. numérico entre monomios es el menor número entero positivo divisible por todos sus coeficientes.'
+  - 'Se calcula seleccionando la mayor potencia de cada factor primo presente en cualquier coeficiente.'
+al_terminar_debes_poder: 'Determinar el m.c.m. numérico entre los coeficientes de cualquier grupo de monomios.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado

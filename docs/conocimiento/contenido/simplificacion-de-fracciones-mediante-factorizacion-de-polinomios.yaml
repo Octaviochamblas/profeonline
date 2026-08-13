@@ -1,129 +1,108 @@
 semantic_id: MAT.ALG.FRACCIONES_BASE.SIMPLIFICACION_FACTORIZACION
-resumen_inicial: Para simplificar fracciones polinomiales se deben factorizar completamente
-  el numerador y denominador y cancelar los factores comunes enteros.
-explicacion_simple: 'Cuando una fracción algebraica contiene sumas o restas en el
-  numerador o denominador, NO podemos cancelar términos sueltos directamente.
+resumen_inicial: 'La simplificación de fracciones mediante factorización de polinomios consiste en descomponer el numerador y el denominador en factores primos para cancelar únicamente paréntesis o factores multiplicativos idénticos.'
+explicacion_simple: |
+  Para **simplificar fracciones con polinomios** (ej: $\frac{x^2 - 9}{x^2 + 5x + 6}$):
+  - **REGLA DE ORO DE LA SIMPLIFICACIÓN**:
+    $$\mathbf{\text{¡SOLO SE PUEDEN CANCELAR FACTORES QUE ESTÉN MULTIPLICANDO!}}$$
+    - **NUNCA** canceles términos que estén sumando o restando (ej: cancelar las $x^2$ directamente está **GRAVEMENTE PROHIBIDO**).
+  - **PROCEDIMIENTO EN 3 PASOS**:
+    1. **Factoriza por completo el numerador**:
+       - $x^2 - 9 = \mathbf{(x - 3)(x + 3)}$.
+    2. **Factoriza por completo el denominador**:
+       - $x^2 + 5x + 6 = \mathbf{(x + 2)(x + 3)}$.
+    3. **Cancela los paréntesis (factores) EXACTAMENTE IGUALES arriba y abajo**:
+       $$\frac{(x - 3)\cancel{(x + 3)}}{(x + 2)\cancel{(x + 3)}} = \mathbf{\frac{x - 3}{x + 2}}$$
+explicacion_formal: |
+  ### Definición formal
+  Sean $P(x), Q(x) \in \mathbb{K}[x]$ dos polinomios no nulos. Para simplificar la función racional $f(x) = \frac{P(x)}{Q(x)}$, se descomponen ambos polinomios sobre el Dominio de Factorización Única $\mathbb{K}[x]$ en sus factores primos irreducibles:
 
-  Primero debemos convertir el numerador y el denominador en productos de factores
-  mediante la factorización.
+  $$P(x) = c_1 \cdot D(x) \cdot A(x) \quad \text{y} \quad Q(x) = c_2 \cdot D(x) \cdot B(x)$$
 
-  Una vez que ambas partes están escritas como productos de paréntesis, cancelamos
-  los paréntesis idénticos que aparezcan arriba y abajo.'
-explicacion_formal: 'Dada una fracción polinomial $\frac{P(x)}{Q(x)}$, se factorizan
-  ambos polinomios en producto de factores irreductibles sobre $\mathbb{R}[x]$:
+  donde $D(x) = \operatorname{MCD}(P, Q)$ es el Máximo Común Divisor polinomial. Aplicando el axioma de la división de factores neutros ($\frac{D(x)}{D(x)} = 1$ para $D(x) \neq 0$):
 
+  $$f(x) = \frac{c_1 A(x) D(x)}{c_2 B(x) D(x)} = \frac{c_1 A(x)}{c_2 B(x)} \cdot \mathbf{1} = \frac{c_1 A(x)}{c_2 B(x)}$$
 
-  $$\frac{P(x)}{Q(x)} = \frac{A(x) \cdot C(x)}{B(x) \cdot C(x)} = \frac{A(x)}{B(x)}
-  \quad \text{para } C(x) \neq 0 \quad \land \quad B(x) \neq 0$$
+  ### Restricción del Dominio
+  La simplificación sólo es válida si se excluyen explícitamente del dominio las raíces de $D(x)$ ($D(x) \neq 0$).
 
-
-  **Desglose de la fórmula:**
-
-  - $C(x)$: Polinomio factor común presente en numerador y denominador (M.C.D. polinomial).
-
-  - $\frac{A(x)}{B(x)}$: Fracción reducida equivalente obtenida tras cancelar el factor
-  común $C(x)$.'
-definiciones_clave: '- **Factorización previa**: Acción de transformar sumas y restas
-  en multiplicación antes de simplificar.
-
-  - **Cancelación de factores**: División del numerador y denominador entre un mismo
-  paréntesis o factor común no nulo.'
-propiedades_relaciones: '- **Prohibición de cancelar sumandos**: Cancelar términos
-  separados por signos $+$ o $-$ destruye la equivalencia algebraica de la fracción.
-
-  - **Fracción polinomial irreducible**: Fracción donde $\text{M.C.D.}(A(x), B(x))
-  = 1$.'
+  ### Síntesis didáctica
+  Transformar polinomios en productos de factores permite simplificar aquellos paréntesis o bloques multiplicativos que sean idénticos en el numerador y denominador.
+definiciones_clave: |
+  - **Simplificación polinomial**: Cancelación de factores o paréntesis comunes entre el numerador y denominador previamente factorizados.
+  - **Factor multiplicativo vs Término sumando**: Diferencia estructural donde sólo las expresiones unidas por multiplicación admiten simplificación.
+  - **Fracción polinomial irreductible**: Expresión final donde el numerador y denominador factorizados tienen M.C.D. igual a 1.
+propiedades_relaciones: |
+  - **Inviolabilidad de las adiciones**: Intentar simplificar términos individuales separados por signos $+$ o $-$ destruye la igualdad algebraica.
 ejemplo_guiado:
-  enunciado: Simplifica la fracción algebraica $\frac{x^2 - 16}{x^2 + 7x + 12}$ mediante
-    factorización de sus términos, y evalúa el resultado irreducible para $x = 2$.
+  enunciado: 'Simplifica la fracción algebraica $\frac{2x^2 - 8}{x^2 - 4x + 4}$.'
   pasos:
-  - 'Paso 1: Factorizar el numerador $x^2 - 16$ mediante diferencia de cuadrados:
-    $(x - 4)(x + 4)$.Paso 2: Factorizar el denominador $x^2 + 7x + 12$ buscando dos
-    números que multipliquen $12$ y sumen $7$: $(x + 3)(x + 4)$.Paso 3: Cancelar el
-    factor común $(x + 4)$ en numerador y denominador: $\frac{(x - 4)(x + 4)}{(x +
-    3)(x + 4)} = \frac{x - 4}{x + 3}$.Paso 4: Evaluar la expresión reducida para $x
-    = 2$: $\frac{2 - 4}{2 + 3} = \frac{-2}{5} = -\frac{2}{5}$.'
+    - 'Paso 1: Factorizamos completamente el numerador $2x^2 - 8$:
+       - Extraemos factor común $2$: $2(x^2 - 4)$.
+       - Factorizamos la diferencia de cuadrados: $2(x - 2)(x + 2)$.'
+    - 'Paso 2: Factorizamos completamente el denominador $x^2 - 4x + 4$:
+       - Es un trinomio cuadrado perfecto: $(x - 2)^2 = (x - 2)(x - 2)$.'
+    - 'Paso 3: Escribimos la fracción con sus factores descompuestos:
+       $\frac{2(x - 2)(x + 2)}{(x - 2)(x - 2)}$.'
+    - 'Paso 4: Cancelamos un factor $(x - 2)$ presente en el numerador y en el denominador:
+       $\frac{2\cancel{(x - 2)}(x + 2)}{\cancel{(x - 2)}(x - 2)} = \mathbf{\frac{2(x + 2)}{x - 2}}$.'
+    - 'Conclusión: La expresión simplificada es **$\frac{2(x + 2)}{x - 2}$** con $x \neq 2$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la forma simplificada irreducible de $\frac{x^2 - 16}{x^2 + 7x
-    + 12}$?
-  choices:
-  - text: $\frac{x - 4}{x + 3}$
-    is_correct: true
-  - text: $\frac{x + 4}{x + 3}$
-    is_correct: false
-  - text: $\frac{-16}{7x + 12}$
-    is_correct: false
-  - text: $\frac{x - 4}{x - 3}$
-    is_correct: false
-  explanation: La alternativa correcta es '$\frac{x - 4}{x + 3}$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: Al evaluar $\frac{x - 4}{x + 3}$ para $x = 2$, ¿cuál es el valor numérico
-    obtenido?
-  choices:
-  - text: $-\frac{2}{5}$
-    is_correct: true
-  - text: $\frac{2}{5}$
-    is_correct: false
-  - text: $-\frac{6}{5}$
-    is_correct: false
-  - text: $\frac{2}{3}$
-    is_correct: false
-  explanation: La alternativa correcta es '$-\frac{2}{5}$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Al intentar simplificar la expresión $\frac{x^2 + 5}{x^2 + 3}$, ¿por qué es UN ERROR GRAVE tachar o cancelar los términos $x^2$?'
+    choices:
+      - {text: 'Porque $x^2$ es un término que está sumando en ambas expresiones y la simplificación sólo está permitida para factores que están multiplicando', is_correct: true}
+      - {text: 'Porque los números 5 y 3 son distintos', is_correct: false}
+      - {text: 'Porque $x^2$ es un número par', is_correct: false}
+      - {text: 'Porque el resultado da 5/3', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque $x^2$ es un término que está sumando en ambas expresiones y la simplificación sólo está permitida para factores que están multiplicando''. Regla fundamental: prohibición de cancelar sumandos.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el primer paso obligatorio que debe realizarse para simplificar la fracción $\frac{x^2 - x - 6}{x^2 - 9}$?'
+    choices:
+      - {text: 'Factorizar completamente tanto el numerador $(x-3)(x+2)$ como el denominador $(x-3)(x+3)$', is_correct: true}
+      - {text: 'Restar los coeficientes numéricos', is_correct: false}
+      - {text: 'Cancelar los $x^2$', is_correct: false}
+      - {text: 'Dividir entre 6', is_correct: false}
+    explanation: 'La alternativa correcta es ''Factorizar completamente tanto el numerador $(x-3)(x+2)$ como el denominador $(x-3)(x+3)$''. La factorización previa es requisito indispensable para simplificar polinomios.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Factorizar completamente el polinomio del numerador utilizando productos
-  notables o factor común.'
-- 'Paso 2: Factorizar completamente el polinomio del denominador.'
-- 'Paso 3: Identificar los paréntesis o factores multiplicativos idénticos arriba
-  y abajo.'
-- 'Paso 4: Cancelar los factores comunes especificando las restricciones del dominio.'
-- 'Paso 5: Escribir la fracción simplificada restante.'
-errores_correccion: '- **Error común:** Tachar o cancelar términos sumandos individuales
-  (ejemplo: simplificar $\frac{x^2 + 5}{x^2 + 2}$ cancelando $x^2$ para obtener $\frac{5}{2}$).
-
-  - **Cómo corregirlo:** NUNCA taches términos que estén sumando o restando. Solo
-  se pueden cancelar factores completos que estén MULTIPLICANDO a toda la expresión.'
+  - 'Paso 1: Factorizar completamente el polinomio del numerador utilizando factor común, productos notables o trinomios.'
+  - 'Paso 2: Factorizar completamente el polinomio del denominador mediante las mismas técnicas algebraicas.'
+  - 'Paso 3: Identificar los paréntesis o factores multiplicativos que sean idénticos en ambos niveles de la fracción.'
+  - 'Paso 4: Tachar o cancelar los factores comunes idénticos y escribir la fracción irreductible resultante.'
+errores_correccion: |
+  - **Error 1:** Cancelar términos sumandos o restandos en lugar de factorizar primero (escribir $\frac{x+5}{x+2} \to \frac{5}{2}$ tachando las $x$). **Cómo corregirlo:** La simplificación **SÓLO SE APLICA A FACTORES MULTIPLICATIVOS; NUNCA A TÉRMINOS SUMANDOS SEPARADOS POR $+$ O $-$**.
+  - **Error 2:** Cancelar factores parcialmente parecidos sin que sean exactamente idénticos (como $(x - 2)$ con $(x + 2)$). **Cómo corregirlo:** Para simplificar directamente **LOS PARÉNTESIS DEBEN SER EXACTAMENTE IGUALES EN TÉRMINOS Y SIGNOS**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de $x$.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración de $x^2$.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Es válida esta regla?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, por definición.
-- titulo: ¿Es válida la división por cero?
-  respuesta: 'No'
-  solucion_pasos:
-  - No, está indefinida.
+  - titulo: 'Diferencia de cuadrados'
+    enunciado: 'Para $\frac{x^2 - 1}{x + 1}$, ¿es el resultado $x - 1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\frac{(x+1)(x-1)}{x+1} = x-1$.'
+  - titulo: 'Factor común en numerador'
+    enunciado: 'Para $\frac{3x - 6}{x - 2}$, ¿es el resultado $3$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\frac{3(x-2)}{x-2} = 3$.'
+  - titulo: 'Error de cancelación en suma'
+    enunciado: 'En $\frac{a + b}{a}$, ¿es válido cancelar $a$ para obtener $b$?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No, $a$ está sumando en el numerador.'
+  - titulo: 'Trinomio mónico'
+    enunciado: 'Para $\frac{x^2 + 3x + 2}{x + 2}$, ¿es el resultado $x + 1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\frac{(x+2)(x+1)}{x+2} = x+1$.'
 errores_frecuentes:
-- Omitir el signo negativo global al transferirlo al numerador.
-- Multiplicar numerador y denominador por signos distintos.
-- Asumir que cambiar el signo de la fracción no requiere modificar sus términos.
-- Sumar numeradores antes de homogenizar denominadores.
-- Cancelar términos sueltos en fracciones algebraicas.
+  - 'Cancelar términos que están sumando o restando en lugar de factorizar los polinomios.'
+  - 'Cancelar paréntesis con signos opuestos como (x - 2) con (x + 2) creyendo que son iguales.'
+  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
+  - 'La factorización por completo de los polinomios hasta sus factores primos irreducibles no es ejecutada.'
+  - 'Declarar que al simplificar todo el numerador queda 0 en lugar de 1.'
 afirmaciones_verdaderas:
-- El signo menos de una fracción puede aplicarse indistintamente al numerador o al
-  denominador.
-- La ley de los signos de la división rige las equivalencias globales en fracciones
-  algebraicas.
-al_terminar_debes_poder: Al finalizar este recurso podrás aplicar y manipular las
-  propiedades fundamentales de las fracciones algebraicas.
-fuente: Texto escolar MINEDUC — Álgebra / Fracciones Algebraicas
+  - 'Para simplificar fracciones algebraicas con polinomios es obligatorio factorizar previamente el numerador y denominador.'
+  - 'Únicamente se pueden cancelar aquellos paréntesis o factores que estén multiplicando a toda la expresión.'
+al_terminar_debes_poder: 'Simplificar fracciones algebraicas compuestas por polinomios factorizando completamente ambas expresiones.'
+fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
 estado: publicado
