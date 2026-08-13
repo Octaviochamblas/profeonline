@@ -1,129 +1,87 @@
 semantic_id: MAT.ALG.MODELAMIENTO_AFIN.MODELO_AFIN_CONTEXTUAL
-resumen_inicial: Una situación que combina un costo fijo o valor de partida con una
-  tarifa variable por unidad se modela mediante una función afín $f(x) = m x + n$.
-explicacion_simple: 'Muchos servicios reales cobran en dos partes:
+resumen_inicial: El modelamiento de situaciones con valor inicial mediante una función afín integra un costo o estado base no nulo con una tasa de variación constante.
+explicacion_simple: |
+  Para construir un **modelo afín $f(x) = mx + b$** a partir de un enunciado:
 
-  1. Un **cargo fijo de entrada** o costo de suscripción (que se paga aunque no consumas
-  nada, $n$).
+  1. Busca el **valor inicial o fijo**: ese número es **$b$** (la altura de partida cuando $x = 0$).
+  2. Busca el **ritmo o tasa constante por unidad**: ese número es **$m$** (la pendiente que multiplica a $x$).
+  3. Junta ambos elementos: **$\text{Total} = (\text{Tasa}) \cdot x + (\text{Valor Inicial})$**.
+explicacion_formal: |
+  Sea un sistema cuyo estado dependiente $y$ cambia a una razón constante $m = \frac{\Delta y}{\Delta x}$ y posee una condición inicial conocida $y(0) = b \neq 0$. El **modelo afín contextual** se define por la ecuación diferencial ordinaria con condición inicial:
 
-  2. Un **cargo variable** por cada unidad consumida (multiplicado por $x$, $m x$).
+  $$\frac{dy}{dx} = m, \quad y(0) = b \implies y = mx + b$$
 
-  La suma de ambas partes genera el **modelo afín**: $C(x) = m x + n$.'
-explicacion_formal: 'Un sistema dinámico lineal desfasado responde al **modelo afín
-  contextual**:
-
-
-  $$C(x) = m x + n$$
-
-
-  **Desglose de la fórmula:**
-
-  - $n = C(0) \neq 0$: Costo fijo, tarifa base o condición inicial en $x = 0$.
-
-  - $m = \frac{\Delta C}{\Delta x}$: Costo marginal por unidad adicional consumida.'
-definiciones_clave: '- **Modelo afín contextual**: Ecuación $f(x) = m x + n$ con cargo
-  fijo $n$ y costo variable $m x$.
-
-  - **Cargo fijo / Tarifa base**: Valor del intercepto $n$ independiente del volumen
-  de consumo.'
-propiedades_relaciones: '- **Costo total**: Suma del costo variable ($m x$) más el
-  costo fijo ($n$).'
+  **Componentes del modelo:**
+  - $b$: Valor base o estado inicial no nulo del sistema.
+  - $m$: Tasa de cambio constante (positiva o negativa).
+definiciones_clave: |
+  - **Modelo afín contextual**: Representación mediante la regla $f(x) = mx + b$ de un fenómeno con condición inicial fija $b \neq 0$ y variación constante $m$.
+propiedades_relaciones: |
+  - **No proporcionalidad directa**: Debido a la existencia de la constante inicial $b \neq 0$, la razón $\frac{y}{x}$ NO es constante, rompiendo la proporcionalidad directa estricta.
 ejemplo_guiado:
-  enunciado: Un plan de telefonía móvil cobra un cargo fijo mensual de $\$7.000$ más
-    $\$50$ por cada giga adicional consumido. Escribe la función de costo total $C(g)$
-    y calcula la cuenta para un consumo de $12\text{ gigas}$.
+  enunciado: 'Un servicio de encomiendas cobra un cargo fijo de envío de $\$3.500$ más $\$800$ por cada kilogramo de peso del paquete. Construye la función de costo $C(p)$ para un paquete de $p$ kg.'
   pasos:
-  - 'Paso 1: Identificar el cargo fijo (intercepto): $n = 7.000$.Paso 2: Identificar
-    el costo por giga adicional (pendiente): $m = 50$.Paso 3: Formar la función afín
-    del costo: $C(g) = 50g + 7.000$.Paso 4: Evaluar para $g = 12$: $C(12) = 50(12)
-    + 7.000 = 600 + 7.000 = 7.600$.Paso 5: Concluir que el total a pagar por $12\text{
-    gigas}$ es $\$7.600$.'
+    - 'Paso 1: Identificar la cuota fija inicial: $b = 3.500$.'
+    - 'Paso 2: Identificar la tasa variable por kilogramo: $m = 800$.'
+    - 'Paso 3: Formar la expresión de la función afín: $C(p) = 800p + 3.500$.'
+    - 'Paso 4: Concluir que la tarifa se modela mediante la función afín $C(p) = 800p + 3.500$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: En el plan de telefonía con cargo fijo de $\$7.000$ y $\$50$ por giga
-    extra, ¿cuál es el costo total para un consumo de $12\text{ gigas}$?
-  choices:
-  - text: $\$7.600$
-    is_correct: true
-  - text: $\$600$
-    is_correct: false
-  - text: $\$84.600$
-    is_correct: false
-  - text: $\$7.050$
-    is_correct: false
-  explanation: La alternativa correcta es '$\$7.600$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué representa el número $7.000$ en la función de costo $C(g) = 50g +
-    7.000$?
-  choices:
-  - text: El cargo fijo mensual obligatorio que se paga incluso consumiendo 0 gigas.
-    is_correct: true
-  - text: El costo de un solo giga.
-    is_correct: false
-  - text: El número de gigas contratados.
-    is_correct: false
-  - text: El impuesto de telefonía.
-    is_correct: false
-  explanation: La alternativa correcta es 'El cargo fijo mensual obligatorio que se
-    paga incluso consumiendo 0 gigas.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Si el envío cuesta un cargo fijo de $3.500 más $800 por kilogramo, ¿cuál es la función de costo $C(p)$?'
+    choices:
+      - {text: '$C(p) = 800p + 3.500$', is_correct: true}
+      - {text: '$C(p) = 3.500p + 800$', is_correct: false}
+      - {text: '$C(p) = 4.300p$', is_correct: false}
+      - {text: '$C(p) = 800p - 3.500$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$C(p) = 800p + 3.500$''. Tasa $m = 800$ y fijo $b = 3500$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: '¿Por qué el costo total $C(p) = 800p + 3.500$ no representa una proporcionalidad directa?'
+    choices:
+      - {text: 'Porque la razón $C(p)/p$ no es constante debido al cargo fijo de $3.500.', is_correct: true}
+      - {text: 'Porque la pendiente $800$ es un número par.', is_correct: false}
+      - {text: 'Porque el peso $p$ no se puede medir en decimales.', is_correct: false}
+      - {text: 'Porque la recta pasa por el origen $(0,0)$.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque la razón $C(p)/p$ no es constante debido al cargo fijo de $3.500.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar la cuota fija o constante inicial $n$.'
-- 'Paso 2: Identificar la tasa variable de cobro por unidad $m$.'
-- 'Paso 3: Construir la expresión afín $C(x) = m x + n$.'
-- 'Paso 4: Reemplazar el consumo $x$ para calcular la cuenta total.'
-errores_correccion: '- **Error común:** Multiplicar la variable $x$ por el cargo fijo
-  en lugar de multiplicarla por la tarifa variable.
-
-  - **Cómo corregirlo:** La variable $x$ multiplica UNICAMENTE al costo unitario variable
-  $m$. El cargo fijo $n$ se suma suelto al final.'
+  - 'Paso 1: Detectar en la situación el valor fijo o inicial $b$ ($x = 0$).'
+  - 'Paso 2: Detectar el ritmo de variación unitario $m$ asignando su signo correspondiente.'
+  - 'Paso 3: Escribir la expresión analítica $f(x) = mx + b$.'
+  - 'Paso 4: Validar el modelo evaluando casos conocidos de entrada.'
+errores_correccion: |
+  - **Error común:** Sumar la tasa y el valor inicial en un solo número (por ejemplo, escribir $C(p) = 4300p$).
+  - **Cómo corregirlo:** La tasa $m$ se **MULTIPLICA por la variable $x$** ($800p$), mientras que el cargo fijo $b$ se **SUMA por separado** ($+ 3.500$).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de modelamiento afín.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de modelamiento afín.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una tasa de cambio constante m indica que el proceso se puede modelar con
-    una función afín?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, la razón incremental constante caracteriza a los modelos afines y lineales.
-- titulo: ¿El cargo fijo n representa la salida en el momento inicial x = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, f(0) = n es el intercepto o condición de partida.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de modelamiento afín.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de modelamiento afín.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la tasa de cambio $m$ (unidades compuestas) con el valor acumulado inicial
-  $n$ (unidades simples).
-- Agregar un cargo fijo $n$ en situaciones de proporcionalidad directa donde no existe
-  valor inicial.
-- Multiplicar la variable $x$ por el cargo fijo $n$ en lugar de multiplicarla por
-  la tarifa unitaria $m$.
-- Confundir el crecimiento lineal (suma constante por año) con el crecimiento exponencial
-  (porcentaje constante por año).
-- Sustituir el valor de la salida $y$ en el lugar de la entrada $x$ al realizar una
-  predicción en el modelo.
+  - 'En un modelo afín con valor inicial $C(p) = 800p + 3.500$, la tarifa por 2 kg es el doble de la tarifa por 1 kg.'
+  - 'El valor inicial $b$ de una situación se calcula multiplicando la tasa de cambio por la variable de entrada $x$.'
+  - 'Un problema con cuota inicial fija y variación constante se modela siempre mediante una función cuadrática.'
+  - 'Si la cuota inicial de un contrato es de $\$10.000$, la gráfica del modelo atraviesa el origen cartesiano.'
+  - 'Sumar la cuota inicial y la tasa unitaria antes de multiplicar por $x$ es una simplificación algebraica válida.'
 afirmaciones_verdaderas:
-- La pendiente $m$ en un modelo afín contextual representa la tasa de cambio unitaria
-  constante $\frac{\Delta y}{\Delta x}$.
-- El intercepto $n$ representa la condición inicial, costo base o valor de partida
-  del sistema cuando la variable de entrada vale cero ($x = 0$).
-al_terminar_debes_poder: Al finalizar este recurso podrás identificar tasas de cambio
-  constantes, construir modelos lineales y afines contextuales e interpretar pendiente
-  e intercepto para realizar predicciones.
-fuente: Texto escolar MINEDUC — Álgebra / Modelamiento Lineal y Afín
+  - 'Una situación con un valor base inicial $b \neq 0$ y una tasa de variación constante $m$ por unidad se representa mediante una función afín $f(x) = mx + b$.'
+  - 'La presencia del valor inicial $b$ provoca que la relación entre las variables no sea de proporcionalidad directa estricta.'
+al_terminar_debes_poder: |
+  QUÉ: Modelar situaciones problemáticas con valor inicial mediante funciones afines.
+  CÓMO: Asignar el parámetro $b$ a la constante inicial, $m$ a la tasa unitaria y construir la ecuación $f(x) = mx + b$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Modelamiento Afín y Lineal'
 estado: publicado

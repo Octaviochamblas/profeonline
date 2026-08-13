@@ -1,129 +1,88 @@
 semantic_id: MAT.ALG.MODELAMIENTO_AFIN.PREDICCION_MODELO_AFIN
-resumen_inicial: Predecir valores mediante un modelo afín consiste en sustituir una
-  variable conocida en la ecuación para interpolar o extrapolar resultados futuros
-  o pasados.
-explicacion_simple: 'Una vez que tenemos la fórmula afín de un modelo (por ejemplo
-  el costo de producción $C(x) = 150x + 4.000$):
+resumen_inicial: La predicción de valores mediante un modelo afín utiliza la fórmula $f(x) = mx + b$ para calcular estados futuros o resolver condiciones inversas.
+explicacion_simple: |
+  Una vez que tienes la fórmula afín $f(x) = mx + b$ de un problema, puedes hacer dos tipos de **predicciones**:
 
-  - **Para predecir el costo** de fabricar $200$ unidades, reemplazamos $x = 200$
-  en la fórmula.
+  1. **Calcular la salida dada la entrada**: Reemplazas el valor $x$ en la fórmula y calculas $y$.
+     - Ejemplo: ¿Cuánto pagaré por $12$ km? $\implies$ evalúas $f(12)$.
+  2. **Calcular la entrada dada la salida**: Igualas la fórmula a una meta $y$ y despejas $x$.
+     - Ejemplo: Si pagué $\$10.000$, ¿cuántos km viajé? $\implies$ resuelves $mx + b = 10.000$.
+explicacion_formal: |
+  Dada la función afín $f: D \subseteq \mathbb{R} \to \mathbb{R}$ con $f(x) = mx + b$ ($m \neq 0$), el proceso de **predicción analítica** abarca dos tipos de problemas:
 
-  - **Para predecir cuántas unidades se fabricaron** si el costo total fue $\$10.000$,
-  igualamos $150x + 4.000 = 10.000$ y despejamos $x$.'
-explicacion_formal: 'Dada la función modelo $f: \operatorname{Dom}(f) \to \operatorname{Rec}(f)$
-  con $f(x) = m x + n$:
+  1. **Interpolación / Extrapolación directa (evaluación)**:
+     $$y_{\text{predicho}} = f(x_{\text{dado}}) = m \cdot x_{\text{dado}} + b$$
 
-  1. **Extrapolación directa (evaluación)**: $y_{\text{pred}} = f(x_{\text{dado}})
-  = m x_{\text{dado}} + n$.
-
-  2. **Extrapolación inversa (preimagen)**: $x_{\text{pred}} = f^{-1}(y_{\text{dado}})
-  = \frac{y_{\text{dado}} - n}{m}$.
-
-
-  **Desglose de la fórmula:**
-
-  - Utilización analítica de la recta modelo para estimar comportamientos fuera o
-  dentro del rango de datos muestreados.'
-definiciones_clave: '- **Predicción / Extrapolación**: Estimación de un valor futuro
-  o no observado mediante la evaluación de la función modelo.'
-propiedades_relaciones: '- **Validez del dominio**: Las predicciones son confiables
-  solo dentro del rango realista del dominio del fenómeno.'
+  2. **Inversión contextual (resolución de ecuación)**:
+     $$x_{\text{necesario}} = f^{-1}(y_{\text{meta}}) = \frac{y_{\text{meta}} - b}{m}$$
+definiciones_clave: |
+  - **Predicción mediante modelo afín**: Estimación cuantitativa de estados no observados del sistema mediante la evaluación directa o inversión de la función afín.
+propiedades_relaciones: |
+  - **Validez de la extrapolación**: Las predicciones para valores de $x$ muy alejados del rango de datos originales deben interpretarse con cautela respetando el dominio del fenómeno real.
 ejemplo_guiado:
-  enunciado: El nivel de agua de un embalse disminuye según el modelo $H(t) = -0{,}4t
-    + 12$ (donde $H$ es altura en metros y $t$ es días). Predice la altura en el día
-    $15$ y determina cuántos días tardará en vaciarse por completo ($H = 0$).
+  enunciado: 'El saldo restante en una tarjeta de transporte tras $n$ viajes es $S(n) = 20.000 - 800n$ pesos. a) Predice el saldo tras $15$ viajes. b) Determina cuántos viajes se realizaron si el saldo es $\$5.600$.'
   pasos:
-  - 'Paso 1: Para la altura en el día $15$: evaluar $H(15) = -0{,}4(15) + 12 = -6
-    + 12 = 6\text{ metros}$.Paso 2: Para el vaciado completo ($H = 0$): igualar $-0{,}4t
-    + 12 = 0$.Paso 3: Despejar $t$: $-0{,}4t = -12 \implies t = \frac{-12}{-0{,}4}
-    = 30\text{ días}$.Paso 4: Concluir que al día $15$ habrá $6\text{ m}$ de agua
-    y se vaciará completamente al día $30$.'
+    - 'Paso 1: Para a), evaluar en $n = 15$: $S(15) = 20.000 - 800(15) = 20.000 - 12.000 = 8.000$ pesos.'
+    - 'Paso 2: Para b), igualar $S(n) = 5.600$: $20.000 - 800n = 5.600$.'
+    - 'Paso 3: Despejar $n$: $800n = 20.000 - 5.600 = 14.400 \implies n = \frac{14.400}{800} = 18$ viajes.'
+    - 'Paso 4: Concluir que tras $15$ viajes quedan $\$8.000$ y que $\$5.600$ de saldo corresponden a $18$ viajes.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: En el modelo del embalse $H(t) = -0{,}4t + 12$, ¿en cuántos días se vaciará
-    el embalse por completo ($H = 0$)?
-  choices:
-  - text: En $30\text{ días}$
-    is_correct: true
-  - text: En $12\text{ días}$
-    is_correct: false
-  - text: En $15\text{ días}$
-    is_correct: false
-  - text: En $4.8\text{ días}$
-    is_correct: false
-  explanation: La alternativa correcta es 'En $30\text{ días}$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué altura de agua predice el modelo $H(t) = -0{,}4t + 12$ para el día
-    $15$?
-  choices:
-  - text: $6\text{ metros}$
-    is_correct: true
-  - text: $12\text{ metros}$
-    is_correct: false
-  - text: $0\text{ metros}$
-    is_correct: false
-  - text: $3\text{ metros}$
-    is_correct: false
-  explanation: La alternativa correcta es '$6\text{ metros}$'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'En el saldo $S(n) = 20.000 - 800n$, ¿cuál es el saldo restante tras 15 viajes?'
+    choices:
+      - {text: '$8.000 pesos', is_correct: true}
+      - {text: '$12.000 pesos', is_correct: false}
+      - {text: '$5.600 pesos', is_correct: false}
+      - {text: '$10.000 pesos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$8.000 pesos''. $S(15) = 20.000 - 800(15) = 20.000 - 12.000 = 8.000$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'En el mismo saldo $S(n) = 20.000 - 800n$, si quedan $5.600 pesos de saldo, ¿cuántos viajes se realizaron?'
+    choices:
+      - {text: '18 viajes', is_correct: true}
+      - {text: '15 viajes', is_correct: false}
+      - {text: '20 viajes', is_correct: false}
+      - {text: '25 viajes', is_correct: false}
+    explanation: 'La alternativa correcta es ''18 viajes''. $20.000 - 800n = 5.600 \implies 800n = 14.400 \implies n = 18$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar qué variable se entrega como dato (entrada $x$ o salida $y$).'
-- 'Paso 2: Si entregan la entrada $x$, evaluar $f(x)$ sustituyendo directamente.'
-- 'Paso 3: Si entregan la salida $y$, resolver la ecuación $m x + n = y$ para despejar
-  $x$.'
-- 'Paso 4: Interpretar el resultado obtenido con sus unidades contextuales.'
-errores_correccion: '- **Error común:** Evaluar la variable entregada en la posición
-  equivocada (reemplazar la salida en la $x$).
-
-  - **Cómo corregirlo:** Si el dato dado es el resultado total (ejemplo: pesos o volumen
-  final), debes igualar la función completa a ese dato y despejar $x$.'
+  - 'Paso 1: Asegurar que la fórmula del modelo afín $f(x) = mx + b$ esté correctamente construida.'
+  - 'Paso 2: Identificar si se pide evaluar una entrada $x$ o despejar una salida $y$.'
+  - 'Paso 3: Si se pide salida, sustituir $x$ en la fórmula y operar; si se pide entrada, resolver $mx + b = y$.'
+  - 'Paso 4: Redactar la conclusión expresando las unidades del problema.'
+errores_correccion: |
+  - **Error común:** Confundir la variable de entrada con la de salida al realizar la sustitución en la fórmula.
+  - **Cómo corregirlo:** Lee atentamente qué magnitud representa $x$ (ej. viajes) y cuál representa $y$ (ej. pesos) antes de reemplazar.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de modelamiento afín.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de modelamiento afín.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una tasa de cambio constante m indica que el proceso se puede modelar con
-    una función afín?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, la razón incremental constante caracteriza a los modelos afines y lineales.
-- titulo: ¿El cargo fijo n representa la salida en el momento inicial x = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, f(0) = n es el intercepto o condición de partida.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de modelamiento afín.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de modelamiento afín.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la tasa de cambio $m$ (unidades compuestas) con el valor acumulado inicial
-  $n$ (unidades simples).
-- Agregar un cargo fijo $n$ en situaciones de proporcionalidad directa donde no existe
-  valor inicial.
-- Multiplicar la variable $x$ por el cargo fijo $n$ en lugar de multiplicarla por
-  la tarifa unitaria $m$.
-- Confundir el crecimiento lineal (suma constante por año) con el crecimiento exponencial
-  (porcentaje constante por año).
-- Sustituir el valor de la salida $y$ en el lugar de la entrada $x$ al realizar una
-  predicción en el modelo.
+  - 'Para predecir el valor de salida en un modelo afín $f(x) = mx + b$ se debe igualar la pendiente a cero.'
+  - 'Reemplazar una entrada $x = 10$ en el modelo $S(n) = 20.000 - 800n$ exige restar $20.000$ antes de multiplicar.'
+  - 'Calcular la variable de entrada dada una salida $y$ en un modelo afín genera siempre dos soluciones numéricas distintas.'
+  - 'Las predicciones realizadas con un modelo afín son siempre infinitamente válidas para cualquier valor de $x$ real.'
+  - 'Evaluar $f(x) = mx + b$ en un valor futuro equivale a calcular la ordenada al origen de la función cuadrática.'
 afirmaciones_verdaderas:
-- La pendiente $m$ en un modelo afín contextual representa la tasa de cambio unitaria
-  constante $\frac{\Delta y}{\Delta x}$.
-- El intercepto $n$ representa la condición inicial, costo base o valor de partida
-  del sistema cuando la variable de entrada vale cero ($x = 0$).
-al_terminar_debes_poder: Al finalizar este recurso podrás identificar tasas de cambio
-  constantes, construir modelos lineales y afines contextuales e interpretar pendiente
-  e intercepto para realizar predicciones.
-fuente: Texto escolar MINEDUC — Álgebra / Modelamiento Lineal y Afín
+  - 'Predicciones en un modelo afín $f(x) = mx + b$ involucran evaluar $f(x_{\text{dado}})$ para hallar salidas o resolver $mx + b = y_{\text{meta}}$ para determinar la entrada requerida.'
+  - 'La validez de las predicciones obtenidas por extrapolación depende de las restricciones contextuales del dominio del problema.'
+al_terminar_debes_poder: |
+  QUÉ: Realizar predicciones e interpretaciones inversas a partir de un modelo afín dado.
+  CÓMO: Evaluar $f(x)$ para datos de entrada o despejar $x$ en la ecuación $mx + b = y$ según la consulta planteada.
+fuente: 'Texto escolar MINEDUC — Álgebra / Modelamiento Afín y Lineal'
 estado: publicado

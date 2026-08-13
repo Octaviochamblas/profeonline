@@ -1,135 +1,85 @@
 semantic_id: MAT.ALG.MODELAMIENTO_AFIN.IDENTIFICACION_TASA_CONSTANTE
-resumen_inicial: Una tasa de cambio constante indica que la variable dependiente incrementa
-  o disminuye en una cantidad fija por cada unidad de cambio en la variable independiente.
-explicacion_simple: 'Para saber si un problema contextual se puede modelar con una
-  función afín o lineal, debemos buscar una **tasa de cambio constante**.
+resumen_inicial: Identificar una tasa de cambio constante en un contexto real permite justificar el uso de modelos afines o lineales para representar la situación.
+explicacion_simple: |
+  En problemas del mundo real, saber si una situación se modela con una recta depende de la **tasa de cambio**:
 
-  Por ejemplo, si un servicio de taxi cobra $\$500$ fijos más $\$300$ por cada kilómetro
-  recorrido:
+  - Si la cantidad aumenta o disminuye exactamente **en la misma cantidad por cada unidad de tiempo o distancia** (por ejemplo, $\$300$ por cada km o $5$ litros por minuto), la tasa de cambio es **constante**.
+  - Una tasa constante indica que la relación es **lineal o afín**.
+explicacion_formal: |
+  Sea $y = f(x)$ la función que describe un fenómeno contextual. La existencia de una **tasa de cambio constante** implica que el cociente de diferencias es invariante para cualquier par de estados $(x_1, y_1)$ y $(x_2, y_2)$ con $x_1 \neq x_2$:
 
-  - Cada kilómetro extra agrega SIEMPRE los mismos $\$300$.
+  $$\frac{\Delta y}{\Delta x} = \frac{y_2 - y_1}{x_2 - x_1} = k \quad (\text{constante } k \in \mathbb{R})$$
 
-  - Esos $\$300/\text{km}$ son la **tasa constante (la pendiente $m$)**, y la tarifa
-  base de $\$500$ es el **valor inicial (el intercepto $n$)**.'
-explicacion_formal: 'Un proceso de variación entre $x$ e $y$ responde a una **tasa
-  de cambio constante $m$** si y solo si el cociente de diferencias incrementales
-  es invariante:
-
-
-  $$m = \frac{\Delta y}{\Delta x} = \text{constante} \implies y(x) = m x + n$$
-
-
-  **Desglose de la fórmula:**
-
-  - $m$: Tasa de cambio unitaria constante (variación del sistema por unidad de $x$).
-
-  - $n$: Condición inicial o valor de partida del sistema en $x = 0$.'
-definiciones_clave: '- **Tasa de cambio constante ($m$)**: Magnitud fija de incremento
-  o decrecimiento por unidad de la variable independiente.
-
-  - **Modelabilidad lineal/afín**: Condición de un problema que permite representarlo
-  mediante $f(x) = m x + n$.'
-propiedades_relaciones: '- **Diferencias finitas constantes**: En una tabla de datos
-  con pasos uniformes en $x$, las diferencias entre salidas consecutivas son constantes.'
+  **Consecuencia estructural:**
+  $$y - y_1 = k(x - x_1) \implies f(x) = kx + b$$
+definiciones_clave: |
+  - **Tasa de cambio constante**: Variación fija e invariable de la variable dependiente por cada incremento unitario de la variable independiente.
+propiedades_relaciones: |
+  - **Criterio de linealidad**: Si la tasa de cambio entre intervalos iguales no es constante, el fenómeno no se puede modelar mediante una función afín.
 ejemplo_guiado:
-  enunciado: Un estanque se vacía a una tasa constante de $15\text{ litros}$ por minuto.
-    Si inicialmente contenía $300\text{ litros}$, identifica la tasa de cambio y escribe
-    la función del volumen $V(t)$.
+  enunciado: 'Un plan telefónico cobra una cuota fija mensual y un valor constante por cada gigabyte consumido. Si consumiendo $2$ GB el total es $\$8.000$ y consumiendo $5$ GB el total es $\$14.000$, calcula la tasa de cambio constante.'
   pasos:
-  - 'Paso 1: Identificar el cambio por unidad de tiempo: pierde $15\text{ L/min} \implies$
-    tasa de cambio $m = -15$.Paso 2: Identificar el estado inicial en $t = 0$: $n
-    = 300\text{ L}$.Paso 3: Construir la función en el tiempo $t$: $V(t) = -15t +
-    300$.Paso 4: Concluir que la tasa constante de $-15\text{ L/min}$ modela el vaciado
-    afín del estanque.'
+    - 'Paso 1: Identificar los puntos dados $(x, y)$: $P_1(2, 8000)$ y $P_2(5, 14000)$.'
+    - 'Paso 2: Calcular la variación total de dinero: $\Delta y = 14000 - 8000 = 6000$.'
+    - 'Paso 3: Calcular la variación de gigabytes: $\Delta x = 5 - 2 = 3$.'
+    - 'Paso 4: Dividir para hallar la tasa unitaria: $k = \frac{6000}{3} = 2000$ pesos por GB.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: En el contexto de un estanque que se vacía a $15\text{ L/min}$ partiendo
-    de $300\text{ L}$, ¿cuál es la función $V(t)$ del volumen restante?
-  choices:
-  - text: $V(t) = -15t + 300$
-    is_correct: true
-  - text: $V(t) = 15t + 300$
-    is_correct: false
-  - text: $V(t) = 300t - 15$
-    is_correct: false
-  - text: $V(t) = -300t + 15$
-    is_correct: false
-  explanation: La alternativa correcta es '$V(t) = -15t + 300$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué representa el signo negativo en la tasa de cambio $m = -15\text{
-    L/min}$?
-  choices:
-  - text: Que el volumen disminuye (se vacía) a medida que transcurre el tiempo.
-    is_correct: true
-  - text: Que el tiempo retrocede.
-    is_correct: false
-  - text: Que el estanque está roto.
-    is_correct: false
-  - text: Que la capacidad total es negativa.
-    is_correct: false
-  explanation: La alternativa correcta es 'Que el volumen disminuye (se vacía) a medida
-    que transcurre el tiempo.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Si consumiendo 2 GB el total es $8.000 y consumiendo 5 GB el total es $14.000, ¿cuál es la tasa de cambio por GB?'
+    choices:
+      - {text: '$2.000 pesos por GB', is_correct: true}
+      - {text: '$6.000 pesos por GB', is_correct: false}
+      - {text: '$3.000 pesos por GB', is_correct: false}
+      - {text: '$4.000 pesos por GB', is_correct: false}
+    explanation: 'La alternativa correcta es ''$2.000 pesos por GB''. $k = \frac{14000 - 8000}{5 - 2} = \frac{6000}{3} = 2000$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: '¿Qué propiedad del contexto confirma que una situación puede modelarse mediante una función afín?'
+    choices:
+      - {text: 'Que la tasa de variación por unidad permanezca constante.', is_correct: true}
+      - {text: 'Que los valores se dupliquen a cada segundo.', is_correct: false}
+      - {text: 'Que el valor inicial sea igual a cero.', is_correct: false}
+      - {text: 'Que la gráfica sea una curva parabólica.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Que la tasa de variación por unidad permanezca constante.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar las dos variables del problema (ejemplo: tiempo $t$ y volumen
-  $V$).'
-- 'Paso 2: Detectar la cantidad fija que varía por cada unidad de la variable independiente.'
-- 'Paso 3: Asignar signo positivo si aumenta o negativo si disminuye para establecer
-  la pendiente $m$.'
-- 'Paso 4: Formular la función $f(x) = m x + n$ incorporando el valor inicial $n$.'
-errores_correccion: '- **Error común:** Confundir la tasa de cambio $m$ con el valor
-  acumulado inicial $n$.
-
-  - **Cómo corregirlo:** La tasa de cambio $m$ lleva siempre las unidades compuestas
-  (ejemplo: $\text{litros/minuto}$ o $\text{pesos/km}$), mientras que $n$ lleva unidades
-  simples (ejemplo: $\text{litros}$ o $\text{pesos}$).'
+  - 'Paso 1: Extraer del texto dos o más pares de valores $(x_1, y_1)$ y $(x_2, y_2)$.'
+  - 'Paso 2: Calcular las diferencias $\Delta y = y_2 - y_1$ y $\Delta x = x_2 - x_1$.'
+  - 'Paso 3: Determinar la tasa unitaria mediante el cociente $k = \frac{\Delta y}{\Delta x}$.'
+  - 'Paso 4: Verificar la constancia de $k$ para confirmar la naturaleza afín del modelo.'
+errores_correccion: |
+  - **Error común:** Confundir la tasa de cambio constante (unidades por unidad de $x$) con el valor total o acumulado en un instante.
+  - **Cómo corregirlo:** La tasa mide la **VARIACIÓN por cada incremento de 1 unidad**, no el valor total en el punto.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de modelamiento afín.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de modelamiento afín.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una tasa de cambio constante m indica que el proceso se puede modelar con
-    una función afín?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, la razón incremental constante caracteriza a los modelos afines y lineales.
-- titulo: ¿El cargo fijo n representa la salida en el momento inicial x = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, f(0) = n es el intercepto o condición de partida.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de modelamiento afín.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de modelamiento afín.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir la tasa de cambio $m$ (unidades compuestas) con el valor acumulado inicial
-  $n$ (unidades simples).
-- Agregar un cargo fijo $n$ en situaciones de proporcionalidad directa donde no existe
-  valor inicial.
-- Multiplicar la variable $x$ por el cargo fijo $n$ en lugar de multiplicarla por
-  la tarifa unitaria $m$.
-- Confundir el crecimiento lineal (suma constante por año) con el crecimiento exponencial
-  (porcentaje constante por año).
-- Sustituir el valor de la salida $y$ en el lugar de la entrada $x$ al realizar una
-  predicción en el modelo.
+  - 'Una tasa de cambio constante indica que el valor total $y$ permanece siempre invariable en todo momento.'
+  - 'En un contexto real, la tasa de cambio se calcula multiplicando los valores de entrada $x_1 \cdot x_2$.'
+  - 'Si la tasa de cambio varía de un intervalo a otro, la situación puede seguir representándose por una única recta afín.'
+  - 'La tasa de cambio constante en un problema de llenado de agua equivale a la capacidad total del estanque.'
+  - 'Una tasa de cambio negativa indica que la función afín contextual no posee solución en el tiempo.'
 afirmaciones_verdaderas:
-- La pendiente $m$ en un modelo afín contextual representa la tasa de cambio unitaria
-  constante $\frac{\Delta y}{\Delta x}$.
-- El intercepto $n$ representa la condición inicial, costo base o valor de partida
-  del sistema cuando la variable de entrada vale cero ($x = 0$).
-al_terminar_debes_poder: Al finalizar este recurso podrás identificar tasas de cambio
-  constantes, construir modelos lineales y afines contextuales e interpretar pendiente
-  e intercepto para realizar predicciones.
-fuente: Texto escolar MINEDUC — Álgebra / Modelamiento Lineal y Afín
+  - 'La existencia de una tasa de cambio constante $\frac{\Delta y}{\Delta x} = k$ en un fenómeno real es la condición necesaria y suficiente para justificar un modelo de función afín o lineal.'
+  - 'La tasa de cambio representa el ritmo de incremento o decremento de la variable dependiente por cada unidad de variación en la variable independiente.'
+al_terminar_debes_poder: |
+  QUÉ: Identificar y calcular la tasa de cambio constante en situaciones del entorno real.
+  CÓMO: Obtener la razón $\frac{\Delta y}{\Delta x}$ entre dos puntos de datos y validar la linealidad del modelo.
+fuente: 'Texto escolar MINEDUC — Álgebra / Modelamiento Afín y Lineal'
 estado: publicado
