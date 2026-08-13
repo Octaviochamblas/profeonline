@@ -1,126 +1,86 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARTE_ENTERA_COBROS_TRAMOS
-resumen_inicial: El cobro por tramos o fracciones de tiempo (como estacionamientos
-  o franqueo postal) se modela mediante la función parte entera.
-explicacion_simple: 'Servicios como los **estacionamientos o tarifas de correo** no
-  cobran por minutos exactos continuos, sino por **bloques o tramos comenzados**:
+resumen_inicial: El modelamiento de cobros por tramos mediante la función parte entera expresa tarifas escalonadas donde el costo aumenta en bloques discretos.
+explicacion_simple: |
+  En la vida real, muchos **servicios cobran por minutos u horas "iniciadas" o "completas"**:
 
-  - Si un estacionamiento cobra $\$800$ por cada hora o fracción de hora:
+  - **Estacionamiento**: Te cobran $\$1.000$ por cada hora o fracción de hora. Si estacionas $1{,}2$ horas, pagas por $2$ horas enteras.
+  - **Envíos postales**: Cobran $\$500$ por cada tramo de $500$ gramos enteros o fracción.
+  - Este tipo de tarifas donde el costo se mantiene constante en un tramo y da un "salto" al siguiente se modela con la **función parte entera** (o techo).
+explicacion_formal: |
+  Sea $t \ge 0$ la cantidad continua de un recurso (tiempo, masa, volumen). El modelo tarifario por tramos de tamaño $L > 0$ con costo fijo $C_0$ por tramo o fracción se expresa mediante la función escalonada:
 
-  - Permanecer 10 minutos (0,16 horas) cobra la 1ª hora completa ($\$800$).
+  $$C(t) = C_0 \cdot \left\lceil \frac{t}{L} \right\rceil \quad \text{o en términos de piso} \quad C(t) = C_0 \cdot \left( \left\lfloor \frac{t}{L} \right\rfloor + 1 \right) \quad \text{para } t > 0$$
 
-  - Permanecer 1 hora y 5 minutos (1,08 horas) cobra 2 horas completas ($\$1.600$).
-
-  Este redondeo hacia arriba de tramos se representa con variaciones de la parte entera.'
-explicacion_formal: 'Un sistema de tarificación por bloques de tamaño $L > 0$ y tarifa
-  por tramo $C_0$ se modela mediante la **función escalonada superior**:
-
-
-  $$C(t) = C_0 \cdot \left( -\lfloor -t/L \rfloor \right)$$
-
-
-  **Desglose de la fórmula:**
-
-  - Utilización de la función parte entera para representar la función techo (redondeo
-  al entero superior por tramos iniciados).'
-definiciones_clave: '- **Modelamiento por tramos**: Uso de funciones discontinuas
-  escalonadas para calcular tarifas en bloques discretos de insumo o tiempo.'
-propiedades_relaciones: '- **Tarifa constante por intervalo**: El costo permanece
-  invariable dentro de la franja del bloque y salta al sobrepasar el límite del tramo.'
+  **Propiedad de discontinuidad por tramos:**
+  La función tarifa $C(t)$ es constante por intervalos semiabiertos $]kL, (k+1)L]$ y presenta discontinuidades de salto en los múltiplos del tramo $t = kL$.
+definiciones_clave: |
+  - **Cobro por tramos mediante parte entera**: Modelo matemático discreto que aplica tarifas fijas discontinuas según intervalos de consumo.
+propiedades_relaciones: |
+  - **Modelamiento de redondeo superior**: Para cobrar "fracción de hora como hora completa", se combina la función parte entera con ajustes de traslación para lograr el efecto techo $\lceil x \rceil$.
 ejemplo_guiado:
-  enunciado: Un estacionamiento cobra $\$600$ por cada media hora ($30\text{ min}$)
-    o fracción iniciada. Calcula el cobro para un cliente que estacionó durante $75\text{
-    minutos}$.
+  enunciado: 'Un estacionamiento cobra $\$1.200$ por cada hora o fracción de hora iniciada. Escribe el costo $C(t)$ para $t$ horas y calcula el total a pagar por un tiempo de $2{,}3$ horas.'
   pasos:
-  - 'Paso 1: Calcular cuántas medias horas ($30\text{ min}$) representan $75\text{
-    minutos}$: $\frac{75}{30} = 2{,}5$ tramos.Paso 2: Como es por fracción iniciada,
-    $2{,}5$ tramos se redondean hacia arriba al entero superior: $3$ tramos completos.Paso
-    3: Multiplicar la cantidad de tramos por la tarifa: $3 \cdot 600 = 1.800$.Paso
-    4: Concluir que el cobro total para $75\text{ minutos}$ es $\$1.800$.'
+    - 'Paso 1: Identificar el valor por tramo: $C_0 = 1.200$.'
+    - 'Paso 2: Identificar el efecto "fracción como hora completa": para $t = 2{,}3$, se pagan $3$ horas completas.'
+    - 'Paso 3: Expresar mediante la regla de tramos: $C(2{,}3) = 1.200 \cdot \lceil 2{,}3 \rceil = 1.200 \cdot 3$.'
+    - 'Paso 4: Calcular el costo final: $1.200 \cdot 3 = 3.600$ pesos.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: En el estacionamiento que cobra $\$600$ por cada $30\text{ min}$ o fracción,
-    ¿cuál es el cobro total para un vehículo que estuvo $75\text{ minutos}$?
-  choices:
-  - text: $\$1.800$
-    is_correct: true
-  - text: $\$1.200$
-    is_correct: false
-  - text: $\$1.500$
-    is_correct: false
-  - text: $\$2.400$
-    is_correct: false
-  explanation: La alternativa correcta es '$\$1.800$'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Por qué estar $31\text{ minutos}$ cobra lo mismo que estar $60\text{
-    minutos}$ en un cobro por medias horas iniciadas?
-  choices:
-  - text: Porque al pasar el minuto 30 se inicia el segundo tramo, cobrando 2 tramos
-      completos en ambos casos.
-    is_correct: true
-  - text: Porque el tiempo se redondea a cero.
-    is_correct: false
-  - text: Porque la tarifa es constante.
-    is_correct: false
-  - text: Porque no se cobra el primer tramo.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque al pasar el minuto 30 se inicia
-    el segundo tramo, cobrando 2 tramos completos en ambos casos.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Si un estacionamiento cobra $1.200 por cada hora o fracción de hora iniciada, ¿cuánto se paga por 2,3 horas?'
+    choices:
+      - {text: '$3.600 pesos', is_correct: true}
+      - {text: '$2.400 pesos', is_correct: false}
+      - {text: '$2.760 pesos', is_correct: false}
+      - {text: '$4.800 pesos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$3.600 pesos''. Al estacionar 2,3 horas se inician 3 tramos de hora completa: $3 \cdot 1.200 = 3.600$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: '¿Qué tipo de gráfica representa a una tarifa comercial de cobro por tramos o fracciones de tiempo?'
+    choices:
+      - {text: 'Una gráfica escalonada con saltos en cada tramo.', is_correct: true}
+      - {text: 'Una línea recta continua sin interrupciones.', is_correct: false}
+      - {text: 'Una parábola suave que abre hacia arriba.', is_correct: false}
+      - {text: 'Una curva exponencial creciente.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Una gráfica escalonada con saltos en cada tramo.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Dividir la cantidad utilizada entre la longitud del tramo $L$.'
-- 'Paso 2: Aplicar la regla del servicio (trunca hacia abajo o redondea hacia arriba
-  el tramo iniciado).'
-- 'Paso 3: Multiplicar el número de tramos enteros por el costo unitario del tramo.'
-errores_correccion: '- **Error común:** Calcular el cobro proporcional decimal (hacer
-  $2{,}5 \cdot 600 = 1.500$).
-
-  - **Cómo corregirlo:** El cobro por tramos o fracciones NO ES PROPORCIONAL CONTINUO.
-  Una fracción de minuto en un nuevo tramo cobra el tramo ENTERO completo.'
+  - 'Paso 1: Determinar el tamaño del tramo $L$ y el costo por tramo $C_0$.'
+  - 'Paso 2: Determinar si la fracción se cobra como tramo entero (redondeo hacia arriba).'
+  - 'Paso 3: Construir la fórmula escalonada utilizando la función parte entera ajustada.'
+  - 'Paso 4: Evaluar la función en el tiempo o consumo especificado para hallar la tarifa.'
+errores_correccion: |
+  - **Error común:** Calcular el cobro de $2{,}3$ horas multiplicando directamente $1.200 \cdot 2{,}3 = 2.760$ (modelo continuo afín).
+  - **Cómo corregirlo:** La tarifa por tramos es **DISCONTINUA Y ESCALONADA**; no se cobra en decimales continuos sino en bloques enteros.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de simetrías y funciones especiales.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de simetrías y funciones especiales.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función par cumple la identidad de simetría f(-x) = f(x)?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de función par con simetría en el eje Y.
-- titulo: ¿La función parte entera [x] devuelve el mayor entero menor o igual a x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de la función piso o parte entera.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de funciones especiales.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de funciones especiales.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir las funciones pares (simetría eje Y) con las funciones impares (simetría
-  respecto al origen).
-- Asumir que toda función real debe ser obligatoriamente par o impar, ignorando el
-  caso sin paridad.
-- Creer que una función impar o par debe tener coeficientes pares o impares respectivamente.
-- 'Calcular la parte entera de números negativos truncando decimales en lugar de redondear
-  al entero menor (ej: $[-1{,}2] = -2$).'
-- Unir los escalones horizontales de la función parte entera con líneas verticales
-  en lugar de dejarlos discontinuos.
+  - 'En una tarifa de estacionamiento por hora o fracción, permanecer 2,1 horas exige pagar exactamente por 2 horas.'
+  - 'Modelar un cobro por tramos se realiza mediante una función afín continua sin saltos verticales.'
+  - 'La tarifa por tramos calculada con la función parte entera entrega resultados con decimales continuos.'
+  - 'Permanecer 3,0 horas exactas en un cobro por fracción de hora obliga a pagar por 4 horas.'
+  - 'La función parte entera en modelos comerciales produce siempre tarifas negativas para consumos de tiempo.'
 afirmaciones_verdaderas:
-- Una función es par si $f(-x) = f(x)$ (simétrica respecto al eje $Y$) e impar si
-  $f(-x) = -f(x)$ (simétrica respecto al origen $(0,0)$).
-- La función parte entera $f(x) = [x]$ asigna a cada real el mayor entero menor o
-  igual a $x$, generando una gráfica escalonada discontinua.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, analizar y clasificar
-  simetrías de funciones pares e impares, así como graficar y aplicar la función parte
-  entera en contextos de cobro por tramos y finanzas.
-fuente: Texto escolar MINEDUC — Álgebra / Simetrías y Funciones Especiales
+  - 'Las tarifas por tramos de fracción de tiempo o masa se representan mediante funciones escalonadas basadas en la función parte entera.'
+  - 'En un modelo de cobro por tramos, la tarifa permanece constante durante todo el tramo y experimenta un salto discreto al pasar al tramo siguiente.'
+al_terminar_debes_poder: |
+  QUÉ: Formular y resolver modelos de cobro por tramos o fracciones mediante la función parte entera.
+  CÓMO: Identificar la cuota fija por tramo $C_0$, aplicar el operador escalonado y calcular la tarifa para consumos reales.
+fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
 estado: publicado

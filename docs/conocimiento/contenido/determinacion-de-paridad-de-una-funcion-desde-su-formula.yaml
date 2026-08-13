@@ -1,123 +1,91 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARIDAD_DESDE_FORMULA
-resumen_inicial: 'Para determinar analíticamente la paridad de $f(x)$ se calcula $f(-x)$
-  y se clasifica en: Par si $f(-x)=f(x)$, Impar si $f(-x)=-f(x)$, o Sin Paridad si
-  no cumple ninguna.'
-explicacion_simple: "Para saber si una función cualquiera es **par, impar o sin paridad**\
-  \ desde su fórmula:\n1. Reemplazamos cada $x$ por $(-x)$.\n2. Simplificamos la expresión.\n\
-  3. Comparamos el resultado:\n   - Si da la MISMA función original $\\implies$ es\
-  \ **PAR**.\n   - Si da la función original con TODOS los signos cambiados $\\implies$\
-  \ es **IMPAR**.\n   - Si no da ninguna de las dos cosas $\\implies$ es **SIN PARIDAD**\
-  \ (ni par ni impar)."
-explicacion_formal: 'Dada $f: D \to \mathbb{R}$, el **algoritmo de paridad analítica**
-  establece la tricotomía de paridad:
+resumen_inicial: La determinación de paridad desde la fórmula analiza la respuesta algebraica al evaluar $f(-x)$ para clasificar la función como par, impar o sin paridad.
+explicacion_simple: |
+  Para determinar la paridad de una función desde su fórmula:
 
+  1. Reemplazas cada $x$ por $(-x)$.
+  2. Simplificas la expresión.
+  3. Comparas la nueva expresión con la fórmula original $f(x)$:
+     - **Si queda IDÉNTICA a $f(x)$** $\implies$ la función es **PAR**.
+     - **Si queda EXACTAMENTE OPUESTA $-f(x)$** (con todos los signos cambiados) $\implies$ la función es **IMPAR**.
+     - **Si no queda ni idéntica ni opuesta** $\implies$ la función **NO TIENE PARIDAD** (ni par ni impar).
+explicacion_formal: |
+  Dada la función $f(x)$ con dominio simétrico $D$, el algoritmo analítico de **determinación de paridad** evalúa la transformación $x \mapsto -x$:
 
-  $$\text{Clasificación} = \begin{cases} \text{PAR} & \iff f(-x) = f(x) \\ \text{IMPAR}
-  & \iff f(-x) = -f(x) \\ \text{SIN PARIDAD} & \iff f(-x) \neq f(x) \quad \land \quad
-  f(-x) \neq -f(x) \end{cases}$$
+  $$\text{Resultado de } f(-x) = \begin{cases} f(x) & \implies f \text{ es Par} \\ -f(x) & \implies f \text{ es Impar} \\ \text{otro} & \implies f \text{ no posee paridad} \end{cases}$$
 
-
-  **Desglose de la fórmula:**
-
-  - La inmensa mayoría de las funciones arbitrarias reales no poseen paridad definida
-  (son sin paridad).'
-definiciones_clave: '- **Sin paridad (ni par ni impar)**: Función real que no satisface
-  ninguna de las dos identidades de simetría.'
-propiedades_relaciones: '- **Suma de funciones**: La suma de dos funciones pares es
-  par; la suma de dos funciones impares es impar; pero la suma de una par y una impar
-  no tiene paridad.'
+  **Criterio polinómico rápido:**
+  - Si un polinomio contiene **únicamente exponentes pares** en sus términos (incluyendo constantes $x^0$), es **Par**.
+  - Si contiene **únicamente exponentes impares** sin término independiente constante, es **Impar**.
+  - Si combina exponentes pares e impares, **no posee paridad**.
+definiciones_clave: |
+  - **Determinación analítica de paridad**: Clasificación de la simetría algebraica de una función mediante la sustitución $f(-x)$.
+propiedades_relaciones: |
+  - **Función nula**: La función constante $f(x) = 0$ es la única función matemática que es simultáneamente par e impar.
 ejemplo_guiado:
-  enunciado: Determina la paridad de la función $f(x) = 2x + 3$.
+  enunciado: 'Determina la paridad de las funciones: a) $f(x) = 5x^3 - x$, b) $g(x) = x^2 + 3x + 1$.'
   pasos:
-  - 'Paso 1: Evaluar $f(-x) = 2(-x) + 3 = -2x + 3$.Paso 2: Comparar con $f(x) = 2x
-    + 3$: no son iguales ($-2x + 3 \neq 2x + 3 \implies$ NO ES PAR).Paso 3: Comparar
-    con $-f(x) = -(2x + 3) = -2x - 3$: no son iguales ($-2x + 3 \neq -2x - 3 \implies$
-    NO ES IMPAR).Paso 4: Concluir que la función afín $f(x) = 2x + 3$ es SIN PARIDAD
-    (ni par ni impar).'
+    - 'Paso 1: Para $f(x)$, evaluar $f(-x) = 5(-x)^3 - (-x) = -5x^3 + x = -(5x^3 - x) = -f(x) \implies f$ es IMPAR.'
+    - 'Paso 2: Para $g(x)$, evaluar $g(-x) = (-x)^2 + 3(-x) + 1 = x^2 - 3x + 1$.'
+    - 'Paso 3: Comparar $g(-x)$ con $g(x) = x^2 + 3x + 1$ y $-g(x) = -x^2 - 3x - 1$.'
+    - 'Paso 4: Como $g(-x) \neq g(x)$ y $g(-x) \neq -g(x)$, se concluye que $g(x)$ NO POSEE PARIDAD.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al evaluar $f(-x)$ en la función afín $f(x) = 2x + 3$, ¿cuál es la clasificación
-    de su paridad?
-  choices:
-  - text: Es una función SIN PARIDAD (ni par ni impar).
-    is_correct: true
-  - text: Es una función par.
-    is_correct: false
-  - text: Es una función impar.
-    is_correct: false
-  - text: Es una función biyectiva par.
-    is_correct: false
-  explanation: La alternativa correcta es 'Es una función SIN PARIDAD (ni par ni impar).'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué ocurre al evaluar $f(-x)$ en la función polinómica $f(x) = x^3 +
-    x^2$?
-  choices:
-  - text: Como $f(-x) = -x^3 + x^2$, no es ni par ni impar (sin paridad).
-    is_correct: true
-  - text: Es estrictamente par.
-    is_correct: false
-  - text: Es estrictamente impar.
-    is_correct: false
-  - text: Se convierte en una recta.
-    is_correct: false
-  explanation: La alternativa correcta es 'Como $f(-x) = -x^3 + x^2$, no es ni par
-    ni impar (sin paridad).'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Si al evaluar $f(-x)$ se obtiene una expresión distinta a $f(x)$ y distinta a $-f(x)$, ¿cuál es la conclusión?'
+    choices:
+      - {text: 'La función no posee paridad (ni par ni impar).', is_correct: true}
+      - {text: 'La función es obligatoriamente par e impar a la vez.', is_correct: false}
+      - {text: 'La función es una función constante.', is_correct: false}
+      - {text: 'La función no está definida en los reales.', is_correct: false}
+    explanation: 'La alternativa correcta es ''La función no posee paridad (ni par ni impar).''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: '¿Qué paridad presenta la función polinómica $g(x) = x^2 + 3x + 1$?'
+    choices:
+      - {text: 'No posee paridad.', is_correct: true}
+      - {text: 'Es una función par.', is_correct: false}
+      - {text: 'Es una función impar.', is_correct: false}
+      - {text: 'Es una función lineal pura.', is_correct: false}
+    explanation: 'La alternativa correcta es ''No posee paridad.''. Al evaluar $g(-x) = x^2 - 3x + 1$, no equivale a $g(x)$ ni a $-g(x)$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Calcular la expresión de $f(-x)$.'
-- 'Paso 2: Calcular la expresión de $-f(x)$.'
-- 'Paso 3: Comparar $f(-x)$ contra $f(x)$ y contra $-f(x)$.'
-- 'Paso 4: Declarar ''Par'', ''Impar'' o ''Sin paridad''.'
-errores_correccion: '- **Error común:** Creer que toda función en matemáticas debe
-  ser obligatoriamente par o impar.
-
-  - **Cómo corregirlo:** La gran mayoría de las funciones reales son ''sin paridad''
-  (no cumplen ninguna de las dos condiciones).'
+  - 'Paso 1: Escribir la expresión original de la función $f(x)$.'
+  - 'Paso 2: Calcular $f(-x)$ sustituyendo cada $x$ por $(-x)$ y simplificando.'
+  - 'Paso 3: Comparar la expresión simplificada con $f(x)$ y con $-f(x)$.'
+  - 'Paso 4: Clasificar el resultado en: Par, Impar o Sin paridad.'
+errores_correccion: |
+  - **Error común:** Creer que toda función matemática debe ser obligatoriamente Par o Impar (falsa dicotomía).
+  - **Cómo corregirlo:** La gran mayoría de las funciones arbitrarias **NO TIENEN PARIDAD** (no son ni pares ni impares).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de simetrías y funciones especiales.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de simetrías y funciones especiales.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función par cumple la identidad de simetría f(-x) = f(x)?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de función par con simetría en el eje Y.
-- titulo: ¿La función parte entera [x] devuelve el mayor entero menor o igual a x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de la función piso o parte entera.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de funciones especiales.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de funciones especiales.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir las funciones pares (simetría eje Y) con las funciones impares (simetría
-  respecto al origen).
-- Asumir que toda función real debe ser obligatoriamente par o impar, ignorando el
-  caso sin paridad.
-- Creer que una función impar o par debe tener coeficientes pares o impares respectivamente.
-- 'Calcular la parte entera de números negativos truncando decimales en lugar de redondear
-  al entero menor (ej: $[-1{,}2] = -2$).'
-- Unir los escalones horizontales de la función parte entera con líneas verticales
-  en lugar de dejarlos discontinuos.
+  - 'Toda función matemática real debe ser obligatoriamente clasificada como par o como impar.'
+  - 'Un polinomio que combina términos de grado 2 y grado 1 es una función par.'
+  - 'Si una función tiene un término constante $b = 5$, entonces es una función impar.'
+  - 'Evaluar $f(-x)$ equivale a multiplicar la función completa por el número $-1$.'
+  - 'La paridad de una función cambia según el valor numérico $x$ que se elija para evaluar.'
 afirmaciones_verdaderas:
-- Una función es par si $f(-x) = f(x)$ (simétrica respecto al eje $Y$) e impar si
-  $f(-x) = -f(x)$ (simétrica respecto al origen $(0,0)$).
-- La función parte entera $f(x) = [x]$ asigna a cada real el mayor entero menor o
-  igual a $x$, generando una gráfica escalonada discontinua.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, analizar y clasificar
-  simetrías de funciones pares e impares, así como graficar y aplicar la función parte
-  entera en contextos de cobro por tramos y finanzas.
-fuente: Texto escolar MINEDUC — Álgebra / Simetrías y Funciones Especiales
+  - 'La paridad analítica de una función se determina comparando $f(-x)$ con $f(x)$ (para paridad) y con $-f(x)$ (para imparidad).'
+  - 'Existen funciones algebraicas que no satisfacen $f(-x) = f(x)$ ni $f(-x) = -f(x)$, perteneciendo a la categoría sin paridad.'
+al_terminar_debes_poder: |
+  QUÉ: Determinar analíticamente la paridad de una función a partir de su regla algebraica.
+  CÓMO: Evaluar $f(-x)$, simplificar signos, comparar con $f(x)$ y $-f(x)$ y clasificar en Par, Impar o Sin paridad.
+fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
 estado: publicado

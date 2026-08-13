@@ -1,124 +1,88 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARTE_ENTERA_DEFINICION
-resumen_inicial: La función parte entera $f(x) = [x]$ (o escalón) asigna a cada número
-  real el mayor número entero que es menor o igual a $x$.
-explicacion_simple: 'La **función parte entera** (denotada $f(x) = [x]$ o $\lfloor
-  x \rfloor$) aproxima cualquier número hacia el entero inmediatamente menor o igual
-  a él (redondeo hacia abajo):
+resumen_inicial: La función parte entera (o suelo) asigna a cada número real el mayor entero menor o igual que dicho número, denotado por $f(x) = \lfloor x \rfloor$.
+explicacion_simple: |
+  La **función parte entera $\lfloor x \rfloor$** (o piso):
 
-  - Para números positivos: $[3{,}7] = 3$, $[3{,}0] = 3$, $[0{,}9] = 0$.
+  - "Redondea siempre hacia abajo" al número entero más cercano.
+  - Para positivos: $\lfloor 3{,}7 \rfloor = 3$ (la parte decimal se elimina).
+  - Para enteros puros: $\lfloor 5 \rfloor = 5$.
+  - Para negativos: $\lfloor -2{,}3 \rfloor = -3$ (¡ojo! hacia abajo en la recta numérica $-3 < -2{,}3$).
+explicacion_formal: |
+  Sea $x \in \mathbb{R}$. La **función parte entera** $f: \mathbb{R} \to \mathbb{Z}$ dada por $f(x) = \lfloor x \rfloor$ (o $[x]$) asigna el único número entero $n \in \mathbb{Z}$ que satisface la doble inecuación:
 
-  - Para números negativos (¡CUIDADO!): $[-2{,}3] = -3$ (porque $-3$ es el entero
-  menor o igual a $-2{,}3$).'
-explicacion_formal: 'La **función parte entera (o piso)** $f: \mathbb{R} \to \mathbb{Z}$
-  se define formalmente como:
+  $$n \le x < n + 1 \implies \lfloor x \rfloor = n$$
 
-
-  $$[x] = \lfloor x \rfloor = \max \{k \in \mathbb{Z} \mid k \le x\}$$
-
-
-  **Desglose de la fórmula:**
-
-  - Propiedad del entero característico: Para todo $x \in \mathbb{R}$, existe un único
-  $k \in \mathbb{Z}$ tal que $k \le x < k + 1$, donde $[x] = k$.'
-definiciones_clave: '- **Función parte entera ($[x]$ o $\lfloor x \rfloor$)**: Función
-  a tramos discontinuos que extrae la componente entera no superior a $x$.
-
-  - **Propiedad del piso**: $k \le x < k + 1 \iff [x] = k$.'
-propiedades_relaciones: '- **Dominio y Recorrido**: $\operatorname{Dom}([x]) = \mathbb{R}$
-  y $\operatorname{Rec}([x]) = \mathbb{Z}$ (conjunto de los enteros).'
+  **Propiedades fundamentales de acotamiento:**
+  - $x - 1 < \lfloor x \rfloor \le x \quad \forall x \in \mathbb{R}$
+  - $\lfloor x + k \rfloor = \lfloor x \rfloor + k \quad \forall k \in \mathbb{Z}$
+definiciones_clave: |
+  - **Función parte entera ($\lfloor x \rfloor$)**: Función escalonada que mapea cada número real $x$ al mayor entero $n \le x$.
+propiedades_relaciones: |
+  - **Dominio y recorrido**: $\text{Dom}(f) = \mathbb{R}$ y $\text{Rec}(f) = \mathbb{Z}$ (el conjunto de los números enteros).
 ejemplo_guiado:
-  enunciado: Evalúa el valor de la función parte entera $f(x) = [x]$ para $x_1 = 4{,}8$,
-    $x_2 = 5{,}0$ y $x_3 = -1{,}2$.
+  enunciado: 'Calcula el valor numérico de la función parte entera para: a) $x = 4{,}8$, b) $x = 7$, c) $x = -1{,}4$.'
   pasos:
-  - 'Paso 1: Para $x_1 = 4{,}8$: buscar los enteros entre los que se ubica $4 \le
-    4{,}8 < 5 \implies [4{,}8] = 4$.Paso 2: Para $x_2 = 5{,}0$: por ser entero exacto
-    $5 \le 5{,}0 < 6 \implies [5{,}0] = 5$.Paso 3: Para $x_3 = -1{,}2$: buscar los
-    enteros entre los que se ubica $-2 \le -1{,}2 < -1 \implies [-1{,}2] = -2$.Paso
-    4: Concluir las evaluaciones: $4$, $5$ y $-2$.'
+    - 'Paso 1: Para $x = 4{,}8$, buscar el entero $n$ tal que $n \le 4{,}8 < n+1 \implies n = 4 \implies \lfloor 4{,}8 \rfloor = 4$.'
+    - 'Paso 2: Para $x = 7$, como es entero, $7 \le 7 < 8 \implies \lfloor 7 \rfloor = 7$.'
+    - 'Paso 3: Para $x = -1{,}4$, buscar el entero $n \le -1{,}4$: el entero a la izquierda es $-2 \implies \lfloor -1{,}4 \rfloor = -2$.'
+    - 'Paso 4: Concluir que los resultados son $4$, $7$ y $-2$ respectivamente.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al evaluar la función parte entera en $x = -1{,}2$, ¿cuál es el valor
-    numérico obtenido?
-  choices:
-  - text: $[-1{,}2] = -2$
-    is_correct: true
-  - text: $[-1{,}2] = -1$
-    is_correct: false
-  - text: $[-1{,}2] = 1$
-    is_correct: false
-  - text: $[-1{,}2] = 0$
-    is_correct: false
-  explanation: La alternativa correcta es '$[-1{,}2] = -2$'. (Puesto que $-2$ es el
-    mayor entero menor o igual a $-1{,}2$).
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Cuál es el conjunto recorrido $\operatorname{Rec}(f)$ de la función parte
-    entera $f(x) = [x]$ en los reales?
-  choices:
-  - text: El conjunto de los números enteros $\mathbb{Z}$.
-    is_correct: true
-  - text: El conjunto de los números reales $\mathbb{R}$.
-    is_correct: false
-  - text: El intervalo $[0, 1[$.
-    is_correct: false
-  - text: El conjunto de los números irracionales.
-    is_correct: false
-  explanation: La alternativa correcta es 'El conjunto de los números enteros $\mathbb{Z}$.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Cuál es el valor de la función parte entera para el número negativo $x = -2{,}3$?'
+    choices:
+      - {text: '$\\lfloor -2{,}3 \\rfloor = -3$', is_correct: true}
+      - {text: '$\\lfloor -2{,}3 \\rfloor = -2$', is_correct: false}
+      - {text: '$\\lfloor -2{,}3 \\rfloor = 2$', is_correct: false}
+      - {text: '$\\lfloor -2{,}3 \\rfloor = 0$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\\lfloor -2{,}3 \\rfloor = -3$''. En la recta numérica, el mayor entero menor o igual a $-2{,}3$ es $-3$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el conjunto recorrido de la función parte entera $f(x) = \\lfloor x \\rfloor$?'
+    choices:
+      - {text: 'El conjunto de los números enteros $\\mathbb{Z}$.', is_correct: true}
+      - {text: 'El conjunto de los números reales $\\mathbb{R}$.', is_correct: false}
+      - {text: 'Solo los números reales positivos.', is_correct: false}
+      - {text: 'El conjunto vacío.', is_correct: false}
+    explanation: 'La alternativa correcta es ''El conjunto de los números enteros $\\mathbb{Z}$.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Ubicar el número $x$ en la recta numérica.'
-- 'Paso 2: Mirar hacia la izquierda en la recta numérica para hallar el primer número
-  entero.'
-- 'Paso 3: Declarar ese entero como el resultado $[x]$.'
-errores_correccion: '- **Error común:** Escribir $[-1{,}2] = -1$ (pensar que simplemente
-  se ''trunca'' la parte decimal).
-
-  - **Cómo corregirlo:** La parte entera busca el entero MENOR o igual. En la recta
-  numérica, a la izquierda de $-1{,}2$ está el $-2$.'
+  - 'Paso 1: Ubicar el número real $x$ en la recta numérica.'
+  - 'Paso 2: Identificar los dos números enteros consecutivos entre los cuales se encuentra $x$ ($n \le x < n + 1$).'
+  - 'Paso 3: Seleccionar el número entero situado inmediatamente a la izquierda (o sobre el número si es entero).'
+  - 'Paso 4: Asignar el entero $n$ como resultado de $\lfloor x \rfloor$.'
+errores_correccion: |
+  - **Error común:** Pensar que $\lfloor -2{,}3 \rfloor = -2$ recortando simplemente los decimales sin considerar la dirección hacia abajo.
+  - **Cómo corregirlo:** En los números negativos, **"IR HACIA ABAJO" SIGNIFICA ALEJARSE DE CERO** (ej. $\lfloor -2{,}3 \rfloor = -3$).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de simetrías y funciones especiales.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de simetrías y funciones especiales.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función par cumple la identidad de simetría f(-x) = f(x)?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de función par con simetría en el eje Y.
-- titulo: ¿La función parte entera [x] devuelve el mayor entero menor o igual a x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de la función piso o parte entera.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de funciones especiales.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de funciones especiales.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir las funciones pares (simetría eje Y) con las funciones impares (simetría
-  respecto al origen).
-- Asumir que toda función real debe ser obligatoriamente par o impar, ignorando el
-  caso sin paridad.
-- Creer que una función impar o par debe tener coeficientes pares o impares respectivamente.
-- 'Calcular la parte entera de números negativos truncando decimales en lugar de redondear
-  al entero menor (ej: $[-1{,}2] = -2$).'
-- Unir los escalones horizontales de la función parte entera con líneas verticales
-  en lugar de dejarlos discontinuos.
+  - 'La función parte entera evaluada en $x = -1{,}2$ da como resultado el número $-1$.'
+  - 'El recorrido de la función parte entera $f(x) = \lfloor x \rfloor$ contiene todos los números decimales reales.'
+  - 'La función parte entera es una curva continua sin saltos ni interrupciones.'
+  - 'Evaluar $\lfloor x \rfloor$ en un número entero $x = 5$ da como resultado $4$.'
+  - 'Sumar un número entero $k$ dentro de $\lfloor x + k \rfloor$ multiplica el valor por $k$.'
 afirmaciones_verdaderas:
-- Una función es par si $f(-x) = f(x)$ (simétrica respecto al eje $Y$) e impar si
-  $f(-x) = -f(x)$ (simétrica respecto al origen $(0,0)$).
-- La función parte entera $f(x) = [x]$ asigna a cada real el mayor entero menor o
-  igual a $x$, generando una gráfica escalonada discontinua.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, analizar y clasificar
-  simetrías de funciones pares e impares, así como graficar y aplicar la función parte
-  entera en contextos de cobro por tramos y finanzas.
-fuente: Texto escolar MINEDUC — Álgebra / Simetrías y Funciones Especiales
+  - 'La función parte entera $f(x) = \lfloor x \rfloor$ asigna a cada número real el mayor entero menor o igual a $x$, cumpliendo $n \le x < n + 1 \implies \lfloor x \rfloor = n$.'
+  - 'El recorrido de la función parte entera está formado exclusivamente por el conjunto de los números enteros $\mathbb{Z}$.'
+al_terminar_debes_poder: |
+  QUÉ: Definir y calcular el valor de la función parte entera en el conjunto de los números reales.
+  CÓMO: Ubicar $x$ en la recta numérica e identificar el entero $n \le x$, aplicando la regla a valores positivos, enteros y negativos.
+fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
 estado: publicado

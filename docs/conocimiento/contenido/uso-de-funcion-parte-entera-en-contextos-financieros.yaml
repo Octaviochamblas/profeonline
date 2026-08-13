@@ -1,130 +1,90 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARTE_ENTERA_CONTEXTO_FINANCIERO
-resumen_inicial: En contextos financieros, la parte entera modela liquidaciones de
-  intereses por períodos cumplidos, divisas no fraccionables y tramos tributarios.
-explicacion_simple: 'En el mundo financiero y comercial, muchas cosas solo ocurren
-  en **unidades enteras**:
+resumen_inicial: El uso de la función parte entera en contextos financieros modela decisiones discretas como el cálculo de comisiones, intereses periódicos o unidades vendidas.
+explicacion_simple: |
+  En el **mundo financiero y de los negocios**, las operaciones no siempre son continuas:
 
-  - **Intereses bancarios por mes vencido:** Si un depósito paga intereses cada 30
-  días, estar 59 días te paga solo el 1er mes (el 2º mes no se cumple).
+  - **Intereses bancarios**: Un depósito paga intereses solo por **meses completos acumulados**. Si dejas el dinero $5{,}8$ meses, te pagan solo por $5$ meses enteros ($\lfloor 5{,}8 \rfloor = 5$).
+  - **Empaques de venta**: Si produces $147$ huevos y los vendes en cajas de $12$, puedes formar exactamente $\lfloor 147 / 12 \rfloor = \lfloor 12{,}25 \rfloor = 12$ cajas completas.
+  - La función parte entera permite calcular la **cantidad exacta de periodos o productos enteros**.
+explicacion_formal: |
+  Sea $V$ una variable económica continua (tiempo transcurrido, monto acumulado, unidades producidas) y $B$ la base de capitalización o empaque. La función de beneficio o unidades discretas $N(V)$ se modela mediante:
 
-  - **Compra de divisas u objetos indivisibles:** No puedes comprar $3{,}7$ billetes
-  o $4{,}8$ acciones; debes tomar la parte entera de las unidades que te alcanza la
-  plata.'
-explicacion_formal: 'La cuantificación discreta de unidades financieras $N(M)$ con
-  capital $M$ y costo unitario $P_0$ se rige por el modelo:
+  $$N(V) = K \cdot \left\lfloor \frac{V}{B} \right\rfloor$$
 
+  donde $K$ es la ganancia o tasa fija asignada a cada bloque completo $B$.
 
-  $$N(M) = \left\lfloor \frac{M}{P_0} \right\rfloor$$
+  **Aplicación a intereses por periodos enteros:**
+  El capital acumulado $C(t)$ tras $t$ periodos con tasa de interés simple $r$ abonada al final de cada periodo $T$ viene dado por:
 
-
-  **Desglose de la fórmula:**
-
-  - Aplicación de la función parte entera para restringir a $\mathbb{Z}^+$ la cantidad
-  máxima de activos enteros adquiribles con el presupuesto $M$.'
-definiciones_clave: '- **Cuantificación financiera discreta**: Modelamiento de variables
-  comerciales que no admiten fracciones continuas.'
-propiedades_relaciones: '- **Piso presupuestario**: La función parte entera garantiza
-  no exceder el presupuesto disponible al comprar unidades enteras.'
+  $$C(t) = C_0 \cdot \left(1 + r \cdot \left\lfloor \frac{t}{T} \right\rfloor \right)$$
+definiciones_clave: |
+  - **Modelamiento financiero discreto**: Aplicación de la función parte entera para representar pagos de intereses, comisiones o unidades completas en economía.
+propiedades_relaciones: |
+  - **Ausencia de prorrateo**: En contratos donde no existe prorrateo diario, las fracciones de tiempo no generan intereses hasta completar el ciclo entero.
 ejemplo_guiado:
-  enunciado: Un inversionista dispone de $\$1.500.000$ para comprar acciones de una
-    empresa que cotizan a $\$340.000$ cada una. Determina cuántas acciones enteras
-    puede comprar y el vuelto restante.
+  enunciado: 'Un depósito a plazo rinde $\$15.000$ por cada mes completo transcurrido. Si el dinero permanece depositado durante $7{,}8$ meses, calcula los intereses totales cobrados.'
   pasos:
-  - 'Paso 1: Plantear la división del presupuesto entre el precio unitario: $\frac{1.500.000}{340.000}
-    \approx 4{,}4117$.Paso 2: Aplicar la función parte entera para obtener las acciones
-    enteras: $N = [4{,}4117] = 4\text{ acciones}$.Paso 3: Calcular el costo de las
-    4 acciones: $4 \cdot 340.000 = 1.360.000$.Paso 4: Calcular el dinero restante:
-    $1.500.000 - 1.360.000 = \$140.000$.Paso 5: Concluir que puede comprar $4$ acciones
-    enteras y le sobran $\$140.000$.'
+    - 'Paso 1: Aplicar la función parte entera a la cantidad de meses: $\lfloor 7{,}8 \rfloor = 7$ meses enteros.'
+    - 'Paso 2: Identificar la ganancia fija por mes completo: $K = 15.000$.'
+    - 'Paso 3: Calcular el beneficio acumulado: $I = 15.000 \cdot 7$.'
+    - 'Paso 4: Multiplicar: $15.000 \cdot 7 = 105.000$ pesos.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Con un presupuesto de $\$1.500.000$ y acciones a $\$340.000$, ¿cuántas
-    acciones enteras se pueden adquirir usando la función parte entera?
-  choices:
-  - text: $4\text{ acciones}$
-    is_correct: true
-  - text: $5\text{ acciones}$
-    is_correct: false
-  - text: $4.41\text{ acciones}$
-    is_correct: false
-  - text: $3\text{ acciones}$
-    is_correct: false
-  explanation: La alternativa correcta es '$4\text{ acciones}$'. (Puesto que $[4{,}4117]
-    = 4$).
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Por qué en este contexto financiero NO se puede aproximar $4{,}41$ al
-    entero superior $5$?
-  choices:
-  - text: Porque 5 acciones costarían $\$1.700.000$, superando el presupuesto disponible
-      de $\$1.500.000$.
-    is_correct: true
-  - text: Porque las acciones no se venden en números impares.
-    is_correct: false
-  - text: Porque la bolsa de comercio lo prohíbe.
-    is_correct: false
-  - text: Porque el dinero se duplica.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque 5 acciones costarían $\$1.700.000$,
-    superando el presupuesto disponible de $\$1.500.000$.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Si una inversión rinde $15.000 por cada mes completo y el dinero permanece 7,8 meses, ¿cuánto dinero se recibe por concepto de intereses?'
+    choices:
+      - {text: '$105.000 pesos', is_correct: true}
+      - {text: '$117.000 pesos', is_correct: false}
+      - {text: '$120.000 pesos', is_correct: false}
+      - {text: '$100.000 pesos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$105.000 pesos''. Solo se pagan 7 meses completos: $15.000 \cdot \lfloor 7{,}8 \rfloor = 15.000 \cdot 7 = 105.000$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: '¿Por qué se utiliza la función parte entera en contratos financieros sin prorrateo diario?'
+    choices:
+      - {text: 'Porque las fracciones de periodo no generan ganancias hasta completar el ciclo entero.', is_correct: true}
+      - {text: 'Porque la tasa de interés se vuelve negativa con los decimales.', is_correct: false}
+      - {text: 'Porque el banco cobra una multa por usar números decimales.', is_correct: false}
+      - {text: 'Porque el capital inicial se reduce a cero.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque las fracciones de periodo no generan ganancias hasta completar el ciclo entero.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Dividir el capital disponible entre el costo unitario del activo.'
-- 'Paso 2: Aplicar la función parte entera $\lfloor \cdot \rfloor$ al resultado de
-  la división.'
-- 'Paso 3: Multiplicar las unidades enteras por el costo unitario para hallar el gasto
-  real.'
-- 'Paso 4: Restar del capital original para hallar el saldo remanente.'
-errores_correccion: '- **Error común:** Redondear al entero más cercano (pensar que
-  $4{,}7$ daría 5 al comprar con presupuesto limitado).
-
-  - **Cómo corregirlo:** En compras presupuestarias se usa SIEMPRE la parte entera
-  hacia abajo ($\lfloor x \rfloor$), porque no puedes comprar lo que no te alcanza
-  a pagar.'
+  - 'Paso 1: Identificar la unidad o periodo base $B$ y la ganancia/costo por periodo $K$.'
+  - 'Paso 2: Dividir la variable continua dada $V$ entre la base $B$.'
+  - 'Paso 3: Aplicar el operador parte entera $\lfloor V / B \rfloor$ para obtener los bloques enteros completos.'
+  - 'Paso 4: Multiplicar el número de bloques por $K$ para determinar el resultado financiero final.'
+errores_correccion: |
+  - **Error común:** Prorratear decimalmente los intereses cuando las cláusulas financieras exigen periodos enteros cumplidos.
+  - **Cómo corregirlo:** Si el contrato exige **PERIODOS ENTEROS COMPLETOS**, debes aplicar la función parte entera $\lfloor t / T \rfloor$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de simetrías y funciones especiales.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de simetrías y funciones especiales.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Una función par cumple la identidad de simetría f(-x) = f(x)?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de función par con simetría en el eje Y.
-- titulo: ¿La función parte entera [x] devuelve el mayor entero menor o igual a x?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, es la definición de la función piso o parte entera.
+  - titulo: Ejemplo 1
+    enunciado: Demostración básica de funciones especiales.
+    alternativas:
+      - '$1$'
+      - '$0$'
+      - '$-1$'
+    respuesta: '$1$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Demostración algebraica de funciones especiales.
+    alternativas:
+      - '$x$'
+      - '$x^2$'
+      - '$1$'
+    respuesta: '$x$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Confundir las funciones pares (simetría eje Y) con las funciones impares (simetría
-  respecto al origen).
-- Asumir que toda función real debe ser obligatoriamente par o impar, ignorando el
-  caso sin paridad.
-- Creer que una función impar o par debe tener coeficientes pares o impares respectivamente.
-- 'Calcular la parte entera de números negativos truncando decimales en lugar de redondear
-  al entero menor (ej: $[-1{,}2] = -2$).'
-- Unir los escalones horizontales de la función parte entera con líneas verticales
-  en lugar de dejarlos discontinuos.
+  - 'En un contrato bancario sin prorrateo, permanecer 7,9 meses equivale a cobrar intereses por 8 meses enteros.'
+  - 'La función parte entera en contextos financieros multiplica el capital inicial por un exponente cuadrático.'
+  - 'Vender productos en cajas cerradas de 12 unidades permite vender fracciones decimales de cajas al mismo precio.'
+  - 'Aplicar la función parte entera a un saldo bancario negativo devuelve un saldo positivo de mayor valor.'
+  - 'Los intereses liquidados por periodos enteros cambian continuamente a cada segundo sin saltos.'
 afirmaciones_verdaderas:
-- Una función es par si $f(-x) = f(x)$ (simétrica respecto al eje $Y$) e impar si
-  $f(-x) = -f(x)$ (simétrica respecto al origen $(0,0)$).
-- La función parte entera $f(x) = [x]$ asigna a cada real el mayor entero menor o
-  igual a $x$, generando una gráfica escalonada discontinua.
-al_terminar_debes_poder: Al finalizar este recurso podrás definir, analizar y clasificar
-  simetrías de funciones pares e impares, así como graficar y aplicar la función parte
-  entera en contextos de cobro por tramos y finanzas.
-fuente: Texto escolar MINEDUC — Álgebra / Simetrías y Funciones Especiales
+  - 'La función parte entera se utiliza en finanzas para modelar liquidaciones de intereses, comisiones o ventas donde las fracciones no generan derechos hasta completar el ciclo entero.'
+  - 'El modelo $N = K \cdot \lfloor V / B \rfloor$ asigna beneficios exclusivamente a la cantidad de bloques enteros cumplidos.'
+al_terminar_debes_poder: |
+  QUÉ: Resolver problemas financieros y comerciales mediante el uso de la función parte entera.
+  CÓMO: Determinar el número de periodos enteros completos $\lfloor V / B \rfloor$ y calcular el rendimiento o beneficio económico discreto.
+fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
 estado: publicado
