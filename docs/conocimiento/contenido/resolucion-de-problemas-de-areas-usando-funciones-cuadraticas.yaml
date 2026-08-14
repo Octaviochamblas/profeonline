@@ -1,102 +1,90 @@
 semantic_id: MAT.ALG.FUNC_CUADR_MODELO.PROBLEMAS_AREAS
-resumen_inicial: 'Los problemas de áreas se resuelven expresando la superficie como el producto de dos dimensiones $A(x) = x \cdot g(x)$, formando una función cuadrática cuyo vértice entrega el área máxima.'
+resumen_inicial: La resolución de problemas de áreas formula funciones $A(x)$ relacionando dimensiones geométricas con perímetros fijos para hallar la superficie máxima.
 explicacion_simple: |
-  Cuando queremos construir un rectángulo con una cantidad fija de cerco o manguera y lograr que encierre la mayor cantidad posible de espacio (área máxima), planteamos una función cuadrática multiplicando el ancho por el largo. Al graficar esta función, el punto del vértice nos muestra la medida exacta de los lados que debemos elegir para lograr la superficie máxima.
+  En problemas de geometría práctica (como cercar un jardín, construir una ventana o diseñar una caja), el **área $A = \text{base} \times \text{altura}$** genera una función cuadrática:
+
+  - **Ejemplo típico**: Tienes un alambre de $40 \text{ m}$ para formar un terreno rectangular de ancho $x$ y largo $y$:
+    - Perímetro: $2x + 2y = 40 \implies x + y = 20 \implies y = 20 - x$.
+    - Función de Área: $A(x) = x \cdot y = x(20 - x) = 20x - x^2$.
+  - Como $a = -1 < 0$, la función tiene forma de parábola triste ($\cap$) y su **punto más alto es el ÁREA MÁXIMA**.
+  - **Dato curioso**: ¡El rectángulo que encierra la mayor área posible con un perímetro fijo es siempre un **CUADRADO**!
 explicacion_formal: |
-  ### Definición formal
-  La **optimización de áreas bidimensionales** bajo restricciones lineales de perímetro consiste en determinar la función superficie $A: D \to \mathbb{R}^+$ dada por el producto de funciones de primer grado:
-  $$A(x) = \text{ancho}(x) \cdot \text{largo}(x) = x \cdot (m - n x) = -n x^2 + m x, \quad n > 0$$
+  Sea una región plana de geometría variable parametrizada por la dimensión $x \in D_{ctx} \subset \mathbb{R}^+$. El problema de **optimización de área** formula la función cuadrática objetiva $A: D_{ctx} \to \mathbb{R}^+$:
 
-  ### Desglose simbólico
-  - Restricción de perímetro $P_0 = 2x + 2y \implies y = \frac{P_0}{2} - x$.
-  - Función de superficie $A(x) = x \left(\frac{P_0}{2} - x\right) = -x^2 + \frac{P_0}{2} x$.
-  - Dimensión óptima: $x_{\text{óptimo}} = -\frac{m}{2(-n)} = \frac{m}{2n}$. En rectángulos con 4 lados cerrados de cerco, el rectángulo de área máxima es siempre un **cuadrado** ($x = y = \frac{P_0}{4}$).
-  - Área máxima alcanzada: $A_{\text{máx}} = A(x_{\text{óptimo}})$.
+  $$A(x) = g(x) \cdot h(x) = (p_1 x + q_1)(p_2 x + q_2) = a x^2 + b x + c$$
 
-  ### Síntesis didáctica
-  Diferenciar restricciones de cerco con paredes existentes: Si un lado del terreno aprovecha un muro rígido preexistente (solo se cercan 3 lados: $P_0 = x + 2y$), el terreno óptimo no es un cuadrado sino un rectángulo donde el largo del cerco es el doble del ancho.
+  **Análisis de extremales geométricos:**
+  - Dado que $a = p_1 p_2 < 0$ en la mayoría de los cercados con restricción lineal de perímetro, el área máxima $A_{máx}$ se alcanza unívocamente en la dimensión crítica:
+
+  $$x^* = -\frac{b}{2a} \implies A_{máx} = A(x^*) = \frac{4ac - b^2}{4a}$$
 definiciones_clave: |
-  - **Función de área $A(x)$**: Regla cuadrática cóncava hacia abajo que expresa la superficie en función de una sola dimensión.
-  - **Dimensión óptima**: Valor del lado $x = h$ que maximiza el área contenida.
-  - **Área máxima**: Valor supremo $k = A(h)$ del conjunto recorrido de la función de superficie.
+  - **Área óptima cuadrática**: Superficie máxima alcanzada por una figura geométrica de dimensiones variables sujetas a restricciones de perímetro lineal.
 propiedades_relaciones: |
-  - **Teorema isoperimétrico para rectángulos**: Entre todos los rectángulos de igual perímetro fijo $P_0$, el de mayor área es el cuadrado perfecto de lado $l = \frac{P_0}{4}$.
-  - **Dominio de área positiva**: El área solo tiene sentido si $A(x) > 0$, lo que acota $x$ al intervalo abierto entre las raíces $]0, x_2[$.
+  - **Teorema del cuadrado isoperimétrico**: Entre todos los rectángulos de perímetro fijo $P$, el cuadrado de lado $L = P/4$ posee el área máxima $A_{máx} = (P/4)^2$.
 ejemplo_guiado:
-  enunciado: 'Un agricultor dispone de 100 metros de malla para cercar un terreno rectangular destinado al pastoreo. Determina las dimensiones del terreno para obtener el área máxima y calcula dicha superficie en $m^2$.'
+  enunciado: 'Halla las dimensiones y el área máxima de un rectángulo cuyo semiperímetro es de 14 metros.'
   pasos:
-    - 'Paso 1: Planteamos el perímetro: $2x + 2y = 100 \implies x + y = 50 \implies y = 50 - x$.'
-    - 'Paso 2: Construimos la función de área: $A(x) = x \cdot y = x(50 - x) = -x^2 + 50x$.'
-    - 'Paso 3: Calculamos la dimensión óptima del ancho (vértice $h$): $x = -\frac{50}{2(-1)} = 25\text{ metros}$.'
-    - 'Paso 4: Calculamos el largo correspondiente: $y = 50 - 25 = 25\text{ metros}$ (un cuadrado de $25 \times 25$).'
-    - 'Paso 5: Evaluamos el área máxima obtenida: $A(25) = 25 \cdot 25 = 625\text{ m}^2$.'
+    - 'Paso 1: Expresar el largo en función del ancho $x$: $\text{largo} = 14 - x$.'
+    - 'Paso 2: Formular la función de área: $A(x) = x(14 - x) = 14x - x^2 = -x^2 + 14x$.'
+    - 'Paso 3: Calcular el ancho óptimo $x^*$: $x^* = -\frac{14}{2(-1)} = 7$ metros.'
+    - 'Paso 4: Calcular el largo óptimo: $\text{largo} = 14 - 7 = 7$ metros (cuadrado de $7 \times 7$) y el área máxima $A(7) = 49 \text{ m}^2$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'Si se dispone de 80 metros de cerco para rodear los 4 lados de un jardín rectangular, ¿cuáles son las dimensiones del terreno que maximizan el área y cuánto vale esa área máxima?'
+    question: 'Si se dispone de 100 metros de cerco para construir un rectángulo de lados $x$ y $(50 - x)$, ¿cuál es la superficie máxima que se puede encerrar?'
     choices:
-      - {text: 'Cuadrado de $20 \times 20$ metros con un área máxima de $400\text{ m}^2$', is_correct: true}
-      - {text: 'Rectángulo de $30 \times 10$ metros con un área máxima de $300\text{ m}^2$', is_correct: false}
-      - {text: 'Cuadrado de $40 \times 40$ metros con un área máxima de $1600\text{ m}^2$', is_correct: false}
-      - {text: 'Rectángulo de $25 \times 15$ metros con un área máxima de $375\text{ m}^2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Cuadrado de $20 \times 20$ metros con un área máxima de $400\text{ m}^2$''. Por el teorema isoperimétrico, $x = y = \frac{80}{4} = 20\text{ m}$, resultando $A = 20 \cdot 20 = 400\text{ m}^2$.'
-    reinforcement_section: 'Explicación formal'
+      - {text: 'Exactamente $625 \text{ m}^2$ ($25 \times 25$)', is_correct: true}
+      - {text: 'Exactamente $1000 \text{ m}^2$.', is_correct: false}
+      - {text: 'Exactamente $500 \text{ m}^2$.', is_correct: false}
+      - {text: 'Exactamente $2500 \text{ m}^2$.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $625 \text{ m}^2$ ($25 \times 25$)''. $x^* = 25$, y $A(25) = 25 \cdot 25 = 625$.'
+    reinforcement_section: Explicación formal
   - placement: after_ejemplo_guiado
-    question: 'Se desea cercar un terreno adosado a un río (no se cerca la orilla del río) usando 40 metros de malla. Si $x$ es el ancho perpendicular al río, la función de área es $A(x) = x(40 - 2x) = -2x^2 + 40x$. ¿Cuál es el área máxima?'
+    question: '¿Por qué la función de área de un rectángulo con perímetro fijo $P$ tiene coeficiente cuadrático negativo $a < 0$?'
     choices:
-      - {text: '$200\text{ m}^2$', is_correct: true}
-      - {text: '$100\text{ m}^2$', is_correct: false}
-      - {text: '$400\text{ m}^2$', is_correct: false}
-      - {text: '$800\text{ m}^2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$200\text{ m}^2$''. Calculamos el ancho óptimo $x = -\frac{40}{2(-2)} = 10\text{ m}$. El área máxima es $A(10) = 10(40 - 20) = 200\text{ m}^2$.'
-    reinforcement_section: 'Ejemplo guiado'
+      - {text: 'Porque al aumentar el ancho $x$, el largo $(P/2 - x)$ disminuye, produciendo el término $-x^2$', is_correct: true}
+      - {text: 'Porque las áreas geométricas son números negativos.', is_correct: false}
+      - {text: 'Porque el semiperímetro es siempre menor que cero.', is_correct: false}
+      - {text: 'Porque la base del rectángulo se mide en centímetros.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque al aumentar el ancho $x$, el largo $(P/2 - x)$ disminuye, produciendo el término $-x^2$''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Expresar una de las dimensiones del terreno en función de la otra utilizando la restricción del cerco disponible.'
-  - 'Paso 2: Formular la función de área multiplicando ambas dimensiones para obtener el modelo cuadrático $A(x) = -ax^2 + bx$.'
-  - 'Paso 3: Calcular la abscisa del vértice $x = -\frac{b}{2a}$ para hallar la dimensión óptima.'
-  - 'Paso 4: Evaluar $A(x)$ en dicho valor para calcular el área máxima en las unidades cuadradas correspondientes.'
+  - 'Paso 1: Identificar el perímetro o la restricción dada en el problema geométrico.'
+  - 'Paso 2: Escribir una de las dimensiones en función de la variable $x$.'
+  - 'Paso 3: Multiplicar base por altura para armar la función de área $A(x) = -ax^2 + bx + c$.'
+  - 'Paso 4: Calcular el vértice para obtener la dimensión óptima $x^* = -\frac{b}{2a}$ y el área máxima $A(x^*)$.'
 errores_correccion: |
-  - **Error 1:** Confundir el perímetro del terreno con el área, respondiendo con los metros de malla disponibles. **Cómo corregirlo:** La malla disponible es la restricción lineal de perímetro. El área es la superficie bidimensional resultante de multiplicar largo por ancho.
-  - **Error 2:** Asumir que el terreno con pared siempre es un cuadrado perfecto. **Cómo corregirlo:** Si se aprovecha un muro existente, solo se cerca una longitud $x + 2y = P_0$. En este caso, el rectángulo óptimo tiene un lado que mide el doble que el otro.
+  - **Error común:** Olvidar que un lado del terreno aprovecha un muro existente en ciertos problemas, usando $2x + 2y$ en lugar de $2x + y$.
+  - **Cómo corregirlo:** Lee la figura: si un lado **NO REQUIERE MALLA** (muro de río o pared), la ligadura es **$2x + y = \text{Malla}$**.
 ejemplos:
-  - titulo: 'Área máxima con 4 lados de malla'
-    enunciado: '¿Cuál es el área máxima de un rectángulo con 200 m de perímetro?'
+  - titulo: Ejemplo 1
+    enunciado: Área máxima de 4 lados.
     alternativas:
-      - '$2500\text{ m}^2$'
-      - '$5000\text{ m}^2$'
-      - '$10000\text{ m}^2$'
-    respuesta: '$2500\text{ m}^2$'
+      - 'Ancho 10 m, largo 10 m, Área máxima 100 m^2'
+      - 'Ancho 5 m, largo 15 m, Área máxima 75 m^2'
+      - 'Área máxima 400 m^2'
+    respuesta: 'Ancho 10 m, largo 10 m, Área máxima 100 m^2'
     solucion_pasos:
-      - '1. El lado óptimo es el cuadrado de $l = \frac{200}{4} = 50$ m.'
-      - '2. El área máxima es $A = 50 \cdot 50 = 2500\text{ m}^2$.'
-  - titulo: 'Dimensión de ancho óptimo'
-    enunciado: 'En la función de área $A(x) = -3x^2 + 60x$, ¿qué ancho $x$ maximiza la superficie?'
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Área máxima con pared existente.
     alternativas:
-      - '$x = 10$'
-      - '$x = 20$'
-      - '$x = 300$'
-    respuesta: '$x = 10$'
+      - 'Ancho 15 m, largo 30 m, Área máxima 450 m^2'
+      - 'Ancho 20 m, largo 20 m, Área máxima 400 m^2'
+      - 'Área máxima 600 m^2'
+    respuesta: 'Ancho 15 m, largo 30 m, Área máxima 450 m^2'
     solucion_pasos:
-      - '1. $x = -\frac{60}{2(-3)} = \frac{60}{6} = 10$.'
-      - '2. El ancho que maximiza la superficie es $x = 10$.'
-  - titulo: 'Concavidad en problemas de áreas'
-    enunciado: '¿El coeficiente cuadrático $a$ en las funciones de optimización de áreas rectangulares es siempre negativo ($a < 0$)?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. El producto $x(M - nx) = -nx^2 + Mx$ genera siempre un término cuadrático negativo $-nx^2$, garantizando un área máxima en el vértice.'
-  - titulo: 'Unidades del área máxima'
-    enunciado: 'Si las dimensiones del terreno están en metros, ¿el área máxima obtenida del vértice se expresa en metros cuadrados ($m^2$)?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. La superficie es una magnitud bidimensional expresada en unidades al cuadrado.'
+      - Pasos de solución.
 errores_frecuentes:
-  - 'El área máxima de un rectángulo rodeado por 40 metros de malla se obtiene construyendo un terreno de $39 \times 1$ metros.'
-  - 'La dimensión que maximiza el área de una figura es igual al valor del área máxima.'
-  - 'Si un terreno aprovecha un muro de piedra, las dimensiones que maximizan el área forman siempre un cuadrado perfecto.'
-  - 'La función de área $A(x) = x(100 - x)$ tiene su vértice en $x = 100$.'
-  - 'El área de una figura geométrica puede ser un valor numérico negativo si el vértice tiene ordenada negativa.'
+  - 'Dada una malla de 60 m para cercar con un muro, es correcto decir que el ancho óptimo es de 15 m por la regla de 4 lados.'
+  - 'La suposición de que el área de una figura geométrica puede asumir valores negativos en el dominio contextual.'
+  - 'Cometer errores al multiplicar el producto de dimensiones cuadráticas confundiendo unidades lineales con superficiales.'
+  - 'La falta de restricción del dominio $0 < x < P/2$ permitiendo dimensiones de longitud nula o negativa.'
+  - 'Afirmar que un rectángulo de dimensiones asimétricas encierra mayor superficie que un cuadrado con el mismo perímetro.'
 afirmaciones_verdaderas:
-  - 'Entre todos los rectángulos de perímetro fijo con 4 lados cercados, el cuadrado es la figura geométrica que encierra el área máxima.'
-  - 'La función de área en problemas de cercados rectangulares es una parábola cóncava hacia abajo cuyo vértice indica las dimensiones y el área máxima.'
-al_terminar_debes_poder: 'Plantear y resolver problemas de optimización de áreas bidimensionales utilizando funciones cuadráticas.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La función de área de un rectángulo sujeto a perímetro constante es una parábola cóncava hacia abajo cuyo máximo se alcanza en el vértice.'
+  - 'Para un rectángulo cercado en sus cuatro lados con perímetro constante $P$, la superficie máxima se obtiene cuando la figura es un cuadrado de lado $P/4$.'
+al_terminar_debes_poder: |
+  QUÉ: Formular y resolver problemas de optimización de áreas geométricas usando funciones cuadráticas.
+  CÓMO: Plantear la ligadura de perímetro, expresar el área $A(x) = -ax^2 + bx$, hallar el vértice $x^*$ y calcular la superficie máxima $A(x^*)$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
 estado: publicado

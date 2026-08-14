@@ -1,102 +1,97 @@
 semantic_id: MAT.ALG.FUNC_CUADR_MODELO.OPTIMIZACION
-resumen_inicial: 'La optimización cuadrática halla el valor máximo o mínimo absoluto de un modelo identificando la concavidad de la curva y calculando las coordenadas del vértice $V(h, k)$.'
+resumen_inicial: La optimización cuadrática aplica la teoría del vértice para calcular máximos o mínimos globales en problemas de economía, ingeniería y geometría.
 explicacion_simple: |
-  Optimizar significa encontrar lo "mejor" dentro de un problema: si hablamos de ganancias, alturas o superficies, buscamos el valor **máximo**; si hablamos de costos, gastos o errores, buscamos el valor **mínimo**. En una función cuadrática, el punto óptimo siempre está en el vértice de la parábola. El signo de $a$ nos avisa si es un pico (máximo) o un fondo (mínimo).
+  **Optimizar** significa encontrar la mejor opción posible: la **mayor ganancia**, el **menor costo**, el **área más grande** o el **tiempo óptimo**.
+
+  - Como la gráfica de una función cuadrática $f(x) = ax^2 + bx + c$ es una parábola, la optimización **SE RESUELVE SIEMPRE CON EL VÉRTICE $V(h, k)$**:
+
+  1. **Si buscas MAXIMIZAR (hacer lo más grande posible)**:
+     - El modelo tendrá $a < 0$ (cóncava hacia abajo $\cap$).
+     - La respuesta al óptimo es la **ordenada del vértice $k = f(h)$**.
+  2. **Si buscas MINIMIZAR (hacer lo más pequeño posible)**:
+     - El modelo tendrá $a > 0$ (cóncava hacia arriba $\cup$).
+     - La respuesta al óptimo es la **ordenada del vértice $k = f(h)$**.
 explicacion_formal: |
-  ### Definición formal
-  Dada la función cuadrática $f: D \to \mathbb{R}$ definida por $f(x) = ax^2 + bx + c$, el problema de **optimización matemática** busca el elemento extremo del conjunto imagen:
-  $$\text{Extremo de } f(x) = \begin{cases} \text{Máximo absoluto } k = f\left(-\frac{b}{2a}\right), & \text{si } a < 0 \\ \text{Mínimo absoluto } k = f\left(-\frac{b}{2a}\right), & \text{si } a > 0 \end{cases}$$
+  Sea la función objetivo diferenciable $f: D_{ctx} \to \mathbb{R}$ con $f(x) = ax^2 + bx + c$. El **Problema de Optimización Cuadrática Global** busca resolver la extremalización:
 
-  ### Desglose simbólico
-  - **Punto óptimo o argumento óptimo**: $x^* = h = -\frac{b}{2a} \in D$ (valor de la variable que optimiza).
-  - **Valor óptimo**: $y^* = k = f(x^*) = c - \frac{b^2}{4a}$ (magnitud óptima alcanzada).
-  - Condición de primer orden: La derivada $f'(x^*) = 2ax^* + b = 0 \implies x^* = -\frac{b}{2a}$.
-  - Condición de segundo orden: $f''(x) = 2a$. Si $2a < 0 \implies$ Máximo; si $2a > 0 \implies$ Mínimo.
+  $$\max_{x \in D_{ctx}} f(x) \quad \text{o} \quad \min_{x \in D_{ctx}} f(x)$$
 
-  ### Síntesis didáctica
-  Diferenciar con claridad el "dónde" del "cuánto": El argumento $x^*$ responde a la pregunta *¿para qué valor se logra la optimización?*, mientras que el valor óptimo $y^*$ responde a *¿cuál es la magnitud máxima o mínima lograda?*.
+  **Demostración por cálculo diferencial del punto crítico:**
+  La condición necesaria de primer orden exige que la primera derivada sea nula:
+
+  $$f'(x) = 2ax + b = 0 \iff x^* = -\frac{b}{2a}$$
+
+  - La condición de segundo orden confirma el carácter del óptimo: $f''(x^*) = 2a$.
+    - Si $a < 0 \implies f''(x^*) < 0$: $x^*$ es el **maximizador global estricto** con valor óptimo $f(x^*) = k$.
+    - Si $a > 0 \implies f''(x^*) > 0$: $x^*$ es el **minimizador global estricto** con valor óptimo $f(x^*) = k$.
 definiciones_clave: |
-  - **Optimización**: Búsqueda del valor máximo o mínimo global que puede alcanzar una función.
-  - **Argumento óptimo $x^*$**: Abscisa del vértice que produce el valor extremo de la función.
-  - **Valor óptimo $y^*$**: Ordenada del vértice que representa el resultado óptimo de la optimización.
+  - **Optimización cuadrática**: Proceso matemático para determinar el argumento crítico $x^*$ y la magnitud extrema $f(x^*)$ alcanzada en el vértice de la parábola.
 propiedades_relaciones: |
-  - **Unicidad del extremo en $\mathbb{R}$**: Toda función cuadrática definida sobre un intervalo no acotado posee exactamente un único punto extremo global.
-  - **Efecto de restricciones en el dominio**: Si el dominio restringido $[x_1, x_2]$ no contiene la abscisa del vértice $h$, el valor óptimo se ubica en uno de los extremos del intervalo.
+  - **Unicidad del óptimo global**: Toda función cuadrática bien definida sobre $\mathbb{R}$ posee un único punto óptimo global absoluto (sin máximos ni mínimos locales secundarios).
 ejemplo_guiado:
-  enunciado: 'Un fabricante modela el costo diario de producción $C(x)$ en miles de pesos al fabricar $x$ bicicletas mediante la función $C(x) = 2x^2 - 80x + 1500$. Determina cuántas bicicletas debe fabricar para minimizar el costo y calcula dicho costo mínimo.'
+  enunciado: 'Un granjero quiere construir un cerco rectangular de área máxima con 80 metros de cerca. Optimiza la función de área $A(x) = -x^2 + 40x$ para hallar las dimensiones y el área máxima.'
   pasos:
-    - 'Paso 1: Identificamos los coeficientes: $a = 2$, $b = -80$, $c = 1500$.'
-    - 'Paso 2: Evaluamos la concavidad: como $a = 2 > 0$, la parábola abre hacia arriba y su vértice es un costo mínimo absoluto.'
-    - 'Paso 3: Calculamos la cantidad de bicicletas óptima $x^* = -\frac{b}{2a} = -\frac{-80}{2(2)} = \frac{80}{4} = 20\text{ bicicletas}$.'
-    - 'Paso 4: Calculamos el costo mínimo evaluando $C(20)$: $C(20) = 2(20)^2 - 80(20) + 1500 = 2(400) - 1600 + 1500 = 800 - 1600 + 1500 = 700\text{ miles de pesos}$.'
-    - 'Paso 5: Conclusión: Debe fabricar 20 bicicletas para alcanzar el costo mínimo de 700 miles de pesos (700.000 pesos).'
+    - 'Paso 1: Identificar coeficientes de $A(x) = -x^2 + 40x$: $a = -1, b = 40, c = 0$.'
+    - 'Paso 2: Hallar la dimensión óptima $x^*$ (ancho): $x^* = -\frac{40}{2(-1)} = 20$ metros.'
+    - 'Paso 3: Hallar la segunda dimensión (largo): $\text{largo} = 40 - x^* = 40 - 20 = 20$ metros (un cuadrado).'
+    - 'Paso 4: Calcular el área máxima sustituyendo $x^* = 20$: $A(20) = -(20)^2 + 40(20) = -400 + 800 = 400 \text{ m}^2$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'Dada la función de ingreso $I(x) = -5x^2 + 100x + 200$, ¿cuál es el ingreso máximo que se puede alcanzar?'
+    question: 'En un proceso de optimización donde los costos de producción son $C(x) = 2x^2 - 16x + 50$, ¿cuál es la cantidad producida $x^*$ que minimiza el costo total?'
     choices:
-      - {text: '$700$', is_correct: true}
-      - {text: '$10$', is_correct: false}
-      - {text: '$500$', is_correct: false}
-      - {text: '$200$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$700$''. Calculamos la abscisa $x^* = -\frac{100}{2(-5)} = 10$. El ingreso máximo es $I(10) = -5(100) + 100(10) + 200 = -500 + 1000 + 200 = 700$.'
-    reinforcement_section: 'Explicación formal'
+      - {text: 'Exactamente 4 unidades producidas ($x^* = 4$)', is_correct: true}
+      - {text: 'Exactamente 8 unidades producidas ($x^* = 8$).', is_correct: false}
+      - {text: 'Exactamente 18 unidades producidas ($x^* = 18$).', is_correct: false}
+      - {text: 'Exactamente 50 unidades producidas ($x^* = 50$).', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente 4 unidades producidas ($x^* = 4$)''. $x^* = -b/(2a) = -(-16)/(2 \cdot 2) = 16/4 = 4$.'
+    reinforcement_section: Explicación formal
   - placement: after_ejemplo_guiado
-    question: 'En un problema de optimización donde $f(x) = -3x^2 + 12x - 5$, ¿qué tipo de extremo posee la función y en qué valor de $x$ se alcanza?'
+    question: 'Para la misma función de costos $C(x) = 2x^2 - 16x + 50$ cuyo mínimo ocurre en $x^* = 4$, ¿cuál es el costo mínimo absoluto alcanzado?'
     choices:
-      - {text: 'Posee un máximo en $x = 2$', is_correct: true}
-      - {text: 'Posee un mínimo en $x = 2$', is_correct: false}
-      - {text: 'Posee un máximo en $x = -2$', is_correct: false}
-      - {text: 'Posee un mínimo en $x = 4$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Posee un máximo en $x = 2$''. Como $a = -3 < 0$, es un máximo, y se alcanza en $x = -\frac{12}{2(-3)} = 2$.'
-    reinforcement_section: 'Ejemplo guiado'
+      - {text: 'El costo mínimo es de $18 ($C(4) = 18$)', is_correct: true}
+      - {text: 'El costo mínimo es de $4 ($C(4) = 4$).', is_correct: false}
+      - {text: 'El costo mínimo es de $50 ($C(4) = 50$).', is_correct: false}
+      - {text: 'El costo mínimo es de $32 ($C(4) = 32$).', is_correct: false}
+    explanation: 'La alternativa correcta es ''El costo mínimo es de $18 ($C(4) = 18$)''. Evaluando $C(4) = 2(4)^2 - 16(4) + 50 = 32 - 64 + 50 = 18$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la regla cuadrática del modelo $f(x) = ax^2 + bx + c$ y sus coeficientes $a, b, c$.'
-  - 'Paso 2: Comprobar el signo de $a$ para ratificar si se busca un máximo ($a < 0$) o un mínimo ($a > 0$).'
-  - 'Paso 3: Calcular el valor del parámetro $x^* = -\frac{b}{2a}$ para hallar la cantidad o valor de entrada óptimo.'
-  - 'Paso 4: Sustituir $x^*$ en la función original $f(x^*)$ para calcular el valor numérico optimizado.'
+  - 'Paso 1: Plantear o verificar la función cuadrática objetivo $f(x) = ax^2 + bx + c$.'
+  - 'Paso 2: Comprobar la dirección de optimización (maximizar si $a < 0$, minimizar si $a > 0$).'
+  - 'Paso 3: Calcular el argumento óptimo de control $x^* = -\frac{b}{2a}$.'
+  - 'Paso 4: Sustituir $x^*$ en la función objetivo para obtener el valor óptimo absoluto $f(x^*) = k$.'
 errores_correccion: |
-  - **Error 1:** Afirmar que una función cuadrática con $a > 0$ posee un valor máximo absoluto. **Cómo corregirlo:** Si $a > 0$, las ramas crecen hacia $+\infty$, por lo que la función no tiene máximo; únicamente posee un **mínimo** en el vértice.
-  - **Error 2:** Confundir la abscisa óptima $x^*$ con el valor óptimo $y^*$. **Cómo corregirlo:** La abscisa $x^*$ indica las unidades necesarias para optimizar, mientras que $y^* = f(x^*)$ es el resultado numérico optimizado.
+  - **Error común:** Intentar resolver $f(x) = 0$ (hallar ceros) cuando la pregunta pedía optimizar (hallar el máximo o mínimo).
+  - **Cómo corregirlo:** Para **OPTIMIZAR** se calcula el **VÉRTICE $x^* = -b/(2a)$**; los ceros solo indican cuándo se anula la función.
 ejemplos:
-  - titulo: 'Cálculo de punto mínimo'
-    enunciado: '¿En qué punto $x$ alcanza su mínimo la función $f(x) = x^2 - 6x + 10$?'
+  - titulo: Ejemplo 1
+    enunciado: Maximización de ganancias.
     alternativas:
-      - '$x = 3$'
-      - '$x = -3$'
-      - '$x = 1$'
-    respuesta: '$x = 3$'
+      - 'Ganancia máxima de $900 vendiendo a $30'
+      - 'Ganancia máxima de $30 vendiendo a $900'
+      - 'Ganancia nula en x = 30'
+    respuesta: 'Ganancia máxima de $900 vendiendo a $30'
     solucion_pasos:
-      - '1. $a = 1 > 0 \implies$ Mínimo.'
-      - '2. $x^* = -\frac{-6}{2(1)} = 3$.'
-  - titulo: 'Valor máximo alcanzado'
-    enunciado: '¿Cuál es el valor máximo de $g(x) = -2x^2 + 8x - 3$?'
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Minimización de consumo de combustible.
     alternativas:
-      - '$5$'
-      - '$2$'
-      - '$8$'
-    respuesta: '$5$'
+      - 'Consumo mínimo de 6 L/100km a 80 km/h'
+      - 'Consumo mínimo de 80 L/100km a 6 km/h'
+      - 'Consumo constante'
+    respuesta: 'Consumo mínimo de 6 L/100km a 80 km/h'
     solucion_pasos:
-      - '1. $x^* = -\frac{8}{2(-2)} = 2$.'
-      - '2. $g(2) = -2(4) + 8(2) - 3 = -8 + 16 - 3 = 5$.'
-  - titulo: 'Extremo en forma canónica'
-    enunciado: 'Dada la función $f(x) = -4(x - 5)^2 + 12$, ¿su valor máximo es $12$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. En forma canónica, el vértice es $V(5, 12)$. Como $a = -4 < 0$, el valor máximo es directamente $k = 12$.'
-  - titulo: 'Derivada nula en el óptimo'
-    enunciado: '¿La pendiente de la tangente a la curva en el punto de optimización es igual a cero?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. En el vértice la tangente es una recta horizontal de pendiente cero ($f''(x^*) = 0$).'
+      - Pasos de solución.
 errores_frecuentes:
-  - 'La función $f(x) = 3x^2 - 12x + 7$ alcanza su valor máximo en el vértice.'
-  - 'El valor máximo de una función cuadrática $f(x) = ax^2 + bx + c$ viene dado por la constante $c$.'
-  - 'Para hallar el mínimo de una función cuadrática se deben calcular sus ceros reales.'
-  - 'La abscisa del punto óptimo se calcula mediante la fórmula $x = -\frac{b}{a}$.'
-  - 'Una parábola con $a < 0$ posee un mínimo absoluto en el vértice.'
+  - 'Igualar la función a cero en lugar de calcular las coordenadas del vértice al resolver un problema de optimización.'
+  - 'La confusión entre la variable de control $x^*$ que produce el óptimo y el valor óptimo extremo $f(x^*)$.'
+  - 'La búsqueda de maximizar una función cuadrática cóncava hacia arriba que se extiende ilimitadamente al infinito.'
+  - 'La falta de verificación de si el argumento óptimo $x^*$ cae dentro del dominio contextual restringido del problema.'
+  - 'Afirmar que un problema de optimización cuadrática puede tener múltiples máximos locales en la misma parábola.'
 afirmaciones_verdaderas:
-  - 'Toda función cuadrática posee un único valor extremo en su vértice, siendo un máximo si $a < 0$ o un mínimo si $a > 0$.'
-  - 'El valor óptimo maximizado o minimizado de la función corresponde a la ordenada del vértice $k = f\left(-\frac{b}{2a}\right)$.'
-al_terminar_debes_poder: 'Optimizar funciones cuadráticas para calcular valores máximos o mínimos y sus correspondientes puntos de origen.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La optimización de una función cuadrática se realiza calculando la abscisa del vértice $x^* = -b/(2a)$ y su correspondiente valor extremo $f(x^*)$.'
+  - 'Una función cuadrática cóncava hacia abajo ($a < 0$) posee un único máximo absoluto global en su vértice.'
+al_terminar_debes_poder: |
+  QUÉ: Resolver problemas de optimización calculando los valores máximos o mínimos de una función cuadrática.
+  CÓMO: Plantear $f(x)$, aislar $a, b$, calcular el argumento crítico $x^* = -b/(2a)$, evaluar la imagen óptima $f(x^*)$ e interpretar.
+fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
 estado: publicado

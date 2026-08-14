@@ -1,97 +1,92 @@
 semantic_id: MAT.ALG.FUNC_CUADR_MODELO.VALIDEZ_DOMINIO_CONTEXTO
-resumen_inicial: 'El dominio contextual restringe el dominio matemático abstracto $\mathbb{R}$ a un subconjunto práctico de valores reales coherentes con las limitaciones físicas de la realidad.'
+resumen_inicial: La evaluación del dominio contextual restringe los valores de $x$ a aquellos físicamente posibles ($x > 0$, $y \ge 0$, tiempos positivos).
 explicacion_simple: |
-  Aunque una fórmula matemática se pueda calcular para cualquier número positivo o negativo, en el mundo real existen límites infranqueables: el tiempo no corre hacia atrás ($t \ge 0$), las distancias o lados de un terreno no pueden ser negativos ni cero ($x > 0$), y una fábrica no puede producir una cantidad infinita de productos por capacidad de bodega. Evaluar el dominio contextual consiste en encontrar el rango de números con sentido práctico.
+  Matemáticamente, una función cuadrática $f(x) = ax^2 + bx + c$ acepta cualquier número real ($\text{Dom}(f) = \mathbb{R}$). Sin embargo, **EN LA VIDA REAL HAY RESTRICCIONES**:
+
+  - **Tiempo ($t$)**: El tiempo no puede ser negativo ($t \ge 0$).
+  - **Distancias y Áreas ($x, A$)**: Las medidas de terreno y las longitudes deben ser strictly positivas ($x > 0$).
+  - **Alturas y Cantidades ($h, Q$)**: No se pueden fabricar $-15$ pelotas ni tener alturas negativas antes del lanzamiento.
+
+  **Dominio restringido del contexto ($D_{ctx}$)**:
+  Es el intervalo de números que **SÍ TIENEN SENTIDO EN EL MUNDO REAL**.
+  - **Ejemplo**: Para $A(x) = x(20 - x)$, como el ancho $x > 0$ y el largo $(20 - x) > 0$, el dominio real del contexto es **$x \in ]0, 20[$**.
 explicacion_formal: |
-  ### Definición formal
-  Dada una función cuadrática abstracta $f: \mathbb{R} \to \mathbb{R}$, el **dominio contextual o práctico** $D_{\text{práctico}} \subset \mathbb{R}$ es el subconjunto de números reales que satisface simultáneamente las restricciones físicas, geométricas y operativas del problema:
-  $$D_{\text{práctico}} = \{x \in \mathbb{R} \mid x \ge x_{\text{mín}} \ \land \ x \le x_{\text{máx}} \ \land \ f(x) \ge y_{\text{mín}}\}$$
+  Sea la función cuadrática pura $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = ax^2 + bx + c$. Cuando $f$ actúa como modelo de una situación física, económica o geométrica, el **dominio contextual válido $D_{ctx} \subset \mathbb{R}$** es el subconjunto de abscisas que satisfacen el sistema simultáneo de inecuaciones de realidad:
 
-  ### Desglose simbólico
-  - Restricción de no negatividad de variables físicas: $t \ge 0$ (tiempo) y $x > 0$ (longitudes).
-  - Restricción de viabilidad de salidas: $f(x) \ge 0$ (alturas no subterráneas, áreas positivas o utilidades no deficitarias).
-  - Restricción por capacidad finita de insumos: $x \le \text{Capacidad Máxima}$.
-  - Intersección de intervalos: $D_{\text{práctico}} = D_{\text{matemático}} \cap I_{\text{físico}} \cap I_{\text{operativo}}$.
+  $$D_{ctx} = \{x \in \mathbb{R} \mid x \ge x_{\min} \land f(x) \ge 0 \land \text{Restricciones Físicas}\}$$
 
-  ### Síntesis didáctica
-  Diferenciar dominio matemático de dominio contextual: El dominio matemático de cualquier función cuadrática polinomial es siempre el conjunto completo de los números reales $\mathbb{R}$. El dominio contextual es un intervalo acotado de dicho conjunto.
+  **Principios de acotación del dominio contextual:**
+  1. **Positividad espacial:** Longitudes, anchos y superficies requieren $x > 0$ y $f(x) > 0$.
+  2. **Causalidad temporal:** Variables cinemáticas imponen $t \ge 0$.
+  3. **Acotación por ligadura lineal:** En áreas con malla limitada $P$, la variable $x$ se acota superiormente por el semiperímetro $x < P/2$.
 definiciones_clave: |
-  - **Dominio matemático**: Conjunto total de valores $x \in \mathbb{R}$ donde la fórmula algebraica está bien definida.
-  - **Dominio contextual / práctico**: Intervalo acotado de valores $x$ que poseen significado real coherente.
-  - **Cota de factibilidad**: Limite superior o inferior impuesto por la física o economía del entorno.
+  - **Dominio contextual ($D_{ctx}$)**: Restricción física o económica del conjunto de entrada que descarta soluciones matemáticas absurdas para el mundo real.
 propiedades_relaciones: |
-  - **Recorte del conjunto recorrido**: Al restringir el dominio al intervalo $D_{\text{práctico}}$, el conjunto recorrido resultante $\operatorname{Rec}_{\text{práctico}}(f)$ se acota únicamente a los valores alcanzables en dicho intervalo.
-  - **Ubicación del óptimo en los extremos del dominio**: Si la abscisa del vértice $h \notin D_{\text{práctico}}$, el máximo o mínimo del modelo contextualizado ocurre en uno de los extremos del intervalo permitido.
+  - **Divergencia entre dominio matemático y contextual**: Mientras que el dominio algebraico de cualquier función cuadrática es $\mathbb{R}$, el dominio contextual es invariablemente un intervalo acotado o semirrecta cerrada.
 ejemplo_guiado:
-  enunciado: 'Un granjero cerca un terreno rectangular de ancho $x$ con 40 metros de malla mediante la función de área $A(x) = x(20 - x) = -x^2 + 20x$. Determina el dominio matemático abstracto y evalúa el dominio contextual válido para las dimensiones del terreno.'
+  enunciado: 'Determina el dominio contextual válido para el área de un terreno rectangular de largo $(50 - x)$ metros y ancho $x$ metros.'
   pasos:
-    - 'Paso 1: El dominio matemático abstracto de la función cuadrática polinomial $A(x) = -x^2 + 20x$ es $\operatorname{Dom}(A) = \mathbb{R}$.'
-    - 'Paso 2: Exigimos las restricciones geométricas reales: el ancho debe ser estrictamente positivo ($x > 0$).'
-    - 'Paso 3: El largo $y = 20 - x$ también debe ser estrictamente positivo ($20 - x > 0 \implies x < 20$).'
-    - 'Paso 4: Exigimos que el área resultante sea positiva ($A(x) > 0 \implies x \in ]0, 20[$).'
-    - 'Paso 5: Concluimos que el dominio contextual válido es el intervalo abierto $D_{\text{práctico}} = ]0, 20[\text{ metros}$.'
+    - 'Paso 1: Establecer la restricción de positividad para el ancho: $x > 0$.'
+    - 'Paso 2: Establecer la restricción de positividad para el largo: $50 - x > 0 \implies x < 50$.'
+    - 'Paso 3: Intersecar ambas condiciones algebraicas: $0 < x < 50$.'
+    - 'Paso 4: Declarar el dominio contextual: $D_{ctx} = ]0, 50[$ metros.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'La altura de un clavadista al saltar desde una plataforma viene dada por $h(t) = -5t^2 + 5t + 10$. El clavadista toca el agua a los 2 segundos. ¿Cuál es el dominio contextual válido para el tiempo $t$?'
+    question: 'Para un proyectil cuya altura viene dada por $h(t) = -5t^2 + 40t$ desde el suelo ($h \ge 0$), ¿cuál es su dominio contextual válido $D_{ctx}$?'
     choices:
-      - {text: 'El intervalo cerrado $D_{\text{práctico}} = [0, 2]\text{ segundos}$', is_correct: true}
-      - {text: 'El conjunto completo de los números reales $\mathbb{R}$', is_correct: false}
-      - {text: 'El intervalo no acotado $]-\infty, 2]$', is_correct: false}
-      - {text: 'El intervalo no acotado $[2, +\infty[$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El intervalo cerrado $D_{\text{práctico}} = [0, 2]\text{ segundos}$''. El tiempo inicia en $t = 0$ (salto) y termina en $t = 2$ (entrada al agua).'
-    reinforcement_section: 'Explicación formal'
+      - {text: 'El intervalo cerrado $[0, 8]$ segundos', is_correct: true}
+      - {text: 'Todos los números reales $\mathbb{R}$.', is_correct: false}
+      - {text: 'El intervalo abierto $]-\infty, 8[$.', is_correct: false}
+      - {text: 'Únicamente el valor $t = 4$.', is_correct: false}
+    explanation: 'La alternativa correcta es ''El intervalo cerrado $[0, 8]$ segundos''. El proyectil despega en $t = 0$ y cae a tierra en $t = 8$.'
+    reinforcement_section: Explicación formal
   - placement: after_ejemplo_guiado
-    question: 'Si la capacidad máxima de almacenamiento de un galpón es de 50 toneladas, y la función de costo es $C(x) = x^2 - 40x + 500$, ¿cuál es la cota superior del dominio contextual?'
+    question: 'Si al resolver la ecuación de un problema de dimensiones de un terreno se obtienen las soluciones matemáticas $x_1 = -6$ y $x_2 = 12$, ¿qué valor pertenece al dominio contextual?'
     choices:
-      - {text: '$x \le 50\text{ toneladas}$', is_correct: true}
-      - {text: '$x \le 20\text{ toneladas}$', is_correct: false}
-      - {text: '$x \le 500\text{ toneladas}$', is_correct: false}
-      - {text: 'No posee cota superior', is_correct: false}
-    explanation: 'La alternativa correcta es ''$x \le 50\text{ toneladas}$''. La restricción de infraestructura impone un límite superior insoslayable de 50 toneladas.'
-    reinforcement_section: 'Ejemplo guiado'
+      - {text: 'Únicamente $x = 12$ metros, porque las dimensiones geométricas son positivas', is_correct: true}
+      - {text: 'Únicamente $x = -6$ metros.', is_correct: false}
+      - {text: 'Ambas soluciones por ser raíces algebraicas válidas.', is_correct: false}
+      - {text: 'Ninguna de las dos soluciones.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Únicamente $x = 12$ metros, porque las dimensiones geométricas son positivas''. Se descarta $x = -6$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el dominio matemático abstracto de la función cuadrática (siempre $\mathbb{R}$).'
-  - 'Paso 2: Aplicar la condición de no negatividad sobre la variable de entrada ($x \ge 0$ o $t \ge 0$).'
-  - 'Paso 3: Resolver la inecuación $f(x) \ge 0$ para garantizar que los resultados de salida tengan sentido real.'
-  - 'Paso 4: Intersecar los intervalos obtenidos y las restricciones del problema para declarar $D_{\text{práctico}}$.'
+  - 'Paso 1: Identificar la naturaleza física de la variable de entrada $x$ (tiempo, longitud, precio).'
+  - 'Paso 2: Plantear inecuaciones de positividad para todas las dimensiones y variables de salida del problema.'
+  - 'Paso 3: Resolver el sistema de inecuaciones simultáneas para aislar el intervalo válido.'
+  - 'Paso 4: Expresar el dominio contextual resultante $D_{ctx}$ en notación de intervalos y descartar soluciones algebraicas extrañas.'
 errores_correccion: |
-  - **Error 1:** Confundir el dominio matemático $\mathbb{R}$ con el dominio contextual acotado. **Cómo corregirlo:** La fórmula matemática acepta cualquier número, pero la realidad del problema impone límites físicos y geométricos que restringen las entradas a un intervalo factible.
-  - **Error 2:** Incluir tiempos negativos en el dominio práctico de un proyectil argumentando que la gráfica se prolonga hacia el cuadrante II. **Cómo corregirlo:** El tiempo físico parte desde el instante de lanzamiento $t = 0$. Los valores $t < 0$ carecen de existencia en el experimento.
+  - **Error común:** Considerar que el dominio de un problema real es $\mathbb{R}$ solo porque la función matemática es cuadrática.
+  - **Cómo corregirlo:** La matemática acepta todo, pero **EL MUNDO REAL TIENE LÍMITES**; acota siempre $x$ con las restricciones físicas.
 ejemplos:
-  - titulo: 'Dominio de tiempo de vuelo'
-    enunciado: 'Un proyectil despega en $t = 0$ y cae a tierra en $t = 6$. ¿Cuál es su dominio contextual?'
+  - titulo: Ejemplo 1
+    enunciado: Dominio contextual de tiempo de vuelo.
     alternativas:
-      - '$[0, 6]$'
-      - '$\mathbb{R}$'
-      - '$[6, +\infty[$'
-    respuesta: '$[0, 6]$'
+      - 'D_ctx = [0, 10] segundos'
+      - 'D_ctx = \mathbb{R}'
+      - 'D_ctx = ]-\infty, 10]'
+    respuesta: 'D_ctx = [0, 10] segundos'
     solucion_pasos:
-      - '1. El evento ocurre únicamente entre el despegue ($t = 0$) y la caída ($t = 6$).'
-      - '2. El dominio contextual es el intervalo cerrado $[0, 6]$.'
-  - titulo: 'Dominio en problemas de geometría'
-    enunciado: 'Para un rectángulo de lados $x$ y $(12 - x)$, ¿el valor $x = 15$ pertenece al dominio contextual?'
-    respuesta: 'No'
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Dominio contextual de dimensiones geométricas.
+    alternativas:
+      - 'D_ctx = ]0, 30[ metros'
+      - 'D_ctx = [-30, 30]'
+      - 'D_ctx = ]0, +\infty['
+    respuesta: 'D_ctx = ]0, 30[ metros'
     solucion_pasos:
-      - 'No. Si $x = 15$, el otro lado mide $(12 - 15) = -3$, lo cual es una dimensión geométrica imposible.'
-  - titulo: 'Dominio acotado por capacidad'
-    enunciado: 'Si una máquina sólo puede operar un máximo de 8 horas diarias, ¿el dominio contextual del tiempo $t$ en horas se restringe a $[0, 8]$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. La capacidad operativa de la máquina impone la cota superior $t \le 8$.'
-  - titulo: 'Diferencia entre dominios'
-    enunciado: '¿El dominio contextual de un problema es un subconjunto del dominio matemático de la función cuadrática?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $D_{\text{práctico}} \subset \operatorname{Dom}(f) = \mathbb{R}$.'
+      - Pasos de solución.
 errores_frecuentes:
-  - 'El dominio contextual de una función de trayectoria de proyectil es el conjunto de todos los números reales $\mathbb{R}$.'
-  - 'En un problema de área rectangular $A(x) = x(50 - x)$, se puede elegir un ancho $x = 60$ metros.'
-  - 'Un tiempo negativo $t = -5$ segundos es perfectamente válido en el dominio práctico de un lanzamiento.'
-  - 'El dominio contextual solo depende de la fórmula algebraica y no de las restricciones del texto.'
-  - 'Si la función de costo está definida para $x \in \mathbb{R}$, una empresa puede producir una cantidad negativa de $-10$ artículos.'
+  - 'Dada una función cuadrática aplicada a un problema de física, es correcto afirmar que su dominio contextual es todo el conjunto $\mathbb{R}$.'
+  - 'La inclusión de valores de tiempo negativos dentro del conjunto de entrada en modelos de movimiento balístico.'
+  - 'Aceptar dimensiones de longitud iguales o menores a cero al calcular el área de una figura geométrica.'
+  - 'La falta de eliminación de raíces algebraicas matemáticas que caen fuera de los límites de positividad contextual.'
+  - 'La equivalencia errónea entre las restricciones del dominio contextual en $x$ y los límites del recorrido en $y$.'
 afirmaciones_verdaderas:
-  - 'El dominio contextual de una función cuadrática acota el conjunto de los números reales a un intervalo de valores físicamente factibles.'
-  - 'Las restricciones de no negatividad de distancias, tiempos y capacidades imponen límites superiores e inferiores al dominio práctico.'
-al_terminar_debes_poder: 'Evaluar y delimitar la validez del dominio contextual en problemas aplicados de funciones cuadráticas.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El dominio contextual $D_{ctx}$ restringe el dominio matemático $\mathbb{R}$ a los valores que satisfacen la realidad del problema (tiempo $\ge 0$, dimensiones $> 0$).'
+  - 'Al resolver ecuaciones cuadráticas en contextos aplicados, las raíces negativas deben ser descartadas si la variable física no admite valores negativos.'
+al_terminar_debes_poder: |
+  QUÉ: Evaluar y determinar la validez del dominio contextual en problemas aplicados de funciones cuadráticas.
+  CÓMO: Plantear inecuaciones de positividad ($x > 0, y \ge 0$), resolver la intersección de intervalos, definir $D_{ctx}$ y descartar soluciones inválidas.
+fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
 estado: publicado
