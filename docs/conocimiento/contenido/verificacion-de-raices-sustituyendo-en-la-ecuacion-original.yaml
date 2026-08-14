@@ -1,131 +1,88 @@
 semantic_id: MAT.ALG.EC_CUADR_RESOL_FACTOR.VERIFICACION_RAICES
-resumen_inicial: Verificar una raíz consiste en reemplazar el valor obtenido en la
-  incógnita $x$ de la ecuación original y comprobar que satisfaga la igualdad $0 =
-  0$.
-explicacion_simple: 'Para comprobar de forma 100% segura si un número $x_0$ es realmente
-  una solución válida de una ecuación cuadrática:
+resumen_inicial: La verificación de raíces reemplaza la solución hallada en la ecuación original para confirmar que satisface la igualdad numérica.
+explicacion_simple: |
+  Para **verificar si un número es realmente la solución correcta** de una ecuación cuadrática:
 
-  1. Tomas el número $x_0$ y lo sustituyes en cada lugar donde aparezca la letra $x$.
+  1. Tomas la solución candidata (por ejemplo $x = 3$).
+  2. La reemplazas en la **ecuación original** en cada lugar donde aparezca la letra $x$.
+  3. Calculas el valor numérico respetando el orden de las operaciones (primero potencias $x^2$, luego multiplicaciones y al final sumas/restas).
+  4. Si al final obtienes una **igualdad numérica cierta** (como $0 = 0$ o $12 = 12$), entonces la solución **ES CORRECTA**.
+  5. Si obtienes algo falso (como $5 = 0$), el valor probado no es solución o cometiste un error algebraico.
+explicacion_formal: |
+  Sea $P(x) = 0$ una ecuación cuadrática y $x_0 \in \mathbb{R}$ un valor escalar candidato a solución. El proceso de **verificación formal** evalúa el homomorfismo de sustitución:
 
-  2. Calculas las potencias, multiplicaciones y sumas respetando la jerarquía de operaciones.
+  $$x \mapsto x_0 \implies P(x_0) \stackrel{?}{=} 0$$
 
-  3. Si el resultado final simplificado es **$0 = 0$ (o miembro izquierdo = miembro
-  derecho)**, la raíz es CORRECTA.
-
-  4. Si el resultado da un disparate (ej: $14 = 0$), el número NO es raíz o cometiste
-  un error algebraico previo.'
-explicacion_formal: 'Sea la ecuación $P(x) = 0$. Un número $r \in \mathbb{C}$ es **raíz
-  o solución de la ecuación** si y solo si la evaluación funcional satisface la identidad
-  escalar:
-
-
-  $$P(r) = 0$$
-
-
-  **Desglose de la fórmula:**
-
-  - Prueba de pertenencia al conjunto solución mediante sustitución directa en el
-  polinomio $a(r)^2 + b(r) + c = 0$.'
-definiciones_clave: '- **Verificación de raíces**: Procedimiento aritmético de comprobación
-  por sustitución directa de un valor candidato en la igualdad original.'
-propiedades_relaciones: '- **Detección de raíces extrañas**: Muy útil al resolver
-  ecuaciones cuadráticas con fracciones o radicales para descartar valores no permitidos.'
+  **Criterio de validez analítica:**
+  - Si $P(x_0) = 0$, $x_0$ es una raíz o cero del polinomio y pertenece al conjunto solución ($x_0 \in S$).
+  - Si $P(x_0) \neq 0$, $x_0$ es una raíz extraña o un valor erróneo ($x_0 \notin S$).
+definiciones_clave: |
+  - **Verificación de soluciones**: Comprobación aritmética directa sustituyendo el valor hallado en la incógnita de la expresión inicial.
+propiedades_relaciones: |
+  - **Detección de raíces extrañas**: En ecuaciones fraccionarias o irracionales traducidas a cuadráticas, la verificación en la ecuación inicial es indispensable para descartar valores que anulen denominadores o produzcan radicandos negativos.
 ejemplo_guiado:
-  enunciado: Verifica si el valor $x = 3$ es una raíz correcta de la ecuación cuadrática
-    $2x^2 - 5x - 3 = 0$.
+  enunciado: 'Verifica si los valores $x = 2$ y $x = -1$ son soluciones válidas para la ecuación cuadrática $x^2 - x - 2 = 0$.'
   pasos:
-  - 'Paso 1: Reemplazar $x = 3$ en el miembro izquierdo: $2(3)^2 - 5(3) - 3$.Paso
-    2: Resolver la potencia primero: $2(9) - 5(3) - 3 = 18 - 15 - 3$.Paso 3: Realizar
-    las restas: $18 - 15 = 3 \implies 3 - 3 = 0$.Paso 4: Comprobar la igualdad: $0
-    = 0$ (CUMPLE).Paso 5: Concluir que $x = 3$ es efectivamente una raíz de la ecuación
-    dada.'
+    - 'Paso 1: Probar $x = 2$: sustituir $(2)^2 - (2) - 2 = 4 - 2 - 2 = 0$. Como $0 = 0$, $x = 2$ es solución correcta.'
+    - 'Paso 2: Probar $x = -1$: sustituir $(-1)^2 - (-1) - 2 = 1 + 1 - 2 = 0$. Como $0 = 0$, $x = -1$ es solución correcta.'
+    - 'Paso 3: Concluir que ambos valores verifican exitosamente la igualdad matemática original.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al sustituir $x = 3$ en la expresión $2x^2 - 5x - 3$, ¿cuál es la comprobación
-    aritmética resultante?
-  choices:
-  - text: $2(9) - 15 - 3 = 18 - 18 = 0$, demostrando que $x = 3$ es raíz.
-    is_correct: true
-  - text: $2(6) - 15 - 3 = -6 \neq 0$, demostrando que no es raíz.
-    is_correct: false
-  - text: $18 + 15 - 3 = 30 \neq 0$
-    is_correct: false
-  - text: La sustitución no se puede realizar.
-    is_correct: false
-  explanation: La alternativa correcta es '$2(9) - 15 - 3 = 18 - 18 = 0$, demostrando
-    que $x = 3$ es raíz.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué indica obtener la expresión final $14 = 0$ al sustituir un número
-    $x = k$ en una ecuación?
-  choices:
-  - text: Que el número $k$ NO es una solución válida de la ecuación dada.
-    is_correct: true
-  - text: Que la ecuación es una identidad universal.
-    is_correct: false
-  - text: Que $x = 14$ es la verdadera solución.
-    is_correct: false
-  - text: Que la ecuación tiene soluciones infinitas.
-    is_correct: false
-  explanation: La alternativa correcta es 'Que el número $k$ NO es una solución válida
-    de la ecuación dada.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Qué resultado debe obtenerse al sustituir una solución correcta $x_0$ en la expresión $ax^2 + bx + c = 0$?'
+    choices:
+      - {text: 'Una identidad o igualdad numérica verdadera ($0 = 0$).', is_correct: true}
+      - {text: 'Un resultado mayor que el coeficiente cuadrático $a$.', is_correct: false}
+      - {text: 'Una contradicción matemática.', is_correct: false}
+      - {text: 'El valor del discriminante $\Delta$.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Una identidad o igualdad numérica verdadera ($0 = 0$).''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Al verificar el valor $x = 3$ en la ecuación $x^2 - 5x + 6 = 0$, ¿qué cálculo aritmético se realiza?'
+    choices:
+      - {text: '$(3)^2 - 5(3) + 6 = 9 - 15 + 6 = 0$, confirmando que es solución.', is_correct: true}
+      - {text: '$3^2 - 5 + 6 = 10$, demostrando que no es solución.', is_correct: false}
+      - {text: '$3 \cdot 5 + 6 = 21$, confirmando que es solución.', is_correct: false}
+      - {text: 'No se puede realizar la verificación.', is_correct: false}
+    explanation: 'La alternativa correcta es ''$(3)^2 - 5(3) + 6 = 9 - 15 + 6 = 0$, confirmando que es solución.''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Tomar la ecuación en su forma original.'
-- 'Paso 2: Reemplazar la incógnita $x$ por el valor de la raíz a comprobar utilizando
-  paréntesis.'
-- 'Paso 3: Calcular potencias, multiplicaciones y sumas aritméticas.'
-- 'Paso 4: Si el resultado es $0 = 0$, validar la solución.'
-errores_correccion: '- **Error común:** Elevar al cuadrado multiplicando el coeficiente
-  primero (en $2(3)^2$, hacer $(2 \cdot 3)^2 = 6^2 = 36$).
-
-  - **Cómo corregirlo:** La jerarquía de operaciones exige resolver PRIMERO la potencia
-  $3^2 = 9$ y LUEGO multiplicar por $2$: $2 \cdot 9 = 18$.'
+  - 'Paso 1: Tomar la expresión de la ecuación en su estado original sin modificar.'
+  - 'Paso 2: Reemplazar cada ocurrencia de la variable por el valor de la solución probada entre paréntesis.'
+  - 'Paso 3: Resolver primero los cuadrados de los paréntesis, luego las multiplicaciones y finalmente sumas o restas.'
+  - 'Paso 4: Comprobar la igualdad numérica resultante (si $0 = 0$, la solución queda confirmada).'
+errores_correccion: |
+  - **Error común:** Elevar al cuadrado sin respetar los signos negativos del paréntesis (ej. evaluar $(-3)^2$ como $-9$ en lugar de $+9$).
+  - **Cómo corregirlo:** Pon **SIEMPRE PARENTESIS AL SUSTITUIR**; recuerda que todo número negativo elevado al cuadrado da un resultado **POSITIVO** (ej. $(-3)^2 = +9$).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de resolución por factorización.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de resolución por factorización.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿La propiedad del producto nulo exige que A * B = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, exige que el miembro derecho sea exactamente cero.
-- titulo: ¿Toda ecuación incompleta ax^2 + bx = 0 admite la solución x = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, al factorizar x(ax + b) = 0 se obtiene siempre x_1 = 0.
+  - titulo: Ejemplo 1
+    enunciado: Verificación exitosa.
+    alternativas:
+      - '$0 = 0$ (Verificado)'
+      - '$5 = 0$ (Falso)'
+      - '$-2 = 0$ (Falso)'
+    respuesta: '$0 = 0$ (Verificado)'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Detección de valor incorrecto.
+    alternativas:
+      - '$8 \neq 0$ (No es solución)'
+      - '$0 = 0$ (Es solución)'
+      - '$1 = 1$'
+    respuesta: '$8 \neq 0$ (No es solución)'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Intentar aplicar la propiedad del producto nulo a una ecuación igualada a un número
-  distinto de cero.
-- Dividir una ecuación cuadrática entre la incógnita $x$ perdiendo la solución fundamental
-  $x = 0$.
-- Olvidar anteponer el doble signo $\pm$ al extraer raíz cuadrada en la resolución
-  de $x^2 = k$.
-- Confundir los números de los factores $(x+m)(x+n)$ con las soluciones reales de
-  la ecuación (que tienen signos invertidos).
-- Violar la jerarquía de operaciones al verificar raíces calculando multiplicaciones
-  antes que potencias.
+  - 'Evaluar el cuadrado del número negativo $(-4)^2$ entrega como resultado el valor $-16$.'
+  - 'La sustitución de la solución hallada debe realizarse únicamente en la última línea del procedimiento algebraico.'
+  - 'Obtener el resultado $5 = 0$ al sustituir un valor demuestra que la verificación fue exitosa.'
+  - 'En la verificación de la expresión $x^2 - x - 6 = 0$ con $x = -2$, el término $-x$ se convierte en $-2$.'
+  - 'La comprobación numérica solo es obligatoria para ecuaciones incompletas puras.'
 afirmaciones_verdaderas:
-- La propiedad del producto nulo establece que $A \cdot B = 0 \iff A = 0 \lor B =
-  0$.
-- Toda ecuación incompleta binomia $a x^2 + b x = 0$ se resuelve por factor común
-  $x(a x + b) = 0$ produciendo siempre la raíz $x = 0$.
-al_terminar_debes_poder: Al finalizar este recurso podrás resolver ecuaciones cuadráticas
-  completas e incompletas mediante factorización de monomio común, trinomios simples,
-  trinomios generales y verificación de raíces.
-fuente: Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado
+  - 'La verificación consiste en sustituir el valor obtenido en la incógnita de la ecuación original y comprobar que la igualdad numérica resultante es verdadera.'
+  - 'Evaluar $(-x)$ con una raíz negativa exige aplicar la regla de los signos transformando la doble negación en una adición positiva.'
+al_terminar_debes_poder: |
+  QUÉ: Verificar la validez de las soluciones encontradas en ecuaciones cuadráticas mediante sustitución directa.
+  CÓMO: Reemplazar la variable por el valor entre paréntesis, evaluar potencias y operaciones con signos e identificar si se cumple $0 = 0$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
 estado: publicado
