@@ -1,103 +1,93 @@
 semantic_id: MAT.ALG.FUNC_CUADR_VERTICE.RECORRIDO_DESDE_VERTICE
-resumen_inicial: 'El recorrido de una función cuadrática no restringida está acotado por la ordenada de su vértice $k$: $\operatorname{Rec}(f) = [k, +\infty[$ si $a > 0$, o $\operatorname{Rec}(f) = ]-\infty, k]$ si $a < 0$.'
+resumen_inicial: La determinación del recorrido (o rango) establece el conjunto de valores $y$ que toma la función a partir de $k$ y la concavidad de $a$.
 explicacion_simple: |
-  Mientras que el dominio de una función cuadrática son todos los números reales (las entradas $x$), el recorrido (las salidas $y$) tiene un límite claro marcado por el vértice. Si la parábola abre hacia arriba, la curva parte desde la altura $k$ del vértice y sube al infinito (recorrido desde $k$ hasta $+\infty$). Si abre hacia abajo, la curva viene desde $-\infty$ y sube únicamente hasta la altura $k$ del vértice (recorrido desde $-\infty$ hasta $k$).
+  El **recorrido o rango** de una función cuadrática es el conjunto de todos los valores de altura $y$ que la parábola alcanza efectivamente en el gráfico:
+
+  - Depende **solamente de dos datos**: el valor $k$ de la ordenada del vértice $V(h, k)$ y el signo de $a$.
+  - **Si $a > 0$ (Cóncava hacia arriba)**:
+    - La parábola empieza en la altura del vértice $k$ y sube sin límite hacia $+\infty$.
+    - Su recorrido es **$[k, +\infty[$**.
+  - **Si $a < 0$ (Cóncava hacia abajo)**:
+    - La parábola viene desde $-\infty$ y sube solo hasta la altura máxima del vértice $k$.
+    - Su recorrido es **$]-\infty, k]$**.
 explicacion_formal: |
-  ### Definición formal
-  El **recorrido o imagen** de la función cuadrática $f(x) = ax^2 + bx + c$ de vértice $V(h, k)$ es el conjunto de todos los valores de salida $y \in \mathbb{R}$ para los cuales existe una preimagen $x \in \mathbb{R}$:
-  $$\operatorname{Rec}(f) = \{y \in \mathbb{R} \mid \exists x \in \mathbb{R}, f(x) = y\}$$
-  Según el signo de $a$, el conjunto recorrido se expresa como un intervalo real semicerrado:
-  - **Si $a > 0$**: $\operatorname{Rec}(f) = [k, +\infty[ = \left[\frac{4ac - b^2}{4a}, +\infty\right[$.
-  - **Si $a < 0$**: $\operatorname{Rec}(f) = ]-\infty, k] = \left]-\infty, \frac{4ac - b^2}{4a}\right]$.
+  Sea la función cuadrática $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = ax^2 + bx + c$ y vértice $V(h, k)$. El **recorrido o conjunto imagen** $\text{Rec}(f) \subseteq \mathbb{R}$ es la imagen directa de la recta real:
 
-  ### Desglose simbólico
-  - $k$: Límite o cota cerrada que pertenece al recorrido ($k \in \operatorname{Rec}(f)$).
-  - Intervalos semicerrados: El corchete en $k$ es siempre **cerrado** porque el vértice es un punto alcanzado por la función ($f(h) = k$).
+  $$\text{Rec}(f) = \{y \in \mathbb{R} \mid \exists x \in \mathbb{R}, f(x) = y\}$$
 
-  ### Síntesis didáctica
-  Diferenciar Dominio de Recorrido: El dominio son las entradas (siempre $\mathbb{R}$). El recorrido son las salidas, las cuales están siempre **acotadas por un lado** por la altura $k$ del vértice.
+  **Teorema de acotación del recorrido cuadrático:**
+  1. **Concavidad positiva ($a > 0$):**
+     $$\text{Rec}(f) = [k, +\infty) = \left[\frac{4ac - b^2}{4a}, +\infty\right)$$
+  2. **Concavidad negativa ($a < 0$):**
+     $$\text{Rec}(f) = (-\infty, k] = \left(-\infty, \frac{4ac - b^2}{4a}\right]$$
 definiciones_clave: |
-  - **Recorrido de la función cuadrática**: Conjunto de todos los valores $y$ que la parábola alcanza efectivamente en el plano.
-  - **Cota del recorrido**: Valor $k = f(h)$ que actúa como extremo cerrado del intervalo de salidas.
-  - **Intervalo semicerrado**: Notación $[k, +\infty[$ o $]-\infty, k]$ utilizada para formalizar el recorrido.
+  - **Recorrido de la función cuadrática**: Conjunto de todos los valores reales de llegada $y$ generados por la función cuadrática, acotado por la ordenada del vértice $k$.
 propiedades_relaciones: |
-  - **Relación con la inecuación cuadrática**: La imagen $y$ pertenece al recorrido si y solo si el discriminante de la ecuación $ax^2 + bx + (c - y) = 0$ es no negativo ($\Delta_y \ge 0$).
-  - **Efecto de la traslación vertical**: Sumar una constante $C$ a la función desplaza el intervalo del recorrido en $C$ unidades ($[k + C, +\infty[$).
+  - **Asimetría entre Dominio y Recorrido**: A diferencia del dominio que abarca ilimitadamente $\mathbb{R}$, el recorrido de una función cuadrática es siempre un intervalo semirrecta cerrado en el valor del vértice $k$.
 ejemplo_guiado:
-  enunciado: 'Calcula el recorrido formal de las funciones cuadráticas $f(x) = 2x^2 - 8x + 5$ y $g(x) = -3x^2 + 6x + 1$ determinando previamente sus vértices y concavidades.'
+  enunciado: 'Calcula el recorrido de la función cuadrática $f(x) = -2x^2 + 8x - 1$.'
   pasos:
-    - 'Paso 1: Para $f(x)$, $a = 2 > 0$. Calculamos $h = -\frac{-8}{2(2)} = 2$ y $k = f(2) = 2(2)^2 - 8(2) + 5 = 8 - 16 + 5 = -3$.'
-    - 'Paso 2: Como $a > 0$, la parábola abre hacia arriba. Su recorrido es $\operatorname{Rec}(f) = [-3, +\infty[$.'
-    - 'Paso 3: Para $g(x)$, $a = -3 < 0$. Calculamos $h = -\frac{6}{2(-3)} = 1$ y $k = g(1) = -3(1)^2 + 6(1) + 1 = 4$.'
-    - 'Paso 4: Como $a < 0$, la parábola abre hacia abajo. Su recorrido es $\operatorname{Rec}(g) = ]-\infty, 4]$.'
+    - 'Paso 1: Identificar el signo de $a$: $a = -2 < 0$, la parábola es cóncava hacia abajo.'
+    - 'Paso 2: Calcular la abscisa del vértice: $h = -\frac{8}{2(-2)} = 2$.'
+    - 'Paso 3: Calcular la ordenada del vértice $k = f(2) = -2(2)^2 + 8(2) - 1 = -8 + 16 - 1 = 7$.'
+    - 'Paso 4: Formular el recorrido semirrecta: como $a < 0$, $\text{Rec}(f) = ]-\infty, 7]$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'Si una función cuadrática tiene $a = -5 < 0$ y su vértice se encuentra en $V(2, 9)$, ¿cuál es su conjunto recorrido?'
+    question: '¿Cuál es el recorrido de la función cuadrática $f(x) = x^2 - 6x + 13$ cuyo vértice se encuentra en $V(3, 4)$?'
     choices:
-      - {text: '$\operatorname{Rec}(f) = ]-\infty, 9]$', is_correct: true}
-      - {text: '$\operatorname{Rec}(f) = [9, +\infty[$', is_correct: false}
-      - {text: '$\operatorname{Rec}(f) = ]-\infty, 2]$', is_correct: false}
-      - {text: '$\operatorname{Rec}(f) = \mathbb{R}$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\operatorname{Rec}(f) = ]-\infty, 9]$''. Al ser $a = -5 < 0$, abre hacia abajo y el recorrido va desde $-\infty$ hasta la ordenada $k = 9$.'
-    reinforcement_section: 'Explicación formal'
+      - {text: 'El intervalo cerrado por la izquierda $[4, +\infty[$', is_correct: true}
+      - {text: 'El intervalo semirrecta $]-\infty, 4]$.', is_correct: false}
+      - {text: 'El conjunto de todos los números reales $\mathbb{R}$.', is_correct: false}
+      - {text: 'El intervalo acotado $[3, 4]$.', is_correct: false}
+    explanation: 'La alternativa correcta es ''El intervalo cerrado por la izquierda $[4, +\infty[$''. Como $a = 1 > 0$, el recorrido va desde $k=4$ hasta $+\infty$.'
+    reinforcement_section: Explicación formal
   - placement: after_ejemplo_guiado
-    question: 'Dada la función cuadrática en forma canónica $p(x) = 3(x - 4)^2 - 7$, ¿cuál es su conjunto recorrido?'
+    question: 'Si una función cuadrática posee recorrido $\text{Rec}(g) = ]-\infty, -2]$, ¿qué información se deduce sobre su concavidad y su vértice?'
     choices:
-      - {text: '$\operatorname{Rec}(p) = [-7, +\infty[$', is_correct: true}
-      - {text: '$\operatorname{Rec}(p) = [4, +\infty[$', is_correct: false}
-      - {text: '$\operatorname{Rec}(p) = ]-\infty, -7]$', is_correct: false}
-      - {text: '$\operatorname{Rec}(p) = [-4, +\infty[$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\operatorname{Rec}(p) = [-7, +\infty[$''. La forma canónica da $a = 3 > 0$ y $k = -7$, produciendo el intervalo $[-7, +\infty[$.'
-    reinforcement_section: 'Ejemplo guiado'
+      - {text: 'Su concavidad es negativa ($a < 0$) y la ordenada de su vértice es $k = -2$', is_correct: true}
+      - {text: 'Su concavidad es positiva ($a > 0$) y la ordenada de su vértice es $k = -2$.', is_correct: false}
+      - {text: 'Su concavidad es positiva ($a > 0$) y la abscisa de su vértice es $h = -2$.', is_correct: false}
+      - {text: 'No es posible deducir su concavidad.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Su concavidad es negativa ($a < 0$) y la ordenada de su vértice es $k = -2$''.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Determinar el signo del coeficiente cuadrático $a$ ($a > 0$ o $a < 0$).'
-  - 'Paso 2: Calcular la ordenada del vértice $k = f(h) = \frac{4ac - b^2}{4a}$.'
-  - 'Paso 3: Construir el intervalo del recorrido: si $a > 0 \implies \operatorname{Rec}(f) = [k, +\infty[$; si $a < 0 \implies \operatorname{Rec}(f) = ]-\infty, k]$.'
+  - 'Paso 1: Determinar el coeficiente $a$ y verificar si la parábola se abre hacia arriba ($a > 0$) o hacia abajo ($a < 0$).'
+  - 'Paso 2: Calcular la ordenada del vértice $k = f\left(-\frac{b}{2a}\right)$.'
+  - 'Paso 3: Si $a > 0$, escribir el intervalo $[k, +\infty[$.'
+  - 'Paso 4: Si $a < 0$, escribir el intervalo $]-\infty, k]$.'
 errores_correccion: |
-  - **Error 1:** Utilizar la abscisa del vértice $h$ para definir el intervalo del recorrido (ej: escribir $[h, +\infty[$). **Cómo corregirlo:** El recorrido consta de valores de salida $y$. Se debe utilizar siempre la ordenada del vértice $k = f(h)$, no la abscisa $h$.
-  - **Error 2:** Escribir el corchete abierto en la cota del vértice (ej: $]k, +\infty[$). **Cómo corregirlo:** El punto del vértice pertenece a la función ($f(h) = k$), por lo que la cota $k$ debe llevar corchete cerrado $[k$ o $k]$.
+  - **Error común:** Utilizar la abscisa $h$ en lugar de la ordenada $k$ para armar el intervalo del recorrido.
+  - **Cómo corregirlo:** El recorrido **MEDIR MÁXIMOS Y MÍNIMOS EN $Y$**; usa siempre la segunda componente del vértice **$k$**.
 ejemplos:
-  - titulo: 'Recorrido de función cuadrática básica'
-    enunciado: '¿Cuál es el recorrido de $f(x) = x^2 + 6$?'
+  - titulo: Ejemplo 1
+    enunciado: Recorrido con a positivo.
     alternativas:
-      - '$[6, +\infty[$'
-      - '$\mathbb{R}$'
-      - ']$-\infty, 6]$'
-    respuesta: '$[6, +\infty[$'
+      - 'Rec(f) = [-5, +\infty['
+      - 'Rec(f) = ]-\infty, -5]'
+      - 'Rec(f) = \mathbb{R}'
+    respuesta: 'Rec(f) = [-5, +\infty['
     solucion_pasos:
-      - '1. Coeficientes: $a = 1 > 0$, $b = 0$, $c = 6$.'
-      - '2. Vértice: $h = 0$, $k = f(0) = 6$.'
-      - '3. Como $a > 0$, $\operatorname{Rec}(f) = [6, +\infty[$.'
-  - titulo: 'Recorrido de parábola cóncava hacia abajo'
-    enunciado: '¿Cuál es el recorrido de $g(x) = -2x^2 + 8x$?'
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Recorrido con a negativo.
     alternativas:
-      - ']$-\infty, 8]$'
-      - '$[8, +\infty[$'
-      - ']$-\infty, 2]$'
-    respuesta: ']$-\infty, 8]$'
+      - 'Rec(f) = ]-\infty, 10]'
+      - 'Rec(f) = [10, +\infty['
+      - 'Rec(f) = [-10, 10]'
+    respuesta: 'Rec(f) = ]-\infty, 10]'
     solucion_pasos:
-      - '1. $a = -2 < 0$, $h = -\frac{8}{2(-2)} = 2$.'
-      - '2. $k = g(2) = -2(2)^2 + 8(2) = -8 + 16 = 8$.'
-      - '3. Como $a < 0$, $\operatorname{Rec}(g) = ]-\infty, 8]$.'
-  - titulo: 'Cota finita en el recorrido'
-    enunciado: '¿El recorrido de toda función cuadrática real no restringida está acotado superior e inferiormente a la vez?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No. El recorrido de una función cuadrática está acotado únicamente por un solo lado (inferiormente si $a > 0$, o superiormente si $a < 0$).'
-  - titulo: 'Pertenencia de la cota al recorrido'
-    enunciado: 'Si una función tiene recorrido $[-4, +\infty[$, ¿el valor $y = -4$ pertenece al conjunto recorrido?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. El corchete cerrado $[-4$ indica que $y = -4$ es un valor alcanzado en el vértice de la función.'
+      - Pasos de solución.
 errores_frecuentes:
-  - 'El recorrido de toda función cuadrática es igual al conjunto de los números reales $\mathbb{R}$.'
-  - 'En la función $f(x) = x^2 - 4x + 5$, con vértice $V(2, 1)$, el recorrido es $[2, +\infty[$.'
-  - 'Si una parábola tiene $a < 0$, su recorrido va desde la ordenada del vértice $k$ hasta $+\infty$.'
-  - 'El intervalo del recorrido se escribe con el corchete abierto en el valor del vértice $k$.'
-  - 'El término independiente $c$ da por sí solo la cota inferior del recorrido.'
+  - 'La equiparación del dominio de la función ($\mathbb{R}$) con el recorrido acotado por el vértice.'
+  - 'Utilizar la coordenada horizontal $h$ para escribir el límite del intervalo del recorrido.'
+  - 'El cambio de orientación de los corchetes de los intervalos infiriendo abiertos en el valor finito $k$.'
+  - 'La creencia de que si $c = 0$, el recorrido de la función debe comenzar obligatoriamente en 0.'
+  - 'Escribir $[-\infty, k]$ con el corchete cerrado en el infinito.'
 afirmaciones_verdaderas:
-  - 'El recorrido de una función cuadrática depende del signo de $a$ y de la ordenada del vértice $k$, siendo $[k, +\infty[$ si $a > 0$, o $]-\infty, k]$ si $a < 0$.'
-  - 'A diferencia del dominio que es siempre $\mathbb{R}$, el recorrido de una función cuadrática es siempre un intervalo semicerrado acotado por $k$.'
-al_terminar_debes_poder: 'Determinar el conjunto recorrido de cualquier función cuadrática a partir de la ordenada del vértice $k$ y el signo de $a$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El recorrido de una función cuadrática depende del signo de $a$ y de la ordenada del vértice $k$, resultando $[k, +\infty[$ si $a > 0$ o $]-\infty, k]$ si $a < 0$.'
+  - 'A diferencia del dominio que abarca toda la recta real $\mathbb{R}$, el recorrido se encuentra siempre acotado inferiormente o superiormente por $k$.'
+al_terminar_debes_poder: |
+  QUÉ: Determinar y expresar el recorrido o conjunto imagen de cualquier función cuadrática.
+  CÓMO: Obtener $a$ y la ordenada del vértice $k$, verificar concavidad y construir el intervalo $[k, +\infty[$ o $]-\infty, k]$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
 estado: publicado
