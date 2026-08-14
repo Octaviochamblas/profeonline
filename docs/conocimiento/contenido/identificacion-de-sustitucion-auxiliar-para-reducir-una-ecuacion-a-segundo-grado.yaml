@@ -1,114 +1,91 @@
 semantic_id: MAT.ALG.EC_CUADR_METODOS.SUSTITUCION_AUXILIAR
-resumen_inicial: Una sustitución auxiliar (como $u = x^2$ o $u = g(x)$) permite transformar
-  ecuaciones de grado superior (como las bicuadradas) en cuadráticas ordinarias.
-explicacion_simple: 'Ecuaciones como las **bicuadradas $a x^4 + b x^2 + c = 0$** parecen
-  de cuarto grado, pero pueden ''disfrazarse'' de cuadráticas:
+resumen_inicial: La identificación de sustitución auxiliar reconoce un cambio de variable $u = g(x)$ para transformar ecuaciones de grado superior en ecuaciones cuadráticas $au^2 + bu + c = 0$.
+explicacion_simple: |
+  Muchas ecuaciones difíciles no son cuadráticas a simple vista, pero se **disfrazan de cuadráticas**:
 
-  - Definimos una variable auxiliar: **$u = x^2$**.
+  - **Ejemplo**: $x^4 - 5x^2 + 4 = 0$ (ecuación bicuadrada de grado 4).
+  - Si te fijas, $x^4$ es exactamente $(x^2)^2$.
+  - Si inventas una letra auxiliar como $u = x^2$, la ecuación se convierte en:
+    $$u^2 - 5u + 4 = 0$$
+  - ¡Esta nueva ecuación en $u$ es una **ecuación cuadrática simple**!
+  - Tras resolver $u$, vuelves a reemplazar $u = x^2$ para encontrar los valores finales de $x$.
+explicacion_formal: |
+  Dada una ecuación polinómica o trascendente de la forma $a[g(x)]^2 + b[g(x)] + c = 0$, la **sustitución o cambio de variable auxiliar** es una función biyectiva en el dominio considerado:
 
-  - Sustituimos $x^4 = u^2$ y la ecuación se convierte en **$a u^2 + b u + c = 0$**.
+  $$u = g(x) \implies au^2 + bu + c = 0 \quad \text{con } a \neq 0$$
 
-  - Resolvemos para $u$ y al final devolvemos el cambio deshaciendo $x = \pm \sqrt{u}$.'
-explicacion_formal: Definición formal y justificación algebraica de métodos de resolución
-  de ecuaciones cuadráticas.
-definiciones_clave: '- **Método algebraico**: Procedimiento analítico para resolver
-  ecuaciones cuadráticas sin depender de estimaciones gráficas.'
-propiedades_relaciones: '- **Equivalencia de métodos**: Todos los métodos algebraicos
-  (fórmula general, completación de cuadrados, sustitución) entregan exactamente las
-  mismas soluciones.'
+  **Clasificación de ecuaciones reducibles:**
+  - **Bicuadradas:** $ax^4 + bx^2 + c = 0 \implies u = x^2$.
+  - **Exponenciales:** $a(e^x)^2 + b(e^x) + c = 0 \implies u = e^x$.
+  - **Binomiales de paréntesis:** $a(2x + 1)^2 + b(2x + 1) + c = 0 \implies u = 2x + 1$.
+definiciones_clave: |
+  - **Sustitución auxiliar**: Técnica algebraica de cambio de variable que transforma una expresión compleja en una ecuación polinómica equivalente de segundo grado.
+propiedades_relaciones: |
+  - **Desarmado o restitución de variable**: Cada solución válida $u_0$ de la ecuación cuadrática auxiliar exige resolver la ecuación secundaria $g(x) = u_0$ para hallar todas las raíces originales en la variable $x$.
 ejemplo_guiado:
-  enunciado: Resolución de ecuaciones cuadráticas mediante métodos algebraicos avanzados.
+  enunciado: 'Identifica la sustitución auxiliar adecuada para transformar la ecuación $(x^2 - 3)^2 - 2(x^2 - 3) - 8 = 0$ en una ecuación cuadrática.'
   pasos:
-  - 'Paso 1: Aplicar la técnica o cambio de variable.'
-  - 'Paso 2: Desarrollar la ecuación cuadrática resultante.'
-  - 'Paso 3: Obtener las raíces en la variable auxiliar.'
-  - 'Paso 4: Despejar la variable original.'
+    - 'Paso 1: Observar el término que se repite en forma cuadrática y lineal: $(x^2 - 3)$.'
+    - 'Paso 2: Definir la variable auxiliar: sea $u = x^2 - 3$.'
+    - 'Paso 3: Sustituir en la ecuación original: $u^2 - 2u - 8 = 0$.'
+    - 'Paso 4: Concluir que la sustitución $u = x^2 - 3$ reduce la expresión a una ecuación de segundo grado estándar en $u$.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cuál es la principal ventaja de utilizar métodos algebraicos directos
-    en ecuaciones cuadráticas?
-  choices:
-  - text: Garantizan la obtención exacta de todas las raíces reales o complejas.
-    is_correct: true
-  - text: Eliminan los números negativos.
-    is_correct: false
-  - text: Transforman todas las ecuaciones en rectas.
-    is_correct: false
-  - text: No requieren operaciones aritméticas.
-    is_correct: false
-  explanation: La alternativa correcta es 'Garantizan la obtención exacta de todas
-    las raíces reales o complejas.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Qué paso es indispensable al utilizar una variable auxiliar $u = x^2$?
-  choices:
-  - text: Deshacer el cambio al final calculando $x = \pm \sqrt{u}$ para los valores
-      de u positivos.
-    is_correct: true
-  - text: Dejar el resultado final expresado en la variable u.
-    is_correct: false
-  - text: Sumar u a toda la ecuación.
-    is_correct: false
-  - text: Igualar u a cero obligatoriamente.
-    is_correct: false
-  explanation: La alternativa correcta es 'Deshacer el cambio al final calculando
-    $x = \pm \sqrt{u}$ para los valores de u positivos.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: '¿Qué sustitución auxiliar $u$ transforma la ecuación bicuadrada $2x^4 - 7x^2 + 3 = 0$ en una ecuación cuadrática en $u$?'
+    choices:
+      - {text: 'La sustitución $u = x^2$', is_correct: true}
+      - {text: 'La sustitución $u = x^4$', is_correct: false}
+      - {text: 'La sustitución $u = 2x$', is_correct: false}
+      - {text: 'La sustitución $u = x + 3$', is_correct: false}
+    explanation: 'La alternativa correcta es ''La sustitución $u = x^2$''. Como $x^4 = (x^2)^2$, la expresión queda $2u^2 - 7u + 3 = 0$.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Si en la ecuación $x^6 - 9x^3 + 8 = 0$ se define $u = x^3$, ¿en qué ecuación cuadrática se transforma?'
+    choices:
+      - {text: '$u^2 - 9u + 8 = 0$', is_correct: true}
+      - {text: '$u^3 - 9u + 8 = 0$', is_correct: false}
+      - {text: '$u^2 - 9u^3 + 8 = 0$', is_correct: false}
+      - {text: '$6u - 9u + 8 = 0$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$u^2 - 9u + 8 = 0$''. Puesto que $x^6 = (x^3)^2 = u^2$, la expresión se simplifica a $u^2 - 9u + 8 = 0$.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Seleccionar el método algebraico más adecuado (fórmula, completación de
-  cuadrados o sustitución).'
-- 'Paso 2: Ejecutar los pasos algebraicos rigurosamente.'
-- 'Paso 3: Simplificar los radicales y fracciones resultantes.'
-- 'Paso 4: Declarar el conjunto solución $S$.'
-errores_correccion: '- **Error común:** Errores de signo al elevar coeficientes negativos
-  al cuadrado en la fórmula general.
-
-  - **Cómo corregirlo:** Usa paréntesis: $(-b)^2$ siempre resulta en un número positivo.'
+  - 'Paso 1: Examinar la estructura de la ecuación buscando el bloque o función $g(x)$ que aparece elevado al cuadrado y elevado a 1.'
+  - 'Paso 2: Declarar la sustitución $u = g(x)$.'
+  - 'Paso 3: Reemplazar el bloque $[g(x)]^2$ por $u^2$ y el bloque $[g(x)]$ por $u$.'
+  - 'Paso 4: Escribir la nueva ecuación cuadrática resultante $au^2 + bu + c = 0$.'
+errores_correccion: |
+  - **Error común:** Dar como solución final los valores de la variable auxiliar $u$ sin restituir la variable original $x$.
+  - **Cómo corregirlo:** La ecuación inicial está en términos de $x$; tras hallar $u$, **DEBES RESOLVER $g(x) = u$** para entregar las raíces de $x$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de métodos algebraicos.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de métodos de resolución.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿La fórmula general resuelve cualquier ecuación cuadrática ax^2 + bx + c
-    = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, la fórmula general resolvente es de aplicación universal.
-- titulo: ¿Al sustituir b = -5 en la fórmula general, -b se transforma en +5?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, -(-5) = +5 por la regla de signos.
+  - titulo: Ejemplo 1
+    enunciado: Sustitución en ecuación bicuadrada.
+    alternativas:
+      - '$u = x^2$'
+      - '$u = x^4$'
+      - '$u = x$'
+    respuesta: '$u = x^2$'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Sustitución de bloque binomial.
+    alternativas:
+      - '$u = 3x - 1$'
+      - '$u = (3x - 1)^2$'
+      - '$u = 3x$'
+    respuesta: '$u = 3x - 1$'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Escribir $(-5)^2 = -25$ dentro del radical de la fórmula general en lugar de $+25$.
-- Escribir el denominador $2a$ de la fórmula general dividiendo únicamente al radical
-  y no a todo el numerador.
-- Olvidar sumar el término $(b/2)^2$ a ambos lados de la ecuación al completar el
-  cuadrado.
-- Olvidar deshacer el cambio de variable auxiliar $u = x^2$ dejando las soluciones
-  expresadas en $u$ en lugar de $x$.
-- Simplificar coeficientes en fracciones algebraicas sin antes haber factorizado el
-  numerador completo.
+  - 'La suposición de que los valores hallados para la variable auxiliar $u$ son las soluciones finales de la incógnita $x$.'
+  - 'La elección de la sustitución $u = x^4$ en una ecuación bicuadrada para intentar reducirla a grado 2.'
+  - 'Ignorar que valores negativos de $u$ en $u = x^2$ producen soluciones que no existen en los números reales $\mathbb{R}$.'
+  - 'Aplicar el cambio de variable únicamente al término cuadrático conservando la variable $x$ en el término lineal.'
+  - 'La sustitución de variable altera el número de soluciones complejas totales de un polinomio.'
 afirmaciones_verdaderas:
-- La fórmula general $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$ resuelve cualquier ecuación
-  cuadrática real.
-- Para resolver ecuaciones bicuadradas de la forma $a x^4 + b x^2 + c = 0$, la sustitución
-  $u = x^2$ la reduce a la cuadrática $a u^2 + b u + c = 0$.
-al_terminar_debes_poder: Al finalizar este recurso podrás aplicar la fórmula general,
-  sustituir coeficientes ordenadamente, simplificar radicales, completar el cuadrado
-  y resolver ecuaciones reducibles a segundo grado.
-fuente: Texto escolar MINEDUC — Álgebra / Métodos de Resolución Cuadrática
+  - 'La sustitución auxiliar $u = g(x)$ permite reducir ecuaciones de grado superior o con bloques repetidos a una forma cuadrática estándar $au^2 + bu + c = 0$.'
+  - 'Tras resolver la ecuación cuadrática auxiliar para $u$, es indispensable despejar la variable original mediante la relación $g(x) = u$.'
+al_terminar_debes_poder: |
+  QUÉ: Identificar y aplicar sustituciones auxiliares $u = g(x)$ para reducir ecuaciones a la forma de segundo grado.
+  CÓMO: Reconocer la estructura $a[g(x)]^2 + b[g(x)] + c = 0$, formular $u = g(x)$, resolver para $u$ y restituir la variable $x$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
 estado: publicado
