@@ -1,118 +1,89 @@
 semantic_id: MAT.ALG.EC_CUADR_MODELO.SELECCION_RAIZ_VALIDA
-resumen_inicial: Seleccionar la raíz válida exige contrastar las dos soluciones algebraicas
-  contra las limitaciones físicas del problema (tiempos $t \ge 0$, dimensiones $d
-  > 0$).
-explicacion_simple: 'Una ecuación cuadrática entrega dos números como respuesta matemática
-  ($x_1$ y $x_2$), pero **debes usar el sentido común del contexto real**:
+resumen_inicial: La selección de la raíz válida discrimina entre las dos soluciones algebraicas $x_1, x_2$ aquella que satisface el dominio físico o contextual del problema.
+explicacion_simple: |
+  Una ecuación cuadrática siempre entrega **dos soluciones matemáticas** en su resolución. Sin embargo, en los problemas aplicados:
 
-  - Si $x$ representa el tiempo de vuelo de una pelota y obtienes $t_1 = 3\text{ s}$
-  y $t_2 = -2\text{ s}$, la respuesta física es únicamente **$3\text{ s}$**.
+  - **Contexto de Edades**: Una edad no puede ser un número negativo (ej. si obtienes $x_1 = 15$ y $x_2 = -3$, la edad es solo $15$ años).
+  - **Contexto de Tiempo**: El tiempo transcurrido desde un evento no puede ser negativo ($t \ge 0$).
+  - **Contexto de Cantidad de Personas**: La cantidad de objetos o personas debe ser un número entero positivo ($n \in \mathbb{Z}^+$).
+  - **Regla de oro**: **REVISA SIEMPRE SI LAS RAÍCES TIENEN SENTIDO EN EL MUNDO REAL** antes de marcar la respuesta final.
+explicacion_formal: |
+  Sea $S_{alg} = \{x_1, x_2\}$ el conjunto solución algebraico obtenido de resolver $ax^2 + bx + c = 0$, y sea $D_{ctx} \subset \mathbb{R}$ el dominio de definición impuesto por el contexto de aplicación (físico, geométrico o socioeconómico). El **operador de selección contextual** define el conjunto solución real válido $S_{val}$ como la intersección:
 
-  - Si $x$ representa el ancho de un terreno y obtienes $x_1 = 12\text{ m}$ y $x_2
-  = -15\text{ m}$, el ancho real es **$12\text{ m}$**.'
-explicacion_formal: Definición formal y restricciones físicas en el modelamiento cuadrático
-  de problemas contextuales.
-definiciones_clave: '- **Dominio del contexto**: Conjunto de valores numéricos que
-  poseen sentido físico en la realidad modelada.'
-propiedades_relaciones: '- **Filtrado de soluciones extrañas**: Descarte de raíces
-  algebraicas que violan las restricciones del dominio del contexto.'
+  $$S_{val} = S_{alg} \cap D_{ctx}$$
+
+  **Tipologías de dominios de restricción $D_{ctx}$:**
+  - **Magnitudes Geométricas / Físicas:** $D_{ctx} = \{x \in \mathbb{R} \mid x > 0\}$.
+  - **Contadores Discretos:** $D_{ctx} = \{x \in \mathbb{Z} \mid x \ge 1\}$.
+  - **Dominio Temporal Positivo:** $D_{ctx} = \{t \in \mathbb{R} \mid t \ge 0\}$.
+definiciones_clave: |
+  - **Selección de raíz válida**: Criterio de validación contextual que descarta soluciones algebraicas reales que contradicen las restricciones físicas o de definición del enunciado.
+propiedades_relaciones: |
+  - **Soluciones extrañas contextuales**: Raíces matemáticas perfectas de la ecuación cuadrática que quedan invalidadas por pertenecer fuera del dominio del problema real.
 ejemplo_guiado:
-  enunciado: Modelamiento y resolución de problemas cuadráticos en contexto real.
+  enunciado: 'Al resolver la ecuación que modela el número de personas en una excursión se obtienen las raíces $n_1 = 18$ y $n_2 = -2.5$. ¿Cuál es la respuesta válida?'
   pasos:
-  - 'Paso 1: Asignar la variable x con sus unidades correspondientes.'
-  - 'Paso 2: Construir la ecuación cuadrática del problema.'
-  - 'Paso 3: Resolver la ecuación obteniendo x1 y x2.'
-  - 'Paso 4: Seleccionar la raíz válida e interpretar la respuesta final en lenguaje
-    verbal.'
+    - 'Paso 1: Identificar las restricciones del contexto: el número de personas debe ser un entero positivo ($n \in \mathbb{Z}^+$).'
+    - 'Paso 2: Evaluar $n_1 = 18$: es entero positivo ($18 \in \mathbb{Z}^+$).'
+    - 'Paso 3: Evaluar $n_2 = -2.5$: es negativo y decimal (inválido).'
+    - 'Paso 4: Seleccionar como respuesta válida $n = 18$ personas.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: Al resolver un problema de lanzamiento de proyectiles donde $h(t) = -5t^2
-    + 20t = 0$, se obtienen $t_1 = 0\text{ s}$ y $t_2 = 4\text{ s}$. ¿En qué segundo
-    vuelve a tocar el suelo?
-  choices:
-  - text: A los $4\text{ segundos}$ de haber sido lanzado.
-    is_correct: true
-  - text: A los $0\text{ segundos}$.
-    is_correct: false
-  - text: A los $20\text{ segundos}$.
-    is_correct: false
-  - text: A los $5\text{ segundos}$.
-    is_correct: false
-  explanation: La alternativa correcta es 'A los $4\text{ segundos}$ de haber sido
-    lanzado.'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: ¿Por qué se deben descartar las soluciones negativas al calcular dimensiones
-    de terrenos o distancias?
-  choices:
-  - text: Porque las distancias y longitudes geométricas son siempre cantidades estrictamente
-      positivas.
-    is_correct: true
-  - text: Porque los números negativos no tienen raíz cuadrada.
-    is_correct: false
-  - text: Porque la ecuación se destruye.
-    is_correct: false
-  - text: Porque el área sería cero.
-    is_correct: false
-  explanation: La alternativa correcta es 'Porque las distancias y longitudes geométricas
-    son siempre cantidades estrictamente positivas.'.
-  reinforcement_section: Ejemplo guiado
+  - placement: after_explicacion_formal
+    question: 'Al resolver un problema sobre la cantidad de productos vendidos se obtienen las soluciones $x_1 = 25$ y $x_2 = -4$. ¿Por qué se descarta la raíz $x_2 = -4$?'
+    choices:
+      - {text: 'Porque no se pueden vender cantidades negativas de productos ($x \in \mathbb{Z}^+$).', is_correct: true}
+      - {text: 'Porque la solución $-4$ es un número primo.', is_correct: false}
+      - {text: 'Porque la ecuación cuadrática no tiene soluciones reales.', is_correct: false}
+      - {text: 'Porque el discriminante fue igual a cero.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque no se pueden vender cantidades negativas de productos ($x \in \mathbb{Z}^+$).''.'
+    reinforcement_section: Explicación formal
+  - placement: after_ejemplo_guiado
+    question: 'Un problema sobre el tiempo en segundos en que una pelota toca el suelo da como soluciones $t_1 = -2$ y $t_2 = 3$. ¿Cuál es la respuesta del tiempo de vuelo?'
+    choices:
+      - {text: '$t = 3 \text{ segundos}$', is_correct: true}
+      - {text: '$t = -2 \text{ segundos}$', is_correct: false}
+      - {text: 'Ambas soluciones son válidas.', is_correct: false}
+      - {text: 'Ninguna solución es válida.', is_correct: false}
+    explanation: 'La alternativa correcta es ''$t = 3 \text{ segundos}$''. El tiempo transcurrido debe ser un valor no negativo ($t \ge 0$).'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Traducir el enunciado verbal a una ecuación de segundo grado $a x^2 + b
-  x + c = 0$.'
-- 'Paso 2: Resolver la ecuación mediante factorización o fórmula general.'
-- 'Paso 3: Evaluar la validez de $x_1$ y $x_2$ en el contexto del problema.'
-- 'Paso 4: Redactar la respuesta verbal conclusiva con unidades.'
-errores_correccion: '- **Error común:** Dar ambas soluciones matemáticas sin verificar
-  si una de ellas es físicamente imposible.
-
-  - **Cómo corregirlo:** Analiza siempre si las variables representan tiempo, distancia
-  o cantidad de personas para descartar soluciones no válidas.'
+  - 'Paso 1: Obtener las dos soluciones algebraicas $x_1$ y $x_2$ de la ecuación de segundo grado.'
+  - 'Paso 2: Identificar las restricciones de naturaleza física o práctica del enunciado (longitud $> 0$, tiempo $\ge 0$, personas $\in \mathbb{Z}^+$).'
+  - 'Paso 3: Comprobar cada solución matemática contra las restricciones declaradas.'
+  - 'Paso 4: Seleccionar la raíz válida y redactar la respuesta contextual adecuada.'
+errores_correccion: |
+  - **Error común:** Dar ambas soluciones matemáticas ($x_1$ y $x_2$) como respuesta final en un problema aplicado de edades o distancias.
+  - **Cómo corregirlo:** **COMPRUEBA EL CONTEXTO** y descarta explícitamente la raíz que carezca de sentido en la realidad.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Demostración básica de modelamiento cuadrático.
-  alternativas:
-  - $1$
-  - $0$
-  - $-1$
-  respuesta: $1$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: Ejemplo 2
-  enunciado: Demostración algebraica de resolución contextual.
-  alternativas:
-  - $x$
-  - $x^2$
-  - $1$
-  respuesta: $x$
-  solucion_pasos:
-  - Pasos de solución.
-- titulo: ¿Se deben descartar soluciones negativas al calcular distancias o tiempos?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, las magnitudes físicas de longitud y tiempo en física clásica son no negativas.
-- titulo: ¿Un proyectil lanzado verticalmente h(t) = -5t^2 + v0*t vuelve al suelo
-    cuando h(t) = 0?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, tocar el suelo equivale a tener altura h = 0.
+  - titulo: Ejemplo 1
+    enunciado: Problema de edades.
+    alternativas:
+      - 'Edad = 14 años'
+      - 'Edad = -6 años'
+      - 'Edad = 14 o -6 años'
+    respuesta: 'Edad = 14 años'
+    solucion_pasos:
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Conteo discreto de objetos.
+    alternativas:
+      - '10 objetos'
+      - '-12 objetos'
+      - '10 o -12 objetos'
+    respuesta: '10 objetos'
+    solucion_pasos:
+      - Pasos de solución.
 errores_frecuentes:
-- Aceptar soluciones negativas en problemas donde la variable representa magnitudes
-  no negativas como edades o medidas de lados.
-- Confundir la pregunta por la incógnita $x$ con la pregunta por la superficie o perímetro
-  completo.
-- Plantear incorrectamente la ecuación de área olvidando multiplicar los paréntesis
-  del largo y ancho.
-- Olvidar colocar unidades físicas (metros, segundos, pesos) en la respuesta contextual
-  final.
-- Sumar en lugar de multiplicar al traducir frases de producto entre números.
+  - 'Entregar las dos soluciones matemáticas $x_1$ y $x_2$ como respuestas válidas en un problema de distancias o edades.'
+  - 'Aceptar soluciones fraccionarias o decimales en problemas que exigen el conteo de objetos discretos indivisibles.'
+  - 'Descartar la solución positiva por asumirse incorrectamente que ambas soluciones cuadráticas deben ser rechazadas.'
+  - 'La sustitución errónea de la variable de resultado $x$ con las preguntas compuestas del problema (ej. dar $x$ en lugar de $x+5$).'
+  - 'No verificar las soluciones encontradas sustituyendo en las expresiones contextuales originales.'
 afirmaciones_verdaderas:
-- El modelamiento cuadrático traduce enunciados reales a ecuaciones $a x^2 + b x +
-  c = 0$ cuyas soluciones deben filtrarse según las restricciones físicas del problema.
-- En problemas de lanzamiento de proyectiles $h(t) = -g t^2 + v_0 t + h_0$, el instante
-  de retorno al suelo se halla igualando la altura a cero ($h(t) = 0$).
-al_terminar_debes_poder: Al finalizar este recurso podrás traducir enunciados verbales
-  a ecuaciones cuadráticas, resolver problemas de áreas, números y movimiento, seleccionando
-  la raíz válida e interpretando la solución.
-fuente: Texto escolar MINEDUC — Álgebra / Modelamiento Cuadrático
+  - 'Seleccionar la raíz válida requiere intersectar el conjunto solución algebraico $S_{alg}$ con el dominio de restricción físico del problema $D_{ctx}$.'
+  - 'Las magnitudes de tiempo, distancia, edad y cantidades de objetos discretos imponen restricciones de no negatividad o entero positivo sobre las raíces.'
+al_terminar_debes_poder: |
+  QUÉ: Filtrar y seleccionar la raíz algebraicamente válida que satisface las restricciones del contexto aplicado.
+  CÓMO: Obtener $x_1, x_2$, contrastar con el dominio físico del enunciado ($x > 0, t \ge 0$) y declarar la respuesta contextual correcta.
+fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
 estado: publicado
