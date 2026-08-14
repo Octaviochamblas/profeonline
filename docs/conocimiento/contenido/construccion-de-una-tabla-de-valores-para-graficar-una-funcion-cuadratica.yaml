@@ -1,100 +1,99 @@
 semantic_id: MAT.ALG.FUNC_CUADR_GRAFICA.TABLA_VALORES
-resumen_inicial: 'La tabla de valores organiza de forma sistemática la evaluación de una función cuadrática en un conjunto de preimágenes centradas en el vértice para obtener sus coordenadas numéricas.'
+resumen_inicial: La construcción de una tabla de valores organiza de manera sistemática pares ordenados $(x, f(x))$ para graficar la parábola.
 explicacion_simple: |
-  Para dibujar una parábola de forma precisa en un papel o gráfico, se construye una tabla con dos columnas: una para las entradas $x$ y otra para las salidas $y = f(x)$. El truco principal para que la tabla muestre la forma curva completa es elegir el valor del vértice $h = -\frac{b}{2a}$ como centro de la tabla y tomar números enteros a la izquierda y a la derecha de este centro.
+  Una **tabla de valores** es una herramienta para calcular puntos clave antes de hacer el dibujo de la parábola:
+
+  1. Eliges varios números para la entrada $x$ (es ideal incluir el valor del **vértice** y números a su izquierda y derecha).
+  2. Calculas la salida $y = f(x)$ reemplazando cada $x$ en la fórmula.
+  3. Escribes los pares de coordenadas $(x, y)$.
+
+  **Ejemplo**: Para $f(x) = x^2 - 2x$:
+  | $x$ | $f(x) = x^2 - 2x$ | Punto $(x, y)$ |
+  | :---: | :---: | :---: |
+  | $-1$ | $(-1)^2 - 2(-1) = 3$ | $(-1, 3)$ |
+  | $0$ | $0^2 - 2(0) = 0$ | $(0, 0)$ |
+  | $1$ | $1^2 - 2(1) = -1$ | $(1, -1)$ |
+  | $2$ | $2^2 - 2(2) = 0$ | $(2, 0)$ |
+  | $3$ | $3^2 - 2(3) = 3$ | $(3, 3)$ |
+
+  ¡Observa cómo los valores de $y$ se repiten simétricamente alrededor del vértice $x = 1$!
 explicacion_formal: |
-  ### Definición formal
-  Una **tabla de valores** para una función cuadrática $f(x) = ax^2 + bx + c$ es una matriz de pares ordenados $\{(x_i, y_i)\}_{i=1}^n$ tal que $y_i = f(x_i)$.
+  Sea la función $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = ax^2 + bx + c$. La **matriz de evaluación o tabla de valores** es un subconjunto finito del grafo de la función $\mathcal{T} \subset G(f)$:
 
-  ### Desglose simbólico
-  - $h = -\frac{b}{2a}$: Abscisa central del muestreo.
-  - Conjunto de muestreo aconsejado: $x \in \{h-2, h-1, h, h+1, h+2\}$.
-  - Simetría tabular: $f(h-1) = f(h+1)$ y $f(h-2) = f(h+2)$.
+  $$\mathcal{T} = \{(x_k, f(x_k)) \in \mathbb{R}^2 \mid k \in \{1, 2, \dots, n\}\}$$
 
-  ### Síntesis didáctica
-  Si la tabla de valores no incluye la abscisa del vértice $h$, es probable que los puntos graficados parezcan una simple recta inclinada o una rama curva incompleta. Centrar la tabla en $h$ garantiza visualizar el punto de giro y la simetría duplicada de las salidas $y$.
+  **Estrategia óptima de selección de nodos de entrada $x_k$:**
+  Para reflejar fielmente la simetría de la curva, el conjunto de abscisas $\{x_k\}$ se centra en la abscisa del vértice $x_v = -\frac{b}{2a}$, seleccionando valores equidistantes:
+
+  $$x_v - 2h, \quad x_v - h, \quad x_v, \quad x_v + h, \quad x_v + 2h$$
 definiciones_clave: |
-  - **Tabla de valores**: Estructura de columnas $(x, y)$ donde se registran las preimágenes y sus correspondientes imágenes calculadas.
-  - **Muestreo centrado**: Selección estratégica de valores de $x$ equidistantes a la abscisa del vértice $h$.
-  - **Par ordenado $(x, y)$**: Coordenada cartesiana obtenida de cada fila de la tabla de valores.
+  - **Tabla de valores**: Estructura de filas y columnas que tabula parejas de datos $(x, f(x))$ para la construcción cartesiana de la parábola.
 propiedades_relaciones: |
-  - **Identificación visual de la simetría**: En una tabla centrada en $h$, los valores de $y$ se repiten simétricamente por encima y por debajo de la fila del vértice.
-  - **Detección de errores de cálculo**: Si los valores de $y$ a distancias iguales de $h$ no resultan idénticos, se ha cometido un error operacional al evaluar la notación.
+  - **Simetría numérica tabular**: En una tabla construida con abscisas centradas en el vértice $x_v$, los valores de salida $y$ a igual distancia del vértice son exactamente idénticos: $f(x_v - h) = f(x_v + h)$.
 ejemplo_guiado:
-  enunciado: 'Construye la tabla de valores para la función $f(x) = x^2 - 2x - 3$ seleccionando 5 puntos centrados en el eje de simetría $h = -\frac{b}{2a}$.'
+  enunciado: 'Construye la tabla de valores de la función $f(x) = x^2 + 1$ para $x \in \{-2, -1, 0, 1, 2\}$.'
   pasos:
-    - 'Paso 1: Calculamos la abscisa del vértice: $h = -\frac{-2}{2(1)} = 1$.'
-    - 'Paso 2: Elegimos 2 valores menores y 2 valores mayores que 1, formando el conjunto de entradas $x \in \{-1, 0, 1, 2, 3\}$.'
-    - 'Paso 3: Evaluamos cada entrada: $f(-1) = (-1)^2 - 2(-1) - 3 = 0$, $f(0) = -3$, $f(1) = 1^2 - 2(1) - 3 = -4$, $f(2) = -3$, $f(3) = 0$.'
-    - 'Paso 4: Consolidamos los pares ordenados en la tabla: $(-1, 0)$, $(0, -3)$, $(1, -4)$, $(2, -3)$, $(3, 0)$, observando la simetría de valores alrededor de $y = -4$.'
+    - 'Paso 1: Evaluar $x = -2 \implies f(-2) = (-2)^2 + 1 = 5 \implies (-2, 5)$.'
+    - 'Paso 2: Evaluar $x = -1 \implies f(-1) = (-1)^2 + 1 = 2 \implies (-1, 2)$.'
+    - 'Paso 3: Evaluar $x = 0 \implies f(0) = 0^2 + 1 = 1 \implies (0, 1)$.'
+    - 'Paso 4: Evaluar $x = 1 \implies (1, 2)$ y $x = 2 \implies (2, 5)$. Constatar la simetría.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Por qué es fundamental calcular la abscisa del vértice $h = -\frac{b}{2a}$ antes de construir la tabla de valores de una función cuadrática?'
+    question: '¿Alrededor de qué valor de $x$ conviene centrar los valores de una tabla para apreciar la simetría de la parábola?'
     choices:
-      - {text: 'Para seleccionar un rango de entradas $x$ centrado en el punto de giro que muestre la simetría curva', is_correct: true}
-      - {text: 'Para encontrar las intersecciones con el eje de las abscisas', is_correct: false}
-      - {text: 'Para determinar el grado del polinomio de la función', is_correct: false}
-      - {text: 'Para anular el término independiente $c$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Para seleccionar un rango de entradas $x$ centrado en el punto de giro que muestre la simetría curva''. Centrar la tabla en $h$ asegura capturar ambas ramas de la parábola.'
-    reinforcement_section: 'Explicación formal'
+      - {text: 'Alrededor de la abscisa del vértice $x_v = -b/(2a)$', is_correct: true}
+      - {text: 'Alrededor del número 10.', is_correct: false}
+      - {text: 'Alrededor del término independiente $c$.', is_correct: false}
+      - {text: 'Únicamente alrededor de números impares.', is_correct: false}
+    explanation: 'La alternativa correcta es ''Alrededor de la abscisa del vértice $x_v = -b/(2a)$''.'
+    reinforcement_section: Explicación formal
   - placement: after_ejemplo_guiado
-    question: 'En la tabla de valores de $g(x) = -x^2 + 4x$, centrada en $h = 2$, se obtienen los puntos $(1, 3)$ y $(2, 4)$. Por simetría, ¿cuál es el valor de $g(3)$?'
+    question: 'En la tabla de $f(x) = x^2 - 4x$, el vértice está en $x = 2$ con $f(2) = -4$. Si $f(1) = -3$, ¿cuánto vale $f(3)$ por propiedad de simetría?'
     choices:
-      - {text: '$g(3) = 3$', is_correct: true}
-      - {text: '$g(3) = 4$', is_correct: false}
-      - {text: '$g(3) = 0$', is_correct: false}
-      - {text: '$g(3) = -3$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$g(3) = 3$''. El valor $x = 3$ está a 1 unidad a la derecha del centro $h = 2$, por lo que su salida es igual a la de $x = 1$, es decir, $g(3) = g(1) = 3$.'
-    reinforcement_section: 'Ejemplo guiado'
+      - {text: '$f(3) = -3$', is_correct: true}
+      - {text: '$f(3) = 0$', is_correct: false}
+      - {text: '$f(3) = 3$', is_correct: false}
+      - {text: '$f(3) = -4$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$f(3) = -3$''. Al estar $x=1$ y $x=3$ a la misma distancia de $x=2$, sus imágenes son iguales.'
+    reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Determinar el centro de la tabla calculando la abscisa del vértice $h = -\frac{b}{2a}$.'
-  - 'Paso 2: Seleccionar valores de $x$ enteros consecutivos a ambos lados de $h$ (por ejemplo: $h-2, h-1, h, h+1, h+2$).'
-  - 'Paso 3: Evaluar la función en cada $x$, registrar las imágenes $y = f(x)$ en la tabla y verificar que $f(h-d) = f(h+d)$.'
+  - 'Paso 1: Calcular la abscisa del vértice $x_v = -\frac{b}{2a}$.'
+  - 'Paso 2: Seleccionar al menos 2 valores a la izquierda y 2 valores a la derecha de $x_v$.'
+  - 'Paso 3: Sustituir cada $x$ en la función calculando cuidadosamente los resultados $y$.'
+  - 'Paso 4: Organizar las respuestas en pares ordenados $(x, y)$ dentro de la tabla.'
 errores_correccion: |
-  - **Error 1:** Elegir únicamente valores positivos aleatorios (como $x \in \{1, 2, 3, 4, 5\}$) cuando el vértice está en $h = -3$. **Cómo corregirlo:** Elegir valores lejanos al vértice solo muestra una rama ascendente o descendente. Siempre se debe hallar $h$ primero para centrar el muestreo.
-  - **Error 2:** Olvidar elevar al cuadrado el signo de los números negativos al llenar la columna de $y$. **Cómo corregirlo:** Escribir $f(-2) = (-2)^2 = 4$. Si se omite el paréntesis se comete el error $-2^2 = -4$, alterando la simetría de la tabla.
+  - **Error común:** Escoger valores de $x$ muy alejados del vértice (ej. $x = 10, 20$) perdiendo la vista del vértice y la curva.
+  - **Cómo corregirlo:** Calcula **PRIMERO EL VÉRTICE $x_v$** y elige valores cercanos a su alrededor.
 ejemplos:
-  - titulo: 'Simetría de valores en la tabla'
-    enunciado: 'Para $f(x) = x^2 - 4$, con centro en $h = 0$, se evalúan $x = -2, -1, 0, 1, 2$. ¿Cuáles son los valores correspondientes de $y$?'
+  - titulo: Ejemplo 1
+    enunciado: Tabla simétrica en el origen.
     alternativas:
-      - '$y \in \{0, -3, -4, -3, 0\}$'
-      - '$y \in \{0, 1, 4, 1, 0\}$'
-      - '$y \in \{-8, -5, -4, -3, 0\}$'
-    respuesta: '$y \in \{0, -3, -4, -3, 0\}$'
+      - '(-1, 3), (0, 0), (1, 3)'
+      - '(-1, -3), (0, 0), (1, 3)'
+      - '(-1, 1), (0, 0), (1, 2)'
+    respuesta: '(-1, 3), (0, 0), (1, 3)'
     solucion_pasos:
-      - '1. $f(-2) = (-2)^2 - 4 = 0$.'
-      - '2. $f(-1) = (-1)^2 - 4 = -3$.'
-      - '3. $f(0) = 0 - 4 = -4$ (vértice).'
-      - '4. $f(1) = 1 - 4 = -3$ y $f(2) = 4 - 4 = 0$.'
-  - titulo: 'Identificación del vértice en una tabla dada'
-    enunciado: 'En la tabla de una función cuadrática se registran los puntos $(-1, 5)$, $(0, 2)$, $(1, 1)$, $(2, 2)$, $(3, 5)$. ¿Cuáles son las coordenadas del vértice?'
+      - Pasos de solución.
+  - titulo: Ejemplo 2
+    enunciado: Tabla con traslación.
     alternativas:
-      - '$(1, 1)$'
-      - '$(0, 2)$'
-      - '$(2, 2)$'
-    respuesta: '$(1, 1)$'
+      - '(1, 1), (2, 0), (3, 1)'
+      - '(1, 0), (2, 1), (3, 2)'
+      - '(1, 2), (2, 2), (3, 2)'
+    respuesta: '(1, 1), (2, 0), (3, 1)'
     solucion_pasos:
-      - '1. Observamos que las salidas $y$ disminuyen hasta 1 y luego vuelven a aumentar simétricamente (2, 5).'
-      - '2. El punto central y extremo es el par $(1, 1)$, que representa el vértice de la parábola.'
-  - titulo: 'Verificación de simetría tabular'
-    enunciado: 'En una tabla de valores centrada en $h = 3$, ¿las filas correspondientes a $x = 1$ y $x = 5$ deben presentar exactamente el mismo valor de $y$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Ambas entradas están a una distancia de $d = 2$ unidades del centro $h = 3$, por lo que sus imágenes coinciden.'
-  - titulo: 'Muestreo suficiente para graficar'
-    enunciado: '¿Bastan 2 puntos cualesquiera para graficar de forma unívoca una parábola cuadrática en el plano?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No. Por 2 puntos pasan infinitas parábolas distintas. Se requieren al menos 3 puntos no colineales (o el vértice y 2 puntos simétricos) para definir la parábola.'
+      - Pasos de solución.
 errores_frecuentes:
-  - 'Para graficar una función cuadrática basta con construir una tabla conteniendo los números $x = 0, 1, 2$ independientemente de la fórmula.'
-  - 'En la tabla de valores de $f(x) = -x^2$, la entrada $x = -3$ produce una salida $y = 9$.'
-  - 'Los valores de la columna $y$ en la tabla de una función cuadrática deben crecer en una proporción constante.'
-  - 'El punto de la tabla que tiene $x = 0$ representa siempre el vértice de la parábola.'
-  - 'Si en una tabla de valores de una parábola no se observan números repetidos en $y$, la función está mal definida.'
+  - 'Cometer errores de signo en la potencia de números negativos dentro de la tabla.'
+  - 'Elegir únicamente valores de $x$ positivos impidiendo observar la curvatura completa de la parábola.'
+  - 'La falta de aprovechamiento de la simetría de las salidas $y$ para verificar la corrección de los cálculos tabulares.'
+  - 'El intercambio entre las columnas de entrada $x$ y salida $y$ al traspasar los puntos al plano cartesiano.'
+  - 'La suposición de que la diferencia entre valores consecutivos de $y$ en la tabla debe ser una constante fija.'
 afirmaciones_verdaderas:
-  - 'Una tabla de valores centrada en $h = -\frac{b}{2a}$ exhibe valores de $y$ simétricos a distancias iguales del centro.'
-  - 'El punto central de una tabla de valores equilibrada corresponde a las coordenadas del vértice $V(h, k)$.'
-al_terminar_debes_poder: 'Construir tablas de valores equilibradas y centradas en el vértice para representar fielmente funciones cuadráticas en el plano cartesiano.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Construir una tabla de valores centrada en el vértice $x_v$ permite verificar visualmente la simetría de la parábola.'
+  - 'Los valores de salida $y$ situados a la misma distancia a la izquierda y derecha del vértice son idénticos.'
+al_terminar_debes_poder: |
+  QUÉ: Construir y organizar tablas de valores para graficar funciones cuadráticas.
+  CÓMO: Calcular $x_v$, elegir valores simétricos de entrada, evaluar $f(x)$ y formar la matriz de puntos ordenados $(x, y)$.
+fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
 estado: publicado
