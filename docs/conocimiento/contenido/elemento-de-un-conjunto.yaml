@@ -1,93 +1,103 @@
 semantic_id: MAT.FUND.CONJUNTOS_BASICOS.ELEMENTO
-titulo: Elemento de un conjunto
-objetivo: 'Identificar qué es un elemento de un conjunto y distinguir los objetos
-  que pertenecen
+resumen_inicial: 'Concepto fundamental de elemento o miembro de un conjunto y su naturaleza ontológica en la teoría de conjuntos.'
+explicacion_simple: |
+  Un **elemento** (o miembro) es cualquier objeto individual que forma parte de un conjunto. Los elementos pueden ser números, letras, figuras geométricas, personas o incluso **otros conjuntos**. Por ejemplo, en el conjunto $A = \{3, \text{"rojo"}, \Delta\}$, los elementos son el número $3$, la palabra "rojo" y la figura $\Delta$. Un conjunto que contiene conjuntos como elementos, como $B = \{1, \{2, 3\}\}$, tiene dos elementos: el número $1$ y el conjunto $\{2, 3\}$.
+explicacion_formal: |
+  ### Definición formal
+  En la teoría de conjuntos, un objeto $x$ es un **elemento (o miembro)** del conjunto $A$ si satisface la relación binaria primitiva de pertenencia de primer orden:
+  $$x \in A$$
+  En la teoría axiomática pura de Zermelo-Fraenkel ($\text{ZF}$), no existen "ur-elementos" (átomos no conjuntistas); todo elemento es a su vez un conjunto:
+  $$\forall x \, (x \in A \to x \text{ es un conjunto})$$
+  En contextos matemáticos aplicados, los elementos pueden ser escalares, vectores, funciones o estructuras algebraicas.
 
-  a un conjunto de los que no pertenecen.
+  ### Desglose simbólico
+  - Relación primitiva: $x \in A$ (se lee "$x$ pertenece a $A$" o "$x$ es elemento de $A$").
+  - Identificación por comas en extensión: Si $A = \{a_1, a_2, \dots, a_n\}$, cada $a_i$ es un elemento.
+  - Anidación conjuntista: En $C = \{1, \{2\}\}$, los elementos son $1$ y $\{2\}$ (el elemento $2 \notin C$).
 
-  '
-introduccion: 'El concepto de elemento es inseparable del concepto de conjunto. Todo
-  conjunto está
-
-  formado por sus elementos. Entender qué es un elemento y cómo se relaciona con el
-
-  conjunto es el primer paso para trabajar con teoría de conjuntos.
-
-  '
-resumen: 'Un elemento es cualquier objeto que pertenece a un conjunto. Los elementos
-  son los
-
-  componentes básicos del conjunto. Todo lo que "está dentro" de un conjunto es un
-
-  elemento de ese conjunto.
-
-  '
-explicacion: "Un elemento (también llamado miembro) es cualquier objeto que pertenece\
-  \ a un conjunto.\nLos elementos pueden ser números, letras, palabras, objetos físicos,\
-  \ o incluso otros\nconjuntos.\n\nCaracterísticas de los elementos:\n- Son los objetos\
-  \ individuales que componen el conjunto.\n- No se repiten dentro del mismo conjunto.\n\
-  - Pueden ser de cualquier naturaleza (números, letras, colores, etc.).\n\nEjemplos:\n\
-  - En A = {1, 2, 3}, los elementos son 1, 2 y 3.\n- En B = {rojo, azul}, los elementos\
-  \ son rojo y azul.\n- En C = {{1,2}, {3,4}}, los elementos son {1,2} y {3,4} (conjuntos\
-  \ dentro de un\n  conjunto).\n"
+  ### Síntesis didáctica
+  La condición de ser elemento es puramente relacional: un mismo objeto puede actuar como elemento respecto a un conjunto de nivel superior y como conjunto respecto a sus propios miembros.
+definiciones_clave: |
+  - **Elemento de un conjunto**: Objeto individual que compone o pertenece a una colección determinada.
+  - **Miembro primitivo**: Instancia de la relación binaria $\in$ en la posición izquierda ($x \in A$).
+  - **Conjunto de conjuntos**: Estructura donde los elementos miembros son a su vez conjuntos con sus propios elementos internos.
+propiedades_relaciones: |
+  - **No transitividad de la pertenencia**: Si $x \in A$ y $A \in B$, en general $x \notin B$. Por ejemplo, $2 \in \{2\}$ y $\{2\} \in \{\{2\}\}$, pero $2 \notin \{\{2\}\}$.
+  - **Axioma de regularidad / fundación**: Ningún conjunto puede ser elemento de sí mismo ($\forall A, \, A \notin A$).
+ejemplo_guiado:
+  enunciado: 'Dado el conjunto $M = \{5, \{7, 8\}, 9\}$, enumera todos sus elementos individuales y determina si el número $7$ es un elemento de $M$.'
+  pasos:
+    - 'Paso 1: Examinar la lista principal delimitada por las llaves exteriores de $M$.'
+    - 'Paso 2: Identificar los objetos separados por comas al nivel exterior:
+      - Elemento 1: El número escalar $5$.
+      - Elemento 2: El conjunto $\{7, 8\}$.
+      - Elemento 3: El número escalar $9$.'
+    - 'Paso 3: Contar el número total de elementos de $M$: Tiene exactamente $3$ elementos.'
+    - 'Paso 4: Evaluar si el número $7$ es elemento de $M$: El $7$ pertenece al conjunto interno $\{7, 8\}$, pero no figura suelto en la lista exterior de $M$.'
+    - 'Paso 5: Concluir formalmente que los elementos de $M$ son $5, \{7, 8\}$ y $9$, y que $7 \notin M$ (aunque $\{7, 8\} \in M$).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuántos elementos tiene el conjunto $A = \{1, 2, \{3, 4\}, 5\}$?'
+    choices:
+      - {text: 'Exactamente $4$ elementos ($1, 2, \{3, 4\}$ y $5$)', is_correct: true}
+      - {text: '$5$ elementos', is_correct: false}
+      - {text: '$3$ elementos', is_correct: false}
+      - {text: '$2$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $4$ elementos ($1, 2, \{3, 4\}$ y $5$)''. El subconjunto $\{3, 4\}$ cuenta como un único elemento individual.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Dado el conjunto $B = \{a, \{b\}\}$, ¿cuál de las siguientes proposiciones es Verdadera?'
+    choices:
+      - {text: '$\{b\} \in B$', is_correct: true}
+      - {text: '$b \in B$', is_correct: false}
+      - {text: '$\{a\} \in B$', is_correct: false}
+      - {text: '$B$ contiene $3$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\{b\} \in B$''. El objeto con llaves $\{b\}$ es el segundo elemento de $B$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Escribe o identifica el conjunto dado.'
-- 'Paso 2: Todo objeto listado dentro de las llaves {} es un elemento del conjunto.'
-- 'Paso 3: Si el conjunto está definido por comprensión (A = {x | propiedad}), evalúa
-  la propiedad para cada candidato.'
-- 'Paso 4: Confirma que cada elemento satisface la condición de pertenencia.'
+  - 'Paso 1: Observar las llaves de apertura $\{$ y cierre $\}$ más externas del conjunto.'
+  - 'Paso 2: Identificar los objetos separados por comas que se encuentran en el primer nivel de anidación.'
+  - 'Paso 3: Tratar cada subconjunto entre llaves internas como un único elemento atómico.'
+  - 'Paso 4: Contar y listar cada uno de los elementos identificados.'
+errores_correccion: |
+  - **Error 1:** Asumir que si un objeto está dentro de un subconjunto, también es elemento del conjunto principal. **Cómo corregirlo:** La pertenencia $\in$ no es transitiva. En $A = \{\{3\}\}$, el elemento es $\{3\}$; el número $3$ no es elemento de $A$ ($3 \notin A$).
+  - **Error 2:** Contar los elementos de los conjuntos internos sumándolos al total. **Cómo corregirlo:** El conjunto $\{1, \{2, 3, 4\}\}$ tiene exactamente 2 elementos: el número $1$ y el bloque $\{2, 3, 4\}$.
 ejemplos:
-- tipo: A
-  titulo: Identificar elementos de un conjunto
-  enunciado: 'Dado el conjunto A = {lunes, martes, miércoles, jueves, viernes}, identifica
-
-    todos sus elementos.
-
-    '
-  solucion_pasos: "1. El conjunto A está dado en notación de llaves.\n2. Los objetos\
-    \ dentro de las llaves son: lunes, martes, miércoles, jueves,\n   viernes.\n3.\
-    \ Por lo tanto, los elementos de A son: lunes, martes, miércoles, jueves y\n \
-    \  viernes. El conjunto tiene 5 elementos.\n"
-- tipo: A
-  titulo: Elemento vs. conjunto
-  enunciado: 'En el conjunto C = {{1, 2}, {3, 4}, 5}, ¿cuáles son los elementos? ¿Cuántos
-
-    tiene?
-
-    '
-  solucion_pasos: "1. El conjunto C está definido con llaves.\n2. Los objetos dentro\
-    \ de las llaves externas son: {1, 2}, {3, 4} y 5.\n3. Los elementos de C son:\
-    \ {1, 2}, {3, 4} y 5. Note que {1, 2} y {3, 4} son\n   elementos que a su vez\
-    \ son conjuntos.\n4. El conjunto C tiene 3 elementos.\n"
-- tipo: B
-  titulo: Número de elementos
-  respuesta: '3'
-  solucion_pasos: 'El conjunto C = {{1,2}, {3,4}, 5} tiene 3 elementos: los conjuntos
-    {1,2} y
-
-    {3,4}, y el número 5. El hecho de que dos de los elementos sean conjuntos no
-
-    cambia que son tres objetos distintos dentro de C.
-
-    '
-- tipo: B
-  titulo: ¿Es 2 un elemento de A = {{1,2}, 3}?
-  respuesta: false
-  solucion_pasos: 'A = {{1,2}, 3} tiene exactamente dos elementos: el conjunto {1,2}
-    y el número 3.
-
-    El número 2 no es un elemento de A; es un elemento del elemento {1,2} de A. Por
-
-    lo tanto, 2 no pertenece a A.
-
-    '
+  - titulo: 'Elementos de conjunto numérico'
+    enunciado: '¿Cuáles son los elementos de $K = \{2, 4, 6\}$?'
+    alternativas:
+      - 'Los números $2, 4$ y $6$'
+      - 'El número $246$'
+      - 'El conjunto $\{246\}$'
+    respuesta: 'Los números $2, 4$ y $6$'
+    solucion_pasos:
+      - '1. Son los 3 valores individuales separados por comas.'
+  - titulo: 'Conjunto de conjuntos'
+    enunciado: '¿El objeto $\{1, 2\}$ es elemento de $S = \{\{1, 2\}, \{3, 4\}\}$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\{1, 2\}$ aparece listado en el primer nivel de $S$.'
+  - titulo: 'No transitividad'
+    enunciado: 'Si $x \in A$ y $A \in B$, ¿se puede afirmar que $x \in B$ siempre?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No, la relación de pertenencia no es transitiva.'
+  - titulo: 'Conjunto vacío como elemento'
+    enunciado: '¿Cuántos elementos tiene el conjunto $\{\emptyset\}$?'
+    respuesta: 'Exactamente 1 elemento (el conjunto vacío)'
+    solucion_pasos:
+      - 'Contiene un único elemento, que es el conjunto $\emptyset$.'
 errores_frecuentes:
-- Declarar un elemento que es un conjunto (como {1,2}) con sus propios elementos (1
-  y 2).
-- Afirmar que los elementos de un conjunto deben ser del mismo tipo (todos números,
-  todas letras, etc.).
-- Contar un elemento repetido dos veces al determinar cuántos elementos tiene el conjunto.
-- Omitir que un conjunto puede ser elemento de otro conjunto.
-- Declarar el conjunto vacío {} como un conjunto sin elementos con el número 0.
-fuente: Lipschutz, S. (2011). Teoría de conjuntos. McGraw-Hill.
+  - 'La afirmación de que la relación de pertenencia es transitiva ($x \in A \land A \in B \implies x \in B$).'
+  - 'La afirmación de que el número $3$ es elemento del conjunto $\{\{3\}\}$.'
+  - 'La afirmación de que un conjunto no puede tener a otro conjunto como elemento constituyente.'
+  - 'La afirmación de que el conjunto $\{\emptyset\}$ es un conjunto vacío sin elementos.'
+  - 'La afirmación de que el recuento de elementos de un conjunto exige la adición de los miembros de todos sus subconjuntos anidados.'
+afirmaciones_verdaderas:
+  - 'Un elemento es cualquier objeto que satisface la relación binaria de pertenencia ($x \in A$) en el primer nivel de delimitación de un conjunto.'
+  - 'La relación de pertenencia no es transitiva: que un elemento pertenezca a un subconjunto no implica que pertenezca al conjunto contenedor exterior.'
+al_terminar_debes_poder: |
+  QUÉ: Identificar, contar y diferenciar los elementos de cualquier conjunto matemático.
+  CÓMO: Reconocer los objetos delimitados en el primer nivel de llaves y distinguir entre elementos atómicos y subconjuntos anidados.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
