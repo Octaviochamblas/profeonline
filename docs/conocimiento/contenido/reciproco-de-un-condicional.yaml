@@ -1,115 +1,105 @@
 semantic_id: MAT.FUND.RAZONAMIENTO_LOGICO.CONDICIONAL_RECIPROCO
-titulo: Recíproco de un condicional
-objetivo: Obtener el recíproco de una proposición condicional intercambiando el antecedente
-  y el consecuente.
-introduccion: 'Imagina la siguiente regla: "Si está lloviendo, entonces el suelo está
-  mojado". ¿Qué pasa si la leemos al revés? "Si el suelo está mojado, entonces está
-  lloviendo".
+resumen_inicial: 'Definición, tabla de verdad y análisis de no equivalencia del recíproco de un condicional ($q \to p$) respecto al condicional directo ($p \to q$).'
+explicacion_simple: |
+  El **recíproco** (o condicional recíproco) se obtiene simplemente intercambiando el orden de las proposiciones: en lugar de "Si $p$, entonces $q$" ($p \to q$), escribimos **"Si $q$, entonces $p$" ($q \to p$)**. Es fundamental saber que **un condicional y su recíproco NO significan lo mismo**. Por ejemplo: "Si un animal es un perro, entonces es un mamífero" es verdadero; pero su recíproco: "Si un animal es un mamífero, entonces es un perro" es completamente falso (puede ser un gato o una ballena).
+explicacion_formal: |
+  ### Definición formal
+  Dado un condicional directo $\Phi = p \to q$, su **proposición recíproca** es la fórmula obtenida por la permutación de sus términos constituyentes:
+  $$\text{Recíproco}(p \to q) = q \to p$$
+  En el cálculo proposicional clásico, el condicional directo y su recíproco **no son lógicamente equivalentes**:
+  $$p \to q \not\equiv q \to p$$
+  dado que la fórmula $(p \to q) \leftrightarrow (q \to p)$ no es una tautología sino una contingencia.
 
+  ### Desglose simbólico
+  - Vector de salida directo: $\mathbf{v}(p \to q) = [V, F, V, V]^T$.
+  - Vector de salida recíproco: $\mathbf{v}(q \to p) = [V, V, F, V]^T$.
+  - Discrepancia en asignaciones intermedias:
+    - Fila 2 ($V, F$): Directo = $F$, Recíproco = $V$.
+    - Fila 3 ($F, V$): Directo = $V$, Recíproco = $F$.
 
-  Aunque a veces parece que al leer una frase condicional al revés obtenemos lo mismo,
-  esto no siempre es verdad. En matemáticas, la frase leída al revés (intercambiando
-  el orden de las dos partes) se llama el recíproco del condicional.
-
-
-  El recíproco es una nueva proposición y es sumamente importante entender que su
-  valor de verdad no tiene por qué ser igual al del condicional original. ¡El suelo
-  podría estar mojado porque alguien regó las plantas!'
-resumen: 'El recíproco de un condicional $p \to q$ es la proposición condicional $q
-  \to p$, obtenida al intercambiar el antecedente y el consecuente. En general, un
-  condicional y su recíproco no son lógicamente equivalentes.
-
-  '
-explicacion: 'Dado un condicional de la forma $p \to q$, donde $p$ es el **antecedente**
-  (hipótesis) y $q$ es el **consecuente** (tesis), podemos construir nuevas variaciones
-  condicionales.
-
-
-  El **recíproco** (o recíproca) de $p \to q$ se obtiene intercambiando las posiciones
-  del antecedente y el consecuente.
-
-
-  Formalmente:
-
-  $$\text{Si el condicional original es } p \to q \text{, su recíproco es } q \to
-  p$$
-
-
-  **Independencia de los Valores de Verdad**
-
-  Es un error conceptual común pensar que si una implicación $p \to q$ es verdadera,
-  su recíproco $q \to p$ también debe serlo. Comparemos sus tablas de verdad:
-
-
-  | $p$ | $q$ | Condicional: $p \to q$ | Recíproco: $q \to p$ |
-
-  | :---: | :---: | :---: | :---: |
-
-  | V | V | **V** | **V** |
-
-  | V | F | **F** | **V** |
-
-  | F | V | **V** | **F** |
-
-  | F | F | **V** | **V** |
-
-
-  Como podemos ver en la segunda y tercera fila, las columnas de resultados difieren.
-  Por lo tanto, el condicional original y su recíproco **no son lógicamente equivalentes**:
-
-  $$p \to q \not\equiv q \to p$$'
+  ### Síntesis didáctica
+  La conjunción simultánea de un condicional y su recíproco constituye formalmente el conectivo bicondicional: $(p \to q) \land (q \to p) \equiv p \leftrightarrow q$.
+definiciones_clave: |
+  - **Recíproco de un condicional ($q \to p$)**: Proposición condicional formada al intercambiar antecedente y consecuente.
+  - **Falacia de afirmación del consecuente**: Error deductivo que consiste en asumir que la verdad de $p \to q$ y $q$ garantiza la verdad de $p$.
+  - **No conmutatividad condicional**: Propiedad del condicional por la cual la permutación de operandos altera la tabla de verdad.
+propiedades_relaciones: |
+  - **Equivalencia con el inverso**: El recíproco $q \to p$ es lógicamente equivalente al inverso $\neg p \to \neg q$ por la ley del contrarrecíproco.
+  - **Condición suficiente vs necesaria**: En $p \to q$, $p$ es suficiente para $q$; en $q \to p$, $p$ pasa a ser condición necesaria.
+ejemplo_guiado:
+  enunciado: 'Dado el enunciado condicional directo: "Si un número entero termina en $0$, entonces es divisible por $5$", formula su recíproco y analiza el valor de verdad de ambos.'
+  pasos:
+    - 'Paso 1: Identificar las partes del condicional directo:
+      - Antecedente $p$: "Un número entero termina en $0$".
+      - Consecuente $q$: "El número es divisible por $5$".'
+    - 'Paso 2: Evaluar el condicional directo $p \to q$: Todo número terminado en $0$ ($10, 20, 30\dots$) es múltiplo de $5$. Por lo tanto, el directo es **Verdadero ($V$)**.'
+    - 'Paso 3: Formular el recíproco permutando las proposiciones ($q \to p$): "Si un número entero es divisible por $5$, entonces termina en $0$".'
+    - 'Paso 4: Evaluar el recíproco $q \to p$: Existen números divisibles por $5$ que no terminan en $0$, como el $15$ o el $25$ (contraejemplos). Por lo tanto, el recíproco es **Falso ($F$)**.'
+    - 'Paso 5: Concluir que el condicional directo y su recíproco poseen valores de verdad independientes.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la relación lógica formal entre un condicional $p \to q$ y su recíproco $q \to p$?'
+    choices:
+      - {text: 'No son lógicamente equivalentes ($p \to q \not\equiv q \to p$)', is_correct: true}
+      - {text: 'Son siempre lógicamente equivalentes', is_correct: false}
+      - {text: 'El recíproco es siempre una contradicción', is_correct: false}
+      - {text: 'El recíproco es la negación de $p \to q$', is_correct: false}
+    explanation: 'La alternativa correcta es ''No son lógicamente equivalentes ($p \to q \not\equiv q \to p$)''. Sus tablas de verdad discrepan en las filas 2 y 3.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el recíproco de la proposición "Si un polígono es un cuadrado, entonces es un rectángulo"?'
+    choices:
+      - {text: 'Si un polígono es un rectángulo, entonces es un cuadrado', is_correct: true}
+      - {text: 'Si un polígono no es un cuadrado, entonces no es un rectángulo', is_correct: false}
+      - {text: 'Si un polígono no es un rectángulo, entonces no es un cuadrado', is_correct: false}
+      - {text: 'Un polígono es un cuadrado si y solo si es un rectángulo', is_correct: false}
+    explanation: 'La alternativa correcta es ''Si un polígono es un rectángulo, entonces es un cuadrado''. Se forma intercambiando antecedente y consecuente.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar el antecedente ($p$) y el consecuente ($q$) en la proposición
-  condicional original $p \to q$.'
-- 'Paso 2: Intercambiar sus posiciones, colocando el consecuente original como el
-  nuevo antecedente, y el antecedente original como el nuevo consecuente.'
-- 'Paso 3: Escribir la nueva proposición condicional resultante: $q \to p$. En esquema:
-  $p \to q \implies q \to p$.'
+  - 'Paso 1: Identificar el antecedente $p$ y el consecuente $q$ del condicional directo original $p \to q$.'
+  - 'Paso 2: Permutar las posiciones: colocar $q$ como nuevo antecedente y $p$ como nuevo consecuente.'
+  - 'Paso 3: Escribir la nueva fórmula condicional: $q \to p$.'
+  - 'Paso 4: Si se requiere evaluar verdad, analizar de forma independiente el recíproco sin asumir el valor del directo.'
+errores_correccion: |
+  - **Error 1:** Asumir que si un teorema condicional es verdadero, su recíproco es automáticamente verdadero. **Cómo corregirlo:** El recíproco debe ser demostrado de forma independiente; en matemáticas muchos teoremas verdaderos poseen recíprocos falsos.
+  - **Error 2:** Confundir el recíproco ($q \to p$) con el contrarrecíproco ($\neg q \to \neg p$). **Cómo corregirlo:** El recíproco solo intercambia el orden sin negar; el contrarrecíproco intercambia el orden Y niega ambas proposiciones.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Determina el recíproco del condicional: ''Si un número es divisible
-    por 4, entonces es un número par''.'
-  solucion_pasos:
-  - 'Paso a: Identificamos los componentes: el antecedente $p$ es ''un número es divisible
-    por 4'' y el consecuente $q$ es ''es un número par''.'
-  - 'Paso b: Intercambiamos el orden de $p$ y $q$.'
-  - 'Paso c: Escribimos el recíproco: ''Si un número es par, entonces es divisible
-    por 4''.'
-  - 'Paso d: Observamos que aunque el condicional original es verdadero, el recíproco
-    es falso (por ejemplo, el número 6 es par pero no es divisible por 4).'
-- titulo: Ejemplo 2
-  enunciado: Escribe la proposición recíproca de $\neg p \to q$.
-  solucion_pasos:
-  - 'Paso a: Identificamos el antecedente: $\neg p$.'
-  - 'Paso b: Identificamos el consecuente: $q$.'
-  - 'Paso c: Intercambiamos ambos elementos.'
-  - 'Paso d: La proposición recíproca obtenida es $q \to \neg p$.'
-- titulo: ¿El recíproco de 'Si estudio, entonces apruebo' es 'Si apruebo, entonces
-    estudio'?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Identificamos el antecedente: ''estudio''.'
-  - 'Identificamos el consecuente: ''apruebo''.'
-  - 'Intercambiamos el orden para formar el nuevo condicional: ''Si apruebo, entonces
-    estudio''.'
-  - Esta proposición es el recíproco de la original.
-- titulo: ¿Es un condicional siempre equivalente a su recíproco?
-  respuesta: 'No'
-  solucion_pasos:
-  - Construyendo la tabla de verdad de $p \to q$ y $q \to p$, vemos que para la asignación
-    $p$ Verdadero y $q$ Falso (V, F), $p \to q$ es Falso y $q \to p$ es Verdadero.
-  - Al diferir en sus valores de verdad, demostramos que $p \to q \not\equiv q \to
-    p$, por lo que no son equivalentes en general.
+  - titulo: 'Formulación de recíproco'
+    enunciado: '¿Cuál es el recíproco de "Si llueve, entonces el suelo está mojado"?'
+    alternativas:
+      - 'Si el suelo está mojado, entonces llueve'
+      - 'Si no llueve, entonces el suelo no está mojado'
+      - 'Si el suelo no está mojado, entonces no llueve'
+    respuesta: 'Si el suelo está mojado, entonces llueve'
+    solucion_pasos:
+      - '1. Antecedente: "llueve". Consecuente: "el suelo está mojado".'
+      - '2. Permutando: "Si el suelo está mojado, entonces llueve".'
+  - titulo: 'Vector de verdad del recíproco'
+    enunciado: '¿El vector de salida canónico de $q \to p$ es $[V, V, F, V]^T$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, tiene su único valor falso en la fila 3 donde $q=V$ y $p=F$.'
+  - titulo: 'Conjunción con el directo'
+    enunciado: '¿La fórmula $(p \to q) \land (q \to p)$ es equivalente al bicondicional $p \leftrightarrow q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, el bicondicional es la conjunción de los dos condicionales recíprocos.'
+  - titulo: 'Equivalencia con el inverso'
+    enunciado: '¿Es el recíproco $q \to p$ equivalente al inverso $\neg p \to \neg q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\neg p \to \neg q \equiv \neg(\neg q) \to \neg(\neg p) \equiv q \to p$.'
 errores_frecuentes:
-- Afirmar que el condicional y su recíproco son equivalentes y usarlos indistintamente
-  en demostraciones.
-- Declarar el recíproco ($q \to p$) con el inverso ($\neg p \to \neg q$) o con el
-  contrarrecíproco ($\neg q \to \neg p$).
-- Negar los términos al formar el recíproco (escribiendo por ejemplo $\neg q \to \neg
-  p$, lo cual es el contrarrecíproco, no el recíproco).
-- Identificar de manera errónea el antecedente en frases que no tienen la estructura
-  clásica 'Si... entonces...' (ej. 'q siempre que p').
-- Declarar que si el recíproco es falso, la proposición original también debe ser
-  falsa, cuando sus valores son lógicamente independientes.
-fuente: Lógica Simbólica, Irving Copi, Capítulo 2
+  - 'La afirmación de que el condicional recíproco $q \to p$ es lógicamente equivalente al condicional directo $p \to q$.'
+  - 'La afirmación de que la verdad de una implicación garantiza de forma automática la verdad de su recíproco.'
+  - 'La afirmación de que para formar el recíproco se deben negar ambas proposiciones componentes.'
+  - 'La afirmación de que la tabla de verdad del recíproco tiene el valor falso ubicado en la fila 2.'
+  - 'La afirmación de que el recíproco de una tautología es siempre una contradicción.'
+afirmaciones_verdaderas:
+  - 'El recíproco de un condicional $p \to q$ es la proposición $q \to p$, obtenida al permutar antecedente y consecuente.'
+  - 'Un condicional y su recíproco no son lógicamente equivalentes en general ($p \to q \not\equiv q \to p$) y poseen vectores de verdad distintos.'
+al_terminar_debes_poder: |
+  QUÉ: Identificar, formular y contrastar el recíproco de un condicional ($q \to p$).
+  CÓMO: Permutar antecedente y consecuente, evaluar su tabla de verdad $[V, V, F, V]^T$ y evitar la falacia de afirmación del consecuente.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

@@ -1,123 +1,110 @@
 semantic_id: MAT.FUND.RAZONAMIENTO_LOGICO.CONDICIONAL_INVERSO
-titulo: Inverso de un condicional
-objetivo: Obtener el inverso de una proposición condicional negando tanto el antecedente
-  como el consecuente.
-introduccion: 'Imagina que alguien te dice: "Si comes todas tus verduras, entonces
-  obtendrás postre". ¿Qué pasaría si no comes tus verduras? ¿Significa automáticamente
-  que no tendrás postre?
-
-
-  En lógica matemática, si tomamos una frase de tipo "Si... entonces..." y negamos
-  ambas partes, creamos una nueva proposición llamada el inverso (o contraria) del
-  condicional.
-
-
-  Es súper importante entender que el inverso no significa lo mismo que la frase original.
-  ¡Tu mamá podría tener piedad y darte postre de todas formas! Aprenderemos a construir
-  el inverso de cualquier condicional y a ver por qué no debemos confundirlo con la
-  frase original.'
-resumen: 'El inverso de un condicional $p \to q$ es la proposición condicional $\neg
-  p \to \neg q$, obtenida al negar tanto el antecedente como el consecuente. En general,
-  un condicional y su inverso no son lógicamente equivalentes.
-
-  '
-explicacion: 'Dado un condicional de la forma $p \to q$, donde $p$ es el **antecedente**
-  y $q$ es el **consecuente**, podemos formar otras proposiciones lógicas relacionadas.
-
-
-  El **inverso** (o la proposición contraria) de $p \to q$ se obtiene negando individualmente
-  tanto el antecedente como el consecuente, manteniendo el orden original de la implicación.
-
-
-  Formalmente:
-
-  $$\text{Si el condicional original es } p \to q \text{, su inverso es } \neg p \to
-  \neg q$$
-
-
-  **Independencia de los Valores de Verdad**
-
-  Un condicional y su inverso **no son lógicamente equivalentes**:
-
+resumen_inicial: 'Definición, tabla de verdad y análisis de no equivalencia del inverso de un condicional ($\neg p \to \neg q$) respecto al condicional directo ($p \to q$).'
+explicacion_simple: |
+  El **inverso** (o condicional inverso, también llamado contrario) se obtiene **negando tanto el antecedente como el consecuente** sin cambiar su orden: a partir de "Si $p$, entonces $q$" ($p \to q$), formamos **"Si no $p$, entonces no $q$" ($\neg p \to \neg q$)**. Al igual que el recíproco, **el inverso NO es equivalente al condicional directo**. Por ejemplo: "Si llueve, me mojo" es verdadero; pero su inverso: "Si no llueve, no me mojo" no es necesariamente verdadero (puedes mojarte en una piscina o con una manguera).
+explicacion_formal: |
+  ### Definición formal
+  Dado un condicional directo $\Phi = p \to q$, su **proposición inversa** (o contraria) es la fórmula resultante de negar independientemente antecedente y consecuente manteniendo el orden sintáctico:
+  $$\text{Inverso}(p \to q) = \neg p \to \neg q$$
+  En el cálculo proposicional clásico, el condicional directo y su inverso **no son lógicamente equivalentes**:
   $$p \to q \not\equiv \neg p \to \neg q$$
+  dado que la tabla de verdad del inverso discrepa del directo en las interpretaciones intermedias.
 
+  ### Desglose simbólico
+  - Vector de salida directo: $\mathbf{v}(p \to q) = [V, F, V, V]^T$.
+  - Vector de salida inverso: $\mathbf{v}(\neg p \to \neg q) = [F \to F, F \to V, V \to F, V \to V]^T = [V, V, F, V]^T$.
+  - Equivalencia con el recíproco: Por la ley de contraposición, $\neg p \to \neg q \equiv \neg(\neg q) \to \neg(\neg p) \equiv q \to p$.
 
-  Comparemos sus tablas de verdad:
-
-
-  | $p$ | $q$ | $\neg p$ | $\neg q$ | Condicional: $p \to q$ | Inverso: $\neg p \to
-  \neg q$ |
-
-  | :---: | :---: | :---: | :---: | :---: | :---: |
-
-  | V | V | F | F | **V** | **V** |
-
-  | V | F | F | V | **F** | **V** |
-
-  | F | V | V | F | **V** | **F** |
-
-  | F | F | V | V | **V** | **V** |
-
-
-  Como vemos en las filas 2 y 3, sus valores de verdad son diferentes. Sin embargo,
-  es interesante notar que el inverso $\neg p \to \neg q$ es lógicamente equivalente
-  al recíproco $q \to p$.'
+  ### Síntesis didáctica
+  Asumir que la falsedad del antecedente implica la falsedad del consecuente constituye la célebre falacia formal de negación del antecedente.
+definiciones_clave: |
+  - **Inverso de un condicional ($\neg p \to \neg q$)**: Condicional formado por las negaciones directas de antecedente y consecuente.
+  - **Falacia de negación del antecedente**: Razonamiento inválido que infiere erróneamente $\neg q$ a partir de $p \to q$ y $\neg p$.
+  - **Equivalencia inversa-recíproca**: Propiedad estructural por la cual el inverso de $p \to q$ es idéntico al recíproco $q \to p$.
+propiedades_relaciones: |
+  - **Contrarrecíproco del inverso**: El contrarrecíproco del inverso $\neg p \to \neg q$ es el recíproco $q \to p$.
+  - **Independencia veritativa**: El valor de verdad del inverso no puede inferirse del valor del condicional directo.
+ejemplo_guiado:
+  enunciado: 'Dado el condicional directo: "Si un número es divisible por $4$, entonces es par", formula su inverso y evalúa el valor de verdad de ambos.'
+  pasos:
+    - 'Paso 1: Identificar las proposiciones del directo:
+      - Antecedente $p$: "Un número es divisible por $4$".
+      - Consecuente $q$: "El número es par".'
+    - 'Paso 2: Evaluar el directo $p \to q$: Como todo múltiplo de $4$ es divisible por $2$, el condicional directo es **Verdadero ($V$)**.'
+    - 'Paso 3: Formular el inverso negando ambas partes ($\neg p \to \neg q$): "Si un número no es divisible por $4$, entonces no es par".'
+    - 'Paso 4: Evaluar el inverso $\neg p \to \neg q$: Tomemos el número $6$: no es divisible por $4$ ($\neg p = V$), pero sí es par ($\neg q = F$). Por lo tanto, $V \to F = F$, lo que hace al inverso **Falso ($F$)**.'
+    - 'Paso 5: Concluir que el condicional directo y su inverso no tienen por qué coincidir en valor de verdad.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cómo se obtiene formalmente el inverso del condicional directo $p \to q$?'
+    choices:
+      - {text: 'Negando ambas proposiciones sin cambiar su orden: $\neg p \to \neg q$', is_correct: true}
+      - {text: 'Intercambiando el orden de las proposiciones sin negarlas: $q \to p$', is_correct: false}
+      - {text: 'Negando e intercambiando el orden: $\neg q \to \neg p$', is_correct: false}
+      - {text: 'Negando únicamente el consecuente: $p \to \neg q$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Negando ambas proposiciones sin cambiar su orden: $\neg p \to \neg q$''. Es la definición formal del condicional inverso.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿A cuál de las siguientes proposiciones condicionales es lógicamente equivalente el inverso $\neg p \to \neg q$?'
+    choices:
+      - {text: 'Al recíproco $q \to p$', is_correct: true}
+      - {text: 'Al directo $p \to q$', is_correct: false}
+      - {text: 'Al contrarrecíproco $\neg q \to \neg p$', is_correct: false}
+      - {text: 'A la conjunción $\neg p \land \neg q$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Al recíproco $q \to p$''. El contrarrecíproco del inverso $\neg(\neg q) \to \neg(\neg p)$ se reduce a $q \to p$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar el antecedente ($p$) y el consecuente ($q$) en la proposición
-  condicional original $p \to q$.'
-- 'Paso 2: Negar de forma individual tanto el antecedente como el consecuente, obteniendo
-  $\neg p$ y $\neg q$.'
-- 'Paso 3: Escribir la nueva proposición condicional manteniendo el orden de la implicación:
-  $\neg p \to \neg q$. En esquema: $p \to q \implies \neg p \to \neg q$.'
+  - 'Paso 1: Identificar el antecedente $p$ y el consecuente $q$ del condicional directo $p \to q$.'
+  - 'Paso 2: Negar el antecedente, obteniendo $\neg p$.'
+  - 'Paso 3: Negar el consecuente, obteniendo $\neg q$.'
+  - 'Paso 4: Formar el nuevo condicional manteniendo el sentido original: $\neg p \to \neg q$.'
+  - 'Paso 5: Evaluar el valor de verdad del inverso de forma autónoma mediante su tabla $[V, V, F, V]^T$.'
+errores_correccion: |
+  - **Error 1:** Afirmar que el inverso es equivalente al condicional directo. **Cómo corregirlo:** El inverso $\neg p \to \neg q$ tiene el vector $[V, V, F, V]^T$, mientras que el directo $p \to q$ tiene el vector $[V, F, V, V]^T$.
+  - **Error 2:** Confundir el inverso ($\neg p \to \neg q$) con el contrarrecíproco ($\neg q \to \neg p$). **Cómo corregirlo:** El inverso niega sin permutar el orden; el contrarrecíproco niega y a la vez permuta las posiciones de antecedente y consecuente.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Determina el inverso del condicional: ''Si llueve, entonces la calle
-    se moja''.'
-  solucion_pasos:
-  - 'Paso a: Identificamos el antecedente $p$ (''llueve'') y el consecuente $q$ (''la
-    calle se moja'').'
-  - 'Paso b: Negamos ambas partes: $\neg p$ es ''no llueve'' y $\neg q$ es ''la calle
-    no se moja''.'
-  - 'Paso c: Formamos el condicional inverso manteniendo el orden: ''Si no llueve,
-    entonces la calle no se moja''.'
-  - 'Paso d: Notamos que el condicional original es verdadero, pero el inverso puede
-    ser falso (la calle se podría mojar por un camión de riego).'
-- titulo: Ejemplo 2
-  enunciado: Escribe la proposición inversa de $\neg p \to q$.
-  solucion_pasos:
-  - 'Paso a: Identificamos el antecedente: $\neg p$.'
-  - 'Paso b: Identificamos el consecuente: $q$.'
-  - 'Paso c: Negamos ambos términos: la negación de $\neg p$ es $\neg(\neg p) \equiv
-    p$, y la negación de $q$ es $\neg q$.'
-  - 'Paso d: Escribimos el condicional inverso con las partes negadas: $p \to \neg
-    q$.'
-- titulo: ¿El inverso de 'Si estudio, entonces apruebo' es 'Si no estudio, entonces
-    no apruebo'?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Identificamos el antecedente: ''estudio''.'
-  - 'Identificamos el consecuente: ''apruebo''.'
-  - 'Negamos ambos elementos manteniendo el orden: ''Si no estudio, entonces no apruebo''.'
-  - Esta proposición corresponde exactamente a la definición de condicional inverso.
-- titulo: ¿Es un condicional siempre lógicamente equivalente a su inverso?
-  respuesta: 'No'
-  solucion_pasos:
-  - Comparemos las tablas de verdad de $p \to q$ y $\neg p \to \neg q$.
-  - Para la combinación $p$ Falso y $q$ Verdadero (F, V), el condicional $p \to q$
-    es Verdadero, pero el inverso $\neg p \to \neg q$ es Falso (pues se traduce en
-    $V \to F$).
-  - Al diferir en sus valores de verdad, se demuestra que $p \to q \not\equiv \neg
-    p \to \neg q$.
+  - titulo: 'Formulación del inverso'
+    enunciado: '¿Cuál es el inverso de "Si es verano, hace calor"?'
+    alternativas:
+      - 'Si no es verano, no hace calor'
+      - 'Si hace calor, es verano'
+      - 'Si no hace calor, no es verano'
+    respuesta: 'Si no es verano, no hace calor'
+    solucion_pasos:
+      - '1. Negar antecedente: "no es verano".'
+      - '2. Negar consecuente: "no hace calor".'
+      - '3. Inverso: "Si no es verano, no hace calor".'
+  - titulo: 'Vector de salida del inverso'
+    enunciado: '¿Cuál es el vector columna de verdad de $\neg p \to \neg q$?'
+    alternativas:
+      - '$[V, V, F, V]^T$'
+      - '$[V, F, V, V]^T$'
+      - '$[F, F, V, V]^T$'
+    respuesta: '$[V, V, F, V]^T$'
+    solucion_pasos:
+      - '1. En la fila 3 ($p=F, q=V$), $\neg p = V$ y $\neg q = F$, dando $V \to F = F$.'
+      - '2. El vector es $[V, V, F, V]^T$.'
+  - titulo: 'Equivalencia inversa con recíproco'
+    enunciado: '¿Las tablas de verdad del inverso y del recíproco son idénticas?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, ambos comparten el vector de salida $[V, V, F, V]^T$.'
+  - titulo: 'Falacia de negación del antecedente'
+    enunciado: '¿Es válido deducir $\neg q$ sabiendo únicamente que $p \to q$ es verdadero y $p$ es falso?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No, es una falacia formal ya que el inverso $\neg p \to \neg q$ no es lógicamente equivalente al directo.'
 errores_frecuentes:
-- Declarar que un condicional y su inverso siempre dicen lo mismo (son equivalentes)
-  e intercambiarlos en deducciones.
-- Declarar el inverso (\\neg p \\to \\neg q) con el recíproco (q \\to p) o con el
-  contrarrecíproco (\\neg q \\to \\neg p).
-- Intercambiar de lugar los términos al negar (escribiendo \\neg q \\to \\neg p, lo
-  cual es el contrarrecíproco, no el inverso).
-- Omitir aplicar la ley de doble negación al negar términos que ya eran negativos
-  en el condicional de origen.
-- Afirmar que si el condicional inverso es falso, el condicional original obligatoriamente
-  debe ser falso, siendo que son independientes.
-fuente: Lógica Simbólica, Irving Copi, Capítulo 2
+  - 'La afirmación de que el condicional inverso $\neg p \to \neg q$ es lógicamente equivalente al condicional directo $p \to q$.'
+  - 'La afirmación de que para formular el inverso se debe permutar el orden de las proposiciones.'
+  - 'La afirmación de que la falsedad del antecedente permite deducir con certeza la falsedad del consecuente.'
+  - 'La afirmación de que la tabla de verdad del inverso tiene su único resultado falso en la fila 2.'
+  - 'La afirmación de que el inverso y el contrarrecíproco son la misma proposición condicional.'
+afirmaciones_verdaderas:
+  - 'El inverso de un condicional $p \to q$ es la proposición $\neg p \to \neg q$, formada al negar ambas proposiciones conservando su orden original.'
+  - 'El condicional inverso $\neg p \to \neg q$ es lógicamente equivalente al condicional recíproco $q \to p$, pero no es equivalente al condicional directo $p \to q$.'
+al_terminar_debes_poder: |
+  QUÉ: Identificar, formular y contrastar el inverso de un condicional ($\neg p \to \neg q$).
+  CÓMO: Negar antecedente y consecuente sin permutar, evaluar su tabla de verdad $[V, V, F, V]^T$ y evitar la falacia de negación del antecedente.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

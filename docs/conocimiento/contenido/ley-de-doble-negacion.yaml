@@ -1,118 +1,107 @@
 semantic_id: MAT.FUND.RAZONAMIENTO_LOGICO.DOBLE_NEGACION
-titulo: Ley de doble negación
-objetivo: Aplicar la ley de doble negación para simplificar proposiciones lógicas
-  compuestas.
-introduccion: '¿Alguna vez has dicho algo como "no es cierto que no quiero ir"? Si
-  lo piensas bien, al negar dos veces seguidas que no quieres ir, en realidad estás
-  diciendo ¡que sí quieres ir!
+resumen_inicial: 'Definición, demostración y aplicaciones de la ley de doble negación ($\neg\neg p \equiv p$), que establece que dos negaciones consecutivas se anulan mutuamente.'
+explicacion_simple: |
+  La **ley de doble negación** establece que negar una afirmación dos veces equivale a dejar la afirmación original tal como estaba al principio. En el lenguaje cotidiano, si alguien dice "No es verdad que no comí pastel", en el fondo está afirmando "Comí pastel". En la lógica matemática se escribe formalmente como **$\neg(\neg p) \equiv p$**. Cada par de negaciones consecutivas se cancela exactamente como dos signos menos en aritmética: $-(-x) = x$.
+explicacion_formal: |
+  ### Definición formal
+  En el cálculo proposicional clásico, la **ley de doble negación (o principio de involución)** establece la equivalencia semántica entre una proposición $p$ y su doble complemento lógico:
+  $$\neg(\neg p) \equiv p \quad \iff \quad \models \neg(\neg p) \leftrightarrow p$$
+  En el álgebra de Boole $(\{0, 1\}, \land, \lor, \neg)$, se formula como la involución aritmética:
+  $$1 - (1 - v(p)) = v(p)$$
 
+  ### Desglose simbólico
+  - Evaluación fila 1 ($p = V$): $\neg(\neg V) = \neg(F) = V$.
+  - Evaluación fila 2 ($p = F$): $\neg(\neg F) = \neg(V) = F$.
+  - Regla de simplificación para $k$ negaciones consecutivas $\neg^k p$:
+    $$\neg^k p \equiv \begin{cases} p & \text{si } k \text{ es par} \\ \neg p & \text{si } k \text{ es impar} \end{cases}$$
 
-  En el lenguaje cotidiano y en las matemáticas, negar una negación anula la negación
-  y nos devuelve a la afirmación original. Es como dar dos giros de 180 grados seguidos:
-  terminas mirando exactamente hacia la misma dirección en la que empezaste.
-
-
-  Esta regla en lógica matemática se conoce como la Ley de Doble Negación, y es una
-  de las herramientas más sencillas y útiles para limpiar y simplificar frases enredadas.'
-resumen: 'La Ley de Doble Negación establece que la negación de una proposición ya
-  negada es equivalente a la proposición original. Formalmente, $\neg(\neg p) \equiv
-  p$.
-
-  '
-explicacion: 'La **Ley de Doble Negación** es un principio lógico fundamental que
-  indica que si una proposición se niega dos veces, su valor de verdad resultante
-  es idéntico al de la proposición original sin negar.
-
-
-  Formalmente:
-
-  $$\neg(\neg p) \equiv p$$
-
-
-  **Demostración mediante Tabla de Verdad**
-
-  Construimos la tabla de verdad para una variable proposicional $p$:
-
-
-  | $p$ | $\neg p$ | $\neg(\neg p)$ |
-
-  | :---: | :---: | :---: |
-
-  | V | F | **V** |
-
-  | F | V | **F** |
-
-
-  Como podemos observar, la columna de $p$ y la columna de $\neg(\neg p)$ son idénticas
-  en todas sus filas. Esto demuestra la equivalencia lógica.
-
-
-  **Aplicación en la Simplificación de Fórmulas**
-
-  Esta ley nos permite eliminar dobles negaciones sucesivas dentro de fórmulas complejas.
-  Por ejemplo:
-
-  $$\neg(\neg(p \lor \neg\neg q)) \equiv p \lor q$$
-
-  aplicando doble negación tanto en la parte externa como a la variable $q$.'
+  ### Síntesis didáctica
+  La doble negación permite limpiar y simplificar fórmulas extensas eliminando parejas de negaciones sucesivas sin alterar la validez del razonamiento.
+definiciones_clave: |
+  - **Ley de doble negación ($\neg\neg p \equiv p$)**: Regla lógica que afirma que la doble aplicación del operador de negación reproduce la fórmula original.
+  - **Involución booleana**: Propiedad de una función matemática que es su propia inversa ($f(f(x)) = x$).
+  - **Cancelación de paridad**: Principio por el cual un número par de negaciones sucesivas equivale a la afirmación directa.
+propiedades_relaciones: |
+  - **Distinción con lógicas no clásicas**: En la lógica intuicionista solo se acepta $p \to \neg\neg p$, pero no el recíproco $\neg\neg p \to p$. En la lógica clásica ambas implicaciones son válidas.
+  - **Aplicación en simplificación algebraica**: Permite reducir expresiones como $\neg\neg(p \land q) \equiv p \land q$.
+ejemplo_guiado:
+  enunciado: 'Demuestra mediante tabla de verdad que la fórmula $\neg(\neg p) \leftrightarrow p$ es una tautología.'
+  pasos:
+    - 'Paso 1: Colocar la columna base para $p$: Fila 1 = $V$, Fila 2 = $F$.'
+    - 'Paso 2: Calcular la primera negación $\neg p$: Fila 1 $\neg V = F$, Fila 2 $\neg F = V$. Columna: $[F, V]^T$.'
+    - 'Paso 3: Calcular la segunda negación $\neg(\neg p)$: Fila 1 $\neg F = V$, Fila 2 $\neg V = F$. Columna: $[V, F]^T$.'
+    - 'Paso 4: Evaluar el bicondicional $\neg(\neg p) \leftrightarrow p$:
+      - Fila 1 ($V \leftrightarrow V$): $V$
+      - Fila 2 ($F \leftrightarrow F$): $V$'
+    - 'Paso 5: Concluir que el vector resultante es $[V, V]^T$, lo que demuestra formalmente que la doble negación es una tautología.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'Si una proposición tiene $4$ operadores de negación consecutivos aplicados ($\neg\neg\neg\neg p$), ¿a qué es equivalente?'
+    choices:
+      - {text: '$p$', is_correct: true}
+      - {text: '$\neg p$', is_correct: false}
+      - {text: '$p \land \neg p$', is_correct: false}
+      - {text: 'Una contradicción', is_correct: false}
+    explanation: 'La alternativa correcta es ''$p$''. Como el número de negaciones es par ($4$), se cancelan de dos en dos resultando en $p$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál de las siguientes afirmaciones traduce al lenguaje natural la expresión $\neg(\neg p)$, donde $p$: "El triángulo es equilátero"?'
+    choices:
+      - {text: 'No es cierto que el triángulo no sea equilátero', is_correct: true}
+      - {text: 'El triángulo nunca es equilátero', is_correct: false}
+      - {text: 'El triángulo es escaleno y no equilátero', is_correct: false}
+      - {text: 'Todos los triángulos son equiláteros', is_correct: false}
+    explanation: 'La alternativa correcta es ''No es cierto que el triángulo no sea equilátero''. Refleja la negación de una negación.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar la presencia de negaciones consecutivas aplicadas sobre una
-  misma proposición o subfórmula (de la forma $\neg(\neg P)$).'
-- 'Paso 2: Aplicar la ley de equivalencia de la doble negación para eliminar el par
-  de negaciones: $\neg(\neg P) \equiv P$.'
-- 'Paso 3: Escribir la proposición simplificada obtenida. En esquema: $\neg(\neg p)
-  \vdash p$.'
+  - 'Paso 1: Identificar la presencia de dos símbolos de negación consecutivos sobre la misma variable o subfórmula: $\neg(\neg A)$.'
+  - 'Paso 2: Aplicar la ley de involución cancelando el par de negaciones: $\neg\neg A \mapsto A$.'
+  - 'Paso 3: Si hay una cadena de negaciones, contar el número total $k$; si es par simplificar a $A$, si es impar a $\neg A$.'
+  - 'Paso 4: Reemplazar el bloque simplificado en la fórmula principal.'
+errores_correccion: |
+  - **Error 1:** Afirmar que tres negaciones consecutivas ($\neg\neg\neg p$) se cancelan por completo. **Cómo corregirlo:** Dos negaciones se cancelan entre sí ($\neg\neg p \equiv p$), quedando todavía una tercera negación activa: $\neg\neg\neg p \equiv \neg p$.
+  - **Error 2:** Creer que $\neg(\neg p \land q)$ equivale a $p \land q$. **Cómo corregirlo:** La negación exterior afecta a todo el paréntesis; para simplificar deben aplicarse las Leyes de De Morgan: $\neg(\neg p \land q) \equiv p \lor \neg q$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Simplifica la proposición $\neg(\neg p \lor \neg(\neg q))$ usando la
-    doble negación.
-  solucion_pasos:
-  - 'Paso a: Identificamos que en el término $\neg(\neg q)$ hay una doble negación
-    aplicada a $q$.'
-  - 'Paso b: Aplicamos la ley de doble negación a ese término: $\neg(\neg q) \equiv
-    q$.'
-  - 'Paso c: Sustituimos el resultado en la proposición original, obteniendo la expresión
-    simplificada: $\neg(\neg p \lor q)$.'
-- titulo: Ejemplo 2
-  enunciado: Demuestra que la proposición $\neg(\neg(p \land q))$ es equivalente a
-    $p \land q$.
-  solucion_pasos:
-  - 'Paso a: Consideramos el término completo $P = (p \land q)$ como una única proposición.'
-  - 'Paso b: La expresión original tiene la estructura $\neg(\neg P)$.'
-  - 'Paso c: Por la ley de doble negación, se aplica la equivalencia $\neg(\neg P)
-    \equiv P$.'
-  - 'Paso d: Al sustituir $P$ por su valor original, concluimos la cadena de equivalencia:
-    $\neg(\neg(p \land q)) \equiv p \land q$.'
-- titulo: ¿Es la frase 'No es verdad que no aprobé el examen' lógicamente equivalente
-    a 'Aprobé el examen'?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Identificamos las proposiciones: sea $p$ la afirmación ''Aprobé el examen''.'
-  - 'La frase dada se formaliza como la negación de ''no aprobé'', es decir: $\neg(\neg
-    p)$.'
-  - Por la ley de doble negación, $\neg(\neg p) \equiv p$, lo que significa exactamente
-    'Aprobé el examen'.
-- titulo: ¿La negación de la proposición $\neg p$ es lógicamente equivalente a $\neg
-    p$?
-  respuesta: 'No'
-  solucion_pasos:
-  - La negación de la proposición $\neg p$ se escribe como $\neg(\neg p)$.
-  - Por la ley de doble negación, $\neg(\neg p) \equiv p$, la cual tiene valores de
-    verdad opuestos a $\neg p$.
-  - Por lo tanto, la negación de $\neg p$ es equivalente a $p$, no a $\neg p$.
+  - titulo: 'Doble negación de proposición verdadera'
+    enunciado: 'Si $p$ es verdadera, ¿cuál es el valor de $\neg\neg p$?'
+    alternativas:
+      - 'Verdadero ($V$)'
+      - 'Falso ($F$)'
+      - 'Indeterminado'
+    respuesta: 'Verdadero ($V$)'
+    solucion_pasos:
+      - '1. $\neg p = F$.'
+      - '2. $\neg(\neg p) = \neg F = V$.'
+  - titulo: 'Tres negaciones consecutivas'
+    enunciado: '¿A qué equivale la expresión $\neg\neg\neg q$?'
+    alternativas:
+      - '$\neg q$'
+      - '$q$'
+      - '$\bot$'
+    respuesta: '$\neg q$'
+    solucion_pasos:
+      - '1. Cancelamos el primer par: $\neg\neg(\neg q) \equiv \neg q$.'
+  - titulo: 'Involución de fórmulas compuestas'
+    enunciado: '¿Es $\neg\neg(p \to q)$ equivalente a $p \to q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, la ley de doble negación aplica a cualquier fórmula bien formada.'
+  - titulo: 'Tautología de equivalencia'
+    enunciado: '¿La fórmula $\neg\neg p \leftrightarrow p$ tiene vector $[V, V]^T$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, es una equivalencia tautológica universal.'
 errores_frecuentes:
-- 'Afirmar que tres negaciones consecutivas se cancelan por completo; en realidad,
-  una cantidad impar de negaciones equivale a una sola negación: $\neg\neg\neg p \equiv
-  \neg p$.'
-- Aplicar incorrectamente la doble negación distribuyéndola sobre conectivos sin cambiar
-  la estructura (por ejemplo, declarar que $\neg(\neg p \lor q)$ es $p \lor q$ sin
-  notar que el exterior niega a todo el paréntesis).
-- Declarar la negación lógica con términos opuestos en el lenguaje natural (ej. 'no
-  es malo' no equivale estrictamente a 'es bueno' en lógica bivalente).
-- Omitir los paréntesis al escribir la doble negación, escribiendo \neg\neg p como
-  si fuera una operación separada e interpretando mal su jerarquía.
-- Declarar que la doble negación no altera los valores en una tabla de verdad, asumiendo
-  que \neg(\neg p) siempre requiere cálculo de nuevo en lugar de copiar la columna
-  de p.
-fuente: Lógica Simbólica, Irving Copi, Capítulo 2
+  - 'La afirmación de que un número impar de negaciones consecutivas equivale a la proposición afirmativa sin negar.'
+  - 'La afirmación de que la doble negación $\neg\neg p$ produce una fórmula de valor veritativo inverso a $p$.'
+  - 'La afirmación de que la expresión $\neg(\neg p \lor q)$ se simplifica eliminando directamente los dos signos de negación.'
+  - 'La afirmación de que la ley de doble negación solo se cumple si $p$ es verdadera.'
+  - 'La afirmación de que dos negaciones consecutivas se combinan multiplicativamente para dar una contradicción.'
+afirmaciones_verdaderas:
+  - 'La ley de doble negación establece que una proposición negada dos veces consecutivas $\neg(\neg p)$ es lógicamente equivalente a la proposición original $p$.'
+  - 'Una cadena de $k$ negaciones sobre una proposición $p$ se reduce a $p$ si $k$ es un entero par, y a $\neg p$ si $k$ es impar.'
+al_terminar_debes_poder: |
+  QUÉ: Conocer, demostrar y aplicar la ley de doble negación ($\neg\neg p \equiv p$).
+  CÓMO: Simplificar pares de negaciones consecutivas en fórmulas algebraicas y evaluar su tabla de verdad tautológica.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
