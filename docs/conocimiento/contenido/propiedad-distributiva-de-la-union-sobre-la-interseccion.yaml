@@ -1,113 +1,106 @@
 semantic_id: MAT.FUND.PROPIEDADES_CONJUNTOS.DISTRIBUTIVA_UNION_SOBRE_INTERSECCION
-titulo: Propiedad distributiva de la unión sobre la intersección
-objetivo: Aplicar la propiedad distributiva de la unión sobre la intersección para
-  simplificar y resolver operaciones combinadas entre tres conjuntos.
-introduccion: Imagina que en un colegio deciden premiar a los estudiantes que pertenecen
-  a 1° Medio ($A$), O que participan simultáneamente en el taller de Ajedrez ($B$)
-  Y en el de Robótica ($C$). Esto se puede expresar como $A \cup (B \cap C)$. La propiedad
-  distributiva nos dice que esto es exactamente equivalente a premiar a los alumnos
-  que están en (1° Medio o Ajedrez) Y que también están en (1° Medio o Robótica),
-  es decir, $(A \cup B) \cap (A \cup C)$. Esta regla nos permite reorganizar las condiciones
-  de manera más simple.
-resumen: 'La propiedad distributiva de la unión sobre la intersección establece que
-  la unión de un conjunto con la intersección de otros dos es equivalente a la intersección
-  de las uniones del primer conjunto con cada uno de los otros dos. Formalmente: $A
-  \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.'
-explicacion: 'La **propiedad distributiva de la unión sobre la intersección** es una
-  ley fundamental en la teoría de conjuntos que nos permite relacionar y reescribir
-  expresiones algebraicas de conjuntos que combinan las operaciones de unión e intersección.
-
-
-  ### Definición Formal
-
-  Sean $A$, $B$ y $C$ tres conjuntos en un universo $U$. Se cumple la siguiente igualdad:
-
+resumen_inicial: 'Demostración lógica, propiedades y aplicación de la propiedad distributiva de la unión sobre la intersección: $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.'
+explicacion_simple: |
+  La **propiedad distributiva de la unión sobre la intersección** funciona de manera similar a cómo se distribuye la multiplicación sobre la suma en álgebra: el conjunto $A$ "se reparte" con la unión $\cup$ hacia $B$ y hacia $C$:
   $$A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$$
+  Esto significa que unir $A$ con la parte común de $B$ y $C$ es exactamente lo mismo que unir $A$ con $B$, unir $A$ con $C$, y luego buscar la parte común entre ambas uniones. Es una herramienta poderosa para simplificar expresiones complejas con conjuntos.
+explicacion_formal: |
+  ### Definición formal
+  En la teoría de conjuntos y el retículo distributivo booleano $(\mathcal{P}(\mathcal{U}), \cup, \cap)$, la unión distribuye sobre la intersección:
+  $$\forall A, B, C \subseteq \mathcal{U}, \quad A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$$
+  Demostración formal basada en la distributividad lógica de la disyunción sobre la conjunción ($\lor$ sobre $\land$):
+  $$x \in (A \cup (B \cap C)) \iff x \in A \lor (x \in B \land x \in C) \iff (x \in A \lor x \in B) \land (x \in A \lor x \in C) \iff x \in ((A \cup B) \cap (A \cup C))$$
+  Por el axioma de extensionalidad, se concluye la identidad de ambos conjuntos.
 
+  ### Desglose simbólico
+  - Ley lógica subyacente: $P \lor (Q \land R) \equiv (P \lor Q) \land (P \lor R)$.
+  - Dualidad reticular: A diferencia del álgebra elemental de números reales (donde la suma no distribuye sobre el producto), en el álgebra de conjuntos **ambas operaciones distribuyen mutuamente**.
+  - Generalización: $A \cup \left(\bigcap_{i \in I} B_i\right) = \bigcap_{i \in I} (A \cup B_i)$.
 
-  ### Demostración
-
-  Esta propiedad se basa en la ley distributiva de la disyunción proposicional sobre
-  la conjunción proposicional en lógica matemática. Por definición de las operaciones
-  de conjuntos:
-
-  $$A \cup (B \cap C) = \{x \in U \mid x \in A \lor x \in (B \cap C)\}$$
-
-  $$= \{x \in U \mid x \in A \lor (x \in B \land x \in C)\}$$
-
-  Aplicando la propiedad distributiva de la lógica de proposiciones, donde $p \lor
-  (q \land r) \equiv (p \lor q) \land (p \lor r)$, tenemos:
-
-  $$= \{x \in U \mid (x \in A \lor x \in B) \land (x \in A \lor x \in C)\}$$
-
-  $$= \{x \in U \mid x \in (A \cup B) \land x \in (A \cup C)\} = (A \cup B) \cap (A
-  \cup C)$$
-
-  Esto demuestra analíticamente que ambos miembros son iguales.
-
-
-  ### Diferencia con la Aritmética Común
-
-  En el álgebra numérica ordinaria, el producto se distribuye sobre la suma ($a \cdot
-  (b+c) = a \cdot b + a \cdot c$), pero la suma NO se distribuye sobre el producto
-  ($a + (b \cdot c) \neq (a+b) \cdot (a+c)$). Sin embargo, en el álgebra de conjuntos,
-  la unión sí se distribuye sobre la intersección y viceversa.'
+  ### Síntesis didáctica
+  La distributividad permite factorizar o expandir expresiones conjuntistas mixtas para optimizar su cómputo o demostración.
+definiciones_clave: |
+  - **Distributividad de la unión sobre la intersección**: Regla que expande $A \cup (B \cap C)$ en $(A \cup B) \cap (A \cup C)$.
+  - **Retículo distributivo**: Estructura algebraica donde las dos operaciones binarias distribuyen mutuamente una sobre la otra.
+  - **Dualidad de operadores**: Simetría estructural entre $\cup$ y $\cap$.
+propiedades_relaciones: |
+  - **Factorización conjuntista**: $(A \cup B) \cap (A \cup C) = A \cup (B \cap C)$ (extraer $A \cup$ como factor común).
+  - **Simplificación con subconjuntos**: Si $B \cap C = \emptyset$, entonces $(A \cup B) \cap (A \cup C) = A \cup \emptyset = A$.
+ejemplo_guiado:
+  enunciado: 'Dados los conjuntos $A = \{1, 2\}$, $B = \{2, 3\}$ y $C = \{2, 4\}$, verifica la propiedad distributiva calculando ambos lados de $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.'
+  pasos:
+    - 'Paso 1: Resolver el lado izquierdo $A \cup (B \cap C)$:
+      - Calcular la intersección: $B \cap C = \{2, 3\} \cap \{2, 4\} = \{2\}$.
+      - Unir con $A$: $A \cup (B \cap C) = \{1, 2\} \cup \{2\} = \{1, 2\}$.'
+    - 'Paso 2: Resolver el lado derecho $(A \cup B) \cap (A \cup C)$:
+      - Primera unión: $A \cup B = \{1, 2\} \cup \{2, 3\} = \{1, 2, 3\}$.
+      - Segunda unión: $A \cup C = \{1, 2\} \cup \{2, 4\} = \{1, 2, 4\}$.
+      - Intersectar ambas uniones: $\{1, 2, 3\} \cap \{1, 2, 4\} = \{1, 2\}$.'
+    - 'Paso 3: Comparar ambos lados: $\{1, 2\} = \{1, 2\}$.'
+    - 'Paso 4: Concluir formalmente que $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿A qué expresión es equivalente $(A \cup B) \cap (A \cup C)$ al aplicar factorización conjuntista?'
+    choices:
+      - {text: '$A \cup (B \cap C)$', is_correct: true}
+      - {text: '$A \cap (B \cup C)$', is_correct: false}
+      - {text: '$(A \cap B) \cup C$', is_correct: false}
+      - {text: '$A \cup B \cup C$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$A \cup (B \cap C)$''. Es la forma compacta factorizada de la propiedad distributiva.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si $B$ y $C$ son conjuntos disjuntos ($B \cap C = \emptyset$), ¿a qué simplifica la expresión $(A \cup B) \cap (A \cup C)$?'
+    choices:
+      - {text: '$A$', is_correct: true}
+      - {text: '$\emptyset$', is_correct: false}
+      - {text: '$B \cup C$', is_correct: false}
+      - {text: '$\mathcal{U}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$A$''. Al sustituir: $A \cup (B \cap C) = A \cup \emptyset = A$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identifica los tres conjuntos $A$, $B$ y $C$. El conjunto $A$ es el que
-  se une externamente, mientras que $B$ y $C$ se intersectan.'
-- 'Paso 2: Resuelve el lado izquierdo $A \cup (B \cap C)$ calculando primero la intersección
-  $B \cap C$ y luego uniendo el resultado con $A$.'
-- 'Paso 3: Resuelve el lado derecho $(A \cup B) \cap (A \cup C)$ calculando por separado
-  las uniones $A \cup B$ y $A \cup C$, para luego intersectar ambos conjuntos resultantes.'
-- 'Paso 4: Compara los conjuntos finales de ambos lados y comprueba que sus elementos
-  coinciden.'
+  - 'Paso 1: Identificar el conjunto exterior $A$ y la operación de unión que afecta al paréntesis $(B \cap C)$.'
+  - 'Paso 2: Distribuir la unión con $A$ a cada miembro del paréntesis: $(A \cup B)$ y $(A \cup C)$.'
+  - 'Paso 3: Conectar ambos paréntesis mediante el operador de intersección central $\cap$.'
+  - 'Paso 4: Para el proceso inverso (factorización), extraer el término repetido $A \cup$ hacia afuera.'
+errores_correccion: |
+  - **Error 1:** Mantener el mismo operador dentro y fuera de los paréntesis al expandir. **Cómo corregirlo:** La distributividad alterna los operadores: la unión exterior entra a los paréntesis y la intersección interior se convierte en el operador principal intermedio.
+  - **Error 2:** Creer que la unión no puede distribuirse sobre la intersección porque en álgebra real la suma no distribuye sobre el producto. **Cómo corregirlo:** El álgebra booleana de conjuntos es totalmente simétrica; la unión sí distribuye sobre la intersección.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Sean los conjuntos $A = \{1, 2\}$, $B = \{2, 3\}$ y $C = \{2, 4\}$. Comprueba
-    la propiedad distributiva calculando $A \cup (B \cap C)$ y $(A \cup B) \cap (A
-    \cup C)$.
-  solucion_pasos:
-  - 'Paso a: Evaluamos el lado izquierdo. Primero calculamos la intersección: $B \cap
-    C = \{2\}$.'
-  - 'Paso b: Unimos $A$ con el resultado anterior: $A \cup (B \cap C) = \{1, 2\} \cup
-    \{2\} = \{1, 2\}$.'
-  - 'Paso c: Evaluamos el lado derecho. Primero calculamos las uniones parciales:
-    $A \cup B = \{1, 2, 3\}$ y $A \cup C = \{1, 2, 4\}$.'
-  - 'Paso d: Ahora intersectamos ambos resultados: $(A \cup B) \cap (A \cup C) = \{1,
-    2, 3\} \cap \{1, 2, 4\} = \{1, 2\}$.'
-  - 'Paso e: Ambos lados dan como resultado $\{1, 2\}$, verificando la propiedad distributiva.'
-- titulo: Ejemplo 2
-  enunciado: Sean los conjuntos $X = \{a\}$, $Y = \{b\}$ y $Z = \{c\}$. Comprueba
-    la propiedad distributiva de la unión sobre la intersección.
-  solucion_pasos:
-  - 'Paso a: Para el lado izquierdo, calculamos primero $Y \cap Z = \varnothing$.
-    Luego, $X \cup \varnothing = \{a\}$.'
-  - 'Paso b: Para el lado derecho, calculamos $X \cup Y = \{a, b\}$ y $X \cup Z =
-    \{a, c\}$. La intersección entre $\{a, b\}$ y $\{a, c\}$ es $\{a\}$.'
-  - 'Paso c: Ambos lados resultan en el conjunto $\{a\}$, confirmando la equivalencia.'
-- titulo: ¿Es la expresión $A \cup (B \cap C)$ equivalente a $(A \cup B) \cap (A \cup
-    C)$ para cualquier trío de conjuntos?
-  respuesta: Sí
-  solucion_pasos:
-  - La propiedad distributiva de la unión sobre la intersección es una ley lógica
-    universal de la teoría de conjuntos.
-  - Se cumple siempre, sin importar la naturaleza o el tamaño de los conjuntos involucrados.
-- titulo: ¿Qué ocurre con la propiedad si los conjuntos $B$ y $C$ son disjuntos?
-  respuesta: Se cumple igual
-  solucion_pasos:
-  - Si $B \cap C = \varnothing$, el lado izquierdo se reduce a $A \cup \varnothing
-    = A$.
-  - El lado derecho también se reducirá a $A$, por lo que la propiedad sigue siendo
-    perfectamente válida.
+  - titulo: 'Distribución con conjuntos de letras'
+    enunciado: 'Si $A = \{x\}$, $B = \{y\}$, $C = \{z\}$, ¿cuál es $(A \cup B) \cap (A \cup C)$ sabiendo que $B \cap C = \emptyset$?'
+    alternativas:
+      - '$\{x\}$'
+      - '$\{y, z\}$'
+      - '$\emptyset$'
+    respuesta: '$\{x\}$'
+    solucion_pasos:
+      - '1. $(A \cup B) \cap (A \cup C) = A \cup (B \cap C) = \{x\} \cup \emptyset = \{x\}$.'
+  - titulo: 'Simplificación de expresión'
+    enunciado: 'Simplifica $(M \cup N) \cap (M \cup N^c)$.'
+    respuesta: '$M$'
+    solucion_pasos:
+      - '$M \cup (N \cap N^c) = M \cup \emptyset = M$.'
+  - titulo: 'Distribución con el universo'
+    enunciado: '¿$(A \cup \mathcal{U}) \cap (A \cup B)$ a qué equivale?'
+    respuesta: '$A \cup B$'
+    solucion_pasos:
+      - '$\mathcal{U} \cap (A \cup B) = A \cup B$.'
+  - titulo: 'Factor común en conjuntos'
+    enunciado: '¿Cuál es la forma factorizada de $(P \cup Q) \cap (P \cup R)$?'
+    respuesta: '$P \cup (Q \cap R)$'
+    solucion_pasos:
+      - 'Se extrae el factor común $P \cup$.'
 errores_frecuentes:
-- Declarar esta propiedad con la distributiva de la intersección sobre la unión, escribiendo
-  $A \cap (B \cup C)$ en lugar de $A \cup (B \cap C)$.
-- Distribuir la unión como si fuera multiplicación aritmética y escribir erróneamente
-  $(A \cup B) \cup (A \cup C)$.
-- Omitir que la intersección final en el lado derecho es de dos conjuntos ya unidos,
-  no de los conjuntos originales.
-- Afirmar que esta propiedad no se aplica si alguno de los conjuntos es vacío.
-- Declarar que la propiedad asociativa y la distributiva son lo mismo, omitiendo los
-  cambios de operaciones entre unión e intersección.
-fuente: Elementos de Matemática, Editorial Addison-Wesley, pág. 62
+  - 'La afirmación de que la unión no distribuye sobre la intersección en la teoría de conjuntos.'
+  - 'La afirmación de que $A \cup (B \cap C)$ es idéntico a $(A \cup B) \cup (A \cup C)$.'
+  - 'La afirmación de que $(A \cup B) \cap (A \cup C)$ se reduce a la intersección $B \cap C$.'
+  - 'La afirmación de que la propiedad distributiva de la unión solo es válida cuando los conjuntos son finitos.'
+  - 'La afirmación de que distribuir la unión sobre la intersección altera la cardinalidad total del universo.'
+afirmaciones_verdaderas:
+  - 'La unión de conjuntos distribuye sobre la intersección según la ley $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.'
+  - 'La validez de esta propiedad se fundamenta en la tautología lógica $P \lor (Q \land R) \equiv (P \lor Q) \land (P \lor R)$.'
+al_terminar_debes_poder: |
+  QUÉ: Enunciar, demostrar y aplicar la propiedad distributiva de la unión sobre la intersección ($A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$).
+  CÓMO: Expandir y factorizar expresiones booleanas conjuntistas y simplificar operaciones mediante la ley lógica $P \lor (Q \land R) \equiv (P \lor Q) \land (P \lor R)$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

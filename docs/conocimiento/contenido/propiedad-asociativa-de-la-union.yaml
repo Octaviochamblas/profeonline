@@ -1,113 +1,103 @@
 semantic_id: MAT.FUND.PROPIEDADES_CONJUNTOS.ASOCIATIVA_UNION
-titulo: Propiedad asociativa de la unión
-objetivo: Aplicar la propiedad asociativa de la unión para agrupar y simplificar operaciones
-  de unión entre tres o más conjuntos.
-introduccion: Imagina que tres amigos, Juan ($A$), María ($B$) y Pedro ($C$), deciden
-  juntar sus colecciones de juguetes. Para organizarse, primero se pueden reunir Juan
-  y María para juntar sus colecciones ($A \cup B$), y al día siguiente añadir los
-  juguetes de Pedro. O bien, Juan puede esperar y reunirse con el grupo que ya formaron
-  María y Pedro ($B \cup C$). En ambos casos, el gran montón de juguetes final será
-  exactamente el mismo. Esta idea en matemáticas se conoce como la propiedad asociativa
-  de la unión.
-resumen: La propiedad asociativa de la unión establece que al realizar la unión de
-  tres conjuntos, el orden en el que se agrupen las operaciones parciales no altera
-  el resultado final. Es decir, $(A \cup B) \cup C = A \cup (B \cup C)$.
-explicacion: 'La **propiedad asociativa de la unión** indica que cuando unimos tres
-  o más conjuntos mediante la operación de unión, la forma en que agrupemos los conjuntos
-  de dos en dos no altera el conjunto resultante.
+resumen_inicial: 'Demostración lógica, propiedades y aplicación de la propiedad asociativa de la unión de conjuntos: $(A \cup B) \cup C = A \cup (B \cup C)$.'
+explicacion_simple: |
+  La **propiedad asociativa de la unión** dice que cuando unimos tres o más conjuntos, **no importa cómo los agrupemos con paréntesis**: el resultado final es siempre el mismo: **$(A \cup B) \cup C = A \cup (B \cup C)$**. Puedes unir primero $A$ con $B$ y al resultado unirle $C$, o bien unir primero $B$ con $C$ y luego unirle $A$. Como el resultado no cambia, solemos escribir simplemente **$A \cup B \cup C$** sin necesidad de paréntesis.
+explicacion_formal: |
+  ### Definición formal
+  En la teoría de conjuntos y el álgebra de Boole, la operación binaria de unión es **asociativa**:
+  $$\forall A, B, C \subseteq \mathcal{U}, \quad (A \cup B) \cup C = A \cup (B \cup C)$$
+  Demostración formal basada en la asociatividad de la disyunción lógica ($\lor$):
+  $$x \in ((A \cup B) \cup C) \iff (x \in A \lor x \in B) \lor x \in C \iff x \in A \lor (x \in B \lor x \in C) \iff x \in (A \cup (B \cup C))$$
+  Por el axioma de extensionalidad, se concluye la igualdad de los conjuntos.
 
+  ### Desglose simbólico
+  - Ley lógica subyacente: $(P \lor Q) \lor R \equiv P \lor (Q \lor R)$.
+  - Notación no ambigua sin paréntesis: $A \cup B \cup C = \{x \in \mathcal{U} \mid x \in A \lor x \in B \lor x \in C\}$.
+  - Generalización asociativa: $\bigcup_{i=1}^n A_i$ es invariante ante cualquier árbol de parentización binaria (números de Catalan).
 
-  ### Definición Formal
-
-  Sean $A$, $B$ y $C$ tres conjuntos en un universo $U$. Se cumple que:
-
-  $$(A \cup B) \cup C = A \cup (B \cup C)$$
-
-
-  ### Demostración
-
-  Esta propiedad se deriva directamente de la propiedad asociativa del conector lógico
-  de disyunción ($\lor$). Por definición de la unión:
-
-  $$(A \cup B) \cup C = \{x \in U \mid x \in (A \cup B) \lor x \in C\}$$
-
-  $$= \{x \in U \mid (x \in A \lor x \in B) \lor x \in C\}$$
-
-  Dado que la disyunción lógica es asociativa, es decir, $(p \lor q) \lor r \equiv
-  p \lor (q \lor r)$, podemos reescribir la expresión anterior como:
-
-  $$= \{x \in U \mid x \in A \lor (x \in B \lor x \in C)\}$$
-
-  $$= \{x \in U \mid x \in A \lor x \in (B \cup C)\} = A \cup (B \cup C)$$
-
-  Esto demuestra que la igualdad se cumple para cualquier trío de conjuntos.
-
-
-  ### Consecuencia Práctica
-
-  Dado que el agrupamiento no afecta el resultado, el uso de paréntesis es redundante
-  cuando solo hay operaciones de unión consecutivas. Por lo tanto, podemos omitirlos
-  y escribir simplemente:
-
-  $$A \cup B \cup C$$'
+  ### Síntesis didáctica
+  La asociatividad permite extender operaciones binarias a un número arbitrario de operandos sin ambigüedad estructural.
+definiciones_clave: |
+  - **Propiedad asociativa**: Invarianza del resultado ante la redistribución de los signos de agrupación (paréntesis).
+  - **Asociatividad de la disyunción**: Equivalencia lógica tautológica $(P \lor Q) \lor R \equiv P \lor (Q \lor R)$.
+  - **Unión múltiple ($A \cup B \cup C$)**: Agregación global directa de todos los elementos presentes en al menos uno de los conjuntos.
+propiedades_relaciones: |
+  - **Estructura de semigrupo**: La asociatividad confiere a $(\mathcal{P}(\mathcal{U}), \cup)$ la categoría matemática de semigrupo.
+  - **Diagrama de Venn**: En un diagrama de tres círculos, $(A \cup B) \cup C$ y $A \cup (B \cup C)$ sombrean exactamente la misma superficie compuesta por las 7 regiones interiores.
+ejemplo_guiado:
+  enunciado: 'Dados los conjuntos $A = \{1, 2\}$, $B = \{2, 3\}$ y $C = \{3, 4\}$, demuestra por extensión que $(A \cup B) \cup C = A \cup (B \cup C)$.'
+  pasos:
+    - 'Paso 1: Resolver el lado izquierdo $(A \cup B) \cup C$:
+      - Primero calcular el paréntesis: $A \cup B = \{1, 2\} \cup \{2, 3\} = \{1, 2, 3\}$.
+      - Unir con $C$: $(A \cup B) \cup C = \{1, 2, 3\} \cup \{3, 4\} = \{1, 2, 3, 4\}$.'
+    - 'Paso 2: Resolver el lado derecho $A \cup (B \cup C)$:
+      - Primero calcular el paréntesis: $B \cup C = \{2, 3\} \cup \{3, 4\} = \{2, 3, 4\}$.
+      - Unir con $A$: $A \cup (B \cup C) = \{1, 2\} \cup \{2, 3, 4\} = \{1, 2, 3, 4\}$.'
+    - 'Paso 3: Comparar ambos resultados: $\{1, 2, 3, 4\} = \{1, 2, 3, 4\}$.'
+    - 'Paso 4: Concluir formalmente la validez de la propiedad asociativa.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué consecuencia práctica directa permite la propiedad asociativa de la unión?'
+    choices:
+      - {text: 'Poder omitir los paréntesis y escribir directamente $A \cup B \cup C$ sin ambigüedad', is_correct: true}
+      - {text: 'Convertir las uniones en intersecciones automáticamente', is_correct: false}
+      - {text: 'Afirmar que los tres conjuntos son disjuntos', is_correct: false}
+      - {text: 'Garantizar que la cardinalidad siempre sea la suma directa sin inclusiones', is_correct: false}
+    explanation: 'La alternativa correcta es ''Poder omitir los paréntesis y escribir directamente $A \cup B \cup C$ sin ambigüedad''. La asociatividad hace irrelevante la agrupación.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si $A \cup (B \cup C) = \{a, b, c, d\}$, ¿cuál es el valor de $(A \cup B) \cup C$?'
+    choices:
+      - {text: '$\{a, b, c, d\}$', is_correct: true}
+      - {text: '$\emptyset$', is_correct: false}
+      - {text: '$\{a, b, c\}$', is_correct: false}
+      - {text: '$\{d\}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\{a, b, c, d\}$''. Por la propiedad asociativa, reagrupar los paréntesis no altera el conjunto resultante.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identifica los tres conjuntos que vas a unir (por ejemplo, $A$, $B$ y $C$).'
-- 'Paso 2: Resuelve la primera forma de agrupación $(A \cup B) \cup C$. Primero obtén
-  la unión de $A$ y $B$, y luego une ese resultado con $C$.'
-- 'Paso 3: Resuelve la segunda forma de agrupación $A \cup (B \cup C)$. Primero obtén
-  la unión de $B$ y $C$, y luego une $A$ con ese resultado.'
-- 'Paso 4: Compara ambos conjuntos obtenidos. Verás que tienen exactamente los mismos
-  elementos.'
+  - 'Paso 1: Expresar la condición $x \in ((A \cup B) \cup C)$ como $(x \in A \lor x \in B) \lor x \in C$.'
+  - 'Paso 2: Aplicar la asociatividad de la disyunción lógica para reordenar a $x \in A \lor (x \in B \lor x \in C)$.'
+  - 'Paso 3: Traducir a la notación conjuntista $x \in (A \cup (B \cup C))$.'
+  - 'Paso 4: Concluir la igualdad $(A \cup B) \cup C = A \cup (B \cup C)$ por extensionalidad.'
+errores_correccion: |
+  - **Error 1:** Modificar los operadores en vez de los paréntesis al aplicar la asociatividad (ej. poner $(A \cup B) \cap C$). **Cómo corregirlo:** La propiedad asociativa mantiene el MISMO operador en toda la expresión ($\cup$ y $\cup$); si los operadores son distintos se trata de distributividad.
+  - **Error 2:** Creer que la asociatividad permite alterar el orden relativo de los conjuntos sin justificar la conmutatividad. **Cómo corregirlo:** La asociatividad redistribuye signos de agrupación manteniendo la posición; alterar el orden de los términos involucra también conmutatividad.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Sean los conjuntos $A = \{1, 2\}$, $B = \{2, 3\}$ y $C = \{4\}$. Comprueba
-    la propiedad asociativa calculando $(A \cup B) \cup C$ y $A \cup (B \cup C)$.
-  solucion_pasos:
-  - 'Paso a: Calculamos el primer agrupamiento. Primero hacemos $A \cup B = \{1, 2,
-    3\}$.'
-  - 'Paso b: Ahora unimos el resultado con $C$: $(A \cup B) \cup C = \{1, 2, 3\} \cup
-    \{4\} = \{1, 2, 3, 4\}$.'
-  - 'Paso c: Calculamos el segundo agrupamiento. Primero hacemos $B \cup C = \{2,
-    3, 4\}$.'
-  - 'Paso d: Ahora unimos $A$ con el resultado: $A \cup (B \cup C) = \{1, 2\} \cup
-    \{2, 3, 4\} = \{1, 2, 3, 4\}$.'
-  - 'Paso e: Comparamos ambos resultados y vemos que $\{1, 2, 3, 4\} = \{1, 2, 3,
-    4\}$, confirmando la propiedad.'
-- titulo: Ejemplo 2
-  enunciado: Sean los conjuntos $X = \{a\}$, $Y = \varnothing$ y $Z = \{b\}$. Comprueba
-    la propiedad asociativa de la unión.
-  solucion_pasos:
-  - 'Paso a: Para el primer miembro, calculamos $(X \cup Y) \cup Z$. Primero $X \cup
-    Y = \{a\} \cup \varnothing = \{a\}$. Luego, $\{a\} \cup Z = \{a\} \cup \{b\} =
-    \{a, b\}$.'
-  - 'Paso b: Para el segundo miembro, calculamos $X \cup (Y \cup Z)$. Primero $Y \cup
-    Z = \varnothing \cup \{b\} = \{b\}$. Luego, $X \cup \{b\} = \{a\} \cup \{b\} =
-    \{a, b\}$.'
-  - 'Paso c: Ambos métodos de agrupación resultan en el mismo conjunto $\{a, b\}$.'
-- titulo: ¿Permite la propiedad asociativa escribir la unión de tres conjuntos sin
-    usar paréntesis?
-  respuesta: Sí
-  solucion_pasos:
-  - Como la forma de agrupar no altera el resultado de la unión, no hay ambigüedad
-    al escribir $A \cup B \cup C$.
-  - Los paréntesis se vuelven innecesarios en cadenas puras de unión de conjuntos.
-- titulo: ¿Se cumple la propiedad asociativa si los tres conjuntos son disjuntos entre
-    sí?
-  respuesta: Sí
-  solucion_pasos:
-  - La propiedad asociativa de la unión se cumple para cualquier terna de conjuntos,
-    sin importar si tienen o no elementos en común.
-  - Por ejemplo, si $A = \{1\}$, $B = \{2\}$ y $C = \{3\}$, tanto $(A \cup B) \cup
-    C$ como $A \cup (B \cup C)$ resultan en el conjunto $\{1, 2, 3\}$.
+  - titulo: 'Asociatividad con intervalos'
+    enunciado: '¿Es $((0, 2) \cup [1, 3]) \cup (2, 4)$ igual a $(0, 2) \cup ([1, 3] \cup (2, 4))$?'
+    alternativas:
+      - 'Sí, ambos dan $(0, 4)$'
+      - 'No, los extremos difieren'
+      - 'Indeterminado'
+    respuesta: 'Sí, ambos dan $(0, 4)$'
+    solucion_pasos:
+      - '1. La unión es asociativa y cubre el intervalo continuo $(0, 4)$.'
+  - titulo: 'Unión de 4 conjuntos'
+    enunciado: '¿Se pueden agrupar libremente 4 conjuntos unidos: $A \cup B \cup C \cup D$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Por extensión de la ley asociativa a $n$ términos.'
+  - titulo: 'Asociatividad con el vacío'
+    enunciado: '¿$(A \cup B) \cup \emptyset = A \cup (B \cup \emptyset)$?'
+    respuesta: 'Sí, ambos dan $A \cup B$'
+    solucion_pasos:
+      - 'Ambas expresiones simplifican a $A \cup B$.'
+  - titulo: 'Área en diagramas de Venn'
+    enunciado: '¿Ocupan la misma superficie $(A \cup B) \cup C$ y $A \cup (B \cup C)$ en el diagrama de Venn?'
+    respuesta: 'Sí, cubren exactamente las 7 regiones interiores'
+    solucion_pasos:
+      - 'Ambas representan la unión global de los tres círculos.'
 errores_frecuentes:
-- Cambiar el orden de los conjuntos en la escritura y declarar que eso es exclusivamente
-  la propiedad asociativa (eso es la conmutativa; la asociativa cambia los paréntesis
-  de lugar sin cambiar el orden de los conjuntos).
-- Afirmar que la presencia de un conjunto vacío rompe la asociatividad.
-- Realizar una intersección en lugar de una unión en alguno de los pasos.
-- Declarar que los paréntesis son obligatorios para poder calcular la unión de tres
-  conjuntos.
-- Declarar la asociatividad de la unión con la asociatividad de la diferencia de conjuntos
-  (la diferencia de conjuntos no es asociativa).
-fuente: Introducción a la Matemática Moderna, Editorial Addison-Wesley, pág. 55
+  - 'La afirmación de que la redistribución de paréntesis altera el conjunto resultante en una cadena de uniones.'
+  - 'La afirmación de que la propiedad asociativa se aplica cuando se mezclan uniones e intersecciones sin distribuir.'
+  - 'La afirmación de que la unión de tres conjuntos finitos depende del par inicial que se decida operar.'
+  - 'La afirmación de que la asociatividad no es válida para familias infinitas de conjuntos.'
+  - 'La afirmación de que es obligatorio mantener siempre los paréntesis en la notación $A \cup B \cup C$.'
+afirmaciones_verdaderas:
+  - 'La unión de conjuntos es asociativa para cualquier terna de conjuntos ($(A \cup B) \cup C = A \cup (B \cup C)$).'
+  - 'La asociatividad de la unión se deduce de la equivalencia tautológica de la disyunción lógica ($(P \lor Q) \lor R \equiv P \lor (Q \lor R)$).'
+al_terminar_debes_poder: |
+  QUÉ: Enunciar, demostrar y aplicar la propiedad asociativa de la unión ($(A \cup B) \cup C = A \cup (B \cup C)$).
+  CÓMO: Reagrupar paréntesis sin alterar el resultado, vincular con la asociatividad lógica de $\lor$ y simplificar uniones múltiples.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

@@ -1,120 +1,109 @@
 semantic_id: MAT.FUND.PROPIEDADES_CONJUNTOS.DE_MORGAN_COMPLEMENTO_UNION
-titulo: Ley de De Morgan para el complemento de una unión
-objetivo: Aplicar la ley de De Morgan para el complemento de una unión para simplificar
-  y resolver operaciones de complementación en conjuntos.
-introduccion: 'Imagina que en una pastelería hay tortas que tienen chocolate ($A$)
-  o manjar ($B$). Si un cliente dice: "No quiero ninguna torta que tenga chocolate
-  o manjar", esto equivale exactamente a decir: "No quiero chocolate ($A^c$) Y tampoco
-  quiero manjar ($B^c$)". En matemáticas, esta equivalencia entre "no (A o B)" y "no
-  A y no B" se conoce como la primera Ley de De Morgan para el complemento de una
-  unión, y nos ayuda a cambiar una operación de unión por una de intersección al aplicar
-  complementos.'
-resumen: 'La Ley de De Morgan para el complemento de una unión establece que el complemento
-  de la unión de dos conjuntos es igual a la intersección de los complementos de cada
-  conjunto. Formalmente: $(A \cup B)^c = A^c \cap B^c$.'
-explicacion: 'Las **leyes de De Morgan** son un par de reglas de transformación que
-  relacionan la unión, la intersección y el complemento de conjuntos. La primera de
-  estas leyes describe cómo se comporta el complemento con respecto a la unión.
-
-
-  ### Definición Formal
-
-  Sean $A$ y $B$ dos conjuntos contenidos en un conjunto universal $U$. El complemento
-  de su unión, denotado por $(A \cup B)^c$ o $(A \cup B)''$, se expresa como:
-
+resumen_inicial: 'Demostración lógica, propiedades, diagramas de Venn y aplicación de la Primera Ley de De Morgan: $(A \cup B)^c = A^c \cap B^c$.'
+explicacion_simple: |
+  La **Primera Ley de De Morgan** establece que el **complemento de una unión es igual a la intersección de los complementos**:
   $$(A \cup B)^c = A^c \cap B^c$$
+  En palabras cotidianas: no estar en la unión de $A$ con $B$ significa **no estar en $A$ Y al mismo tiempo no estar en $B$**. Es la regla que nos enseña cómo distribuir el complemento hacia adentro de un paréntesis: **se niega cada conjunto individual ($A^c$ y $B^c$) y el símbolo de unión $\cup$ se da vuelta para transformarse en intersección $\cap$**.
+explicacion_formal: |
+  ### Definición formal
+  En la teoría de conjuntos y el álgebra booleana, la **Primera Ley de De Morgan** establece la dualidad de la unión bajo la complementación:
+  $$\forall A, B \subseteq \mathcal{U}, \quad (A \cup B)^c = A^c \cap B^c$$
+  Demostración formal basada en la negación lógica de la disyunción:
+  $$x \in (A \cup B)^c \iff \neg(x \in (A \cup B)) \iff \neg(x \in A \lor x \in B) \iff (\neg(x \in A) \land \neg(x \in B)) \iff (x \in A^c \land x \in B^c) \iff x \in (A^c \cap B^c)$$
+  Por el axioma de extensionalidad, se concluye formalmente que $(A \cup B)^c = A^c \cap B^c$.
 
+  ### Desglose simbólico
+  - Ley lógica subyacente: $\neg(P \lor Q) \equiv \neg P \land \neg Q$.
+  - Generalización a familias arbitrarias de conjuntos:
+    $$\left(\bigcup_{i \in I} A_i\right)^c = \bigcap_{i \in I} A_i^c$$
+  - En diagramas de Venn: Representa exactamente la región exterior al trazado de ambos círculos dentro del rectángulo $\mathcal{U}$.
 
-  ### Demostración
-
-  Esta propiedad se fundamenta directamente en las leyes de De Morgan de la lógica
-  proposicional, las cuales establecen que la negación de una disyunción es lógicamente
-  equivalente a la conjunción de las negaciones: $\neg(p \lor q) \equiv \neg p \land
-  \neg q$.
-
-
-  Por definición de las operaciones de conjuntos:
-
-  $$(A \cup B)^c = \{x \in U \mid x \notin (A \cup B)\}$$
-
-  $$= \{x \in U \mid \neg(x \in A \lor x \in B)\}$$
-
-  Aplicando la ley lógica de De Morgan:
-
-  $$= \{x \in U \mid x \notin A \land x \notin B\}$$
-
-  $$= \{x \in U \mid x \in A^c \land x \in B^c\} = A^c \cap B^c$$
-
-  Por lo tanto, se demuestra la equivalencia.
-
-
-  ### Representación Gráfica (Diagrama de Venn)
-
-  En un diagrama de Venn, la unión $A \cup B$ corresponde a la zona interna de ambos
-  círculos. El complemento $(A \cup B)^c$ es toda la región exterior a ambos círculos.
-  Por otro lado, la intersección de la región fuera de $A$ ($A^c$) con la región fuera
-  de $B$ ($B^c$) cubre exactamente esta misma área exterior, verificando gráficamente
-  la propiedad.'
+  ### Síntesis didáctica
+  La Primera Ley de De Morgan transforma un problema de exclusión de una unión en la exigencia simultánea de pertenecer al exterior de cada conjunto individual.
+definiciones_clave: |
+  - **Primera Ley de De Morgan**: Teorema fundamental que establece $(A \cup B)^c = A^c \cap B^c$.
+  - **Dualidad de De Morgan**: Principio por el cual el operador complemento intercambia uniones e intersecciones.
+  - **Negación de la disyunción**: Equivalencia lógica $\neg(P \lor Q) \equiv \neg P \land \neg Q$.
+propiedades_relaciones: |
+  - **Cardinalidad del complemento de la unión**: $|(A \cup B)^c| = |\mathcal{U}| - |A \cup B| = |\mathcal{U}| - (|A| + |B| - |A \cap B|)$.
+  - **Inversión de inclusión**: Permite probar que $A \subseteq B \implies B^c \subseteq A^c$.
+ejemplo_guiado:
+  enunciado: 'Dado el universo $\mathcal{U} = \{1, 2, 3, 4, 5, 6\}$ y los subconjuntos $A = \{1, 2, 3\}$ y $B = \{3, 4\}$, demuestra paso a paso la Primera Ley de De Morgan calculando $(A \cup B)^c$ y $A^c \cap B^c$.'
+  pasos:
+    - 'Paso 1: Resolver el lado izquierdo $(A \cup B)^c$:
+      - Calcular la unión: $A \cup B = \{1, 2, 3\} \cup \{3, 4\} = \{1, 2, 3, 4\}$.
+      - Calcular el complemento respecto a $\mathcal{U}$: $(A \cup B)^c = \mathcal{U} \setminus \{1, 2, 3, 4\} = \{5, 6\}$.'
+    - 'Paso 2: Resolver el lado derecho $A^c \cap B^c$:
+      - Calcular $A^c = \mathcal{U} \setminus \{1, 2, 3\} = \{4, 5, 6\}$.
+      - Calcular $B^c = \mathcal{U} \setminus \{3, 4\} = \{1, 2, 5, 6\}$.
+      - Intersectar ambos complementos: $A^c \cap B^c = \{4, 5, 6\} \cap \{1, 2, 5, 6\} = \{5, 6\}$.'
+    - 'Paso 3: Comparar ambos resultados: $\{5, 6\} = \{5, 6\}$.'
+    - 'Paso 4: Concluir formalmente que $(A \cup B)^c = A^c \cap B^c$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué transformación sufren los operadores y los conjuntos al aplicar la Primera Ley de De Morgan a $(A \cup B)^c$?'
+    choices:
+      - {text: 'Cada conjunto se complementa individualmente y la unión se transforma en intersección ($A^c \cap B^c$)', is_correct: true}
+      - {text: 'Cada conjunto se complementa y la unión se mantiene como unión ($A^c \cup B^c$)', is_correct: false}
+      - {text: 'Los conjuntos quedan iguales y se elimina el complemento', is_correct: false}
+      - {text: 'Se obtiene la diferencia simétrica $A \bigtriangleup B$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cada conjunto se complementa individualmente y la unión se transforma en intersección ($A^c \cap B^c$)''. El operador $\cup$ se transforma en $\cap$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si $|\mathcal{U}| = 40$ y $|A \cup B| = 28$, ¿cuál es la cardinalidad de la intersección de los complementos $|A^c \cap B^c|$?'
+    choices:
+      - {text: '$12$ elementos ($40 - 28$)', is_correct: true}
+      - {text: '$28$ elementos', is_correct: false}
+      - {text: '$68$ elementos', is_correct: false}
+      - {text: '$14$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$12$ elementos ($40 - 28$)''. Por De Morgan, $|A^c \cap B^c| = |(A \cup B)^c| = 40 - 28 = 12$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identifica los conjuntos $A$ y $B$, el conjunto universal $U$, y calcula
-  los complementos individuales $A^c$ y $B^c$.'
-- 'Paso 2: Para calcular el lado izquierdo $(A \cup B)^c$, primero obtén la unión
-  $A \cup B$ y luego determina todos los elementos de $U$ que no pertenecen a dicha
-  unión.'
-- 'Paso 3: Para calcular el lado derecho $A^c \cap B^c$, toma los conjuntos $A^c$
-  y $B^c$ previamente calculados e identifica sus elementos comunes.'
-- 'Paso 4: Compara ambos resultados para comprobar que contienen los mismos elementos.'
+  - 'Paso 1: Identificar una expresión con el complemento de una unión: $(A \cup B)^c$.'
+  - 'Paso 2: Distribuir el símbolo de complemento a cada conjunto operando: $A \mapsto A^c$ y $B \mapsto B^c$.'
+  - 'Paso 3: Transformar el operador de unión $\cup$ en operador de intersección $\cap$.'
+  - 'Paso 4: Escribir la expresión resultante como $A^c \cap B^c$.'
+  - 'Paso 5: En el diagrama de Venn, sombrear el área exterior a ambos círculos.'
+errores_correccion: |
+  - **Error 1:** Distribuir el complemento manteniendo el operador de unión (ej. escribir $(A \cup B)^c = A^c \cup B^c$). **Cómo corregirlo:** La ley de De Morgan exige invertir el operador: la unión $\cup$ debe transformarse obligatoriamente en intersección $\cap$.
+  - **Error 2:** Olvidar que la ley aplica a familias múltiples de conjuntos. **Cómo corregirlo:** Para tres conjuntos la regla es idéntica: $(A \cup B \cup C)^c = A^c \cap B^c \cap C^c$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Dado el universo $U = \{1, 2, 3, 4, 5\}$ y los conjuntos $A = \{1, 2\}$
-    y $B = \{3, 4\}$, comprueba la ley de De Morgan calculando $(A \cup B)^c$ y $A^c
-    \cap B^c$.
-  solucion_pasos:
-  - 'Paso a: Calculamos el lado izquierdo. Primero hallamos la unión: $A \cup B =
-    \{1, 2, 3, 4\}$.'
-  - 'Paso b: Determinamos el complemento de esta unión respecto al universo $U$: $(A
-    \cup B)^c = \{5\}$.'
-  - 'Paso c: Calculamos el lado derecho. Primero hallamos los complementos individuales:
-    $A^c = \{3, 4, 5\}$ y $B^c = \{1, 2, 5\}$.'
-  - 'Paso d: Intersectamos ambos complementos buscando elementos comunes: $A^c \cap
-    B^c = \{5\}$.'
-  - 'Paso e: Comparamos ambos resultados y vemos que $\{5\} = \{5\}$, lo que comprueba
-    la ley de De Morgan.'
-- titulo: Ejemplo 2
-  enunciado: Si el universo es $U = \{a, b, c, d\}$, el conjunto $X = \{a, b, c\}$
-    e $Y = \{c, d\}$, comprueba la ley de De Morgan para el complemento de la unión.
-  solucion_pasos:
-  - 'Paso a: Para el miembro izquierdo, calculamos $X \cup Y = \{a, b, c, d\} = U$.
-    Por lo tanto, el complemento de la unión es $(X \cup Y)^c = U^c = \varnothing$.'
-  - 'Paso b: Para el miembro derecho, calculamos los complementos individuales: $X^c
-    = \{d\}$ y $Y^c = \{a, b\}$. Su intersección es $X^c \cap Y^c = \{d\} \cap \{a,
-    b\} = \varnothing$.'
-  - 'Paso c: Ambos lados resultan en el conjunto vacío $\varnothing$, confirmando
-    la equivalencia.'
-- titulo: ¿Es el complemento de la unión $(A \cup B)^c$ equivalente a $A^c \cap B^c$
-    para cualquier par de conjuntos?
-  respuesta: Sí
-  solucion_pasos:
-  - La Ley de De Morgan para la unión es una tautología matemática.
-  - Se cumple siempre, sin importar cómo estén definidos los conjuntos o la composición
-    del universo.
-- titulo: ¿Si los conjuntos $A$ y $B$ son disjuntos, el complemento de su unión es
-    igual al conjunto vacío?
-  respuesta: 'No'
-  solucion_pasos:
-  - Que sean disjuntos significa que $A \cap B = \varnothing$, pero su unión $A \cup
-    B$ no es necesariamente igual al universo $U$.
-  - Por lo tanto, el complemento de la unión $(A \cup B)^c$ solo será vacío si la
-    unión de ambos cubre todo el universo $U$, independientemente de si son disjuntos
-    o no.
+  - titulo: 'Aplicación con números pares e impares'
+    enunciado: 'Si $P$ son los pares e $I$ los impares en $\mathbb{Z}$, ¿cuál es $(P \cup I)^c$?'
+    alternativas:
+      - '$\emptyset$'
+      - '$\mathbb{Z}$'
+      - '$\{0\}$'
+    respuesta: '$\emptyset$'
+    solucion_pasos:
+      - '1. $P \cup I = \mathbb{Z}$.'
+      - '2. $(\mathbb{Z})^c = \emptyset = P^c \cap I^c = I \cap P = \emptyset$.'
+  - titulo: 'De Morgan con tres conjuntos'
+    enunciado: '¿A qué equivale $(A \cup B \cup C)^c$?'
+    respuesta: '$A^c \cap B^c \cap C^c$'
+    solucion_pasos:
+      - 'Se distribuye el complemento y todas las uniones se transforman en intersecciones.'
+  - titulo: 'De Morgan con conjuntos disjuntos'
+    enunciado: 'Si $A \cap B = \emptyset$, ¿se cumple igualmente $(A \cup B)^c = A^c \cap B^c$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Las leyes de De Morgan son universales para cualquier par de conjuntos.'
+  - titulo: 'Región en diagrama de Venn'
+    enunciado: '¿Qué región representa $A^c \cap B^c$ en el diagrama de Venn?'
+    respuesta: 'La región exterior a ambos círculos'
+    solucion_pasos:
+      - 'Corresponde a la zona dentro del rectángulo que no pertenece a ninguno de los dos conjuntos.'
 errores_frecuentes:
-- Distribuir el complemento de forma errónea escribiendo $(A \cup B)^c = A^c \cup
-  B^c$, olvidando cambiar el símbolo de unión ($\cup$) por intersección ($\cap$).
-- Calcular los complementos sin definir un conjunto universal de referencia, lo cual
-  hace imposible determinar los elementos externos.
-- Declarar la ley de De Morgan con la propiedad distributiva.
-- Declarar que la ley solo se aplica a conjuntos disjuntos.
-- No cambiar el sentido de las operaciones al pasar el complemento de afuera hacia
-  adentro de los paréntesis.
-fuente: Teoría de Conjuntos y Temas Afines, Editorial Reverté, pág. 55
+  - 'La afirmación de que el complemento de la unión es igual a la unión de los complementos ($(A \cup B)^c = A^c \cup B^c$).'
+  - 'La afirmación de que $(A \cup B)^c$ produce el conjunto universal $\mathcal{U}$.'
+  - 'La afirmación de que la Primera Ley de De Morgan solo es aplicable cuando los conjuntos son mutuamente disjuntos.'
+  - 'La afirmación de que al aplicar De Morgan el complemento de un conjunto se anula.'
+  - 'La afirmación de que la intersección $A^c \cap B^c$ sombrea el centro compartido de los dos círculos.'
+afirmaciones_verdaderas:
+  - 'La Primera Ley de De Morgan establece que el complemento de la unión es idéntico a la intersección de los complementos ($(A \cup B)^c = A^c \cap B^c$).'
+  - 'La validez de esta ley se fundamenta en la tautología lógica de la negación de una disyunción ($\neg(P \lor Q) \equiv \neg P \land \neg Q$).'
+al_terminar_debes_poder: |
+  QUÉ: Enunciar, demostrar y aplicar la Primera Ley de De Morgan ($(A \cup B)^c = A^c \cap B^c$).
+  CÓMO: Transformar el complemento de una unión en la intersección de complementos aplicando la ley lógica $\neg(P \lor Q) \equiv \neg P \land \neg Q$ e interpretarlo en diagramas de Venn.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
