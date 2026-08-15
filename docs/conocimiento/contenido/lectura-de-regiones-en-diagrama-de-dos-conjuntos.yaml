@@ -1,169 +1,109 @@
 semantic_id: MAT.FUND.DIAGRAMAS_VENN.REGIONES_DOS_CONJUNTOS
-titulo: Lectura de regiones en diagrama de dos conjuntos
-objetivo: 'Identificar y describir con notación de conjuntos las cuatro regiones de un
+resumen_inicial: 'Interpretación formal, traducción entre lenguaje natural y operaciones booleanas para cada una de las 4 regiones de un diagrama de Venn de dos conjuntos.'
+explicacion_simple: |
+  Aprender a **leer las regiones de un diagrama de Venn** es fundamental para traducir enunciados de la vida real a expresiones matemáticas:
+  - **"Solo $A$" o "A pero no B"**: es la medialuna izquierda ($A \setminus B$ o $A \cap B^c$).
+  - **"Ambos" o "A y B a la vez"**: es la lenteja central ($A \cap B$).
+  - **"Solo $B$" o "B pero no A"**: es la medialuna derecha ($B \setminus A$ o $B \cap A^c$).
+  - **"Al menos uno de los dos"**: es toda la unión (las tres regiones de los círculos juntas: $A \cup B$).
+  - **"Exactamente uno de los dos"**: son las dos medialunas juntas sin el centro (diferencia simétrica $A \bigtriangleup B$).
+  - **"Ninguno de los dos"**: es la zona de afuera ($(A \cup B)^c$).
+explicacion_formal: |
+  ### Definición formal
+  En la lógica proposicional y conjuntista, la **lectura de regiones de orden 2** es el homomorfismo biyectivo entre los $2^4 = 16$ eventos booleanos generados por $\{A, B\}$ y las combinaciones de las 4 regiones atómicas disjuntas $\{R_{10}, R_{11}, R_{01}, R_{00}\}$:
+  $$\begin{array}{|l|l|l|} \hline \text{Enunciado en lenguaje natural} & \text{Expresión conjuntista} & \text{Átomos booleanos} \\ \hline \text{Solo } A \text{ (no } B\text{)} & A \setminus B = A \cap B^c & R_{10} \\ \text{Solo } B \text{ (no } A\text{)} & B \setminus A = B \cap A^c & R_{01} \\ \text{Ambos simultáneamente} & A \cap B & R_{11} \\ \text{Al menos uno (} A \text{ o } B\text{)} & A \cup B & R_{10} \cup R_{11} \cup R_{01} \\ \text{Exactamente uno (} A \text{ o exclusivo } B\text{)} & A \bigtriangleup B = (A \setminus B) \cup (B \setminus A) & R_{10} \cup R_{01} \\ \text{A lo sumo uno} & (A \cap B)^c & R_{10} \cup R_{01} \cup R_{00} \\ \text{Ninguno de los dos} & (A \cup B)^c = A^c \cap B^c & R_{00} \\ \hline \end{array}$$
 
-  diagrama de Venn de dos conjuntos, distinguiendo la región exclusiva de A,
+  ### Desglose simbólico
+  - "Al menos uno": Conectivo disyuntivo inclusivo $\lor \mapsto \cup$.
+  - "Ambos": Conectivo conjuntivo $\land \mapsto \cap$.
+  - "Exactamente uno": Conectivo disyuntivo exclusivo $\oplus \mapsto \bigtriangleup$.
+  - "A lo sumo uno": Negación de la conjunción $\neg(A \land B) \mapsto (A \cap B)^c$.
 
-  la intersección, la región exclusiva de B y la región exterior.
-
-  '
-introduccion: 'Un diagrama de Venn de dos conjuntos A y B divide el universo U en exactamente
-
-  cuatro regiones disjuntas. Cada región agrupa los elementos según su pertenencia
-
-  a A, a B, a ambos o a ninguno. Saber nombrar cada región con notación de conjuntos
-
-  es fundamental para resolver problemas de cardinalidad y para interpretar
-
-  correctamente la información representada en el diagrama.
-
-  '
-resumen: 'Las cuatro regiones de un diagrama de Venn con conjuntos A y B son:
-
-  - Región I   (solo A):        A\B  — elementos en A pero no en B.
-
-  - Región II  (intersección):  A∩B  — elementos en A y en B simultáneamente.
-
-  - Región III (solo B):        B\A  — elementos en B pero no en A.
-
-  - Región IV  (ninguno):       (A∪B)'' = U\(A∪B) — elementos fuera de ambos conjuntos.
-
-  '
-explicacion: "Al dibujar dos círculos superpuestos dentro de un rectángulo (el universo U),\nsurgen naturalmente\
-  \ cuatro zonas:\n\n1. La parte del círculo A que no se superpone con B corresponde a los elementos\n\
-  \   que pertenecen a A pero no a B. Se denota A\\B (diferencia de conjuntos) o,\n   de forma equivalente,\
-  \ A∩B'.\n\n2. La zona de superposición de ambos círculos contiene los elementos que pertenecen\n   simultáneamente\
-  \ a A y a B: la intersección A∩B.\n\n3. La parte del círculo B que no se superpone con A contiene los\
-  \ elementos que\n   pertenecen a B pero no a A: la diferencia B\\A (equivalente a B∩A').\n\n4. El área\
-  \ del rectángulo exterior a ambos círculos agrupa los elementos del\n   universo que no pertenecen ni\
-  \ a A ni a B: el complemento de la unión, (A∪B)'\n   o U\\(A∪B).\n\nLas cuatro regiones son disjuntas\
-  \ (no se solapan entre sí) y su unión es el\nuniverso completo U.\n"
+  ### Síntesis didáctica
+  La correcta interpretación textual de frases como "al menos", "a lo sumo" y "exactamente" evita confusiones sistemáticas al plantear ecuaciones de conjuntos.
+definiciones_clave: |
+  - **"Solo $A$" ($A \setminus B$)**: Elementos que pertenecen exclusivamente a $A$ y no a $B$.
+  - **"Al menos uno" ($A \cup B$)**: Pertenencia a $A$, a $B$ o a ambos a la vez.
+  - **"Exactamente uno" ($A \bigtriangleup B$)**: Pertenencia exclusiva a uno de los dos conjuntos, descartando la intersección.
+  - **"A lo sumo uno" ($(A \cap B)^c$)**: Pertenencia a como máximo uno de los dos conjuntos (admite 0 o 1 conjunto).
+propiedades_relaciones: |
+  - **Complementariedad**: "Al menos uno" ($A \cup B$) y "Ninguno" ($(A \cup B)^c$) son complementos estrictos en el universo $\mathcal{U}$.
+  - **Descomposición disyunta de la unión**: $A \cup B = (A \setminus B) \cup (A \cap B) \cup (B \setminus A)$.
+ejemplo_guiado:
+  enunciado: 'En un grupo, $14$ personas tienen perro ($P$), $11$ tienen gato ($G$) y $6$ tienen ambas mascotas. Identifica y calcula: (a) cuántos tienen solo perro, (b) cuántos tienen solo gato, (c) cuántos tienen exactamente una mascota, y (d) cuántos tienen al menos una mascota.'
+  pasos:
+    - 'Paso 1: Identificar los datos base: $|P| = 14$, $|G| = 11$, $|P \cap G| = 6$.'
+    - 'Paso 2: Calcular (a) "Solo perro" ($P \setminus G$):
+      - $|P \setminus G| = |P| - |P \cap G| = 14 - 6 = 8$ personas.'
+    - 'Paso 3: Calcular (b) "Solo gato" ($G \setminus P$):
+      - $|G \setminus P| = |G| - |P \cap G| = 11 - 6 = 5$ personas.'
+    - 'Paso 4: Calcular (c) "Exactamente una mascota" ($P \bigtriangleup G$):
+      - $|P \bigtriangleup G| = |P \setminus G| + |G \setminus P| = 8 + 5 = 13$ personas.'
+    - 'Paso 5: Calcular (d) "Al menos una mascota" ($P \cup G$):
+      - $|P \cup G| = 8 + 6 + 5 = 19$ personas (o $14 + 11 - 6 = 19$).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué operación conjuntista corresponde a la frase "elementos que pertenecen a exactamente uno de los dos conjuntos $A$ o $B$"?'
+    choices:
+      - {text: 'La diferencia simétrica: $A \bigtriangleup B = (A \setminus B) \cup (B \setminus A)$', is_correct: true}
+      - {text: 'La intersección: $A \cap B$', is_correct: false}
+      - {text: 'La unión completa: $A \cup B$', is_correct: false}
+      - {text: 'El complemento del universo: $\mathcal{U}^c$', is_correct: false}
+    explanation: 'La alternativa correcta es ''La diferencia simétrica: $A \bigtriangleup B = (A \setminus B) \cup (B \setminus A)$''. Agrupa las dos regiones exclusivas.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'En un diagrama con $|A \setminus B| = 10$, $|A \cap B| = 4$, $|B \setminus A| = 6$ y $|(A \cup B)^c| = 5$, ¿cuántos elementos cumplen "a lo sumo uno de los dos conjuntos"?'
+    choices:
+      - {text: '$21$ elementos ($10 + 6 + 5$)', is_correct: true}
+      - {text: '$16$ elementos', is_correct: false}
+      - {text: '$20$ elementos', is_correct: false}
+      - {text: '$4$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$21$ elementos ($10 + 6 + 5$)''. "A lo sumo uno" abarca solo A (10), solo B (6) y ninguno (5), sumando 21.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Leer el enunciado y determinar a qué conjunto(s) pertenece el elemento o grupo de elementos descritos.'
-- 'Paso 2: Localizar la región en el diagrama: ¿solo en A? → A\B (luneta izquierda); ¿en A y en B? → A∩B (zona central); ¿solo en B? → B\A (luneta derecha); ¿en ninguno? → (A∪B)'''' (área exterior a ambos círculos).'
-- 'Paso 3: Escribir la notación de conjuntos correspondiente.'
-- 'Paso 4: Verificar que la región elegida sea disjunta de las demás (un elemento no puede estar en dos regiones a la vez).'
+  - 'Paso 1: Leer el enunciado e identificar las palabras clave ("solo", "ambos", "al menos uno", "exactamente uno", "a lo sumo uno", "ninguno").'
+  - 'Paso 2: Traducir cada frase a su región booleana correspondiente en el diagrama.'
+  - 'Paso 3: Calcular las cantidades numéricas de cada una de las 4 regiones atómicas.'
+  - 'Paso 4: Sumar las regiones involucradas según la pregunta formulada.'
+errores_correccion: |
+  - **Error 1:** Confundir "al menos uno" con "exactamente uno". **Cómo corregirlo:** "Al menos uno" incluye la intersección ($A \cup B = \text{Solo } A + \text{Ambos} + \text{Solo } B$); "exactamente uno" descarta la intersección ($A \bigtriangleup B = \text{Solo } A + \text{Solo } B$).
+  - **Error 2:** Olvidar que "a lo sumo uno" incluye la región exterior "ninguno". **Cómo corregirlo:** "A lo sumo uno" significa $0$ o $1$, por lo que se suman: Solo $A$ ($1$) + Solo $B$ ($1$) + Ninguno ($0$).
 ejemplos:
-- tipo: A
-  titulo: Identificar la región de elementos que pertenecen SOLO a A
-  enunciado: 'En un diagrama de Venn con conjuntos A y B, describe con notación de conjuntos
-
-    la región que contiene los elementos que pertenecen SOLO a A (no a B).
-
-    '
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Identificamos los elementos objetivo: aquellos que están en A pero no en B.
-
-      '
-  - paso: 2
-    descripcion: 'En el diagrama, esto corresponde a la parte del círculo A que queda fuera
-
-      del círculo B (la «luneta» izquierda).
-
-      '
-  - paso: 3
-    descripcion: 'La notación de conjuntos para esta región es A\B (diferencia de conjuntos).
-
-      De forma equivalente puede escribirse A∩B'', donde B'' es el complemento de B.
-
-      '
-  - paso: 4
-    descripcion: 'Verificación: ningún elemento de A\B pertenece a B, por lo que esta región
-
-      es disjunta de A∩B y de B\A. ✓
-
-      '
-- tipo: A
-  titulo: Identificar la región central (intersección)
-  enunciado: 'En un diagrama de Venn con conjuntos A y B, describe con notación de conjuntos
-
-    la región central (la que A y B comparten).
-
-    '
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'La región central es aquella donde los dos círculos se superponen.
-
-      '
-  - paso: 2
-    descripcion: 'Los elementos de esta zona pertenecen simultáneamente a A y a B.
-
-      '
-  - paso: 3
-    descripcion: 'La notación correcta es A∩B (intersección de A y B).
-
-      '
-  - paso: 4
-    descripcion: 'Verificación: todo elemento de A∩B pertenece a A (sí) y a B (sí), y no
-
-      pertenece a A\B ni a B\A. ✓
-
-      '
-- tipo: B
-  titulo: ¿Puede un elemento pertenecer a $A \setminus B$ y a $A \cap B$ a la vez?
-  enunciado: '¿Puede un elemento pertenecer simultáneamente a la región $A \setminus B$
-
-    y a la región $A \cap B$ del mismo diagrama de Venn?
-
-    '
-  respuesta: 'No'
-  solucion_pasos:
-  - paso: 1
-    descripcion: '$A \setminus B$ contiene elementos que están en A pero NO en B.
-
-      '
-  - paso: 2
-    descripcion: '$A \cap B$ contiene elementos que están en A Y en B.
-
-      '
-  - paso: 3
-    descripcion: 'Un elemento en $A \setminus B$ no pertenece a B, por lo que no puede
-
-      cumplir la condición de $A \cap B$. Las dos regiones son disjuntas.
-
-      '
-  - paso: 4
-    descripcion: 'Conclusión: No es posible. Un elemento pertenece a exactamente una de
-
-      las cuatro regiones del diagrama. ✓
-
-      '
-- tipo: B
-  titulo: ¿La región $B \setminus A$ forma parte del conjunto $B$?
-  enunciado: '¿Es correcto afirmar que la región $B \setminus A$ forma parte del conjunto $B$?
-
-    '
-  respuesta: Sí
-  solucion_pasos:
-  - paso: 1
-    descripcion: '$B \setminus A$ se define como los elementos que pertenecen a B pero no a A.
-
-      '
-  - paso: 2
-    descripcion: 'Por definición, todo elemento de $B \setminus A$ pertenece a B.
-
-      '
-  - paso: 3
-    descripcion: 'Por lo tanto, $B \setminus A \subseteq B$, es decir, la región «solo B»
-
-      es un subconjunto de B.
-
-      '
-  - paso: 4
-    descripcion: 'Conclusión: Sí es correcto. $B \setminus A$ forma parte de B. ✓
-
-      '
+  - titulo: 'Interpretación de "Solo A"'
+    enunciado: 'Si $|A|=20$ y $|A \cap B|=8$, ¿cuánto vale "solo A"?'
+    alternativas:
+      - '$12$'
+      - '$20$'
+      - '$28$'
+    respuesta: '$12$'
+    solucion_pasos:
+      - '1. $|A \setminus B| = 20 - 8 = 12$.'
+  - titulo: 'Interpretación de "Ninguno"'
+    enunciado: '¿A qué región corresponde "ni A ni B"?'
+    respuesta: 'A la región exterior $(A \cup B)^c$'
+    solucion_pasos:
+      - 'Corresponde al complemento de la unión: $\mathcal{U} \setminus (A \cup B)$.'
+  - titulo: 'Diferencia simétrica'
+    enunciado: 'Si solo $A = 7$ y solo $B = 9$, ¿cuánto vale la diferencia simétrica?'
+    respuesta: '$16$'
+    solucion_pasos:
+      - '$|A \bigtriangleup B| = 7 + 9 = 16$.'
+  - titulo: 'A lo sumo uno'
+    enunciado: 'Si $|\mathcal{U}| = 30$ y $|A \cap B| = 6$, ¿cuántos cumplen a lo sumo uno?'
+    respuesta: '$24$'
+    solucion_pasos:
+      - '$|(A \cap B)^c| = |\mathcal{U}| - |A \cap B| = 30 - 6 = 24$.'
 errores_frecuentes:
-- 'A\B excluye expresamente los elementos de A∩B. La diferencia «quita» la intersección
-    del conjunto A.'
-- 'La región exterior es (A∪B)'', es decir, el complemento de la UNIÓN. Un elemento que no
-    pertenece a A podría aún pertenecer a B, por lo que no estaría en la región exterior.'
-- 'Las cuatro regiones son mutuamente excluyentes (disjuntas). Cada elemento del universo
-    pertenece a exactamente una de ellas.'
-- 'En A\B el minuendo es A y el sustraendo es B. El resultado queda dentro de A, no dentro
-    de B. El orden importa: A\B ≠ B\A en general.'
-- 'Siempre hay cuatro regiones: I (solo A), II (A∩B), III (solo B) y IV (ninguno). La
-    región exterior existe incluso si está vacía.'
-fuente: Matemáticas para la Educación Media, MINEDUC
+  - 'La afirmación de que "al menos uno" descarta a los elementos que pertenecen a ambos conjuntos simultáneamente.'
+  - 'La afirmación de que la expresión "exactamente uno" incluye la región central de intersección.'
+  - 'La afirmación de que "a lo sumo uno" es equivalente a la unión $A \cup B$.'
+  - 'La afirmación de que "solo A" se calcula sumando el conjunto A con la intersección.'
+  - 'La afirmación de que la región "ninguno" no forma parte del cálculo de probabilidades o cardinalidades.'
+afirmaciones_verdaderas:
+  - 'La expresión "exactamente uno de los dos conjuntos" corresponde a la diferencia simétrica $A \bigtriangleup B = (A \setminus B) \cup (B \setminus A)$.'
+  - 'La expresión "al menos uno de los dos conjuntos" corresponde a la unión $A \cup B$, mientras que "a lo sumo uno" corresponde a su complemento conjuntivo $(A \cap B)^c$.'
+al_terminar_debes_poder: |
+  QUÉ: Leer, traducir e interpretar las regiones de un diagrama de Venn de dos conjuntos.
+  CÓMO: Mapear expresiones en lenguaje natural ("solo", "al menos uno", "exactamente uno", "a lo sumo uno") a sus operaciones conjuntistas booleanas.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

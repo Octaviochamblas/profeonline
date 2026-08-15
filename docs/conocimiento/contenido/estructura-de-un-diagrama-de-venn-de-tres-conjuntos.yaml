@@ -1,123 +1,122 @@
 semantic_id: MAT.FUND.DIAGRAMAS_VENN.DIAGRAMA_TRES_CONJUNTOS
-titulo: Estructura de un diagrama de Venn de tres conjuntos
-objetivo: Representar tres conjuntos en un diagrama de Venn ubicando tres círculos
-  superpuestos de forma simétrica para generar todas las intersecciones posibles.
-introduccion: 'Imagina que tienes una lista de alumnos que juegan básquetbol ($A$),
-  fútbol ($B$) y tenis ($C$). Si un compañero juega los tres deportes, ¿dónde deberías
-  dibujarlo para no repetir su nombre? Necesitamos una zona central compartida por
-  tres círculos a la vez.
+resumen_inicial: 'Estructura canónica de un diagrama de Venn para tres conjuntos secantes ($A, B, C$), generando exactamente 8 regiones disjuntas.'
+explicacion_simple: |
+  El **diagrama de Venn de tres conjuntos** ($A$, $B$ y $C$) se forma dibujando **tres círculos que se cruzan entre sí** dentro del rectángulo universal $\mathcal{U}$. Esta figura divide al universo en exactamente **$8$ regiones disjuntas** ($2^3 = 8$):
+  1. **$1$ región central**: donde se cruzan los 3 círculos a la vez ($A \cap B \cap C$).
+  2. **$3$ regiones dobles**: donde se cruzan de a 2 conjuntos (solo $A$ y $B$, solo $A$ y $C$, solo $B$ y $C$).
+  3. **$3$ regiones individuales**: de pertenencia exclusiva (solo $A$, solo $B$, solo $C$).
+  4. **$1$ región exterior**: los que no están en ninguno de los 3 conjuntos ($(A \cup B \cup C)^c$).
+explicacion_formal: |
+  ### Definición formal
+  En la lógica visual de Venn, el **diagrama estándar de orden 3** es la descomposición del plano inducida por tres curvas cerradas simples en posición general dentro de $\mathcal{U}$:
+  $$\mathcal{U} = \bigcup_{b_1, b_2, b_3 \in \{0, 1\}} R_{b_1 b_2 b_3}$$
+  generando exactamente $2^3 = 8$ átomos booleanos disjuntos dos a dos:
+  - **Triple intersección**: $R_{111} = A \cap B \cap C$.
+  - **Intersecciones dobles exclusivas**:
+    - $R_{110} = (A \cap B) \setminus C$.
+    - $R_{101} = (A \cap C) \setminus B$.
+    - $R_{011} = (B \cap C) \setminus A$.
+  - **Regiones exclusivas individuales**:
+    - $R_{100} = A \setminus (B \cup C)$.
+    - $R_{010} = B \setminus (A \cup C)$.
+    - $R_{001} = C \setminus (A \cup B)$.
+  - **Región exterior complementaria**: $R_{000} = (A \cup B \cup C)^c$.
 
+  ### Desglose simbólico
+  - Principio de Inclusión-Exclusión para 3 conjuntos:
+    $$|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$$
+  - Conservación total: $|\mathcal{U}| = |A \cup B \cup C| + |(A \cup B \cup C)^c|$.
 
-  En matemáticas, cuando analizamos tres conjuntos que pueden compartir elementos
-  entre sí, dibujamos tres círculos entrelazados en forma de trébol dentro de un rectángulo.
-  Esto crea varias zonas interesantes de superposición.
-
-
-  Aprender a leer este diagrama te permitirá ordenar grandes cantidades de información
-  y resolver acertijos complejos sobre grupos que tienen varias características al
-  mismo tiempo.'
-resumen: 'El diagrama de Venn de tres conjuntos ($A$, $B$ y $C$) consta de un rectángulo
-  universal $U$ y tres círculos superpuestos simétricamente. Esta disposición divide
-  al universo en exactamente ocho regiones disjuntas, incluyendo la intersección común
-  de los tres conjuntos ($A \cap B \cap C$) y las intersecciones de a dos conjuntos.
-
-  '
-explicacion: 'El **diagrama de Venn para tres conjuntos** es el diseño geométrico
-  estándar que permite visualizar todas las posibles relaciones lógicas de pertenencia
-  y exclusión entre tres colecciones.
-
-
-  **Estructura Geométrica:**
-
-  Se dibuja con tres círculos de igual tamaño dispuestos en forma triangular (dos
-  arriba y uno abajo, o similar) de manera que se superpongan entre sí. Esta configuración
-  geométrica genera **ocho regiones mutuamente excluyentes (disjuntas)** en el universo
-  $U$:
-
-  1. **Exclusiva de $A$ ($A \cap B^c \cap C^c$):** Elementos que solo pertenecen a
-  $A$.
-
-  2. **Exclusiva de $B$ ($B \cap A^c \cap C^c$):** Elementos que solo pertenecen a
-  $B$.
-
-  3. **Exclusiva de $C$ ($C \cap A^c \cap B^c$):** Elementos que solo pertenecen a
-  $C$.
-
-  4. **Intersección exclusiva de $A$ y $B$ ($A \cap B \cap C^c$):** Elementos en común
-  entre $A$ y $B$ que no están en $C$.
-
-  5. **Intersección exclusiva de $B$ y $C$ ($B \cap C \cap A^c$):** Elementos en común
-  entre $B$ y $C$ que no están en $A$.
-
-  6. **Intersección exclusiva de $A$ y $C$ ($A \cap C \cap B^c$):** Elementos en común
-  entre $A$ y $C$ que no están en $B$.
-
-  7. **Intersección común de los tres ($A \cap B \cap C$):** La zona central donde
-  coinciden los tres círculos.
-
-  8. **Exterior a los tres ($(A \cup B \cup C)^c$):** El espacio del rectángulo fuera
-  de todos los círculos.'
+  ### Síntesis didáctica
+  La estrategia de resolución algorítmica exige rellenar el diagrama **de adentro hacia afuera**: primero la triple intersección ($R_{111}$), luego las dobles exclusivas, después las individuales y al final la región exterior.
+definiciones_clave: |
+  - **Diagrama de Venn de 3 conjuntos**: Estructura gráfica canónica de tres curvas secantes que genera 8 regiones disjuntas.
+  - **Triple intersección ($A \cap B \cap C$)**: Región nuclear compartida simultáneamente por los tres conjuntos.
+  - **Inclusión-exclusión de orden 3**: Teorema algebraico que equilibra sumas y restas alternadas para calcular la unión triple.
+propiedades_relaciones: |
+  - **Generalización a $n$ conjuntos**: Un diagrama de Venn de $n$ conjuntos en posición general particiona el universo en $2^n$ regiones.
+  - **Alternancia de signos**: La fórmula de Poincaré alterna signos $+ - +$ según la paridad de la cardinalidad de las intersecciones.
+ejemplo_guiado:
+  enunciado: 'En una encuesta a $100$ estudiantes ($\mathcal{U}$): $40$ estudian Álgebra ($A$), $35$ Biología ($B$), $30$ Cálculo ($C$), $15$ estudian $A$ y $B$, $12$ estudian $A$ y $C$, $10$ estudian $B$ y $C$, y $5$ estudian las tres materias ($A \cap B \cap C$). Distribuye los datos y halla cuántos no estudian ninguna materia.'
+  pasos:
+    - 'Paso 1: Colocar la triple intersección en el centro:
+      - $|A \cap B \cap C| = 5$.'
+    - 'Paso 2: Calcular las tres intersecciones dobles exclusivas restando la triple:
+      - Solo $A$ y $B$: $15 - 5 = 10$.
+      - Solo $A$ y $C$: $12 - 5 = 7$.
+      - Solo $B$ y $C$: $10 - 5 = 5$.'
+    - 'Paso 3: Calcular las regiones exclusivas individuales restando las zonas compartidas del total de cada conjunto:
+      - Solo $A$: $40 - (10 + 7 + 5) = 40 - 22 = 18$.
+      - Solo $B$: $35 - (10 + 5 + 5) = 35 - 20 = 15$.
+      - Solo $C$: $30 - (7 + 5 + 5) = 30 - 17 = 13$.'
+    - 'Paso 4: Sumar las $7$ regiones interiores para obtener la unión $|A \cup B \cup C|$:
+      - $|A \cup B \cup C| = 18 + 15 + 13 + 10 + 7 + 5 + 5 = 73$.'
+    - 'Paso 5: Calcular la región exterior "Ninguna":
+      - $|(A \cup B \cup C)^c| = 100 - 73 = 27$ estudiantes.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿En cuántas regiones disjuntas particiona el plano un diagrama de Venn canónico de tres conjuntos dentro del universo $\mathcal{U}$?'
+    choices:
+      - {text: 'Exactamente $8$ regiones disjuntas ($2^3$)', is_correct: true}
+      - {text: '$6$ regiones', is_correct: false}
+      - {text: '$7$ regiones', is_correct: false}
+      - {text: '$12$ regiones', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $8$ regiones disjuntas ($2^3$)''. 1 triple, 3 dobles, 3 individuales y 1 exterior.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Al rellenar un diagrama de Venn de tres conjuntos, ¿cuál es el orden correcto del procedimiento para no arrastrar errores de duplicación?'
+    choices:
+      - {text: 'Comenzar desde el centro (triple intersección) y avanzar sucesivamente hacia afuera', is_correct: true}
+      - {text: 'Comenzar llenando los totales exteriores y finalizar en el centro', is_correct: false}
+      - {text: 'Llenar los círculos de izquierda a derecha de forma arbitraria', is_correct: false}
+      - {text: 'Omitir la triple intersección y calcular solo las regiones dobles', is_correct: false}
+    explanation: 'La alternativa correcta es ''Comenzar desde el centro (triple intersección) y avanzar sucesivamente hacia afuera''. Permite deducir las partes solapadas.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Dibuja el rectángulo universal $U$.'
-- 'Paso 2: Dibuja tres círculos superpuestos de forma simétrica (dos arriba, uno centrado
-  abajo) para que todas las zonas de cruce existan, y etiquétalos como $A$, $B$ y
-  $C$.'
-- 'Paso 3: Coloca primero los elementos que pertenecen a los tres conjuntos en la
-  zona central de triple cruce ($A \cap B \cap C$).'
-- 'Paso 4: Coloca luego los elementos que pertenecen a dos conjuntos en sus respectivas
-  intersecciones exclusivas de a pares (restando la zona central).'
-- 'Paso 5: Distribuye los elementos restantes en las regiones exclusivas de cada círculo
-  y, finalmente, ubica los elementos externos en el rectángulo.'
+  - 'Paso 1: Dibujar el rectángulo universal $\mathcal{U}$ y trazar tres círculos secantes rotulados $A, B, C$.'
+  - 'Paso 2: Colocar en primer lugar el dato de la triple intersección central $|A \cap B \cap C|$.'
+  - 'Paso 3: Calcular las intersecciones dobles exclusivas restando la triple intersección a cada dato de intersección de pares.'
+  - 'Paso 4: Calcular las regiones individuales exclusivas (solo $A$, solo $B$, solo $C$) restando las tres zonas adyacentes al total de cada conjunto.'
+  - 'Paso 5: Sumar las 7 áreas internas para hallar la unión $|A \cup B \cup C|$ y restar de $|\mathcal{U}|$ para obtener la región exterior.'
+errores_correccion: |
+  - **Error 1:** Colocar el dato de una intersección doble (ej. $A \cap B$) directamente en la zona doble sin restar la triple intersección. **Cómo corregirlo:** La región doble exclusiva es $(A \cap B) \setminus C = |A \cap B| - |A \cap B \cap C|$; de lo contrario la zona central se contabiliza dos veces.
+  - **Error 2:** Restar la triple intersección en la fórmula de inclusión-exclusión final. **Cómo corregirlo:** En la fórmula de Poincaré para 3 conjuntos, la triple intersección se suma al final para compensar que fue restada tres veces en los pares: $+ |A \cap B \cap C|$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: En un diagrama de Venn de tres conjuntos superpuestos $A$, $B$ y $C$,
-    describe en lenguaje de conjuntos la región central que pertenece a los tres círculos
-    simultáneamente.
-  solucion_pasos:
-  - 'Paso a: Identificamos la región descrita: es el área de superposición común a
-    los círculos $A$, $B$ y $C$.'
-  - 'Paso b: En esta zona, cualquier elemento debe pertenecer a $A$, pertenecer a
-    $B$ y pertenecer a $C$ de manera simultánea.'
-  - 'Paso c: La pertenencia simultánea a múltiples conjuntos se define a través de
-    la intersección. Por ende, la región central se denota como $A \cap B \cap C$.'
-- titulo: Ejemplo 2
-  enunciado: Describe en lenguaje de conjuntos la región que representa los elementos
-    que pertenecen a la unión de los conjuntos $A$ y $B$, pero que quedan totalmente
-    fuera del conjunto $C$.
-  solucion_pasos:
-  - 'Paso a: La región solicitada comprende todos los elementos que están en el círculo
-    $A$, en el círculo $B$, o en ambos (es decir, la unión $A \cup B$).'
-  - 'Paso b: Al especificar que deben quedar fuera del conjunto $C$, debemos restar
-    todos los elementos que pertenezcan a $C$.'
-  - 'Paso c: Esta operación de exclusión se representa mediante la diferencia de conjuntos,
-    resultando en $(A \cup B) \setminus C$.'
-- titulo: ¿Si un elemento $x$ está en la región central de triple cruce, se cumple
-    la afirmación $x \\in A$?
-  respuesta: Sí
-  solucion_pasos:
-  - La región central del diagrama representa a la intersección común $A \cap B \cap
-    C$.
-  - Por definición de intersección, si un elemento pertenece a $A \cap B \cap C$,
-    entonces pertenece a $A$, a $B$ y a $C$ simultáneamente.
-  - Como pertenece a los tres, en particular pertenece al conjunto $A$ ($x \in A$).
-- titulo: ¿Si el conjunto $A \\cap B \\cap C$ tiene cardinalidad $|A \\cap B \\cap
-    C| = 2$ y la intersección de $A$ y $B$ tiene cardinalidad $|A \\cap B| = 5$, entonces
-    la cardinalidad de la región que pertenece a $A$ y $B$ pero no a $C$ es 3?
-  respuesta: Sí
-  solucion_pasos:
-  - La región que pertenece a $A$ y $B$ pero no a $C$ se denota por $(A \cap B) \setminus
-    C$.
-  - 'Su cardinalidad se obtiene restando la triple intersección de la intersección
-    de a dos: $|(A \cap B) \setminus C| = |A \cap B| - |A \cap B \cap C|$.'
-  - 'Reemplazando los datos: $5 - 2 = 3$.'
-  - Por lo tanto, la cardinalidad de esa región es efectivamente 3.
+  - titulo: 'Cálculo de triple intersección'
+    enunciado: 'Si $|A|=20, |B|=20, |C|=20$, todas las dobles valen 8, $|A \cup B \cup C|=44$, ¿cuánto vale $|A \cap B \cap C|$?'
+    alternativas:
+      - '$8$'
+      - '$5$'
+      - '$2$'
+    respuesta: '$8$'
+    solucion_pasos:
+      - '1. $44 = (20+20+20) - (8+8+8) + x \implies 44 = 60 - 24 + x \implies 44 = 36 + x \implies x = 8$.'
+  - titulo: 'Exactamente dos materias'
+    enunciado: 'En el ejemplo guiado, ¿cuántos alumnos estudian exactamente dos materias?'
+    respuesta: '$22$ estudiantes ($10 + 7 + 5$)'
+    solucion_pasos:
+      - 'Se suman las tres regiones dobles exclusivas: $10 + 7 + 5 = 22$.'
+  - titulo: 'Exactamente una materia'
+    enunciado: 'En el ejemplo guiado, ¿cuántos alumnos estudian exactamente una materia?'
+    respuesta: '$46$ estudiantes ($18 + 15 + 13$)'
+    solucion_pasos:
+      - 'Se suman las tres regiones individuales exclusivas: $18 + 15 + 13 = 46$.'
+  - titulo: 'Número total de regiones'
+    enunciado: '¿Cuántas regiones interiores tiene la unión de tres conjuntos en el diagrama?'
+    respuesta: '$7$ regiones'
+    solucion_pasos:
+      - 'La unión particiona el interior en $8 - 1 = 7$ regiones.'
 errores_frecuentes:
-- Dibujar los tres círculos en fila, lo cual impide que exista una zona de intersección
-  directa entre el primero y el tercero sin pasar por el segundo.
-- Omitir restar la intersección de los tres ($A \cap B \cap C$) al calcular las cardinalidades
-  de las intersecciones dobles exclusivas.
-- Colocar elementos de la intersección triple en las zonas exclusivas de un solo conjunto.
-- Declarar la región exterior con alguna de las regiones exclusivas internas.
-- No identificar adecuadamente las 8 regiones disjuntas.
-fuente: Álgebra y Fundamentos, Universidad de Chile
+  - 'La afirmación de que el diagrama de tres conjuntos secantes genera solo seis regiones en el plano.'
+  - 'La afirmación de que en la fórmula de inclusión-exclusión de tres conjuntos la triple intersección se resta al final.'
+  - 'La afirmación de que el dato de $A \cap B$ corresponde exclusivamente a la zona donde no interviene $C$.'
+  - 'La afirmación de que para calcular "solo A" basta deducir una única intersección doble.'
+  - 'La afirmación de que la región exterior a los tres conjuntos siempre contiene cero elementos.'
+afirmaciones_verdaderas:
+  - 'El diagrama de Venn estándar de tres conjuntos particiona al conjunto universal $\mathcal{U}$ en exactamente $8$ regiones disjuntas ($2^3$).'
+  - 'La fórmula de inclusión-exclusión para tres conjuntos compensa la sobre-resta sumando la triple intersección: $|A \cup B \cup C| = \sum |A_i| - \sum |A_i \cap A_j| + |A \cap B \cap C|$.'
+al_terminar_debes_poder: |
+  QUÉ: Estructurar, construir y resolver problemas de conteo con diagramas de Venn de tres conjuntos.
+  CÓMO: Rellenar las 8 regiones de adentro hacia afuera comenzando por la triple intersección y aplicar el principio de inclusión-exclusión de orden 3.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
