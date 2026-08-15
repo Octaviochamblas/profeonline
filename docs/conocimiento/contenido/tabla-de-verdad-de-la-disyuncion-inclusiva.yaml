@@ -1,99 +1,107 @@
 semantic_id: MAT.FUND.TABLAS_VERDAD.TABLA_DISYUNCION_INCLUSIVA
-titulo: Tabla de verdad de la disyunción inclusiva
-objetivo: Comprender y construir la tabla de verdad del conectivo de disyunción inclusiva
-  para evaluar proposiciones compuestas del tipo "o".
-introduccion: 'Imagina que en un restaurante el menú incluye de postre: "helado o
-  flan". Esto significa que puedes pedir helado, puedes pedir flan, o incluso si el
-  restaurante es muy generoso, podrías pedir ambos y seguiría siendo válido. La única
-  forma de que te quedes sin postre es que no elijas ninguno de los dos. En lógica,
-  el conectivo "o" (disyunción inclusiva) funciona así: es verdadero si al menos una
-  de las opciones es verdadera, o si ambas lo son.'
-resumen: La disyunción inclusiva (u "o" lógico) es un conectivo binario que se denota
-  con el símbolo $\lor$. La proposición $p \lor q$ es verdadera si al menos una de
-  las proposiciones ($p$ o $q$) es verdadera, y es falsa únicamente cuando ambas son
-  falsas.
-explicacion: 'La **disyunción inclusiva** une dos proposiciones $p$ y $q$ mediante
-  el símbolo $\lor$ (se lee "o"). Escribimos $p \lor q$.
+resumen_inicial: 'Estructura canónica de la tabla de verdad de la disyunción inclusiva ($p \lor q$), caracterizada por tres filas verdaderas y una única fila falsa.'
+explicacion_simple: |
+  La **tabla de verdad de la disyunción inclusiva** ($p \lor q$) organiza las $4$ combinaciones posibles entre dos variables unidas con "o". La columna de salida es muy generosa: contiene **Verdadero ($V$)** en las tres primeras filas (donde al menos una de las dos partes es verdadera). La única fila donde la disyunción inclusiva resulta **Falsa ($F$)** es la cuarta fila, donde tanto $p$ como $q$ son falsos ($F \lor F = F$).
+explicacion_formal: |
+  ### Definición formal
+  La **tabla de verdad de la disyunción inclusiva binaria** es la representación matricial de la función veritativo-funcional booleana $\lor: \{V, F\}^2 \to \{V, F\}$:
+  $$\begin{array}{|c|c|c|} \hline p & q & p \lor q \\ \hline V & V & V \\ V & F & V \\ F & V & V \\ F & F & F \\ \hline \end{array}$$
+  donde el vector columna de salida canónico es $\mathbf{v}(p \lor q) = [V, V, V, F]^T$.
 
+  ### Desglose simbólico
+  - Fila 1 ($V, V$): $V \lor V = V$ (ambas verdaderas).
+  - Fila 2 ($V, F$): $V \lor F = V$ (primer operando verdadero).
+  - Fila 3 ($F, V$): $F \lor V = V$ (segundo operando verdadero).
+  - Fila 4 ($F, F$): $F \lor F = F$ (única fila de falsedad).
 
-  En lógica formal, el conectivo "o" se interpreta de forma inclusiva: la expresión
-  es verdadera si $p$ es verdadera, si $q$ es verdadera, o si ambas lo son. Solo resulta
-  falsa cuando ninguna se cumple.
-
-
-  Para dos variables simples ($n = 2$), la tabla de verdad tiene $2^2 = 4$ filas:
-
-
-  | $p$ | $q$ | $p \lor q$ |
-
-  | :---: | :---: | :---: |
-
-  | $V$ | $V$ | $V$ |
-
-  | $V$ | $F$ | $V$ |
-
-  | $F$ | $V$ | $V$ |
-
-  | $F$ | $F$ | $F$ |
-
-
-  **Comparación importante:**
-
-  A diferencia de la conjunción ($\land$), donde necesitamos que ambas proposiciones
-  sean verdaderas, en la disyunción inclusiva ($\lor$) basta con que **una sola**
-  de las proposiciones simples sea verdadera para que toda la expresión sea verdadera.'
+  ### Síntesis didáctica
+  La disyunción inclusiva posee una tasa de verdad del $75\%$ ($3$ de $4$ filas), siendo el complemento booleano exacto de la tabla de la conjunción negada mediante las Leyes de De Morgan.
+definiciones_clave: |
+  - **Tabla de verdad de la disyunción inclusiva**: Matriz de 4 filas que describe el comportamiento veritativo del operador $\lor$.
+  - **Fila de falsedad exclusiva**: Única fila (Fila 4) donde la disyunción produce el valor $F$.
+  - **Vector de salida booleano**: Vector binario $[1, 1, 1, 0]$ representativo de la disyunción inclusiva.
+propiedades_relaciones: |
+  - **Dualidad con la conjunción**: El vector $[V, V, V, F]^T$ de $p \lor q$ es el inverso ordenado del vector $[F, F, F, V]^T$ de $\neg p \land \neg q$.
+  - **Conmutatividad matricial**: Las filas intermedias ($V, F \mapsto V$ y $F, V \mapsto V$) confirman que $p \lor q \equiv q \lor p$.
+ejemplo_guiado:
+  enunciado: 'Construye la tabla de verdad de la fórmula $(p \lor q) \land \neg p$ y determina su vector columna de salida.'
+  pasos:
+    - 'Paso 1: Establecer las $4$ combinaciones de entrada para $p$ y $q$.'
+    - 'Paso 2: Calcular la subcolumna $p \lor q$: $[V, V, V, F]^T$.'
+    - 'Paso 3: Calcular la subcolumna $\neg p$: Invertir $p$, obteniendo $[F, F, V, V]^T$.'
+    - 'Paso 4: Evaluar la conjunción final $(p \lor q) \land \neg p$:
+      - Fila 1: $V \land F = F$
+      - Fila 2: $V \land F = F$
+      - Fila 3: $V \land V = V$
+      - Fila 4: $F \land V = F$'
+    - 'Paso 5: Concluir que el vector de salida es $[F, F, V, F]^T$, correspondiente a una contingencia (equivalente lógicamente a $\neg p \land q$).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'En la tabla de verdad de $p \lor q$, ¿cuántas filas presentan el valor Verdadero ($V$) en la columna de salida?'
+    choices:
+      - {text: 'Exactamente $3$ filas de las $4$ posibles', is_correct: true}
+      - {text: 'Exactamente $1$ fila', is_correct: false}
+      - {text: 'Las $4$ filas completas', is_correct: false}
+      - {text: 'Exactamente $2$ filas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $3$ filas de las $4$ posibles''. La disyunción inclusiva es verdadera siempre que exista al menos un $V$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿En cuál fila de la tabla canónica de $p \lor q$ se produce el único resultado Falso ($F$)?'
+    choices:
+      - {text: 'En la fila 4, donde $p=F$ y $q=F$', is_correct: true}
+      - {text: 'En la fila 1, donde $p=V$ y $q=V$', is_correct: false}
+      - {text: 'En la fila 2, donde $p=V$ y $q=F$', is_correct: false}
+      - {text: 'En la fila 3, donde $p=F$ y $q=V$', is_correct: false}
+    explanation: 'La alternativa correcta es ''En la fila 4, donde $p=F$ y $q=F$''. Solo la combinación de doble falsedad genera $F$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar el número de proposiciones simples $n$. Para dos variables $p$
-  y $q$ ($n=2$), calculamos la cantidad de filas necesarias mediante la fórmula $2^n
-  = 2^2 = 4$ filas.'
-- 'Paso 2: Definir las columnas de la tabla de verdad: una columna para $p$, otra
-  para $q$, y una columna final para la disyunción $p \lor q$.'
-- 'Paso 3: Llenar de forma ordenada los valores lógicos iniciales: $p$ con ($V, V,
-  F, F$) y $q$ con ($V, F, V, F$).'
-- 'Paso 4: Evaluar la disyunción inclusiva fila por fila, aplicando el conectivo de
-  adentro hacia afuera: la expresión da Falso ($F$) si y solo si ambas variables son
-  $F$; de lo contrario, el resultado es Verdadero ($V$).'
+  - 'Paso 1: Colocar las 4 filas estándar de entrada para $p$ ($V, V, F, F$) y $q$ ($V, F, V, F$).'
+  - 'Paso 2: Escribir la columna de salida con el título $p \lor q$.'
+  - 'Paso 3: Colocar $V$ en cada fila donde figure al menos una entrada $V$.'
+  - 'Paso 4: Colocar $F$ exclusivamente en la fila donde ambas entradas sean $F$.'
+errores_correccion: |
+  - **Error 1:** Asignar $F$ en la primera fila ($V, V$). **Cómo corregirlo:** La disyunción inclusiva permite que ambos componentes sean verdaderos; por ende, $V \lor V = V$.
+  - **Error 2:** Confundir la tabla de la disyunción inclusiva con la de la disyunción exclusiva. **Cómo corregirlo:** La disyunción inclusiva tiene vector $[V, V, V, F]^T$; la exclusiva tiene vector $[F, V, V, F]^T$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Determina el valor de verdad de la proposición: "10 es un número impar
-    o $3 + 3 = 6$".'
-  solucion_pasos:
-  - 'Paso a: Identificamos las proposiciones simples. Sea $p$: "10 es un número impar"
-    (Falso) y $q$: "$3 + 3 = 6$" (Verdadero).'
-  - 'Paso b: Evaluamos la disyunción inclusiva $p \lor q$. Como el segundo término
-    $q$ es Verdadero ($V$), toda la expresión "o" es Verdadera ($V$).'
-- titulo: Ejemplo 2
-  enunciado: Si $p$ es falsa y $q$ es falsa, ¿cuál es el valor de verdad de la expresión
-    $\neg p \lor q$?
-  solucion_pasos:
-  - 'Paso a: Evaluamos primero la negación interna: como $p$ es Falso ($F$), su negación
-    $\neg p$ es Verdadera ($V$).'
-  - 'Paso b: Evaluamos la disyunción inclusiva conectivo por conectivo: tenemos $\neg
-    p \lor q$, que equivale a Verdadero ($V$) o Falso ($F$). Como uno de los términos
-    es Verdadero, el resultado es Verdadero ($V$).'
-- titulo: ¿La disyunción inclusiva $p \lor q$ es falsa si al menos una de las proposiciones
-    es verdadera?
-  respuesta: 'No'
-  solucion_pasos:
-  - Por la regla de la disyunción inclusiva, basta con que una sola de las proposiciones
-    sea verdadera para que toda la proposición compuesta sea verdadera.
-  - Por lo tanto, si al menos una es verdadera, la disyunción inclusiva es Verdadera,
-    no Falsa.
-- titulo: ¿Es la proposición "$2 > 5 \lor 4 > 9$" falsa?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Evaluamos el primer término: $2 > 5$ es Falso ($F$).'
-  - 'Evaluamos el segundo término: $4 > 9$ es Falso ($F$).'
-  - Como ambos términos son falsos, la disyunción $F \lor F$ es Falsa ($F$).
+  - titulo: 'Fila de doble verdad'
+    enunciado: '¿Cuánto vale $p \lor q$ en la fila donde $p=V$ y $q=V$?'
+    alternativas:
+      - '$V$'
+      - '$F$'
+      - 'Indeterminado'
+    respuesta: '$V$'
+    solucion_pasos:
+      - '1. $V \lor V = V$.'
+  - titulo: 'Fila con un operando verdadero'
+    enunciado: '¿Cuánto vale $p \lor q$ en la fila donde $p=V$ y $q=F$?'
+    alternativas:
+      - '$V$'
+      - '$F$'
+      - '$0$'
+    respuesta: '$V$'
+    solucion_pasos:
+      - '1. $V \lor F = V$.'
+  - titulo: 'Fila de doble falsedad'
+    enunciado: '¿Cuánto vale $p \lor q$ en la fila donde $p=F$ y $q=F$?'
+    respuesta: '$F$'
+    solucion_pasos:
+      - '1. $F \lor F = F$.'
+  - titulo: 'Tasa de verdad'
+    enunciado: '¿La probabilidad de verdad en una tabla aleatoria de disyunción inclusiva es del 75%?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, 3 de cada 4 filas son verdaderas (75%).'
 errores_frecuentes:
-- Declarar la disyunción inclusiva con la exclusiva, pensando que si ambas proposiciones
-  son verdaderas, el resultado de $p \lor q$ debe ser falso.
-- Declarar el símbolo de disyunción ($\lor$) con el de conjunción ($\land$).
-- Asociar la palabra "o" del lenguaje cotidiano únicamente a situaciones donde se
-  debe elegir una sola opción de manera obligatoria.
-- No realizar la negación de los términos antes de evaluar la disyunción, obteniendo
-  un valor de verdad erróneo.
-- Colocar mal los paréntesis al construir tablas de verdad más grandes, cambiando
-  la precedencia de la disyunción con respecto a la conjunción.
-fuente: Lógica Matemática y Teoría de Conjuntos, pág. 18
+  - 'La afirmación de que la tabla de verdad de la disyunción inclusiva contiene una sola combinación verdadera.'
+  - 'La afirmación de que en la combinación $p=V$ y $q=V$ la disyunción inclusiva produce falsedad.'
+  - 'La afirmación de que la disyunción inclusiva arroja el mismo vector de salida que la disyunción exclusiva.'
+  - 'La afirmación de que la fila $p=F$ y $q=F$ produce un valor de verdad verdadero en la disyunción.'
+  - 'La afirmación de que la disyunción inclusiva no cumple la propiedad de conmutatividad en su tabla.'
+afirmaciones_verdaderas:
+  - 'La tabla de verdad de la disyunción inclusiva $p \lor q$ genera el vector de salida canónico $[V, V, V, F]^T$.'
+  - 'En la tabla de verdad de la disyunción inclusiva, existe una única fila con resultado falso correspondiente a la asignación simultánea $p=F$ y $q=F$.'
+al_terminar_debes_poder: |
+  QUÉ: Construir y evaluar la tabla de verdad canónica de la disyunción inclusiva ($p \lor q$).
+  CÓMO: Asignar las $4$ combinaciones de entrada y aplicar la regla de tres verdades y una falsedad ($[V, V, V, F]^T$).
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

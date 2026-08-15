@@ -1,102 +1,107 @@
 semantic_id: MAT.FUND.TABLAS_VERDAD.TABLA_CONJUNCION
-titulo: Tabla de verdad de la conjunción
-objetivo: Comprender y construir la tabla de verdad del conectivo de conjunción lógica
-  para evaluar proposiciones compuestas del tipo "y".
-introduccion: 'Imagina que para ir a una excursión necesitas llevar dos cosas obligatoriamente:
-  una autorización firmada Y tu documento de identidad. Si llevas la autorización
-  pero olvidas el documento, ¿puedes ir? No. Si olvidas la autorización pero llevas
-  el documento, ¿puedes ir? Tampoco. Solo puedes ir si cumples AMBAS condiciones a
-  la vez. En lógica, esta relación se llama conjunción (la palabra "y"). Una proposición
-  con "y" solo es verdadera cuando todas sus partes son verdaderas por separado.'
-resumen: La conjunción lógica es un conectivo binario que une dos proposiciones $p$
-  y $q$ mediante el operador "y" (símbolo $\land$). La proposición compuesta $p \land
-  q$ es verdadera únicamente cuando tanto $p$ como $q$ son verdaderas.
-explicacion: 'La **conjunción** es un conectivo lógico binario que conecta dos proposiciones,
-  $p$ y $q$. Se denota por el símbolo $\land$ (que se lee "y"), escribiéndose $p \land
-  q$.
+resumen_inicial: 'Estructura canónica de la tabla de verdad de la conjunción ($p \land q$), que contiene una única fila verdadera y tres filas falsas.'
+explicacion_simple: |
+  La **tabla de verdad de la conjunción** ($p \land q$) muestra todas las combinaciones posibles para dos afirmaciones unidas con "y". Como hay dos variables ($p$ y $q$), existen $4$ combinaciones posibles ($2^2 = 4$ filas). La columna del resultado solo tiene una fila con **Verdadero ($V$)**: la primera fila, donde tanto $p$ como $q$ son verdaderos. En las otras tres filas, como hay al menos un Falso, el resultado final es siempre **Falso ($F$)**.
+explicacion_formal: |
+  ### Definición formal
+  La **tabla de verdad de la conjunción binaria** es la matriz veritativo-funcional exhaustiva del operador $\land: \{V, F\}^2 \to \{V, F\}$:
+  $$\begin{array}{|c|c|c|} \hline p & q & p \land q \\ \hline V & V & V \\ V & F & F \\ F & V & F \\ F & F & F \\ \hline \end{array}$$
+  donde el vector columna de salida es $\mathbf{v}(p \land q) = [V, F, F, F]^T$.
 
+  ### Desglose simbólico
+  - Fila 1 ($V, V$): $V \land V = V$ (simultaneidad de verdad).
+  - Fila 2 ($V, F$): $V \land F = F$ (segundo operando falso).
+  - Fila 3 ($F, V$): $F \land V = F$ (primer operando falso).
+  - Fila 4 ($F, F$): $F \land F = F$ (ambos operandos falsos).
 
-  La regla de verdad para la conjunción establece que la proposición compuesta $p
-  \land q$ es **verdadera** si y solo si ambas proposiciones componentes ($p$ y $q$)
-  son verdaderas al mismo tiempo. En cualquier otro caso, la conjunción es falsa.
-
-
-  Dado que hay dos proposiciones simples implicadas ($n = 2$), la tabla de verdad
-  tiene $2^2 = 4$ filas:
-
-
-  | $p$ | $q$ | $p \land q$ |
-
-  | :---: | :---: | :---: |
-
-  | $V$ | $V$ | $V$ |
-
-  | $V$ | $F$ | $F$ |
-
-  | $F$ | $V$ | $F$ |
-
-  | $F$ | $F$ | $F$ |
-
-
-  **Puntos clave:**
-
-  - ''Si al menos una de las proposiciones simples es falsa, toda la conjunción $p
-  \land q$ se reduce a falsa ($F$).''
-
-  - ''La conjunción es conmutativa, es decir, $p \land q \equiv q \land p$.'''
+  ### Síntesis didáctica
+  La conjunción posee una firma veritativa asimétrica con una tasa de éxito del $25\%$ ($1$ de $4$ filas), caracterizándose por ser altamente restrictiva.
+definiciones_clave: |
+  - **Tabla de verdad de la conjunción**: Matriz de 4 filas que detalla los valores de verdad del operador $\land$.
+  - **Fila de verdad exclusiva**: Única fila (Fila 1) donde la conjunción produce el valor $V$.
+  - **Vector de salida booleano**: Vector binario $[1, 0, 0, 0]$ asociado a la operación de conjunción.
+propiedades_relaciones: |
+  - **Simetría conmutativa en la tabla**: Las filas 2 ($V, F \mapsto F$) y 3 ($F, V \mapsto F$) arrojan resultados idénticos, reflejando que $p \land q \equiv q \land p$.
+  - **Submatriz de evaluación**: Sirve como bloque fundamental para construir tablas de verdad complejas de orden $n \geq 2$.
+ejemplo_guiado:
+  enunciado: 'Construye la tabla de verdad de la fórmula $(p \land q) \land \neg q$ y determina su vector de salida.'
+  pasos:
+    - 'Paso 1: Configurar las columnas de entrada para $p$ y $q$ ($4$ filas canónicas).'
+    - 'Paso 2: Calcular la subcolumna $p \land q$: $[V, F, F, F]^T$.'
+    - 'Paso 3: Calcular la subcolumna $\neg q$: Invertir la columna de $q$, obteniendo $[F, V, F, V]^T$.'
+    - 'Paso 4: Evaluar la conjunción final $(p \land q) \land \neg q$:
+      - Fila 1: $V \land F = F$
+      - Fila 2: $F \land V = F$
+      - Fila 3: $F \land F = F$
+      - Fila 4: $F \land V = F$'
+    - 'Paso 5: Concluir que el vector de salida es $[F, F, F, F]^T$, demostrando que la fórmula es una contradicción.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'En la tabla de verdad canónica de $p \land q$, ¿cuántas filas tienen el valor Verdadero ($V$) en la columna de salida?'
+    choices:
+      - {text: 'Exactamente $1$ fila de las $4$ posibles', is_correct: true}
+      - {text: 'Exactamente $2$ filas', is_correct: false}
+      - {text: 'Exactamente $3$ filas', is_correct: false}
+      - {text: 'Las $4$ filas completas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $1$ fila de las $4$ posibles''. La conjunción solo es $V$ en la fila donde $p=V$ y $q=V$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Qué valor de verdad tiene la tercera fila de la tabla de verdad canónica para $p \land q$ (donde $p=F$ y $q=V$)?'
+    choices:
+      - {text: 'Falso ($F$)', is_correct: true}
+      - {text: 'Verdadero ($V$)', is_correct: false}
+      - {text: 'Indefinido', is_correct: false}
+      - {text: 'Tautológico', is_correct: false}
+    explanation: 'La alternativa correcta es ''Falso ($F$)''. Al ser $p=F$, la conjunción resulta inmediatamente $F \land V = F$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar el número de proposiciones simples $n$. Para dos variables $p$
-  y $q$ ($n=2$), calculamos la cantidad de filas necesarias mediante la fórmula $2^n
-  = 2^2 = 4$ filas.'
-- 'Paso 2: Definir las columnas de la tabla de verdad: columnas para las variables
-  simples $p$ y $q$, y una columna final para la conjunción $p \land q$.'
-- 'Paso 3: Llenar los valores de verdad de las proposiciones iniciales de forma sistemática:
-  para $p$ alternar de dos en dos ($V, V, F, F$) y para $q$ alternar de uno en uno
-  ($V, F, V, F$).'
-- 'Paso 4: Evaluar la conjunción conectivo por conectivo desde el interior hacia el
-  exterior: aplicar la regla de la conjunción de modo que la fila dé $V$ únicamente
-  si tanto $p$ como $q$ son $V$, y dé $F$ en los demás casos.'
+  - 'Paso 1: Escribir las combinaciones canónicas de entrada para $p$ ($V, V, F, F$) y $q$ ($V, F, V, F$).'
+  - 'Paso 2: Crear la columna de salida con el encabezado $p \land q$.'
+  - 'Paso 3: Asignar $V$ únicamente en la fila donde ambas entradas sean $V$.'
+  - 'Paso 4: Asignar $F$ en las tres filas restantes donde figure al menos un $F$.'
+errores_correccion: |
+  - **Error 1:** Llenar la columna de salida con tres $V$ y un $F$. **Cómo corregirlo:** La conjunción solo tiene un $V$ (en la primera fila) y tres $F$. La tabla que tiene tres $V$ corresponde a la disyunción inclusiva ($\lor$).
+  - **Error 2:** Desordenar las combinaciones de entrada de $p$ y $q$. **Cómo corregirlo:** Mantener siempre el orden estándar: $p = (V, V, F, F)$ y $q = (V, F, V, F)$ para facilitar la lectura y corrección.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Determina el valor de verdad de la proposición compuesta: "El número
-    5 es primo y $2 + 2 = 5$".'
-  solucion_pasos:
-  - 'Paso a: Identificamos las proposiciones simples. Sea $p$: "El número 5 es primo"
-    (Verdadero) y $q$: "$2 + 2 = 5$" (Falso).'
-  - 'Paso b: Analizamos la conjunción $p \land q$. Dado que $q$ es falsa, la proposición
-    compuesta "y" es Falsa ($F$).'
-- titulo: Ejemplo 2
-  enunciado: Dadas dos proposiciones verdaderas $p$ y $q$, determina el valor de verdad
-    de la expresión $\neg p \land q$.
-  solucion_pasos:
-  - 'Paso a: Evaluamos primero la negación interna: como $p$ es Verdadero ($V$), entonces
-    $\neg p$ es Falsa ($F$).'
-  - 'Paso b: Evaluamos la conjunción conectivo por conectivo: tenemos $\neg p \land
-    q$, lo que equivale a evaluar Falso ($F$) con Verdadero ($V$). Como uno de los
-    elementos es Falso, el resultado final es Falso ($F$).'
-- titulo: ¿La conjunción de una proposición verdadera y otra falsa siempre resulta
-    en un valor falso?
-  respuesta: Sí
-  solucion_pasos:
-  - Por definición de la tabla de verdad de la conjunción, el conectivo $\land$ requiere
-    que ambas proposiciones sean verdaderas para que el resultado sea verdadero.
-  - Si una de ellas es falsa ($V \land F$), la regla de la conjunción determina que
-    el resultado es Falso ($F$).
-- titulo: ¿Es la proposición "$3 < 5 \land 7$ es un número impar" verdadera?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Evaluamos el primer término: $3 < 5$ es Verdadero ($V$).'
-  - 'Evaluamos el segundo término: 7 es un número impar es Verdadero ($V$).'
-  - Como ambos términos son verdaderos, la conjunción $V \land V$ es Verdadera ($V$).
+  - titulo: 'Fila de verdad'
+    enunciado: '¿En qué fila de la tabla canónica $p \land q$ es verdadero?'
+    alternativas:
+      - 'En la fila $1$ ($p=V, q=V$)'
+      - 'En la fila $2$ ($p=V, q=F$)'
+      - 'En la fila $4$ ($p=F, q=F$)'
+    respuesta: 'En la fila $1$ ($p=V, q=V$)'
+    solucion_pasos:
+      - '1. La fila 1 contiene $V \land V = V$.'
+  - titulo: 'Fila de doble falsedad'
+    enunciado: '¿Cuánto vale $p \land q$ en la fila donde $p=F$ y $q=F$?'
+    alternativas:
+      - '$F$'
+      - '$V$'
+      - 'Indeterminado'
+    respuesta: '$F$'
+    solucion_pasos:
+      - '1. $F \land F = F$.'
+  - titulo: 'Porcentaje de verdad'
+    enunciado: '¿El porcentaje de combinaciones verdaderas en la tabla de la conjunción es del 25%?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, 1 de cada 4 combinaciones es verdadera (25%).'
+  - titulo: 'Invarianza conmutativa'
+    enunciado: '¿La columna de $q \land p$ es exactamente igual a la columna de $p \land q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, ambas generan el vector $[V, F, F, F]^T$.'
 errores_frecuentes:
-- Asociar la palabra "y" de la conjunción con una suma lógica, pensando que basta
-  con que una proposición sea verdadera para sumar puntos de verdad.
-- Declarar el símbolo de la conjunción ($\land$) con el de la disyunción ($\lor$).
-- Omitir la evaluación de negaciones previas a la conjunción, aplicando la regla directamente
-  sobre las variables simples.
-- Declarar que en lenguaje natural la palabra "pero" no representa una conjunción
-  lógica (en lógica, "pero" funciona igual que "y").
-- Llenar la tabla de verdad con valores desordenados para $p$ y $q$, lo que dificulta
-  verificar si se consideraron todas las combinaciones posibles.
-fuente: Lógica Matemática y Teoría de Conjuntos, pág. 15
+  - 'La afirmación de que la tabla de verdad de la conjunción presenta tres combinaciones verdaderas.'
+  - 'La afirmación de que en la combinación $p=V$ y $q=F$ la conjunción resulta en valor verdadero.'
+  - 'La afirmación de que la tabla de verdad de dos variables contiene $2$ filas en lugar de $4$.'
+  - 'La afirmación de que la columna de salida de la conjunción es idéntica a la de la disyunción inclusiva.'
+  - 'La afirmación de que en la fila $p=F$ y $q=F$ la conjunción produce una tautología.'
+afirmaciones_verdaderas:
+  - 'La tabla de verdad de la conjunción $p \land q$ consta de $4$ filas y genera el vector de salida canónico $[V, F, F, F]^T$.'
+  - 'En la tabla de verdad de la conjunción, existe una única fila con resultado verdadero correspondiente a la asignación simultánea $p=V$ y $q=V$.'
+al_terminar_debes_poder: |
+  QUÉ: Construir y evaluar la tabla de verdad canónica de la conjunción ($p \land q$).
+  CÓMO: Organizar las $4$ combinaciones de entrada y aplicar la regla de asignación restrictiva $[V, F, F, F]^T$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

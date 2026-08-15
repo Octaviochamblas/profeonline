@@ -1,115 +1,103 @@
 semantic_id: MAT.FUND.TABLAS_VERDAD.FILAS_TRES_VARIABLES
-titulo: Número de filas en una tabla de verdad con tres variables
-objetivo: Calcular el número de filas y distribuir los valores de verdad en una tabla
-  de verdad con tres variables proposicionales.
-introduccion: 'Imagina que para organizar un paseo escolar dependes de tres variables
-  independientes: "que haga buen tiempo", "que el bus esté disponible" y "que los
-  padres aprueben el viaje". ¿Cuántas combinaciones diferentes de respuestas Sí/No
-  pueden ocurrir en total? Podrían ser las tres afirmativas, dos afirmativas y una
-  negativa, y así sucesivamente. En lógica, cuando trabajamos con tres proposiciones
-  independientes, necesitamos exactamente 8 combinaciones posibles para asegurarnos
-  de que evaluamos todos los escenarios posibles sin olvidar ninguno.'
-resumen: Para una tabla de verdad con tres variables proposicionales $p$, $q$ y $r$,
-  el número de filas necesarias para representar todas las combinaciones de valores
-  de verdad es $2^3 = 8$. Estos valores se distribuyen sistemáticamente dividiendo
-  a la mitad consecutivamente en cada columna.
-explicacion: 'Cuando una expresión lógica contiene tres variables proposicionales
-  distintas (por ejemplo, $p$, $q$ y $r$), el número de combinaciones posibles de
-  verdad y falsedad aumenta exponencialmente.
+resumen_inicial: 'Cálculo y justificación combinatoria del número de filas en una tabla de verdad con $3$ variables proposicionales ($2^3 = 8$ filas).'
+explicacion_simple: |
+  Cuando una fórmula matemática de lógica tiene **$3$ variables diferentes** (por ejemplo, $p$, $q$ y $r$), el número de combinaciones posibles aumenta aplicando la potencia de dos: **$2^3 = 2 \times 2 \times 2 = 8$ filas**. Para ordenarlas fácilmente sin olvidar ninguna, la primera columna ($p$) lleva $4$ verdades y $4$ falsedades; la segunda ($q$) va de $2$ en $2$ ($2$ verdades, $2$ falsedades...); y la tercera ($r$) va alternando de $1$ en $1$ ($V, F, V, F...$).
+explicacion_formal: |
+  ### Definición formal
+  El número de interpretaciones veritativas en una tabla de verdad para un conjunto de $3$ variables proposicionales $\mathcal{V}_3 = \{p, q, r\}$ corresponde a la cardinalidad del espacio producto tridimensional $\mathbb{V}^3$:
+  $$N_{\text{filas}} = |\mathbb{V}^3| = |\mathbb{V} \times \mathbb{V} \times \mathbb{V}| = 2^3 = 8$$
+  donde cada fila representa una 3-tupla binaria única $(v_1, v_2, v_3) \in \{V, F\}^3$.
 
+  ### Desglose simbólico
+  - Base $2$: Bivalencia ontológica $\{V, F\}$.
+  - Exponente $n=3$: Número de variables proposicionales independientes ($p, q, r$).
+  - Distribución canónica por columnas:
+    - Columna 1 ($p$): $2^{3-1} = 4$ valores $V$ y $4$ valores $F$ ($V, V, V, V, F, F, F, F$).
+    - Columna 2 ($q$): $2^{3-2} = 2$ valores $V$ y $2$ valores $F$ alternados ($V, V, F, F, V, V, F, F$).
+    - Columna 3 ($r$): $2^{3-3} = 1$ valor $V$ y $1$ valor $F$ alternados ($V, F, V, F, V, F, V, F$).
 
-  Aplicando la fórmula exponencial del número de filas:
-
-  $$\text{Número de filas} = 2^n$$
-
-
-  Con $n = 3$, obtenemos:
-
-  $$2^3 = 8 \text{ filas}$$
-
-
-  **Distribución estándar de los valores de verdad:**
-
-  Para asegurar de forma inequívoca que se listan las 8 combinaciones posibles sin
-  repeticiones ni omisiones, se sigue este orden sistemático por columnas de izquierda
-  a derecha:
-
-  1. **Primera columna ($p$):** Se divide el total (8) por 2. Llenamos las primeras
-  4 filas con Verdadero ($V$) y las 4 siguientes con Falso ($F$).
-
-  2. **Segunda columna ($q$):** Se divide el bloque anterior (4) por 2. Alternamos
-  bloques de 2 Verdaderos ($V, V$) y 2 Falsos ($F, F$) hasta completar las 8 filas.
-
-  3. **Tercera columna ($r$):** Se divide el bloque anterior (2) por 2. Alternamos
-  de uno en uno ($V, F, V, F, V, F, V, F$).
-
-
-  De esta manera, la primera fila corresponde a la combinación donde todas son verdaderas
-  ($V, V, V$), y la última fila corresponde a la combinación donde todas son falsas
-  ($F, F, F$).'
+  ### Síntesis didáctica
+  La disposición canónica de 8 filas cubre de forma biyectiva y ordenada los números binarios del 7 al 0 en base 2 ($111_2$ a $000_2$), asegurando la completitud de la tabla.
+definiciones_clave: |
+  - **Tabla de verdad de 3 variables**: Arreglo matricial de 8 filas necesario para fórmulas con 3 átomos lógicos distintos.
+  - **Espacio de valuaciones $\mathbb{V}^3$**: Conjunto de las 8 ternas ordenadas posibles de valores veritativos.
+  - **Patrón binario decreciente**: Método estándar de partición sucesiva de bloques de tamaño $4, 2, 1$.
+propiedades_relaciones: |
+  - **Duplicación iterativa**: Pasar de 2 a 3 variables duplica el espacio de búsqueda de 4 a 8 filas.
+  - **Generalización**: Para $n$ variables, la tabla requiere $2^n$ filas; para 4 variables requerirá $2^4 = 16$ filas.
+ejemplo_guiado:
+  enunciado: 'Calcula cuántas filas tiene la tabla de verdad de la fórmula $(p \land q) \to (r \lor \neg p)$ y describe la secuencia de valores de la columna $q$.'
+  pasos:
+    - 'Paso 1: Identificar las variables distintas: aparecen $p$, $q$ y $r$, luego $n = 3$.'
+    - 'Paso 2: Calcular el número de filas: $N = 2^n = 2^3 = 8$ filas.'
+    - 'Paso 3: Determinar el tamaño de bloque para la columna $q$ (segunda variable): Tamaño $= 2^{3-2} = 2$.'
+    - 'Paso 4: Escribir la secuencia de $8$ valores para $q$: $2$ verdades, $2$ falsedades, $2$ verdades, $2$ falsedades, es decir: $(V, V, F, F, V, V, F, F)$.'
+    - 'Paso 5: Concluir que la tabla consta de $8$ filas con estructura canónica completa.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuántas filas tiene la tabla de verdad de una fórmula lógica que contiene $3$ variables proposicionales distintas?'
+    choices:
+      - {text: 'Exactamente $8$ filas ($2^3$)', is_correct: true}
+      - {text: '$6$ filas ($2 \times 3$)', is_correct: false}
+      - {text: '$9$ filas ($3^2$)', is_correct: false}
+      - {text: '$12$ filas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $8$ filas ($2^3$)''. La fórmula combinatoria es $2^n = 2^3 = 8$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'En la disposición canónica de una tabla de 8 filas, ¿cuántos valores Verdadero ($V$) consecutivos se escriben al inicio de la primera columna ($p$)?'
+    choices:
+      - {text: 'Exactamente $4$ valores $V$ consecutivos', is_correct: true}
+      - {text: '$2$ valores $V$', is_correct: false}
+      - {text: '$1$ valor $V$', is_correct: false}
+      - {text: '$8$ valores $V$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $4$ valores $V$ consecutivos''. La mitad de las 8 filas son $V$ ($8/2 = 4$) y la otra mitad son $F$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar el número de proposiciones simples distintas $n$. Con tres variables
-  proposicionales $p$, $q$ y $r$ ($n=3$), calculamos el número de filas requeridas
-  mediante la fórmula $2^n = 2^3 = 8$ filas.'
-- 'Paso 2: Estructurar la tabla de verdad definiendo columnas iniciales para $p$,
-  $q$ y $r$, y columnas a la derecha para las operaciones intermedias y el resultado
-  final.'
-- 'Paso 3: Llenar la columna de la primera variable $p$ con 4 Verdaderos ($V$) seguidos
-  de 4 Falsos ($F$).'
-- 'Paso 4: Completar la tabla llenando la columna de la segunda variable $q$ alternando
-  de dos en dos ($V, V, F, F, V, V, F, F$) y la columna de la tercera variable $r$
-  alternando de uno en uno ($V, F, V, F, V, F, V, F$).'
+  - 'Paso 1: Contar el número de variables proposicionales independientes ($n=3$).'
+  - 'Paso 2: Calcular el número de filas: $N = 2^3 = 8$.'
+  - 'Paso 3: Llenar la primera columna ($p$) con $4$ valores $V$ seguidos de $4$ valores $F$.'
+  - 'Paso 4: Llenar la segunda columna ($q$) alternando bloques de $2$ valores $V$ y $2$ valores $F$.'
+  - 'Paso 5: Llenar la tercera columna ($r$) alternando de $1$ en $1$ ($V, F, V, F, V, F, V, F$).'
+errores_correccion: |
+  - **Error 1:** Asumir que una tabla de 3 variables tiene $6$ filas multiplicando $2 \times 3$. **Cómo corregirlo:** La combinatoria de valores de verdad es exponencial ($2^n$), por lo que para $n=3$ es $2^3 = 8$ filas.
+  - **Error 2:** Desordenar las combinaciones omitiendo ternas como $(F, V, F)$. **Cómo corregirlo:** Utilizar el método de división en bloques ($4-2-1$) garantiza la presencia de las 8 combinaciones sin duplicados.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Determina cuántas filas tendrá la tabla de verdad para la expresión
-    lógica: $(p \land q) \rightarrow (\neg r \lor p)$.'
-  solucion_pasos:
-  - 'Paso a: Identificamos las variables lógicas simples distintas que aparecen en
-    la expresión: $p$, $q$ y $r$. Esto nos da $n = 3$.'
-  - 'Paso b: Aplicamos la fórmula del número de filas para tablas de verdad: $2^n
-    = 2^3 = 8$. Por lo tanto, la tabla de verdad correspondiente requiere exactamente
-    8 filas.'
-- titulo: Ejemplo 2
-  enunciado: Identifica la combinación de valores de verdad correspondiente a la quinta
-    fila en la distribución estándar para las variables $p$, $q$ y $r$.
-  solucion_pasos:
-  - 'Paso a: Analizamos la primera variable $p$ (filas 1-4 son $V$, filas 5-8 son
-    $F$). Para la fila 5, el valor de $p$ es Falso ($F$).'
-  - 'Paso b: Analizamos la segunda variable $q$ ($V,V,F,F,V,V,F,F$). Para la fila
-    5, el valor de $q$ es Verdadero ($V$).'
-  - 'Paso c: Analizamos la tercera variable $r$ (alterna $V, F, V, F, V, F, V, F$).
-    Para la fila 5, el valor de $r$ es Verdadero ($V$). La combinación es ($F, V,
-    V$).'
-- titulo: ¿Si una expresión lógica posee las variables $p$, $q$, $r$ y su negación
-    $\neg p$, el número de filas en su tabla es 16?
-  respuesta: 'No'
-  solucion_pasos:
-  - La cantidad de variables proposicionales distintas es lo único que define el número
-    de filas.
-  - En esta expresión, las proposiciones simples son únicamente $p$, $q$ y $r$. Las
-    negaciones como $\neg p$ no cuentan como variables nuevas. Por lo tanto, $n =
-    3$, y la tabla tendrá $2^3 = 8$ filas.
-- titulo: ¿La sexta fila en la distribución estándar para tres variables corresponde
-    a la combinación ($F, V, F$)?
-  respuesta: Sí
-  solucion_pasos:
-  - Determinamos los valores para la fila 6 columna por columna.
-  - 'Columna 1 ($p$): los valores son $V,V,V,V,F,F,F,F$, de modo que la sexta fila
-    es Falso ($F$).'
-  - 'Columna 2 ($q$): los valores son $V,V,F,F,V,V,F,F$, de modo que la sexta fila
-    es Verdadero ($V$).'
-  - 'Columna 3 ($r$): los valores son $V,F,V,F,V,F,V,F$, de modo que la sexta fila
-    es Falso ($F$). Por tanto, la combinación es ($F, V, F$).'
+  - titulo: 'Cálculo de filas con 3 variables'
+    enunciado: '¿Cuántas filas tiene la tabla de $(p \lor q) \land r$?'
+    alternativas:
+      - '$8$ filas'
+      - '$6$ filas'
+      - '$16$ filas'
+    respuesta: '$8$ filas'
+    solucion_pasos:
+      - '1. Hay 3 variables: $p, q, r$.'
+      - '2. Filas $= 2^3 = 8$.'
+  - titulo: 'Fórmula con múltiples conectivos'
+    enunciado: '¿La fórmula $(p \to q) \leftrightarrow (q \to r)$ requiere 8 filas?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, contiene 3 variables distintas ($p, q, r$), por lo que requiere $2^3 = 8$ filas.'
+  - titulo: 'Secuencia de la tercera columna'
+    enunciado: '¿La tercera columna ($r$) alterna valores $V$ y $F$ de 1 en 1?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, sigue el patrón $(V, F, V, F, V, F, V, F)$.'
+  - titulo: 'Extensión a 4 variables'
+    enunciado: '¿Si se añade una cuarta variable $s$, la tabla pasa a tener 16 filas?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $2^4 = 16$ filas.'
 errores_frecuentes:
-- Afirmar que por cada conectivo lógico o negación en la fórmula se debe duplicar
-  el número de filas de la tabla de verdad.
-- Calcular erróneamente el número de filas multiplicando la base por el exponente
-  ($2 \cdot 3 = 6$ filas) en lugar de realizar la potenciación ($2^3 = 8$ filas).
-- Perder el orden de alternancia en las columnas de variables simples, provocando
-  combinaciones duplicadas y combinaciones faltantes.
-- Contar las negaciones como variables independientes al calcular el exponente de
-  la fórmula $2^n$.
-- Llenar la columna de la tercera variable $r$ alternando de dos en dos, en lugar
-  de hacerlo de uno en uno como corresponde a la distribución estándar.
-fuente: Lógica Matemática y Teoría de Conjuntos, pág. 35
+  - 'La afirmación de que una tabla de verdad de 3 variables tiene 6 filas calculadas como $2 \times 3$.'
+  - 'La afirmación de que el número de filas de una tabla depende de la cantidad de paréntesis presentes.'
+  - 'La afirmación de que la columna inicial de una tabla de 8 filas comienza con 2 valores verdaderos.'
+  - 'La afirmación de que una fórmula con variables repetidas como $(p \land q) \to (p \land r)$ tiene 16 filas.'
+  - 'La afirmación de que el número de filas de 3 variables se calcula elevando $3^2 = 9$.'
+afirmaciones_verdaderas:
+  - 'El número de filas de una tabla de verdad con $3$ variables proposicionales distintas es exactamente $2^3 = 8$.'
+  - 'El llenado canónico de las columnas de entrada para $3$ variables sigue el patrón decreciente de bloques de tamaño $4$, $2$ y $1$.'
+al_terminar_debes_poder: |
+  QUÉ: Calcular y estructurar el número de filas de una tabla de verdad con $3$ variables proposicionales.
+  CÓMO: Aplicar la fórmula exponencial $2^3 = 8$ y organizar las $3$ columnas de entrada mediante el esquema canónico de bloques $4-2-1$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

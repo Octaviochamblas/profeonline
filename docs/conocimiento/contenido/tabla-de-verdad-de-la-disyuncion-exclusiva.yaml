@@ -1,109 +1,103 @@
 semantic_id: MAT.FUND.TABLAS_VERDAD.TABLA_DISYUNCION_EXCLUSIVA
-titulo: Tabla de verdad de la disyunción exclusiva
-objetivo: Comprender y construir la tabla de verdad del conectivo de disyunción exclusiva
-  para evaluar proposiciones compuestas excluyentes.
-introduccion: 'Imagina que te dicen: "O naces en Chile o naces en España". ¿Puedes
-  haber nacido en ambos países a la vez? No, es imposible físicamente. Y tampoco es
-  posible que no hayas nacido en ningún lugar del mundo. Tienes que elegir exactamente
-  uno de los dos. Esta es la disyunción exclusiva (el "o" exclusivo). A diferencia
-  de la disyunción inclusiva, aquí la proposición compuesta solo es verdadera si eliges
-  una opción, pero falsa si eliges ambas o ninguna.'
-resumen: La disyunción exclusiva es un conectivo binario representado por el símbolo
-  $\oplus$ o $\underline{\lor}$. La proposición $p \oplus q$ es verdadera únicamente
-  cuando una de las proposiciones es verdadera y la otra es falsa; es decir, cuando
-  sus valores de verdad son distintos.
-explicacion: 'La **disyunción exclusiva** une dos proposiciones $p$ y $q$ mediante
-  el operador "o... o..." (excluyente). Se representa matemáticamente con el símbolo
-  $\oplus$ o $\underline{\lor}$.
+resumen_inicial: 'Estructura canónica de la tabla de verdad de la disyunción exclusiva ($p \oplus q$), con dos filas verdaderas intermedias y dos filas falsas en los extremos.'
+explicacion_simple: |
+  La **tabla de verdad de la disyunción exclusiva** ($p \oplus q$) describe la situación de "o uno o el otro, pero no ambos". En sus $4$ combinaciones, las filas del centro (donde las variables son diferentes: $V, F$ o $F, V$) dan como resultado **Verdadero ($V$)**. En cambio, en las filas de los extremos (donde ambas variables son iguales: $V, V$ o $F, F$), el resultado es **Falso ($F$)**.
+explicacion_formal: |
+  ### Definición formal
+  La **tabla de verdad de la disyunción exclusiva binaria** es la matriz veritativo-funcional booleana correspondiente a la suma módulo 2 sobre $\mathbb{Z}_2$:
+  $$\begin{array}{|c|c|c|} \hline p & q & p \oplus q \\ \hline V & V & F \\ V & F & V \\ F & V & V \\ F & F & F \\ \hline \end{array}$$
+  donde el vector columna de salida canónico es $\mathbf{v}(p \oplus q) = [F, V, V, F]^T$.
 
+  ### Desglose simbólico
+  - Fila 1 ($V, V$): $V \oplus V = F$ (se descarta la coexistencia de verdad).
+  - Fila 2 ($V, F$): $V \oplus F = V$ (disparidad veritativa válida).
+  - Fila 3 ($F, V$): $F \oplus V = V$ (disparidad veritativa válida).
+  - Fila 4 ($F, F$): $F \oplus F = F$ (ausencia total de verdad).
 
-  La regla de la disyunción exclusiva establece que la proposición $p \oplus q$ es
-  **verdadera** si y solo si las proposiciones simples tienen **valores de verdad
-  contrarios** (una verdadera y la otra falsa). Si ambas son verdaderas, o ambas son
-  falsas, el resultado de la disyunción exclusiva es falso.
-
-
-  Para dos variables simples ($n = 2$), la tabla de verdad tiene $2^2 = 4$ filas:
-
-
-  | $p$ | $q$ | $p \oplus q$ |
-
-  | :---: | :---: | :---: |
-
-  | $V$ | $V$ | $F$ |
-
-  | $V$ | $F$ | $V$ |
-
-  | $F$ | $V$ | $V$ |
-
-  | $F$ | $F$ | $F$ |
-
-
-  **Diferencia clave con la disyunción inclusiva ($\lor$):**
-
-  En la disyunción inclusiva, la fila $V - V$ da como resultado Verdadero ($V$). En
-  cambio, en la disyunción exclusiva ($\oplus$), la fila $V - V$ da como resultado
-  Falso ($F$) porque las opciones se excluyen mutuamente.'
+  ### Síntesis didáctica
+  La disyunción exclusiva es exactamente la inversa lógica del bicondicional: su vector $[F, V, V, F]^T$ niega punto a punto el vector $[V, F, F, V]^T$ de $p \leftrightarrow q$.
+definiciones_clave: |
+  - **Tabla de verdad de la disyunción exclusiva**: Matriz de 4 filas que exhibe dos resultados verdaderos simétricos ($[F, V, V, F]^T$).
+  - **Detector de imparidad**: Función que devuelve 1 cuando la suma de bits de entrada es impar.
+  - **Vector complementario del bicondicional**: Relación vectorial $\mathbf{v}(p \oplus q) = \mathbf{1} - \mathbf{v}(p \leftrightarrow q)$.
+propiedades_relaciones: |
+  - **Simetría antipodal**: Los extremos superior ($V,V$) e inferior ($F,F$) son falsos, y los términos cruzados ($V,F$ y $F,V$) son verdaderos.
+  - **Conmutatividad**: $p \oplus q \equiv q \oplus p$ confirmado por la igualdad de las filas 2 y 3.
+ejemplo_guiado:
+  enunciado: 'Construye la tabla de verdad para la fórmula $(p \oplus q) \leftrightarrow \neg(p \leftrightarrow q)$ y verifica si es una tautología.'
+  pasos:
+    - 'Paso 1: Colocar las 4 filas estándar de entrada para $p$ y $q$.'
+    - 'Paso 2: Calcular la subcolumna $p \oplus q$: $[F, V, V, F]^T$.'
+    - 'Paso 3: Calcular la subcolumna $p \leftrightarrow q$: $[V, F, F, V]^T$.'
+    - 'Paso 4: Calcular la negación $\neg(p \leftrightarrow q)$: Invertir la columna anterior, obteniendo $[F, V, V, F]^T$.'
+    - 'Paso 5: Evaluar el bicondicional entre ambas columnas: Comparar $[F, V, V, F]^T$ con $[F, V, V, F]^T$. Como coinciden fila por fila, el resultado es $[V, V, V, V]^T$, confirmando que es una tautología.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuáles filas de la tabla canónica de $p \oplus q$ tienen como resultado Verdadero ($V$)?'
+    choices:
+      - {text: 'Las filas 2 y 3, donde las variables tienen valores de verdad distintos ($V, F$ y $F, V$)', is_correct: true}
+      - {text: 'Las filas 1 y 4, donde las variables tienen valores iguales', is_correct: false}
+      - {text: 'Únicamente la fila 1', is_correct: false}
+      - {text: 'Las 4 filas completas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Las filas 2 y 3, donde las variables tienen valores de verdad distintos ($V, F$ y $F, V$)''. La disyunción exclusiva exige disparidad.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cuál es el valor en la fila 1 de la tabla de verdad de $p \oplus q$ (donde $p=V$ y $q=V$)?'
+    choices:
+      - {text: 'Falso ($F$)', is_correct: true}
+      - {text: 'Verdadero ($V$)', is_correct: false}
+      - {text: 'Indeterminado', is_correct: false}
+      - {text: 'Tautológico', is_correct: false}
+    explanation: 'La alternativa correcta es ''Falso ($F$)''. Al ser ambas verdaderas, la condición de exclusividad mutua se incumple.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar el número de proposiciones simples $n$. Para dos variables $p$
-  y $q$ ($n=2$), calculamos el número de filas de la tabla de verdad mediante $2^n
-  = 2^2 = 4$ filas.'
-- 'Paso 2: Definir las columnas correspondientes en la tabla de verdad: columnas para
-  las variables de entrada $p$ y $q$, y una columna para la operación de disyunción
-  exclusiva $p \oplus q$.'
-- 'Paso 3: Llenar las filas iniciales asignando las combinaciones lógicas de forma
-  ordenada: $p$ con ($V, V, F, F$) y $q$ con ($V, F, V, F$).'
-- 'Paso 4: Evaluar la disyunción exclusiva fila por fila, aplicando el conectivo de
-  adentro hacia afuera: el resultado de $p \oplus q$ es Verdadero ($V$) si los valores
-  de $p$ y $q$ son diferentes ($V-F$ o $F-V$), y Falso ($F$) si son iguales ($V-V$
-  o $F-F$).'
+  - 'Paso 1: Disponer las 4 combinaciones canónicas de entrada ($p: V, V, F, F$ y $q: V, F, V, F$).'
+  - 'Paso 2: Rotular la columna de salida como $p \oplus q$.'
+  - 'Paso 3: Colocar $F$ en la primera fila ($V, V$) y en la cuarta fila ($F, F$).'
+  - 'Paso 4: Colocar $V$ en las filas intermedias ($V, F$ y $F, V$).'
+errores_correccion: |
+  - **Error 1:** Asignar $V$ en la fila $1$ ($V, V$). **Cómo corregirlo:** La disyunción exclusiva no tolera simultaneidad de verdad; si $p=V$ y $q=V$, entonces $p \oplus q = F$.
+  - **Error 2:** Creer que la fila $4$ ($F, F$) es verdadera. **Cómo corregirlo:** Para que la disyunción exclusiva sea verdadera debe existir al menos una verdad exclusiva; si ambas son falsas, el resultado es estrictamente $F$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Determina el valor de verdad de la proposición excluyente: "O bien 8
-    es múltiplo de 2 o bien 8 es múltiplo de 3 (pero no ambos)".'
-  solucion_pasos:
-  - 'Paso a: Identificamos las proposiciones simples. Sea $p$: "8 es múltiplo de 2"
-    (Verdadero) y $q$: "8 es múltiplo de 3" (Falso).'
-  - 'Paso b: Analizamos la disyunción exclusiva $p \oplus q$. Dado que $p$ y $q$ tienen
-    valores de verdad distintos ($V$ y $F$), la proposición compuesta es Verdadera
-    ($V$).'
-- titulo: Ejemplo 2
-  enunciado: Si $p$ es verdadera y $q$ es verdadera, determina el valor de verdad
-    de la expresión compuesta $(\neg p) \oplus q$.
-  solucion_pasos:
-  - 'Paso a: Evaluamos primero la negación interna: como $p$ es Verdadero ($V$), entonces
-    $\neg p$ es Falsa ($F$).'
-  - 'Paso b: Evaluamos la disyunción exclusiva conectivo por conectivo: tenemos $(\neg
-    p) \oplus q$, que equivale a evaluar Falso ($F$) con Verdadero ($V$). Dado que
-    los valores son distintos, el resultado de la disyunción exclusiva es Verdadero
-    ($V$).'
-- titulo: ¿La disyunción exclusiva de dos proposiciones verdaderas da como resultado
-    un valor verdadero?
-  respuesta: 'No'
-  solucion_pasos:
-  - La disyunción exclusiva excluye la posibilidad de que ambas proposiciones ocurran
-    simultáneamente.
-  - Por lo tanto, si ambas proposiciones simples son verdaderas ($V \oplus V$), el
-    resultado lógico es Falso ($F$).
-- titulo: ¿La expresión $p \oplus q$ tiene exactamente la misma tabla de verdad que
-    la negación de la bicondicional $\neg(p \leftrightarrow q)$?
-  respuesta: Sí
-  solucion_pasos:
-  - La bicondicional $p \leftrightarrow q$ es verdadera cuando $p$ y $q$ son iguales,
-    y falsa cuando son distintos.
-  - 'Al negar la bicondicional $\neg(p \leftrightarrow q)$, los resultados se invierten:
-    da verdadero cuando son distintos y falso cuando son iguales. Esto coincide exactamente
-    con la definición de la disyunción exclusiva $p \oplus q$.'
+  - titulo: 'Fila de verdad 1'
+    enunciado: '¿Cuánto vale $p \oplus q$ en la fila $p=V, q=F$?'
+    alternativas:
+      - '$V$'
+      - '$F$'
+      - '$1/2$'
+    respuesta: '$V$'
+    solucion_pasos:
+      - '1. $V \oplus F = V$.'
+  - titulo: 'Fila de verdad 2'
+    enunciado: '¿Cuánto vale $p \oplus q$ en la fila $p=F, q=V$?'
+    alternativas:
+      - '$V$'
+      - '$F$'
+      - 'Nulo'
+    respuesta: '$V$'
+    solucion_pasos:
+      - '1. $F \oplus V = V$.'
+  - titulo: 'Porcentaje de verdad'
+    enunciado: '¿El porcentaje de combinaciones verdaderas en la tabla de la disyunción exclusiva es exactamente del 50%?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, exactamente 2 de 4 filas son verdaderas (50%).'
+  - titulo: 'Relación con el bicondicional'
+    enunciado: '¿La suma booleana de los vectores de $p \oplus q$ y $p \leftrightarrow q$ es el vector $[1, 1, 1, 1]^T$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, son vectores estrictamente complementarios fila por fila.'
 errores_frecuentes:
-- Declarar el comportamiento de la disyunción exclusiva con el de la disyunción inclusiva
-  en la primera fila (cuando ambas variables son verdaderas).
-- Asociar erróneamente el símbolo $\oplus$ con una suma binaria ordinaria sin considerar
-  que $1 \oplus 1 = 0$ (Falso) en lógica.
-- Omitir que si ambas proposiciones son falsas, el resultado de la disyunción exclusiva
-  también es falso.
-- Aplicar incorrectamente la jerarquía de operadores lógicos cuando la disyunción
-  exclusiva se combina con negaciones o conjunciones.
-- Utilizar indistintamente las palabras "o" (inclusivo) y "o... o..." (exclusivo)
-  en lenguaje natural, induciendo a errores de formalización.
-fuente: Lógica Matemática y Teoría de Conjuntos, pág. 21
+  - 'La afirmación de que la tabla de la disyunción exclusiva produce verdad en la fila donde ambas variables son verdaderas.'
+  - 'La afirmación de que la disyunción exclusiva genera un vector de salida con tres valores verdaderos.'
+  - 'La afirmación de que la fila $p=F$ y $q=F$ produce un resultado verdadero en la disyunción exclusiva.'
+  - 'La afirmación de que la disyunción exclusiva posee la misma tabla de verdad que el condicional.'
+  - 'La afirmación de que el orden de las columnas de entrada altera el vector de salida de la disyunción exclusiva.'
+afirmaciones_verdaderas:
+  - 'La tabla de verdad de la disyunción exclusiva $p \oplus q$ genera el vector de salida canónico $[F, V, V, F]^T$.'
+  - 'En la tabla de la disyunción exclusiva, los resultados verdaderos ocurren exactamente en las filas donde las entradas son dispares ($V, F$ y $F, V$).'
+al_terminar_debes_poder: |
+  QUÉ: Construir y evaluar la tabla de verdad canónica de la disyunción exclusiva ($p \oplus q$).
+  CÓMO: Asignar las $4$ combinaciones de entrada y aplicar el patrón de disparidad veritativa $[F, V, V, F]^T$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

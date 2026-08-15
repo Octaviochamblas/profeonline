@@ -1,104 +1,101 @@
 semantic_id: MAT.FUND.TABLAS_VERDAD.TABLA_NEGACION
-titulo: Tabla de verdad de la negación
-objetivo: Comprender y construir la tabla de verdad del conectivo de negación para
-  determinar el valor de verdad de una proposición negada.
-introduccion: 'Imagina que tu amigo te dice: "Hoy está lloviendo". Si miras por la
-  ventana y ves un sol radiante, sabes que su afirmación es falsa. Negar algo es simplemente
-  decir lo contrario. En matemáticas y lógica, usamos la negación para cambiar el
-  valor de verdad de una frase. Si algo es verdadero, al negarlo se vuelve falso,
-  y si algo es falso, al negarlo se vuelve verdadero. Es como un interruptor de luz:
-  si está encendido (verdadero) y lo cambias, se apaga (falso).'
-resumen: La negación lógica es un conectivo unario que invierte el valor de verdad
-  de una proposición. Se denota por el símbolo $\neg$ o $\sim$. Si una proposición
-  $p$ es verdadera ($V$), entonces su negación $\neg p$ es falsa ($F$), y viceversa.
-explicacion: 'La **negación** es una operación lógica elemental que se aplica a una
-  sola proposición (por lo que es un conectivo *unario*). Si representamos una proposición
-  con la variable $p$, la negación de $p$ se escribe como $\neg p$ (se lee "no $p$")
-  o también $\sim p$.
+resumen_inicial: 'Estructura canónica de la tabla de verdad de la negación ($\neg p$), compuesta por $2$ filas que alternan estrictamente el valor de verdad.'
+explicacion_simple: |
+  La **tabla de verdad de la negación** es la más sencilla de todas las tablas de lógica. Como solo tiene una variable ($p$), solo hay dos posibilidades: que $p$ sea Verdadera o que $p$ sea Falsa ($2^1 = 2$ filas). En la columna de la negación ($\neg p$), los valores simplemente se invierten: cuando $p$ vale $V$, $\neg p$ vale **$F$**; y cuando $p$ vale $F$, $\neg p$ vale **$V$**.
+explicacion_formal: |
+  ### Definición formal
+  La **tabla de verdad de la negación unaria** es la representación tabular exhaustiva de la función booleana de complemento $f_\neg: \{V, F\} \to \{V, F\}$:
+  $$\begin{array}{|c|c|} \hline p & \neg p \\ \hline V & F \\ F & V \\ \hline \end{array}$$
+  donde cada fila $i \in \{1, 2\}$ representa una asignación de modelo $\mathcal{M}_i \models p$.
 
+  ### Desglose simbólico
+  - Número de filas: $2^n = 2^1 = 2$ estados atómicos independientes.
+  - Inversión biyectiva: $v(\neg p) = 1 - v(p)$ en el álgebra de Boole $(\{0, 1\}, \land, \lor, \neg)$.
+  - Involución tabular: La columna resultante de $\neg(\neg p)$ reproduce exactamente la columna inicial de $p$.
 
-  La regla básica de la negación es directa: el valor de verdad de la negación de
-  una proposición es siempre el opuesto al de la proposición original.
-
-
-  La **tabla de verdad** de la negación es la más simple posible, ya que solo involucra
-  una variable, lo que da lugar a $2^1 = 2$ filas:
-
-
-  | $p$ | $\neg p$ |
-
-  | :---: | :---: |
-
-  | $V$ | $F$ |
-
-  | $F$ | $V$ |
-
-
-  **Propiedades e ideas clave:**
-
-  - ''**Doble Negación**: Negar una proposición dos veces nos devuelve a la proposición
-  original. Es decir, $\neg(\neg p) \equiv p$. Por ejemplo, "no es cierto que no está
-  lloviendo" equivale a "está lloviendo".''
-
-  - ''**Leyes de verdad**: La negación de una verdad es una falsedad, y la negación
-  de una falsedad es una verdad.'''
+  ### Síntesis didáctica
+  La tabla de la negación opera fila por fila de manera determinística: la salida en cada celda es exactamente el complemento lógico de la celda de entrada.
+definiciones_clave: |
+  - **Tabla de verdad de la negación**: Arreglo matricial de 2 filas que muestra la inversión veritativa del operador $\neg$.
+  - **Columna de entrada**: Columna que lista las combinaciones de verdad de las variables atómicas ($V, F$).
+  - **Columna de salida**: Columna evaluada mediante la aplicación del operador lógico.
+propiedades_relaciones: |
+  - **Complementariedad estricta**: En ninguna fila coinciden los valores de $p$ y $\neg p$.
+  - **Base para tablas mayores**: En fórmulas con múltiples variables, la subcolumna de negación se calcula aplicando la regla de 2 filas a cada celda de la variable correspondiente.
+ejemplo_guiado:
+  enunciado: 'Construye la tabla de verdad completa para la fórmula $\neg p \lor p$ y clasifica el resultado.'
+  pasos:
+    - 'Paso 1: Listar la columna base de $p$: Fila 1 = $V$, Fila 2 = $F$.'
+    - 'Paso 2: Calcular la columna de $\neg p$: Para Fila 1 $\neg V = F$, para Fila 2 $\neg F = V$.'
+    - 'Paso 3: Evaluar la disyunción $\neg p \lor p$: Fila 1 ($F \lor V = V$), Fila 2 ($V \lor F = V$).'
+    - 'Paso 4: Concluir la clasificación: Como la columna final contiene únicamente valores $V$, la fórmula es una tautología.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuántas filas posee la tabla de verdad básica del operador de negación sobre una variable proposicional?'
+    choices:
+      - {text: 'Exactamente $2$ filas ($2^1$)', is_correct: true}
+      - {text: '$4$ filas', is_correct: false}
+      - {text: '$1$ fila', is_correct: false}
+      - {text: '$8$ filas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Exactamente $2$ filas ($2^1$)''. Para una variable atómica $n=1$, el número de filas es $2^1 = 2$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'En la tabla de verdad de la negación, ¿qué valor aparece en la columna $\neg p$ cuando en la fila $p$ se tiene el valor $F$?'
+    choices:
+      - {text: 'Verdadero ($V$)', is_correct: true}
+      - {text: 'Falso ($F$)', is_correct: false}
+      - {text: 'Indeterminado', is_correct: false}
+      - {text: 'Nulo', is_correct: false}
+    explanation: 'La alternativa correcta es ''Verdadero ($V$)''. La negación de la falsedad es la verdad ($\neg F = V$).'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar el número de proposiciones simples $n$. En este caso, al haber
-  solo una proposición $p$ ($n=1$), la cantidad de filas de la tabla será $2^1 = 2$.'
-- 'Paso 2: Definir las columnas de la tabla de verdad: una columna inicial para la
-  proposición $p$ y una columna para la operación de negación $\neg p$.'
-- 'Paso 3: Llenar la columna inicial con los posibles valores de verdad de $p$: Verdadero
-  ($V$) en la primera fila y Falso ($F$) en la segunda fila.'
-- 'Paso 4: Evaluar la negación fila por fila, aplicando el conectivo $\neg$ de adentro
-  hacia afuera: si $p$ es $V$, entonces $\neg p$ es $F$; si $p$ es $F$, entonces $\neg
-  p$ es $V$.'
+  - 'Paso 1: Dibujar una tabla con dos columnas: una para $p$ y otra para $\neg p$.'
+  - 'Paso 2: Escribir los valores de $p$ en orden descendente: primera fila $V$, segunda fila $F$.'
+  - 'Paso 3: Invertir cada valor en la columna $\neg p$: colocar $F$ en la primera fila y $V$ en la segunda fila.'
+  - 'Paso 4: Verificar que no existan contradicciones ni celdas vacías.'
+errores_correccion: |
+  - **Error 1:** Construir 4 filas para una tabla que solo contiene la variable $p$. **Cómo corregirlo:** El número de filas viene dado por $2^n$; al haber una sola variable ($n=1$), la tabla tiene únicamente $2^1 = 2$ filas.
+  - **Error 2:** Asignar el mismo valor de entrada a la columna de salida. **Cómo corregirlo:** La negación siempre cambia el valor; $V$ pasa a ser $F$ y $F$ pasa a ser $V$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Dada la proposición verdadera $p$: "El número 2 es par", determina el
-    valor de verdad de su negación $\neg p$.'
-  solucion_pasos:
-  - 'Paso a: Identificamos el valor de verdad de la proposición original $p$. Como
-    2 es par, $p$ es Verdadero ($V$).'
-  - 'Paso b: Aplicamos la regla de la negación, la cual invierte el valor de verdad.
-    La negación $\neg p$ será Falsa ($F$).'
-- titulo: Ejemplo 2
-  enunciado: 'Dada la proposición falsa $q$: "El sol gira alrededor de la Tierra",
-    formula su negación en lenguaje natural y determina su valor de verdad.'
-  solucion_pasos:
-  - 'Paso a: Escribimos la negación de la frase. Una forma correcta es: "El sol no
-    gira alrededor de la Tierra" o "No es cierto que el sol gire al rededor de la
-    Tierra".'
-  - 'Paso b: Como la proposición original $q$ es Falsa ($F$), su negación $\neg q$
-    es Verdadera ($V$).'
-- titulo: ¿Si una proposición $r$ es falsa, entonces la doble negación $\neg(\neg
-    r)$ es falsa?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Primero evaluamos la negación interna: como $r$ es Falsa ($F$), entonces $\neg
-    r$ es Verdadera ($V$).'
-  - 'Luego evaluamos la negación externa: la negación de $\neg r$ (que es $V$) es
-    Falsa ($F$).'
-  - Por lo tanto, la doble negación $\neg(\neg r)$ tiene el mismo valor de verdad
-    que $r$, es decir, Falso ($F$).
-- titulo: ¿La negación de "Todos los estudiantes aprobaron el examen" es "Ningún estudiante
-    aprobó el examen"?
-  respuesta: 'No'
-  solucion_pasos:
-  - En lógica formal, para negar una afirmación universal como "Todos lo hacen", basta
-    con encontrar al menos un caso que no lo cumpla.
-  - 'Por lo tanto, la negación correcta es: "Al menos un estudiante no aprobó el examen"
-    o "No todos los estudiantes aprobaron el examen". Decir "Ninguno aprobó" es un
-    error común de sobre-negación.'
+  - titulo: 'Evaluación de fila 1'
+    enunciado: '¿Cuál es el valor en la fila donde $p = V$ para $\neg p$?'
+    alternativas:
+      - '$F$'
+      - '$V$'
+      - '$1/2$'
+    respuesta: '$F$'
+    solucion_pasos:
+      - '1. $\neg V = F$.'
+  - titulo: 'Evaluación de fila 2'
+    enunciado: '¿Cuál es el valor en la fila donde $p = F$ para $\neg p$?'
+    alternativas:
+      - '$V$'
+      - '$F$'
+      - '$0$'
+    respuesta: '$V$'
+    solucion_pasos:
+      - '1. $\neg F = V$.'
+  - titulo: 'Columna de doble negación'
+    enunciado: '¿La columna de $\neg\neg p$ es idéntica a la columna de $p$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, por la ley de doble negación $\neg\neg V = V$ y $\neg\neg F = F$.'
+  - titulo: 'Suma de valores'
+    enunciado: '¿En cada fila la suma booleana de $p$ y $\neg p$ es igual a $1$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $1+0 = 1$ y $0+1 = 1$.'
 errores_frecuentes:
-- Afirmar que la negación de "todos" es "ninguno". La negación correcta de un universal
-  es que existe al menos uno que no cumple la condición.
-- Declarar que negar una proposición compuesta consiste simplemente en negar cada
-  una de sus partes individuales.
-- Declarar la negación de una proposición con su valor de verdad opuesto cuando se
-  trabaja con conectivos más complejos.
-- Omitir que la doble negación vuelve a la proposición original, asumiendo erróneamente
-  que tres negaciones equivalen a una afirmación.
-- Escribir incorrectamente los símbolos de negación en fórmulas lógicas complejas,
-  alterando el orden de precedencia sin usar paréntesis.
-fuente: Lógica Matemática y Teoría de Conjuntos, pág. 12
+  - 'La afirmación de que la tabla de verdad de la negación sobre una variable requiere 4 filas.'
+  - 'La afirmación de que en la tabla de la negación existe una fila donde $p$ y $\neg p$ son ambos verdaderos.'
+  - 'La afirmación de que la negación de $V$ resulta en una salida indeterminada en la tabla.'
+  - 'La afirmación de que el orden canónico de asignación de $p$ comienza con falsedad $F$.'
+  - 'La afirmación de que la columna resultante de $\neg p$ coincide con la columna de $p$.'
+afirmaciones_verdaderas:
+  - 'La tabla de verdad de la negación unaria consta de $2^1 = 2$ filas y mapea biyectivamente cada valor veritativo a su complemento estricto.'
+  - 'En la tabla de verdad, las columnas de $p$ y $\neg p$ presentan valores disjuntos y complementarios en cada una de sus filas.'
+al_terminar_debes_poder: |
+  QUÉ: Construir, llenar e interpretar la tabla de verdad del conectivo de negación ($\neg p$).
+  CÓMO: Asignar las $2$ filas canónicas de entrada ($V, F$) y generar la columna de complemento ($F, V$).
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
