@@ -1,100 +1,105 @@
 semantic_id: MAT.FUND.CONECTIVOS_LOGICOS.DISYUNCION_EXCLUSIVA
-titulo: Disyunción exclusiva
-objetivo: Identificar y aplicar el conectivo de disyunción exclusiva para formar proposiciones
-  compuestas que son verdaderas cuando exactamente una de las partes es verdadera
-introduccion: 'Imagina que lanzas una moneda: solo puede caer cara O sello, nunca
-  ambas al mismo tiempo. Eso es la disyunción exclusiva: exactamente una de las dos
-  opciones ocurre, pero no las dos juntas. Si ambas son verdaderas o ambas son falsas,
-  el resultado es falso.
+resumen_inicial: 'Definición, tabla de verdad y propiedades de la disyunción exclusiva ($p \oplus q$), que es verdadera cuando exactamente una sola proposición es verdadera.'
+explicacion_simple: |
+  La **disyunción exclusiva** (escrita en símbolos como **$p \oplus q$** o $p \ \underline{\lor} \ q$) une dos opciones con la estructura "O bien... o bien...". Funciona con la regla de exclusión estricta: para que la frase sea **Verdadera**, **exactamente una de las dos partes debe ser verdadera**. Si ambas partes son verdaderas al mismo tiempo, o si ambas son falsas al mismo tiempo, la disyunción exclusiva se vuelve **Falsa**. Por ejemplo, "Una persona está viva o bien está muerta": no se pueden dar ambos estados a la vez ni omitir ambos.
+explicacion_formal: |
+  ### Definición formal
+  En el cálculo proposicional, la **disyunción exclusiva** (o suma módulo 2) es un operador binario $\oplus: \mathcal{P} \times \mathcal{P} \to \mathcal{P}$ definido por la función veritativa booleana $f_\oplus: \{V, F\}^2 \to \{V, F\}$ tal que:
+  $$v(p \oplus q) = \begin{cases} V & \text{si } v(p) \neq v(q) \\ F & \text{si } v(p) = v(q) \end{cases}$$
+  En álgebra booleana sobre $\mathbb{Z}_2 = \{0, 1\}$, se expresa como la adición módulo $2$: $v(p \oplus q) = (v(p) + v(q)) \pmod 2$.
 
-  '
-resumen: 'La disyunción exclusiva ($p \oplus q$) es Verdadera cuando EXACTAMENTE UNA
-  de las proposiciones es Verdadera. Si ambas son Verdaderas o ambas son Falsas, el
-  resultado es Falso.
+  ### Desglose simbólico
+  - Símbolos equivalentes: $p \oplus q$, $p \ \underline{\lor} \ q$, $p \ \Delta \ q$.
+  - Tabla de verdad canónica:
+    $$\begin{array}{|c|c|c|} \hline p & q & p \oplus q \\ \hline V & V & F \\ V & F & V \\ F & V & V \\ F & F & F \\ \hline \end{array}$$
+  - Equivalencia analítica: $p \oplus q \equiv (p \lor q) \land \neg(p \land q) \equiv \neg(p \leftrightarrow q)$.
 
-  '
-explicacion: 'La **disyunción exclusiva** es un conectivo binario que excluye el caso
-  en que ambas proposiciones sean verdaderas simultáneamente.
-
-
-  **Símbolos:** $p \oplus q$ o $p \veebar q$ (también $p \lor_e q$ en algunos textos)
-
-
-  **Lectura:** "p o q, pero no ambas", "o p o q (exclusivamente)"
-
-
-  **Tabla de verdad:**
-
-
-  | $p$ | $q$ | $p \oplus q$ |
-
-  |-----|-----|--------------|
-
-  | V   | V   | F            |
-
-  | V   | F   | V            |
-
-  | F   | V   | V            |
-
-  | F   | F   | F            |
-
-
-  **Regla clave:** $p \oplus q = V$ cuando $p$ y $q$ tienen **valores de verdad diferentes**.
-
-
-  **Equivalencia formal:** $p \oplus q \equiv (p \lor q) \land \neg(p \land q)$
-
-
-  **Diferencia con la disyunción inclusiva:** La inclusiva ($\lor$) acepta que ambas
-  sean V; la exclusiva ($\oplus$) lo rechaza.
-
-
-  **Propiedad conmutativa:** $p \oplus q \equiv q \oplus p$
-
-  '
+  ### Síntesis didáctica
+  La disyunción exclusiva es el detector de disparidad: devuelve Verdadero si los valores de entrada son diferentes entre sí ($V$ y $F$), y Falso si los valores son idénticos ($V, V$ o $F, F$).
+definiciones_clave: |
+  - **Disyunción exclusiva ($p \oplus q$)**: Conectivo binario que produce valor verdadero si y solo si los operandos tienen valores de verdad distintos.
+  - **Diferencia simétrica proposicional**: Estructura que afirma la verdad de una u otra proposición, pero nunca de ambas simultáneamente.
+  - **Negación del bicondicional**: Relación por la cual $p \oplus q \equiv \neg(p \leftrightarrow q)$.
+propiedades_relaciones: |
+  - **Autoinversa**: $p \oplus p \equiv F$ (cualquier proposición en disyunción exclusiva consigo misma es una contradicción).
+  - **Conmutatividad y asociatividad**: Cumple $p \oplus q \equiv q \oplus p$ y $(p \oplus q) \oplus r \equiv p \oplus (q \oplus r)$.
+ejemplo_guiado:
+  enunciado: 'Sean las proposiciones $p$: "$12$ es divisible por $4$" y $q$: "$12$ es divisible por $3$". Determina el valor de verdad de la disyunción exclusiva $p \oplus q$.'
+  pasos:
+    - 'Paso 1: Evaluar la proposición simple $p$: $12 / 4 = 3$, por lo tanto $v(p) = V$.'
+    - 'Paso 2: Evaluar la proposición simple $q$: $12 / 3 = 4$, por lo tanto $v(q) = V$.'
+    - 'Paso 3: Aplicar la regla de la disyunción exclusiva: $v(p \oplus q) = v(V \oplus V)$.'
+    - 'Paso 4: Concluir el resultado: Como ambas proposiciones son verdaderas simultáneamente ($v(p) = v(q) = V$), la disyunción exclusiva resulta Falsa: $v(p \oplus q) = F$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuándo es Verdadera ($V$) la disyunción exclusiva $p \oplus q$?'
+    choices:
+      - {text: 'Cuando exactamente una de las dos proposiciones es verdadera y la otra es falsa', is_correct: true}
+      - {text: 'Cuando ambas proposiciones son verdaderas al mismo tiempo', is_correct: false}
+      - {text: 'Cuando ambas proposiciones son falsas al mismo tiempo', is_correct: false}
+      - {text: 'En todas las combinaciones posibles de su tabla de verdad', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cuando exactamente una de las dos proposiciones es verdadera y la otra es falsa''. La disyunción exclusiva exige disparidad en los valores de verdad.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿A cuál de las siguientes expresiones lógicas es equivalente la disyunción exclusiva $p \oplus q$?'
+    choices:
+      - {text: '$\neg(p \leftrightarrow q)$', is_correct: true}
+      - {text: '$p \land q$', is_correct: false}
+      - {text: '$p \lor q$', is_correct: false}
+      - {text: '$p \to q$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\neg(p \leftrightarrow q)$''. El bicondicional es verdadero cuando coinciden; su negación es verdadera cuando difieren.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- Identificar las dos proposiciones simples $p$ y $q$, y determinar su valor de verdad
-  individual.
-- 'Comparar los valores de verdad: si son DIFERENTES, $p \oplus q = V$; si son IGUALES,
-  $p \oplus q = F$.'
-- 'Alternativamente: calcular $p \lor q$ y $\neg(p \land q)$, luego conjugarlos.'
-- Verificar que el contexto lingüístico corresponde a un "o exclusivo" y no a un "o
-  inclusivo".
+  - 'Paso 1: Identificar las dos proposiciones componentes $p$ y $q$.'
+  - 'Paso 2: Evaluar el valor de verdad individual de cada proposición.'
+  - 'Paso 3: Si los valores de verdad son diferentes (uno $V$ y el otro $F$), asignar $V$ a $p \oplus q$.'
+  - 'Paso 4: Si los valores de verdad son iguales (ambos $V$ o ambos $F$), asignar $F$ a $p \oplus q$.'
+errores_correccion: |
+  - **Error 1:** Evaluar la disyunción exclusiva como verdadera cuando ambas proposiciones son verdaderas. **Cómo corregirlo:** La disyunción exclusiva excluye la coexistencia de verdad; si $v(p)=V$ y $v(q)=V$, entonces $v(p \oplus q) = F$.
+  - **Error 2:** No distinguir el "o" simple del "o bien... o bien...". **Cómo corregirlo:** En lenguaje natural, "o bien $A$ o bien $B$" señala exclusión mutua ($\oplus$), mientras que "A o B" habitualmente es inclusivo ($\lor$).
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Sea $p$: "El número 3 es primo" (V) y $q$: "El número 3 es par" (F).
-    ¿Cuál es el valor de verdad de $p \oplus q$?'
-  solucion_pasos:
-  - $p = V$ y $q = F$. Los valores son diferentes.
-  - Como $p \neq q$ en sus valores de verdad, entonces $p \oplus q = V$.
-- titulo: Ejemplo 2
-  enunciado: 'Sea $p$: "El cuadrado de 2 es 4" (V) y $q$: "El cuadrado de 3 es 9"
-    (V). ¿Cuál es el valor de verdad de $p \oplus q$?'
-  solucion_pasos:
-  - $p = V$ y $q = V$. Ambas son Verdaderas (valores iguales).
-  - Como $p = q$ en sus valores de verdad, entonces $p \oplus q = F$ (la disyunción
-    exclusiva no admite que ambas sean V).
-- titulo: ¿Es la disyunción exclusiva Verdadera cuando ambas proposiciones son Falsas?
-  respuesta: 'No'
-  solucion_pasos:
-  - Cuando $p = F$ y $q = F$, los valores son iguales (ambas falsas).
-  - La disyunción exclusiva requiere valores diferentes, por lo que $p \oplus q =
-    F$.
-- titulo: ¿Es $p \oplus q$ equivalente a $(p \lor q) \land \neg(p \land q)$?
-  respuesta: Sí
-  solucion_pasos:
-  - La expresión $(p \lor q)$ exige que al menos una sea V; $\neg(p \land q)$ prohíbe
-    que ambas sean V.
-  - La conjunción de ambas condiciones da exactamente la tabla de la disyunción exclusiva.
+  - titulo: 'Disyunción exclusiva con valores distintos'
+    enunciado: '¿Cuál es el valor de verdad de "$5 > 2 \oplus 5 < 2$"?'
+    alternativas:
+      - 'Verdadero ($V$)'
+      - 'Falso ($F$)'
+      - 'Indeterminado'
+    respuesta: 'Verdadero ($V$)'
+    solucion_pasos:
+      - '1. $5 > 2$ es $V$.'
+      - '2. $5 < 2$ es $F$.'
+      - '3. $V \oplus F = V$.'
+  - titulo: 'Disyunción exclusiva de dos verdades'
+    enunciado: 'Si $v(p) = V$ y $v(q) = V$, ¿cuánto vale $v(p \oplus q)$?'
+    alternativas:
+      - 'Falso ($F$)'
+      - 'Verdadero ($V$)'
+      - 'Nulo'
+    respuesta: 'Falso ($F$)'
+    solucion_pasos:
+      - '1. Al coincidir ambos en $V$, la exclusión no se cumple.'
+      - '2. $V \oplus V = F$.'
+  - titulo: 'Disyunción exclusiva consigo misma'
+    enunciado: '¿Es $p \oplus p$ siempre una contradicción ($F$)?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, pues una proposición siempre tiene el mismo valor que ella misma ($V \oplus V = F$ y $F \oplus F = F$).'
+  - titulo: 'Relación con el bicondicional'
+    enunciado: '¿La tabla de verdad de $p \oplus q$ es exactamente la opuesta a la de $p \leftrightarrow q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $p \oplus q \equiv \neg(p \leftrightarrow q)$.'
 errores_frecuentes:
-- Declarar la disyunción exclusiva (⊕) con la inclusiva (∨), olvidando que la exclusiva
-  prohíbe que ambas sean verdaderas.
-- Declarar que la disyunción exclusiva es verdadera cuando ambas proposiciones son
-  falsas.
-- Usar el símbolo ∨ cuando se quiere expresar la disyunción exclusiva.
-- Omitir que la regla clave es que los valores de verdad deben ser diferentes para
-  obtener V.
-- Declarar el enunciado "uno u otro, o ambos" (inclusiva) con "uno u otro, pero no
-  ambos" (exclusiva).
-fuente: Lógica Proposicional — Fundamentos Matemáticos
+  - 'La afirmación de que la disyunción exclusiva es verdadera cuando ambas proposiciones componentes son verdaderas.'
+  - 'La afirmación de que la disyunción exclusiva es idéntica en tabla de verdad a la disyunción inclusiva.'
+  - 'La afirmación de que la fórmula $p \oplus p$ resulta en una tautología siempre verdadera.'
+  - 'La afirmación de que la disyunción exclusiva es verdadera cuando ambas proposiciones son falsas.'
+  - 'La afirmación de que la disyunción exclusiva no es conmutativa.'
+afirmaciones_verdaderas:
+  - 'La disyunción exclusiva $p \oplus q$ es verdadera si y solo si exactamente una de las proposiciones es verdadera y la otra es falsa ($v(p) \neq v(q)$).'
+  - 'La disyunción exclusiva es lógicamente equivalente a la negación del bicondicional: $p \oplus q \equiv \neg(p \leftrightarrow q)$.'
+al_terminar_debes_poder: |
+  QUÉ: Definir, evaluar y formalizar la disyunción exclusiva ($p \oplus q$).
+  CÓMO: Aplicar el criterio de disparidad veritativa ($V \oplus F = V, F \oplus V = V, V \oplus V = F, F \oplus F = F$) y distinguirla de la disyunción inclusiva.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

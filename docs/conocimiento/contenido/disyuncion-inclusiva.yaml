@@ -1,101 +1,109 @@
 semantic_id: MAT.FUND.CONECTIVOS_LOGICOS.DISYUNCION_INCLUSIVA
-titulo: Disyunción inclusiva
-objetivo: Identificar y aplicar el conectivo de disyunción inclusiva para formar proposiciones
-  compuestas que son verdaderas cuando al menos una de las partes es verdadera
-introduccion: 'Imagina que un restaurante ofrece postre gratis si cumples al menos
-  una condición: que sea tu cumpleaños O que hayas pedido el menú completo. Si cumples
-  alguna —o incluso ambas— recibes el postre. Solo te quedas sin él si no cumples
-  ninguna. Esa es la idea de la disyunción inclusiva: basta con que una sea verdadera.
+resumen_inicial: 'Definición, tabla de verdad y propiedades de la disyunción inclusiva ($p \lor q$), que es verdadera cuando al menos una proposición es verdadera.'
+explicacion_simple: |
+  La **disyunción inclusiva** es el conectivo lógico que une dos frases con la letra "o" (escrito en símbolos como **$p \lor q$**). Funciona con una regla muy generosa: para que la frase completa sea **Verdadera**, basta con que **al menos una de las dos partes sea verdadera** (o incluso ambas al mismo tiempo). La única forma de que una disyunción inclusiva sea **Falsa** es que **ambas partes sean falsas**. Por ejemplo, "Para entrar al cine necesitas carnet o entrada": si tienes carnet entras, si tienes entrada entras, y si tienes ambas cosas también entras.
+explicacion_formal: |
+  ### Definición formal
+  En el cálculo proposicional, la **disyunción inclusiva** (o suma lógica) es un operador binario $\lor: \mathcal{P} \times \mathcal{P} \to \mathcal{P}$ definido por la función veritativa booleana $f_\lor: \{V, F\}^2 \to \{V, F\}$ tal que:
+  $$v(p \lor q) = \begin{cases} F & \text{si } v(p) = F \text{ y } v(q) = F \\ V & \text{en cualquier otro caso} \end{cases}$$
+  En álgebra booleana sobre $\{0, 1\}$, se expresa como: $v(p \lor q) = v(p) + v(q) - v(p) \cdot v(q) = \max(v(p), v(q))$.
 
-  '
-resumen: 'La disyunción inclusiva ($p \lor q$) une dos proposiciones con "o". El resultado
-  es Verdadero cuando AL MENOS UNA de las proposiciones es Verdadera. Solo es Falso
-  cuando ambas son Falsas.
+  ### Desglose simbólico
+  - Símbolos equivalentes: $p \lor q$, $p + q$.
+  - Tabla de verdad canónica:
+    $$\begin{array}{|c|c|c|} \hline p & q & p \lor q \\ \hline V & V & V \\ V & F & V \\ F & V & V \\ F & F & F \\ \hline \end{array}$$
+  - Propiedad de Idempotencia: $p \lor p \equiv p$.
+  - Propiedad Conmutativa: $p \lor q \equiv q \lor p$.
+  - Elemento neutro: La falsedad $F$ actúa como neutro ($p \lor F \equiv p$).
+  - Elemento absorbente: La verdad $V$ actúa como absorbente ($p \lor V \equiv V$).
 
-  '
-explicacion: 'La **disyunción inclusiva** es un conectivo binario que admite que ambas
-  proposiciones sean verdaderas simultáneamente.
-
-
-  **Símbolo:** $p \lor q$
-
-
-  **Lectura:** "p o q", "p o q, o ambas"
-
-
-  **Tabla de verdad:**
-
-
-  | $p$ | $q$ | $p \lor q$ |
-
-  |-----|-----|------------|
-
-  | V   | V   | V          |
-
-  | V   | F   | V          |
-
-  | F   | V   | V          |
-
-  | F   | F   | F          |
-
-
-  **Regla clave:** $p \lor q$ es Falso únicamente cuando AMBAS proposiciones son Falsas.
-
-
-  **Diferencia con la disyunción exclusiva:** La disyunción inclusiva permite que
-  $p$ y $q$ sean ambas verdaderas; la exclusiva no lo permite.
-
-
-  **Propiedad conmutativa:** $p \lor q \equiv q \lor p$
-
-
-  **Relación con la conjunción (De Morgan):** $\neg(p \lor q) \equiv \neg p \land
-  \neg q$
-
-  '
+  ### Síntesis didáctica
+  La disyunción inclusiva permite la coexistencia de verdad: es verdadera si la primera es verdadera, si la segunda es verdadera, o si ambas son verdaderas simultáneamente.
+definiciones_clave: |
+  - **Disyunción inclusiva ($p \lor q$)**: Conectivo binario que produce valor falso si y solo si ambos operandos son falsos.
+  - **Operador disyuntor ($\lor$)**: Símbolo formal para representar la partícula "o" en sentido no excluyente.
+  - **Máximo veritativo**: Interpretación de la disyunción como el valor máximo booleano entre sus componentes ($\max(v(p), v(q))$).
+propiedades_relaciones: |
+  - **Principio del Tercero Excluido**: $p \lor \neg p \equiv V$ (siempre es una tautología).
+  - **Leyes de De Morgan**: $\neg(p \lor q) \equiv \neg p \land \neg q$.
+ejemplo_guiado:
+  enunciado: 'Sean las proposiciones $p$: "$7$ es un número primo" y $q$: "$7$ es un número par". Determina el valor de verdad de la disyunción inclusiva $p \lor q$.'
+  pasos:
+    - 'Paso 1: Evaluar la proposición simple $p$: El número $7$ solo es divisible por $1$ y $7$, por lo tanto $v(p) = V$.'
+    - 'Paso 2: Evaluar la proposición simple $q$: El número $7$ no es divisible por $2$, por lo tanto $v(q) = F$.'
+    - 'Paso 3: Aplicar la regla de la disyunción inclusiva: $v(p \lor q) = v(V \lor F)$.'
+    - 'Paso 4: Concluir el resultado: Como al menos uno de los componentes es verdadero ($v(p) = V$), la disyunción es verdadera: $v(p \lor q) = V$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Bajo qué única condición la disyunción inclusiva $p \lor q$ resulta Falsa ($F$)?'
+    choices:
+      - {text: 'Cuando ambas proposiciones $p$ y $q$ son falsas ($v(p)=F$ y $v(q)=F$)', is_correct: true}
+      - {text: 'Cuando una proposición es verdadera y la otra es falsa', is_correct: false}
+      - {text: 'Cuando ambas proposiciones son verdaderas', is_correct: false}
+      - {text: 'Cuando la proposición $p$ es una negación', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cuando ambas proposiciones $p$ y $q$ son falsas ($v(p)=F$ y $v(q)=F$)''. La disyunción solo falla si ambos operandos son falsos.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si sabemos que $p \lor q$ es falsa ($F$), ¿cuál es el valor de verdad de la conjunción $p \land q$?'
+    choices:
+      - {text: 'Falso ($F$)', is_correct: true}
+      - {text: 'Verdadero ($V$)', is_correct: false}
+      - {text: 'Indefinido', is_correct: false}
+      - {text: 'Tautológico', is_correct: false}
+    explanation: 'La alternativa correcta es ''Falso ($F$)''. Si $p \lor q$ es falsa, necesariamente $p=F$ y $q=F$, por lo que $p \land q = F \land F = F$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- Identificar las dos proposiciones simples $p$ y $q$, y determinar su valor de verdad
-  individual.
-- Formar la proposición compuesta $p \lor q$.
-- 'Aplicar la regla: $p \lor q = F$ solo si $p = F$ Y $q = F$; en cualquier otro caso,
-  $p \lor q = V$.'
-- Confirmar que la interpretación lingüística corresponde a un "o" inclusivo.
+  - 'Paso 1: Identificar las dos proposiciones simples componentes $p$ y $q$.'
+  - 'Paso 2: Evaluar individualmente el valor de verdad de $p$ y de $q$.'
+  - 'Paso 3: Si al menos una de las proposiciones es $V$, asignar $V$ a la disyunción $p \lor q$.'
+  - 'Paso 4: Si ambas proposiciones son $F$, asignar $F$ a la disyunción.'
+errores_correccion: |
+  - **Error 1:** Creer que en una disyunción "o" no pueden ser verdaderas ambas partes a la vez. **Cómo corregirlo:** La disyunción inclusiva ($\lor$) incluye la posibilidad de que ambas proposiciones sean verdaderas. El caso donde se excluye la simultaneidad corresponde a la disyunción exclusiva ($\oplus$).
+  - **Error 2:** Confundir el símbolo de disyunción ($\lor$) con el de conjunción ($\land$). **Cómo corregirlo:** Recordar que $\lor$ (forma de "V") es la disyunción inclusiva y $\land$ (forma de "A" sin barra) es la conjunción ("AND").
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Sea $p$: "El número 4 es par" y $q$: "El número 4 es primo". ¿Cuál es
-    el valor de verdad de $p \lor q$?'
-  solucion_pasos:
-  - '$p$: "El número 4 es par" → Verdadero (4 es divisible por 2).'
-  - '$q$: "El número 4 es primo" → Falso (4 = 2 × 2, tiene divisores distintos de
-    1 y sí mismo).'
-  - Como $p = V$ (al menos una es verdadera), entonces $p \lor q = V$.
-- titulo: Ejemplo 2
-  enunciado: 'Sea $p$: "El número 9 es par" y $q$: "El número 9 es divisible por 4".
-    ¿Cuál es el valor de verdad de $p \lor q$?'
-  solucion_pasos:
-  - '$p$: "El número 9 es par" → Falso (9 es impar).'
-  - '$q$: "El número 9 es divisible por 4" → Falso (9 ÷ 4 = 2,25).'
-  - Como ambas son Falsas, entonces $p \lor q = F$.
-- titulo: ¿Puede la disyunción inclusiva $p \lor q$ ser Verdadera cuando ambas proposiciones
-    son Verdaderas?
-  respuesta: Sí
-  solucion_pasos:
-  - La primera fila de la tabla de verdad (V-V) da como resultado $p \lor q = V$.
-  - 'Esto es precisamente lo que distingue a la disyunción inclusiva de la exclusiva:
-    incluye el caso en que ambas son verdaderas.'
-- titulo: ¿Es $p \lor q$ siempre Falso si $p$ es Falso?
-  respuesta: 'No'
-  solucion_pasos:
-  - Si $p = F$ pero $q = V$, entonces $p \lor q = V$.
-  - Solo cuando $p = F$ Y también $q = F$, la disyunción es Falsa.
+  - titulo: 'Disyunción con un término verdadero'
+    enunciado: '¿Cuál es el valor de verdad de "$3 > 5 \lor 2 < 8$"?'
+    alternativas:
+      - 'Verdadero ($V$)'
+      - 'Falso ($F$)'
+      - 'Indeterminado'
+    respuesta: 'Verdadero ($V$)'
+    solucion_pasos:
+      - '1. $3 > 5$ es $F$.'
+      - '2. $2 < 8$ es $V$.'
+      - '3. $F \lor V = V$.'
+  - titulo: 'Disyunción de dos falsedades'
+    enunciado: '¿Cuál es el valor de verdad de "$1 = 0 \lor 4 = 9$"?'
+    alternativas:
+      - 'Falso ($F$)'
+      - 'Verdadero ($V$)'
+      - 'Nulo'
+    respuesta: 'Falso ($F$)'
+    solucion_pasos:
+      - '1. $1 = 0$ es $F$.'
+      - '2. $4 = 9$ es $F$.'
+      - '3. $F \lor F = F$.'
+  - titulo: 'Tautología con verdad absorbente'
+    enunciado: '¿Cuál es el valor de verdad de la expresión $p \lor V$?'
+    respuesta: 'Verdadero ($V$)'
+    solucion_pasos:
+      - 'Al contener el valor absorbente $V$, la disyunción es siempre verdadera independientemente de $p$.'
+  - titulo: 'Equivalencia de De Morgan'
+    enunciado: '¿La negación de $p \lor q$ es equivalente a $\neg p \land \neg q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, es la primera Ley de De Morgan para la disyunción inclusiva.'
 errores_frecuentes:
-- Declarar la disyunción inclusiva (∨) con la exclusiva (⊕), olvidando que la inclusiva
-  permite que ambas sean verdaderas.
-- Afirmar que "o" en lógica siempre significa "uno u otro, pero no ambos" (ese sería
-  el "o exclusivo").
-- Declarar el símbolo ∨ (disyunción) con ∧ (conjunción).
-- Omitir que la disyunción es Falsa únicamente cuando AMBAS proposiciones son Falsas.
-- Traducir "o" del lenguaje natural directamente como exclusivo sin verificar el contexto
-  lógico.
-fuente: Lógica Proposicional — Fundamentos Matemáticos
+  - 'La afirmación de que la disyunción inclusiva es falsa cuando ambas proposiciones componentes son verdaderas.'
+  - 'La afirmación de que la disyunción inclusiva exige que exactamente una sola proposición sea verdadera.'
+  - 'La afirmación de que la tabla de verdad de la disyunción inclusiva tiene solo una combinación verdadera.'
+  - 'La afirmación de que el elemento neutro de la disyunción inclusiva es la verdad $V$.'
+  - 'La afirmación de que la fórmula $p \lor \neg p$ puede ser falsa para algún valor de $p$.'
+afirmaciones_verdaderas:
+  - 'La disyunción inclusiva $p \lor q$ es verdadera si al menos una de las proposiciones componentes $p$ o $q$ es verdadera, incluyendo el caso en que ambas lo sean.'
+  - 'La disyunción inclusiva es falsa única y exclusivamente cuando ambas proposiciones componentes son simultáneamente falsas ($F \lor F = F$).'
+al_terminar_debes_poder: |
+  QUÉ: Comprender, evaluar y formalizar la disyunción inclusiva ($p \lor q$).
+  CÓMO: Aplicar la regla del mínimo de falsedad ($F \lor F = F$) y distinguirla conceptualmente de la disyunción exclusiva.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

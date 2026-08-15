@@ -1,112 +1,105 @@
 semantic_id: MAT.FUND.CONECTIVOS_LOGICOS.PARENTESIS_LOGICOS
-titulo: Uso de paréntesis en proposiciones compuestas
-objetivo: Comprender y aplicar el uso de paréntesis para modificar el orden de evaluación
-  en fórmulas lógicas compuestas, agrupando subfórmulas correctamente
-introduccion: 'En aritmética, (2 + 3) × 4 = 20 es diferente de 2 + (3 × 4) = 14. Los
-  paréntesis cambian el resultado. En lógica ocurre lo mismo: los paréntesis agrupan
-  subfórmulas y pueden cambiar completamente el valor de verdad de una proposición
-  compuesta. Son la herramienta que nos permite anular la prioridad predeterminada
-  de los conectivos.
+resumen_inicial: 'Uso de signos de agrupación (paréntesis, corchetes) para eliminar ambigüedades y definir la estructura jerárquica en fórmulas compuestas.'
+explicacion_simple: |
+  Los **paréntesis** $( \ )$, **corchetes** $[ \ ]$ y **llaves** $\{ \ \}$ son herramientas esenciales en la lógica proposicional. Cumplen una función idéntica a la que tienen en las matemáticas escolares: nos indican **qué operación debe resolverse primero** y agrupan ideas completas. Por ejemplo, no es lo mismo decir "$(p \land q) \lor r$" (donde primero resolvemos la conjunción) que "$p \land (q \lor r)$" (donde primero resolvemos la disyunción). Usar paréntesis evita ambigüedades y garantiza que todos entiendan exactamente la misma fórmula.
+explicacion_formal: |
+  ### Definición formal
+  En la gramática generativa de la lógica proposicional $\mathcal{L}_0$, los **símbolos de puntuación y agrupación** $\mathcal{S}_{\text{agrup}} = \{(, ), [, ], \{, \}\}$ son delimitadores sintácticos que imponen la formación unívoca de Fórmulas Bien Formadas (FBF).
+  Garantizan el **Teorema de Lectura Única (o Descomposición Única)**: para toda fórmula bien delimitada $\alpha$, existe un único árbol sintáctico abstracto que define la raíz u operador principal y el orden de evaluación veritativa:
+  $$\alpha \in \text{FBF} \implies \exists ! \ \mathcal{T}(\alpha)$$
 
-  '
-resumen: 'Los paréntesis en lógica permiten agrupar subfórmulas y forzar un orden
-  de evaluación diferente al establecido por la prioridad de conectivos. La subfórmula
-  dentro del paréntesis más interno se evalúa primero.
+  ### Desglose simbólico
+  - Paréntesis interiores: Se evalúan con máxima precedencia antes de los conectivos exteriores.
+  - No equivalencia de agrupaciones: $(p \to q) \to r \not\equiv p \to (q \to r)$.
+  - Distribución con paréntesis: $p \land (q \lor r) \equiv (p \land q) \lor (p \land r)$.
 
-  '
-explicacion: 'Los **paréntesis** son símbolos de agrupación que forman parte de la
-  sintaxis de la lógica proposicional.
-
-
-  **Función:** Modificar el orden de evaluación que establece la prioridad de conectivos.
-
-
-  **Regla de evaluación:** Se evalúa primero el paréntesis más interno (anidamiento),
-  luego los externos.
-
-
-  **Ejemplo de impacto en el valor de verdad:**
-
-
-  Sean $p = V$, $q = F$, $r = V$:
-
-  - $p \lor q \land r$ (sin paréntesis) = $p \lor (q \land r)$ = $V \lor (F \land
-  V)$ = $V \lor F$ = $V$
-
-  - $(p \lor q) \land r$ (con paréntesis) = $(V \lor F) \land V$ = $V \land V$ = $V$
-
-  - En este caso coinciden, pero no siempre ocurre así.
-
-
-  **Ejemplo con paréntesis que cambia el resultado:** sean $p = F$, $q = V$, $r =
-  V$:
-
-  - $\neg p \land q$ = $(\neg F) \land V$ = $V \land V$ = $V$
-
-  - $\neg(p \land q)$ = $\neg(F \land V)$ = $\neg F$ = $V$ (coinciden aquí)
-
-  - $p \land \neg q$ vs $\neg(p \land q)$: son fórmulas distintas con resultados distintos
-  en general.
-
-
-  **Paréntesis anidados:** Se evalúa de adentro hacia afuera.
-
-  - $((p \land q) \lor r) \to s$: primero $p \land q$, luego $\_ \lor r$, luego $\_
-  \to s$.
-
-
-  **Fórmula bien formada (FBF):** Una fórmula sin paréntesis ambiguos o faltantes.
-  Toda FBF tiene un árbol sintáctico único.
-
-  '
+  ### Síntesis didáctica
+  Los paréntesis permiten al autor del argumento especificar con total precisión el alcance (*scope*) de cada conector lógico, superando cualquier regla de precedencia implícita.
+definiciones_clave: |
+  - **Signos de agrupación**: Símbolos sintácticos que delimitan subfórmulas e indican el orden prioritario de evaluación.
+  - **Teorema de lectura única**: Propiedad sintáctica que asegura que una fórmula no puede ser interpretada de dos maneras distintas.
+  - **Alcance de un operador (*Scope*)**: Conjunto de variables y subfórmulas sobre las que opera un conectivo lógico específico.
+propiedades_relaciones: |
+  - **Leyes de Distributividad**: El uso de paréntesis permite distribuir conjunciones sobre disyunciones: $p \land (q \lor r) \equiv (p \land q) \lor (p \land r)$.
+  - **Leyes Asociativas**: Permiten reubicar paréntesis sin cambiar el valor de verdad en operadores idénticos: $(p \land q) \land r \equiv p \land (q \land r)$.
+ejemplo_guiado:
+  enunciado: 'Demuestra que las fórmulas $(p \land q) \lor r$ y $p \land (q \lor r)$ no son equivalentes evaluándolas con los valores de verdad $v(p) = F$, $v(q) = V$ y $v(r) = V$.'
+  pasos:
+    - 'Paso 1: Evaluar la primera fórmula $(p \land q) \lor r$:
+      - Resolver el paréntesis interior: $p \land q = F \land V = F$.
+      - Resolver el conector exterior: $F \lor r = F \lor V = V$.
+      - El resultado de la primera fórmula es **Verdadero ($V$)**.'
+    - 'Paso 2: Evaluar la segunda fórmula $p \land (q \lor r)$:
+      - Resolver el paréntesis interior: $q \lor r = V \lor V = V$.
+      - Resolver el conector exterior: $p \land V = F \land V = F$.
+      - El resultado de la segunda fórmula es **Falso ($F$)**.'
+    - 'Paso 3: Comparar los resultados: Como para una misma asignación una fórmula da $V$ y la otra da $F$, se demuestra formalmente que no son equivalentes.'
+    - 'Paso 4: Concluir que los paréntesis alteran fundamentalmente el significado lógico de la expresión.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la función principal de los paréntesis en las fórmulas proposicionales complejas?'
+    choices:
+      - {text: 'Determinar de forma unívoca el orden de evaluación y el alcance de cada conectivo lógico', is_correct: true}
+      - {text: 'Hacer que la fórmula sea siempre una tautología verdadera', is_correct: false}
+      - {text: 'Convertir proposiciones simples en variables numéricas', is_correct: false}
+      - {text: 'Eliminar todas las negaciones presentes en la fórmula', is_correct: false}
+    explanation: 'La alternativa correcta es ''Determinar de forma unívoca el orden de evaluación y el alcance de cada conectivo lógico''. Asegura el principio de descomposición y lectura única.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'En la fórmula $\neg(p \land q) \to r$, ¿qué parte de la expresión es afectada directamente por el símbolo de negación $\neg$?'
+    choices:
+      - {text: 'Únicamente el bloque $(p \land q)$ contenido dentro del paréntesis', is_correct: true}
+      - {text: 'Toda la fórmula completa incluyendo el condicional y $r$', is_correct: false}
+      - {text: 'Únicamente la variable $p$', is_correct: false}
+      - {text: 'Únicamente la variable $r$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Únicamente el bloque $(p \land q)$ contenido dentro del paréntesis''. Los paréntesis delimitan el alcance del operador de negación.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- Identificar el paréntesis más interno de la fórmula.
-- Evaluar la subfórmula contenida en ese paréntesis con los valores de verdad dados.
-- Reemplazar el paréntesis evaluado por su valor (V o F) y continuar hacia afuera.
-- Repetir el proceso hasta evaluar la fórmula completa.
-- Verificar que el resultado final corresponde al valor de la fórmula completa.
+  - 'Paso 1: Localizar los paréntesis más internos de la fórmula proposicional.'
+  - 'Paso 2: Evaluar los valores de verdad de las operaciones dentro de esos paréntesis internos.'
+  - 'Paso 3: Sustituir los resultados intermedios y avanzar hacia los paréntesis o corchetes más externos.'
+  - 'Paso 4: Evaluar finalmente el conectivo principal que une los bloques mayores.'
+errores_correccion: |
+  - **Error 1:** Descartar los paréntesis asumiendo que $(p \to q) \to r$ es igual a $p \to (q \to r)$. **Cómo corregirlo:** El condicional no es asociativo; cambiar la posición de los paréntesis en una cadena condicional altera por completo la tabla de verdad.
+  - **Error 2:** Colocar signos de cierre sin correspondencia con los signos de apertura. **Cómo corregirlo:** Toda fórmula bien formada exige un balance perfecto de paréntesis: cada paréntesis abierto $($ debe contar con su correspondiente paréntesis de cierre $)$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Con $p = V$, $q = F$, $r = V$, evalúa $\neg(p \land q) \lor r$.
-  solucion_pasos:
-  - 'Paso 1 (paréntesis más interno): $p \land q = V \land F = F$.'
-  - 'Paso 2 (negación sobre el resultado): $\neg(F) = V$.'
-  - 'Paso 3 (disyunción final): $V \lor r = V \lor V = V$.'
-  - 'La fórmula tiene valor de verdad: V.'
-- titulo: Ejemplo 2
-  enunciado: Con $p = V$, $q = V$, $r = F$, evalúa $((p \to q) \land r) \leftrightarrow
-    \neg p$.
-  solucion_pasos:
-  - 'Paso 1 (paréntesis más interno): $p \to q = V \to V = V$.'
-  - 'Paso 2 (paréntesis externo): $(V) \land r = V \land F = F$.'
-  - 'Paso 3 (negación separada): $\neg p = \neg V = F$.'
-  - 'Paso 4 (bicondicional): $F \leftrightarrow F = V$ (mismos valores de verdad).'
-- titulo: ¿Cambia el valor de verdad de $\neg p \land q$ si se escribe como $\neg(p
-    \land q)$?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Ejemplo con $p = V$, $q = V$: $\neg p \land q = F \land V = F$; mientras que
-    $\neg(p \land q) = \neg(V) = F$ (coinciden en este caso).'
-  - 'Ejemplo con $p = F$, $q = V$: $\neg p \land q = V \land V = V$; mientras que
-    $\neg(p \land q) = \neg(F \land V) = \neg F = V$ (coinciden nuevamente, pero no
-    siempre). Con $p=V$, $q=F$: $\neg p \land q = F \land F = F$; $\neg(p\land q)=\neg
-    F=V$. ¡Difieren!'
-- titulo: ¿Tiene sentido una fórmula con paréntesis mal balanceados, como $p \land
-    (q \lor r$?
-  respuesta: 'No'
-  solucion_pasos:
-  - Una fórmula bien formada (FBF) exige que cada paréntesis de apertura tenga su
-    correspondiente paréntesis de cierre.
-  - 'La expresión $p \land (q \lor r$ no es una FBF: está incompleta y es sintácticamente
-    inválida en lógica proposicional.'
+  - titulo: 'Evaluación con paréntesis prioritarios'
+    enunciado: 'Si $p=V, q=F, r=V$, ¿cuál es el valor de verdad de $(p \lor q) \land \neg r$?'
+    alternativas:
+      - 'Falso ($F$)'
+      - 'Verdadero ($V$)'
+      - 'Indeterminado'
+    respuesta: 'Falso ($F$)'
+    solucion_pasos:
+      - '1. Paréntesis $(p \lor q) = V \lor F = V$.'
+      - '2. Negación $\neg r = \neg V = F$.'
+      - '3. Conjunción final: $V \land F = F$.'
+  - titulo: 'Alcance de la negación'
+    enunciado: '¿La fórmula $\neg(p \lor q)$ es diferente de $\neg p \lor q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, en la primera la negación abarca toda la disyunción; en la segunda solo afecta a $p$.'
+  - titulo: 'Asociatividad de la conjunción'
+    enunciado: '¿Es lógicamente equivalente $(p \land q) \land r$ a $p \land (q \land r)$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, por la ley asociativa de la conjunción.'
+  - titulo: 'Balance de delimitadores'
+    enunciado: '¿Una fórmula con paréntesis sin cerrar es una fórmula bien formada?'
+    respuesta: 'No'
+    solucion_pasos:
+      - 'No, carece de validez sintáctica en la lógica proposicional formal.'
 errores_frecuentes:
-- Ignorar los paréntesis y evaluar los conectivos de izquierda a derecha sin respetar
-  la agrupación.
-- ''
-- Omitir que en paréntesis anidados se evalúa de adentro hacia afuera.
-- Añadir o quitar paréntesis creyendo que no cambian el significado, cuando en realidad
-  pueden cambiar el valor de verdad.
-- Escribir fórmulas con paréntesis desbalanceados o mal cerrados, produciendo expresiones
-  sintácticamente inválidas.
-fuente: Lógica Proposicional — Fundamentos Matemáticos
+  - 'La afirmación de que la reubicación de paréntesis en una cadena de condicionales preserva la equivalencia lógica.'
+  - 'La afirmación de que la expresión $\neg(p \land q)$ es lógicamente idéntica a $\neg p \land q$.'
+  - 'La afirmación de que los signos de agrupación pueden suprimirse sin alterar la tabla de verdad de fórmulas no asociativas.'
+  - 'La afirmación de que las operaciones fuera de los paréntesis se evalúan antes que las operaciones encerradas dentro de ellos.'
+  - 'La afirmación de que una fórmula con paréntesis no balanceados posee un valor de verdad definido.'
+afirmaciones_verdaderas:
+  - 'Los signos de agrupación (paréntesis, corchetes) establecen la prioridad absoluta de resolución y delimitan el alcance de cada conectivo lógico.'
+  - 'En virtud del teorema de lectura única, una fórmula con paréntesis balanceados posee una única interpretación estructural y una tabla de verdad bien definida.'
+al_terminar_debes_poder: |
+  QUÉ: Utilizar, interpretar y evaluar fórmulas proposicionales estructuradas con paréntesis y signos de agrupación.
+  CÓMO: Resolver de adentro hacia afuera los bloques delimitados y verificar el teorema de lectura única en expresiones complejas.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

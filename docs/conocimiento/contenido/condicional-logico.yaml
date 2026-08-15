@@ -1,112 +1,109 @@
 semantic_id: MAT.FUND.CONECTIVOS_LOGICOS.CONDICIONAL
-titulo: Condicional lógico
-objetivo: Identificar y aplicar el conectivo condicional, reconociendo que es Falso
-  únicamente cuando el antecedente es Verdadero y el consecuente es Falso
-introduccion: 'Imagina que un amigo te promete: "Si apruebo el examen, te invito a
-  comer." La promesa solo se rompe si aprueba el examen Y no te invita. Si no aprueba,
-  la promesa no se rompe aunque no te invite. El condicional funciona igual: solo
-  es Falso cuando se cumple la condición y no ocurre la consecuencia.
+resumen_inicial: 'Definición, tabla de verdad y análisis de la implicación condicional ($p \to q$), que es falsa únicamente cuando el antecedente es verdadero y el consecuente falso.'
+explicacion_simple: |
+  El **condicional lógico** (o implicación material, escrito **$p \to q$**) representa la estructura "Si ocurre $p$, entonces ocurre $q$". La primera parte ($p$) se llama **antecedente** y la segunda ($q$) se llama **consecuente**. Funciona como una promesa o contrato: la promesa solo se rompe (se vuelve **Falsa**) si se cumple la condición inicial ($p$ es verdadero) pero no se entrega el resultado prometido ($q$ es falso). En todos los demás casos, el condicional es **Verdadero** (incluso si el antecedente es falso).
+explicacion_formal: |
+  ### Definición formal
+  En el cálculo proposicional, el **condicional material** (o implicación lógica) es un operador binario $\to: \mathcal{P} \times \mathcal{P} \to \mathcal{P}$ definido por la función veritativa booleana $f_\to: \{V, F\}^2 \to \{V, F\}$ tal que:
+  $$v(p \to q) = \begin{cases} F & \text{si } v(p) = V \text{ y } v(q) = F \\ V & \text{en cualquier otro caso} \end{cases}$$
+  En términos algebraicos y conjuntistas, es equivalente a la disyunción con antecedente negado:
+  $$p \to q \equiv \neg p \lor q$$
 
-  '
-resumen: 'El condicional ($p \to q$) se lee "si $p$, entonces $q$". Es Falso ÚNICAMENTE
-  cuando el antecedente $p$ es Verdadero y el consecuente $q$ es Falso. En los otros
-  tres casos, es Verdadero.
+  ### Desglose simbólico
+  - $p$: Antecedente, hipótesis o premisa.
+  - $q$: Consecuente, tesis o conclusión.
+  - Tabla de verdad canónica:
+    $$\begin{array}{|c|c|c|} \hline p & q & p \to q \\ \hline V & V & V \\ V & F & F \\ F & V & V \\ F & F & V \\ \hline \end{array}$$
+  - No conmutatividad: $p \to q \not\equiv q \to p$.
 
-  '
-explicacion: 'El **condicional** (o implicación) es un conectivo binario asimétrico.
-
-
-  **Símbolo:** $p \to q$ (también $p \Rightarrow q$ o $p \supset q$)
-
-
-  **Lectura:** "si $p$, entonces $q$"; "p implica q"; "$p$ es condición suficiente
-  de $q$"; "$q$ es condición necesaria de $p$"
-
-
-  **Terminología:**
-
-  - $p$: **antecedente** (hipótesis, condición)
-
-  - $q$: **consecuente** (conclusión, tesis)
-
-
-  **Tabla de verdad:**
-
-
-  | $p$ | $q$ | $p \to q$ |
-
-  |-----|-----|-----------|
-
-  | V   | V   | V         |
-
-  | V   | F   | F         |
-
-  | F   | V   | V         |
-
-  | F   | F   | V         |
-
-
-  **Regla clave:** $p \to q$ es Falso **solo cuando** $p = V$ y $q = F$ (hipótesis
-  cumplida, conclusión no cumplida).
-
-
-  **Equivalencia:** $p \to q \equiv \neg p \lor q$
-
-
-  **Formas relacionadas:**
-
-  - Recíproco: $q \to p$
-
-  - Inverso: $\neg p \to \neg q$
-
-  - Contrarrecíproco: $\neg q \to \neg p$ (equivalente al original)
-
-  '
+  ### Síntesis didáctica
+  La única combinación que invalida un condicional es la premisa verdadera que conduce a una conclusión falsa ($V \to F$). Si el antecedente es falso ($F$), el condicional es automáticamente verdadero por vacuidad (*ex falso quodlibet*).
+definiciones_clave: |
+  - **Condicional material ($p \to q$)**: Conectivo binario que expresa implicación y solo es falso cuando $v(p)=V$ y $v(q)=F$.
+  - **Antecedente ($p$)**: Condición suficiente previa que inicia la implicación.
+  - **Consecuente ($q$)**: Condición necesaria resultante de la implicación.
+propiedades_relaciones: |
+  - **Equivalencia con disyunción**: $p \to q \equiv \neg p \lor q$.
+  - **Negación del condicional**: $\neg(p \to q) \equiv p \land \neg q$.
+  - **Ley del Contrarrecíproco**: $p \to q \equiv \neg q \to \neg p$.
+ejemplo_guiado:
+  enunciado: 'Determina el valor de verdad del condicional: "Si $3 > 5$, entonces $2 + 2 = 4$".'
+  pasos:
+    - 'Paso 1: Identificar y evaluar el antecedente $p$: "$3 > 5$". Como $3$ no es mayor que $5$, $v(p) = F$.'
+    - 'Paso 2: Identificar y evaluar el consecuente $q$: "$2 + 2 = 4$". Es una igualdad aritmética correcta, por lo tanto $v(q) = V$.'
+    - 'Paso 3: Aplicar la tabla de verdad del condicional: Evaluamos $v(F \to V)$.'
+    - 'Paso 4: Concluir el resultado: De acuerdo con la definición formal del condicional, cuando el antecedente es falso, la implicación es automáticamente Verdadera: $v(p \to q) = V$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Bajo qué única asignación de valores de verdad el condicional $p \to q$ es Falso ($F$)?'
+    choices:
+      - {text: 'Cuando el antecedente $p$ es verdadero y el consecuente $q$ es falso ($V \to F$)', is_correct: true}
+      - {text: 'Cuando el antecedente $p$ es falso y el consecuente $q$ es verdadero ($F \to V$)', is_correct: false}
+      - {text: 'Cuando tanto $p$ como $q$ son falsos ($F \to F$)', is_correct: false}
+      - {text: 'Cuando tanto $p$ como $q$ son verdaderos ($V \to V$)', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cuando el antecedente $p$ es verdadero y el consecuente $q$ es falso ($V \to F$)''. Es el único caso donde la implicación falla.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿A cuál de las siguientes expresiones es lógicamente equivalente el condicional $p \to q$?'
+    choices:
+      - {text: '$\neg p \lor q$', is_correct: true}
+      - {text: '$p \land \neg q$', is_correct: false}
+      - {text: '$\neg p \land q$', is_correct: false}
+      - {text: '$q \to p$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\neg p \lor q$''. Es la equivalencia lógica fundamental de la implicación material.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- Identificar el antecedente ($p$) y el consecuente ($q$) del condicional $p \to q$.
-- Determinar el valor de verdad de $p$ y de $q$ por separado.
-- 'Aplicar la regla: si $p = V$ y $q = F$, entonces $p \to q = F$; en cualquier otro
-  caso, $p \to q = V$.'
-- 'Verificar el significado: una implicación es falsa solo si la hipótesis se cumple
-  pero la conclusión no.'
+  - 'Paso 1: Identificar con claridad cuál proposición actúa como antecedente ($p$) y cuál como consecuente ($q$).'
+  - 'Paso 2: Determinar el valor de verdad individual de $p$ y de $q$.'
+  - 'Paso 3: Si $v(p) = V$ y $v(q) = F$, asignar $F$ al condicional $p \to q$.'
+  - 'Paso 4: En cualquier otro caso (si $v(p)=F$ o si $v(q)=V$), asignar $V$ al condicional.'
+errores_correccion: |
+  - **Error 1:** Afirmar que si el antecedente es falso, el condicional completo debe ser falso. **Cómo corregirlo:** En la lógica formal, un antecedente falso no invalida el condicional; por vacuidad, tanto $F \to V$ como $F \to F$ son estrictamente Verdaderos ($V$).
+  - **Error 2:** Creer que el condicional es conmutativo ($p \to q \equiv q \to p$). **Cómo corregirlo:** El condicional no es conmutativo; la afirmación recíproca $q \to p$ tiene una tabla de verdad diferente.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: 'Sea $p$: "El número 4 es par" (V) y $q$: "El número 4 es múltiplo de
-    3" (F). ¿Cuál es el valor de verdad de $p \to q$?'
-  solucion_pasos:
-  - $p = V$ y $q = F$. Estamos en el caso V→F.
-  - Este es el único caso donde el condicional es Falso, por lo tanto $p \to q = F$.
-- titulo: Ejemplo 2
-  enunciado: 'Sea $p$: "El número 5 es par" (F) y $q$: "El número 5 es primo" (V).
-    ¿Cuál es el valor de verdad de $p \to q$?'
-  solucion_pasos:
-  - $p = F$ y $q = V$. Estamos en el caso F→V.
-  - Cuando el antecedente es Falso, el condicional es siempre Verdadero (hipótesis
-    falsa no viola la implicación). Entonces $p \to q = V$.
-- titulo: ¿Es el condicional $p \to q$ verdadero cuando el antecedente es falso, independientemente
-    del consecuente?
-  respuesta: Sí
-  solucion_pasos:
-  - Las filas F→V y F→F de la tabla de verdad producen ambas $p \to q = V$.
-  - 'Esto se llama "implicación vacuamente verdadera": si la hipótesis no se cumple,
-    la implicación no puede ser violada.'
-- titulo: ¿Es el condicional $p \to q$ equivalente a $\neg p \lor q$?
-  respuesta: Sí
-  solucion_pasos:
-  - 'Verificación fila a fila: V→V: $\neg V \lor V = F \lor V = V$. V→F: $\neg V \lor
-    F = F \lor F = F$.'
-  - 'F→V: $\neg F \lor V = V \lor V = V$. F→F: $\neg F \lor F = V \lor F = V$. Las
-    tablas coinciden exactamente.'
+  - titulo: 'Condicional con antecedente y consecuente falsos'
+    enunciado: '¿Cuál es el valor de verdad de "Si $1 = 2$, entonces $5 = 10$"?'
+    alternativas:
+      - 'Verdadero ($V$)'
+      - 'Falso ($F$)'
+      - 'Indefinido'
+    respuesta: 'Verdadero ($V$)'
+    solucion_pasos:
+      - '1. Antecedente $1 = 2$ es $F$.'
+      - '2. Consecuente $5 = 10$ es $F$.'
+      - '3. $F \to F = V$.'
+  - titulo: 'Condicional que resulta falso'
+    enunciado: '¿Cuál es el valor de verdad de "Si $2 < 4$, entonces $2 > 4$"?'
+    alternativas:
+      - 'Falso ($F$)'
+      - 'Verdadero ($V$)'
+      - 'Nulo'
+    respuesta: 'Falso ($F$)'
+    solucion_pasos:
+      - '1. Antecedente $2 < 4$ es $V$.'
+      - '2. Consecuente $2 > 4$ es $F$.'
+      - '3. $V \to F = F$.'
+  - titulo: 'Ley del Contrarrecíproco'
+    enunciado: '¿Es la proposición $\neg q \to \neg p$ lógicamente equivalente a $p \to q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, es el principio de equivalencia por contraposición o contrarrecíproco.'
+  - titulo: 'Negación de la implicación'
+    enunciado: '¿La negación de $p \to q$ es la conjunción $p \land \neg q$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, $\neg(p \to q) \equiv \neg(\neg p \lor q) \equiv p \land \neg q$.'
 errores_frecuentes:
-- Afirmar que el condicional es falso cuando el antecedente es falso (error de intuición,
-  pues F→cualquier_cosa = V).
-- Declarar el condicional con el bicondicional, que requiere que ambas proposiciones
-  tengan el mismo valor de verdad.
-- Invertir el antecedente y el consecuente al leer "p solo si q" (que equivale a p
-  → q, no q → p).
-- Declarar que "p implica q" significa que p causa q en sentido causal; en lógica,
-  solo es una relación formal de verdad.
-- Declarar el condicional p → q con su recíproco q → p, que son proposiciones distintas
-  y no equivalentes.
-fuente: Lógica Proposicional — Fundamentos Matemáticos
+  - 'La afirmación de que un condicional cuyo antecedente es falso resulta en un valor de verdad falso.'
+  - 'La afirmación de que el condicional $p \to q$ cumple la propiedad conmutativa siendo equivalente a $q \to p$.'
+  - 'La afirmación de que la negación de $p \to q$ es la fórmula $p \to \neg q$.'
+  - 'La afirmación de que el condicional requiere una relación de causa física temporal entre las proposiciones.'
+  - 'La afirmación de que si el consecuente es verdadero, el condicional puede ser falso.'
+afirmaciones_verdaderas:
+  - 'El condicional lógico $p \to q$ es falso única y exclusivamente cuando el antecedente es verdadero y el consecuente es falso ($V \to F = F$).'
+  - 'El condicional es lógicamente equivalente a la disyunción $\neg p \lor q$ y a su contrarrecíproco $\neg q \to \neg p$.'
+al_terminar_debes_poder: |
+  QUÉ: Comprender, evaluar y aplicar el conectivo condicional ($p \to q$) y sus equivalencias lógicas.
+  CÓMO: Identificar antecedente y consecuente, aplicar la regla de falsedad exclusiva ($V \to F = F$) y transformar fórmulas usando $\neg p \lor q$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

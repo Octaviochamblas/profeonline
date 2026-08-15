@@ -1,111 +1,105 @@
 semantic_id: MAT.FUND.CONECTIVOS_LOGICOS.PRIORIDAD_CONECTIVOS
-titulo: Prioridad de conectivos lógicos
-objetivo: Aplicar correctamente el orden de precedencia de los conectivos lógicos
-  para interpretar y evaluar fórmulas compuestas sin ambigüedad
-introduccion: 'Así como en aritmética se multiplica antes de sumar (recuerdas PAPOMUDAS),
-  en lógica también existe un orden de prioridad para los conectivos. Sin ese orden,
-  una fórmula como "p ∨ q ∧ r" sería ambigua. La prioridad establece cuál conectivo
-  "liga más fuerte" y por lo tanto se aplica primero.
+resumen_inicial: 'Jerarquía y orden de precedencia estándar de los conectivos lógicos para evaluar fórmulas proposicionales sin ambigüedad.'
+explicacion_simple: |
+  Así como en aritmética sabemos que las multiplicaciones se resuelven antes que las sumas (en $2 + 3 \times 4$ primero multiplicamos), en lógica existe un **orden de prioridad de los conectivos**. La **negación ($\neg$)** tiene la máxima prioridad y se resuelve primero, seguida de la **conjunción ($\land$)** y la **disyunción ($\lor$)**, y al final se resuelven el **condicional ($\to$)** y el **bicondicional ($\leftrightarrow$)**. Esto permite saber exactamente qué operación realizar primero cuando no hay paréntesis.
+explicacion_formal: |
+  ### Definición formal
+  En la sintaxis formal de la lógica proposicional, la **jerarquía de precedencia de operadores** define el orden relativo de evaluación para evitar ambigüedades en fórmulas que carecen de delimitadores explícitos:
+  $$\text{Nivel 1: } \neg \quad \succ \quad \text{Nivel 2: } \{\land, \lor, \oplus\} \quad \succ \quad \text{Nivel 3: } \to \quad \succ \quad \text{Nivel 4: } \leftrightarrow$$
 
-  '
-resumen: 'El orden de prioridad (de mayor a menor) es: $\neg$ > $\land$ > $\lor$ >
-  $\to$ > $\leftrightarrow$. Los paréntesis siempre tienen la mayor prioridad y permiten
-  alterar el orden predeterminado.
+  ### Desglose simbólico
+  - Nivel 1 (Mayor prioridad): Negación ($\neg$). Afecta únicamente a la variable inmediata que le sigue.
+  - Nivel 2 (Prioridad intermedia): Conjunción ($\land$) y Disyunción ($\lor$). Se evalúan antes de las implicaciones.
+  - Nivel 3 (Prioridad baja): Condicional ($\to$).
+  - Nivel 4 (Menor prioridad): Bicondicional ($\leftrightarrow$).
+  - Asociatividad: Salvo indicación contraria, los operadores de igual nivel se asocian de izquierda a derecha.
 
-  '
-explicacion: 'La **prioridad de conectivos** (también llamada precedencia) determina
-  cómo se agrupan los operadores cuando no hay paréntesis.
-
-
-  **Orden de prioridad (de mayor a menor):**
-
-
-  | Prioridad | Conectivo | Nombre |
-
-  |-----------|-----------|--------|
-
-  | 1 (mayor) | $\neg$ | Negación |
-
-  | 2 | $\land$ | Conjunción |
-
-  | 3 | $\lor$ | Disyunción |
-
-  | 4 | $\to$ | Condicional |
-
-  | 5 (menor) | $\leftrightarrow$ | Bicondicional |
-
-
-  **Mnemotecnia:** "¡No Y O Si Si-solo-si" (Neg, And, Or, If, Iff)
-
-
-  **Regla de asociatividad:**
-
-  - $\land$, $\lor$, $\leftrightarrow$ son **asociativos a la izquierda**: $p \land
-  q \land r = (p \land q) \land r$
-
-  - $\to$ es **asociativo a la derecha**: $p \to q \to r = p \to (q \to r)$
-
-
-  **Ejemplo de interpretación:**
-
-  - $p \lor q \land r$ se lee como $p \lor (q \land r)$, porque $\land$ tiene mayor
-  prioridad que $\lor$.
-
-  - $\neg p \land q$ se lee como $(\neg p) \land q$, porque $\neg$ tiene mayor prioridad
-  que $\land$.
-
-
-  **Los paréntesis** anulan el orden de prioridad y obligan a evaluar primero lo que
-  encierran.
-
-  '
+  ### Síntesis didáctica
+  Por convención estándar, la expresión $\neg p \land q \to r$ se interpreta inequívocamente como $((\neg p) \land q) \to r$.
+definiciones_clave: |
+  - **Jerarquía de conectivos**: Escala de precedencia que rige el orden de aplicación de los operadores lógicos en una fórmula.
+  - **Fórmula ambigua**: Expresión sin paréntesis cuya interpretación dependería de la convención de precedencia.
+  - **Operador dominante**: Conectivo de menor precedencia que define la operación principal o estructura global de la fórmula.
+propiedades_relaciones: |
+  - **Sobreescritura mediante paréntesis**: Los signos de agrupación (paréntesis, corchetes) tienen prioridad absoluta y anulan cualquier orden estándar.
+  - **Árbol sintáctico**: Toda fórmula bien formada posee un único árbol de análisis sintáctico determinado por la jerarquía.
+ejemplo_guiado:
+  enunciado: 'Determina el orden de operaciones y la interpretación con paréntesis de la fórmula lógica $\neg p \lor q \to r$.'
+  pasos:
+    - 'Paso 1: Identificar el operador de máxima prioridad: La negación $\neg$ actúa directamente sobre la variable $p$, generando $(\neg p)$.'
+    - 'Paso 2: Identificar el siguiente operador en jerarquía: La disyunción $\lor$ opera entre $(\neg p)$ y $q$, generando el bloque $((\neg p) \lor q)$.'
+    - 'Paso 3: Identificar el operador principal de menor jerarquía: El condicional $\to$ toma como antecedente todo el bloque anterior y como consecuente a $r$.'
+    - 'Paso 4: Escribir la fórmula completamente delimitada con paréntesis: $((\neg p) \lor q) \to r$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cuál de los siguientes conectivos lógicos tiene la mayor jerarquía de precedencia?'
+    choices:
+      - {text: 'La negación ($\neg$)', is_correct: true}
+      - {text: 'El condicional ($\to$)', is_correct: false}
+      - {text: 'El bicondicional ($\leftrightarrow$)', is_correct: false}
+      - {text: 'La disyunción inclusiva ($\lor$)', is_correct: false}
+    explanation: 'La alternativa correcta es ''La negación ($\neg$)''. Es el operador de mayor precedencia por ser unario.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: '¿Cómo debe interpretarse la expresión $p \land q \to r$ según la jerarquía estándar?'
+    choices:
+      - {text: '$(p \land q) \to r$', is_correct: true}
+      - {text: '$p \land (q \to r)$', is_correct: false}
+      - {text: '$(p \to r) \land (q \to r)$', is_correct: false}
+      - {text: '$\neg(p \land q \land r)$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$(p \land q) \to r$''. La conjunción ($\land$) tiene mayor prioridad que el condicional ($\to$).'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- Identificar todos los conectivos presentes en la fórmula.
-- Aplicar primero las negaciones ($\neg$) que no estén entre paréntesis.
-- Agrupar las conjunciones ($\land$) a continuación.
-- Luego las disyunciones ($\lor$), seguidas por los condicionales ($\to$) y finalmente
-  los bicondicionales ($\leftrightarrow$).
-- Verificar que el resultado sea una fórmula bien formada con agrupación inequívoca.
+  - 'Paso 1: Localizar los operadores de negación ($\neg$) que no tengan paréntesis previos y aplicarlos a sus variables contiguas.'
+  - 'Paso 2: Localizar las conjunciones ($\land$) y disyunciones ($\lor$) y agrupar sus operandos inmediatos.'
+  - 'Paso 3: Localizar los condicionales ($\to$) y definir sus bloques de antecedente y consecuente.'
+  - 'Paso 4: Resolver los bicondicionales ($\leftrightarrow$) como operadores de cierre en la estructura global.'
+errores_correccion: |
+  - **Error 1:** Interpretar $\neg p \land q$ como $\neg(p \land q)$. **Cómo corregirlo:** La negación solo afecta a la variable inmediata $p$; para afectar a toda la conjunción es indispensable el uso explícito de paréntesis: $\neg(p \land q)$.
+  - **Error 2:** Evaluar una fórmula de izquierda a derecha de forma puramente secuencial ignorando las jerarquías. **Cómo corregirlo:** Al igual que en el álgebra numérica, los operadores con mayor rango de precedencia deben evaluarse primero.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Interpretar la fórmula $p \lor q \land \neg r$ aplicando el orden de
-    prioridad.
-  solucion_pasos:
-  - 'Paso 1: Aplicar $\neg$ primero → $\neg r$ queda como unidad.'
-  - 'Paso 2: Aplicar $\land$ → $q \land \neg r$ queda agrupado.'
-  - 'Paso 3: Aplicar $\lor$ → la fórmula completa es $p \lor (q \land \neg r)$.'
-- titulo: Ejemplo 2
-  enunciado: Interpretar la fórmula $p \to q \lor \neg r \leftrightarrow s$ aplicando
-    el orden de prioridad.
-  solucion_pasos:
-  - 'Paso 1: Negación → $\neg r$ queda como unidad.'
-  - 'Paso 2: Disyunción → $q \lor \neg r$ queda agrupado.'
-  - 'Paso 3: Condicional → $p \to (q \lor \neg r)$ queda agrupado.'
-  - 'Paso 4: Bicondicional (menor prioridad) → fórmula final: $(p \to (q \lor \neg
-    r)) \leftrightarrow s$.'
-- titulo: ¿Tiene la negación mayor prioridad que la conjunción en una fórmula como
-    $\neg p \land q$?
-  respuesta: Sí
-  solucion_pasos:
-  - La prioridad de $\neg$ es 1 (la más alta), mientras que $\land$ tiene prioridad
-    2.
-  - Por tanto $\neg p \land q$ se interpreta como $(\neg p) \land q$, no como $\neg(p
-    \land q)$.
-- titulo: ¿Es $p \lor q \land r$ equivalente a $(p \lor q) \land r$?
-  respuesta: 'No'
-  solucion_pasos:
-  - Por prioridad, $\land$ se aplica antes que $\lor$, por lo que la fórmula equivale
-    a $p \lor (q \land r)$.
-  - Las expresiones $p \lor (q \land r)$ y $(p \lor q) \land r$ tienen tablas de verdad
-    distintas (no son equivalentes lógicas).
+  - titulo: 'Precedencia de negación vs conjunción'
+    enunciado: '¿La expresión $\neg p \land q$ equivale a $(\neg p) \land q$?'
+    alternativas:
+      - 'Sí, equivale a $(\neg p) \land q$'
+      - 'No, equivale a $\neg(p \land q)$'
+      - 'No, es una expresión inválida'
+    respuesta: 'Sí, equivale a $(\neg p) \land q$'
+    solucion_pasos:
+      - '1. La negación tiene mayor jerarquía.'
+      - '2. Se aplica sobre $p$ antes de la conjunción.'
+  - titulo: 'Jerarquía entre condicional y bicondicional'
+    enunciado: 'En la fórmula $p \to q \leftrightarrow r$, ¿cuál es el conectivo principal?'
+    alternativas:
+      - 'El bicondicional ($\leftrightarrow$)'
+      - 'El condicional ($\to$)'
+      - 'Ambos tienen igual peso'
+    respuesta: 'El bicondicional ($\leftrightarrow$)'
+    solucion_pasos:
+      - '1. El condicional tiene mayor prioridad que el bicondicional.'
+      - '2. Se agrupa como $(p \to q) \leftrightarrow r$, siendo el bicondicional el conector principal.'
+  - titulo: 'Uso de paréntesis sobre la regla'
+    enunciado: '¿Los paréntesis modifican el orden habitual de evaluación de los conectivos?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí, cualquier operación dentro de paréntesis se evalúa de manera prioritaria.'
+  - titulo: 'Evaluación de expresión mixta'
+    enunciado: 'Si $p=V, q=F, r=V$, ¿cuánto vale $p \lor q \land r$ con precedencia $(\land \succ \lor)$?'
+    respuesta: 'Verdadero ($V$)'
+    solucion_pasos:
+      - '1. $q \land r = F \land V = F$.'
+      - '2. $p \lor F = V \lor F = V$.'
 errores_frecuentes:
-- Leer la fórmula de izquierda a derecha sin respetar la prioridad, aplicando los
-  conectivos en el orden en que aparecen.
-- Declarar la prioridad de ∧ y ∨, creyendo que ∨ tiene mayor precedencia que ∧.
-- Omitir que la negación ¬ tiene la mayor prioridad y solo afecta a la proposición
-  inmediatamente a su derecha.
-- No recordar que el bicondicional (↔) tiene la menor prioridad de todos los conectivos.
-- Declarar que todos los conectivos son asociativos a la izquierda, ignorando que
-  el condicional (→) es asociativo a la derecha.
-fuente: Lógica Proposicional — Fundamentos Matemáticos
+  - 'La afirmación de que la negación $\neg p \land q$ afecta automáticamente a toda la expresión como $\neg(p \land q)$.'
+  - 'La afirmación de que el condicional posee mayor prioridad de resolución que la conjunción.'
+  - 'La afirmación de que las fórmulas proposicionales se evalúan siempre de izquierda a derecha sin jerarquía.'
+  - 'La afirmación de que los paréntesis no alteran el resultado de la tabla de verdad de una fórmula.'
+  - 'La afirmación de que el bicondicional se resuelve antes que la negación.'
+afirmaciones_verdaderas:
+  - 'El orden de precedencia estándar de los conectivos lógicos sitúa a la negación en primer lugar, seguida de conjunciones/disyunciones, condicionales y bicondicionales.'
+  - 'La presencia de paréntesis anula la jerarquía por defecto y establece la prioridad absoluta de resolución para las subfórmulas delimitadas.'
+al_terminar_debes_poder: |
+  QUÉ: Conocer, aplicar e interpretar la jerarquía de precedencia de los conectivos lógicos.
+  CÓMO: Asignar el orden correcto de evaluación ($\neg \succ \{\land, \lor\} \succ \to \succ \leftrightarrow$) e insertar paréntesis sin alterar la semántica original.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
