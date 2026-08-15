@@ -1,132 +1,115 @@
 semantic_id: MAT.FUND.PRODUCTO_CARTESIANO.CARDINALIDAD_PRODUCTO_CARTESIANO
-titulo: Cardinalidad del producto cartesiano
-objetivo: 'Calcular la cardinalidad del producto cartesiano $A \times B$ usando la
-  fórmula
-
-  $|A \times B| = |A| \cdot |B|$, y comprender los casos especiales cuando uno de
-
-  los conjuntos es vacío.
-
-  '
-introduccion: 'Cuando trabajamos con conjuntos finitos, una pregunta natural es: ¿cuántos
-
-  elementos tiene $A \times B$? No es necesario listar todos los pares para saberlo.
-
-  Basta multiplicar las cardinalidades de los conjuntos. Esta propiedad es muy
-
-  útil para verificar listados y para resolver problemas de combinatoria elemental.
-
-  '
-resumen: 'Para dos conjuntos finitos $A$ y $B$:
-
+resumen_inicial: 'Principio multiplicativo fundamental: cálculo de la cardinalidad del producto cartesiano de conjuntos finitos ($|A \times B| = |A| \cdot |B|$).'
+explicacion_simple: |
+  La **cardinalidad del producto cartesiano** (es decir, cuántos pares ordenados tiene $A \times B$) se calcula mediante el **principio multiplicativo**: **simplemente multiplicamos la cantidad de elementos de $A$ por la cantidad de elementos de $B$**:
   $$|A \times B| = |A| \cdot |B|$$
+  Por ejemplo, si el conjunto $A$ tiene $4$ elementos y el conjunto $B$ tiene $5$ elementos, el producto cartesiano $A \times B$ tendrá exactamente $4 \cdot 5 = 20$ pares ordenados. Si multiplicamos al revés, $|B \times A| = 5 \cdot 4 = 20$, por lo que **ambos productos siempre tienen la misma cantidad de pares**: **$|A \times B| = |B \times A|$**.
+explicacion_formal: |
+  ### Definición formal
+  En la combinatoria enumerativa y la teoría de conjuntos finitos, el **Teorema Fundamental de Cardinalidad Cartesiana** establece que si $A$ y $B$ son conjuntos finitos:
+  $$|A \times B| = |A| \cdot |B|$$
+  Demostración formal mediante descomposición en partición disjunta:
+  Podemos particionar el conjunto $A \times B$ fijando cada elemento $a \in A$:
+  $$A \times B = \bigcup_{a \in A} (\{a\} \times B)$$
+  Para cada $a \in A$, el conjunto $\{a\} \times B = \{(a, b) \mid b \in B\}$ tiene exactamente $|B|$ elementos, y para $a_1 \neq a_2$, $(\{a_1\} \times B) \cap (\{a_2\} \times B) = \emptyset$.
+  Por el principio aditivo de cardinalidad para conjuntos disjuntos:
+  $$|A \times B| = \sum_{a \in A} |\{a\} \times B| = \sum_{a \in A} |B| = |A| \cdot |B|$$
 
-  Propiedades clave:
+  ### Generalización a $n$ conjuntos
+  Para una familia finita de $n$ conjuntos $\{A_1, A_2, \dots, A_n\}$:
+  $$\left|\prod_{i=1}^n A_i\right| = |A_1 \times A_2 \times \dots \times A_n| = \prod_{i=1}^n |A_i|$$
+  En particular, para la potencia cartesiana: $|A^n| = |A|^n$.
 
-  - Si $A = \emptyset$ o $B = \emptyset$, entonces $A \times B = \emptyset$ y $|A
-  \times B| = 0$.
+  ### Consecuencia sobre la conmutatividad cardinal
+  Aunque $A \times B \neq B \times A$ en general como conjuntos, sus cardinalidades son idénticas en $\mathbb{N}_0$: $|A \times B| = |A| \cdot |B| = |B| \cdot |A| = |B \times A|$.
 
-  - $|A \times B| = |B \times A|$ (las cardinalidades son iguales aunque los conjuntos
-  difieran).
-
-  - Si $|A| = m$ y $|B| = n$, entonces $A \times B$ tiene exactamente $m \times n$
-  pares.
-
-  '
-explicacion: 'La fórmula $|A \times B| = |A| \cdot |B|$ se entiende intuitivamente:
-  por cada uno
-
-  de los $|A|$ elementos de $A$, se forman $|B|$ pares distintos (uno con cada elemento
-
-  de $B$). En total, $|A|$ grupos de $|B|$ pares = $|A| \cdot |B|$ pares.
-
-
-  **Caso vacío:** si $B = \emptyset$, no hay elementos de $B$ con qué formar pares,
-
-  así que $A \times \emptyset = \emptyset$ y $|\emptyset| = 0$.
-
-  Esto es consistente con $|A| \cdot 0 = 0$ para cualquier $|A|$.
-
-
-  **Simetría de la cardinalidad:**
-
-  $|A \times B| = |A| \cdot |B| = |B| \cdot |A| = |B \times A|$
-
-  aunque $A \times B \neq B \times A$ como conjuntos (salvo casos especiales).
-
-  '
+  ### Síntesis didáctica
+  La cardinalidad del producto cartesiano es el ancla que une la multiplicación aritmética básica con la combinatoria de eventos independientes.
+definiciones_clave: |
+  - **Cardinalidad del producto cartesiano**: Número total de pares ordenados contenidos en $A \times B$, dado por $|A| \cdot |B|$.
+  - **Principio multiplicativo del conteo**: Regla combinatoria donde el número de resultados de decisiones secuenciales independientes es el producto de las opciones individuales.
+  - **Potencia cardinal ($|A^n| = |A|^n$)**: Cardinalidad del espacio de $n$-tuplas sobre un mismo conjunto base.
+propiedades_relaciones: |
+  - **Cardinalidad de relaciones**: El número total de posibles relaciones binarias de $A$ en $B$ es $|\mathcal{P}(A \times B)| = 2^{|A \times B|} = 2^{|A| \cdot |B|}$.
+  - **Anulación con el vacío**: Si $|A| = 0$ o $|B| = 0$, entonces $|A \times B| = 0 \cdot |B| = 0$.
+ejemplo_guiado:
+  enunciado: 'Un menú de restaurante ofrece $3$ opciones de entrada ($E$), $4$ opciones de plato de fondo ($F$) y $2$ opciones de postre ($P$). Calcula cuántos menús completos distintos de tres tiempos se pueden conformar ($|E \times F \times P|$).'
+  pasos:
+    - 'Paso 1: Identificar las cardinalidades individuales:
+      - $|E| = 3$ entradas.
+      - $|F| = 4$ platos de fondo.
+      - $|P| = 2$ postres.'
+    - 'Paso 2: Aplicar el principio multiplicativo de la cardinalidad cartesiana para tres conjuntos:
+      - $|E \times F \times P| = |E| \cdot |F| \cdot |P|$.'
+    - 'Paso 3: Sustituir los valores numéricos:
+      - $|E \times F \times P| = 3 \cdot 4 \cdot 2$.'
+    - 'Paso 4: Realizar la multiplicación:
+      - $3 \cdot 4 = 12$.
+      - $12 \cdot 2 = 24$.'
+    - 'Paso 5: Concluir que se pueden armar exactamente $24$ combinaciones de menús completos diferentes.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'Si $|A| = 6$ y $|B| = 7$, ¿cuál es la cardinalidad del producto cartesiano $|A \times B|$?'
+    choices:
+      - {text: '$42$ pares ordenados ($6 \cdot 7$)', is_correct: true}
+      - {text: '$13$ pares ordenados ($6 + 7$)', is_correct: false}
+      - {text: '$1$ par ordenado', is_correct: false}
+      - {text: '$49$ pares ordenados', is_correct: false}
+    explanation: 'La alternativa correcta es ''$42$ pares ordenados ($6 \cdot 7$)''. Por el principio multiplicativo, $|A \times B| = |A| \cdot |B| = 6 \cdot 7 = 42$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si $|A \times B| = 35$ y sabemos que $|A| = 5$, ¿cuántos elementos tiene el conjunto $B$?'
+    choices:
+      - {text: '$7$ elementos ($35 / 5$)', is_correct: true}
+      - {text: '$30$ elementos ($35 - 5$)', is_correct: false}
+      - {text: '$40$ elementos', is_correct: false}
+      - {text: '$5$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$7$ elementos ($35 / 5$)''. Despejando: $|B| = |A \times B| / |A| = 35 / 5 = 7$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Determinar $|A|$ (número de elementos de $A$).'
-- 'Paso 2: Determinar $|B|$ (número de elementos de $B$).'
-- 'Paso 3: Si alguno es vacío, concluir que $|A \times B| = 0$.'
-- 'Paso 4: En caso contrario, calcular $|A| \cdot |B|$.'
+  - 'Paso 1: Determinar la cardinalidad de cada conjunto operando ($|A|, |B|, \dots$).'
+  - 'Paso 2: Si alguno de los conjuntos tiene cardinalidad $0$, la cardinalidad del producto cartesiano es inmediatamente $0$.'
+  - 'Paso 3: Multiplicar las cardinalidades individuales: $|A \times B| = |A| \cdot |B|$.'
+  - 'Paso 4: Si se busca el número de relaciones posibles, calcular $2^{|A \times B|}$.'
+errores_correccion: |
+  - **Error 1:** Sumar las cardinalidades en lugar de multiplicarlas (ej. escribir $|A \times B| = |A| + |B|$). **Cómo corregirlo:** El producto cartesiano empareja todos contra todos, requiriendo una multiplicación aritmética: $|A| \cdot |B|$.
+  - **Error 2:** Creer que $|A \times B| \neq |B \times A|$ en términos de cantidad de elementos. **Cómo corregirlo:** Los conjuntos de pares son distintos, pero sus cantidades numéricas son exactamente iguales por la conmutatividad de la multiplicación en $\mathbb{N}_0$.
 ejemplos:
-- tipo: A
-  titulo: Calcular $|A \times B|$ con $|A| = 4$ y $|B| = 6$
-  enunciado: 'Se sabe que el conjunto $A$ tiene 4 elementos y el conjunto $B$ tiene
-    6 elementos.
-
-    Calcula la cardinalidad de $A \times B$.
-
-    '
-  solucion_pasos: "Paso 1 — Identificar cardinalidades:\n  $|A| = 4$ y $|B| = 6$.\n\
-    \nPaso 2 — Aplicar la fórmula:\n  $|A \\times B| = |A| \\cdot |B| = 4 \\cdot 6\
-    \ = 24$\n\nPaso 3 — Interpretación:\n  El producto cartesiano $A \\times B$ tiene\
-    \ exactamente 24 pares ordenados.\n\nRespuesta: $|A \\times B| = 24$.\n"
-- tipo: A
-  titulo: Calcular $|A \times B|$ con $|A| = 5$ y $B = \emptyset$
-  enunciado: 'El conjunto $A$ tiene 5 elementos y $B = \emptyset$. Calcula $|A \times
-    B|$.
-
-    '
-  solucion_pasos: "Paso 1 — Identificar cardinalidades:\n  $|A| = 5$ y $|B| = |\\\
-    emptyset| = 0$.\n\nPaso 2 — Caso vacío:\n  Si $B = \\emptyset$, entonces $A \\\
-    times B = \\emptyset$, porque no existe ningún\n  elemento de $B$ con quien formar\
-    \ un par.\n\nPaso 3 — Aplicar la fórmula (consistencia):\n  $|A \\times B| = |A|\
-    \ \\cdot |B| = 5 \\cdot 0 = 0$ ✓\n\nRespuesta: $|A \\times B| = 0$, porque $A\
-    \ \\times \\emptyset = \\emptyset$.\n"
-- tipo: B
-  titulo: ¿Se cumple que $|A \times B| = |A| \cdot |B|$ para todo par de conjuntos
-    finitos?
-  respuesta: Sí
-  solucion_pasos: "Esta es la fórmula de cardinalidad del producto cartesiano para\
-    \ conjuntos finitos.\nSe puede verificar con cualquier ejemplo:\n  $A = \\{1,\
-    \ 2\\}$, $B = \\{a, b, c\\}$:\n  $A \\times B = \\{(1,a),(1,b),(1,c),(2,a),(2,b),(2,c)\\\
-    }$ → 6 elementos.\n  $|A| \\cdot |B| = 2 \\cdot 3 = 6$ ✓\n\nEl caso $B = \\emptyset$\
-    \ también es consistente: $|A| \\cdot 0 = 0$.\n\nLa respuesta es **Sí**.\n"
-- tipo: B
-  titulo: ¿Puede $|A \times B| > |B \times A|$?
-  respuesta: 'No'
-  solucion_pasos: '$|A \times B| = |A| \cdot |B|$ y $|B \times A| = |B| \cdot |A|$.
-
-    Como la multiplicación de números naturales es conmutativa:
-
-    $$|A| \cdot |B| = |B| \cdot |A|$$
-
-    Por tanto $|A \times B| = |B \times A|$ siempre.
-
-
-    Ninguno puede ser estrictamente mayor que el otro.
-
-    La respuesta es **No**.
-
-    '
+  - titulo: 'Cálculo de cardinalidad directa'
+    enunciado: 'Si $|A| = 5$ y $|B| = 8$, ¿cuánto vale $|A \times B|$?'
+    alternativas:
+      - '$40$'
+      - '$13$'
+      - '$25$'
+    respuesta: '$40$'
+    solucion_pasos:
+      - '1. $|A \times B| = 5 \cdot 8 = 40$.'
+  - titulo: 'Cardinalidad con conjunto vacío'
+    enunciado: 'Si $|A| = 12$ y $|B| = 0$, ¿cuánto vale $|A \times B|$?'
+    respuesta: '$0$'
+    solucion_pasos:
+      - '$12 \cdot 0 = 0$, pues $A \times \emptyset = \emptyset$.'
+  - titulo: 'Potencia cartesiana del binario'
+    enunciado: 'Si $B = \{0, 1\}$, ¿cuántas cadenas binarias de longitud 4 existen ($|B^4|$)?'
+    respuesta: '$16$'
+    solucion_pasos:
+      - '$|B^4| = |B|^4 = 2^4 = 16$.'
+  - titulo: 'Total de relaciones binarias'
+    enunciado: 'Si $|A|=2$ y $|B|=3$, ¿cuántas relaciones distintas de A en B se pueden definir?'
+    respuesta: '$64$'
+    solucion_pasos:
+      - '$|A \times B| = 2 \cdot 3 = 6$. Total de relaciones $= 2^6 = 64$.'
 errores_frecuentes:
-- 'Con $|A| = 4$ y $|B| = 6$, calcular $|A \times B| = 4 + 6 = 10$ en vez de $24$.
-  La cardinalidad del producto cartesiano se calcula multiplicando: $|A \times B|
-  = |A| \cdot |B| = 4 \cdot 6 = 24$.'
-- Declarar que $A \times \emptyset$ contiene pares como $(a, \text{nada})$. Un par
-  ordenado requiere dos componentes; si $B = \emptyset$ no hay segunda componente
-  posible. Por tanto $A \times \emptyset = \emptyset$.
-- Concluir que como las cardinalidades son iguales, los conjuntos son iguales. Las
-  cardinalidades son iguales ($|A \times B| = |B \times A|$), pero los conjuntos pueden
-  ser distintos ($A \times B \neq B \times A$ en general).
-- Escribir $|\mathbb{R} \times \mathbb{R}| = |\mathbb{R}| \cdot |\mathbb{R}|$ como
-  si fueran números naturales. La fórmula $|A \times B| = |A| \cdot |B|$ se aplica
-  directamente a conjuntos finitos. Para conjuntos infinitos se requiere teoría de
-  cardinalidades (que está fuera del alcance de este nivel).
-- Declarar que si $|A \times B| = 24$, el conjunto tiene 24 "números" distintos. El
-  conjunto $A \times B$ tiene 24 pares ordenados; cada elemento es un par $(a, b)$,
-  no un número aislado.
-fuente: Matemáticas para la Educación Media, MINEDUC
+  - 'La afirmación de que la cardinalidad del producto cartesiano es igual a la suma de las cardinalidades individuales.'
+  - 'La afirmación de que $|A \times B|$ y $|B \times A|$ tienen diferente número de elementos para conjuntos finitos.'
+  - 'La afirmación de que la cardinalidad del producto cartesiano con el conjunto vacío es igual a la cardinalidad del conjunto no vacío.'
+  - 'La afirmación de que el número de relaciones posibles entre $A$ y $B$ es igual a $|A| \cdot |B|$ en lugar de $2^{|A| \cdot |B|}$.'
+  - 'La afirmación de que la potencia cartesiana $|A^3|$ se calcula como $3 \cdot |A|$ en lugar de $|A|^3$.'
+afirmaciones_verdaderas:
+  - 'La cardinalidad del producto cartesiano de dos conjuntos finitos es el producto de sus cardinalidades individuales ($|A \times B| = |A| \cdot |B|$).'
+  - 'Para cualesquiera conjuntos finitos $A$ y $B$, se cumple la igualdad numérica $|A \times B| = |B \times A|$.'
+al_terminar_debes_poder: |
+  QUÉ: Calcular y fundamentar la cardinalidad del producto cartesiano ($|A \times B| = |A| \cdot |B|$ y $|A^n| = |A|^n$).
+  CÓMO: Aplicar el principio multiplicativo del conteo, despejar incógnitas cardinales y determinar el número de relaciones posibles $2^{|A| \cdot |B|}$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
