@@ -1,118 +1,113 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.INCLUSION_EXCLUSION_TRES_CONJUNTOS
-titulo: Principio de inclusión-exclusión para tres conjuntos
-objetivo: Aplicar el principio de inclusión-exclusión para tres conjuntos para calcular
-  la cardinalidad de la unión o de alguna de las intersecciones múltiples.
-introduccion: 'Imagina que en un colegio hay estudiantes inscritos en tres talleres
-  diferentes: Arte ($A$), Música ($B$) y Deportes ($C$). Si deseamos calcular el total
-  de estudiantes únicos que participan en al menos uno de los tres talleres, no podemos
-  simplemente sumar las cantidades de cada taller, porque hay estudiantes que están
-  en dos o incluso en los tres talleres. Para no repetir a nadie, la fórmula nos indica:
-  sumar los de cada taller, restar los que están en parejas de talleres, y sumar de
-  nuevo a los estudiantes súper activos que están en los tres talleres a la vez. Esta
-  técnica se conoce como el principio de inclusión-exclusión para tres conjuntos.'
-resumen: 'El principio de inclusión-exclusión para tres conjuntos establece que la
-  cardinalidad de la unión de tres conjuntos es igual a la suma de sus cardinalidades
-  individuales, menos la suma de las intersecciones dobles, más la intersección triple.
-  Formalmente: $|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |A \cap C| - |B
-  \cap C| + |A \cap B \cap C|$.'
-explicacion: 'El **principio de inclusión-exclusión para tres conjuntos** es una extensión
-  natural del principio para dos conjuntos, y permite contar de manera precisa los
-  elementos de la unión de tres conjuntos finitos que pueden traslaparse de múltiples
-  formas.
+resumen_inicial: 'Fórmula de Poincaré de orden 3, demostración y aplicaciones del Principio de Inclusión-Exclusión para tres conjuntos finitos: $|A \cup B \cup C|$.'
+explicacion_simple: |
+  Para calcular cuántos elementos hay en la unión de **tres conjuntos** ($A, B$ y $C$) con elementos repetidos, usamos la **fórmula de inclusión-exclusión de tres conjuntos**:
+  $$|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$$
+  ¿Por qué esta alternancia de signos ($+ - +$)?
+  1. Primero **sumamos** los tres conjuntos ($|A| + |B| + |C|$), pero esto cuenta de más las intersecciones.
+  2. Luego **restamos** todas las parejas dobles ($-|A \cap B| - |A \cap C| - |B \cap C|$), pero esto resta tres veces el centro compartido.
+  3. Finalmente **volvemos a sumar** la triple intersección central ($+|A \cap B \cap C|$) para compensar y dejar el conteo perfecto.
+explicacion_formal: |
+  ### Definición formal
+  En la combinatoria enumerativa, la **Fórmula de Poincaré / Principio de Inclusión-Exclusión para tres conjuntos** establece que:
+  $$|A \cup B \cup C| = \sum_{i} |A_i| - \sum_{i < j} |A_i \cap A_j| + |A_1 \cap A_2 \cap A_3|$$
+  Desarrollada explícitamente:
+  $$|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$$
 
+  ### Demostración formal por función característica
+  Para cualquier elemento $x \in \mathcal{U}$, su pertenencia a la unión se representa como:
+  $$\mathbf{1}_{A \cup B \cup C}(x) = 1 - (1 - \mathbf{1}_A(x))(1 - \mathbf{1}_B(x))(1 - \mathbf{1}_C(x))$$
+  Expandiendo el producto algebraico:
+  $$\mathbf{1}_{A \cup B \cup C}(x) = (\mathbf{1}_A(x) + \mathbf{1}_B(x) + \mathbf{1}_C(x)) - (\mathbf{1}_{A \cap B}(x) + \mathbf{1}_{A \cap C}(x) + \mathbf{1}_{B \cap C}(x)) + \mathbf{1}_{A \cap B \cap C}(x)$$
+  Sumando sobre todo $x \in \mathcal{U}$ se obtiene exactamente la identidad de cardinalidades.
 
-  ### Explicación Paso a Paso de la Fórmula
-
-  Para calcular el tamaño de la unión $A \cup B \cup C$:
-
-  1. **Inclusión individual:** Sumamos $|A| + |B| + |C|$. En este paso, cualquier
-  elemento que pertenece a más de un conjunto ha sido sobrecontado. Específicamente,
-  los elementos de las intersecciones dobles se han contado 2 veces, y los de la intersección
-  triple ($A \cap B \cap C$) se han contado 3 veces.
-
-  2. **Exclusión doble:** Restamos las cardinalidades de las intersecciones de dos
-  en dos: $-|A \cap B| - |A \cap C| - |B \cap C|$. Esto remueve los conteos duplicados
-  de los elementos que pertenecen a dos conjuntos. Sin embargo, al restar estas tres
-  intersecciones, los elementos que pertenecen a la intersección triple (que se contaron
-  3 veces al inicio) ahora se han restado 3 veces, quedando con un conteo neto de
-  0.
-
-  3. **Inclusión triple:** Para corregir el hecho de que la intersección triple quedó
-  completamente excluida, debemos sumarla de nuevo una vez: $+|A \cap B \cap C|$.
-
-
-  ### Fórmula Matemática
-
-  $$|A \cup B \cup C| = |A| + |B| + |C| - (|A \cap B| + |A \cap C| + |B \cap C|) +
-  |A \cap B \cap C|$$'
+  ### Síntesis didáctica
+  La alternancia de signos $+ - +$ es la firma matemática del ajuste de sobre-inclusión y sobre-exclusión en retículos booleanos.
+definiciones_clave: |
+  - **Fórmula de Poincaré (orden 3)**: Teorema algebraico que calcula la cardinalidad de la unión triple mediante sumas y restas alternadas.
+  - **Función característica ($\mathbf{1}_S$)**: Herramienta analítica que modela la pertenencia binaria de elementos.
+  - **Triple intersección compensatoria**: Término $+|A \cap B \cap C|$ sumado al final para compensar la sobre-resta de las parejas.
+propiedades_relaciones: |
+  - **Despeje del núcleo central**: $|A \cap B \cap C| = |A \cup B \cup C| - \sum |A_i| + \sum |A_i \cap A_j|$.
+  - **Extensión probabilística**: $P(A \cup B \cup C) = \sum P(A_i) - \sum P(A_i \cap A_j) + P(A \cap B \cap C)$.
+ejemplo_guiado:
+  enunciado: 'En una academia: $45$ estudiantes leen ciencia ($C$), $40$ historia ($H$), $35$ arte ($A$). Las intersecciones de a dos son: $|C \cap H| = 15$, $|C \cap A| = 12$, $|H \cap A| = 10$, y $6$ leen las tres materias ($|C \cap H \cap A| = 6$). Calcula el total de estudiantes que leen al menos una materia.'
+  pasos:
+    - 'Paso 1: Identificar las sumas individuales ($S_1$):
+      - $S_1 = 45 + 40 + 35 = 120$.'
+    - 'Paso 2: Identificar la suma de intersecciones dobles ($S_2$):
+      - $S_2 = 15 + 12 + 10 = 37$.'
+    - 'Paso 3: Identificar la triple intersección ($S_3$):
+      - $S_3 = 6$.'
+    - 'Paso 4: Aplicar la fórmula de inclusión-exclusión:
+      - $|C \cup H \cup A| = S_1 - S_2 + S_3 = 120 - 37 + 6$.'
+    - 'Paso 5: Realizar las operaciones:
+      - $120 - 37 = 83$.
+      - $83 + 6 = 89$ estudiantes en total.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué signo lleva el término de la triple intersección $|A \cap B \cap C|$ en la fórmula de Poincaré para tres conjuntos?'
+    choices:
+      - {text: 'Signo positivo ($+$), sumándose al final para compensar la sobre-resta', is_correct: true}
+      - {text: 'Signo negativo ($-$), restándose junto con las parejas', is_correct: false}
+      - {text: 'Signo neutro (no se incluye en la fórmula)', is_correct: false}
+      - {text: 'Signo de multiplicación', is_correct: false}
+    explanation: 'La alternativa correcta es ''Signo positivo ($+$), sumándose al final para compensar la sobre-resta''. La fórmula alterna signos $+ - +$.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si $|A|=10, |B|=10, |C|=10$, todas las intersecciones dobles valen $3$ y la triple vale $1$, ¿cuál es el valor de $|A \cup B \cup C|$?'
+    choices:
+      - {text: '$22$ elementos ($30 - 9 + 1$)', is_correct: true}
+      - {text: '$20$ elementos', is_correct: false}
+      - {text: '$30$ elementos', is_correct: false}
+      - {text: '$21$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$22$ elementos ($30 - 9 + 1$)''. Se calcula como $(10+10+10) - (3+3+3) + 1 = 30 - 9 + 1 = 22$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identifica todas las cardinalidades dadas en el enunciado: individuales
-  ($|A|, |B|, |C|$), intersecciones dobles ($|A \cap B|, |A \cap C|, |B \cap C|$)
-  e intersección triple ($|A \cap B \cap C|$).'
-- 'Paso 2: Suma las tres cardinalidades individuales.'
-- 'Paso 3: Resta la suma de las tres intersecciones dobles al resultado del Paso 2.'
-- 'Paso 4: Suma la intersección triple al resultado anterior para obtener la cardinalidad
-  de la unión $|A \cup B \cup C|$.'
+  - 'Paso 1: Sumar las tres cardinalidades individuales: $S_1 = |A| + |B| + |C|$.'
+  - 'Paso 2: Sumar las tres intersecciones de pares: $S_2 = |A \cap B| + |A \cap C| + |B \cap C|$.'
+  - 'Paso 3: Identificar el valor de la triple intersección: $S_3 = |A \cap B \cap C|$.'
+  - 'Paso 4: Aplicar la alternancia de signos: $|A \cup B \cup C| = S_1 - S_2 + S_3$.'
+  - 'Paso 5: Si la incógnita es la triple intersección o un conjunto individual, despejar algebraicamente.'
+errores_correccion: |
+  - **Error 1:** Restar la triple intersección al final en lugar de sumarla. **Cómo corregirlo:** Las intersecciones dobles restan al centro tres veces; para restaurarlo exactamente una vez se debe sumar $+|A \cap B \cap C|$.
+  - **Error 2:** Sumar directamente los tres conjuntos individuales sin restar las parejas comunes. **Cómo corregirlo:** La adición simple genera sobreconteo en todas las áreas solapadas; la deducción de las dobles es obligatoria.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: En un grupo de 50 deportistas, 22 juegan fútbol ($F$), 18 básquetbol
-    ($B$) y 20 tenis ($T$). Además, 7 juegan fútbol y básquetbol ($F \cap B$), 6 juegan
-    fútbol y tenis ($F \cap T$), 5 juegan básquetbol y tenis ($B \cap T$), y 3 practican
-    los tres deportes ($F \cap B \cap T$). ¿Cuántos deportistas juegan al menos uno
-    de los tres deportes?
-  solucion_pasos:
-  - 'Paso a: Identificamos los datos: individuales ($|F| = 22$, $|B| = 18$, $|T| =
-    20$), intersecciones dobles ($|F \cap B| = 7$, $|F \cap T| = 6$, $|B \cap T| =
-    5$), intersección triple ($|F \cap B \cap T| = 3$).'
-  - 'Paso b: Aplicamos la fórmula del principio de inclusión-exclusión: $|F \cup B
-    \cup T| = 22 + 18 + 20 - (7 + 6 + 5) + 3$.'
-  - 'Paso c: Calculamos la suma individual: $22 + 18 + 20 = 60$.'
-  - 'Paso d: Calculamos la suma de las intersecciones dobles: $7 + 6 + 5 = 18$. Restamos
-    al total individual: $60 - 18 = 42$.'
-  - 'Paso e: Sumamos la intersección triple: $42 + 3 = 45$. Por lo tanto, 45 deportistas
-    juegan al menos uno de los tres deportes.'
-- titulo: Ejemplo 2
-  enunciado: 'Un grupo de estudiantes lee tres revistas: Ciencia ($C$), Literatura
-    ($L$) e Historia ($H$). Se sabe que 15 leen Ciencia, 12 Literatura y 10 Historia.
-    Además, 5 leen Ciencia y Literatura, 4 Ciencia e Historia, y 3 Literatura e Historia.
-    Si hay 25 estudiantes en total que leen al menos una revista y nadie lee las tres
-    a la vez ($C \cap L \cap H = \varnothing$), verifica si los datos son coherentes.'
-  solucion_pasos:
-  - 'Paso a: Los datos son $|C|=15$, $|L|=12$, $|H|=10$, $|C \cap L|=5$, $|C \cap
-    H|=4$, $|L \cap H|=3$, $|C \cup L \cup H|=25$, e intersección triple $|C \cap
-    L \cap H|=0$.'
-  - 'Paso b: Aplicamos la fórmula para verificar la igualdad: $25 = 15 + 12 + 10 -
-    (5 + 4 + 3) + 0$.'
-  - 'Paso c: Evaluamos el lado derecho: $15 + 12 + 10 = 37$; restamos las dobles:
-    $37 - 12 = 25$; sumamos la triple: $25 + 0 = 25$.'
-  - 'Paso d: Como $25 = 25$, la igualdad se cumple, demostrando que los datos de cardinalidad
-    del problema son coherentes.'
-- titulo: ¿Se cumple la fórmula si las tres intersecciones dobles son vacías?
-  respuesta: Sí
-  solucion_pasos:
-  - Si las intersecciones dobles son vacías ($|A \cap B| = 0$, etc.), la intersección
-    triple también debe ser necesariamente vacía ($|A \cap B \cap C| = 0$).
-  - 'En este caso, la fórmula se simplifica a la suma directa de las cardinalidades
-    individuales: $|A \cup B \cup C| = |A| + |B| + |C|$, lo cual corresponde a la
-    unión de conjuntos disjuntos.'
-- titulo: ¿Es posible que la intersección triple $|A \cap B \cap C|$ sea mayor que
-    alguna de las intersecciones dobles?
-  respuesta: 'No'
-  solucion_pasos:
-  - La intersección triple $A \cap B \cap C$ está contenida dentro de cualquiera de
-    las intersecciones dobles (por ejemplo, $A \cap B \cap C \subseteq A \cap B$).
-  - Por las propiedades de la inclusión, la cardinalidad de un subconjunto nunca puede
-    superar a la del conjunto que lo contiene. Por lo tanto, $|A \cap B \cap C| \le
-    |A \cap B|$ siempre.
+  - titulo: 'Cálculo de unión triple básica'
+    enunciado: 'Si $S_1 = 60, S_2 = 24, S_3 = 4$, ¿cuánto vale $|A \cup B \cup C|$?'
+    alternativas:
+      - '$40$'
+      - '$32$'
+      - '$44$'
+    respuesta: '$40$'
+    solucion_pasos:
+      - '1. $|A \cup B \cup C| = 60 - 24 + 4 = 40$.'
+  - titulo: 'Despeje de la triple intersección'
+    enunciado: 'Si $|A \cup B \cup C| = 50, S_1 = 70, S_2 = 25$, ¿cuánto vale $|A \cap B \cap C|$?'
+    respuesta: '$5$'
+    solucion_pasos:
+      - '$50 = 70 - 25 + x \implies 50 = 45 + x \implies x = 5$.'
+  - titulo: 'Conjuntos disjuntos dos a dos'
+    enunciado: 'Si todas las intersecciones son vacías, ¿qué resulta la fórmula?'
+    respuesta: '$|A \cup B \cup C| = |A| + |B| + |C|$'
+    solucion_pasos:
+      - '$S_2 = 0$ y $S_3 = 0$, reduciendo a la suma directa.'
+  - titulo: 'Región exterior a los tres'
+    enunciado: 'Si $|\mathcal{U}| = 100$ y $|A \cup B \cup C| = 85$, ¿cuántos hay en la región exterior?'
+    respuesta: '$15$'
+    solucion_pasos:
+      - '$|(A \cup B \cup C)^c| = 100 - 85 = 15$.'
 errores_frecuentes:
-- Omitir sumar de vuelta la intersección triple ($|A \cap B \cap C|$), lo que deja
-  a ese grupo de elementos sin contabilizar.
-- Sumar las intersecciones dobles en lugar de restarlas de la suma individual.
-- Declarar la cardinalidad de la unión $|A \cup B \cup C|$ con el tamaño del universo
-  completo (puede haber elementos en el universo que no están en ninguno de los tres
-  conjuntos).
-- No verificar que los datos de las intersecciones sean coherentes entre sí (por ejemplo,
-  que la intersección triple no sea mayor que las dobles).
-- Restar la intersección triple al final en lugar de sumarla.
-fuente: Matemática Discreta, Editorial Pearson, pág. 248
+  - 'La afirmación de que la fórmula de tres conjuntos resta la triple intersección en su último término.'
+  - 'La afirmación de que la adición directa de los tres conjuntos individuales calcula la unión triple sin deducir las parejas comunes.'
+  - 'La afirmación de que las tres intersecciones de pares pueden sumarse a los totales sin signo negativo.'
+  - 'La afirmación de que la fórmula de inclusión-exclusión de tres conjuntos no es válida para conjuntos infinitos medibles.'
+  - 'La afirmación de que la cardinalidad de la triple intersección puede superar a la cardinalidad de cualquier intersección doble.'
+afirmaciones_verdaderas:
+  - 'La cardinalidad de la unión de tres conjuntos finitos se calcula mediante la fórmula de Poincaré: $|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$.'
+  - 'La alternancia de signos en la fórmula de inclusión-exclusión compensa de forma exacta el sobreconteo y la sobre-resta de los átomos booleanos.'
+al_terminar_debes_poder: |
+  QUÉ: Enunciar, demostrar y aplicar el Principio de Inclusión-Exclusión para tres conjuntos ($|A \cup B \cup C|$).
+  CÓMO: Calcular la unión triple mediante la suma $S_1 - S_2 + S_3$, despejar la triple intersección y resolver problemas de conteo combinatorio.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

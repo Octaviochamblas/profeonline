@@ -1,170 +1,108 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.REGION_SOLO_UN_CONJUNTO_TRES
-titulo: Cálculo de regiones exclusivas en tres conjuntos
-objetivo: 'Calcular la cardinalidad de la región «solo A» en un diagrama de Venn de tres
+resumen_inicial: 'Fórmulas y cálculo de las regiones exclusivas individuales ("Solo A", "Solo B", "Solo C") y de la condición "Exactamente un conjunto" en problemas de tres conjuntos.'
+explicacion_simple: |
+  En un problema con **tres conjuntos** ($A, B, C$), las **regiones exclusivas individuales** representan a los elementos que pertenecen **únicamente a un solo conjunto y a ninguno de los otros dos**:
+  - **"Solo $A$"**: se calcula tomando el total de $A$ y restando las tres zonas con las que comparte elementos:
+    $$\text{Solo } A = |A| - (\text{Solo } A \text{ y } B) - (\text{Solo } A \text{ y } C) - (\text{Los tres})$$
+  - **"Exactamente uno de los tres"**: es la suma directa de las tres regiones exclusivas:
+    $$\text{Exactamente uno} = \text{Solo } A + \text{Solo } B + \text{Solo } C$$
+explicacion_formal: |
+  ### Definición formal
+  En la teoría conjuntista de orden 3 sobre $\mathcal{U}$, las **regiones exclusivas individuales** son los átomos booleanos de peso de Hamming 1:
+  $$|R_{100}| = |A \setminus (B \cup C)| = |A \cap B^c \cap C^c| = |A| - |A \cap B| - |A \cap C| + |A \cap B \cap C|$$
+  $$|R_{010}| = |B \setminus (A \cup C)| = |B \cap A^c \cap C^c| = |B| - |A \cap B| - |B \cap C| + |A \cap B \cap C|$$
+  $$|R_{001}| = |C \setminus (A \cup B)| = |C \cap A^c \cap B^c| = |C| - |A \cap C| - |B \cap C| + |A \cap B \cap C|$$
+  La cardinalidad total de la condición **"Exactamente uno"** es la suma disjunta:
+  $$N_{\text{exactamente 1}} = |R_{100}| + |R_{010}| + |R_{001}| = \sum |A_i| - 2\sum |A_i \cap A_j| + 3|A \cap B \cap C|$$
 
-  conjuntos, aplicando la fórmula |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|.
+  ### Desglose simbólico
+  - Fórmula con dobles exclusivas: $|R_{100}| = |A| - (x_{110} + x_{101} + x_{111})$.
+  - Criterio de peso de Hamming: $w(b) = 1$.
 
-  '
-introduccion: 'En un diagrama de Venn de tres conjuntos A, B y C, la región «solo A» contiene
-
-  los elementos que pertenecen a A pero no a B ni a C. Para obtener su cardinalidad
-
-  no basta con restar |A∩B| y |A∩C| de |A|, ya que los elementos de A∩B∩C quedarían
-
-  restados dos veces. Por eso se suma de vuelta |A∩B∩C| al final, aplicando el
-
-  principio de inclusión-exclusión a nivel de región.
-
-  '
-resumen: 'Fórmula para la región «solo A» en un diagrama de tres conjuntos:
-
-  |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|
-
-
-  Por simetría:
-
-  |solo B| = |B| - |A∩B| - |B∩C| + |A∩B∩C|
-
-  |solo C| = |C| - |A∩C| - |B∩C| + |A∩B∩C|
-
-  '
-explicacion: "El conjunto A se descompone en cuatro regiones disjuntas del diagrama:\n  A = (solo A) ∪\
-  \ [(A∩B)\\C] ∪ [(A∩C)\\B] ∪ (A∩B∩C)\n\nPor tanto:\n  |A| = |solo A| + |(A∩B)\\C| + |(A∩C)\\B| + |A∩B∩C|\n\
-  \nUsando |(A∩B)\\C| = |A∩B| - |A∩B∩C| y |(A∩C)\\B| = |A∩C| - |A∩B∩C|:\n\n  |A| = |solo A| + (|A∩B| -\
-  \ |A∩B∩C|) + (|A∩C| - |A∩B∩C|) + |A∩B∩C|\n\nDespejando:\n  |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|\n\
-  \nLa suma de |A∩B∩C| al final corrige el doble descuento de los elementos\nque pertenecen a los tres\
-  \ conjuntos.\n"
+  ### Síntesis didáctica
+  Cada región exclusiva descuenta todas las dependencias compartidas para aislar la membresía estricta e independiente.
+definiciones_clave: |
+  - **Región "Solo un conjunto"**: Átomo booleano que reúne los elementos con pertenencia única y exclusiva a una sola de las tres categorías.
+  - **Condición "Exactamente uno"**: Agregación de las tres regiones individuales exclusivas.
+  - **Peso de Hamming 1**: Clasificación de regiones con una sola condición afirmativa.
+propiedades_relaciones: |
+  - **Disyunción mutua**: Las tres regiones $R_{100}, R_{010}, R_{001}$ son disjuntas dos a dos.
+  - **Complementariedad**: "Exactamente uno" es un subconjunto disjunto de la unión total $A \cup B \cup C$.
+ejemplo_guiado:
+  enunciado: 'En una encuesta de preferencias: $|A| = 40$, $|B| = 35$, $|C| = 30$, las dobles exclusivas son: Solo $A$ y $B = 8$, Solo $A$ y $C = 6$, Solo $B$ y $C = 5$, y los tres $= 4$. Calcula: (a) Solo $A$, (b) Solo $B$, (c) Solo $C$, y (d) cuántos prefieren exactamente una opción.'
+  pasos:
+    - 'Paso 1: Calcular (a) "Solo $A$":
+      - Restar a $|A|$ las tres zonas compartidas: $40 - (8 + 6 + 4) = 40 - 18 = 22$.'
+    - 'Paso 2: Calcular (b) "Solo $B$":
+      - Restar a $|B|$ las tres zonas compartidas: $35 - (8 + 5 + 4) = 35 - 17 = 18$.'
+    - 'Paso 3: Calcular (c) "Solo $C$":
+      - Restar a $|C|$ las tres zonas compartidas: $30 - (6 + 5 + 4) = 30 - 15 = 15$.'
+    - 'Paso 4: Calcular (d) "Exactamente una opción":
+      - Sumar los tres resultados exclusivos: $22 + 18 + 15 = 55$ personas.'
+    - 'Paso 5: Concluir que $55$ personas prefieren exactamente una sola de las opciones.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Qué fórmula calcula la región exclusiva "Solo $A$" en función de las dobles exclusivas y la triple central?'
+    choices:
+      - {text: '$|A| - (\text{Solo } A \text{ y } B) - (\text{Solo } A \text{ y } C) - (\text{Los tres})$', is_correct: true}
+      - {text: '$|A| + |B| + |C|$', is_correct: false}
+      - {text: '$|A| - |B| - |C|$', is_correct: false}
+      - {text: '$|A \cup B \cup C| - |A|$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$|A| - (\text{Solo } A \text{ y } B) - (\text{Solo } A \text{ y } C) - (\text{Los tres})$''. Se descuentan las tres regiones solapadas que tocan al círculo A.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si Solo $A = 14$, Solo $B = 16$ y Solo $C = 10$, ¿cuántos elementos pertenecen a "exactamente uno de los tres conjuntos"?'
+    choices:
+      - {text: '$40$ elementos ($14 + 16 + 10$)', is_correct: true}
+      - {text: '$14$ elementos', is_correct: false}
+      - {text: '$30$ elementos', is_correct: false}
+      - {text: '$50$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$40$ elementos ($14 + 16 + 10$)''. Se suman directamente las tres regiones exclusivas individuales: $14 + 16 + 10 = 40$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar los datos: |A|, |A∩B|, |A∩C| y |A∩B∩C|.'
-- 'Paso 2: Verificar que |A∩B∩C| ≤ |A∩B| y |A∩B∩C| ≤ |A∩C|.'
-- 'Paso 3: Aplicar la fórmula: |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|.'
-- 'Paso 4: Verificar que el resultado sea ≥ 0.'
-- 'Paso 5: (Opcional) Sumar las siete regiones interiores y la exterior para comprobar que el total es |U|.'
+  - 'Paso 1: Disponer de las tres regiones dobles exclusivas y de la triple intersección central.'
+  - 'Paso 2: Para cada conjunto, sumar las tres zonas de solapamiento que residen en su interior.'
+  - 'Paso 3: Restar dicha suma al total del conjunto respectivo para obtener su región exclusiva.'
+  - 'Paso 4: Para calcular "exactamente uno", sumar las tres cantidades exclusivas individuales obtenidas.'
+errores_correccion: |
+  - **Error 1:** Restar directamente los datos de intersección brutos sin deducir el centro previamente. **Cómo corregirlo:** Si se usan intersecciones de pares brutas, la fórmula formal requiere sumar la triple central: $|A| - |A \cap B| - |A \cap C| + |A \cap B \cap C|$.
+  - **Error 2:** Creer que "exactamente uno" es equivalente a la unión total $A \cup B \cup C$. **Cómo corregirlo:** La unión incluye los elementos que están en 2 o en 3 conjuntos; "exactamente uno" descarta todas las intersecciones.
 ejemplos:
-- tipo: A
-  titulo: Calcular |solo A| con |A|=30, |A∩B|=12, |A∩C|=10, |A∩B∩C|=5
-  enunciado: 'Dados |A| = 30, |A∩B| = 12, |A∩C| = 10 y |A∩B∩C| = 5,
-
-    calcula la cardinalidad de la región «solo A».
-
-    '
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Identificamos los datos: |A| = 30, |A∩B| = 12, |A∩C| = 10, |A∩B∩C| = 5.
-
-      '
-  - paso: 2
-    descripcion: 'Verificamos: 5 ≤ 12 ✓ y 5 ≤ 10 ✓.
-
-      '
-  - paso: 3
-    descripcion: 'Aplicamos la fórmula:
-
-      |solo A| = 30 - 12 - 10 + 5 = 13.
-
-      '
-  - paso: 4
-    descripcion: 'Verificación: el resultado 13 ≥ 0 ✓.
-
-      Resultado: |solo A| = 13.
-
-      '
-- tipo: A
-  titulo: Calcular |solo A| con |A|=25, |A∩B|=8, |A∩C|=7, |A∩B∩C|=3
-  enunciado: 'Dados |A| = 25, |A∩B| = 8, |A∩C| = 7 y |A∩B∩C| = 3,
-
-    calcula la cardinalidad de la región «solo A».
-
-    '
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Identificamos los datos: |A| = 25, |A∩B| = 8, |A∩C| = 7, |A∩B∩C| = 3.
-
-      '
-  - paso: 2
-    descripcion: 'Verificamos: 3 ≤ 8 ✓ y 3 ≤ 7 ✓.
-
-      '
-  - paso: 3
-    descripcion: 'Aplicamos la fórmula:
-
-      |solo A| = 25 - 8 - 7 + 3 = 13.
-
-      '
-  - paso: 4
-    descripcion: 'Verificación: 13 ≥ 0 ✓.
-
-      Resultado: |solo A| = 13.
-
-      '
-- tipo: B
-  titulo: ¿La fórmula correcta para «solo A» en tres conjuntos incluye sumar $|A \cap B \cap C|$?
-  enunciado: '¿La fórmula para la región «solo A» en un diagrama de tres conjuntos es
-
-    $|A| - |A \cap B| - |A \cap C| + |A \cap B \cap C|$?
-
-    '
-  respuesta: Sí
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Al restar |A∩B| y |A∩C| de |A|, los elementos de A∩B∩C se descuentan
-
-      dos veces (una por |A∩B| y otra por |A∩C|).
-
-      '
-  - paso: 2
-    descripcion: 'Para corregir este doble descuento, se suma |A∩B∩C| una vez, restaurando
-
-      el conteo correcto.
-
-      '
-  - paso: 3
-    descripcion: 'La fórmula resultante |A| - |A∩B| - |A∩C| + |A∩B∩C| da exactamente la
-
-      cardinalidad de los elementos que están SOLO en A.
-
-      '
-  - paso: 4
-    descripcion: 'Conclusión: Sí, la fórmula es correcta y el término +|A∩B∩C| es esencial. ✓
-
-      '
-- tipo: B
-  titulo: ¿Puede la región «solo A» contener elementos que también pertenezcan a $B$?
-  enunciado: '¿Puede la región «solo A» contener elementos que también pertenezcan a $B$?
-
-    '
-  respuesta: 'No'
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Por definición, la región «solo A» = A\(B∪C) contiene únicamente elementos
-
-      que NO pertenecen a B ni a C.
-
-      '
-  - paso: 2
-    descripcion: 'Si un elemento perteneciera a B, estaría en A∩B y no en la región «solo A».
-
-      '
-  - paso: 3
-    descripcion: 'La fórmula garantiza esto al descontar |A∩B|: los elementos compartidos
-
-      con B quedan fuera de la región «solo A».
-
-      '
-  - paso: 4
-    descripcion: 'Conclusión: No, ningún elemento de la región «solo A» pertenece a B. ✓
-
-      '
+  - titulo: 'Cálculo de Solo A'
+    enunciado: 'Si $|A| = 30$ y las tres áreas de cruce de A suman 18, ¿cuánto vale Solo A?'
+    alternativas:
+      - '$12$'
+      - '$30$'
+      - '$48$'
+    respuesta: '$12$'
+    solucion_pasos:
+      - '1. $\text{Solo } A = 30 - 18 = 12$.'
+  - titulo: 'Exactamente uno'
+    enunciado: 'Si Solo A = 10, Solo B = 12, Solo C = 8, ¿cuánto vale exactamente uno?'
+    respuesta: '$30$'
+    solucion_pasos:
+      - '$10 + 12 + 8 = 30$.'
+  - titulo: 'Caso de conjuntos disjuntos'
+    enunciado: 'Si los tres conjuntos son disjuntos, ¿a qué es igual exactamente uno?'
+    respuesta: '$|A| + |B| + |C|$'
+    solucion_pasos:
+      - 'Al no haber cruces, todos los elementos son exclusivos.'
+  - titulo: 'Región exclusiva vacía'
+    enunciado: 'Si $|A| = 15$ y las tres zonas compartidas suman 15, ¿cuál es Solo A?'
+    respuesta: '$0$'
+    solucion_pasos:
+      - '$15 - 15 = 0$, ningún elemento pertenece exclusivamente a A.'
 errores_frecuentes:
-- 'Los elementos de A∩B∩C se restan dos veces (en |A∩B| y en |A∩C|). Se deben sumar de
-    vuelta: |solo A| = |A| - |A∩B| - |A∩C| + |A∩B∩C|.'
-- '|B∩C| no contiene elementos de «solo A» y no aparece en la fórmula. Solo se usan
-    intersecciones que involucran a A: |A∩B|, |A∩C| y |A∩B∩C|.'
-- 'A completo incluye las regiones (A∩B)\C, (A∩C)\B y A∩B∩C. «Solo A» excluye todas esas
-    partes; de ahí la necesidad de restar las intersecciones.'
-- 'En tres conjuntos hay que descontar también |A∩C| y corregir el doble descuento de
-    |A∩B∩C|. La fórmula de dos conjuntos es insuficiente.'
-- 'Un resultado negativo indica datos inconsistentes. Verificar que |A∩B∩C| ≤ |A∩B|,
-    |A∩B∩C| ≤ |A∩C| y que |solo A| ≥ 0 antes de aceptar el resultado.'
-fuente: Matemáticas para la Educación Media, MINEDUC
+  - 'La afirmación de que la región "Solo A" se calcula restando una sola de las intersecciones dobles.'
+  - 'La afirmación de que la condición "exactamente uno" incluye a los elementos compartidos por dos conjuntos.'
+  - 'La afirmación de que las regiones exclusivas individuales pueden intersectarse entre sí.'
+  - 'La afirmación de que la suma de "Solo A", "Solo B" y "Solo C" equivale a la totalidad del universo $\mathcal{U}$.'
+  - 'La afirmación de que para calcular "Solo A" no se debe deducir la triple intersección central.'
+afirmaciones_verdaderas:
+  - 'La cardinalidad de la región exclusiva "Solo A" se obtiene restando las tres regiones de solapamiento del total de $A$ ($|R_{100}| = |A| - (x_{110} + x_{101} + x_{111})$).'
+  - 'La cantidad de elementos que pertenecen a exactamente uno de los tres conjuntos es la suma directa de sus tres regiones exclusivas individuales ($|R_{100}| + |R_{010}| + |R_{001}|$).'
+al_terminar_debes_poder: |
+  QUÉ: Calcular e interpretar las regiones exclusivas individuales ("Solo A", "Solo B", "Solo C") y la condición "Exactamente uno" en tres conjuntos.
+  CÓMO: Deducir las zonas de solapamiento adyacentes de cada conjunto y sumar las componentes disjuntas de peso de Hamming 1.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

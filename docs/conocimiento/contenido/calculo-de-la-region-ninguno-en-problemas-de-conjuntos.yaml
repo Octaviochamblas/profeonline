@@ -1,168 +1,105 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.REGION_NINGUNO
-titulo: Cálculo de la región ninguno en problemas de conjuntos
-objetivo: 'Calcular la cardinalidad de la región «ninguno» en un diagrama de Venn de dos
+resumen_inicial: 'Fórmulas, significado lógico y cálculo de la región exterior "Ninguno" ($(A \cup B)^c$ o $(A \cup B \cup C)^c$) en problemas de conteo con diagramas de Venn.'
+explicacion_simple: |
+  La **región "Ninguno"** (o región exterior) representa a todos los elementos del universo que **NO pertenecen a ninguno de los conjuntos considerados** en el problema. Para calcular cuántos elementos hay en esta región, simplemente tomamos el **total del universo ($|\mathcal{U}|$)** y le **restamos el total de elementos que están en la unión** (los que pertenecen al menos a un conjunto):
+  $$\text{Ninguno} = |\mathcal{U}| - |\text{Unión}|$$
+  Por ejemplo, si se encuesta a $100$ personas y $85$ practican algún deporte, la región "ninguno" (los que no practican ningún deporte) tiene $100 - 85 = 15$ personas.
+explicacion_formal: |
+  ### Definición formal
+  En la teoría de conjuntos y el álgebra booleana, la **región ninguno** para una familia finita de conjuntos $\{A_1, A_2, \dots, A_n\}$ dentro de un universo $\mathcal{U}$ es el átomo booleano complementario $R_{00\dots0}$:
+  $$R_{\text{ninguno}} = \left(\bigcup_{i=1}^n A_i\right)^c = \bigcap_{i=1}^n A_i^c$$
+  Por la propiedad del complemento absoluto, su cardinalidad está determinada unívocamente por:
+  $$|R_{\text{ninguno}}| = |\mathcal{U}| - \left|\bigcup_{i=1}^n A_i\right|$$
 
-  conjuntos, aplicando la fórmula |ninguno| = |U| - |A∪B| junto con el principio
+  ### Desglose simbólico
+  - Para dos conjuntos: $|(A \cup B)^c| = |\mathcal{U}| - (|A| + |B| - |A \cap B|)$.
+  - Para tres conjuntos: $|(A \cup B \cup C)^c| = |\mathcal{U}| - |A \cup B \cup C|$.
+  - Equivalencia de De Morgan: Pertenecer a "ninguno" equivale a no pertenecer a $A_1$, Y no pertenecer a $A_2$, ..., Y no pertenecer a $A_n$.
 
-  de inclusión-exclusión para obtener |A∪B|.
-
-  '
-introduccion: 'En muchos problemas de conjuntos se pregunta cuántos elementos del universo no
-
-  pertenecen a ninguno de los conjuntos dados. Esta cantidad es la cardinalidad de
-
-  la región exterior del diagrama de Venn. Para calcularla se necesita conocer el
-
-  total del universo y la cardinalidad de la unión A∪B, que se obtiene mediante
-
-  el principio de inclusión-exclusión: |A∪B| = |A| + |B| - |A∩B|.
-
-  '
-resumen: 'Fórmula para la región «ninguno» en un diagrama de dos conjuntos:
-
-  - |A∪B| = |A| + |B| - |A∩B|       (principio de inclusión-exclusión)
-
-  - |ninguno| = |U| - |A∪B|
-
-
-  Es decir: |ninguno| = |U| - |A| - |B| + |A∩B|.
-
-  '
-explicacion: "El universo U se descompone en dos partes disjuntas:\n  U = (A∪B) ∪ (A∪B)'\n\nPor tanto:\
-  \ |U| = |A∪B| + |(A∪B)'|\n\nDespejando la región exterior:\n  |(A∪B)'| = |U| - |A∪B|\n\nPara obtener\
-  \ |A∪B| sin contar doble la intersección, se usa el principio de\ninclusión-exclusión:\n  |A∪B| = |A|\
-  \ + |B| - |A∩B|\n\nSustituyendo:\n  |ninguno| = |U| - |A| - |B| + |A∩B|\n\nEste valor debe ser ≥ 0;\
-  \ si resulta negativo, los datos del problema son\ninconsistentes.\n"
+  ### Síntesis didáctica
+  La región exterior actúa como el residuo poblacional pasivo que completa la masa total del conjunto universal $\mathcal{U}$.
+definiciones_clave: |
+  - **Región "Ninguno"**: Conjunto de elementos del universo que carecen de todas las propiedades o membresías evaluadas.
+  - **Complemento de la unión**: Expresión matemática $\left(\bigcup A_i\right)^c$ que define rigurosamente la región exterior.
+  - **Conservación poblacional**: Ecuación $|\mathcal{U}| = |\text{Unión}| + |\text{Ninguno}|$.
+propiedades_relaciones: |
+  - **No negatividad**: $|\text{Ninguno}| \geq 0 \iff |\text{Unión}| \leq |\mathcal{U}|$.
+  - **Universo saturado**: Si $|\text{Unión}| = |\mathcal{U}|$, entonces la región "ninguno" es el conjunto vacío ($|\text{Ninguno}| = 0$).
+ejemplo_guiado:
+  enunciado: 'En un grupo de $80$ personas ($\mathcal{U}$), $45$ leen periódicos ($P$), $35$ escuchan noticias por radio ($R$) y $15$ se informan por ambos medios. Calcula cuántas personas no se informan por ninguno de estos dos medios.'
+  pasos:
+    - 'Paso 1: Identificar los datos del problema:
+      - $|\mathcal{U}| = 80, |P| = 45, |R| = 35, |P \cap R| = 15$.'
+    - 'Paso 2: Calcular la cardinalidad de la unión $|P \cup R|$ mediante inclusión-exclusión:
+      - $|P \cup R| = |P| + |R| - |P \cap R| = 45 + 35 - 15 = 65$ personas.'
+    - 'Paso 3: Aplicar la fórmula de la región exterior:
+      - $|(P \cup R)^c| = |\mathcal{U}| - |P \cup R|$.'
+    - 'Paso 4: Realizar la sustracción numérica:
+      - $|(P \cup R)^c| = 80 - 65 = 15$ personas.'
+    - 'Paso 5: Concluir que $15$ personas no se informan por ninguno de los dos medios.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: '¿Cómo se calcula la cardinalidad de la región "Ninguno" en cualquier problema de conjuntos dentro del universo $\mathcal{U}$?'
+    choices:
+      - {text: 'Restando la cardinalidad total de la unión al total del conjunto universal: $|\mathcal{U}| - |\text{Unión}|$', is_correct: true}
+      - {text: 'Sumando las cardinalidades de todos los conjuntos individuales', is_correct: false}
+      - {text: 'Multiplicando las cardinalidades de los conjuntos', is_correct: false}
+      - {text: 'Dividiendo el universo entre el número de conjuntos', is_correct: false}
+    explanation: 'La alternativa correcta es ''Restando la cardinalidad total de la unión al total del conjunto universal: $|\mathcal{U}| - |\text{Unión}|$''. Es el complemento de la unión.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si en un universo de $100$ elementos la unión de tres conjuntos suma $|A \cup B \cup C| = 92$, ¿cuántos elementos hay en la región exterior?'
+    choices:
+      - {text: '$8$ elementos ($100 - 92$)', is_correct: true}
+      - {text: '$92$ elementos', is_correct: false}
+      - {text: '$192$ elementos', is_correct: false}
+      - {text: '$0$ elementos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$8$ elementos ($100 - 92$)''. Se resta la unión del universo: $100 - 92 = 8$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar los datos: |U|, |A|, |B| y |A∩B|.'
-- 'Paso 2: Calcular |A∪B| = |A| + |B| - |A∩B|.'
-- 'Paso 3: Calcular |ninguno| = |U| - |A∪B|.'
-- 'Paso 4: Verificar que |ninguno| ≥ 0 y que la suma de las cuatro regiones sea igual a |U|.'
+  - 'Paso 1: Calcular la cardinalidad total de la unión ($|A \cup B|$ o $|A \cup B \cup C|$) mediante las fórmulas de inclusión-exclusión o sumando las regiones interiores del diagrama.'
+  - 'Paso 2: Identificar la cardinalidad del conjunto universal $|\mathcal{U}|$.'
+  - 'Paso 3: Realizar la resta $|\text{Ninguno}| = |\mathcal{U}| - |\text{Unión}|$.'
+  - 'Paso 4: Registrar el valor en el espacio exterior a los círculos dentro del rectángulo del diagrama de Venn.'
+errores_correccion: |
+  - **Error 1:** Restar los totales directos $|A| + |B|$ de $|\mathcal{U}|$ sin considerar la intersección. **Cómo corregirlo:** La resta debe hacerse con la cardinalidad de la unión $|A \cup B| = |A| + |B| - |A \cap B|$, no con la suma bruta de los conjuntos.
+  - **Error 2:** Omitir la región exterior creyendo que la suma de los círculos siempre debe dar el universo. **Cómo corregirlo:** En la mayoría de los problemas existen individuos que no poseen ninguna de las características estudiadas ($|\text{Ninguno}| > 0$).
 ejemplos:
-- tipo: A
-  titulo: Calcular la región «ninguno» con |U|=50
-  enunciado: 'Dados |U| = 50, |A| = 20, |B| = 18 y |A∩B| = 8, calcula la
-
-    cardinalidad de la región «ninguno».
-
-    '
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Identificamos los datos: |U| = 50, |A| = 20, |B| = 18, |A∩B| = 8.
-
-      '
-  - paso: 2
-    descripcion: 'Calculamos |A∪B|:
-
-      |A∪B| = |A| + |B| - |A∩B| = 20 + 18 - 8 = 30.
-
-      '
-  - paso: 3
-    descripcion: 'Calculamos la región «ninguno»:
-
-      |ninguno| = |U| - |A∪B| = 50 - 30 = 20.
-
-      '
-  - paso: 4
-    descripcion: 'Verificación de las cuatro regiones:
-
-      |A\B| = 20 - 8 = 12, |A∩B| = 8, |B\A| = 18 - 8 = 10, |ninguno| = 20.
-
-      12 + 8 + 10 + 20 = 50 = |U| ✓.
-
-      '
-- tipo: A
-  titulo: Calcular la región «ninguno» con |U|=100
-  enunciado: 'Dados |U| = 100, |A| = 45, |B| = 38 y |A∩B| = 13, calcula la
-
-    cardinalidad de la región «ninguno».
-
-    '
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'Identificamos los datos: |U| = 100, |A| = 45, |B| = 38, |A∩B| = 13.
-
-      '
-  - paso: 2
-    descripcion: 'Calculamos |A∪B|:
-
-      |A∪B| = 45 + 38 - 13 = 70.
-
-      '
-  - paso: 3
-    descripcion: 'Calculamos la región «ninguno»:
-
-      |ninguno| = 100 - 70 = 30.
-
-      '
-  - paso: 4
-    descripcion: 'Verificación: |A\B| = 32, |A∩B| = 13, |B\A| = 25, |ninguno| = 30.
-
-      32 + 13 + 25 + 30 = 100 = |U| ✓.
-
-      '
-- tipo: B
-  titulo: ¿La región «ninguno» es igual a $|U| - |A \cup B|$?
-  enunciado: '¿Es la región «ninguno» igual a $|U| - |A \cup B|$?
-
-    '
-  respuesta: Sí
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'La región «ninguno» corresponde a (A∪B)'', el complemento de la unión.
-
-      '
-  - paso: 2
-    descripcion: 'Por la ley de complementos: |U| = |A∪B| + |(A∪B)''|.
-
-      '
-  - paso: 3
-    descripcion: 'Despejando: |(A∪B)''| = |U| - |A∪B|. Esta es exactamente la región «ninguno».
-
-      '
-  - paso: 4
-    descripcion: 'Conclusión: Sí, |ninguno| = |U| - |A∪B|. ✓
-
-      '
-- tipo: B
-  titulo: ¿Puede la cardinalidad de la región «ninguno» ser negativa?
-  enunciado: '¿Puede la cardinalidad de la región «ninguno» ser negativa?
-
-    '
-  respuesta: 'No'
-  solucion_pasos:
-  - paso: 1
-    descripcion: 'La región «ninguno» = (A∪B)'' ⊆ U, por lo que es un conjunto (no puede
-
-      tener cardinalidad negativa).
-
-      '
-  - paso: 2
-    descripcion: 'Formalmente: |ninguno| = |U| - |A∪B|. Como A∪B ⊆ U, se tiene
-
-      |A∪B| ≤ |U|, y por tanto |ninguno| ≥ 0.
-
-      '
-  - paso: 3
-    descripcion: 'Si un cálculo arroja un valor negativo, los datos son inconsistentes
-
-      (A∪B excede el universo), lo que indica un error en el enunciado.
-
-      '
-  - paso: 4
-    descripcion: 'Conclusión: No, la cardinalidad de la región «ninguno» no puede ser negativa. ✓
-
-      '
+  - titulo: 'Cálculo de ninguno con dos conjuntos'
+    enunciado: 'Si $|\mathcal{U}| = 50$ y $|A \cup B| = 42$, ¿cuántos hay en la región exterior?'
+    alternativas:
+      - '$8$'
+      - '$42$'
+      - '$50$'
+    respuesta: '$8$'
+    solucion_pasos:
+      - '1. $|\text{Ninguno}| = 50 - 42 = 8$.'
+  - titulo: 'Universo completamente cubierto'
+    enunciado: 'Si $|\mathcal{U}| = 60$ y $|A \cup B| = 60$, ¿cuántos hay en ninguno?'
+    respuesta: '$0$'
+    solucion_pasos:
+      - '$60 - 60 = 0$, la región exterior es el conjunto vacío.'
+  - titulo: 'Despeje de la unión a partir de ninguno'
+    enunciado: 'Si $|\mathcal{U}| = 75$ y la región ninguno tiene 15, ¿cuál es $|A \cup B|$?'
+    respuesta: '$60$'
+    solucion_pasos:
+      - '$|A \cup B| = 75 - 15 = 60$.'
+  - titulo: 'Representación simbólica'
+    enunciado: '¿A qué operación equivale "ninguno de los conjuntos A y B"?'
+    respuesta: '$(A \cup B)^c = A^c \cap B^c$'
+    solucion_pasos:
+      - 'Por la Primera Ley de De Morgan.'
 errores_frecuentes:
-- 'La fórmula correcta es |A∪B| = |A| + |B| - |A∩B|. Sumar |A| + |B| directamente cuenta
-    los elementos de A∩B dos veces.'
-- 'Hay que descontar |A∪B|, no |A| + |B|. La fórmula completa es |ninguno| = |U| - |A| -
-    |B| + |A∩B|.'
-- '«Ninguno» = (A∪B)''. El complemento de A sería A'' = U\A, que aún incluye elementos de
-    B\A. «Ninguno» excluye tanto A como B.'
-- 'Siempre verificar: |A\B| + |A∩B| + |B\A| + |ninguno| = |U|. Si no se cumple, hay un
-    error en alguno de los cálculos.'
-- 'La región «ninguno» se calcula restando la UNIÓN, no la intersección. |ninguno| = |U| -
-    |A∪B|.'
-fuente: Matemáticas para la Educación Media, MINEDUC
+  - 'La afirmación de que la región ninguno se calcula deduciendo la suma directa de los conjuntos del universo sin la inclusión de la intersección.'
+  - 'La afirmación de que la región exterior no forma parte del conjunto universal $\mathcal{U}$.'
+  - 'La afirmación de que la cardinalidad de la región ninguno puede resultar negativa en un problema bien planteado.'
+  - 'La afirmación de que los elementos de la región ninguno pertenecen a la unión de los complementos.'
+  - 'La afirmación de que la suma de los círculos de un diagrama de Venn siempre debe igualar a $|\mathcal{U}|$.'
+afirmaciones_verdaderas:
+  - 'La cardinalidad de la región "Ninguno" es igual a la cardinalidad del universo menos la cardinalidad de la unión ($|\text{Ninguno}| = |\mathcal{U}| - |\bigcup A_i|$).'
+  - 'Por la Ley de De Morgan, la región "Ninguno" es idéntica a la intersección de los complementos individuales ($(\bigcup A_i)^c = \bigcap A_i^c$).'
+al_terminar_debes_poder: |
+  QUÉ: Calcular e interpretar la región "Ninguno" ($(A \cup B)^c$ o $(A \cup B \cup C)^c$) en problemas de conjuntos.
+  CÓMO: Restar la cardinalidad de la unión al universo $|\mathcal{U}|$ y aplicar las leyes de De Morgan para caracterizar elementos externos.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

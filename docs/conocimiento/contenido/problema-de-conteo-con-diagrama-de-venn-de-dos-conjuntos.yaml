@@ -1,104 +1,110 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.PROBLEMA_VENN_DOS_CONJUNTOS
-titulo: Problema de conteo con diagrama de Venn de dos conjuntos
-objetivo: Resolver problemas de conteo con diagramas de Venn de dos conjuntos distribuyendo
-  los datos de 'adentro hacia afuera' en las cuatro regiones disjuntas del diagrama.
-introduccion: Imagina que en un grupo de 20 estudiantes, 12 juegan fútbol, 10 juegan
-  tenis y 4 juegan ambos deportes. Si quieres saber cuántos estudiantes no juegan
-  ninguno de estos dos deportes, ¿cómo lo averiguarías? La mejor manera es dibujar
-  dos círculos que se cruzan. Si colocas primero los 4 en el centro (los que hacen
-  ambos deportes), puedes deducir fácilmente quiénes juegan *solo* fútbol ($12 - 4
-  = 8$) y quiénes juegan *solo* tenis ($10 - 4 = 6$). Al final, sumas todas estas
-  zonas ($8 + 4 + 6 = 18$) y se lo restas al total de estudiantes ($20 - 18 = 2$)
-  para saber cuántos quedan afuera de los círculos. ¡El dibujo hace que todo sea claro!
-resumen: 'Resolver problemas de conteo con dos conjuntos mediante diagramas de Venn
-  consiste en dividir el universo en cuatro regiones disjuntas: solo $A$, solo $B$,
-  ambos ($A \cap B$) y ninguno ($(A \cup B)^c$), distribuyendo los datos numéricos
-  desde la intersección hacia afuera.'
-explicacion: "Un **diagrama de Venn para dos conjuntos** $A$ y $B$ divide al conjunto\
-  \ universal $U$ en exactamente cuatro regiones disjuntas (que no se traslapan).\
-  \ Para resolver problemas de conteo, debemos identificar cuántos elementos corresponden\
-  \ a cada una de estas áreas.\n\n### Las Cuatro Regiones Disjuntas\n1. **Solo $A$\
-  \ (Región de diferencia $A \\setminus B$):** Elementos que pertenecen a $A$ pero\
-  \ no a $B$. Su cardinalidad se calcula como:\n   $$|A \\setminus B| = |A| - |A \\\
-  cap B|$$\n2. **Ambos (Región de intersección $A \\cap B$):** Elementos comunes que\
-  \ pertenecen a $A$ y a $B$ simultáneamente.\n3. **Solo $B$ (Región de diferencia\
-  \ $B \\setminus A$):** Elementos que pertenecen a $B$ pero no a $A$. Su cardinalidad\
-  \ se calcula como:\n   $$|B \\setminus A| = |B| - |A \\cap B|$$\n4. **Ninguno (Región\
-  \ de complemento de la unión $(A \\cup B)^c$):** Elementos en el universo $U$ que\
-  \ no pertenecen a ninguno de los dos conjuntos. Su cardinalidad se calcula como:\n\
-  \   $$|(A \\cup B)^c| = |U| - |A \\cup B|$$\n\n### Estrategia de Resolución \"De\
-  \ adentro hacia afuera\"\nLa regla de oro para resolver problemas de conjuntos con\
-  \ diagramas de Venn es rellenar las regiones comenzando por el centro:\n1. **Paso\
-  \ 1:** Escribe la cardinalidad de la intersección ($A \\cap B$) en la zona común\
-  \ central.\n2. **Paso 2:** Resta el valor de la intersección a las cardinalidades\
-  \ totales de $A$ y $B$ para obtener los valores de las regiones \"Solo $A$\" y \"\
-  Solo $B$\".\n3. **Paso 3:** Suma los valores de las tres regiones interiores para\
-  \ obtener la cardinalidad de la unión:\n   $$|A \\cup B| = |Solo\\ A| + |Ambos|\
-  \ + |Solo\\ B|$$\n4. **Paso 4:** Resta el total de la unión del total del universo\
-  \ ($|U|$) para encontrar los elementos que están en la región \"Ninguno\"."
+resumen_inicial: 'Metodología sistemática de resolución de problemas verbales de conteo con dos conjuntos mediante diagramas de Venn y llenado desde la intersección.'
+explicacion_simple: |
+  Para resolver **problemas de conteo de la vida real con dos conjuntos** (por ejemplo: personas que toman té, café o ambos), el método más rápido y seguro es usar un **diagrama de Venn de dos círculos**:
+  1. **Comenzar siempre por el centro**: colocar la cantidad de personas que hacen **ambas cosas a la vez** ($A \cap B$).
+  2. **Calcular los exclusivos**: restar el centro a los totales de cada grupo para hallar **"solo $A$"** y **"solo $B$"**.
+  3. **Calcular los que no hacen ninguno**: restar la suma de las tres regiones interiores al total del universo $\mathcal{U}$.
+explicacion_formal: |
+  ### Definición formal
+  En la resolución algorítmica de problemas de conteo, un **problema de 2 conjuntos sobre $\mathcal{U}$** consiste en determinar los valores de la cuádrupla de átomos booleanos $(a, b, c, d)$ sujetos al sistema de ecuaciones lineales de conservación:
+  $$\begin{cases} a + b = |A| & \text{(Total de } A\text{)} \\ b + c = |B| & \text{(Total de } B\text{)} \\ b = |A \cap B| & \text{(Intersección central)} \\ a + b + c + d = |\mathcal{U}| & \text{(Universo total)} \end{cases}$$
+  donde $a = |A \setminus B|$ (Solo $A$), $b = |A \cap B|$ (Ambos), $c = |B \setminus A|$ (Solo $B$) y $d = |(A \cup B)^c|$ (Ninguno).
+
+  ### Desglose simbólico
+  - Ecuación explícita para $a$: $a = |A| - b$.
+  - Ecuación explícita para $c$: $c = |B| - b$.
+  - Ecuación explícita para la unión: $|A \cup B| = a + b + c$.
+  - Ecuación explícita para la región exterior: $d = |\mathcal{U}| - (a + b + c)$.
+
+  ### Síntesis didáctica
+  Este sistema triangular desacoplado se resuelve de forma directa y secuencial sustituyendo de adentro ($b$) hacia afuera ($a, c, d$).
+definiciones_clave: |
+  - **Problema de conteo de 2 conjuntos**: Situación donde se modelan poblaciones con dos características solapadas.
+  - **Átomos booleanos de orden 2**: Las 4 regiones disjuntas $a, b, c, d$ que particionan a $\mathcal{U}$.
+  - **Llenado centrípeto-centrífugo**: Estrategia que fija primero la intersección central para luego deducir los laterales y el exterior.
+propiedades_relaciones: |
+  - **Invarianza de la suma**: $a + b + c + d = |\mathcal{U}|$ en toda asignación coherente de datos.
+  - **Condición de no negatividad**: $a \geq 0, b \geq 0, c \geq 0, d \geq 0$, lo que impone $b \leq \min(|A|, |B|)$ y $|A \cup B| \leq |\mathcal{U}|$.
+ejemplo_guiado:
+  enunciado: 'En una encuesta a $60$ personas sobre consumo de bebidas: $35$ toman café ($C$), $25$ toman té ($T$) y $12$ toman ambas bebidas ($C \cap T$). Resuelve mediante diagrama de Venn: (a) cuántos toman solo café, (b) cuántos toman solo té, y (c) cuántos no toman ninguna de las dos bebidas.'
+  pasos:
+    - 'Paso 1: Identificar el universo y los datos: $|\mathcal{U}| = 60, |C| = 35, |T| = 25, |C \cap T| = 12$.'
+    - 'Paso 2: Colocar el dato central de intersección en el diagrama:
+      - Región "Ambos": $b = 12$.'
+    - 'Paso 3: Calcular la región exclusiva "Solo café" ($a$):
+      - $a = |C| - |C \cap T| = 35 - 12 = 23$ personas.'
+    - 'Paso 4: Calcular la región exclusiva "Solo té" ($c$):
+      - $c = |T| - |C \cap T| = 25 - 12 = 13$ personas.'
+    - 'Paso 5: Calcular la región exterior "Ninguna bebida" ($d$):
+      - Total que toma alguna bebida: $a + b + c = 23 + 12 + 13 = 48$.
+      - $d = |\mathcal{U}| - 48 = 60 - 48 = 12$ personas.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: 'En la resolución de un problema de conteo con diagrama de Venn de dos conjuntos, ¿cuál es la primera región que debe ubicarse para evitar errores de conteo?'
+    choices:
+      - {text: 'La intersección central que corresponde a los elementos comunes a ambos conjuntos ($A \cap B$)', is_correct: true}
+      - {text: 'La región exterior dentro del rectángulo universal', is_correct: false}
+      - {text: 'El total del conjunto que tenga más elementos', is_correct: false}
+      - {text: 'Cualquier región de manera aleatoria', is_correct: false}
+    explanation: 'La alternativa correcta es ''La intersección central que corresponde a los elementos comunes a ambos conjuntos ($A \cap B$)''. Permite deducir de inmediato las zonas exclusivas.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'En un grupo de $50$ personas, $30$ practican fútbol y $10$ practican fútbol y tenis. ¿Cuántas personas practican solo fútbol?'
+    choices:
+      - {text: '$20$ personas ($30 - 10$)', is_correct: true}
+      - {text: '$30$ personas', is_correct: false}
+      - {text: '$40$ personas', is_correct: false}
+      - {text: '$10$ personas', is_correct: false}
+    explanation: 'La alternativa correcta es ''$20$ personas ($30 - 10$)''. A la cantidad total de fútbol se le debe restar la intersección compartida.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Dibuja el diagrama de Venn con dos conjuntos intersecándose dentro de un
-  rectángulo que representa el universo.'
-- 'Paso 2: Identifica el dato de la intersección y colócalo en la región central compartida.'
-- 'Paso 3: Resta este valor central de los totales de cada conjunto para completar
-  las regiones "Solo A" y "Solo B".'
-- 'Paso 4: Suma las tres regiones internas para obtener la unión y réstala de la cardinalidad
-  del universo para hallar la región exterior (Ninguno).'
+  - 'Paso 1: Dibujar el rectángulo universal $\mathcal{U}$ y dos círculos secantes $A$ y $B$.'
+  - 'Paso 2: Registrar en el centro el dato de la intersección $|A \cap B|$.'
+  - 'Paso 3: Obtener "Solo $A$" restando $|A \cap B|$ del total $|A|$ y registrar en la medialuna izquierda.'
+  - 'Paso 4: Obtener "Solo $B$" restando $|A \cap B|$ del total $|B|$ y registrar en la medialuna derecha.'
+  - 'Paso 5: Sumar las tres regiones interiores y restar del total del universo para registrar la región exterior "Ninguno".'
+errores_correccion: |
+  - **Error 1:** Anotar el total del conjunto directamente en la medialuna exclusiva. **Cómo corregirlo:** La medialuna es exclusiva ("Solo $A$"); se debe restar previamente la cantidad que está en la intersección central.
+  - **Error 2:** Olvidar restar la unión del universo para calcular los que no pertenecen a ningún conjunto. **Cómo corregirlo:** La región exterior $d$ es obligatoria y se calcula como $|\mathcal{U}| - (a + b + c)$.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: En una encuesta a 40 personas sobre sus mascotas, 25 dijeron tener perros
-    ($P$), 15 tener gatos ($G$) y 8 dijeron tener ambos. ¿Cuántas personas no tienen
-    perros ni gatos?
-  solucion_pasos:
-  - 'Paso a: Identificamos los datos: Universo $|U| = 40$, Perros $|P| = 25$, Gatos
-    $|G| = 15$, Ambos $|P \cap G| = 8$.'
-  - 'Paso b: Colocamos el $8$ en la intersección central.'
-  - 'Paso c: Calculamos "Solo perros": $25 - 8 = 17$. Calculamos "Solo gatos": $15
-    - 8 = 7$.'
-  - 'Paso d: Sumamos las tres regiones internas para obtener la unión (personas con
-    al menos una mascota): $17 + 8 + 7 = 32$.'
-  - 'Paso e: Restamos la unión del total del universo para hallar "Ninguno": $40 -
-    32 = 8$. Por lo tanto, 8 personas no tienen perros ni gatos.'
-- titulo: Ejemplo 2
-  enunciado: De 35 estudiantes de un curso, 20 practican atletismo ($A$) y 18 natación
-    ($N$). Si todos los estudiantes practican al menos uno de los dos deportes, ¿cuántos
-    estudiantes practican ambos deportes?
-  solucion_pasos:
-  - 'Paso a: Como todos practican al menos un deporte, la región "Ninguno" es $0$,
-    por lo que la unión es igual al universo: $|A \cup N| = 35$. También $|A| = 20$
-    y $|N| = 18$.'
-  - 'Paso b: Planteamos la ecuación del principio de inclusión-exclusión: $35 = 20
-    + 18 - |A \cap N|$.'
-  - 'Paso c: Despejamos el valor de la intersección: $|A \cap N| = 20 + 18 - 35 =
-    38 - 35 = 3$.'
-  - 'Paso d: Colocamos $3$ en el centro. Así, "Solo atletismo" es $20 - 3 = 17$ y
-    "Solo natación" es $18 - 3 = 15$. La suma de las regiones es $17 + 3 + 15 = 35$,
-    coincidiendo con el total.'
-- titulo: ¿Se puede rellenar el diagrama empezando por los totales de los conjuntos
-    $A$ y $B$?
-  respuesta: 'No'
-  solucion_pasos:
-  - Si colocas los totales directamente en los círculos sin restar la intersección,
-    estarías duplicando elementos.
-  - Por ejemplo, si pones 25 en el círculo de perros y 15 en el de gatos, la suma
-    daría 40, lo cual ignora a las 8 personas que tienen ambos y desajusta las proporciones.
-- titulo: ¿Si el universo tiene 50 elementos, es posible que la suma de "Solo A",
-    "Ambos" y "Solo B" sea 55?
-  respuesta: 'No'
-  solucion_pasos:
-  - La unión de los conjuntos $A$ y $B$ es un subconjunto del universo $U$.
-  - Por lo tanto, la cardinalidad de la unión ($|Solo\ A| + |Ambos| + |Solo\ B|$)
-    nunca puede ser mayor que la cardinalidad del universo ($|U| = 50$). Un valor
-    de 55 indica una inconsistencia en los datos del problema.
+  - titulo: 'Lectores de periódicos'
+    enunciado: 'De 80 personas, 50 leen el diario A, 40 el B y 20 ambos. ¿Cuántos leen solo un diario?'
+    alternativas:
+      - '$50$ personas'
+      - '$70$ personas'
+      - '$30$ personas'
+    respuesta: '$50$ personas'
+    solucion_pasos:
+      - '1. Solo A $= 50 - 20 = 30$.'
+      - '2. Solo B $= 40 - 20 = 20$.'
+      - '3. Solo un diario $= 30 + 20 = 50$.'
+  - titulo: 'Cálculo de la región ninguno'
+    enunciado: 'En el problema anterior, ¿cuántos no leen ningún diario?'
+    respuesta: '$10$ personas'
+    solucion_pasos:
+      - 'Unión $= 30 + 20 + 20 = 70$. Ninguno $= 80 - 70 = 10$.'
+  - titulo: 'Despeje de intersección en problema'
+    enunciado: 'Si $|\mathcal{U}| = 30$, $|A| = 18, |B| = 16$ y ninguno $= 4$, ¿cuántos están en ambos?'
+    respuesta: '$8$'
+    solucion_pasos:
+      - 'Unión $= 30 - 4 = 26$. Intersección $= 18 + 16 - 26 = 8$.'
+  - titulo: 'Exactamente una característica'
+    enunciado: '¿A qué equivale la suma de las medialunas laterales?'
+    respuesta: 'A la diferencia simétrica $A \bigtriangleup B$'
+    solucion_pasos:
+      - 'Representa los elementos que poseen exactamente una sola de las dos características.'
 errores_frecuentes:
-- Colocar los valores totales de los conjuntos directamente en las regiones exclusivas
-  sin haber restado previamente la intersección central.
-- Sumar incorrectamente las regiones disjuntas para obtener la unión.
-- Declarar la región "Ninguno" (exterior de los círculos) con el conjunto vacío (que
-  significa ausencia de elementos).
-- Omitir que la suma de las cuatro regiones en las que se divide el diagrama de Venn
-  debe ser exactamente igual a la cardinalidad del universo.
-- Intentar resolver el problema sin hacer un esquema gráfico, aumentando la probabilidad
-  de error al restar.
-fuente: Álgebra, Editorial Pearson, pág. 102
+  - 'La afirmación de que la cantidad total de un conjunto puede colocarse en la medialuna sin la deducción de la intersección central.'
+  - 'La afirmación de que la adición simple de los datos directos del enunciado resuelve el problema sin construir el diagrama.'
+  - 'La afirmación de que la región exterior a los círculos siempre es nula en problemas de encuestas.'
+  - 'La afirmación de que la intersección puede calcularse sumando el universo con los conjuntos individuales.'
+  - 'La afirmación de que las cuatro regiones de un diagrama de Venn pueden tener cardinalidades negativas.'
+afirmaciones_verdaderas:
+  - 'En un problema de conteo con dos conjuntos, el llenado sistemático comienza por la intersección central y resta ese valor para calcular las regiones exclusivas.'
+  - 'La suma de las cuatro regiones disjuntas del diagrama ($a + b + c + d$) es estrictamente igual a la cardinalidad del conjunto universal $|\mathcal{U}|$.'
+al_terminar_debes_poder: |
+  QUÉ: Resolver problemas verbales de conteo con dos conjuntos utilizando diagramas de Venn.
+  CÓMO: Plantear las ecuaciones de conservación, rellenar de la intersección hacia afuera y calcular exclusividades y complementos.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
