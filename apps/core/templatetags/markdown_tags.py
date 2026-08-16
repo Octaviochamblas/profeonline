@@ -154,3 +154,55 @@ def markdown_inline_filter(value):
     if html.startswith("<p>") and html.endswith("</p>") and "<p>" not in html[3:-4]:
         return mark_safe(html[3:-4])
     return mark_safe(html)
+
+
+_IMG_RE = re.compile(r"(!\[.*?\]\(.*?\))")
+_QUE_PATTERN = re.compile(
+    r"(?:^|\n)\s*(?:\*\*)?QU[EÉ](?:\s*\([^)]*\))?(?:\*\*)?\s*:\s*(?:\*\*)?\s*(.*?)(?=(?:\n\s*(?:\*\*)?C[OÓ]MO(?:\s*\([^)]*\))?(?:\*\*)?\s*:\s*(?:\*\*)?)|$)",
+    re.DOTALL | re.IGNORECASE,
+)
+_COMO_PATTERN = re.compile(
+    r"(?:^|\n)\s*(?:\*\*)?C[OÓ]MO(?:\s*\([^)]*\))?(?:\*\*)?\s*:\s*(?:\*\*)?\s*(.*)$",
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+@register.filter(name="parse_al_terminar")
+def parse_al_terminar_filter(value):
+    """Parsea el campo 'al_terminar_debes_poder' extrayendo imágenes iniciales,
+    intro, y separando 'QUÉ' (objetivo) y 'CÓMO' (mecanismo) para enmarcarlos
+    en tarjetas visuales dedicadas.
+    """
+    if not value:
+        return {"is_structured": False, "raw": ""}
+
+    text = str(value).strip()
+    images = _IMG_RE.findall(text)
+    clean_text = _IMG_RE.sub("", text).strip()
+
+    m_que = _QUE_PATTERN.search(clean_text)
+    m_como = _COMO_PATTERN.search(clean_text)
+
+    if not m_que and not m_como:
+        return {"is_structured": False, "raw": text}
+
+    intro = ""
+    if m_que and m_que.start() > 0:
+        intro = clean_text[: m_que.start()].strip()
+    elif not m_que and m_como and m_como.start() > 0:
+        intro = clean_text[: m_como.start()].strip()
+
+    que_text = m_que.group(1).strip() if m_que else ""
+    como_text = m_como.group(1).strip() if m_como else ""
+
+    que_text = re.sub(r"^\*\*\s*", "", que_text)
+    como_text = re.sub(r"^\*\*\s*", "", como_text)
+
+    return {
+        "is_structured": True,
+        "images": images,
+        "intro": intro,
+        "que": que_text,
+        "como": como_text,
+        "raw": text,
+    }

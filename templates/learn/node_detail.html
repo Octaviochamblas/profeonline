@@ -447,7 +447,105 @@
 .ex-catbtn.selected  { border-color:#4a7cf6; background:#e8f0fe; color:#1d4ed8; font-weight:600; }
 .ex-catbtn.cat-ok    { border-color:#16a34a !important; background:#f0fdf4 !important; color:#15803d !important; font-weight:700; }
 .ex-catbtn.cat-err   { border-color:#dc2626 !important; background:#fef2f2 !important; color:#b91c1c !important; }
-.ex-catbtn:disabled  { cursor:default; opacity:.85; }
+/* ── Al terminar debes poder (QUÉ y CÓMO Cards) ── */
+.learn-goal-images {
+  margin-bottom: 1.25rem;
+}
+.learn-goal-images img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+.learn-goal-intro {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.6;
+}
+.learn-goals-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+@media (min-width: 768px) {
+  .learn-goals-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+}
+.learn-goal-card {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.learn-goal-card:hover {
+  transform: translateY(-2px);
+  border-color: #94a3b8;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+.learn-goal-card--que {
+  border-top: 4px solid #0d9488;
+  background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 32%);
+}
+.learn-goal-card--como {
+  border-top: 4px solid #3b82f6;
+  background: linear-gradient(180deg, #eff6ff 0%, #ffffff 32%);
+}
+.learn-goal-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+.learn-goal-card__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+.learn-goal-card__badge--que {
+  background: #0f766e;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);
+}
+.learn-goal-card__badge--como {
+  background: #1d4ed8;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+}
+.learn-goal-card__label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #475569;
+}
+.learn-goal-card__body {
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: #1e293b;
+  flex-grow: 1;
+}
+.learn-goal-card__body p {
+  margin: 0;
+}
+.learn-goal-card__body p + p {
+  margin-top: 0.5rem;
+}
 
 @media (max-width: 700px) {
   .node-title-row__icon { width: 2.6rem; height: 2.6rem; font-size: 1.3rem; }
@@ -747,13 +845,57 @@
     {% endif %}
 
     {% if content.al_terminar_debes_poder %}
+    {% with goals=content.al_terminar_debes_poder|parse_al_terminar %}
     <div class="node-rail-item">
         <span class="node-rail-item__dot node-rail-item__dot--success" aria-hidden="true">📌</span>
         <section class="learn-section learn-text-card node-rail-item__card node-rail-item__card--success">
             <h2 class="learn-section__title" style="color: #0f766e;">Al terminar debes poder</h2>
-            <div class="resource-view__content">{{ content.al_terminar_debes_poder|markdown }}</div>
+            {% if goals.is_structured %}
+                {% if goals.images %}
+                <div class="resource-view__content learn-goal-images">
+                    {% for img in goals.images %}
+                    {{ img|markdown }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if goals.intro %}
+                <div class="resource-view__content learn-goal-intro">
+                    {{ goals.intro|markdown }}
+                </div>
+                {% endif %}
+
+                <div class="learn-goals-grid">
+                    {% if goals.que %}
+                    <div class="learn-goal-card learn-goal-card--que">
+                        <div class="learn-goal-card__header">
+                            <span class="learn-goal-card__badge learn-goal-card__badge--que">🎯 QUÉ</span>
+                            <span class="learn-goal-card__label">Objetivo de aprendizaje</span>
+                        </div>
+                        <div class="learn-goal-card__body">
+                            {{ goals.que|markdown }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if goals.como %}
+                    <div class="learn-goal-card learn-goal-card--como">
+                        <div class="learn-goal-card__header">
+                            <span class="learn-goal-card__badge learn-goal-card__badge--como">⚙️ CÓMO</span>
+                            <span class="learn-goal-card__label">Mecanismo y resolución</span>
+                        </div>
+                        <div class="learn-goal-card__body">
+                            {{ goals.como|markdown }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="resource-view__content">{{ content.al_terminar_debes_poder|markdown }}</div>
+            {% endif %}
         </section>
     </div>
+    {% endwith %}
     {% endif %}
 
     {% if other_media %}

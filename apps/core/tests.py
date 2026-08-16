@@ -478,6 +478,26 @@ class MarkdownSecurityFilterTests(TestCase):
         self.assertIn("<h3>Definición formal</h3>", rendered)
         self.assertIn(r"\(\frac{a}{b}\)", rendered)
 
+    def test_parse_al_terminar_structured(self):
+        from apps.core.templatetags.markdown_tags import parse_al_terminar_filter
+        text = (
+            "![Resumen](/static/img/nodos/test.svg)\n\n"
+            "QUÉ: Identificar y diferenciar proposiciones simples.\n\n"
+            "CÓMO: Verificar conectivos lógicos $\\land, \\lor$."
+        )
+        res = parse_al_terminar_filter(text)
+        self.assertTrue(res["is_structured"])
+        self.assertEqual(len(res["images"]), 1)
+        self.assertIn("Identificar y diferenciar proposiciones simples.", res["que"])
+        self.assertIn("Verificar conectivos lógicos $\\land, \\lor$.", res["como"])
+
+    def test_parse_al_terminar_unstructured_fallback(self):
+        from apps.core.templatetags.markdown_tags import parse_al_terminar_filter
+        text = "Texto libre sin estructura formal."
+        res = parse_al_terminar_filter(text)
+        self.assertFalse(res["is_structured"])
+        self.assertEqual(res["raw"], text)
+
 
 class CacheBackendCheckTests(TestCase):
     @override_settings(
