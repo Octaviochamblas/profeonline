@@ -1,106 +1,146 @@
 semantic_id: MAT.FUND.LOGICA_BASICA.VALOR_VERDAD
-resumen_inicial: 'Determinación y evaluación del valor de verdad ($V$ o $F$) de proposiciones matemáticas simples y compuestas mediante reglas veritativo-funcionales.'
-explicacion_simple: |
-  El **valor de verdad** es la calificación que le damos a una proposición para indicar si lo que afirma es **Verdadero** ($V$) o **Falso** ($F$). En la lógica matemática estándar no existen términos medios: una frase no puede ser "medio verdadera" ni "medio falsa". Para una proposición simple, revisamos si el hecho matemático es correcto o no. Para una proposición compuesta (como "$4$ es par y $5$ es par"), combinamos los valores de verdad de cada parte usando las reglas del conector correspondiente.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: Determinación y evaluación del valor de verdad ($V$ o $F$) de proposiciones matemáticas simples y compuestas mediante reglas veritativo-funcionales.
+explicacion_simple: 'El **valor de verdad** es la calificación que le damos a una proposición para indicar si lo que afirma es **Verdadero** ($V$) o **Falso** ($F$). En la lógica matemática estándar no existen términos medios: una frase no puede ser "medio verdadera" ni "medio falsa". Para una proposición simple, revisamos si el hecho matemático es correcto o no. Para una proposición compuesta (como "$4$ es par y $5$ es par"), combinamos los valores de verdad de cada parte usando las reglas del conector correspondiente.
+
+
+  ![Valor de verdad y principios lógicos](/static/img/nodos/valor-de-verdad-intro.svg)
+
+  '
+explicacion_formal: '### Definición formal
+
   Sea $\mathcal{P}$ el conjunto de todas las fórmulas proposicionales bien formadas. Una **función de valuación veritativa** (o función de asignación de verdad) es un homomorfismo booleano:
+
   $$v: \mathcal{P} \to \mathbb{V} = \{V, F\} \quad (\text{o } \{1, 0\})$$
+
   que satisface los axiomas ontológicos de la lógica clásica bivalente:
+
   1. **Principio de Bivalencia**: $\forall p \in \mathcal{P}, v(p) = V \lor v(p) = F$.
+
   2. **Principio de No Contradicción**: $\forall p \in \mathcal{P}, \neg(v(p) = V \land v(p) = F)$.
+
   3. **Composicionalidad veritativa**: Para todo conectivo n-ario $\omega$, $v(\omega(p_1, \dots, p_n)) = f_\omega(v(p_1), \dots, v(p_n))$.
 
+
   ### Desglose simbólico
+
   - Notación binaria: $V \equiv 1$ (Verdadero), $F \equiv 0$ (Falso).
+
   - Valuación atómica: $v(p) = V$ si la aserción concuerda con la estructura axiomática; $v(p) = F$ en caso contrario.
+
   - Negación veritativa: $v(\neg p) = V \iff v(p) = F$.
 
+
   ### Síntesis didáctica
+
   El valor de verdad es una propiedad intrínseca, objetiva e invariante de toda proposición en un sistema axiomático determinado.
-definiciones_clave: |
-  - **Valor de verdad ($v(p)$)**: Calificación veritativa de una proposición ($V$ o $F$).
+
+  '
+definiciones_clave: '- **Valor de verdad ($v(p)$)**: Calificación veritativa de una proposición ($V$ o $F$).
+
   - **Bivalencia**: Principio que establece la existencia exclusiva de dos valores de verdad en la lógica clásica.
+
   - **Tabla de verdad**: Disposición matricial exhaustiva que lista todos los valores de verdad posibles de una fórmula compuesta.
-propiedades_relaciones: |
-  - **Complementariedad**: $v(p) + v(\neg p) = 1$ en representación booleana binaria $\{0, 1\}$.
+
+  '
+propiedades_relaciones: '- **Complementariedad**: $v(p) + v(\neg p) = 1$ en representación booleana binaria $\{0, 1\}$.
+
   - **Determinación funcional**: Toda fórmula bien formada con $n$ variables proposicionales queda completamente caracterizada por un vector de verdad de longitud $2^n$.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Determina el valor de verdad de las siguientes proposiciones: 1) "$p$: El número $2$ es el único número primo par", 2) "$q$: $3 + 7 = 11$", 3) "La proposición compuesta $p \land q$".'
+  enunciado: '![Ejemplos de evaluación de valor de verdad](/static/img/nodos/valor-de-verdad-ejemplos.svg)
+
+
+    Determina el valor de verdad de las siguientes proposiciones: 1) "$p$: El número $2$ es el único número primo par", 2) "$q$: $3 + 7 = 11$", 3) "La proposición compuesta $p \land q$".'
   pasos:
-    - 'Paso 1: Evaluar la proposición simple $p$: Efectivamente el $2$ es el único número par con exactamente dos divisores ($1$ y $2$). Por ende, $v(p) = V$.'
-    - 'Paso 2: Evaluar la proposición simple $q$: Como $3 + 7 = 10 \neq 11$, la igualdad es falsa. Por ende, $v(q) = F$.'
-    - 'Paso 3: Evaluar la conjunción $p \land q$: La regla de la conjunción establece que $v(p \land q) = V$ si y solo si ambos operandos son verdaderos.'
-    - 'Paso 4: Calcular el resultado: Como $v(p) = V$ y $v(q) = F$, se concluye que $v(p \land q) = F$.'
+  - 'Paso 1: Evaluar la proposición simple $p$: Efectivamente el $2$ es el único número par con exactamente dos divisores ($1$ y $2$). Por ende, $v(p) = V$.'
+  - 'Paso 2: Evaluar la proposición simple $q$: Como $3 + 7 = 10 \neq 11$, la igualdad es falsa. Por ende, $v(q) = F$.'
+  - 'Paso 3: Evaluar la conjunción $p \land q$: La regla de la conjunción establece que $v(p \land q) = V$ si y solo si ambos operandos son verdaderos.'
+  - 'Paso 4: Calcular el resultado: Como $v(p) = V$ y $v(q) = F$, se concluye que $v(p \land q) = F$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En la lógica matemática clásica, ¿cuántos valores de verdad posibles puede adoptar una proposición?'
-    choices:
-      - {text: 'Exactamente dos valores: Verdadero ($V$) o Falso ($F$)', is_correct: true}
-      - {text: 'Tres valores: Verdadero, Falso o Indeterminado', is_correct: false}
-      - {text: 'Infinitos valores reales en el intervalo $[0, 1]$', is_correct: false}
-      - {text: 'Un único valor constante fijado en Verdadero', is_correct: false}
-    explanation: 'La alternativa correcta es ''Exactamente dos valores: Verdadero ($V$) o Falso ($F$)''. Por el Principio de Bivalencia, solo existen $V$ y $F$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si la proposición simple $p$ tiene valor de verdad $V$ y la proposición $q$ tiene valor $F$, ¿cuál es el valor de verdad de la disyunción $p \lor q$?'
-    choices:
-      - {text: 'Verdadero ($V$)', is_correct: true}
-      - {text: 'Falso ($F$)', is_correct: false}
-      - {text: 'Indefinido', is_correct: false}
-      - {text: 'Nulo', is_correct: false}
-    explanation: 'La alternativa correcta es ''Verdadero ($V$)''. La disyunción inclusiva es verdadera cuando al menos uno de sus componentes es verdadero.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: En la lógica matemática clásica, ¿cuántos valores de verdad posibles puede adoptar una proposición?
+  choices:
+  - text: 'Exactamente dos valores: Verdadero ($V$) o Falso ($F$)'
+    is_correct: true
+  - text: 'Tres valores: Verdadero, Falso o Indeterminado'
+    is_correct: false
+  - text: Infinitos valores reales en el intervalo $[0, 1]$
+    is_correct: false
+  - text: Un único valor constante fijado en Verdadero
+    is_correct: false
+  explanation: 'La alternativa correcta es ''Exactamente dos valores: Verdadero ($V$) o Falso ($F$)''. Por el Principio de Bivalencia, solo existen $V$ y $F$.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si la proposición simple $p$ tiene valor de verdad $V$ y la proposición $q$ tiene valor $F$, ¿cuál es el valor de verdad de la disyunción $p \lor q$?
+  choices:
+  - text: Verdadero ($V$)
+    is_correct: true
+  - text: Falso ($F$)
+    is_correct: false
+  - text: Indefinido
+    is_correct: false
+  - text: Nulo
+    is_correct: false
+  explanation: La alternativa correcta es 'Verdadero ($V$)'. La disyunción inclusiva es verdadera cuando al menos uno de sus componentes es verdadero.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar las proposiciones atómicas componentes y asignarles sus valores de verdad $V$ o $F$ según los hechos matemáticos.'
-  - 'Paso 2: Identificar los conectivos lógicos y su jerarquía de operaciones (paréntesis, negaciones, conjunciones/disyunciones, condicionales).'
-  - 'Paso 3: Evaluar las operaciones lógicas intermedias aplicando las tablas de verdad de cada conectivo.'
-  - 'Paso 4: Obtener el valor de verdad final unívoco ($V$ o $F$) de la expresión analizada.'
-errores_correccion: |
-  - **Error 1:** Afirmar que el valor de verdad en matemáticas depende de opiniones personales o de acuerdos subjetivos. **Cómo corregirlo:** En lógica y matemáticas, el valor de verdad se establece objetiva y deductivamente a partir de definiciones, axiomas y teoremas.
+- 'Paso 1: Identificar las proposiciones atómicas componentes y asignarles sus valores de verdad $V$ o $F$ según los hechos matemáticos.'
+- 'Paso 2: Identificar los conectivos lógicos y su jerarquía de operaciones (paréntesis, negaciones, conjunciones/disyunciones, condicionales).'
+- 'Paso 3: Evaluar las operaciones lógicas intermedias aplicando las tablas de verdad de cada conectivo.'
+- 'Paso 4: Obtener el valor de verdad final unívoco ($V$ o $F$) de la expresión analizada.'
+errores_correccion: '- **Error 1:** Afirmar que el valor de verdad en matemáticas depende de opiniones personales o de acuerdos subjetivos. **Cómo corregirlo:** En lógica y matemáticas, el valor de verdad se establece objetiva y deductivamente a partir de definiciones, axiomas y teoremas.
+
   - **Error 2:** Creer que un enunciado abierto como "$x + 2 = 5$" tiene valor de verdad falso por defecto. **Cómo corregirlo:** Los enunciados abiertos carecen de valor de verdad hasta que la variable toma un valor específico o se aplica un cuantificador.
+
+  '
 ejemplos:
-  - titulo: 'Valor de verdad de proposición aritmética'
-    enunciado: '¿Cuál es el valor de verdad de "$15$ es múltiplo de $5$"?'
-    alternativas:
-      - 'Verdadero ($V$)'
-      - 'Falso ($F$)'
-      - 'Indeterminado'
-    respuesta: 'Verdadero ($V$)'
-    solucion_pasos:
-      - '1. $15 = 5 \times 3$, por lo que $15$ es múltiplo de $5$.'
-      - '2. El valor de verdad es $V$.'
-  - titulo: 'Valor de verdad de desigualdad'
-    enunciado: '¿Cuál es el valor de verdad de "$8 < 3$"?'
-    alternativas:
-      - 'Falso ($F$)'
-      - 'Verdadero ($V$)'
-      - 'Incompleto'
-    respuesta: 'Falso ($F$)'
-    solucion_pasos:
-      - '1. En la recta numérica $8$ se ubica a la derecha de $3$, luego $8 > 3$.'
-      - '2. La proposición es falsa ($F$).'
-  - titulo: 'Valor de verdad de negación'
-    enunciado: 'Si $v(p) = F$, ¿cuál es el valor de $v(\neg p)$?'
-    respuesta: 'Verdadero ($V$)'
-    solucion_pasos:
-      - 'La negación invierte el valor de verdad: $v(\neg F) = V$.'
-  - titulo: 'Condicional con antecedente falso'
-    enunciado: '¿Cuál es el valor de verdad de "Si $1 = 2$, entonces el cielo es azul"?'
-    respuesta: 'Verdadero ($V$)'
-    solucion_pasos:
-      - 'En la lógica proposicional, todo condicional con antecedente falso ($F \to V$) es formalmente Verdadero ($V$).'
+- titulo: Valor de verdad de proposición aritmética
+  enunciado: ¿Cuál es el valor de verdad de "$15$ es múltiplo de $5$"?
+  alternativas:
+  - Verdadero ($V$)
+  - Falso ($F$)
+  - Indeterminado
+  respuesta: Verdadero ($V$)
+  solucion_pasos:
+  - 1. $15 = 5 \times 3$, por lo que $15$ es múltiplo de $5$.
+  - 2. El valor de verdad es $V$.
+- titulo: Valor de verdad de desigualdad
+  enunciado: ¿Cuál es el valor de verdad de "$8 < 3$"?
+  alternativas:
+  - Falso ($F$)
+  - Verdadero ($V$)
+  - Incompleto
+  respuesta: Falso ($F$)
+  solucion_pasos:
+  - 1. En la recta numérica $8$ se ubica a la derecha de $3$, luego $8 > 3$.
+  - 2. La proposición es falsa ($F$).
+- titulo: Valor de verdad de negación
+  enunciado: Si $v(p) = F$, ¿cuál es el valor de $v(\neg p)$?
+  respuesta: Verdadero ($V$)
+  solucion_pasos:
+  - 'La negación invierte el valor de verdad: $v(\neg F) = V$.'
+- titulo: Condicional con antecedente falso
+  enunciado: ¿Cuál es el valor de verdad de "Si $1 = 2$, entonces el cielo es azul"?
+  respuesta: Verdadero ($V$)
+  solucion_pasos:
+  - En la lógica proposicional, todo condicional con antecedente falso ($F \to V$) es formalmente Verdadero ($V$).
 errores_frecuentes:
-  - 'La afirmación de que el valor de verdad de una proposición matemática depende de la percepción subjetiva del observador.'
-  - 'La afirmación de que una proposición puede poseer simultáneamente valor de verdad verdadero y falso en la lógica clásica.'
-  - 'La afirmación de que los enunciados abiertos con variables libres tienen valor de verdad falso asignado por defecto.'
-  - 'La afirmación de que un condicional con antecedente falso resulta siempre en un valor de verdad falso.'
-  - 'La afirmación de que existen valores de verdad intermedios fraccionarios en el sistema de lógica bivalente clásica.'
+- La afirmación de que el valor de verdad de una proposición matemática depende de la percepción subjetiva del observador.
+- La afirmación de que una proposición puede poseer simultáneamente valor de verdad verdadero y falso en la lógica clásica.
+- La afirmación de que los enunciados abiertos con variables libres tienen valor de verdad falso asignado por defecto.
+- La afirmación de que un condicional con antecedente falso resulta siempre en un valor de verdad falso.
+- La afirmación de que existen valores de verdad intermedios fraccionarios en el sistema de lógica bivalente clásica.
 afirmaciones_verdaderas:
-  - 'En la lógica matemática clásica bivalente, toda proposición posee un único valor de verdad perteneciente al conjunto binario $\{V, F\}$.'
-  - 'El valor de verdad de una proposición compuesta se calcula de forma unívoca y determinística mediante las reglas veritativo-funcionales de sus conectivos.'
-al_terminar_debes_poder: |
+- En la lógica matemática clásica bivalente, toda proposición posee un único valor de verdad perteneciente al conjunto binario $\{V, F\}$.
+- El valor de verdad de una proposición compuesta se calcula de forma unívoca y determinística mediante las reglas veritativo-funcionales de sus conectivos.
+al_terminar_debes_poder: '![Resumen de la función de verdad](/static/img/nodos/valor-de-verdad-resumen.svg)
+
+
   QUÉ: Evaluar y determinar el valor de verdad de proposiciones matemáticas simples y compuestas.
+
   CÓMO: Contrastar proposiciones simples contra teoremas y definiciones, y aplicar las reglas de las tablas de verdad sobre los conectivos lógicos en proposiciones compuestas.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+  '
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado
