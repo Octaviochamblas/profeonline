@@ -57,6 +57,10 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
 - **Login con Google:** allauth, credenciales en `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
 - **CSP:** con nonce por petición (`apps/core/middleware.py`).
 - **Auditorías:** vigentes en `docs/auditorias/`; las antiguas en `docs/auditorias/_archivo-2026-05-30/`.
+- **Ejemplos en recursos (12 secciones):** Todos los ejercicios de la sección `ejemplos`
+  deben ser interactivos (Tipo A con `alternativas:` o Tipo B con `respuesta: "Sí"` / `"No"`).
+  Está **estrictamente prohibido** redactar ejemplos de respuesta abierta o pasivos que
+  caigan en el botón "Ver solución" (pauta en `docs/conocimiento/pauta-contenido.md`).
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
@@ -76,3 +80,13 @@ El consumo de tokens es una prioridad. Reglas para no dispararlo:
    al usuario el gasto aproximado y barajar un enfoque más económico antes de continuar.
 6. **Previsualizar visualmente con URL local** (levantar runserver y pasar el link) en vez de
    capturas, salvo que el usuario pida una imagen.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

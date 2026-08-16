@@ -95,6 +95,14 @@ ejemplo_guiado:
 # alternativas, enunciados) en las secciones `checkpoints` ("Comprueba tu avance"), `ejemplos` ("Ejemplos")
 # y `errores_frecuentes` / `afirmaciones_verdaderas` ("Ejemplos Verdadero/Falso") DEBEN estar encerradas
 # obligatoriamente entre signos de dólar ($...$ o $$...$$) para su renderizado profesional mediante KaTeX.
+#
+# ⚠️ CUARTA REGLA DURA (agregada 2026-08-16): Prohibición estricta de ejemplos pasivos ("Ver solución")
+# TODOS los ejercicios en la sección `ejemplos` DEBEN ser interactivos para que el estudiante responda
+# activamente antes de ver la retroalimentación. Está ESTRICTAMENTE PROHIBIDO redactar ejemplos de respuesta
+# abierta que carezcan de opciones y caigan en el botón pasivo "Ver solución".
+# - En selección múltiple (Tipo A): DEBE definirse la lista `alternativas:` (mínimo 3 opciones) y `respuesta:`
+#   coincidiendo exactamente con la opción correcta.
+# - En ejercicios Sí/No (Tipo B): `respuesta:` DEBE ser exactamente "Sí" o "No" (o definir `alternativas:`).
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."
@@ -131,7 +139,7 @@ ejemplos:
       - "3. Cuadrado del segundo: $3^2 = 9$. Resultado: $x^2 + 6x + 9$."
   # TIPO B — Ejemplo Sí/No interactivo (True/False en la UI)
   - titulo: "¿Es $(x + 4)^2 = x^2 + 8x + 16$ una identidad correcta?"
-    respuesta: "Sí"          # o "No"
+    respuesta: "Sí"          # o "No" obligatoriamente
     solucion_pasos:
       - "Sí, aplicando el producto notable se obtiene $x^2 + 8x + 16$."
 errores_frecuentes:
@@ -163,7 +171,7 @@ estado: publicado    # o borrador
 | `checkpoints` | Sí | **Exactamente 2** (`after_explicacion_formal` y `after_ejemplo_guiado`), 4 alternativas cada uno, 1 sola correcta. **Obligatorio:** todas las expresiones matemáticas en preguntas, alternativas y explicaciones deben usar $LaTeX$. `explanation` debe comenzar literalmente por "La alternativa correcta es '...'" mencionando la opción correcta. Validado por `node_checkpoint_service.normalize_node_checkpoints`. |
 | `procedimiento` | Sí | Lista de pasos en orden. Mínimo 2, recomendado 3-4. Expresiones matemáticas escritas en $LaTeX$. |
 | `errores_correccion` | Sí | Texto en Markdown que se muestra directamente en la sección visual **"Errores frecuentes y cómo corregirlos"**. Debe detallar 2-3 errores específicos del concepto y su respectiva forma de corregirlos (ej: `- **Error 1:** ... **Cómo corregirlo:** ...`). |
-| `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple, 3 alternativas) + 2 Tipo B (Sí/No interactivos). Los Tipo B van al final. **Obligatorio:** enunciados, alternativas y pasos de solución deben expresar las fórmulas y términos en $LaTeX$. |
+| `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple con lista `alternativas:`) + 2 Tipo B (con `respuesta: "Sí"` o `"No"`). **PROHIBIDO:** redactar ejemplos pasivos sin opciones que caigan en "Ver solución". **Obligatorio:** enunciados, alternativas y pasos de solución deben expresar las fórmulas y términos en $LaTeX$. |
 | `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas particularizadas en $LaTeX$. Deben ser **afirmaciones matemáticas declarativas directas pero FALSAS** que un alumno pudiera dar por verdaderas. Está **estrictamente prohibido** usar palabras como *"Confundir..."*, *"Pensar que..."*, *"Olvidar..."*, *"Creer..."*, *"Asumir..."*, *"Omitir..."*, *"Errar..."*, *"Cometer errores..."*, *"Error..."*, *"La suposición..."*, *"Suposición..."*, *"Suponer..."*, *"La creencia..."*, *"Creencia..."* ni ninguna palabra o forma de redacción que haga referencia o delate que lo que se está diciendo es falso solo por la forma de decirlo (meta-lenguaje). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
 | `afirmaciones_verdaderas` | Sí | **Mínimo 2**. Afirmaciones ciertas sobre el tema en $LaTeX$, breves y verificables. Sin ellas, la sección V/F muestra solo "Falso" siempre. |
 | `al_terminar_debes_poder` | Sí | 1-2 frases que expliquen orgánicamente **QUÉ** sabrá hacer el alumno y **CÓMO** lo ejecutará (el mecanismo, algoritmo o criterio matemático explícito de resolución propio del nodo, sin usar plantillas genéricas vacías). |

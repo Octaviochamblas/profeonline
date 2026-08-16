@@ -51,6 +51,10 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   comprobaciones y briefs visuales. Contrato backend en
   `docs/gobernanza/estandar-editorial-recursos-teoricos.md`; plantilla de autoría
   en el repo hermano `profeonline-uploader/docs/estandar-recurso-teorico-interactivo.md`.
+- **Ejemplos en recursos (12 secciones):** Todos los ejercicios de la sección `ejemplos`
+  deben ser interactivos (Tipo A con `alternativas:` o Tipo B con `respuesta: "Sí"` / `"No"`).
+  Está **estrictamente prohibido** redactar ejemplos de respuesta abierta o pasivos que
+  caigan en el botón "Ver solución" (pauta en `docs/conocimiento/pauta-contenido.md`).
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
