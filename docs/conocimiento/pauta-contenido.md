@@ -111,6 +111,16 @@ ejemplo_guiado:
 # Si el nodo cuenta con infografía de síntesis, la etiqueta `![...](/static/img/nodos/...)` se ubica al inicio.
 # Queda ESTRICTAMENTE PROHIBIDO redactar párrafos de texto corrido sin estas dos etiquetas, ya que la plataforma
 # las utiliza para construir y enmarcar automáticamente las dos tarjetas visuales independientes (`🎯 QUÉ` y `⚙️ CÓMO`).
+#
+# ⚠️ SEXTA REGLA DURA (agregada 2026-08-17): Estándar Zero-Overflow en Infografías y Diagramas SVG
+# Todo archivo SVG generado para los nodos (`static/img/nodos/*.svg`) DEBE cumplir estrictamente con:
+# 1. Anclaje derecho seguro: Todo texto o badge ubicado en el extremo derecho de un contenedor/píldora DEBE
+#    usar obligatoriamente `text-anchor="end"` con padding interior (`x = rect_x + rect_width - 16`).
+# 2. Límite de caracteres por contenedor: El texto no debe exceder el ancho útil disponible
+#    ($N_{\text{max}} \approx \frac{W_{\text{box}} - 30}{F_s \times 0.62}$ caracteres). Textos largos deben dividirse en
+#    múltiples líneas (`<tspan>` o `<text>` apilados) o sintetizarse.
+# 3. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja.
+# 4. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."

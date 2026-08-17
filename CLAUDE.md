@@ -65,6 +65,10 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   las dos etiquetas explícitas `QUÉ:` (acción o capacidad matemática) y `CÓMO:` (mecanismo o
   algoritmo técnico de resolución en $LaTeX$). Prohibido redactar párrafos de texto corrido
   sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
+- **Infografías y Diagramas SVG:** Todo SVG (`static/img/nodos/`) debe respetar el estándar
+  *Zero-Overflow*: textos derechos anclados con `text-anchor="end"`, padding seguro $\ge 15\text{px}$,
+  y control estricto de longitud de caracteres por caja. Prohibido desbordar los bordes de cards
+  o del canvas.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
