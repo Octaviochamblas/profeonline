@@ -103,6 +103,14 @@ ejemplo_guiado:
 # - En selección múltiple (Tipo A): DEBE definirse la lista `alternativas:` (mínimo 3 opciones) y `respuesta:`
 #   coincidiendo exactamente con la opción correcta.
 # - En ejercicios Sí/No (Tipo B): `respuesta:` DEBE ser exactamente "Sí" o "No" (o definir `alternativas:`).
+#
+# ⚠️ QUINTA REGLA DURA (agregada 2026-08-17): Estructura obligatoria QUÉ y CÓMO en "Al terminar debes poder"
+# El campo `al_terminar_debes_poder` DEBE estructurarse obligatoriamente con las dos etiquetas explícitas:
+# 1. `QUÉ:` — Acción o capacidad matemática concreta lograda por el estudiante.
+# 2. `CÓMO:` — Mecanismo, algoritmo o criterio técnico específico de resolución en $LaTeX$.
+# Si el nodo cuenta con infografía de síntesis, la etiqueta `![...](/static/img/nodos/...)` se ubica al inicio.
+# Queda ESTRICTAMENTE PROHIBIDO redactar párrafos de texto corrido sin estas dos etiquetas, ya que la plataforma
+# las utiliza para construir y enmarcar automáticamente las dos tarjetas visuales independientes (`🎯 QUÉ` y `⚙️ CÓMO`).
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."
@@ -152,7 +160,11 @@ afirmaciones_verdaderas:           # NUEVO desde 2026-08-04
   - "El desarrollo del cuadrado de binomio $(a + b)^2$ genera un trinomio $a^2 + 2ab + b^2$."
   - "Segunda afirmación cierta con expresiones en $LaTeX$."
 al_terminar_debes_poder: |
-  1-2 frases: qué debe saber hacer el alumno al terminar este recurso.
+  ![Resumen del cuadrado de binomio](/static/img/nodos/cuadrado-de-binomio-resumen.svg)
+
+  QUÉ: Desarrollar y expandir algebraicamente el cuadrado de un binomio suma $(a + b)^2$ y resta $(a - b)^2$.
+
+  CÓMO: Aplicar el algoritmo notable calculando el cuadrado del primer término, sumando o restando el doble producto de ambos términos y sumando el cuadrado del segundo término ($a^2 \pm 2ab + b^2$).
 fuente: "Libro / apunte de referencia con página si aplica"
 estado: publicado    # o borrador
 ```
@@ -174,7 +186,7 @@ estado: publicado    # o borrador
 | `ejemplos` | Sí | **Mínimo 4**: 2 Tipo A (selección múltiple con lista `alternativas:`) + 2 Tipo B (con `respuesta: "Sí"` o `"No"`). **PROHIBIDO:** redactar ejemplos pasivos sin opciones que caigan en "Ver solución". **Obligatorio:** enunciados, alternativas y pasos de solución deben expresar las fórmulas y términos en $LaTeX$. |
 | `errores_frecuentes` | Sí | **Exactamente 5**. Afirmaciones falsas particularizadas en $LaTeX$. Deben ser **afirmaciones matemáticas declarativas directas pero FALSAS** que un alumno pudiera dar por verdaderas. Está **estrictamente prohibido** usar palabras como *"Confundir..."*, *"Pensar que..."*, *"Olvidar..."*, *"Creer..."*, *"Asumir..."*, *"Omitir..."*, *"Errar..."*, *"Cometer errores..."*, *"Error..."*, *"La suposición..."*, *"Suposición..."*, *"Suponer..."*, *"La creencia..."*, *"Creencia..."* ni ninguna palabra o forma de redacción que haga referencia o delate que lo que se está diciendo es falso solo por la forma de decirlo (meta-lenguaje). Se mezclan con `afirmaciones_verdaderas` en la sección "Ejemplos Verdadero/Falso". |
 | `afirmaciones_verdaderas` | Sí | **Mínimo 2**. Afirmaciones ciertas sobre el tema en $LaTeX$, breves y verificables. Sin ellas, la sección V/F muestra solo "Falso" siempre. |
-| `al_terminar_debes_poder` | Sí | 1-2 frases que expliquen orgánicamente **QUÉ** sabrá hacer el alumno y **CÓMO** lo ejecutará (el mecanismo, algoritmo o criterio matemático explícito de resolución propio del nodo, sin usar plantillas genéricas vacías). |
+| `al_terminar_debes_poder` | Sí | **Obligatorio: Estructura explícita `QUÉ:` y `CÓMO:`** (e infografía de síntesis al inicio si aplica). Define la acción concreta (`QUÉ`) y el algoritmo o mecanismo técnico de resolución (`CÓMO`) con términos matemáticos precisos en $LaTeX$. **PROHIBIDO:** redactar párrafos de texto corrido sin estas etiquetas. Alimenta automáticamente las dos tarjetas visuales independientes `🎯 QUÉ` y `⚙️ CÓMO`. |
 | `fuente` | Recomendado | Nombre del libro y página. Ayuda a verificar. |
 | `estado` | Sí | Usa `publicado` cuando el contenido está revisado. |
 

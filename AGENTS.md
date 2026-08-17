@@ -55,6 +55,10 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   deben ser interactivos (Tipo A con `alternativas:` o Tipo B con `respuesta: "Sí"` / `"No"`).
   Está **estrictamente prohibido** redactar ejemplos de respuesta abierta o pasivos que
   caigan en el botón "Ver solución" (pauta en `docs/conocimiento/pauta-contenido.md`).
+- **Al terminar debes poder (12 secciones):** Debe estar estructurado obligatoriamente con
+  las dos etiquetas explícitas `QUÉ:` (acción o capacidad matemática) y `CÓMO:` (mecanismo o
+  algoritmo técnico de resolución en $LaTeX$). Prohibido redactar párrafos de texto corrido
+  sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
