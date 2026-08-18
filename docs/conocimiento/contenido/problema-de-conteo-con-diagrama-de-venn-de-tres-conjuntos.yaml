@@ -1,115 +1,162 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.PROBLEMA_VENN_TRES_CONJUNTOS
-resumen_inicial: 'Metodología sistemática de resolución de problemas verbales de conteo con tres conjuntos mediante diagramas de Venn y llenado de adentro hacia afuera.'
-explicacion_simple: |
-  Para resolver problemas de conteo con **tres conjuntos** (por ejemplo: preferencias de tres deportes o tres asignaturas), se utiliza un diagrama de Venn de **tres círculos secantes** siguiendo un **orden estricto de adentro hacia afuera**:
+resumen_inicial: Metodología sistemática de resolución de problemas verbales de conteo con tres conjuntos mediante diagramas de Venn y llenado de adentro hacia afuera.
+explicacion_simple: 'Para resolver problemas de conteo con **tres conjuntos** (por ejemplo: preferencias de tres deportes o tres asignaturas), se utiliza un diagrama de Venn de **tres círculos secantes** siguiendo un **orden estricto de adentro hacia afuera**:
+
   1. **Centro absoluto**: registrar cuántos cumplen las **tres cosas a la vez** ($A \cap B \cap C$).
+
   2. **Intersecciones dobles**: restar el centro a las parejas para hallar los que cumplen **"solo $A$ y $B$"**, **"solo $A$ y $C$"**, **"solo $B$ y $C$"**.
+
   3. **Regiones individuales**: restar las tres zonas vecinas a los totales para hallar **"solo $A$"**, **"solo $B$"** y **"solo $C$"**.
+
   4. **Exterior**: sumar las $7$ regiones internas y restarlas de $\mathcal{U}$ para hallar **"ninguno"**.
-explicacion_formal: |
-  ### Definición formal
+
+
+  ![problema-de-conteo-con-diagrama-de-venn-de-tres-conjuntos](/static/img/nodos/problema-de-conteo-con-diagrama-de-venn-de-tres-conjuntos-intro.svg)'
+explicacion_formal: '### Definición formal
+
   En la resolución algorítmica de problemas de conteo, un **problema de 3 conjuntos sobre $\mathcal{U}$** consiste en resolver el sistema lineal de 8 variables disjuntas $\{x_{111}, x_{110}, x_{101}, x_{011}, x_{100}, x_{010}, x_{001}, x_{000}\}$:
+
   $$\begin{cases} x_{111} = |A \cap B \cap C| & \text{(Triple central)} \\ x_{110} = |A \cap B| - x_{111} & \text{(Solo } A \text{ y } B\text{)} \\ x_{101} = |A \cap C| - x_{111} & \text{(Solo } A \text{ y } C\text{)} \\ x_{011} = |B \cap C| - x_{111} & \text{(Solo } B \text{ y } C\text{)} \\ x_{100} = |A| - (x_{110} + x_{101} + x_{111}) & \text{(Solo } A\text{)} \\ x_{010} = |B| - (x_{110} + x_{011} + x_{111}) & \text{(Solo } B\text{)} \\ x_{001} = |C| - (x_{101} + x_{011} + x_{111}) & \text{(Solo } C\text{)} \\ x_{000} = |\mathcal{U}| - \sum_{i=1}^7 x_i & \text{(Ninguno)} \end{cases}$$
 
+
   ### Desglose simbólico
+
   - Flujo de resolución: $x_{111} \longrightarrow (x_{110}, x_{101}, x_{011}) \longrightarrow (x_{100}, x_{010}, x_{001}) \longrightarrow x_{000}$.
+
   - Condición de consistencia: Todas las variables $x_{ijk} \geq 0$.
 
+
   ### Síntesis didáctica
+
   El flujo algorítmico jerárquico garantiza que cada deducción descuente exactamente los términos solapados calculados en el nivel previo.
-definiciones_clave: |
-  - **Problema de conteo de 3 conjuntos**: Problema de modelado combinatorio que involucra tres propiedades simultáneas.
+
+  '
+definiciones_clave: '- **Problema de conteo de 3 conjuntos**: Problema de modelado combinatorio que involucra tres propiedades simultáneas.
+
   - **Estrategia centrífuga**: Técnica de deducción que avanza desde el núcleo atómico ($x_{111}$) hacia las periferias ($x_{000}$).
+
   - **Conservación del universo**: Condición que exige que la suma de los 8 átomos iguale la población total $|\mathcal{U}|$.
-propiedades_relaciones: |
-  - **Suma de niveles de Hamming**:
-    - Nivel 3 (tres): $x_{111}$.
-    - Nivel 2 (exactamente dos): $x_{110} + x_{101} + x_{011}$.
-    - Nivel 1 (exactamente uno): $x_{100} + x_{010} + x_{001}$.
-    - Nivel 0 (ninguno): $x_{000}$.
+
+  '
+propiedades_relaciones: "- **Suma de niveles de Hamming**:\n  - Nivel 3 (tres): $x_{111}$.\n  - Nivel 2 (exactamente dos): $x_{110} + x_{101} + x_{011}$.\n  - Nivel 1 (exactamente uno): $x_{100} + x_{010} + x_{001}$.\n  - Nivel 0 (ninguno): $x_{000}$.\n"
 ejemplo_guiado:
-  enunciado: 'En un colegio de $120$ alumnos ($\mathcal{U}$): $60$ juegan fútbol ($F$), $50$ básquetbol ($B$), $45$ vóleibol ($V$), $20$ juegan $F$ y $B$, $18$ juegan $F$ y $V$, $15$ juegan $B$ y $V$, y $8$ juegan los tres deportes. Resuelve el diagrama de Venn y determina: (a) cuántos juegan solo fútbol, (b) cuántos juegan exactamente dos deportes, y (c) cuántos no juegan ningún deporte.'
+  enunciado: 'En un colegio de $120$ alumnos ($\mathcal{U}$): $60$ juegan fútbol ($F$), $50$ básquetbol ($B$), $45$ vóleibol ($V$), $20$ juegan $F$ y $B$, $18$ juegan $F$ y $V$, $15$ juegan $B$ y $V$, y $8$ juegan los tres deportes. Resuelve el diagrama de Venn y determina: (a) cuántos juegan solo fútbol, (b) cuántos juegan exactamente dos deportes, y (c) cuántos no juegan ningún deporte.
+
+
+    ![Ejemplo problema-de-conteo-con-diagrama-de-venn-de-tres-conjuntos](/static/img/nodos/problema-de-conteo-con-diagrama-de-venn-de-tres-conjuntos-ejemplos.svg)'
   pasos:
-    - 'Paso 1: Colocar la triple intersección central:
-      - $x_{111} = |F \cap B \cap V| = 8$.'
-    - 'Paso 2: Calcular las tres dobles exclusivas:
-      - Solo $F$ y $B$: $20 - 8 = 12$.
-      - Solo $F$ y $V$: $18 - 8 = 10$.
-      - Solo $B$ y $V$: $15 - 8 = 7$.'
-    - 'Paso 3: Calcular las tres regiones individuales exclusivas:
-      - Solo $F$: $60 - (12 + 10 + 8) = 60 - 30 = 30$.
-      - Solo $B$: $50 - (12 + 7 + 8) = 50 - 27 = 23$.
-      - Solo $V$: $45 - (10 + 7 + 8) = 45 - 25 = 20$.'
-    - 'Paso 4: Responder preguntas (a) y (b):
-      - (a) Solo fútbol = $30$ alumnos.
-      - (b) Exactamente dos deportes = $12 + 10 + 7 = 29$ alumnos.'
-    - 'Paso 5: Calcular el total de deportistas y la región exterior (c):
-      - Unión $= 30 + 23 + 20 + 12 + 10 + 7 + 8 = 110$ alumnos.
-      - (c) Ningún deporte $= 120 - 110 = 10$ alumnos.'
+  - 'Paso 1: Colocar la triple intersección central: - $x_{111} = |F \cap B \cap V| = 8$.'
+  - 'Paso 2: Calcular las tres dobles exclusivas: - Solo $F$ y $B$: $20 - 8 = 12$. - Solo $F$ y $V$: $18 - 8 = 10$. - Solo $B$ y $V$: $15 - 8 = 7$.'
+  - 'Paso 3: Calcular las tres regiones individuales exclusivas: - Solo $F$: $60 - (12 + 10 + 8) = 60 - 30 = 30$. - Solo $B$: $50 - (12 + 7 + 8) = 50 - 27 = 23$. - Solo $V$: $45 - (10 + 7 + 8) = 45 - 25 = 20$.'
+  - 'Paso 4: Responder preguntas (a) y (b): - (a) Solo fútbol = $30$ alumnos. - (b) Exactamente dos deportes = $12 + 10 + 7 = 29$ alumnos.'
+  - 'Paso 5: Calcular el total de deportistas y la región exterior (c): - Unión $= 30 + 23 + 20 + 12 + 10 + 7 + 8 = 110$ alumnos. - (c) Ningún deporte $= 120 - 110 = 10$ alumnos.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué es fundamental comenzar a rellenar el diagrama de Venn de tres conjuntos desde la triple intersección central?'
-    choices:
-      - {text: 'Porque el valor central debe restarse a cada una de las tres intersecciones de pares y luego a los conjuntos individuales', is_correct: true}
-      - {text: 'Porque el centro es siempre la región con más elementos', is_correct: false}
-      - {text: 'Porque el centro define el tamaño del universo $\mathcal{U}$', is_correct: false}
-      - {text: 'Porque la fórmula de Poincaré no funciona si no se empieza por el centro', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque el valor central debe restarse a cada una de las tres intersecciones de pares y luego a los conjuntos individuales''. Evita arrastrar errores de sobreconteo.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'En el ejemplo guiado, si sumamos los alumnos que juegan "exactamente un deporte", ¿cuál es el total?'
-    choices:
-      - {text: '$73$ alumnos ($30 + 23 + 20$)', is_correct: true}
-      - {text: '$155$ alumnos', is_correct: false}
-      - {text: '$110$ alumnos', is_correct: false}
-      - {text: '$29$ alumnos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$73$ alumnos ($30 + 23 + 20$)''. Se suman las tres zonas exclusivas individuales: $30 + 23 + 20 = 73$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué es fundamental comenzar a rellenar el diagrama de Venn de tres conjuntos desde la triple intersección central?
+  choices:
+  - text: Porque el valor central debe restarse a cada una de las tres intersecciones de pares y luego a los conjuntos individuales
+    is_correct: true
+  - text: Porque el centro es siempre la región con más elementos
+    is_correct: false
+  - text: Porque el centro define el tamaño del universo $\mathcal{U}$
+    is_correct: false
+  - text: Porque la fórmula de Poincaré no funciona si no se empieza por el centro
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el valor central debe restarse a cada una de las tres intersecciones de pares y luego a los conjuntos individuales'. Evita arrastrar errores de sobreconteo.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, si sumamos los alumnos que juegan "exactamente un deporte", ¿cuál es el total?
+  choices:
+  - text: $73$ alumnos ($30 + 23 + 20$)
+    is_correct: true
+  - text: $155$ alumnos
+    is_correct: false
+  - text: $110$ alumnos
+    is_correct: false
+  - text: $29$ alumnos
+    is_correct: false
+  explanation: 'La alternativa correcta es ''$73$ alumnos ($30 + 23 + 20$)''. Se suman las tres zonas exclusivas individuales: $30 + 23 + 20 = 73$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Dibujar el rectángulo universal y los tres círculos secantes rotulados.'
-  - 'Paso 2: Registrar en el centro la cantidad de la triple intersección $x_{111}$.'
-  - 'Paso 3: Calcular las 3 regiones dobles exclusivas restando $x_{111}$ a cada dato de intersección de pares.'
-  - 'Paso 4: Calcular las 3 regiones individuales exclusivas restando las 3 zonas ya calculadas al total de cada conjunto.'
-  - 'Paso 5: Sumar las 7 regiones internas y restar de $|\mathcal{U}|$ para obtener la región exterior "Ninguno".'
-errores_correccion: |
-  - **Error 1:** Anotar el dato de intersección de dos conjuntos directamente en la región doble sin restar el centro. **Cómo corregirlo:** La región doble es exclusiva ($(A \cap B) \setminus C$); se debe restar obligatoriamente la cantidad que está en el centro triple.
+- 'Paso 1: Dibujar el rectángulo universal y los tres círculos secantes rotulados.'
+- 'Paso 2: Registrar en el centro la cantidad de la triple intersección $x_{111}$.'
+- 'Paso 3: Calcular las 3 regiones dobles exclusivas restando $x_{111}$ a cada dato de intersección de pares.'
+- 'Paso 4: Calcular las 3 regiones individuales exclusivas restando las 3 zonas ya calculadas al total de cada conjunto.'
+- 'Paso 5: Sumar las 7 regiones internas y restar de $|\mathcal{U}|$ para obtener la región exterior "Ninguno".'
+errores_correccion: '- **Error 1:** Anotar el dato de intersección de dos conjuntos directamente en la región doble sin restar el centro. **Cómo corregirlo:** La región doble es exclusiva ($(A \cap B) \setminus C$); se debe restar obligatoriamente la cantidad que está en el centro triple.
+
   - **Error 2:** Restar solo el centro al calcular "Solo $A$". **Cómo corregirlo:** Al total de $A$ se le deben restar TRES regiones: las dos dobles adyacentes y la triple central.
+
+  '
 ejemplos:
-  - titulo: 'Cálculo de dobles exclusivas'
-    enunciado: 'Si $|A \cap B| = 14$ y $|A \cap B \cap C| = 6$, ¿cuántos hay en "Solo A y B"?'
-    alternativas:
-      - '$8$'
-      - '$14$'
-      - '$20$'
-    respuesta: '$8$'
-    solucion_pasos:
-      - '1. $(A \cap B) \setminus C = 14 - 6 = 8$.'
-  - titulo: 'Cálculo de individual exclusiva'
-    enunciado: 'Si $|A| = 40$, y las zonas de solapamiento de A suman 25, ¿cuánto vale "Solo A"?'
-    respuesta: '$15$'
-    solucion_pasos:
-      - '$40 - 25 = 15$.'
-  - titulo: 'Exactamente dos características'
-    enunciado: 'Si las tres dobles exclusivas valen 5, 8 y 7, ¿cuántos cumplen exactamente dos?'
-    respuesta: '$20$'
-    solucion_pasos:
-      - '$5 + 8 + 7 = 20$.'
-  - titulo: 'Conservación del universo'
-    enunciado: 'Si la unión interna suma 85 en un universo de 100, ¿cuántos hay en la región exterior?'
-    respuesta: '$15$'
-    solucion_pasos:
-      - '$100 - 85 = 15$.'
+- titulo: Cálculo de dobles exclusivas
+  enunciado: Si $|A \cap B| = 14$ y $|A \cap B \cap C| = 6$, ¿cuántos hay en "Solo A y B"?
+  alternativas:
+  - $8$
+  - $14$
+  - $20$
+  respuesta: $8$
+  solucion_pasos:
+  - 1. $(A \cap B) \setminus C = 14 - 6 = 8$.
+- titulo: Cálculo de individual exclusiva
+  enunciado: Si $|A| = 40$, y las zonas de solapamiento de A suman 25, ¿cuánto vale "Solo A"?
+  respuesta: $15$
+  solucion_pasos:
+  - $40 - 25 = 15$.
+  alternativas:
+  - texto: $15$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Exactamente dos características
+  enunciado: Si las tres dobles exclusivas valen 5, 8 y 7, ¿cuántos cumplen exactamente dos?
+  respuesta: $20$
+  solucion_pasos:
+  - $5 + 8 + 7 = 20$.
+  alternativas:
+  - texto: $20$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Conservación del universo
+  enunciado: Si la unión interna suma 85 en un universo de 100, ¿cuántos hay en la región exterior?
+  respuesta: $15$
+  solucion_pasos:
+  - $100 - 85 = 15$.
+  alternativas:
+  - texto: $15$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
 errores_frecuentes:
-  - 'La afirmación de que el dato de una intersección de dos conjuntos puede registrarse en el diagrama sin deducir el valor central.'
-  - 'La afirmación de que para calcular la región "Solo A" basta con deducir únicamente una de las regiones compartidas.'
-  - 'La afirmación de que la región exterior es igual a la resta de los tres totales directos del universo.'
-  - 'La afirmación de que la suma de los que practican exactamente un deporte incluye a los que practican dos.'
-  - 'La afirmación de que un diagrama de tres conjuntos divide al plano en siete regiones en lugar de ocho.'
+- La afirmación de que el dato de una intersección de dos conjuntos puede registrarse en el diagrama sin deducir el valor central.
+- La afirmación de que para calcular la región "Solo A" basta con deducir únicamente una de las regiones compartidas.
+- La afirmación de que la región exterior es igual a la resta de los tres totales directos del universo.
+- La afirmación de que la suma de los que practican exactamente un deporte incluye a los que practican dos.
+- La afirmación de que un diagrama de tres conjuntos divide al plano en siete regiones en lugar de ocho.
 afirmaciones_verdaderas:
-  - 'La resolución de problemas de conteo con tres conjuntos exige un procedimiento secuencial de adentro hacia afuera a partir de la triple intersección central.'
-  - 'El conjunto universal $\mathcal{U}$ se particiona en exactamente 8 átomos booleanos disjuntos cuya suma equivale a la cardinalidad total de la población.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver problemas verbales de conteo con tres conjuntos utilizando diagramas de Venn.
+- La resolución de problemas de conteo con tres conjuntos exige un procedimiento secuencial de adentro hacia afuera a partir de la triple intersección central.
+- El conjunto universal $\mathcal{U}$ se particiona en exactamente 8 átomos booleanos disjuntos cuya suma equivale a la cardinalidad total de la población.
+al_terminar_debes_poder: 'QUÉ: Resolver problemas verbales de conteo con tres conjuntos utilizando diagramas de Venn.
+
   CÓMO: Deducir secuencialmente los 8 átomos booleanos de adentro hacia afuera y calcular preguntas de exclusividad, multiplicidad y complementación.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+
+  ![Resumen problema-de-conteo-con-diagrama-de-venn-de-tres-conjuntos](/static/img/nodos/problema-de-conteo-con-diagrama-de-venn-de-tres-conjuntos-resumen.svg)'
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado

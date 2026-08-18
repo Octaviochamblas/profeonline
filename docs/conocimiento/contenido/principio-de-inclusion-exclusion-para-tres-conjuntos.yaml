@@ -1,113 +1,178 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.INCLUSION_EXCLUSION_TRES_CONJUNTOS
 resumen_inicial: 'Fórmula de Poincaré de orden 3, demostración y aplicaciones del Principio de Inclusión-Exclusión para tres conjuntos finitos: $|A \cup B \cup C|$.'
-explicacion_simple: |
-  Para calcular cuántos elementos hay en la unión de **tres conjuntos** ($A, B$ y $C$) con elementos repetidos, usamos la **fórmula de inclusión-exclusión de tres conjuntos**:
+explicacion_simple: 'Para calcular cuántos elementos hay en la unión de **tres conjuntos** ($A, B$ y $C$) con elementos repetidos, usamos la **fórmula de inclusión-exclusión de tres conjuntos**:
+
   $$|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$$
+
   ¿Por qué esta alternancia de signos ($+ - +$)?
+
   1. Primero **sumamos** los tres conjuntos ($|A| + |B| + |C|$), pero esto cuenta de más las intersecciones.
+
   2. Luego **restamos** todas las parejas dobles ($-|A \cap B| - |A \cap C| - |B \cap C|$), pero esto resta tres veces el centro compartido.
+
   3. Finalmente **volvemos a sumar** la triple intersección central ($+|A \cap B \cap C|$) para compensar y dejar el conteo perfecto.
-explicacion_formal: |
-  ### Definición formal
+
+
+  ![principio-de-inclusion-exclusion-para-tres-conjuntos](/static/img/nodos/principio-de-inclusion-exclusion-para-tres-conjuntos-intro.svg)'
+explicacion_formal: '### Definición formal
+
   En la combinatoria enumerativa, la **Fórmula de Poincaré / Principio de Inclusión-Exclusión para tres conjuntos** establece que:
+
   $$|A \cup B \cup C| = \sum_{i} |A_i| - \sum_{i < j} |A_i \cap A_j| + |A_1 \cap A_2 \cap A_3|$$
+
   Desarrollada explícitamente:
+
   $$|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$$
+
 
   ### Demostración formal por función característica
+
   Para cualquier elemento $x \in \mathcal{U}$, su pertenencia a la unión se representa como:
+
   $$\mathbf{1}_{A \cup B \cup C}(x) = 1 - (1 - \mathbf{1}_A(x))(1 - \mathbf{1}_B(x))(1 - \mathbf{1}_C(x))$$
+
   Expandiendo el producto algebraico:
+
   $$\mathbf{1}_{A \cup B \cup C}(x) = (\mathbf{1}_A(x) + \mathbf{1}_B(x) + \mathbf{1}_C(x)) - (\mathbf{1}_{A \cap B}(x) + \mathbf{1}_{A \cap C}(x) + \mathbf{1}_{B \cap C}(x)) + \mathbf{1}_{A \cap B \cap C}(x)$$
+
   Sumando sobre todo $x \in \mathcal{U}$ se obtiene exactamente la identidad de cardinalidades.
 
+
   ### Síntesis didáctica
+
   La alternancia de signos $+ - +$ es la firma matemática del ajuste de sobre-inclusión y sobre-exclusión en retículos booleanos.
-definiciones_clave: |
-  - **Fórmula de Poincaré (orden 3)**: Teorema algebraico que calcula la cardinalidad de la unión triple mediante sumas y restas alternadas.
+
+  '
+definiciones_clave: '- **Fórmula de Poincaré (orden 3)**: Teorema algebraico que calcula la cardinalidad de la unión triple mediante sumas y restas alternadas.
+
   - **Función característica ($\mathbf{1}_S$)**: Herramienta analítica que modela la pertenencia binaria de elementos.
+
   - **Triple intersección compensatoria**: Término $+|A \cap B \cap C|$ sumado al final para compensar la sobre-resta de las parejas.
-propiedades_relaciones: |
-  - **Despeje del núcleo central**: $|A \cap B \cap C| = |A \cup B \cup C| - \sum |A_i| + \sum |A_i \cap A_j|$.
+
+  '
+propiedades_relaciones: '- **Despeje del núcleo central**: $|A \cap B \cap C| = |A \cup B \cup C| - \sum |A_i| + \sum |A_i \cap A_j|$.
+
   - **Extensión probabilística**: $P(A \cup B \cup C) = \sum P(A_i) - \sum P(A_i \cap A_j) + P(A \cap B \cap C)$.
+
+  '
 ejemplo_guiado:
-  enunciado: 'En una academia: $45$ estudiantes leen ciencia ($C$), $40$ historia ($H$), $35$ arte ($A$). Las intersecciones de a dos son: $|C \cap H| = 15$, $|C \cap A| = 12$, $|H \cap A| = 10$, y $6$ leen las tres materias ($|C \cap H \cap A| = 6$). Calcula el total de estudiantes que leen al menos una materia.'
+  enunciado: 'En una academia: $45$ estudiantes leen ciencia ($C$), $40$ historia ($H$), $35$ arte ($A$). Las intersecciones de a dos son: $|C \cap H| = 15$, $|C \cap A| = 12$, $|H \cap A| = 10$, y $6$ leen las tres materias ($|C \cap H \cap A| = 6$). Calcula el total de estudiantes que leen al menos una materia.
+
+
+    ![Ejemplo principio-de-inclusion-exclusion-para-tres-conjuntos](/static/img/nodos/principio-de-inclusion-exclusion-para-tres-conjuntos-ejemplos.svg)'
   pasos:
-    - 'Paso 1: Identificar las sumas individuales ($S_1$):
-      - $S_1 = 45 + 40 + 35 = 120$.'
-    - 'Paso 2: Identificar la suma de intersecciones dobles ($S_2$):
-      - $S_2 = 15 + 12 + 10 = 37$.'
-    - 'Paso 3: Identificar la triple intersección ($S_3$):
-      - $S_3 = 6$.'
-    - 'Paso 4: Aplicar la fórmula de inclusión-exclusión:
-      - $|C \cup H \cup A| = S_1 - S_2 + S_3 = 120 - 37 + 6$.'
-    - 'Paso 5: Realizar las operaciones:
-      - $120 - 37 = 83$.
-      - $83 + 6 = 89$ estudiantes en total.'
+  - 'Paso 1: Identificar las sumas individuales ($S_1$): - $S_1 = 45 + 40 + 35 = 120$.'
+  - 'Paso 2: Identificar la suma de intersecciones dobles ($S_2$): - $S_2 = 15 + 12 + 10 = 37$.'
+  - 'Paso 3: Identificar la triple intersección ($S_3$): - $S_3 = 6$.'
+  - 'Paso 4: Aplicar la fórmula de inclusión-exclusión: - $|C \cup H \cup A| = S_1 - S_2 + S_3 = 120 - 37 + 6$.'
+  - 'Paso 5: Realizar las operaciones: - $120 - 37 = 83$. - $83 + 6 = 89$ estudiantes en total.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué signo lleva el término de la triple intersección $|A \cap B \cap C|$ en la fórmula de Poincaré para tres conjuntos?'
-    choices:
-      - {text: 'Signo positivo ($+$), sumándose al final para compensar la sobre-resta', is_correct: true}
-      - {text: 'Signo negativo ($-$), restándose junto con las parejas', is_correct: false}
-      - {text: 'Signo neutro (no se incluye en la fórmula)', is_correct: false}
-      - {text: 'Signo de multiplicación', is_correct: false}
-    explanation: 'La alternativa correcta es ''Signo positivo ($+$), sumándose al final para compensar la sobre-resta''. La fórmula alterna signos $+ - +$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si $|A|=10, |B|=10, |C|=10$, todas las intersecciones dobles valen $3$ y la triple vale $1$, ¿cuál es el valor de $|A \cup B \cup C|$?'
-    choices:
-      - {text: '$22$ elementos ($30 - 9 + 1$)', is_correct: true}
-      - {text: '$20$ elementos', is_correct: false}
-      - {text: '$30$ elementos', is_correct: false}
-      - {text: '$21$ elementos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$22$ elementos ($30 - 9 + 1$)''. Se calcula como $(10+10+10) - (3+3+3) + 1 = 30 - 9 + 1 = 22$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué signo lleva el término de la triple intersección $|A \cap B \cap C|$ en la fórmula de Poincaré para tres conjuntos?
+  choices:
+  - text: Signo positivo ($+$), sumándose al final para compensar la sobre-resta
+    is_correct: true
+  - text: Signo negativo ($-$), restándose junto con las parejas
+    is_correct: false
+  - text: Signo neutro (no se incluye en la fórmula)
+    is_correct: false
+  - text: Signo de multiplicación
+    is_correct: false
+  explanation: La alternativa correcta es 'Signo positivo ($+$), sumándose al final para compensar la sobre-resta'. La fórmula alterna signos $+ - +$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si $|A|=10, |B|=10, |C|=10$, todas las intersecciones dobles valen $3$ y la triple vale $1$, ¿cuál es el valor de $|A \cup B \cup C|$?
+  choices:
+  - text: $22$ elementos ($30 - 9 + 1$)
+    is_correct: true
+  - text: $20$ elementos
+    is_correct: false
+  - text: $30$ elementos
+    is_correct: false
+  - text: $21$ elementos
+    is_correct: false
+  explanation: La alternativa correcta es '$22$ elementos ($30 - 9 + 1$)'. Se calcula como $(10+10+10) - (3+3+3) + 1 = 30 - 9 + 1 = 22$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Sumar las tres cardinalidades individuales: $S_1 = |A| + |B| + |C|$.'
-  - 'Paso 2: Sumar las tres intersecciones de pares: $S_2 = |A \cap B| + |A \cap C| + |B \cap C|$.'
-  - 'Paso 3: Identificar el valor de la triple intersección: $S_3 = |A \cap B \cap C|$.'
-  - 'Paso 4: Aplicar la alternancia de signos: $|A \cup B \cup C| = S_1 - S_2 + S_3$.'
-  - 'Paso 5: Si la incógnita es la triple intersección o un conjunto individual, despejar algebraicamente.'
-errores_correccion: |
-  - **Error 1:** Restar la triple intersección al final en lugar de sumarla. **Cómo corregirlo:** Las intersecciones dobles restan al centro tres veces; para restaurarlo exactamente una vez se debe sumar $+|A \cap B \cap C|$.
+- 'Paso 1: Sumar las tres cardinalidades individuales: $S_1 = |A| + |B| + |C|$.'
+- 'Paso 2: Sumar las tres intersecciones de pares: $S_2 = |A \cap B| + |A \cap C| + |B \cap C|$.'
+- 'Paso 3: Identificar el valor de la triple intersección: $S_3 = |A \cap B \cap C|$.'
+- 'Paso 4: Aplicar la alternancia de signos: $|A \cup B \cup C| = S_1 - S_2 + S_3$.'
+- 'Paso 5: Si la incógnita es la triple intersección o un conjunto individual, despejar algebraicamente.'
+errores_correccion: '- **Error 1:** Restar la triple intersección al final en lugar de sumarla. **Cómo corregirlo:** Las intersecciones dobles restan al centro tres veces; para restaurarlo exactamente una vez se debe sumar $+|A \cap B \cap C|$.
+
   - **Error 2:** Sumar directamente los tres conjuntos individuales sin restar las parejas comunes. **Cómo corregirlo:** La adición simple genera sobreconteo en todas las áreas solapadas; la deducción de las dobles es obligatoria.
+
+  '
 ejemplos:
-  - titulo: 'Cálculo de unión triple básica'
-    enunciado: 'Si $S_1 = 60, S_2 = 24, S_3 = 4$, ¿cuánto vale $|A \cup B \cup C|$?'
-    alternativas:
-      - '$40$'
-      - '$32$'
-      - '$44$'
-    respuesta: '$40$'
-    solucion_pasos:
-      - '1. $|A \cup B \cup C| = 60 - 24 + 4 = 40$.'
-  - titulo: 'Despeje de la triple intersección'
-    enunciado: 'Si $|A \cup B \cup C| = 50, S_1 = 70, S_2 = 25$, ¿cuánto vale $|A \cap B \cap C|$?'
-    respuesta: '$5$'
-    solucion_pasos:
-      - '$50 = 70 - 25 + x \implies 50 = 45 + x \implies x = 5$.'
-  - titulo: 'Conjuntos disjuntos dos a dos'
-    enunciado: 'Si todas las intersecciones son vacías, ¿qué resulta la fórmula?'
-    respuesta: '$|A \cup B \cup C| = |A| + |B| + |C|$'
-    solucion_pasos:
-      - '$S_2 = 0$ y $S_3 = 0$, reduciendo a la suma directa.'
-  - titulo: 'Región exterior a los tres'
-    enunciado: 'Si $|\mathcal{U}| = 100$ y $|A \cup B \cup C| = 85$, ¿cuántos hay en la región exterior?'
-    respuesta: '$15$'
-    solucion_pasos:
-      - '$|(A \cup B \cup C)^c| = 100 - 85 = 15$.'
+- titulo: Cálculo de unión triple básica
+  enunciado: Si $S_1 = 60, S_2 = 24, S_3 = 4$, ¿cuánto vale $|A \cup B \cup C|$?
+  alternativas:
+  - $40$
+  - $32$
+  - $44$
+  respuesta: $40$
+  solucion_pasos:
+  - 1. $|A \cup B \cup C| = 60 - 24 + 4 = 40$.
+- titulo: Despeje de la triple intersección
+  enunciado: Si $|A \cup B \cup C| = 50, S_1 = 70, S_2 = 25$, ¿cuánto vale $|A \cap B \cap C|$?
+  respuesta: $5$
+  solucion_pasos:
+  - $50 = 70 - 25 + x \implies 50 = 45 + x \implies x = 5$.
+  alternativas:
+  - texto: $5$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Conjuntos disjuntos dos a dos
+  enunciado: Si todas las intersecciones son vacías, ¿qué resulta la fórmula?
+  respuesta: $|A \cup B \cup C| = |A| + |B| + |C|$
+  solucion_pasos:
+  - $S_2 = 0$ y $S_3 = 0$, reduciendo a la suma directa.
+  alternativas:
+  - texto: $|A \cup B \cup C| = |A| + |B| + |C|$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Región exterior a los tres
+  enunciado: Si $|\mathcal{U}| = 100$ y $|A \cup B \cup C| = 85$, ¿cuántos hay en la región exterior?
+  respuesta: $15$
+  solucion_pasos:
+  - $|(A \cup B \cup C)^c| = 100 - 85 = 15$.
+  alternativas:
+  - texto: $15$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
 errores_frecuentes:
-  - 'La afirmación de que la fórmula de tres conjuntos resta la triple intersección en su último término.'
-  - 'La afirmación de que la adición directa de los tres conjuntos individuales calcula la unión triple sin deducir las parejas comunes.'
-  - 'La afirmación de que las tres intersecciones de pares pueden sumarse a los totales sin signo negativo.'
-  - 'La afirmación de que la fórmula de inclusión-exclusión de tres conjuntos no es válida para conjuntos infinitos medibles.'
-  - 'La afirmación de que la cardinalidad de la triple intersección puede superar a la cardinalidad de cualquier intersección doble.'
+- La afirmación de que la fórmula de tres conjuntos resta la triple intersección en su último término.
+- La afirmación de que la adición directa de los tres conjuntos individuales calcula la unión triple sin deducir las parejas comunes.
+- La afirmación de que las tres intersecciones de pares pueden sumarse a los totales sin signo negativo.
+- La afirmación de que la fórmula de inclusión-exclusión de tres conjuntos no es válida para conjuntos infinitos medibles.
+- La afirmación de que la cardinalidad de la triple intersección puede superar a la cardinalidad de cualquier intersección doble.
 afirmaciones_verdaderas:
-  - 'La cardinalidad de la unión de tres conjuntos finitos se calcula mediante la fórmula de Poincaré: $|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$.'
-  - 'La alternancia de signos en la fórmula de inclusión-exclusión compensa de forma exacta el sobreconteo y la sobre-resta de los átomos booleanos.'
-al_terminar_debes_poder: |
-  QUÉ: Enunciar, demostrar y aplicar el Principio de Inclusión-Exclusión para tres conjuntos ($|A \cup B \cup C|$).
+- 'La cardinalidad de la unión de tres conjuntos finitos se calcula mediante la fórmula de Poincaré: $|A \cup B \cup C| = (|A| + |B| + |C|) - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$.'
+- La alternancia de signos en la fórmula de inclusión-exclusión compensa de forma exacta el sobreconteo y la sobre-resta de los átomos booleanos.
+al_terminar_debes_poder: 'QUÉ: Enunciar, demostrar y aplicar el Principio de Inclusión-Exclusión para tres conjuntos ($|A \cup B \cup C|$).
+
   CÓMO: Calcular la unión triple mediante la suma $S_1 - S_2 + S_3$, despejar la triple intersección y resolver problemas de conteo combinatorio.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+
+  ![Resumen principio-de-inclusion-exclusion-para-tres-conjuntos](/static/img/nodos/principio-de-inclusion-exclusion-para-tres-conjuntos-resumen.svg)'
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado

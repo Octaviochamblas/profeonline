@@ -1,108 +1,170 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.REGION_TRES_CONJUNTOS
-resumen_inicial: 'Fórmulas de despeje y cálculo de la triple intersección central $|A \cap B \cap C|$ a partir de la unión, el universo o sistemas de ecuaciones de conteo.'
-explicacion_simple: |
-  La **región común a tres conjuntos** (o triple intersección: **$|A \cap B \cap C|$**) representa a los elementos que pertenecen **a los tres conjuntos al mismo tiempo** (es el corazón o centro del diagrama de Venn). Cuando en un problema este dato no se conoce, se puede **despejar directamente usando la fórmula de inclusión-exclusión de tres conjuntos**:
+resumen_inicial: Fórmulas de despeje y cálculo de la triple intersección central $|A \cap B \cap C|$ a partir de la unión, el universo o sistemas de ecuaciones de conteo.
+explicacion_simple: 'La **región común a tres conjuntos** (o triple intersección: **$|A \cap B \cap C|$**) representa a los elementos que pertenecen **a los tres conjuntos al mismo tiempo** (es el corazón o centro del diagrama de Venn). Cuando en un problema este dato no se conoce, se puede **despejar directamente usando la fórmula de inclusión-exclusión de tres conjuntos**:
+
   $$|A \cap B \cap C| = |A \cup B \cup C| - (|A| + |B| + |C|) + (|A \cap B| + |A \cap C| + |B \cap C|)$$
+
   Es el valor pivote más importante: una vez que se halla este número central, todas las demás $7$ regiones del diagrama se pueden resolver fácilmente.
-explicacion_formal: |
-  ### Definición formal
+
+
+  ![calculo-de-la-region-comun-a-tres-conjuntos](/static/img/nodos/calculo-de-la-region-comun-a-tres-conjuntos-intro.svg)'
+explicacion_formal: '### Definición formal
+
   En el álgebra booleana de orden 3, el átomo central $R_{111}$ es la intersección simultánea de los tres conjuntos:
+
   $$R_{111} = A \cap B \cap C = \{x \in \mathcal{U} \mid x \in A \land x \in B \land x \in C\}$$
+
   Despejando $|A \cap B \cap C|$ de la fórmula de Poincaré para tres conjuntos:
+
   $$|A \cap B \cap C| = |A \cup B \cup C| - \sum_{i=1}^3 |A_i| + \sum_{1 \leq i < j \leq 3} |A_i \cap A_j|$$
+
   Si el dato inicial es el universo total $|\mathcal{U}|$ y la región exterior $d = |(A \cup B \cup C)^c|$, sustituyendo $|A \cup B \cup C| = |\mathcal{U}| - d$:
+
   $$|A \cap B \cap C| = (|\mathcal{U}| - d) - (|A| + |B| + |C|) + (|A \cap B| + |A \cap C| + |B \cap C|)$$
 
+
   ### Desglose simbólico
+
   - Cota superior estricta: $|A \cap B \cap C| \leq \min(|A \cap B|, |A \cap C|, |B \cap C|)$.
+
   - Cota inferior de Fréchet: $|A \cap B \cap C| \geq |A| + |B| + |C| - 2|\mathcal{U}|$.
 
+
   ### Síntesis didáctica
+
   La triple intersección actúa como el parámetro de acoplamiento fundamental que fija la coherencia de todo el diagrama de tres conjuntos.
-definiciones_clave: |
-  - **Triple intersección ($|A \cap B \cap C|$)**: Átomo central que agrupa los elementos que satisfacen simultáneamente las tres condiciones.
+
+  '
+definiciones_clave: '- **Triple intersección ($|A \cap B \cap C|$)**: Átomo central que agrupa los elementos que satisfacen simultáneamente las tres condiciones.
+
   - **Despeje de Poincaré**: Procedimiento algebraico para hallar el centro conociendo la unión y las sumas de orden 1 y 2.
+
   - **Cota de compatibilidad**: Límite superior $\min(|A_i \cap A_j|)$ que no puede ser superado por la triple intersección.
-propiedades_relaciones: |
-  - **Monotonía**: $(A \cap B \cap C) \subseteq (A \cap B)$, $(A \cap B \cap C) \subseteq (A \cap C)$ y $(A \cap B \cap C) \subseteq (B \cap C)$.
+
+  '
+propiedades_relaciones: '- **Monotonía**: $(A \cap B \cap C) \subseteq (A \cap B)$, $(A \cap B \cap C) \subseteq (A \cap C)$ y $(A \cap B \cap C) \subseteq (B \cap C)$.
+
   - **Condición de disyunción triple**: Si $|A \cap B \cap C| = 0$, el centro del diagrama es vacío.
+
+  '
 ejemplo_guiado:
-  enunciado: 'En una encuesta a $100$ personas ($\mathcal{U}$): $|A| = 45$, $|B| = 40$, $|C| = 35$, las intersecciones de a dos son $|A \cap B| = 15$, $|A \cap C| = 12$, $|B \cap C| = 10$, y $11$ personas no prefieren ninguna de las tres opciones. Calcula cuántas personas prefieren las tres opciones a la vez ($|A \cap B \cap C|$).'
+  enunciado: 'En una encuesta a $100$ personas ($\mathcal{U}$): $|A| = 45$, $|B| = 40$, $|C| = 35$, las intersecciones de a dos son $|A \cap B| = 15$, $|A \cap C| = 12$, $|B \cap C| = 10$, y $11$ personas no prefieren ninguna de las tres opciones. Calcula cuántas personas prefieren las tres opciones a la vez ($|A \cap B \cap C|$).
+
+
+    ![Ejemplo calculo-de-la-region-comun-a-tres-conjuntos](/static/img/nodos/calculo-de-la-region-comun-a-tres-conjuntos-ejemplos.svg)'
   pasos:
-    - 'Paso 1: Calcular la unión $|A \cup B \cup C|$ restando la región exterior al universo:
-      - $|A \cup B \cup C| = 100 - 11 = 89$ personas.'
-    - 'Paso 2: Calcular la suma de conjuntos individuales ($S_1$):
-      - $S_1 = 45 + 40 + 35 = 120$.'
-    - 'Paso 3: Calcular la suma de intersecciones dobles ($S_2$):
-      - $S_2 = 15 + 12 + 10 = 37$.'
-    - 'Paso 4: Plantear la ecuación de Poincaré con la incógnita $x = |A \cap B \cap C|$:
-      - $89 = S_1 - S_2 + x \implies 89 = 120 - 37 + x$.'
-    - 'Paso 5: Resolver para $x$:
-      - $89 = 83 + x \implies x = 89 - 83 = 6$ personas.'
+  - 'Paso 1: Calcular la unión $|A \cup B \cup C|$ restando la región exterior al universo: - $|A \cup B \cup C| = 100 - 11 = 89$ personas.'
+  - 'Paso 2: Calcular la suma de conjuntos individuales ($S_1$): - $S_1 = 45 + 40 + 35 = 120$.'
+  - 'Paso 3: Calcular la suma de intersecciones dobles ($S_2$): - $S_2 = 15 + 12 + 10 = 37$.'
+  - 'Paso 4: Plantear la ecuación de Poincaré con la incógnita $x = |A \cap B \cap C|$: - $89 = S_1 - S_2 + x \implies 89 = 120 - 37 + x$.'
+  - 'Paso 5: Resolver para $x$: - $89 = 83 + x \implies x = 89 - 83 = 6$ personas.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula algebraica para despejar la triple intersección $|A \cap B \cap C|$ a partir de la fórmula de inclusión-exclusión?'
-    choices:
-      - {text: '$|A \cup B \cup C| - (|A| + |B| + |C|) + (|A \cap B| + |A \cap C| + |B \cap C|)$', is_correct: true}
-      - {text: '$(|A| + |B| + |C|) - |A \cup B \cup C|$', is_correct: false}
-      - {text: '$|A \cap B| + |A \cap C| + |B \cap C|$', is_correct: false}
-      - {text: '$|\mathcal{U}| - (|A| + |B| + |C|)$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$|A \cup B \cup C| - (|A| + |B| + |C|) + (|A \cap B| + |A \cap C| + |B \cap C|)$''. Se despeja directamente de la ecuación de Poincaré.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si $|A \cap B| = 8$, $|A \cap C| = 6$ y $|B \cap C| = 5$, ¿cuál es el valor máximo posible que puede alcanzar la triple intersección $|A \cap B \cap C|$?'
-    choices:
-      - {text: '$5$ elementos ($\min(8, 6, 5)$)', is_correct: true}
-      - {text: '$8$ elementos', is_correct: false}
-      - {text: '$19$ elementos', is_correct: false}
-      - {text: '$6$ elementos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$5$ elementos ($\min(8, 6, 5)$)''. La triple intersección es subconjunto de cada par, por lo que está acotada por el mínimo de ellos: $\min(8, 6, 5) = 5$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es la fórmula algebraica para despejar la triple intersección $|A \cap B \cap C|$ a partir de la fórmula de inclusión-exclusión?
+  choices:
+  - text: $|A \cup B \cup C| - (|A| + |B| + |C|) + (|A \cap B| + |A \cap C| + |B \cap C|)$
+    is_correct: true
+  - text: $(|A| + |B| + |C|) - |A \cup B \cup C|$
+    is_correct: false
+  - text: $|A \cap B| + |A \cap C| + |B \cap C|$
+    is_correct: false
+  - text: $|\mathcal{U}| - (|A| + |B| + |C|)$
+    is_correct: false
+  explanation: La alternativa correcta es '$|A \cup B \cup C| - (|A| + |B| + |C|) + (|A \cap B| + |A \cap C| + |B \cap C|)$'. Se despeja directamente de la ecuación de Poincaré.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si $|A \cap B| = 8$, $|A \cap C| = 6$ y $|B \cap C| = 5$, ¿cuál es el valor máximo posible que puede alcanzar la triple intersección $|A \cap B \cap C|$?
+  choices:
+  - text: $5$ elementos ($\min(8, 6, 5)$)
+    is_correct: true
+  - text: $8$ elementos
+    is_correct: false
+  - text: $19$ elementos
+    is_correct: false
+  - text: $6$ elementos
+    is_correct: false
+  explanation: 'La alternativa correcta es ''$5$ elementos ($\min(8, 6, 5)$)''. La triple intersección es subconjunto de cada par, por lo que está acotada por el mínimo de ellos: $\min(8, 6, 5) = 5$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Obtener la cardinalidad de la unión $|A \cup B \cup C|$ (o deducirla como $|\mathcal{U}| - |\text{Ninguno}|$).'
-  - 'Paso 2: Sumar los tres totales individuales: $S_1 = |A| + |B| + |C|$.'
-  - 'Paso 3: Sumar las tres intersecciones de pares: $S_2 = |A \cap B| + |A \cap C| + |B \cap C|$.'
-  - 'Paso 4: Calcular $|A \cap B \cap C| = |\text{Unión}| - S_1 + S_2$.'
-  - 'Paso 5: Comprobar que el valor obtenido no supere ninguna de las intersecciones de a dos.'
-errores_correccion: |
-  - **Error 1:** Despejar la triple intersección con signos erróneos (ej. restar las intersecciones de a dos). **Cómo corregirlo:** En el despeje, la suma de individuales $S_1$ pasa restando y la suma de dobles $S_2$ pasa sumando: $|\text{Unión}| - S_1 + S_2$.
+- 'Paso 1: Obtener la cardinalidad de la unión $|A \cup B \cup C|$ (o deducirla como $|\mathcal{U}| - |\text{Ninguno}|$).'
+- 'Paso 2: Sumar los tres totales individuales: $S_1 = |A| + |B| + |C|$.'
+- 'Paso 3: Sumar las tres intersecciones de pares: $S_2 = |A \cap B| + |A \cap C| + |B \cap C|$.'
+- 'Paso 4: Calcular $|A \cap B \cap C| = |\text{Unión}| - S_1 + S_2$.'
+- 'Paso 5: Comprobar que el valor obtenido no supere ninguna de las intersecciones de a dos.'
+errores_correccion: '- **Error 1:** Despejar la triple intersección con signos erróneos (ej. restar las intersecciones de a dos). **Cómo corregirlo:** En el despeje, la suma de individuales $S_1$ pasa restando y la suma de dobles $S_2$ pasa sumando: $|\text{Unión}| - S_1 + S_2$.
+
   - **Error 2:** Obtener una triple intersección mayor que alguna de las intersecciones dobles. **Cómo corregirlo:** La triple intersección es un subconjunto de cada par; si $|A \cap B \cap C| > |A \cap B|$, el sistema de datos es inconsistente.
+
+  '
 ejemplos:
-  - titulo: 'Despeje directo'
-    enunciado: 'Si Unión = 50, S1 = 70, S2 = 25, ¿cuál es la triple intersección?'
-    alternativas:
-      - '$5$'
-      - '$10$'
-      - '$15$'
-    respuesta: '$5$'
-    solucion_pasos:
-      - '1. $|A \cap B \cap C| = 50 - 70 + 25 = 5$.'
-  - titulo: 'Despeje con universo y ninguno'
-    enunciado: 'Si $|\mathcal{U}|=80$, ninguno $=10$, $S_1 = 100$, $S_2 = 35$, ¿cuánto vale el centro?'
-    respuesta: '$5$'
-    solucion_pasos:
-      - 'Unión $= 80 - 10 = 70$. Centro $= 70 - 100 + 35 = 5$.'
-  - titulo: 'Cota máxima'
-    enunciado: 'Si $|A \cap B|=7, |A \cap C|=4, |B \cap C|=6$, ¿puede la triple valer 5?'
-    respuesta: 'No, el máximo posible es 4'
-    solucion_pasos:
-      - 'La cota superior es $\min(7, 4, 6) = 4$.'
-  - titulo: 'Triple intersección vacía'
-    enunciado: 'Si Unión $= 55, S_1 = 80, S_2 = 25$, ¿cuánto vale la triple?'
-    respuesta: '$0$'
-    solucion_pasos:
-      - '$55 - 80 + 25 = 0$, los tres conjuntos no tienen ningún elemento común simultáneo.'
+- titulo: Despeje directo
+  enunciado: Si Unión = 50, S1 = 70, S2 = 25, ¿cuál es la triple intersección?
+  alternativas:
+  - $5$
+  - $10$
+  - $15$
+  respuesta: $5$
+  solucion_pasos:
+  - 1. $|A \cap B \cap C| = 50 - 70 + 25 = 5$.
+- titulo: Despeje con universo y ninguno
+  enunciado: Si $|\mathcal{U}|=80$, ninguno $=10$, $S_1 = 100$, $S_2 = 35$, ¿cuánto vale el centro?
+  respuesta: $5$
+  solucion_pasos:
+  - Unión $= 80 - 10 = 70$. Centro $= 70 - 100 + 35 = 5$.
+  alternativas:
+  - texto: $5$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Cota máxima
+  enunciado: Si $|A \cap B|=7, |A \cap C|=4, |B \cap C|=6$, ¿puede la triple valer 5?
+  respuesta: No, el máximo posible es 4
+  solucion_pasos:
+  - La cota superior es $\min(7, 4, 6) = 4$.
+  alternativas:
+  - texto: No, el máximo posible es 4
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Triple intersección vacía
+  enunciado: Si Unión $= 55, S_1 = 80, S_2 = 25$, ¿cuánto vale la triple?
+  respuesta: $0$
+  solucion_pasos:
+  - $55 - 80 + 25 = 0$, los tres conjuntos no tienen ningún elemento común simultáneo.
+  alternativas:
+  - texto: $0$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
 errores_frecuentes:
-  - 'La afirmación de que la triple intersección puede calcularse sumando directamente las tres intersecciones de pares.'
-  - 'La afirmación de que la cardinalidad de la triple intersección puede superar a una de las intersecciones dobles.'
-  - 'La afirmación de que en el despeje de Poincaré los signos de las sumas individuales y dobles no se invierten.'
-  - 'La afirmación de que la región central no afecta el cálculo de las regiones individuales.'
-  - 'La afirmación de que la triple intersección es igual a cero si los conjuntos son no vacíos.'
+- La afirmación de que la triple intersección puede calcularse sumando directamente las tres intersecciones de pares.
+- La afirmación de que la cardinalidad de la triple intersección puede superar a una de las intersecciones dobles.
+- La afirmación de que en el despeje de Poincaré los signos de las sumas individuales y dobles no se invierten.
+- La afirmación de que la región central no afecta el cálculo de las regiones individuales.
+- La afirmación de que la triple intersección es igual a cero si los conjuntos son no vacíos.
 afirmaciones_verdaderas:
-  - 'La cardinalidad de la triple intersección central se despeja de la fórmula de Poincaré como $|A \cap B \cap C| = |A \cup B \cup C| - \sum |A_i| + \sum |A_i \cap A_j|$.'
-  - 'La cardinalidad de la triple intersección está estrictamente acotada superiormente por el mínimo de las cardinalidades de las intersecciones dobles ($\min_{i < j} |A_i \cap A_j|$).'
-al_terminar_debes_poder: |
-  QUÉ: Despejar, calcular y verificar la cardinalidad de la región común a tres conjuntos ($|A \cap B \cap C|$).
+- La cardinalidad de la triple intersección central se despeja de la fórmula de Poincaré como $|A \cap B \cap C| = |A \cup B \cup C| - \sum |A_i| + \sum |A_i \cap A_j|$.
+- La cardinalidad de la triple intersección está estrictamente acotada superiormente por el mínimo de las cardinalidades de las intersecciones dobles ($\min_{i < j} |A_i \cap A_j|$).
+al_terminar_debes_poder: 'QUÉ: Despejar, calcular y verificar la cardinalidad de la región común a tres conjuntos ($|A \cap B \cap C|$).
+
   CÓMO: Aplicar el despeje de la fórmula de Poincaré ($|\text{Unión}| - S_1 + S_2$) y validar mediante las cotas superiores de intersecciones dobles.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+
+  ![Resumen calculo-de-la-region-comun-a-tres-conjuntos](/static/img/nodos/calculo-de-la-region-comun-a-tres-conjuntos-resumen.svg)'
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado

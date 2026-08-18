@@ -1,110 +1,162 @@
 semantic_id: MAT.FUND.CARDINALIDAD_CONJUNTOS.REGION_EXACTAMENTE_DOS_CONJUNTOS
-resumen_inicial: 'Fórmulas y cálculo de las intersecciones dobles exclusivas y de la condición global "Exactamente dos conjuntos" en diagramas de Venn de orden 3.'
-explicacion_simple: |
-  En un problema con **tres conjuntos** ($A, B, C$), los elementos que pertenecen a **"exactamente dos conjuntos"** son aquellos que están en dos conjuntos a la vez, **pero NO en el tercero**:
-  - **"Solo $A$ y $B$"**: se calcula tomando la intersección de $A$ y $B$ y restándole el centro triple:
-    $$\text{Solo } A \text{ y } B = |A \cap B| - |A \cap B \cap C|$$
-  - De igual forma se calculan **"Solo $A$ y $C$"** y **"Solo $B$ y $C$"**.
-  - **"Exactamente dos de los tres"**: es la suma directa de estas tres regiones dobles exclusivas:
-    $$\text{Exactamente dos} = (\text{Solo } A \text{ y } B) + (\text{Solo } A \text{ y } C) + (\text{Solo } B \text{ y } C)$$
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: Fórmulas y cálculo de las intersecciones dobles exclusivas y de la condición global "Exactamente dos conjuntos" en diagramas de Venn de orden 3.
+explicacion_simple: "En un problema con **tres conjuntos** ($A, B, C$), los elementos que pertenecen a **\"exactamente dos conjuntos\"** son aquellos que están en dos conjuntos a la vez, **pero NO en el tercero**:\n- **\"Solo $A$ y $B$\"**: se calcula tomando la intersección de $A$ y $B$ y restándole el centro triple:\n  $$\\text{Solo } A \\text{ y } B = |A \\cap B| - |A \\cap B \\cap C|$$\n- De igual forma se calculan **\"Solo $A$ y $C$\"** y **\"Solo $B$ y $C$\"**.\n- **\"Exactamente dos de los tres\"**: es la suma directa de estas tres regiones dobles exclusivas:\n  $$\\text{Exactamente dos} = (\\text{Solo } A \\text{ y } B) + (\\text{Solo } A \\text{ y } C) + (\\text{Solo } B \\text{ y } C)$$\n\n![calculo-de-regiones-pertenecientes-exactamente-a-dos-conjuntos](/static/img/nodos/calculo-de-regiones-pertenecientes-exactamente-a-dos-conjuntos-intro.svg)"
+explicacion_formal: '### Definición formal
+
   En la teoría conjuntista de orden 3 sobre $\mathcal{U}$, las **regiones dobles exclusivas** son los átomos booleanos de peso de Hamming 2:
+
   $$|R_{110}| = |(A \cap B) \setminus C| = |A \cap B \cap C^c| = |A \cap B| - |A \cap B \cap C|$$
+
   $$|R_{101}| = |(A \cap C) \setminus B| = |A \cap C \cap B^c| = |A \cap C| - |A \cap B \cap C|$$
+
   $$|R_{011}| = |(B \cap C) \setminus A| = |B \cap C \cap A^c| = |B \cap C| - |A \cap B \cap C|$$
+
   La cardinalidad total de la condición **"Exactamente dos"** es la suma disjunta:
+
   $$N_{\text{exactamente 2}} = |R_{110}| + |R_{101}| + |R_{011}| = (|A \cap B| + |A \cap C| + |B \cap C|) - 3|A \cap B \cap C|$$
 
+
   ### Desglose simbólico
+
   - Criterio de peso de Hamming: $w(b) = 2$.
+
   - Descuento del centro triple: En la suma de pares brutos $\sum |A_i \cap A_j|$, el centro triple $A \cap B \cap C$ está sumado 3 veces; al restar $3|A \cap B \cap C|$ se elimina por completo.
 
+
   ### Síntesis didáctica
+
   Diferenciar entre "intersección de pares" ($|A \cap B|$) e "intersección doble exclusiva" ($|R_{110}|$) es la clave para no duplicar elementos en problemas combinatorios.
-definiciones_clave: |
-  - **Región doble exclusiva**: Conjunto de elementos que pertenecen simultáneamente a dos conjuntos determinados y no pertenecen al tercero.
+
+  '
+definiciones_clave: '- **Región doble exclusiva**: Conjunto de elementos que pertenecen simultáneamente a dos conjuntos determinados y no pertenecen al tercero.
+
   - **Condición "Exactamente dos"**: Suma de las tres regiones dobles exclusivas.
+
   - **Peso de Hamming 2**: Clasificación de átomos booleanos con exactamente dos afirmaciones de pertenencia.
-propiedades_relaciones: |
-  - **Relación con "Al menos dos"**: $|\text{Al menos dos}| = |\text{Exactamente dos}| + |A \cap B \cap C|$.
+
+  '
+propiedades_relaciones: '- **Relación con "Al menos dos"**: $|\text{Al menos dos}| = |\text{Exactamente dos}| + |A \cap B \cap C|$.
+
   - **Disyunción mutua**: Las tres regiones $R_{110}, R_{101}, R_{011}$ no comparten ningún elemento entre sí.
+
+  '
 ejemplo_guiado:
-  enunciado: 'En un club deportivo: $|A \cap B| = 14$, $|A \cap C| = 12$, $|B \cap C| = 10$, y $4$ socios practican los tres deportes ($|A \cap B \cap C| = 4$). Calcula: (a) cuántos practican solo $A$ y $B$, (b) cuántos practican solo $A$ y $C$, (c) cuántos practican solo $B$ y $C$, y (d) cuántos practican exactamente dos deportes.'
+  enunciado: 'En un club deportivo: $|A \cap B| = 14$, $|A \cap C| = 12$, $|B \cap C| = 10$, y $4$ socios practican los tres deportes ($|A \cap B \cap C| = 4$). Calcula: (a) cuántos practican solo $A$ y $B$, (b) cuántos practican solo $A$ y $C$, (c) cuántos practican solo $B$ y $C$, y (d) cuántos practican exactamente dos deportes.
+
+
+    ![Ejemplo calculo-de-regiones-pertenecientes-exactamente-a-dos-conjuntos](/static/img/nodos/calculo-de-regiones-pertenecientes-exactamente-a-dos-conjuntos-ejemplos.svg)'
   pasos:
-    - 'Paso 1: Calcular (a) "Solo $A$ y $B$":
-      - $|(A \cap B) \setminus C| = 14 - 4 = 10$ socios.'
-    - 'Paso 2: Calcular (b) "Solo $A$ y $C$":
-      - $|(A \cap C) \setminus B| = 12 - 4 = 8$ socios.'
-    - 'Paso 3: Calcular (c) "Solo $B$ y $C$":
-      - $|(B \cap C) \setminus A| = 10 - 4 = 6$ socios.'
-    - 'Paso 4: Calcular (d) "Exactamente dos deportes":
-      - Sumar las tres dobles exclusivas: $10 + 8 + 6 = 24$ socios.'
-    - 'Paso 5: Verificar mediante la fórmula directa:
-      - $(14 + 12 + 10) - 3(4) = 36 - 12 = 24$ socios.'
+  - 'Paso 1: Calcular (a) "Solo $A$ y $B$": - $|(A \cap B) \setminus C| = 14 - 4 = 10$ socios.'
+  - 'Paso 2: Calcular (b) "Solo $A$ y $C$": - $|(A \cap C) \setminus B| = 12 - 4 = 8$ socios.'
+  - 'Paso 3: Calcular (c) "Solo $B$ y $C$": - $|(B \cap C) \setminus A| = 10 - 4 = 6$ socios.'
+  - 'Paso 4: Calcular (d) "Exactamente dos deportes": - Sumar las tres dobles exclusivas: $10 + 8 + 6 = 24$ socios.'
+  - 'Paso 5: Verificar mediante la fórmula directa: - $(14 + 12 + 10) - 3(4) = 36 - 12 = 24$ socios.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuántas veces se debe restar la triple intersección $|A \cap B \cap C|$ a la suma bruta de intersecciones de a dos ($|A \cap B| + |A \cap C| + |B \cap C|$) para obtener "Exactamente dos conjuntos"?'
-    choices:
-      - {text: 'Exactamente $3$ veces ($-3|A \cap B \cap C|$)', is_correct: true}
-      - {text: 'Exactamente $1$ vez ($-|A \cap B \cap C|$)', is_correct: false}
-      - {text: 'Exactamente $2$ veces ($-2|A \cap B \cap C|$)', is_correct: false}
-      - {text: 'Ninguna vez (se suma)', is_correct: false}
-    explanation: 'La alternativa correcta es ''Exactamente $3$ veces ($-3|A \cap B \cap C|$)''. Como el centro está incluido en cada uno de los tres pares, se resta 3 veces para eliminarlo por completo.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si las dobles exclusivas valen $7$, $9$ y $4$, ¿cuántos elementos pertenecen a "exactamente dos conjuntos"?'
-    choices:
-      - {text: '$20$ elementos ($7 + 9 + 4$)', is_correct: true}
-      - {text: '$24$ elementos', is_correct: false}
-      - {text: '$16$ elementos', is_correct: false}
-      - {text: '$7$ elementos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$20$ elementos ($7 + 9 + 4$)''. Se suman directamente las tres regiones dobles exclusivas: $7 + 9 + 4 = 20$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuántas veces se debe restar la triple intersección $|A \cap B \cap C|$ a la suma bruta de intersecciones de a dos ($|A \cap B| + |A \cap C| + |B \cap C|$) para obtener "Exactamente dos conjuntos"?
+  choices:
+  - text: Exactamente $3$ veces ($-3|A \cap B \cap C|$)
+    is_correct: true
+  - text: Exactamente $1$ vez ($-|A \cap B \cap C|$)
+    is_correct: false
+  - text: Exactamente $2$ veces ($-2|A \cap B \cap C|$)
+    is_correct: false
+  - text: Ninguna vez (se suma)
+    is_correct: false
+  explanation: La alternativa correcta es 'Exactamente $3$ veces ($-3|A \cap B \cap C|$)'. Como el centro está incluido en cada uno de los tres pares, se resta 3 veces para eliminarlo por completo.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si las dobles exclusivas valen $7$, $9$ y $4$, ¿cuántos elementos pertenecen a "exactamente dos conjuntos"?
+  choices:
+  - text: $20$ elementos ($7 + 9 + 4$)
+    is_correct: true
+  - text: $24$ elementos
+    is_correct: false
+  - text: $16$ elementos
+    is_correct: false
+  - text: $7$ elementos
+    is_correct: false
+  explanation: 'La alternativa correcta es ''$20$ elementos ($7 + 9 + 4$)''. Se suman directamente las tres regiones dobles exclusivas: $7 + 9 + 4 = 20$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar los datos de intersección de pares ($|A \cap B|, |A \cap C|, |B \cap C|$) y la triple central $|A \cap B \cap C|$.'
-  - 'Paso 2: Calcular cada doble exclusiva restando la triple intersección a cada par.'
-  - 'Paso 3: Sumar las tres cantidades obtenidas para responder la condición "Exactamente dos".'
-  - 'Paso 4: Alternativamente, sumar los tres pares brutos y restar $3|A \cap B \cap C|$.'
-errores_correccion: |
-  - **Error 1:** Sumar las intersecciones brutas $|A \cap B| + |A \cap C| + |B \cap C|$ sin restar la triple central. **Cómo corregirlo:** Las intersecciones brutas contienen al centro triple; para que sean exclusivas se debe restar $3|A \cap B \cap C|$.
+- 'Paso 1: Identificar los datos de intersección de pares ($|A \cap B|, |A \cap C|, |B \cap C|$) y la triple central $|A \cap B \cap C|$.'
+- 'Paso 2: Calcular cada doble exclusiva restando la triple intersección a cada par.'
+- 'Paso 3: Sumar las tres cantidades obtenidas para responder la condición "Exactamente dos".'
+- 'Paso 4: Alternativamente, sumar los tres pares brutos y restar $3|A \cap B \cap C|$.'
+errores_correccion: '- **Error 1:** Sumar las intersecciones brutas $|A \cap B| + |A \cap C| + |B \cap C|$ sin restar la triple central. **Cómo corregirlo:** Las intersecciones brutas contienen al centro triple; para que sean exclusivas se debe restar $3|A \cap B \cap C|$.
+
   - **Error 2:** Confundir "exactamente dos" con "al menos dos". **Cómo corregirlo:** "Al menos dos" incluye al centro triple; "exactamente dos" descarta y elimina al centro triple.
+
+  '
 ejemplos:
-  - titulo: 'Cálculo de doble exclusiva'
-    enunciado: 'Si $|A \cap B| = 15$ y la triple central es 5, ¿cuántos hay en solo A y B?'
-    alternativas:
-      - '$10$'
-      - '$15$'
-      - '$20$'
-    respuesta: '$10$'
-    solucion_pasos:
-      - '1. $\text{Solo } A \text{ y } B = 15 - 5 = 10$.'
-  - titulo: 'Exactamente dos a partir de fórmula'
-    enunciado: 'Si la suma de pares brutos es 45 y la triple central es 5, ¿cuántos cumplen exactamente dos?'
-    respuesta: '$30$'
-    solucion_pasos:
-      - '$45 - 3(5) = 45 - 15 = 30$.'
-  - titulo: 'Relación con al menos dos'
-    enunciado: 'Si exactamente dos es 25 y la triple central es 5, ¿cuántos cumplen al menos dos?'
-    respuesta: '$30$'
-    solucion_pasos:
-      - '$25 + 5 = 30$.'
-  - titulo: 'Intersección doble nula'
-    enunciado: 'Si $|A \cap B| = 4$ y $|A \cap B \cap C| = 4$, ¿cuál es Solo A y B?'
-    respuesta: '$0$'
-    solucion_pasos:
-      - '$4 - 4 = 0$, todos los que están en A y B también están en C.'
+- titulo: Cálculo de doble exclusiva
+  enunciado: Si $|A \cap B| = 15$ y la triple central es 5, ¿cuántos hay en solo A y B?
+  alternativas:
+  - $10$
+  - $15$
+  - $20$
+  respuesta: $10$
+  solucion_pasos:
+  - 1. $\text{Solo } A \text{ y } B = 15 - 5 = 10$.
+- titulo: Exactamente dos a partir de fórmula
+  enunciado: Si la suma de pares brutos es 45 y la triple central es 5, ¿cuántos cumplen exactamente dos?
+  respuesta: $30$
+  solucion_pasos:
+  - $45 - 3(5) = 45 - 15 = 30$.
+  alternativas:
+  - texto: $30$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Relación con al menos dos
+  enunciado: Si exactamente dos es 25 y la triple central es 5, ¿cuántos cumplen al menos dos?
+  respuesta: $30$
+  solucion_pasos:
+  - $25 + 5 = 30$.
+  alternativas:
+  - texto: $30$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
+- titulo: Intersección doble nula
+  enunciado: Si $|A \cap B| = 4$ y $|A \cap B \cap C| = 4$, ¿cuál es Solo A y B?
+  respuesta: $0$
+  solucion_pasos:
+  - $4 - 4 = 0$, todos los que están en A y B también están en C.
+  alternativas:
+  - texto: $0$
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple exactamente con la propiedad y cálculo cardinal.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el principio de conteo entrega un valor determinado y exacto.
+  - texto: No se puede determinar con los datos dados
+    es_correcta: false
+    retroalimentacion: Incorrecto, los datos del enunciado bastan para despejar la incógnita.
 errores_frecuentes:
-  - 'La afirmación de que la región "Solo A y B" incluye a los elementos que también pertenecen al conjunto C.'
-  - 'La afirmación de que la condición "exactamente dos" suma el valor de la triple intersección central.'
-  - 'La afirmación de que la suma de intersecciones de a dos no contiene sobreconteo del centro triple.'
-  - 'La afirmación de que para calcular "exactamente dos" basta con deducir una sola vez el valor central.'
-  - 'La afirmación de que las tres regiones dobles exclusivas pueden solaparse entre sí.'
+- La afirmación de que la región "Solo A y B" incluye a los elementos que también pertenecen al conjunto C.
+- La afirmación de que la condición "exactamente dos" suma el valor de la triple intersección central.
+- La afirmación de que la suma de intersecciones de a dos no contiene sobreconteo del centro triple.
+- La afirmación de que para calcular "exactamente dos" basta con deducir una sola vez el valor central.
+- La afirmación de que las tres regiones dobles exclusivas pueden solaparse entre sí.
 afirmaciones_verdaderas:
-  - 'La cantidad de elementos que pertenecen a exactamente dos de los tres conjuntos es igual a $(|A \cap B| + |A \cap C| + |B \cap C|) - 3|A \cap B \cap C|$.'
-  - 'Cada región doble exclusiva se obtiene restando la triple intersección central a la intersección del par correspondiente ($|(A \cap B) \setminus C| = |A \cap B| - |A \cap B \cap C|$).'
-al_terminar_debes_poder: |
-  QUÉ: Calcular e interpretar las regiones dobles exclusivas y la condición "Exactamente dos conjuntos" en tres conjuntos.
+- La cantidad de elementos que pertenecen a exactamente dos de los tres conjuntos es igual a $(|A \cap B| + |A \cap C| + |B \cap C|) - 3|A \cap B \cap C|$.
+- Cada región doble exclusiva se obtiene restando la triple intersección central a la intersección del par correspondiente ($|(A \cap B) \setminus C| = |A \cap B| - |A \cap B \cap C|$).
+al_terminar_debes_poder: 'QUÉ: Calcular e interpretar las regiones dobles exclusivas y la condición "Exactamente dos conjuntos" en tres conjuntos.
+
   CÓMO: Deducir la triple intersección central de los pares brutos y sumar los átomos booleanos de peso de Hamming 2.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+
+  ![Resumen calculo-de-regiones-pertenecientes-exactamente-a-dos-conjuntos](/static/img/nodos/calculo-de-regiones-pertenecientes-exactamente-a-dos-conjuntos-resumen.svg)'
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado
