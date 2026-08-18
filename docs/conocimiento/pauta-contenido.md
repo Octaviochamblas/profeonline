@@ -90,11 +90,13 @@ ejemplo_guiado:
 # familia. Antes de cargar, verificar que ningún otro YAML del mismo sub-tema tenga
 # el mismo `enunciado`.
 #
-# ⚠️ TERCERA REGLA DURA (agregada 2026-08-07): Expresiones matemáticas en LaTeX
+# ⚠️ TERCERA REGLA DURA (agregada 2026-08-07, actualizada 2026-08-18): Expresiones matemáticas en LaTeX
 # TODAS las expresiones matemáticas (variables, ecuaciones, polinomios, números con exponentes,
-# alternativas, enunciados) en las secciones `checkpoints` ("Comprueba tu avance"), `ejemplos` ("Ejemplos")
+# números decimales con barra periódica como $0,\overline{3}$ o $2,45\overline{8}$, fracciones, alternativas, enunciados)
+# en las secciones `checkpoints` ("Comprueba tu avance"), `ejemplos` ("Ejemplos")
 # y `errores_frecuentes` / `afirmaciones_verdaderas` ("Ejemplos Verdadero/Falso") DEBEN estar encerradas
 # obligatoriamente entre signos de dólar ($...$ o $$...$$) para su renderizado profesional mediante KaTeX.
+# Está ESTRICTAMENTE PROHIBIDO dejar comandos LaTeX (\overline, \frac, etc.) en texto plano sin delimitar por $.
 #
 # ⚠️ CUARTA REGLA DURA (agregada 2026-08-16): Prohibición estricta de ejemplos pasivos ("Ver solución")
 # TODOS los ejercicios en la sección `ejemplos` DEBEN ser interactivos para que el estudiante responda
@@ -112,7 +114,7 @@ ejemplo_guiado:
 # Queda ESTRICTAMENTE PROHIBIDO redactar párrafos de texto corrido sin estas dos etiquetas, ya que la plataforma
 # las utiliza para construir y enmarcar automáticamente las dos tarjetas visuales independientes (`🎯 QUÉ` y `⚙️ CÓMO`).
 #
-# ⚠️ SEXTA REGLA DURA (agregada 2026-08-17): Estándar Zero-Overflow en Infografías y Diagramas SVG
+# ⚠️ SEXTA REGLA DURA (agregada 2026-08-17, actualizada 2026-08-18): Estándar Zero-Overflow y Períodos en SVG
 # Todo archivo SVG generado para los nodos (`static/img/nodos/*.svg`) DEBE cumplir estrictamente con:
 # 1. Anclaje derecho seguro: Todo texto o badge ubicado en el extremo derecho de un contenedor/píldora DEBE
 #    usar obligatoriamente `text-anchor="end"` con padding interior (`x = rect_x + rect_width - 16`).
@@ -120,12 +122,16 @@ ejemplo_guiado:
 #    Para cualquier contenedor o sub-caja interna (cajas comparativas $p$ vs $\neg p$, badges, píldoras, etc.)
 #    de ancho $W_{\text{box}}$ y fuente $F_s$:
 #    $$N_{\text{max}} \le \frac{W_{\text{box}} - (2 \times \text{padding})}{F_s \times 0.60}$$
-#    (Ejemplo crítico evitado: en una caja de $120\text{px}$, el texto "VERDADERO (V)" de 13 caracteres a $18\text{px}$
-#    requiere $140.4\text{px}$, desbordando la caja. Debe usarse caja de $\ge 138\text{px}$ con $F_s \le 14.5\text{px}$
-#    o sintetizarse a "VERDAD (V)" para garantizar padding $\ge 15\text{px}$).
-# 3. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
-# 4. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
-# 5. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
+#    En cajas centrales de 650px a 12px, el largo máximo no debe superar los 65 caracteres. Dividir fórmulas
+#    largas en dos líneas o simplificar rotulaciones para no tocar los bordes del recuadro.
+# 3. Representación de Períodos Decimales en SVG:
+#    PROHIBIDO usar caracteres combinados Unicode (como `\u0304` / COMBINING MACRON `̄`) sobre números en SVG,
+#    ya que solo cubren un dígito en números multídígito y causan desalineación visual.
+#    En su lugar, usar OBLIGATORIAMENTE `<tspan style="text-decoration: overline">54</tspan>` o una línea vectorial
+#    `<line>` para garantizar una barra continua, nítida y perfectamente alineada sobre todos los dígitos periódicos.
+# 4. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
+# 5. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
+# 6. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."

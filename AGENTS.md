@@ -59,11 +59,15 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   las dos etiquetas explícitas `QUÉ:` (acción o capacidad matemática) y `CÓMO:` (mecanismo o
   algoritmo técnico de resolución en $LaTeX$). Prohibido redactar párrafos de texto corrido
   sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
+- **Fórmulas y Matemáticas en YAML (KaTeX):** Toda expresión matemática, fracción o número decimal con barra periódica ($0,\overline{3}$, $2,45\overline{8}$) en enunciados, alternativas, explicaciones o títulos de `ejemplos` y `checkpoints` DEBE estar estrictamente delimitada con signos de dólar (`$...$` o `$$...$$`). Prohibido dejar comandos LaTeX como `\overline` en texto plano.
 - **Infografías y Diagramas SVG:** Todo SVG (`static/img/nodos/`) debe respetar el estándar
   *Zero-Overflow*: textos derechos anclados con `text-anchor="end"`, padding seguro $\ge 15\text{px}$,
   y control estricto de longitud de caracteres por caja contenedora y subcaja interna
   ($N_{\text{max}} \le \frac{W_{\text{box}} - 2 \times \text{padding}}{\text{font-size} \times 0.60}$).
-  Prohibido desbordar los bordes de subcajas, cards o del canvas.
+  Prohibido desbordar los bordes de subcajas, cards o del canvas. En números periódicos en SVG, está
+  **estrictamente prohibido usar caracteres combinados Unicode (`\u0304`)**; usar siempre
+  `<tspan style="text-decoration: overline">...</tspan>` o un elemento vectorial `<line>` para cubrir
+  la totalidad del período.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
