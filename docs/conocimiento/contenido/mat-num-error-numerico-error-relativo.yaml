@@ -1,130 +1,142 @@
 semantic_id: MAT.NUM.ERROR_NUMERICO.ERROR_RELATIVO
-resumen_inicial: 'El error relativo es la razón entre el error absoluto y el valor
-  exacto real: $E_r = \frac{|V_{\text{real}} - V_{\text{aprox}}|}{|V_{\text{real}}|}$.'
-explicacion_simple: El error relativo mide la importancia o precisión real del error
-  en proporción al tamaño del número que estamos midiendo. No es lo mismo equivocarse
-  por 1 metro al medir un lápiz que equivocarse por 1 metro al medir una carretera;
-  el error relativo evalúa esa diferencia de escala dividiendo el error entre el total.
-explicacion_formal: 'Sea $x \in \mathbb{R} \setminus \{0\}$ el valor exacto no nulo
-  y $\bar{x}$ una aproximación, el **Error Relativo $E_r$** se define como el cociente
-  adimensional:
+resumen_inicial: El error relativo es la razón entre el error absoluto y el valor real exacto, proporcionando una medida adimensional de la calidad o precisión de la aproximación.
+explicacion_simple: '![Cálculo del error relativo](/static/img/nodos/calculo-del-error-relativo-intro.svg)
 
 
-  $$E_r = \frac{E_a}{|x|} = \frac{|x - \bar{x}|}{|x|}$$
+  Un error de $1\text{ cm}$ no significa lo mismo si medimos un tornillo de $2\text{ cm}$ que si medimos una carretera de $10\text{ km}$. El error relativo soluciona este problema dividiendo el error absoluto entre el valor real; al cancelarse las unidades de medida, obtenemos un número puro que nos indica la verdadera precisión de la estimación sin importar la escala.'
+explicacion_formal: 'Sea $x_{\text{real}} \in \mathbb{R} \setminus \{0\}$ y $x_{\text{aprox}} \in \mathbb{R}$, el **Error Relativo** $E_{\text{rel}}$ se define mediante el cociente:
 
 
-  **Desglose de la fórmula:**
-
-  - $E_a = |x - \bar{x}|$: Error absoluto en el numerador.
-
-  - $|x|$: Valor absoluto del valor exacto de referencia en el denominador ($x \neq
-  0$).
-
-  - Adimensionalidad: Al dividir unidades iguales, $E_r$ carece de unidades físicas
-  (es un número puro en $\mathbb{R}^+$).
+  $$E_{\text{rel}} = \frac{E_{\text{abs}}}{|x_{\text{real}}|} = \frac{|x_{\text{real}} - x_{\text{aprox}}|}{|x_{\text{real}}|}$$
 
 
-  > **Complemento didáctico:** Mientras menor sea el error relativo $E_r$, mayor será
-  la **precisión** y calidad de la aproximación.'
-definiciones_clave: '- **Error relativo**: Indicador adimensional de precisión $E_r
-  = \frac{E_a}{|x|}$ que compara el error absoluto frente a la magnitud del valor
-  real.'
-propiedades_relaciones: '- **Adimensionalidad**: $E_r$ es independiente de las unidades
-  de medida empleadas.'
+  **Desglose formal de la fórmula:**
+
+  - **$E_{\text{abs}}$:** Error absoluto en el numerador.
+
+  - **$|x_{\text{real}}|$:** Valor absoluto del valor real de referencia en el denominador ($x_{\text{real}} \neq 0$).
+
+  - **Magnitud adimensional:** Las unidades del numerador y denominador se cancelan, permitiendo la comparación universal de precisión.
+
+
+  > **Complemento didáctico:** A menor error relativo, mayor es la calidad y exactitud de la aproximación. Un error relativo cercano a cero ($E_{\text{rel}} \to 0$) representa máxima precisión.'
+definiciones_clave: '- **Error relativo**: Razón adimensional $\frac{E_{\text{abs}}}{|x_{\text{real}}|}$ que pondera el error según la magnitud real.
+
+  - **Adimensionalidad**: Propiedad matemática de no depender de ninguna unidad de medida específica.
+
+  - **Calidad de aproximación**: Métrica inversa del error relativo (menor error relativo implica mayor calidad).'
+propiedades_relaciones: '- **Independencia de escala**: Permite comparar la precisión entre magnitudes astronómicas y microscópicas.
+
+  - **No negatividad**: $E_{\text{rel}} \ge 0$.
+
+  - **Invarianza ante cambio de unidades**: Medir en metros o centímetros arroja exactamente el mismo error relativo.'
 ejemplo_guiado:
-  enunciado: Calcule el error relativo si el valor exacto es $x = 50$ y el valor aproximado
-    es $\bar{x} = 49$.
+  enunciado: '![Ejemplos de error relativo](/static/img/nodos/calculo-del-error-relativo-ejemplos.svg)
+
+
+    Si el valor real es $10\text{ m}$ y el valor aproximado es $9,5\text{ m}$, calcule el error relativo de la medición.'
   pasos:
-  - 'Paso 1: Calcular el error absoluto: $E_a = |50 - 49| = 1$.'
-  - 'Paso 2: Dividir el error absoluto entre el valor absoluto del valor real: $\frac{1}{|50|}
-    = \frac{1}{50}$.'
-  - 'Paso 3: Convertir la fracción a decimal: $1 : 50 = 0,02$.'
-  - 'Conclusión: El error relativo es $0,02$ (adimensional).'
+  - 'Paso 1: Calcular el error absoluto: $E_{\text{abs}} = |10 - 9,5| = 0,5\text{ m}$.'
+  - 'Paso 2: Identificar el valor real: $|x_{\text{real}}| = 10\text{ m}$.'
+  - "Paso 3: Calcular el cociente del error relativo:\n  $$E_{\\text{rel}} = \\frac{0,5\\text{ m}}{10\\text{ m}} = 0,05 = \\frac{1}{20}$$"
+  - 'Conclusión: El error relativo es $0,05$ (o $\frac{1}{20}$, sin unidades de medida).'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la fórmula para calcular el error relativo Er?
+  question: ¿Por qué el error relativo no lleva unidades de medida (es adimensional)?
   choices:
-  - text: Er = Ea / |x| (error absoluto dividido por el valor absoluto del valor real)
+  - text: Porque se cancelan las unidades del error absoluto con las del valor real en la división
     is_correct: true
-  - text: Er = Ea · x
+  - text: Porque el error absoluto no tiene unidades
     is_correct: false
-  - text: Er = x / Ea
+  - text: Porque el valor real siempre es un número entero
     is_correct: false
-  - text: Er = Ea + x
+  - text: Porque siempre se divide por 100
     is_correct: false
-  explanation: La alternativa correcta es 'Er = Ea / |x| (error absoluto dividido
-    por el valor absoluto del valor real)'.
+  explanation: La alternativa correcta es 'Porque se cancelan las unidades del error absoluto con las del valor real en la división'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado con x = 50 y x_barra = 49 (Ea = 1), ¿cuál fue el
-    error relativo resultante?
+  question: En el ejemplo guiado para $10\text{ m}$ y $9,5\text{ m}$, ¿cuál fue el valor del error relativo?
   choices:
-  - text: 0,02
+  - text: $0,05$
     is_correct: true
-  - text: '1'
+  - text: $0,5\text{ m}$
     is_correct: false
-  - text: 0,5
+  - text: $0,005$
     is_correct: false
-  - text: '50'
+  - text: $0,95$
     is_correct: false
-  explanation: La alternativa correcta es '0,02'.
+  explanation: La alternativa correcta es '$0,05$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Obtener el error absoluto $E_a = |x - \bar{x}|$.'
-- 'Paso 2: Dividir $E_a$ entre el valor absoluto del valor exacto $|x|$.'
-- 'Paso 3: Expresar el resultado como un número decimal o fracción adimensional.'
-errores_correccion: '- **Error 1: Dividir entre el valor aproximado en lugar de dividir
-  entre el valor real ($E_r = \frac{E_a}{\bar{x}}$).** **Cómo corregirlo:** La base
-  de comparación teórica es SIEMPRE el valor real exacto $x$.
+- 'Paso 1: Calcular el error absoluto $E_{\text{abs}} = |x_{\text{real}} - x_{\text{aprox}}|$.'
+- 'Paso 2: Dividir el error absoluto entre el valor absoluto del valor real ($|x_{\text{real}}|$).'
+- 'Paso 3: Simplificar la fracción resultante o expresarla en notación decimal pura sin unidades.'
+errores_correccion: '- **Error 1: Dividir el error absoluto por el valor aproximado en vez del valor real.** **Cómo corregirlo:** La referencia en el denominador DEBE ser SIEMPRE el valor REAL exacto ($|x_{\text{real}}|$).
 
-
-  - **Error 2: Asignar unidades de medida al error relativo.** **Cómo corregirlo:**
-  El error relativo es un cociente de unidades idénticas y por ende es ADIMENSIONAL.'
+  - **Error 2: Agregar unidades de medida al error relativo (ej: escribir $0,05\text{ m}$).** **Cómo corregirlo:** El error relativo es un número puro adimensional; las unidades se cancelan.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Si $E_a = 0,4$ y el valor real es $x = 8$, calcule $E_r$.
+  enunciado: Calcule el error relativo si $x_{\text{real}} = 8$ y $x_{\text{aprox}} = 7,6$.
   alternativas:
-  - 0,05
-  - 0,5
-  - 3,2
-  respuesta: 0,05
+  - $0,05$
+  - $0,4$
+  - $0,04$
+  respuesta: $0,05$
   solucion_pasos:
-  - $E_r = 0,4 / 8 = 0,05$.
+  - $E_{\text{abs}} = |8 - 7,6| = 0,4$. $E_{\text{rel}} = \frac{0,4}{8} = 0,05$.
 - titulo: Ejemplo 2
-  enunciado: 'Compare la precisión: medir 10 cm con error de 1 cm vs medir 100 cm
-    con error de 1 cm.'
+  enunciado: 'Compare: Medición 1 ($x_{\text{real}}=10$, $E_{\text{abs}}=1$) vs Medición 2 ($x_{\text{real}}=100$, $E_{\text{abs}}=1$). ¿Cuál es más precisa?'
   alternativas:
-  - La segunda medición es más precisa porque Er = 1/100 = 0,01 < 0,10
-  - Ambas tienen la misma precisión
-  - La primera es más precisa
-  respuesta: La segunda medición es más precisa porque Er = 1/100 = 0,01 < 0,10
+  - La Medición 2 es más precisa porque $E_{\text{rel}} = \frac{1}{100} = 0,01 < 0,10$
+  - La Medición 1 es más precisa
+  - Ambas tienen la misma precisión porque tienen el mismo error absoluto
+  respuesta: La Medición 2 es más precisa porque $E_{\text{rel}} = \frac{1}{100} = 0,01 < 0,10$
   solucion_pasos:
-  - $E_{r1} = 1/10 = 0,10$ y $E_{r2} = 1/100 = 0,01$. A menor error relativo, mayor
-    precisión.
+  - $E_{\text{rel}_1} = \frac{1}{10} = 0,10$; $E_{\text{rel}_2} = \frac{1}{100} = 0,01$. A menor error relativo, mayor precisión.
 - titulo: ¿Carece el error relativo de unidades de medida?
   respuesta: Sí
   solucion_pasos:
-  - Sí, es un número adimensional.
+  - Sí, es un cociente adimensional.
+  alternativas:
+  - texto: Sí, es completamente adimensional
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Al dividir magnitudes con la misma unidad, estas se cancelan.
+  - texto: No, se mide en la misma unidad que el error absoluto
+    es_correcta: false
+    retroalimentacion: Incorrecto, las unidades se simplifican en el cociente.
+  - texto: Solo si se expresa como fracción
+    es_correcta: false
+    retroalimentacion: Incorrecto, tanto en fracción como en decimal es adimensional.
 - titulo: ¿Es mejor una aproximación si su error relativo se acerca a cero?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $E_r \to 0$ implica máxima precisión.
+  - Sí, un menor error relativo representa una mayor fidelidad y calidad de la aproximación.
+  alternativas:
+  - texto: Sí, menor error relativo implica mayor precisión
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $E_{\text{rel}} = 0$ corresponde a una exactitud total.
+  - texto: No, debe ser cercano a 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, un error relativo de 1 implicaría un 100% de discrepancia.
+  - texto: El error relativo no mide la calidad
+    es_correcta: false
+    retroalimentacion: Incorrecto, el error relativo es el estándar cuantitativo de precisión.
 errores_frecuentes:
-- Dividir el error absoluto por el valor aproximado en lugar de dividirlo entre el
-  valor real.
-- El error relativo conserva las unidades físicas como metros o kilogramos del valor
-  original.
-- Un error absoluto de 1 metro representa siempre la misma precisión sin importar
-  el total medido.
-- El error relativo de una aproximación perfecta es igual a 1.
-- Calcular el error relativo requiere multiplicar el valor real por la constante 100.
+- Dividir el error absoluto entre el valor aproximado en lugar de dividir por el valor real.
+- Asignar unidades de medida al error relativo.
+- Comparar la calidad de dos mediciones basándose únicamente en el error absoluto sin calcular el relativo.
+- Creer que un error relativo alto corresponde a una medición de alta calidad.
+- Calcular el error relativo cuando el valor real es cero sin tomar las precauciones de indeterminación.
 afirmaciones_verdaderas:
-- El error relativo $E_r = E_a / |x|$ mide la precisión proporcional de la aproximación
-  respecto al valor real.
-- El error relativo es una magnitud adimensional independiente de la unidad de medida
-  utilizada.
-al_terminar_debes_poder: "Al terminar serás capaz de calcular el error relativo $E_r\
-  \ = \frac{E_a}{|x|}$, evaluando la precisión de una aproximación de forma adimensional\
-  \ respecto a la escala del valor exacto."
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+- El error relativo es el cociente entre el error absoluto y el valor absoluto del valor real.
+- El error relativo es una magnitud adimensional independiente de la unidad de medida utilizada.
+- Entre dos aproximaciones, aquella con menor error relativo es la más precisa y de mejor calidad.
+al_terminar_debes_poder: '![Síntesis de cálculo del error relativo](/static/img/nodos/calculo-del-error-relativo-resumen.svg)
+
+
+  QUÉ: Calcular el error relativo para evaluar cuantitativamente la precisión de una estimación.
+
+
+  CÓMO: Dividiendo el error absoluto entre el valor absoluto del valor real ($E_{\text{rel}} = \frac{|x_{\text{real}} - x_{\text{aprox}}|}{|x_{\text{real}}|}$), obteniendo un valor adimensional que permite comparar la calidad de mediciones en distintas escalas.'
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

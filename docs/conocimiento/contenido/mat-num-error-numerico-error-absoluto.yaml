@@ -1,131 +1,142 @@
 semantic_id: MAT.NUM.ERROR_NUMERICO.ERROR_ABSOLUTO
-resumen_inicial: 'El error absoluto es el valor absoluto de la diferencia entre el
-  valor real exacto $V_{\text{real}}$ y el valor aproximado $V_{\text{aprox}}$: $E_a
-  = |V_{\text{real}} - V_{\text{aprox}}|$.'
-explicacion_simple: El error absoluto mide qué tan lejos nos quedamos del valor exacto
-  en términos reales, expresando la distancia o diferencia sin importar si nos pasamos
-  o si nos quedamos cortos. Al utilizar la barra de valor absoluto, el error absoluto
-  se expresa siempre como una cantidad positiva o cero.
-explicacion_formal: 'Sea $x \in \mathbb{R}$ el valor exacto y $\bar{x} \in \mathbb{Q}$
-  una aproximación, el **Error Absoluto $E_a$** se define cuantitativamente como la
-  métrica de distancia escalar:
+resumen_inicial: El error absoluto es el valor absoluto de la diferencia entre el valor real exacto y el valor aproximado, midiendo la magnitud neta de la discrepancia.
+explicacion_simple: '![Cálculo del error absoluto](/static/img/nodos/calculo-del-error-absoluto-intro.svg)
 
 
-  $$E_a = |x - \bar{x}|$$
+  El error absoluto mide cuánta distancia hay entre el valor exacto de un número y el valor que usamos para aproximarlo. Para calcularlo, restamos el valor real menos el valor aproximado y le aplicamos valor absoluto, lo que garantiza que el error absoluto sea siempre un número positivo o cero y conserve las mismas unidades de medida que el problema original.'
+explicacion_formal: 'Sea $x_{\text{real}} \in \mathbb{R}$ el valor exacto y $x_{\text{aprox}} \in \mathbb{R}$ su valor aproximado, el **Error Absoluto** $E_{\text{abs}}$ se define mediante:
 
 
-  **Desglose de la fórmula:**
-
-  - $| \cdot |$: Función valor absoluto que garantiza $E_a \ge 0$.
-
-  - $x$: Valor exacto (teórico o medido sin incertidumbre).
-
-  - $\bar{x}$: Valor aproximado (obtenido por redondeo, truncamiento o medición).
-
-  - Unidades: Conserva exactamente la misma unidad de medida que la magnitud original
-  ($m, kg, s, \dots$).
+  $$E_{\text{abs}} = |x_{\text{real}} - x_{\text{aprox}}|$$
 
 
-  > **Complemento didáctico:** El error absoluto indica la magnitud física del desvío,
-  pero no permite juzgar la calidad de una medición por sí solo si no se compara con
-  el tamaño del valor real.'
-definiciones_clave: '- **Error absoluto**: Magnitud de desvío no negativa $E_a = |x
-  - \bar{x}|$ expresada en la misma unidad de la cantidad medida.'
-propiedades_relaciones: '- **Positividad**: $E_a \ge 0$, siendo $E_a = 0 \iff x =
-  \bar{x}$.'
+  **Desglose formal de la fórmula:**
+
+  - **$x_{\text{real}} - x_{\text{aprox}}$:** Desviación o residuo algebraico (positivo si es por defecto, negativo si es por exceso).
+
+  - **$| \cdot |$ (Valor absoluto):** Operador que suprime el signo, asegurando la no negatividad $E_{\text{abs}} \ge 0$.
+
+  - **Distancia métrica euclidiana:** Corresponde a la distancia $d(x_{\text{real}}, x_{\text{aprox}})$ en la recta real $\mathbb{R}$.
+
+
+  > **Complemento didáctico:** El error absoluto posee la misma dimensión física y unidad de medida que las cantidades que se están comparando (metros, segundos, gramos, etc.).'
+definiciones_clave: '- **Error absoluto**: Valor no negativo $|x_{\text{real}} - x_{\text{aprox}}|$ que cuantifica la discrepancia de una estimación.
+
+  - **Valor real ($x_{\text{real}}$)**: Magnitud matemática o física exacta de referencia.
+
+  - **Valor aproximado ($x_{\text{aprox}}$)**: Magnitud obtenida mediante redondeo, truncamiento o medición experimental.'
+propiedades_relaciones: '- **No negatividad**: $E_{\text{abs}} \ge 0$, con $E_{\text{abs}} = 0 \iff x_{\text{real}} = x_{\text{aprox}}$.
+
+  - **Simetría**: $|x_{\text{real}} - x_{\text{aprox}}| = |x_{\text{aprox}} - x_{\text{real}}|$.
+
+  - **Preservación de unidades**: Si $x$ está en metros, $E_{\text{abs}}$ se expresa en metros.'
 ejemplo_guiado:
-  enunciado: Calcule el error absoluto si el valor real de un objeto es $x = 4,8$
-    metros y su valor aproximado es $\bar{x} = 4,75$ metros.
+  enunciado: '![Ejemplos de error absoluto](/static/img/nodos/calculo-del-error-absoluto-ejemplos.svg)
+
+
+    Si el valor exacto de una longitud es $3,5\text{ m}$ y se aproxima por $3,8\text{ m}$, calcule el error absoluto cometido.'
   pasos:
-  - 'Paso 1: Identificar las cantidades: $x = 4,8$ m y $\bar{x} = 4,75$ m.'
-  - 'Paso 2: Calcular la diferencia: $x - \bar{x} = 4,8 - 4,75 = 0,05$.'
-  - 'Paso 3: Aplicar el valor absoluto: $|0,05| = 0,05$.'
-  - 'Conclusión: El error absoluto es de $0,05$ metros.'
+  - 'Paso 1: Identificar el valor real y el valor aproximado: $x_{\text{real}} = 3,5\text{ m}$, $x_{\text{aprox}} = 3,8\text{ m}$.'
+  - 'Paso 2: Plantear la resta algebraica: $3,5 - 3,8 = -0,3\text{ m}$.'
+  - 'Paso 3: Aplicar el valor absoluto: $E_{\text{abs}} = |-0,3\text{ m}| = 0,3\text{ m}$.'
+  - 'Conclusión: El error absoluto cometido es $0,3\text{ m}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la fórmula para calcular el error absoluto Ea entre un valor
-    real x y un valor aproximado x_barra?
+  question: ¿Por qué el error absoluto nunca puede ser un número negativo?
   choices:
-  - text: Ea = |x - x_barra| (el valor absoluto de la diferencia)
+  - text: Porque se aplica la función valor absoluto a la diferencia entre los valores
     is_correct: true
-  - text: Ea = x / x_barra
+  - text: Porque el valor real siempre es mayor que el aproximado
     is_correct: false
-  - text: Ea = (x - x_barra) / x
+  - text: Porque siempre se divide por un número positivo
     is_correct: false
-  - text: Ea = x + x_barra
+  - text: Porque se expresa en porcentaje
     is_correct: false
-  explanation: La alternativa correcta es 'Ea = |x - x_barra| (el valor absoluto de
-    la diferencia)'.
+  explanation: La alternativa correcta es 'Porque se aplica la función valor absoluto a la diferencia entre los valores'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para x = 4,8 y x_barra = 4,75, ¿cuál fue el error
-    absoluto?
+  question: En el ejemplo guiado para $3,5\text{ m}$ aproximado a $3,8\text{ m}$, ¿cuál fue el error absoluto?
   choices:
-  - text: 0,05 metros
+  - text: $0,3\text{ m}$
     is_correct: true
-  - text: -0,05 metros
+  - text: $-0,3\text{ m}$
     is_correct: false
-  - text: 0,5 metros
+  - text: $0,03\text{ m}$
     is_correct: false
-  - text: 0,01 metros
+  - text: $3,0\text{ m}$
     is_correct: false
-  explanation: La alternativa correcta es '0,05 metros'.
+  explanation: La alternativa correcta es '$0,3\text{ m}$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar el valor exacto o real $x$ y la aproximación $\bar{x}$.'
-- 'Paso 2: Restar la aproximación del valor real ($x - \bar{x}$).'
-- 'Paso 3: Aplicar valor absoluto a la diferencia para asegurar un valor no negativo
-  $E_a \ge 0$.'
-errores_correccion: '- **Error 1: Expresar el error absoluto con signo negativo ($E_a
-  = -0,05$).** **Cómo corregirlo:** La presencia de la barra de valor absoluto exige
-  que el error absoluto sea SIEMPRE no negativo ($E_a \ge 0$).
+- 'Paso 1: Identificar el valor real exacto ($x_{\text{real}}$) y el valor aproximado ($x_{\text{aprox}}$).'
+- 'Paso 2: Calcular la resta algebraica $x_{\text{real}} - x_{\text{aprox}}$.'
+- 'Paso 3: Calcular el valor absoluto del resultado obtenido y asignar las unidades correspondientes.'
+errores_correccion: '- **Error 1: Dejar el error absoluto con signo negativo (ej: escribir $-0,3$).** **Cómo corregirlo:** El error absoluto aplica obligatoriamente valor absoluto, por lo que el resultado final NUNCA lleva signo negativo ($|-0,3| = 0,3$).
 
-
-  - **Error 2: Dividir la resta entre el valor real.** **Cómo corregirlo:** Dividir
-  entre el valor real entrega el error RELATIVO, no el absoluto.'
+  - **Error 2: Omitir las unidades de medida en el error absoluto.** **Cómo corregirlo:** El error absoluto posee dimensión física y DEBE conservar las mismas unidades que los valores originales.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule el error absoluto si el valor real es 12,5 y la aproximación
-    es 12,8.
+  enunciado: Calcule el error absoluto si el valor real es $12,4$ y el aproximado es $12,1$.
   alternativas:
-  - 0,3
-  - -0,3
-  - 0,03
-  respuesta: 0,3
+  - $0,3$
+  - $-0,3$
+  - $0,03$
+  respuesta: $0,3$
   solucion_pasos:
-  - $E_a = |12,5 - 12,8| = |-0,3| = 0,3$.
+  - $E_{\text{abs}} = |12,4 - 12,1| = |0,3| = 0,3$.
 - titulo: Ejemplo 2
-  enunciado: Si $x = 3$ y $\bar{x} = 2,95$, ¿cuál es el error absoluto?
+  enunciado: Calcule el error absoluto si el valor real es $2,45$ y se redondea a $2,4$.
   alternativas:
-  - 0,05
-  - 0,5
-  - -0,05
-  respuesta: 0,05
+  - $0,05$
+  - $0,5$
+  - $-0,05$
+  respuesta: $0,05$
   solucion_pasos:
-  - $E_a = |3 - 2,95| = 0,05$.
+  - $E_{\text{abs}} = |2,45 - 2,40| = |0,05| = 0,05$.
 - titulo: ¿Tiene el error absoluto la misma unidad de medida que los valores comparados?
   respuesta: Sí
   solucion_pasos:
-  - Sí, a diferencia del error relativo, el error absoluto mantiene la unidad física.
+  - Sí, el error absoluto conserva la unidad física de la magnitud analizada.
+  alternativas:
+  - texto: Sí, conserva las mismas unidades
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Si los valores están en metros, el error absoluto se expresa en metros.
+  - texto: No, es un número adimensional
+    es_correcta: false
+    retroalimentacion: Incorrecto, la magnitud adimensional corresponde al error relativo.
+  - texto: No, se expresa siempre en porcentaje
+    es_correcta: false
+    retroalimentacion: Incorrecto, el porcentaje corresponde al error porcentual.
 - titulo: ¿Es el error absoluto siempre mayor o igual a cero?
   respuesta: Sí
   solucion_pasos:
-  - Sí, por la propiedad $|a| \ge 0$.
+  - Sí, por la propiedad de no negatividad del valor absoluto ($|u| \ge 0$).
+  alternativas:
+  - texto: Sí, siempre es mayor o igual a cero
+    es_correcta: true
+    retroalimentacion: ¡Correcto! El valor absoluto anula cualquier resultado negativo.
+  - texto: No, puede ser negativo por exceso
+    es_correcta: false
+    retroalimentacion: Incorrecto, el error algebraico puede ser negativo, pero el error absoluto es siempre $\ge 0$.
+  - texto: Solo si el valor real es mayor que 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, la no negatividad aplica a cualquier número real.
 errores_frecuentes:
-- El error absoluto de una aproximación es un valor estrictamente negativo si nos
-  quedamos cortos.
-- Calcular el error absoluto requiere dividir la resta por el valor real exacto del
-  problema.
-- El error absoluto carece de unidades de medida y se expresa siempre en porcentaje.
-- Un error absoluto igual a cero indica que la aproximación es infinitamente superior
-  al valor real.
-- El orden de la resta dentro del valor absoluto altera la magnitud del error absoluto.
+- Expresar el error absoluto con signo negativo tras una aproximación por exceso.
+- Confundir el error absoluto con el error relativo creyendo que es un número adimensional.
+- Omitir las unidades de medida en el valor del error absoluto.
+- Dividir por el valor real creyendo que es parte del error absoluto.
+- Pensar que un error absoluto pequeño garantiza automáticamente alta precisión sin considerar la escala.
 afirmaciones_verdaderas:
-- El error absoluto $E_a = |x - \bar{x}|$ representa la diferencia no negativa entre
-  el valor exacto y el aproximado.
-- El error absoluto posee las mismas unidades de medida que las cantidades $x$ y $\bar{x}$.
-al_terminar_debes_poder: Al terminar serás capaz de calcular el error absoluto $E_a
-  = |x - \bar{x}|$ de cualquier aproximación, verificando que sea un resultado no
-  negativo en la unidad de medida original.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+- El error absoluto es la distancia euclidiana $|x_{\text{real}} - x_{\text{aprox}}|$ entre el valor real y el aproximado.
+- El error absoluto de una aproximación es siempre mayor o igual a cero.
+- El error absoluto se expresa en las mismas unidades físicas de medida que las cantidades evaluadas.
+al_terminar_debes_poder: '![Síntesis de cálculo del error absoluto](/static/img/nodos/calculo-del-error-absoluto-resumen.svg)
+
+
+  QUÉ: Calcular el error absoluto de una aproximación o medición numérica.
+
+
+  CÓMO: Restando el valor real y el valor aproximado y aplicando la función valor absoluto ($E_{\text{abs}} = |x_{\text{real}} - x_{\text{aprox}}|$), preservando las unidades de medida originales.'
+fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
