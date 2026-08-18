@@ -67,8 +67,16 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
 - **Infografías y Diagramas SVG:** Todo SVG (`static/img/nodos/`) debe respetar el estándar
   *Zero-Overflow*: textos derechos anclados con `text-anchor="end"`, padding seguro $\ge 15\text{px}$,
-  y control estricto de longitud de caracteres por caja. Prohibido desbordar los bordes de cards
-  o del canvas.
+  y control estricto de longitud de caracteres por caja contenedora y subcaja interna
+  ($N_{\text{max}} \le \frac{W_{\text{box}} - 2 \times \text{padding}}{\text{font-size} \times 0.60}$).
+  Prohibido desbordar los bordes de subcajas, cards o del canvas. En números periódicos en SVG, está
+  **estrictamente prohibido usar caracteres combinados Unicode (`\u0304`)**; usar siempre
+  `<tspan style="text-decoration: overline">...</tspan>` o un elemento vectorial `<line>` para cubrir
+  la totalidad del período. En expresiones matemáticas dentro de SVGs, está **estrictamente prohibido
+  usar notación plana de programador con guiones bajos o símbolos crudos** (`E_%`, `E_rel`, `v_real`,
+  `x_def`, `d_k`, `10^-k`, `10^k`); usar siempre etiquetas tipográficas vectoriales
+  `<tspan baseline-shift="sub" font-size="70%">...</tspan>` para subíndices y
+  `<tspan baseline-shift="super" font-size="70%">...</tspan>` para superíndices.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 

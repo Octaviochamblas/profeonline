@@ -67,7 +67,11 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   Prohibido desbordar los bordes de subcajas, cards o del canvas. En números periódicos en SVG, está
   **estrictamente prohibido usar caracteres combinados Unicode (`\u0304`)**; usar siempre
   `<tspan style="text-decoration: overline">...</tspan>` o un elemento vectorial `<line>` para cubrir
-  la totalidad del período.
+  la totalidad del período. En expresiones matemáticas dentro de SVGs, está **estrictamente prohibido
+  usar notación plana de programador con guiones bajos o símbolos crudos** (`E_%`, `E_rel`, `v_real`,
+  `x_def`, `d_k`, `10^-k`, `10^k`); usar siempre etiquetas tipográficas vectoriales
+  `<tspan baseline-shift="sub" font-size="70%">...</tspan>` para subíndices y
+  `<tspan baseline-shift="super" font-size="70%">...</tspan>` para superíndices.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 

@@ -129,9 +129,15 @@ ejemplo_guiado:
 #    ya que solo cubren un dígito en números multídígito y causan desalineación visual.
 #    En su lugar, usar OBLIGATORIAMENTE `<tspan style="text-decoration: overline">54</tspan>` o una línea vectorial
 #    `<line>` para garantizar una barra continua, nítida y perfectamente alineada sobre todos los dígitos periódicos.
-# 4. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
-# 5. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
-# 6. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
+# 4. Tipografía Matemática Vectorial (Subíndices y Superíndices):
+#    PROHIBIDO usar notación plana de programador con guiones bajos o símbolos crudos (`E_%`, `E_rel`, `E_abs`,
+#    `v_real`, `v_aprox`, `x_def`, `x_exc`, `d_k`, `d_{k+1}`, `10^-k`, `10^k`) dentro de elementos SVG.
+#    En su lugar, usar OBLIGATORIAMENTE `<tspan baseline-shift="sub" font-size="70%">...</tspan>` para subíndices y
+#    `<tspan baseline-shift="super" font-size="70%">...</tspan>` para superíndices (o variantes con estilo),
+#    garantizando una tipografía matemática profesional, estética y perfectamente renderizada en navegadores.
+# 5. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
+# 6. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
+# 7. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."
