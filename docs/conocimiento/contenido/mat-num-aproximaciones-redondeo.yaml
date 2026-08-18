@@ -1,124 +1,126 @@
 semantic_id: MAT.NUM.APROXIMACIONES.REDONDEO
-resumen_inicial: 'El redondeo aproxima un número a la posición decimal $k$ eligiendo
-  el valor más cercano: si la cifra siguiente es $\ge 5$ se suma 1 a la posición $k$,
-  y si es $< 5$ la cifra $k$ se mantiene.'
-explicacion_simple: 'Redondear un número significa buscar el número más cercano con
-  la cantidad de decimales deseada. Para hacerlo, miramos la primera cifra que vamos
-  a descartar: si es un 5, 6, 7, 8 o 9, le sumamos 1 a la última cifra que conservamos;
-  si es 0, 1, 2, 3 o 4, dejamos esa cifra exactamente igual.'
-explicacion_formal: 'Sea $x = a_0, a_1 a_2 \dots a_k a_{k+1} \dots$, la **Aproximación
-  por Redondeo a la $k$-ésima posición decimal** se rige por la regla de decisión:
+resumen_inicial: El redondeo aproxima un número a la posición decimal $k$ eligiendo el valor más cercano, evaluando si el primer dígito descartado es menor a 5 (defecto) o mayor o igual a 5 (exceso).
+explicacion_simple: '![Aproximación por redondeo](/static/img/nodos/aproximacion-por-redondeo-intro.svg)
 
 
-  $$\text{Red}(x, k) = \begin{cases} a_0, a_1 \dots a_k & \text{si } a_{k+1} < 5 \\
-  a_0, a_1 \dots (a_k + 1) \cdot 10^{-k} & \text{si } a_{k+1} \ge 5 \end{cases}$$
+  El redondeo consiste en buscar el número con la cantidad de decimales deseada que se encuentre más cerca del valor real. Para redondear, observamos la primera cifra que vamos a eliminar: si es menor que $5$ ($0, 1, 2, 3, 4$), la cifra anterior se mantiene igual; si es mayor o igual a $5$ ($5, 6, 7, 8, 9$), sumamos $1$ a la cifra anterior.'
+explicacion_formal: "Dado $x = \\sum a_i \\cdot 10^{-i} \\in \\mathbb{R}$ y un orden de corte $k$, el **Redondeo Estándar a $k$ decimales** $x_{\\text{red}}$ se define mediante:\n\n$$x_{\\text{red}} = \\frac{\\lfloor x \\cdot 10^k + 0,5 \\rfloor}{10^k}$$\n\n**Desglose formal del algoritmo:**\n- **Primer dígito descartado ($d_{k+1}$):**\n  - Si $d_{k+1} \\in \\{0, 1, 2, 3, 4\\} \\implies x_{\\text{red}} = x_{\\text{def}}$ (se mantiene la cifra $d_k$).\n  - Si $d_{k+1} \\in \\{5, 6, 7, 8, 9\\} \\implies x_{\\text{red}} = x_{\\text{exc}}$ (se suma $+1$ a la cifra $d_k$).\n- **Minimización de error:** Garantiza que el error absoluto cumpla $|x - x_{\\text{red}}| \\le \\frac{1}{2} \\cdot 10^{-k}$.\n\n> **Complemento didáctico:** El redondeo minimiza la distancia en la recta numérica respecto al valor exacto."
+definiciones_clave: '- **Redondeo a $k$ decimales**: Aproximación al múltiplo de $10^{-k}$ más cercano al valor real.
 
+  - **Cifra discriminante ($d_{k+1}$)**: Primer dígito descartado que determina si se conserva o incrementa la cifra $d_k$.
 
-  **Desglose del algoritmo:**
+  - **Error simétrico acotado**: Propiedad $|x - x_{\text{red}}| \le \frac{1}{2} \cdot 10^{-k}$ que caracteriza al redondeo.'
+propiedades_relaciones: '- **Optimización de proximidad**: Ningún otro número con $k$ decimales está más cerca de $x$ que $x_{\text{red}}$.
 
-  - $a_{k+1}$: Cifra de evaluación (la primera eliminada tras el corte de precisión
-  $k$).
-
-  - Minimización del error absoluto: El redondeo garantiza que $|x - \text{Red}(x,
-  k)| \le \frac{1}{2} \cdot 10^{-k}$.
-
-
-  > **Complemento didáctico:** El redondeo es el método de aproximación estándar utilizado
-  en el comercio, las ciencias experimentales y las calculadoras.'
-definiciones_clave: '- **Aproximación por redondeo**: Método óptimo de aproximación
-  que minimiza el error absoluto eligiendo la cota más cercana según si $a_{k+1} \ge
-  5$ o $< 5$.'
-propiedades_relaciones: '- **Criterio de minimización de error**: $|x - \text{Red}(x,k)|
-  \le \frac{1}{2} \cdot 10^{-k}$.'
+  - **Discretización**: Divide la recta numérica en intervalos centrados en cada múltiplo de $10^{-k}$.'
 ejemplo_guiado:
-  enunciado: Redondee a las centésimas los números $6,423$ y $6,428$.
+  enunciado: '![Ejemplos de aproximación por redondeo](/static/img/nodos/aproximacion-por-redondeo-ejemplos.svg)
+
+
+    Redondee el número $3,746$ a la décima y a la centésima.'
   pasos:
-  - 'Paso 1: Para $6,423$, la cifra a evaluar es la milésima ($3$). Como $3 < 5$,
-    la centésima ($2$) se conserva $\implies 6,42$.'
-  - 'Paso 2: Para $6,428$, la cifra a evaluar es la milésima ($8$). Como $8 \ge 5$,
-    se suma 1 a la centésima ($2+1=3$) $\implies 6,43$.'
-  - 'Conclusión: $6,423 \to 6,42$ y $6,428 \to 6,43$ por redondeo a las centésimas.'
+  - 'Paso 1: A la décima ($k=1$): La cifra en las décimas es $7$. El dígito siguiente es $4$. Como $4 < 5$, la décima se mantiene en $7 \implies 3,7$.'
+  - 'Paso 2: Comprobar proximidad: $|3,746 - 3,7| = 0,046 < 0,05$ (más cerca de $3,7$ que de $3,8$).'
+  - 'Paso 3: A la centésima ($k=2$): La cifra en las centésimas es $4$. El dígito siguiente es $6$. Como $6 \ge 5$, sumamos $+1$ a la centésima: $4 + 1 = 5 \implies 3,75$.'
+  - 'Paso 4: Comprobar proximidad: $|3,746 - 3,75| = 0,004 < 0,005$ (más cerca de $3,75$ que de $3,74$).'
+  - 'Conclusión: A la décima es $3,7$ y a la centésima es $3,75$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: En el redondeo a las décimas, ¿qué se hace si la cifra de las centésimas
-    es mayor o igual a 5?
+  question: ¿Qué regla se aplica a la cifra retenida si el primer dígito descartado es un 7?
   choices:
-  - text: Se le suma 1 a la cifra de las décimas
+  - text: Se le suma 1 a la cifra retenida (porque 7 es mayor o igual a 5)
     is_correct: true
-  - text: Se deja la cifra de las décimas exactamente igual
+  - text: Se mantiene igual la cifra retenida
     is_correct: false
-  - text: Se le resta 1 a las décimas
+  - text: Se convierte en 0
     is_correct: false
-  - text: Se multiplica por 10
+  - text: Se divide por 2
     is_correct: false
-  explanation: La alternativa correcta es 'Se le suma 1 a la cifra de las décimas'.
+  explanation: La alternativa correcta es 'Se le suma 1 a la cifra retenida (porque 7 es mayor o igual a 5)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 6,428 redondeado a las centésimas, ¿cuál fue
-    el resultado?
+  question: En el ejemplo guiado para $3,746$, ¿cuál fue el redondeo a la centésima?
   choices:
-  - text: 6,43
+  - text: $3,75$
     is_correct: true
-  - text: 6,42
+  - text: $3,74$
     is_correct: false
-  - text: 6,40
+  - text: $3,70$
     is_correct: false
-  - text: 6,50
+  - text: $3,80$
     is_correct: false
-  explanation: La alternativa correcta es '6,43'.
+  explanation: La alternativa correcta es '$3,75$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar la cifra en la posición decimal de corte $k$.'
-- 'Paso 2: Observar la cifra inmediatamente siguiente ($a_{k+1}$).'
-- 'Paso 3: Si $a_{k+1} \ge 5$, sumar 1 a la cifra $k$. Si $a_{k+1} < 5$, mantener
-  la cifra $k$ y descartar las siguientes.'
-errores_correccion: '- **Error 1: Observar dos o más cifras hacia la derecha en lugar
-  de solo la primera descartada.** **Cómo corregirlo:** El redondeo evalúa ÚNICAMENTE
-  la cifra inmediatamente siguiente a la de corte ($a_{k+1}$).
+- 'Paso 1: Ubicar la posición decimal $k$ a la cual se desea redondear.'
+- 'Paso 2: Mirar exclusivamente el primer dígito a la derecha de dicha posición ($d_{k+1}$).'
+- 'Paso 3: Si dicho dígito es $0, 1, 2, 3$ o $4$, mantener la cifra de la posición $k$; si es $5, 6, 7, 8$ o $9$, sumar $1$ a la cifra de la posición $k$ (con acarreo si fuera $9$).'
+errores_correccion: '- **Error 1: Mirar varios dígitos posteriores en cadena en vez de solo el primero inmediato.** **Cómo corregirlo:** La decisión de redondeo depende EXCLUSIVAMENTE del primer dígito descartado ($d_{k+1}$).
 
-
-  - **Error 2: Sumar 1 a la cifra cuando el siguiente dígito es menor que 5.** **Cómo
-  corregirlo:** Si la cifra descartada es $0, 1, 2, 3$ o $4$, la cifra mantenida NO
-  sufre ningún cambio.'
+  - **Error 2: Olvidar propagar la reserva cuando la cifra a redondear es 9 (ej: $8,97$ a décimas).** **Cómo corregirlo:** Si la cifra es $9$ y suma $1$, pasa a $0$ y suma $1$ al orden inmediatamente superior ($8,97 \implies 9,0$).'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Redondee 3,74 a las décimas.
+  enunciado: Redondee $3,74$ a la décima.
   alternativas:
-  - 3,7
-  - 3,8
-  - 4,0
-  respuesta: 3,7
+  - $3,7$
+  - $3,8$
+  - $4,0$
+  respuesta: $3,7$
   solucion_pasos:
-  - La centésima es $4 < 5 \implies 3,7$.
+  - 'Como la centésima es $4 < 5$, la décima se conserva: $3,7$.'
 - titulo: Ejemplo 2
-  enunciado: Redondee 8,96 a las décimas.
+  enunciado: Redondee $8,97$ a la décima.
   alternativas:
-  - 9,0
-  - 8,9
-  - 9,6
-  respuesta: 9,0
+  - $9,0$
+  - $8,9$
+  - $9,1$
+  respuesta: $9,0$
   solucion_pasos:
-  - La centésima es $6 \ge 5 \implies 8,9 + 0,1 = 9,0$.
-- titulo: ¿Es el redondeo de 1,45 a la décima igual a 1,5?
+  - Como la centésima es $7 \ge 5$, la décima $9 + 1 = 10 \implies 9,0$.
+- titulo: ¿Es el redondeo de $1,45$ a la décima igual a $1,5$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, la centésima es $5 \ge 5 \implies 1,5$.
-- titulo: ¿Es 2,137 redondeado a las centésimas igual a 2,14?
+  - Sí, como la centésima es $5 \ge 5$, la décima $4$ sube a $5 \implies 1,5$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! El dígito 5 activa el incremento en $+1$ de la décima.
+  - texto: No, es 1,4
+    es_correcta: false
+    retroalimentacion: Incorrecto, el 5 redondea hacia arriba en la convención estándar.
+  - texto: No, es 2,0
+    es_correcta: false
+    retroalimentacion: Incorrecto, la aproximación solicitada es a las décimas.
+- titulo: ¿Es $2,137$ redondeado a las centésimas igual a $2,14$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, la milésima es $7 \ge 5 \implies 2,14$.
+  - Sí, la milésima es $7 \ge 5$, por lo que la centésima $3$ sube a $4 \implies 2,14$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Como $7 \ge 5$, la centésima $3$ pasa a $4$.
+  - texto: No, es 2,13
+    es_correcta: false
+    retroalimentacion: Incorrecto, $2,13$ sería el truncamiento, no el redondeo.
+  - texto: No, es 2,10
+    es_correcta: false
+    retroalimentacion: Incorrecto, no se reemplaza por cero la centésima.
 errores_frecuentes:
-- Redondear requiere examinar la suma de todos los decimales eliminados en conjunto.
-- Si la primera cifra descartada es igual a 4 se debe incrementar en 1 la cifra retenida.
-- El redondeo de $4,19$ a las décimas da como resultado $4,1$.
-- Redondear un decimal negativo invierte las reglas y resta 10 a la parte entera.
-- El redondeo entrega el mismo resultado exacto que el truncamiento en todos los casos.
+- Evaluar dígitos más lejanos a la derecha afectando en cadena la cifra de redondeo.
+- Olvidar colocar el cero decimal cuando un dígito 9 redondea a 0 ($8,97$ a décimas es $9,0$, no $9$).
+- Confundir el redondeo con el truncamiento cuando la cifra siguiente es mayor a 5.
+- Afirmar que redondear $2,49$ a la unidad entrega $3$ al redondear primero el 4 con el 9.
+- Considerar que el error de redondeo puede ser superior a la mitad de la unidad de orden de precisión.
 afirmaciones_verdaderas:
-- El redondeo incrementa en 1 la cifra $k$ si la primera cifra descartada es $\ge
-  5$, y la mantiene si es $< 5$.
-- Es el método de aproximación que minimiza el valor absoluto del error de aproximación.
-al_terminar_debes_poder: Al terminar serás capaz de redondear cualquier número a la
-  posición decimal deseada, aplicando el criterio de evaluación de la cifra posterior
-  ($a_{k+1} \ge 5$ o $< 5$).
+- El redondeo selecciona el múltiplo del orden decimal más cercano al valor original.
+- Si la primera cifra descartada es $5, 6, 7, 8$ o $9$, se suma una unidad a la cifra retenida.
+- El error absoluto de una aproximación por redondeo a $k$ decimales nunca supera $\frac{1}{2} \cdot 10^{-k}$.
+al_terminar_debes_poder: '![Síntesis de aproximación por redondeo](/static/img/nodos/aproximacion-por-redondeo-resumen.svg)
+
+
+  QUÉ: Redondear números decimales a una precisión posicional dada ($k$ cifras).
+
+
+  CÓMO: Analizando el primer dígito descartado ($d_{k+1}$), conservando la cifra retenida si $d_{k+1} < 5$ o incrementándola en $+1$ si $d_{k+1} \ge 5$, minimizando el error absoluto a $|x - x_{\text{red}}| \le \frac{1}{2} \cdot 10^{-k}$.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

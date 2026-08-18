@@ -1,125 +1,140 @@
 semantic_id: MAT.NUM.APROXIMACIONES.TRUNCAMIENTO
-resumen_inicial: El truncamiento aproxima un número eliminando o 'cortando' directamente
-  todas las cifras decimales a partir de la posición $k$ requerida, sin realizar redondeos.
-explicacion_simple: Truncar un número es la forma más simple de cortar un decimal.
-  Consiste en conservar los dígitos hasta la posición deseada y borrar o descartar
-  de golpe todos los demás números que vienen después, sin importar cuáles sean esas
-  cifras borradas.
-explicacion_formal: 'Sea $x = a_0, a_1 a_2 \dots a_k a_{k+1} \dots$, la **Aproximación
-  por Truncamiento a la $k$-ésima posición decimal** descarte la cola decimal mediante:
+resumen_inicial: El truncamiento aproxima un número eliminando o 'cortando' directamente las cifras decimales a partir de la posición indicada sin considerar su valor.
+explicacion_simple: '![Aproximación por truncamiento](/static/img/nodos/aproximacion-por-truncamiento-intro.svg)
 
 
-  $$\text{Trunc}(x, k) = \frac{\lfloor x \cdot 10^k \rfloor}{10^k} = a_0, a_1 a_2
-  \dots a_k$$
+  Truncar un número decimal es como usar una tijera para cortar todas las cifras que están después de la posición deseada. No importa si los números que eliminamos son grandes (como $7, 8$ o $9$), la última cifra que conservamos NUNCA cambia ni se le suma $1$.'
+explicacion_formal: 'Dado un número real $x \in \mathbb{R}$ con desarrollo decimal $x = \operatorname{sgn}(x) \cdot (a_0 + \sum_{i=1}^{\infty} a_i \cdot 10^{-i})$, el **Truncamiento a $k$ decimales** $x_{\text{trunc}}$ se define mediante:
 
 
-  **Desglose de la fórmula:**
-
-  - $\lfloor \cdot \rfloor$: Función piso entero que elimina la parte fraccionaria
-  remanente.
-
-  - Independencia de $a_{k+1}$: Las cifras borradas $a_{k+1}, a_{k+2}, \dots$ son
-  totalmente ignoradas en el cálculo.
+  $$x_{\text{trunc}} = \operatorname{sgn}(x) \cdot \frac{\lfloor |x| \cdot 10^k \rfloor}{10^k}$$
 
 
-  > **Complemento didáctico:** A diferencia del redondeo, en el truncamiento de $3,899$
-  a las décimas el resultado es $3,8$ aunque los nueves estén extremadamente cerca
-  de $3,9$.'
-definiciones_clave: '- **Aproximación por truncamiento**: Corte directo de la secuencia
-  decimal en la posición $k$ descartando todo remanente posicional.'
-propiedades_relaciones: '- **Equivalencia a defecto positiva**: $\text{Trunc}(x,k)
-  = x_{\text{def}}$ para $x > 0$.'
+  **Desglose formal de la operación:**
+
+  - **Acción de corte:** Suprime los términos $\sum_{i=k+1}^{\infty} a_i \cdot 10^{-i}$ de forma estricta.
+
+  - **Invarianza de dígitos retenidos:** Los primeros $k$ dígitos tras la coma permanecen estrictamente idénticos a los del número original.
+
+  - **Independencia de magnitud:** El valor del dígito $a_{k+1}$ no tiene ningún impacto en el resultado.
+
+
+  > **Complemento didáctico:** Para números positivos, el truncamiento y la aproximación por defecto son exactamente la misma operación aritmética.'
+definiciones_clave: '- **Truncamiento a $k$ decimales**: Supresión de todas las cifras decimales posteriores a la posición $k$.
+
+  - **Corte posicional**: Operación directa que preserva las cifras decimales sin efectuar redondeo.
+
+  - **Función parte entera escalada**: $\frac{\lfloor x \cdot 10^k \rfloor}{10^k}$ que formaliza el corte en $\mathbb{R}^+$.'
+propiedades_relaciones: '- **Coincidencia con defecto en $\mathbb{R}^+$**: $x_{\text{trunc}} = x_{\text{def}}$ para todo $x \ge 0$.
+
+  - **Simplicidad computacional**: No requiere evaluación condicional de dígitos descartados.'
 ejemplo_guiado:
-  enunciado: Trunque los números $3,749$ y $3,799$ a las décimas ($k=1$).
+  enunciado: '![Ejemplos de aproximación por truncamiento](/static/img/nodos/aproximacion-por-truncamiento-ejemplos.svg)
+
+
+    Trunque el número $4,589$ a la décima y a la centésima.'
   pasos:
-  - 'Paso 1: Para $3,749$, cortar en la primera cifra decimal $\implies 3,7$.'
-  - 'Paso 2: Para $3,799$, cortar en la primera cifra decimal ignorando las cifras
-    posteriores $\implies 3,7$.'
-  - 'Conclusión: Ambos números entregan exactamente $3,7$ al truncarse a las décimas.'
+  - 'Paso 1: A la décima ($k=1$): Conservar hasta la primera cifra tras la coma ($5$) y cortar todo lo demás $\implies 4,5$.'
+  - 'Paso 2: Observar que la cifra $8$ posterior no altera el $5$: queda exactamente $4,5$.'
+  - 'Paso 3: A la centésima ($k=2$): Conservar hasta la segunda cifra tras la coma ($58$) y cortar el $9$ posterior $\implies 4,58$.'
+  - 'Conclusión: Truncado a la décima es $4,5$ y a la centésima es $4,58$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿En qué consiste la aproximación por truncamiento?
+  question: ¿Qué ocurre con la última cifra conservada al truncar un número decimal?
   choices:
-  - text: En cortar directamente los decimales a partir de la posición indicada, sin
-      cambiar las cifras conservadas
+  - text: Permanece exactamente igual sin importar los dígitos posteriores
     is_correct: true
-  - text: En sumar 1 a la última cifra siempre
+  - text: Aumenta en 1 si el siguiente dígito es 9
     is_correct: false
-  - text: En multiplicar por 100
+  - text: Disminuye en 1
     is_correct: false
-  - text: En convertir el número a entero
+  - text: Se convierte en cero
     is_correct: false
-  explanation: La alternativa correcta es 'En cortar directamente los decimales a
-    partir de la posición indicada, sin cambiar las cifras conservadas'.
+  explanation: La alternativa correcta es 'Permanece exactamente igual sin importar los dígitos posteriores'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 3,799 truncado a las décimas, ¿cuál fue el resultado?
+  question: En el ejemplo guiado para $4,589$, ¿cuál fue el truncamiento a la décima?
   choices:
-  - text: 3,7
+  - text: $4,5$
     is_correct: true
-  - text: 3,8
+  - text: $4,6$
     is_correct: false
-  - text: 3,79
+  - text: $5,0$
     is_correct: false
-  - text: 4,0
+  - text: $4,58$
     is_correct: false
-  explanation: La alternativa correcta es '3,7'.
+  explanation: La alternativa correcta es '$4,5$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Localizar la posición decimal de corte $k$.'
-- 'Paso 2: Escribir el número conservando únicamente las cifras hasta la posición
-  $k$.'
-- 'Paso 3: Eliminar de forma directa todos los dígitos situados a la derecha de la
-  posición $k$ sin hacer ningún redondeo.'
-errores_correccion: '- **Error 1: Redondear hacia arriba al truncar si el dígito siguiente
-  es 9 (ej: truncar $3,799 \to 3,8$).** **Cómo corregirlo:** El truncamiento CORTA
-  a ciegas sin mirar ni modificar cifras; el resultado es $3,7$.
+- 'Paso 1: Contar $k$ posiciones decimales después de la coma.'
+- 'Paso 2: Trazar una línea de corte inmediatamente después de la posición $k$.'
+- 'Paso 3: Escribir el número hasta dicha posición descartando por completo todos los dígitos posteriores.'
+errores_correccion: '- **Error 1: Redondear hacia arriba si la siguiente cifra es 8 o 9 (ej: truncar $4,58$ como $4,6$).** **Cómo corregirlo:** En el truncamiento NUNCA se redondea; el corte es directo ($4,58 \implies 4,5$).
 
-
-  - **Error 2: Confundir truncamiento con aproximación por exceso.** **Cómo corregirlo:**
-  El truncamiento preserva intactos los dígitos retenidos; por exceso los incrementa
-  en 1.'
+  - **Error 2: Truncar suprimiendo cifras de la parte entera.** **Cómo corregirlo:** El orden $k$ se cuenta exclusivamente a partir de la COMA DECIMAL hacia la derecha.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Trunque 4,58 a las décimas.
+  enunciado: Trunque $4,58$ a la décima.
   alternativas:
-  - 4,5
-  - 4,6
-  - 4,0
-  respuesta: 4,5
+  - $4,5$
+  - $4,6$
+  - $5,0$
+  respuesta: $4,5$
   solucion_pasos:
-  - Se corta en la décima $\implies 4,5$.
+  - 'Se corta tras la décima: $4,5$.'
 - titulo: Ejemplo 2
-  enunciado: Trunque 1,999 a las centésimas.
+  enunciado: Trunque $1,999$ a la centésima.
   alternativas:
-  - 1,99
-  - 2,00
-  - 1,90
-  respuesta: 1,99
+  - $1,99$
+  - $2,00$
+  - $1,90$
+  respuesta: $1,99$
   solucion_pasos:
-  - Se corta en la centésima $\implies 1,99$.
-- titulo: ¿Es el truncamiento de 5,123 a la décima igual a 5,1?
+  - 'Se corta tras la centésima: $1,99$ (no se redondea a 2,00).'
+- titulo: ¿Es el truncamiento de $5,123$ a la décima igual a $5,1$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, se corta directamente en la décima.
+  - Sí, conservando hasta las décimas se obtiene $5,1$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cortando tras el 1 resulta $5,1$.
+  - texto: No, es 5,2
+    es_correcta: false
+    retroalimentacion: Incorrecto, en truncamiento no se incrementa la cifra.
+  - texto: No, es 5,0
+    es_correcta: false
+    retroalimentacion: Incorrecto, la décima 1 se conserva intacta.
 - titulo: ¿Cambia el truncamiento la última cifra conservada?
   respuesta: 'No'
   solucion_pasos:
-  - No, el truncamiento preserva inalteradas las cifras hasta el corte.
+  - No, el truncamiento preserva de forma idéntica todas las cifras hasta el orden de corte.
+  alternativas:
+  - texto: No, la última cifra se mantiene intacta
+    es_correcta: true
+    retroalimentacion: ¡Correcto! El truncamiento jamás altera los dígitos que se conservan.
+  - texto: Sí, suma 1 si sigue un 9
+    es_correcta: false
+    retroalimentacion: Incorrecto, eso corresponde al redondeo.
+  - texto: Sí, siempre disminuye en 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, las cifras retenidas son invariantes.
 errores_frecuentes:
-- El truncamiento incrementa en una unidad la cifra de corte cuando los decimales
-  borrados son mayores que 5.
-- Truncar un número decimal positivo es equivalente a aproximarlo por exceso.
-- El truncamiento a las décimas de $2,99$ es igual a $3,0$.
-- Para truncar un número decimal es necesario calcular el promedio de sus cifras.
-- El truncamiento de una fracción propia produce un número entero mayor que 1.
+- Sumar una unidad a la última cifra conservada en el truncamiento cuando el siguiente dígito es alto.
+- Confundir el truncamiento con el redondeo estándar.
+- Eliminar cifras de la parte entera en lugar de contar desde la coma hacia la derecha.
+- Pensar que truncar $7,99$ a la unidad entrega $8$ en vez de $7$.
+- Considerar que el truncamiento solo se aplica a números decimales infinitos.
 afirmaciones_verdaderas:
-- El truncamiento elimina de golpe las cifras decimales a partir de la posición $k$
-  sin efectuar redondeos.
-- Para números positivos, el truncamiento a $k$ decimales coincide exactamente con
-  la aproximación por defecto.
-al_terminar_debes_poder: Al terminar serás capaz de aproximar cualquier número por
-  truncamiento a la posición decimal requerida, descartando directamente las cifras
-  posteriores sin alterar los dígitos conservados.
+- El truncamiento elimina todas las cifras decimales a partir de la posición solicitada sin alterar las anteriores.
+- Para números reales positivos, el truncamiento coincide conceptual y numéricamente con la aproximación por defecto.
+- El truncamiento a $k$ decimales de cualquier número no se ve afectado por el valor de las cifras descartadas.
+al_terminar_debes_poder: '![Síntesis de aproximación por truncamiento](/static/img/nodos/aproximacion-por-truncamiento-resumen.svg)
+
+
+  QUÉ: Truncar números decimales a un orden de precisión determinado ($k$ cifras).
+
+
+  CÓMO: Trazando un corte estricto tras la posición decimal $k$ y descartando todas las cifras posteriores sin modificar ninguna de las cifras retenidas ($x_{\text{trunc}} = \frac{\lfloor x \cdot 10^k \rfloor}{10^k}$).'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
