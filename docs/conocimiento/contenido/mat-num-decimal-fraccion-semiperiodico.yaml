@@ -1,58 +1,53 @@
 semantic_id: MAT.NUM.DECIMAL_FRACCION.SEMIPERIODICO
-resumen_inicial: Para convertir un decimal semiperiódico a fracción, el numerador
-  es la resta del número sin coma menos la parte no periódica, y el denominador tiene
-  tantos 9s como cifras del período seguidos de tantos 0s como cifras del anteperíodo.
-explicacion_simple: 'Para convertir un decimal semiperiódico a fracción, el número
-  de arriba se calcula restando el número completo sin coma menos todo lo que está
-  antes de la barra. Abajo colocamos una combinación de nueves y ceros: tantos nueves
-  como cifras tenga la barra, seguidos de tantos ceros como dígitos tenga el anteperíodo.'
-explicacion_formal: 'Dado un decimal semiperiódico $d = a_0, c_1 \dots c_m \overline{p_1
-  \dots p_k}$, su **Fracción Generatriz Semiperiódica** se obtiene mediante:
+resumen_inicial: Para convertir un decimal semiperiódico a fracción, el numerador es la resta del número sin coma menos la parte no periódica, y el denominador combina tantos 9s como cifras periódicas seguidos de tantos 0s como cifras anteperiódicas.
+explicacion_simple: '![Conversión de decimal semiperiódico a fracción](/static/img/nodos/conversion-de-decimal-semiperiodico-a-fraccion-intro.svg)
 
 
-  $$d = \frac{N - NP}{\underbrace{99\dots9}_{k \text{ nueves}} \underbrace{00\dots0}_{m
-  \text{ ceros}}}$$
+  Para transformar un decimal semiperiódico a fracción, calculamos el numerador restando el número completo sin coma ni barra menos toda la parte no periódica (el entero junto al anteperíodo). En el denominador escribimos tantos nueves ($9$) como cifras tenga la barra del período, seguidos a la derecha de tantos ceros ($0$) como cifras tenga el anteperíodo, simplificando finalmente el resultado.'
+explicacion_formal: 'Dado un número decimal semiperiódico $d = a_0, c_1 \dots c_m \overline{p_1 \dots p_k}$ con anteperíodo de longitud $m \in \mathbb{N}$ y período de longitud $k \in \mathbb{N}$, su **Fracción Generatriz Semiperiódica** se define mediante:
 
 
-  **Desglose de la fórmula:**
-
-  - $N$: Número entero completo formado al omitir coma y barra ($a_0 c_1 \dots c_m
-  p_1 \dots p_k$).
-
-  - $NP$: Parte no periódica (entero formado por la parte entera y el anteperíodo
-  $a_0 c_1 \dots c_m$).
-
-  - $k$ nueves: Cantidad de dígitos bajo la barra del período.
-
-  - $m$ ceros: Cantidad de dígitos del anteperíodo ubicados entre la coma y la barra.
+  $$d = \frac{N - NP}{\underbrace{99\dots9}_{k \text{ nueves}} \underbrace{00\dots0}_{m \text{ ceros}}} = \frac{a_0 c_1 \dots c_m p_1 \dots p_k - a_0 c_1 \dots c_m}{10^m (10^k - 1)}$$
 
 
-  > **Complemento didáctico:** Los ceros del denominador representan la presencia
-  del anteperíodo y equivalen al factor de potencia de 10 utilizado en la demostración
-  algebraica.'
-definiciones_clave: '- **Fracción generatriz de decimal semiperiódico**: Estructura
-  de fracción $\frac{N - NP}{9\dots90\dots0}$ simplificada a su forma irreductible.'
-propiedades_relaciones: '- **Estructura Mixta Denominadora**: Combina 9s (período)
-  y 0s (anteperíodo) en el denominador.'
+  **Desglose formal de la fórmula:**
+
+  - **$N$:** Número entero formado al omitir la coma decimal y la barra del período.
+
+  - **$NP$:** Parte no periódica (entero formado por la parte entera y el anteperíodo $a_0 c_1 \dots c_m$).
+
+  - **$k$ nueves:** Cantidad de dígitos bajo la barra del período.
+
+  - **$m$ ceros:** Cantidad de dígitos del anteperíodo ubicados entre la coma y el período.
+
+
+  > **Fundamento algebraico:** Multiplicando $10^{m+k} \cdot d - 10^m \cdot d$, se anula la cola periódica infinita: $10^m(10^k - 1) \cdot d = N - NP$, obteniendo el denominador compuesto $99\dots900\dots0$.'
+definiciones_clave: '- **Fracción generatriz semiperiódica**: Razón $\frac{N - NP}{9\dots90\dots0}$ simplificada a su expresión irreductible.
+
+  - **Anteperíodo ($c_1 \dots c_m$)**: Bloque no repetitivo situado exclusivamente entre la coma y el período.
+
+  - **Denominador mixto**: Estructura de nueves seguidos obligatoriamente de ceros a la derecha.'
+propiedades_relaciones: '- **Estructura Mixta del Denominador**: Los $9$ provienen del período ($10^k-1$) y los $0$ provienen del anteperíodo ($10^m$).
+
+  - **Orden estricto**: Los nueves se sitúan SIEMPRE a la izquierda y los ceros a la derecha en el denominador.'
 ejemplo_guiado:
-  enunciado: Convierta el decimal semiperiódico $0,1666... = 0,1\overline{6}$ a fracción
-    irreductible.
+  enunciado: '![Ejemplos de decimal semiperiódico a fracción](/static/img/nodos/conversion-de-decimal-semiperiodico-a-fraccion-ejemplos.svg)
+
+
+    Convierta el decimal semiperiódico $0,1\overline{6}$ a fracción irreductible.'
   pasos:
   - 'Paso 1: Identificar el número sin coma ni barra: $N = 16$.'
   - 'Paso 2: Identificar la parte no periódica (entero + anteperíodo): $NP = 1$.'
-  - 'Paso 3: Restar en el numerador: $16 - 1 = 15$.'
-  - 'Paso 4: Armar el denominador: $1$ cifra bajo la barra (un $9$) y $1$ cifra en
-    anteperíodo (un $0$) $\implies 90$.'
+  - 'Paso 3: Restar en el numerador: $N - NP = 16 - 1 = 15$.'
+  - 'Paso 4: Construir el denominador: $1$ cifra bajo la barra (un $9$) y $1$ cifra en anteperíodo (un $0$) $\implies 90$.'
   - 'Paso 5: Formar la fracción generatriz: $\frac{15}{90}$.'
-  - 'Paso 6: Simplificar dividiendo entre $15$: $\frac{15 : 15}{90 : 15} = \frac{1}{6}$.'
+  - "Paso 6: Simplificar dividiendo numerador y denominador entre $15$:\n  $$\\frac{15 : 15}{90 : 15} = \\frac{1}{6}$$"
   - 'Conclusión: $0,1\overline{6} = \frac{1}{6}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cómo se forma el denominador de la fracción generatriz de un decimal
-    semiperiódico?
+  question: ¿Cómo se forma el denominador de la fracción generatriz de un decimal semiperiódico?
   choices:
-  - text: Tantos 9s como cifras tenga el período seguidos de tantos 0s como cifras
-      tenga el anteperíodo
+  - text: Tantos 9s como cifras tenga el período seguidos de tantos 0s como cifras tenga el anteperíodo
     is_correct: true
   - text: Solo nueves sin ningún cero
     is_correct: false
@@ -60,64 +55,75 @@ checkpoints:
     is_correct: false
   - text: Una potencia de 10 pura
     is_correct: false
-  explanation: La alternativa correcta es 'Tantos 9s como cifras tenga el período
-    seguidos de tantos 0s como cifras tenga el anteperíodo'.
+  explanation: La alternativa correcta es 'Tantos 9s como cifras tenga el período seguidos de tantos 0s como cifras tenga el anteperíodo'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: "En el ejemplo guiado para 0,1\bar{6}, ¿cuál fue la fracción irreductible\
-    \ obtenida?"
+  question: En el ejemplo guiado para $0,1\overline{6}$, ¿cuál fue la fracción irreductible obtenida?
   choices:
-  - text: 1/6
+  - text: $\frac{1}{6}$
     is_correct: true
-  - text: 15/90
+  - text: $\frac{15}{90}$
     is_correct: false
-  - text: 16/90
+  - text: $\frac{16}{90}$
     is_correct: false
-  - text: 1/9
+  - text: $\frac{1}{9}$
     is_correct: false
-  explanation: La alternativa correcta es '1/6'.
+  explanation: La alternativa correcta es '$\frac{1}{6}$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Restar en el numerador el número completo sin coma ni barra menos la parte
-  no periódica ($N - NP$).'
-- 'Paso 2: Construir el denominador escribiendo tantos 9s como cifras tenga el período
-  seguidos de tantos 0s como cifras tenga el anteperíodo.'
-- 'Paso 3: Simplificar la fracción hasta su forma irreductible.'
-errores_correccion: '- **Error 1: Restar solo la parte entera en lugar de toda la
-  parte no periódica.** **Cómo corregirlo:** Se debe restar la parte entera JUNTO
-  al anteperíodo ($NP$).
+- 'Paso 1: Restar en el numerador el número completo sin coma ni barra menos la parte no periódica ($N - NP$).'
+- 'Paso 2: Construir el denominador escribiendo tantos 9s como cifras tenga el período seguidos de tantos 0s como cifras tenga el anteperíodo.'
+- 'Paso 3: Simplificar la fracción resultante hasta su forma irreductible.'
+errores_correccion: '- **Error 1: Restar solo la parte entera en lugar de toda la parte no periódica.** **Cómo corregirlo:** Se DEBE restar la parte entera JUNTO al anteperíodo ($NP = a_0 c_1 \dots c_m$).
 
-
-  - **Error 2: Invertir el orden de nueves y ceros en el denominador (poner ceros
-  antes que los nueves).** **Cómo corregirlo:** Los nueves van SIEMPRE primero a la
-  izquierda y los ceros van después a la derecha ($99..00..$).'
+  - **Error 2: Invertir el orden de nueves y ceros en el denominador (poner ceros antes que nueves).** **Cómo corregirlo:** Los nueves van SIEMPRE primero a la izquierda y los ceros van después a la derecha ($99\dots00$).'
 ejemplos:
 - titulo: Ejemplo 1
   enunciado: Convierta $0,4\overline{6}$ a fracción irreductible.
   alternativas:
-  - 7/15
-  - 42/90
-  - 46/90
-  respuesta: 7/15
+  - $\frac{7}{15}$
+  - $\frac{42}{90}$
+  - $\frac{46}{90}$
+  respuesta: $\frac{7}{15}$
   solucion_pasos:
-  - 'Numerador: $46 - 4 = 42$. Denominador: $90$. Fracción: $42/90 = 7/15$.'
+  - 'Numerador: $46 - 4 = 42$. Denominador: $90$. Fracción: $\frac{42}{90} = \frac{7}{15}$ tras simplificar por 6.'
 - titulo: Ejemplo 2
-  enunciado: Convierta $1,2\overline{3}$ a fracción.
+  enunciado: Convierta $1,2\overline{3}$ a fracción irreductible.
   alternativas:
-  - 37/30
-  - 111/90
-  - 123/90
-  respuesta: 37/30
+  - $\frac{37}{30}$
+  - $\frac{111}{90}$
+  - $\frac{123}{90}$
+  respuesta: $\frac{37}{30}$
   solucion_pasos:
-  - 'Numerador: $123 - 12 = 111$. Denominador: $90 \implies 111/90 = 37/30$.'
-- titulo: ¿Es $0,0\overline{5}$ igual a 1/18?
+  - 'Numerador: $123 - 12 = 111$. Denominador: $90 \implies \frac{111}{90} = \frac{37}{30}$ tras simplificar por 3.'
+- titulo: ¿Es $0,0\overline{5}$ igual a $\frac{1}{18}$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $(5-0)/90 = 5/90 = 1/18$.
+  - Sí, $\frac{5 - 0}{90} = \frac{5}{90} = \frac{1}{18}$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $\frac{5}{90}$ simplificado entre 5 resulta en la fracción $\frac{1}{18}$.
+  - texto: No, es 5/100
+    es_correcta: false
+    retroalimentacion: Incorrecto, $5/100 = 0,05$ es un decimal finito sin periodicidad.
+  - texto: No, es 5/900
+    es_correcta: false
+    retroalimentacion: Incorrecto, el anteperíodo consta de 1 sola cifra (el cero), por lo que lleva un único cero.
 - titulo: ¿Se escriben los ceros a la derecha de los nueves en el denominador semiperiódico?
   respuesta: Sí
   solucion_pasos:
-  - Sí, la estructura es $99..00..$.
+  - Sí, la estructura es estrictamente $99\dots00$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Los nueves van siempre al inicio seguidos de los ceros a la derecha ($90, 900, 990, \dots$).
+  - texto: No, van a la izquierda
+    es_correcta: false
+    retroalimentacion: Incorrecto, anteponer ceros a la izquierda no tendría valor numérico en el denominador.
+  - texto: Solo si la parte entera es cero
+    es_correcta: false
+    retroalimentacion: Incorrecto, la regla de los denominadores mixtos es universal.
 errores_frecuentes:
 - Restar únicamente la parte entera en el numerador ignorando las cifras del anteperíodo.
 - Colocar los ceros antes que los nueves en el denominador de la fracción generatriz.
@@ -126,10 +132,14 @@ errores_frecuentes:
 - Los decimales semiperiódicos no pueden simplificarse a fracciones irreductibles.
 afirmaciones_verdaderas:
 - Para convertir un decimal semiperiódico a fracción se resta $N - NP$ en el numerador.
-- El denominador contiene tantos nueves como cifras periódicas seguidos de tantos
-  ceros como cifras anteperiódicas.
-al_terminar_debes_poder: Al terminar serás capaz de convertir cualquier decimal semiperiódico
-  a su fracción generatriz irreductible, restando la parte no periódica y estructurando
-  el denominador con nueves y ceros.
+- El denominador contiene tantos nueves como cifras periódicas seguidos de tantos ceros como cifras anteperiódicas.
+- La fracción generatriz semiperiódica se simplifica dividiendo numerador y denominador por su máximo común divisor.
+al_terminar_debes_poder: '![Síntesis de decimal semiperiódico a fracción](/static/img/nodos/conversion-de-decimal-semiperiodico-a-fraccion-resumen.svg)
+
+
+  QUÉ: Convertir cualquier número decimal infinito semiperiódico a su fracción generatriz irreductible.
+
+
+  CÓMO: Restando en el numerador el número completo sin coma ni barra menos la parte no periódica ($N - NP$), y estructurando el denominador con tantos nueves como cifras tenga el período seguidos de tantos ceros como cifras tenga el anteperíodo ($99\dots9_k 00\dots0_m$), simplificando hasta la fracción irreductible.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

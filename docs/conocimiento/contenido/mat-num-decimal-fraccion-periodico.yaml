@@ -1,51 +1,49 @@
 semantic_id: MAT.NUM.DECIMAL_FRACCION.PERIODICO
-resumen_inicial: Para convertir un decimal periódico puro a fracción, el numerador
-  es la resta entre el número completo sin coma y la parte entera, y el denominador
-  está formado por tantos 9s como cifras tenga el período.
-explicacion_simple: Para pasar un decimal periódico puro (con barra desde la coma)
-  a fracción, restamos el número completo sin coma menos la parte entera para armar
-  el numerador. En el número de abajo (denominador) escribimos tantos nueves (9) como
-  dígitos tenga la barra del período, y luego simplificamos.
-explicacion_formal: 'Dado un decimal periódico puro $d = a_0, \overline{p_1 p_2 \dots
-  p_k}$, su **Fracción Generatriz Periódica Pura** se calcula mediante la fórmula:
+resumen_inicial: Para convertir un decimal periódico puro a fracción, el numerador es la resta del número sin coma ni barra menos la parte entera, y el denominador contiene tantos 9s como cifras tenga el período.
+explicacion_simple: '![Conversión de decimal periódico puro a fracción](/static/img/nodos/conversion-de-decimal-periodico-a-fraccion-intro.svg)
 
 
-  $$d = \frac{N - A}{99\dots9_k} = \frac{a_0 p_1 p_2 \dots p_k - a_0}{\underbrace{99\dots9}_{k
-  \text{ nueves}}}$$
+  Para transformar un decimal periódico puro (donde el período con barra inicia inmediatamente tras la coma) a fracción, restamos en el numerador el número completo sin coma menos la parte entera. En el denominador colocamos tantos nueves ($9$) como cifras tenga la barra del período, y finalmente simplificamos.'
+explicacion_formal: 'Dado un número decimal periódico puro $d = a_0, \overline{p_1 p_2 \dots p_k}$, su **Fracción Generatriz Periódica Pura** se calcula mediante la fórmula:
 
 
-  **Desglose de la fórmula:**
-
-  - $N = a_0 p_1 \dots p_k \in \mathbb{Z}$: Número formado al omitir la coma y la
-  barra.
-
-  - $A = a_0 \in \mathbb{Z}$: Parte entera del número decimal.
-
-  - $99\dots9_k$: Denominador formado por $k$ nueves, donde $k$ es el número de dígitos
-  del período con barra.
+  $$d = \frac{N - A}{\underbrace{99\dots9}_{k \text{ nueves}}} = \frac{a_0 p_1 p_2 \dots p_k - a_0}{10^k - 1}$$
 
 
-  > **Complemento didáctico:** La presencia de los 9s en el denominador proviene algebraicamente
-  de restar la ecuación $10^k \cdot d - d = (10^k - 1) \cdot d$.'
-definiciones_clave: '- **Fracción generatriz de decimal periódico puro**: Fórmula
-  $\frac{N - A}{99\dots9_k}$ reducida a fracción irreductible.'
-propiedades_relaciones: '- **Eliminación de la infinitud**: Convierte la repetición
-  infinita a la razón exacta de dos enteros.'
+  **Desglose formal de la fórmula:**
+
+  - **$N = a_0 p_1 \dots p_k \in \mathbb{Z}$:** Entero obtenido al suprimir la coma y la barra del período.
+
+  - **$A = a_0 \in \mathbb{Z}$:** Parte entera del número decimal.
+
+  - **$99\dots9_k = 10^k - 1$:** Denominador compuesto exclusivamente por $k$ nueves, donde $k$ es la longitud del período.
+
+
+  > **Fundamento algebraico:** Al plantear $10^k \cdot d - d = (N + 0,\overline{P}) - (A + 0,\overline{P}) = N - A$, la parte decimal periódica infinita se cancela exactamente, despejando $d = \frac{N-A}{10^k - 1}$.'
+definiciones_clave: '- **Fracción generatriz de decimal periódico puro**: Fórmula $\frac{N - A}{99\dots9_k}$ simplificada a su expresión irreductible.
+
+  - **Período decimal ($p_1 \dots p_k$)**: Bloque finito de cifras que se repite indefinidamente comenzando inmediatamente tras la coma.
+
+  - **Denominador repunit de base 9**: Cadena de dígitos $9$ ($9, 99, 999, \dots$) que cancela la infinitud periódica.'
+propiedades_relaciones: '- **Eliminación de la infinitud**: Transforma un desarrollo decimal infinito repetitivo en una razón exacta de dos números enteros.
+
+  - **Ausencia de ceros en el denominador**: Un decimal periódico puro nunca lleva ceros en el denominador de su fracción generatriz básica.'
 ejemplo_guiado:
-  enunciado: Convierta el decimal periódico puro $1,\overline{36}$ a fracción irreductible.
+  enunciado: '![Ejemplos de decimal periódico puro a fracción](/static/img/nodos/conversion-de-decimal-periodico-a-fraccion-ejemplos.svg)
+
+
+    Convierta el decimal periódico puro $1,\overline{36}$ a fracción irreductible.'
   pasos:
   - 'Paso 1: Identificar el número sin coma ni barra: $N = 136$.'
   - 'Paso 2: Identificar la parte entera a restar: $A = 1$.'
   - 'Paso 3: Calcular el numerador: $N - A = 136 - 1 = 135$.'
-  - 'Paso 4: Contar las cifras del período $\overline{36}$: $2$ cifras $\implies$
-    denominador $99$.'
+  - 'Paso 4: Contar las cifras del período $\overline{36}$: $k = 2$ cifras $\implies$ denominador $99$.'
   - 'Paso 5: Formar la fracción generatriz: $\frac{135}{99}$.'
-  - 'Paso 6: Simplificar dividiendo por $9$: $\frac{135 : 9}{99 : 9} = \frac{15}{11}$.'
+  - "Paso 6: Simplificar dividiendo numerador y denominador entre $9$:\n  $$\\frac{135 : 9}{99 : 9} = \\frac{15}{11}$$"
   - 'Conclusión: $1,\overline{36} = \frac{15}{11}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cómo se forma el denominador de la fracción generatriz de un decimal
-    periódico puro?
+  question: ¿Cómo se forma el denominador de la fracción generatriz de un decimal periódico puro?
   choices:
   - text: Con tantos nueves como cifras tenga el período (9, 99, 999...)
     is_correct: true
@@ -55,63 +53,75 @@ checkpoints:
     is_correct: false
   - text: Es siempre 90
     is_correct: false
-  explanation: La alternativa correcta es 'Con tantos nueves como cifras tenga el
-    período (9, 99, 999...)'.
+  explanation: La alternativa correcta es 'Con tantos nueves como cifras tenga el período (9, 99, 999...)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: "En el ejemplo guiado para 1,\bar{36}, ¿cuál fue la fracción irreductible\
-    \ final?"
+  question: En el ejemplo guiado para $1,\overline{36}$, ¿cuál fue la fracción irreductible final?
   choices:
-  - text: 15/11
+  - text: $\frac{15}{11}$
     is_correct: true
-  - text: 135/99
+  - text: $\frac{135}{99}$
     is_correct: false
-  - text: 136/99
+  - text: $\frac{136}{99}$
     is_correct: false
-  - text: 36/99
+  - text: $\frac{36}{99}$
     is_correct: false
-  explanation: La alternativa correcta es '15/11'.
+  explanation: La alternativa correcta es '$\frac{15}{11}$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Restar en el numerador el número completo sin coma ni barra menos la parte
-  entera ($N - A$).'
-- 'Paso 2: Escribir en el denominador una cadena de nueves igual a la cantidad de
-  dígitos bajo la barra periódica.'
+- 'Paso 1: Restar en el numerador el número completo sin coma ni barra menos la parte entera ($N - A$).'
+- 'Paso 2: Escribir en el denominador una cadena de nueves igual a la cantidad de dígitos bajo la barra periódica ($99\dots9$).'
 - 'Paso 3: Simplificar la fracción hasta obtener su forma irreductible.'
-errores_correccion: '- **Error 1: Olvidar restar la parte entera en el numerador (escribir
-  $\frac{136}{99}$ en lugar de $\frac{135}{99}$).** **Cómo corregirlo:** Se DEBE restar
-  la parte entera $A$ de todo el número $N$.
+errores_correccion: '- **Error 1: Olvidar restar la parte entera en el numerador (ej: escribir $\frac{136}{99}$ en vez de $\frac{135}{99}$).** **Cómo corregirlo:** Se DEBE restar obligatoriamente la parte entera $A$ de todo el número $N$.
 
-
-  - **Error 2: Usar ceros en el denominador de un periódico puro.** **Cómo corregirlo:**
-  Si NO hay anteperíodo, el denominador lleva ÚNICAMENTE nueves (sin ceros).'
+  - **Error 2: Usar ceros o potencias de 10 en el denominador de un periódico puro.** **Cómo corregirlo:** Si no existe anteperíodo, el denominador lleva ÚNICAMENTE nueves (sin ceros).'
 ejemplos:
 - titulo: Ejemplo 1
   enunciado: Convierta $0,\overline{7}$ a fracción.
   alternativas:
-  - 7/9
-  - 7/10
-  - 7/99
-  respuesta: 7/9
+  - $\frac{7}{9}$
+  - $\frac{7}{10}$
+  - $\frac{7}{99}$
+  respuesta: $\frac{7}{9}$
   solucion_pasos:
-  - $(7-0)/9 = 7/9$.
+  - $\frac{7 - 0}{9} = \frac{7}{9}$.
 - titulo: Ejemplo 2
   enunciado: Convierta $0,\overline{45}$ a fracción irreductible.
   alternativas:
-  - 5/11
-  - 45/99
-  - 45/100
-  respuesta: 5/11
+  - $\frac{5}{11}$
+  - $\frac{45}{99}$
+  - $\frac{45}{100}$
+  respuesta: $\frac{5}{11}$
   solucion_pasos:
-  - $45/99 = 5/11$ tras simplificar entre 9.
-- titulo: ¿Equivale $0,\overline{3}$ a la fracción 1/3?
+  - $\frac{45 - 0}{99} = \frac{45}{99} = \frac{5}{11}$ tras simplificar por 9.
+- titulo: ¿Equivale $0,\overline{3}$ a la fracción $\frac{1}{3}$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $3/9 = 1/3$.
+  - Sí, $\frac{3 - 0}{9} = \frac{3}{9} = \frac{1}{3}$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $\frac{3}{9}$ simplificado por 3 es exactamente $\frac{1}{3}$.
+  - texto: No, es 3/10
+    es_correcta: false
+    retroalimentacion: Incorrecto, $\frac{3}{10} = 0,3$ es un decimal finito sin período infinito.
+  - texto: No, es 3/99
+    es_correcta: false
+    retroalimentacion: Incorrecto, el período consta de 1 sola cifra, por lo que lleva un solo 9.
 - titulo: ¿Es $0,\overline{9}$ exactamente igual al entero 1?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $9/9 = 1$.
+  - Sí, $\frac{9 - 0}{9} = \frac{9}{9} = 1$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Aplicando la fórmula generatriz $\frac{9}{9} = 1$, demostrando la equivalencia exacta de $0,\overline{9} = 1$ en $\mathbb{R}$.
+  - texto: No, es menor que 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, en análisis matemático y álgebra formal $0,\overline{9} = 1$ exactamente.
+  - texto: No, es 9/10
+    es_correcta: false
+    retroalimentacion: Incorrecto, $9/10 = 0,9$ no posee período infinito.
 errores_frecuentes:
 - Omitir restar la parte entera en el numerador de un decimal periódico puro.
 - Formar el denominador con una potencia de 10 en lugar de usar nueves.
@@ -119,12 +129,15 @@ errores_frecuentes:
 - El número $0,\overline{6}$ equivale a la fracción $6/10$.
 - Los decimales periódicos puros no se pueden transformar en fracciones exactas.
 afirmaciones_verdaderas:
-- Para convertir un decimal periódico puro a fracción se resta $N - A$ en el numerador
-  y se colocan $k$ nueves en el denominador.
-- La presencia exclusiva de nueves en el denominador refleja que la repetición periódica
-  inicia directamente tras la coma.
-al_terminar_debes_poder: Al terminar serás capaz de convertir cualquier decimal infinito
-  periódico puro a su fracción generatriz irreductible mediante la regla de restar
-  la parte entera y colocar nueves en el denominador.
+- Para convertir un decimal periódico puro a fracción se resta $N - A$ en el numerador y se colocan $k$ nueves en el denominador.
+- La presencia exclusiva de nueves en el denominador refleja que la repetición periódica inicia directamente tras la coma.
+- Simplificar la fracción generatriz periódica pura conduce a una fracción irreductible en $\mathbb{Q}$.
+al_terminar_debes_poder: '![Síntesis de decimal periódico puro a fracción](/static/img/nodos/conversion-de-decimal-periodico-a-fraccion-resumen.svg)
+
+
+  QUÉ: Convertir cualquier número decimal infinito periódico puro a su fracción generatriz irreductible.
+
+
+  CÓMO: Restando en el numerador el número completo sin coma ni barra menos la parte entera ($N - A$), y disponiendo en el denominador una cadena de tantos nueves como cifras tenga el período ($99\dots9_k$), simplificando la fracción hasta su forma irreductible.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
