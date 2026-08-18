@@ -1,111 +1,140 @@
 semantic_id: MAT.FUND.RAZONAMIENTO_LOGICO.EQUIVALENCIA_LOGICA
-resumen_inicial: 'Definición, demostración y propiedades de la equivalencia lógica ($\equiv$ o $\Leftrightarrow$), que ocurre cuando dos fórmulas comparten idéntica tabla de verdad.'
-explicacion_simple: |
-  Dos fórmulas lógicas son **lógicamente equivalentes** (escrito con el símbolo **$\equiv$** o $\Leftrightarrow$) cuando significan exactamente lo mismo en términos de verdad. Aunque estén escritas con palabras o símbolos diferentes, al construir sus tablas de verdad **sus columnas finales son 100% idénticas fila por fila**. Por ejemplo, decir "No es cierto que no fui" equivale a decir "Fui", y decir "$p \to q$" equivale exactamente a decir "$\neg p \lor q$".
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: Definición, demostración y propiedades de la equivalencia lógica ($\equiv$ o $\Leftrightarrow$), que ocurre cuando dos fórmulas comparten idéntica tabla de verdad.
+explicacion_simple: 'Dos fórmulas lógicas son **lógicamente equivalentes** (escrito con el símbolo **$\equiv$** o $\Leftrightarrow$) cuando significan exactamente lo mismo en términos de verdad. Aunque estén escritas con palabras o símbolos diferentes, al construir sus tablas de verdad **sus columnas finales son 100% idénticas fila por fila**. Por ejemplo, decir "No es cierto que no fui" equivale a decir "Fui", y decir "$p \to q$" equivale exactamente a decir "$\neg p \lor q$".
+
+
+  ![Infografía: Equivalencia Lógica](/static/img/nodos/equivalencia-logica-intro.svg)'
+explicacion_formal: '### Definición formal
+
   En el cálculo proposicional, dos fórmulas bien formadas $\Phi$ y $\Psi$ son **lógicamente equivalentes**, denotado formalmente como:
+
   $$\Phi \equiv \Psi \quad (\text{o } \Phi \Leftrightarrow \Psi)$$
+
   si y solo si para toda asignación veritativa o modelo $\mathcal{M} \in \mathbb{V}^n$, ambas fórmulas toman idéntico valor de verdad:
+
   $$\forall \mathcal{M}, \quad v_\mathcal{M}(\Phi) = v_\mathcal{M}(\Psi)$$
+
   lo cual ocurre si y solo si la fórmula bicondicional $\Phi \leftrightarrow \Psi$ es una tautología ($\models \Phi \leftrightarrow \Psi$).
 
+
   ### Desglose simbólico
+
   - Vector de verdad: $\mathbf{v}(\Phi) = \mathbf{v}(\Psi)$.
+
   - Criterio de tautología: $\models \Phi \leftrightarrow \Psi \iff \Phi \equiv \Psi$.
+
   - Propiedad Reflexiva: $\Phi \equiv \Phi$.
+
   - Propiedad Simétrica: $\Phi \equiv \Psi \implies \Psi \equiv \Phi$.
+
   - Propiedad Transitiva: $(\Phi \equiv \Psi \land \Psi \equiv \Theta) \implies \Phi \equiv \Theta$.
 
+
   ### Síntesis didáctica
+
   La equivalencia lógica es una relación de congruencia: permite sustituir una subfórmula por otra equivalente dentro de cualquier demostración sin alterar el valor de verdad global.
-definiciones_clave: |
-  - **Equivalencia lógica ($\Phi \equiv \Psi$)**: Relación metalingüística que expresa igualdad veritativa en toda interpretación.
+
+  '
+definiciones_clave: '- **Equivalencia lógica ($\Phi \equiv \Psi$)**: Relación metalingüística que expresa igualdad veritativa en toda interpretación.
+
   - **Principio de sustitución**: Regla por la cual una subfórmula puede reemplazarse por su equivalente lógico.
+
   - **Bicondicional tautológico**: Condición formal que valida operativamente una equivalencia lógica mediante $\models \Phi \leftrightarrow \Psi$.
-propiedades_relaciones: |
-  - **Estructura de álgebra de Boole**: Las equivalencias lógicas estructuran las propiedades de asociatividad, distributividad, absorción y leyes de De Morgan.
+
+  '
+propiedades_relaciones: '- **Estructura de álgebra de Boole**: Las equivalencias lógicas estructuran las propiedades de asociatividad, distributividad, absorción y leyes de De Morgan.
+
   - **Distinción entre $\leftrightarrow$ y $\equiv$**: El símbolo $\leftrightarrow$ es un conectivo del lenguaje objeto; el símbolo $\equiv$ es una relación de equivalencia del metalenguaje.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Demuestra mediante tabla de verdad que el condicional $p \to q$ es lógicamente equivalente a su forma disyuntiva $\neg p \lor q$.'
+  enunciado: 'Demuestra mediante tabla de verdad que el condicional $p \to q$ es lógicamente equivalente a su forma disyuntiva $\neg p \lor q$.
+
+
+    ![Diagrama: Equivalencia Lógica](/static/img/nodos/equivalencia-logica-ejemplos.svg)'
   pasos:
-    - 'Paso 1: Construir las $4$ combinaciones canónicas para $p$ y $q$.'
-    - 'Paso 2: Calcular la columna de la primera fórmula $\Phi_1 = p \to q$:
-      - Fila 1 ($V, V$): $V \to V = V$
-      - Fila 2 ($V, F$): $V \to F = F$
-      - Fila 3 ($F, V$): $F \to V = V$
-      - Fila 4 ($F, F$): $F \to F = V$. Columna: $[V, F, V, V]^T$.'
-    - 'Paso 3: Calcular la columna de la segunda fórmula $\Phi_2 = \neg p \lor q$:
-      - Fila 1 ($F \lor V$): $V$
-      - Fila 2 ($F \lor F$): $F$
-      - Fila 3 ($V \lor V$): $V$
-      - Fila 4 ($V \lor F$): $V$. Columna: $[V, F, V, V]^T$.'
-    - 'Paso 4: Comparar los vectores columna: Ambas columnas arrojan exactamente $[V, F, V, V]^T$.'
-    - 'Paso 5: Concluir que se demuestra formalmente la equivalencia: $p \to q \equiv \neg p \lor q$.'
+  - 'Paso 1: Construir las $4$ combinaciones canónicas para $p$ y $q$.'
+  - 'Paso 2: Calcular la columna de la primera fórmula $\Phi_1 = p \to q$: - Fila 1 ($V, V$): $V \to V = V$ - Fila 2 ($V, F$): $V \to F = F$ - Fila 3 ($F, V$): $F \to V = V$ - Fila 4 ($F, F$): $F \to F = V$. Columna: $[V, F, V, V]^T$.'
+  - 'Paso 3: Calcular la columna de la segunda fórmula $\Phi_2 = \neg p \lor q$: - Fila 1 ($F \lor V$): $V$ - Fila 2 ($F \lor F$): $F$ - Fila 3 ($V \lor V$): $V$ - Fila 4 ($V \lor F$): $V$. Columna: $[V, F, V, V]^T$.'
+  - 'Paso 4: Comparar los vectores columna: Ambas columnas arrojan exactamente $[V, F, V, V]^T$.'
+  - 'Paso 5: Concluir que se demuestra formalmente la equivalencia: $p \to q \equiv \neg p \lor q$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuándo se dice que dos fórmulas proposicionales $\Phi$ y $\Psi$ son lógicamente equivalentes ($\Phi \equiv \Psi$)?'
-    choices:
-      - {text: 'Cuando sus columnas principales en la tabla de verdad son idénticas fila por fila para toda asignación', is_correct: true}
-      - {text: 'Cuando ambas fórmulas contienen exactamente las mismas letras proposicionales en el mismo orden', is_correct: false}
-      - {text: 'Cuando al menos una fila de sus tablas de verdad coincide en el valor Verdadero', is_correct: false}
-      - {text: 'Cuando ambas fórmulas son simultáneamente contradicciones falsas en la fila 1', is_correct: false}
-    explanation: 'La alternativa correcta es ''Cuando sus columnas principales en la tabla de verdad son idénticas fila por fila para toda asignación''. La equivalencia exige identidad veritativa total.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si la fórmula $\Phi \leftrightarrow \Psi$ es una tautología ($\models \Phi \leftrightarrow \Psi$), ¿qué se deduce sobre $\Phi$ y $\Psi$?'
-    choices:
-      - {text: 'Que $\Phi$ y $\Psi$ son lógicamente equivalentes ($\Phi \equiv \Psi$)', is_correct: true}
-      - {text: 'Que $\Phi$ es una tautología y $\Psi$ es una contradicción', is_correct: false}
-      - {text: 'Que $\Phi$ y $\Psi$ no pueden evaluarse en una tabla de verdad', is_correct: false}
-      - {text: 'Que $\Phi$ es falsa siempre que $\Psi$ sea verdadera', is_correct: false}
-    explanation: 'La alternativa correcta es ''Que $\Phi$ y $\Psi$ son lógicamente equivalentes ($\Phi \equiv \Psi$)''. El bicondicional tautológico es el criterio canónico de equivalencia.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuándo se dice que dos fórmulas proposicionales $\Phi$ y $\Psi$ son lógicamente equivalentes ($\Phi \equiv \Psi$)?
+  choices:
+  - text: Cuando sus columnas principales en la tabla de verdad son idénticas fila por fila para toda asignación
+    is_correct: true
+  - text: Cuando ambas fórmulas contienen exactamente las mismas letras proposicionales en el mismo orden
+    is_correct: false
+  - text: Cuando al menos una fila de sus tablas de verdad coincide en el valor Verdadero
+    is_correct: false
+  - text: Cuando ambas fórmulas son simultáneamente contradicciones falsas en la fila 1
+    is_correct: false
+  explanation: La alternativa correcta es 'Cuando sus columnas principales en la tabla de verdad son idénticas fila por fila para toda asignación'. La equivalencia exige identidad veritativa total.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si la fórmula $\Phi \leftrightarrow \Psi$ es una tautología ($\models \Phi \leftrightarrow \Psi$), ¿qué se deduce sobre $\Phi$ y $\Psi$?
+  choices:
+  - text: Que $\Phi$ y $\Psi$ son lógicamente equivalentes ($\Phi \equiv \Psi$)
+    is_correct: true
+  - text: Que $\Phi$ es una tautología y $\Psi$ es una contradicción
+    is_correct: false
+  - text: Que $\Phi$ y $\Psi$ no pueden evaluarse en una tabla de verdad
+    is_correct: false
+  - text: Que $\Phi$ es falsa siempre que $\Psi$ sea verdadera
+    is_correct: false
+  explanation: La alternativa correcta es 'Que $\Phi$ y $\Psi$ son lógicamente equivalentes ($\Phi \equiv \Psi$)'. El bicondicional tautológico es el criterio canónico de equivalencia.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Construir una tabla de verdad común con las variables de ambas fórmulas.'
-  - 'Paso 2: Calcular la columna principal de la primera fórmula $\Phi$.'
-  - 'Paso 3: Calcular la columna principal de la segunda fórmula $\Psi$.'
-  - 'Paso 4: Comparar fila por fila ambas columnas; si todos los valores coinciden, declarar que $\Phi \equiv \Psi$.'
-errores_correccion: |
-  - **Error 1:** Afirmar que dos fórmulas son equivalentes porque coinciden en la mayoría de las filas. **Cómo corregirlo:** La equivalencia lógica exige una concordancia del 100% en todas las filas; si discrepan en una sola celda, no son equivalentes.
+- 'Paso 1: Construir una tabla de verdad común con las variables de ambas fórmulas.'
+- 'Paso 2: Calcular la columna principal de la primera fórmula $\Phi$.'
+- 'Paso 3: Calcular la columna principal de la segunda fórmula $\Psi$.'
+- 'Paso 4: Comparar fila por fila ambas columnas; si todos los valores coinciden, declarar que $\Phi \equiv \Psi$.'
+errores_correccion: '- **Error 1:** Afirmar que dos fórmulas son equivalentes porque coinciden en la mayoría de las filas. **Cómo corregirlo:** La equivalencia lógica exige una concordancia del 100% en todas las filas; si discrepan en una sola celda, no son equivalentes.
+
   - **Error 2:** Confundir el conectivo bicondicional $\leftrightarrow$ con la relación metalingüística de equivalencia $\equiv$. **Cómo corregirlo:** $\leftrightarrow$ es un operador que forma nuevas proposiciones; $\equiv$ es una aseveración que afirma que dos fórmulas tienen la misma tabla.
+
+  '
 ejemplos:
-  - titulo: 'Equivalencia de implicación'
-    enunciado: '¿Es $p \to q$ lógicamente equivalente a $\neg p \lor q$?'
-    alternativas:
-      - 'Sí, ambas tienen el vector $[V, F, V, V]^T$'
-      - 'No, difieren en la fila 3'
-      - 'No, una usa condicional y la otra disyunción'
-    respuesta: 'Sí, ambas tienen el vector $[V, F, V, V]^T$'
-    solucion_pasos:
-      - '1. Las tablas de ambas fórmulas coinciden en las 4 filas.'
-      - '2. Por ende, $p \to q \equiv \neg p \lor q$.'
-  - titulo: 'Transitividad'
-    enunciado: 'Si $A \equiv B$ y $B \equiv C$, ¿se cumple que $A \equiv C$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, por la propiedad transitiva de la relación de equivalencia lógica.'
-  - titulo: 'Equivalencia con tautología'
-    enunciado: '¿Es $p \lor V$ equivalente a $V$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, por la ley de dominación / absorción booleana.'
-  - titulo: 'Doble negación'
-    enunciado: '¿La fórmula $\neg\neg p$ es equivalente a $p$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, es la ley de doble negación fundamental.'
+- titulo: Equivalencia de implicación
+  enunciado: ¿Es $p \to q$ lógicamente equivalente a $\neg p \lor q$?
+  alternativas:
+  - Sí, ambas tienen el vector $[V, F, V, V]^T$
+  - No, difieren en la fila 3
+  - No, una usa condicional y la otra disyunción
+  respuesta: Sí, ambas tienen el vector $[V, F, V, V]^T$
+  solucion_pasos:
+  - 1. Las tablas de ambas fórmulas coinciden en las 4 filas.
+  - 2. Por ende, $p \to q \equiv \neg p \lor q$.
+- titulo: Transitividad
+  enunciado: Si $A \equiv B$ y $B \equiv C$, ¿se cumple que $A \equiv C$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por la propiedad transitiva de la relación de equivalencia lógica.
+- titulo: Equivalencia con tautología
+  enunciado: ¿Es $p \lor V$ equivalente a $V$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por la ley de dominación / absorción booleana.
+- titulo: Doble negación
+  enunciado: ¿La fórmula $\neg\neg p$ es equivalente a $p$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es la ley de doble negación fundamental.
 errores_frecuentes:
-  - 'La afirmación de que dos fórmulas son equivalentes si coinciden en 3 de las 4 filas de la tabla.'
-  - 'La afirmación de que el condicional $p \to q$ es lógicamente equivalente a su recíproco $q \to p$.'
-  - 'La afirmación de que el símbolo de equivalencia $\equiv$ actúa como un conectivo dentro de la fórmula.'
-  - 'La afirmación de que dos fórmulas sintácticamente distintas no pueden tener la misma tabla de verdad.'
-  - 'La afirmación de que una contradicción puede ser lógicamente equivalente a una contingencia.'
+- La afirmación de que dos fórmulas son equivalentes si coinciden en 3 de las 4 filas de la tabla.
+- La afirmación de que el condicional $p \to q$ es lógicamente equivalente a su recíproco $q \to p$.
+- La afirmación de que el símbolo de equivalencia $\equiv$ actúa como un conectivo dentro de la fórmula.
+- La afirmación de que dos fórmulas sintácticamente distintas no pueden tener la misma tabla de verdad.
+- La afirmación de que una contradicción puede ser lógicamente equivalente a una contingencia.
 afirmaciones_verdaderas:
-  - 'Dos fórmulas proposicionales son lógicamente equivalentes ($\Phi \equiv \Psi$) si y solo si poseen el mismo valor de verdad bajo toda asignación posible en su tabla de verdad.'
-  - 'La equivalencia lógica $\Phi \equiv \Psi$ se cumple si y solo si la proposición bicondicional $\Phi \leftrightarrow \Psi$ es una tautología universal.'
-al_terminar_debes_poder: |
+- Dos fórmulas proposicionales son lógicamente equivalentes ($\Phi \equiv \Psi$) si y solo si poseen el mismo valor de verdad bajo toda asignación posible en su tabla de verdad.
+- La equivalencia lógica $\Phi \equiv \Psi$ se cumple si y solo si la proposición bicondicional $\Phi \leftrightarrow \Psi$ es una tautología universal.
+al_terminar_debes_poder: '![Cuadro resumen: Equivalencia Lógica](/static/img/nodos/equivalencia-logica-resumen.svg)
+
+
   QUÉ: Definir, demostrar y aplicar la equivalencia lógica ($\Phi \equiv \Psi$) entre fórmulas proposicionales.
-  CÓMO: Comparar columnas principales en tablas de verdad y verificar la tautología del bicondicional $\Phi \leftrightarrow \Psi$.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+  CÓMO: Comparar columnas principales en tablas de verdad y verificar la tautología del bicondicional $\Phi \leftrightarrow \Psi$.'
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado
