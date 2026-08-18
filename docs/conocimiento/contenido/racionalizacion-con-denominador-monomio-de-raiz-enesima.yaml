@@ -1,99 +1,133 @@
 semantic_id: MAT.NUM.RACIONALIZACION.DENOMINADOR_MONOMIO_RAIZ_ENESIMA
-resumen_inicial: 'La racionalización de un denominador monomio de raíz enésima $\sqrt[n]{b^k}$ elimina el radical amplificando la fracción por $\sqrt[n]{b^{n-k}}$, completando el exponente necesario para cancelar la raíz.'
-explicacion_simple: |
-  Para quitar una raíz de mayor grado del denominador (como una raíz cúbica $\sqrt[3]{b}$ o una raíz quinta $\sqrt[5]{b^2}$), no basta con multiplicar por la misma raíz. Debes "completar la diferencia" que le falta al exponente para alcanzar el valor del índice $n$. Si abajo tienes $\sqrt[3]{2^1}$, a ese 1 le faltan 2 para llegar a 3. Por ende, amplificas por $\sqrt[3]{2^2}$. Al multiplicar $\sqrt[3]{2^1} \cdot \sqrt[3]{2^2} = \sqrt[3]{2^3} = 2$, logras cancelar la raíz del denominador.
-explicacion_formal: |
-  ### Definición formal
-  La **racionalización de un monomio de raíz enésima** de la forma $\frac{a}{\sqrt[n]{b^k}}$ (con $1 \le k < n$) requiere encontrar el **factor racionalizante de complemento**:
-  $$\text{Factor Racionalizante} = \sqrt[n]{b^{n-k}}$$
-  al multiplicar por este factor, se aplica la ley de suma de exponentes de igual índice:
-  $$\frac{a}{\sqrt[n]{b^k}} = \frac{a \cdot \sqrt[n]{b^{n-k}}}{\sqrt[n]{b^k} \cdot \sqrt[n]{b^{n-k}}} = \frac{a \cdot \sqrt[n]{b^{n-k}}}{\sqrt[n]{b^{k + (n-k)}}} = \frac{a \cdot \sqrt[n]{b^{n-k}}}{\sqrt[n]{b^n}} = \frac{a \cdot \sqrt[n]{b^{n-k}}}{b}$$
+resumen_inicial: Para racionalizar un monomio de raíz enésima $\sqrt[n]{b^k}$, se amplifica la fracción por el factor complementario $\frac{\sqrt[n]{b^{n-k}}}{\sqrt[n]{b^{n-k}}}$, completando la potencia $n$-ésima perfecta en el denominador.
+explicacion_simple: "![Racionalización con denominador monomio de raíz enésima](/static/img/nodos/racionalizacion-con-denominador-monomio-de-raiz-enesima-intro.svg)\n\nCuando el denominador tiene una raíz de índice mayor a $2$ (como raíz cúbica $\\sqrt[3]{2}$ o raíz quinta $\\sqrt[5]{x^2}$), **no sirve multiplicar por la misma raíz**.\n- **¿Por qué?** Porque $\\sqrt[3]{2} \\cdot \\sqrt[3]{2} = \\sqrt[3]{4}$, ¡y $4$ no tiene raíz cúbica exacta!\n- **La regla del exponente que falta:** Te preguntas: *¿Cuánto le falta al exponente para llegar al índice $n$?*\n  - En $\\frac{4}{\\sqrt[3]{2^1}}$, al exponente $1$ le faltan $3 - 1 = 2$ para llegar a $3$.\n  - Multiplicas arriba y abajo por $\\sqrt[3]{2^2} = \\sqrt[3]{4}$:\n$$\\frac{4}{\\sqrt[3]{2}} \\cdot \\frac{\\sqrt[3]{2^2}}{\\sqrt[3]{2^2}} = \\frac{4\\sqrt[3]{4}}{\\sqrt[3]{2^3}} = \\frac{4\\sqrt[3]{4}}{2} = 2\\sqrt[3]{4}$$"
+explicacion_formal: 'Sea la fracción $\frac{a}{\sqrt[n]{b^k}}$ con $a \in \mathbb{R}$, $b \in \mathbb{R}^+$, $n \in \mathbb{N}_{\ge 2}$ y $1 \le k < n$. El **Factor Racionalizante de Orden $n$** se define mediante el exponente complementario:
 
-  ### Regla del exponente complementario $(n - k)$
-  - Índice del radical: $n$.
-  - Exponente actual del radicando: $k$.
-  - Exponente del factor racionalizante: $n - k$ (lo que falta para completar la potencia $n$-ésima perfecta).
 
-  ### Síntesis didáctica
-  - Factor de amplificación: $\frac{\sqrt[n]{b^{n-k}}}{\sqrt[n]{b^{n-k}}}$.
-  - Numerador resultante: $a \cdot \sqrt[n]{b^{n-k}}$.
-  - Denominador resultante: $b$ (entero racional libre de raíz).
-definiciones_clave: |
-  - **Exponente complementario $n - k$**: Cantidad que falta sumar al exponente interno $k$ para alcanzar el índice $n$.
-  - **Factor racionalizante enésimo $\sqrt[n]{b^{n-k}}$**: Radical que al multiplicarse por $\sqrt[n]{b^k}$ completa la potencia exacta $\sqrt[n]{b^n} = b$.
-  - **Cancelación enésima**: Propiedad $\sqrt[n]{b^n} = b$ que elimina la raíz del denominador.
-propiedades_relaciones: |
-  - **Generalización del caso cuadrático**: Para $n = 2$ y $k = 1$, el complemento es $2 - 1 = 1$, reduciéndose al caso particular $\sqrt{b}$.
-  - **Condición $k < n$**: Si $k \ge n$, primero se extraen factores del radical antes de determinar el complemento necesario.
+  $$e = n - k$$
+
+
+  **Teorema de Racionalización Enésima:**
+
+  $$\frac{a}{\sqrt[n]{b^k}} = \frac{a}{\sqrt[n]{b^k}} \cdot \frac{\sqrt[n]{b^{n-k}}}{\sqrt[n]{b^{n-k}}} = \frac{a \sqrt[n]{b^{n-k}}}{\sqrt[n]{b^k \cdot b^{n-k}}} = \frac{a \sqrt[n]{b^{n-k}}}{\sqrt[n]{b^n}} = \frac{a \sqrt[n]{b^{n-k}}}{b}$$
+
+
+  **Condición de Aplicación:**
+
+  Si el radicando es un número compuesto (como $27$), debe expresarse previamente en su descomposición prima ($27 = 3^3$) para calcular con precisión el exponente complementario $n - k$.'
+definiciones_clave: '- **Exponente complementario ($n - k$)**: Cantidad que le falta a la potencia del radicando para igualar al índice del radical.
+
+  - **Factor racionalizante enésimo**: Expresión $\sqrt[n]{b^{n-k}}$ que permite completar la potencia $b^n$.
+
+  - **Descomposición prima previa**: Representación en factores primos obligatoria antes de racionalizar.'
+propiedades_relaciones: '- **Cancelación exacta**: $\sqrt[n]{b^k} \cdot \sqrt[n]{b^{n-k}} = \sqrt[n]{b^{k + (n-k)}} = \sqrt[n]{b^n} = b$.
+
+  - **Caso $k = 1$ en raíz cúbica**: $\frac{1}{\sqrt[3]{b}} = \frac{\sqrt[3]{b^2}}{b}$.'
 ejemplo_guiado:
-  enunciado: 'Racionaliza el denominador de la fracción $M = \frac{6}{\sqrt[3]{2}}$ completando el exponente necesario en el radicando.'
+  enunciado: '![Ejemplos de racionalización enésima](/static/img/nodos/racionalizacion-con-denominador-monomio-de-raiz-enesima-ejemplos.svg)
+
+
+    Racionalice y simplifique las fracciones $\frac{4}{\sqrt[3]{2}}$, $\frac{6}{\sqrt[5]{x^2}}$ y $\frac{3}{\sqrt[4]{27}}$.'
   pasos:
-    - 'Paso 1: Identificamos el índice $n = 3$ y el exponente del radicando $k = 1$ en $\sqrt[3]{2^1}$.'
-    - 'Paso 2: Calculamos el exponente complementario: $n - k = 3 - 1 = 2$. El factor racionalizante es $\sqrt[3]{2^2} = \sqrt[3]{4}$.'
-    - 'Paso 3: Amplificamos la fracción multiplicando arriba y abajo por $\sqrt[3]{2^2}$: $M = \frac{6 \cdot \sqrt[3]{2^2}}{\sqrt[3]{2^1} \cdot \sqrt[3]{2^2}} = \frac{6\sqrt[3]{4}}{\sqrt[3]{2^{1+2}}} = \frac{6\sqrt[3]{4}}{\sqrt[3]{2^3}}$.'
-    - 'Paso 4: Cancelamos la raíz cúbica del denominador obteniendo el entero $2$ y simplificamos los números exteriores: $M = \frac{6\sqrt[3]{4}}{2} = 3\sqrt[3]{4}$.'
+  - 'Paso 1: Racionalizar $\frac{4}{\sqrt[3]{2}}$: Falta $3 - 1 = 2$. Multiplicar por $\frac{\sqrt[3]{2^2}}{\sqrt[3]{2^2}} \implies \frac{4\sqrt[3]{4}}{2} = 2\sqrt[3]{4}$.'
+  - 'Paso 2: Racionalizar $\frac{6}{\sqrt[5]{x^2}}$: Falta $5 - 2 = 3$. Multiplicar por $\frac{\sqrt[5]{x^3}}{\sqrt[5]{x^3}} \implies \frac{6\sqrt[5]{x^3}}{x}$.'
+  - 'Paso 3: Racionalizar $\frac{3}{\sqrt[4]{27}}$: Descomponer $27 = 3^3$. Falta $4 - 3 = 1$. Multiplicar por $\frac{\sqrt[4]{3}}{\sqrt[4]{3}} \implies \frac{3\sqrt[4]{3}}{3} = \sqrt[4]{3}$.'
+  - 'Conclusión: Las formas racionalizadas son $2\sqrt[3]{4}$, $\frac{6\sqrt[5]{x^3}}{x}$ y $\sqrt[4]{3}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué factor radical debe amplificarse la fracción $\frac{a}{\sqrt[n]{b^k}}$ para racionalizar su denominador?'
-    choices:
-      - {text: 'Por $\frac{\sqrt[n]{b^{n-k}}}{\sqrt[n]{b^{n-k}}}$, multiplicando por la raíz cuyo exponente complementario es $n - k$', is_correct: true}
-      - {text: 'Por la misma raíz $\frac{\sqrt[n]{b^k}}{\sqrt[n]{b^k}}$ sin modificar el exponente', is_correct: false}
-      - {text: 'Por una raíz cuadrada simple $\frac{\sqrt{b}}{\sqrt{b}}$', is_correct: false}
-      - {text: 'Por la potencia $b^n$ sin raíz', is_correct: false}
-    explanation: 'La alternativa correcta es ''Por $\frac{\sqrt[n]{b^{n-k}}}{\sqrt[n]{b^{n-k}}}$, multiplicando por la raíz cuyo exponente complementario es $n - k$''. El exponente $n - k$ es la cantidad exacta necesaria para completar $k + (n-k) = n$ y cancelar la raíz.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el factor racionalizante necesario para eliminar el radical en el denominador de $\frac{5}{\sqrt[5]{3^2}}$?'
-    choices:
-      - {text: '$\sqrt[5]{3^3}$, pues el exponente complementario es $5 - 2 = 3$', is_correct: true}
-      - {text: '$\sqrt[5]{3^2}$, multiplicando por la misma expresión', is_correct: false}
-      - {text: '$\sqrt[5]{3^5}$, elevando al índice', is_correct: false}
-      - {text: '$\sqrt{3}$, reduciendo a raíz cuadrada', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\sqrt[5]{3^3}$, pues el exponente complementario es $5 - 2 = 3$''. Como $k = 2$ y $n = 5$, el complemento es $5 - 2 = 3 \implies \sqrt[5]{3^3}$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué factor se debe amplificar la fracción $\frac{1}{\sqrt[3]{5}}$ para racionalizarla?
+  choices:
+  - text: Por $\frac{\sqrt[3]{5^2}}{\sqrt[3]{5^2}} = \frac{\sqrt[3]{25}}{\sqrt[3]{25}}$ (porque $3 - 1 = 2$)
+    is_correct: true
+  - text: Por $\frac{\sqrt[3]{5}}{\sqrt[3]{5}}$
+    is_correct: false
+  - text: Por $\frac{\sqrt{5}}{\sqrt{5}}$
+    is_correct: false
+  - text: Por $5$
+    is_correct: false
+  explanation: La alternativa correcta es 'Por $\frac{\sqrt[3]{5^2}}{\sqrt[3]{5^2}} = \frac{\sqrt[3]{25}}{\sqrt[3]{25}}$ (porque $3 - 1 = 2$)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué para $\frac{3}{\sqrt[4]{27}}$ se amplificó por $\sqrt[4]{3}$?
+  choices:
+  - text: Porque $27 = 3^3$, por lo que al exponente $3$ le falta $4 - 3 = 1$ para llegar a $4$
+    is_correct: true
+  - text: 'Porque $27 : 3 = 9$'
+    is_correct: false
+  - text: Porque $27$ es impar
+    is_correct: false
+  - text: Porque se divide por $3$
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque $27 = 3^3$, por lo que al exponente $3$ le falta $4 - 3 = 1$ para llegar a $4$'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el índice $n$ de la raíz y el exponente $k$ del radicando en el denominador $\sqrt[n]{b^k}$.'
-  - 'Paso 2: Calcular el exponente complementario $n - k$.'
-  - 'Paso 3: Multiplicar el numerador y el denominador por el factor racionalizante $\sqrt[n]{b^{n-k}}$.'
-  - 'Paso 4: Sumar los exponentes del denominador $k + (n-k) = n$, simplificar la raíz $\sqrt[n]{b^n} = b$ y reducir coeficientes.'
-errores_correccion: |
-  - **Error 1:** Multiplicar por el mismo radical $\sqrt[n]{b^k}$ creyendo que elimina cualquier raíz (ej: hacer $\sqrt[3]{2} \cdot \sqrt[3]{2} = \sqrt[3]{4}$, que NO elimina la raíz). **Cómo corregirlo:** En raíces de grado $n \ge 3$, debes multiplicar por el exponente **complementario** $n - k$ para alcanzar la potencia $n$: $\sqrt[3]{2^1} \cdot \sqrt[3]{2^2} = \sqrt[3]{2^3} = 2$.
-  - **Error 2:** Restar el índice del exponente al calcular el complemento (ej: hacer $k - n$). **Cómo corregirlo:** El complemento se calcula **restando el exponente actual del índice**: $n - k$.
+- 'Paso 1: Descomponer la base del radicando en potencias de números primos $b^k$.'
+- 'Paso 2: Calcular el exponente complementario $e = n - k$.'
+- 'Paso 3: Amplificar la fracción multiplicando numerador y denominador por $\sqrt[n]{b^e}$, cancelando la raíz en el denominador a $b$ y simplificando.'
+errores_correccion: "- **Error 1: Multiplicar por la misma raíz sin ajustar exponentes ($\frac{1}{\\sqrt[3]{2}} \\cdot \frac{\\sqrt[3]{2}}{\\sqrt[3]{2}} = \frac{\\sqrt[3]{2}}{\\sqrt[3]{4}}$).** **Cómo corregirlo:** La potencia debe completar el índice: usar $\\sqrt[3]{2^2} = \\sqrt[3]{4}$ para que el denominador sea $\\sqrt[3]{8} = 2$.\n- **Error 2: No descomponer números compuestos antes de buscar el exponente complementario.** **Cómo corregirlo:** Escribir siempre $8 = 2^3$, $27 = 3^3$, $16 = 2^4$ antes de calcular $n - k$."
 ejemplos:
-  - titulo: 'Racionalización raíz cúbica simple'
-    enunciado: '¿La racionalización de $\frac{4}{\sqrt[3]{2}}$ equivale a $2\sqrt[3]{4}$?'
-    alternativas:
-      - 'Sí, pues $\frac{4\sqrt[3]{2^2}}{2} = 2\sqrt[3]{4}$'
-      - 'No, equivale a $4\sqrt[3]{2}$'
-      - 'No, equivale a $2\sqrt[3]{2}$'
-    respuesta: 'Sí, pues $\frac{4\sqrt[3]{2^2}}{2} = 2\sqrt[3]{4}$'
-    solucion_pasos:
-      - '1. Complemento para $n=3, k=1$: $3-1 = 2 \implies$ factor $\sqrt[3]{2^2} = \sqrt[3]{4}$.'
-      - '2. Amplificamos: $\frac{4\sqrt[3]{4}}{\sqrt[3]{2^3}} = \frac{4\sqrt[3]{4}}{2} = 2\sqrt[3]{4}$.'
-  - titulo: 'Racionalización raíz cuarta'
-    enunciado: '¿Para racionalizar $\frac{1}{\sqrt[4]{5^3}}$ se amplifica por $\sqrt[4]{5^1}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Complemento: $4 - 3 = 1 \implies$ factor $\sqrt[4]{5^1} \implies \frac{\sqrt[4]{5}}{5}$.'
-  - titulo: 'Simplificación de enteros'
-    enunciado: '¿El resultado de racionalizar $\frac{10}{\sqrt[3]{5}}$ es $2\sqrt[3]{25}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $\frac{10\sqrt[3]{5^2}}{5} = 2\sqrt[3]{25}$.'
-  - titulo: 'Cancelación final'
-    enunciado: '¿El producto de los radicales del denominador $\sqrt[n]{b^k} \cdot \sqrt[n]{b^{n-k}}$ resulta siempre en el entero $b$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $\sqrt[n]{b^{k + n - k}} = \sqrt[n]{b^n} = b$.'
+- titulo: Ejemplo 1
+  enunciado: ¿Cuál es la forma racionalizada de $\frac{2}{\sqrt[3]{4}}$?
+  alternativas:
+  - $\sqrt[3]{2}$
+  - $2\sqrt[3]{2}$
+  - $\sqrt[3]{4}$
+  respuesta: $\sqrt[3]{2}$
+  solucion_pasos:
+  - $4 = 2^2$, falta $3-2=1 \implies \frac{2\sqrt[3]{2}}{2} = \sqrt[3]{2}$.
+- titulo: Ejemplo 2
+  enunciado: ¿A qué equivale racionalizar $\frac{1}{\sqrt[5]{a^3}}$?
+  alternativas:
+  - $\frac{\sqrt[5]{a^2}}{a}$
+  - $\frac{\sqrt[5]{a^3}}{a}$
+  - $\sqrt[5]{a^2}$
+  respuesta: $\frac{\sqrt[5]{a^2}}{a}$
+  solucion_pasos:
+  - Falta $5 - 3 = 2 \implies \frac{\sqrt[5]{a^2}}{a}$.
+- titulo: ¿Es 5 / ∛5 igual a ∛25?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $\frac{5}{\sqrt[3]{5}} \cdot \frac{\sqrt[3]{25}}{\sqrt[3]{25}} = \frac{5\sqrt[3]{25}}{5} = \sqrt[3]{25}$.
+  alternativas:
+  - texto: Sí, 5 / ∛5 = ∛25
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Factor complementario ∛5² = ∛25.
+  - texto: No, es igual a ∛5
+    es_correcta: false
+    retroalimentacion: Incorrecto, $5/5 = 1$, queda $\sqrt[3]{25}$.
+  - texto: No, es igual a 5∛5
+    es_correcta: false
+    retroalimentacion: Incorrecto, los 5 se cancelan.
+- titulo: ¿Es el factor racionalizante de 1 / ∜(x³) igual a ∜x?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque $4 - 3 = 1 \implies \sqrt[4]{x^1} = \sqrt[4]{x}$.
+  alternativas:
+  - texto: Sí, falta 4 - 3 = 1 dando ∜x
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Exponente complementario unitario.
+  - texto: No, es ∜(x³)
+    es_correcta: false
+    retroalimentacion: Incorrecto, ese factor no eliminaría la raíz.
+  - texto: No, es x
+    es_correcta: false
+    retroalimentacion: Incorrecto, debe ser un radical de índice 4.
 errores_frecuentes:
-  - 'Amplificar una fracción de raíz cúbica $\frac{a}{\sqrt[3]{b}}$ por el mismo radical $\sqrt[3]{b}$ elimina la raíz del denominador.'
-  - 'El exponente complementario de la racionalización enésima se calcula dividiendo el índice entre el exponente.'
-  - 'La racionalización de $\frac{1}{\sqrt[5]{x^2}}$ requiere multiplicar por la raíz cuadrada $\sqrt{x}$.'
-  - 'Sumar el índice al exponente actual al buscar el factor racionalizante enésimo.'
-  - 'Multiplicar los radicandos del denominador mediante la suma de índices.'
+- Amplificar por la misma raíz de orden $n$ sin elevar al exponente complementario.
+- No descomponer bases numéricas en potencias primas antes de calcular $n - k$.
+- Restar incorrectamente $n - k$.
+- Olvidar que en el denominador la raíz se cancela por completo.
+- Cambiar el índice de la raíz durante la amplificación.
 afirmaciones_verdaderas:
-  - 'La racionalización con denominador monomio de raíz enésima $\sqrt[n]{b^k}$ exige amplificar por la raíz complementaria $\sqrt[n]{b^{n-k}}$ para completar la potencia $n$-ésima perfecta $b^n$.'
-  - 'El exponente del factor racionalizante $n - k$ representa exactamente la cantidad de potencias que le faltan al radicando para cancelar la raíz de índice $n$.'
-al_terminar_debes_poder: 'Racionalizar denominadores monomios de raíz enésima calculando el exponente complementario $n - k$ para cancelar la raíz.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- Para racionalizar un monomio de raíz enésima se amplifica por $\sqrt[n]{b^{n-k}}$.
+- La suma de los exponentes interior y complementario debe ser exactamente igual al índice $n$.
+- La descomposición en factores primos es un paso previo fundamental para no inflar los cálculos.
+al_terminar_debes_poder: '![Síntesis de racionalización enésima](/static/img/nodos/racionalizacion-con-denominador-monomio-de-raiz-enesima-resumen.svg)
+
+
+  QUÉ: Racionalizar fracciones cuyo denominador sea un monomio con raíz enésima $\sqrt[n]{b^k}$.
+
+
+  CÓMO: Expresando la base en factores primos, calculando el exponente complementario $e = n - k$, amplificando por $\frac{\sqrt[n]{b^e}}{\sqrt[n]{b^e}}$ y cancelando el radical en el denominador.'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado
