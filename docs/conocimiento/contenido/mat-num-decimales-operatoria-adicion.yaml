@@ -1,127 +1,141 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.ADICION
-resumen_inicial: La adición de números decimales exige disponer los sumandos verticalmente
-  de modo que las comas decimales queden perfectamente alineadas en la misma columna.
-explicacion_simple: Para sumar números decimales de forma directa, debemos escribir
-  los números uno debajo de otro de tal manera que todas las comas queden exactamente
-  en la misma línea vertical. Así nos aseguramos de estar sumando unidades con unidades,
-  décimas con décimas y centésimas con centésimas.
-explicacion_formal: 'Dada la suma de decimales $d_1 = \sum a_i \cdot 10^i$ y $d_2
-  = \sum b_i \cdot 10^i$ en $\mathbb{Q}$, la **Adición Posicional Decimal** se efectúa
-  mediante:
+resumen_inicial: La adición de números decimales exige disponer los sumandos verticalmente alineando sus comas para sumar cifras del mismo valor posicional.
+explicacion_simple: '![Adición de decimales mediante alineación de coma](/static/img/nodos/adicion-de-decimales-mediante-alineacion-de-coma-intro.svg)
 
 
-  $$d_1 + d_2 = \sum_{i=-k}^{m} (a_i + b_i) \cdot 10^i$$
+  Para sumar números decimales de forma directa, debemos escribir los sumandos en columna de modo que todas las comas queden en la misma línea vertical. Esto garantiza que sumemos unidades con unidades, décimos con décimos y centésimos con centésimos.'
+explicacion_formal: 'Dada la adición de números decimales finitos $d_1 = \sum_{i=-k_1}^{m_1} a_i \cdot 10^i$ y $d_2 = \sum_{j=-k_2}^{m_2} b_j \cdot 10^j$ en $\mathbb{Q}$, la **Adición Posicional Decimal** se define mediante:
 
 
-  **Desglose de la fórmula:**
-
-  - Alineación vertical: Garantiza que el coeficiente de $10^i$ del primer número
-  coincida de forma posicional con el coeficiente de $10^i$ del segundo.
-
-  - Relleno de ceros: Las posiciones sin dígitos a la derecha de la coma se completan
-  con ceros a la derecha ($a_i = 0$ para $i < -k$).
+  $$d_1 + d_2 = \sum_{i=-\max(k_1, k_2)}^{\max(m_1, m_2) + 1} (a_i + b_i + r_i) \cdot 10^i$$
 
 
-  > **Complemento didáctico:** La coma en el resultado final se ubica directamente
-  en la misma posición de la columna vertical de las comas de los sumandos.'
-definiciones_clave: '- **Alineación de coma decimal**: Disposición en columna donde
-  las comas de todos los sumandos coinciden verticalmente.'
-propiedades_relaciones: '- **Preservación del valor de posición**: Asegura la adición
-  estricta entre dígitos del mismo valor posicional.'
+  **Desglose formal de la fórmula:**
+
+  - **Alineación vertical:** Garantiza que el coeficiente del orden $10^i$ del primer sumando coincida posicionalmente con el coeficiente de $10^i$ del segundo.
+
+  - **Relleno de ceros:** Si $k_1 < k_2$, se completan ceros a la derecha ($a_i = 0$) para operar con la misma cantidad de cifras decimales.
+
+  - **Reserva $r_i$:** Si $a_i + b_i \ge 10$, se retiene la unidad de orden superior ($r_{i+1} = 1$) que se adiciona a la columna inmediata izquierda.
+
+
+  > **Complemento didáctico:** La coma decimal desciende verticalmente a la misma posición en la línea del resultado final.'
+definiciones_clave: '- **Alineación de coma decimal**: Disposición en columna donde las comas de todos los sumandos coinciden verticalmente.
+
+  - **Valor posicional decimal**: Jerarquía donde cada posición a la derecha de la coma vale una décima parte de la anterior (décimos $10^{-1}$, centésimos $10^{-2}$, milésimos $10^{-3}$).
+
+  - **Reserva decimal**: Canje donde 10 unidades de un orden decimal forman 1 unidad del orden inmediatamente superior.'
+propiedades_relaciones: '- **Clausura en $\mathbb{Q}$**: La suma de dos números decimales racionales produce siempre un número decimal racional.
+
+  - **Conmutatividad**: $a + b = b + a$.
+
+  - **Asociatividad**: $(a + b) + c = a + (b + c)$.
+
+  - **Elemento neutro**: $a + 0 = a$.'
 ejemplo_guiado:
-  enunciado: Calcule la suma decimal $12,45 + 3,8$.
+  enunciado: Calcule la suma de los números decimales $12,45 + 3,8$.
   pasos:
-  - 'Paso 1: Alinear los números verticalmente por su coma decimal.'
-  - 'Paso 2: Rellar con cero a la derecha para igualar decimales: $3,80$.'
-  - "Paso 3: Disponer la suma vertical:\n  12,45\n+  3,80\n------\n  16,25"
+  - 'Paso 1: Alinear los números verticalmente haciendo coincidir sus comas decimales.'
+  - 'Paso 2: Igualar la cantidad de cifras decimales rellenando con ceros a la derecha: $3,8 \implies 3,80$.'
+  - "Paso 3: Disponer la suma en columna e incorporar la reserva:\n  12,45\n+  3,80\n------\n  16,25"
   - 'Conclusión: $12,45 + 3,8 = 16,25$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la regla fundamental para colocar los números al sumar decimales
-    verticalmente?
+  question: ¿Cuál es la regla fundamental para disponer los números al sumar decimales en columna?
   choices:
-  - text: Alinear de forma exacta la coma decimal de todos los sumandos en la misma
-      columna
+  - text: Alinear la coma decimal de todos los sumandos en una misma columna vertical
     is_correct: true
-  - text: Alinear todos los números a la derecha sin importar la coma
+  - text: Alinear todos los números hacia la derecha sin considerar la coma
     is_correct: false
-  - text: Eliminar todas las comas antes de sumar
+  - text: Eliminar las comas antes de iniciar la adición
     is_correct: false
-  - text: Colocar los números de mayor a menor según la cantidad de dígitos
+  - text: Ordenar los sumandos según la cantidad total de cifras
     is_correct: false
-  explanation: La alternativa correcta es 'Alinear de forma exacta la coma decimal
-    de todos los sumandos en la misma columna'.
+  explanation: La alternativa correcta es 'Alinear la coma decimal de todos los sumandos en una misma columna vertical'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 12,45 + 3,8, ¿cuál fue el resultado de la suma
-    alineada?
+  question: En el ejemplo guiado para $12,45 + 3,8$, ¿cuál fue el resultado tras igualar cifras con ceros?
   choices:
-  - text: 16,25
+  - text: $16,25$
     is_correct: true
-  - text: 15,53
+  - text: $15,53$
     is_correct: false
-  - text: 16,30
+  - text: $16,30$
     is_correct: false
-  - text: 12,83
+  - text: $12,83$
     is_correct: false
-  explanation: La alternativa correcta es '16,25'.
+  explanation: La alternativa correcta es '$16,25$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Escribir los sumandos verticalmente haciendo coincidir las comas en una
-  misma columna.'
+- 'Paso 1: Escribir los sumandos verticalmente haciendo coincidir las comas en una misma columna.'
 - 'Paso 2: Completar con ceros a la derecha los lugares decimales faltantes.'
-- 'Paso 3: Sumar cifra por cifra de derecha a izquierda y situar la coma en el resultado
-  respetando la columna.'
-errores_correccion: '- **Error 1: Alinear los números a la derecha como si fueran
-  enteros (sumar $12,45 + 3,8$ como si fuera $1245 + 38 = 1283$).** **Cómo corregirlo:**
-  La referencia de alineación es la COMA DECIMAL, no la última cifra.
+- 'Paso 3: Sumar cifra por cifra de derecha a izquierda, incorporando reservas y situando la coma en el resultado respetando la columna.'
+errores_correccion: '- **Error 1: Alinear los números a la derecha como si fueran enteros (sumar $12,45 + 3,8$ como $1245 + 38 = 1283$).** **Cómo corregirlo:** La referencia obligatoria de alineación es la COMA DECIMAL, no la última cifra.
 
-
-  - **Error 2: Olvidar ubicar la coma en la suma resultante.** **Cómo corregirlo:**
-  La coma desciende verticalmente a la misma posición en la línea del resultado.'
+  - **Error 2: Olvidar bajar la coma al resultado.** **Cómo corregirlo:** La coma desciende exactamente en la misma columna vertical que las comas de los sumandos.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule 4,56 + 2,1.
+  enunciado: Calcule $4,56 + 2,1$.
   alternativas:
-  - 6,66
-  - 6,57
-  - 4,77
-  respuesta: 6,66
+  - $6,66$
+  - $6,57$
+  - $4,77$
+  respuesta: $6,66$
   solucion_pasos:
   - $4,56 + 2,10 = 6,66$.
 - titulo: Ejemplo 2
-  enunciado: Calcule 0,78 + 15,2.
+  enunciado: Calcule $0,78 + 15,2$.
   alternativas:
-  - 15,98
-  - 9,3
-  - 15,86
-  respuesta: 15,98
+  - $15,98$
+  - $9,3$
+  - $15,86$
+  respuesta: $15,98$
   solucion_pasos:
   - $0,78 + 15,20 = 15,98$.
-- titulo: ¿Se recomienda agregar ceros a la derecha para igualar la cantidad de dígitos
-    decimales?
+- titulo: ¿Se recomienda agregar ceros a la derecha para igualar la cantidad de dígitos decimales?
   respuesta: Sí
   solucion_pasos:
-  - Sí, facilita el cálculo por columna posicional.
-- titulo: ¿Es 3,5 + 1,25 igual a 4,75?
+  - Sí, rellenar ceros a la derecha facilita el cálculo ordenado columna por columna.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Agregar ceros no altera el valor del número decimal y evita errores de alineación.
+  - texto: No, está prohibido
+    es_correcta: false
+    retroalimentacion: Incorrecto, agregar ceros a la derecha de la parte decimal es una propiedad válida que facilita la suma.
+  - texto: Solo en números enteros
+    es_correcta: false
+    retroalimentacion: Incorrecto, se aplica específicamente a la parte decimal de los números.
+- titulo: ¿Es $3,5 + 1,25$ igual a $4,75$?
   respuesta: Sí
   solucion_pasos:
   - Sí, $3,50 + 1,25 = 4,75$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Al alinear $3,50 + 1,25$ la suma posicional entrega $4,75$.
+  - texto: No, es 4,30
+    es_correcta: false
+    retroalimentacion: Incorrecto, no se deben sumar dígitos de distinto orden posicional.
+  - texto: No, es 4,750 pero no 4,75
+    es_correcta: false
+    retroalimentacion: Incorrecto, $4,750$ y $4,75$ representan exactamente el mismo número.
 errores_frecuentes:
-- Alinear los números decimales justificando a la derecha en lugar de guiar la alineación
-  por la coma.
+- Alinear los números decimales justificando a la derecha en lugar de guiar la alineación por la coma.
 - Sumar la parte entera con las décimas al no alinear adecuadamente las columnas.
-- Completar los espacios decimales vacíos agregando ceros a la izquierda de la parte
-  entera.
+- Completar los espacios decimales vacíos agregando ceros a la izquierda de la parte entera.
 - Mover la coma del resultado dos posiciones a la izquierda tras realizar la suma.
 - La adición de dos decimales finitos positivos siempre produce un número entero.
 afirmaciones_verdaderas:
-- Para sumar números decimales es obligatorio alinear las comas decimales en una misma
-  columna vertical.
-- Agregar ceros a la derecha de la parte decimal no altera el valor del número y facilita
-  la alineación.
-al_terminar_debes_poder: Al terminar serás capaz de sumar números decimales mediante
-  la alineación vertical estricta de sus comas decimales y el relleno de ceros a la
-  derecha.
+- Para sumar números decimales es obligatorio alinear las comas decimales en una misma columna vertical.
+- Agregar ceros a la derecha de la parte decimal no altera el valor del número y facilita la alineación.
+- La coma decimal del resultado se ubica exactamente en la misma columna que los sumandos.
+al_terminar_debes_poder: '![Síntesis de adición de decimales](/static/img/nodos/adicion-de-decimales-mediante-alineacion-de-coma-resumen.svg)
+
+
+  QUÉ: Sumar números decimales finitos alineando el valor posicional de sus cifras.
+
+
+  CÓMO: Disponiendo los sumandos en columna con las comas decimales alineadas verticalmente, rellenando con ceros a la derecha ($a,b = a,b0$) y descendiendo la coma a la misma posición en la suma final.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

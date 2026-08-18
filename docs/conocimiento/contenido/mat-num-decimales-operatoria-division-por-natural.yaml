@@ -1,47 +1,44 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.DIVISION_POR_NATURAL
-resumen_inicial: Para dividir un número decimal por un número natural se realiza la
-  división entera estándar y se coloca una coma en el cociente justo antes de bajar
-  la primera cifra decimal del dividendo.
-explicacion_simple: Al dividir un decimal por un número entero normal, comenzamos
-  dividiendo la parte entera. En el instante exacto en que vamos a 'bajar' el primer
-  número que está después de la coma del dividendo, escribimos una coma en nuestra
-  respuesta (el cociente) y continuamos dividiendo de forma normal.
-explicacion_formal: 'Dada la división de $d = A + \frac{B}{10^k}$ ($A \in \mathbb{N}_0,
-  \, B < 10^k$) entre $N \in \mathbb{N}$, la **División Mixta por Natural** descompone:
+resumen_inicial: Para dividir un número decimal por un número natural se realiza la división entera estándar y se coloca una coma en el cociente al descender la primera cifra decimal.
+explicacion_simple: '![División de decimal por número natural](/static/img/nodos/division-de-decimal-por-numero-natural-intro.svg)
 
 
-  $$\frac{d}{N} = \frac{A}{N} + \frac{B}{N \cdot 10^k} = C_{\text{entero}} + \frac{R}{N}
-  + \frac{B}{N \cdot 10^k}$$
+  Al dividir un número decimal por un entero natural, comenzamos dividiendo la parte entera. En el instante exacto en que vamos a bajar la primera cifra que está después de la coma del dividendo, escribimos una coma en el cociente y continuamos dividiendo de forma normal.'
+explicacion_formal: 'Dada la división de un decimal $d = A + \frac{B}{10^k}$ ($A \in \mathbb{N}_0, B < 10^k$) entre un número natural $N \in \mathbb{N}$, la **División Mixta por Natural** se expresa mediante:
 
 
-  **Desglose del algoritmo:**
-
-  - Parte entera: Se divide $A$ entre $N$ obteniendo el cociente entero.
-
-  - Transición a la coma: Al agotar la parte entera $A$, se ubica la coma decimal
-  en el cociente e ingresan los residuos multiplicados por $10$.
+  $$\frac{d}{N} = \frac{A}{N} + \frac{B}{N \cdot 10^k} = C_{\text{entero}} + \frac{R_0}{N} + \frac{B}{N \cdot 10^k}$$
 
 
-  > **Complemento didáctico:** La coma en el cociente aparece inmediatamente cuando
-  el dividendo consume su primera cifra decimal.'
-definiciones_clave: '- **División por número natural**: Algoritmo secuencial que marca
-  la coma en el cociente al traspasar la frontera de las unidades enteras.'
-propiedades_relaciones: '- **Continuidad divisional**: La coma se coloca inmediatamente
-  antes de operar la primera cifra decimal del dividendo.'
+  **Desglose formal del algoritmo:**
+
+  - **Fase entera:** Se divide $A$ entre $N$ obteniendo el cociente entero $C_{\text{entero}}$ y resto $R_0 < N$.
+
+  - **Transición a la coma:** Al agotar las cifras enteras, se coloca la coma decimal en el cociente.
+
+  - **Fase decimal:** Cada resto sucesivo $R_i$ se multiplica por $10$ al bajar la siguiente cifra decimal del dividendo, continuando la división hasta obtener resto cero o la precisión deseada.
+
+
+  > **Complemento didáctico:** Si la parte entera es menor que el divisor ($A < N$), el cociente inicia obligatoriamente con $0,$.'
+definiciones_clave: '- **División por número natural**: Algoritmo que marca la coma en el cociente al descender el primer dígito decimal.
+
+  - **Dividendo decimal**: Cantidad que contiene parte entera y decimal.
+
+  - **Divisor natural**: Número entero positivo sin parte decimal.'
+propiedades_relaciones: '- **Continuidad posicional**: La coma se coloca en el cociente antes de procesar los décimos.
+
+  - **Comprobación**: Dividendo $=$ Divisor $\cdot$ Cociente $+$ Resto.'
 ejemplo_guiado:
-  enunciado: 'Calcule la división $14,25 : 5$.'
+  enunciado: 'Calcule la división de decimales $14,25 : 5$.'
   pasos:
   - 'Paso 1: Dividir la parte entera: $14 : 5 = 2$ con resto $4$.'
   - 'Paso 2: Colocar la coma en el cociente: $2,$.'
-  - 'Paso 3: Bajar la primera cifra decimal ($2$) para formar $42$: $42 : 5 = 8$ con
-    resto $2$.'
-  - 'Paso 4: Bajar la siguiente cifra decimal ($5$) para formar $25$: $25 : 5 = 5$
-    con resto $0$.'
+  - 'Paso 3: Bajar la primera cifra decimal ($2$) para formar $42$: $42 : 5 = 8$ con resto $2$.'
+  - 'Paso 4: Bajar la siguiente cifra decimal ($5$) para formar $25$: $25 : 5 = 5$ con resto $0$.'
   - 'Conclusión: $14,25 : 5 = 2,85$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿En qué momento exacto se coloca la coma en el cociente al dividir un
-    decimal por un natural?
+  question: ¿En qué momento exacto se coloca la coma en el cociente al dividir un decimal por un natural?
   choices:
   - text: Justo antes de bajar la primera cifra decimal del dividendo
     is_correct: true
@@ -51,80 +48,91 @@ checkpoints:
     is_correct: false
   - text: Nunca se coloca coma
     is_correct: false
-  explanation: La alternativa correcta es 'Justo antes de bajar la primera cifra decimal
-    del dividendo'.
+  explanation: La alternativa correcta es 'Justo antes de bajar la primera cifra decimal del dividendo'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: 'En el ejemplo guiado para 14,25 : 5, ¿cuál fue el cociente final exacto?'
+  question: 'En el ejemplo guiado para $14,25 : 5$, ¿cuál fue el cociente final exacto?'
   choices:
-  - text: 2,85
+  - text: $2,85$
     is_correct: true
-  - text: 28,5
+  - text: $28,5$
     is_correct: false
-  - text: 0,285
+  - text: $0,285$
     is_correct: false
-  - text: 2,55
+  - text: $2,55$
     is_correct: false
-  explanation: La alternativa correcta es '2,85'.
+  explanation: La alternativa correcta es '$2,85$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
 - 'Paso 1: Dividir la parte entera del dividendo por el número natural.'
 - 'Paso 2: Escribir una coma en el cociente al llegar al punto decimal.'
-- 'Paso 3: Bajar de a una las cifras decimales restantes del dividendo y continuar
-  dividiendo normalmente.'
-errores_correccion: '- **Error 1: Olvidar poner la coma en el cociente y obtener un
-  resultado entero inflado ($14,25 : 5 = 285$).** **Cómo corregirlo:** La coma DEBE
-  marcarse en el cociente antes de bajar las décimas.
+- 'Paso 3: Bajar de a una las cifras decimales restantes del dividendo y continuar dividiendo normalmente.'
+errores_correccion: '- **Error 1: Olvidar poner la coma en el cociente y obtener un resultado entero inflado ($14,25 : 5 = 285$).** **Cómo corregirlo:** La coma DEBE marcarse en el cociente antes de bajar las décimas.
 
-
-  - **Error 2: Si el entero es menor que el divisor, no colocar 0 en el cociente ($2,4
-  : 6 = 4$).** **Cómo corregirlo:** Como $2 < 6$, se coloca $0,$ en el cociente y
-  se divide $24 : 6 = 4 \implies 0,4$.'
+  - **Error 2: Si el entero es menor que el divisor, no colocar 0 en el cociente ($2,4 : 6 = 4$).** **Cómo corregirlo:** Como $2 < 6$, se coloca $0,$ en el cociente y se divide $24 : 6 = 4 \implies 0,4$.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: 'Calcule 9,6 : 3.'
+  enunciado: 'Calcule $9,6 : 3$.'
   alternativas:
-  - 3,2
-  - '32'
-  - 0,32
-  respuesta: 3,2
+  - $3,2$
+  - $32$
+  - $0,32$
+  respuesta: $3,2$
   solucion_pasos:
-  - $9:3 = 3$, ponemos coma, $6:3 = 2 \implies 3,2$.
+  - '$9 : 3 = 3$, colocamos coma, $6 : 3 = 2 \implies 3,2$.'
 - titulo: Ejemplo 2
-  enunciado: 'Calcule 1,8 : 9.'
+  enunciado: 'Calcule $1,8 : 9$.'
   alternativas:
-  - 0,2
-  - '2'
-  - 0,02
-  respuesta: 0,2
+  - $0,2$
+  - $2$
+  - $0,02$
+  respuesta: $0,2$
   solucion_pasos:
   - '$1 < 9 \implies$ poner $0,$. $18 : 9 = 2 \implies 0,2$.'
-- titulo: ¿Se coloca 0, en el cociente si la parte entera del dividendo es menor que
-    el divisor?
+- titulo: ¿Se coloca 0, en el cociente si la parte entera del dividendo es menor que el divisor?
   respuesta: Sí
   solucion_pasos:
-  - Sí, para habilitar la división de las cifras decimales.
-- titulo: '¿Es 7,5 : 5 igual a 1,5?'
+  - Sí, para habilitar la división de las cifras decimales cuando la parte entera es insuficiente.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Si el dividendo entero es menor que el divisor, el cociente comienza con $0,$.
+  - texto: No, se ignora el entero
+    es_correcta: false
+    retroalimentacion: Incorrecto, ignorar la parte entera alteraría el orden de magnitud del resultado.
+  - texto: Solo si el divisor es par
+    es_correcta: false
+    retroalimentacion: Incorrecto, la regla se aplica para cualquier número natural divisor.
+- titulo: '¿Es $7,5 : 5$ igual a $1,5$?'
   respuesta: Sí
   solucion_pasos:
-  - Sí, $7:5 = 1$ resto 2, coma, $25:5 = 5 \implies 1,5$.
+  - 'Sí, $7 : 5 = 1$ resto 2, coma, $25 : 5 = 5 \implies 1,5$.'
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: '¡Correcto! $7 : 5 = 1$ (resto 2), coma, $25 : 5 = 5 \implies 1,5$.'
+  - texto: No, es 15
+    es_correcta: false
+    retroalimentacion: Incorrecto, se olvidó colocar la coma decimal en el cociente.
+  - texto: No, es 0,15
+    es_correcta: false
+    retroalimentacion: Incorrecto, $7$ cabe una vez entera en $5$.
 errores_frecuentes:
-- Omitir colocar la coma en el cociente al traspasar la frontera de la parte entera
-  del dividendo.
-- Ignorar que si la parte entera es menor que el divisor se debe escribir $0,$ en
-  el cociente.
+- Omitir colocar la coma en el cociente al traspasar la frontera de la parte entera del dividendo.
+- Ignorar que si la parte entera es menor que el divisor se debe escribir $0,$ en el cociente.
 - Multiplicar el dividendo por 10 sin hacer ningún cambio en la operación.
-- Colocar la coma en el cociente después de haber bajado todas las cifras decimales
-  del dividendo.
-- Dividir un decimal por un número natural altera el divisor convirtiéndolo en un
-  número decimal.
+- Colocar la coma en el cociente después de haber bajado todas las cifras decimales del dividendo.
+- Dividir un decimal por un número natural altera el divisor convirtiéndolo en un número decimal.
 afirmaciones_verdaderas:
-- Al dividir un decimal por un número natural, la coma se sitúa en el cociente al
-  procesar la primera cifra decimal.
-- Si la parte entera del dividendo es menor que el divisor, el cociente se inicia
-  obligatoriamente con 0,.
-al_terminar_debes_poder: Al terminar serás capaz de dividir números decimales entre
-  números naturales, insertando correctamente la coma en el cociente al descender
-  el primer dígito decimal.
+- Al dividir un decimal por un número natural, la coma se sitúa en el cociente al procesar la primera cifra decimal.
+- Si la parte entera del dividendo es menor que el divisor, el cociente se inicia obligatoriamente con 0,.
+- Al agotar las cifras decimales del dividendo, se pueden añadir ceros al resto para continuar dividiendo.
+al_terminar_debes_poder: '![Síntesis de división por natural](/static/img/nodos/division-de-decimal-por-numero-natural-resumen.svg)
+
+
+  QUÉ: Dividir un número decimal entre un número natural obteniendo cocientes exactos o con aproximación decimal.
+
+
+  CÓMO: Ejecutando el algoritmo de división estándar e insertando la coma en el cociente en el instante exacto en que se baja la primera cifra decimal del dividendo.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

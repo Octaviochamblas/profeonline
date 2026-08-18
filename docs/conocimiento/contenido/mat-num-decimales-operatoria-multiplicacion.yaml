@@ -1,49 +1,49 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.MULTIPLICACION
-resumen_inicial: La multiplicación de números decimales se realiza como si fuesen
-  números enteros, y la coma en el resultado se ubica contando la suma total de cifras
-  decimales de los factores.
-explicacion_simple: Para multiplicar decimales, primero multiplicamos los números
-  como si no tuvieran coma. Luego, contamos cuántas cifras decimales hay en total
-  entre los dos números que multiplicamos, y esa misma cantidad de cifras contamos
-  de derecha a izquierda para poner la coma en el resultado final.
-explicacion_formal: 'Para dos decimales finitos $d_1 = A \cdot 10^{-m}$ y $d_2 = B
-  \cdot 10^{-n}$ (donde $A, B \in \mathbb{Z}$ y $m, n \in \mathbb{N}_0$ son el número
-  de cifras decimales de cada factor), el **Producto Decimal** es:
+resumen_inicial: La multiplicación de números decimales se realiza como números enteros, ubicando la coma en el producto según la suma total de cifras decimales de ambos factores.
+explicacion_simple: '![Multiplicación de decimales mediante conteo de cifras](/static/img/nodos/multiplicacion-de-decimales-mediante-conteo-de-cifras-decimales-intro.svg)
 
 
-  $$d_1 \cdot d_2 = (A \cdot B) \cdot 10^{-(m + n)}$$
+  Para multiplicar decimales, primero multiplicamos los factores como si no tuvieran coma. Luego, contamos cuántas cifras decimales hay en total entre los dos números, y esa misma cantidad de cifras contamos de derecha a izquierda para colocar la coma en el resultado final.'
+explicacion_formal: 'Para dos números decimales finitos $d_1 = A \cdot 10^{-m}$ y $d_2 = B \cdot 10^{-n}$ (donde $A, B \in \mathbb{Z}$ y $m, n \in \mathbb{N}_0$ son la cantidad de cifras decimales de cada factor), el **Producto Decimal** es:
 
 
-  **Desglose de la fórmula:**
-
-  - $A \cdot B$: Multiplicación estándar de los enteros sin coma.
-
-  - $10^{-(m+n)}$: Desplazamiento de la coma $m + n$ posiciones hacia la izquierda
-  en el producto.
+  $$d_1 \cdot d_2 = (A \cdot 10^{-m}) \cdot (B \cdot 10^{-n}) = (A \cdot B) \cdot 10^{-(m + n)}$$
 
 
-  > **Complemento didáctico:** El total de cifras decimales del resultado es la SUMA
-  directa ($m + n$) de las cifras decimales de ambos factores.'
-definiciones_clave: '- **Conteo de cifras decimales**: Algoritmo de ubicación de la
-  coma en el producto sumando las cifras decimales de cada factor.'
-propiedades_relaciones: '- **Suma de decimales**: El total de cifras decimales del
-  resultado es $m + n$.'
+  **Desglose formal de la fórmula:**
+
+  - **$A \cdot B$:** Multiplicación estándar de los enteros generados al suprimir las comas.
+
+  - **$10^{-(m+n)}$:** Desplazamiento de la coma exactamente $m + n$ posiciones hacia la izquierda en el producto.
+
+  - **Completación con ceros a la izquierda:** Si el producto $A \cdot B$ tiene menos de $m + n$ dígitos, se anteponen ceros inmediatamente a la izquierda.
+
+
+  > **Complemento didáctico:** La cantidad total de cifras decimales del producto es la SUMA directa ($m + n$) de las cifras decimales de ambos factores.'
+definiciones_clave: '- **Conteo de cifras decimales**: Algoritmo de posicionamiento de la coma sumando las cifras decimales de los factores.
+
+  - **Factores decimales**: Términos que se multiplican en la operación.
+
+  - **Desplazamiento a la izquierda**: Retroceso de la coma tantos lugares como indique la potencia negativa de 10.'
+propiedades_relaciones: '- **Conmutatividad**: $a \cdot b = b \cdot a$.
+
+  - **Asociatividad**: $(a \cdot b) \cdot c = a \cdot (b \cdot c)$.
+
+  - **Elemento neutro**: $a \cdot 1 = a$.
+
+  - **Efecto de escala**: Multiplicar por un decimal $0 < d < 1$ disminuye el valor del número ($x \cdot d < x$).'
 ejemplo_guiado:
-  enunciado: Calcule la multiplicación $2,35 \cdot 1,4$.
+  enunciado: Calcule la multiplicación decimal $2,35 \cdot 1,4$.
   pasos:
-  - 'Paso 1: Contar las cifras decimales de los factores: $2,35$ tiene 2 decimales;
-    $1,4$ tiene 1 decimal. Total = $2 + 1 = 3$ decimales.'
-  - 'Paso 2: Multiplicar sin comas como enteros: $235 \cdot 14 = 3290$.'
-  - 'Paso 3: Ubicar la coma contando 3 posiciones desde la derecha: $3290 \implies
-    3,290 = 3,29$.'
+  - 'Paso 1: Contar las cifras decimales de los factores: $2,35$ tiene 2 decimales y $1,4$ tiene 1 decimal. Total = $2 + 1 = 3$ cifras decimales.'
+  - 'Paso 2: Multiplicar los números como enteros prescindiendo de las comas: $235 \cdot 14 = 3290$.'
+  - 'Paso 3: Ubicar la coma contando 3 lugares de derecha a izquierda: $3290 \implies 3,290 = 3,29$.'
   - 'Conclusión: $2,35 \cdot 1,4 = 3,29$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cómo se determina el número de cifras decimales que tendrá el producto
-    de dos números decimales?
+  question: ¿Cómo se determina el número de cifras decimales que tendrá el producto de dos números decimales?
   choices:
-  - text: Sumando la cantidad de cifras decimales del primer factor con las del segundo
-      factor
+  - text: Sumando la cantidad de cifras decimales del primer factor con las del segundo factor
     is_correct: true
   - text: Restando los decimales
     is_correct: false
@@ -51,14 +51,12 @@ checkpoints:
     is_correct: false
   - text: Es siempre 2 cifras decimales
     is_correct: false
-  explanation: La alternativa correcta es 'Sumando la cantidad de cifras decimales
-    del primer factor con las del segundo factor'.
+  explanation: La alternativa correcta es 'Sumando la cantidad de cifras decimales del primer factor con las del segundo factor'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 2,35 · 1,4, ¿cuántos decimales en total se contaron
-    para ubicar la coma?
+  question: En el ejemplo guiado para $2,35 \cdot 1,4$, ¿cuántos decimales en total se contaron para ubicar la coma?
   choices:
-  - text: 3 cifras decimales (2 + 1)
+  - text: 3 cifras decimales ($2 + 1$)
     is_correct: true
   - text: 2 cifras decimales
     is_correct: false
@@ -66,66 +64,78 @@ checkpoints:
     is_correct: false
   - text: 4 cifras decimales
     is_correct: false
-  explanation: La alternativa correcta es '3 cifras decimales (2 + 1)'.
+  explanation: La alternativa correcta es '3 cifras decimales ($2 + 1$)'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Multiplicar los números como si fueran enteros normales ignorando temporalmente
-  las comas.'
-- 'Paso 2: Sumar la cantidad de dígitos decimales que poseen ambos factores en conjunto
-  ($m + n$).'
-- 'Paso 3: Contar esa misma cantidad de lugares de derecha a izquierda en el producto
-  final para ubicar la coma.'
-errores_correccion: '- **Error 1: Alinear las comas en columna al multiplicar decimales.**
-  **Cómo corregirlo:** La multiplicación NO exige alinear comas; los números se ubican
-  alineados a la derecha como enteros.
+- 'Paso 1: Multiplicar los números como si fueran enteros normales ignorando temporalmente las comas.'
+- 'Paso 2: Sumar la cantidad de dígitos decimales que poseen ambos factores en conjunto ($m + n$).'
+- 'Paso 3: Contar esa misma cantidad de lugares de derecha a izquierda en el producto final para ubicar la coma.'
+errores_correccion: '- **Error 1: Alinear las comas en columna al multiplicar decimales.** **Cómo corregirlo:** La multiplicación NO exige alinear comas; los números se alinean a la derecha como enteros.
 
-
-  - **Error 2: Contar las cifras decimales solo del factor con más decimales.** **Cómo
-  corregirlo:** La coma en el resultado debe contar la SUMA del total de decimales
-  de AMBOS factores.'
+  - **Error 2: Contar las cifras decimales solo del factor con más decimales.** **Cómo corregirlo:** La coma en el resultado debe contar la SUMA del total de decimales de AMBOS factores.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule 0,3 · 0,2.
+  enunciado: Calcule $0,3 \cdot 0,2$.
   alternativas:
-  - 0,06
-  - 0,6
-  - 0,006
-  respuesta: 0,06
+  - $0,06$
+  - $0,6$
+  - $0,006$
+  respuesta: $0,06$
   solucion_pasos:
   - $3 \cdot 2 = 6$. Como hay $1 + 1 = 2$ decimales en total $\implies 0,06$.
 - titulo: Ejemplo 2
-  enunciado: Calcule 1,5 · 0,04.
+  enunciado: Calcule $1,5 \cdot 0,04$.
   alternativas:
-  - 0,06
-  - 0,6
-  - 0,006
-  respuesta: 0,06
+  - $0,06$
+  - $0,6$
+  - $0,006$
+  respuesta: $0,06$
   solucion_pasos:
   - $15 \cdot 4 = 60$. Total de decimales $1 + 2 = 3 \implies 0,060 = 0,06$.
 - titulo: ¿Se deben sumar los decimales de ambos factores para posicionar la coma?
   respuesta: Sí
   solucion_pasos:
   - Sí, la regla establece que $m + n$ define las posiciones decimales del producto.
-- titulo: ¿Es 0,5 · 0,5 igual a 0,25?
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! La suma de decimales de los factores determina el total de posiciones de la coma en el producto.
+  - texto: No, se toma el mayor
+    es_correcta: false
+    retroalimentacion: Incorrecto, tomar el mayor es un error que omite el efecto fraccionario del segundo factor.
+  - texto: Solo si son números positivos
+    es_correcta: false
+    retroalimentacion: Incorrecto, la regla de cifras decimales es independiente del signo.
+- titulo: ¿Es $0,5 \cdot 0,5$ igual a $0,25$?
   respuesta: Sí
   solucion_pasos:
   - Sí, $5 \cdot 5 = 25$ con $1 + 1 = 2$ posiciones decimales $\implies 0,25$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $5 \cdot 5 = 25$, y con dos cifras decimales resulta $0,25$.
+  - texto: No, es 2,5
+    es_correcta: false
+    retroalimentacion: Incorrecto, $2,5$ solo tiene 1 cifra decimal.
+  - texto: No, es 0,5
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0,5 \cdot 0,5 = 0,25$.
 errores_frecuentes:
-- Alinear obligatoriamente la coma decimal de los factores al momento de escribir
-  la multiplicación.
-- Contar únicamente las cifras decimales del primer factor para colocar la coma en
-  el resultado.
-- Multiplicar la parte entera con la parte entera y la parte decimal con la parte
-  decimal por separado.
+- Alinear obligatoriamente la coma decimal de los factores al momento de escribir la multiplicación.
+- Contar únicamente las cifras decimales del primer factor para colocar la coma en el resultado.
+- Multiplicar la parte entera con la parte entera y la parte decimal con la parte decimal por separado.
 - Mover la coma del producto hacia la derecha en lugar de contar de derecha a izquierda.
 - El producto de dos números decimales menores que 1 siempre es mayor que 1.
 afirmaciones_verdaderas:
-- La multiplicación decimal se realiza como producto entero y la coma cuenta la suma
-  de las cifras decimales de los factores.
-- El producto de dos decimales propios entre 0 y 1 es siempre menor que cada uno de
-  los factores.
-al_terminar_debes_poder: Al terminar serás capaz de multiplicar números decimales,
-  aplicando el producto entero y posicionando la coma según la suma total de cifras
-  decimales de los factores.
+- La multiplicación decimal se realiza como producto entero y la coma cuenta la suma de las cifras decimales de los factores.
+- El producto de dos decimales propios entre 0 y 1 es siempre menor que cada uno de los factores.
+- Al multiplicar por $10^k$, la coma decimal se desplaza exactamente $k$ posiciones hacia la derecha.
+al_terminar_debes_poder: '![Síntesis de multiplicación de decimales](/static/img/nodos/multiplicacion-de-decimales-mediante-conteo-de-cifras-decimales-resumen.svg)
+
+
+  QUÉ: Multiplicar números decimales finitos determinando la posición exacta de la coma en el producto.
+
+
+  CÓMO: Multiplicando los factores como números enteros ($A \cdot B$) y desplazando la coma decimal de derecha a izquierda tantas posiciones como la suma total de cifras decimales ($m + n$).'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

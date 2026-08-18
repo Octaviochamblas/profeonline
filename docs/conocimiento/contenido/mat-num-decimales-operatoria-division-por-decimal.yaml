@@ -1,52 +1,44 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.DIVISION_POR_DECIMAL
-resumen_inicial: Para dividir por un número decimal, se amplifican dividendo y divisor
-  por una potencia de 10 ($10^k$) suficiente para convertir el divisor en un número
-  natural.
-explicacion_simple: No se puede dividir directamente teniendo un divisor con coma.
-  La estrategia consiste en correr la coma del divisor a la derecha hasta convertirlo
-  en un entero (multiplicando por 10, 100, 1000, etc.), y correr la coma del dividendo
-  exactamente la misma cantidad de puestos hacia la derecha.
-explicacion_formal: 'Para efectuar $\frac{d_1}{d_2}$ con $d_2 = B \cdot 10^{-k} \in
-  \mathbb{Q}$ ($k$ cifras decimales en el divisor), la **Homogenización Entera del
-  Divisor** amplifica por $10^k$:
+resumen_inicial: Para dividir por un número decimal, se amplifican dividendo y divisor por una potencia de 10 suficiente para convertir el divisor en un número natural.
+explicacion_simple: '![División de decimales mediante amplificación](/static/img/nodos/division-de-decimales-mediante-amplificacion-por-potencia-de-10-intro.svg)
 
 
-  $$\frac{d_1}{d_2} = \frac{d_1 \cdot 10^k}{d_2 \cdot 10^k} = \frac{d_1 \cdot 10^k}{B}$$
+  No es posible dividir directamente cuando el divisor tiene coma. La estrategia consiste en correr la coma del divisor hacia la derecha hasta transformarlo en un número entero (multiplicando por 10, 100, 1000, etc.), y correr la coma del dividendo exactamente la misma cantidad de puestos hacia la derecha.'
+explicacion_formal: 'Para efectuar $\frac{d_1}{d_2}$ con $d_2 = B \cdot 10^{-k} \in \mathbb{Q}$ ($k$ cifras decimales en el divisor), la **Homogenización Entera del Divisor** amplifica por $10^k$:
 
 
-  **Desglose de la fórmula:**
-
-  - $10^k$: Potencia de 10 donde $k$ es el número exacto de posiciones decimales del
-  divisor $d_2$.
-
-  - $B = d_2 \cdot 10^k \in \mathbb{Z}$: Divisor transformado en entero natural, reduciendo
-  el problema a una división por natural.
+  $$\frac{d_1}{d_2} = \frac{d_1 \cdot 10^k}{d_2 \cdot 10^k} = \frac{d_1 \cdot 10^k}{B} \quad (B \in \mathbb{N})$$
 
 
-  > **Complemento didáctico:** La propiedad de invarianza del cociente $a : b = (a
-  \cdot m) : (b \cdot m)$ garantiza que la respuesta final de la división amplificada
-  es idéntica a la original.'
-definiciones_clave: '- **Amplificación por potencia de 10**: Técnica que elimina las
-  cifras decimales del divisor multiplicando ambos términos por $10^k$.'
-propiedades_relaciones: '- **Invarianza del cociente**: Amplificar $a$ y $b$ por $10^k$
-  preserva $a:b = (a \cdot 10^k) : (b \cdot 10^k)$.'
+  **Desglose formal del teorema:**
+
+  - **$10^k$:** Potencia de 10 donde el exponente $k$ coincide exactamente con la cantidad de cifras decimales del divisor $d_2$.
+
+  - **$B = d_2 \cdot 10^k$:** Divisor transformado en número natural, reduciendo el problema a una división por natural.
+
+  - **Invarianza del cociente:** La propiedad fundamental $\frac{a}{b} = \frac{a \cdot m}{b \cdot m}$ garantiza que el cociente no se altera.
+
+
+  > **Complemento didáctico:** La potencia $10^k$ la determina EXCLUSIVAMENTE el divisor; el dividendo simplemente se multiplica por esa misma potencia.'
+definiciones_clave: '- **Amplificación por potencia de 10**: Técnica que elimina las cifras decimales del divisor multiplicando ambos términos por $10^k$.
+
+  - **Invarianza del cociente**: Principio por el cual multiplicar dividendo y divisor por un mismo factor no nulo mantiene inalterado el resultado.'
+propiedades_relaciones: '- **Invarianza del cociente**: $a : b = (a \cdot 10^k) : (b \cdot 10^k)$.
+
+  - **Efecto de división por decimal propio**: Si $0 < d < 1$, entonces $x : d > x$ (el cociente es mayor que el dividendo).'
 ejemplo_guiado:
-  enunciado: 'Calcule la división de decimales $4,86 : 0,12$ amplificando por una
-    potencia de 10.'
+  enunciado: 'Calcule la división de decimales $4,86 : 0,12$ amplificando por una potencia de 10.'
   pasos:
-  - 'Paso 1: Contar los decimales del divisor $0,12$: tiene 2 cifras decimales.'
+  - 'Paso 1: Contar los decimales del divisor $0,12$: tiene 2 cifras decimales ($k=2$).'
   - 'Paso 2: Determinar la potencia de 10 para amplificar: $10^2 = 100$.'
-  - "Paso 3: Amplificar dividendo y divisor por $100$:\n  - Dividendo: $4,86 \\cdot\
-    \ 100 = 486$.\n  - Divisor: $0,12 \\cdot 100 = 12$."
-  - 'Paso 4: Realizar la división entera equivalente $486 : 12 = 40,5$.'
+  - "Paso 3: Amplificar dividendo y divisor por $100$:\n  - Dividendo: $4,86 \\cdot 100 = 486$.\n  - Divisor: $0,12 \\cdot 100 = 12$."
+  - 'Paso 4: Realizar la división equivalente de divisor entero: $486 : 12 = 40,5$.'
   - 'Conclusión: $4,86 : 0,12 = 40,5$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: '¿Por qué potencia de 10 se deben amplificar dividendo y divisor al dividir
-    4,86 : 0,12?'
+  question: '¿Por qué potencia de 10 se deben amplificar dividendo y divisor al dividir $4,86 : 0,12$?'
   choices:
-  - text: Por 100 (porque el divisor 0,12 tiene 2 cifras decimales que deben convertirse
-      a entero)
+  - text: Por 100 (porque el divisor 0,12 tiene 2 cifras decimales que deben convertirse a entero)
     is_correct: true
   - text: Por 10 únicamente
     is_correct: false
@@ -54,80 +46,91 @@ checkpoints:
     is_correct: false
   - text: Por 2
     is_correct: false
-  explanation: La alternativa correcta es 'Por 100 (porque el divisor 0,12 tiene 2
-    cifras decimales que deben convertirse a entero)'.
+  explanation: La alternativa correcta es 'Por 100 (porque el divisor 0,12 tiene 2 cifras decimales que deben convertirse a entero)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: 'En el ejemplo guiado para 4,86 : 0,12 amplificado a 486 : 12, ¿cuál fue
-    el cociente final?'
+  question: 'En el ejemplo guiado para $4,86 : 0,12$ amplificado a $486 : 12$, ¿cuál fue el cociente final?'
   choices:
-  - text: 40,5
+  - text: $40,5$
     is_correct: true
-  - text: 4,05
+  - text: $4,05$
     is_correct: false
-  - text: '405'
+  - text: $405$
     is_correct: false
-  - text: 4,5
+  - text: $4,5$
     is_correct: false
-  explanation: La alternativa correcta es '40,5'.
+  explanation: La alternativa correcta es '$40,5$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
 - 'Paso 1: Contar cuántas cifras decimales posee el divisor $d_2$ ($k$ decimales).'
-- 'Paso 2: Multiplicar tanto el dividendo como el divisor por la potencia de 10 correspondiente
-  ($10^k$).'
-- 'Paso 3: Resolver la nueva división equivalente obtenida donde el divisor es un
-  número entero.'
-errores_correccion: '- **Error 1: Amplificar solo el divisor y olvidar amplificar
-  el dividendo por la misma potencia de 10.** **Cómo corregirlo:** La amplificación
-  DEBE aplicarse obligatoriamente a AMBOS términos para no alterar el cociente.
+- 'Paso 2: Multiplicar tanto el dividendo como el divisor por la potencia de 10 correspondiente ($10^k$).'
+- 'Paso 3: Resolver la nueva división equivalente obtenida donde el divisor es un número entero.'
+errores_correccion: '- **Error 1: Amplificar solo el divisor y olvidar amplificar el dividendo por la misma potencia de 10.** **Cómo corregirlo:** La amplificación DEBE aplicarse obligatoriamente a AMBOS términos para no alterar el cociente.
 
-
-  - **Error 2: Determinar la potencia de 10 guiándose por las cifras del dividendo
-  en vez del divisor.** **Cómo corregirlo:** La potencia $10^k$ la determina EXCLUSIVAMENTE
-  la cantidad de decimales del DIVISOR.'
+  - **Error 2: Determinar la potencia de 10 guiándose por las cifras del dividendo en vez del divisor.** **Cómo corregirlo:** La potencia $10^k$ la determina EXCLUSIVAMENTE la cantidad de decimales del DIVISOR.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: 'Calcule 3,6 : 0,6.'
+  enunciado: 'Calcule $3,6 : 0,6$.'
   alternativas:
-  - '6'
-  - 0,6
-  - '60'
-  respuesta: '6'
+  - $6$
+  - $0,6$
+  - $60$
+  respuesta: $6$
   solucion_pasos:
   - 'Amplificando por 10: $36 : 6 = 6$.'
 - titulo: Ejemplo 2
-  enunciado: 'Calcule 1,2 : 0,04.'
+  enunciado: 'Calcule $1,2 : 0,04$.'
   alternativas:
-  - '30'
-  - '3'
-  - 0,3
-  respuesta: '30'
+  - $30$
+  - $3$
+  - $0,3$
+  respuesta: $30$
   solucion_pasos:
   - 'Amplificando por 100: $120 : 4 = 30$.'
-- titulo: '¿Es la división 1,5 : 0,5 equivalente a 15 : 5?'
+- titulo: '¿Es la división $1,5 : 0,5$ equivalente a $15 : 5$?'
   respuesta: Sí
   solucion_pasos:
   - Sí, tras amplificar por 10 ambos términos.
-- titulo: '¿Es 0,8 : 0,2 igual a 4?'
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: '¡Correcto! Multiplicar dividendo y divisor por 10 genera la división equivalente $15 : 5 = 3$.'
+  - texto: No, cambia el resultado
+    es_correcta: false
+    retroalimentacion: Incorrecto, la propiedad fundamental de la división garantiza que el cociente se preserva.
+  - texto: Solo si se divide entre 2
+    es_correcta: false
+    retroalimentacion: Incorrecto, la amplificación por potencias de 10 es universal.
+- titulo: '¿Es $0,8 : 0,2$ igual a $4$?'
   respuesta: Sí
   solucion_pasos:
   - 'Sí, $8 : 2 = 4$.'
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: '¡Correcto! Amplificando por 10 se obtiene $8 : 2 = 4$.'
+  - texto: No, es 0,4
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0,8$ contiene $4$ veces a $0,2$.
+  - texto: No, es 40
+    es_correcta: false
+    retroalimentacion: Incorrecto, ambos términos se amplificaron por la misma potencia de 10.
 errores_frecuentes:
-- Amplificar únicamente el divisor por la potencia de 10 olvidando multiplicar el
-  dividendo.
-- Elegir la potencia de 10 para amplificar basándose en el número de decimales del
-  dividendo.
-- Dividir la parte entera entre la parte entera y la parte decimal entre la parte
-  decimal por separado.
+- Amplificar únicamente el divisor por la potencia de 10 olvidando multiplicar el dividendo.
+- Elegir la potencia de 10 para amplificar basándose en el número de decimales del dividendo.
+- Dividir la parte entera entre la parte entera y la parte decimal entre la parte decimal por separado.
 - Dividir entre un decimal menor que 1 produce siempre un cociente menor que el dividendo.
 - Al finalizar la división amplificada se debe dividir el resultado obtenido por 100.
 afirmaciones_verdaderas:
-- Para dividir por un decimal se amplifican dividendo y divisor por $10^k$ para transformar
-  el divisor en natural.
-- Dividir por un número decimal positivo estrictamente menor que 1 genera un cociente
-  mayor que el dividendo.
-al_terminar_debes_poder: Al terminar serás capaz de efectuar divisiones entre números
-  decimales, transformando el divisor en un número natural mediante amplificación
-  por potencias de 10.
+- Para dividir por un decimal se amplifican dividendo y divisor por $10^k$ para transformar el divisor en natural.
+- Dividir por un número decimal positivo estrictamente menor que 1 genera un cociente mayor que el dividendo.
+- La amplificación simultánea de dividendo y divisor preserva exactamente el valor del cociente.
+al_terminar_debes_poder: '![Síntesis de división entre decimales](/static/img/nodos/division-de-decimales-mediante-amplificacion-por-potencia-de-10-resumen.svg)
+
+
+  QUÉ: Dividir números decimales transformando el divisor en un número natural.
+
+
+  CÓMO: Amplificando dividendo y divisor simultáneamente por $10^k$ (donde $k$ es el número de cifras decimales del divisor) y resolviendo la división equivalente resultante.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

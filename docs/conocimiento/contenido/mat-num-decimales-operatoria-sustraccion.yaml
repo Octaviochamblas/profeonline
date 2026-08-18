@@ -1,45 +1,45 @@
 semantic_id: MAT.NUM.DECIMALES_OPERATORIA.SUSTRACCION
-resumen_inicial: La sustracción de números decimales alinea verticalmente minuendo
-  y sustraendo según sus comas, completando obligatoriamente los ceros faltantes en
-  el minuendo.
-explicacion_simple: Para restar números decimales, alineamos las comas de ambos números
-  en una misma columna. Si el número de arriba (minuendo) tiene menos cifras decimales
-  que el de abajo (sustraendo), es absolutamente necesario agregar ceros a la derecha
-  del de arriba para poder pedir prestado y restar correctamente.
-explicacion_formal: 'Dada la resta $d_1 - d_2$ en $\mathbb{Q}$, la **Sustracción Posicional
-  Decimal** exige:
+resumen_inicial: La sustracción de números decimales alinea verticalmente minuendo y sustraendo según sus comas, completando obligatoriamente los ceros faltantes en el minuendo.
+explicacion_simple: '![Sustracción de decimales mediante alineación de coma](/static/img/nodos/sustraccion-de-decimales-mediante-alineacion-de-coma-intro.svg)
 
 
-  $$d_1 - d_2 = \sum_{i=-k}^{m} (a_i - b_i) \cdot 10^i$$
+  Para restar números decimales, alineamos las comas de ambos números en una misma columna. Si el minuendo (número de arriba) tiene menos cifras decimales que el sustraendo (número de abajo), es indispensable rellenar con ceros a la derecha para poder reagrupar y restar correctamente.'
+explicacion_formal: 'Dada la sustracción de números decimales finitos $d_1 = \sum_{i=-k_1}^{m_1} a_i \cdot 10^i$ (minuendo) y $d_2 = \sum_{j=-k_2}^{m_2} b_j \cdot 10^j$ (sustraendo) en $\mathbb{Q}$ con $d_1 \ge d_2$, la **Sustracción Posicional Decimal** se define mediante:
 
 
-  **Desglose de la fórmula:**
-
-  - Relleno de ceros obligatorio: Si $d_1$ tiene menor precisión decimal que $d_2$,
-  se imponen ceros explícitos ($a_i = 0$) para permitir el canje o reserva posicional
-  en $\mathbb{Z}$.
-
-  - Alineación vertical: Las comas decimales deben ocupar la misma columna.
+  $$d_1 - d_2 = \sum_{i=-\max(k_1, k_2)}^{\max(m_1, m_2)} (a_i - b_i - c_i) \cdot 10^i$$
 
 
-  > **Complemento didáctico:** Sin el relleno con ceros a la derecha en el minuendo,
-  es muy frecuente cometer el error de ''bajar el número'' directamente sin restar.'
-definiciones_clave: '- **Sustracción de decimales**: Operación en columna alineada
-  por la coma con relleno de ceros a la derecha en las vacantes decimales.'
-propiedades_relaciones: '- **Invarianza de alineación**: Preserva las columnas posicionales
-  mediante ceros auxiliares.'
+  **Desglose formal de la fórmula:**
+
+  - **Relleno de ceros obligatorio:** Si $k_1 < k_2$, se imponen ceros explícitos en el minuendo ($a_i = 0$ para $i < -k_1$) para posibilitar el canje posicional.
+
+  - **Canje posicional ($c_i$):** Si $a_i < b_i$, se toma $1$ unidad del orden inmediato superior ($10^{i+1} = 10 \cdot 10^i$) aumentando $a_i$ en $10$ y restando $1$ en la columna izquierda.
+
+  - **Alineación vertical:** Las comas decimales ocupan la misma columna vertical en toda la operación.
+
+
+  > **Complemento didáctico:** Sin el relleno con ceros en el minuendo, es muy frecuente cometer el grave error de ''bajar'' la cifra del sustraendo sin restar.'
+definiciones_clave: '- **Minuendo**: Cantidad de la cual se resta otra (término superior).
+
+  - **Sustraendo**: Cantidad que se resta (término inferior).
+
+  - **Relleno de ceros en minuendo**: Adición de ceros a la derecha para habilitar el canje de unidades decimales.'
+propiedades_relaciones: '- **No conmutativa**: $a - b \neq b - a$.
+
+  - **Comprobación de la resta**: Minuendo $=$ Diferencia $+$ Sustraendo.
+
+  - **Invarianza por traslación**: $(a + c) - (b + c) = a - b$.'
 ejemplo_guiado:
   enunciado: Calcule la resta decimal $15,4 - 6,28$.
   pasos:
-  - 'Paso 1: Alinear por la coma decimal verticalmente.'
-  - 'Paso 2: Rellenar obligatoriamente con cero el minuendo $15,4 \implies 15,40$.'
-  - "Paso 3: Restar verticalmente con canje posicional:\n  15,40\n-  6,28\n------\n\
-    \   9,12"
+  - 'Paso 1: Alinear minuendo y sustraendo verticalmente por su coma decimal.'
+  - 'Paso 2: Rellenar obligatoriamente con cero el minuendo para igualar centésimos: $15,4 \implies 15,40$.'
+  - "Paso 3: Restar en columna con canje posicional ($10 - 8 = 2$, $3 - 2 = 1$, $15 - 6 = 9$):\n  15,40\n-  6,28\n------\n   9,12"
   - 'Conclusión: $15,4 - 6,28 = 9,12$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Por qué es obligatorio rellenar con ceros a la derecha en el minuendo
-    al restar 15,4 - 6,28?
+  question: ¿Por qué es obligatorio rellenar con ceros a la derecha en el minuendo al restar $15,4 - 6,28$?
   choices:
   - text: Para poder realizar el canje posicional al restar 0 menos 8 en las centésimas
     is_correct: true
@@ -49,77 +49,91 @@ checkpoints:
     is_correct: false
   - text: No es obligatorio
     is_correct: false
-  explanation: La alternativa correcta es 'Para poder realizar el canje posicional
-    al restar 0 menos 8 en las centésimas'.
+  explanation: La alternativa correcta es 'Para poder realizar el canje posicional al restar 0 menos 8 en las centésimas'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 15,4 - 6,28, ¿cuál fue la resta correcta?
+  question: En el ejemplo guiado para $15,4 - 6,28$, ¿cuál fue la diferencia obtenida?
   choices:
-  - text: 9,12
+  - text: $9,12$
     is_correct: true
-  - text: 9,18
+  - text: $9,18$
     is_correct: false
-  - text: 9,22
+  - text: $9,22$
     is_correct: false
-  - text: 15,12
+  - text: $15,12$
     is_correct: false
-  explanation: La alternativa correcta es '9,12'.
+  explanation: La alternativa correcta es '$9,12$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
 - 'Paso 1: Escribir minuendo y sustraendo en columna con las comas en una misma vertical.'
 - 'Paso 2: Rellenar con ceros los espacios decimales vacíos a la derecha en el minuendo.'
-- 'Paso 3: Efectuar la resta con reserva/canje de derecha a izquierda y colocar la
-  coma en la misma columna.'
-errores_correccion: '- **Error 1: Bajar directamente el dígito del sustraendo sin
-  restar de un cero ($15,4 - 6,28 = 9,18$).** **Cómo corregirlo:** Se debe agregar
-  el cero ($15,40$) y restar $10 - 8 = 2$ en las centésimas con reserva.
+- 'Paso 3: Efectuar la resta con reserva/canje de derecha a izquierda y colocar la coma en la misma columna.'
+errores_correccion: '- **Error 1: Bajar directamente el dígito del sustraendo sin restar de un cero ($15,4 - 6,28 = 9,18$).** **Cómo corregirlo:** Se debe agregar el cero ($15,40$) y restar $10 - 8 = 2$ en las centésimas con reserva.
 
-
-  - **Error 2: Alinear las últimas cifras sin respetar las comas.** **Cómo corregirlo:**
-  La coma marca el centro invariable de alineación posicional.'
+  - **Error 2: Alinear las últimas cifras sin respetar las comas.** **Cómo corregirlo:** La coma marca el centro invariable de alineación posicional.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule 8,5 - 3,24.
+  enunciado: Calcule $8,5 - 3,24$.
   alternativas:
-  - 5,26
-  - 5,36
-  - 5,24
-  respuesta: 5,26
+  - $5,26$
+  - $5,36$
+  - $5,24$
+  respuesta: $5,26$
   solucion_pasos:
   - $8,50 - 3,24 = 5,26$.
 - titulo: Ejemplo 2
-  enunciado: Calcule 10 - 4,75.
+  enunciado: Calcule $10 - 4,75$.
   alternativas:
-  - 5,25
-  - 6,25
-  - 5,75
-  respuesta: 5,25
+  - $5,25$
+  - $6,25$
+  - $5,75$
+  respuesta: $5,25$
   solucion_pasos:
   - $10,00 - 4,75 = 5,25$.
-- titulo: ¿Es necesario transformar 10 a 10,00 para restar 10 - 4,75?
+- titulo: ¿Es necesario transformar 10 a $10,00$ para restar $10 - 4,75$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, la alineación con ceros $10,00$ es fundamental para restar centésimas.
-- titulo: ¿Es 5,4 - 2,1 igual a 3,3?
+  - Sí, la alineación con ceros $10,00$ es fundamental para restar centésimas con canje.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Escribir $10,00$ permite realizar el préstamo sucesivo desde las unidades hacia décimos y centésimos.
+  - texto: No, se resta directo dando 6,75
+    es_correcta: false
+    retroalimentacion: Incorrecto, no se puede restar sin igualar el orden posicional decimal.
+  - texto: Solo si el resultado es negativo
+    es_correcta: false
+    retroalimentacion: Incorrecto, aplica siempre que el sustraendo tenga cifras decimales.
+- titulo: ¿Es $5,4 - 2,1$ igual a $3,3$?
   respuesta: Sí
   solucion_pasos:
   - Sí, $5,4 - 2,1 = 3,3$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Restando décimos ($4-1=3$) y unidades ($5-2=3$) se obtiene $3,3$.
+  - texto: No, es 3,5
+    es_correcta: false
+    retroalimentacion: Incorrecto, $4-1=3$ en las décimas.
+  - texto: No, es 3,1
+    es_correcta: false
+    retroalimentacion: Incorrecto, $5-2=3$ en las unidades.
 errores_frecuentes:
-- Al restar decimales cuando el minuendo tiene menos cifras decimales, se 'baja' la
-  cifra del sustraendo.
-- Alinear minuendo y sustraendo a la derecha ignorando la coma decimal produce la
-  resta correcta.
+- Al restar decimales cuando el minuendo tiene menos cifras decimales, se 'baja' la cifra del sustraendo.
+- Alinear minuendo y sustraendo a la derecha ignorando la coma decimal produce la resta correcta.
 - Rellenar con ceros a la derecha modifica el valor intrínseco del minuendo.
-- La sustracción de decimales es una operación conmutativa donde el orden no altera
-  la diferencia.
-- Restar una cifra decimal de cero entrega como resultado esa misma cifra positiva
-  sin reserva.
+- La sustracción de decimales es una operación conmutativa donde el orden no altera la diferencia.
+- Restar una cifra decimal de cero entrega como resultado esa misma cifra positiva sin reserva.
 afirmaciones_verdaderas:
-- La sustracción de decimales exige alinear las comas verticalmente y rellenar con
-  ceros las vacantes del minuendo.
-- El canje o reserva posicional en la resta decimal funciona de manera idéntica a
-  los números enteros.
-al_terminar_debes_poder: Al terminar serás capaz de restar números decimales mediante
-  la alineación por coma y el relleno obligatorio de ceros a la derecha en el minuendo.
+- La sustracción de decimales exige alinear las comas verticalmente y rellenar con ceros las vacantes del minuendo.
+- El canje o reserva posicional en la resta decimal funciona de manera idéntica a los números enteros.
+- Comprobar la resta sumando sustraendo y diferencia debe reconstruir exactamente el minuendo.
+al_terminar_debes_poder: '![Síntesis de sustracción de decimales](/static/img/nodos/sustraccion-de-decimales-mediante-alineacion-de-coma-resumen.svg)
+
+
+  QUÉ: Restar números decimales finitos y enteros mediante canje o reagrupación posicional.
+
+
+  CÓMO: Alineando minuendo y sustraendo por la coma decimal, agregando ceros obligatorios en las vacantes del minuendo ($15 = 15,00$) y efectuando la resta de derecha a izquierda con reserva.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
