@@ -1,118 +1,129 @@
 semantic_id: MAT.NUM.RAICES_CONCEPTO.RAIZ_COMO_INVERSA_POTENCIA
-resumen_inicial: 'La radicación es la operación inversa de la potenciación: si la
-  potencia eleva una base a un exponente $b^n = a$, la raíz deshace la operación obteniendo
-  la base original $\sqrt[n]{a} = b$.'
-explicacion_simple: La potencia y la raíz son dos caras de la misma moneda. Si elevar
-  un número al cubo lo hace crecer ($2^3 = 8$), sacarle la raíz cúbica desace el proceso
-  y nos devuelve al número 2 original.
-explicacion_formal: 'Para todo $a \ge 0$ y $n \in \mathbb{N}_{\ge 2}$, las funciones
-  $f(x) = x^n$ y $g(x) = \sqrt[n]{x}$ son **Inversas Algebraicas Mutuas** sobre $\mathbb{R}^+$:
+resumen_inicial: 'La radicación y la potenciación son operaciones inversas: $(\sqrt[n]{a})^n = a$ y $\sqrt[n]{a^n} = a$ para $n$ impar (o $|a|$ para $n$ par).'
+explicacion_simple: '![Raíz enésima como operación inversa](/static/img/nodos/raiz-enesima-como-operacion-inversa-de-la-potencia-intro.svg)
 
 
-  $$(g \circ f)(x) = \sqrt[n]{x^n} = x \quad (x \ge 0) \quad \text{y} \quad (f \circ
-  g)(x) = \left(\sqrt[n]{x}\right)^n = x$$
+  La radicación y la potenciación se ''deshacen'' mutuamente:
 
+  - Si tomas un número positivo, le extraes la raíz y luego lo elevas a la misma potencia, obtienes el número original: $(\sqrt{7})^2 = 7$.
 
-  **Desglose de la cancelación:**
+  - **¡Cuidado con los signos en índices pares!** Si elevas $-5$ al cuadrado obtienes $+25$, y su raíz cuadrada es $+5$. Por eso, $\sqrt{(-5)^2} = |-5| = +5$, no $-5$.'
+explicacion_formal: "Sean $a \\in \\mathbb{R}$ y $n \\in \\mathbb{N}$ con $n \\ge 2$. La **Propiedad de Composición Inversa** establece:\n\n**1. Cancelación Externa:**\nPara todo $a$ tal que $\\sqrt[n]{a} \\in \\mathbb{R}$:\n$$(\\sqrt[n]{a})^n = a$$\n\n**2. Cancelación Interna (Teorema del Valor Absoluto):**\n- **Si $n$ es par ($n = 2k$):**\n  $$\\sqrt[2k]{a^{2k}} = |a| = \\begin{cases} a & \\text{si } a \\ge 0 \\\\ -a & \\text{si } a < 0 \\end{cases}$$\n- **Si $n$ es impar ($n = 2k+1$):**\n  $$\\sqrt[2k+1]{a^{2k+1}} = a \\quad (\\forall a \\in \\mathbb{R})$$"
+definiciones_clave: '- **Inversa funcional**: Operador que restituye la variable independiente original.
 
-  - Operador inverso: $\sqrt[n]{\cdot}$ cancela la elevación al exponente $n$.
+  - **Cancelación interna**: Evaluación de la raíz de una potencia $\sqrt[n]{a^n}$.
 
-  - Atención al valor absoluto: Si $n$ es par y $x \in \mathbb{R}$, $\sqrt[n]{x^n}
-  = |x|$.'
-definiciones_clave: '- **Operación inversa**: Relación estructural donde la raíz $n$-ésima
-  cancela el exponente $n$ de una potencia.'
-propiedades_relaciones: '- **Cancelación funcional**: $(\sqrt[n]{a})^n = a$ y $\sqrt[n]{a^n}
-  = a$ para $a \ge 0$.'
+  - **Valor absoluto en raíz par**: Garantía de que $\sqrt{x^2} = |x| \ge 0$.'
+propiedades_relaciones: '- **No linealidad con negativos en par**: $\sqrt{x^2} \neq x$ si $x < 0$.
+
+  - **Identidad en impares**: $\sqrt[3]{x^3} = x$ para todo $x \in \mathbb{R}$.'
 ejemplo_guiado:
-  enunciado: Verifique la cancelación reciproca en $(\sqrt[3]{8})^3$ y $\sqrt[3]{2^3}$.
+  enunciado: '![Ejemplos de raíz como operación inversa](/static/img/nodos/raiz-enesima-como-operacion-inversa-de-la-potencia-ejemplos.svg)
+
+
+    Simplifique las expresiones $(\sqrt{11})^2$, $\sqrt{(-5)^2}$ y $\sqrt[3]{(-2)^3}$ aplicando las propiedades de inversa.'
   pasos:
-  - 'Paso 1: Para $(\sqrt[3]{8})^3$: calcular la raíz interna $\sqrt[3]{8} = 2$. Elevar
-    al cubo $2^3 = 8$.'
-  - 'Paso 2: Para $\sqrt[3]{2^3}$: calcular la potencia interna $2^3 = 8$. Extraer
-    la raíz $\sqrt[3]{8} = 2$.'
-  - 'Conclusión: La radicación y la potenciación cancelan mutuamente sus efectos.'
+  - 'Paso 1: Evaluar $(\sqrt{11})^2$: Cancelación externa directa sobre radicando positivo $\implies 11$.'
+  - 'Paso 2: Evaluar $\sqrt{(-5)^2}$: Cancelación interna de índice par. Se aplica valor absoluto: $\sqrt{(-5)^2} = |-5| = +5$.'
+  - 'Paso 3: Evaluar $\sqrt[3]{(-2)^3}$: Cancelación interna de índice impar. Conserva signo: $\sqrt[3]{(-2)^3} = -2$.'
+  - 'Conclusión: Los resultados son $11$, $+5$ y $-2$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Qué ocurre al elevar la raíz enésima (sqrt[n]{a})^n a la potencia n para
-    a >= 0?
+  question: ¿Cuál es el valor exacto de $\sqrt{(-7)^2}$?
   choices:
-  - text: La potencia cancela la raíz devolviendo el radicando a
+  - text: $+7$ (porque $\sqrt{a^2} = |a| = |-7| = 7$)
     is_correct: true
-  - text: Se multiplica a por n
+  - text: $-7$
     is_correct: false
-  - text: Da cero siempre
+  - text: $\pm 7$
     is_correct: false
-  - text: Se convierte en una fracción
+  - text: No existe en $\mathbb{R}$
     is_correct: false
-  explanation: La alternativa correcta es 'La potencia cancela la raíz devolviendo
-    el radicando a'.
+  explanation: La alternativa correcta es '$+7$ (porque $\sqrt{a^2} = |a| = |-7| = 7$)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para (sqrt[3]{8})^3, ¿cuál fue el resultado de la
-    cancelación?
+  question: En el ejemplo guiado, ¿por qué $(\sqrt{11})^2$ da exactamente $11$?
   choices:
-  - text: '8'
+  - text: Porque elevar al cuadrado una raíz cuadrada restituye directamente el radicando original
     is_correct: true
-  - text: '2'
+  - text: Porque $11$ es primo
     is_correct: false
-  - text: '24'
+  - text: Porque se multiplica $11 \times 2$
     is_correct: false
-  - text: '64'
+  - text: Porque el exponente se cancela a cero
     is_correct: false
-  explanation: La alternativa correcta es '8'.
+  explanation: La alternativa correcta es 'Porque elevar al cuadrado una raíz cuadrada restituye directamente el radicando original'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar la potencia de igual exponente que el índice de la raíz.'
-- 'Paso 2: Cancelar el operador raíz con el exponente correspondiente.'
-- 'Paso 3: Obtener el valor de la base libre del radical.'
-errores_correccion: '- **Error 1: Decir que $\sqrt{x^2} = x$ para todo $x \in \mathbb{R}$.**
-  **Cómo corregirlo:** Si $x$ puede ser negativo, $\sqrt{x^2} = |x|$ (ej: $\sqrt{(-3)^2}
-  = \sqrt{9} = +3$).
+- 'Paso 1: Identificar si la operación es una cancelación externa $(\sqrt[n]{a})^n$ o interna $\sqrt[n]{a^n}$.'
+- 'Paso 2: Verificar la paridad del índice $n$.'
+- 'Paso 3: Si es par, aplicar valor absoluto $|a|$; si es impar, conservar el valor algebraico directo $a$.'
+errores_correccion: '- **Error 1: Cancelar $\sqrt{x^2} = x$ sin considerar que $x$ puede ser negativo.** **Cómo corregirlo:** La fórmula rigurosa es $\sqrt{x^2} = |x|$.
 
-
-  - **Error 2: Intentar cancelar una raíz con un exponente distinto de su índice.**
-  **Cómo corregirlo:** La cancelación exige que el exponente sea IGUAL al índice de
-  la raíz.'
+  - **Error 2: Creer que $(\sqrt{a})^2$ puede dar un número negativo.** **Cómo corregirlo:** Para que $\sqrt{a} \in \mathbb{R}$ se exige $a \ge 0$, luego $(\sqrt{a})^2 = a \ge 0$.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule $(\sqrt{5})^2$.
+  enunciado: ¿Cuál es el valor de $(\sqrt{13})^2$?
   alternativas:
-  - '5'
-  - '25'
-  - sqrt(10)
-  respuesta: '5'
+  - $13$
+  - $169$
+  - $\sqrt{13}$
+  respuesta: $13$
   solucion_pasos:
-  - $(\sqrt{5})^2 = 5$ por cancelación.
+  - $(\sqrt{13})^2 = 13$.
 - titulo: Ejemplo 2
-  enunciado: Calcule $\sqrt[4]{3^4}$.
+  enunciado: ¿Cuál es el valor de $\sqrt[3]{5^3}$?
   alternativas:
-  - '3'
-  - '12'
-  - '81'
-  respuesta: '3'
+  - $5$
+  - $125$
+  - $15$
+  respuesta: $5$
   solucion_pasos:
-  - $\sqrt[4]{81} = 3$.
-- titulo: ¿Es la radicación la operación inversa de la potenciación?
+  - $\sqrt[3]{5^3} = 5$.
+- titulo: ¿Es √((-9)²) igual a 9?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $\sqrt[n]{b^n} = b$ para $b \ge 0$.
-- titulo: ¿Es (sqrt[3]{x})^3 igual a x para cualquier real x?
+  - Sí, $(-9)^2 = 81 \implies \sqrt{81} = +9 = |-9|$.
+  alternativas:
+  - texto: Sí, √((-9)²) = |-9| = 9
+    es_correcta: true
+    retroalimentacion: ¡Correcto! La raíz cuadrada principal es siempre positiva.
+  - texto: No, es igual a -9
+    es_correcta: false
+    retroalimentacion: Incorrecto, la raíz cuadrada de un número real no puede ser negativa.
+  - texto: No, no existe en ℝ
+    es_correcta: false
+    retroalimentacion: Incorrecto, $(-9)^2 = +81 \ge 0$.
+- titulo: ¿Es ∛((-4)³) igual a -4?
   respuesta: Sí
   solucion_pasos:
-  - Sí, las raíces de índice impar conservan el valor exacto de $x$.
+  - Sí, en índice impar $\sqrt[3]{a^3} = a \implies -4$.
+  alternativas:
+  - texto: Sí, ∛((-4)³) = -4
+    es_correcta: true
+    retroalimentacion: ¡Correcto! El índice impar preserva el signo del radicando.
+  - texto: No, debe ser positivo (+4)
+    es_correcta: false
+    retroalimentacion: Incorrecto, solo los índices pares aplican valor absoluto.
+  - texto: No, es igual a -64
+    es_correcta: false
+    retroalimentacion: Incorrecto, la raíz cúbica cancela la potencia.
 errores_frecuentes:
-- La radicación es una operación independiente que no guarda relación con la potenciación.
-- La expresión $\sqrt{(-4)^2}$ resulta en el número negativo $-4$ por cancelación
-  directa sin valor absoluto.
-- Elevar una raíz cuadrada al cuadrado multiplica por dos el valor del radicando.
-- Las funciones de raíz $n$-ésima y potencia $n$-ésima se suman para dar cero.
-- La potencia cancella la raíz únicamente si la base es un entero impar.
+- Omitir el valor absoluto en $\sqrt{x^2} = |x|$.
+- Cambiar de signo el resultado en índices impares con radicando negativo.
+- Confundir $(\sqrt{x})^2$ con $\sqrt{x^2}$ en dominios reales.
+- Multiplicar exponente por índice en vez de cancelarlos.
+- Creer que la radicación no tiene inversa en números negativos.
 afirmaciones_verdaderas:
-- La radicación actúa como la operación inversa de la potenciación sobre sus dominios
-  de existencia.
-- 'Para todo $a \ge 0$, la elevación a la potencia $n$ y la extracción de raíz $n$-ésima
-  se anulan mutuamente: $(\sqrt[n]{a})^n = a$.'
-al_terminar_debes_poder: Al terminar serás capaz de aplicar la inversión entre radicación
-  y potenciación $(\sqrt[n]{a})^n = a$, simplificando expresiones radicales.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
+- La radicación cancela a la potenciación cuando comparten la misma base y grado.
+- La identidad $\sqrt{x^2} = |x|$ es válida para todo número real $x$.
+- Para índices impares, $\sqrt[n]{x^n} = x$ para todo $x \in \mathbb{R}$.
+al_terminar_debes_poder: '![Síntesis de operación inversa](/static/img/nodos/raiz-enesima-como-operacion-inversa-de-la-potencia-resumen.svg)
+
+
+  QUÉ: Aplicar las propiedades de cancelación e inversa entre la radicación y la potenciación.
+
+
+  CÓMO: Utilizando las identidades $(\sqrt[n]{a})^n = a$, $\sqrt[2k]{a^{2k}} = |a|$ y $\sqrt[2k+1]{a^{2k+1}} = a$ según la paridad del índice $n$.'
+fuente: Texto escolar MINEDUC — Matemática 8° Básico / 1° Medio / PAES.
 estado: publicado
