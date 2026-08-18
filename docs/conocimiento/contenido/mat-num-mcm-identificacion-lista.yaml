@@ -1,45 +1,38 @@
 semantic_id: MAT.NUM.MINIMO_COMUN_MULTIPLO.IDENTIFICACION_LISTA
-resumen_inicial: El m.c.m. por listas se obtiene enumerando múltiplos de cada número
-  hasta hallar el primer valor coincidente.
-explicacion_simple: Este método consiste en escribir las tablas de multiplicar de
-  cada uno de los números de forma paralela. Vamos avanzando paso a paso en las listas
-  de múltiplos hasta que encontremos el primer número que aparezca al mismo tiempo
-  en todas las listas.
-explicacion_formal: 'Dada la familia de secuencias ordenadas de múltiplos $M^+(a_i)
-  = \{ a_i \cdot 1, a_i \cdot 2, a_i \cdot 3, \dots \}$, el **Algoritmo de Listas
-  de Coincidencia** busca:
+resumen_inicial: El m.c.m. por listas se obtiene enumerando múltiplos de cada número hasta hallar el primer valor coincidente.
+explicacion_simple: 'Este método consiste en escribir las tablas de multiplicar de cada uno de los números de forma paralela. Vamos avanzando paso a paso en las listas de múltiplos hasta que encontremos el primer número que aparezca al mismo tiempo en todas las listas.
 
 
-  $$m^* = \min \{ m \in \mathbb{N} \mid \forall i \in \{1, \dots, k\}, \, m \in M^+(a_i)
-  \}$$
+  ![Identificación del m.c.m. mediante lista de múltiplos comunes](/static/img/nodos/identificacion-del-mcm-mediante-lista-de-multiplos-comunes-intro.svg)'
+explicacion_formal: 'Dada la familia de secuencias ordenadas de múltiplos $M^+(a_i) = \{ a_i \cdot 1, a_i \cdot 2, a_i \cdot 3, \dots \}$, el **Algoritmo de Listas de Coincidencia** busca:
+
+
+  $$m^* = \min \{ m \in \mathbb{N} \mid \forall i \in \{1, \dots, k\}, \, m \in M^+(a_i) \}$$
 
 
   **Desglose de la fórmula:**
 
   - $M^+(a_i)$: Enumeración secuencial de los múltiplos positivos de $a_i$.
 
-  - $m^*$: El valor de la primera intersección no vacía detectada al recorrer las
-  listas.
+  - $m^*$: El valor de la primera intersección no vacía detectada al recorrer las listas.
 
 
-  > **Complemento didáctico:** Es un método altamente intuitivo y visual ideal para
-  números pequeños, pero resulta ineficiente para números de varias cifras.'
-definiciones_clave: '- **Método de listas coincidentes**: Búsqueda por enumeración
-  explícita del primer múltiplo común.'
-propiedades_relaciones: '- **Eficiencia relativa**: Muy rápido para números de un
-  dígito; lento para números mayores.'
+  > **Complemento didáctico:** Es un método altamente intuitivo y visual ideal para números pequeños, pero resulta ineficiente para números de varias cifras.'
+definiciones_clave: '- **Método de listas coincidentes**: Búsqueda por enumeración explícita del primer múltiplo común.'
+propiedades_relaciones: '- **Eficiencia relativa**: Muy rápido para números de un dígito; lento para números mayores.'
 ejemplo_guiado:
-  enunciado: Halle el m.c.m. entre $6$ y $8$ construyendo sus listas de múltiplos.
+  enunciado: 'Halle el m.c.m. entre $6$ y $8$ construyendo sus listas de múltiplos.
+
+
+    ![Ejemplo Identificación del m.c.m. mediante lista de múltiplos comunes](/static/img/nodos/identificacion-del-mcm-mediante-lista-de-multiplos-comunes-ejemplos.svg)'
   pasos:
   - 'Paso 1: Listar múltiplos de 6: $\{6, 12, 18, 24, 30, 36, 42, 48, \dots\}$.'
   - 'Paso 2: Listar múltiplos de 8: $\{8, 16, 24, 32, 40, 48, \dots\}$.'
   - 'Paso 3: Identificar los coincidentes: $\{24, 48, \dots\}$.'
-  - 'Conclusión: El primer coincidente es $24$, por lo que $\operatorname{mcm}(6,
-    8) = 24$.'
+  - 'Conclusión: El primer coincidente es $24$, por lo que $\operatorname{mcm}(6, 8) = 24$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la primera coincidencia positiva al listar los múltiplos de 6
-    y 8?
+  question: ¿Cuál es la primera coincidencia positiva al listar los múltiplos de 6 y 8?
   choices:
   - text: '24'
     is_correct: true
@@ -52,8 +45,7 @@ checkpoints:
   explanation: La alternativa correcta es '24'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado, ¿por qué 48 no es el m.c.m. entre 6 y 8 aunque sea
-    un múltiplo común?
+  question: En el ejemplo guiado, ¿por qué 48 no es el m.c.m. entre 6 y 8 aunque sea un múltiplo común?
   choices:
   - text: Porque 24 es menor que 48 y el mcm exige ser el menor múltiplo común
     is_correct: true
@@ -63,20 +55,16 @@ checkpoints:
     is_correct: false
   - text: Es un error, 48 sí es el mcm
     is_correct: false
-  explanation: La alternativa correcta es 'Porque 24 es menor que 48 y el mcm exige
-    ser el menor múltiplo común'.
+  explanation: La alternativa correcta es 'Porque 24 es menor que 48 y el mcm exige ser el menor múltiplo común'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
 - 'Paso 1: Escribir la lista de los primeros 10 múltiplos de cada uno de los números.'
 - 'Paso 2: Marcar los números que se repitan en todas las listas.'
 - 'Paso 3: Elegir el menor de los números marcados como el m.c.m.'
-errores_correccion: '- **Error 1: Detener la lista demasiado pronto sin hallar coincidencias.**
-  **Cómo corregirlo:** Continuar agregando múltiplos hasta encontrar el primer elemento
-  común.
+errores_correccion: '- **Error 1: Detener la lista demasiado pronto sin hallar coincidencias.** **Cómo corregirlo:** Continuar agregando múltiplos hasta encontrar el primer elemento común.
 
 
-  - **Error 2: Tomar un múltiplo que está en una lista pero no en las demás.** **Cómo
-  corregirlo:** El número debe ser estrictamente común a todas las listas.'
+  - **Error 2: Tomar un múltiplo que está en una lista pero no en las demás.** **Cómo corregirlo:** El número debe ser estrictamente común a todas las listas.'
 ejemplos:
 - titulo: Ejemplo 1
   enunciado: Halle el m.c.m.(5, 7) por listas.
@@ -86,8 +74,7 @@ ejemplos:
   - '12'
   respuesta: '35'
   solucion_pasos:
-  - 'Múltiplos de 5: 5, 10, 15, 20, 25, 30, 35... Múltiplos de 7: 7, 14, 21, 28, 35...
-    mcm = 35.'
+  - 'Múltiplos de 5: 5, 10, 15, 20, 25, 30, 35... Múltiplos de 7: 7, 14, 21, 28, 35... mcm = 35.'
 - titulo: Ejemplo 2
   enunciado: ¿Cuál es la primera coincidencia en las listas de múltiplos de 10 y 15?
   alternativas:
@@ -97,28 +84,49 @@ ejemplos:
   respuesta: '30'
   solucion_pasos:
   - 'Múltiplos de 10: 10, 20, 30... Múltiplos de 15: 15, 30... mcm = 30.'
-- titulo: ¿Se pueden usar listas de múltiplos para hallar el m.c.m. de tres números
-    a la vez?
+- titulo: ¿Se pueden usar listas de múltiplos para hallar el m.c.m. de tres números a la vez?
   respuesta: Sí
   solucion_pasos:
   - Sí, buscando el primer elemento común a las tres listas.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Corresponde exactamente al menor múltiplo común obtenido mediante el algoritmo correspondiente.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el cálculo del MCM entrega un valor entero único bien definido.
+  - texto: No es posible calcularlo con los métodos estándar
+    es_correcta: false
+    retroalimentacion: Incorrecto, los métodos de listas, tabla simultánea y potencias primas son deterministas y exactos.
 - titulo: ¿Es el m.c.m.(4, 10) igual a 40 por ser su producto?
   respuesta: 'No'
   solucion_pasos:
   - No, al listar múltiplos vemos que 20 es menor ($mcm=20$).
+  alternativas:
+  - texto: 'No'
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Corresponde exactamente al menor múltiplo común obtenido mediante el algoritmo correspondiente.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, el cálculo del MCM entrega un valor entero único bien definido.
+  - texto: No es posible calcularlo con los métodos estándar
+    es_correcta: false
+    retroalimentacion: Incorrecto, los métodos de listas, tabla simultánea y potencias primas son deterministas y exactos.
 errores_frecuentes:
 - El primer elemento coincidente en la lista de múltiplos puede ser el número cero.
-- Basta con encontrar un múltiplo que coincida en dos de tres listas para declarar
-  el m.c.m.
+- Basta con encontrar un múltiplo que coincida en dos de tres listas para declarar el m.c.m.
 - El método de listas exige multiplicar los múltiplos encontrados entre sí.
-- La lista de múltiplos de un número debe detenerse obligatoriamente en el número
-  100.
+- La lista de múltiplos de un número debe detenerse obligatoriamente en el número 100.
 - Si un número es par y otro impar no existirán coincidencias en sus listas de múltiplos.
 afirmaciones_verdaderas:
-- El m.c.m. mediante listas se encuentra identificando la primera coincidencia positiva
-  entre las secuencias.
+- El m.c.m. mediante listas se encuentra identificando la primera coincidencia positiva entre las secuencias.
 - El m.c.m. de dos números es siempre menor o igual que su producto $a \cdot b$.
-al_terminar_debes_poder: Al terminar serás capaz de hallar el m.c.m. mediante la enumeración
-  de listas de múltiplos, identificando el primer elemento coincidente.
+al_terminar_debes_poder: '**QUÉ:** Determinar el mínimo común múltiplo mediante el método por extensión de listas de múltiplos comunes.
+
+
+  **CÓMO:** Escribiendo en orden ascendente los múltiplos de cada número $M(a) = \{a, 2a, 3a, \dots\}$ y $M(b) = \{b, 2b, 3b, \dots\}$ hasta hallar el primer elemento coincidente positivo.
+
+
+  ![Resumen Identificación del m.c.m. mediante lista de múltiplos comunes](/static/img/nodos/identificacion-del-mcm-mediante-lista-de-multiplos-comunes-resumen.svg)'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
