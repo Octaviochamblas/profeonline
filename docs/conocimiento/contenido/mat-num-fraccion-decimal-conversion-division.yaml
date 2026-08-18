@@ -1,53 +1,50 @@
 semantic_id: MAT.NUM.FRACCION_DECIMAL.CONVERSION_DIVISION
-resumen_inicial: Para transformar cualquier fracción $\frac{a}{b}$ en su número decimal
-  equivalente, se realiza la división entera entre el numerador $a$ y el denominador
-  $b$.
-explicacion_simple: Toda fracción representa una división no efectuada. Para convertir
-  una fracción a número decimal, simplemente dividimos el número de arriba (numerador)
-  entre el número de abajo (denominador); el cociente que obtengamos al continuar
-  la división agregando comas y ceros será el número decimal equivalente.
-explicacion_formal: 'Sea la fracción $\frac{a}{b} \in \mathbb{Q}$ con $b \neq 0$,
-  la **Conversión a Expansión Decimal** se define mediante el algoritmo de la división
-  euclidiana extendida en el sistema decimal:
+resumen_inicial: Para transformar cualquier fracción $\frac{a}{b}$ en su número decimal equivalente, se realiza la división entera entre el numerador $a$ y el denominador $b$.
+explicacion_simple: '![Conversión de fracción a decimal mediante división](/static/img/nodos/conversion-de-fraccion-a-decimal-mediante-division-intro.svg)
+
+
+  Toda fracción representa formalmente una división no efectuada. Para convertir una fracción a número decimal, simplemente dividimos el número de arriba (numerador) entre el número de abajo (denominador); el cociente que obtengamos al continuar la división agregando comas y ceros a los residuos será el número decimal equivalente.'
+explicacion_formal: 'Sea la fracción $\frac{a}{b} \in \mathbb{Q}$ con $b \neq 0$, la **Conversión a Expansión Decimal** se define mediante el algoritmo de la división euclidiana extendida en el sistema posicional decimal:
 
 
   $$\frac{a}{b} = a \div b = C + \sum_{k=1}^{\infty} d_k \cdot 10^{-k}$$
 
 
-  **Desglose de la fórmula:**
+  **Desglose formal de la fórmula:**
 
-  - $C \in \mathbb{Z}$: Parte entera del cociente obtenida al dividir $a$ entre $b$.
+  - **$C \in \mathbb{Z}$:** Parte entera del cociente obtenida al dividir $a$ entre $b$.
 
-  - $d_k \in \{0, 1, \dots, 9\}$: Dígitos decimales consecutivos derivados de multiplicar
-  los restos de la división por $10$.
+  - **$d_k \in \{0, 1, \dots, 9\}$:** Dígitos decimales consecutivos derivados de multiplicar los restos sucesivos por $10$.
+
+  - **Restos posibles:** Al dividir por $b$, existen a lo sumo $b$ residuos distintos $\{0, 1, \dots, b-1\}$.
 
 
-  > **Complemento didáctico:** Dado que el número de restos posibles en la división
-  entera por $b$ es finito (a lo sumo $b-1$ restos distintos no nulos), la división
-  SIEMPRE termina en resto 0 (finito) o entra en un ciclo repetitivo (periódico).'
-definiciones_clave: '- **Conversión por división**: Algoritmo directo de división
-  $a : b$ para hallar la representación decimal de $\frac{a}{b}$.'
-propiedades_relaciones: '- **Finitud de los restos**: Garantiza matemáticamente que
-  la expansión decimal resultante sea o finita o periódica en $\mathbb{Q}$.'
+  > **Complemento didáctico:** Dado que el conjunto de restos es estrictamente finito, la división siempre termina en resto $0$ (decimal finito) o repite un resto previo (decimal infinito periódico).'
+definiciones_clave: '- **Conversión por división**: Algoritmo directo $a : b$ para calcular la representación decimal de $\frac{a}{b}$.
+
+  - **Cociente decimal**: Número resultante de extender la división más allá de la unidad entera mediante comas y ceros.
+
+  - **Residuo cíclico**: Resto de la división que se repite periódicamente generando cifras decimales infinitas.'
+propiedades_relaciones: '- **Finitud de los restos**: Garantiza matemáticamente que en $\mathbb{Q}$ toda fracción genera exclusivamente un decimal finito o periódico.
+
+  - **Invarianza por amplificación**: $\frac{a}{b} = \frac{a \cdot k}{b \cdot k}$ produce exactamente el mismo número decimal.'
 ejemplo_guiado:
-  enunciado: Transforme la fracción $\frac{3}{8}$ a número decimal mediante la división
-    entera.
+  enunciado: '![Ejemplos de conversión por división](/static/img/nodos/conversion-de-fraccion-a-decimal-mediante-division-ejemplos.svg)
+
+
+    Transforme la fracción $\frac{3}{8}$ a número decimal mediante la división entera.'
   pasos:
   - 'Paso 1: Plantear la división del numerador entre el denominador: $3 : 8$.'
-  - 'Paso 2: Como $3 < 8$, la parte entera es $0$. Escribir $0,$ en el cociente y
-    agregar un cero al $3 \implies 30$.'
+  - 'Paso 2: Como $3 < 8$, la parte entera es $0$. Escribir $0,$ en el cociente y agregar un cero al $3 \implies 30$.'
   - 'Paso 3: Dividir $30 : 8 = 3$ con resto $6$.'
-  - 'Paso 4: Agregar cero al resto $6 \implies 60$. Dividir $60 : 8 = 7$ con resto
-    $4$.'
-  - 'Paso 5: Agregar cero al resto $4 \implies 40$. Dividir $40 : 8 = 5$ con resto
-    $0$.'
+  - 'Paso 4: Agregar cero al resto $6 \implies 60$. Dividir $60 : 8 = 7$ con resto $4$.'
+  - 'Paso 5: Agregar cero al resto $4 \implies 40$. Dividir $40 : 8 = 5$ con resto $0$.'
   - 'Conclusión: $\frac{3}{8} = 0,375$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es la operación aritmética que permite convertir cualquier fracción
-    a/b en número decimal?
+  question: ¿Cuál es la operación aritmética que permite convertir cualquier fracción a/b en número decimal?
   choices:
-  - text: 'Dividir el numerador a entre el denominador b (a : b)'
+  - text: 'Dividir el numerador a entre el denominador b ($a : b$)'
     is_correct: true
   - text: Multiplicar el numerador a por el denominador b
     is_correct: false
@@ -55,80 +52,91 @@ checkpoints:
     is_correct: false
   - text: Restar a - b
     is_correct: false
-  explanation: 'La alternativa correcta es ''Dividir el numerador a entre el denominador
-    b (a : b)''.'
+  explanation: 'La alternativa correcta es ''Dividir el numerador a entre el denominador b ($a : b$)''.'
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 3/8, ¿cuál fue el número decimal obtenido al
-    dividir?
+  question: En el ejemplo guiado para $\frac{3}{8}$, ¿cuál fue el número decimal obtenido al dividir?
   choices:
-  - text: 0,375
+  - text: $0,375$
     is_correct: true
-  - text: 2,66
+  - text: $2,66$
     is_correct: false
-  - text: 0,38
+  - text: $0,38$
     is_correct: false
-  - text: 0,83
+  - text: $0,83$
     is_correct: false
-  explanation: La alternativa correcta es '0,375'.
+  explanation: La alternativa correcta es '$0,375$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
 - 'Paso 1: Escribir la división del numerador entre el denominador ($a : b$).'
-- 'Paso 2: Calcular el cociente entero y colocar una coma decimal en el cociente cuando
-  los enteros se agoten.'
-- 'Paso 3: Multiplicar sucesivamente los residuos por 10 y continuar dividiendo hasta
-  obtener resto cero o detectar la repetición del período.'
-errores_correccion: '- **Error 1: Dividir el denominador entre el numerador ($b :
-  a$).** **Cómo corregirlo:** La conversión exige estrictamente dividir el NUMERADOR
-  entre el DENOMINADOR ($a : b$).
+- 'Paso 2: Calcular el cociente entero y colocar una coma decimal en el cociente cuando los enteros se agoten.'
+- 'Paso 3: Multiplicar sucesivamente los residuos por 10 y continuar dividiendo hasta obtener resto cero o detectar la repetición del período.'
+errores_correccion: '- **Error 1: Dividir el denominador entre el numerador ($b : a$).** **Cómo corregirlo:** La conversión exige estrictamente dividir el NUMERADOR entre el DENOMINADOR ($a : b$).
 
-
-  - **Error 2: Detener la división en el primer resto sin continuar agregando ceros.**
-  **Cómo corregirlo:** Se deben agregar ceros a los residuos para descubrir todas
-  las cifras decimales del número.'
+  - **Error 2: Detener la división en el primer resto sin continuar agregando ceros.** **Cómo corregirlo:** Se deben agregar ceros a los residuos para descubrir todas las cifras decimales del número.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Convertir 1/4 a decimal.
+  enunciado: Convertir $\frac{1}{4}$ a decimal.
   alternativas:
-  - 0,25
-  - 0,4
-  - 4,0
-  respuesta: 0,25
+  - $0,25$
+  - $0,4$
+  - $4,0$
+  respuesta: $0,25$
   solucion_pasos:
   - '$1 : 4 = 0,25$.'
 - titulo: Ejemplo 2
-  enunciado: Convertir 5/2 a decimal.
+  enunciado: Convertir $\frac{5}{2}$ a decimal.
   alternativas:
-  - 2,5
-  - 0,4
-  - 2,2
-  respuesta: 2,5
+  - $2,5$
+  - $0,4$
+  - $2,2$
+  respuesta: $2,5$
   solucion_pasos:
   - '$5 : 2 = 2,5$.'
 - titulo: ¿Se obtiene el valor decimal exacto dividiendo numerador entre denominador?
   respuesta: Sí
   solucion_pasos:
-  - Sí, es la definición operativa de la fracción en $\mathbb{Q}$.
-- titulo: ¿Es 3/5 igual a 0,6?
+  - 'Sí, la fracción representa la operación exacta $a : b$ en $\mathbb{Q}$.'
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Una fracción es formalmente el cociente de la división entre el numerador y el denominador.
+  - texto: No, solo para fracciones propias
+    es_correcta: false
+    retroalimentacion: Incorrecto, el algoritmo de división es universal para todo tipo de fracciones.
+  - texto: Solo si el denominador es 10
+    es_correcta: false
+    retroalimentacion: Incorrecto, aplica a cualquier denominador entero no nulo.
+- titulo: ¿Es $\frac{3}{5}$ igual a $0,6$?
   respuesta: Sí
   solucion_pasos:
   - 'Sí, $3 : 5 = 0,6$.'
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: '¡Correcto! Al dividir $30 : 5 = 6$, por lo que $3 : 5 = 0,6$.'
+  - texto: No, es 0,35
+    es_correcta: false
+    retroalimentacion: Incorrecto, no se yuxtaponen los dígitos de la fracción.
+  - texto: No, es 1,66
+    es_correcta: false
+    retroalimentacion: Incorrecto, $\frac{3}{5}$ es menor que 1.
 errores_frecuentes:
 - Dividir el denominador entre el numerador para convertir una fracción a número decimal.
-- Sumar el numerador y el denominador para hallar la representación decimal de la
-  fracción.
+- Sumar el numerador y el denominador para hallar la representación decimal de la fracción.
 - Detener el proceso de división en el primer resto no nulo sin agregar la coma decimal.
-- La división de dos números enteros produce siempre un número decimal infinito no
-  periódico.
-- Convertir una fracción propia a decimal entrega como resultado una cifra entera
-  mayor que 10.
+- La división de dos números enteros produce siempre un número decimal infinito no periódico.
+- Convertir una fracción propia a decimal entrega como resultado una cifra entera mayor que 10.
 afirmaciones_verdaderas:
-- Para convertir una fracción $a/b$ a decimal se divide el numerador $a$ entre el
-  denominador $b$.
-- La finitud de restos posibles en la división entera garantiza que el resultado sea
-  un decimal finito o periódico.
-al_terminar_debes_poder: Al terminar serás capaz de convertir cualquier fracción a
-  su representación decimal equivalente ejecutando la división entera entre el numerador
-  y el denominador.
+- Para convertir una fracción $a/b$ a decimal se divide el numerador $a$ entre el denominador $b$.
+- La finitud de restos posibles en la división entera garantiza que el resultado sea un decimal finito o periódico.
+- Si el residuo de la división se vuelve cero, el número obtenido es un decimal finito.
+al_terminar_debes_poder: '![Síntesis de conversión por división](/static/img/nodos/conversion-de-fraccion-a-decimal-mediante-division-resumen.svg)
+
+
+  QUÉ: Convertir cualquier fracción común o impropia a su número decimal equivalente.
+
+
+  CÓMO: Ejecutando la división entera del numerador entre el denominador ($a : b$), incorporando la coma decimal en el cociente y agregando ceros sucesivos a los restos hasta obtener resto cero (decimal finito) o detectar la periodicidad del residuo (decimal periódico).'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado

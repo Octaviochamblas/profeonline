@@ -1,48 +1,46 @@
 semantic_id: MAT.NUM.FRACCION_DECIMAL.DENOMINADOR_POTENCIA_DIEZ
-resumen_inicial: Una fracción decimal (con denominador potencia de 10) se convierte
-  directamente a decimal escribiendo el numerador y desplazar la coma a la izquierda
-  según la cantidad de ceros del denominador.
-explicacion_simple: Cuando una fracción tiene como denominador un 10, 100, 1000, etc.,
-  convertirla a decimal es muy rápido y no exige dividir. Simplemente tomamos el número
-  del numerador y corremos la coma decimal hacia la izquierda tantos lugares como
-  ceros tenga el denominador.
-explicacion_formal: 'Dada una **Fracción Decimal** de la forma $\frac{N}{10^k}$ con
-  $N \in \mathbb{Z}$ y $k \in \mathbb{N}$, su conversión inmediata a notación posicional
-  es:
+resumen_inicial: Una fracción decimal (con denominador potencia de 10) se convierte inmediatamente a decimal desplazando la coma del numerador a la izquierda según los ceros del denominador.
+explicacion_simple: '![Conversión de fracción decimal a número decimal](/static/img/nodos/conversion-de-fraccion-decimal-a-numero-decimal-intro.svg)
+
+
+  Cuando una fracción tiene como denominador una potencia de diez ($10, 100, 1000$, etc.), convertirla a decimal es inmediato y no requiere dividir. Simplemente tomamos el número del numerador y desplazamos su coma hacia la izquierda tantos lugares como ceros tenga el denominador.'
+explicacion_formal: 'Dada una **Fracción Decimal** de la forma $\frac{N}{10^k}$ con $N \in \mathbb{Z}$ y $k \in \mathbb{N}$, su conversión directa a notación posicional decimal es:
 
 
   $$\frac{N}{10^k} = N \cdot 10^{-k}$$
 
 
-  **Desglose de la fórmula:**
+  **Desglose formal de la fórmula:**
 
-  - $10^k$: Potencia de 10 del denominador que contiene exactamente $k$ ceros.
+  - **$10^k$:** Denominador potencia de 10 con exactamente $k$ ceros.
 
-  - $10^{-k}$: Desplazamiento posicional de la coma $k$ lugares hacia la izquierda
-  sobre las cifras de $N$.
+  - **$10^{-k}$:** Operador que traslada la coma decimal $k$ lugares hacia la izquierda sobre las cifras de $N$.
+
+  - **Ceros auxiliares:** Si la cantidad de dígitos de $N$ es menor que $k$, se anteponen $k - \text{long}(N)$ ceros a la izquierda.
 
 
-  > **Complemento didáctico:** Si el número de ceros $k$ es mayor que las cifras del
-  numerador $N$, se deben agregar ceros adicionales a la izquierda del numerador antes
-  de situar la coma.'
-definiciones_clave: '- **Fracción decimal**: Fracción cuyo denominador es una potencia
-  entera de diez ($10, 100, 1000, \dots$).'
-propiedades_relaciones: '- **Conversión inmediata sin división**: Se basa en la notación
-  posicional en base 10.'
+  > **Complemento didáctico:** También es posible amplificar fracciones cuyo denominador sea divisor de una potencia de 10 (como $2, 4, 5, 20, 25, 50$) para convertirlas sin dividir a mano.'
+definiciones_clave: '- **Fracción decimal**: Fracción cuyo denominador es una potencia entera positiva de diez ($10^1, 10^2, 10^3, \dots$).
+
+  - **Desplazamiento posicional a la izquierda**: Retroceso de la coma tantos órdenes de magnitud como ceros contenga el divisor.
+
+  - **Amplificación a base decimal**: Multiplicación de numerador y denominador para obtener un denominador $10^k$.'
+propiedades_relaciones: '- **Conversión directa sin resto**: Toda fracción decimal genera exclusivamente un número decimal finito.
+
+  - **Correspondencia exacta de ceros**: El número de cifras decimales coincide exactamente con el exponente $k$ de la potencia de 10.'
 ejemplo_guiado:
-  enunciado: Convierta las fracciones decimales $\frac{47}{100}$ y $\frac{3}{1000}$
-    a número decimal.
+  enunciado: '![Ejemplos de fracciones decimales](/static/img/nodos/conversion-de-fraccion-decimal-a-numero-decimal-ejemplos.svg)
+
+
+    Convierta las fracciones decimales $\frac{47}{100}$ y $\frac{3}{1000}$ a número decimal.'
   pasos:
-  - 'Paso 1: Para $\frac{47}{100}$, el denominador $100$ tiene $2$ ceros. Mover la
-    coma $2$ lugares a la izquierda sobre $47 \implies 0,47$.'
+  - 'Paso 1: Para $\frac{47}{100}$, el denominador $100$ tiene $2$ ceros. Mover la coma $2$ lugares a la izquierda sobre $47 \implies 0,47$.'
   - 'Paso 2: Para $\frac{3}{1000}$, el denominador $1000$ tiene $3$ ceros.'
-  - 'Paso 3: Como $3$ tiene una sola cifra, rellenar con ceros a la izquierda ($003$)
-    y desplazar $3$ posiciones $\implies 0,003$.'
+  - 'Paso 3: Como $3$ tiene una sola cifra, rellenar con ceros a la izquierda ($003$) y desplazar $3$ posiciones $\implies 0,003$.'
   - 'Conclusión: $\frac{47}{100} = 0,47$ y $\frac{3}{1000} = 0,003$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuántas posiciones a la izquierda se mueve la coma al convertir N / 10^k
-    a número decimal?
+  question: ¿Cuántas posiciones a la izquierda se mueve la coma al convertir $\frac{N}{10^k}$ a número decimal?
   choices:
   - text: k posiciones a la izquierda (tantas como ceros tenga el denominador)
     is_correct: true
@@ -52,79 +50,91 @@ checkpoints:
     is_correct: false
   - text: No se mueve la coma
     is_correct: false
-  explanation: La alternativa correcta es 'k posiciones a la izquierda (tantas como
-    ceros tenga el denominador)'.
+  explanation: La alternativa correcta es 'k posiciones a la izquierda (tantas como ceros tenga el denominador)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 3/1000, ¿cuál fue el decimal resultante?
+  question: En el ejemplo guiado para $\frac{3}{1000}$, ¿cuál fue el decimal resultante?
   choices:
-  - text: 0,003
+  - text: $0,003$
     is_correct: true
-  - text: 0,03
+  - text: $0,03$
     is_correct: false
-  - text: 0,3
+  - text: $0,3$
     is_correct: false
-  - text: 3,000
+  - text: $3,000$
     is_correct: false
-  explanation: La alternativa correcta es '0,003'.
+  explanation: La alternativa correcta es '$0,003$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Contar la cantidad de ceros $k$ presentes en el denominador potencia de
-  diez ($10^k$).'
+- 'Paso 1: Contar la cantidad de ceros $k$ presentes en el denominador potencia de diez ($10^k$).'
 - 'Paso 2: Escribir las cifras del numerador.'
-- 'Paso 3: Desplazar la coma decimal $k$ lugares hacia la izquierda, agregando ceros
-  a la izquierda si el número de cifras del numerador es menor que $k$.'
-errores_correccion: '- **Error 1: Desplazar la coma hacia la derecha en lugar de la
-  izquierda ($3/100 = 300$).** **Cómo corregirlo:** La división por potencias de 10
-  desplaza la coma hacia la IZQUIERDA.
+- 'Paso 3: Desplazar la coma decimal $k$ lugares hacia la izquierda, agregando ceros a la izquierda si el número de cifras del numerador es menor que $k$.'
+errores_correccion: '- **Error 1: Desplazar la coma hacia la derecha en lugar de la izquierda (ej: $3/100 = 300$).** **Cómo corregirlo:** La división por potencias de 10 desplaza la coma hacia la IZQUIERDA.
 
-
-  - **Error 2: Olvidar agregar ceros a la izquierda cuando el numerador tiene pocas
-  cifras ($5/1000 = 0,5$).** **Cómo corregirlo:** Se deben colocar ceros de relleno
-  a la izquierda hasta completar las $k$ posiciones decimales ($0,005$).'
+  - **Error 2: Olvidar agregar ceros a la izquierda cuando el numerador tiene pocas cifras ($5/1000 = 0,5$).** **Cómo corregirlo:** Se deben colocar ceros de relleno a la izquierda hasta completar las $k$ posiciones decimales ($0,005$).'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Convertir 125/10 a decimal.
+  enunciado: Convertir $\frac{125}{10}$ a decimal.
   alternativas:
-  - 12,5
-  - 1,25
-  - 0,125
-  respuesta: 12,5
+  - $12,5$
+  - $1,25$
+  - $0,125$
+  respuesta: $12,5$
   solucion_pasos:
   - Un cero en el denominador $\implies 12,5$.
 - titulo: Ejemplo 2
-  enunciado: Convertir 8/100 a decimal.
+  enunciado: Convertir $\frac{8}{100}$ a decimal.
   alternativas:
-  - 0,08
-  - 0,8
-  - 8,00
-  respuesta: 0,08
+  - $0,08$
+  - $0,8$
+  - $8,00$
+  respuesta: $0,08$
   solucion_pasos:
   - Dos ceros en el denominador $\implies 0,08$.
 - titulo: ¿Equivale dividir por 100 a mover la coma 2 posiciones a la izquierda?
   respuesta: Sí
   solucion_pasos:
-  - Sí, por la notación posicional en base 10.
-- titulo: ¿Es 9/10 igual a 0,9?
+  - Sí, cada división por 10 disminuye en un orden de magnitud la posición decimal.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! En base 10, dividir por $10^2 = 100$ traslada la coma 2 lugares hacia la izquierda.
+  - texto: No, se traslada a la derecha
+    es_correcta: false
+    retroalimentacion: Incorrecto, trasladar a la derecha multiplicaría el valor por 100.
+  - texto: Solo para números pares
+    es_correcta: false
+    retroalimentacion: Incorrecto, la propiedad posicional aplica a todo número real.
+- titulo: ¿Es $\frac{9}{10}$ igual a $0,9$?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $9/10 = 0,9$.
+  - Sí, $\frac{9}{10} = 0,9$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Moviendo la coma 1 lugar a la izquierda sobre el 9 se obtiene $0,9$.
+  - texto: No, es 0,09
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0,09$ corresponde a $\frac{9}{100}$.
+  - texto: No, es 9,0
+    es_correcta: false
+    retroalimentacion: Incorrecto, $9,0$ corresponde a $9$ unidades enteras.
 errores_frecuentes:
-- Mover la coma decimal hacia la derecha al dividir un numerador entre una potencia
-  de diez.
-- Omitir ceros de relleno a la izquierda cuando el numerador posee menos dígitos que
-  los ceros del denominador.
-- Una fracción de denominador 100 se convierte a decimal moviendo la coma tres lugares
-  a la izquierda.
+- Mover la coma decimal hacia la derecha al dividir un numerador entre una potencia de diez.
+- Omitir ceros de relleno a la izquierda cuando el numerador posee menos dígitos que los ceros del denominador.
+- Una fracción de denominador 100 se convierte a decimal moviendo la coma tres lugares a la izquierda.
 - Las fracciones con denominador 10 generan decimales infinitos periódicos puros.
 - Dividir una fracción por 100 equivale a multiplicar el numerador por 100.
 afirmaciones_verdaderas:
-- Para convertir $\frac{N}{10^k}$ a decimal se desplaza la coma $k$ lugares hacia
-  la izquierda sobre $N$.
-- Las fracciones con denominador potencia de diez generan exclusivamente decimales
-  finitos.
-al_terminar_debes_poder: Al terminar serás capaz de convertir inmediatamente fracciones
-  decimales a números decimales desplazando la coma a la izquierda según los ceros
-  del denominador.
+- Para convertir $\frac{N}{10^k}$ a decimal se desplaza la coma $k$ lugares hacia la izquierda sobre $N$.
+- Las fracciones con denominador potencia de diez generan exclusivamente decimales finitos.
+- Amplificar una fracción a denominador potencia de 10 permite convertirla a decimal sin realizar división manual.
+al_terminar_debes_poder: '![Síntesis de fracciones decimales a número decimal](/static/img/nodos/conversion-de-fraccion-decimal-a-numero-decimal-resumen.svg)
+
+
+  QUÉ: Convertir fracciones decimales (o fracciones amplificables a potencias de 10) a números decimales exactos.
+
+
+  CÓMO: Desplazando la coma decimal del numerador tantas posiciones hacia la izquierda como ceros tenga el denominador ($N/10^k = N \cdot 10^{-k}$), anteponiendo ceros auxiliares a la izquierda si fuera necesario.'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
