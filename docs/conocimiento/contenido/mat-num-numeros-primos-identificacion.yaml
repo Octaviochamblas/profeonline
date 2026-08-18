@@ -1,52 +1,41 @@
 semantic_id: MAT.NUM.NUMEROS_PRIMOS.PRIMO_IDENTIFICACION
-resumen_inicial: 'Un número $p > 1$ se identifica como primo comprobando que la cantidad
-  de sus divisores es exactamente dos: $|D(p)| = 2$.'
-explicacion_simple: Para identificar si un número dado es primo, debemos probar si
-  es posible dividirlo exactamente por algún número primo menor que su raíz cuadrada.
-  Si ninguno de esos números primos lo divide exactamente, confirmamos que el número
-  solo se puede dividir por 1 y por sí mismo, clasificándolo como primo.
-explicacion_formal: 'Para determinar la primalidad de un entero $n > 1$, se aplica
-  el **Test de Primalidad por División Finitiva**:
+resumen_inicial: 'Un número $p > 1$ se identifica como primo comprobando que la cantidad de sus divisores es exactamente dos: $|D(p)| = 2$.'
+explicacion_simple: 'Para identificar si un número dado es primo, debemos probar si es posible dividirlo exactamente por algún número primo menor que su raíz cuadrada. Si ninguno de esos números primos lo divide exactamente, confirmamos que el número solo se puede dividir por 1 y por sí mismo, clasificándolo como primo.
 
 
-  $$n \text{ es primo} \iff \forall p_i \in \text{Primos}, \, p_i \le \sqrt{n} \implies
-  n \not\equiv 0 \pmod{p_i}$$
+  ![Identificación de número primo por cantidad de divisores](/static/img/nodos/identificacion-de-numero-primo-por-cantidad-de-divisores-intro.svg)'
+explicacion_formal: 'Para determinar la primalidad de un entero $n > 1$, se aplica el **Test de Primalidad por División Finitiva**:
+
+
+  $$n \text{ es primo} \iff \forall p_i \in \text{Primos}, \, p_i \le \sqrt{n} \implies n \not\equiv 0 \pmod{p_i}$$
 
 
   **Desglose de la fórmula:**
 
-  - $p_i \le \sqrt{n}$: Conjunto acotado de números primos menores o iguales a la
-  raíz cuadrada de $n$.
+  - $p_i \le \sqrt{n}$: Conjunto acotado de números primos menores o iguales a la raíz cuadrada de $n$.
 
-  - $n \not\equiv 0 \pmod{p_i}$: Exigencia de que ningún primo de la prueba divida
-  a $n$ de forma exacta.
+  - $n \not\equiv 0 \pmod{p_i}$: Exigencia de que ningún primo de la prueba divida a $n$ de forma exacta.
 
 
-  > **Complemento didáctico:** Para probar si 29 es primo, evaluamos primos $p \le
-  \sqrt{29} \approx 5.38$ (primos 2, 3, 5). Como 29 no es divisible por 2, 3 ni 5,
-  se concluye que 29 es primo.'
-definiciones_clave: '- **Test de primalidad por ensayo de división**: Algoritmo que
-  prueba divisibilidad solo por primos $p_i \le \sqrt{n}$.
+  > **Complemento didáctico:** Para probar si 29 es primo, evaluamos primos $p \le \sqrt{29} \approx 5.38$ (primos 2, 3, 5). Como 29 no es divisible por 2, 3 ni 5, se concluye que 29 es primo.'
+definiciones_clave: '- **Test de primalidad por ensayo de división**: Algoritmo que prueba divisibilidad solo por primos $p_i \le \sqrt{n}$.
 
-  - **Conteo de divisores ($|D(n)|$)**: Función cardinal que debe ser estrictamente
-  igual a 2 para garantizar primalidad.'
-propiedades_relaciones: '- **Eficiencia algorítmica**: Reduce drásticamente las pruebas
-  de divisibilidad necesarias.'
+  - **Conteo de divisores ($|D(n)|$)**: Función cardinal que debe ser estrictamente igual a 2 para garantizar primalidad.'
+propiedades_relaciones: '- **Eficiencia algorítmica**: Reduce drásticamente las pruebas de divisibilidad necesarias.'
 ejemplo_guiado:
-  enunciado: Identifique si el número $37$ es primo probando divisores primos hasta
-    $\sqrt{37}$.
+  enunciado: 'Identifique si el número $37$ es primo probando divisores primos hasta $\sqrt{37}$.
+
+
+    ![Ejemplo Identificación de número primo por cantidad de divisores](/static/img/nodos/identificacion-de-numero-primo-por-cantidad-de-divisores-ejemplos.svg)'
   pasos:
-  - 'Paso 1: Estimar la cota superior: $\sqrt{37} \approx 6.08$, los primos a probar
-    son $\{2, 3, 5\}$.'
+  - 'Paso 1: Estimar la cota superior: $\sqrt{37} \approx 6.08$, los primos a probar son $\{2, 3, 5\}$.'
   - 'Paso 2: Probar divisibilidad por 2: 37 es impar (no divisible).'
   - 'Paso 3: Probar divisibilidad por 3: $3+7=10$ (no divisible).'
   - 'Paso 4: Probar divisibilidad por 5: termina en 7 (no divisible).'
-  - 'Conclusión: Como ningún primo $p \le \sqrt{37}$ divide a 37, 37 es un número
-    primo.'
+  - 'Conclusión: Como ningún primo $p \le \sqrt{37}$ divide a 37, 37 es un número primo.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Hasta qué primos se debe probar para verificar si un número n es primo
-    por prueba de división?
+  question: ¿Hasta qué primos se debe probar para verificar si un número n es primo por prueba de división?
   choices:
   - text: Hasta los primos menores o iguales a la raíz cuadrada de n (p ≤ √n)
     is_correct: true
@@ -56,8 +45,7 @@ checkpoints:
     is_correct: false
   - text: Solo probar el 2 y el 5
     is_correct: false
-  explanation: La alternativa correcta es 'Hasta los primos menores o iguales a la
-    raíz cuadrada de n (p ≤ √n)'.
+  explanation: La alternativa correcta es 'Hasta los primos menores o iguales a la raíz cuadrada de n (p ≤ √n)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
   question: En el ejemplo guiado con 37, ¿cuántos divisores positivos tiene en total?
@@ -75,15 +63,11 @@ checkpoints:
 procedimiento:
 - 'Paso 1: Calcular la raíz cuadrada aproximada del número $n$.'
 - 'Paso 2: Listar todos los números primos $p_i \le \sqrt{n}$.'
-- 'Paso 3: Si ninguno de esos primos divide a $n$, concluir que $|D(n)| = 2$ y $n$
-  es primo.'
-errores_correccion: '- **Error 1: Probar números compuestos como 4 u 8 al evaluar
-  primalidad.** **Cómo corregirlo:** Basta probar únicamente números primos, pues
-  si un compuesto dividiera a $n$, su divisor primo también lo haría.
+- 'Paso 3: Si ninguno de esos primos divide a $n$, concluir que $|D(n)| = 2$ y $n$ es primo.'
+errores_correccion: '- **Error 1: Probar números compuestos como 4 u 8 al evaluar primalidad.** **Cómo corregirlo:** Basta probar únicamente números primos, pues si un compuesto dividiera a $n$, su divisor primo también lo haría.
 
 
-  - **Error 2: Probar divisibilidad por todos los enteros hasta $n$.** **Cómo corregirlo:**
-  La búsqueda se detiene en $\sqrt{n}$ por la propiedad de pares conjugados.'
+  - **Error 2: Probar divisibilidad por todos los enteros hasta $n$.** **Cómo corregirlo:** La búsqueda se detiene en $\sqrt{n}$ por la propiedad de pares conjugados.'
 ejemplos:
 - titulo: Ejemplo 1
   enunciado: Para verificar si 47 es primo, ¿hasta qué primo debemos probar?
@@ -107,23 +91,45 @@ ejemplos:
   respuesta: Sí
   solucion_pasos:
   - $\sqrt{31} \approx 5.56$. Primos 2, 3, 5 no dividen a 31. $|D(31)| = 2$.
+  alternativas:
+  - texto: Sí
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple rigurosamente con las definiciones de primalidad, compuestos y cantidad de divisores.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, la clasificación formal de divisores en ℕ entrega un resultado unívoco.
+  - texto: El número pertenece a ambas categorías
+    es_correcta: false
+    retroalimentacion: Incorrecto, los conjuntos de números primos y compuestos son estrictamente disjuntos.
 - titulo: ¿Es 91 un número primo?
   respuesta: 'No'
   solucion_pasos:
   - No, $91 = 7 \cdot 13$, por lo que es divisible por 7.
+  alternativas:
+  - texto: 'No'
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cumple rigurosamente con las definiciones de primalidad, compuestos y cantidad de divisores.
+  - texto: Ninguna de las anteriores
+    es_correcta: false
+    retroalimentacion: Incorrecto, la clasificación formal de divisores en ℕ entrega un resultado unívoco.
+  - texto: El número pertenece a ambas categorías
+    es_correcta: false
+    retroalimentacion: Incorrecto, los conjuntos de números primos y compuestos son estrictamente disjuntos.
 errores_frecuentes:
-- Para comprobar la primalidad de un número se debe probar la división por todos los
-  enteros hasta $n-1$.
+- Para comprobar la primalidad de un número se debe probar la división por todos los enteros hasta $n-1$.
 - Si un número no termina en cifra par, se concluye de inmediato que es primo.
 - Probar divisibilidad por 4 y por 9 es indispensable para saber si un número es primo.
 - Un número que no es divisible por 2 ni por 3 es siempre un número primo.
 - Identificar un número primo exige contar una cantidad impar de divisores positivos.
 afirmaciones_verdaderas:
-- Un número es primo si y solo si la cantidad de sus divisores positivos es exactamente
-  dos.
-- Para verificar la primalidad de $n$ basta con probar los divisores primos menores
-  o iguales a $\sqrt{n}$.
-al_terminar_debes_poder: Al terminar serás capaz de identificar la primalidad de cualquier
-  número mediante el conteo de divisores y la prueba de división hasta la cota $\sqrt{n}$.
+- Un número es primo si y solo si la cantidad de sus divisores positivos es exactamente dos.
+- Para verificar la primalidad de $n$ basta con probar los divisores primos menores o iguales a $\sqrt{n}$.
+al_terminar_debes_poder: '**QUÉ:** Determinar la primalidad de un número natural mediante el criterio de cantidad de divisores y prueba acotada.
+
+
+  **CÓMO:** Comprobando que $\tau(n) = 2$ mediante la prueba de divisibilidad por todos los números primos $p \le \lfloor\sqrt{n}\rfloor$ sin obtener ningún resto nulo.
+
+
+  ![Resumen Identificación de número primo por cantidad de divisores](/static/img/nodos/identificacion-de-numero-primo-por-cantidad-de-divisores-resumen.svg)'
 fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
 estado: publicado
