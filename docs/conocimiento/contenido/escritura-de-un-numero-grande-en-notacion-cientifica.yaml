@@ -1,123 +1,137 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.ESCRITURA_NUMERO_GRANDE
-resumen_inicial: Para escribir un número grande ($|x| \ge 10$) en notación científica,
-  la coma se desplaza $n$ posiciones hacia la izquierda hasta tener un coeficiente
-  $1 \le |k| < 10$, asignando un exponente entero positivo $+n$.
-explicacion_simple: Al convertir un número grande a notación científica, corremos
-  la coma hacia la izquierda hasta dejar un solo dígito diferente de cero antes de
-  ella. La cantidad de saltos que dimos hacia la izquierda será el exponente positivo
-  de nuestra potencia de diez.
-explicacion_formal: 'Sea $x \ge 10$, la representación $x = k \cdot 10^n$ se construye
-  mediante la traslación de la coma:
+resumen_inicial: Para escribir un número grande ($|x| \ge 10$) en notación científica, se desplaza la coma hacia la izquierda hasta dejar un solo dígito entero, resultando en un exponente positivo $n > 0$.
+explicacion_simple: '![Escritura de números grandes en notación científica](/static/img/nodos/escritura-de-un-numero-grande-en-notacion-cientifica-intro.svg)
 
 
-  $$x = (a_0 a_1 \dots a_p) \implies k = a_0, a_1 \dots a_p \quad \text{con } n =
-  p > 0$$
+  Para transformar un número grande (como $450\,000$) a notación científica, colocamos una coma imaginaria al final del número y la movemos hacia la **izquierda** hasta que quede después del primer dígito. En $450\,000$, la coma viaja $5$ lugares a la izquierda hasta quedar entre el $4$ y el $5$ ($4,5$). Cada salto a la izquierda suma uno al exponente, así que el resultado es $4,5 \cdot 10^5$. ¡Recuerda contar los lugares que se mueve la coma, no solo los ceros!'
+explicacion_formal: 'Sea $N \in \mathbb{R}$ un número real tal que $|N| \ge 10$. Su **Conversión a Notación Científica** se define mediante el algoritmo de desplazamiento a la izquierda:
 
 
-  **Desglose del algoritmo:**
-
-  - Dirección de desplazamiento: Izquierda $\implies$ Exponente positivo $+n$.
-
-  - Equivalencia de potencia: Multiplicar $k \cdot 10^n$ restablece la escala original
-  expandiendo ceros hacia la derecha.
+  $$N = k \cdot 10^n$$
 
 
-  > **Complemento didáctico:** Ejemplo: $3.800.000 = 3,8 \cdot 10^6$ (se corrió la
-  coma $6$ lugares a la izquierda).'
-definiciones_clave: '- **Escritura de números grandes**: Conversión con traslación
-  de coma a la izquierda y exponente positivo $+n$.'
-propiedades_relaciones: '- **Exponente positivo**: Representa la cantidad de traslaciones
-  a la izquierda.'
+  **Algoritmo matemático:**
+
+  1. Se sitúa la coma decimal a la derecha de la cifra de las unidades.
+
+  2. Se traslada la coma $n$ posiciones hacia la izquierda hasta situarla inmediatamente a la derecha del primer dígito significativo no nulo.
+
+  3. El número de traslaciones efectuadas determina el exponente entero estrictamente positivo $n \in \mathbb{N}$ ($n > 0$).
+
+  4. Se eliminan los ceros redundantes a la derecha de la parte decimal resultante, preservando las cifras significativas no nulas y los ceros intermedios.'
+definiciones_clave: '- **Desplazamiento a la izquierda**: Operación de división sucesiva por 10 compensada con $10^n$.
+
+  - **Exponente positivo ($n > 0$)**: Indicador directo de que la magnitud original es mayor o igual a diez.'
+propiedades_relaciones: '- **Ceros intermedios**: En $50\,400\,000$, el cero entre $5$ y $4$ se mantiene: $5,04 \cdot 10^7$.
+
+  - **Magnitud vs conteo de ceros**: El exponente coincide con la cantidad de ceros únicamente si el número es de la forma $d \cdot 10^n$ con $d \in \{1, \dots, 9\}$.'
 ejemplo_guiado:
-  enunciado: Escriba el número grande $45.000.000$ en notación científica.
+  enunciado: '![Ejemplos de escritura de números grandes](/static/img/nodos/escritura-de-un-numero-grande-en-notacion-cientifica-ejemplos.svg)
+
+
+    Exprese en notación científica la velocidad de la luz ($300\,000\text{ km/s}$), la distancia media Tierra-Sol ($149\,600\,000\text{ km}$) y la población mundial estimada en $8\,000\,000\,000$ de personas.'
   pasos:
-  - 'Paso 1: Colocar la coma tras la primera cifra no nula: $4,5$.'
-  - 'Paso 2: Contar los lugares desde $4,5$ hasta el final del número original: $7$
-    posiciones a la izquierda.'
-  - 'Paso 3: Asignar exponente $+7$ a la potencia de diez: $10^7$.'
-  - 'Conclusión: $45.000.000 = 4,5 \cdot 10^7$.'
+  - 'Paso 1: Convertir $300\,000$: Coma al final ($300\,000,$). Se desplaza $5$ lugares a la izquierda. Resultado: $3 \cdot 10^5\text{ km/s}$.'
+  - 'Paso 2: Convertir $149\,600\,000$: Coma al final. Se desplaza $8$ lugares a la izquierda hasta $1,496$. Resultado: $1,496 \cdot 10^8\text{ km}$.'
+  - 'Paso 3: Convertir $8\,000\,000\,000$: Coma al final. Se desplaza $9$ lugares a la izquierda. Resultado: $8 \cdot 10^9$ personas.'
+  - 'Conclusión: Los valores son $3 \cdot 10^5$, $1,496 \cdot 10^8$ y $8 \cdot 10^9$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Qué signo tiene el exponente de la potencia de diez al escribir un número
-    grande (>= 10) en notación científica?
+  question: ¿Cuál es la notación científica correcta para $7\,250\,000$?
   choices:
-  - text: Signo positivo (+n)
+  - text: $7,25 \cdot 10^6$ (la coma se movió $6$ posiciones)
     is_correct: true
-  - text: Signo negativo (-n)
+  - text: $7,25 \cdot 10^4$ (porque tiene $4$ ceros)
     is_correct: false
-  - text: Es siempre cero
+  - text: $72,5 \cdot 10^5$
     is_correct: false
-  - text: Es indeterminado
+  - text: $0,725 \cdot 10^7$
     is_correct: false
-  explanation: La alternativa correcta es 'Signo positivo (+n)'.
+  explanation: La alternativa correcta es '$7,25 \cdot 10^6$ (la coma se movió $6$ posiciones)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 45.000.000, ¿cuál fue la expresión final?
+  question: En el ejemplo guiado, ¿por qué en $149\,600\,000$ el exponente es $8$ y no $5$?
   choices:
-  - text: 4,5 · 10^7
+  - text: Porque la coma debe desplazarse hasta situarse tras el primer dígito ($1$), recorriendo $8$ cifras
     is_correct: true
-  - text: 45 · 10^6
+  - text: Porque hay $5$ ceros
     is_correct: false
-  - text: 4,5 · 10^{-7}
+  - text: Porque se cuenta de dos en dos
     is_correct: false
-  - text: 0,45 · 10^8
+  - text: Es una aproximación
     is_correct: false
-  explanation: La alternativa correcta es '4,5 · 10^7'.
+  explanation: La alternativa correcta es 'Porque la coma debe desplazarse hasta situarse tras el primer dígito ($1$), recorriendo $8$ cifras'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Mover la coma decimal hacia la izquierda hasta dejar un único dígito entero
-  entre 1 y 9.'
-- 'Paso 2: Contar el número de saltos $n$ realizados a la izquierda.'
-- 'Paso 3: Multiplicar la mantisa por la potencia $10^n$ con exponente positivo $+n$.'
-errores_correccion: '- **Error 1: Asignar exponente negativo a un número grande ($5.000
-  = 5 \cdot 10^{-3}$).** **Cómo corregirlo:** Los números grandes llevan exponente
-  POSITIVO ($5 \cdot 10^3$).
+- 'Paso 1: Ubicar la coma decimal al final del número entero.'
+- 'Paso 2: Contar cuántas posiciones se traslada la coma hacia la izquierda hasta quedar justo después del primer dígito distinto de cero.'
+- 'Paso 3: Escribir la mantisa $k$ resultante y multiplicarla por $10^n$, donde $n$ es el número de saltos efectuados.'
+errores_correccion: '- **Error 1: Contar solo los ceros finales en vez de las posiciones decimales.** **Cómo corregirlo:** En $230\,000$ la coma se mueve $5$ posiciones ($2,3 \cdot 10^5$), no $4$ ceros.
 
-
-  - **Error 2: Errar en el conteo de la última cifra.** **Cómo corregirlo:** Contar
-  meticulosamente cada posición que cruza la coma hasta situarse a la derecha del
-  primer dígito.'
+  - **Error 2: Asignar exponente negativo a números grandes.** **Cómo corregirlo:** Todo número mayor o igual a 10 tiene exponente POSITIVO ($10^{+n}$).'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Escriba $600.000$ en notación científica.
+  enunciado: ¿Cómo se escribe $52\,000\,000$ en notación científica?
   alternativas:
-  - 6 · 10^5
-  - 6 · 10^{-5}
-  - 60 · 10^4
-  respuesta: 6 · 10^5
+  - $5,2 \cdot 10^7$
+  - $52 \cdot 10^6$
+  - $5,2 \cdot 10^6$
+  respuesta: $5,2 \cdot 10^7$
   solucion_pasos:
-  - $600.000 = 6 \cdot 10^5$.
+  - La coma se mueve 7 lugares a la izquierda $\implies 5,2 \cdot 10^7$.
 - titulo: Ejemplo 2
-  enunciado: Escriba $123.000.000$ en notación científica.
+  enunciado: ¿Cuál es la notación científica de $900\,000$?
   alternativas:
-  - 1,23 · 10^8
-  - 12,3 · 10^7
-  - 1,23 · 10^{-8}
-  respuesta: 1,23 · 10^8
+  - $9 \cdot 10^5$
+  - $9 \cdot 10^6$
+  - $90 \cdot 10^4$
+  respuesta: $9 \cdot 10^5$
   solucion_pasos:
-  - $123.000.000 = 1,23 \cdot 10^8$.
-- titulo: ¿Es 7.000 igual a 7 · 10^3?
+  - $900\,000 = 9 \cdot 10^5$ (5 saltos a la izquierda).
+- titulo: ¿Es 1.500 igual a 1,5 · 10³?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $7 \cdot 1000 = 7000$.
-- titulo: ¿Requiere un número grande un exponente positivo en la potencia de 10?
+  - 'Sí, la coma se traslada 3 posiciones a la izquierda: $1,500 = 1,5 \cdot 10^3$.'
+  alternativas:
+  - texto: Sí, 1.500 = 1,5 · 10³
+    es_correcta: true
+    retroalimentacion: ¡Correcto! 3 posiciones hacia la izquierda.
+  - texto: No, es igual a 1,5 · 10²
+    es_correcta: false
+    retroalimentacion: Incorrecto, $1,5 \cdot 10^2 = 150$.
+  - texto: No, es igual a 15 · 10²
+    es_correcta: false
+    retroalimentacion: Incorrecto, 15 no está normalizado.
+- titulo: ¿Es el exponente de 64.000 igual a 4?
   respuesta: Sí
   solucion_pasos:
-  - Sí, por desplazar la coma a la izquierda.
+  - Sí, $64\,000 = 6,4 \cdot 10^4$, por lo que el exponente es 4.
+  alternativas:
+  - texto: Sí, el exponente es 4 (6,4 · 10⁴)
+    es_correcta: true
+    retroalimentacion: ¡Correcto! La coma se desplaza 4 lugares.
+  - texto: No, es 3 porque tiene 3 ceros
+    es_correcta: false
+    retroalimentacion: Incorrecto, la coma debe pasar también sobre el 4.
+  - texto: No, es 5
+    es_correcta: false
+    retroalimentacion: Incorrecto, $6,4 \cdot 10^5 = 640\,000$.
 errores_frecuentes:
-- Escribir números grandes asignando un exponente negativo a la potencia de diez.
-- Dejar dos o más cifras enteras antes de la coma al convertir un número grande.
-- Contar incorrectamente las posiciones decimales confundiendo el número de ceros
-  con los saltos.
-- El número $200.000$ expresado en notación científica equivale a $2 \cdot 10^{-5}$.
-- Multiplicar la mantisa por un exponente par sin modificar el coeficiente.
+- Contar únicamente los ceros finales omitiendo dígitos intermedios.
+- Detener la coma antes de dejar un único dígito entero ($45 \cdot 10^3$).
+- Asignar signo negativo al exponente de números grandes.
+- Eliminar ceros significativos situados entre dígitos no nulos ($405\,000 = 4,5 \cdot 10^5$).
+- Confundir la separación de miles con comas decimales.
 afirmaciones_verdaderas:
-- La conversión de un número grande ($|x| \ge 10$) requiere mover la coma a la izquierda
-  y usar un exponente positivo $+n$.
-- El exponente $+n$ representa la cantidad de posiciones decimales recorridas hasta
-  lograr $1 \le |k| < 10$.
-al_terminar_debes_poder: Al terminar serás capaz de convertir números grandes a notación
-  científica $k \cdot 10^n$, moviendo la coma a la izquierda y asignando un exponente
-  positivo $+n$.
-fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
+- Los números mayores o iguales a 10 generan siempre exponentes enteros positivos ($n > 0$).
+- El desplazamiento de la coma a la izquierda equivale a dividir sucesivamente por diez.
+- El valor del exponente es exactamente igual a la cantidad de posiciones que se trasladó la coma.
+al_terminar_debes_poder: '![Síntesis de números grandes](/static/img/nodos/escritura-de-un-numero-grande-en-notacion-cientifica-resumen.svg)
+
+
+  QUÉ: Convertir números grandes ($|N| \ge 10$) a notación científica normalizada.
+
+
+  CÓMO: Desplazando la coma decimal hacia la izquierda hasta dejar una única cifra entera no nula ($1 \le k < 10$), asignando un exponente positivo $n > 0$ igual a la cantidad exacta de posiciones desplazadas y conservando todas las cifras significativas.'
+fuente: Texto escolar MINEDUC — Matemática 8° Básico / 1° Medio / PAES.
 estado: publicado

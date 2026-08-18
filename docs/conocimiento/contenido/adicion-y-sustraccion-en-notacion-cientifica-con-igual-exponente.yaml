@@ -1,125 +1,129 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.ADICION_SUSTRACCION
-resumen_inicial: 'Para sumar o restar números en notación científica con igual exponente
-  $(a \cdot 10^n) \pm (b \cdot 10^n)$, se suman o restan los coeficientes $(a \pm
-  b)$ y se factoriza la potencia de diez común: $(a \pm b) \cdot 10^n$.'
-explicacion_simple: Si los números en notación científica tienen exactamente el mismo
-  exponente en el 10, podemos sumar o restar directamente los números de adelante
-  y dejar la misma potencia de 10 como factor común. Si los exponentes son distintos,
-  primero hay que igualarlos.
-explicacion_formal: 'Dados $x = a \cdot 10^n$ y $y = b \cdot 10^n$, la **Adición/Sustracción
-  por Factor Común** cumple:
+resumen_inicial: 'Para sumar o restar números en notación científica con igual exponente, se operan las mantisas y se conserva la potencia de diez común: $a \cdot 10^n \pm b \cdot 10^n = (a \pm b) \cdot 10^n$.'
+explicacion_simple: '![Adición y sustracción en notación científica con igual exponente](/static/img/nodos/adicion-y-sustraccion-en-notacion-cientifica-con-igual-exponente-intro.svg)
 
 
-  $$x \pm y = (a \pm b) \cdot 10^n$$
+  Sumar o restar números en notación científica cuando tienen **el mismo exponente** de diez es exactamente como sumar términos semejantes en álgebra:
 
+  - La potencia $10^n$ se comporta como una variable común que se mantiene intacta.
 
-  **Desglose operativo:**
+  - Solo sumas o restas los números de adelante (las mantisas $a \pm b$).
 
-  - Homogeneización de exponentes: Si los exponentes difieren ($m \neq n$), se desplaza
-  la coma del coeficiente de uno de los términos para igualar las potencias antes
-  de factorizar.
+  - **¡Regla de oro!** Los exponentes de diez **NUNCA se suman ni se restan** en la suma ($2 \cdot 10^3 + 4 \cdot 10^3 = 6 \cdot 10^3$, no $6 \cdot 10^6$). Si tras la suma la mantisa queda $\ge 10$, se renormaliza sumando $1$ al exponente.'
+explicacion_formal: "Sean $x = a \\cdot 10^n$ e $y = b \\cdot 10^n$ dos números en notación científica con idéntico orden de magnitud $n \\in \\mathbb{Z}$. Por la propiedad distributiva de la multiplicación respecto a la adición y sustracción en $\\mathbb{R}$:\n\n$$x \\pm y = (a \\pm b) \\cdot 10^n$$\n\n**Fase de Renormalización del resultado:**\n- **En la adición ($a + b$):** Como $1 \\le a, b < 10$, la suma satisface $2 \\le a + b < 20$.\n  - Si $a + b \\ge 10$: Se define $k = \\frac{a+b}{10}$ y la suma normalizada es $k \\cdot 10^{n+1}$.\n- **En la sustracción ($a - b$):** Si $|a - b| < 1$, se traslada la coma a la derecha y se decrementa el exponente: $k \\cdot 10^{n-1}$."
+definiciones_clave: '- **Factorización por potencia común**: Extracción de $10^n$ como factor común de la operación.
 
+  - **Términos semejantes de orden $n$**: Cantidades que comparten la misma escala decimal.'
+propiedades_relaciones: '- **Preservación estricta de escala**: $10^n \pm 10^n \neq 10^{2n}$ (la suma no altera el orden de magnitud salvo desborde por acarreo).
 
-  > **Complemento didáctico:** Ejemplo con igual exponente: $(3,2 \cdot 10^4) + (4,5
-  \cdot 10^4) = (3,2 + 4,5) \cdot 10^4 = 7,7 \cdot 10^4$.'
-definiciones_clave: '- **Adición y sustracción en notación científica**: Operación
-  $(a \pm b) \cdot 10^n$ requiriendo igual exponente previo.'
-propiedades_relaciones: '- **Factorización común**: $(a \cdot 10^n) \pm (b \cdot 10^n)
-  = (a \pm b) \cdot 10^n$.'
+  - **Distributividad**: $(a + b) \cdot 10^n = a \cdot 10^n + b \cdot 10^n$.'
 ejemplo_guiado:
-  enunciado: Calcule $(4,2 \cdot 10^5) + (3,6 \cdot 10^5)$ y $(8,5 \cdot 10^3) - (2,1
-    \cdot 10^3)$.
+  enunciado: '![Ejemplos de suma y resta con igual exponente](/static/img/nodos/adicion-y-sustraccion-en-notacion-cientifica-con-igual-exponente-ejemplos.svg)
+
+
+    Calcule y exprese en notación científica normalizada las operaciones $4,2 \cdot 10^5 + 3,1 \cdot 10^5$, $8,5 \cdot 10^{-3} - 3,2 \cdot 10^{-3}$ y $7,5 \cdot 10^4 + 6,5 \cdot 10^4$.'
   pasos:
-  - 'Paso 1: Para la suma, verificar exponente común $10^5$: $(4,2 + 3,6) \cdot 10^5
-    = 7,8 \cdot 10^5$.'
-  - 'Paso 2: Para la resta, verificar exponente común $10^3$: $(8,5 - 2,1) \cdot 10^3
-    = 6,4 \cdot 10^3$.'
-  - 'Conclusión: La suma es $7,8 \cdot 10^5$ y la resta es $6,4 \cdot 10^3$.'
+  - 'Paso 1: Evaluar $4,2 \cdot 10^5 + 3,1 \cdot 10^5$: Exponente común $5$. Sumar mantisas: $(4,2 + 3,1) \cdot 10^5 = 7,3 \cdot 10^5$ (ya normalizado).'
+  - 'Paso 2: Evaluar $8,5 \cdot 10^{-3} - 3,2 \cdot 10^{-3}$: Exponente común $-3$. Restar mantisas: $(8,5 - 3,2) \cdot 10^{-3} = 5,3 \cdot 10^{-3}$.'
+  - 'Paso 3: Evaluar $7,5 \cdot 10^4 + 6,5 \cdot 10^4$: Sumar mantisas: $7,5 + 6,5 = 14$. Queda $14 \cdot 10^4$. Normalizar: $14 = 1,4 \cdot 10^1 \implies 1,4 \cdot 10^5$.'
+  - 'Conclusión: Los resultados son $7,3 \cdot 10^5$, $5,3 \cdot 10^{-3}$ y $1,4 \cdot 10^5$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Qué condición previa se requiere para sumar o restar directamente los
-    coeficientes a y b en notación científica?
+  question: ¿Cuál es el resultado de calcular $3 \cdot 10^4 + 5 \cdot 10^4$?
   choices:
-  - text: Que las potencias de diez tengan exactamente el mismo exponente n
+  - text: $8 \cdot 10^4$ (sumando las mantisas $3 + 5 = 8$ y conservando $10^4$)
     is_correct: true
-  - text: Que los coeficientes a y b sean iguales
+  - text: $8 \cdot 10^8$
     is_correct: false
-  - text: Que el exponente sea cero
+  - text: $15 \cdot 10^4$
     is_correct: false
-  - text: Que las bases sean negativas
+  - text: $8 \cdot 100^4$
     is_correct: false
-  explanation: La alternativa correcta es 'Que las potencias de diez tengan exactamente
-    el mismo exponente n'.
+  explanation: La alternativa correcta es '$8 \cdot 10^4$ (sumando las mantisas $3 + 5 = 8$ y conservando $10^4$)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para la suma (4,2 · 10^5) + (3,6 · 10^5), ¿cuál fue
-    el resultado?
+  question: En el ejemplo guiado, ¿por qué $7,5 \cdot 10^4 + 6,5 \cdot 10^4$ terminó con exponente $5$?
   choices:
-  - text: 7,8 · 10^5
+  - text: Porque $7,5 + 6,5 = 14$, y al normalizar $14$ a $1,4$ se sumó $1$ al exponente ($4 + 1 = 5$)
     is_correct: true
-  - text: 7,8 · 10^{10}
+  - text: Porque los exponentes $4 + 4$ se sumaron
     is_correct: false
-  - text: 15,12 · 10^5
+  - text: Porque siempre se aumenta el exponente en sumas
     is_correct: false
-  - text: 7,8 · 10^0
+  - text: Fue un error de aproximación
     is_correct: false
-  explanation: La alternativa correcta es '7,8 · 10^5'.
+  explanation: La alternativa correcta es 'Porque $7,5 + 6,5 = 14$, y al normalizar $14$ a $1,4$ se sumó $1$ al exponente ($4 + 1 = 5$)'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Verificar que los dos términos tengan el mismo exponente en la potencia
-  de diez.'
-- 'Paso 2: Sumar o restar los coeficientes de la parte decimal ($a \pm b$).'
-- 'Paso 3: Conservar la potencia de diez común $10^n$ y reajustar el coeficiente si
-  no cumple $1 \le |k| < 10$.'
-errores_correccion: '- **Error 1: Sumar los exponentes de diez al sumar las expresiones
-  ($(3 \cdot 10^4) + (2 \cdot 10^4) = 5 \cdot 10^8$).** **Cómo corregirlo:** En la
-  suma o resta, la potencia de diez se MANTIENE como factor común ($5 \cdot 10^4$).
+- 'Paso 1: Confirmar que ambos términos compartan el mismo exponente en la potencia de diez ($10^n$).'
+- 'Paso 2: Sumar o restar los coeficientes manteniendo la potencia de diez como factor común: $(a \pm b) \cdot 10^n$.'
+- 'Paso 3: Verificar la mantisa resultante y renormalizar desplazando la coma si $(a \pm b) \ge 10$ o $< 1$.'
+errores_correccion: '- **Error 1: Sumar los exponentes de diez ($2 \cdot 10^3 + 3 \cdot 10^3 = 5 \cdot 10^6$).** **Cómo corregirlo:** La potencia $10^3$ es un factor común ($2000 + 3000 = 5000 = 5 \cdot 10^3$). ¡Los exponentes NO se suman!
 
-
-  - **Error 2: Sumar directamente coeficientes cuando los exponentes son distintos.**
-  **Cómo corregirlo:** Se DEBEN igualar primero los exponentes desplazando la coma
-  de un coeficiente antes de sumar.'
+  - **Error 2: No renormalizar tras sumas que superan 10 ($6 \cdot 10^4 + 8 \cdot 10^4 = 14 \cdot 10^4$).** **Cómo corregirlo:** Escribir $1,4 \cdot 10^5$.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule $(1,5 \cdot 10^6) + (2,3 \cdot 10^6)$.
+  enunciado: ¿Cuánto es $5,1 \cdot 10^6 + 2,3 \cdot 10^6$?
   alternativas:
-  - 3,8 · 10^6
-  - 3,8 · 10^{12}
-  - 3,45 · 10^6
-  respuesta: 3,8 · 10^6
+  - $7,4 \cdot 10^6$
+  - $7,4 \cdot 10^{12}$
+  - $74 \cdot 10^5$
+  respuesta: $7,4 \cdot 10^6$
   solucion_pasos:
-  - $(1,5 + 2,3) \cdot 10^6 = 3,8 \cdot 10^6$.
+  - $(5,1 + 2,3) \cdot 10^6 = 7,4 \cdot 10^6$.
 - titulo: Ejemplo 2
-  enunciado: Calcule $(9,4 \cdot 10^{-2}) - (4,1 \cdot 10^{-2})$.
+  enunciado: ¿Cuál es el resultado de $9 \cdot 10^{-4} - 4 \cdot 10^{-4}$?
   alternativas:
-  - 5,3 · 10^{-2}
-  - 5,3 · 10^{-4}
-  - 13,5 · 10^{-2}
-  respuesta: 5,3 · 10^{-2}
+  - $5 \cdot 10^{-4}$
+  - $5 \cdot 10^{-8}$
+  - $5 \cdot 10^0$
+  respuesta: $5 \cdot 10^{-4}$
   solucion_pasos:
-  - $(9,4 - 4,1) \cdot 10^{-2} = 5,3 \cdot 10^{-2}$.
-- titulo: ¿Es (2 · 10^3) + (3 · 10^3) igual a 5 · 10^3?
+  - $(9 - 4) \cdot 10^{-4} = 5 \cdot 10^{-4}$.
+- titulo: ¿Es 3 · 10² + 4 · 10² igual a 7 · 10⁴?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, $300 + 400 = 700 = 7 \cdot 10^2$, el exponente no se suma.
+  alternativas:
+  - texto: No, el exponente común se conserva (es 7 · 10² = 700)
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Los exponentes nunca se suman en la adición.
+  - texto: Sí, se suman las mantisas y los exponentes
+    es_correcta: false
+    retroalimentacion: Incorrecto, $7 \cdot 10^4 = 70.000 \neq 700$.
+  - texto: No, es igual a 12 · 10²
+    es_correcta: false
+    retroalimentacion: Incorrecto, las mantisas se suman ($3 + 4 = 7$).
+- titulo: ¿Es 8 · 10⁵ + 7 · 10⁵ igual a 1,5 · 10⁶?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $(2+3) \cdot 10^3 = 5 \cdot 10^3$.
-- titulo: ¿Se conserva el exponente de diez al sumar términos con igual exponente?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, la potencia $10^n$ se factoriza como término común.
+  - Sí, $(8 + 7) \cdot 10^5 = 15 \cdot 10^5 = 1,5 \cdot 10^6$.
+  alternativas:
+  - texto: Sí, 15 · 10⁵ normalizado es 1,5 · 10⁶
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Al superar 10 se suma 1 al exponente.
+  - texto: No, es igual a 15 · 10⁵
+    es_correcta: false
+    retroalimentacion: Incorrecto, falta normalizar la mantisa.
+  - texto: No, es igual a 1,5 · 10¹⁰
+    es_correcta: false
+    retroalimentacion: Incorrecto, los exponentes no se duplican.
 errores_frecuentes:
-- Sumar los exponentes de diez al resolver la adición de números en notación científica.
-- Sumar los coeficientes numéricos directamente cuando los exponentes de diez son
-  diferentes.
-- Multiplicar la potencia de diez común por dos al sumar expresiones en notación científica.
-- La suma $(4 \cdot 10^3) + (2 \cdot 10^3)$ equivale numéricamente a $6 \cdot 10^6$.
-- Restar las potencias de diez al restar los coeficientes decimales.
+- Sumar o restar los exponentes de diez al sumar las cantidades.
+- Olvidar normalizar cuando la suma de mantisas es mayor o igual a 10.
+- Olvidar renormalizar cuando la resta de mantisas es menor a 1.
+- Intentar sumar directamente números con exponentes distintos sin igualar escalas.
+- Multiplicar las potencias de diez en vez de factorizarlas.
 afirmaciones_verdaderas:
-- Para sumar o restar números en notación científica con igual exponente se operan
-  los coeficientes y se mantiene el factor común $10^n$.
-- Si los exponentes difieren, se debe transformar previamente uno de los términos
-  para igualar sus potencias de diez.
-al_terminar_debes_poder: Al terminar serás capaz de sumar y restar números en notación
-  científica $(a \cdot 10^n) \pm (b \cdot 10^n) = (a \pm b) \cdot 10^n$, factorizando
-  la potencia de diez común.
-fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
+- Para sumar números en notación científica con igual exponente se operan las mantisas y se conserva $10^n$.
+- La potencia común $10^n$ actúa algebraicamente como un término semejante.
+- Si la adición de mantisas genera un valor $\ge 10$, se normaliza sumando 1 al exponente.
+al_terminar_debes_poder: '![Síntesis de suma y resta](/static/img/nodos/adicion-y-sustraccion-en-notacion-cientifica-con-igual-exponente-resumen.svg)
+
+
+  QUÉ: Sumar y restar números en notación científica que comparten el mismo exponente.
+
+
+  CÓMO: Factorizando la potencia común $10^n$, sumando o restando las mantisas $(a \pm b) \cdot 10^n$, conservando inalterado el exponente y renormalizando el resultado si la mantisa obtenida no pertenece al intervalo $[1, 10)$.'
+fuente: Texto escolar MINEDUC — Matemática 8° Básico / 1° Medio / PAES.
 estado: publicado

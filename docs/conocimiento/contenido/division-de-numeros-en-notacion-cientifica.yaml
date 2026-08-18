@@ -1,125 +1,129 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.DIVISION
-resumen_inicial: 'Para dividir números en notación científica $\frac{a \cdot 10^m}{b
-  \cdot 10^n}$, se dividen los coeficientes $\left(\frac{a}{b}\right)$ y se restan
-  los exponentes de las potencias de diez: $\left(\frac{a}{b}\right) \cdot 10^{m-n}$
-  ($b \neq 0$).'
-explicacion_simple: Para dividir en notación científica, dividimos de forma independiente
-  los números decimales de la izquierda y restamos los exponentes de las potencias
-  de diez (el de arriba menos el de abajo).
-explicacion_formal: 'Dados $x = a \cdot 10^m$ y $y = b \cdot 10^n$ ($b \neq 0$), el
-  **Cociente en Notación Científica** satisface:
+resumen_inicial: 'Para dividir números en notación científica, se dividen las mantisas entre sí y se restan los exponentes de las potencias de diez: $\frac{a \cdot 10^m}{b \cdot 10^n} = \left(\frac{a}{b}\right) \cdot 10^{m-n}$, normalizando si el cociente es menor a 1.'
+explicacion_simple: '![División en notación científica](/static/img/nodos/division-de-numeros-en-notacion-cientifica-intro.svg)
 
 
-  $$\frac{x}{y} = \left(\frac{a}{b}\right) \cdot 10^{m-n}$$
+  Dividir números en notación científica es muy directo:
 
+  1. **Divides los números de adelante** (las mantisas $a : b$).
 
-  **Desglose del reajuste:**
+  2. **Restas los exponentes de diez** ($10^{m-n}$) aplicando la ley de cociente de potencias de igual base.
 
-  - Si el cociente de coeficientes $\frac{a}{b} < 1$, se reescribe ajustando la coma
-  a la derecha y restando 1 al exponente.
+  3. **Paso final de normalización:** Si el cociente de las mantisas te da menor a $1$ (por ejemplo $0,4$), mueves la coma un lugar a la derecha y restas $1$ al exponente: $0,4 \cdot 10^3 = 4 \cdot 10^2$.'
+explicacion_formal: "Sean $x = a \\cdot 10^m$ e $y = b \\cdot 10^n$ dos números en notación científica con $b \\neq 0$ ($1 \\le a, b < 10$ y $m, n \\in \\mathbb{Z}$). El **Cociente en Notación Científica** se define formalmente como:\n\n$$\\frac{x}{y} = \\left(\\frac{a}{b}\\right) \\cdot 10^{m-n}$$\n\n**Fase de Renormalización:**\nComo $1 \\le a < 10$ y $1 \\le b < 10$, el cociente $\\frac{a}{b}$ satisface $0,1 < \\frac{a}{b} < 10$:\n- **Si $1 \\le \\frac{a}{b} < 10$:** La expresión ya está en forma normalizada.\n- **Si $0,1 < \\frac{a}{b} < 1$:** Se define $k = \\left(\\frac{a}{b}\\right) \\cdot 10 \\in [1, 10)$ y se decrementa el exponente:\n  $$\\frac{x}{y} = k \\cdot 10^{(m-n)-1}$$"
+definiciones_clave: '- **Cociente de mantisas ($a/b$)**: División directa del dividendo por el divisor.
 
+  - **Renormalización descendente**: Ajuste $k = (a/b) \cdot 10$ con exponente $(m-n-1)$ cuando el cociente es $< 1$.'
+propiedades_relaciones: '- **Resta de negativos en el divisor**: $\frac{10^m}{10^{-k}} = 10^{m - (-k)} = 10^{m+k}$.
 
-  > **Complemento didáctico:** Ejemplo: $\frac{2 \cdot 10^7}{8 \cdot 10^3} = 0,25
-  \cdot 10^4 = 2,5 \cdot 10^3$.'
-definiciones_clave: '- **División en notación científica**: Operación $\left(\frac{a}{b}\right)
-  \cdot 10^{m-n}$ ajustando la mantisa al intervalo $[1, 10)$.'
-propiedades_relaciones: '- **Agrupación de cociente**: Divide coeficientes y resta
-  exponentes.'
+  - **División por cero excluida**: Requiere obligatoriamente $b \neq 0$.'
 ejemplo_guiado:
-  enunciado: Divida $\frac{2 \cdot 10^8}{5 \cdot 10^3}$ y exprese el resultado en
-    notación científica estándar.
+  enunciado: '![Ejemplos de división en notación científica](/static/img/nodos/division-de-numeros-en-notacion-cientifica-ejemplos.svg)
+
+
+    Calcule el cociente de las expresiones $\frac{9 \cdot 10^8}{3 \cdot 10^3}$, $\frac{1,2 \cdot 10^4}{4 \cdot 10^{-2}}$ y $\frac{3,5 \cdot 10^{-5}}{7 \cdot 10^2}$ en notación científica normalizada.'
   pasos:
-  - 'Paso 1: Dividir los coeficientes: $2 : 5 = 0,4$.'
-  - 'Paso 2: Restar los exponentes de diez: $10^{8-3} = 10^5$. Expresión intermedia:
-    $0,4 \cdot 10^5$.'
-  - 'Paso 3: Reajustar la mantisa $0,4 < 1$ moviendo la coma $1$ lugar a la derecha
-    ($4 \cdot 10^{-1}$): $(4 \cdot 10^{-1}) \cdot 10^5 = 4 \cdot 10^4$.'
-  - 'Conclusión: El cociente es $4 \cdot 10^4$.'
+  - 'Paso 1: Evaluar $\frac{9 \cdot 10^8}{3 \cdot 10^3}$: Dividir mantisas $9 : 3 = 3$. Restar exponentes: $8 - 3 = 5$. Resultado: $3 \cdot 10^5$ (normalizado).'
+  - 'Paso 2: Evaluar $\frac{1,2 \cdot 10^4}{4 \cdot 10^{-2}}$: Dividir mantisas $1,2 : 4 = 0,3$. Restar exponentes: $4 - (-2) = 6$. Queda $0,3 \cdot 10^6$. Normalizar: $0,3 = 3 \cdot 10^{-1} \implies 3 \cdot 10^5$.'
+  - 'Paso 3: Evaluar $\frac{3,5 \cdot 10^{-5}}{7 \cdot 10^2}$: Dividir mantisas $3,5 : 7 = 0,5$. Restar exponentes: $-5 - 2 = -7$. Queda $0,5 \cdot 10^{-7}$. Normalizar: $0,5 = 5 \cdot 10^{-1} \implies 5 \cdot 10^{-8}$.'
+  - 'Conclusión: Los resultados son $3 \cdot 10^5$, $3 \cdot 10^5$ y $5 \cdot 10^{-8}$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Qué se hace con las potencias de diez al dividir números en notación
-    científica?
+  question: ¿Cuál es el resultado normalizado de $\frac{2 \cdot 10^7}{5 \cdot 10^3}$?
   choices:
-  - text: Se conservan las bases de diez y se restan sus exponentes (10^{m-n})
+  - text: '$4 \cdot 10^3$ (porque $2 : 5 = 0,4 = 4 \cdot 10^{-1}$ y $7 - 3 - 1 = 3$)'
     is_correct: true
-  - text: Se dividen los exponentes
+  - text: $0,4 \cdot 10^4$
     is_correct: false
-  - text: Se multiplican los exponentes
+  - text: $4 \cdot 10^4$
     is_correct: false
-  - text: Se eliminan las potencias de diez
+  - text: $0,4 \cdot 10^{10}$
     is_correct: false
-  explanation: La alternativa correcta es 'Se conservan las bases de diez y se restan
-    sus exponentes (10^{m-n})'.
+  explanation: 'La alternativa correcta es ''$4 \cdot 10^3$ (porque $2 : 5 = 0,4 = 4 \cdot 10^{-1}$ y $7 - 3 - 1 = 3$)''.'
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para (2 · 10^8) / (5 · 10^3), ¿cuál fue el resultado
-    estándar final?
+  question: En el ejemplo guiado, ¿por qué $\frac{1,2 \cdot 10^4}{4 \cdot 10^{-2}}$ dio como exponente previo $6$?
   choices:
-  - text: 4 · 10^4
+  - text: 'Porque al restar un exponente negativo se convierte en suma: $4 - (-2) = 4 + 2 = 6$'
     is_correct: true
-  - text: 0,4 · 10^5
+  - text: Porque $4 - 2 = 2$
     is_correct: false
-  - text: 4 · 10^5
+  - text: Porque se multiplicaron los exponentes
     is_correct: false
-  - text: 0,4 · 10^4
+  - text: Porque $1,2$ es decimal
     is_correct: false
-  explanation: La alternativa correcta es '4 · 10^4'.
+  explanation: 'La alternativa correcta es ''Porque al restar un exponente negativo se convierte en suma: $4 - (-2) = 4 + 2 = 6$''.'
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Dividir el coeficiente del numerador entre el del denominador ($a / b$).'
-- 'Paso 2: Restar el exponente del denominador al del numerador ($m - n$).'
-- 'Paso 3: Reajustar la mantisa si resulta $< 1$ o $\ge 10$ modificando el exponente.'
-errores_correccion: '- **Error 1: Dejar la mantisa menor a 1 ($0,4 \cdot 10^5$).**
-  **Cómo corregirlo:** Correr la coma a la derecha a $4$ y restar 1 al exponente ($4
-  \cdot 10^4$).
+- 'Paso 1: Dividir la mantisa del numerador por la del denominador: $a / b$.'
+- 'Paso 2: Restar los exponentes de diez: $(\text{exp. numerador}) - (\text{exp. denominador})$.'
+- 'Paso 3: Si el cociente $a / b < 1$, desplazar la coma un lugar a la derecha y restar $1$ al exponente final.'
+errores_correccion: '- **Error 1: Dejar el cociente menor a 1 sin normalizar ($0,2 \cdot 10^5$).** **Cómo corregirlo:** La mantisa debe ser $\ge 1$. Reescribir $2 \cdot 10^4$.
 
-
-  - **Error 2: Sumar exponentes en lugar de restarlos al dividir.** **Cómo corregirlo:**
-  En la división los exponentes se RESTAN (numerador menos denominador).'
+  - **Error 2: Error de signos al restar exponentes negativos en el divisor.** **Cómo corregirlo:** Recordar $m - (-n) = m + n$.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Calcule $\frac{8 \cdot 10^6}{2 \cdot 10^2}$.
+  enunciado: ¿Cuál es el valor de $\frac{8 \cdot 10^6}{2 \cdot 10^2}$?
   alternativas:
-  - 4 · 10^4
-  - 4 · 10^8
-  - 4 · 10^3
-  respuesta: 4 · 10^4
+  - $4 \cdot 10^4$
+  - $4 \cdot 10^3$
+  - $4 \cdot 10^8$
+  respuesta: $4 \cdot 10^4$
   solucion_pasos:
-  - $(8/2) \cdot 10^{6-2} = 4 \cdot 10^4$.
+  - '$(8 : 2) \cdot 10^{6-2} = 4 \cdot 10^4$.'
 - titulo: Ejemplo 2
-  enunciado: Calcule $\frac{1,5 \cdot 10^3}{3 \cdot 10^5}$.
+  enunciado: ¿Cuál es el resultado normalizado de $\frac{1 \cdot 10^5}{4 \cdot 10^2}$?
   alternativas:
-  - 5 · 10^{-3}
-  - 0,5 · 10^{-2}
-  - 5 · 10^{-2}
-  respuesta: 5 · 10^{-3}
+  - $2,5 \cdot 10^2$
+  - $0,25 \cdot 10^3$
+  - $2,5 \cdot 10^3$
+  respuesta: $2,5 \cdot 10^2$
   solucion_pasos:
-  - $(1,5/3) \cdot 10^{3-5} = 0,5 \cdot 10^{-2} = 5 \cdot 10^{-3}$.
-- titulo: ¿Es (9 · 10^4) / (3 · 10^4) igual a 3 · 10^0 (o 3)?
+  - '$1 : 4 = 0,25 \implies 0,25 \cdot 10^3 = 2,5 \cdot 10^2$.'
+- titulo: ¿Es (6 · 10⁴) / (3 · 10⁻²) igual a 2 · 10⁶?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $9/3 = 3$ y $4-4 = 0 \implies 3 \cdot 10^0 = 3$.
-- titulo: ¿Requiere un coeficiente de 0,2 mover la coma a la derecha y restar 1 al
-    exponente?
+  - 'Sí, $6 : 3 = 2$ y $4 - (-2) = 6 \implies 2 \cdot 10^6$.'
+  alternativas:
+  - texto: Sí, 4 - (-2) = 6 dando 2 · 10⁶
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Restar un exponente negativo suma.
+  - texto: No, es igual a 2 · 10²
+    es_correcta: false
+    retroalimentacion: Incorrecto, olvidaste el cambio de signo de la resta.
+  - texto: No, es igual a 2 · 10⁻²
+    es_correcta: false
+    retroalimentacion: Incorrecto, $4 - (-2) = 6$.
+- titulo: ¿Es (4 · 10⁵) / (8 · 10²) igual a 5 · 10²?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $0,2 \cdot 10^n = 2 \cdot 10^{n-1}$.
+  - 'Sí, $4 : 8 = 0,5$ y $5 - 2 = 3 \implies 0,5 \cdot 10^3 = 5 \cdot 10^2$.'
+  alternativas:
+  - texto: Sí, 0,5 · 10³ normalizado es 5 · 10²
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $0,5 \cdot 10^3 = 5 \cdot 10^2$.
+  - texto: No, es igual a 0,5 · 10³
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0,5$ no está normalizado.
+  - texto: No, es igual a 2 · 10³
+    es_correcta: false
+    retroalimentacion: Incorrecto, $4/8 = 0,5$ y no $2$.
 errores_frecuentes:
-- Dejar el coeficiente menor a 1 al resolver la división sin reajustar el exponente
-  de diez.
-- Sumar los exponentes de las potencias de diez al calcular una división en notación
-  científica.
-- Dividir las potencias de diez mediante la división directa de sus exponentes.
-- La división $\frac{6 \cdot 10^4}{2 \cdot 10^2}$ es igual a $3 \cdot 10^2$ sin modificar
-  exponentes.
-- Aplicar la regla del cociente cuando el divisor es igual a cero.
+- Dividir los exponentes en lugar de restarlos.
+- Olvidar renormalizar cuando la división de mantisas resulta menor que 1.
+- Sumar 1 en lugar de restar 1 al exponente tras mover la coma a la derecha.
+- Cometer errores de doble signo al restar exponentes negativos.
+- Invertir el orden de la división (dividir denominador por numerador).
 afirmaciones_verdaderas:
-- 'Al dividir en notación científica se dividen los coeficientes y se restan los exponentes
-  de diez: $(a/b) \cdot 10^{m-n}$ ($b \neq 0$).'
-- Si la mantisa resultante es $< 1$, se mueve la coma 1 posición a la derecha y se
-  resta $1$ al exponente.
-al_terminar_debes_poder: Al terminar serás capaz de dividir números en notación científica,
-  dividiendo coeficientes, restando exponentes y reajustando la mantisa al rango $1
-  \le |k| < 10$.
-fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
+- Para dividir números en notación científica se dividen las mantisas y se restan los exponentes.
+- Si la división de mantisas es menor a 1, se resta 1 al exponente final tras desplazar la coma.
+- La división por potencias con exponente negativo se traduce en una suma de exponentes.
+al_terminar_debes_poder: '![Síntesis de división](/static/img/nodos/division-de-numeros-en-notacion-cientifica-resumen.svg)
+
+
+  QUÉ: Dividir números expresados en notación científica.
+
+
+  CÓMO: Dividiendo las mantisas $(a / b)$, restando algebraicamente los exponentes de diez $(m - n)$ y renormalizando el resultado si el cociente resulta ser menor que uno ($a / b < 1$).'
+fuente: Texto escolar MINEDUC — Matemática 8° Básico / 1° Medio / PAES.
 estado: publicado

@@ -1,121 +1,137 @@
 semantic_id: MAT.NUM.NOTACION_CIENTIFICA.CONVERSION_A_DECIMAL
-resumen_inicial: Para convertir $k \cdot 10^n$ a forma decimal estándar, la coma se
-  desplaza $n$ posiciones a la derecha si $n > 0$, o $n$ posiciones a la izquierda
-  si $n < 0$.
-explicacion_simple: 'Para pasar de notación científica a número común decimal, nos
-  guiamos por el signo del exponente: si el exponente es positivo, corremos la coma
-  hacia la derecha agrandando el número; si el exponente es negativo, corremos la
-  coma hacia la izquierda achicándolo.'
-explicacion_formal: 'La conversión de $k \cdot 10^n$ a forma decimal estándar $x$
-  se rige por la regla de desplazamiento opuesto:
+resumen_inicial: Para convertir de notación científica a número decimal, se desplaza la coma hacia la derecha si el exponente es positivo ($n > 0$) o hacia la izquierda si el exponente es negativo ($n < 0$), rellenando con ceros.
+explicacion_simple: '![Conversión de notación científica a número decimal](/static/img/nodos/conversion-de-notacion-cientifica-a-numero-decimal-intro.svg)
 
 
-  $$x = \begin{cases} k \text{ desplazando coma } n \text{ lugares a la derecha} &
-  \text{si } n > 0 \\ k \text{ desplazando coma } |n| \text{ lugares a la izquierda}
-  & \text{si } n < 0 \end{cases}$$
+  Convertir desde notación científica a formato decimal tradicional es el camino inverso:
+
+  1. Si el exponente es **positivo** (como $6,25 \cdot 10^5$), el número debe agrandarse: movemos la coma hacia la **derecha** $5$ lugares, agregando ceros al final si se acaban las cifras $\implies 625\,000$.
+
+  2. Si el exponente es **negativo** (como $4,1 \cdot 10^{-4}$), el número debe achicarse: movemos la coma hacia la **izquierda** $4$ lugares, agregando ceros adelante $\implies 0,00041$.'
+explicacion_formal: 'Sea $x = k \cdot 10^n$ una expresión en notación científica con $1 \le |k| < 10$ y $n \in \mathbb{Z}$. La **Conversión a Notación Decimal Estándar** se rige por:
 
 
-  **Desglose de la expansión:**
-
-  - Relleno con ceros: Si faltan cifras al correr la coma, se añaden ceros suplementarios.
+  $$x = k \cdot 10^n = \begin{cases} k \cdot \underbrace{10 \cdot 10 \dots 10}_{n \text{ veces}} & \text{si } n > 0 \\ k & \text{si } n = 0 \\ \frac{k}{10^{|n|}} & \text{si } n < 0 \end{cases}$$
 
 
-  > **Complemento didáctico:** Ejemplo: $4,2 \cdot 10^4 = 42.000$ y $4,2 \cdot 10^{-3}
-  = 0,0042$.'
-definiciones_clave: '- **Conversión a decimal estándar**: Proceso inverso de desplazar
-  la coma según el valor y signo del exponente $n$.'
-propiedades_relaciones: '- **Desplazamiento por signo**: Exponente positivo desplaza
-  a la derecha; exponente negativo desplaza a la izquierda.'
+  **Reglas operativas de desplazamiento:**
+
+  - **Caso $n > 0$ (Multiplicación por $10^n$):** La coma decimal de $k$ se traslada $n$ posiciones hacia la **derecha** ($\rightarrow$). Si la parte decimal de $k$ tiene $d$ dígitos con $d < n$, se agregan $(n - d)$ ceros a la derecha.
+
+  - **Caso $n < 0$ (División por $10^{|n|}$):** La coma decimal de $k$ se traslada $|n|$ posiciones hacia la **izquierda** ($\leftarrow$), anteponiendo $(|n| - 1)$ ceros entre la coma y el primer dígito de $k$.'
+definiciones_clave: '- **Expansión decimal**: Restitución del formato posicional estándar de base diez.
+
+  - **Relleno con ceros**: Inserción de ceros posicionales en las posiciones decimales o enteras vacías.'
+propiedades_relaciones: '- **Exponente cero**: Si $n = 0$, $k \cdot 10^0 = k \cdot 1 = k$ (la coma no se mueve).
+
+  - **Conserva valor y signo**: Si la mantisa es negativa ($-9,3 \cdot 10^2$), el decimal es negativo ($-930$).'
 ejemplo_guiado:
-  enunciado: Convierta a número decimal estándar las expresiones $5,6 \cdot 10^4$
-    y $3,1 \cdot 10^{-3}$.
+  enunciado: '![Ejemplos de conversión a decimal](/static/img/nodos/conversion-de-notacion-cientifica-a-numero-decimal-ejemplos.svg)
+
+
+    Convierta a formato decimal estándar los números $6,25 \cdot 10^5$, $4,1 \cdot 10^{-4}$ y $-9,3 \cdot 10^2$.'
   pasos:
-  - 'Paso 1: Para $5,6 \cdot 10^4$, exponente $+4 \implies$ mover coma $4$ posiciones
-    a la derecha: $56.000$.'
-  - 'Paso 2: Para $3,1 \cdot 10^{-3}$, exponente $-3 \implies$ mover coma $3$ posiciones
-    a la izquierda: $0,0031$.'
-  - 'Conclusión: $5,6 \cdot 10^4 = 56.000$ y $3,1 \cdot 10^{-3} = 0,0031$.'
+  - 'Paso 1: Evaluar $6,25 \cdot 10^5$: Exponente $+5$ (positivo). Mover coma $5$ lugares a la derecha: $6,25 \to 625\,000$.'
+  - 'Paso 2: Evaluar $4,1 \cdot 10^{-4}$: Exponente $-4$ (negativo). Mover coma $4$ lugares a la izquierda: $4,1 \to 0,00041$.'
+  - 'Paso 3: Evaluar $-9,3 \cdot 10^2$: Exponente $+2$ (positivo). Mover coma $2$ lugares a la derecha conservando el signo menos: $-930$.'
+  - 'Conclusión: Los valores decimales son $625\,000$, $0,00041$ y $-930$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Hacia qué lado se desplaza la coma al convertir k · 10^n a decimal cuando
-    el exponente n es positivo?
+  question: ¿Cuál es el valor decimal de $3,02 \cdot 10^4$?
   choices:
-  - text: Hacia la derecha (agrandando el número)
+  - text: $30\,200$ (moviendo la coma $4$ posiciones a la derecha)
     is_correct: true
-  - text: Hacia la izquierda
+  - text: $302\,000$
     is_correct: false
-  - text: No se desplaza
+  - text: $3\,020$
     is_correct: false
-  - text: Se elimina la coma
+  - text: $0,000302$
     is_correct: false
-  explanation: La alternativa correcta es 'Hacia la derecha (agrandando el número)'.
+  explanation: La alternativa correcta es '$30\,200$ (moviendo la coma $4$ posiciones a la derecha)'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para 3,1 · 10^{-3}, ¿cuál fue el número decimal obtenido?
+  question: En el ejemplo guiado, ¿cómo se convirtió $4,1 \cdot 10^{-4}$?
   choices:
-  - text: 0,0031
+  - text: Moviendo la coma $4$ lugares a la izquierda, resultando en $0,00041$
     is_correct: true
-  - text: '3100'
+  - text: Moviendo la coma a la derecha para dar $41\,000$
     is_correct: false
-  - text: 0,031
+  - text: Multiplicando $4,1$ por $-4$
     is_correct: false
-  - text: '31.000'
+  - text: Restando $4$ a $4,1$
     is_correct: false
-  explanation: La alternativa correcta es '0,0031'.
+  explanation: La alternativa correcta es 'Moviendo la coma $4$ lugares a la izquierda, resultando en $0,00041$'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Observar el signo del exponente $n$ de la potencia de diez.'
-- 'Paso 2: Si $n > 0$, desplazar la coma $n$ lugares a la derecha. Si $n < 0$, desplazar
-  $|n|$ lugares a la izquierda.'
-- 'Paso 3: Completar con ceros en las posiciones donde sea necesario.'
-errores_correccion: '- **Error 1: Mover la coma a la izquierda cuando el exponente
-  es positivo.** **Cómo corregirlo:** Exponente positivo amplifica el número, la coma
-  se mueve a la DERECHA.
+- 'Paso 1: Observar el signo del exponente $n$.'
+- 'Paso 2: Si $n > 0$, desplazar la coma de la mantisa $n$ lugares hacia la derecha completando con ceros a la derecha.'
+- 'Paso 3: Si $n < 0$, desplazar la coma $|n|$ lugares hacia la izquierda anteponiendo el cero entero y ceros decimales necesarios.'
+errores_correccion: '- **Error 1: Mover la coma en dirección contraria.** **Cómo corregirlo:** Recordar: Exponente positivo $\implies$ número GRANDE (derecha $\rightarrow$). Exponente negativo $\implies$ número PEQUEÑO (izquierda $\leftarrow$).
 
-
-  - **Error 2: Agregar exactamente $n$ ceros sin contar los dígitos decimales existentes.**
-  **Cómo corregirlo:** La coma se traslada por POSICIONES decimales, no por cantidad
-  fija de ceros.'
+  - **Error 2: Agregar ceros sin contar las cifras decimales ya existentes ($2,5 \cdot 10^3 = 25000$).** **Cómo corregirlo:** El $5$ ya consume una posición decimal: $2,5 \to 25 \to 250 \to 2500$ ($2$ ceros adicionales).'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Convierta $2,5 \cdot 10^3$ a decimal.
+  enunciado: ¿A qué número decimal equivale $7,4 \cdot 10^3$?
   alternativas:
-  - '2500'
-  - '250'
-  - 0,0025
-  respuesta: '2500'
+  - $7\,400$
+  - $74\,000$
+  - $740$
+  respuesta: $7\,400$
   solucion_pasos:
-  - $2,5 \cdot 1000 = 2500$.
+  - 'Mover coma 3 lugares a la derecha: $7,4 \to 7400$.'
 - titulo: Ejemplo 2
-  enunciado: Convierta $7 \cdot 10^{-4}$ a decimal.
+  enunciado: ¿A qué decimal equivale $8,9 \cdot 10^{-3}$?
   alternativas:
-  - 0,0007
-  - 0,007
-  - '70.000'
-  respuesta: 0,0007
+  - $0,0089$
+  - $0,089$
+  - $0,00089$
+  respuesta: $0,0089$
   solucion_pasos:
-  - $7 / 10.000 = 0,0007$.
-- titulo: ¿Es 1,2 · 10^2 igual a 120?
+  - 'Mover coma 3 lugares a la izquierda: $0,0089$.'
+- titulo: ¿Es 5,0 · 10⁻² igual a 0,05?
   respuesta: Sí
   solucion_pasos:
-  - Sí, $1,2 \cdot 100 = 120$.
-- titulo: ¿Requiere un exponente negativo mover la coma hacia la izquierda?
+  - Sí, $5,0 \cdot 10^{-2} = 0,05$, desplazando 2 posiciones a la izquierda.
+  alternativas:
+  - texto: Sí, 5,0 · 10⁻² = 0,05
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Dos lugares a la izquierda.
+  - texto: No, es igual a 0,5
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0,5 = 5 \cdot 10^{-1}$.
+  - texto: No, es igual a 0,005
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0,005 = 5 \cdot 10^{-3}$.
+- titulo: ¿Es 1,23 · 10² igual a 123?
   respuesta: Sí
   solucion_pasos:
-  - Sí, reduce la magnitud creando ceros a la izquierda.
+  - Sí, $1,23 \cdot 100 = 123$.
+  alternativas:
+  - texto: Sí, la coma se mueve 2 lugares a la derecha dando 123
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $1,23 \cdot 10^2 = 123$.
+  - texto: No, es igual a 1.230
+    es_correcta: false
+    retroalimentacion: Incorrecto, la mantisa ya tenía 2 cifras decimales.
+  - texto: No, es igual a 12,3
+    es_correcta: false
+    retroalimentacion: Incorrecto, $12,3 = 1,23 \cdot 10^1$.
 errores_frecuentes:
-- Mover la coma decimal a la izquierda al convertir expresiones con exponentes positivos.
-- Agregar ceros directamente al final del coeficiente ignorando los decimales existentes.
-- Eliminar la coma decimal de forma inmediata sin modificar la posición del coeficiente.
-- La expresión $4,5 \cdot 10^3$ equivale al número decimal $0,0045$.
-- Mover la coma a la derecha cuando el exponente de diez es un número negativo.
+- Mover la coma a la izquierda con exponentes positivos.
+- Agregar ceros equivalentes al exponente sin descontar las cifras decimales de la mantisa.
+- Olvidar colocar el cero entero '$0,$' en conversiones con exponentes negativos.
+- Cambiar el signo del número al expandir exponentes negativos.
+- Ignorar el exponente cero ($k \cdot 10^0 = k$).
 afirmaciones_verdaderas:
-- Para pasar de notación científica a decimal, un exponente $+n$ desplaza la coma
-  a la derecha y un exponente $-n$ a la izquierda.
-- Las posiciones vacías creadas durante el desplazamiento de la coma se rellenan con
-  ceros suplementarios.
-al_terminar_debes_poder: Al terminar serás capaz de convertir números en notación
-  científica $k \cdot 10^n$ a su representación decimal estándar, desplazando la coma
-  según el signo del exponente.
-fuente: Texto escolar MINEDUC — Números 7° Básico / PAES.
+- La conversión con exponente positivo desplaza la coma hacia la derecha.
+- La conversión con exponente negativo desplaza la coma hacia la izquierda.
+- Las cifras decimales existentes en la mantisa consumen posiciones del desplazamiento.
+al_terminar_debes_poder: '![Síntesis de conversión a decimal](/static/img/nodos/conversion-de-notacion-cientifica-a-numero-decimal-resumen.svg)
+
+
+  QUÉ: Convertir expresiones en notación científica a números decimales y enteros estándar.
+
+
+  CÓMO: Desplazando la coma decimal hacia la derecha para $n > 0$ o hacia la izquierda para $n < 0$, completando con los ceros posicionales correspondientes según la cantidad de cifras decimales de la mantisa.'
+fuente: Texto escolar MINEDUC — Matemática 8° Básico / 1° Medio / PAES.
 estado: publicado
