@@ -1,98 +1,148 @@
 semantic_id: MAT.NUM.RAICES_PROPIEDADES.DESCOMPOSICION_RADICANDO
-resumen_inicial: 'La descomposición del radicando permite simplificar raíces no exactas factorizando el número interno como el producto de una potencia perfecta y un residuo irreducible.'
-explicacion_simple: |
-  Muchas raíces no son números enteros exactos (como $\sqrt{72}$ o $\sqrt{50}$), pero pueden simplificarse descomponiendo su interior. Buscas el cuadrado perfecto más grande (como 4, 9, 16, 25, 36, 49, 64, 81, 100) que divida exactamente al número de adentro. Luego extraes la raíz de ese cuadrado perfecto y dejas el resto adentro. Por ejemplo, en $\sqrt{72}$, descompones $72 = 36 \cdot 2$, extraes $\sqrt{36} = 6$ y obtienes $6\sqrt{2}$.
-explicacion_formal: |
-  ### Definición formal
-  La **descomposición del radicando** es el método aritmético de simplificación que factoriza un radicando entero $K \in \mathbb{Z}^+$ en un producto de la forma:
-  $$K = A^n \cdot B$$
-  donde $A^n$ es la mayor potencia $n$-ésima perfecta divisible por $K$, y $B$ es un entero libre de factores potencia $n$-ésimas, permitiendo simplificar el radical según:
-  $$\sqrt[n]{K} = \sqrt[n]{A^n \cdot B} = A \cdot \sqrt[n]{B}$$
+resumen_inicial: La descomposición del radicando en factores primos permite simplificar raíces al identificar y extraer potencias perfectas, dejando el radicando en su mínima expresión irreducible.
+explicacion_simple: '![Descomposición del radicando para simplificar raíces](/static/img/nodos/descomposicion-del-radicando-para-simplificar-raices-intro.svg)
 
-  ### Algoritmo de Descomposición mediante Primos
-  1. Realizar la **descomposición en factores primos** del radicando $K = p_1^{e_1} \cdot p_2^{e_2} \cdots p_k^{e_k}$.
-  2. Expresar los exponentes como $e_i = q_i \cdot n + r_i$.
-  3. Extraer las bases con exponentes cocientes $q_i$ y conservar dentro los residuos $r_i$.
 
-  ### Síntesis didáctica
-  - Factor potencia perfecta $A^n$: Se simplifica saliendo como el coeficiente $A$.
-  - Factor residuo irreducible $B$: Permanece dentro del radical $\sqrt[n]{B}$.
-definiciones_clave: |
-  - **Descomposición del radicando**: Factorización estratégica del contenido de una raíz para extraer cuadrados o potencias perfectas.
-  - **Potencia perfecta divisible**: Número entero (ej: 4, 9, 16, 25, 27, 64) que divide exactamente al radicando.
-  - **Radical irreducible $\sqrt[n]{B}$**: Forma canónica final donde el radicando $B$ no contiene divisores que sean potencias perfectas.
-propiedades_relaciones: |
-  - **Requisito para operar radicales**: Es el paso previo indispensable para sumar o restar raíces que inicialmente no parecen semejantes (ej: $\sqrt{12} + \sqrt{27} = 2\sqrt{3} + 3\sqrt{3} = 5\sqrt{3}$).
-  - **Forma canónica estandarizada**: Permite expresar respuestas en la forma irreducible simplificada exigida en pruebas estandarizadas (PAES).
+  Simplificar una raíz es como simplificar una fracción: queremos dejar el número de adentro lo más pequeño y limpio posible.
+
+  1. Tomas el número grande (como $108$) y lo descompones en números primos: $108 = 36 \cdot 3 = 6^2 \cdot 3$.
+
+  2. Extraes la raíz del número que tiene raíz exacta: $\sqrt{36} = 6$.
+
+  3. Dejas el resto adentro: $\sqrt{108} = 6\sqrt{3}$.
+
+  ¡Hacer esto te permite descubrir **términos semejantes ocultos** para poder sumar o restar raíces que parecían totalmente distintas!'
+explicacion_formal: 'Sea $N \in \mathbb{N}$ un número natural y $n \in \mathbb{N}_{\ge 2}$. Por el Teorema Fundamental de la Aritmética, existe una única descomposición prima:
+
+
+  $$N = p_1^{k_1} \cdot p_2^{k_2} \cdots p_r^{k_r}$$
+
+
+  **Algoritmo de Reducción a Forma Canónica:**
+
+  Para cada factor primo $p_i$, se efectúa la división euclídea $k_i = n \cdot q_i + r_i$ ($0 \le r_i < n$):
+
+  $$\sqrt[n]{N} = \sqrt[n]{\prod_{i=1}^r p_i^{n q_i + r_i}} = \left(\prod_{i=1}^r p_i^{q_i}\right) \cdot \sqrt[n]{\prod_{i=1}^r p_i^{r_i}} = K \cdot \sqrt[n]{C}$$
+
+
+  - $K = \prod p_i^{q_i} \in \mathbb{N}$: Coeficiente extraído.
+
+  - $C = \prod p_i^{r_i} \in \mathbb{N}$: Radicando libre de potencias $n$-ésimas (radicando canónico irreducible).'
+definiciones_clave: '- **Descomposición canónica**: Factorización en potencias de números primos.
+
+  - **Radicando libre de cuadrados ($C$)**: Entero que no contiene ningún factor cuadrado perfecto mayor a 1.
+
+  - **Forma canónica $K\sqrt[n]{C}$**: Representación irreducible estándar para ejercicios PAES.'
+propiedades_relaciones: '- **Unicidad de la forma canónica**: La representación $K\sqrt[n]{C}$ con $C$ libre de potencias $n$-ésimas es única.
+
+  - **Detección de semejanza**: $\sqrt{12} = 2\sqrt{3}$ y $\sqrt{27} = 3\sqrt{3} \implies$ ambos comparten la base canónica $\sqrt{3}$.'
 ejemplo_guiado:
-  enunciado: 'Simplifica la raíz cuadrada $\sqrt{200}$ descomponiendo el radicando en sus factores de mayor cuadrado perfecto.'
+  enunciado: '![Ejemplos de descomposición de radicando](/static/img/nodos/descomposicion-del-radicando-para-simplificar-raices-ejemplos.svg)
+
+
+    Simplifique a su forma canónica irreducible las raíces $\sqrt{108}$, $\sqrt[3]{250}$ y $\sqrt{300}$ mediante descomposición factorial.'
   pasos:
-    - 'Paso 1: Buscamos divisores de $200$ que sean cuadrados perfectos ($4, 25, 100$). Identificamos el mayor: $100$.'
-    - 'Paso 2: Factorizamos el radicando como producto: $200 = 100 \cdot 2 = 10^2 \cdot 2$.'
-    - 'Paso 3: Aplicamos la raíz a cada factor: $\sqrt{200} = \sqrt{10^2 \cdot 2} = \sqrt{10^2} \cdot \sqrt{2}$.'
-    - 'Paso 4: Extraemos la raíz exacta de $10^2$: resultado $10\sqrt{2}$.'
+  - 'Paso 1: Evaluar $\sqrt{108}$: $108 = 36 \cdot 3 = 6^2 \cdot 3 \implies \sqrt{108} = 6\sqrt{3}$.'
+  - 'Paso 2: Evaluar $\sqrt[3]{250}$: $250 = 125 \cdot 2 = 5^3 \cdot 2 \implies \sqrt[3]{250} = 5\sqrt[3]{2}$.'
+  - 'Paso 3: Evaluar $\sqrt{300}$: $300 = 100 \cdot 3 = 10^2 \cdot 3 \implies \sqrt{300} = 10\sqrt{3}$.'
+  - 'Conclusión: Las formas canónicas son $6\sqrt{3}$, $5\sqrt[3]{2}$ y $10\sqrt{3}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿En qué consiste el método de descomposición del radicando para simplificar una raíz $\sqrt[n]{K}$?'
-    choices:
-      - {text: 'En expresar el radicando como producto de una potencia perfecta $A^n$ y un residuo $B$, extrayendo $A$ fuera de la raíz ($A \cdot \sqrt[n]{B}$)', is_correct: true}
-      - {text: 'En dividir el radicando por 2 e igualar la raíz a un entero', is_correct: false}
-      - {text: 'En sumar los factores primos dentro de la raíz', is_correct: false}
-      - {text: 'En restar el índice del número interno', is_correct: false}
-    explanation: 'La alternativa correcta es ''En expresar el radicando como producto de una potencia perfecta $A^n$ y un residuo $B$, extrayendo $A$ fuera de la raíz ($A \cdot \sqrt[n]{B}$)''. Se factoriza $K = A^n \cdot B$ y se saca $A$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es la forma simplificada irreducible de la raíz cuadrada $\sqrt{72}$?'
-    choices:
-      - {text: '$6\sqrt{2}$, pues $72 = 36 \cdot 2 \implies \sqrt{36} \cdot \sqrt{2} = 6\sqrt{2}$', is_correct: true}
-      - {text: '$2\sqrt{6}$, factorizando incorrectamente', is_correct: false}
-      - {text: '$3\sqrt{8}$, sin usar el mayor cuadrado perfecto', is_correct: false}
-      - {text: '$36\sqrt{2}$, sin extraer la raíz cuadrada a 36', is_correct: false}
-    explanation: 'La alternativa correcta es ''$6\sqrt{2}$, pues $72 = 36 \cdot 2 \implies \sqrt{36} \cdot \sqrt{2} = 6\sqrt{2}$''. Elegir $36$ como mayor cuadrado perfecto da la forma irreducible $6\sqrt{2}$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es la forma canónica simplificada de $\sqrt{72}$?
+  choices:
+  - text: $6\sqrt{2}$ (porque $72 = 36 \cdot 2$)
+    is_correct: true
+  - text: $2\sqrt{18}$
+    is_correct: false
+  - text: $3\sqrt{8}$
+    is_correct: false
+  - text: $36\sqrt{2}$
+    is_correct: false
+  explanation: La alternativa correcta es '$6\sqrt{2}$ (porque $72 = 36 \cdot 2$)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué en $\sqrt[3]{250}$ se buscó el factor $125$?
+  choices:
+  - text: Porque $125 = 5^3$ es el mayor cubo perfecto que divide a $250$
+    is_correct: true
+  - text: 'Porque $250 : 2 = 125$'
+    is_correct: false
+  - text: Porque $125$ termina en $5$
+    is_correct: false
+  - text: Porque es una raíz cuadrada
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque $125 = 5^3$ es el mayor cubo perfecto que divide a $250$'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el mayor cuadrado o potencia perfecta ($4, 9, 16, 25, 36, 49\dots$) que divida exactamente al radicando.'
-  - 'Paso 2: Escribir el radicando como el producto del cuadrado perfecto por el factor restante.'
-  - 'Paso 3: Separar la raíz utilizando la propiedad distributiva del producto.'
-  - 'Paso 4: Calcular la raíz exacta de la potencia perfecta y colocar el resultado multiplicando por fuera del radical irreducible.'
-errores_correccion: |
-  - **Error 1:** No seleccionar el **mayor** cuadrado perfecto al descomponer (ej: descomponer $\sqrt{72} = \sqrt{4 \cdot 18} = 2\sqrt{18}$ y detenerse ahí). **Cómo corregirlo:** Si el radicando residual (18) aún contiene cuadrados perfectos ($9 \cdot 2$), debes continuar simplificando hasta que no queden factores extraíbles: $2 \cdot 3\sqrt{2} = 6\sqrt{2}$.
-  - **Error 2:** Descomponer el radicando en una suma en lugar de un producto (ej: $\sqrt{25 + 9} = 5 + 3 = 8$). **Cómo corregirlo:** La raíz **no es distributiva respecto a la suma**. La descomposición del radicando exige estrictamente una **multiplicación**: $\sqrt{A \cdot B}$.
+- 'Paso 1: Descomponer el número en factores primos dividiendo sucesivamente por $2, 3, 5, 7, \dots$'
+- 'Paso 2: Identificar el mayor cuadrado/cubo perfecto contenido en la descomposición.'
+- 'Paso 3: Extraer la raíz exacta de ese factor perfecto y dejar el resto dentro del radical.'
+errores_correccion: '- **Error 1: Detener la simplificación antes de tiempo ($\sqrt{72} = 3\sqrt{8}$).** **Cómo corregirlo:** Comprobar si el radicando aún tiene cuadrados perfectos: $8 = 4 \cdot 2 \implies 3 \cdot 2\sqrt{2} = 6\sqrt{2}$.
+
+  - **Error 2: No usar la lista de cuadrados conocidos ($4, 9, 16, 25, 36, 49, 64, 81, 100$).** **Cómo corregirlo:** Dividir el número directamente por el mayor cuadrado de la lista.'
 ejemplos:
-  - titulo: 'Descomposición de raíz de 48'
-    enunciado: '¿La descomposición simplificada de $\sqrt{48}$ es $4\sqrt{3}$?'
-    alternativas:
-      - 'Sí, usando $48 = 16 \cdot 3 \implies 4\sqrt{3}$'
-      - 'No, es $2\sqrt{12}$'
-      - 'No, es $3\sqrt{4}$'
-    respuesta: 'Sí, usando $48 = 16 \cdot 3 \implies 4\sqrt{3}$'
-    solucion_pasos:
-      - '1. Buscamos el mayor cuadrado perfecto divisor: $16$.'
-      - '2. Factorizamos $48 = 16 \cdot 3 \implies \sqrt{16} \cdot \sqrt{3} = 4\sqrt{3}$.'
-  - titulo: 'Descomposición de raíz de 300'
-    enunciado: '¿La simplificación de $\sqrt{300}$ equivale a $10\sqrt{3}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $300 = 100 \cdot 3 \implies \sqrt{100} \cdot \sqrt{3} = 10\sqrt{3}$.'
-  - titulo: 'Descomposición en raíz cúbica'
-    enunciado: '¿La simplificación de la raíz cúbica $\sqrt[3]{40}$ resulta en $2\sqrt[3]{5}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. El mayor cubo perfecto divisor es $8 \implies \sqrt[3]{8 \cdot 5} = 2\sqrt[3]{5}$.'
-  - titulo: 'Forma irreducible'
-    enunciado: '¿Una raíz está completamente simplificada cuando el radicando no tiene divisores cuadrados mayores que 1?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Es la definición de la forma canónica irreducible.'
+- titulo: Ejemplo 1
+  enunciado: ¿Cuál es la simplificación de $\sqrt{48}$?
+  alternativas:
+  - $4\sqrt{3}$
+  - $2\sqrt{12}$
+  - $16\sqrt{3}$
+  respuesta: $4\sqrt{3}$
+  solucion_pasos:
+  - $48 = 16 \cdot 3 \implies \sqrt{16} \cdot \sqrt{3} = 4\sqrt{3}$.
+- titulo: Ejemplo 2
+  enunciado: ¿Cuál es la simplificación de $\sqrt{98}$?
+  alternativas:
+  - $7\sqrt{2}$
+  - $2\sqrt{7}$
+  - $49\sqrt{2}$
+  respuesta: $7\sqrt{2}$
+  solucion_pasos:
+  - $98 = 49 \cdot 2 \implies \sqrt{49} \cdot \sqrt{2} = 7\sqrt{2}$.
+- titulo: ¿Es √80 igual a 4√5?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $80 = 16 \cdot 5 \implies \sqrt{16} \cdot \sqrt{5} = 4\sqrt{5}$.
+  alternativas:
+  - texto: Sí, 80 = 16 · 5 dando 4√5
+    es_correcta: true
+    retroalimentacion: ¡Correcto! 16 es cuadrado perfecto.
+  - texto: No, es igual a 2√20
+    es_correcta: false
+    retroalimentacion: Incorrecto, $2\sqrt{20}$ no está simplificado al máximo.
+  - texto: No, es igual a 5√4
+    es_correcta: false
+    retroalimentacion: Incorrecto, $5\sqrt{4} = 10 \neq \sqrt{80}$.
+- titulo: ¿Es √45 simplificable como 3√5?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $45 = 9 \cdot 5 \implies \sqrt{9} \cdot \sqrt{5} = 3\sqrt{5}$.
+  alternativas:
+  - texto: Sí, √45 = 3√5
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $9 \cdot 5 = 45$.
+  - texto: No, 45 no se puede simplificar
+    es_correcta: false
+    retroalimentacion: Incorrecto, contiene el factor cuadrado 9.
+  - texto: No, es igual a 5√3
+    es_correcta: false
+    retroalimentacion: Incorrecto, $\sqrt{9} = 3$, no 5.
 errores_frecuentes:
-  - 'Descomponer el radicando en una suma de dos enteros y aplicar la raíz a cada sumando individual.'
-  - 'Detener el proceso de simplificación cuando el radicando restante aún contiene un cuadrado perfecto divisible.'
-  - 'Dividir el radicando entre 2 y sacar la mitad del número fuera de la raíz.'
-  - 'La descomposición del radicando se realiza dividiendo por factores primos en lugar de divisores cuadrados perfectos.'
-  - 'Restar el cuadrado perfecto del radicando en lugar de dividir por él.'
+- Dejar simplificaciones incompletas con factores extraíbles residuales.
+- Confundir factores primos con factores cuadrados.
+- Dividir el número por 2 y asumir que ese es el factor fuera de la raíz.
+- Olvidar multiplicar factores exteriores cuando se extraen varios términos.
+- No reconocer cubos perfectos al simplificar raíces cúbicas.
 afirmaciones_verdaderas:
-  - 'La descomposición del radicando consiste en expresar el número interno como producto de la mayor potencia perfecta posible y un factor residual para extraer dicha potencia fuera del radical.'
-  - 'Una raíz está en su forma canónica más simplificada cuando el radicando interior no posee divisores que sean potencias perfectas del mismo índice.'
-al_terminar_debes_poder: 'Descomponer el radicando en potencias perfectas divisibles para reducir cualquier raíz a su forma canónica simplificada irreducible.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- La descomposición prima es el método universal para llevar cualquier radical a su forma irreducible.
+- Un radical está completamente simplificado cuando su radicando es libre de potencias $n$-ésimas.
+- La simplificación revela la base radical común entre términos aparentemente distintos.
+al_terminar_debes_poder: '![Síntesis de descomposición de radicandos](/static/img/nodos/descomposicion-del-radicando-para-simplificar-raices-resumen.svg)
+
+
+  QUÉ: Descomponer radicandos numéricos y algebraicos para simplificar raíces a su forma canónica.
+
+
+  CÓMO: Factorizando en números primos, identificando el mayor factor de potencia perfecta de grado $n$ y extrayendo su raíz exacta para dejar un radicando irreducible $K\sqrt[n]{C}$.'
+fuente: Texto escolar MINEDUC — Matemática 8° Básico / 1° Medio / PAES.
 estado: publicado
