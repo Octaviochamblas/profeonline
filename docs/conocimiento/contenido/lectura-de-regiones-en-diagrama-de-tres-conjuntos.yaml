@@ -1,115 +1,141 @@
 semantic_id: MAT.FUND.DIAGRAMAS_VENN.REGIONES_TRES_CONJUNTOS
-resumen_inicial: 'Interpretación formal, traducción entre lenguaje natural y operaciones booleanas para cada una de las 8 regiones de un diagrama de Venn de tres conjuntos.'
-explicacion_simple: |
+resumen_inicial: Interpretación formal, traducción entre lenguaje natural y operaciones booleanas para cada una de las 8 regiones de un diagrama de Venn de tres conjuntos.
+explicacion_simple: '![Infografía: Capas de profundidad y operaciones compuestas en 3 conjuntos](/static/img/nodos/lectura-de-regiones-en-diagrama-de-tres-conjuntos-intro.svg)
+
+
   En un diagrama de Venn de **tres conjuntos** ($A, B, C$), existen frases clave que debemos saber ubicar en el dibujo:
+
   - **"Los tres a la vez"**: es la región del centro mismo ($A \cap B \cap C$).
+
   - **"Solo $A$ y $B$"**: es la zona donde se cruzan $A$ y $B$, pero quitando el centro $C$ ($(A \cap B) \setminus C$).
+
   - **"Solo $A$"**: es la zona exclusiva de $A$ sin tocar ni a $B$ ni a $C$ ($A \setminus (B \cup C)$).
+
   - **"Exactamente dos"**: es la suma de las 3 zonas dobles exclusivas.
+
   - **"Exactamente uno"**: es la suma de las 3 zonas individuales exclusivas (solo $A$ + solo $B$ + solo $C$).
+
   - **"Al menos dos"**: abarca las 3 zonas dobles MÁS la triple central.
+
   - **"Al menos uno"**: es toda la unión completa ($A \cup B \cup C$).
-explicacion_formal: |
-  ### Definición formal
-  En la lógica proposicional y la teoría combinatoria, la **lectura de regiones de orden 3** es la descomposición del álgebra de Boole generada por $\{A, B, C\}$ sobre las $8$ regiones atómicas disjuntas:
-  $$\begin{array}{|l|l|l|} \hline \text{Enunciado en lenguaje natural} & \text{Expresión conjuntista} & \text{Regiones atómicas} \\ \hline \text{Solo } A & A \setminus (B \cup C) & R_{100} \\ \text{Solo } A \text{ y } B \text{ (no } C\text{)} & (A \cap B) \setminus C & R_{110} \\ \text{Los tres simultáneamente} & A \cap B \cap C & R_{111} \\ \text{Exactamente uno} & R_{100} \cup R_{010} \cup R_{001} & 3 \text{ átomos} \\ \text{Exactamente dos} & R_{110} \cup R_{101} \cup R_{011} & 3 \text{ átomos} \\ \text{Al menos dos} & (A \cap B) \cup (A \cap C) \cup (B \cap C) & R_{110} \cup R_{101} \cup R_{011} \cup R_{111} \\ \text{A lo sumo dos} & (A \cap B \cap C)^c & \mathcal{U} \setminus R_{111} \\ \text{Al menos uno} & A \cup B \cup C & \mathcal{U} \setminus R_{000} \\ \text{Ninguno de los tres} & (A \cup B \cup C)^c & R_{000} \\ \hline \end{array}$$
 
-  ### Desglose simbólico
-  - "Exactamente $k$ conjuntos": Suma de regiones con peso de Hamming $w(b) = k$.
-    - $k = 1$: $|R_{100}| + |R_{010}| + |R_{001}|$.
-    - $k = 2$: $|R_{110}| + |R_{101}| + |R_{011}|$.
-    - $k = 3$: $|R_{111}|$.
-  - "Al menos $k$ conjuntos": Suma de regiones con peso $w(b) \geq k$.
+  '
+explicacion_formal: "### Definición formal\nEn la lógica proposicional y la teoría combinatoria, la **lectura de regiones de orden 3** es la descomposición del álgebra de Boole generada por $\\{A, B, C\\}$ sobre las $8$ regiones atómicas disjuntas:\n$$\\begin{array}{|l|l|l|} \\hline \\text{Enunciado en lenguaje natural} & \\text{Expresión conjuntista} & \\text{Regiones atómicas} \\\\ \\hline \\text{Solo } A & A \\setminus (B \\cup C) & R_{100} \\\\ \\text{Solo } A \\text{ y } B \\text{ (no } C\\text{)} & (A \\cap B) \\setminus C & R_{110} \\\\ \\text{Los tres simultáneamente} & A \\cap B \\cap C & R_{111} \\\\ \\text{Exactamente uno} & R_{100} \\cup R_{010} \\cup R_{001} & 3 \\text{ átomos} \\\\ \\text{Exactamente dos} & R_{110} \\cup R_{101} \\cup R_{011} & 3 \\text{ átomos} \\\\ \\text{Al menos dos} & (A \\cap B) \\cup (A \\cap C) \\cup (B \\cap C) & R_{110} \\cup R_{101} \\cup R_{011} \\cup R_{111} \\\\ \\text{A lo sumo dos} & (A \\cap B \\cap C)^c & \\mathcal{U} \\setminus R_{111} \\\
+  \\ \\text{Al menos uno} & A \\cup B \\cup C & \\mathcal{U} \\setminus R_{000} \\\\ \\text{Ninguno de los tres} & (A \\cup B \\cup C)^c & R_{000} \\\\ \\hline \\end{array}$$\n\n### Desglose simbólico\n- \"Exactamente $k$ conjuntos\": Suma de regiones con peso de Hamming $w(b) = k$.\n  - $k = 1$: $|R_{100}| + |R_{010}| + |R_{001}|$.\n  - $k = 2$: $|R_{110}| + |R_{101}| + |R_{011}|$.\n  - $k = 3$: $|R_{111}|$.\n- \"Al menos $k$ conjuntos\": Suma de regiones con peso $w(b) \\geq k$.\n\n### Síntesis didáctica\nIdentificar con precisión los cuantificadores lingüísticos de cota (\"exactamente\", \"al menos\", \"a lo sumo\") permite resolver problemas complejos de tres conjuntos sin ambigüedades.\n"
+definiciones_clave: '- **"Exactamente uno"**: Pertenencia a un único conjunto con exclusión de los otros dos.
 
-  ### Síntesis didáctica
-  Identificar con precisión los cuantificadores lingüísticos de cota ("exactamente", "al menos", "a lo sumo") permite resolver problemas complejos de tres conjuntos sin ambigüedades.
-definiciones_clave: |
-  - **"Exactamente uno"**: Pertenencia a un único conjunto con exclusión de los otros dos.
   - **"Exactamente dos"**: Pertenencia a dos conjuntos simultáneos con exclusión estricta del tercero.
+
   - **"Al menos dos"**: Pertenencia a 2 o a los 3 conjuntos a la vez (unión de dobles y triple).
+
   - **"A lo sumo dos"**: Pertenencia a 0, 1 o 2 conjuntos (todo el universo excepto la triple intersección).
-propiedades_relaciones: |
-  - **Complementariedad**: "Al menos dos" ($w \geq 2$) y "A lo sumo uno" ($w \leq 1$) son conjuntos mutuamente disjuntos y complementarios en $\mathcal{U}$.
+
+  '
+propiedades_relaciones: '- **Complementariedad**: "Al menos dos" ($w \geq 2$) y "A lo sumo uno" ($w \leq 1$) son conjuntos mutuamente disjuntos y complementarios en $\mathcal{U}$.
+
   - **Partición por pesos**: Los 8 átomos se agrupan en cuatro niveles de conteo: 0 conjuntos (1 átomo), 1 conjunto (3 átomos), 2 conjuntos (3 átomos) y 3 conjuntos (1 átomo).
+
+  '
 ejemplo_guiado:
-  enunciado: 'En un diagrama de tres conjuntos se tienen las siguientes cardinalidades: Solo $A = 12$, Solo $B = 10$, Solo $C = 8$, Solo $A$ y $B = 6$, Solo $A$ y $C = 4$, Solo $B$ y $C = 5$, los tres = $3$, y ninguno = $7$. Calcula: (a) cuántos pertenecen a exactamente dos conjuntos, (b) cuántos pertenecen a al menos dos conjuntos, y (c) cuántos pertenecen a exactamente un conjunto.'
+  enunciado: '![Diagrama: Cálculo de al menos dos y exactamente una sola categoría](/static/img/nodos/lectura-de-regiones-en-diagrama-de-tres-conjuntos-ejemplos.svg)
+
+
+    En un diagrama de tres conjuntos se tienen las siguientes cardinalidades: Solo $A = 12$, Solo $B = 10$, Solo $C = 8$, Solo $A$ y $B = 6$, Solo $A$ y $C = 4$, Solo $B$ y $C = 5$, los tres = $3$, y ninguno = $7$. Calcula: (a) cuántos pertenecen a exactamente dos conjuntos, (b) cuántos pertenecen a al menos dos conjuntos, y (c) cuántos pertenecen a exactamente un conjunto.'
   pasos:
-    - 'Paso 1: Identificar las regiones dobles exclusivas:
-      - Solo $A$ y $B = 6$, Solo $A$ y $C = 4$, Solo $B$ y $C = 5$.'
-    - 'Paso 2: Calcular (a) "Exactamente dos conjuntos":
-      - Suma de las dobles exclusivas: $6 + 4 + 5 = 15$ elementos.'
-    - 'Paso 3: Calcular (b) "Al menos dos conjuntos":
-      - Suma de exactamente dos ($15$) más los tres conjuntos ($3$):
-      - $15 + 3 = 18$ elementos.'
-    - 'Paso 4: Calcular (c) "Exactamente un conjunto":
-      - Suma de las tres regiones individuales exclusivas:
-      - $12 + 10 + 8 = 30$ elementos.'
-    - 'Paso 5: Comprobar el universo total:
-      - $|\mathcal{U}| = 30 \text{ (uno)} + 15 \text{ (dos)} + 3 \text{ (tres)} + 7 \text{ (cero)} = 55$ elementos.'
+  - 'Paso 1: Identificar las regiones dobles exclusivas: - Solo $A$ y $B = 6$, Solo $A$ y $C = 4$, Solo $B$ y $C = 5$.'
+  - 'Paso 2: Calcular (a) "Exactamente dos conjuntos": - Suma de las dobles exclusivas: $6 + 4 + 5 = 15$ elementos.'
+  - 'Paso 3: Calcular (b) "Al menos dos conjuntos": - Suma de exactamente dos ($15$) más los tres conjuntos ($3$): - $15 + 3 = 18$ elementos.'
+  - 'Paso 4: Calcular (c) "Exactamente un conjunto": - Suma de las tres regiones individuales exclusivas: - $12 + 10 + 8 = 30$ elementos.'
+  - 'Paso 5: Comprobar el universo total: - $|\mathcal{U}| = 30 \text{ (uno)} + 15 \text{ (dos)} + 3 \text{ (tres)} + 7 \text{ (cero)} = 55$ elementos.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En un diagrama de tres conjuntos, ¿qué regiones deben sumarse para calcular la cantidad de elementos que pertenecen a "al menos dos conjuntos"?'
-    choices:
-      - {text: 'Las tres regiones dobles exclusivas más la triple intersección central ($R_{110} + R_{101} + R_{011} + R_{111}$)', is_correct: true}
-      - {text: 'Únicamente las tres regiones individuales exclusivas', is_correct: false}
-      - {text: 'La totalidad del universo $\mathcal{U}$', is_correct: false}
-      - {text: 'La región exterior más la triple intersección', is_correct: false}
-    explanation: 'La alternativa correcta es ''Las tres regiones dobles exclusivas más la triple intersección central ($R_{110} + R_{101} + R_{011} + R_{111}$)''. "Al menos dos" abarca 2 o 3 conjuntos.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si el universo tiene $|\mathcal{U}| = 100$ y la triple intersección tiene $|A \cap B \cap C| = 8$, ¿cuántos elementos pertenecen a "a lo sumo dos conjuntos"?'
-    choices:
-      - {text: '$92$ elementos ($100 - 8$)', is_correct: true}
-      - {text: '$8$ elementos', is_correct: false}
-      - {text: '$50$ elementos', is_correct: false}
-      - {text: '$108$ elementos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$92$ elementos ($100 - 8$)''. "A lo sumo dos" es el complemento exacto de la triple intersección: $100 - 8 = 92$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: En un diagrama de tres conjuntos, ¿qué regiones deben sumarse para calcular la cantidad de elementos que pertenecen a "al menos dos conjuntos"?
+  choices:
+  - text: Las tres regiones dobles exclusivas más la triple intersección central ($R_{110} + R_{101} + R_{011} + R_{111}$)
+    is_correct: true
+  - text: Únicamente las tres regiones individuales exclusivas
+    is_correct: false
+  - text: La totalidad del universo $\mathcal{U}$
+    is_correct: false
+  - text: La región exterior más la triple intersección
+    is_correct: false
+  explanation: La alternativa correcta es 'Las tres regiones dobles exclusivas más la triple intersección central ($R_{110} + R_{101} + R_{011} + R_{111}$)'. "Al menos dos" abarca 2 o 3 conjuntos.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si el universo tiene $|\mathcal{U}| = 100$ y la triple intersección tiene $|A \cap B \cap C| = 8$, ¿cuántos elementos pertenecen a "a lo sumo dos conjuntos"?
+  choices:
+  - text: $92$ elementos ($100 - 8$)
+    is_correct: true
+  - text: $8$ elementos
+    is_correct: false
+  - text: $50$ elementos
+    is_correct: false
+  - text: $108$ elementos
+    is_correct: false
+  explanation: 'La alternativa correcta es ''$92$ elementos ($100 - 8$)''. "A lo sumo dos" es el complemento exacto de la triple intersección: $100 - 8 = 92$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Desglosar el diagrama en sus 8 regiones atómicas numéricas.'
-  - 'Paso 2: Identificar la cota solicitada en el enunciado ("exactamente $k$", "al menos $k$", "a lo sumo $k$").'
-  - 'Paso 3: Seleccionar las regiones que satisfacen dicha condición.'
-  - 'Paso 4: Sumar las cantidades numéricas de las regiones seleccionadas.'
-  - 'Paso 5: Verificar que la suma no exceda la cardinalidad de la unión o del universo.'
-errores_correccion: |
-  - **Error 1:** Incluir la triple intersección al calcular "exactamente dos". **Cómo corregirlo:** "Exactamente dos" exige que no pertenezca al tercer conjunto; la triple intersección solo se añade en "al menos dos".
+- 'Paso 1: Desglosar el diagrama en sus 8 regiones atómicas numéricas.'
+- 'Paso 2: Identificar la cota solicitada en el enunciado ("exactamente $k$", "al menos $k$", "a lo sumo $k$").'
+- 'Paso 3: Seleccionar las regiones que satisfacen dicha condición.'
+- 'Paso 4: Sumar las cantidades numéricas de las regiones seleccionadas.'
+- 'Paso 5: Verificar que la suma no exceda la cardinalidad de la unión o del universo.'
+errores_correccion: '- **Error 1:** Incluir la triple intersección al calcular "exactamente dos". **Cómo corregirlo:** "Exactamente dos" exige que no pertenezca al tercer conjunto; la triple intersección solo se añade en "al menos dos".
+
   - **Error 2:** Omitir la región exterior al calcular "a lo sumo dos". **Cómo corregirlo:** "A lo sumo dos" incluye 0 conjuntos (la región exterior), 1 conjunto y 2 conjuntos; equivale a $|\mathcal{U}| - |A \cap B \cap C|$.
+
+  '
 ejemplos:
-  - titulo: 'Exactamente un conjunto'
-    enunciado: 'Si solo $A = 5$, solo $B = 4$ y solo $C = 3$, ¿cuánto vale "exactamente uno"?'
-    alternativas:
-      - '$12$'
-      - '$5$'
-      - '$15$'
-    respuesta: '$12$'
-    solucion_pasos:
-      - '1. Se suman las 3 exclusivas: $5 + 4 + 3 = 12$.'
-  - titulo: 'A lo sumo dos'
-    enunciado: '¿Cuál es la fórmula para calcular "a lo sumo dos conjuntos"?'
-    respuesta: '$|\mathcal{U}| - |A \cap B \cap C|$'
-    solucion_pasos:
-      - 'Equivale a todo el universo excepto aquellos que están en los tres a la vez.'
-  - titulo: 'Al menos uno'
-    enunciado: '¿A qué operación equivale "al menos un conjunto"?'
-    respuesta: '$A \cup B \cup C$'
-    solucion_pasos:
-      - 'Es la unión completa de los tres conjuntos.'
-  - titulo: 'Suma total de regiones'
-    enunciado: '¿La suma de los 8 átomos booleanos reconstruye el universo $\mathcal{U}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, los 8 átomos forman una partición exhaustiva de $\mathcal{U}$.'
+- titulo: Exactamente un conjunto
+  enunciado: Si solo $A = 5$, solo $B = 4$ y solo $C = 3$, ¿cuánto vale "exactamente uno"?
+  alternativas:
+  - $12$
+  - $5$
+  - $15$
+  respuesta: $12$
+  solucion_pasos:
+  - '1. Se suman las 3 exclusivas: $5 + 4 + 3 = 12$.'
+- titulo: A lo sumo dos
+  enunciado: ¿Cuál es la fórmula para calcular "a lo sumo dos conjuntos"?
+  respuesta: $|\mathcal{U}| - |A \cap B \cap C|$
+  solucion_pasos:
+  - Equivale a todo el universo excepto aquellos que están en los tres a la vez.
+  alternativas:
+  - $|\mathcal{U}| - |A \cap B \cap C|$
+  - $|A \cup B \cup C|$
+  - $|A| + |B| + |C|$
+  - $|A \cap B \cap C|$
+- titulo: Al menos uno
+  enunciado: ¿A qué operación equivale "al menos un conjunto"?
+  respuesta: $A \cup B \cup C$
+  solucion_pasos:
+  - Es la unión completa de los tres conjuntos.
+  alternativas:
+  - $A \cup B \cup C$
+  - $A \cap B \cap C$
+  - $(A \cup B \cup C)^c$
+  - $A \triangle B \triangle C$
+- titulo: Suma total de regiones
+  enunciado: ¿La suma de los 8 átomos booleanos reconstruye el universo $\mathcal{U}$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, los 8 átomos forman una partición exhaustiva de $\mathcal{U}$.
 errores_frecuentes:
-  - 'La afirmación de que la frase "al menos dos conjuntos" no incluye la triple intersección central.'
-  - 'La afirmación de que la expresión "exactamente dos conjuntos" incluye a los elementos que están en los tres conjuntos.'
-  - 'La afirmación de que "a lo sumo dos conjuntos" excluye a los elementos de la región exterior.'
-  - 'La afirmación de que "solo A y B" incluye a los elementos que también pertenecen a C.'
-  - 'La afirmación de que la suma de las regiones de "exactamente uno" es equivalente a la unión total $A \cup B \cup C$.'
+- La afirmación de que la frase "al menos dos conjuntos" no incluye la triple intersección central.
+- La afirmación de que la expresión "exactamente dos conjuntos" incluye a los elementos que están en los tres conjuntos.
+- La afirmación de que "a lo sumo dos conjuntos" excluye a los elementos de la región exterior.
+- La afirmación de que "solo A y B" incluye a los elementos que también pertenecen a C.
+- La afirmación de que la suma de las regiones de "exactamente uno" es equivalente a la unión total $A \cup B \cup C$.
 afirmaciones_verdaderas:
-  - 'La frase "al menos dos conjuntos" comprende las tres intersecciones dobles exclusivas más la triple intersección central ($R_{110} \cup R_{101} \cup R_{011} \cup R_{111}$).'
-  - 'La expresión "a lo sumo dos conjuntos" es el complemento de la triple intersección y equivale a $\mathcal{U} \setminus (A \cap B \cap C)$.'
-al_terminar_debes_poder: |
-  QUÉ: Leer, traducir e interpretar las 8 regiones de un diagrama de Venn de tres conjuntos.
+- La frase "al menos dos conjuntos" comprende las tres intersecciones dobles exclusivas más la triple intersección central ($R_{110} \cup R_{101} \cup R_{011} \cup R_{111}$).
+- La expresión "a lo sumo dos conjuntos" es el complemento de la triple intersección y equivale a $\mathcal{U} \setminus (A \cap B \cap C)$.
+al_terminar_debes_poder: 'QUÉ: Leer, traducir e interpretar las 8 regiones de un diagrama de Venn de tres conjuntos.
+
   CÓMO: Discriminar entre condiciones de cota ("exactamente", "al menos", "a lo sumo") y sumar los átomos booleanos correspondientes.
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+
+
+  ![Cuadro resumen: Lectura de 3 conjuntos, capas y estratificación](/static/img/nodos/lectura-de-regiones-en-diagrama-de-tres-conjuntos-resumen.svg)
+
+  '
+fuente: Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.
 estado: publicado
