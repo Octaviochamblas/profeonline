@@ -61,8 +61,9 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
 - **Infografías y Diagramas SVG:** Todo SVG (`static/img/nodos/`) debe respetar el estándar
   *Zero-Overflow*: textos derechos anclados con `text-anchor="end"`, padding seguro $\ge 15\text{px}$,
-  y control estricto de longitud de caracteres por caja. Prohibido desbordar los bordes de cards
-  o del canvas.
+  y control estricto de longitud de caracteres por caja contenedora y subcaja interna
+  ($N_{\text{max}} \le \frac{W_{\text{box}} - 2 \times \text{padding}}{\text{font-size} \times 0.60}$).
+  Prohibido desbordar los bordes de subcajas, cards o del canvas.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 

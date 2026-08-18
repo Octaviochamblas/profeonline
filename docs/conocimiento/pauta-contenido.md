@@ -116,11 +116,16 @@ ejemplo_guiado:
 # Todo archivo SVG generado para los nodos (`static/img/nodos/*.svg`) DEBE cumplir estrictamente con:
 # 1. Anclaje derecho seguro: Todo texto o badge ubicado en el extremo derecho de un contenedor/píldora DEBE
 #    usar obligatoriamente `text-anchor="end"` con padding interior (`x = rect_x + rect_width - 16`).
-# 2. Límite de caracteres por contenedor: El texto no debe exceder el ancho útil disponible
-#    ($N_{\text{max}} \approx \frac{W_{\text{box}} - 30}{F_s \times 0.62}$ caracteres). Textos largos deben dividirse en
-#    múltiples líneas (`<tspan>` o `<text>` apilados) o sintetizarse.
-# 3. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja.
+# 2. Límite de caracteres por contenedor y subcaja (Fórmula Universal Zero-Overflow):
+#    Para cualquier contenedor o sub-caja interna (cajas comparativas $p$ vs $\neg p$, badges, píldoras, etc.)
+#    de ancho $W_{\text{box}}$ y fuente $F_s$:
+#    $$N_{\text{max}} \le \frac{W_{\text{box}} - (2 \times \text{padding})}{F_s \times 0.60}$$
+#    (Ejemplo crítico evitado: en una caja de $120\text{px}$, el texto "VERDADERO (V)" de 13 caracteres a $18\text{px}$
+#    requiere $140.4\text{px}$, desbordando la caja. Debe usarse caja de $\ge 138\text{px}$ con $F_s \le 14.5\text{px}$
+#    o sintetizarse a "VERDAD (V)" para garantizar padding $\ge 15\text{px}$).
+# 3. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
 # 4. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
+# 5. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."
