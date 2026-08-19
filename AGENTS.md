@@ -75,9 +75,14 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
 - **Fracciones Matemáticas en Diagramas SVG:** Toda fracción, división o cociente algebraico o numérico
   en diagramas SVG (`static/img/nodos/`) DEBE representarse obligatoriamente en formato vertical apilado
   con numerador superior, línea horizontal vectorial de fracción (`<line>`) y denominador inferior, con
-  los operadores matemáticos ($\cdot$, $=$, $+$, $-$) alineados al centro de la barra. Está **estrictamente
+  los operadores matemáticos ($\cdot$, $=$, $+$, $-$, $\implies$) alineados al centro de la barra. Está **estrictamente
   prohibido** usar notación plana con barra inclinada (`a / b`, `1 / (√3 - 1)`, `6 / √3`, `(a·d + b·c) / 12`)
   en infografías o diagramas explicativos. En contenido YAML, usar siempre $\LaTeX$ vertical $\frac{a}{b}$ en `$...$`.
+  - **Geometría de Fracciones y Prevención de Solapamiento (Zero-Collision):**
+    1. *Ancho de barra y texto:* La barra de fracción `<line>` debe cubrir holgadamente el texto más ancho ($W_{\text{line}} \ge \max(W_{\text{num}}, W_{\text{den}}) + 20\text{px}$). Prohibido centrar texto largo sobre una línea corta.
+    2. *Espaciado horizontal acumulativo:* Al encadenar operadores y fracciones (`N = \frac{A}{B} ⟹ Escala = 1 : N`), la coordenada $X$ de cada elemento siguiente DEBE calcularse sumando el ancho real del elemento anterior más un espacio de separación seguro ($X_{\text{siguiente}} = X_{\text{inicio}} + W_{\text{fracción}} + \text{gap} \ge 25\text{px}$). Prohibido usar desplazamientos fijos pequeños que causen que el texto del numerador/denominador invada o solape el signo igual u otros operadores contiguos.
+    3. *Alineación vertical y separación:* Para una barra en $y_{\text{barra}}$ y fuente de tamaño $F$: numerador en $y_{\text{barra}} - 7\text{px}$, denominador en $y_{\text{barra}} + F + 3\text{px}$, y operadores centrados con la barra en $y_{\text{barra}} + \frac{F}{3}$. La caja o badge contenedora de la fórmula debe tener altura mínima $H \ge 65\text{px}$ para contener la fracción sin rozar los bordes.
+    4. *Prohibición de guiones bajos crudos:* Prohibido escribir `D_real`, `D_plano`, `c_A`, `Parte_i` en SVG. Usar siempre etiquetas tipográficas `<tspan baseline-shift="sub" font-size="70%">...</tspan>` o etiquetas descriptivas en lenguaje natural (`Medida real`, `Medida en el plano`).
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
