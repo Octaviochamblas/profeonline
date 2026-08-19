@@ -1,107 +1,141 @@
-semantic_id: MAT.NUM.IMAGINARIOS.POTENCIAS_DE_I
-resumen_inicial: 'Las potencias enteras de la unidad imaginaria forman un ciclo periódico de cuatro valores que se repite indefinidamente: $i^1 = i$, $i^2 = -1$, $i^3 = -i$, $i^4 = 1$.'
-explicacion_simple: |
-  Cuando elevas la unidad imaginaria $i$ a exponentes cada vez más grandes, descubres un patrón mágico que se repite cada 4 pasos:
-  1. $i^1 = i$
-  2. $i^2 = -1$
-  3. $i^3 = -i$
-  4. $i^4 = 1$
+semantic_id: MAT.NUM.NUMEROS_IMAGINARIOS.CICLO_POTENCIAS
+resumen_inicial: 'Las potencias enteras de la unidad imaginaria forman un ciclo periódico de longitud 4: $\{1, i, -1, -i\}$, de modo que $i^k = i^r$, donde $r$ es el resto de la división euclídea de $k$ entre 4 ($r \in \{0, 1, 2, 3\}$).'
+explicacion_simple: "![Ciclo de potencias de la unidad imaginaria](/static/img/nodos/ciclo-de-potencias-de-la-unidad-imaginaria-intro.svg)\n\nLas potencias de $i$ se repiten en un reloj de 4 posiciones:\n- $i^0 = 1$\n- $i^1 = i$\n- $i^2 = -1$\n- $i^3 = i^2 \\cdot i = -i$\n- $i^4 = (i^2)^2 = (-1)^2 = 1$ (¡vuelve a empezar!).\n- Para calcular una potencia grande como $i^{23}$, **divides el exponente por 4 y te quedas con el resto**:\n  - $23 : 4 = 5$ con **resto 3**.\n  - Por lo tanto: $i^{23} = i^3 = -i$."
+explicacion_formal: 'Sea $k \in \mathbb{Z}$. Por el algoritmo de la división euclídea, existen únicos enteros $q \in \mathbb{Z}$ (cociente) y $r \in \{0, 1, 2, 3\}$ (resto) tales que:
 
-  ¡A partir de $i^5$, los resultados vuelven a empezar! ($i^5 = i, i^6 = -1, i^7 = -i, i^8 = 1$). Para calcular cualquier potencia gigante como $i^{99}$, simplemente divides el exponente $99$ entre $4$ y miras el **resto de la división** ($99 = 4 \cdot 24 + 3$). El resto es $3$, por lo que $i^{99} = i^3 = -i$.
-explicacion_formal: |
-  ### Definición formal
-  El **ciclo de potencias de la unidad imaginaria** es la secuencia periódica de período $T = 4$ generada por el grupo cíclico de orden 4 bajo la multiplicación:
-  $$i^n = i^r \quad \text{donde } r = n \pmod 4 \quad (r \in \{0, 1, 2, 3\})$$
 
-  ### Valores fundamentales del ciclo básico
-  1. **Exponente $r = 1$**: $i^1 = i$
-  2. **Exponente $r = 2$**: $i^2 = -1$
-  3. **Exponente $r = 3$**: $i^3 = i^2 \cdot i = (-1) \cdot i = -i$
-  4. **Exponente $r = 0$ (o múltiplo de 4)**: $i^4 = i^2 \cdot i^2 = (-1) \cdot (-1) = 1 \implies i^0 = 1$
+  $$k = 4q + r \quad (0 \le r < 4)$$
 
-  ### Algoritmo de reducción para exponentes grandes $n \in \mathbb{Z}$
-  Dada la división entera $n = 4q + r$ (con $q \in \mathbb{Z}$ y $0 \le r < 4$):
-  $$i^n = i^{4q + r} = (i^4)^q \cdot i^r = (1)^q \cdot i^r = 1 \cdot i^r = i^r$$
 
-  ### Síntesis didáctica
-  - Período de repetición: $4$.
-  - Múltiplos exactos de 4: Toda potencia de la forma $i^{4k}$ es estrictamente igual al entero positivo $1$.
-definiciones_clave: |
-  - **Ciclo periódico de orden 4**: Secuencia periódica $\{i, -1, -i, 1\}$ que adquieren las potencias sucesivas de $i$.
-  - **Resto de la división por 4 ($n \pmod 4$)**: Valor entero entre 0 y 3 que determina a cuál de las cuatro potencias básicas equivale $i^n$.
-  - **Múltiplo de 4 ($i^{4k} = 1$)**: Potencia de $i$ con exponente divisible por 4 que anula la unidad imaginaria transformándola en 1.
-propiedades_relaciones: |
-  - **Suma de 4 potencias consecutivas**: La suma de cuatro potencias enteras consecutivas de $i$ es siempre igual a cero: $i^k + i^{k+1} + i^{k+2} + i^{k+3} = i - 1 - i + 1 = 0$.
-  - **Potencias negativas**: $i^{-n} = \frac{1}{i^n} = \frac{i^4}{i^n} = i^{4 - n}$.
+  Aplicando las propiedades de las potencias y el hecho de que $i^4 = 1$:
+
+
+  $$i^k = i^{4q + r} = (i^4)^q \cdot i^r = 1^q \cdot i^r = i^r$$
+
+
+  **Tabla Fundamental del Ciclo Periódico:**
+
+  - **Si $r = 0$ ($k$ múltiplo de 4):** $i^k = i^0 = 1$
+
+  - **Si $r = 1$ ($k = 4q + 1$):** $i^k = i^1 = i$
+
+  - **Si $r = 2$ ($k = 4q + 2$):** $i^k = i^2 = -1$
+
+  - **Si $r = 3$ ($k = 4q + 3$):** $i^k = i^3 = -i$'
+definiciones_clave: '- **Ciclo de potencias de $i$**: Conjunto periódico $\{1, i, -1, -i\}$.
+
+  - **Aritmética modular (módulo 4)**: Reducción del exponente al resto de su división por 4.
+
+  - **Período ($T = 4$)**: Longitud de la secuencia de repetición invariante.'
+propiedades_relaciones: '- **Suma de 4 potencias consecutivas**: $i^k + i^{k+1} + i^{k+2} + i^{k+3} = 1 + i - 1 - i = 0$.
+
+  - **Potencias negativas**: $i^{-k} = \frac{1}{i^k} = i^{-k + 4m}$ sumando múltiplos de 4 al exponente.'
 ejemplo_guiado:
-  enunciado: 'Calcula el valor simplificado de la potencia de exponente elevado $A = i^{235}$.'
+  enunciado: '![Ejemplos de ciclo de potencias de i](/static/img/nodos/ciclo-de-potencias-de-la-unidad-imaginaria-ejemplos.svg)
+
+
+    Calcule el valor exacto de $i^{23}$ y simplifique $i^{100}$.'
   pasos:
-    - 'Paso 1: Tomamos el exponente $235$ y lo dividimos por $4$ mediante la división entera con resto.'
-    - 'Paso 2: Realizamos la división: $235 \div 4 = 58$ con resto $r = 3$ (ya que $4 \cdot 58 = 232$, y $235 - 232 = 3$).'
-    - 'Paso 3: Aplicamos el algoritmo de reducción $i^n = i^r$, reemplazando el exponente $235$ por el resto $3$: $i^{235} = i^3$.'
-    - 'Paso 4: Evaluamos el valor del ciclo básico para exponente 3: $i^3 = -i \implies A = -i$.'
+  - 'Paso 1: Para $i^{23}$: Dividir 23 entre 4: $23 = 4 \cdot 5 + 3$ (cociente 5, resto 3).'
+  - 'Paso 2: Reemplazar por el resto $r = 3$: $i^{23} = i^3 = -i$.'
+  - 'Paso 3: Para $i^{100}$: Dividir 100 entre 4: $100 = 4 \cdot 25 + 0$ (resto 0).'
+  - 'Paso 4: Reemplazar por el resto $r = 0$: $i^{100} = i^0 = 1$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es el valor del ciclo de potencias cuando el exponente es un múltiplo exacto de 4 ($i^{4k}$)?'
-    choices:
-      - {text: '$1$, ya que $i^4 = 1$ y $1^k = 1$', is_correct: true}
-      - {text: '$i$, devolviendo la unidad imaginaria', is_correct: false}
-      - {text: '$-1$, por ser un número par', is_correct: false}
-      - {text: '$-i$, por la alternancia de signo', is_correct: false}
-    explanation: 'La alternativa correcta es ''$1$, ya que $i^4 = 1$ y $1^k = 1$''. Los múltiplos de 4 dan como resultado 1.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el valor reducido de la potencia $i^{42}$?'
-    choices:
-      - {text: '$-1$, pues $42 \div 4$ deja resto $2$, e $i^2 = -1$', is_correct: true}
-      - {text: '$1$, asumiendo división exacta', is_correct: false}
-      - {text: '$i$, asumiendo resto 1', is_correct: false}
-      - {text: '$-i$, asumiendo resto 3', is_correct: false}
-    explanation: 'La alternativa correcta es ''$-1$, pues $42 \div 4$ deja resto $2$, e $i^2 = -1$''. $42 = 4 \cdot 10 + 2 \implies i^{42} = i^2 = -1$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor de $i^{42}$ tras aplicar la reducción por el algoritmo de la división?
+  choices:
+  - text: $-1$ (porque $42 = 4 \times 10 + 2$, resto 2 $\implies i^2 = -1$)
+    is_correct: true
+  - text: $1$
+    is_correct: false
+  - text: $i$
+    is_correct: false
+  - text: $-i$
+    is_correct: false
+  explanation: La alternativa correcta es '$-1$ (porque $42 = 4 \times 10 + 2$, resto 2 $\implies i^2 = -1$)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué $i^{100} = 1$?
+  choices:
+  - text: Porque 100 es múltiplo exacto de 4, lo que da resto 0 y $i^0 = 1$
+    is_correct: true
+  - text: Porque cualquier número elevado a 100 da 1
+    is_correct: false
+  - text: Porque $100 / 4 = 25$
+    is_correct: false
+  - text: Porque $i^{100} = 100i$
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque 100 es múltiplo exacto de 4, lo que da resto 0 y $i^0 = 1$'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Tomar el exponente entero $n$ de la potencia $i^n$.'
-  - 'Paso 2: Dividir el exponente $n$ por $4$ y determinar el resto $r \in \{0, 1, 2, 3\}$.'
-  - 'Paso 3: Reescribir la potencia equivalente reducida $i^r$.'
-  - 'Paso 4: Sustituir el valor según la tabla del ciclo: $i^0 = 1, i^1 = i, i^2 = -1, i^3 = -i$.'
-errores_correccion: |
-  - **Error 1:** Usar el cociente de la división en lugar del resto para reducir el exponente (ej: para $i^{13}$, dividir $13 \div 4 = 3$ y decir $i^3 = -i$). **Cómo corregirlo:** La propiedad utiliza el **resto de la división**: $13 = 4 \cdot 3 + 1 \implies \text{resto } r = 1 \implies i^{13} = i^1 = i$.
-  - **Error 2:** Creer que las potencias de $i$ producen números diferentes a los 4 del ciclo (ej: pensar que $i^5 = 5i$). **Cómo corregirlo:** Toda potencia de $i$ con exponente entero **sólo puede dar uno de estos cuatro valores**: $\{i, -1, -i, 1\}$.
+- 'Paso 1: Tomar el exponente entero $k$ y dividirlo por 4.'
+- 'Paso 2: Identificar el resto $r \in \{0, 1, 2, 3\}$ de la división entera.'
+- 'Paso 3: Evaluar la potencia reducida $i^r$ usando los valores elementales ($i^0 = 1, i^1 = i, i^2 = -1, i^3 = -i$).'
+errores_correccion: '- **Error 1: Utilizar el cociente en lugar del resto ($i^{23} = i^5$).** **Cómo corregirlo:** La potencia equivalente depende **exclusivamente del resto de la división**: $23 = 4(5) + 3 \implies i^{23} = i^3 = -i$.
+
+  - **Error 2: Pensar que el ciclo tiene 2 valores.** **Cómo corregirlo:** El ciclo tiene 4 valores ordenados: $1, i, -1, -i$.'
 ejemplos:
-  - titulo: 'Potencia con resto 1'
-    enunciado: '¿El valor de $i^{101}$ es igual a $i$?'
-    alternativas:
-      - 'Sí, pues $101 \div 4$ deja resto $1 \implies i^1 = i$'
-      - 'No, es igual a -1'
-      - 'No, es igual a 1'
-    respuesta: 'Sí, pues $101 \div 4$ deja resto $1 \implies i^1 = i$'
-    solucion_pasos:
-      - '1. Dividimos $101 \div 4 = 25$ con resto 1.'
-      - '2. Evaluamos $i^1 = i$.'
-  - titulo: 'Suma de cuatro potencias consecutivas'
-    enunciado: '¿La suma $i^1 + i^2 + i^3 + i^4$ resulta en $0$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $i + (-1) + (-i) + 1 = 0$.'
-  - titulo: 'Potencia múltiplo de 4'
-    enunciado: '¿El valor de $i^{1000}$ equivale a $1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. 1000 es divisible exactamente por 4 (resto 0), por lo que $i^0 = 1$.'
-  - titulo: 'Evaluación de exponente 3'
-    enunciado: '¿El valor de $i^{15}$ resulta en $-i$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $15 = 4 \cdot 3 + 3 \implies i^{15} = i^3 = -i$.'
+- titulo: Ejemplo 1
+  enunciado: ¿A qué equivale $i^{15}$?
+  alternativas:
+  - $-i$
+  - $i$
+  - $1$
+  respuesta: $-i$
+  solucion_pasos:
+  - $15 = 4 \cdot 3 + 3 \implies i^{15} = i^3 = -i$.
+- titulo: Ejemplo 2
+  enunciado: ¿Cuál es el valor de la suma $E = i^1 + i^2 + i^3 + i^4$?
+  alternativas:
+  - $0$
+  - $1$
+  - $4i$
+  respuesta: $0$
+  solucion_pasos:
+  - $E = i + (-1) + (-i) + 1 = 0$ (suma de 4 potencias consecutivas).
+- titulo: ¿Es i⁵⁷ = i?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque $57 = 4 \cdot 14 + 1 \implies i^{57} = i^1 = i$.
+  alternativas:
+  - texto: Sí, resto 1 da i
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $57 = 4 \times 14 + 1$.
+  - texto: No, es -i
+    es_correcta: false
+    retroalimentacion: Incorrecto, el resto es 1, no 3.
+  - texto: No, es 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, 57 no es múltiplo de 4.
+- titulo: ¿Es i²⁰²⁴ = 1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque 2024 termina en 24 (múltiplo de 4), dando resto 0 y $i^0 = 1$.
+  alternativas:
+  - texto: Sí, 2024 es divisible por 4 dando 1
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Criterio de divisibilidad por 4.
+  - texto: No, es -1
+    es_correcta: false
+    retroalimentacion: Incorrecto, el resto es 0, no 2.
+  - texto: No, es i
+    es_correcta: false
+    retroalimentacion: Incorrecto, el exponente es par.
 errores_frecuentes:
-  - 'Utilizar el cociente de la división por 4 como el nuevo exponente de $i$ en lugar de utilizar el resto.'
-  - 'Las potencias enteras de la unidad imaginaria $i^n$ crecen de forma ilimitada hacia el infinito.'
-  - 'Asignar el valor $-1$ a cualquier potencia con exponente número par independientemente de si es múltiplo de 4.'
-  - 'El resto $r = 0$ al dividir por 4 equivale al exponente $i^1 = i$.'
-  - 'Multiplicar la base $i$ por el exponente $n$ al evaluar $i^n$.'
+- Usar el cociente de la división en vez del resto euclídeo.
+- Olvidar que $i^0 = 1$ cuando el exponente es múltiplo exacto de 4.
+- Desconocer que la suma de 4 potencias consecutivas cualesquiera se anula a cero.
+- Calcular potencias negativas sin invertir la fracción.
 afirmaciones_verdaderas:
-  - 'Las potencias enteras de la unidad imaginaria son periódicas de período 4 con ciclo de valores $\{i, -1, -i, 1\}$.'
-  - 'El valor de cualquier potencia $i^n$ es equivalente a $i^r$, donde $r$ es el resto de dividir el exponente $n$ entre 4.'
-al_terminar_debes_poder: 'Calcular potencias elevadas de la unidad imaginaria $i^n$ utilizando la división por 4 para hallar el resto equivalente del ciclo.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- Las potencias enteras de la unidad imaginaria se repiten en un ciclo periódico de período 4.
+- Para cualquier exponente $k$, $i^k$ es igual a $i^r$, donde $r$ es el resto de dividir $k$ entre 4.
+- La suma de cualesquiera 4 potencias consecutivas de $i$ es siempre igual a cero.
+al_terminar_debes_poder: '![Síntesis de ciclo de potencias de i](/static/img/nodos/ciclo-de-potencias-de-la-unidad-imaginaria-resumen.svg)
+
+
+  QUÉ: Calcular y simplificar cualquier potencia entera positiva o negativa de la unidad imaginaria $i^k$.
+
+
+  CÓMO: Dividiendo el exponente $k$ por 4 para hallar el resto $r \in \{0, 1, 2, 3\}$ y aplicando la equivalencia directa $i^k = i^r$ con la tabla base $\{1, i, -1, -i\}$.'
+fuente: Texto escolar MINEDUC — Matemática 3° Medio / Álgebra Superior.
 estado: publicado
