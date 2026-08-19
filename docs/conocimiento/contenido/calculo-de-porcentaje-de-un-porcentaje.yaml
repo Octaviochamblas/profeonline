@@ -1,102 +1,100 @@
-semantic_id: MAT.NUM.PORCENTAJES.PORCENTAJE_DE_PORCENTAJE
-resumen_inicial: 'El porcentaje de un porcentaje determina el $a\%$ del $b\%$ de una cantidad $C$ multiplicando consecutivamente las razones o expresiones decimales de ambos porcentajes: $P = \left(\frac{a}{100}\right) \cdot \left(\frac{b}{100}\right) \cdot C$.'
+semantic_id: MAT.NUM.PORCENTAJES.PORC_DE_PORC
+resumen_inicial: 'El cálculo de porcentaje de un porcentaje consiste en aplicar sucesivamente dos o más porcentajes multiplicando sus expresiones decimales o fraccionarias ($a\% \text{ del } b\% \text{ de } N = \frac{a \cdot b}{10.000} \cdot N$).'
 explicacion_simple: |
-  Cuando escuchas una frase como *"el $20\%$ del $50\%$ de una cantidad"*, estás aplicando un porcentaje sobre otro porcentaje previo. La forma más fácil de resolverlo es convertir ambos porcentajes a números decimales o fracciones y multiplicarlos todos juntos:
-  - $20\% \to 0,20$
-  - $50\% \to 0,50$
-   Multiplicas $0,20 \cdot 0,50 = 0,10$, lo que significa que el $20\%$ del $50\%$ equivale al **$10\%$ final del total**.
+  ![Cálculo de porcentaje de un porcentaje](/static/img/nodos/calculo-de-porcentaje-de-un-porcentaje-intro.svg)
+
+  Cuando te piden calcular el *"20% del 50% de una cantidad"*, **los porcentajes se multiplican entre sí, ¡NUNCA se suman!** Como la palabra *"de"* significa multiplicación, el cálculo es: $0,20 \cdot 0,50 = 0,10$, lo que equivale simplemente al $10\%$ del total. Así, el $20\%$ del $50\%$ de $\$100.000$ es $\$10.000$.
 explicacion_formal: |
-  ### Definición formal
-  El cálculo del **$a\%$ del $b\%$ de una cantidad $C$** es la composición de dos funciones lineales homogéneas porcentuales $f_a(x) = \frac{a}{100} x$ y $f_b(x) = \frac{b}{100} x$:
-  $$P = (f_a \circ f_b)(C) = \left(\frac{a}{100}\right) \cdot \left(\frac{b}{100}\right) \cdot C = \left(\frac{a \cdot b}{10.000}\right) \cdot C$$
+  ### Formulación algebraica del encadenamiento
+  Sean $a\%, b\% \in \mathbb{R}^+$ dos tasas porcentuales y $N \in \mathbb{R}^+$ una cantidad base. La composición de operadores porcentuales se define como:
+  $$P = a\% \left(b\%(N)\right) = \left(\frac{a}{100}\right) \cdot \left(\frac{b}{100}\right) \cdot N = \left(\frac{a \cdot b}{10.000}\right) \cdot N$$
 
-  ### Porcentaje único equivalente ($p_{\text{eq}}\%$)
-  Dos porcentajes encadenados aplicados consecutivamente sobre una misma base equivalen a un **único porcentaje directo**:
-  $$p_{\text{eq}}\% = \left(\frac{a \cdot b}{100}\right)\%$$
+  ### Tasa porcentual única equivalente
+  La tasa única $c_{\text{eq}}\%$ que produce el mismo efecto que la aplicación compuesta de $a\%$ y $b\%$ es:
+  $$c_{\text{eq}}\% = \left(\frac{a \cdot b}{100}\right)\%$$
 
-  ### Conmutatividad del encadenamiento porcentual
-  Por la propiedad asociativa y conmutativa de la multiplicación real:
-  $$\text{El } a\% \text{ del } b\% \text{ de } C = \text{El } b\% \text{ del } a\% \text{ de } C = \left(\frac{a \cdot b}{10.000}\right) \cdot C$$
-
-  ### Síntesis didáctica
-  - Ecuación del resultado: $P = d_a \cdot d_b \cdot C$.
-  - Porcentaje equivalente: $p_{\text{eq}}\% = \frac{a \cdot b}{100}\%$.
+  ### Generalización a $k$ porcentajes sucesivos
+  $$p_1\% \text{ de } p_2\% \text{ de } \dots \text{ de } p_k\% \text{ de } N = \left(\prod_{i=1}^k \frac{p_i}{100}\right) \cdot N$$
 definiciones_clave: |
-  - **Porcentaje encadenado**: Aplicación sucesiva de dos o más tanto por cientos sobre un valor de origen.
-  - **Porcentaje único equivalente ($p_{\text{eq}}\%$)**: Porcentaje individual que produce exactamente el mismo efecto que los porcentajes sucesivos.
-  - **Composición porcentual**: Producto continuado de operadores fraccionarios $\frac{a}{100} \cdot \frac{b}{100}$.
+  - **Porcentajes encadenados**: Aplicación iterada de operadores porcentuales sobre resultados sucesivos.
+  - **Tasa única equivalente**: Porcentaje único que resume el producto de las tasas decimales ($c_{\text{eq}} = \frac{a \cdot b}{100}$).
+  - **Naturaleza multiplicativa**: Propiedad de los operadores de escala donde cada porcentaje actúa como factor multiplicador.
 propiedades_relaciones: |
-  - **Reducción de la escala**: El porcentaje de un porcentaje (ambos menores al $100\%$) siempre resulta en un porcentaje equivalente estrictamente menor que cada uno de los porcentajes individuales ($p_{\text{eq}}\% < a\%$ y $p_{\text{eq}}\% < b\%$).
-  - **Generalización a $n$ porcentajes**: Para $n$ porcentajes encadenados $p_1, p_2, \dots, p_n$, el factor final es $d_{\text{total}} = \prod_{i=1}^n \left(\frac{p_i}{100}\right)$.
+  - **Conmutatividad del encadenamiento**: El $a\%$ del $b\%$ es idéntico al $b\%$ del $a\%$: $\left(\frac{a}{100}\right)\left(\frac{b}{100}\right) = \left(\frac{b}{100}\right)\left(\frac{a}{100}\right)$.
+  - **Reducción de magnitud**: Si $a, b < 100$, la tasa compuesta $\frac{a \cdot b}{100}$ es estrictamente menor que cada tasa individual.
 ejemplo_guiado:
-  enunciado: 'Calcula el $30\%$ del $40\%$ de $\$200.000$ y determina qué porcentaje único equivalente del total representa.'
+  enunciado: 'Calcula el $20\%$ del $40\%$ de $\$500.000$ y determina a qué porcentaje único equivalente corresponde.'
   pasos:
-    - 'Paso 1: Convertimos los dos porcentajes a su forma decimal: $30\% = 0,3$ y $40\% = 0,4$.'
-    - 'Paso 2: Multiplicamos los decimales para hallar el porcentaje equivalente: $d_{\text{eq}} = 0,3 \cdot 0,4 = 0,12$.'
-    - 'Paso 3: Convertimos a tanto por ciento: $0,12 \cdot 100 = 12\%$. (El $30\%$ del $40\%$ equivale al **$12\%$ directo**).'
-    - 'Paso 4: Multiplicamos por la cantidad total $C = 200.000$: $P = 0,12 \cdot 200.000 = \$24.000$. El resultado es **$\$24.000$**.'
+    - 'Paso 1: Convertimos cada porcentaje a su número decimal: $20\% = 0,20$ y $40\% = 0,40$.'
+    - 'Paso 2: Multiplicamos los factores decimales para hallar la tasa única equivalente: $0,20 \cdot 0,40 = 0,08$.'
+    - 'Paso 3: Convertimos el decimal a porcentaje: $0,08 = 8\%$. El cálculo equivale al $8\%$ directo.'
+    - 'Paso 4: Multiplicamos por el total: $0,08 \cdot 500.000 = \$40.000$.'
+    - 'Paso 5: Conclusión: El $20\%$ del $40\%$ de $\$500.000$ es **$40.000** (tasa equivalente del **8%**).'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿A qué porcentaje único equivalente corresponde el $50\%$ del $50\%$ de una cantidad?'
+    question: '¿A qué porcentaje único equivalente corresponde el $50\%$ del $50\%$?'
     choices:
-      - {text: 'Al $25\%$, multiplicando los decimales $0,5 \cdot 0,5 = 0,25 \implies 25\%$', is_correct: true}
-      - {text: 'Al $100\%$, sumando los dos porcentajes', is_correct: false}
-      - {text: 'Al $50\%$, sin cambios', is_correct: false}
-      - {text: 'Al $10\%$, dividiendo $50 / 5$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Al $25\%$, multiplicando los decimales $0,5 \cdot 0,5 = 0,25 \implies 25\%$''. $0.5 \cdot 0.5 = 0.25 = 25\%$.'
+      - {text: '$25\%$ (la mitad de la mitad)', is_correct: true}
+      - {text: '$100\%$', is_correct: false}
+      - {text: '$50\%$', is_correct: false}
+      - {text: '$10\%$', is_correct: false}
+    explanation: 'La alternativa correcta es $25\%$. $0,50 \cdot 0,50 = 0,25 \implies 25\%$. La mitad de la mitad es un cuarto (25%).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Cuánto es el $10\%$ del $20\%$ de $5.000$?'
+    question: '¿Cuál es el $10\%$ del $30\%$ de $2.000$?'
     choices:
-      - {text: '$100$, pues el porcentaje equivalente es el $2\%$ ($0,10 \cdot 0,20 = 0,02$), y $0,02 \cdot 5.000 = 100$', is_correct: true}
-      - {text: '$1.000$, calculando solo el 20%', is_correct: false}
-      - {text: '$500$, calculando solo el 10%', is_correct: false}
-      - {text: '$300$, sumando $10 + 20 = 30\%$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$100$, pues el porcentaje equivalente es el $2\%$ ($0,10 \cdot 0,20 = 0,02$), y $0,02 \cdot 5.000 = 100$''. $0.1 \cdot 0.2 \cdot 5.000 = 100$.'
+      - {text: '$60$', is_correct: true}
+      - {text: '$600$', is_correct: false}
+      - {text: '$6$', is_correct: false}
+      - {text: '$800$', is_correct: false}
+    explanation: 'La alternativa correcta es $60$. $0,10 \cdot 0,30 = 0,03$ ($3\%$). Luego, $0,03 \cdot 2.000 = 60$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Convertir cada uno de los porcentajes dados $a\%$ y $b\%$ a sus números decimales equivalentes ($d_a = a/100, d_b = b/100$).'
-  - 'Paso 2: Multiplicar los decimales para hallar el factor multiplicativo combinado ($d_{\text{eq}} = d_a \cdot d_b$).'
-  - 'Paso 3: Si se pide el porcentaje equivalente, multiplicar $d_{\text{eq}} \cdot 100\%$.'
-  - 'Paso 4: Multiplicar el factor $d_{\text{eq}}$ por la cantidad total $C$ para obtener el valor final en dinero o unidades.'
+  - 'Paso 1: Expresar cada porcentaje como número decimal dividiendo por $100$.'
+  - 'Paso 2: Multiplicar todos los números decimales entre sí para obtener el factor decimal global.'
+  - 'Paso 3: Multiplicar el factor decimal global por la cantidad base total $N$.'
+  - 'Paso 4: Si se pide el porcentaje equivalente, multiplicar el factor decimal global por $100\%$.'
 errores_correccion: |
-  - **Error 1:** Sumar los porcentajes en lugar de multiplicarlos al calcular el porcentaje de un porcentaje (ej: pensar que el $20\%$ del $30\%$ es el $50\%$). **Cómo corregirlo:** La palabra "de" o "del" indica **MULTIPLICACIÓN**: $\frac{20}{100} \cdot \frac{30}{100} = \frac{6}{100} = 6\%$.
-  - **Error 2:** Dividir por 100 una sola vez al multiplicar dos porcentajes (ej: hacer $\frac{20 \cdot 30}{100} = 60\%$). **Cómo corregirlo:** Cada porcentaje lleva su propio denominador 100; el producto tiene denominador **$10.000$**, lo que da $6\%$.
+  - **Error 1:** Sumar los porcentajes en lugar de multiplicarlos (ej: creer que el $20\%$ del $30\%$ es $50\%$ en vez del $6\%$). **Cómo corregirlo:** La preposición "de" indica producto: **$0,20 \cdot 0,30 = 0,06 = 6\%$**.
+  - **Error 2:** Dividir por 100 solo una vez al final al operar con los números enteros (hacer $(20 \cdot 30)/100 = 600/100 = 6$ pero aplicarlo como $6$ entero en vez de $6\%$).
 ejemplos:
-  - titulo: 'Cálculo del 50% del 20%'
-    enunciado: '¿El $50\%$ del $20\%$ de una cantidad equivale a su $10\%$?'
+  - titulo: 'Porcentaje equivalente compuesto'
+    enunciado: '¿A qué porcentaje único equivale el $25\%$ del $60\%$?'
     alternativas:
-      - 'Sí, pues $0.5 \cdot 0.2 = 0.10 \implies 10\%$'
-      - 'No, equivale al 70%'
-      - 'No, equivale al 30%'
-    respuesta: 'Sí, pues $0.5 \cdot 0.2 = 0.10 \implies 10\%$'
+      - '$15\%$'
+      - '$85\%$'
+      - '$35\%$'
+      - '$2,5\%$'
+    respuesta: '$15\%$'
     solucion_pasos:
-      - '1. Decimales: $50\% = 0,5$ y $20\% = 0,2$.'
-      - '2. Producto: $0,5 \cdot 0,2 = 0,10 \implies 10\%$.'
-  - titulo: 'Cálculo del 25% del 40%'
-    enunciado: '¿El $25\%$ del $40\%$ de $\$100.000$ es $\$10.000$?'
+      - '1. Multiplicamos decimales: $0,25 \cdot 0,60 = 0,15$.'
+      - '2. Convertimos a porcentaje: $0,15 \cdot 100\% = 15\%$.'
+  - titulo: 'Porcentaje de porcentaje directo'
+    enunciado: '¿El $10\%$ del $10\%$ de $10.000$ es igual a $100$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $0.25 \cdot 0.40 = 0.10 \implies 0.10 \cdot 100.000 = \$10.000$.'
-  - titulo: 'Porcentaje equivalente de tres porcentajes'
-    enunciado: '¿El $10\%$ del $10\%$ del $10\%$ equivale al $0.1\%$?'
+      - 'Sí. $0,10 \cdot 0,10 = 0,01$ ($1\%$). Luego $0,01 \cdot 10.000 = 100$.'
+  - titulo: 'Conmutatividad del encadenamiento'
+    enunciado: '¿El $30\%$ del $80\%$ de $X$ es igual al $80\%$ del $30\%$ de $X$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $0,1 \cdot 0,1 \cdot 0,1 = 0,001 = 0,1\%$.'
-  - titulo: 'Conmutatividad en el cálculo'
-    enunciado: '¿El $15\%$ del $80\%$ de $500$ da el mismo resultado que el $80\%$ del $15\%$ de $500$?'
+      - 'Sí. En ambos casos la tasa equivalente es $0,30 \cdot 0,80 = 0,24 = 24\%$.'
+  - titulo: 'Triple encadenamiento'
+    enunciado: '¿El $50\%$ del $50\%$ del $50\%$ de $800$ es igual a $100$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. La multiplicación de reales es conmutativa ($0,15 \cdot 0,8 = 0,8 \cdot 0,15 = 0,12$).'
+      - 'Sí. $(1/2) \cdot (1/2) \cdot (1/2) = 1/8$. Y $800 / 8 = 100$.'
 errores_frecuentes:
-  - 'Sumar los porcentajes en lugar de multiplicarlos al calcular un porcentaje de un porcentaje.'
-  - 'Dividir entre 100 una sola vez al encadenar dos o más razones porcentuales.'
-  - 'Considerar que el porcentaje de un porcentaje produce una cifra mayor a los porcentajes originales.'
-  - 'El porcentaje de un porcentaje es idéntico a la suma de dos descuentos porcentuales sucesivos.'
-  - 'Restar los dos porcentajes para intentar hallar la proporción resultante.'
+  - 'Sumar los porcentajes en vez de multiplicarlos.'
+  - 'Olvidar que cada porcentaje introduce un factor 1/100 en el producto.'
+  - 'Creer que el resultado compuesto puede ser mayor que las tasas individuales.'
 afirmaciones_verdaderas:
-  - 'El $a\%$ del $b\%$ de una cantidad $C$ se calcula multiplicando $P = \left(\frac{a}{100}\right) \cdot \left(\frac{b}{100}\right) \cdot C$.'
-  - 'El porcentaje único equivalente a dos porcentajes encadenados $a\%$ y $b\%$ es $p_{\text{eq}}\% = \left(\frac{a \cdot b}{100}\right)\%$.'
-al_terminar_debes_poder: 'Calcular el porcentaje de un porcentaje mediante el producto de factores decimales $P = d_a \cdot d_b \cdot C$.'
+  - 'El a% del b% de N se calcula multiplicando (a/100) · (b/100) · N.'
+  - 'El 50% del 50% de cualquier cantidad equivale a su cuarta parte (25%).'
+al_terminar_debes_poder: |
+  ![Resumen de cálculo de porcentaje de un porcentaje](/static/img/nodos/calculo-de-porcentaje-de-un-porcentaje-resumen.svg)
+
+  QUÉ: Resolver problemas de porcentajes encadenados y determinar la tasa única equivalente.
+  CÓMO: Multiplicando sucesivamente los factores decimales asociados ($P = a_{\text{dec}} \cdot b_{\text{dec}} \cdot N$), reconociendo la naturaleza puramente multiplicativa del encadenamiento.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

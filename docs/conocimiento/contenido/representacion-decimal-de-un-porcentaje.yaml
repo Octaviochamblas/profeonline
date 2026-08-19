@@ -1,103 +1,103 @@
-semantic_id: MAT.NUM.PORCENTAJES.REPRESENTACION_DECIMAL
-resumen_inicial: 'La representación decimal de un porcentaje $p\%$ es el número real $d$ obtenido al dividir el porcentaje entre 100 ($d = \frac{p}{100}$), lo que equivale a desplazar la coma decimal dos lugares a la izquierda.'
+semantic_id: MAT.NUM.PORCENTAJES.REP_DECIMAL
+resumen_inicial: 'La representación decimal de un porcentaje $p\%$ se obtiene dividiendo $p$ entre 100, lo que equivale a desplazar la coma decimal dos lugares hacia la izquierda ($p\% = p \div 100$).'
 explicacion_simple: |
-  Para convertir cualquier porcentaje a número decimal, simplemente **divides el número entre 100**. Una forma rápida de hacerlo sin calculadora es desplazar la coma decimal dos posiciones hacia la izquierda:
-  - $25\% \to 25 \div 100 = 0,25$
-  - $7\% \to 7 \div 100 = 0,07$
-  - $150\% \to 150 \div 100 = 1,5$
-  Expresar los porcentajes como decimales es muy útil porque permite calcularlos directamente en una multiplicación.
+  ![Representación decimal de un porcentaje](/static/img/nodos/representacion-decimal-de-un-porcentaje-intro.svg)
+
+  Todo porcentaje se puede escribir directamente como un número decimal dividiendo por $100$. Esto es tan sencillo como **correr la coma dos lugares hacia la izquierda**. Por ejemplo, $45\% = 0,45$ y $8\% = 0,08$. Si quieres hacer el camino inverso (de decimal a porcentaje), solo debes correr la coma dos lugares a la derecha: $0,32 = 32\%$.
 explicacion_formal: |
-  ### Definición formal
-  La **expresión decimal equivalente $d$** de un porcentaje $p\%$ es el cociente obtenido al evaluar la razón básica:
-  $$d = \frac{p}{100} = p \cdot 10^{-2} \quad (d \in \mathbb{R}^+)$$
+  ### Definición y operador de conversión
+  La conversión de porcentaje a número decimal es una función biyectiva $f: \mathbb{R}^+ \to \mathbb{R}^+$ definida por:
+  $$p\% = \frac{p}{100} = p \cdot 10^{-2}$$
 
-  ### Regla de desplazamiento del punto decimal
-  Al efectuar la división por $100 = 10^2$, el valor posicional de cada dígito se reduce en dos órdenes de magnitud, trasladando la coma decimal dos posiciones hacia la izquierda:
-  $$p = a_k a_{k-1} \dots a_0 , a_{-1} \dots \implies d = a_k \dots a_2 , a_1 a_0 a_{-1} \dots$$
+  ### Regla de desplazamiento de la coma
+  - **De Porcentaje a Decimal**: Se divide entre $100$ desplazando el separador decimal $2$ posiciones a la izquierda:
+    $$p\% \xrightarrow{\div 100} p_{\text{dec}}$$
+  - **De Decimal a Porcentaje**: Se multiplica por $100\%$ desplazando el separador decimal $2$ posiciones a la derecha:
+    $$d \xrightarrow{\times 100\%} (d \cdot 100)\%$$
 
-  ### Clasificación según el valor del porcentaje
-  - **Porcentajes menores al $100\%$ ($p < 100$)**: Dan lugar a decimales estrictamente menores que la unidad ($d < 1$).
-  - **Porcentaje igual al $100\%$ ($p = 100$)**: Corresponde al entero $d = 1$.
-  - **Porcentajes mayores al $100\%$ ($p > 100$)**: Dan lugar a números decimales mayores que la unidad ($d > 1$).
-
-  ### Síntesis didáctica
-  - Conversión: $d = p \div 100$.
-  - Regla práctica: Mover la coma decimal dos lugares a la izquierda.
+  ### Clasificación por órdenes de magnitud
+  - Porcentajes menores al $10\%$: $d < 0,10$ con cero inmediatamente tras la coma (ej: $4\% = 0,04$).
+  - Porcentajes entre $10\%$ y $99\%$: $0,10 \le d < 1,00$ (ej: $68\% = 0,68$).
+  - Porcentajes mayores al $100\%$: $d \ge 1,00$ con parte entera no nula (ej: $135\% = 1,35$).
 definiciones_clave: |
-  - **Decimal equivalente ($d$)**: Valor numérico real resultado de dividir el tanto por ciento entre 100.
-  - **Factor multiplicativo decimal**: Operador multiplicativo $d$ que calcula de forma directa el tanto por ciento sobre una cantidad.
-  - **Desplazamiento posicional**: Regla operativa de división entre potencias de diez.
+  - **Forma decimal de un porcentaje**: Expresión numérica $p \div 100$ utilizada para multiplicaciones directas.
+  - **Factor multiplicador**: Coeficiente decimal que al multiplicarse por la base produce directamente la parte buscada.
+  - **Desplazamiento posicional**: Movimiento de 2 órdenes de magnitud hacia la izquierda en el sistema decimal.
 propiedades_relaciones: |
-  - **Operación directa de cálculo**: Para hallar el $p\%$ de una cantidad $C$, basta con multiplicar la cantidad por su decimal equivalente: $p\% \text{ de } C = d \cdot C$.
-  - **Inversión de conversión**: Para transformar un número decimal $d$ a porcentaje $p\%$, se multiplica por 100 ($p = d \cdot 100$).
+  - **Equivalencia de la unidad**: El número decimal $1,0$ equivale exactamente al $100\%$.
+  - **Preservación del valor**: $p\% = \frac{p}{100} = p_{\text{dec}}$ representan exactamente el mismo número real.
 ejemplo_guiado:
-  enunciado: 'Convierte los porcentajes $85\%$, $6\%$ y $145\%$ a sus representaciones decimales equivalentes.'
+  enunciado: 'Convierte $7,5\%$ a su forma decimal y luego transforma el número decimal $0,06$ a porcentaje.'
   pasos:
-    - 'Paso 1: Para $85\%$, dividimos por 100 o corremos la coma dos lugares a la izquierda: $85 \div 100 = 0,85$.'
-    - 'Paso 2: Para $6\%$, agregamos un cero a la izquierda al correr la coma: $6 \div 100 = 0,06$.'
-    - 'Paso 3: Para $145\%$, al ser mayor que 100, el decimal supera la unidad: $145 \div 100 = 1,45$.'
-    - 'Paso 4: Respuestas: **$0,85$**, **$0,06$** y **$1,45$**.'
+    - 'Paso 1: Para $7,5\%$, dividimos entre 100 corriendo la coma 2 lugares a la izquierda: $7,5 \div 100 = 0,075$.'
+    - 'Paso 2: Comprobamos: agregamos un cero a la izquierda del 7 para completar los dos saltos decimales.'
+    - 'Paso 3: Para el decimal $0,06$, multiplicamos por 100% corriendo la coma 2 lugares a la derecha: $0,06 \cdot 100\% = 6\%$.'
+    - 'Paso 4: Conclusiones: $7,5\% = 0,075$ y $0,06 = 6\%$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la representación decimal del porcentaje $8\%$'
+    question: '¿Cuál es la representación decimal correcta del $3\%$?'
     choices:
-      - {text: '$0,08$, desplazando la coma dos lugares a la izquierda ($8 \div 100 = 0,08$)', is_correct: true}
-      - {text: '$0,8$, desplazando solo un lugar', is_correct: false}
-      - {text: '$8,0$, sin alterar el número', is_correct: false}
-      - {text: '$800$, multiplicando por 100', is_correct: false}
-    explanation: 'La alternativa correcta es ''$0,08$, desplazando la coma dos lugares a la izquierda ($8 \div 100 = 0,08$)''. $8\% = 8 / 100 = 0,08$.'
+      - {text: '$0,03$', is_correct: true}
+      - {text: '$0,3$', is_correct: false}
+      - {text: '$3,0$', is_correct: false}
+      - {text: '$0,003$', is_correct: false}
+    choices_order: original
+    explanation: 'La alternativa correcta es $0,03$. Dividir $3 \div 100 = 0,03$. Atención: $0,3$ corresponde al $30\%$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si el factor decimal asignado a un producto es $1,25$, ¿a qué porcentaje equivale dicha expresión?'
+    question: '¿A qué porcentaje equivale el número decimal $1,25$?'
     choices:
-      - {text: 'Al $125\%$, multiplicando el decimal por 100 ($1,25 \cdot 100 = 125\%$)', is_correct: true}
-      - {text: 'Al $12.5\%$, multiplicando por 10', is_correct: false}
-      - {text: 'Al $1.25\%$, manteniendo la cifra', is_correct: false}
-      - {text: 'Al $0.125\%$, dividiendo por 10', is_correct: false}
-    explanation: 'La alternativa correcta es ''Al $125\%$, multiplicando el decimal por 100 ($1,25 \cdot 100 = 125\%$)''. $1,25 \cdot 100 = 125\%$.'
+      - {text: '$125\%$', is_correct: true}
+      - {text: '$12,5\%$', is_correct: false}
+      - {text: '$1,25\%$', is_correct: false}
+      - {text: '$0,125\%$', is_correct: false}
+    explanation: 'La alternativa correcta es $125\%$. Multiplicamos $1,25 \cdot 100\% = 125\%$. Al ser mayor que 1, representa más del 100%.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Tomar el número $p$ del porcentaje.'
-  - 'Paso 2: Dividir $p$ entre 100 o mover la coma decimal dos lugares hacia la izquierda (agregando ceros si es necesario).'
-  - 'Paso 3: Eliminar el símbolo de porcentaje $\%$.'
-  - 'Paso 4: Usar el número decimal $d$ para operaciones multiplicativas directas.'
+  - 'Paso 1: Para pasar de porcentaje a decimal, eliminar el símbolo $\%$ y dividir el número por $100$.'
+  - 'Paso 2: Desplazar la coma decimal dos posiciones hacia la izquierda, rellenando con ceros si faltan cifras.'
+  - 'Paso 3: Para pasar de decimal a porcentaje, multiplicar el número por $100$ (desplazar la coma dos posiciones a la derecha) y agregar el símbolo $\%$.'
 errores_correccion: |
-  - **Error 1:** Desplazar la coma un solo lugar a la izquierda al convertir un porcentaje de un solo dígito (ej: escribir que $5\% = 0,5$). **Cómo corregirlo:** La división es por 100, por lo que **DEBES desplazar la coma DOS lugares completando con ceros**: $5\% = 0,05$.
-  - **Error 2:** Mantener el símbolo $\%$ al lado del número decimal (ej: escribir $0,25\%$). **Cómo corregirlo:** Al pasar a decimal, **el símbolo $\%$ SE ELIMINA**, pues la división por 100 ya fue ejecutada.
+  - **Error 1:** Confundir porcentajes de un solo dígito con décimas (ej: escribir $5\% = 0,5$). **Cómo corregirlo:** $0,5$ es $50\%$. Para $5\%$ se debe escribir un cero tras la coma: **$5\% = 0,05$**.
+  - **Error 2:** Olvidar que porcentajes con decimales corren dos posiciones desde la coma original (ej: $0,4\% = 0,004$).
 ejemplos:
-  - titulo: 'Conversión de 50%'
-    enunciado: '¿La representación decimal del $50\%$ es $0,5$?'
-    alternativas:
-      - 'Sí, pues $50 / 100 = 0.5$'
-      - 'No, es 0.05'
-      - 'No, es 5.0'
-    respuesta: 'Sí, pues $50 / 100 = 0.5$'
-    solucion_pasos:
-      - '1. Dividimos $50 \div 100 = 0,5$.'
   - titulo: 'Conversión de porcentaje de 1 dígito'
-    enunciado: '¿La representación decimal del $3\%$ es $0,03$?'
+    enunciado: '¿A qué número decimal equivale el $4\%$?'
+    alternativas:
+      - '$0,04$'
+      - '$0,4$'
+      - '$4,0$'
+      - '$0,004$'
+    respuesta: '$0,04$'
+    solucion_pasos:
+      - '1. Dividimos entre 100: $4 \div 100 = 0,04$.'
+      - '2. Verificamos que $0,4 = 40\%$, por ende $4\% = 0,04$.'
+  - titulo: 'Conversión con decimal original'
+    enunciado: '¿El $12,5\%$ equivale al decimal $0,125$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $3 \div 100 = 0,03$.'
-  - titulo: 'Conversión inversa de decimal a porcentaje'
-    enunciado: '¿El número decimal $0,42$ equivale al $42\%$?'
+      - 'Sí. $12,5 \div 100 = 0,125$.'
+  - titulo: 'Decimal mayor a 1'
+    enunciado: '¿El número decimal $2,4$ equivale al $240\%$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $0,42 \cdot 100 = 42\%$.'
-  - titulo: 'Cálculo directo usando decimal'
-    enunciado: 'Para calcular el $20\%$ de $300$, ¿se multiplica directamente $0,2 \cdot 300 = 60$?'
+      - 'Sí. $2,4 \cdot 100\% = 240\%$.'
+  - titulo: 'Porcentaje menor a 1%'
+    enunciado: '¿El $0,5\%$ equivale al decimal $0,005$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $20\% = 0,2 \implies 0,2 \cdot 300 = 60$.'
+      - 'Sí. $0,5 \div 100 = 0,005$.'
 errores_frecuentes:
-  - 'Mover la coma decimal un solo lugar hacia la izquierda al convertir porcentajes menores a 10.'
-  - 'Conservar el símbolo de porcentaje al lado del número decimal ya transformado.'
-  - 'Multiplicar por 100 en lugar de dividir al transformar un porcentaje a formato decimal.'
-  - 'Considerar que los decimales mayores que 1 no representan porcentajes válidos.'
-  - 'Los números decimales menores a la unidad se escriben omitiendo el cero inicial antes de la coma.'
+  - 'Escribir porcentajes de una cifra como décimas en vez de centésimas (ej: 7% como 0,7 en lugar de 0,07).'
+  - 'Correr la coma en la dirección opuesta al convertir de decimal a porcentaje.'
+  - 'Olvidar colocar la coma decimal en porcentajes mayores a 100% (ej: 150% como 15 en vez de 1,5).'
 afirmaciones_verdaderas:
-  - 'La representación decimal de un porcentaje $p\%$ se obtiene dividiendo el tanto por ciento entre 100 ($d = \frac{p}{100}$).'
-  - 'Para transformar un número decimal a porcentaje, se multiplica el valor decimal por 100 ($p = d \cdot 100$).'
-al_terminar_debes_poder: 'Convertir porcentajes a su representación decimal equivalente $d = \frac{p}{100}$ desplazando la coma dos posiciones.'
+  - 'Para convertir un porcentaje a decimal se divide entre 100, desplazando la coma 2 lugares a la izquierda.'
+  - 'El número decimal 0,08 equivale exactamente al 8%.'
+al_terminar_debes_poder: |
+  ![Resumen de representación decimal de un porcentaje](/static/img/nodos/representacion-decimal-de-un-porcentaje-resumen.svg)
+
+  QUÉ: Convertir bidireccionalmente entre porcentajes y números decimales con fluidez y precisión posicional.
+  CÓMO: Dividiendo entre 100 (desplazando la coma dos lugares a la izquierda) para obtener el decimal ($p\% = p \div 100$), o multiplicando por 100% para obtener el porcentaje ($d \cdot 100\%$).
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

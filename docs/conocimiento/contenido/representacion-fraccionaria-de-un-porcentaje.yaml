@@ -1,106 +1,104 @@
-semantic_id: MAT.NUM.PORCENTAJES.REPRESENTACION_FRACCIONARIA
-resumen_inicial: 'La representación fraccionaria de un porcentaje $p\%$ es la fracción irreducible obtenida al escribir $\frac{p}{100}$ y simplificar el numerador y el denominador por su máximo común divisor.'
+semantic_id: MAT.NUM.PORCENTAJES.REP_FRACCION
+resumen_inicial: 'La representación fraccionaria de un porcentaje $p\%$ se obtiene escribiendo la razón $\frac{p}{100}$ y simplificándola hasta su forma irreducible dividiendo numerador y denominador por su MCD.'
 explicacion_simple: |
-  Expresar un porcentaje como fracción te ayuda a calcular mentalmente muy rápido. Para hacerlo:
-  1. Escribes el porcentaje como una fracción con el 100 abajo ($\frac{p}{100}$).
-  2. Simplificas la fracción dividiendo el número de arriba y el de abajo por el mismo número hasta que no se pueda simplificar más (fracción irreducible).
-  Por ejemplo, el $50\%$ es $\frac{50}{100} = \frac{1}{2}$ (la mitad); el $25\%$ es $\frac{25}{100} = \frac{1}{4}$ (la cuarta parte); el $20\%$ es $\frac{20}{100} = \frac{1}{5}$ (la quinta parte).
+  ![Representación fraccionaria de un porcentaje](/static/img/nodos/representacion-fraccionaria-de-un-porcentaje-intro.svg)
+
+  Convertir un porcentaje a fracción irreducible te permite hacer cálculos mentales instantáneos sin necesidad de usar calculadora. Solo debes escribir el porcentaje sobre $100$ y simplificar. Por ejemplo, $50\% = \frac{50}{100} = \frac{1}{2}$ (la mitad), $25\% = \frac{25}{100} = \frac{1}{4}$ (la cuarta parte), y $20\% = \frac{20}{100} = \frac{1}{5}$ (la quinta parte).
 explicacion_formal: |
-  ### Definición formal
-  La **representación fraccionaria irreducible** de un porcentaje $p\% \in \mathbb{Q}^+$ es la fracción canónica $\frac{a}{b}$ tal que:
-  $$\frac{p}{100} = \frac{a}{b} \quad \text{con} \quad \gcd(a, b) = 1 \quad (a, b \in \mathbb{N})$$
+  ### Algoritmo de simplificación canónica
+  Dado un porcentaje $p\% \in \mathbb{Q}^+$, su representación fraccionaria irreducible $\frac{a}{b}$ se obtiene mediante:
+  $$p\% = \frac{p}{100} = \frac{p \div \operatorname{mcd}(p, 100)}{100 \div \operatorname{mcd}(p, 100)} = \frac{a}{b} \quad \text{con } \operatorname{mcd}(a,b) = 1$$
 
-  ### Principales equivalencias notables de porcentaje a fracción
-  - $10\% = \frac{10}{100} = \frac{1}{10}$ (la décima parte).
-  - $20\% = \frac{20}{100} = \frac{1}{5}$ (la quinta parte).
-  - $25\% = \frac{25}{100} = \frac{1}{4}$ (la cuarta parte).
-  - $33,\overline{3}\% = \frac{100/3}{100} = \frac{1}{3}$ (la tercera parte).
-  - $50\% = \frac{50}{100} = \frac{1}{2}$ (la mitad).
-  - $75\% = \frac{75}{100} = \frac{3}{4}$ (tres cuartas partes).
+  ### Porcentajes con decimales a fracción
+  Si el porcentaje posee parte decimal $p = \frac{N}{10^k}$, se amplifica previamente por $10^k$:
+  $$p\% = \frac{p}{100} = \frac{p \cdot 10^k}{100 \cdot 10^k} = \frac{N}{100 \cdot 10^k}$$
+  y luego se simplifica por el MCD correspondiente.
 
-  ### Transformación de fracción a porcentaje
-  Dada una fracción $\frac{a}{b}$, su porcentaje equivalente $p\%$ se calcula multiplicando la fracción por 100:
-  $$p\% = \left(\frac{a}{b} \cdot 100\right)\%$$
-
-  ### Síntesis didáctica
-  - Conversión: Escribir $\frac{p}{100}$ y simplificar por $\gcd(p, 100)$.
-  - Inversa: $\frac{a}{b} \to \text{Porcentaje} = \left(\frac{a}{b} \cdot 100\right)\%$.
+  ### Tabla de equivalencias fundamentales
+  - $10\% = \frac{1}{10}$
+  - $20\% = \frac{1}{5}$
+  - $25\% = \frac{1}{4}$
+  - $50\% = \frac{1}{2}$
+  - $75\% = \frac{3}{4}$
 definiciones_clave: |
-  - **Fracción irreducible**: Fracción donde el numerador y el denominador no comparten divisores comunes aparte del 1.
-  - **Equivalencia notable**: Porcentajes frecuentemente usados ($25\%, 50\%, 75\%$) con fracciones simples de cálculo mental.
-  - **Simplificación por MCD**: Proceso de reducción fraccionaria dividiendo numerador y denominador entre su Máximo Común Divisor.
+  - **Fracción irreducible**: Fracción $\frac{a}{b}$ donde $a$ y $b$ son coprimos (su MCD es $1$).
+  - **Fracción generatriz de porcentaje**: Forma simplificada que representa la razón de partes sobre 100.
+  - **Amplificación decimal previa**: Multiplicación por potencias de 10 para eliminar decimales del numerador antes de simplificar.
 propiedades_relaciones: |
-  - **Fracción propia vs. impropia**: Porcentajes menores al $100\%$ generan fracciones propias ($a < b$); porcentajes mayores al $100\%$ generan fracciones impropias ($a > b$).
-  - **Facilidad de cálculo mental**: Multiplicar por una fracción irreducible simplificada (ej: $\frac{1}{4}$) es operativamente más rápido que multiplicar por el decimal o dividir entre 100.
+  - **Unicidad de la fracción irreducible**: Cada porcentaje racional posee una única representación fraccionaria irreducible.
+  - **Operador de división rápida**: Calcular el $25\%$ de una cantidad equivale exactamente a dividirla entre $4$.
 ejemplo_guiado:
-  enunciado: 'Encuentra la representación fraccionaria irreducible del $60\%$ y del $125\%$.'
+  enunciado: 'Convierte el $75\%$ a fracción irreducible y luego determina a qué porcentaje equivale la fracción $\frac{2}{5}$.'
   pasos:
-    - 'Paso 1: Escribimos el $60\%$ como fracción de denominador 100: $\frac{60}{100}$.'
-    - 'Paso 2: Simplificamos dividiendo numerador y denominador por su MCD $= 20$: $\frac{60 \div 20}{100 \div 20} = \frac{3}{5}$.'
-    - 'Paso 3: Escribimos el $125\%$ como fracción de denominador 100: $\frac{125}{100}$.'
-    - 'Paso 4: Simplificamos dividiendo por su MCD $= 25$: $\frac{125 \div 25}{100 \div 25} = \frac{5}{4}$. Respuestas: **$\frac{3}{5}$** y **$\frac{5}{4}$**.'
+    - 'Paso 1: Escribimos el $75\%$ como fracción con denominador 100: $\frac{75}{100}$.'
+    - 'Paso 2: Hallamos el $\operatorname{mcd}(75, 100) = 25$ y simplificamos: $\frac{75 \div 25}{100 \div 25} = \frac{3}{4}$.'
+    - 'Paso 3: Para la fracción $\frac{2}{5}$, amplificamos para que el denominador sea 100 (multiplicamos por 20): $\frac{2 \cdot 20}{5 \cdot 20} = \frac{40}{100}$.'
+    - 'Paso 4: Conclusión: $75\% = \frac{3}{4}$ y $\frac{2}{5} = 40\%$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la representación fraccionaria irreducible del porcentaje $75\%$?'
+    question: '¿Cuál es la fracción irreducible equivalente al $20\%$?'
     choices:
-      - {text: 'La fracción $\frac{3}{4}$, dividiendo $75$ y $100$ entre $25$', is_correct: true}
-      - {text: 'La fracción $\frac{75}{100}$, sin simplificar', is_correct: false}
-      - {text: 'La fracción $\frac{1}{4}$', is_correct: false}
-      - {text: 'La fracción $\frac{7}{5}$', is_correct: false}
-    explanation: 'La alternativa correcta es ''La fracción $\frac{3}{4}$, dividiendo $75$ y $100$ entre $25$''. $75 / 100 = 3 / 4$.'
+      - {text: '$\frac{1}{5}$', is_correct: true}
+      - {text: '$\frac{2}{10}$', is_correct: false}
+      - {text: '$\frac{20}{100}$', is_correct: false}
+      - {text: '$\frac{1}{4}$', is_correct: false}
+    explanation: 'La alternativa correcta es $\frac{1}{5}$. $\frac{20}{100} = \frac{20 \div 20}{100 \div 20} = \frac{1}{5}$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿A qué porcentaje equivale la fracción $\frac{2}{5}$?'
+    question: '¿A qué porcentaje equivale exactamente la fracción $\frac{3}{8}$?'
     choices:
-      - {text: 'Al $40\%$, multiplicando $\frac{2}{5} \cdot 100 = \frac{200}{5} = 40\%$', is_correct: true}
-      - {text: 'Al $25\%$, dividiendo $100 / 4$', is_correct: false}
-      - {text: 'Al $20\%$, tomando solo el denominador', is_correct: false}
-      - {text: 'Al $50\%$, aproximando a la mitad', is_correct: false}
-    explanation: 'La alternativa correcta es ''Al $40\%$, multiplicando $\frac{2}{5} \cdot 100 = \frac{200}{5} = 40\%$''. $(2/5) \cdot 100 = 40\%$.'
+      - {text: '$37,5\%$', is_correct: true}
+      - {text: '$38\%$', is_correct: false}
+      - {text: '$30\%$', is_correct: false}
+      - {text: '$3,75\%$', is_correct: false}
+    explanation: 'La alternativa correcta es $37,5\%$. $\frac{3}{8} = 0,375 \implies 0,375 \cdot 100\% = 37,5\%$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Escribir el porcentaje $p$ como numerador de la fracción con denominador 100 ($\frac{p}{100}$).'
-  - 'Paso 2: Hallar el Máximo Común Divisor ($\gcd$) entre $p$ y 100.'
-  - 'Paso 3: Dividir el numerador y el denominador entre el MCD para obtener la fracción irreducible.'
-  - 'Paso 4: Para convertir de fracción $\frac{a}{b}$ a porcentaje, multiplicar $\frac{a}{b} \cdot 100\%$.'
+  - 'Paso 1: Escribir el número del porcentaje sobre 100 en forma de fracción: $\frac{p}{100}$.'
+  - 'Paso 2: Si $p$ tiene decimales, amplificar numerador y denominador por $10, 100$, etc., para obtener números enteros.'
+  - 'Paso 3: Calcular el $\operatorname{mcd}(\text{numerador}, \text{denominador})$.'
+  - 'Paso 4: Dividir ambos términos por el MCD para obtener la fracción irreducible $\frac{a}{b}$.'
 errores_correccion: |
-  - **Error 1:** Dejar la fracción como $\frac{p}{100}$ sin simplificar hasta su forma irreducible. **Cómo corregirlo:** La representación fraccionaria completa exige **simplificar al máximo dividiendo entre el MCD**.
-  - **Error 2:** Invertir la fracción al convertir a porcentaje (ej: pensar que $\frac{1}{5} = 5\%$). **Cómo corregirlo:** Para pasar de fracción a porcentaje debes **multiplicar la fracción por 100**: $\frac{1}{5} \cdot 100 = 20\%$.
+  - **Error 1:** No simplificar hasta la fracción irreducible (ej: dejar $\frac{50}{100}$ o $\frac{5}{10}$ en vez de $\frac{1}{2}$).
+  - **Error 2:** Invertir la fracción al calcular (ej: multiplicar por $4$ en lugar de dividir entre $4$ para hallar el $25\% = \frac{1}{4}$).
 ejemplos:
-  - titulo: 'Fracción equivalente del 20%'
-    enunciado: '¿La representación fraccionaria del $20\%$ es $\frac{1}{5}$?'
+  - titulo: 'Simplificación a fracción notable'
+    enunciado: '¿A qué fracción irreducible equivale el $60\%$?'
     alternativas:
-      - 'Sí, pues $20 / 100 = 1 / 5$'
-      - 'No, es $1 / 20$'
-      - 'No, es $2 / 5$'
-    respuesta: 'Sí, pues $20 / 100 = 1 / 5$'
+      - '$\frac{3}{5}$'
+      - '$\frac{6}{10}$'
+      - '$\frac{3}{4}$'
+      - '$\frac{60}{100}$'
+    respuesta: '$\frac{3}{5}$'
     solucion_pasos:
-      - '1. Escribimos $20 / 100$.'
-      - '2. Dividimos entre 20: $1 / 5$.'
-  - titulo: 'Fracción equivalente del 50%'
-    enunciado: '¿El $50\%$ equivale a la fracción $\frac{1}{2}$?'
+      - '1. Escribimos $\frac{60}{100}$.'
+      - '2. Dividimos entre $\operatorname{mcd}(60, 100) = 20$: $\frac{60 \div 20}{100 \div 20} = \frac{3}{5}$.'
+  - titulo: 'Equivalencia de 50%'
+    enunciado: '¿El $50\%$ de una cantidad equivale a multiplicarla por la fracción $\frac{1}{2}$ (o dividirla entre 2)?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $50 / 100 = 1 / 2$.'
-  - titulo: 'Conversión de fracción a porcentaje'
-    enunciado: '¿La fracción $\frac{3}{10}$ equivale al $30\%$?'
+      - 'Sí. $50\% = \frac{50}{100} = \frac{1}{2}$.'
+  - titulo: 'Porcentaje con decimal a fracción'
+    enunciado: '¿El $12,5\%$ equivale a la fracción irreducible $\frac{1}{8}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $(3/10) \cdot 100 = 30\%$.'
-  - titulo: 'Fracción impropia para porcentaje mayor a 100%'
-    enunciado: '¿El $150\%$ equivale a la fracción impropia $\frac{3}{2}$?'
+      - 'Sí. $\frac{12,5}{100} = \frac{125}{1000} = \frac{1}{8}$ (al simplificar por 125).'
+  - titulo: 'Fracción a porcentaje'
+    enunciado: '¿La fracción $\frac{3}{4}$ equivale al $75\%$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $150 / 100 = 3 / 2$.'
+      - 'Sí. $\frac{3}{4} = 0,75 \implies 0,75 \cdot 100\% = 75\%$.'
 errores_frecuentes:
-  - 'Entregar la fracción de porcentaje sin simplificar a su expresión irreducible.'
-  - 'El denominador de la representación fraccionaria equivale siempre al número entero del porcentaje.'
-  - 'Invertir la fracción al realizar la conversión multiplicativa a porcentaje.'
-  - 'Considerar que las fracciones impropias no representan porcentajes válidos.'
-  - 'Sumar 100 al numerador en lugar de dividir por 100 al armar la fracción.'
+  - 'No simplificar completamente la fracción dejando factores comunes residuales.'
+  - 'Confundir 1/5 (20%) con 1/4 (25%) o 1/8 (12,5%).'
+  - 'Olvidar amplificar por potencias de 10 cuando el porcentaje contiene cifras decimales.'
 afirmaciones_verdaderas:
-  - 'La representación fraccionaria irreducible de un porcentaje $p\%$ es la fracción canónica $\frac{a}{b}$ simplificada de $\frac{p}{100}$.'
-  - 'Para transformar cualquier fracción $\frac{a}{b}$ a porcentaje, se multiplica la fracción por 100 ($p\% = \frac{a}{b} \cdot 100$).'
-al_terminar_debes_poder: 'Convertir porcentajes a su representación fraccionaria irreducible simplificando la fracción $\frac{p}{100}$.'
+  - 'Toda fracción irreducible equivalente a un porcentaje se obtiene simplificando la razón p/100 por el MCD.'
+  - 'El 25% equivale exactamente a la cuarta parte (1/4) de la cantidad total.'
+al_terminar_debes_poder: |
+  ![Resumen de representación fraccionaria de un porcentaje](/static/img/nodos/representacion-fraccionaria-de-un-porcentaje-resumen.svg)
+
+  QUÉ: Convertir porcentajes a fracciones irreductibles y viceversa para agilizar el cálculo aritmético.
+  CÓMO: Escribiendo la razón $\frac{p}{100}$, amplificando si hay decimales y dividiendo por el $\operatorname{mcd}(p, 100)$ para obtener la fracción canónica $\frac{a}{b}$.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

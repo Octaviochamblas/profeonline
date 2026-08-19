@@ -1,105 +1,100 @@
-semantic_id: MAT.NUM.PORCENTAJES.CALCULO_MENTAL_DIEZ
-resumen_inicial: 'La estrategia de cálculo mental para el $10\%$ calcula la décima parte de una cantidad $C$ dividiéndola entre 10 o corriendo su coma decimal una posición a la izquierda.'
+semantic_id: MAT.NUM.PORCENTAJES.CALC_MENTAL_10
+resumen_inicial: 'La estrategia de cálculo mental para el $10\%$ consiste en dividir la cantidad entre 10 (eliminando un cero final o desplazando la coma decimal un lugar a la izquierda), actuando como pivote para calcular $5\%$, $15\%$, $20\%$ y $30\%$.'
 explicacion_simple: |
-  El $10\%$ es el porcentaje más fácil y útil para calcular mentalmente en la vida cotidiana (propinas, impuestos, descuentos). Para hallar el $10\%$ de cualquier número:
-  - Si el número termina en cero, simplemente **le quitas el último cero** (ej: el $10\%$ de $45.000$ es $4.500$).
-  - Si el número no termina en cero, **mueves la coma decimal un lugar a la izquierda** (ej: el $10\%$ de $73$ es $7,3$).
-  Además, conociendo el $10\%$, puedes calcular rápidamente el $5\%$ (la mitad del 10%) o el $20\%$ (el doble del 10%).
+  ![Estrategia de cálculo mental para el 10%](/static/img/nodos/estrategia-de-calculo-mental-para-el-10-intro.svg)
+
+  El $10\%$ es el rey del cálculo mental. Para calcular el $10\%$ de cualquier número, solo debes **dividir entre $10$** (si termina en cero, le quitas un cero; si no, corres la coma un lugar a la izquierda). Por ejemplo, el $10\%$ de $\$48.000$ es $\$4.800$, y el $10\%$ de $65$ es $6,5$. A partir del $10\%$ puedes deducir el $5\%$ (la mitad) o el $20\%$ (el doble) en un segundo.
 explicacion_formal: |
-  ### Definición formal
-  La **propiedad del operador $10\%$** se basa en la equivalencia fraccionaria simplificada de denominador decimal base 10:
-  $$10\% = \frac{10}{100} = \frac{1}{10} = 0,1$$
+  ### Operador pivote decimal
+  Dado $N \in \mathbb{R}^+$, el operador del $10\%$ está definido por la división decimal directa:
+  $$10\%(N) = \frac{10}{100} \cdot N = \frac{N}{10} = N \cdot 10^{-1}$$
 
-  ### Regla de cálculo mental por división escalar
-  Calcular el $10\%$ de un número real $C$ es equivalente a multiplicar $C$ por $0,1$, lo que en la notación posicional decimal corresponde a dividir $C$ por $10$:
-  $$10\% \text{ de } C = \frac{C}{10}$$
-
-  ### Estrategia pivote para otros porcentajes
-  El valor de $10\% = \frac{C}{10}$ actúa como un nodo o pivote aritmético mental para determinar otros porcentajes mediante operaciones simples:
-  - **$5\%$**: $\frac{10\%}{2} = \frac{C}{20}$.
-  - **$20\%$**: $2 \cdot 10\% = \frac{C}{5}$.
-  - **$30\%$**: $3 \cdot 10\% = \frac{3C}{10}$.
-  - **$15\%$**: $10\% + 5\% = \frac{C}{10} + \frac{C}{20}$.
-
-  ### Síntesis didáctica
-  - Operación: $10\% \text{ de } C = C \div 10$.
-  - Módulo posicional: Desplazar coma un lugar a la izquierda.
+  ### Derivación de múltiplos y submúltiplos canónicos
+  Conociendo $u_{10} = 10\%(N) = \frac{N}{10}$:
+  - **5% (Submúltiplo medio)**: $5\%(N) = \frac{u_{10}}{2}$
+  - **20% (Duplo)**: $20\%(N) = 2 \cdot u_{10}$
+  - **30% (Triplo)**: $30\%(N) = 3 \cdot u_{10}$
+  - **15% (Estrategia de adición rápida)**: $15\%(N) = u_{10} + \frac{u_{10}}{2}$
 definiciones_clave: |
-  - **Porcentaje pivote ($10\%$)**: Porcentaje de referencia básica ($1/10$) utilizado para derivar rápidamente otros porcentajes.
-  - **Supresión de cero final**: Simplificación rápida en enteros terminados en cero que equivale a dividir por 10.
-  - **Regla del 15% (propina)**: Estrategia que suma el 10% más su mitad (5%).
+  - **Pivote del 10%**: Valor base de referencia mental $N \div 10$ a partir del cual se componen otras tasas.
+  - **Desplazamiento unario**: Movimiento de exactamente 1 posición decimal hacia la izquierda.
+  - **Composición aditiva mental**: Técnica de sumar $10\% + 5\%$ para obtener el $15\%$.
 propiedades_relaciones: |
-  - **Invariancia multiplicativa**: Si la cantidad $C$ se duplica, el $10\%$ de esa cantidad resultará ser exactamente el doble del $10\%$ original.
-  - **Rapidez algorítmica**: La división por 10 requiere 0 operaciones de cómputo escrito en el sistema decimal de numeración.
+  - **Regla de supresión de ceros**: Si $N = k \cdot 10$, entonces $10\%(N) = k$.
+  - **Simetría del 5% y 20%**: El $5\%$ es la mitad del $10\%$ y el $20\%$ es el doble del $10\%$.
 ejemplo_guiado:
-  enunciado: 'Aplica la estrategia de cálculo mental para hallar el $10\%$ y el $15\%$ de una cuenta de restaurante de $\$24.000$.'
+  enunciado: 'Calcula mentalmente una propina del $10\%$, una del $5\%$ y una del $15\%$ sobre una cuenta de $\$64.000$.'
   pasos:
-    - 'Paso 1: Para el $10\%$, dividimos $\$24.000$ entre $10$ eliminando el último cero: $10\% = \$2.400$.'
-    - 'Paso 2: Para el $5\%$, tomamos la mitad del $10\%$ recién calculado: $5\% = 2.400 \div 2 = \$1.200$.'
-    - 'Paso 3: Para el $15\%$, sumamos el $10\%$ y el $5\%$: $15\% = 2.400 + 1.200 = \$3.600$.'
-    - 'Paso 4: Respuestas: El $10\%$ es **$\$2.400$** y la propina del $15\%$ es **$\$3.600$**.'
+    - 'Paso 1: Calculamos el 10% quitando un cero a $\$64.000$: $10\% = 64.000 \div 10 = \$6.400$.'
+    - 'Paso 2: Calculamos el 5% dividiendo el 10% entre 2: $5\% = 6.400 \div 2 = \$3.200$.'
+    - 'Paso 3: Calculamos el 15% sumando el 10% y el 5%: $15\% = 6.400 + 3.200 = \$9.600$.'
+    - 'Paso 4: Conclusiones: $10\% = \$6.400$, $5\% = \$3.200$ y $15\% = \$9.600$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la regla de cálculo mental para obtener inmediatamente el $10\%$ de cualquier cantidad?'
+    question: '¿Cuál es el $10\%$ de $850$?'
     choices:
-      - {text: 'Dividir la cantidad entre 10 o desplazar la coma decimal un lugar hacia la izquierda', is_correct: true}
-      - {text: 'Dividir la cantidad entre 100', is_correct: false}
-      - {text: 'Multiplicar la cantidad por 10', is_correct: false}
-      - {text: 'Restar 10 a la cantidad total', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir la cantidad entre 10 o desplazar la coma decimal un lugar hacia la izquierda''. $10\% = 1/10$.'
+      - {text: '$85$', is_correct: true}
+      - {text: '$8,5$', is_correct: false}
+      - {text: '$8500$', is_correct: false}
+      - {text: '$0,85$', is_correct: false}
+    explanation: 'La alternativa correcta es $85$. Dividimos $850 \div 10 = 85$ (eliminamos el cero final).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si el $10\%$ de un monto es $\$3.500$, ¿cuánto dinero representa el $20\%$ de ese mismo monto?'
+    question: 'Si el $10\%$ de una cuenta es $\$3.600$, ¿cuánto es el $20\%$, el $5\%$ y el $15\%$, respectivamente?'
     choices:
-      - {text: '$\$7.000$, duplicando el valor del $10\%$ ($3.500 \cdot 2 = 7.000$)', is_correct: true}
-      - {text: '$\$35.000$, multiplicando por 10', is_correct: false}
-      - {text: '$\$1.750$, dividiendo por dos', is_correct: false}
-      - {text: '$\$70.000$, quadruplicando', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$7.000$, duplicando el valor del $10\%$ ($3.500 \cdot 2 = 7.000$)''. El $20\%$ es el doble del $10\%$.'
+      - {text: '$\$7.200$, $\$1.800$ y $\$5.400$', is_correct: true}
+      - {text: '$\$6.000$, $\$1.500$ y $\$4.500$', is_correct: false}
+      - {text: '$\$7.200$, $\$3.600$ y $\$10.800$', is_correct: false}
+      - {text: '$\$3.600$, $\$1.800$ y $\$7.200$', is_correct: false}
+    choices_order: original
+    explanation: 'La alternativa correcta es $\$7.200$, $\$1.800$ y $\$5.400$. $20\% = 2 \cdot 3.600 = 7.200$, $5\% = 3.600 / 2 = 1.800$, y $15\% = 7.200 / 2 + 1.800 = 5.400$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la cantidad $C$.'
-  - 'Paso 2: Si $C$ es entero terminado en cero, eliminar el último cero. Si tiene decimales o no termina en cero, mover la coma decimal un lugar hacia la izquierda.'
-  - 'Paso 3: El resultado obtenido es el $10\%$ de $C$.'
-  - 'Paso 4: Si se requiere $5\%$, $20\%$ o $15\%$, aplicar mitades, dobles o sumas sobre el $10\%$ hallado.'
+  - 'Paso 1: Dividir la cantidad $N$ entre $10$ eliminando el último cero o corriendo la coma 1 posición a la izquierda para hallar el $10\%$.'
+  - 'Paso 2: Para hallar el $5\%$, dividir el resultado del $10\%$ por $2$.'
+  - 'Paso 3: Para hallar el $20\%$ o $30\%$, multiplicar el resultado del $10\%$ por $2$ o por $3$.'
+  - 'Paso 4: Para hallar el $15\%$, sumar los resultados del $10\%$ y del $5\%$.'
 errores_correccion: |
-  - **Error 1:** Mover la coma dos lugares a la izquierda al buscar el $10\%$ (confundiéndolo con el $1\%$). **Cómo corregirlo:** El $10\%$ corresponde a una décima parte, por lo que **se desplaza la coma solo UN lugar a la izquierda**.
-  - **Error 2:** Multiplicar por 10 en lugar de dividir por 10. **Cómo corregirlo:** El $10\%$ es una reducción fraccionaria ($\frac{1}{10}$); **se debe DIVIDIR entre 10**, nunca multiplicar.
+  - **Error 1:** Correr la coma dos lugares en lugar de uno (obteniendo el $1\%$ en lugar del $10\%$). **Cómo corregirlo:** El $10\%$ divide por 10, por lo que **SIEMPRE se corre la coma solo 1 lugar: $N \div 10$**.
+  - **Error 2:** Olvidar colocar la coma decimal en números que no terminan en cero (ej: $10\%$ de $75$ es $7,5$, no $75$ ni $0,75$).
 ejemplos:
-  - titulo: 'Cálculo mental del 10% en números enteros'
-    enunciado: '¿El $10\%$ de $850$ es $85$?'
+  - titulo: 'Cálculo del 10% con coma decimal'
+    enunciado: '¿Cuál es el $10\%$ de $45$?'
     alternativas:
-      - 'Sí, pues $850 / 10 = 85$'
-      - 'No, es 8.5'
-      - 'No, es 8500'
-    respuesta: 'Sí, pues $850 / 10 = 85$'
+      - '$4,5$'
+      - '$0,45$'
+      - '$450$'
+      - '$45$'
+    respuesta: '$4,5$'
     solucion_pasos:
-      - '1. Eliminamos el cero final de 850.'
-      - '2. Resultado: 85.'
-  - titulo: 'Cálculo mental del 10% con coma decimal'
-    enunciado: '¿El $10\%$ de $\$4.250$ es $\$425$?'
+      - '1. Dividimos entre 10: $45 \div 10 = 4,5$.'
+      - '2. Corremos la coma un lugar a la izquierda.'
+  - titulo: 'Cálculo del 5% mental'
+    enunciado: '¿El $5\%$ de $\$80.000$ es igual a $\$4.000$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $4.250 \div 10 = \$425$.'
-  - titulo: 'Derivación del 5% a partir del 10%'
-    enunciado: 'Si el $10\%$ de $600$ es $60$, ¿el $5\%$ es $30$?'
+      - 'Sí. $10\% = \$8.000 \implies 5\% = 8.000 / 2 = \$4.000$.'
+  - titulo: 'Cálculo del 20% mental'
+    enunciado: '¿El $20\%$ de $350$ es igual a $70$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Mitad de 60 es 30.'
-  - titulo: 'Derivación del 20% a partir del 10%'
-    enunciado: 'Si el $10\%$ de $150$ es $15$, ¿el $20\%$ es $30$?'
+      - 'Sí. $10\% = 35 \implies 20\% = 2 \cdot 35 = 70$.'
+  - titulo: 'Cálculo del 15% mental'
+    enunciado: '¿El $15\%$ de $\$20.000$ es igual a $\$3.000$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Doble de 15 es 30.'
+      - 'Sí. $10\% = 2.000$, $5\% = 1.000 \implies 15\% = 2.000 + 1.000 = \$3.000$.'
 errores_frecuentes:
-  - 'Mover la coma decimal dos posiciones a la izquierda en lugar de una al calcular el 10%.'
-  - 'Multiplicar la cantidad por 10 creyendo que se está calculando el 10%.'
-  - 'Sumar 10 a la cifra original en lugar de realizar la división entre 10.'
-  - 'Los números enteros que no terminan en cero conservan su cifra idéntica al calcular el 10%.'
-  - 'El cálculo mental del 10% se efectúa dividiendo el número entre 2.'
+  - 'Desplazar la coma dos lugares en vez de uno.'
+  - 'Confundir el cálculo del 5% con dividir entre 5 en vez de dividir el 10% entre 2.'
+  - 'Olvidar sumar los dos componentes en el cálculo del 15%.'
 afirmaciones_verdaderas:
-  - 'El $10\%$ de una cantidad equivale a su décima parte ($\frac{1}{10}$) y se calcula dividiendo la cantidad por 10.'
-  - 'A partir del $10\%$, se puede obtener el $5\%$ calculando la mitad y el $20\%$ calculando el doble.'
-al_terminar_debes_poder: 'Calcular mentalmente el $10\%$ de cualquier cantidad dividiendo por 10 y derivar porcentajes como el $5\%$, $15\%$ y $20\%$.'
+  - 'El 10% de cualquier número se obtiene dividiendo entre 10 (desplazando la coma 1 posición a la izquierda).'
+  - 'El 15% se calcula rápidamente sumando el 10% más la mitad de ese 10% (5%).'
+al_terminar_debes_poder: |
+  ![Resumen de estrategia de cálculo mental para el 10%](/static/img/nodos/estrategia-de-calculo-mental-para-el-10-resumen.svg)
+
+  QUÉ: Calcular mentalmente el $10\%$ de cualquier cantidad y derivar con agilidad el $5\%$, $15\%$, $20\%$ y $30\%$.
+  CÓMO: Dividiendo entre 10 ($10\% = N \div 10$) y aplicando operaciones de duplicación, bisección y adición ($20\% = 2 \cdot 10\%$, $5\% = 10\% \div 2$, $15\% = 10\% + 5\%$).
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

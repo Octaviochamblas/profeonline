@@ -1,102 +1,104 @@
-semantic_id: MAT.NUM.PORCENTAJES.CALCULO_PORCENTAJE
-resumen_inicial: 'El porcentaje $p\%$ que representa una cantidad parcial $P$ respecto a una cantidad total $C$ se calcula dividiendo la parte entre el total y multiplicando el cociente por 100: $p\% = \left(\frac{P}{C}\right) \cdot 100\%$.'
+semantic_id: MAT.NUM.PORCENTAJES.CALC_TASA
+resumen_inicial: 'Para calcular qué porcentaje representa una cantidad parcial $P$ respecto a un total $T$, se divide la parte entre el total y se multiplica el resultado por 100% ($c\% = \frac{P}{T} \cdot 100\%$).'
 explicacion_simple: |
-  Cuando quieres averiguar qué porcentaje del total representa un cierto grupo de cosas o dinero (por ejemplo, si de $40$ estudiantes en una sala $10$ usan anteojos):
-  1. Divides la parte ($10$) por el total ($40$), obteniendo la fracción $\frac{10}{40} = 0,25$.
-  2. Multiplicas ese resultado decimal por $100$ para convertirlo a porcentaje: $0,25 \cdot 100 = 25\%$.
-  Por lo tanto, los $10$ estudiantes representan el $25\%$ del curso.
+  ![Cálculo del porcentaje que representa una cantidad](/static/img/nodos/calculo-del-porcentaje-que-representa-una-cantidad-intro.svg)
+
+  Cuando quieres saber qué porcentaje es una cantidad de otra (por ejemplo, si respondiste bien $18$ preguntas de un total de $60$), debes formar la fracción **Parte / Total**, hacer la división y multiplicar por $100\%$. En este caso: $\frac{18}{60} = 0,30 \implies 0,30 \cdot 100\% = 30\%$. La clave es recordar que el total de referencia siempre va en el denominador.
 explicacion_formal: |
-  ### Definición formal
-  El **porcentaje relativo $p\%$** que representa un valor parcial $P$ con respecto a un total de referencia $C$ ($C > 0$) viene dado por la razón:
-  $$p\% = \left(\frac{P}{C}\right) \cdot 100\%$$
+  ### Definición del operador de tasa porcentual
+  Dada una cantidad parcial $P \in \mathbb{R}^+$ y una cantidad de referencia total $T \in \mathbb{R}^+$ con $T \neq 0$, la tasa porcentual $c\%$ que representa $P$ respecto a $T$ es:
+  $$c\% = \left(\frac{P}{T}\right) \cdot 100\%$$
 
-  ### Deducción por regla de tres simple directa
-  Estableciendo la equivalencia de que la base $C$ representa el $100\%$:
-  $$\begin{array}{ccc} \text{Cantidad} & & \text{Porcentaje} \\ C & \longrightarrow & 100\% \\ P & \longrightarrow & p\% \end{array} \implies p = \frac{P \cdot 100}{C}$$
+  ### Interpretación por regla de tres simple
+  $$\begin{aligned}
+  T &\longrightarrow 100\% \\
+  P &\longrightarrow c\%
+  \end{aligned} \implies c = \frac{P \cdot 100}{T}$$
 
-  ### Análisis según el tamaño de la parte
-  - Si $P < C \implies p\% < 100\%$ (la parte es menor que el total).
-  - Si $P = C \implies p\% = 100\%$ (la parte es idéntica al total).
-  - Si $P > C \implies p\% > 100\%$ (la parte supera al valor base de comparación).
-
-  ### Síntesis didáctica
-  - Ecuación del porcentaje: $p\% = \left(\frac{\text{Parte}}{\text{Total}}\right) \cdot 100\%$.
+  ### Casos según la razón Parte/Total
+  - Si $P < T$: $c\% < 100\%$ (porcentaje propio o fraccionario).
+  - Si $P = T$: $c\% = 100\%$ (totalidad exacta).
+  - Si $P > T$: $c\% > 100\%$ (exceso o sobrecumplimiento).
 definiciones_clave: |
-  - **Porcentaje relativo ($p\%$)**: Proporción percentil ocupada por la cuota parcial dentro del universo total.
-  - **Cuota parcial ($P$)**: Numerador de la razón que indica la cantidad observada.
-  - **Total de referencia ($C$)**: Denominador de la razón que actúa como base del 100%.
+  - **Tasa porcentual desconocida ($c\%$)**: Incógnita porcentual que cuantifica la proporción de la parte sobre la base.
+  - **Cociente relativo ($\frac{P}{T}$)**: Razón adimensional entre la parte evaluada y el total de referencia.
+  - **Factor de escala porcentual**: Multiplicador $100\%$ que transforma el cociente decimal a tanto por ciento.
 propiedades_relaciones: |
-  - **Escalamiento homogéneo**: Si tanto la parte $P$ como el total $C$ se multiplican por un mismo factor $k$, el porcentaje representado $p\%$ permanece exactamente inalterado.
-  - **Complementario porcentual**: El porcentaje de los elementos no incluidos en $P$ se calcula simplemente como $(100 - p)\%$.
+  - **Invarianza de escala**: Si tanto la parte como el total se multiplican por la misma constante, el porcentaje permanece idéntico.
+  - **Aditividad de partes**: Si $P = P_1 + P_2$, entonces $c\%(P) = c\%(P_1) + c\%(P_2)$.
 ejemplo_guiado:
-  enunciado: 'En un examen de $50$ preguntas, un estudiante respondió correctamente $38$ preguntas. ¿Qué porcentaje de respuestas correctas obtuvo el estudiante?'
+  enunciado: 'En un curso de $40$ estudiantes, $14$ obtuvieron calificación destacada. ¿Qué porcentaje del curso obtuvo calificación destacada?'
   pasos:
-    - 'Paso 1: Identificamos la parte parcial $P = 38$ y la cantidad total de preguntas $C = 50$.'
-    - 'Paso 2: Formulamos la razón de la parte respecto al total: $\frac{P}{C} = \frac{38}{50}$.'
-    - 'Paso 3: Calculamos la división decimal: $38 \div 50 = 0,76$.'
-    - 'Paso 4: Multiplicamos por $100$ para obtener el porcentaje: $0,76 \cdot 100 = 76\%$. El estudiante obtuvo un **$76\%$ de respuestas correctas**.'
+    - 'Paso 1: Identificamos la parte ($P = 14$) y el total ($T = 40$).'
+    - 'Paso 2: Planteamos la razón $\frac{\text{Parte}}{\text{Total}} = \frac{14}{40}$.'
+    - 'Paso 3: Realizamos la división: $14 \div 40 = 0,35$.'
+    - 'Paso 4: Multiplicamos por 100%: $0,35 \cdot 100\% = 35\%$.'
+    - 'Paso 5: Conclusión: Los estudiantes destacados representan el **35%** del curso.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular qué porcentaje $p\%$ representa una parte $P$ de un total $C$?'
+    question: '¿Qué porcentaje representa $15$ respecto a un total de $60$?'
     choices:
-      - {text: 'Dividir la parte $P$ entre el total $C$ y multiplicar el cociente por 100 ($p\% = \frac{P}{C} \cdot 100\%$)', is_correct: true}
-      - {text: 'Dividir el total $C$ entre la parte $P$ y multiplicar por 100', is_correct: false}
-      - {text: 'Multiplicar la parte $P$ por el total $C$', is_correct: false}
-      - {text: 'Restar la parte $P$ al total $C$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir la parte $P$ entre el total $C$ y multiplicar el cociente por 100 ($p\% = \frac{P}{C} \cdot 100\%$)''. Es la razón $P/C$ expresada en tanto por ciento.'
+      - {text: '$25\%$', is_correct: true}
+      - {text: '$40\%$', is_correct: false}
+      - {text: '$20\%$', is_correct: false}
+      - {text: '$4\%$', is_correct: false}
+    explanation: 'La alternativa correcta es $25\%$. $c\% = \left(\frac{15}{60}\right) \cdot 100\% = \frac{1}{4} \cdot 100\% = 25\%$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en un canasto hay $15$ manzanas rojas de un total de $60$ frutas, ¿qué porcentaje de las frutas son manzanas rojas?'
+    question: 'Si de un presupuesto de $\$50.000$ se gastaron $\$35.000$, ¿qué porcentaje del presupuesto fue gastado?'
     choices:
-      - {text: 'El $25\%$, calculando $\frac{15}{60} \cdot 100 = \frac{1}{4} \cdot 100 = 25\%$', is_correct: true}
-      - {text: 'El $40\%$, dividiendo $60 / 15$', is_correct: false}
-      - {text: 'El $15\%$, tomando el número de manzanas', is_correct: false}
-      - {text: 'El $75\%$, considerando las frutas no rojas', is_correct: false}
-    explanation: 'La alternativa correcta es ''El $25\%$, calculando $\frac{15}{60} \cdot 100 = \frac{1}{4} \cdot 100 = 25\%$''. $15/60 = 0.25 \implies 25\%$.'
+      - {text: '$70\%$', is_correct: true}
+      - {text: '$35\%$', is_correct: false}
+      - {text: '$65\%$', is_correct: false}
+      - {text: '$7\%$', is_correct: false}
+    explanation: 'La alternativa correcta es $70\%$. $\frac{35.000}{50.000} \cdot 100\% = \frac{35}{50} \cdot 100\% = 0,70 \cdot 100\% = 70\%$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar claramente la parte observada $P$ y el total de referencia $C$.'
-  - 'Paso 2: Formar la fracción $\frac{P}{C}$ colocando la parte arriba y el total abajo.'
-  - 'Paso 3: Realizar la división $P \div C$ para obtener la forma decimal.'
-  - 'Paso 4: Multiplicar el resultado decimal por 100 y agregar el símbolo $\%$.'
+  - 'Paso 1: Identificar con claridad cuál es la parte ($P$) y cuál es el total de referencia ($T$).'
+  - 'Paso 2: Escribir la razón $\frac{P}{T}$.'
+  - 'Paso 3: Calcular el cociente decimal dividiendo $P \div T$.'
+  - 'Paso 4: Multiplicar el cociente decimal por $100\%$ (desplazar la coma 2 lugares a la derecha) y agregar el símbolo $\%$.'
 errores_correccion: |
-  - **Error 1:** Dividir el total entre la parte en lugar de la parte entre el total (ej: hacer $50 \div 38$ en vez de $38 \div 50$). **Cómo corregirlo:** La parte observada se coloca **SIEMPRE en el numerador**: **$\frac{\text{Parte}}{\text{Total}}$**.
-  - **Error 2:** Olvidar multiplicar por 100 tras realizar la división $P \div C$. **Cómo corregirlo:** La división entrega un número decimal ($0,76$); **debes multiplicar por 100** para expresar el resultado como tanto por ciento ($76\%$).
+  - **Error 1:** Invertir la fracción dividiendo Total entre Parte (ej: $60 \div 15 = 4$ en vez de $15 \div 60 = 0,25 = 25\%$). **Cómo corregirlo:** La parte siempre va en el numerador y el total en el denominador: **$\frac{\text{Parte}}{\text{Total}}$**.
+  - **Error 2:** Olvidar multiplicar por 100 dejando la respuesta como $0,35$ en vez de $35\%$.
 ejemplos:
-  - titulo: 'Porcentaje de aprobados en un curso'
-    enunciado: 'Si 18 de 20 estudiantes aprobaron, ¿el porcentaje de aprobados es el $90\%$?'
+  - titulo: 'Cálculo de tasa porcentual'
+    enunciado: '¿Qué porcentaje representa $12$ de $48$?'
     alternativas:
-      - 'Sí, pues $(18 / 20) \cdot 100 = 0.9 \cdot 100 = 90\%$'
-      - 'No, es el 80%'
-      - 'No, es el 95%'
-    respuesta: 'Sí, pues $(18 / 20) \cdot 100 = 0.9 \cdot 100 = 90\%$'
+      - '$25\%$'
+      - '$20\%$'
+      - '$30\%$'
+      - '$4\%$'
+    respuesta: '$25\%$'
     solucion_pasos:
-      - '1. Razón de parte a total: $18 / 20 = 0,9$.'
-      - '2. Multiplicamos por 100: $0,9 \cdot 100 = 90\%$.'
-  - titulo: 'Porcentaje de la mitad'
-    enunciado: 'Si se toman 25 unidades de 50 totales, ¿representan el $50\%$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $(25/50) \cdot 100 = 0.5 \cdot 100 = 50\%$.'
-  - titulo: 'Porcentaje mayor al 100% por comparación'
-    enunciado: 'Si las ventas actuales son $\$150$ y las anteriores eran $\$100$, ¿las ventas actuales representan el $150\%$ de las anteriores?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $(150 / 100) \cdot 100 = 150\%$.'
+      - '1. Formamos la razón: $\frac{12}{48} = \frac{1}{4}$.'
+      - '2. Multiplicamos por 100%: $\frac{1}{4} \cdot 100\% = 25\%$.'
   - titulo: 'Porcentaje de totalidad'
-    enunciado: 'Si se tienen 80 elementos de 80 posibles, ¿representan el $100\%$?'
+    enunciado: '¿Si una cantidad es igual a su total de referencia, representa el $100\%$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $(80/80) \cdot 100 = 100\%$.'
+      - 'Sí. $\frac{T}{T} \cdot 100\% = 1 \cdot 100\% = 100\%$.'
+  - titulo: 'Porcentaje mayor al total'
+    enunciado: '¿Si se producen $150$ unidades cuando la meta era $100$, el cumplimiento fue del $150\%$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $\frac{150}{100} \cdot 100\% = 150\%$.'
+  - titulo: 'Porcentaje complementario'
+    enunciado: '¿Si el $30\%$ de los alumnos son hombres, las mujeres representan el $70\%$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - 'Sí. $100\% - 30\% = 70\%$.'
 errores_frecuentes:
-  - 'Dividir la cantidad total entre la parte parcial en lugar de dividir la parte entre el total.'
-  - 'El resultado decimal de la división $P/C$ representa directamente el porcentaje sin multiplicar por 100.'
-  - 'El porcentaje de la parte observada equivale numéricamente al porcentaje del complemento restante.'
-  - 'Restar la parte al total y entregar la diferencia como si fuera el porcentaje.'
-  - 'Considerar que la parte observada nunca puede ser mayor que el total de referencia.'
+  - 'Invertir la fracción dividiendo el total por la parte.'
+  - 'Tomar como base el valor restante en lugar del total original.'
+  - 'No multiplicar por 100 al final del cálculo.'
 afirmaciones_verdaderas:
-  - 'El porcentaje $p\%$ que representa una parte $P$ de un total $C$ se calcula mediante la fórmula $p\% = \left(\frac{P}{C}\right) \cdot 100\%$.'
-  - 'Si la parte es igual a la mitad del total ($P = \frac{C}{2}$), el porcentaje que representa es exactamente el $50\%$.'
-al_terminar_debes_poder: 'Calcular qué porcentaje representa una cantidad parcial respecto a un total aplicando la fórmula $p\% = \left(\frac{P}{C}\right) \cdot 100\%$.'
+  - 'El porcentaje que representa una parte respecto al total se calcula mediante la fórmula (Parte / Total) · 100%.'
+  - 'Si la parte es la mitad del total, el porcentaje resultante es exactamente el 50%.'
+al_terminar_debes_poder: |
+  ![Resumen de cálculo del porcentaje que representa una cantidad](/static/img/nodos/calculo-del-porcentaje-que-representa-una-cantidad-resumen.svg)
+
+  QUÉ: Determinar con precisión qué porcentaje representa una cantidad parcial $P$ en relación a una base total $T$.
+  CÓMO: Formulando la razón $\frac{P}{T}$, calculando el cociente decimal y multiplicando por $100\%$ ($c\% = \frac{P}{T} \cdot 100\%$).
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado
