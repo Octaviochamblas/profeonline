@@ -138,6 +138,14 @@ ejemplo_guiado:
 # 5. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
 # 6. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
 # 7. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
+# 8. Fracciones Matemáticas Verticales en SVG:
+#    PROHIBIDO usar notación plana horizontal de programador con barra inclinada (`a / b`, `1 / (√3 - 1)`,
+#    `6 / √3`, `(a·d + b·c) / 12`, `(3² - 5) = 4`) dentro de diagramas SVG.
+#    En su lugar, toda fracción o división en SVG DEBE representarse obligatoriamente en formato vertical
+#    apilado: un elemento `<text>` para el numerador en la parte superior, una línea horizontal vectorial
+#    `<line x1="..." y1="..." x2="..." y2="..." stroke="..." stroke-width="1.5"/>` en el medio, y un elemento
+#    `<text>` para el denominador en la parte inferior, con los signos operativos ($\cdot$, $=$, $+$, $-$)
+#    centrados respecto a la barra de fracción. En contenido YAML, usar siempre $\LaTeX$ vertical $\frac{a}{b}$ en `$...$`.
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."

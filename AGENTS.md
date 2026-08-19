@@ -72,6 +72,12 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   `x_def`, `d_k`, `10^-k`, `10^k`); usar siempre etiquetas tipográficas vectoriales
   `<tspan baseline-shift="sub" font-size="70%">...</tspan>` para subíndices y
   `<tspan baseline-shift="super" font-size="70%">...</tspan>` para superíndices.
+- **Fracciones Matemáticas en Diagramas SVG:** Toda fracción, división o cociente algebraico o numérico
+  en diagramas SVG (`static/img/nodos/`) DEBE representarse obligatoriamente en formato vertical apilado
+  con numerador superior, línea horizontal vectorial de fracción (`<line>`) y denominador inferior, con
+  los operadores matemáticos ($\cdot$, $=$, $+$, $-$) alineados al centro de la barra. Está **estrictamente
+  prohibido** usar notación plana con barra inclinada (`a / b`, `1 / (√3 - 1)`, `6 / √3`, `(a·d + b·c) / 12`)
+  en infografías o diagramas explicativos. En contenido YAML, usar siempre $\LaTeX$ vertical $\frac{a}{b}$ en `$...$`.
 
 ## 💸 Economía de tokens (seguir SIEMPRE)
 
