@@ -1,99 +1,142 @@
 semantic_id: MAT.NUM.LOGARITMOS_PROPIEDADES.POTENCIA
-resumen_inicial: 'El logaritmo de una potencia es igual al exponente multiplicado por el logaritmo de la base del argumento: $\log_b(x^k) = k \cdot \log_b(x)$ ($x > 0$).'
-explicacion_simple: |
-  Esta es una de las propiedades más poderosas de los logaritmos. Si dentro del argumento tienes una potencia (como $\log_2(8^5)$), no necesitas calcular $8^5$ (que da 32768). Simplemente "bajas" el exponente $5$ y lo pones a multiplicar por delante de todo el logaritmo: $5 \cdot \log_2(8) = 5 \cdot 3 = 15$. El exponente que estaba atrapado arriba pasa abajo multiplicando.
-explicacion_formal: |
-  ### Definición formal
-  La **propiedad del logaritmo de una potencia** establece que para toda base real $b > 0, b \neq 1$, un argumento positivo $x \in \mathbb{R}^+$ y cualquier exponente real $k \in \mathbb{R}$:
+resumen_inicial: 'El logaritmo de una potencia es igual al exponente multiplicado por el logaritmo de la base del argumento: $\log_b(x^k) = k \cdot \log_b(x)$ ($x > 0, k \in \mathbb{R}$).'
+explicacion_simple: '![Propiedad del logaritmo de una potencia](/static/img/nodos/logaritmo-de-una-potencia-intro.svg)
+
+
+  Esta propiedad se conoce popularmente como la **regla de la potencia o del sombrerito**:
+
+  - Cuando el argumento tiene un exponente como $\log_2(8^5)$, el exponente $5$ puede *bajar* al frente multiplicando: $5 \cdot \log_2(8) = 5 \cdot 3 = 15$.
+
+  - En sentido inverso, cualquier número que multiplique al frente de un logaritmo puede *subir* como exponente del argumento: $3 \cdot \log(2) = \log(2^3) = \log(8)$.'
+explicacion_formal: 'Sean $b \in \mathbb{R}^+ \setminus \{1\}$, $x \in \mathbb{R}^+$ y $k \in \mathbb{R}$. La **propiedad del logaritmo de una potencia** establece que:
+
+
   $$\log_b(x^k) = k \cdot \log_b(x)$$
 
-  ### Demostración analítica
-  Sea $u = \log_b(x)$. Por la definición exponencial:
-  1. $x = b^u$.
-  2. Elevando ambos miembros a la potencia $k$: $x^k = (b^u)^k = b^{k \cdot u}$.
-  3. Aplicando la definición de logaritmo a la potencia resultante $x^k = b^{k \cdot u}$:
-     $$\log_b(x^k) = k \cdot u$$
-  4. Sustituyendo $u = \log_b(x)$: $\log_b(x^k) = k \cdot \log_b(x)$.
 
-  ### Síntesis didáctica
-  - Regla del sombrero: El exponente $k$ "baja" a multiplicar al coeficiente del logaritmo.
-  - Ámbito de aplicación: Funciona para cualquier exponente $k$ real (entero, negativo o fraccionario).
-definiciones_clave: |
-  - **Logaritmo de una potencia**: Propiedad de simplificación que convierte exponentes sublogarítmicos en factores multiplicativos exteriores.
-  - **Exponente factor multiplicativo**: Transformación del exponente $k$ en coeficiente constante que multiplica al operador $\log_b(x)$.
-  - **Subida de coeficientes**: Propiedad inversa $k \cdot \log_b(x) = \log_b(x^k)$ que convierte coeficientes multiplicativos en exponentes del argumento.
-propiedades_relaciones: |
-  - **Herramienta principal en ecuaciones exponenciales**: Permite despejar incógnitas atrapadas en exponentes al tomar logaritmo a ambos lados ($\log(a^x) = x \cdot \log(a)$).
-  - **Caso particular con exponente $k = 1$**: $\log_b(x^1) = 1 \cdot \log_b(x) = \log_b(x)$.
+  **Demostración Analítica:**
+
+  1. Sea $u = \log_b(x) \implies x = b^u$.
+
+  2. Elevando ambos miembros a la potencia $k$: $x^k = (b^u)^k = b^{k \cdot u}$.
+
+  3. Aplicando el operador logaritmo: $\log_b(x^k) = k \cdot u$.
+
+  4. Reemplazando $u$: $\log_b(x^k) = k \cdot \log_b(x)$. $\blacksquare$'
+definiciones_clave: '- **Logaritmo de una potencia**: Identidad $\log_b(x^k) = k \cdot \log_b(x)$.
+
+  - **Coeficiente multiplicativo**: Factor $k$ que antecede al logaritmo tras extraer el exponente.
+
+  - **Linealidad con potencias**: Propiedad que convierte exponenciales internas en productos externos.'
+propiedades_relaciones: '- **Exponentes enteros, negativos y fraccionarios**: Válido para todo $k \in \mathbb{R}$.
+
+  - **Preparación para condensar**: Antes de sumar o restar logaritmos, se deben subir los coeficientes como exponentes.'
 ejemplo_guiado:
-  enunciado: 'Calcula el valor numérico exacto de la expresión $P = \log_3(9^7)$ aplicando la propiedad del logaritmo de una potencia.'
+  enunciado: '![Ejemplos de logaritmo de una potencia](/static/img/nodos/logaritmo-de-una-potencia-ejemplos.svg)
+
+
+    Calcule el valor de $\log_5(25^4)$ y simplifique la expresión $\log_2(16^{-3})$.'
   pasos:
-    - 'Paso 1: Identificamos el argumento $x = 9$ y el exponente sublogarítmico $k = 7$ en la expresión $\log_3(9^7)$.'
-    - 'Paso 2: Aplicamos la propiedad bajando el exponente $7$ a multiplicar por delante del logaritmo: $P = 7 \cdot \log_3(9)$.'
-    - 'Paso 3: Calculamos el logaritmo simple $\log_3(9)$ buscando el exponente $3^c = 9 \implies c = 2$.'
-    - 'Paso 4: Multiplicamos el coeficiente por el resultado obtenido: $P = 7 \cdot 2 = 14$.'
+  - 'Paso 1: Para $\log_5(25^4)$: Bajar el exponente 4 al frente: $4 \cdot \log_5(25)$.'
+  - 'Paso 2: Calcular $\log_5(25) = 2 \implies 4 \cdot 2 = 8$.'
+  - 'Paso 3: Para $\log_2(16^{-3})$: Bajar el exponente negativo $-3$: $-3 \cdot \log_2(16)$.'
+  - 'Paso 4: Calcular $\log_2(16) = 4 \implies -3 \cdot 4 = -12$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cómo se transforma el logaritmo de una potencia $\log_b(x^k)$ según las propiedades de los logaritmos?'
-    choices:
-      - {text: '$k \cdot \log_b(x)$, pasando el exponente $k$ a multiplicar por delante de la expresión', is_correct: true}
-      - {text: '$\log_b(x) + k$, sumando el exponente al logaritmo', is_correct: false}
-      - {text: '$\log_b(x)^k$, elevando todo el logaritmo a la potencia $k$', is_correct: false}
-      - {text: '$\frac{\log_b(x)}{k}$, dividiendo el logaritmo por el exponente', is_correct: false}
-    explanation: 'La alternativa correcta es ''$k \cdot \log_b(x)$, pasando el exponente $k$ a multiplicar por delante de la expresión''. El exponente interno baja como coeficiente multiplicativo.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el valor simplificado de la expresión $\log_2(8^{10})$?'
-    choices:
-      - {text: '$30$, ya que $10 \cdot \log_2(8) = 10 \cdot 3 = 30$', is_correct: true}
-      - {text: '$80$, multiplicando $8 \cdot 10$', is_correct: false}
-      - {text: '$13$, sumando $10 + 3$', is_correct: false}
-      - {text: '$3^{10}$, elevando 3 a la 10', is_correct: false}
-    explanation: 'La alternativa correcta es ''$30$, ya que $10 \cdot \log_2(8) = 10 \cdot 3 = 30$''. Bajamos el 10 a multiplicar por $\log_2(8) = 3 \implies 10 \cdot 3 = 30$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué ocurre con el exponente $k$ en la expresión $\log_b(x^k)$?
+  choices:
+  - text: 'Pasa al frente multiplicando al logaritmo: $k \cdot \log_b(x)$'
+    is_correct: true
+  - text: Se convierte en la nueva base del logaritmo
+    is_correct: false
+  - text: 'Se suma al logaritmo: $k + \log_b(x)$'
+    is_correct: false
+  - text: 'Eleva a todo el logaritmo: $[\log_b(x)]^k$'
+    is_correct: false
+  explanation: 'La alternativa correcta es ''Pasa al frente multiplicando al logaritmo: $k \cdot \log_b(x)$''.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿cuál es el valor de $\log_5(25^4)$?
+  choices:
+  - text: $8$, porque $4 \cdot \log_5(25) = 4 \cdot 2 = 8$
+    is_correct: true
+  - text: $100$
+    is_correct: false
+  - text: $16$
+    is_correct: false
+  - text: $4$
+    is_correct: false
+  explanation: La alternativa correcta es '$8$, porque $4 \cdot \log_5(25) = 4 \cdot 2 = 8$'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el exponente $k$ que afecta al argumento en $\log_b(x^k)$.'
-  - 'Paso 2: Colocar el exponente $k$ multiplicando por fuera a la izquierda del símbolo $\log_b(x)$.'
-  - 'Paso 3: Calcular el valor del logaritmo simplificado $\log_b(x)$.'
-  - 'Paso 4: Multiplicar el coeficiente $k$ por el valor obtenido.'
-errores_correccion: |
-  - **Error 1:** Elevar todo el logaritmo a la potencia en lugar de multiplicar por ella (ej: confundir $\log_b(x^k)$ con $[\log_b(x)]^k$). **Cómo corregirlo:** La expresión $\log_b(x^k)$ sólo tiene el argumento elevado a $k$, por lo que se convierte en la **multiplicación** $k \cdot \log_b(x)$. La expresión $[\log_b(x)]^k$ representa la potencia del logaritmo completo y no se puede bajar el exponente.
-  - **Error 2:** Sumar el exponente en lugar de multiplicarlo (ej: $\log_b(x^k) = k + \log_b(x)$). **Cómo corregirlo:** El exponente interno baja a **multiplicar** al logaritmo: $k \cdot \log_b(x)$.
+- 'Paso 1: Identificar el exponente $k$ que afecta al argumento $x$.'
+- 'Paso 2: Extraer el exponente colocándolo como coeficiente multiplicativo: $k \cdot \log_b(x)$.'
+- 'Paso 3: Evaluar el logaritmo resultante y realizar el producto numérico final.'
+errores_correccion: '- **Error 1: Confundir $\log_b(x^k)$ con $[\log_b(x)]^k$.** **Cómo corregirlo:** La propiedad solo se aplica si el exponente afecta **exclusivamente al argumento $x$**, no a todo el logaritmo.
+
+  - **Error 2: Condensar sumas con coeficientes al frente sin subirlos primero.** **Cómo corregirlo:** En $2\log(x) + \log(y)$, primero se transforma en $\log(x^2) + \log(y) = \log(x^2 y)$.'
 ejemplos:
-  - titulo: 'Cálculo con exponente entero'
-    enunciado: '¿El valor de $\log_5(25^4)$ es igual a $8$?'
-    alternativas:
-      - 'Sí, pues $4 \cdot \log_5(25) = 4 \cdot 2 = 8$'
-      - 'No, es igual a 100'
-      - 'No, es igual a 16'
-    respuesta: 'Sí, pues $4 \cdot \log_5(25) = 4 \cdot 2 = 8$'
-    solucion_pasos:
-      - '1. Bajamos el exponente 4: $4 \cdot \log_5(25)$.'
-      - '2. Evaluamos $\log_5(25) = 2 \implies 4 \cdot 2 = 8$.'
-  - titulo: 'Despeje de exponente desconocido'
-    enunciado: 'Al tomar logaritmo a $\log(2^x)$, ¿se obtiene la expresión $x \cdot \log(2)$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Es la técnica clave para resolver ecuaciones exponenciales.'
-  - titulo: 'Exponente negativo en argumento'
-    enunciado: '¿La expresión $\log(x^{-3})$ equivale a $-3 \cdot \log(x)$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. El exponente negativo $-3$ baja a multiplicar: $-3 \log(x)$.'
-  - titulo: 'Subida de coeficiente a exponente'
-    enunciado: '¿La expresión $3 \cdot \log_2(5)$ se puede reescribir como $\log_2(5^3) = \log_2(125)$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Aplicando la propiedad en sentido inverso.'
+- titulo: Ejemplo 1
+  enunciado: ¿A qué equivale $3 \cdot \log_2(4)$?
+  alternativas:
+  - $6$
+  - $12$
+  - $8$
+  respuesta: $6$
+  solucion_pasos:
+  - $3 \cdot \log_2(4) = 3 \cdot 2 = 6$ (o bien $\log_2(4^3) = \log_2(64) = 6$).
+- titulo: Ejemplo 2
+  enunciado: Si $\log(x) = 1,5$, ¿cuánto vale $\log(x^4)$?
+  alternativas:
+  - $6$
+  - $5,0625$
+  - $4,5$
+  respuesta: $6$
+  solucion_pasos:
+  - $\log(x^4) = 4 \cdot \log(x) = 4 \cdot 1,5 = 6$.
+- titulo: ¿Es log(10⁵) = 5?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque $\log(10^5) = 5 \cdot \log(10) = 5 \cdot 1 = 5$.
+  alternativas:
+  - texto: Sí, 5 · log(10) = 5
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Bajada directa del exponente.
+  - texto: No, es 50
+    es_correcta: false
+    retroalimentacion: Incorrecto, $\log(10) = 1$.
+  - texto: No, es 10
+    es_correcta: false
+    retroalimentacion: Incorrecto, el exponente es 5.
+- titulo: ¿Equivale 2 · log(5) a log(25)?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, subiendo el coeficiente: $\log(5^2) = \log(25)$.'
+  alternativas:
+  - texto: Sí, log(5²) = log(25)
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Coeficiente ingresa como exponente.
+  - texto: No, es log(10)
+    es_correcta: false
+    retroalimentacion: Incorrecto, el 2 no multiplica al 5 adentro, lo eleva.
+  - texto: No, es 25
+    es_correcta: false
+    retroalimentacion: Incorrecto, conserva el operador logarítmico.
 errores_frecuentes:
-  - 'La expresión $\log_b(x^k)$ es idéntica a la potencia completa del logaritmo $[\log_b(x)]^k$.'
-  - 'Al bajar el exponente $k$ de un logaritmo, este pasa sumando al operador logarítmico.'
-  - 'Multiplicar la base del logaritmo por el exponente $k$ al simplificar.'
-  - 'Bajar exponentes que afectan a toda la expresión logarítmica y no sólo al argumento.'
-  - 'Elevar el resultado del logaritmo al exponente $k$ en lugar de multiplicar.'
+- Bajar exponentes que afectan a toda la expresión $[\log_b(x)]^k$.
+- Multiplicar el argumento por el coeficiente en lugar de elevarlo.
+- Olvidar los signos negativos en exponentes inversos.
+- No subir los coeficientes antes de condensar sumas y restas.
 afirmaciones_verdaderas:
-  - 'El logaritmo de una potencia es igual al exponente multiplicado por el logaritmo de la base del argumento: $\log_b(x^k) = k \cdot \log_b(x)$.'
-  - 'La propiedad del logaritmo de una potencia es el mecanismo algebraico fundamental para despejar incógnitas que se encuentran en el exponente de ecuaciones exponenciales.'
-al_terminar_debes_poder: 'Aplicar la propiedad del logaritmo de una potencia para bajar o subir exponentes como factores multiplicativos.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- El logaritmo de una potencia es igual al exponente multiplicado por el logaritmo de la base.
+- La propiedad es válida para cualquier exponente real $k \in \mathbb{R}$.
+- Permite simplificar argumentos con exponentes elevados de manera inmediata.
+al_terminar_debes_poder: '![Síntesis de logaritmo de una potencia](/static/img/nodos/logaritmo-de-una-potencia-resumen.svg)
+
+
+  QUÉ: Aplicar con precisión la propiedad del logaritmo de una potencia $\log_b(x^k) = k \cdot \log_b(x)$.
+
+
+  CÓMO: Extrayendo exponentes multiplicando al frente o ingresando coeficientes como exponentes del argumento, para todo $x > 0$ y $k \in \mathbb{R}$.'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado

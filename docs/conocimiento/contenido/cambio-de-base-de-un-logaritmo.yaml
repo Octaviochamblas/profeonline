@@ -1,105 +1,135 @@
 semantic_id: MAT.NUM.LOGARITMOS_PROPIEDADES.CAMBIO_BASE
-resumen_inicial: 'La propiedad de cambio de base permite calcular o transformar un logaritmo en base $b$ a una nueva base $c$ mediante la división: $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$.'
-explicacion_simple: |
-  Las calculadoras científicas estándar solo traen botones para logaritmo decimal $\log$ (base 10) y logaritmo natural $\ln$ (base $e$). Si necesitas calcular un logaritmo en otra base como $\log_8(32)$, puedes usar la fórmula del cambio de base. Eliges una nueva base fácil (como la base 10), colocas el logaritmo del argumento ($32$) en el numerador y el logaritmo de la base vieja ($8$) en el denominador: $\log_8(32) = \frac{\log_{10}(32)}{\log_{10}(8)} = \frac{5}{3}$.
-explicacion_formal: |
-  ### Definición formal
-  La **fórmula de cambio de base de logaritmos** establece que para cualesquiera bases reales válidas $b, c > 0$ ($b, c \neq 1$) y todo argumento positivo $a \in \mathbb{R}^+$:
+resumen_inicial: 'El cambio de base permite calcular cualquier logaritmo dividiendo el logaritmo del argumento por el logaritmo de la base original en una nueva base $c$: $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$.'
+explicacion_simple: "![Propiedad de cambio de base](/static/img/nodos/cambio-de-base-de-un-logaritmo-intro.svg)\n\nCuando necesitas calcular un logaritmo que no puedes resolver directamente (como $\\log_4(32)$) o usar una calculadora:\n- Puedes cambiarlo a cualquier base común $c$ formando una fracción vertical:\n  - El **argumento** $a$ va arriba en el numerador: $\\log_c(a)$.\n  - La **base original** $b$ va abajo en el denominador: $\\log_c(b)$.\n- En base 10: $\\log_b(a) = \\frac{\\log(a)}{\\log(b)}$.\n- En base natural: $\\log_b(a) = \\frac{\\ln(a)}{\\ln(b)}$."
+explicacion_formal: 'Sean $a, b, c \in \mathbb{R}^+$ con $b \neq 1$ y $c \neq 1$. El **teorema del cambio de base** establece que:
+
+
   $$\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$$
 
-  ### Demostración analítica
-  Sea $x = \log_b(a)$. Por la definición de forma exponencial:
-  1. $b^x = a$.
-  2. Aplicamos el logaritmo en una nueva base arbitraria $c$ a ambos lados de la igualdad:
-     $$\log_c\left(b^x\right) = \log_c(a)$$
-  3. Aplicamos la propiedad del logaritmo de una potencia bajando el exponente $x$:
-     $$x \cdot \log_c(b) = \log_c(a)$$
-  4. Despejamos la variable $x$:
-     $$x = \frac{\log_c(a)}{\log_c(b)}$$
-  5. Sustituyendo $x = \log_b(a)$: $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$.
 
-  ### Corolario del producto cruzado e inversión de base
-  $$\log_b(a) \cdot \log_a(b) = 1 \implies \log_b(a) = \frac{1}{\log_a(b)}$$
+  **Demostración Analítica:**
 
-  ### Síntesis didáctica
-  - Numerador de la nueva fracción: Logaritmo en base $c$ del **argumento original $a$**.
-  - Denominador de la nueva fracción: Logaritmo en base $c$ de la **base antigua $b$**.
-definiciones_clave: |
-  - **Cambio de base**: Fórmula de conversión que expresa un logaritmo como el cociente de dos logaritmos en una base conveniente.
-  - **Nueva base $c$**: Base seleccionada libremente (comúnmente $10$ o $e$) para efectuar el cálculo.
-  - **Identidad de base invertida $\log_b(a) = \frac{1}{\log_a(b)}$**: Relación recíproca obtenida al intercambiar el argumento por la base.
-propiedades_relaciones: |
-  - **Uso en cálculo numérico y calculadoras**: Es la herramienta indispensable para calcular logaritmos de bases arbitrarias usando el botón `LOG` o `LN`.
-  - **Regla de la cadena logarítmica**: $\log_b(a) \cdot \log_c(b) \cdot \log_d(c) = \log_d(a)$.
+  1. Sea $x = \log_b(a) \implies b^x = a$.
+
+  2. Aplicando el operador logaritmo en base $c$ a ambos lados: $\log_c(b^x) = \log_c(a)$.
+
+  3. Por la propiedad de la potencia: $x \cdot \log_c(b) = \log_c(a)$.
+
+  4. Despejando $x$: $x = \frac{\log_c(a)}{\log_c(b)}$.
+
+  5. Sustituyendo $x$: $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$. $\blacksquare$'
+definiciones_clave: '- **Cambio de base**: Identidad fraccionaria $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$.
+
+  - **Nueva base ($c$)**: Base auxiliar seleccionada para facilitar el cálculo ($c=10$, $c=e$, o una potencia común).
+
+  - **Regla de la cadena logarítmica**: $\log_b(a) \cdot \log_a(c) = \log_b(c)$.'
+propiedades_relaciones: '- **Inversión de base**: $\log_b(a) = \frac{1}{\log_a(b)}$.
+
+  - **Uso en calculadoras**: Permite calcular logaritmos en cualquier base usando las teclas $\log$ y $\ln$.'
 ejemplo_guiado:
-  enunciado: 'Calcula el valor exacto del logaritmo $\log_8(32)$ aplicando un cambio de base conveniente a base 2.'
+  enunciado: '![Ejemplos de cambio de base](/static/img/nodos/cambio-de-base-de-un-logaritmo-ejemplos.svg)
+
+
+    Calcule el valor exacto de $\log_4(32)$ y simplifique el producto $\log_2(3) \cdot \log_3(8)$.'
   pasos:
-    - 'Paso 1: Identificamos la base antigua $b = 8$, el argumento $a = 32$ y elegimos la nueva base conveniente $c = 2$ (ya que 8 y 32 son potencias de 2).'
-    - 'Paso 2: Aplicamos la fórmula del cambio de base: $\log_8(32) = \frac{\log_2(32)}{\log_2(8)}$.'
-    - 'Paso 3: Calculamos el logaritmo del numerador buscando $2^c = 32 \implies \log_2(32) = 5$.'
-    - 'Paso 4: Calculamos el logaritmo del denominador buscando $2^c = 8 \implies \log_2(8) = 3$. Sustituimos para obtener la fracción irreducible: $\log_8(32) = \frac{5}{3}$.'
+  - 'Paso 1: Para $\log_4(32)$: Cambiar a base 2 (común a 4 y 32): $\frac{\log_2(32)}{\log_2(4)}$.'
+  - 'Paso 2: Calcular cada valor: $\frac{5}{2} = 2,5$.'
+  - 'Paso 3: Para $\log_2(3) \cdot \log_3(8)$: Cambiar a base 10: $\frac{\log(3)}{\log(2)} \cdot \frac{\log(8)}{\log(3)}$.'
+  - 'Paso 4: Cancelar $\log(3)$ y simplificar: $\frac{\log(8)}{\log(2)} = \log_2(8) = 3$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula correcta para cambiar la base de un logaritmo $\log_b(a)$ a una nueva base $c$?'
-    choices:
-      - {text: '$\frac{\log_c(a)}{\log_c(b)}$, dividiendo el logaritmo del argumento entre el logaritmo de la base antigua en la nueva base $c$', is_correct: true}
-      - {text: '$\log_c(a) \cdot \log_c(b)$, multiplicando los dos logaritmos', is_correct: false}
-      - {text: '$\frac{\log_c(b)}{\log_c(a)}$, invirtiendo el numerador y el denominador', is_correct: false}
-      - {text: '$\log_c(a - b)$, restando la base del argumento', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\frac{\log_c(a)}{\log_c(b)}$, dividiendo el logaritmo del argumento entre el logaritmo de la base antigua en la nueva base $c$''. El argumento $a$ va en el numerador y la base $b$ en el denominador.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es la representación equivalente de $\log_4(9)$ expresado mediante logaritmos decimales (base 10)?'
-    choices:
-      - {text: '$\frac{\log(9)}{\log(4)}$', is_correct: true}
-      - {text: '$\frac{\log(4)}{\log(9)}$', is_correct: false}
-      - {text: '$\log(9) \cdot \log(4)$', is_correct: false}
-      - {text: '$\log(9 - 4)$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\frac{\log(9)}{\log(4)}$''. Aplicando cambio a base 10, el argumento 9 va arriba y la base 4 va abajo.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es la fórmula correcta para cambiar $\log_b(a)$ a base 10?
+  choices:
+  - text: $\frac{\log(a)}{\log(b)}$ (argumento arriba, base abajo)
+    is_correct: true
+  - text: $\frac{\log(b)}{\log(a)}$
+    is_correct: false
+  - text: $\log(a) - \log(b)$
+    is_correct: false
+  - text: $\log(a \cdot b)$
+    is_correct: false
+  explanation: La alternativa correcta es '$\frac{\log(a)}{\log(b)}$ (argumento arriba, base abajo)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué $\log_4(32) = 2,5$?
+  choices:
+  - text: Porque $\frac{\log_2(32)}{\log_2(4)} = \frac{5}{2} = 2,5$
+    is_correct: true
+  - text: Porque $32 / 4 = 8$
+    is_correct: false
+  - text: Porque $4 \times 2,5 = 10$
+    is_correct: false
+  - text: Porque $2^5 = 10$
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque $\frac{\log_2(32)}{\log_2(4)} = \frac{5}{2} = 2,5$'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la base antigua $b$ y el argumento $a$ en la expresión $\log_b(a)$.'
-  - 'Paso 2: Seleccionar una nueva base $c$ conveniente (potencia común o base decimal $10$).'
-  - 'Paso 3: Formar la fracción colocando el logaritmo del argumento en el numerador $\log_c(a)$ y la base en el denominador $\log_c(b)$.'
-  - 'Paso 4: Calcular de forma independiente ambos logaritmos y simplificar la fracción resultante.'
-errores_correccion: |
-  - **Error 1:** Invertir la posición del argumento y la base en la fracción (ej: escribir $\log_b(a) = \frac{\log_c(b)}{\log_c(a)}$). **Cómo corregirlo:** Recuerda que el **argumento $a$** (que estaba arriba en la notación) se mantiene en el **numerador**, y la **base $b$** (que estaba subíndice abajo) pasa al **denominador**.
-  - **Error 2:** Restar o multiplicar los logaritmos al cambiar de base (ej: $\log_b(a) = \log_c(a) - \log_c(b)$). **Cómo corregirlo:** El cambio de base es estrictamente una **división** de logaritmos: $\frac{\log_c(a)}{\log_c(b)}$.
+- 'Paso 1: Seleccionar una nueva base $c$ adecuada (potencia común, base 10 o base $e$).'
+- 'Paso 2: Escribir la fracción vertical $\frac{\log_c(a)}{\log_c(b)}$ con el argumento $a$ en el numerador y la base $b$ en el denominador.'
+- 'Paso 3: Calcular o simplificar los logaritmos superior e inferior para hallar el resultado.'
+errores_correccion: "- **Error 1: Invertir la fracción ($\\log_b(a) = \frac{\\log(b)}{\\log(a)}$).** **Cómo corregirlo:** La base $b$ está abajo en el logaritmo original, por lo que **permanece abajo en el denominador**: $\frac{\\log_c(a)}{\\log_c(b)}$.\n- **Error 2: Usar bases distintas en numerador y denominador.** **Cómo corregirlo:** La nueva base $c$ debe ser idéntica arriba y abajo."
 ejemplos:
-  - titulo: 'Cálculo de logaritmo con base potencia'
-    enunciado: '¿El valor de $\log_{27}(81)$ es igual a $\frac{4}{3}$ usando cambio a base 3?'
-    alternativas:
-      - 'Sí, pues $\frac{\log_3(81)}{\log_3(27)} = \frac{4}{3}$'
-      - 'No, es igual a 3'
-      - 'No, es igual a 1/3'
-    respuesta: 'Sí, pues $\frac{\log_3(81)}{\log_3(27)} = \frac{4}{3}$'
-    solucion_pasos:
-      - '1. Cambiamos a base 3: $\frac{\log_3(81)}{\log_3(27)}$.'
-      - '2. Evaluamos $\log_3(81) = 4$ y $\log_3(27) = 3 \implies \frac{4}{3}$.'
-  - titulo: 'Recíproco por inversión de base'
-    enunciado: '¿Es verdad que $\log_2(5) \cdot \log_5(2) = 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Por el corolario del producto cruzado $\log_b(a) = \frac{1}{\log_a(b)}$.'
-  - titulo: 'Uso de calculadora decimal'
-    enunciado: '¿Para ingresar $\log_3(7)$ en una calculadora sin base 3 se debe presionar $\frac{\log(7)}{\log(3)}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Es la aplicación directa para calculadoras con base 10.'
-  - titulo: 'Cambio a base natural'
-    enunciado: '¿La expresión $\log_b(a)$ es equivalente a $\frac{\ln(a)}{\ln(b)}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Se puede elegir la base neperiana $c = e$ como nueva base.'
+- titulo: Ejemplo 1
+  enunciado: ¿Cuál es el valor de $\log_8(16)$?
+  alternativas:
+  - $4/3$
+  - $2$
+  - $3/4$
+  respuesta: $4/3$
+  solucion_pasos:
+  - 'Cambiando a base 2: $\frac{\log_2(16)}{\log_2(8)} = \frac{4}{3}$.'
+- titulo: Ejemplo 2
+  enunciado: ¿A qué equivale $\log_5(7) \cdot \log_7(5)$?
+  alternativas:
+  - $1$
+  - $35$
+  - $0$
+  respuesta: $1$
+  solucion_pasos:
+  - 'Por la propiedad del producto inverso: $\log_b(a) \cdot \log_a(b) = 1$.'
+- titulo: ¿Es log_9(27) = 3/2?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, cambiando a base 3: $\frac{\log_3(27)}{\log_3(9)} = \frac{3}{2} = 1,5$.'
+  alternativas:
+  - texto: Sí, log₃(27)/log₃(9) = 3/2
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cambio a base 3 común.
+  - texto: No, es 3
+    es_correcta: false
+    retroalimentacion: Incorrecto, $9^3 = 729$, no $27$.
+  - texto: No, es 1/3
+    es_correcta: false
+    retroalimentacion: Incorrecto, $9^{1,5} = 27$.
+- titulo: ¿Es log_b(a) = ln(a) / ln(b) una igualdad verdadera?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es el cambio de base al logaritmo natural base e.
+  alternativas:
+  - texto: Sí, cambio exacto a base natural e
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Fórmula universal en cálculo.
+  - texto: No, solo se puede cambiar a base 10
+    es_correcta: false
+    retroalimentacion: Incorrecto, la base c puede ser cualquier real positivo distinto de 1.
+  - texto: No, es ln(b) / ln(a)
+    es_correcta: false
+    retroalimentacion: Incorrecto, el argumento siempre va en el numerador.
 errores_frecuentes:
-  - 'Colocar el logaritmo de la base antigua en el numerador y el del argumento en el denominador.'
-  - 'El cambio de base de un logaritmo se realiza restando los logaritmos en la nueva base.'
-  - 'Multiplicar los logaritmos en la nueva base en lugar de dividirlos.'
-  - 'Cambiar la base del logaritmo modificando únicamente el subíndice sin alterar el argumento.'
-  - 'La fórmula del cambio de base altera el valor numérico final expresado por el logaritmo.'
+- Invertir numerador y denominador al aplicar la fórmula.
+- Usar bases diferentes en el numerador y en el denominador.
+- Confundir el cambio de base con la resta de logaritmos.
+- Olvidar que las bases deben ser estrictamente positivas y distintas de 1.
 afirmaciones_verdaderas:
-  - 'La fórmula del cambio de base establece que $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$ para cualquier nueva base válida $c > 0, c \neq 1$.'
-  - 'La relación recíproca entre logaritmos de bases cruzadas determina que $\log_b(a) = \frac{1}{\log_a(b)}$.'
-al_terminar_debes_poder: 'Aplicar la fórmula de cambio de base $\frac{\log_c(a)}{\log_c(b)}$ para simplificar o evaluar logaritmos de bases arbitrarias.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- El cambio de base permite calcular cualquier logaritmo mediante el cociente $\frac{\log_c(a)}{\log_c(b)}$.
+- El argumento se sitúa en el numerador y la base original en el denominador.
+- Es la base del cálculo computacional de logaritmos en calculadoras científicas.
+al_terminar_debes_poder: '![Síntesis de cambio de base](/static/img/nodos/cambio-de-base-de-un-logaritmo-resumen.svg)
+
+
+  QUÉ: Aplicar el teorema del cambio de base para resolver y simplificar logaritmos en cualquier base.
+
+
+  CÓMO: Expresando $\log_b(a) = \frac{\log_c(a)}{\log_c(b)}$ eligiendo una base común $c$, o transformando a bases estándar decimal ($\\log$) y natural ($\\ln$).'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado

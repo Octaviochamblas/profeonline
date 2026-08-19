@@ -1,102 +1,142 @@
-semantic_id: MAT.NUM.LOGARITMOS_PROPIEDADES.POTENCIA_DE_BASE_LOGARITMICA
-resumen_inicial: 'Una potencia cuya base coincide con la base del logaritmo ubicado en su exponente se simplifica devolviendo directamente el argumento: $b^{\log_b(x)} = x$ ($x > 0$).'
-explicacion_simple: |
-  Elevar una base $b$ a un logaritmo que tiene esa misma base $b$ en el exponente es como avanzar un paso y dar inmediatamente un paso atrás. Como la potencia y el logaritmo son operaciones inversas en la misma base, se cancelan mutuamente por completo. Por ejemplo, en $5^{\log_5(19)}$, la base 5 de abajo y el $\log_5$ de arriba se eliminan y el resultado es directamente el número $19$.
-explicacion_formal: |
-  ### Definición formal
-  La **propiedad de cancelación de potencia de base logarítmica** establece que para toda base real $b > 0, b \neq 1$ y cualquier argumento positivo $x \in \mathbb{R}^+$:
-  $$b^{\log_b(x)} = x$$
+semantic_id: MAT.NUM.LOGARITMOS_PROPIEDADES.BASE_COINCIDE_POTENCIA
+resumen_inicial: 'Una potencia cuya base coincide con la base del logaritmo en el exponente se cancela directamente, dejando solo el argumento: $b^{\log_b(a)} = a$ ($b > 0, b \neq 1, a > 0$).'
+explicacion_simple: '![Potencia con base coincidente](/static/img/nodos/potencia-cuya-base-coincide-con-la-base-del-logaritmo-intro.svg)
 
-  ### Demostración analítica
-  Sea $y = b^{\log_b(x)}$.
-  1. Aplicamos el logaritmo en base $b$ a ambos lados de la igualdad:
-     $$\log_b(y) = \log_b\left(b^{\log_b(x)}\right)$$
-  2. Aplicamos la propiedad del logaritmo de una potencia bajando el exponente $\log_b(x)$:
-     $$\log_b(y) = \log_b(x) \cdot \log_b(b)$$
-  3. Dado que $\log_b(b) = 1$:
-     $$\log_b(y) = \log_b(x) \cdot 1 = \log_b(x)$$
-  4. Por la propiedad inyectiva de los logaritmos, al ser $\log_b(y) = \log_b(x)$, se concluye que:
-     $$y = x \implies b^{\log_b(x)} = x$$
 
-  ### Síntesis didáctica
-  - Cancelación directa: La estructura $b^{\log_b(\text{algo})}$ colapsa extrayendo la expresión "algo".
-  - Condición previa: No deben existir coeficientes multiplicativos interrumpiendo la base y el operador $\log_b$.
-definiciones_clave: |
-  - **Cancelación exponencial-logarítmica**: Proceso de simplificación directa por la condición de funciones inversas.
-  - **Identidad $b^{\log_b(x)} = x$**: Igualdad fundamental que demuestra que el exponente de base $b$ reconstruye el argumento $x$.
-  - **Inyección funcional**: Propiedad que garantiza que si $\log_b(y) = \log_b(x)$, entonces $y = x$.
-propiedades_relaciones: |
-  - **Propiedad dual**: Es la gemela de la propiedad de logaritmo de una potencia de igual base $\log_b\left(b^x\right) = x$.
-  - **Reescritura de números reales como potencias**: Permite expresar cualquier número real positivo $x$ como una potencia de base deseada $b$: $x = b^{\log_b(x)}$.
+  Cuando elevas una base $b$ a un logaritmo que tiene exactamente la misma base $b$, se neutralizan por completo:
+
+  - Ejemplo directo: $5^{\log_5(17)} = 17$.
+
+  - Con logaritmo decimal: $10^{\log(9)} = 9$.
+
+  - Con logaritmo natural: $e^{\ln(x)} = x$.
+
+  - Esto ocurre porque la función exponencial $b^x$ y la función logarítmica $\log_b(x)$ son operaciones inversas mutuas.'
+explicacion_formal: 'Sean $b \in \mathbb{R}^+ \setminus \{1\}$ y $a \in \mathbb{R}^+$. Por definición, si $c = \log_b(a)$, entonces por equivalencia exponencial se tiene $b^c = a$.
+
+
+  Sustituyendo la expresión de $c$ en la potencia, se obtiene la **identidad fundamental de cancelación exponencial-logaritmo**:
+
+
+  $$b^{\log_b(a)} = a$$
+
+
+  **Condición de Aplicación:**
+
+  La base de la potencia debe coincidir con la base del logaritmo sin coeficientes intermediarios. Si existe un coeficiente, debe ingresarse previamente al argumento: $b^{k \cdot \log_b(a)} = b^{\log_b(a^k)} = a^k$.'
+definiciones_clave: '- **Cancelación exponencial-logaritmo**: Identidad $b^{\log_b(a)} = a$.
+
+  - **Funciones inversas**: Composición $f(f^{-1}(a)) = a$ donde $f(x) = b^x$ y $f^{-1}(x) = \log_b(x)$.
+
+  - **Coeficiente previo**: Factor que debe elevarse como potencia antes de cancelar.'
+propiedades_relaciones: '- **Universalidad**: Válido para toda base admisible en $\mathbb{R}$.
+
+  - **Despeje de ecuaciones logarítmicas**: Aplicar base $b^{(\cdot)}$ a ambos lados de $\log_b(x) = k \implies x = b^k$.'
 ejemplo_guiado:
-  enunciado: 'Calcula el valor numérico simplificado de la expresión $E = 3^{2\log_3(5)}$ eliminando la estructura logarítmica.'
+  enunciado: '![Ejemplos de potencia con base coincidente](/static/img/nodos/potencia-cuya-base-coincide-con-la-base-del-logaritmo-ejemplos.svg)
+
+
+    Calcule el valor de $7^{\log_7(43)}$ y resuelva la expresión $3^{2 \cdot \log_3(5)}$.'
   pasos:
-    - 'Paso 1: Observamos que en el exponente $2\log_3(5)$ hay un coeficiente 2 multiplicando por delante del logaritmo.'
-    - 'Paso 2: Aplicamos la propiedad del logaritmo de una potencia en sentido inverso para subir el 2 como exponente del argumento: $2\log_3(5) = \log_3(5^2) = \log_3(25)$.'
-    - 'Paso 3: Reescribimos la expresión original con la propiedad aplicada: $E = 3^{\log_3(25)}$.'
-    - 'Paso 4: Aplicamos la propiedad de cancelación $b^{\log_b(x)} = x$ con base 3: $E = 25$.'
+  - 'Paso 1: Para $7^{\log_7(43)}$: La base 7 coincide con la base del logaritmo $\implies 43$.'
+  - 'Paso 2: Para $3^{2 \cdot \log_3(5)}$: Subir el 2 como exponente del argumento: $3^{\log_3(5^2)} = 3^{\log_3(25)}$.'
+  - 'Paso 3: Cancelar base y logaritmo: el resultado es $25$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué resultado se obtiene al evaluar la expresión $b^{\log_b(x)}$ para cualquier argumento positivo $x > 0$?'
-    choices:
-      - {text: '$x$, ya que la base exponencial $b$ y la base logarítmica $\log_b$ se cancelan por ser funciones inversas', is_correct: true}
-      - {text: '$b$, devolviendo la base de la potencia', is_correct: false}
-      - {text: '$\log_b(x)$, conservando el operador', is_correct: false}
-      - {text: '$0$, anulando la expresión', is_correct: false}
-    explanation: 'La alternativa correcta es ''$x$, ya que la base exponencial $b$ y la base logarítmica $\log_b$ se cancelan por ser funciones inversas''. La propiedad establece $b^{\log_b(x)} = x$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el valor de la expresión $10^{\log(42)}$?'
-    choices:
-      - {text: '$42$', is_correct: true}
-      - {text: '$10$', is_correct: false}
-      - {text: '$420$', is_correct: false}
-      - {text: '$4.2$, dividiendo entre 10', is_correct: false}
-    explanation: 'La alternativa correcta es ''$42$''. Como la base es 10 y el logaritmo es decimal $\log_{10}$, $10^{\log_{10}(42)} = 42$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor simplificado de $10^{\log(85)}$?
+  choices:
+  - text: $85$ (por la identidad de cancelación $b^{\log_b(a)} = a$)
+    is_correct: true
+  - text: $10$
+    is_correct: false
+  - text: $850$
+    is_correct: false
+  - text: $1$
+    is_correct: false
+  explanation: La alternativa correcta es '$85$ (por la identidad de cancelación $b^{\log_b(a)} = a$)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué $3^{2 \cdot \log_3(5)} = 25$?
+  choices:
+  - text: 'Porque el 2 sube como exponente de 5: $3^{\log_3(5^2)} = 25$'
+    is_correct: true
+  - text: Porque se multiplica $2 \times 5 = 10$
+    is_correct: false
+  - text: Porque $3^2 = 9$
+    is_correct: false
+  - text: Porque se cancela el 3 dando $2 \times 5 = 10$
+    is_correct: false
+  explanation: 'La alternativa correcta es ''Porque el 2 sube como exponente de 5: $3^{\log_3(5^2)} = 25$''.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la base principal de la potencia y la base del logaritmo en el exponente.'
-  - 'Paso 2: Verificar que no existan coeficientes multiplicativos frente al logaritmo (si los hay, subir el coeficiente como exponente interno).'
-  - 'Paso 3: Confirmar la coincidencia exacta de ambas bases ($b = b$).'
-  - 'Paso 4: Cancelar la base y el operador $\log_b$ dejando como resultado únicamente el argumento $x$.'
-errores_correccion: |
-  - **Error 1:** Cancelar la base cuando existe un coeficiente frente al logaritmo (ej: $3^{2\log_3(5)} = 2 \cdot 5 = 10$). **Cómo corregirlo:** Primero debes **subir el coeficiente** como exponente del argumento: $3^{\log_3(5^2)} = 5^2 = 25$.
-  - **Error 2:** Multiplicar la base por el argumento (ej: $4^{\log_4(3)} = 4 \cdot 3 = 12$). **Cómo corregirlo:** La base y el logaritmo se cancelan completamente; el resultado es directamente el **argumento** $3$.
+- 'Paso 1: Verificar que la base de la potencia coincida con la base del logaritmo.'
+- 'Paso 2: Si el logaritmo tiene un coeficiente multiplicativo al frente, subirlo como exponente del argumento.'
+- 'Paso 3: Aplicar la identidad de cancelación directa $b^{\log_b(a)} = a$.'
+errores_correccion: '- **Error 1: Cancelar sin subir los coeficientes ($b^{2\log_b(a)} = 2a$).** **Cómo corregirlo:** El coeficiente sube como exponente del argumento: $b^{2\log_b(a)} = b^{\log_b(a^2)} = a^2$.
+
+  - **Error 2: Intentar cancelar con bases distintas ($4^{\log_2(x)} = x$).** **Cómo corregirlo:** Expresar $4 = 2^2$, dando $(2^2)^{\log_2(x)} = 2^{2\log_2(x)} = x^2$.'
 ejemplos:
-  - titulo: 'Cancelación directa en base 2'
-    enunciado: '¿La expresión $2^{\log_2(15)}$ es igual a $15$?'
-    alternativas:
-      - 'Sí, pues la base y el logaritmo coinciden en 2'
-      - 'No, es igual a 30'
-      - 'No, es igual a 2'
-    respuesta: 'Sí, pues la base y el logaritmo coinciden en 2'
-    solucion_pasos:
-      - '1. Verificamos coincidencia de bases: 2.'
-      - '2. Aplicamos la regla $2^{\log_2(15)} = 15$.'
-  - titulo: 'Cancelación en base neperiana'
-    enunciado: '¿La expresión $e^{\ln(9)}$ equivale a $9$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $e^{\log_e(9)} = 9$.'
-  - titulo: 'Simplificación con coeficiente negativo'
-    enunciado: '¿La expresión $10^{-\log(2)}$ equivale a $1/2 = 0.5$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Subimos el signo $-1$: $10^{\log(2^{-1})} = 2^{-1} = 1/2 = 0.5$.'
-  - titulo: 'Identidad fundamental de potencias'
-    enunciado: '¿Cualquier número positivo $x$ se puede escribir en base 5 como $5^{\log_5(x)}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Es la reescritura exponencial de un número real.'
+- titulo: Ejemplo 1
+  enunciado: ¿A qué equivale $2^{\log_2(64)}$?
+  alternativas:
+  - $64$
+  - $2$
+  - $128$
+  respuesta: $64$
+  solucion_pasos:
+  - Por cancelación directa $b^{\log_b(x)} = x$, el resultado es $64$.
+- titulo: Ejemplo 2
+  enunciado: ¿Cuál es el valor de $e^{\ln(15)}$?
+  alternativas:
+  - $15$
+  - $e^{15}$
+  - $\ln(15)$
+  respuesta: $15$
+  solucion_pasos:
+  - $e^{\ln(x)} = x \implies e^{\ln(15)} = 15$.
+- titulo: ¿Es 9^(log₃(4)) = 16?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque $9 = 3^2 \implies (3^2)^{\log_3(4)} = 3^{\log_3(4^2)} = 4^2 = 16$.
+  alternativas:
+  - texto: Sí, (3²)^log₃(4) = 4² = 16
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Descomposición previa de la base 9.
+  - texto: No, es 4
+    es_correcta: false
+    retroalimentacion: Incorrecto, la base 9 es $3^2$, eleva al cuadrado.
+  - texto: No, es 36
+    es_correcta: false
+    retroalimentacion: Incorrecto, $4^2 = 16$.
+- titulo: ¿Es 5^(log₅(1)) = 1?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque $\log_5(1) = 0 \implies 5^0 = 1$ (o por cancelación directa).
+  alternativas:
+  - texto: Sí, el resultado es el argumento 1
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Cancelación inmediata de funciones inversas.
+  - texto: No, es 0
+    es_correcta: false
+    retroalimentacion: Incorrecto, $5^0 = 1$, no 0.
+  - texto: No, es 5
+    es_correcta: false
+    retroalimentacion: Incorrecto, el argumento es 1.
 errores_frecuentes:
-  - 'La expresión $b^{\log_b(x)}$ se simplifica multiplicando la base $b$ por el argumento $x$.'
-  - 'Bajar el argumento $x$ y conservar la base $b$ multiplicando tras aplicar $b^{\log_b(x)}$.'
-  - 'Aplicar la cancelación de bases cuando hay un coeficiente sumando o multiplicando en el exponente sin reorganizarlo primero.'
-  - 'El resultado de $e^{\ln(x)}$ es igual al número de Euler $e$.'
-  - 'La expresión $b^{\log_b(x)}$ es numéricamente igual a elevar el logaritmo a la base $(\log_b(x))^b$.'
+- Cancelar bases cuando hay coeficientes multiplicando al logaritmo.
+- Asumir que bases distintas se cancelan sin descomposición previa.
+- Multiplicar la base por el argumento en vez de cancelar.
+- Olvidar que el argumento debe ser estrictamente positivo.
 afirmaciones_verdaderas:
-  - 'Una potencia cuya base coincide con la base del logaritmo en su exponente se simplifica entregando directamente el argumento: $b^{\log_b(x)} = x$.'
-  - 'La propiedad $b^{\log_b(x)} = x$ es consecuencia directa de que la función exponencial $f(x) = b^x$ y la función logarítmica $g(x) = \log_b(x)$ son funciones inversas mutuas.'
-al_terminar_debes_poder: 'Simplificar expresiones de la forma $b^{\log_b(x)}$ cancelando la base exponencial con el logaritmo para extraer el argumento.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- La identidad $b^{\log_b(a)} = a$ es consecuencia directa de que la potencia y el logaritmo son funciones inversas.
+- Para bases decimal y natural se cumple $10^{\log(x)} = x$ y $e^{\ln(x)} = x$.
+- Cualquier coeficiente multiplicativo en el exponente debe elevarse como potencia antes de cancelar.
+al_terminar_debes_poder: '![Síntesis de potencia con base coincidente](/static/img/nodos/potencia-cuya-base-coincide-con-la-base-del-logaritmo-resumen.svg)
+
+
+  QUÉ: Aplicar la identidad de neutralización $b^{\log_b(a)} = a$ en potencias con exponentes logarítmicos.
+
+
+  CÓMO: Verificando la coincidencia de bases, reubicando posibles coeficientes como potencias del argumento y cancelando directamente la operación para obtener $a$.'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado
