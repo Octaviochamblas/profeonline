@@ -1,98 +1,132 @@
-semantic_id: MAT.NUM.PROP_DIRECTA.RECONOCIMIENTO_TABULAR
-resumen_inicial: 'Una tabla de valores representa una proporcionalidad directa si al dividir la segunda fila (o columna) entre la primera para cada par de datos, se obtiene siempre la misma constante $k = \frac{y_i}{x_i}$.'
-explicacion_simple: |
-  Para saber si una tabla de datos muestra una proporcionalidad directa, debes hacer una prueba muy sencilla: toma cada pareja de números de la tabla y divide el valor de abajo ($y$) por el valor de arriba ($x$). Si TODAS las divisiones dan exactamente el mismo número $k$, la tabla es directamente proporcional. Si tan solo una división da un resultado diferente, la tabla NO es de proporcionalidad directa.
-explicacion_formal: |
-  ### Definición formal
-  Dada una tabla con $m$ pares ordenados de datos de mediciones $\{(x_1, y_1), (x_2, y_2), \dots, (x_m, y_m)\}$ con $x_i \neq 0$:
-  - La tabla representa una **relación de proporcionalidad directa** si y solo si se cumple la condición de homogeneidad de cocientes:
-    $$\frac{y_1}{x_1} = \frac{y_2}{x_2} = \dots = \frac{y_m}{x_m} = k \quad (\text{constante})$$
+semantic_id: MAT.NUM.RAZONES_PROPORCIONES.TABLA_PROP_DIRECTA
+resumen_inicial: Una tabla de valores representa una proporcionalidad directa si y solo si todos los pares de datos $(x_i, y_i)$ arrojan exactamente el mismo cociente $\frac{y_i}{x_i} = k$ constante.
+explicacion_simple: "![Reconocimiento tabular](/static/img/nodos/reconocimiento-tabular-de-proporcionalidad-directa-intro.svg)\n\nPara saber si una **tabla de datos** es de proporcionalidad directa:\n1. **Divide $y$ entre $x$ en cada una de las columnas**: $\\frac{y_1}{x_1}, \\frac{y_2}{x_2}, \\frac{y_3}{x_3}, \\dots$\n2. **Compara los resultados**:\n   - Si **todos los cocientes dan exactamente el mismo número $k$**, la tabla **SÍ es de proporcionalidad directa**.\n   - Si **aunque sea uno solo da diferente**, la tabla **NO es de proporcionalidad directa**.\n3. **Completar datos faltantes:** Si la tabla es directa con constante $k$, cualquier casilla vacía se completa multiplicando: $y = k \\cdot x$ o dividiendo: $x = \\frac{y}{k}$."
+explicacion_formal: 'Sea una tabla de datos discretos $\mathcal{T} = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\} \subset \mathbb{R}^+ \times \mathbb{R}^+$.
 
-  ### Verificación de completado de tablas
-  Para completar casilleros vacíos $(x_j, y_j)$ en una tabla de proporción directa:
-  1. Hallar la constante $k = \frac{y_1}{x_1}$ con un par completo.
-  2. Si falta el valor dependiente: $y_j = k \cdot x_j$.
-  3. Si falta el valor independiente: $x_j = \frac{y_j}{k}$.
 
-  ### Síntesis didáctica
-  - Criterio de validación: Comprobar $y_i / x_i = k$ en todas las columnas.
-  - Regla de completado: Usar la constante constante $k$.
-definiciones_clave: |
-  - **Tabla de valores proporcionales**: Arreglo de filas y columnas donde cada par de datos posee la misma razón $k = y/x$.
-  - **Homogeneidad de cocientes**: Condición matemática que exige la igualdad de todos los cocientes de la tabla.
-  - **Completado de tabla**: Proceso algebraico para calcular datos faltantes manteniendo la constante $k$.
-propiedades_relaciones: |
-  - **Constancia de razones horizontales**: En una tabla proporcional, la razón entre dos valores independientes $\frac{x_a}{x_b}$ es igual a la razón entre sus correspondientes dependientes $\frac{y_a}{y_b}$.
-  - **Presencia del cero**: Si la tabla incluye el valor $x = 0$, la casilla correspondiente de $y$ debe ser obligatoriamente $0$.
+  **Criterio de Proporcionalidad Tabular:**
+
+  $\mathcal{T}$ representa una relación de proporcionalidad directa si y solo si:
+
+
+  $$\frac{y_1}{x_1} = \frac{y_2}{x_2} = \dots = \frac{y_n}{x_n} = k \quad (k \in \mathbb{R}^+, k = \text{constante})$$
+
+
+  Si existe al menos un índice $j \in \{1, \dots, n\}$ tal que $\frac{y_j}{x_j} \neq k$, la relación tabular no es directamente proporcional.'
+definiciones_clave: '- **Tabla proporcional directa**: Tabla donde todas las columnas satisfacen $\frac{y}{x} = k$.
+
+  - **Par ordenado $(x_i, y_i)$**: Valores emparejados de entrada y salida en la tabla.
+
+  - **Comprobación exhaustiva**: Verificación de la constante en todas las columnas sin excepción.'
+propiedades_relaciones: '- **Extrapolación tabular**: Permite predecir columnas no presentes mediante $y = kx$.
+
+  - **Sensibilidad a excepciones**: Un solo par discrepante invalida la proporcionalidad de toda la tabla.'
 ejemplo_guiado:
-  enunciado: 'Dada la siguiente tabla de datos, determina si corresponde a una proporcionalidad directa y completa el valor faltante $y_3$ para $x_3 = 7$:\n\n| $x$ (unidades) | 2 | 4 | 7 |\n|---|---|---|---|\n| $y$ (costo \$) | 1.000 | 2.000 | ? |'
+  enunciado: '![Ejemplos de reconocimiento tabular](/static/img/nodos/reconocimiento-tabular-de-proporcionalidad-directa-ejemplos.svg)
+
+
+    Complete la casilla faltante en una tabla directa con $k = 4$ donde $(x=3, y=12)$ y $(x=5, y=?)$, y determine si los pares $(2, 6), (3, 9), (4, 11)$ forman una tabla directamente proporcional.'
   pasos:
-    - 'Paso 1: Calculamos el cociente de la primera columna: $k_1 = \frac{1.000}{2} = 500$.'
-    - 'Paso 2: Calculamos el cociente de la segunda columna: $k_2 = \frac{2.000}{4} = 500$.'
-    - 'Paso 3: Como $k_1 = k_2 = 500$, confirmamos que la tabla es de **proporcionalidad directa** con constante $k = 500$.'
-    - 'Paso 4: Calculamos el valor faltante $y_3$ multiplicando $x_3$ por la constante $k$: $y_3 = 500 \cdot 7 = 3.500$.'
+  - 'Paso 1: Para completar la tabla: Con $k = \frac{12}{3} = 4$, calcular para $x = 5 \implies y = 4 \cdot 5 = 20$.'
+  - 'Paso 2: Para la segunda tabla: Calcular cocientes $\frac{6}{2} = 3$, $\frac{9}{3} = 3$, $\frac{11}{4} = 2,75$.'
+  - 'Paso 3: Comparar cocientes: Como $3 = 3 \neq 2,75$, el tercer par rompe la constancia.'
+  - 'Paso 4: Conclusión: La segunda tabla NO es directamente proporcional.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué prueba matemática permite confirmar si una tabla de datos representa una proporcionalidad directa?'
-    choices:
-      - {text: 'Dividir el valor de $y$ entre $x$ para cada par y comprobar que todos los cocientes dan el mismo resultado $k$', is_correct: true}
-      - {text: 'Restar la fila de $x$ a la fila de $y$ para ver si da la misma diferencia', is_correct: false}
-      - {text: 'Multiplicar los valores de $x$ por los de $y$ comprobando que el producto no cambia', is_correct: false}
-      - {text: 'Comprobar que todos los números de la tabla sean impares', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir el valor de $y$ entre $x$ para cada par y comprobar que todos los cocientes dan el mismo resultado $k$''. Es el criterio de homogeneidad de cocientes.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'En la tabla proporcional dada por $(3, 15)$, $(6, 30)$, $(x, 45)$, ¿cuál es el valor de la incógnita $x$?'
-    choices:
-      - {text: '$9$, pues la constante es $k = 15 / 3 = 5$, por lo que $x = 45 / 5 = 9$', is_correct: true}
-      - {text: '$12$, sumando $6 + 6$', is_correct: false}
-      - {text: '$15$, que es la constante', is_correct: false}
-      - {text: '$225$, multiplicando $45 \cdot 5$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$9$, pues la constante es $k = 15 / 3 = 5$, por lo que $x = 45 / 5 = 9$''. Calculamos $k = 5$ y luego $x = 45 / 5 = 9$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cómo se comprueba si una tabla de valores corresponde a una proporcionalidad directa?
+  choices:
+  - text: Dividiendo y entre x en cada columna y verificando que todos los resultados sean iguales
+    is_correct: true
+  - text: Sumando todos los valores de x y todos los de y
+    is_correct: false
+  - text: Restando la primera columna con la última
+    is_correct: false
+  - text: Comprobando que todos los números sean pares
+    is_correct: false
+  explanation: La alternativa correcta es 'Dividiendo y entre x en cada columna y verificando que todos los resultados sean iguales'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué la tabla con pares (2,6), (3,9) y (4,11) no es proporcional directa?
+  choices:
+  - text: Porque el cociente 11/4 = 2,75 es distinto de 6/2 = 3
+    is_correct: true
+  - text: Porque 11 es un número primo
+    is_correct: false
+  - text: Porque hay solo tres pares de datos
+    is_correct: false
+  - text: Porque 4 es mayor que 3
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el cociente 11/4 = 2,75 es distinto de 6/2 = 3'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Dividir la segunda componente $y_i$ entre la primera $x_i$ para la primera columna completa.'
-  - 'Paso 2: Repetir la división $y_i / x_i$ para las demás columnas de la tabla.'
-  - 'Paso 3: Verificar si el resultado $k$ es exactamente idéntico en todas las columnas.'
-  - 'Paso 4: Si se requiere hallar una casilla vacía, usar $y = k \cdot x$ o $x = y / k$.'
-errores_correccion: |
-  - **Error 1:** Concluir que una tabla es proporcional porque solo la primera pareja da el mismo cociente sin verificar las demás. **Cómo corregirlo:** La proporcionalidad directa exige que **absolutamente TODAS las parejas de la tabla** compartan el mismo cociente $k$.
-  - **Error 2:** Multiplicar $x \cdot y$ para verificar la tabla de proporción directa. **Cómo corregirlo:** El producto constante $x \cdot y = k$ corresponde a la **proporcionalidad INVERSA**; la proporción directa requiere la división $y / x = k$.
+- 'Paso 1: Construir una fila o columna auxiliar calculando el cociente $\frac{y_i}{x_i}$ para cada columna de la tabla.'
+- 'Paso 2: Verificar si todos los cocientes calculados son exactamente iguales al mismo escalar $k$.'
+- 'Paso 3: Si todos coinciden, usar $y = kx$ o $x = \frac{y}{k}$ para rellenar los datos faltantes solicitados.'
+errores_correccion: '- **Error 1: Verificar solo las dos primeras columnas.** **Cómo corregirlo:** Se DEBEN verificar TODAS las columnas; una sola discrepancia final invalida la proporcionalidad directa.
+
+  - **Error 2: Restar en vez de dividir filas.** **Cómo corregirlo:** La proporcionalidad directa se comprueba con el COCIENTE $\frac{y}{x}$.'
 ejemplos:
-  - titulo: 'Verificación de tabla proporcional'
-    enunciado: '¿La tabla $\{(1, 4), (3, 12), (5, 20)\}$ es directamente proporcional con $k = 4$?'
-    alternativas:
-      - 'Sí, pues $4/1 = 12/3 = 20/5 = 4$'
-      - 'No, es falsa'
-      - 'No, $k = 3$'
-    respuesta: 'Sí, pues $4/1 = 12/3 = 20/5 = 4$'
-    solucion_pasos:
-      - '1. Cocientes: $4/1 = 4$, $12/3 = 4$, $20/5 = 4$.'
-      - '2. Mismo cociente $\implies$ Tabla de proporción directa.'
-  - titulo: 'Tabla no proporcional por fallo en un par'
-    enunciado: 'En la tabla $\{(2, 6), (4, 12), (5, 14)\}$, ¿es proporcional el último par?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No. $6/2 = 3$, $12/4 = 3$, pero $14/5 = 2.8 \neq 3$.'
-  - titulo: 'Completar tabla proporcional'
-    enunciado: 'En la tabla proporcional $\{(2, 10), (4, 20), (x, 35)\}$, ¿el valor de $x$ es $7$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $k = 10/2 = 5 \implies x = 35 / 5 = 7$.'
-  - titulo: 'Tabla con origen nulo'
-    enunciado: 'Si la tabla contiene $(0, 0)$ y $(3, 15)$, ¿la constante sigue siendo $k = 5$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. El par $(0,0)$ confirma el paso por el origen.'
+- titulo: Ejemplo 1
+  enunciado: En la tabla directa $(x=2, y=8), (x=4, y=16), (x=7, y=?)$, ¿cuál es el valor de $y$ para $x = 7$?
+  alternativas:
+  - $28$
+  - $24$
+  - $32$
+  respuesta: $28$
+  solucion_pasos:
+  - $k = \frac{8}{2} = 4 \implies y = 4 \cdot 7 = 28$.
+- titulo: Ejemplo 2
+  enunciado: ¿Es directamente proporcional la tabla $(x=3, y=15), (x=6, y=30), (x=10, y=50)$?
+  alternativas:
+  - Sí, todos los cocientes dan k = 5
+  - No, los incrementos son distintos
+  - No, falta el punto x = 1
+  respuesta: Sí, todos los cocientes dan k = 5
+  solucion_pasos:
+  - $\frac{15}{3} = 5$, $\frac{30}{6} = 5$, $\frac{50}{10} = 5$. Sí es proporcional.
+- titulo: ¿Es proporcional directa una tabla si todos sus cocientes y/x dan 2,5?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque la constante $k = 2,5$ es uniforme en toda la tabla.
+  alternativas:
+  - texto: Sí, satisface el criterio fundamental de proporcionalidad tabular
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Constancia universal en la tabla.
+  - texto: No, k debe ser un entero
+    es_correcta: false
+    retroalimentacion: Incorrecto, las constantes pueden ser decimales.
+  - texto: No, requiere que x empiece en 0
+    es_correcta: false
+    retroalimentacion: Incorrecto, no es obligatorio incluir el 0 en la tabla.
+- titulo: ¿Basta que una sola columna falle para que la tabla no sea directa?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la proporcionalidad exige que la constante se cumpla en la totalidad de los datos.
+  alternativas:
+  - texto: Sí, una sola discrepancia invalida la proporcionalidad directa de la tabla
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Criterio estricto de consistencia.
+  - texto: No, se toma el promedio de los cocientes
+    es_correcta: false
+    retroalimentacion: Incorrecto, en matemática exacta debe cumplirse en todos los pares.
+  - texto: No, se descarta la columna rebelde
+    es_correcta: false
+    retroalimentacion: Incorrecto, la tabla describe la relación completa.
 errores_frecuentes:
-  - 'Verificar únicamente la primera columna de la tabla sin comprobar los demás pares de valores.'
-  - 'Multiplicar las columnas $x \cdot y$ en lugar de dividirlas al buscar la constante de proporción directa.'
-  - 'Restar las filas para comprobar la proporcionalidad en lugar de evaluar el cociente.'
-  - 'Aceptar cocientes con variaciones decimales pequeñas como si fueran estrictamente proporcionales.'
-  - 'Invertir el cálculo al completar casilleros multiplicando cuando se debe dividir.'
+- Evaluar únicamente el primer par y omitir los siguientes.
+- Confundir un patrón aditivo en $y$ con una proporcionalidad directa.
+- Invertir el cálculo en algunas columnas ($x/y$ en vez de $y/x$).
+- Calcular mal los valores faltantes al dividir en vez de multiplicar.
 afirmaciones_verdaderas:
-  - 'Una tabla representa una proporcionalidad directa si el cociente $\frac{y}{x} = k$ es exactamente constante para cada par de datos.'
-  - 'Para completar un dato faltante $x$ en una tabla proporcional, se divide el valor $y$ por la constante $k$ ($x = \frac{y}{k}$).'
-al_terminar_debes_poder: 'Reconocer y completar tablas de proporcionalidad directa mediante el cálculo de cocientes equivalentes $\frac{y}{x} = k$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- Una tabla es directamente proporcional si todos sus pares satisfacen $\frac{y_i}{x_i} = k$.
+- La constante $k$ permite completar casillas vacías mediante $y = kx$ o $x = \frac{y}{k}$.
+- Un solo par con cociente distinto invalida la relación proporcional directa.
+al_terminar_debes_poder: '![Síntesis de reconocimiento tabular](/static/img/nodos/reconocimiento-tabular-de-proporcionalidad-directa-resumen.svg)
+
+
+  QUÉ: Reconocer, validar y completar tablas de valores directamente proporcionales.
+
+
+  CÓMO: Calculando el cociente $\frac{y_i}{x_i}$ en cada columna, verificando la igualdad universal a la constante $k$ y completando incógnitas mediante $y = k \cdot x$ o $x = \frac{y}{k}$.'
+fuente: Texto escolar MINEDUC — Matemática 7° Básico / 1° Medio.
 estado: publicado
