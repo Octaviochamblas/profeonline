@@ -1,107 +1,138 @@
-semantic_id: MAT.NUM.REPARTO_ESCALAS.REPARTO_INVERSO
-resumen_inicial: 'El reparto proporcional inverso distribuye una cantidad total $C$ atribuyendo partes mayores a los números o índices menores, convirtiendo los índices a sus recíprocos $\frac{1}{a_1}, \frac{1}{a_2}, \dots, \frac{1}{a_n}$.'
-explicacion_simple: |
-  El reparto proporcional inverso responde a un principio de compensación o penalización: *"quien comete menos faltas, llega con menos atrasos o tarda menos tiempo, recibe un premio más grande"*. La regla de oro para resolverlo es **transformarlo en un reparto directo usando los recíprocos**:
-  1. Tomas los números originales y los das vuelta como fracciones ($\frac{1}{a}, \frac{1}{b}, \frac{1}{c}$).
-  2. Sumas esas fracciones.
-  3. Divides la cantidad total por esa suma de fracciones para hallar la constante $k$.
-  4. Multiplicas $k$ por cada fracción recíproca.
-explicacion_formal: |
-  ### Definición formal
-  El **reparto proporcional inverso** de una cantidad $C$ en $n$ partes $\{x_1, x_2, \dots, x_n\}$ inversamente proporcionales a los índices $\{a_1, a_2, \dots, a_n\}$ ($a_i > 0$) equivale algebraicamente a un **reparto proporcional directo de $C$ respecto a los recíprocos**:
-  $$\left\{\frac{1}{a_1}, \frac{1}{a_2}, \dots, \frac{1}{a_n}\right\}$$
-  satisfaciendo las ecuaciones:
-  $$x_1 \cdot a_1 = x_2 \cdot a_2 = \dots = x_n \cdot a_n = k \quad \text{con} \quad \sum_{i=1}^n x_i = C$$
+semantic_id: MAT.NUM.RAZONES_PROPORCIONES.REPARTO_INVERSO
+resumen_inicial: El reparto proporcional inverso distribuye una cantidad $T$ en partes inversamente proporcionales a $c_1, c_2, \dots, c_n$, lo cual equivale a realizar un reparto proporcional directo respecto a los recíprocos $\frac{1}{c_1}, \frac{1}{c_2}, \dots, \frac{1}{c_n}$.
+explicacion_simple: "![Reparto proporcional inverso](/static/img/nodos/calculo-de-reparto-proporcional-inverso-intro.svg)\n\nEn el **reparto proporcional inverso**, **el que tiene el índice más bajo recibe la cuota más grande**:\n- Se usa comúnmente en **premios por menor cantidad de faltas, menos tardanzas o menor tiempo de carrera**.\n- **Método estándar en 3 pasos:**\n  1. **Invertir cada índice**: Los índices $c_1, c_2, c_3$ se convierten en fracciones recíprocas $\\frac{1}{c_1}, \\frac{1}{c_2}, \\frac{1}{c_3}$.\n  2. **Multiplicar por el MCM**: Multiplicamos todas las fracciones por el mínimo común múltiplo para convertirlas en **números enteros directos**.\n  3. **Aplicar reparto directo estándar**: Calculamos la constante $k$ con los nuevos enteros y multiplicamos."
+explicacion_formal: 'Sea la cantidad total $T \in \mathbb{R}^+$ sujeta a partición en sumandos $x_1, x_2, \dots, x_n$ tales que:
 
-  ### Cálculo de la constante de reparto recíproca $k$
-  Se suman las fracciones de los recíprocos $S_{\text{rec}} = \sum_{i=1}^n \frac{1}{a_i}$ (usando el mínimo común múltiplo de los denominadores) y se obtiene:
-  $$k = \frac{C}{\sum_{i=1}^n \frac{1}{a_i}}$$
 
-  ### Determinación de cada parte
-  Cada asignación individual viene dada por la multiplicación de la constante $k$ por el recíproco correspondiente:
-  $$x_i = k \cdot \left(\frac{1}{a_i}\right) = \frac{k}{a_i}$$
+  $$\sum_{i=1}^{n} x_i = T \quad \text{y} \quad x_1 \cdot c_1 = x_2 \cdot c_2 = \dots = x_n \cdot c_n = k_{\text{inv}}$$
 
-  ### Síntesis didáctica
-  - Transformación: $a_i \implies \frac{1}{a_i}$.
-  - Suma de recíprocos: $S_{\text{rec}} = \frac{1}{a_1} + \frac{1}{a_2} + \dots + \frac{1}{a_n}$.
-  - Parte individual: $x_i = \frac{k}{a_i}$.
-definiciones_clave: |
-  - **Reparto proporcional inverso**: Distribución donde a menor valor del índice le corresponde una mayor proporción del total.
-  - **Índice recíproco $\frac{1}{a}$**: Transformación fraccionaria que convierte una proporción inversa en una directa equivalente.
-  - **Penalización o compensación proporcional**: Criterio de reparto donde la variable actúa como factor reductor.
-propiedades_relaciones: |
-  - **Inversión de orden de beneficios**: Si $a_1 < a_2 < a_3$, en el reparto inverso se cumple estrictamente que $x_1 > x_2 > x_3$.
-  - **Equivalencia a directo con MCM**: Al multiplicar todos los recíprocos por el $\text{mcm}(a_1, \dots, a_n)$, se obtienen números enteros equivalentes para un reparto directo estándar.
+
+  **Teorema de Reducción a Reparto Directo:**
+
+  Reescribiendo la condición de producto:
+
+
+  $$\frac{x_1}{1/c_1} = \frac{x_2}{1/c_2} = \dots = \frac{x_n}{1/c_n} = k_{\text{inv}}$$
+
+
+  Multiplicando los denominadores por $M = \operatorname{mcm}(c_1, \dots, c_n)$, se obtienen índices enteros equivalentes $c''_i = \frac{M}{c_i}$, reduciendo el problema a:
+
+
+  $$k = \frac{T}{\sum_{i=1}^{n} c''_i} \implies x_i = c''_i \cdot k \quad (\forall i)$$'
+definiciones_clave: '- **Reparto inverso**: Distribución donde $x_i \cdot c_i = \text{constante}$.
+
+  - **Índices recíprocos**: Fracciones $\frac{1}{c_i}$.
+
+  - **MCM transformador**: Mínimo común múltiplo empleado para eliminar denominadores.'
+propiedades_relaciones: '- **Monotonía inversa**: $c_i < c_j \implies x_i > x_j$.
+
+  - **Equivalencia directa**: Todo reparto inverso de orden $n$ es isomorfo a un reparto directo con índices transformados $c''_i$.'
 ejemplo_guiado:
-  enunciado: 'Se reparten $\$33.000$ entre dos trabajadores en partes inversamente proporcionales a sus días de inasistencia: $2$ días y $3$ días. Calcula cuánto dinero recibe cada uno.'
+  enunciado: '![Ejemplos de reparto inverso](/static/img/nodos/calculo-de-reparto-proporcional-inverso-ejemplos.svg)
+
+
+    Reparta un premio de $\$260.000$ de forma inversamente proporcional a las faltas cometidas por tres empleados: $2$, $3$ y $4$ faltas, y determine cuánto recibe cada uno en un bono de $\$90.000$ con $1$ y $2$ faltas.'
   pasos:
-    - 'Paso 1: Escribimos los recíprocos de los días de inasistencia: $\frac{1}{2}$ y $\frac{1}{3}$.'
-    - 'Paso 2: Sumamos los recíprocos buscando MCM $= 6$: $S_{\text{rec}} = \frac{1}{2} + \frac{1}{3} = \frac{3 + 2}{6} = \frac{5}{6}$.'
-    - 'Paso 3: Calculamos la constante de reparto: $k = \frac{33.000}{\frac{5}{6}} = 33.000 \cdot \frac{6}{5} = 6.600 \cdot 6 = 39.600$.'
-    - 'Paso 4: Calculamos cada parte multiplicando $k$ por su recíproco:\n- Trabajador 1 (2 faltas): $x_1 = \frac{39.600}{2} = \$19.800$.\n- Trabajador 2 (3 faltas): $x_2 = \frac{39.600}{3} = \$13.200$.\n- Verificación: $19.800 + 13.200 = \$33.000$.'
+  - 'Paso 1: Para $2, 3, 4$ faltas: Invertir a $\frac{1}{2}, \frac{1}{3}, \frac{1}{4}$.'
+  - 'Paso 2: Hallar $\operatorname{mcm}(2,3,4) = 12$ y multiplicar: $12 \cdot \frac{1}{2} = 6$, $12 \cdot \frac{1}{3} = 4$, $12 \cdot \frac{1}{4} = 3$ (suma $= 13$).'
+  - 'Paso 3: Calcular $k = \frac{260000}{13} = \$20.000$. Partes: $6k = \$120.000$, $4k = \$80.000$, $3k = \$60.000$.'
+  - 'Paso 4: Para $1$ y $2$ faltas: Invertir a $1$ y $\frac{1}{2}$ (MCM $= 2 \implies 2$ y $1$, suma $= 3$). $k = \frac{90000}{3} = \$30.000 \implies \$60.000$ y $\$30.000$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es el primer paso fundamental para resolver un reparto proporcional inverso con índices $a, b, c$?'
-    choices:
-      - {text: 'Transformar los índices a sus recíprocos fraccionarios $\frac{1}{a}, \frac{1}{b}, \frac{1}{c}$ y sumarlos', is_correct: true}
-      - {text: 'Sumar directamente los índices $a + b + c$', is_correct: false}
-      - {text: 'Restar los índices a la cantidad total $C$', is_correct: false}
-      - {text: 'Multiplicar los índices entre sí $a \cdot b \cdot c$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Transformar los índices a sus recíprocos fraccionarios $\frac{1}{a}, \frac{1}{b}, \frac{1}{c}$ y sumarlos''. Así se convierte en reparto directo.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si se reparten $\$11.000$ en partes inversamente proporcionales a $2$ y $9$, ¿cuál es el total de la parte que recibe el primer número ($2$)?'
-    choices:
-      - {text: '$\$9.000$, pues los recíprocos son $\frac{1}{2}$ y $\frac{1}{9}$ (razón $9 : 2$), $11.000 \cdot \frac{9}{11} = 9.000$', is_correct: true}
-      - {text: '$\$2.000$, correspondiente a la proporción menor', is_correct: false}
-      - {text: '$\$5.500$, repartiendo a la mitad', is_correct: false}
-      - {text: '$\$1.000$, restando $2$ a $9$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$9.000$, pues los recíprocos son $\frac{1}{2}$ y $\frac{1}{9}$ (razón $9 : 2$), $11.000 \cdot \frac{9}{11} = 9.000$''. Razón entera recíproca $9:2$; parte de 2 es $\frac{9}{11} \cdot 11.000 = 9.000$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es el paso algebraico clave para resolver un reparto proporcional inverso?
+  choices:
+  - text: Invertir los índices originales a sus recíprocos $1/c_i$ y convertirlos a enteros multiplicando por el MCM
+    is_correct: true
+  - text: Restar cada índice del total a repartir
+    is_correct: false
+  - text: Dividir el total directamente entre los índices originales
+    is_correct: false
+  - text: Elevar al cuadrado cada índice
+    is_correct: false
+  explanation: La alternativa correcta es 'Invertir los índices originales a sus recíprocos $1/c_i$ y convertirlos a enteros multiplicando por el MCM'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué el empleado con 2 faltas recibió más dinero ($120.000) que el de 4 faltas ($60.000)?
+  choices:
+  - text: Porque al tener la mitad de faltas, en el reparto inverso le corresponde el doble de premio
+    is_correct: true
+  - text: Porque 2 es un número primo
+    is_correct: false
+  - text: Por antigüedad en la empresa
+    is_correct: false
+  - text: Por una decisión de la administración
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque al tener la mitad de faltas, en el reparto inverso le corresponde el doble de premio'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Convertir cada uno de los índices $a_i$ a su recíproco fraccionario $\frac{1}{a_i}$.'
-  - 'Paso 2: Sumar las fracciones de los recíprocos hallando un común denominador: $S_{\text{rec}} = \sum \frac{1}{a_i}$.'
-  - 'Paso 3: Calcular la constante de reparto dividiendo el total $C$ entre la suma de recíprocos ($k = \frac{C}{S_{\text{rec}}}$).'
-  - 'Paso 4: Multiplicar la constante $k$ por cada fracción recíproca ($x_i = \frac{k}{a_i}$) y verificar que sumen el total $C$.'
-errores_correccion: |
-  - **Error 1:** Sumar los números originales sin invertirlos al hacer un reparto inverso. **Cómo corregirlo:** En un reparto inverso **JAMÁS se suman los números directos**; debes convertirlos primero a **fracciones recíprocas ($\frac{1}{a}$)**.
-  - **Error 2:** Asignar la mayor cantidad de dinero al participante que tiene el número o índice más alto. **Cómo corregirlo:** En el reparto inverso ocurre lo contrario: **el número menor recibe la mayor tajada**.
+- 'Paso 1: Escribir los inversos multiplicativos $\frac{1}{c_1}, \frac{1}{c_2}, \dots, \frac{1}{c_n}$.'
+- 'Paso 2: Calcular el $\operatorname{mcm}$ de los denominadores y multiplicar cada fracción por el $\operatorname{mcm}$ para obtener enteros $c''_i$.'
+- 'Paso 3: Efectuar el reparto directo clásico con los índices enteros: $k = \frac{T}{\sum c''_i}$ y $x_i = c''_i \cdot k$.'
+errores_correccion: '- **Error 1: Repartir directo con los números originales.** **Cómo corregirlo:** En el reparto inverso DEBEN invertirse los índices a $\frac{1}{c_i}$.
+
+  - **Error 2: No amplificar por el mismo MCM a todas las fracciones.** **Cómo corregirlo:** Multiplicar CADA recíproco estrictamente por el mismo valor del $\operatorname{mcm}$.'
 ejemplos:
-  - titulo: 'Reparto inverso entre 2 y 4'
-    enunciado: 'Para repartir $\$60.000$ inversamente a $2$ y $4$, los recíprocos son $1/2$ y $1/4$ (razón $2:1$). ¿Las partes son $\$40.000$ y $\$20.000$?'
-    alternativas:
-      - 'Sí, pues $2/3$ de 60.000 es 40.000 y $1/3$ es 20.000'
-      - 'No, son 20.000 y 40.000'
-      - 'No, son 30.000 cada uno'
-    respuesta: 'Sí, pues $2/3$ de 60.000 es 40.000 y $1/3$ es 20.000'
-    solucion_pasos:
-      - '1. Recíprocos: $1/2$ y $1/4$. Multiplicando por MCM 4: enteros $2$ y $1$.'
-      - '2. Suma enteros: $2 + 1 = 3$.'
-      - '3. Partes: $60.000 \cdot (2/3) = 40.000$ y $60.000 \cdot (1/3) = 20.000$.'
-  - titulo: 'Verificación de la mayor cuota'
-    enunciado: 'En el reparto inverso a 2 y 4, ¿el número menor (2) recibió el doble que el número mayor (4)?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $40.000 = 2 \cdot 20.000$. Cumple la propiedad inversa.'
-  - titulo: 'Masa de tres números en inverso'
-    enunciado: 'Para repartir inversamente a $2, 3, 6$, ¿los recíprocos multiplicados por 6 dan los enteros $3, 2, 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $6 \cdot (1/2) = 3$, $6 \cdot (1/3) = 2$, $6 \cdot (1/6) = 1$.'
-  - titulo: 'Suma de las partes en reparto inverso'
-    enunciado: '¿La suma de las partes resultantes en un reparto inverso coincide exactamente con el total repartido?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Es la propiedad de conservación de la cantidad total.'
+- titulo: Ejemplo 1
+  enunciado: Repartir $\$100.000$ inversamente a $2$ y $3$. ¿Cuánto recibe el primero?
+  alternativas:
+  - $\$60.000$
+  - $\$40.000$
+  - $\$50.000$
+  respuesta: $\$60.000$
+  solucion_pasos:
+  - Inversos $\frac{1}{2}, \frac{1}{3} \implies$ MCM $= 6 \implies 3$ y $2$ (suma $= 5$). $k = 20.000 \implies 3k = \$60.000$.
+- titulo: Ejemplo 2
+  enunciado: En una carrera se reparten $\$33.000$ inversamente a los puestos $1$, $2$ y $3$. ¿Cuánto recibe el 1° lugar?
+  alternativas:
+  - $\$18.000$
+  - $\$11.000$
+  - $\$6.000$
+  respuesta: $\$18.000$
+  solucion_pasos:
+  - Inversos $1, \frac{1}{2}, \frac{1}{3} \implies$ MCM $= 6 \implies 6, 3, 2$ (suma $= 11$). $k = \frac{33000}{11} = 3000 \implies 6k = \$18.000$.
+- titulo: ¿Recibe la mayor parte quien tiene el menor índice en un reparto inverso?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es la propiedad definitoria del reparto inversamente proporcional.
+  alternativas:
+  - texto: Sí, menor índice genera mayor cuota relativa al invertirse
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Principio inverso.
+  - texto: No, recibe la menor parte
+    es_correcta: false
+    retroalimentacion: Incorrecto, eso ocurriría en el reparto directo.
+  - texto: No, todos reciben partes iguales
+    es_correcta: false
+    retroalimentacion: Incorrecto, las partes son proporcionales a los recíprocos.
+- titulo: ¿Equivale el reparto inverso a un reparto directo de los recíprocos 1/c?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, matemáticamente es un isomorfismo directo sobre los inversos.
+  alternativas:
+  - texto: Sí, es el método formal de resolución algebraica
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Teorema de equivalencia recíproca.
+  - texto: No, son conceptos incompatibles
+    es_correcta: false
+    retroalimentacion: Incorrecto, la inversión conecta ambos procedimientos.
+  - texto: No, se deben restar los valores
+    es_correcta: false
+    retroalimentacion: Incorrecto, la relación es multiplicativa.
 errores_frecuentes:
-  - 'Sumar directamente los índices originales sin convertirlos a sus fracciones recíprocas $1/a$.'
-  - 'Asignar la parte de mayor valor al índice de mayor tamaño en un reparto inverso.'
-  - 'Las fracciones recíprocas se pueden sumar directamente sumando numeradores con denominadores.'
-  - 'Multiplicar los índices originales por la constante de reparto en lugar de dividirlos.'
-  - 'Considerar que el reparto inverso es numéricamente idéntico al reparto directo.'
+- Repartir directamente sin invertir los coeficientes.
+- Sumar denominadores de forma incorrecta al sacar el MCM.
+- Asignar la mayor cantidad al número original más alto.
+- No comprobar la suma del total final.
 afirmaciones_verdaderas:
-  - 'El reparto proporcional inverso equivale a realizar un reparto directo sobre los recíprocos de los índices $\frac{1}{a_1}, \frac{1}{a_2}, \dots, \frac{1}{a_n}$.'
-  - 'En todo reparto proporcional inverso, el índice de menor valor numérico recibe la mayor parte asignada.'
-al_terminar_debes_poder: 'Calcular repartos proporcionales inversos transformando los índices a recíprocos $\frac{1}{a_i}$ y calculando la constante $k$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- El reparto inverso asigna cuotas mayores a los índices numéricos más bajos.
+- Se resuelve transformando los índices a sus recíprocos $\frac{1}{c_i}$ y multiplicando por el MCM.
+- La suma de las partes calculadas es exactamente igual a la cantidad total repartida.
+al_terminar_debes_poder: '![Síntesis de reparto inverso](/static/img/nodos/calculo-de-reparto-proporcional-inverso-resumen.svg)
+
+
+  QUÉ: Resolver problemas de reparto proporcional inverso en contextos reales de optimización y premios.
+
+
+  CÓMO: Invirtiendo los índices a $\frac{1}{c_i}$, amplificándolos por el $\operatorname{mcm}$ a coeficientes enteros $c''_i$ y ejecutando el reparto directo con $k = \frac{T}{\sum c''_i}$.'
+fuente: Texto escolar MINEDUC — Matemática 7° Básico / 1° Medio.
 estado: publicado

@@ -1,105 +1,134 @@
-semantic_id: MAT.NUM.REPARTO_ESCALAS.LONGITUD_REAL
-resumen_inicial: 'El cálculo de longitud real ($R$) determina la medida física en el terreno multiplicando la longitud medida en el plano o mapa ($d$) por el denominador de la escala $N$: $R = d \cdot N$.'
-explicacion_simple: |
-  Para saber cuántos metros o kilómetros mide en la realidad una distancia dibujada en un plano o mapa:
-  1. Mides con una regla los centímetros que hay en el plano ($d$).
-  2. Multiplicas esa cantidad por el número de la escala (el denominador $N$).
-  3. Conviertes los centímetros resultantes a metros o kilómetros.
-  Por ejemplo, si mides $4\text{ cm}$ en un plano a escala $1 : 200$, la distancia real será $4 \cdot 200 = 800\text{ cm} = 8\text{ metros}$.
-explicacion_formal: |
-  ### Definición formal
-  Dada una medida $d$ leída en un mapa o plano y una escala de reducción $E = \frac{1}{N}$, la **distancia real correspondiente $R$** se determina despejando de la razón lineal fundamental:
-  $$E = \frac{d}{R} \iff \frac{1}{N} = \frac{d}{R} \implies R = d \cdot N$$
+semantic_id: MAT.NUM.RAZONES_PROPORCIONES.ESCALA_CALCULO_REAL
+resumen_inicial: El cálculo de longitud real a partir de una escala determina la dimensión en el terreno mediante la fórmula $D_{\text{real}} = D_{\text{plano}} \cdot N$, convirtiendo el resultado de centímetros a metros ($\div 100$) o kilómetros ($\div 100.000$).
+explicacion_simple: "![Cálculo de longitud real](/static/img/nodos/calculo-de-longitud-real-usando-escala-intro.svg)\n\nPara calcular **cuánto mide en la realidad** un segmento medido con regla en un mapa:\n\n1. **Paso 1: Multiplicar la medida leída en cm por el denominador de la escala ($N$)**:\n$$D_{\\text{real (en cm)}} = D_{\\text{plano (en cm)}} \\cdot N$$\n2. **Paso 2: Convertir los centímetros a una unidad comprensible**:\n   - Para pasar a **metros**: Divide entre $100$ (quita $2$ ceros).\n   - Para pasar a **kilómetros**: Divide entre $100.000$ (quita $5$ ceros).\n- **Ejemplo:** Si dos pueblos están separados por $8\\text{ cm}$ en un mapa $1 : 100.000$:\n  - $D_{\\text{real}} = 8 \\cdot 100.000 = 800.000\\text{ cm}$.\n  - Pasamos a km $\\implies \\frac{800.000}{100.000} = 8\\text{ km}$ en la realidad."
+explicacion_formal: 'Sea la escala cartográfica $E = \frac{1}{N}$ y la medida observada en el soporte gráfico $D_{\text{plano}} \in \mathbb{R}^+$.
 
-  ### Algoritmo de cálculo con conversión a unidades geográficas
-  1. **Multiplicación en la unidad del plano (habitualmente $\text{cm}$)**:
-     $$R_{\text{cm}} = d_{\text{cm}} \cdot N$$
-  2. **Conversión a metros o kilómetros según el contexto real**:
-     - Para expresar en **metros**: $R_{\text{m}} = \frac{R_{\text{cm}}}{100}$.
-     - Para expresar en **kilómetros**: $R_{\text{km}} = \frac{R_{\text{cm}}}{100.000}$.
 
-  ### Regla práctica rápida de conversión de ceros
-  - En escala $1 : 100 \implies 1\text{ cm en el plano} = 1\text{ m real}$.
-  - En escala $1 : 100.000 \implies 1\text{ cm en el mapa} = 1\text{ km real}$.
+  **Algoritmo de Extrapolación a Escala Real:**
 
-  ### Síntesis didáctica
-  - Ecuación fundamental: $R_{\text{real}} = d_{\text{plano}} \cdot N$.
-definiciones_clave: |
-  - **Medida real $R$**: Distancia física efectiva medida sobre el terreno u objeto tridimensional.
-  - **Multiplicador de escala $N$**: Factor por el cual se amplifica la medida del dibujo para reconstruir la realidad.
-  - **Conversión métrica posterior**: Transformación de unidades ($\text{cm} \to \text{m} \to \text{km}$) tras efectuar el producto $d \cdot N$.
-propiedades_relaciones: |
-  - **Invariancia del valor físico**: La distancia real $R$ calculada es invariable y no depende de la escala elegida para representarla.
-  - **Escalamiento directo**: Si se mide el doble de centímetros en el mapa ($2d$), la distancia real calculada resultará ser exactamente el doble ($2R$).
+  1. **Multiplicación Homotética Inversa:**
+
+  $$D_{\text{real}}^{[\text{cm}]} = D_{\text{plano}}^{[\text{cm}]} \cdot N$$
+
+  2. **Normalización a Unidades Geográficas:**
+
+  $$D_{\text{real}}^{[\text{km}]} = \frac{D_{\text{real}}^{[\text{cm}]}}{10^5} = \frac{D_{\text{plano}}^{[\text{cm}]} \cdot N}{100.000}$$
+
+  $$D_{\text{real}}^{[\text{m}]} = \frac{D_{\text{real}}^{[\text{cm}]}}{10^2} = \frac{D_{\text{plano}}^{[\text{cm}]} \cdot N}{100}$$'
+definiciones_clave: '- **Longitud real ($D_{\text{real}}$)**: Distancia física en el terreno u objeto tridimensional.
+
+  - **Extrapolación métrica**: Multiplicación por el factor $N$ de reducción.
+
+  - **Normalización de unidades**: Conversión de cm a metros o kilómetros.'
+propiedades_relaciones: '- **Ampliación de escala**: La realidad siempre es $N$ veces mayor que la representación gráfica.
+
+  - **Linealidad**: Duplicar la distancia en el papel duplica exactamente la distancia real recorrida.'
 ejemplo_guiado:
-  enunciado: 'En un mapa topográfico confeccionado a escala $1 : 50.000$, la distancia medida con una regla entre dos cerros es de $7.5\text{ centímetros}$. Calcula la distancia real entre los cerros expresada en kilómetros.'
+  enunciado: '![Ejemplos de longitud real](/static/img/nodos/calculo-de-longitud-real-usando-escala-ejemplos.svg)
+
+
+    Si la distancia entre dos ciudades en un mapa con escala $1 : 100.000$ mide $8\text{ cm}$, ¿cuántos kilómetros las separan en la realidad? Además, en un plano a escala $1 : 75$, una pared mide $6\text{ cm}$, ¿cuál es su largo real en metros?'
   pasos:
-    - 'Paso 1: Identificamos la medida del mapa $d = 7.5\text{ cm}$ y el denominador $N = 50.000$.'
-    - 'Paso 2: Calculamos la distancia real en centímetros multiplicando: $R_{\text{cm}} = 7.5 \cdot 50.000 = 375.000\text{ cm}$.'
-    - 'Paso 3: Convertimos la distancia real a metros dividiendo por $100$: $R_{\text{m}} = \frac{375.000}{100} = 3.750\text{ metros}$.'
-    - 'Paso 4: Convertimos a kilómetros dividiendo por $1.000$: $R_{\text{km}} = \frac{3.750}{1.000} = 3.75\text{ km}$. La distancia real es **3.75 kilómetros**.'
+  - 'Paso 1: Para las ciudades: Multiplicar por $N = 100.000 \implies 8 \cdot 100.000 = 800.000\text{ cm}$.'
+  - 'Paso 2: Convertir a kilómetros: $\frac{800.000}{100.000} = 8\text{ km}$ reales.'
+  - 'Paso 3: Para la pared: Multiplicar por $N = 75 \implies 6 \cdot 75 = 450\text{ cm}$.'
+  - 'Paso 4: Convertir a metros: $\frac{450}{100} = 4,5\text{ metros}$ reales.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la distancia real $R$ a partir de la longitud $d$ en el plano y la escala $1 : N$?'
-    choices:
-      - {text: 'Multiplicar la longitud dibujada $d$ por el denominador de la escala $N$ ($R = d \cdot N$)', is_correct: true}
-      - {text: 'Dividir la longitud dibujada $d$ entre el denominador $N$', is_correct: false}
-      - {text: 'Restar la longitud $d$ al denominador $N$', is_correct: false}
-      - {text: 'Sumar $d$ y $N$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Multiplicar la longitud dibujada $d$ por el denominador de la escala $N$ ($R = d \cdot N$)''. Se amplifica el dibujo por el factor $N$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si en el plano de una vivienda a escala $1 : 50$ una pared mide $8\text{ cm}$, ¿cuánto mide la pared en la realidad?'
-    choices:
-      - {text: '$4\text{ metros}$, pues $8 \cdot 50 = 400\text{ cm} = 4\text{ metros}$', is_correct: true}
-      - {text: '$40\text{ metros}$, multiplicando por 500', is_correct: false}
-      - {text: '$0.16\text{ metros}$, dividiendo $8 / 50$', is_correct: false}
-      - {text: '$400\text{ metros}$, sin convertir centímetros a metros', is_correct: false}
-    explanation: 'La alternativa correcta es ''$4\text{ metros}$, pues $8 \cdot 50 = 400\text{ cm} = 4\text{ metros}$''. $R = 8 \cdot 50 = 400\text{ cm} = 4\text{ m}$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es la fórmula para calcular la distancia real a partir de la medida en el mapa?
+  choices:
+  - text: $D_{\text{real}} = D_{\text{plano (cm)}} \cdot N$ (y luego convertir a m o km)
+    is_correct: true
+  - text: $D_{\text{real}} = \frac{D_{\text{plano}}}{N}$
+    is_correct: false
+  - text: $D_{\text{real}} = D_{\text{plano}} + N$
+    is_correct: false
+  - text: $D_{\text{real}} = \frac{N}{D_{\text{plano}}}$
+    is_correct: false
+  explanation: La alternativa correcta es '$D_{\text{real}} = D_{\text{plano (cm)}} \cdot N$ (y luego convertir a m o km)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué 800.000 cm se convirtieron en 8 km?
+  choices:
+  - text: Porque 1 km equivale a 100.000 cm, por lo que se divide entre 100.000
+    is_correct: true
+  - text: Porque se divide entre 100
+    is_correct: false
+  - text: Porque se le quitan dos ceros
+    is_correct: false
+  - text: Por una regla de aproximación
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque 1 km equivale a 100.000 cm, por lo que se divide entre 100.000'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Medir o identificar la longitud $d$ dada en el plano en centímetros.'
-  - 'Paso 2: Identificar el denominador de la escala $N$ de la expresión $1 : N$.'
-  - 'Paso 3: Multiplicar $R_{\text{cm}} = d \cdot N$ para obtener la medida real en centímetros.'
-  - 'Paso 4: Convertir el resultado a metros (dividiendo por 100) o a kilómetros (dividiendo por 100.000) según solicite el enunciado.'
-errores_correccion: |
-  - **Error 1:** Dividir la medida del plano por $N$ al intentar hallar la distancia real. **Cómo corregirlo:** Para pasar del plano a la realidad **se MULTIPLICA por $N$** ($R = d \cdot N$), pues la realidad es más grande que el dibujo.
-  - **Error 2:** Olvidar convertir los centímetros reales finales a metros o kilómetros. **Cómo corregirlo:** En la vida real las distancias no se expresan en cientos de miles de centímetros; **divida por 100 para m o por 100.000 para km**.
+- 'Paso 1: Medir o registrar la distancia en el plano en centímetros $D_{\text{plano}}$.'
+- 'Paso 2: Multiplicar por el factor de escala $N$ para obtener la distancia real en centímetros: $D_{\text{real (cm)}} = D_{\text{plano}} \cdot N$.'
+- 'Paso 3: Convertir a metros ($\div 100$) o a kilómetros ($\div 100.000$) según el contexto.'
+errores_correccion: '- **Error 1: Dejar la respuesta en centímetros sin convertir.** **Cómo corregirlo:** En problemas reales o cartográficos, normalizar siempre a metros o kilómetros.
+
+  - **Error 2: Dividir en vez de multiplicar.** **Cómo corregirlo:** Pasar del plano a la realidad agranda el valor $\implies$ se MULTIPLICA por $N$.'
 ejemplos:
-  - titulo: 'Cálculo de largo de terreno real'
-    enunciado: 'En un plano $1 : 200$, una parcela mide $15\text{ cm}$ de largo. ¿Su largo real es de $30\text{ metros}$?'
-    alternativas:
-      - 'Sí, pues $15 \cdot 200 = 3.000\text{ cm} = 30\text{ m}$'
-      - 'No, es 3 metros'
-      - 'No, es 300 metros'
-    respuesta: 'Sí, pues $15 \cdot 200 = 3.000\text{ cm} = 30\text{ m}$'
-    solucion_pasos:
-      - '1. Producto: $R = 15 \cdot 200 = 3.000\text{ cm}$.'
-      - '2. Conversión: $3.000 / 100 = 30\text{ metros}$.'
-  - titulo: 'Cálculo de tramo carretero en mapa'
-    enunciado: 'En un mapa $1 : 250.000$, un tramo mide $4\text{ cm}$. ¿La distancia real es de $10\text{ km}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $R = 4 \cdot 250.000 = 1.000.000\text{ cm} = 10\text{ km}$.'
-  - titulo: 'Cálculo a escala de ampliación'
-    enunciado: 'A escala $5 : 1$, si una microcélula en el dibujo mide $20\text{ mm}$, ¿su tamaño real es $4\text{ mm}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. En ampliación se divide por el factor: $R = 20 / 5 = 4\text{ mm}$.'
-  - titulo: 'Verificación de proporciones'
-    enunciado: 'Si $2\text{ cm}$ representan $100\text{ m}$, ¿$6\text{ cm}$ en el mismo plano representan $300\text{ m}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Al triplicar la medida dibujada, la medida real se triplica.'
+- titulo: Ejemplo 1
+  enunciado: 'En un mapa $1 : 250.000$, la distancia entre dos cerros es $4\text{ cm}$. ¿Cuántos km hay entre ellos?'
+  alternativas:
+  - $10\text{ km}$
+  - $100\text{ km}$
+  - $1\text{ km}$
+  respuesta: $10\text{ km}$
+  solucion_pasos:
+  - $4 \cdot 250.000 = 1.000.000\text{ cm} = 10\text{ km}$.
+- titulo: Ejemplo 2
+  enunciado: 'En un plano de arquitectura $1 : 20$, una puerta mide $4,5\text{ cm}$ de ancho. ¿Cuál es su ancho real?'
+  alternativas:
+  - $90\text{ cm}$ ($0,9\text{ m}$)
+  - $9\text{ cm}$
+  - $900\text{ cm}$
+  respuesta: $90\text{ cm}$ ($0,9\text{ m}$)
+  solucion_pasos:
+  - $4,5 \cdot 20 = 90\text{ cm} = 0,9\text{ metros}$.
+- titulo: ¿Se multiplica por N para pasar de la medida en el mapa a la medida real?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la medida real es $N$ veces la medida en el dibujo.
+  alternativas:
+  - texto: Sí, la realidad es N veces más grande que el plano
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Multiplicación por factor de reducción inverso.
+  - texto: No, se divide entre N
+    es_correcta: false
+    retroalimentacion: Incorrecto, dividir reduciría el tamaño aún más.
+  - texto: No, se suma N
+    es_correcta: false
+    retroalimentacion: Incorrecto, la homotecia es multiplicativa.
+- titulo: ¿Se divide entre 100.000 para transformar centímetros a kilómetros?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $100.000\text{ cm} = 1\text{ km}$.
+  alternativas:
+  - texto: Sí, es el factor de conversión exacto
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Conversión métrica directa.
+  - texto: No, se divide entre 1.000
+    es_correcta: false
+    retroalimentacion: Incorrecto, entre 1.000 pasa de metros a km.
+  - texto: No, se multiplica por 100
+    es_correcta: false
+    retroalimentacion: Incorrecto, multiplicar aumentaría los centímetros.
 errores_frecuentes:
-  - 'Dividir la medida del plano por el denominador de la escala $N$ en lugar de multiplicar.'
-  - 'El resultado de $R = d \cdot N$ representa directamente metros reales sin necesidad de conversión.'
-  - 'Las distancias en el terreno se calculan dividiendo la medida del plano entre la escala.'
-  - 'La medida real calculada depende de la hoja física de papel donde se imprime el plano.'
-  - 'Multiplicar la medida del plano por mil considerando que la escala entrega metros directamente.'
+- Dividir en lugar de multiplicar por el factor $N$.
+- Olvidar convertir la respuesta final de centímetros a metros o kilómetros.
+- Equivocarse en la cantidad de ceros al dividir por $100.000$.
+- Confundir la escala con una unidad de velocidad o tiempo.
 afirmaciones_verdaderas:
-  - 'La dimensión real de un objeto se calcula multiplicando la medida en el plano por el denominador de la escala ($R = d \cdot N$).'
-  - 'Para expresar la distancia real en kilómetros tras aplicar el producto $d \cdot N$ en centímetros, se debe dividir el resultado entre $100.000$.'
-al_terminar_debes_poder: 'Calcular longitudes reales en el terreno mediante la fórmula $R = d \cdot N$ convirtiendo el resultado a metros o kilómetros.'
-fuente: 'Currículum Nacional MINEDUC y elaboration pedagógica ProfeOnline.'
+- La distancia real se obtiene multiplicando la medida del plano en centímetros por el factor $N$.
+- El resultado en centímetros se convierte a metros dividiendo por $100$ o a kilómetros dividiendo por $100.000$.
+- La distancia real siempre resulta cuantitativamente mayor que la distancia gráfica en escalas de reducción.
+al_terminar_debes_poder: '![Síntesis de cálculo de longitud real](/static/img/nodos/calculo-de-longitud-real-usando-escala-resumen.svg)
+
+
+  QUÉ: Determinar distancias y dimensiones reales en el terreno a partir de mediciones en mapas o planos.
+
+
+  CÓMO: Multiplicando la medida gráfica por el denominador de la escala ($D_{\text{real}} = D_{\text{plano}} \cdot N$) y normalizando a metros o kilómetros mediante división por $100$ o $100.000$.'
+fuente: Texto escolar MINEDUC — Matemática 7° Básico / 1° Medio.
 estado: publicado

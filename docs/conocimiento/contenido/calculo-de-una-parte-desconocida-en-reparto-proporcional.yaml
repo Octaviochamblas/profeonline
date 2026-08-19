@@ -1,106 +1,140 @@
-semantic_id: MAT.NUM.REPARTO_ESCALAS.PARTE_DESCONOCIDA
-resumen_inicial: 'El cálculo de una parte desconocida en un reparto proporcional determina el valor de una asignación específica o de un índice desconocido a partir de una cuota parcial ya conocida.'
-explicacion_simple: |
-  En muchos problemas de reparto no te dan la suma total desde el inicio, sino que te dicen cuánto recibió uno de los beneficiarios. Para encontrar la cuota de los demás o el total repartido:
-  1. Usas la cuota conocida para calcular la constante de reparto $k = \frac{\text{Cuota Conocida}}{\text{Su Índice}}$.
-  2. Una vez que tienes el valor de $k$, la utilizas para calcular cualquier otra parte multiplicando $k \cdot \text{Índice Desconocido}$.
-explicacion_formal: |
-  ### Definición formal
-  En un sistema de reparto proporcional directo con cuotas $\{x_1, x_2, \dots, x_n\}$ e índices $\{a_1, a_2, \dots, a_n\}$, si se conoce únicamente la cuota asignada $x_j$ correspondiente al índice $a_j$:
-  - La **constante de reparto unívoca $k$** viene dada por:
-    $$k = \frac{x_j}{a_j}$$
+semantic_id: MAT.NUM.RAZONES_PROPORCIONES.REPARTO_PARTE_DESCONOCIDA
+resumen_inicial: El cálculo de una parte desconocida en un reparto proporcional reconstruye la constante unitaria $k = \frac{x_{\text{conocido}}}{c_{\text{conocido}}}$ a partir de una única cuota identificada, permitiendo despejar cualquier otra parte o el monto total global.
+explicacion_simple: "![Cálculo de parte desconocida](/static/img/nodos/calculo-de-una-parte-desconocida-en-reparto-proporcional-intro.svg)\n\nA veces un problema **no nos da el total a repartir**, sino que nos dice **cuánto recibió una de las partes**:\n- **¿Cómo lo resolvemos?**\n  1. **Hallamos la constante unitaria $k$ dividiendo esa parte conocida por su propio índice**:\n  $$k = \\frac{\\text{Parte conocida}}{\\text{Índice conocido}}$$\n  2. **Calculamos cualquier otra parte multiplicando su índice por $k$**:\n  $$\\text{Parte desconocida} = c_B \\cdot k$$\n  3. **Si nos piden el total**, sumamos todos los índices y los multiplicamos por $k$:\n  $$\\text{Total } T = (c_A + c_B + c_C + \\dots) \\cdot k$$"
+explicacion_formal: 'Sea un reparto proporcional definido por los índices $c_1, c_2, \dots, c_n$ donde se conoce el valor exacto de la componente $x_j$ para algún índice $j \in \{1, \dots, n\}$.
 
-  ### Determinación de otra cuota $x_i$
-  Con la constante $k$ calculada, la cuota correspondiente a cualquier otro índice conocido $a_i$ se obtiene mediante:
-  $$x_i = k \cdot a_i = \left(\frac{x_j}{a_j}\right) \cdot a_i$$
 
-  ### Determinación del índice desconocido $a_m$ dada su cuota $x_m$
-  Si se conoce la cuota $x_m$ recibida por un participante pero se desconoce su índice $a_m$:
-  $$a_m = \frac{x_m}{k} = \frac{x_m \cdot a_j}{x_j}$$
+  **Despeje de la Constante del Sistema:**
 
-  ### Determinación de la cantidad total repartida $C$
-  La suma total de todas las partes asignadas es:
-  $$C = \sum_{i=1}^n x_i = k \cdot \sum_{i=1}^n a_i = \left(\frac{x_j}{a_j}\right) \cdot S_{\text{total}}$$
+  Por la propiedad fundamental de las razones:
 
-  ### Síntesis didáctica
-  - Paso 1: Hallar $k = \frac{x_{\text{conocido}}}{a_{\text{conocido}}}$.
-  - Paso 2: Calcular la incógnita como $x_{\text{buscado}} = k \cdot a_{\text{buscado}}$ o $a = \frac{x}{k}$.
-definiciones_clave: |
-  - **Cuota de referencia $x_j$**: Asignación parcial conocida que permite deducir la constante global de repartición $k$.
-  - **Índice incógnito $a_m$**: Coeficiente o mérito desconocido que se calcula dividiendo la cuota parcial entre $k$.
-  - **Deducción por razón unitaria**: Método que calcula el valor correspondiente a 1 unidad de índice antes de hallar la parte buscada.
-propiedades_relaciones: |
-  - **Proporción de partes individuales**: La razón entre dos partes asignadas es igual a la razón entre sus respectivos índices: $\frac{x_i}{x_j} = \frac{a_i}{a_j}$.
-  - **Independencia del total $C$**: No se requiere conocer el monto total $C$ para calcular una parte desconocida si se dispone de una cuota y su índice.
+
+  $$k = \frac{x_j}{c_j} \in \mathbb{R}^+$$
+
+
+  **Fórmulas de Reconstrucción:**
+
+  1. **Valor de cualquier otra parte $x_m$ ($m \neq j$):**
+
+  $$x_m = c_m \cdot k = c_m \cdot \left(\frac{x_j}{c_j}\right)$$
+
+  2. **Total global acumulado $T$:**
+
+  $$T = \sum_{i=1}^{n} x_i = k \cdot \sum_{i=1}^{n} c_i = \left(\frac{x_j}{c_j}\right) \cdot \sum_{i=1}^{n} c_i$$'
+definiciones_clave: '- **Parte testigo / conocida ($x_j$)**: Cuota de referencia a partir de la cual se desbloquea la constante $k$.
+
+  - **Reconstrucción de total**: Deducción de $T$ mediante $T = k \cdot \sum c_i$.
+
+  - **Razón cruzada de partes**: Proporción binaria $\frac{x_A}{c_A} = \frac{x_B}{c_B}$.'
+propiedades_relaciones: '- **Desacoplamiento del total**: Permite resolver el reparto sin necesidad de que el total $T$ sea explicitado a priori.
+
+  - **Linealidad estricta**: La diferencia entre dos partes satisface $\Delta x = (c_A - c_B) \cdot k$.'
 ejemplo_guiado:
-  enunciado: 'En un reparto proporcional directo según los índices $3, 5$ y $8$, la persona con índice $5$ recibe $\$25.000$. Calcula cuánto dinero recibe la persona con índice $8$ y cuál fue la suma total repartida.'
+  enunciado: '![Ejemplos de parte desconocida](/static/img/nodos/calculo-de-una-parte-desconocida-en-reparto-proporcional-ejemplos.svg)
+
+
+    En un reparto en razón $3 : 5$, si la persona $A$ recibe $\$18.000$, ¿cuánto recibe $B$? Además, en un reparto en razón $2 : 4 : 7$, si la menor de las partes es $\$14.000$, halle el total repartido.'
   pasos:
-    - 'Paso 1: Calculamos la constante de reparto $k$ dividiendo la cuota conocida por su índice: $k = \frac{25.000}{5} = 5.000$.'
-    - 'Paso 2: Calculamos la parte buscada para el índice $8$: $x_3 = k \cdot 8 = 5.000 \cdot 8 = \$40.000$.'
-    - 'Paso 3: Calculamos la parte para el primer índice $3$: $x_1 = 5.000 \cdot 3 = \$15.000$.'
-    - 'Paso 4: Sumamos todas las partes para hallar el total repartido: $C = 15.000 + 25.000 + 40.000 = \$80.000$.'
+  - 'Paso 1: Para la razón $3:5$: El índice de $A$ es $3$. Hallar $k = \frac{18000}{3} = \$6.000$.'
+  - 'Paso 2: Calcular parte $B$: $B = 5 \cdot k = 5 \cdot 6.000 = \$30.000$.'
+  - 'Paso 3: Para la razón $2:4:7$: La menor parte tiene índice $2 \implies 2k = 14.000 \implies k = \frac{14000}{2} = \$7.000$.'
+  - 'Paso 4: Calcular total: Suma de índices $= 2 + 4 + 7 = 13 \implies \text{Total} = 13 \cdot 7.000 = \$91.000$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si se conoce que la cuota de un beneficiario es $\$12.000$ y su índice de reparto es $4$, ¿cuál es el valor de la constante $k$ y cuánto recibe la persona con índice $7$?'
-    choices:
-      - {text: '$k = 3.000$ (dividiendo $12.000 / 4$), y la parte para índice $7$ es $\$21.000$ ($3.000 \cdot 7 = 21.000$)', is_correct: true}
-      - {text: '$k = 48.000$, y recibe $\$336.000$', is_correct: false}
-      - {text: '$k = 3.000$, y recibe $\$12.000$', is_correct: false}
-      - {text: '$k = 8.000$, y recibe $\$56.000$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$k = 3.000$ (dividiendo $12.000 / 4$), y la parte para índice $7$ es $\$21.000$ ($3.000 \cdot 7 = 21.000$)''. $k = 12.000 / 4 = 3.000$; cuota para 7: $7 \cdot 3.000 = 21.000$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si dos partes de un reparto proporcional directo están en razón $3 : 5$ y la parte mayor es $\$35.000$, ¿cuál es el valor de la parte menor?'
-    choices:
-      - {text: '$\$21.000$, pues la constante es $k = 35.000 / 5 = 7.000$, y $3 \cdot 7.000 = 21.000$', is_correct: true}
-      - {text: '$\$15.000$, restando $20.000$', is_correct: false}
-      - {text: '$\$30.000$, aproximando la cifra', is_correct: false}
-      - {text: '$\$7.000$, que es la constante', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$21.000$, pues la constante es $k = 35.000 / 5 = 7.000$, y $3 \cdot 7.000 = 21.000$''. $k = 35.000/5 = 7.000 \implies x_1 = 3 \cdot 7.000 = 21.000$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cómo se calcula la constante unitaria k cuando se conoce una de las partes del reparto?
+  choices:
+  - text: 'Dividiendo el valor de la parte conocida entre su índice de reparto respectivo: $k = \frac{x_j}{c_j}$'
+    is_correct: true
+  - text: Dividiendo la parte conocida entre el número total de participantes
+    is_correct: false
+  - text: Multiplicando la parte conocida por la suma de todos los índices
+    is_correct: false
+  - text: Restando el índice de la parte conocida
+    is_correct: false
+  explanation: 'La alternativa correcta es ''Dividiendo el valor de la parte conocida entre su índice de reparto respectivo: $k = \frac{x_j}{c_j}$''.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿cómo se obtuvo el total de $91.000 a partir de la menor parte de $14.000?
+  choices:
+  - text: Se calculó la constante k = 14.000 / 2 = 7.000 y se multiplicó por la suma de todos los índices (13 · 7.000 = 91.000)
+    is_correct: true
+  - text: Multiplicando 14.000 por 7
+    is_correct: false
+  - text: Sumando 14.000 + 2 + 4 + 7
+    is_correct: false
+  - text: Elevando al cuadrado el menor índice
+    is_correct: false
+  explanation: La alternativa correcta es 'Se calculó la constante k = 14.000 / 2 = 7.000 y se multiplicó por la suma de todos los índices (13 · 7.000 = 91.000)'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la cuota asignada conocida $x_j$ y su correspondiente índice $a_j$.'
-  - 'Paso 2: Calcular la constante de reparto dividiendo la cuota entre su índice ($k = \frac{x_j}{a_j}$).'
-  - 'Paso 3: Para hallar una parte desconocida $x_i$, multiplicar la constante $k$ por el índice $a_i$.'
-  - 'Paso 4: Para hallar un índice desconocido $a_m$, dividir la cuota $x_m$ entre la constante $k$.'
-errores_correccion: |
-  - **Error 1:** Multiplicar la cuota conocida por el nuevo índice sin haber dividido primero entre su índice correspondiente. **Cómo corregirlo:** Primero debes calcular la constante unitaria **$k = \frac{x_{\text{conocida}}}{a_{\text{conocido}}}$** antes de multiplicar por el nuevo índice.
-  - **Error 2:** Confundir qué número es la cuota de dinero y qué número es el índice del beneficiario. **Cómo corregirlo:** La cuota $x$ tiene unidades de dinero o cantidad repartida, mientras que el índice $a$ es la proporción de puntos, horas o boletos.
+- 'Paso 1: Identificar la parte numérica conocida $x_j$ y su índice correspondiente $c_j$.'
+- 'Paso 2: Despejar la constante unitaria dividiendo $k = \frac{x_j}{c_j}$.'
+- 'Paso 3: Calcular las demás partes requeridas ($x_m = c_m \cdot k$) o el total global ($T = (\sum c_i) \cdot k$).'
+errores_correccion: '- **Error 1: Dividir la parte conocida por la suma total de índices.** **Cómo corregirlo:** La parte conocida $x_j$ SOLO se divide por su propio índice individual $c_j$ ($k = \frac{x_j}{c_j}$).
+
+  - **Error 2: Confundir una parte con la diferencia entre partes.** **Cómo corregirlo:** Si el dato es una diferencia $x_A - x_B$, se debe dividir por $(c_A - c_B)$.'
 ejemplos:
-  - titulo: 'Cálculo de cuota desconocida a partir de una parte'
-    enunciado: 'Si el índice $2$ recibe $\$14.000$ ($k=7.000$), ¿cuánto recibe el índice $6$?'
-    alternativas:
-      - 'Recibe $\$42.000$, pues $6 \cdot 7.000 = 42.000$'
-      - 'Recibe $\$28.000$'
-      - 'Recibe $\$84.000$'
-    respuesta: 'Recibe $\$42.000$, pues $6 \cdot 7.000 = 42.000$'
-    solucion_pasos:
-      - '1. Constante: $k = 14.000 / 2 = 7.000$.'
-      - '2. Cuota para índice 6: $6 \cdot 7.000 = \$42.000$.'
-  - titulo: 'Cálculo del total sin conocerlo inicialmente'
-    enunciado: 'En el reparto con índices $2, 5, 6$ donde índice $2$ recibe $\$14.000$, ¿el total es $\$91.000$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Suma de índices $= 2 + 5 + 6 = 13 \implies C = 13 \cdot 7.000 = \$91.000$.'
-  - titulo: 'Cálculo de un índice desconocido'
-    enunciado: 'Si $k = 5.000$ y una persona recibe $\$35.000$, ¿su índice de reparto es $7$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Índice $a = 35.000 / 5.000 = 7$.'
-  - titulo: 'Diferencia entre dos partes'
-    enunciado: 'Si los índices son $3$ y $7$ con $k=4.000$, ¿la diferencia entre las dos partes es de $\$16.000$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Diferencia de índices $= 7 - 3 = 4 \implies 4 \cdot 4.000 = \$16.000$.'
+- titulo: Ejemplo 1
+  enunciado: 'En un reparto en razón $4 : 7$, la parte mayor es $\$35.000$. ¿Cuánto vale la parte menor?'
+  alternativas:
+  - $\$20.000$
+  - $\$15.000$
+  - $\$28.000$
+  respuesta: $\$20.000$
+  solucion_pasos:
+  - $k = \frac{35000}{7} = 5000 \implies 4k = 4 \cdot 5000 = \$20.000$.
+- titulo: Ejemplo 2
+  enunciado: 'La diferencia entre dos partes en razón $3 : 8$ es $\$25.000$. ¿Cuál es el total repartido?'
+  alternativas:
+  - $\$55.000$
+  - $\$50.000$
+  - $\$40.000$
+  respuesta: $\$55.000$
+  solucion_pasos:
+  - Diferencia de índices $= 8 - 3 = 5 \implies k = \frac{25000}{5} = 5000$. Suma $= 11 \implies 11 \cdot 5000 = \$55.000$.
+- titulo: ¿Basta conocer una sola parte y su índice para reconstruir todo el reparto?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la constante unitaria $k$ define completamente todo el sistema proporcional.
+  alternativas:
+  - texto: Sí, k desbloquea unívocamente todas las demás cuotas y el total
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Reconstrucción completa.
+  - texto: No, se necesita conocer obligatoriamente el total
+    es_correcta: false
+    retroalimentacion: Incorrecto, el total se puede calcular a partir de $k$.
+  - texto: No, se necesitan al menos tres partes conocidas
+    es_correcta: false
+    retroalimentacion: Incorrecto, una sola parte es suficiente.
+- titulo: ¿Se puede calcular la constante k a partir de la diferencia entre dos partes?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, dividiendo la diferencia monetaria entre la resta de sus índices correspondientes.
+  alternativas:
+  - texto: Sí, dividiendo la diferencia de montos por la diferencia de índices
+    es_correcta: true
+    retroalimentacion: '¡Correcto! Propiedad de diferencias: $\Delta x / \Delta c = k$.'
+  - texto: No, la diferencia no conserva la proporción
+    es_correcta: false
+    retroalimentacion: Incorrecto, la linealidad de la resta conserva la constante.
+  - texto: No, solo se puede con la suma
+    es_correcta: false
+    retroalimentacion: Incorrecto, aplica tanto para sumas como para restas.
 errores_frecuentes:
-  - 'Multiplicar la cuota conocida directamente por el nuevo índice sin calcular previamente la constante $k$.'
-  - 'Dividir el nuevo índice entre la cuota en lugar de utilizar la constante de reparto.'
-  - 'Invertir la posición de la cuota y el índice al determinar $k = x / a$.'
-  - 'Es obligatorio conocer la cantidad total repartida $C$ para poder hallar una cuota parcial.'
-  - 'Las unidades del índice de reparto coinciden numéricamente con las unidades monetarias de la cuota.'
+- Dividir el valor de la parte conocida entre la suma total de índices.
+- Asociar el valor numérico al índice incorrecto.
+- Confundir la parte individual con la diferencia entre partes.
+- Olvidar multiplicar por la suma total cuando se solicita el monto global.
 afirmaciones_verdaderas:
-  - 'Dada una cuota asignada $x_j$ y su índice $a_j$, la constante de reparto es $k = \frac{x_j}{a_j}$.'
-  - 'La razón entre dos partes asignadas en un reparto directo es igual a la razón entre sus respectivos índices ($\frac{x_i}{x_j} = \frac{a_i}{a_j}$).'
-al_terminar_debes_poder: 'Calcular partes e índices desconocidos en un reparto proporcional a partir de una asignación parcial dada.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- La constante del reparto se obtiene mediante $k = \frac{x_j}{c_j}$.
+- Conociendo una parte se puede calcular cualquier otra cuota o el total acumulado.
+- La diferencia entre dos cuotas es proporcional a la diferencia de sus índices.
+al_terminar_debes_poder: '![Síntesis de cálculo de parte desconocida](/static/img/nodos/calculo-de-una-parte-desconocida-en-reparto-proporcional-resumen.svg)
+
+
+  QUÉ: Reconstruir partes desconocidas o el total repartido a partir de datos parciales.
+
+
+  CÓMO: Despejando la constante unitaria $k = \frac{x_{\text{conocido}}}{c_{\text{conocido}}}$ y calculando las cuotas restantes ($x_m = c_m \cdot k$) o el total global ($T = (\sum c_i) \cdot k$).'
+fuente: Texto escolar MINEDUC — Matemática 7° Básico / 1° Medio.
 estado: publicado

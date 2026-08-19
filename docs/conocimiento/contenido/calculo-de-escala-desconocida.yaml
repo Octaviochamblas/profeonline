@@ -1,106 +1,138 @@
-semantic_id: MAT.NUM.REPARTO_ESCALAS.ESCALA_DESCONOCIDA
-resumen_inicial: 'El cálculo de una escala desconocida determina el factor $N$ dividiendo la medida real $R$ expresada en centímetros entre la medida dibujada en el plano $d$: $N = \frac{R_{\text{cm}}}{d_{\text{cm}}}$.'
-explicacion_simple: |
-  Si tienes un dibujo y una medida real pero no sabes a qué escala fue hecho el plano:
-  1. Conviertes la medida real a centímetros.
-  2. Divides esos centímetros reales por los centímetros que mide el dibujo en el papel ($N = \frac{\text{Real en cm}}{\text{Dibujo en cm}}$).
-  3. El resultado $N$ es el denominador de la escala, por lo que escribes $1 : N$.
-  Por ejemplo, si una pared de $500\text{ cm}$ real mide $10\text{ cm}$ en el plano, la escala es $N = 500 \div 10 = 50$, es decir, escala $1 : 50$.
-explicacion_formal: |
-  ### Definición formal
-  Dadas las magnitudes pareadas de una representación $d$ y de la realidad $R$, el **denominador de la escala de reducción $N$** es el cociente de magnitudes expresadas en unidades homogéneas:
-  $$N = \frac{R}{d} \quad \iff \quad E = \frac{d}{R} = \frac{1}{N} = 1 : N$$
+semantic_id: MAT.NUM.RAZONES_PROPORCIONES.ESCALA_CALCULO_ESCALA
+resumen_inicial: 'El cálculo de una escala desconocida deduce el factor $N$ mediante el cociente de magnitudes homogéneas $N = \frac{D_{\text{real (cm)}}}{D_{\text{plano (cm)}}}$, formulando la escala resultante en el formato canónico $1 : N$.'
+explicacion_simple: "![Cálculo de escala desconocida](/static/img/nodos/calculo-de-escala-desconocida-intro.svg)\n\nPara averiguar **a qué escala está dibujado un plano o mapa** cuando conocemos una distancia en el papel y su correspondiente distancia real:\n\n1. **Paso 1: Convertir la distancia real a centímetros** (para que ambas medidas estén en la misma unidad).\n2. **Paso 2: Dividir la distancia real en cm entre la distancia en el plano**:\n$$N = \\frac{D_{\\text{real (en cm)}}}{D_{\\text{plano (en cm)}}}$$\n3. **Paso 3: Escribir la escala en formato $1 : N$**:\n- **Ejemplo:** Si $5\\text{ cm}$ en el mapa representan $25\\text{ km}$ en el terreno:\n  - Pasamos $25\\text{ km}$ a cm $\\implies 2.500.000\\text{ cm}$.\n  - $N = \\frac{2.500.000}{5} = 500.000$.\n  - La escala es **$1 : 500.000$**."
+explicacion_formal: 'Sean los pares observados $(D_{\text{plano}}, D_{\text{real}}) \in \mathbb{R}^+ \times \mathbb{R}^+$.
 
-  ### Algoritmo de determinación de escala
-  1. **Homogeneizar unidades**: Convertir $R$ a las mismas unidades de medida que $d$ (usualmente $\text{cm}$).
-  2. **Calcular el factor divisor $N$**:
-     $$N = \frac{R_{\text{cm}}}{d_{\text{cm}}}$$
-  3. **Expresar en formato estándar de reducción $1 : N$** o simplificar la fracción $\frac{d}{R}$.
 
-  ### Determinación de escala a partir de superficies o áreas
-  Si se conocen las áreas en el plano $A_d$ y en la realidad $A_R$:
-  $$E^2 = \frac{A_d}{A_R} \implies E = \sqrt{\frac{A_d}{A_R}} = \frac{1}{N} \implies N = \sqrt{\frac{A_R}{A_d}}$$
+  **Deducción Formal de la Homotecia:**
 
-  ### Síntesis didáctica
-  - Ecuación del factor: $N = \frac{R_{\text{real en cm}}}{d_{\text{plano en cm}}}$.
-  - Formato final: $1 : N$.
-definiciones_clave: |
-  - **Construcción de escala**: Proceso analítico para deducir la razón $1 : N$ a partir de dos mediciones conocidas.
-  - **Factor divisor $N$**: Cociente numérico $\frac{R}{d}$ que especifica la proporción de reducción.
-  - **Homogeneización previa**: Igualación obligatoria de las unidades métricas antes de calcular el cociente $N$.
-propiedades_relaciones: |
-  - **Unicidad de la escala**: Cualquier par de puntos correspondientes $(d_i, R_i)$ del mismo plano debe arrojar exactamente el mismo denominador $N = \frac{R_i}{d_i}$.
-  - **Sensibilidad a errores de medición**: Un error de $1\text{ mm}$ en la lectura de $d$ produce variaciones significativas en el cálculo de $N$ si el objeto es muy grande.
+  Se busca la constante $N \in \mathbb{R}^+$ tal que:
+
+
+  $$E = \frac{D_{\text{plano}}^{[\text{cm}]}}{D_{\text{real}}^{[\text{cm}]}} = \frac{1}{N}$$
+
+
+  Despejando el factor de escala:
+
+
+  $$N = \frac{D_{\text{real}}^{[\text{cm}]}}{D_{\text{plano}}^{[\text{cm}]}} = \frac{D_{\text{real}}^{[\text{km}]} \cdot 10^5}{D_{\text{plano}}^{[\text{cm}]}}$$
+
+
+  expresando el resultado en la forma normalizada $1 : N$.'
+definiciones_clave: '- **Denominador de escala ($N$)**: Razón $\frac{D_{\text{real}}}{D_{\text{plano}}}$ calculada en unidades idénticas.
+
+  - **Formato normalizado ($1 : N$)**: Expresión canónica con numerador unitario.
+
+  - **Cancelación dimensional**: Eliminación de unidades al dividir $\text{cm} / \text{cm}$.'
+propiedades_relaciones: '- **Invarianza de escala**: Con cualquier par de puntos del mismo plano se obtendrá exactamente el mismo valor de $N$.
+
+  - **Adimensionalidad**: La escala carece de símbolos de unidad de medida.'
 ejemplo_guiado:
-  enunciado: 'Un puente que mide $150\text{ metros}$ de largo en la realidad aparece representado en un mapa con una longitud de $3\text{ centímetros}$. Determina la escala a la cual fue confeccionado el mapa.'
+  enunciado: '![Ejemplos de cálculo de escala](/static/img/nodos/calculo-de-escala-desconocida-ejemplos.svg)
+
+
+    Halle la escala de un mapa si $5\text{ cm}$ en el papel representan $25\text{ km}$ de carretera, y determine la escala de un plano de vivienda donde un muro de $8\text{ metros}$ mide $4\text{ cm}$.'
   pasos:
-    - 'Paso 1: Identificamos la medida del mapa $d = 3\text{ cm}$ y la medida real $R = 150\text{ m}$.'
-    - 'Paso 2: Convertimos la medida real a centímetros: $R = 150\text{ m} \cdot 100 = 15.000\text{ cm}$.'
-    - 'Paso 3: Calculamos el denominador de la escala $N$ dividiendo la realidad entre el dibujo: $N = \frac{15.000}{3} = 5.000$.'
-    - 'Paso 4: Escribimos la escala en formato normalizado $1 : N$: **Escala $1 : 5.000$**.'
+  - 'Paso 1: Para el mapa: Pasar $25\text{ km}$ a $\text{cm} \implies 2.500.000\text{ cm}$.'
+  - 'Paso 2: Calcular $N = \frac{2.500.000}{5} = 500.000 \implies$ Escala $1 : 500.000$.'
+  - 'Paso 3: Para la vivienda: Pasar $8\text{ m}$ a $\text{cm} \implies 800\text{ cm}$.'
+  - 'Paso 4: Calcular $N = \frac{800}{4} = 200 \implies$ Escala $1 : 200$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cómo se calcula el denominador de la escala $N$ en un mapa si se conoce la medida dibujada $d$ y la medida real $R$ en centímetros?'
-    choices:
-      - {text: 'Dividiendo la medida real $R$ entre la medida dibujada $d$ ($N = \frac{R}{d}$)', is_correct: true}
-      - {text: 'Multiplicando la medida real $R$ por la medida dibujada $d$', is_correct: false}
-      - {text: 'Restando la medida dibujada $d$ a la medida real $R$', is_correct: false}
-      - {text: 'Dividiendo la medida dibujada $d$ entre la medida real $R$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividiendo la medida real $R$ entre la medida dibujada $d$ ($N = \frac{R}{d}$)''. El denominador es $N = R / d$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si una cancha de fútbol de $100\text{ metros}$ de largo ($10.000\text{ cm}$) mide $20\text{ cm}$ en un plano, ¿cuál es la escala empleada?'
-    choices:
-      - {text: 'Escala $1 : 500$, calculando $N = 10.000 / 20 = 500$', is_correct: true}
-      - {text: 'Escala $1 : 50$, dividiendo $1.000 / 20$', is_correct: false}
-      - {text: 'Escala $1 : 200$, restando ceros', is_correct: false}
-      - {text: '$1 : 2.000$, multiplicando $100 \cdot 20$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Escala $1 : 500$, calculando $N = 10.000 / 20 = 500$''. $N = 10.000\text{ cm} / 20\text{ cm} = 500 \implies$ Escala $1 : 500$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cómo se calcula el denominador N de una escala desconocida?
+  choices:
+  - text: 'Dividiendo la distancia real en cm entre la distancia en el plano en cm: $N = \frac{D_{\text{real (cm)}}}{D_{\text{plano (cm)}}}$'
+    is_correct: true
+  - text: Dividiendo la distancia en el plano entre la distancia real en kilómetros
+    is_correct: false
+  - text: Multiplicando ambas medidas
+    is_correct: false
+  - text: Sumando ambas distancias
+    is_correct: false
+  explanation: 'La alternativa correcta es ''Dividiendo la distancia real en cm entre la distancia en el plano en cm: $N = \frac{D_{\text{real (cm)}}}{D_{\text{plano (cm)}}}$''.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: 'En el ejemplo guiado, ¿por qué la escala de la vivienda resultó ser 1 : 200?'
+  choices:
+  - text: Porque 800 cm reales divididos entre 4 cm del plano dan exactamente N = 200
+    is_correct: true
+  - text: Porque 8 más 4 es 12
+    is_correct: false
+  - text: Porque 200 es la escala estándar de todas las casas
+    is_correct: false
+  - text: Por una aproximación decimal
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque 800 cm reales divididos entre 4 cm del plano dan exactamente N = 200'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Medir o identificar la longitud $d$ en el plano (usualmente en centímetros).'
-  - 'Paso 2: Identificar la longitud real $R$ y convertira a la misma unidad ($\text{cm}$).'
-  - 'Paso 3: Calcular el cociente $N = \frac{R_{\text{cm}}}{d_{\text{cm}}}$.'
-  - 'Paso 4: Formular la escala final en formato $1 : N$.'
-errores_correccion: |
-  - **Error 1:** Dividir los metros reales entre los centímetros del plano sin convertir a centímetros. **Cómo corregirlo:** La división **$N = \frac{R}{d}$ exige que ambas medidas estén en la MISMA unidad ($\text{cm}$)**.
-  - **Error 2:** Escribir el resultado como un número entero solo $N$ en lugar de poner el formato $1 : N$. **Cómo corregirlo:** La escala es una razón matemática; exprésala siempre como **$1 : N$**.
+- 'Paso 1: Convertir la distancia real a centímetros ($D_{\text{real}} \cdot 100$ para metros o $\cdot 100.000$ para kilómetros).'
+- 'Paso 2: Efectuar la división $N = \frac{D_{\text{real (cm)}}}{D_{\text{plano (cm)}}}$.'
+- 'Paso 3: Redactar la escala resultante en formato $1 : N$ (adimensional).'
+errores_correccion: '- **Error 1: Dividir medidas en unidades distintas (ej: $25\text{ km} / 5\text{ cm} = 5$).** **Cómo corregirlo:** Convertir OBLIGATORIAMENTE la distancia real a centímetros antes de dividir.
+
+  - **Error 2: No dejar el numerador en 1.** **Cómo corregirlo:** Simplificar la razón hasta obtener la forma canónica $1 : N$.'
 ejemplos:
-  - titulo: 'Deducción de escala en maqueta'
-    enunciado: 'Un edificio real de $40\text{ metros}$ ($4.000\text{ cm}$) mide $20\text{ cm}$ en la maqueta. ¿La escala es $1 : 200$?'
-    alternativas:
-      - 'Sí, pues $N = 4.000 / 20 = 200 \implies 1 : 200$'
-      - 'No, es 1:20'
-      - 'No, es 1:2.000'
-    respuesta: 'Sí, pues $N = 4.000 / 20 = 200 \implies 1 : 200$'
-    solucion_pasos:
-      - '1. Conversión: $40\text{ m} = 4.000\text{ cm}$.'
-      - '2. División: $N = 4.000 / 20 = 200$.'
-      - '3. Formato: Escala $1 : 200$.'
-  - titulo: 'Escala a partir de mapa rutero'
-    enunciado: 'Una distancia real de $50\text{ km}$ ($5.000.000\text{ cm}$) mide $5\text{ cm}$ en el mapa. ¿La escala es $1 : 1.000.000$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $N = 5.000.000 / 5 = 1.000.000 \implies 1 : 1.000.000$.'
-  - titulo: 'Escala de ampliación en dibujo microscópico'
-    enunciado: 'Una fibra de $0.2\text{ mm}$ mide $20\text{ mm}$ en la lámina. ¿La escala es $100 : 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Ampliación: $20 / 0.2 = 100 \implies 100 : 1$.'
-  - titulo: 'Comprobación con un segundo punto'
-    enunciado: 'En el mismo mapa a escala $1:200$, ¿otra pared real de $10\text{ m}$ debe medir $5\text{ cm}$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $1.000\text{ cm} / 200 = 5\text{ cm}$. Se mantiene la constante $N=200$.'
+- titulo: Ejemplo 1
+  enunciado: Si $3\text{ cm}$ en un plano representan $150\text{ metros}$ en la realidad, ¿cuál es la escala?
+  alternativas:
+  - '$1 : 5.000$'
+  - '$1 : 500$'
+  - '$1 : 50.000$'
+  respuesta: '$1 : 5.000$'
+  solucion_pasos:
+  - '$150\text{ m} = 15.000\text{ cm} \implies N = \frac{15000}{3} = 5000 \implies 1 : 5.000$.'
+- titulo: Ejemplo 2
+  enunciado: Un trayecto de $60\text{ km}$ mide $12\text{ cm}$ en un mapa. ¿Cuál es su escala?
+  alternativas:
+  - '$1 : 500.000$'
+  - '$1 : 50.000$'
+  - '$1 : 5.000.000$'
+  respuesta: '$1 : 500.000$'
+  solucion_pasos:
+  - '$60\text{ km} = 6.000.000\text{ cm} \implies N = \frac{6000000}{12} = 500.000 \implies 1 : 500.000$.'
+- titulo: ¿Se deben expresar ambas medidas en centímetros para deducir la escala?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la homogeneidad de unidades es necesaria para que las dimensiones se cancelen.
+  alternativas:
+  - texto: Sí, es el requisito indispensable para obtener una escala adimensional
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Homogeneización obligatoria.
+  - texto: No, se divide directamente en kilómetros
+    es_correcta: false
+    retroalimentacion: Incorrecto, arrojaría un valor falso sin sentido de escala.
+  - texto: No, se usan pulgadas
+    es_correcta: false
+    retroalimentacion: Incorrecto, el sistema métrico usa centímetros.
+- titulo: '¿Debe expresarse la escala siempre en el formato normalizado 1 : N?'
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el estándar técnico y cartográfico exige simplificar hasta la unidad en el antecedente.
+  alternativas:
+  - texto: Sí, es el estándar internacional de representación cartográfica
+    es_correcta: true
+    retroalimentacion: '¡Correcto! Formato canónico $1 : N$.'
+  - texto: 'No, se puede dejar como 3 : 15.000'
+    es_correcta: false
+    retroalimentacion: Incorrecto, debe simplificarse completamente.
+  - texto: No, se expresa en porcentaje
+    es_correcta: false
+    retroalimentacion: Incorrecto, la escala no se expresa en tanto por ciento.
 errores_frecuentes:
-  - 'Dividir los metros reales entre los centímetros del papel sin realizar la conversión previa a centímetros.'
-  - 'Multiplicar la medida del dibujo por la medida real en lugar de dividirlas.'
-  - 'Escribir la escala invertida poniendo el número mayor a la izquierda en una escala de reducción.'
-  - 'La escala desconocida se expresa simplemente como un número entero $N$ sin el prefijo $1 :$.'
-  - 'La escala de un plano uniforme varía según la región del dibujo que se esté midiendo.'
+- 'Dividir distancias en unidades diferentes (ej: kilómetros entre centímetros).'
+- No simplificar la fracción para dejar el antecedente en 1.
+- 'Agregar unidades de medida a la escala resultante (ej: $1\text{ cm} : 500\text{ m}$).'
+- Invertir el orden dividiendo la medida del plano entre la real.
 afirmaciones_verdaderas:
-  - 'El denominador de la escala $N$ se calcula dividiendo la dimensión real expresada en centímetros entre la dimensión dibujada en centímetros ($N = \frac{R_{\text{cm}}}{d_{\text{cm}}}$).'
-  - 'Toda medición en un plano bien elaborado debe arrojar el mismo valor de denominador de escala $N = \frac{R}{d}$.'
-al_terminar_debes_poder: 'Calcular la escala desconocida $1 : N$ de un mapa o plano comparando mediciones homogéneas $N = \frac{R}{d}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- La escala se calcula mediante $N = \frac{D_{\text{real (cm)}}}{D_{\text{plano (cm)}}}$.
+- Ambas medidas deben estar en centímetros para que la razón sea adimensional.
+- 'La escala normalizada adopta la forma $1 : N$ para reducción.'
+al_terminar_debes_poder: '![Síntesis de cálculo de escala desconocida](/static/img/nodos/calculo-de-escala-desconocida-resumen.svg)
+
+
+  QUÉ: Determinar la escala numérica $1 : N$ a partir de dimensiones emparejadas en el dibujo y en la realidad.
+
+
+  CÓMO: Homogeneizando ambas medidas a centímetros ($D_{\text{real}} \cdot 10^5$ o $\cdot 10^2$), calculando el factor $N = \frac{D_{\text{real (cm)}}}{D_{\text{plano (cm)}}}$ y estructurando la escala normalizada $1 : N$.'
+fuente: Texto escolar MINEDUC — Matemática 7° Básico / 1° Medio.
 estado: publicado
