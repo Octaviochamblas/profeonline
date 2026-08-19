@@ -1,100 +1,131 @@
 semantic_id: MAT.NUM.LOGARITMOS_CONCEPTO.RESTRICCION_ARGUMENTO_POSITIVO
-resumen_inicial: 'El argumento de todo logaritmo $\log_b(a)$ debe ser un número real estrictamente positivo ($a > 0$), ya que ninguna base positiva elevándose a una potencia real puede dar cero o un número negativo.'
-explicacion_simple: |
-  El argumento es el número de adentro del logaritmo ($a$). Este número **siempre debe ser positivo ($a > 0$)**. ¿Por qué? Porque la base $b$ es un número positivo (por ejemplo, 2). Si elevas un número positivo a cualquier exponente (positivo, negativo o cero), el resultado NUNCA te dará cero ni un número negativo: $2^3 = 8$, $2^0 = 1$, $2^{-3} = \frac{1}{8} = 0.125$. Por eso no existen logaritmos reales de números negativos ni de cero.
-explicacion_formal: |
-  ### Definición formal
-  La **restricción de argumento positivo** en el operador logarítmico $\log_b(a)$ exige que:
-  $$a \in \mathbb{R}^+ \quad \iff \quad a > 0$$
+resumen_inicial: El argumento de un logaritmo debe ser estrictamente positivo ($a > 0$), ya que una base positiva elevada a cualquier exponente real siempre genera un resultado mayor que cero.
+explicacion_simple: "![Restricción de argumento positivo](/static/img/nodos/restriccion-de-argumento-positivo-en-un-logaritmo-intro.svg)\n\n¿Por qué no existen logaritmos de números negativos o cero?\n- Para cualquier base positiva ($b > 0$), como $2$:\n  - $2^3 = 8$ (positivo)\n  - $2^0 = 1$ (positivo)\n  - $2^{-5} = \\frac{1}{32}$ (positivo)\n- ¡Ningún exponente puede hacer que una base positiva dé un número negativo o cero!\n- Por eso, el argumento debe ser siempre estrictamente positivo: $a > 0$."
+explicacion_formal: 'Sea la función logarítmica $f(x) = \log_b(x)$ con $b \in \mathbb{R}^+ \setminus \{1\}$. Como la imagen de la función exponencial $g(x) = b^x$ es el conjunto $\operatorname{Rec}(g) = \mathbb{R}^+ = ]0, +\infty[$, el **dominio analítico** del logaritmo es estrictamente:
 
-  ### Demostración por el recorrido de la función exponencial
-  Considerando la definición $\log_b(a) = c \iff b^c = a$:
-  1. **Para bases válidas ($b > 0, b \neq 1$)**: La función exponencial $f(c) = b^c$ tiene como recorrido estrictamente el conjunto de los números reales positivos:
-     $$\operatorname{Rec}(b^c) = ]0, +\infty[ = \mathbb{R}^+$$
-  2. **Consecuencia en el argumento**: Como $a = b^c$ y $b^c > 0$ para todo exponente $c \in \mathbb{R}$, se deduce necesariamente que **el argumento $a$ debe ser estrictamente mayor que cero ($a > 0$)**.
-  3. **Imposibilidad de $a \le 0$**:
-     - Para $a = 0$: No existe ningún exponente $c$ tal que $b^c = 0$ ($\lim_{c \to -\infty} b^c = 0$, es una asíntota horizontal, jamás toca el cero).
-     - Para $a < 0$: Ninguna potencia de base positiva puede producir un resultado negativo en el cuerpo real $\mathbb{R}$.
 
-  ### Síntesis didáctica
-  - Dominio de la función logarítmica: $\operatorname{Dom}(\log_b(x)) = ]0, +\infty[$.
-  - Argumentos prohibidos: $a \le 0$ (el cero y todos los números negativos).
-definiciones_clave: |
-  - **Restricción de argumento positivo $a > 0$**: Condición que exige que la cantidad sublogarítmica sea estrictamente mayor que cero.
-  - **Dominio del logaritmo $]0, +\infty[$**: Conjunto de todos los números reales estrictamente positivos donde el logaritmo está definido.
-  - **Asíntota vertical en $x = 0$**: Recta vertical $x = 0$ hacia la cual la función logarítmica tiende a $-\infty$ al aproximarse al origen.
-propiedades_relaciones: |
-  - **Determinación de dominios de funciones**: Para hallar el dominio de $f(x) = \log_b(g(x))$, se debe resolver la inecuación de argumento positivo $g(x) > 0$.
-  - **Control de soluciones en ecuaciones logarítmicas**: Al resolver ecuaciones logarítmicas, se deben descartar las soluciones aparentes (extrañas) que hagan que algún argumento sea $\le 0$.
+  $$\operatorname{Dom}(\log_b) = ]0, +\infty[$$
+
+
+  **Consecuencias Analíticas:**
+
+  1. $\log_b(a)$ **no existe en $\mathbb{R}$** para todo $a \le 0$.
+
+  2. En $x = 0$ existe una **asíntota vertical** donde $\lim_{x \to 0^+} \log_b(x) = \pm \infty$.'
+definiciones_clave: '- **Argumento positivo ($a > 0$)**: Condición de existencia obligatoria para el radicando o argumento del logaritmo.
+
+  - **Dominio logarítmico**: Conjunto $\mathbb{R}^+ = ]0, +\infty[$.
+
+  - **Asíntota vertical**: Recta $x = 0$ a la que se aproxima la curva logarítmica sin tocarla jamás.'
+propiedades_relaciones: '- **Inecuación de existencia**: Para $\log_b(g(x))$, se exige resolver la inecuación estricta $g(x) > 0$.
+
+  - **Valores del logaritmo**: Aunque el argumento debe ser positivo ($a > 0$), el resultado del logaritmo puede ser negativo ($c < 0$) si $0 < a < 1$ (con $b > 1$).'
 ejemplo_guiado:
-  enunciado: 'Encuentra el conjunto de valores reales válidos para la variable $x$ de modo que la expresión logarítmica $L = \log_2(3x - 12)$ esté bien definida.'
+  enunciado: '![Ejemplos de argumento positivo](/static/img/nodos/restriccion-de-argumento-positivo-en-un-logaritmo-ejemplos.svg)
+
+
+    Determine la validez de $\log_2(-8)$, $\log_{10}(0)$ y $\log_2\left(\frac{1}{16}\right)$ en los números reales.'
   pasos:
-    - 'Paso 1: Identificamos el argumento del logaritmo: $a = 3x - 12$.'
-    - 'Paso 2: Planteamos la restricción de argumento positivo: $a > 0 \implies 3x - 12 > 0$.'
-    - 'Paso 3: Resolvemos la inecuación sumando 12 a ambos lados: $3x > 12$.'
-    - 'Paso 4: Dividimos entre 3 para despejar $x$: $x > 4$. El dominio de existencia es $x \in ]4, +\infty[$.'
+  - 'Paso 1: Para $\log_2(-8)$: El argumento es $-8 < 0$. Como $2^c > 0$ siempre, no existe en $\mathbb{R}$.'
+  - 'Paso 2: Para $\log_{10}(0)$: El argumento es $0$. Como $10^c \neq 0$ para todo $c \in \mathbb{R}$, está indefinido.'
+  - 'Paso 3: Para $\log_2\left(\frac{1}{16}\right)$: El argumento es $\frac{1}{16} > 0$. Es válido y su valor es $-4$ ($2^{-4} = \frac{1}{16}$).'
+  - 'Conclusión: Solo los argumentos estrictamente mayores a cero son válidos en $\mathbb{R}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué el argumento $a$ de una expresión logarítmica $\log_b(a)$ no puede ser cero ni negativo ($a \le 0$) en los números reales?'
-    choices:
-      - {text: 'Porque cualquier base positiva $b > 0$ elevada a cualquier exponente real $c$ entrega siempre un resultado estrictamente positivo $b^c > 0$', is_correct: true}
-      - {text: 'Porque los argumentos negativos sólo existen en la radicación', is_correct: false}
-      - {text: 'Porque el cero es el elemento neutro de la multiplicación', is_correct: false}
-      - {text: 'Porque la base del logaritmo siempre debe ser menor que el argumento', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque cualquier base positiva $b > 0$ elevada a cualquier exponente real $c$ entrega siempre un resultado estrictamente positivo $b^c > 0$''. El recorrido de $b^c$ es $]0, +\infty[$, obligando al argumento $a$ a ser $> 0$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál de las siguientes expresiones logarítmicas está BIEN definida en el conjunto de los números reales?'
-    choices:
-      - {text: '$\log_3(0.001)$, por tener argumento estrictamente positivo', is_correct: true}
-      - {text: '$\log_3(-9)$, por tener argumento negativo', is_correct: false}
-      - {text: '$\log_3(0)$, por tener argumento nulo', is_correct: false}
-      - {text: '$\log_3(-1)$, por tener argumento $-1$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\log_3(0.001)$, por tener argumento estrictamente positivo''. Todo número real mayor que cero ($a > 0$) es un argumento válido.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es el dominio de la función $f(x) = \log_3(x - 5)$?
+  choices:
+  - text: $]5, +\infty[$ (es decir, $x > 5$)
+    is_correct: true
+  - text: $[5, +\infty[$ (incluyendo el 5)
+    is_correct: false
+  - text: $\mathbb{R}$
+    is_correct: false
+  - text: $]0, +\infty[$
+    is_correct: false
+  explanation: La alternativa correcta es '$]5, +\infty[$ (es decir, $x > 5$)'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué $\log_2\left(\frac{1}{16}\right)$ sí existe a pesar de dar un resultado negativo?
+  choices:
+  - text: Porque el argumento $\frac{1}{16}$ es positivo ($> 0$); el resultado del logaritmo sí puede ser negativo
+    is_correct: true
+  - text: Porque $16$ es divisible por $2$
+    is_correct: false
+  - text: Porque las fracciones se vuelven positivas
+    is_correct: false
+  - text: Porque el logaritmo se eleva al cuadrado
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el argumento $\frac{1}{16}$ es positivo ($> 0$); el resultado del logaritmo sí puede ser negativo'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la expresión dentro del operador logaritmo que actúa como argumento $a$.'
-  - 'Paso 2: Formular la inecuación de restricción de argumento positivo: $a > 0$.'
-  - 'Paso 3: Resolver la inecuación algebraica para despejar el intervalo de la variable.'
-  - 'Paso 4: Comprobar que los valores hallados mantengan el argumento estrictamente positivo.'
-errores_correccion: |
-  - **Error 1:** Afirmar que $\log_{10}(0) = 0$. **Cómo corregirlo:** $\log_{10}(0)$ **no existe** en los números reales porque $10^c = 0$ no tiene solución. El argumento debe ser estrictamente positivo ($a > 0$).
-  - **Error 2:** Aceptar soluciones negativas de $x$ al resolver ecuaciones logarítmicas sin verificar el argumento. **Cómo corregirlo:** Siempre debes **sustituir la solución hallada** en el argumento original; si el argumento resultante resulta ser $\le 0$, esa solución debe ser descartada inmediatamente.
+- 'Paso 1: Identificar el argumento $a$ o la expresión interna $g(x)$.'
+- 'Paso 2: Establecer la inecuación estricta $g(x) > 0$.'
+- 'Paso 3: Resolver la inecuación para determinar el conjunto de valores de $x$ donde el logaritmo existe.'
+errores_correccion: '- **Error 1: Confundir argumento negativo con resultado negativo.** **Cómo corregirlo:** El argumento no puede ser negativo ($a > 0$), pero el resultado sí puede ser negativo ($\log_2(1/4) = -2$).
+
+  - **Error 2: Incluir el cero en el dominio ($a \ge 0$).** **Cómo corregirlo:** La inecuación es estrictamente mayor que cero ($a > 0$), el cero no tiene logaritmo.'
 ejemplos:
-  - titulo: 'Evaluación de argumento negativo'
-    enunciado: '¿La expresión $\log_2(-8)$ tiene solución en el conjunto de los números reales?'
-    alternativas:
-      - 'No, porque el argumento $-8$ no es positivo'
-      - 'Sí, y su valor es -3'
-      - 'Sí, y su valor es 3'
-    respuesta: 'No, porque el argumento $-8$ no es positivo'
-    solucion_pasos:
-      - '1. Verificamos el argumento: $a = -8$.'
-      - '2. La regla exige $a > 0$. Como $-8 \le 0$, no existe en $\mathbb{R}$.'
-  - titulo: 'Evaluación de argumento cero'
-    enunciado: '¿Existe el logaritmo $\log_5(0)$ en los números reales?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No. No existe exponente tal que $5^c = 0$.'
-  - titulo: 'Dominio de función logarítmica'
-    enunciado: 'Para que la función $f(x) = \log_4(x - 7)$ exista, ¿se requiere $x > 7$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Argumento positivo: $x - 7 > 0 \implies x > 7$.'
-  - titulo: 'Descarte de raíces extrañas'
-    enunciado: 'Al resolver una ecuación logarítmica y obtener $x = -2$, si el argumento queda $x + 1 = -1$, ¿se descarta dicha solución?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Como el argumento resulta en $-1 \le 0$, la solución se descarta por violar la condición de existencia.'
+- titulo: Ejemplo 1
+  enunciado: ¿Para qué valores de $x$ existe $\log(2x - 6)$?
+  alternativas:
+  - $x > 3$
+  - $x \ge 3$
+  - $x > 0$
+  respuesta: $x > 3$
+  solucion_pasos:
+  - $2x - 6 > 0 \implies 2x > 6 \implies x > 3$.
+- titulo: Ejemplo 2
+  enunciado: ¿Existe el valor real de $\log_{10}(-100)$?
+  alternativas:
+  - No existe en $\mathbb{R}$
+  - $-2$
+  - $2$
+  respuesta: No existe en $\mathbb{R}$
+  solucion_pasos:
+  - El argumento $-100 < 0$ viola la restricción $a > 0$.
+- titulo: ¿Es log(0) = 0 una afirmación verdadera?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, $\log(0)$ está indefinido porque ninguna potencia de 10 da 0.
+  alternativas:
+  - texto: No, log(0) no existe
+    es_correcta: true
+    retroalimentacion: ¡Correcto! El argumento debe ser estrictamente positivo ($a > 0$).
+  - texto: Sí, es igual a 0
+    es_correcta: false
+    retroalimentacion: Incorrecto, el que vale 0 es $\log(1)$.
+  - texto: Sí, es igual a 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, $10^0 = 1$, no 0.
+- titulo: ¿Es log₃(1/27) = -3 una expresión válida?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque el argumento $1/27 > 0$ es positivo y $3^{-3} = 1/27$.
+  alternativas:
+  - texto: Sí, argumento 1/27 > 0 es positivo
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Argumento positivo con exponente negativo.
+  - texto: No, las fracciones no tienen logaritmo
+    es_correcta: false
+    retroalimentacion: Incorrecto, todo número real positivo tiene logaritmo.
+  - texto: No, el logaritmo debe ser positivo
+    es_correcta: false
+    retroalimentacion: Incorrecto, los exponentes pueden ser negativos.
 errores_frecuentes:
-  - 'El logaritmo de un número negativo es igual al logaritmo del número positivo cambiado de signo.'
-  - 'El logaritmo de cero $\log_b(0)$ es igual a cero.'
-  - 'Se pueden calcular logaritmos de argumentos negativos si la base del logaritmo es impar.'
-  - 'El argumento de un logaritmo puede ser igual a cero si la base es mayor que 10.'
-  - 'Aceptar soluciones de ecuaciones logarítmicas que producen argumentos negativos en la ecuación inicial.'
+- Intentar calcular logaritmos de números negativos.
+- Confundir $\log_b(1) = 0$ con $\log_b(0) = 0$.
+- Usar $\ge 0$ en vez de $> 0$ al calcular dominios.
+- Rechazar logaritmos cuyo resultado sea negativo.
 afirmaciones_verdaderas:
-  - 'El argumento de todo logaritmo $\log_b(a)$ en el conjunto de los números reales debe ser un número estrictamente positivo ($a > 0$).'
-  - 'No existen logaritmos reales para argumentos menores o iguales a cero ($a \le 0$) porque el recorrido de la función exponencial de base positiva es $\mathbb{R}^+ = ]0, +\infty[$.'
-al_terminar_debes_poder: 'Determinar el dominio de existencia de expresiones logarítmicas planteando la inecuación de argumento positivo $a > 0$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- El argumento de un logaritmo debe ser un número real estrictamente positivo ($a > 0$).
+- El conjunto imagen de la función exponencial es $]0, +\infty[$, lo que fija el dominio del logaritmo.
+- El resultado de un logaritmo puede ser cualquier número real (positivo, cero o negativo).
+al_terminar_debes_poder: '![Síntesis de restricción de argumento positivo](/static/img/nodos/restriccion-de-argumento-positivo-en-un-logaritmo-resumen.svg)
+
+
+  QUÉ: Comprender y aplicar la restricción de argumento positivo $a > 0$ en logaritmos.
+
+
+  CÓMO: Verificando que todo argumento pertenezca al intervalo $]0, +\infty[$ y planteando inecuaciones estrictas $g(x) > 0$ para hallar dominios de existencia.'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado

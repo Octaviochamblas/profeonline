@@ -1,99 +1,131 @@
 semantic_id: MAT.NUM.LOGARITMOS_CONCEPTO.RESTRICCION_BASE_DISTINTA_UNO
-resumen_inicial: 'La base de todo logaritmo $\log_b(a)$ no puede ser igual a uno ($b \neq 1$) porque $1^c = 1$ no permite despejar un exponente único ni definir argumentos distintos de uno.'
-explicacion_simple: |
-  Si intentaras usar el número 1 como la base de un logaritmo ($\log_1(a)$), te encontrarías con dos problemas imposibles:
-  1. Si buscas $\log_1(5)$, te preguntas: *"¿A qué exponente elevo 1 para obtener 5?"*. Ningún exponente funciona porque $1 \cdot 1 \cdot 1 \dots$ siempre da 1. No existe respuesta.
-  2. Si buscas $\log_1(1)$, te preguntas: *"¿A qué exponente elevo 1 para obtener 1?"*. ¡Cualquier número funciona! ($1^2 = 1, 1^5 = 1, 1^{-10} = 1$). Tendrías infinitas respuestas.
-  Por eso, en matemáticas se prohíbe estrictamente la base 1 ($b \neq 1$).
-explicacion_formal: |
-  ### Definición formal
-  La **restricción de base distinta de uno** en la expresión $\log_b(a)$ establece que:
-  $$b \neq 1 \quad \implies \quad b \in ]0, 1[ \; \cup \; ]1, +\infty[$$
+resumen_inicial: La base de un logaritmo no puede ser igual a 1 ($b \neq 1$), porque $1^c = 1$ para todo exponente, lo que generaría ausencia de solución o infinitas soluciones.
+explicacion_simple: "![Restricción de base distinta de 1](/static/img/nodos/restriccion-de-base-distinta-de-uno-en-un-logaritmo-intro.svg)\n\n¿Por qué la base no puede ser $1$?\n- Como $1$ elevado a cualquier número sigue siendo $1$ ($1^2 = 1, 1^{10} = 1, 1^{-5} = 1$):\n  - $\\log_1(5)$ no tiene solución: ningún exponente puede convertir el $1$ en $5$.\n  - $\\log_1(1)$ tiene infinitas soluciones: cualquier exponente sirve, perdiendo la unicidad.\n- Por eso, la base debe ser siempre distinta de 1: $b \\neq 1$."
+explicacion_formal: 'En el sistema de los números reales, la función exponencial $f(x) = b^x$ con $b = 1$ se reduce a la función constante $f(x) = 1$. Dicha función **no es inyectiva ni sobreyectiva** en $\mathbb{R}^+$, por lo que carece de función inversa.
 
-  ### Demostración por contradicción analítica
-  Si se asumiera la base $b = 1$ en la definición $\log_1(a) = c \iff 1^c = a$:
-  1. **Para todo argumento $a \neq 1$**: La ecuación $1^c = a$ no posee solución real en $c$ (conjunto solución vacío $\emptyset$), pues la potencia constante $1^c = 1$ jamás puede dar como resultado $a \neq 1$.
-  2. **Para el argumento $a = 1$**: La ecuación $1^c = 1$ se satisface para **todo número real $c \in \mathbb{R}$**, destruyendo la propiedad de unicidad requerida para que $\log_b(a)$ sea una función matemática (indeterminación $\mathbb{R}$).
 
-  ### Síntesis didáctica
-  - Condición de base: $b > 0$ y $b \neq 1$.
-  - Razón analítica: Preserva la biyectividad de la función exponencial $f(x) = b^x$ (que para $b = 1$ degeneraría en la recta horizontal constante $y = 1$).
-definiciones_clave: |
-  - **Restricción $b \neq 1$**: Condición de existencia que excluye al número 1 del dominio de las bases de logaritmos.
-  - **Unicidad de la función**: Exigencia de que a cada argumento le corresponda un único resultado real $c$.
-  - **Degeneración de la función**: Colapso de la función exponencial a una constante $1^x = 1$ cuando $b = 1$.
-propiedades_relaciones: |
-  - **Biyectividad de $b^x$**: La restricción $b \neq 1$ garantiza que la función exponencial sea estrictamente creciente ($b > 1$) o estrictamente decreciente ($0 < b < 1$), permitiendo la existencia de su función inversa.
-  - **Restricciones compuestas de base**: Para una base $g(x)$, se deben resolver simultáneamente $g(x) > 0$ y $g(x) \neq 1$.
+  **Casos de Falla Algebraica:**
+
+  1. **Si $a \neq 1$:** La ecuación $1^c = a$ tiene conjunto solución vacío $\emptyset$.
+
+  2. **Si $a = 1$:** La ecuación $1^c = 1$ se satisface para todo $c \in \mathbb{R}$, produciendo indeterminación.
+
+
+  Por lo tanto, se exige la condición de base $b \in \mathbb{R}^+ \setminus \{1\} = ]0, 1[ \cup ]1, +\infty[.'
+definiciones_clave: '- **Base distinta de uno ($b \neq 1$)**: Restricción de no unitariedad obligatoria para la base logarítmica.
+
+  - **Inyectividad**: Propiedad requerida para que a cada argumento le corresponda un único logaritmo.
+
+  - **Indeterminación logarítmica**: Pérdida de unicidad provocada por la base 1.'
+propiedades_relaciones: '- **Dominio de bases**: $b \in ]0, 1[ \cup ]1, +\infty[$.
+
+  - **Bases decrecientes**: Si $0 < b < 1$, la función logarítmica es estrictamente decreciente.
+
+  - **Bases crecientes**: Si $b > 1$, la función logarítmica es estrictamente creciente.'
 ejemplo_guiado:
-  enunciado: 'Encuentra los valores prohibidos de la variable $x$ para que el logaritmo $L = \log_{(x - 4)}(25)$ esté correctamente definido en $\mathbb{R}$.'
+  enunciado: '![Ejemplos de base distinta de 1](/static/img/nodos/restriccion-de-base-distinta-de-uno-en-un-logaritmo-ejemplos.svg)
+
+
+    Analice la existencia y unicidad de $\log_1(9)$, $\log_1(1)$ y $\log_2(1)$.'
   pasos:
-    - 'Paso 1: Identificamos la base del logaritmo: $b = x - 4$.'
-    - 'Paso 2: Aplicamos la primera restricción (base positiva): $x - 4 > 0 \implies x > 4$.'
-    - 'Paso 3: Aplicamos la segunda restricción (base distinta de uno): $x - 4 \neq 1 \implies x \neq 1 + 4 \implies x \neq 5$.'
-    - 'Paso 4: Conclusión: La variable $x$ debe ser mayor que 4, pero **excluyendo exactamente el valor $x = 5$** (Dominio: $x \in ]4, 5[ \; \cup \; ]5, +\infty[$).'
+  - 'Paso 1: Para $\log_1(9)$: Plantear $1^c = 9$. Como $1^c = 1$ siempre, no tiene solución.'
+  - 'Paso 2: Para $\log_1(1)$: Plantear $1^c = 1$. Todo $c \in \mathbb{R}$ lo cumple, generando indeterminación.'
+  - 'Paso 3: Para $\log_2(1)$: La base es $2 \neq 1$. Es válida y su valor único es $0$ ($2^0 = 1$).'
+  - 'Conclusión: La base debe ser estrictamente distinta de 1 para garantizar solución única.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué el número 1 está estrictamente excluido como base de cualquier logaritmo ($b \neq 1$)?'
-    choices:
-      - {text: 'Porque $1^c = 1$ no permite obtener argumentos distintos de 1 y genera infinitas respuestas para $\log_1(1)$, destruyendo la función', is_correct: true}
-      - {text: 'Porque el número 1 no se puede escribir como fracción', is_correct: false}
-      - {text: 'Porque los logaritmos sólo aceptan bases pares', is_correct: false}
-      - {text: 'Porque $1 \cdot 1 = 2$ invalida la propiedad exponencial', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque $1^c = 1$ no permite obtener argumentos distintos de 1 y genera infinitas respuestas para $\log_1(1)$, destruyendo la función''. Para $b=1$, la ecuación $1^c = a$ no tiene solución para $a \neq 1$ o tiene infinitas para $a=1$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Qué ocurre si intentamos evaluar la expresión $\log_1(8)$?'
-    choices:
-      - {text: 'No está definida en los números reales, pues no existe ningún exponente $c$ tal que $1^c = 8$', is_correct: true}
-      - {text: 'Su resultado es $8$, dividiendo $8 / 1$', is_correct: false}
-      - {text: 'Su resultado es $1$, multiplicando por 1', is_correct: false}
-      - {text: 'Su resultado es $0$, por ser la base 1', is_correct: false}
-    explanation: 'La alternativa correcta es ''No está definida en los números reales, pues no existe ningún exponente $c$ tal que $1^c = 8$''. La base $b = 1$ está prohibida.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué no existe el logaritmo $\log_1(7)$?
+  choices:
+  - text: Porque $1^c = 1$ para todo número real, por lo que nunca puede dar $7$
+    is_correct: true
+  - text: Porque $7$ es un número primo
+    is_correct: false
+  - text: Porque el logaritmo de $1$ es $0$
+    is_correct: false
+  - text: Porque $1 \times 7 = 7$
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque $1^c = 1$ para todo número real, por lo que nunca puede dar $7$'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al resolver $\log_{x-2}(10) = 3$, ¿qué valor de $x$ queda prohibido por la restricción $b \neq 1$?
+  choices:
+  - text: $x = 3$ (porque $3 - 2 = 1$, haciendo la base igual a 1)
+    is_correct: true
+  - text: $x = 2$
+    is_correct: false
+  - text: $x = 0$
+    is_correct: false
+  - text: $x = 5$
+    is_correct: false
+  explanation: La alternativa correcta es '$x = 3$ (porque $3 - 2 = 1$, haciendo la base igual a 1)'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la expresión que actúa como la base $b$ en el logaritmo $\log_b(a)$.'
-  - 'Paso 2: Plantear las dos condiciones de existencia de la base: $b > 0$ y $b \neq 1$.'
-  - 'Paso 3: Resolver la ecuación $b = 1$ para hallar el valor puntual prohibido.'
-  - 'Paso 4: Excluir dicho valor puntual del dominio de soluciones válidas.'
-errores_correccion: |
-  - **Error 1:** Afirmar que $\log_1(1) = 1$. **Cómo corregirlo:** $\log_1(1)$ **no está definido** (es indeterminado) porque $1^c = 1$ se cumple para cualquier exponente $c \in \mathbb{R}$ ($1^0=1, 1^2=1, 1^5=1$). La base $b = 1$ se prohíbe completamente.
-  - **Error 2:** Olvidar excluir la solución $b = 1$ al resolver inecuaciones de base variable. **Cómo corregirlo:** Además de verificar $b > 0$, siempre debes resolver $b \neq 1$ y quitar ese punto del conjunto solución.
+- 'Paso 1: Identificar la expresión de la base $b$.'
+- 'Paso 2: Plantear la restricción $b \neq 1$ además de $b > 0$.'
+- 'Paso 3: Excluir de las soluciones finales cualquier valor que anule la condición $b \neq 1$.'
+errores_correccion: "- **Error 1: Creer que $\\log_1(1) = 1$.** **Cómo corregirlo:** La base 1 está excluida universalmente por generar infinitas soluciones ($1^0 = 1, 1^1 = 1, 1^2 = 1$).\n- **Error 2: Olvidar comprobar $b \neq 1$ en ecuaciones algebraicas.** **Cómo corregirlo:** Al resolver ecuaciones con incógnitas en la base, descartar siempre los valores donde la base resulte 1."
 ejemplos:
-  - titulo: 'Evaluación de base igual a 1'
-    enunciado: '¿Existe el logaritmo $\log_1(16)$ en los números reales?'
-    alternativas:
-      - 'No, pues la base no puede ser igual a 1'
-      - 'Sí, y su valor es 16'
-      - 'Sí, y su valor es 0'
-    respuesta: 'No, pues la base no puede ser igual a 1'
-    solucion_pasos:
-      - '1. Verificamos la base: $b = 1$.'
-      - '2. La regla exige $b \neq 1$. Por lo tanto, no existe en $\mathbb{R}$.'
-  - titulo: 'Punto excluido en base variable'
-    enunciado: 'En el logaritmo $\log_{(x-2)}(9)$, ¿el valor $x = 3$ está prohibido?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Si $x = 3 \implies b = 3 - 2 = 1$. Como la base no puede ser 1, $x = 3$ está excluido.'
-  - titulo: 'Intervalos válidos de base'
-    enunciado: '¿El dominio de la base de un logaritmo está formado por dos intervalos $]0, 1[ \; \cup \; ]1, +\infty[$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Abarca todos los reales positivos excepto el punto 1.'
-  - titulo: 'Biyectividad de la función'
-    enunciado: '¿Excluir la base 1 garantiza que la función exponencial $f(x) = b^x$ tenga función inversa?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Para $b \neq 1$, la función $b^x$ es estrictamente monótona y biyectiva.'
+- titulo: Ejemplo 1
+  enunciado: ¿Cuál es el valor de $\log_1(100)$?
+  alternativas:
+  - No existe en $\mathbb{R}$
+  - $100$
+  - $0$
+  respuesta: No existe en $\mathbb{R}$
+  solucion_pasos:
+  - La base es 1, por lo que la expresión carece de solución en $\mathbb{R}$.
+- titulo: Ejemplo 2
+  enunciado: ¿Para qué valores de $x$ está definida la base en $\log_{x}(8)$?
+  alternativas:
+  - $x > 0$ con $x \neq 1$
+  - $x > 0$
+  - $x \neq 1$
+  respuesta: $x > 0$ con $x \neq 1$
+  solucion_pasos:
+  - 'La base debe ser estrictamente positiva y distinta de 1: $x \in ]0, 1[ \cup ]1, +\infty[$.'
+- titulo: ¿Es log_b(a) válido si b = 1?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, la base 1 está excluida de la definición de logaritmo.
+  alternativas:
+  - texto: No, la base debe ser distinta de 1
+    es_correcta: true
+    retroalimentacion: ¡Correcto! $b \neq 1$ es una restricción fundamental.
+  - texto: Sí, siempre que a = 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, incluso $\log_1(1)$ está indefinido.
+  - texto: Sí, para todo argumento positivo
+    es_correcta: false
+    retroalimentacion: Incorrecto, la base 1 no es admisible.
+- titulo: ¿Es log_{0,5}(4) = -2 una expresión válida?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque $b = 0,5 > 0$ y $0,5 \neq 1$, y $(0,5)^{-2} = (1/2)^{-2} = 4$.
+  alternativas:
+  - texto: Sí, 0,5 > 0 y 0,5 ≠ 1
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Base en el intervalo ]0, 1[.
+  - texto: No, las bases decimales no existen
+    es_correcta: false
+    retroalimentacion: Incorrecto, cualquier número positivo distinto de 1 es válido.
+  - texto: No, es igual a 2
+    es_correcta: false
+    retroalimentacion: Incorrecto, $(1/2)^2 = 1/4$, se requiere exponente negativo.
 errores_frecuentes:
-  - 'El logaritmo en base 1 de cualquier número es siempre igual a 0.'
-  - 'La base $b = 1$ es válida cuando el argumento también es igual a 1.'
-  - 'Evaluar $\log_1(5)$ dando como respuesta el número 5 por la propiedad de la identidad.'
-  - 'El valor puntual que hace que la base sea igual a 1 se incluye en el dominio válido de la función logarítmica.'
-  - 'La restricción $b \neq 1$ aplica únicamente cuando el argumento es negativo.'
+- Asignar un valor arbitrario a $\log_1(1)$.
+- Olvidar excluir el valor $b = 1$ en inecuaciones de dominio.
+- Confundir la restricción de la base ($b \neq 1$) con el argumento (el argumento sí puede ser 1).
+- Permitir bases unitarias en problemas de modelamiento.
 afirmaciones_verdaderas:
-  - 'La base de todo logaritmo $\log_b(a)$ debe ser diferente de uno ($b \neq 1$) para evitar la indeterminación y garantizar la unicidad de la función.'
-  - 'Para $b = 1$, la ecuación $1^c = a$ no posee solución si $a \neq 1$ y posee infinitas soluciones si $a = 1$, por lo cual la base 1 está excluida del conjunto de reales.'
-al_terminar_debes_poder: 'Determinar las restricciones completas de la base de un logaritmo aplicando $b > 0$ y $b \neq 1$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- La base de un logaritmo debe ser estrictamente distinta de 1 ($b \neq 1$).
+- El argumento sí puede ser igual a 1, dando como resultado $\log_b(1) = 0$.
+- La restricción $b \neq 1$ garantiza la inyectividad y unicidad de la función logarítmica.
+al_terminar_debes_poder: '![Síntesis de restricción de base distinta de 1](/static/img/nodos/restriccion-de-base-distinta-de-uno-en-un-logaritmo-resumen.svg)
+
+
+  QUÉ: Comprender y aplicar la restricción de base distinta de uno $b \neq 1$ en logaritmos.
+
+
+  CÓMO: Verificando que la base pertenezca al conjunto $]0, 1[ \cup ]1, +\infty[$ y excluyendo los valores que anulen la condición en ecuaciones algebraicas.'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado

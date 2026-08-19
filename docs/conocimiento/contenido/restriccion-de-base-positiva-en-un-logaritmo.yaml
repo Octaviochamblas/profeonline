@@ -1,98 +1,142 @@
 semantic_id: MAT.NUM.LOGARITMOS_CONCEPTO.RESTRICCION_BASE_POSITIVA
-resumen_inicial: 'La base de todo logaritmo $\log_b(a)$ debe ser estrictamente positiva ($b > 0$) para garantizar la existencia y continuidad de la función en los números reales.'
-explicacion_simple: |
-  La base de un logaritmo nunca puede ser un número negativo o cero. Si intentaras usar una base negativa (como $\log_{-2}(8)$), tendrías problemas graves: $(-2)^1 = -2$, $(-2)^2 = 4$, $(-2)^3 = -8$. El resultado iría saltando de positivo a negativo constantemente y no podrías calcular potencias de exponentes fraccionarios como $(-2)^{1/2} = \sqrt{-2}$, que ni siquiera existe en los números reales. Por eso, en matemáticas reales se exige que la base sea siempre positiva ($b > 0$).
-explicacion_formal: |
-  ### Definición formal
-  La **restricción de base positiva** en la expresión $\log_b(a)$ exige formalmente que:
-  $$b \in \mathbb{R}^+ \quad \iff \quad b > 0$$
+resumen_inicial: La base $b$ de un logaritmo debe ser estrictamente positiva ($b > 0$) para asegurar que las potencias reales existan y no produzcan números complejos ni indeterminaciones.
+explicacion_simple: '![Restricción de base positiva](/static/img/nodos/restriccion-de-base-positiva-en-un-logaritmo-intro.svg)
 
-  ### Justificación analítica por inconsistencia real
-  Si se permitiera una base negativa $b < 0$:
-  1. **Oscilación de signos**: Las potencias enteras $b^c$ alternan signos positivos y negativos ($(-b)^1 < 0, (-b)^2 > 0$), impidiendo definir valores para argumentos positivos continuos.
-  2. **Inexistencia en el cuerpo real $\mathbb{R}$**: Para exponentes racionales con denominador par, como $c = \frac{1}{2}$, la potencia equivalente exigiría evaluar raíces pares de números negativos:
-     $$\log_{-4}(2) = c \iff (-4)^c = 2 \implies (-4)^{1/2} = \sqrt{-4} \notin \mathbb{R}$$
-  3. **Imposibilidad de la función continua**: Impediría definir la función logarítmica $f(x) = \log_b(x)$ como una curva continua y diferenciable.
 
-  ### Síntesis didáctica
-  - Condición de existencia: $b > 0$.
-  - Bases prohibidas: $b \le 0$ (números negativos y el cero no son bases válidas en $\mathbb{R}$).
-definiciones_clave: |
-  - **Restricción de base positiva $b > 0$**: Condición de existencia fundamental que exige que el subíndice del logaritmo sea mayor que cero.
-  - **Dominio de la base**: Conjunto de valores numéricos válidos que puede adoptar la base $b \in ]0, 1[ \cup ]1, +\infty[$.
-  - **Inconsistencia en $\mathbb{R}$**: Imposibilidad de definir una función continua real cuando la base es menor o igual a cero.
-propiedades_relaciones: |
-  - **Conexión con la función exponencial**: La base de la función exponencial $f(x) = b^x$ exige exactamente la misma restricción $b > 0$.
-  - **Resolución de inecuaciones de base**: Al resolver ecuaciones donde la base contiene una variable $\log_{(x-3)}(a)$, se debe exigir la inecuación $x - 3 > 0 \implies x > 3$.
+  ¿Por qué la base de un logaritmo no puede ser negativa ni cero?
+
+  - **Si fuera negativa (como $-2$):** $(-2)^{1/2} = \sqrt{-2}$, ¡que no es un número real! Las potencias con base negativa alternan de signo y se rompen en fracciones.
+
+  - **Si fuera cero ($0$):** $0^c$ siempre es $0$, por lo que jamás podría dar números como $5$ u $8$.
+
+  - Por eso, la base debe ser siempre positiva: $b > 0$.'
+explicacion_formal: 'En la definición de $\log_b(a) = c \iff b^c = a$, la condición **$b > 0$** es un requisito algebraico indispensable para que la función exponencial $f(x) = b^x$ esté unívocamente definida sobre todo el cuerpo de los números reales $\mathbb{R}$.
+
+
+  **Análisis de Imposibilidad:**
+
+  1. **Para $b < 0$:** Exponentes racionales con denominador par (ej. $x = \frac{1}{2}, \frac{3}{4}$) generarían raíces de radicando negativo en $\mathbb{R}$:
+
+  $$(-b)^{1/2} = \sqrt{-b} \notin \mathbb{R}$$
+
+  2. **Para $b = 0$:** $0^x = 0$ para todo $x > 0$, lo que impide generar cualquier argumento $a \neq 0$.
+
+
+  Por lo tanto, el dominio de bases admisibles exige estrictamente $b \in \mathbb{R}^+$.'
+definiciones_clave: '- **Base positiva ($b > 0$)**: Restricción de positividad obligatoria de la base de todo logaritmo.
+
+  - **Clausura en $\mathbb{R}$**: Garantía de que las potencias generadas pertenezcan exclusivamente a los números reales.
+
+  - **Solución extraña**: Solución algebraica negativa que debe descartarse al resolver incógnitas en la base.'
+propiedades_relaciones: '- **Intersección de restricciones**: La base debe ser $b > 0$ y $b \neq 1$.
+
+  - **Descarte de negativos**: En $x^2 = 16 \implies x = \pm 4$, como base de logaritmo solo es válida $x = 4$.'
 ejemplo_guiado:
-  enunciado: 'Determina el conjunto de valores reales válidos para la variable $x$ de modo que la expresión logarítmica $L = \log_{(2x - 6)}(100)$ esté bien definida en los números reales.'
+  enunciado: '![Ejemplos de restricción de base positiva](/static/img/nodos/restriccion-de-base-positiva-en-un-logaritmo-ejemplos.svg)
+
+
+    Analice la validez en $\mathbb{R}$ de las expresiones $\log_{-2}(4)$, $\log_0(5)$ y $\log_3(27)$.'
   pasos:
-    - 'Paso 1: Identificamos la base del logaritmo: $b = 2x - 6$.'
-    - 'Paso 2: Planteamos la restricción de base positiva: $b > 0 \implies 2x - 6 > 0$.'
-    - 'Paso 3: Resolvemos la inecuación sumando 6 a ambos lados: $2x > 6$.'
-    - 'Paso 4: Dividimos por 2 para despejar $x$: $x > 3$. El logaritmo existe para todo $x \in ]3, +\infty[$ (excluyendo $x = 3.5$ donde la base valga 1).'
+  - 'Paso 1: Para $\log_{-2}(4)$: La base es $-2 < 0$. No está definida en $\mathbb{R}$ por ser negativa.'
+  - 'Paso 2: Para $\log_0(5)$: La base es $0$. Como $0^c \neq 5$ para todo $c$, está indefinida.'
+  - 'Paso 3: Para $\log_3(27)$: La base es $3 > 0$ y distinta de 1. Es válida y su valor es $3$ (pues $3^3 = 27$).'
+  - 'Conclusión: Solo $\log_3(27)$ está correctamente definido en $\mathbb{R}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué la base $b$ de un logaritmo $\log_b(a)$ debe ser estrictamente positiva ($b > 0$) en los números reales?'
-    choices:
-      - {text: 'Porque las bases negativas generan saltos de signo y potencias de exponente fraccionario no reales como $\sqrt{-4} \notin \mathbb{R}$', is_correct: true}
-      - {text: 'Porque los números positivos no se pueden multiplicar', is_correct: false}
-      - {text: 'Porque la base debe ser siempre mayor que el argumento', is_correct: false}
-      - {text: 'Porque los exponentes reales sólo existen para números pares', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque las bases negativas generan saltos de signo y potencias de exponente fraccionario no reales como $\sqrt{-4} \notin \mathbb{R}$''. Las bases negativas impiden definir la función logarítmica continua en $\mathbb{R}$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál de los siguientes números NO puede ser utilizado como base válida de un logaritmo real?'
-    choices:
-      - {text: '$-3$, por ser un número negativo', is_correct: true}
-      - {text: '$5$, por ser positivo', is_correct: false}
-      - {text: '$0.5$, por ser una fracción positiva', is_correct: false}
-      - {text: '$10$, por ser la base decimal', is_correct: false}
-    explanation: 'La alternativa correcta es ''$-3$, por ser un número negativo''. Las bases de los logaritmos reales deben ser estrictamente mayores que cero ($b > 0$).'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué la expresión $\log_{-3}(9)$ no está definida en los números reales?
+  choices:
+  - text: Porque la base es negativa ($-3 < 0$), lo que viola la condición $b > 0$
+    is_correct: true
+  - text: Porque $9$ no es múltiplo de $3$
+    is_correct: false
+  - text: Porque $(-3)^2 = -9$
+    is_correct: false
+  - text: Porque el resultado debería ser decimal
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque la base es negativa ($-3 < 0$), lo que viola la condición $b > 0$'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al resolver $\log_x(25) = 2$, se obtiene $x^2 = 25 \implies x = \pm 5$. ¿Cuál es la solución correcta?
+  choices:
+  - text: $x = 5$ únicamente, porque la base debe ser estrictamente positiva ($b > 0$)
+    is_correct: true
+  - text: $x = -5$ únicamente
+    is_correct: false
+  - text: Ambas soluciones $x = 5$ y $x = -5$
+    is_correct: false
+  - text: Ninguna solución
+    is_correct: false
+  explanation: La alternativa correcta es '$x = 5$ únicamente, porque la base debe ser estrictamente positiva ($b > 0$)'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la expresión que ocupa la posición de la base $b$ en el logaritmo $\log_b(a)$.'
-  - 'Paso 2: Plantear la inecuación de condición de existencia de base positiva: $b > 0$.'
-  - 'Paso 3: Resolver la inecuación algebraica para encontrar el intervalo permitido de la variable.'
-  - 'Paso 4: Excluir los valores que violan la condición de positividad.'
-errores_correccion: |
-  - **Error 1:** Intentar evaluar logaritmos con base negativa (ej: calcular $\log_{-2}(4) = 2$). **Cómo corregirlo:** Aunque $(-2)^2 = 4$, la notación logarítmica real **prohíbe las bases negativas** para evitar inconsistencias con exponentes fraccionarios y discontinuidades.
-  - **Error 2:** Usar la base cero en un logaritmo (ej: $\log_0(5)$). **Cómo corregirlo:** La base $0$ elevada a cualquier exponente positivo da $0$ y elevada a negativos no existe, por lo que $b = 0$ está estrictamente excluido.
+- 'Paso 1: Identificar la base $b$ del logaritmo.'
+- 'Paso 2: Comprobar que $b > 0$. Si $b \le 0$, el logaritmo no existe en $\mathbb{R}$.'
+- 'Paso 3: En ecuaciones algebraicas, descartar toda solución donde la base resulte menor o igual a cero.'
+errores_correccion: '- **Error 1: Aceptar bases negativas porque $(-2)^2 = 4$.** **Cómo corregirlo:** Aunque $(-2)^2 = 4$, la función $\log_{-2}(x)$ no es continua en $\mathbb{R}$ y está excluida por definición formal.
+
+  - **Error 2: No descartar soluciones negativas en ecuaciones.** **Cómo corregirlo:** Si $x^2 = 49$, descartar $x = -7$ para la base de un logaritmo.'
 ejemplos:
-  - titulo: 'Evaluación de base negativa'
-    enunciado: '¿La expresión $\log_{-5}(25)$ está definida en el conjunto de los números reales?'
-    alternativas:
-      - 'No, porque la base $-5$ es negativa'
-      - 'Sí, y su valor es 2'
-      - 'Sí, y su valor es -2'
-    respuesta: 'No, porque la base $-5$ es negativa'
-    solucion_pasos:
-      - '1. Verificamos la base: $b = -5$.'
-      - '2. Como $-5 \le 0$, no cumple la condición de base positiva $b > 0$. No está definida en $\mathbb{R}$.'
-  - titulo: 'Evaluación de base cero'
-    enunciado: '¿Es posible definir el logaritmo $\log_0(10)$ en los números reales?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No. La base debe ser estrictamente mayor que cero ($b > 0$).'
-  - titulo: 'Base fraccionaria positiva'
-    enunciado: '¿La fracción positiva $b = 1/2$ es una base válida de logaritmo?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Es estrictamente positiva ($1/2 > 0$) y diferente de 1.'
-  - titulo: 'Inecuación de base'
-    enunciado: 'Para que $\log_{(x-5)}(8)$ exista, ¿se debe exigir $x > 5$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Base positiva: $x - 5 > 0 \implies x > 5$.'
+- titulo: Ejemplo 1
+  enunciado: ¿Existe el valor real de $\log_{-4}(16)$?
+  alternativas:
+  - No existe en $\mathbb{R}$
+  - $2$
+  - $-2$
+  respuesta: No existe en $\mathbb{R}$
+  solucion_pasos:
+  - La base es $-4 < 0$, por lo que no está definido en $\mathbb{R}$.
+- titulo: Ejemplo 2
+  enunciado: Si $\log_x(36) = 2$, ¿cuál es el valor válido de $x$?
+  alternativas:
+  - $6$
+  - $\pm 6$
+  - $-6$
+  respuesta: $6$
+  solucion_pasos:
+  - $x^2 = 36 \implies x = 6$ (se descarta $-6$ por restricción de base positiva).
+- titulo: ¿Es log₀(10) una expresión válida en ℝ?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, porque la base $0$ no cumple la condición $b > 0$.
+  alternativas:
+  - texto: No, la base no puede ser 0
+    es_correcta: true
+    retroalimentacion: ¡Correcto! La base debe ser estrictamente positiva.
+  - texto: Sí, es igual a 0
+    es_correcta: false
+    retroalimentacion: Incorrecto, $0^c \neq 10$ para todo $c$.
+  - texto: Sí, es igual a 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, está matemáticamente indefinido.
+- titulo: ¿Es log_{1/2}(8) = -3 una expresión válida en ℝ?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, porque la base $1/2 > 0$ es positiva y distinta de 1, dando $(1/2)^{-3} = 2^3 = 8$.
+  alternativas:
+  - texto: Sí, base 1/2 > 0 es positiva y válida
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Las bases fraccionarias positivas son completamente válidas.
+  - texto: No, la base debe ser entera
+    es_correcta: false
+    retroalimentacion: Incorrecto, las bases pueden ser cualquier real positivo distinto de 1.
+  - texto: No, el resultado no puede ser negativo
+    es_correcta: false
+    retroalimentacion: Incorrecto, el exponente puede ser negativo.
 errores_frecuentes:
-  - 'Se pueden calcular logaritmos reales con bases negativas si el argumento es un número par.'
-  - 'La base de un logaritmo puede ser igual a 0 si el argumento es cero.'
-  - 'La restricción de base positiva $b > 0$ se aplica únicamente a los logaritmos decimales.'
-  - 'Evaluar $\log_{-3}(9)$ dando como resultado válido el número 2 en $\mathbb{R}$.'
-  - 'Las bases de los logaritmos pueden ser cualquier número real sin restricción de signo.'
+- Aceptar bases negativas por coincidencia en exponentes pares.
+- Olvidar descartar soluciones negativas al despejar la base.
+- Creer que las bases fraccionarias menores a 1 son negativas.
+- Permitir la base cero.
 afirmaciones_verdaderas:
-  - 'La base de todo logaritmo $\log_b(a)$ en el conjunto de los números reales debe ser estrictamente positiva ($b > 0$).'
-  - 'Las bases negativas se excluyen formalmente porque generan discontinuidades y potencias con resultados imaginarios en el cuerpo real $\mathbb{R}$.'
-al_terminar_debes_poder: 'Determinar las restricciones de existencia de un logaritmo planteando la inecuación de base positiva $b > 0$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- La base de un logaritmo debe ser un número real estrictamente positivo ($b > 0$).
+- Las bases negativas no están definidas en $\mathbb{R}$ para evitar números complejos.
+- En ecuaciones logarítmicas, se descartan las soluciones donde la base resulte menor o igual a cero.
+al_terminar_debes_poder: '![Síntesis de restricción de base positiva](/static/img/nodos/restriccion-de-base-positiva-en-un-logaritmo-resumen.svg)
+
+
+  QUÉ: Comprender y aplicar la restricción de base positiva $b > 0$ en logaritmos.
+
+
+  CÓMO: Verificando que la base pertenezca a $\mathbb{R}^+$ y descartando soluciones negativas en ecuaciones donde la incógnita se encuentre en la base.'
+fuente: Texto escolar MINEDUC — Matemática 2° Medio / PAES.
 estado: publicado
