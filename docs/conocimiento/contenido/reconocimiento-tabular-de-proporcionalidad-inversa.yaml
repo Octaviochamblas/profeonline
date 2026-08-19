@@ -1,98 +1,132 @@
-semantic_id: MAT.NUM.PROP_INVERSA.RECONOCIMIENTO_TABULAR
-resumen_inicial: 'Una tabla de valores representa una proporcionalidad inversa si al multiplicar los valores de cada columna (o par de datos), se obtiene siempre el mismo producto constante $k = x_i \cdot y_i$.'
-explicacion_simple: |
-  Para verificar si una tabla de datos muestra una proporcionalidad inversa, debes hacer la prueba de la multiplicación: toma cada pareja de datos y multiplica el número de arriba ($x$) por el número de abajo ($y$). Si TODAS las multiplicaciones dan exactamente el mismo número $k$, la tabla es de proporcionalidad inversa. Si una sola multiplicación da un resultado diferente, la tabla NO es de proporción inversa.
-explicacion_formal: |
-  ### Definición formal
-  Dada una tabla con $m$ pares ordenados de datos $\{(x_1, y_1), (x_2, y_2), \dots, (x_m, y_m)\}$ con $x_i, y_i > 0$:
-  - La tabla representa una **relación de proporcionalidad inversa** si y solo si se satisface la condición de homogeneidad de productos:
-    $$x_1 \cdot y_1 = x_2 \cdot y_2 = \dots = x_m \cdot y_m = k \quad (\text{constante})$$
+semantic_id: MAT.NUM.RAZONES_PROPORCIONES.TABLA_PROP_INVERSA
+resumen_inicial: Una tabla de valores representa una proporcionalidad inversa si y solo si todos los pares de datos $(x_i, y_i)$ arrojan exactamente el mismo producto $x_i \cdot y_i = k$ constante.
+explicacion_simple: "![Reconocimiento tabular inverso](/static/img/nodos/reconocimiento-tabular-de-proporcionalidad-inversa-intro.svg)\n\nPara verificar si una **tabla de datos** corresponde a una proporcionalidad inversa:\n1. **Multiplica los valores de cada columna**: $x_1 \\cdot y_1, x_2 \\cdot y_2, x_3 \\cdot y_3, \\dots$\n2. **Compara los resultados**:\n   - Si **todos los productos dan exactamente el mismo número $k$**, la tabla **SÍ es de proporcionalidad inversa**.\n   - Si **aunque sea un solo producto da diferente**, la tabla **NO es inversa**.\n3. **Completar datos faltantes:** Para rellenar casillas vacías, divide la constante $k$ por el número de la columna:\n$$y = \\frac{k}{x} \\quad \\text{o} \\quad x = \\frac{k}{y}$$"
+explicacion_formal: 'Sea una tabla discreta de valores $\mathcal{T} = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\} \subset \mathbb{R}^+ \times \mathbb{R}^+$.
 
-  ### Verificación y completado de casilleros en la tabla
-  Para completar casilleros vacíos $(x_j, y_j)$ en una tabla de proporción inversa:
-  1. Hallar la constante $k = x_1 \cdot y_1$ utilizando una columna completa.
-  2. Si falta el valor dependiente: $y_j = \frac{k}{x_j}$.
-  3. Si falta el valor independiente: $x_j = \frac{k}{y_j}$.
 
-  ### Síntesis didáctica
-  - Criterio de validación: Comprobar $x_i \cdot y_i = k$ en todas las columnas.
-  - Regla de completado: Dividir la constante $k$ por la cantidad conocida ($y = k / x$).
-definiciones_clave: |
-  - **Tabla de valores inversamente proporcionales**: Arreglo numérico donde cada par de datos satisface la ecuación de producto $x \cdot y = k$.
-  - **Homogeneidad de productos**: Principio que exige que la multiplicación de cada columna de la tabla resulte en el mismo valor $k$.
-  - **Completado de tabla inversa**: Proceso algebraico para calcular datos faltantes mediante la división $y = k / x$.
-propiedades_relaciones: |
-  - **Invariancia de cocientes cruzados rectos**: En una tabla inversa, la razón entre dos valores independientes $\frac{x_a}{x_b}$ es igual a la razón invertida de sus dependientes $\frac{y_b}{y_a}$.
-  - **Exclusión del valor cero**: Las tablas de proporcionalidad inversa no pueden contener el valor $0$ en ninguna de sus casillas ($x_i, y_i \neq 0$).
+  **Criterio de Proporcionalidad Inversa Tabular:**
+
+  $\mathcal{T}$ representa una relación de proporcionalidad inversa si y solo si:
+
+
+  $$x_1 \cdot y_1 = x_2 \cdot y_2 = \dots = x_n \cdot y_n = k \quad (k \in \mathbb{R}^+, k = \text{constante})$$
+
+
+  Si existe al menos un índice $j \in \{1, \dots, n\}$ tal que $x_j \cdot y_j \neq k$, la tabla no representa una proporcionalidad inversa.'
+definiciones_clave: '- **Tabla proporcional inversa**: Tabla donde todas las columnas satisfacen $x_i \cdot y_i = k$.
+
+  - **Verificación horizontal por columna**: Producto de las componentes de cada par ordenado.
+
+  - **Relleno inverso**: Cálculo de celdas vacías mediante división por $k$.'
+propiedades_relaciones: '- **Invarianza de área**: Cada columna define un rectángulo de área $k$.
+
+  - **Sensibilidad a fallos**: Una única columna con producto divergente anula la proporcionalidad inversa de toda la tabla.'
 ejemplo_guiado:
-  enunciado: 'Dada la siguiente tabla de datos, determina si corresponde a una proporcionalidad inversa y completa el valor faltante $y_3$ para $x_3 = 6$:\n\n| $x$ (velocidad km/h) | 20 | 40 | 60 |\n|---|---|---|---|\n| $y$ (tiempo h) | 6 | 3 | ? |'
+  enunciado: '![Ejemplos de tabla inversa](/static/img/nodos/reconocimiento-tabular-de-proporcionalidad-inversa-ejemplos.svg)
+
+
+    Complete la casilla faltante en una tabla inversa donde $(x=3, y=20)$ y $(x=5, y=?)$, y determine si los pares $(2, 30), (3, 20), (4, 14)$ forman una tabla inversamente proporcional.'
   pasos:
-    - 'Paso 1: Calculamos el producto de la primera columna: $k_1 = 20 \cdot 6 = 120$.'
-    - 'Paso 2: Calculamos el producto de la segunda columna: $k_2 = 40 \cdot 3 = 120$.'
-    - 'Paso 3: Como $k_1 = k_2 = 120$, confirmamos que la tabla representa una **proporcionalidad inversa** con constante $k = 120$.'
-    - 'Paso 4: Calculamos el valor faltante $y_3$ dividiendo la constante $k$ entre $x_3$: $y_3 = \frac{120}{60} = 2\text{ horas}$.'
+  - 'Paso 1: Para completar la tabla: Calcular $k = 3 \cdot 20 = 60$.'
+  - 'Paso 2: Para $x = 5$: $y = \frac{60}{5} = 12$.'
+  - 'Paso 3: Para la segunda tabla: Multiplicar pares: $2 \cdot 30 = 60$, $3 \cdot 20 = 60$, $4 \cdot 14 = 56$.'
+  - 'Paso 4: Comparar: Como $56 \neq 60$, la segunda tabla NO es inversamente proporcional.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué prueba matemática confirma que una tabla representa una relación de proporcionalidad inversa?'
-    choices:
-      - {text: 'Multiplicar los valores de $x$ por los de $y$ para cada columna y comprobar que todos los productos dan el mismo resultado $k$', is_correct: true}
-      - {text: 'Dividir los valores de $y$ entre los de $x$ para ver si dan el mismo cociente', is_correct: false}
-      - {text: 'Restar la fila de $x$ a la fila de $y$', is_correct: false}
-      - {text: 'Sumar todas las columnas y comprobar que den 100', is_correct: false}
-    explanation: 'La alternativa correcta es ''Multiplicar los valores de $x$ por los de $y$ para cada columna y comprobar que todos los productos dan el mismo resultado $k$''. Es el criterio de homogeneidad de productos.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'En la tabla de proporcionalidad inversa dada por $(2, 24)$, $(4, 12)$, $(x, 8)$, ¿cuál es el valor de la incógnita $x$?'
-    choices:
-      - {text: '$6$, pues la constante es $k = 2 \cdot 24 = 48$, por lo que $x = 48 / 8 = 6$', is_correct: true}
-      - {text: '$16$, multiplicando $2 \cdot 8$', is_correct: false}
-      - {text: '$48$, que es la constante', is_correct: false}
-      - {text: '$3$, dividiendo $24 / 8$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$6$, pues la constante es $k = 2 \cdot 24 = 48$, por lo que $x = 48 / 8 = 6$''. Calculamos $k = 48$ y despejamos $x = 48 / 8 = 6$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cómo se verifica si una tabla corresponde a una proporcionalidad inversa?
+  choices:
+  - text: Multiplicando x por y en cada columna y comprobando que todos los productos sean iguales a k
+    is_correct: true
+  - text: Dividiendo y entre x en cada columna
+    is_correct: false
+  - text: Sumando las dos filas
+    is_correct: false
+  - text: Verificando que la fila x siempre aumente
+    is_correct: false
+  explanation: La alternativa correcta es 'Multiplicando x por y en cada columna y comprobando que todos los productos sean iguales a k'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En el ejemplo guiado, ¿por qué la tabla con pares (2,30), (3,20) y (4,14) falló como tabla inversa?
+  choices:
+  - text: Porque el tercer producto $4 \times 14 = 56$ no es igual a 60
+    is_correct: true
+  - text: Porque 14 es un número par
+    is_correct: false
+  - text: Porque hay solo tres columnas
+    is_correct: false
+  - text: Porque 30 es divisible por 3
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el tercer producto $4 \times 14 = 56$ no es igual a 60'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Multiplicar los valores de la primera columna completa de la tabla ($k = x_1 \cdot y_1$).'
-  - 'Paso 2: Repetir el producto $x_i \cdot y_i$ para las demás columnas de la tabla.'
-  - 'Paso 3: Verificar si el resultado $k$ es estrictamente idéntico en todas las columnas.'
-  - 'Paso 4: Si se requiere hallar una casilla vacía, usar $y = \frac{k}{x}$ o $x = \frac{k}{y}$.'
-errores_correccion: |
-  - **Error 1:** Dividir $y / x$ al evaluar una tabla de proporción inversa. **Cómo corregirlo:** La división $y/x$ se usa para proporción directa; en la **proporción inversa se debe multiplicar $x \cdot y = k$**.
-  - **Error 2:** Aceptar un par con cero en la tabla inversa (ej: poner $(0, 0)$ en una tabla de proporción inversa). **Cómo corregirlo:** La proporcionalidad inversa **jamás incluye el punto $(0,0)$**, pues la división entre cero no está definida ($y = k/0$).
+- 'Paso 1: Crear una fila auxiliar calculando el producto $x_i \cdot y_i$ para cada columna.'
+- 'Paso 2: Comprobar si todos los productos resultan idénticos a la constante $k$.'
+- 'Paso 3: Si todos coinciden, completar casillas vacías mediante $y = \frac{k}{x}$ o $x = \frac{k}{y}$.'
+errores_correccion: '- **Error 1: Dividir en vez de multiplicar.** **Cómo corregirlo:** La proporcionalidad inversa se prueba mediante el PRODUCTO $x \cdot y$.
+
+  - **Error 2: No verificar todas las columnas.** **Cómo corregirlo:** Se debe multiplicar cada par individualmente hasta el final de la tabla.'
 ejemplos:
-  - titulo: 'Verificación de tabla de proporción inversa'
-    enunciado: '¿La tabla $\{(1, 24), (2, 12), (3, 8), (4, 6)\}$ es inversamente proporcional con $k = 24$?'
-    alternativas:
-      - 'Sí, pues $1 \cdot 24 = 2 \cdot 12 = 3 \cdot 8 = 4 \cdot 6 = 24$'
-      - 'No, es de proporción directa'
-      - 'No, los productos cambian'
-    respuesta: 'Sí, pues $1 \cdot 24 = 2 \cdot 12 = 3 \cdot 8 = 4 \cdot 6 = 24$'
-    solucion_pasos:
-      - '1. Productos: $1 \cdot 24 = 24$, $2 \cdot 12 = 24$, $3 \cdot 8 = 24$, $4 \cdot 6 = 24$.'
-      - '2. Mismo producto $\implies$ Tabla de proporcionalidad inversa.'
-  - titulo: 'Tabla no inversa por fallo en una columna'
-    enunciado: 'En la tabla $\{(2, 15), (3, 10), (5, 7)\}$, ¿el último par es inversamente proporcional a los primeros?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No. $2 \cdot 15 = 30$, $3 \cdot 10 = 30$, pero $5 \cdot 7 = 35 \neq 30$.'
-  - titulo: 'Completar casilla en tabla inversa'
-    enunciado: 'En la tabla inversa $\{(3, 20), (5, 12), (x, 6)\}$, ¿el valor de $x$ es $10$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $k = 3 \cdot 20 = 60 \implies x = 60 / 6 = 10$.'
-  - titulo: 'Razón de proporciones en tabla inversa'
-    enunciado: 'Si $x$ se duplica de $3$ a $6$ en una tabla inversa, ¿la casilla $y$ disminuye a la mitad?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Cumple el principio de compensación inversa.'
+- titulo: Ejemplo 1
+  enunciado: En la tabla inversa $(x=2, y=18), (x=3, y=12), (x=9, y=?)$, ¿cuál es el valor de $y$ para $x = 9$?
+  alternativas:
+  - $4$
+  - $6$
+  - $2$
+  respuesta: $4$
+  solucion_pasos:
+  - $k = 2 \cdot 18 = 36 \implies y = \frac{36}{9} = 4$.
+- titulo: Ejemplo 2
+  enunciado: ¿Es inversamente proporcional la tabla $(x=2, y=50), (x=4, y=25), (x=10, y=10)$?
+  alternativas:
+  - Sí, todos los productos dan k = 100
+  - No, los números van disminuyendo
+  - No, falta el punto x = 1
+  respuesta: Sí, todos los productos dan k = 100
+  solucion_pasos:
+  - $2 \cdot 50 = 100$, $4 \cdot 25 = 100$, $10 \cdot 10 = 100$. Sí es inversa.
+- titulo: ¿Es proporcional inversa una tabla si todos sus productos x · y dan 72?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la constancia del producto demuestra la proporcionalidad inversa.
+  alternativas:
+  - texto: Sí, cumple con el criterio de producto constante
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Criterio de consistencia tabular.
+  - texto: No, debe dar 1
+    es_correcta: false
+    retroalimentacion: Incorrecto, la constante puede ser cualquier valor real positivo.
+  - texto: No, los cocientes deben ser iguales
+    es_correcta: false
+    retroalimentacion: Incorrecto, eso es para proporción directa.
+- titulo: ¿Basta un solo producto discordante para descartar proporcionalidad inversa?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la relación matemática debe cumplirse en la totalidad de los datos tabulados.
+  alternativas:
+  - texto: Sí, una sola discordancia invalida la proporcionalidad inversa de la tabla
+    es_correcta: true
+    retroalimentacion: ¡Correcto! Criterio riguroso.
+  - texto: No, se puede promediar el error
+    es_correcta: false
+    retroalimentacion: Incorrecto, en matemática exacta debe ser estricto.
+  - texto: No, se ignora el último valor
+    es_correcta: false
+    retroalimentacion: Incorrecto, todos los pares definen la relación.
 errores_frecuentes:
-  - 'Dividir los valores de las columnas $y / x$ en lugar de multiplicarlos al verificar una tabla de proporción inversa.'
-  - 'Comprobar únicamente un par de datos en lugar de verificar el producto constante en todas las columnas.'
-  - 'Colocar el valor cero en casillas de una tabla de proporcionalidad inversa.'
-  - 'Multiplicar la constante $k$ por el valor independiente al intentar hallar una casilla vacía ($y = k \cdot x$).'
-  - 'Restar las filas para comprobar si la disminución de valores es constante.'
+- Dividir $y/x$ en lugar de multiplicar $x \cdot y$.
+- Multiplicar solo los dos primeros pares y asumir el resto.
+- Multiplicar en vez de dividir al completar casillas faltantes.
+- Confundir la tabla inversa con una directa decreciente.
 afirmaciones_verdaderas:
-  - 'Una tabla representa una proporcionalidad inversa si el producto $x \cdot y = k$ es constante para todos los pares de datos.'
-  - 'Para hallar una casilla vacía $y$ en una tabla de proporción inversa, se divide la constante $k$ entre el valor conocido $x$ ($y = \frac{k}{x}$).'
-al_terminar_debes_poder: 'Reconocer y completar tablas de proporcionalidad inversa mediante el cálculo de productos constantes $x \cdot y = k$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+- Una tabla es inversamente proporcional si todos sus pares satisfacen $x_i \cdot y_i = k$.
+- La constante $k$ permite completar celdas vacías mediante $y = \frac{k}{x}$ o $x = \frac{k}{y}$.
+- Un solo par con producto distinto invalida la relación proporcional inversa.
+al_terminar_debes_poder: '![Síntesis de reconocimiento tabular inverso](/static/img/nodos/reconocimiento-tabular-de-proporcionalidad-inversa-resumen.svg)
+
+
+  QUÉ: Reconocer, validar y completar tablas de valores inversamente proporcionales.
+
+
+  CÓMO: Calculando el producto $x_i \cdot y_i$ en cada columna, verificando la igualdad universal a la constante $k$ y completando incógnitas mediante $y = \frac{k}{x}$ o $x = \frac{k}{y}$.'
+fuente: Texto escolar MINEDUC — Matemática 7° Básico / 1° Medio.
 estado: publicado
