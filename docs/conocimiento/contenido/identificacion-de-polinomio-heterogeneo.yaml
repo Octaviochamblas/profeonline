@@ -1,109 +1,121 @@
 semantic_id: MAT.ALG.POLINOMIOS.POLINOMIO_HETEROGENEO
-resumen_inicial: 'La identificación de polinomio heterogéneo consiste en verificar que al menos dos de sus términos algebraicos componentes posean grados absolutos diferentes entre sí.'
+resumen_inicial: 'Un polinomio es heterogéneo cuando sus términos monomios componentes poseen grados absolutos diferentes entre sí.'
 explicacion_simple: |
-  Un polinomio es **heterogéneo** si sus términos **NO tienen todos la misma "potencia total" (grado absoluto)**:
-  - "Hetero" significa "diferente" o "distinto".
-  - Es el caso más común en álgebra.
-  - Ejemplo: En $P(x,y) = 5x^3 - 2x^2 y + 7$:
-    - Término $5x^3 \implies$ Grado $3$.
-    - Término $-2x^2 y \implies$ Grado $2 + 1 = 3$.
-    - Término $+7 \implies$ Grado $0$.
-  - Como el último término tiene grado $0$ y los anteriores grado $3$, los términos **tienen grados distintos $\implies$ es un polinomio heterogéneo**.
+  - Un polinomio es **heterogéneo** cuando **no todos sus términos tienen el mismo grado**.
+  - Es el caso más común en álgebra:
+    - En $P(x) = 3x^3 - 5x + 8$, los grados de sus términos son $3$, $1$ y $0$. Como son diferentes, es **heterogéneo**.
+    - En $Q(x, y) = 4x^3y^2 - 5x^2y + 7$, los grados son $5$, $3$ y $0$. Como no coinciden, es **heterogéneo**.
+  - Si un polinomio no es homogéneo, automáticamente es heterogéneo.
+
+  ![Polinomio Heterogéneo](/static/img/nodos/identificacion-de-polinomio-heterogeneo-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Un polinomio $P(x_1, \dots, x_k) = \sum_{i=1}^n M_i \in \mathbb{R}[x_1, \dots, x_k]$ es **heterogéneo** si y solo si existen al menos dos monomios constituyentes no nulos $M_i$ y $M_j$ ($i \neq j$) cuyos grados absolutos no son iguales:
+  Un polinomio $P(x_1, \dots, x_n) \in \mathbb{K}[x_1, \dots, x_n]$ es **heterogéneo** si y solo si su soporte no es equigradual; es decir, existen al menos dos monomios $T_i, T_j$ en su forma reducida tales que:
 
-  $$\exists i, j \in \{1, \dots, n\} \quad \text{tal que} \quad \operatorname{grabs}(M_i) \neq \operatorname{grabs}(M_j)$$
+  $$\exists T_i, T_j \in \operatorname{supp}(P) \quad \text{con} \quad \operatorname{GA}(T_i) \neq \operatorname{GA}(T_j)$$
 
-  ### Ruptura de la Escala de Euler
-  Para un polinomio heterogéneo $P(x_1, \dots, x_k)$, no existe ninguna potencia escalar uniforme $d \in \mathbb{R}$ que satisfaga la condición de escalamiento de Euler para todo $\lambda$:
-
-  $$P(\lambda x_1, \dots, \lambda x_k) \neq \lambda^d \cdot P(x_1, \dots, x_k)$$
-
-  ### Síntesis didáctica
-  La heterogeneidad es la propiedad estándar de las funciones polinómicas que contienen términos de grados mixtos o independientes.
+  ### Propiedades
+  1. **Complementariedad:** La clase de polinomios heterogéneos es el complemento directo de los polinomios homogéneos dentro del anillo de polinomios.
+  2. **Polinomios de una sola variable:** Todo polinomio en $\mathbb{K}[x]$ con dos o más términos irreducibles es estrictamente heterogéneo.
+  3. **No escalabilidad:** En un polinomio heterogéneo, no existe un único exponente $k$ tal que $P(tx, ty) = t^k P(x, y)$.
 definiciones_clave: |
-  - **Polinomio heterogéneo**: Polinomio en el cual sus términos poseen diferentes grados absolutos entre sí.
-  - **Grados mixtos**: Presencia de monomios con distintas dimensiones de potencia dentro de una misma expresión.
-  - **No homogeneidad**: Ausencia de invarianza bajo escalamiento uniforme de variables.
+  - **Polinomio heterogéneo**: Polinomio cuyos términos presentan al menos dos grados absolutos distintos.
+  - **Disparidad de grados**: Condición de que $\min(\operatorname{GA}(T_i)) < \max(\operatorname{GA}(T_i))$.
+  - **Componentes homogéneas**: Monomios agrupados por niveles de igual grado dentro de un polinomio heterogéneo.
 propiedades_relaciones: |
-  - **Inclusión del término independiente**: Todo polinomio que contenga términos de grado positivo y un término independiente constante no nulo ($a_0 \neq 0$) es **necesariamente heterogéneo**.
-  - **Suma de homogéneos de distinto grado**: La adición de dos polinomios homogéneos de distinto grado absoluto resulta en un polinomio heterogéneo.
+  - **Descomposición canónica**: Todo polinomio heterogéneo $P$ de grado $n$ se descompone como $P = H_n + H_{n-1} + \dots + H_0$, donde cada $H_k$ es un polinomio homogéneo de grado $k$.
+  - **Comportamiento asintótico**: Cuando las variables crecen indefinidamente, el comportamiento de un polinomio heterogéneo queda dominado por su componente homogénea de mayor grado.
 ejemplo_guiado:
-  enunciado: 'Determina si el polinomio $P(x,y) = 4x^3 y^2 - 9x y + 2$ es homogéneo o heterogéneo justificando la respuesta mediante los grados absolutos de cada término.'
+  enunciado: 'Determina si el polinomio multivariable $P(x, y) = 5x^3y^2 - 2x^2y^2 + 8xy - 3$ es homogéneo o heterogéneo justificando con los grados de cada término.'
+  imagen: '/static/img/nodos/identificacion-de-polinomio-heterogeneo-ejemplos.svg'
   pasos:
-    - 'Paso 1: Calculamos el grado del 1.er término $4x^3 y^2$: Sumamos exponentes $3 + 2 = 5$.'
-    - 'Paso 2: Calculamos el grado del 2.º término $-9x y$: Sumamos exponentes $1 + 1 = 2$.'
-    - 'Paso 3: Calculamos el grado del 3.er término $+2$: Al ser constante sin letras, su grado es $0$.'
-    - 'Paso 4: Comparamos los grados absolutos obtenidos: $\{5, 2, 0\}$. Al ser valores diferentes ($5 \neq 2 \neq 0$), la expresión es heterogénea.'
-    - 'Conclusión: **Es un polinomio heterogéneo**.'
+    - 'Paso 1: Calculamos el grado de $5x^3y^2$: $3 + 2 = **5$**.'
+    - 'Paso 2: Calculamos el grado de $-2x^2y^2$: $2 + 2 = **4$**.'
+    - 'Paso 3: Calculamos el grado de $8xy$: $1 + 1 = **2$**.'
+    - 'Paso 4: Calculamos el grado de $-3$: **$0$**.'
+    - 'Paso 5: Comparamos los grados: $\{5, 4, 2, 0\}$. Al existir grados distintos ($5 \neq 4 \neq 2 \neq 0$), **$P(x, y)$ es heterogéneo**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué condición define a un polinomio algebraico como heterogéneo?'
+    question: '¿Por qué la función cuadrática $f(x) = ax^2 + bx + c$ ($a, b, c \neq 0$) es un polinomio heterogéneo?'
     choices:
-      - {text: 'Tener al menos dos términos algebraicos componentes con grados absolutos diferentes', is_correct: true}
-      - {text: 'Tener todos sus coeficientes numéricos con signos negativos', is_correct: false}
-      - {text: 'Tener exactamente una sola variable en toda la expresión', is_correct: false}
-      - {text: 'Poseer únicamente términos cuadráticos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Tener al menos dos términos algebraicos componentes con grados absolutos diferentes''. Definición de heterogeneidad.'
+      - text: 'Porque sus términos tienen grados 2, 1 y 0, los cuales son distintos entre sí'
+        is_correct: true
+      - text: 'Porque tiene 3 coeficientes diferentes'
+        is_correct: false
+      - text: 'Porque su gráfica es una parábola'
+        is_correct: false
+      - text: 'Porque es de segundo grado'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque sus términos tienen grados 2, 1 y 0, los cuales son distintos entre sí''. Al tener términos con grados diferentes, es heterogéneo.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Por qué la presencia de un término independiente constante no nulo ($a_0 \neq 0$) en un polinomio de grado 2 como $x^2 + 3x + 5$ lo convierte en heterogéneo?'
+    question: '¿Cuál de las siguientes afirmaciones sobre polinomios heterogéneos es VERDADERA?'
     choices:
-      - {text: 'Porque el término constante tiene grado $0$, mientras que los otros términos tienen grado $2$ y $1$', is_correct: true}
-      - {text: 'Porque el número 5 es un número primo', is_correct: false}
-      - {text: 'Porque no se pueden sumar números con letras', is_correct: false}
-      - {text: 'Porque la variable $x$ cambia de signo', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque el término constante tiene grado $0$, mientras que los otros términos tienen grado $2$ y $1$''. Presenta grados mixtos $2, 1, 0$.'
+      - text: 'Basta que dos términos tengan grados absolutos diferentes para que todo el polinomio sea heterogéneo'
+        is_correct: true
+      - text: 'Todos los términos deben tener obligatoriamente grados diferentes'
+        is_correct: false
+      - text: 'No pueden contener términos independientes'
+        is_correct: false
+      - text: 'Son polinomios que no tienen grado'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Basta que dos términos tengan grados absolutos diferentes para que todo el polinomio sea heterogéneo''. La existencia de al menos un grado distinto rompe la homogeneidad.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Calcular el grado absoluto de cada monomio constituyente del polinomio.'
-  - 'Paso 2: Comparar los grados absolutos resultantes.'
-  - 'Paso 3: Si se encuentra al menos un par de términos con grados distintos, clasificar el polinomio como heterogéneo.'
-  - 'Paso 4: En caso contrario (si todos son iguales), clasificar como homogéneo.'
+  - 'Paso 1: Calcular el grado absoluto de cada uno de los monomios del polinomio.'
+  - 'Paso 2: Comparar la lista de grados obtenidos.'
+  - 'Paso 3: Si se encuentra al menos una discrepancia entre los grados, clasificar como polinomio heterogéneo.'
+  - 'Paso 4: Identificar el grado máximo como el grado global del polinomio.'
 errores_correccion: |
-  - **Error 1:** Afirmar que un polinomio en una sola variable como $x^3 + x^2 + x$ es homogéneo porque sólo usa la letra $x$. **Cómo corregirlo:** La homogeneidad **compara los GRADOS ABSOLUTOS de los términos**, no el nombre de las letras ($3 \neq 2 \neq 1 \implies$ heterogéneo).
-  - **Error 2:** Clasificar un polinomio de un solo término (monomio) como heterogéneo. **Cómo corregirlo:** Para ser heterogéneo **se requieren al menos dos términos** con grados distintos.
+  - **Error 1:** Asumir que en un polinomio heterogéneo todos los términos deben tener grados distintos. **Cómo corregirlo:** Pueden existir términos con igual grado (ej. $x^2y + xy^2 + x$ tiene grados 3, 3, 1), y **sigue siendo heterogéneo** por el grado 1.
+  - **Error 2:** Creer que un polinomio heterogéneo no tiene grado definido. **Cómo corregirlo:** Su grado es el **máximo grado absoluto** de sus monomios.
 ejemplos:
-  - titulo: 'Reconocimiento de polinomio heterogéneo'
-    enunciado: '¿Es $2x^4 - 7x^2 + 3$ un polinomio heterogéneo?'
+  - titulo: 'Polinomio heterogéneo en dos variables'
+    enunciado: '¿Es $P(x, y) = 3x^4y - 2x^2y^2 + 5$ un polinomio heterogéneo?'
     alternativas:
-      - 'Sí, sus términos tienen grados 4, 2 y 0 (diferentes)'
+      - 'Sí, sus términos tienen grados 5, 4 y 0'
       - 'No, es homogéneo'
-      - 'No, es un monomio'
-    respuesta: 'Sí, sus términos tienen grados 4, 2 y 0 (diferentes)'
+      - 'No es un polinomio'
+    respuesta: 'Sí, sus términos tienen grados 5, 4 y 0'
     solucion_pasos:
-      - '1. Grados de los términos: $4, 2, 0$.'
-      - '2. Al ser distintos, es heterogéneo.'
-  - titulo: 'Heterogeneidad en polinomio de dos variables'
-    enunciado: 'En la expresión $x^3 y + x y^2$, ¿es el polinomio heterogéneo?'
+      - '1. $\operatorname{GA}(3x^4y) = 4 + 1 = 5$.'
+      - '2. $\operatorname{GA}(-2x^2y^2) = 2 + 2 = 4$.'
+      - '3. $\operatorname{GA}(5) = 0$.'
+      - '4. Los grados son distintos $\implies$ Heterogéneo.'
+  - titulo: 'Polinomio en una variable'
+    enunciado: '¿Es el binomio $x^5 - x^2$ un polinomio heterogéneo?'
     alternativas:
-      - 'Sí, el primer término tiene grado 4 ($3+1$) y el segundo grado 3 ($1+2$)'
-      - 'No, es homogéneo de grado 5'
-      - 'No, es un binomio mónico'
-    respuesta: 'Sí, el primer término tiene grado 4 ($3+1$) y el segundo grado 3 ($1+2$)'
+      - 'Sí, porque sus términos tienen grados 5 y 2'
+      - 'No, porque tiene una sola variable'
+      - 'No, porque no tiene término independiente'
+    respuesta: 'Sí, porque sus términos tienen grados 5 y 2'
     solucion_pasos:
-      - '1. Grado de $x^3 y \to 3+1=4$. Grado de $x y^2 \to 1+2=3$.'
-      - '2. $4 \neq 3 \implies$ Heterogéneo.'
-  - titulo: 'Suma de grados mixtos'
-    enunciado: '¿Es heterogéneo cualquier polinomio ordenado completo de grado mayor o igual a 1?'
+      - '1. Grado de $x^5 = 5$.'
+      - '2. Grado de $-x^2 = 2$.'
+      - '3. $5 \neq 2 \implies$ Heterogéneo.'
+  - titulo: 'Universalidad en polinomios de una variable'
+    enunciado: '¿Son todos los polinomios de una sola variable con dos o más términos heterogéneos?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, contiene potencias descendentes con grados distintos.'
-  - titulo: 'Heterogeneidad por término constante'
-    enunciado: '¿Convierte el término $+9$ a la expresión $x^2 + y^2 + 9$ en un polinomio heterogéneo?'
-    respuesta: 'Sí'
+      - '1. Si tuvieran el mismo grado se sumarían como términos semejantes.'
+      - '2. Al tener $\ge 2$ términos no semejantes en una variable, sus grados son forzosamente distintos.'
+  - titulo: 'Escalamiento en heterogéneos'
+    enunciado: '¿Cumple un polinomio heterogéneo la propiedad $P(tx, ty) = t^k P(x, y)$ para una constante $k$ única?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, $x^2$ e $y^2$ tienen grado 2 y $+9$ tiene grado 0.'
+      - '1. Cada término escala con una potencia de $t$ diferente según su propio grado.'
+      - '2. No se puede factorizar una potencia común $t^k$.'
 errores_frecuentes:
-  - 'Un polinomio es homogéneo si todas sus letras son exactamente la misma variable independientemente de sus exponentes.'
-  - 'Los polinomios heterogéneos no pueden ser sumados o restados entre sí en álgebra.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Un polinomio de un solo término (monomio) se clasifica como heterogéneo si tiene más de dos variables.'
-  - 'La heterogeneidad de un polinomio depende del valor de sus coeficientes numéricos.'
+  - 'Creer que para ser heterogéneo todos los términos deben tener grados estrictamente diferentes.'
+  - 'Confundir polinomios heterogéneos con expresiones que contienen diferentes tipos de variables.'
+  - 'Suponer que un polinomio heterogéneo carece de grado absoluto definido.'
+  - 'Olvidar que los polinomios de una sola variable con más de un término son siempre heterogéneos.'
+  - 'Clasificar un polinomio como homogéneo ignorando el grado cero de la constante independiente.'
 afirmaciones_verdaderas:
-  - 'Un polinomio es heterogéneo si sus términos algebraicos presentan grados absolutos distintos.'
-  - 'Todo polinomio de una variable con términos de distintos exponentes es heterogéneo.'
-al_terminar_debes_poder: 'Identificar polinomios heterogéneos comprobando la existencia de términos con grados absolutos diferentes.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'Un polinomio es heterogéneo cuando sus términos poseen al menos dos grados absolutos distintos.'
+  - 'Todo polinomio de una variable con dos o más términos irreducibles es estrictamente heterogéneo.'
+al_terminar_debes_poder: |
+  ![Resumen de Polinomio Heterogéneo](/static/img/nodos/identificacion-de-polinomio-heterogeneo-resumen.svg)
+
+  QUÉ: Identificar y justificar la condición de heterogeneidad en polinomios analizando la discrepancia de grados entre sus términos.
+  CÓMO: Calculando los grados monomios y verificando la existencia de al menos dos términos con grados desiguales ($\operatorname{GA}(T_i) \neq \operatorname{GA}(T_j)$).

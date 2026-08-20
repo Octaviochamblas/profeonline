@@ -1,102 +1,119 @@
-semantic_id: MAT.NUM.PROG_ARITMETICA.CALCULO_INDICE
-resumen_inicial: 'La determinación de la posición de un término despeja la variable de posición ordinal $n$ en la fórmula del término general: $n = \frac{a_n - a_1}{d} + 1$.'
+semantic_id: MAT.NUM.PROG_ARITMETICA.CALCULO_POSICION
+resumen_inicial: 'La determinación de la posición $n$ de un término despeja el índice mediante $n = \frac{a_n - a_1}{d} + 1$, exigiendo que $n$ pertenezca a los números naturales ($n \in \mathbb{N}$) como criterio de pertenencia.'
 explicacion_simple: |
-  Si sabes que en una lista de números está el valor $77$ (por ejemplo, en la secuencia $5, 9, 13, 17, \dots$) y quieres averiguar **en qué casilla o número de lugar ($n$) está ubicado**:
-  1. Restas ese número menos el primero: $77 - 5 = 72$.
-  2. Divides el resultado por la diferencia entre números ($d = 4$): $72 \div 4 = 18$.
-  3. Le sumas $1$ para obtener la posición: $18 + 1 = 19$.
-  El número $77$ ocupa el **lugar 19** de la progresión ($a_{19} = 77$).
-explicacion_formal: |
-  ### Definición formal
-  La **posición ordinal $n$** correspondiente a un valor real $a_n$ en una progresión aritmética se obtiene aislando la variable discreta $n$ en la ecuación canónica:
-  $$a_n = a_1 + (n - 1)d \implies a_n - a_1 = (n - 1)d \implies \frac{a_n - a_1}{d} = n - 1 \implies n = \frac{a_n - a_1}{d} + 1$$
+  Si te dan un número y quieres saber **en qué lugar de la fila está**:
+  - Despejamos la posición ($n$) con esta regla:
+    $$n = \frac{a_n - a_1}{d} + 1$$
+  - Pasos a seguir:
+    1. Restas el número menos el primer término ($a_n - a_1$).
+    2. Divides ese resultado entre el paso ($d$).
+    3. Al final, **sumas $1$**.
+  - **Importante:** La posición $n$ debe ser un número entero positivo ($1, 2, 3, \dots$). Si te da un número decimal, significa que ese número **no pertenece a la progresión**.
 
-  ### Condición de Pertenencia a la Progresión
-  Un número $V \in \mathbb{R}$ pertenece a la progresión aritmética $(a_n)$ si y solo si la posición calculada $n$ satisface:
-  $$n = \frac{V - a_1}{d} + 1 \in \mathbb{N} = \{1, 2, 3, \dots\}$$
-  - Si $n$ resulta ser un entero positivo, $V$ pertenece a la P.A. y ocupa el lugar $n$.
-  - Si $n$ resulta ser un número decimal, fraccionario o no positivo ($n \le 0$), el valor $V$ **no pertenece** a la progresión.
+  ![Determinación de la posición de un término](/static/img/nodos/determinacion-de-la-posicion-de-un-termino-en-una-progresion-aritmetica-intro.svg)
+explicacion_formal: |
+  ### Deducción formal por Despeje
+  A partir de la ecuación canónica de la progresión aritmética:
+  $$a_n = a_1 + (n - 1)d$$
+  1. Restamos $a_1$ a ambos miembros: $a_n - a_1 = (n - 1)d$.
+  2. Dividimos por $d$ ($d \neq 0$): $\frac{a_n - a_1}{d} = n - 1$.
+  3. Sumamos $1$:
+     $$n = \frac{a_n - a_1}{d} + 1$$
+
+  ### Criterio de Pertenencia a la Progresión
+  Un número real $x \in \mathbb{R}$ pertenece a la progresión aritmética $(a_n)$ si y solo si el valor resultante de la evaluación:
+  $$n(x) = \frac{x - a_1}{d} + 1$$
+  satisface que **$n(x) \in \mathbb{N} = \{1, 2, 3, \dots\}$**. Si $n(x) \notin \mathbb{N}$, el valor $x$ no forma parte de la secuencia.
 
   ### Síntesis didáctica
-  - Ecuación del índice: $n = \frac{a_n - a_1}{d} + 1$.
-  - Criterio de pertenencia: $n \in \mathbb{Z}^+$.
+  - Ecuación de posición: $n = \frac{a_n - a_1}{d} + 1$.
+  - Validación: $n \in \{1, 2, 3, \dots\}$.
 definiciones_clave: |
-  - **Índice de posición ($n$)**: Número natural que indica la ubicación ordinal del término.
-  - **Criterio de pertenencia integrática**: Exigencia algebraica de que $n$ sea un entero estrictamente positivo.
-  - **Despeje de variable discreta**: Aislamiento de $n$ en el exponente/multiplicador de la ecuación afín.
+  - **Posición ordinal ($n$)**: Índice entero positivo que ubica al término en la sucesión.
+  - **Criterio de pertenencia**: Condición algebraica que exige que $(a_n - a_1)$ sea un múltiplo entero exacto de $d$.
+  - **Término objetivo ($a_n$)**: Valor numérico cuya ubicación en la secuencia se desea determinar.
 propiedades_relaciones: |
-  - **Divisibilidad exacta**: Para que un número $V$ pertenezca a la P.A., la diferencia $(V - a_1)$ debe ser divisible de forma exacta entre $d$.
-  - **Biyección de posiciones**: Cada valor válido de la progresión se asocia a un único lugar $n$ unívoco.
+  - **Divisibilidad estricta**: $x$ está en la PA si y solo si $d$ divide exactamente a $(x - a_1)$ con cociente mayor o igual a cero.
+  - **Biyección posicional**: Para cada valor que pertenece a la PA le corresponde una única posición $n$.
 ejemplo_guiado:
-  enunciado: 'En la progresión aritmética $8, 14, 20, 26, \dots$, determina qué lugar ocupa el número $116$ y comprueba si el número $50$ pertenece a la secuencia.'
+  enunciado: 'En la progresión aritmética $(5, 9, 13, 17, \dots)$, determina qué posición ocupa el número $81$ y averigua si el número $95$ pertenece a la progresión.'
+  imagen: '/static/img/nodos/determinacion-de-la-posicion-de-un-termino-en-una-progresion-aritmetica-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $a_1 = 8$ y la diferencia $d = 14 - 8 = 6$.'
-    - 'Paso 2: Para el número $116$, aplicamos la fórmula del índice: $n = \frac{116 - 8}{6} + 1 = \frac{108}{6} + 1 = 18 + 1 = 19$. El número 116 ocupa el **lugar 19**.'
-    - 'Paso 3: Para el número $50$, aplicamos la fórmula: $n = \frac{50 - 8}{6} + 1 = \frac{42}{6} + 1 = 7 + 1 = 8$. El número 50 ocupa el **lugar 8**.'
-    - 'Paso 4: Ambos valores pertenecen a la secuencia por ser **enteros positivos**.'
+    - 'Paso 1: Identificamos $a_1 = 5$ y $d = 9 - 5 = 4$.'
+    - 'Paso 2: Para $a_n = 81$: $n = \frac{81 - 5}{4} + 1 = \frac{76}{4} + 1 = 19 + 1 = 20$. Como $20 \in \mathbb{N}$, el número $81$ ocupa la **posición $n = 20$**.'
+    - 'Paso 3: Para el número $95$: $n = \frac{95 - 5}{4} + 1 = \frac{90}{4} + 1 = 22,5 + 1 = 23,5$.'
+    - 'Paso 4: Como $23,5 \notin \mathbb{N}$, el número $95$ **no pertenece** a la progresión aritmética.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la posición ordinal $n$ de un término $a_n$ en una progresión aritmética?'
+    question: '¿Qué ocurre si al despejar la posición $n$ de un valor en una PA se obtiene un número decimal como $14,4$?'
     choices:
-      - {text: 'Dividir la resta del término menos el primero entre la diferencia y sumar 1 ($n = \frac{a_n - a_1}{d} + 1$)', is_correct: true}
-      - {text: 'Multiplicar el término por la diferencia y restar el primer término', is_correct: false}
-      - {text: 'Dividir el término directamente entre la posición deseada', is_correct: false}
-      - {text: 'Restar el primer término al número de posición $n$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir la resta del término menos el primero entre la diferencia y sumar 1 ($n = \frac{a_n - a_1}{d} + 1$)''. Despeja $n$ de $a_n = a_1 + (n-1)d$.'
+      - {text: 'El valor evaluado no pertenece a la progresión aritmética, ya que $n$ debe ser un número entero positivo', is_correct: true}
+      - {text: 'Se redondea al entero más cercano ($n=14$)', is_correct: false}
+      - {text: 'La progresión tiene un error de cálculo en su fórmula', is_correct: false}
+      - {text: 'Significa que ocupa dos posiciones simultáneamente', is_correct: false}
+    explanation: 'La alternativa correcta es ''El valor evaluado no pertenece a la progresión aritmética, ya que $n$ debe ser un número entero positivo''. El dominio de las sucesiones está restringido a $\mathbb{N}$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si al calcular la posición de un número en una P.A. obtienes $n = 12,4$, ¿qué concluyes sobre la pertenencia de dicho número a la progresión?'
+    question: 'En la PA $(7, 12, 17, 22, \dots)$, ¿qué lugar ocupa el término $62$?'
     choices:
-      - {text: 'El número no pertenece a la progresión aritmética porque la posición $n$ debe ser un número entero positivo', is_correct: true}
-      - {text: 'El número ocupa la posición 12 redondeando hacia abajo', is_correct: false}
-      - {text: 'El número ocupa la posición 13 redondeando hacia arriba', is_correct: false}
-      - {text: 'La progresión es decreciente y de diferencia negativa', is_correct: false}
-    explanation: 'La alternativa correcta es ''El número no pertenece a la progresión aritmética porque la posición $n$ debe ser un número entero positivo''. Las posiciones deben ser enteros.'
+      - {text: '$n = 12$, calculando $\frac{62 - 7}{5} + 1 = \frac{55}{5} + 1 = 11 + 1 = 12$', is_correct: true}
+      - {text: '$n = 11$, olvidando sumar 1 al final', is_correct: false}
+      - {text: '$n = 10$', is_correct: false}
+      - {text: '$n = 62$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$n = 12$, calculando $\frac{62 - 7}{5} + 1 = \frac{55}{5} + 1 = 11 + 1 = 12$''. Con $a_1=7$ y $d=5$, la posición es 12.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer término $a_1$, la diferencia común $d$ y el valor numérico $a_n$.'
-  - 'Paso 2: Restar el primer término al valor numérico: $(a_n - a_1)$.'
-  - 'Paso 3: Dividir el resultado entre la diferencia común: $\frac{a_n - a_1}{d}$.'
-  - 'Paso 4: Sumar 1 al cociente obtenido para hallar la posición $n$, e interpretar si $n \in \mathbb{N}$.'
+  - 'Paso 1: Identificar el primer término $a_1$, la diferencia común $d$ y el valor a evaluar $a_n$.'
+  - 'Paso 2: Restar $a_n - a_1$.'
+  - 'Paso 3: Dividir la resta entre la diferencia $d$.'
+  - 'Paso 4: Sumar 1 al cociente obtenido: $n = \frac{a_n - a_1}{d} + 1$.'
+  - 'Paso 5: Comprobar que $n$ sea un número natural ($n \in \{1, 2, 3, \dots\}$).'
 errores_correccion: |
-  - **Error 1:** Olvidar sumar la constante 1 al final del despeje (quedarse con $\frac{a_n - a_1}{d}$). **Cómo corregirlo:** La expresión $\frac{a_n - a_1}{d}$ equivale a $(n-1)$; **DEBES sumar 1 para despejar la posición $n$**.
-  - **Error 2:** Aceptar posiciones decimales o negativas como válidas. **Cómo corregirlo:** Las posiciones ordinales **son números enteros positivos**: si da decimal, el número no pertenece a la P.A.
+  - **Error 1:** Olvidar sumar 1 al final del despeje (calcular solo $\frac{a_n - a_1}{d}$). **Cómo corregirlo:** La fórmula de la posición es **$n = \frac{a_n - a_1}{d} + 1$** (sumar obligatoriamente 1).
+  - **Error 2:** Redondear decimales para forzar la pertenencia de un número que no está en la progresión. **Cómo corregirlo:** Si $n$ no es entero, **el número no pertenece a la sucesión**.
 ejemplos:
-  - titulo: 'Cálculo de posición exacta'
-    enunciado: 'En $a_1 = 3$ y $d = 5$, ¿el número $48$ ocupa la posición $n = \frac{48 - 3}{5} + 1 = \frac{45}{5} + 1 = 9 + 1 = 10$?'
+  - titulo: 'Posición de un término dado'
+    enunciado: 'En la PA $(4, 10, 16, 22, \dots)$, ¿qué posición ocupa el número $100$?'
     alternativas:
-      - 'Sí, ocupa la posición 10'
-      - 'No, ocupa la posición 9'
-      - 'No, no pertenece a la P.A.'
-    respuesta: 'Sí, ocupa la posición 10'
+      - '$n = 17$'
+      - '$n = 16$'
+      - '$n = 18$'
+    respuesta: '$n = 17$'
     solucion_pasos:
-      - '1. Resta: $48 - 3 = 45$.'
-      - '2. División: $45 / 5 = 9$.'
-      - '3. Suma 1: $9 + 1 = 10$.'
-  - titulo: 'Prueba de no pertenencia'
-    enunciado: 'En la P.A. anterior ($a_1 = 3, d = 5$), ¿el número $20$ pertenece a la progresión?'
-    respuesta: 'No'
+      - '1. $a_1 = 4, d = 6$.'
+      - '2. $n = (100 - 4)/6 + 1 = 96/6 + 1 = 16 + 1 = 17$.'
+  - titulo: 'Verificación de pertenencia'
+    enunciado: '¿El número $50$ pertenece a la progresión aritmética $3, 7, 11, 15, \dots$?'
+    alternativas:
+      - 'No, porque $(50-3)/4 + 1 = 47/4 + 1 = 12,75$ (no es entero)'
+      - 'Sí, ocupa la posición 12'
+      - 'Sí, ocupa la posición 13'
+    respuesta: 'No, porque $(50-3)/4 + 1 = 47/4 + 1 = 12,75$ (no es entero)'
     solucion_pasos:
-      - 'No. $n = (20 - 3)/5 + 1 = 17/5 + 1 = 3,4 + 1 = 4,4 \notin \mathbb{N}$.'
+      - '1. $47$ no es divisible por $4 \implies n \notin \mathbb{N}$.'
   - titulo: 'Posición con diferencia negativa'
-    enunciado: 'En $a_1 = 50$ y $d = -4$, ¿qué posición ocupa el término $a_n = 10$?'
-    respuesta: 'Posición n = 11'
-    solucion_pasos:
-      - 'Sí. $n = \frac{10 - 50}{-4} + 1 = \frac{-40}{-4} + 1 = 10 + 1 = 11$.'
-  - titulo: 'Lugar del primer término'
-    enunciado: 'Para $a_n = a_1$, ¿la fórmula entrega $n = \frac{a_1 - a_1}{d} + 1 = 0 + 1 = 1$?'
+    enunciado: 'En la PA $(50, 45, 40, \dots)$, ¿el término $0$ ocupa la posición $n=11$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. El primer término ocupa la posición 1.'
+      - '1. $n = (0 - 50)/(-5) + 1 = -50/-5 + 1 = 10 + 1 = 11$.'
+  - titulo: 'Condición de posición entera'
+    enunciado: '¿La posición de un término en una progresión aritmética puede ser un número fraccionario como $\frac{7}{2}$?'
+    respuesta: 'No'
+    solucion_pasos:
+      - '1. Las posiciones ordinales deben ser números enteros positivos $\mathbb{N}$.'
 errores_frecuentes:
-  - 'La posición $n$ se obtiene directamente del cociente $\frac{a_n - a_1}{d}$ sin necesidad de sumar 1.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Aceptar posiciones decimales o fraccionarias como respuestas válidas a problemas de conteo.'
-  - 'Invertir el numerador haciendo $a_1 - a_n$ afectando el signo de la división.'
+  - 'Al despejar la posición $n$ de un término se omite sumar uno al resultado de dividir $(a_n - a_1)$ por $d$.'
+  - 'Cuando el cálculo de la posición entrega un número decimal, este se redondea al entero más cercano.'
+  - 'La posición $n$ puede admitir valores negativos en una progresión con términos negativos.'
+  - 'Al evaluar la pertenencia en una PA decreciente, se omite el signo negativo de la diferencia común.'
+  - 'Un número siempre pertenece a una PA sin importar si $(a_n - a_1)$ es múltiplo de la diferencia común.'
 afirmaciones_verdaderas:
-  - 'La posición $n$ de un término $a_n$ en una P.A. se calcula mediante $n = \frac{a_n - a_1}{d} + 1$.'
-  - 'Un valor numérico pertenece a una progresión aritmética si y solo si la posición $n$ calculada resulta ser un número entero positivo.'
-al_terminar_debes_poder: 'Calcular la posición ordinal $n$ de un término en una progresión aritmética mediante $n = \frac{a_n - a_1}{d} + 1$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La posición de un término se obtiene mediante $n = \frac{a_n - a_1}{d} + 1$ y debe ser un número entero positivo ($n \in \mathbb{N}$).'
+  - 'Un número real pertenece a una progresión aritmética si y solo si la diferencia $(x - a_1)$ es un múltiplo exacto no negativo de $d$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/determinacion-de-la-posicion-de-un-termino-en-una-progresion-aritmetica-resumen.svg)
+
+  QUÉ: Calcular la posición ordinal $n$ de un término y verificar su pertenencia a una progresión aritmética.
+  CÓMO: Evaluar $n = \frac{a_n - a_1}{d} + 1$ comprobando rigurosamente que $n \in \mathbb{N}$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

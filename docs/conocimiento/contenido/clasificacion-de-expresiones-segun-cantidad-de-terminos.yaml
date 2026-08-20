@@ -1,113 +1,125 @@
-semantic_id: MAT.ALG.EXPRESIONES.NUMERO_TERMINOS
-resumen_inicial: 'La clasificación de expresiones algebraicas según la cantidad de términos las categoriza en monomios (1 término), binomios (2 términos), trinomios (3 términos) y polinomios generales (4 o más términos) tras reducir los términos semejantes.'
+semantic_id: MAT.ALG.POLINOMIOS.CLASIFICACION_TERMINOS
+resumen_inicial: 'Las expresiones algebraicas enteras se clasifican según su cantidad de términos irreducibles en monomios (1 término), binomios (2 términos), trinomios (3 términos) o polinomios generales (4 o más términos).'
 explicacion_simple: |
-  Para nombrar y clasificar cualquier expresión algebraica, primero **reducimos los términos semejantes** y luego contamos cuántos términos irreducibles quedan:
-  - **1 Término $\implies$ Monomio**: Ejemplo: $-8x^3 y$.
-  - **2 Términos $\implies$ Binomio**: Ejemplo: $a^2 - b^2$.
-  - **3 Términos $\implies$ Trinomio**: Ejemplo: $x^2 - 5x + 6$.
-  - **4 o más Términos $\implies$ Polinomio de $N$ términos**: Ejemplo: $x^3 - 3x^2 + 3x - 1$ es un polinomio de 4 términos (o tetranomio).
+  - Una vez que agrupamos y sumamos todos los términos semejantes de una expresión, podemos clasificarla según **cuántos términos quedaron**:
+    1. **Monomio:** tiene **$1$ solo término** (ej. $-7x^3y$).
+    2. **Binomio:** tiene **$2$ términos** (ej. $3x + 5$).
+    3. **Trinomio:** tiene **$3$ términos** (ej. $x^2 - 4x + 4$).
+    4. **Polinomio (o Multinomio):** tiene **$4$ o más términos** (ej. $2x^3 - 5x^2 + 3x - 8$).
+  - La palabra **polinomio** es el nombre general de toda la familia ("muchos términos"), pero se acostumbra usar monomio, binomio y trinomio para los casos de 1, 2 y 3 términos.
+
+  ![Clasificación por Términos](/static/img/nodos/clasificacion-de-expresiones-segun-cantidad-de-terminos-intro.svg)
 explicacion_formal: |
-  ### Definición formal
-  Dada una expresión polinómica reducida $P(x_1, \dots, x_k) \in \mathbb{R}[x_1, \dots, x_k]$, la función cardinal de términos $N(P) = |\{M_i \mid M_i \neq 0\}|$ asigna una categoría taxonómica según el valor de $N$:
+  ### Taxonomía estructural de expresiones enteras
+  Sea $P(x_1, \dots, x_n) = \sum_{j=1}^k c_j X_j$ una expresión algebraica entera en su forma canónica reducida ($c_j \neq 0$, $X_i \not\equiv X_j$). La clasificación según su cardinal de términos $k = |\operatorname{supp}(P)|$ se define como:
 
-  $$P = \sum_{i=1}^N M_i \quad \text{con } M_i \not\sim M_j \ (\forall i \neq j)$$
+  $$\text{Clasificación}(P) = \begin{cases}
+  \text{Monomio} & \text{si } k = 1 \\
+  \text{Binomio} & \text{si } k = 2 \\
+  \text{Trinomio} & \text{si } k = 3 \\
+  \text{Cuatrinomio / Polinomio general} & \text{si } k \ge 4
+  \end{cases}$$
 
-  ### Tabla Taxonómica de Expresiones Algebraicas
-
-  | Cantidad de Términos Irreducibles ($N$) | Clasificación Taxonómica | Ejemplo Canónico Reducido |
-  | :---: | :--- | :--- |
-  | **$N = 1$** | Monomio | $-14 x^5$ |
-  | **$N = 2$** | Binomio | $9a^2 - 16b^2$ |
-  | **$N = 3$** | Trinomio | $x^2 + 2xy + y^2$ |
-  | **$N \ge 4$** | Polinomio de $N$ términos | $x^3 - 4x^2 + 2x - 7$ ($N=4$) |
-
-  ### Síntesis didáctica
-  La clasificación según la cantidad de términos brinda orden sintáctico. Permite aplicar reglas específicas de simplificación y factorización según la estructura contable de la expresión.
+  ### Protocolo riguroso de clasificación
+  1. **Reducción canónica:** $\sum c_i X_i \longrightarrow \sum_{j=1}^k \tilde{c}_j \tilde{X}_j$ combinando partes literales semejantes.
+  2. **Eliminación de términos nulos:** Los monomios con $\tilde{c}_j = 0$ no se contabilizan.
+  3. **Conteo cardinal:** $k$ determina de forma unívoca la categoría polinomial.
 definiciones_clave: |
-  - **Clasificación por número de términos**: Categorización sintáctica que determina si una expresión es monomio, binomio, trinomio o multinomio.
-  - **Términos irreducibles**: Estado de una expresión algebraica donde se han agrupado al máximo todas las partes literales idénticas.
-  - **Multinomio / Polinomio de N términos**: Expresión reducida compuesta por 4 o más monomios no semejantes.
+  - **Forma reducida**: Expresión algebraica donde todos los términos semejantes han sido combinados y no quedan términos nulos.
+  - **Monomio / Binomio / Trinomio**: Expresiones enteras de 1, 2 y 3 términos irreducibles respectivamente.
+  - **Multinomio**: Término genérico que describe cualquier expresión compuesta por múltiples términos algebraicos.
 propiedades_relaciones: |
-  - **Reducción previa obligatoria**: La clasificación contable sólo es válida sobre expresiones algebraicas previamente reducidas.
-  - **Transformación por operaciones**: Multiplicar dos binomios puede generar un trinomio (ej: binomios con término común) o un binomio (ej: binomios conjugados).
+  - **Independencia del grado**: La cantidad de términos de un polinomio es totalmente independiente de su grado (ej. $x^8$ es monomio de grado 8; $x+y+z$ es trinomio de grado 1).
+  - **Invarianza bajo permutación**: El orden en que se listen los términos no altera la clasificación taxonómica.
 ejemplo_guiado:
-  enunciado: 'Clasifica la siguiente expresión según su cantidad de términos después de simplificarla completamente: $E = 6x^2 - 3x + 2x^2 + 5x - 4 + 7$.'
+  enunciado: 'Clasifica las siguientes expresiones algebraicas tras reducirlas completamente: a) $E_1 = 3x^2 - 5x + 2x^2 + 8$, b) $E_2 = 7a + 4b - 7a$, c) $E_3 = x^3 - 2x^2 + 5x - 9$.'
+  imagen: '/static/img/nodos/clasificacion-de-expresiones-segun-cantidad-de-terminos-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los grupos de términos semejantes:
-       - Términos en $x^2$: $6x^2 + 2x^2 = 8x^2$
-       - Términos en $x$: $-3x + 5x = +2x$
-       - Términos independientes: $-4 + 7 = +3$'
-    - 'Paso 2: Escribimos la expresión simplificada reducida: $E = 8x^2 + 2x + 3$.'
-    - 'Paso 3: Contamos la cantidad de términos irreducibles: Tiene exactamente **3 términos** ($8x^2$, $+2x$ y $+3$).'
-    - 'Paso 4: Asignamos la clasificación taxonómica correspondiere.'
-    - 'Conclusión: La expresión reducida es un **Trinomio**.'
+    - 'Paso 1: Para $E_1$, reducimos semejantes: $3x^2 + 2x^2 = 5x^2 \implies E_1 = 5x^2 - 5x + 8$. Tiene **3 términos** $\implies$ es un **Trinomio**.'
+    - 'Paso 2: Para $E_2$, reducimos semejantes: $7a - 7a = 0 \implies E_2 = 4b$. Tiene **1 término** $\implies$ es un **Monomio**.'
+    - 'Paso 3: Para $E_3$, no hay términos semejantes: $x^3 - 2x^2 + 5x - 9$. Tiene **4 términos** $\implies$ es un **Polinomio de 4 términos (cuatrinomio)**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué paso debe ejecutarse OBLIGATORIAMENTE antes de contar los términos para clasificar una expresión algebraica?'
+    question: 'Si una expresión algebraica tiene 4 términos irreducibles no semejantes, ¿cómo se clasifica taxonómicamente?'
     choices:
-      - {text: 'Reducir completamente todos los términos semejantes que existan en la expresión', is_correct: true}
-      - {text: 'Multiplicar todos los coeficientes numéricos por dos', is_correct: false}
-      - {text: 'Cambiar el signo de los términos independientes', is_correct: false}
-      - {text: 'Reemplazar las letras por el número 1', is_correct: false}
-    explanation: 'La alternativa correcta es ''Reducir completamente todos los términos semejantes que existan en la expresión''. Contar sin reducir entrega clasificaciones erróneas.'
+      - text: 'Polinomio general (o cuatrinomio)'
+        is_correct: true
+      - text: 'Trinomio'
+        is_correct: false
+      - text: 'Binomio de cuarto grado'
+        is_correct: false
+      - text: 'Monomio cuádruple'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Polinomio general (o cuatrinomio)''. Los términos de 4 o más monomios se clasifican como polinomios o cuatrinomios.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Al reducir la expresión $5a - 2b + 3a + 2b$, ¿en qué categoría queda clasificada la expresión final?'
+    question: '¿Qué paso es indispensable realizar ANTES de clasificar una expresión según su cantidad de términos?'
     choices:
-      - {text: 'Queda clasificada como Monomio ($8a$), porque los términos en $b$ se cancelan ($-2b + 2b = 0$)', is_correct: true}
-      - {text: 'Queda clasificada como Binomio', is_correct: false}
-      - {text: 'Queda clasificada como Polinomio de 4 términos', is_correct: false}
-      - {text: 'Queda clasificada como Trinomio', is_correct: false}
-    explanation: 'La alternativa correcta es ''Queda clasificada como Monomio ($8a$), porque los términos en $b$ se cancelan ($-2b + 2b = 0$)''. $-2b+2b=0$ y $5a+3a=8a$.'
+      - text: 'Agrupar y reducir todos los términos semejantes sumando sus coeficientes'
+        is_correct: true
+      - text: 'Igualar la expresión a cero'
+        is_correct: false
+      - text: 'Calcular la raíz cuadrada de cada coeficiente'
+        is_correct: false
+      - text: 'Ordenar las variables de derecha a izquierda'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Agrupar y reducir todos los términos semejantes sumando sus coeficientes''. Sin reducción previa, se pueden contar términos repetidos o nulos erróneamente.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Agrupar y sumar los coeficientes de todos los términos que posean exactamente la misma parte literal.'
-  - 'Paso 2: Escribir la expresión simplificada final.'
-  - 'Paso 3: Contar los términos irreducibles resultantes.'
-  - 'Paso 4: Asignar la categoría: 1 $\to$ Monomio, 2 $\to$ Binomio, 3 $\to$ Trinomio, 4 o más $\to$ Polinomio de N términos.'
+  - 'Paso 1: Identificar todos los términos y agrupar los que tengan la misma parte literal.'
+  - 'Paso 2: Reducir los términos semejantes sumando o restando algebraicamente sus coeficientes.'
+  - 'Paso 3: Eliminar los términos cuyo coeficiente resultante sea cero.'
+  - 'Paso 4: Contar la cantidad de términos irreducibles y asignar la categoría correspondiente (1: Monomio, 2: Binomio, 3: Trinomio, $\ge 4$: Polinomio general).'
 errores_correccion: |
-  - **Error 1:** Contar los términos antes de reducir la expresión (ej: decir que $x + x + x$ es un trinomio en lugar del monomio $3x$). **Cómo corregirlo:** La clasificación **exige reducción previa de semejantes**.
-  - **Error 2:** Considerar que los términos cancelados que dan cero aportan a la cuenta de términos (ej: en $x + y - y$ contar 3 términos). **Cómo corregirlo:** Los términos que se cancelan ($0$) **desaparecen de la cuenta final**.
+  - **Error 1:** Confundir la cantidad de términos con el grado del polinomio (decir que $x^3$ es un trinomio). **Cómo corregirlo:** $x^3$ tiene **$1$ solo término** (es monomio) de grado 3.
+  - **Error 2:** Contar términos antes de simplificar. **Cómo corregirlo:** Siempre **reducir semejantes primero**: $2x + 3x = 5x$ es monomio.
 ejemplos:
-  - titulo: 'Clasificación tras reducción'
-    enunciado: '¿Cómo se clasifica la expresión $4x^3 - x^3 + 2x^3$?'
+  - titulo: 'Clasificación de expresión reducida'
+    enunciado: '¿A qué categoría pertenece la expresión $8x^5 - 3x^2$?'
     alternativas:
-      - 'Monomio, porque se reduce a $5x^3$'
-      - 'Trinomio, porque tiene tres sumandos iniciales'
-      - 'Binomio'
-    respuesta: 'Monomio, porque se reduce a $5x^3$'
+      - 'Binomio de quinto grado'
+      - 'Monomio de quinto grado'
+      - 'Trinomio de segundo grado'
+    respuesta: 'Binomio de quinto grado'
     solucion_pasos:
-      - '1. Reducimos: $(4 - 1 + 2)x^3 = 5x^3$.'
-      - '2. Consta de 1 solo término $\implies$ Monomio.'
-  - titulo: 'Expresión de 4 términos'
-    enunciado: '¿Cómo se clasifica la expresión reducida $a^3 + a^2 b + a b^2 + b^3$?'
+      - '1. Tiene 2 términos no semejantes: $8x^5$ y $-3x^2$.'
+      - '2. El término de mayor exponente es $8x^5$ (grado 5).'
+      - '3. Es un binomio de 5° grado.'
+  - titulo: 'Reducción de términos mixtos'
+    enunciado: 'La expresión $4a + 3b - 2a + c - 3b$, ¿cómo se clasifica finalmente?'
     alternativas:
-      - 'Polinomio de 4 términos'
-      - 'Trinomio de cuarto grado'
-      - 'Binomio compuesto'
-    respuesta: 'Polinomio de 4 términos'
+      - 'Binomio ($2a + c$)'
+      - 'Trinomio ($2a + 6b + c$)'
+      - 'Polinomio de 5 términos'
+    respuesta: 'Binomio ($2a + c$)'
     solucion_pasos:
-      - '1. Contamos 4 términos no semejantes.'
-      - '2. Es un polinomio de 4 términos.'
-  - titulo: 'Cancelación completa'
-    enunciado: 'En la expresión $3x - 3x + 5$, ¿la clasificación reducida final es un Monomio constante igual a $5$?'
+      - '1. $4a - 2a = 2a$.'
+      - '2. $3b - 3b = 0$ (se anula).'
+      - '3. $+c$.'
+      - '4. La expresión reducida es $2a + c$, que tiene 2 términos (binomio).'
+  - titulo: 'Monomio de alto grado'
+    enunciado: '¿Es la expresión $-15x^8y^{12}$ un monomio a pesar de tener exponentes grandes?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $3x - 3x = 0 \implies$ Queda sólo $+5$ (monomio constante).'
-  - titulo: 'Clasificación de producto notables'
-    enunciado: 'Al desarrollar $(x+1)^2 = x^2 + 2x + 1$, ¿la expresión resultante se clasifica como un Trinomio?'
-    respuesta: 'Sí'
+      - '1. Es un único término sin sumas intermedias.'
+      - '2. Es un monomio de grado 20.'
+  - titulo: 'Equivalencia entre grado y términos'
+    enunciado: '¿Un polinomio de grado 4 debe tener obligatoriamente 4 términos?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, tiene 3 términos irreducibles.'
+      - '1. Un polinomio de grado 4 puede ser un monomio ($x^4$), un binomio ($x^4 + 1$), un trinomio ($x^4 + x^2 + 1$) o tener 5 términos.'
+      - '2. El grado y la cantidad de términos son independientes.'
 errores_frecuentes:
-  - 'Clasificar una expresión algebraicamente contando sus sumandos sin reducir previamente los términos semejantes.'
-  - 'Los términos que se anulan dando cero continúan sumando a la cantidad total de términos del polinomio.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Un polinomio de 4 términos se denomina trinomio compuesto de segundo orden.'
-  - 'Sumar dos binomios siempre genera como resultado un tetranomio de 4 términos.'
+  - 'Confundir el grado de la expresión con el número de términos (pensar que $x^4$ es un polinomio de 4 términos).'
+  - 'Clasificar la expresión antes de haber reducido los términos semejantes.'
+  - 'Contar los términos nulos que se cancelan tras la adición algebraica.'
+  - 'Creer que un monomio solo puede tener coeficientes enteros pequeños.'
+  - 'Asumir que las expresiones racionales fraccionarias se clasifican con la misma tabla de polinomios enteros.'
 afirmaciones_verdaderas:
-  - 'La clasificación de expresiones por número de términos debe efectuarse únicamente sobre expresiones en su forma reducida e irreducible.'
-  - 'Una expresión reducida se clasifica como monomio (1 término), binomio (2 términos), trinomio (3 términos) o polinomio de N términos (4 o más).'
-al_terminar_debes_poder: 'Clasificar cualquier expresión algebraica en monomio, binomio, trinomio o polinomio de N términos reduciendo previamente sus términos semejantes.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Nomenclatura.'
-estado: publicado
+  - 'Las expresiones algebraicas enteras se clasifican en monomios (1), binomios (2), trinomios (3) o polinomios ($\ge 4$) según su cantidad de términos irreducibles.'
+  - 'El grado de un polinomio es una propiedad dimensional independiente del número de términos que posea.'
+al_terminar_debes_poder: |
+  ![Resumen de Clasificación por Términos](/static/img/nodos/clasificacion-de-expresiones-segun-cantidad-de-terminos-resumen.svg)
+
+  QUÉ: Clasificar cualquier expresión algebraica entera en monomio, binomio, trinomio o polinomio general tras su reducción canónica completa.
+  CÓMO: Simplificando y combinando términos semejantes ($\sum c_i X_i$) y contando el número final de términos irreducibles no nulos.

@@ -451,12 +451,16 @@
 .learn-goal-images {
   margin-bottom: 1.75rem;
 }
-.learn-goal-images img {
+.learn-goal-images img,
+.learn-ejemplo-imagen img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
   height: auto;
   border-radius: 14px;
+}
+.learn-ejemplo-imagen {
+  margin-bottom: 1.5rem;
 }
 .learn-goal-intro {
   margin-bottom: 1.5rem;
@@ -700,7 +704,12 @@
         <span class="node-rail-item__dot" aria-hidden="true">✏️</span>
         <section class="learn-section learn-text-card node-rail-item__card">
             <h2 class="learn-section__title">Ejemplo guiado</h2>
-            <p class="resource-view__content">{{ content.ejemplo_guiado.enunciado|markdown }}</p>
+            {% if content.ejemplo_guiado.imagen %}
+            <div class="resource-view__content learn-ejemplo-imagen">
+                <img src="{{ content.ejemplo_guiado.imagen }}" alt="Ejemplo guiado" />
+            </div>
+            {% endif %}
+            <div class="resource-view__content">{{ content.ejemplo_guiado.enunciado|markdown }}</div>
             <ul class="learn-procedure">
                 {% for paso in content.ejemplo_guiado.pasos %}
                 <li class="learn-procedure__step">{{ paso|bold_step }}</li>

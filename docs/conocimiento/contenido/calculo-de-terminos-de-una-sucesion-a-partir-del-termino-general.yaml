@@ -1,105 +1,115 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.CALCULO_TERMINOS_GENERAL
-resumen_inicial: 'El cálculo de términos a partir del término general evalúa la función de la sucesión $a_n = f(n)$ sustituyendo algebraicamente la variable $n$ por números enteros positivos específicos.'
+resumen_inicial: 'El cálculo de términos de una sucesión evalúa la regla explícita $a_n = f(n)$ para valores específicos del índice $n = 1, 2, 3, \dots$, aplicando la jerarquía de las operaciones aritméticas.'
 explicacion_simple: |
-  Para calcular cualquier término de una sucesión cuando te dan su fórmula general $a_n$:
-  1. Identificas qué término te están pidiendo (por ejemplo, el **cuarto término**, lo que significa que $n = 4$).
-  2. Remplazas la letra $n$ por el número $4$ en toda la fórmula.
-  3. Resuelves las operaciones respetando la jerarquía (primero potencias, luego multiplicaciones y divisiones, y al final sumas y restas).
-  Por ejemplo, si $a_n = 2n^2 + 3$, para $n=4$: $a_4 = 2(4^2) + 3 = 2(16) + 3 = 32 + 3 = 35$.
+  Calcular los términos de una sucesión es como usar una calculadora donde introduces la posición ($n$) y la fórmula te entrega el valor ($a_n$):
+  - Si la regla es $a_n = \frac{2n - 1}{n + 1}$:
+    - En $n = 1$: $a_1 = \frac{2(1) - 1}{1 + 1} = \frac{1}{2}$
+    - En $n = 2$: $a_2 = \frac{2(2) - 1}{2 + 1} = \frac{3}{3} = 1$
+    - En $n = 3$: $a_3 = \frac{2(3) - 1}{3 + 1} = \frac{5}{4}$
+  - Solo debes sustituir la letra $n$ por el número de posición y resolver con cuidado las operaciones.
+
+  ![Cálculo de términos a partir del término general](/static/img/nodos/calculo-de-terminos-de-una-sucesion-a-partir-del-termino-general-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **cálculo numérico de un término** $a_k$ es la evaluación de la función $f: \mathbb{N} \to \mathbb{R}$ en un punto singular del dominio $n = k \in \mathbb{N}$:
-  $$a_k = f(k) = \left. f(n) \right|_{n=k}$$
+  El proceso de evaluación de una sucesión definida por su término general $a_n = f(n)$ consiste en la aplicación del operador de sustitución posicional para un conjunto finito de índices $I = \{k_1, k_2, \dots, k_m\} \subset \mathbb{N}$:
+  $$k \longmapsto a_k = f(k) \quad (k \in \mathbb{N})$$
 
-  ### Algoritmo de Evaluación de Términos
-  1. **Determinación del valor de entrada**: Fijar el número entero positivo $n = k \ge 1$.
-  2. **Sustitución explícita**: Reemplazar cada ocurrencia de la variable $n$ por el valor $k$ utilizando paréntesis para evitar errores de signo o de jerarquía operacional.
-  3. **Jerarquía operacional estricta**:
-     - Evaluar paréntesis y potencias compuestas.
-     - Efectuar productos y cocientes de izquierda a derecha.
-     - Realizar adiciones y sustracciones finales.
-  4. **Simplificación del resultado**: Reducir fracciones o expresiones radicales si es necesario.
+  ### Protocolo de Evaluación Algebraica
+  1. **Sustitución con paréntesis**: Reemplazar cada aparición de la variable $n$ por el entero positivo $(k)$.
+  2. **Jerarquía operacional**:
+     - Evaluar potencias y raíces ($k^p, \sqrt{k}$).
+     - Evaluar productos y cocientes ($c \cdot k, \frac{P(k)}{Q(k)}$).
+     - Evaluar adiciones y sustracciones.
+  3. **Manejo de signos alternantes**: Evaluar $(-1)^k$:
+     $$(-1)^k = \begin{cases} -1 & \text{si } k \text{ es impar} \\ +1 & \text{si } k \text{ es par} \end{cases}$$
 
   ### Síntesis didáctica
-  - Entrada: Posición $n=k$.
-  - Operación: $a_k = f(k)$.
-  - Salida: Cifra real $a_k$.
+  - Algoritmo: Reemplazar $n \to k$ y operar según jerarquía estricta.
+  - Casos clave: Fracciones algebraicas y signos alternados.
 definiciones_clave: |
-  - **Sustitución numérica**: Reemplazo explícito de la variable simbólica $n$ por un número constante.
-  - **Jerarquía de operaciones**: Orden prioritario obligatorio al resolver una expresión matemática (Paréntesis, Potencias, Multiplicación/División, Suma/Resta).
-  - **Evaluación en el dominio**: Acto de asignar un valor entero positivo a la función generadora de la sucesión.
+  - **Evaluación de una sucesión**: Sustitución numérica de la variable independiente $n$ por un número natural específico.
+  - **Términos iniciales**: Conjunto de los primeros valores $\{a_1, a_2, a_3, a_4\}$ generados por la fórmula.
+  - **Factor alternante ($(-1)^n$)**: Factor que conmuta periódicamente el signo de los términos entre positivo y negativo.
 propiedades_relaciones: |
-  - **Consistencia algebraica**: Evaluar $a_n$ para una secuencia de enteros consecutivos $n=1, 2, 3, 4$ genera la lista ordenada que caracteriza la sucesión.
-  - **Invariancia funcional**: Independientemente de cómo se organice la fórmula algebraica, la sustitución directa de $n=k$ debe arrojar exactamente el mismo resultado único.
+  - **Determinismo estricto**: Para una fórmula $a_n$ dada, cada posición $n$ genera un valor único y reproducible.
+  - **Simplificación de términos**: Las fracciones resultantes deben expresarse en su forma irreducible.
 ejemplo_guiado:
-  enunciado: 'Dada la sucesión con término general $a_n = \frac{n^2 - 1}{2n + 1}$, calcula el valor de los términos $a_1$, $a_3$ y $a_5$.'
+  enunciado: 'Para la sucesión con término general $a_n = (-1)^n \cdot \frac{3n + 1}{2}$, calcula los tres primeros términos $a_1, a_2, a_3$.'
+  imagen: '/static/img/nodos/calculo-de-terminos-de-una-sucesion-a-partir-del-termino-general-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para $n=1$, sustituimos: $a_1 = \frac{1^2 - 1}{2(1) + 1} = \frac{1 - 1}{2 + 1} = \frac{0}{3} = 0$.'
-    - 'Paso 2: Para $n=3$, sustituimos: $a_3 = \frac{3^2 - 1}{2(3) + 1} = \frac{9 - 1}{6 + 1} = \frac{8}{7}$.'
-    - 'Paso 3: Para $n=5$, sustituimos: $a_5 = \frac{5^2 - 1}{2(5) + 1} = \frac{25 - 1}{10 + 1} = \frac{24}{11}$.'
-    - 'Paso 4: Respuestas: **$a_1 = 0$**, **$a_3 = \frac{8}{7}$** y **$a_5 = \frac{24}{11}$**.'
+    - 'Paso 1: Evaluamos en $n=1$: $a_1 = (-1)^1 \cdot \frac{3(1) + 1}{2} = (-1) \cdot \frac{4}{2} = -1 \cdot 2 = -2$.'
+    - 'Paso 2: Evaluamos en $n=2$: $a_2 = (-1)^2 \cdot \frac{3(2) + 1}{2} = (1) \cdot \frac{7}{2} = \frac{7}{2} = 3,5$.'
+    - 'Paso 3: Evaluamos en $n=3$: $a_3 = (-1)^3 \cdot \frac{3(3) + 1}{2} = (-1) \cdot \frac{10}{2} = -1 \cdot 5 = -5$.'
+    - 'Paso 4: Los tres primeros términos son **$-2, \frac{7}{2}, -5$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es el primer paso obligatorio para calcular el décimo término ($a_{10}$) de una sucesión a partir de su término general?'
+    question: 'Para la sucesión $a_n = 3n^2 - 5$, ¿cuál es el valor del segundo término $a_2$?'
     choices:
-      - {text: 'Sustituir la variable $n$ por el número 10 en la fórmula del término general', is_correct: true}
-      - {text: 'Multiplicar la fórmula del término general por 10', is_correct: false}
-      - {text: 'Sumar 10 al resultado del primer término', is_correct: false}
-      - {text: 'Igualar la fórmula del término general a 10 y despejar $n$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Sustituir la variable $n$ por el número 10 en la fórmula del término general''. Para hallar $a_{10}$ se sustituye $n=10$.'
+      - {text: '$7$, calculando $3(2^2) - 5 = 3(4) - 5 = 12 - 5 = 7$', is_correct: true}
+      - {text: '$1$, restando $6 - 5$', is_correct: false}
+      - {text: '$31$, elevando $(3 \cdot 2)^2 - 5$', is_correct: false}
+      - {text: '$2$, igual a la posición', is_correct: false}
+    explanation: 'La alternativa correcta es ''$7$, calculando $3(2^2) - 5 = 3(4) - 5 = 12 - 5 = 7$''. Primero se evalúa la potencia $2^2=4$, luego el producto $3 \cdot 4 = 12$ y finalmente la resta $12 - 5 = 7$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si $a_n = 3^n - 2$, ¿cuál es el valor del tercer término ($a_3$)?'
+    question: 'Si $a_n = \frac{n+2}{2n}$, ¿cuál es el valor de $a_4$ simplificado al máximo?'
     choices:
-      - {text: 'El número $25$, calculando $3^3 - 2 = 27 - 2 = 25$', is_correct: true}
-      - {text: 'El número $7$, multiplicando $3 \cdot 3 - 2$', is_correct: false}
-      - {text: 'El número $27$, omitiendo la resta', is_correct: false}
-      - {text: 'El número $1$, calculando $3 - 2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El número $25$, calculando $3^3 - 2 = 27 - 2 = 25$''. $3^3 = 27 \implies 27 - 2 = 25$.'
+      - {text: '$\frac{3}{4}$, calculando $\frac{4+2}{2(4)} = \frac{6}{8} = \frac{3}{4}$', is_correct: true}
+      - {text: '$\frac{6}{4}$', is_correct: false}
+      - {text: '$1$', is_correct: false}
+      - {text: '$\frac{1}{2}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\frac{3}{4}$, calculando $\frac{4+2}{2(4)} = \frac{6}{8} = \frac{3}{4}$''. Sustituyendo $n=4$ se obtiene $\frac{6}{8}$, que al simplificar por 2 resulta $\frac{3}{4}$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el número entero de posición $n = k$ que se desea evaluar.'
-  - 'Paso 2: Reemplazar todas las apariciones de $n$ por el número $k$ en la fórmula funcional de $a_n$.'
-  - 'Paso 3: Resolver las potencias y paréntesis en primer lugar.'
-  - 'Paso 4: Efectuar las multiplicaciones, divisiones, sumas y restas finales para obtener el valor simplificado.'
+  - 'Paso 1: Identificar el número de posición $k$ que se desea evaluar.'
+  - 'Paso 2: Sustituir cada variable $n$ de la fórmula por el valor $(k)$.'
+  - 'Paso 3: Resolver primero las potencias y operaciones dentro de paréntesis.'
+  - 'Paso 4: Efectuar multiplicaciones, divisiones y simplificar las fracciones resultantes.'
 errores_correccion: |
-  - **Error 1:** Multiplicar la base por la variable $n$ en lugar de elevar a la potencia (ej: evaluar $2^n$ para $n=3$ como $2 \cdot 3 = 6$ en vez de $2^3 = 8$). **Cómo corregirlo:** La variable $n$ figura como exponente; **debes elevar la base al exponente $n$**: $2^3 = 8$.
-  - **Error 2:** Alterar el orden de operaciones al sustituir $n$ (ej: en $5n^2$ con $n=2$, calcular $(5 \cdot 2)^2 = 100$ en lugar de $5 \cdot 2^2 = 20$). **Cómo corregirlo:** Primero se resuelve la **potencia $n^2$** y al final se multiplica por el coeficiente.
+  - **Error 1:** Errores en la regla de los signos con el factor alternante $(-1)^n$ (creer que $(-1)^2 = -1$). **Cómo corregirlo:** Recordar que **$(-1)^{\text{par}} = +1$** y **$(-1)^{\text{impar}} = -1$**.
+  - **Error 2:** Multiplicar la base antes de elevar a la potencia en expresiones como $3n^2$. **Cómo corregirlo:** Por jerarquía de operaciones, **primero se calcula $n^2$ y luego se multiplica por 3**.
 ejemplos:
-  - titulo: 'Cálculo de término en fórmula cuadrática'
-    enunciado: 'Si $a_n = n^2 + 3n$, ¿el segundo término $a_2$ es $10$?'
+  - titulo: 'Evaluación de término lineal'
+    enunciado: 'Para $a_n = 7n - 4$, ¿cuál es el valor de $a_6$?'
     alternativas:
-      - 'Sí, pues $2^2 + 3(2) = 4 + 6 = 10$'
-      - 'No, es $8$'
-      - 'No, es $14$'
-    respuesta: 'Sí, pues $2^2 + 3(2) = 4 + 6 = 10$'
+      - '$38$'
+      - '$42$'
+      - '$34$'
+    respuesta: '$38$'
     solucion_pasos:
-      - '1. Sustituimos $n=2$.'
-      - '2. $a_2 = 2^2 + 3(2) = 4 + 6 = 10$.'
-  - titulo: 'Cálculo de término en fórmula exponencial'
-    enunciado: 'Si $a_n = 5 \cdot 2^n$, ¿el tercer término $a_3$ es $40$?'
+      - '1. $a_6 = 7(6) - 4 = 42 - 4 = 38$.'
+  - titulo: 'Evaluación de término exponencial'
+    enunciado: 'Para $a_n = 3 \cdot 2^n$, ¿cuál es el valor de $a_4$?'
+    alternativas:
+      - '$48$'
+      - '$24$'
+      - '$96$'
+    respuesta: '$48$'
+    solucion_pasos:
+      - '1. $a_4 = 3 \cdot 2^4 = 3 \cdot 16 = 48$.'
+  - titulo: 'Evaluación de signo alternado'
+    enunciado: '¿Para $a_n = (-1)^n \cdot n$, el cuarto término $a_4$ es igual a $+4$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_3 = 5 \cdot 2^3 = 5 \cdot 8 = 40$.'
-  - titulo: 'Cálculo de los tres primeros términos'
-    enunciado: 'Si $a_n = 4n - 1$, ¿los términos para $n=1, 2, 3$ son $3, 7, 11$?'
+      - '1. $a_4 = (-1)^4 \cdot 4 = 1 \cdot 4 = +4$.'
+  - titulo: 'Evaluación fraccionaria'
+    enunciado: '¿Para $a_n = \frac{1}{n}$, los primeros tres términos son $1, \frac{1}{2}, \frac{1}{3}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_1 = 3, a_2 = 7, a_3 = 11$.'
-  - titulo: 'Término con numerador constante'
-    enunciado: 'Si $a_n = \frac{12}{n+1}$, ¿el término $a_3$ es $3$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $a_3 = 12 / (3+1) = 12 / 4 = 3$.'
+      - '1. $a_1 = 1/1 = 1$, $a_2 = 1/2$, $a_3 = 1/3$.'
 errores_frecuentes:
-  - 'Multiplicar los coeficientes por la variable de posición antes de efectuar las potencias indicadas.'
-  - 'Reemplazar valores de posición negativos o fraccionarios en el dominio natural de la sucesión.'
-  - 'La operación de multiplicación $c \cdot n$ es algebraicamente equivalente a la elevación a la potencia $c^n$.'
-  - 'Las fracciones resultantes en la evaluación de términos racionales deben conservarse sin simplificar.'
-  - 'Considerar que evaluar $a_n$ para $n=1$ siempre entrega la constante de la fórmula.'
+  - 'En expresiones de la forma $3n^2$, se multiplica primero tres por $n$ y luego se eleva al cuadrado el resultado.'
+  - 'El factor alternante $(-1)^n$ produce un valor negativo cuando el exponente $n$ es un número par.'
+  - 'La sustitución de la variable $n$ se efectúa sumando la posición al final de la fórmula sin reemplazar la letra.'
+  - 'Las fracciones generadas por una fórmula de sucesión no requieren ser simplificadas.'
+  - 'Evaluar una sucesión en la posición $n=1$ siempre produce como resultado el número uno.'
 afirmaciones_verdaderas:
-  - 'Para calcular el término $a_k$ a partir del término general, se reemplaza la variable $n$ por el número $k$ en la fórmula.'
-  - 'En la evaluación de $a_n$, se deben resolver primero las potencias de $n$ antes de realizar la multiplicación por el coeficiente.'
-al_terminar_debes_poder: 'Calcular cualquier término de una sucesión $a_k$ mediante la sustitución ordenada de $n=k$ en su término general.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Para calcular un término $a_k$ se sustituye la variable $n$ por el valor $k$ en la expresión algebraica y se opera respetando la jerarquía.'
+  - 'El factor alternante $(-1)^n$ asigna signo positivo a las posiciones pares y signo negativo a las posiciones impares.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-terminos-de-una-sucesion-a-partir-del-termino-general-resumen.svg)
+
+  QUÉ: Calcular y simplificar los valores numéricos de los términos de una sucesión a partir de su término general.
+  CÓMO: Sustituir el índice posicional $n=k$ en $a_n = f(n)$ aplicando la jerarquía de potencias, productos y reglas de signos algebraicos.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

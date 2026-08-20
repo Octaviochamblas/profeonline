@@ -1,108 +1,121 @@
-semantic_id: MAT.ALG.CLASIFICACION_TECNICA.EXPRESION_FRACCIONARIA
-resumen_inicial: 'La identificación de expresión algebraica fraccionaria consiste en reconocer aquellas expresiones racionales que contienen al menos una variable o letra en su denominador.'
+semantic_id: MAT.ALG.CLASIFICACION.EXPRESION_FRACCIONARIA
+resumen_inicial: 'Una expresión algebraica es fraccionaria cuando contiene al menos una variable en el denominador o afectada por un exponente entero negativo.'
 explicacion_simple: |
-  Una **expresión algebraica fraccionaria** es una fracción que **lleva letras abajo en el denominador**:
-  - **Condición clave**: Al menos una variable o letra debe estar dividiendo en el denominador.
-  - Ejemplos: $\frac{5}{x}$, $\frac{3x + 1}{x - 2}$, $\frac{a}{b^2 + 1}$.
-  - **Consecuencia importante (Restricción de Dominio)**: Como en matemáticas **NUNCA se puede dividir entre cero**, el denominador de una expresión fraccionaria no puede valer cero.
-    - En $\frac{5}{x - 3}$, la variable $x$ no puede tomar el valor $3$, porque $3 - 3 = 0$ (indefinición).
-  - **¡Cuidado con la trampa!** La expresión $\frac{x}{5}$ **NO es fraccionaria**, porque abajo sólo hay un número ($5$), no una letra.
+  - Una expresión algebraica es **fraccionaria** cuando tiene **letras en el denominador** (dividiendo).
+  - Ejemplos típicos:
+    - $\frac{3x + 1}{x - 2}$ (la $x$ está en el denominador).
+    - $5x^2 + \frac{4}{y}$ (la $y$ divide).
+    - $2x^{-3} + 7$ (porque $x^{-3} = \frac{1}{x^3}$, la letra está dividiendo).
+  - **Consecuencia fundamental:** Las expresiones fraccionarias **tienen restricciones en su dominio**, porque el denominador nunca puede valer cero (no se puede dividir por $0$).
+
+  ![Expresión Algebraica Fraccionaria](/static/img/nodos/identificacion-de-expresion-algebraica-fraccionaria-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una expresión algebraica $E(x_1, \dots, x_k)$ es **fraccionaria** si es un elemento del cuerpo de fracciones racionales $\mathbb{R}(x_1, \dots, x_k) \setminus \mathbb{R}[x_1, \dots, x_k]$ representable como el cociente de dos polinomios $P$ y $Q$:
+  Una expresión algebraica racional $E(x_1, \dots, x_n)$ es **fraccionaria** si pertenece al cuerpo de fracciones racionales $\mathbb{K}(x_1, \dots, x_n) \setminus \mathbb{K}[x_1, \dots, x_n]$.
+  En su forma irreducible canónica:
 
-  $$E(x_1, \dots, x_k) = \frac{P(x_1, \dots, x_k)}{Q(x_1, \dots, x_k)} \quad \text{donde } \deg(Q) \ge 1$$
+  $$E(x) = \frac{P(x)}{Q(x)}, \quad \text{con } P, Q \in \mathbb{K}[x], \quad \operatorname{gr}(Q) \ge 1 \quad \text{y} \quad \gcd(P, Q) = 1$$
 
-  es decir, el denominador $Q(x_1, \dots, x_k)$ es un polinomio no constante que contiene al menos una variable de referencia.
-
-  ### Restricción de Dominio (Valores Prohibidos)
-  El dominio de definición de una expresión fraccionaria excluye todas las raíces del polinomio denominador:
-
-  $$\operatorname{Dom}(E) = \{(x_1, \dots, x_k) \in \mathbb{R}^k \mid Q(x_1, \dots, x_k) \neq 0\}$$
-
-  ### Síntesis didáctica
-  Las expresiones fraccionarias introducen asíntotas y puntos de discontinuidad por indefinición aditiva. Exigen calcular el MCD o MCM de denominadores para su adición o simplificación.
+  ### Restricciones de dominio (Valores no admisibles)
+  El dominio real de una expresión algebraica fraccionaria excluye los ceros del polinomio denominador:
+  $$\operatorname{Dom}(E) = \{x \in \mathbb{R} : Q(x) \neq 0\} = \mathbb{R} \setminus \mathcal{Z}(Q)$$
 definiciones_clave: |
-  - **Expresión algebraica fraccionaria**: Cociente polinómico $\frac{P(x)}{Q(x)}$ donde el denominador $Q(x)$ contiene al menos una variable.
-  - **Restricción de dominio**: Exclusión de los valores de las variables que hacen que el denominador sea igual a cero.
-  - **Asíntota vertical**: Recta a la cual la gráfica se aproxima indefinidamente en las cercanías de una raíz del denominador.
+  - **Expresión algebraica fraccionaria**: Cociente irreducible de polinomios donde el divisor tiene grado $\ge 1$.
+  - **Valores no admisibles / Polos**: Puntos donde el denominador se anula ($Q(x) = 0$), produciendo asíntotas o discontinuidades.
+  - **Fracción algebraica irreducible**: Expresión fraccionaria donde $\gcd(P, Q) = 1$.
 propiedades_relaciones: |
-  - **Inversión de potencias**: Toda variable en el denominador equivale a una potencia con exponente negativo ($x^{-n} = \frac{1}{x^n}$).
-  - **Simplificación de fracciones algebraicas**: Para simplificar una expresión fraccionaria se factorizan numerador y denominador y se cancelan los factores comunes no nulos.
+  - **Equivalencia de potencias negativas**: Cualquier término con exponente entero estrictamente negativo ($c \cdot x^{-k}$ con $k \in \mathbb{N}$) es una expresión fraccionaria ($c / x^k$).
+  - **Simplificación condicionada**: $\frac{x^2 - 1}{x - 1} = x + 1$ es válida exclusivamente bajo la restricción de dominio $x \neq 1$.
 ejemplo_guiado:
-  enunciado: 'Dado el objeto algebraico $E(x) = \frac{7x - 2}{x - 4}$, justifica por qué es una expresión fraccionaria y determina su restricción de dominio.'
+  enunciado: 'Identifica si la expresión $E(x) = 3x^2 - \frac{5}{x - 4} + 2$ es fraccionaria y determina sus valores no admisibles en $\mathbb{R}$.'
+  imagen: '/static/img/nodos/identificacion-de-expresion-algebraica-fraccionaria-ejemplos.svg'
   pasos:
-    - 'Paso 1: Examinamos el denominador: Corresponde al binomio $x - 4$, el cual contiene la variable $x$ $\implies$ **Es una expresión fraccionaria**.'
-    - 'Paso 2: Buscamos el valor prohibido igualando el denominador a cero: $x - 4 = 0 \implies x = 4$.'
-    - 'Paso 3: Excluimos el valor $4$ del conjunto de los números reales.'
-    - 'Conclusión: Es una **expresión fraccionaria** cuyo dominio es **$\operatorname{Dom}(E) = \mathbb{R} \setminus \{4\}$** (la variable $x$ no puede valer $4$).'
+    - 'Paso 1: Examinamos los términos de la expresión: $3x^2$ (entero), $-\frac{5}{x-4}$ (fraccionario), $+2$ (constante).'
+    - 'Paso 2: Observamos que el segundo término posee la variable $x$ en el denominador ($x - 4$).'
+    - 'Paso 3: Por tener una variable en el divisor, **$E(x)$ es una expresión algebraica fraccionaria**.'
+    - 'Paso 4: Hallamos los valores no admisibles igualando el denominador a cero: $x - 4 = 0 \implies **x = 4$**.'
+    - 'Paso 5: Conclusión: La expresión es fraccionaria y su dominio es $\operatorname{Dom}(E) = \mathbb{R} \setminus \{4\}$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué característica indispensable convierte a una expresión racional en fraccionaria?'
+    question: '¿Cuál de las siguientes expresiones es una expresión algebraica fraccionaria?'
     choices:
-      - {text: 'Tener al menos una variable o letra en el denominador de la fracción', is_correct: true}
-      - {text: 'Tener un número impar en el numerador', is_correct: false}
-      - {text: 'Estar formada exclusivamente por números negativos', is_correct: false}
-      - {text: 'Carecer de coeficientes numéricos constantes', is_correct: false}
-    explanation: 'La alternativa correcta es ''Tener al menos una variable o letra en el denominador de la fracción''. Definición de expresión fraccionaria.'
+      - text: '$\frac{2x - 3}{x + 5}$'
+        is_correct: true
+      - text: '$\frac{x^2 - 7}{3}$'
+        is_correct: false
+      - text: '$\frac{1}{2}x^3 + 5x$'
+        is_correct: false
+      - text: '$\sqrt{5}x^2 - 1$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$\frac{2x - 3}{x + 5}$''. Tiene la variable $x$ en el denominador ($x+5$), a diferencia de $\frac{x^2-7}{3}$ cuyo divisor es una constante numérica.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'En la expresión algebraica fraccionaria $\frac{9}{x + 6}$, ¿cuál es la restricción de dominio para la variable $x$?'
+    question: '¿Por qué la expresión $4x^3 + 7x^{-2}$ se clasifica como fraccionaria?'
     choices:
-      - {text: 'La variable $x$ no puede ser igual a $-6$ ($x \neq -6$)', is_correct: true}
-      - {text: 'La variable $x$ no puede ser igual a $0$', is_correct: false}
-      - {text: 'La variable $x$ no puede ser un número positivo', is_correct: false}
-      - {text: 'No tiene restricciones de dominio', is_correct: false}
-    explanation: 'La alternativa correcta es ''La variable $x$ no puede ser igual a $-6$ ($x \neq -6$)''. $-6 + 6 = 0$ anula el denominador.'
+      - text: 'Porque el exponente negativo $-2$ equivale al término $\frac{7}{x^2}$, colocando a la variable en el denominador'
+        is_correct: true
+      - text: 'Porque el coeficiente 4 es entero'
+        is_correct: false
+      - text: 'Porque tiene dos términos'
+        is_correct: false
+      - text: 'Porque es irracional'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque el exponente negativo $-2$ equivale al término $\frac{7}{x^2}$, colocando a la variable en el denominador''. Toda potencia negativa representa una división por variable.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Inspeccionar el denominador de la expresión algebraica.'
-  - 'Paso 2: Confirmar la presencia de al menos una letra o variable en dicho denominador.'
-  - 'Paso 3: Igualar el denominador a cero para hallar las raíces o valores prohibidos.'
-  - 'Paso 4: Declarar la expresión como fraccionaria y establecer la restricción de su dominio ($\mathbb{R} \setminus \{\text{raíces}\}$).'
+  - 'Paso 1: Identificar si alguna variable figura en el denominador de algún término.'
+  - 'Paso 2: Verificar si existen variables con exponentes enteros negativos ($x^{-k}$).'
+  - 'Paso 3: Si se cumple al menos una de estas condiciones y no hay raíces en variables, clasificar como expresión fraccionaria.'
+  - 'Paso 4: Determinar las restricciones igualando los denominadores a cero.'
 errores_correccion: |
-  - **Error 1:** Clasificar expresiones con denominador numérico como $\frac{x}{3}$ como si fueran fraccionarias. **Cómo corregirlo:** Si el denominador es sólo un número ($3$), **la expresión es ENTERA**, no fraccionaria.
-  - **Error 2:** Evaluar una expresión fraccionaria en un valor que anula su denominador (ej: $x=2$ en $\frac{5}{x-2}$). **Cómo corregirlo:** Las raíces del denominador **están PROHIBIDAS** en el dominio por indefinición.
+  - **Error 1:** Clasificar $\frac{x}{5}$ como fraccionaria. **Cómo corregirlo:** El denominador es el **número 5** (constante), por lo que es una expresión **entera**.
+  - **Error 2:** Olvidar que $x^{-1}$ es una fracción. **Cómo corregirlo:** Aplicar la ley $x^{-k} = \frac{1}{x^k}$ para reconocer la **variable en el divisor**.
 ejemplos:
-  - titulo: 'Identificación de expresión fraccionaria'
-    enunciado: '¿Cuál de las siguientes expresiones es fraccionaria?'
+  - titulo: 'Fracción algebraica con dos variables'
+    enunciado: '¿Es la expresión $E(x, y) = \frac{x + y}{x - y}$ una expresión algebraica fraccionaria?'
     alternativas:
-      - '$\frac{8}{x - 1}$'
-      - '$\frac{x - 1}{8}$'
-      - '$8x - 1$'
-    respuesta: '$\frac{8}{x - 1}$'
+      - 'Sí, porque el denominador $x - y$ contiene variables'
+      - 'No, porque el numerador es un binomio'
+      - 'Es una expresión entera'
+    respuesta: 'Sí, porque el denominador $x - y$ contiene variables'
     solucion_pasos:
-      - '1. $\frac{8}{x-1}$ tiene la variable $x$ en el denominador.'
-      - '2. Es una expresión fraccionaria.'
-  - titulo: 'Restricción de dominio'
-    enunciado: 'En la expresión $\frac{x^2}{2x - 10}$, ¿cuál es el valor prohibido de $x$?'
+      - '1. El divisor $x - y$ depende de las variables.'
+      - '2. Requiere la restricción $x \neq y$.'
+      - '3. Es fraccionaria.'
+  - titulo: 'Exponente negativo en monomio'
+    enunciado: '¿Es el monomio $6a^{-3}b^2$ una expresión fraccionaria?'
     alternativas:
-      - '$x = 5$'
-      - '$x = 0$'
-      - '$x = 10$'
-    respuesta: '$x = 5$'
+      - 'Sí, equivale a $\frac{6b^2}{a^3}$'
+      - 'No, es un monomio entero'
+      - 'Es irracional'
+    respuesta: 'Sí, equivale a $\frac{6b^2}{a^3}$'
     solucion_pasos:
-      - '1. Igualamos $2x - 10 = 0 \implies 2x = 10 \implies x = 5$.'
-      - '2. La variable no puede tomar el valor $5$.'
-  - titulo: 'Equivalencia de potencia negativa'
-    enunciado: 'La expresión $4x^{-3}$, ¿equivale a la expresión fraccionaria $\frac{4}{x^3}$?'
+      - '1. $a^{-3} = \frac{1}{a^3}$.'
+      - '2. Reescribiendo: $\frac{6b^2}{a^3}$.'
+      - '3. Es fraccionaria.'
+  - titulo: 'Restricción de división por cero'
+    enunciado: '¿Tienen las expresiones algebraicas fraccionarias restricciones en su dominio real?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, por propiedad de potencias de exponente negativo $x^{-n} = \frac{1}{x^n}$.'
-  - titulo: 'Descarte de expresión fraccionaria'
-    enunciado: 'La expresión $\frac{3x + 7}{2}$, ¿es una expresión fraccionaria?'
+      - '1. El denominador no puede anularse.'
+      - '2. Los valores donde $Q(x)=0$ no pertenecen al dominio.'
+  - titulo: 'Denominador constante'
+    enunciado: '¿Es la expresión $\frac{3x^2 - 1}{7}$ una expresión algebraica fraccionaria?'
     respuesta: 'No'
     solucion_pasos:
-      - 'No, el denominador es el número constante $2$ sin variables $\implies$ es una expresión entera.'
+      - '1. El divisor es el número constante 7.'
+      - '2. Es una expresión algebraica entera.'
 errores_frecuentes:
-  - 'Una expresión con un denominador numérico constante como x/5 es una expresión fraccionaria.'
-  - 'Las expresiones fraccionarias no tienen restricciones de dominio y están definidas para todo x real.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Multiplicar el numerador por cero elimina la condición de expresión fraccionaria.'
-  - 'El valor x=0 anula siempre el denominador de cualquier expresión fraccionaria.'
+  - 'Confundir denominadores numéricos constantes con denominadores algebraicos que contienen variables.'
+  - 'No reconocer que los exponentes enteros negativos representan variables en el denominador.'
+  - 'Suponer que una expresión fraccionaria está definida para todo número real sin calcular valores no admisibles.'
+  - 'Simplificar términos cancelando variables en denominadores sin declarar las restricciones de dominio previas.'
+  - 'Clasificar expresiones fraccionarias como irracionales por tener divisiones complejas.'
 afirmaciones_verdaderas:
-  - 'Una expresión algebraica es fraccionaria si contiene al menos una variable en su denominador.'
-  - 'El dominio de definición de una expresión fraccionaria excluye todos los valores que anulan su denominador.'
-al_terminar_debes_poder: 'Identificar expresiones algebraicas fraccionarias verificando la existencia de variables en el denominador y calculando sus restricciones de dominio.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Clasificación.'
-estado: publicado
+  - 'Una expresión algebraica es fraccionaria si posee al menos una variable en el denominador o con exponente entero negativo.'
+  - 'El dominio de una expresión fraccionaria excluye todos los valores que anulan su polinomio denominador.'
+al_terminar_debes_poder: |
+  ![Resumen de Expresión Fraccionaria](/static/img/nodos/identificacion-de-expresion-algebraica-fraccionaria-resumen.svg)
+
+  QUÉ: Reconocer expresiones algebraicas fraccionarias, interpretar potencias negativas como divisores y calcular valores no admisibles en el dominio.
+  CÓMO: Identificando la presencia de variables en el denominador ($Q(x) \neq \text{cte}$) o exponentes negativos ($x^{-k} = 1/x^k$) estableciendo $Q(x) \neq 0$.

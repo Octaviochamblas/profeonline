@@ -1,130 +1,172 @@
 semantic_id: MAT.ALG.ECUACIONES_FRACCIONARIAS.SOLUCION_EXTRANEA
-resumen_inicial: La resolución de detección de solución extraña por restricción del
-  denominador establece los métodos algebraicos formales, las propiedades de la igualdad
-  y el modelamiento numérico.
-explicacion_simple: El propósito didáctico de detección de solución extraña por restricción
-  del denominador es aplicar normas algebraicas rigurosas para transformar, despejar
-  e interpretar incógnitas en ecuaciones o sistemas de ecuaciones. Nos permite determinar
-  con exactitud el conjunto solución de un problema, asegurando que los valores obtenidos
-  satisfagan de manera consistente las condiciones originales.
-explicacion_formal: 'En el estudio de **Detección de solución extraña por restricción
-  del denominador**, dada la ecuación o sistema $E(x) = 0$ definido sobre $\mathbb{R}^n$,
-  el conjunto solución $S$ se establece formalmente como:
+resumen_inicial: Una solución extraña es un valor algebraico obtenido al resolver la ecuación entera que anula algún denominador
+  de la ecuación fraccionaria original, debiendo ser descartada.
+explicacion_simple: 'Al multiplicar una ecuación fraccionaria por el m.c.m. de sus denominadores, se transforma la igualdad
+  en una ecuación entera.
 
 
-  $$S = \{ x \in \mathbb{R}^n \mid E(x) = 0 \}$$
+  Sin embargo, esta manipulación algebraica puede introducir falsas soluciones denominadas **soluciones extrañas**.
 
 
-  **Desglose de la fórmula:**
-
-  - $x \in \mathbb{R}^n$: Representa el vector de incógnitas o la variable sobre el
-  espacio dimensional del problema.
-
-  - $E(x) = 0$: Denota la forma canónica de la ecuación o sistema tras trasponer todos
-  los términos al primer miembro.
-
-  - $S$: Es el conjunto solución compuesto por todos los puntos que convierten la
-  proposición abierta en una igualdad numérica verdadera.
+  Una solución extraña es aquel valor numérico que resuelve perfectamente la ecuación entera simplificada, pero que al sustituirse
+  en la ecuación fraccionaria original provoca una división por cero (anula algún denominador).
 
 
-  > **Complemento didáctico:** Esta definición garantiza que la resolución matemática
-  de detección de solución extraña por restricción del denominador consiste en caracterizar
-  el conjunto exacto $S$, descartando soluciones extrañas no compatibles con el dominio
-  o el contexto.'
-definiciones_clave: '- **Detección de solución extraña por restricción del denominador**:
-  Concepto clave en la resolución de ecuaciones y sistemas.
+  Por esta razón, siempre debemos contrastar los candidatos obtenidos contra las restricciones del dominio: todo valor prohibido
+  se descarta inmediatamente del conjunto solución ($S$).
 
-  - **Conjunto Solución S**: Conjunto de valores que verifican la igualdad.'
-propiedades_relaciones: '- **Conservación de equivalencia**: Las operaciones inversas
-  aplicadas a ambos miembros no alteran el conjunto solución $S$.'
+
+  ![Detección de solución extraña](/static/img/nodos/deteccion-de-solucion-extrana-por-restriccion-del-denominador-intro.svg)
+
+  '
+explicacion_formal: '### Definición formal
+
+  Dada una ecuación fraccionaria con conjunto de valores prohibidos $V_p = \{x \in \mathbb{R} \mid \exists i : Q_i(x) = 0\}$
+  y sea $x = c$ una raíz obtenida tras resolver la ecuación entera enterizada por multiplicación por $M(x)$:
+
+
+  $$\text{Si } c \in V_p \implies c \notin \operatorname{Dom} \implies c \text{ es una solución extraña}$$
+
+
+  $$S = \{c \in \mathbb{R} \mid c \text{ satisface la ecuación enterizada}\} \setminus V_p$$
+
+
+  ### Desglose de la fórmula
+
+  - $c \in V_p$: El candidato anula al menos un denominador original $Q_i(c) = 0$.
+
+  - $S = \emptyset$: Si la única raíz obtenida resulta ser una solución extraña, la ecuación carece de solución real (es incompatible).
+
+
+  ### Síntesis didáctica
+
+  Multiplicar por una expresión algebraica $M(x)$ que contiene a la variable no es una operación estrictamente equivalente
+  para los valores donde $M(x) = 0$, lo que genera soluciones espurias que deben ser filtradas.
+
+  '
+definiciones_clave: '- **Solución extraña**: Valor que satisface la ecuación polinomial entera resultante pero anula un denominador
+  de la ecuación fraccionaria original.
+
+  - **Ecuación incompatible**: Ecuación cuyo conjunto solución es el conjunto vacío ($S = \emptyset$) al descartarse todas
+  sus soluciones candidatas.
+
+  '
+propiedades_relaciones: '- **No equivalencia en raíces del m.c.m.**: Multiplicar por $M(x)$ introduce como candidatos a todas
+  las raíces de $M(x) = 0$.
+
+  - **Invalidez de división por cero**: Ninguna operación matemática puede validar una fracción con denominador nulo en $\mathbb{R}$.
+
+  '
 ejemplo_guiado:
-  enunciado: Un problema de ingeniería modela la relación lineal $E_{06}(x) = 4x +
-    15 = 31$. Aplica las propiedades de detección de solución extraña por restricción
-    del denominador y halla la solución $x$.
+  enunciado: Resuelve la ecuación fraccionaria $\frac{x}{x - 3} = \frac{3}{x - 3} + 2$, establece las restricciones de dominio,
+    detecta si existe alguna solución extraña y determina el conjunto solución $S$.
+  imagen: /static/img/nodos/deteccion-de-solucion-extrana-por-restriccion-del-denominador-ejemplos.svg
   pasos:
-  - 'Paso 1: Restar la constante $15$ en ambos miembros: $4x = 16$.'
-  - 'Paso 2: Despejar la incógnita $x$ dividiendo entre el coeficiente $4$: $x = \frac{16}{4}
-    = 4$.'
-  - 'Paso 3: Verificar en la ecuación original: $4(4) + 15 = 31$ (comprobado).'
+  - 'Paso 1: Establecer la restricción de dominio: el denominador $x - 3 \neq 0 \implies x \neq 3$, por lo que $V_p = \{3\}$.'
+  - 'Paso 2: Multiplicar ambos miembros por el m.c.m. $(x - 3)$: $x = 3 + 2(x - 3)$.'
+  - 'Paso 3: Aplicar la propiedad distributiva: $x = 3 + 2x - 6 \implies x = 2x - 3$.'
+  - 'Paso 4: Trasponer términos semejantes: $3 = 2x - x \implies x = 3$.'
+  - 'Paso 5: Contrastar el candidato $x = 3$ con la restricción $V_p = \{3\}$: puesto que $3 \in V_p$, el valor $x = 3$ anula
+    los denominadores y constituye una solución extraña.'
+  - 'Paso 6: Descartar la solución extraña y concluir que la ecuación no tiene solución real: $S = \emptyset$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el objetivo principal al resolver detección de solución extraña
-    por restricción del denominador?
+  question: ¿Por qué debe descartarse un valor candidato $x = c$ que anula un denominador de la ecuación original?
   choices:
-  - text: Determinar de forma unívoca el conjunto solución que satisface la igualdad
-      en detección de solución extraña por restricción del denominador
+  - text: Porque la división por cero no está definida en $\mathbb{R}$, convirtiéndola en una solución extraña.
     is_correct: true
-  - text: Eliminar el signo de igualdad
+  - text: Porque las soluciones deben ser obligatoriamente números pares.
     is_correct: false
-  - text: Hacer que todas las variables valgan cero
+  - text: Porque el m.c.m. solo admite números primos como soluciones.
     is_correct: false
-  - text: Multiplicar por un escalar negativo
+  - text: Porque la ecuación se transforma en una identidad cuadrática.
     is_correct: false
-  explanation: La alternativa correcta es 'Determinar de forma unívoca el conjunto
-    solución que satisface la igualdad en detección de solución extraña por restricción
-    del denominador'.
+  explanation: La alternativa correcta es 'Porque la división por cero no está definida en $\mathbb{R}$, convirtiéndola en
+    una solución extraña.'.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: Para la ecuación propuesta evaluada en detección de solución extraña por
-    restricción del denominador, ¿cuál es la solución x?
+  question: Para la ecuación $\frac{x}{x - 3} = \frac{3}{x - 3} + 2$, tras descartar la solución extraña $x = 3$, ¿cuál es
+    su conjunto solución $S$?
   choices:
-  - text: '4'
+  - text: $S = \emptyset$ (sin solución)
     is_correct: true
-  - text: '14'
+  - text: $S = \{3\}$
     is_correct: false
-  - text: '35'
+  - text: $S = \{0\}$
     is_correct: false
-  - text: '51'
+  - text: $S = \mathbb{R}$
     is_correct: false
-  explanation: La alternativa correcta es '4'.
+  explanation: La alternativa correcta es '$S = \emptyset$ (sin solución)'.
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar la estructura y los datos dados para detección de solución
-  extraña por restricción del denominador.'
-- 'Paso 2: Aplicar la regla de resolución o eliminación correspondiente a detección
-  de solución extraña por restricción del denominador.'
-- 'Paso 3: Obtener la solución de la incógnita y verificar su validez en la ecuación
-  original.'
-errores_correccion: Al resolver detección de solución extraña por restricción del
-  denominador, evita trasponer términos sin cambiar su signo.
+- 'Paso 1: Identificar y listar los valores prohibidos que anulan cualquier denominador de la ecuación inicial ($V_p$).'
+- 'Paso 2: Multiplicar la ecuación por el m.c.m. de los denominadores para obtener la ecuación entera.'
+- 'Paso 3: Resolver algebraicamente la ecuación entera y determinar los valores candidatos para la incógnita.'
+- 'Paso 4: Comparar cada candidato con el conjunto de valores prohibidos $V_p$.'
+- 'Paso 5: Descartar cualquier candidato que pertenezca a $V_p$ como solución extraña y definir el conjunto solución legítimo
+  $S$.'
+errores_correccion: '- **Error 1:** Aceptar como solución válida un valor que anula un denominador de la ecuación fraccionaria
+  inicial. **Cómo corregirlo:** Toda raíz que coincida con un valor prohibido **ES UNA SOLUCIÓN EXTRAÑA Y DEBE SER DESCARTADA
+  DEL CONJUNTO SOLUCIÓN ($S = \emptyset$)**.
+
+  - **Error 2:** Descartar soluciones válidas confundiéndolas con valores prohibidos del numerador. **Cómo corregirlo:** Solo
+  se descartan valores que **ANULEN LOS DENOMINADORES; SI UN VALOR ANULA EL NUMERADOR PERO NO EL DENOMINADOR, ES UNA SOLUCIÓN
+  TOTALMENTE VÁLIDA**.
+
+  '
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Resuelve la ecuación $4x = 20$.
+  enunciado: Al resolver $\frac{x}{x - 3} = \frac{3}{x - 3} + 2$, se obtiene algebraicamente $x = 3$. ¿Cuál es el conjunto
+    solución real?
   alternativas:
-  - x = 5
-  - x = 1
-  - x = 2
-  respuesta: x = 5
+  - $S = \emptyset$
+  - $S = \{3\}$
+  - $S = \{0\}$
+  respuesta: $S = \emptyset$
   solucion_pasos:
-  - 'Dividir entre 4: $x = \frac{20}{4} = 5$.'
+  - '1. Restricción: $x \neq 3$.'
+  - 2. El candidato obtenido es $x = 3$.
+  - 3. Como anula el denominador, es una solución extraña $\implies S = \emptyset$.
 - titulo: Ejemplo 2
-  enunciado: Despeja x en $x - 5 = 12$.
+  enunciado: Resuelve la ecuación $\frac{2x}{x - 2} = \frac{4}{x - 2} + 1$.
   alternativas:
-  - x = 17
-  - x = 7
-  - x = 12
-  respuesta: x = 17
+  - No tiene solución ($S = \emptyset$) por solución extraña $x = 2$
+  - Solución única $x = 2$
+  - Solución $x = 4$
+  respuesta: No tiene solución ($S = \emptyset$) por solución extraña $x = 2$
   solucion_pasos:
-  - 'Sumar 5 a ambos lados: $x = 12 + 5$.'
-- titulo: ¿Sumar el mismo número a ambos miembros conserva la igualdad?
+  - '1. Restricción: $x \neq 2$.'
+  - '2. Multiplicar por $(x - 2)$: $2x = 4 + (x - 2) \implies 2x = x + 2 \implies x = 2$.'
+  - 3. Al ser $x = 2$ un valor prohibido, se descarta $\implies S = \emptyset$.
+- titulo: Solución no prohibida
+  enunciado: ¿Si una ecuación con restricción $x \neq 3$ entrega como solución $x = 5$, la solución es legítima?
   respuesta: Sí
   solucion_pasos:
-  - Sí, es la propiedad aditiva fundamental de las igualdades.
-- titulo: ¿Un sistema de ecuaciones sin solución se grafica como rectas secantes?
-  respuesta: 'No'
+  - Sí, pues $5 \neq 3$ y pertenece al dominio permitido.
+- titulo: Candidato nulo
+  enunciado: ¿Un candidato $x = 0$ que no anula ningún denominador puede ser una solución válida?
+  respuesta: Sí
   solucion_pasos:
-  - No, las rectas secantes tienen solución única; las paralelas no tienen solución.
+  - Sí, el cero es un número real admisible si ningún denominador es $x = 0$.
 errores_frecuentes:
-- Omitir cambiar el signo de un término al trasponerlo al otro miembro.
-- Multiplicar o dividir por una expresión literal que puede ser igual a cero.
-- Aceptar soluciones extrañas en ecuaciones fraccionarias.
-- Declarar la solución de un sistema 2x2 con una sola incógnita aislada.
-- No verificar el resultado en las ecuaciones originales.
+- Aceptar como solución válida una raíz candidata que anula algún denominador de la ecuación fraccionaria original.
+- Concluir que el conjunto solución es $S = \{c\}$ en lugar de $S = \emptyset$ tras descartar la solución extraña.
+- Descartar una solución válida como $x = 0$ confundiéndola con una indeterminación de división por cero.
+- Evaluar la validez de la solución únicamente en la ecuación entera multiplicada por el m.c.m. en lugar de en la ecuación
+  fraccionaria original.
+- Asumir que toda ecuación fraccionaria posee obligatoriamente soluciones extrañas.
 afirmaciones_verdaderas:
-- Las operaciones inversas aplicadas en ambos miembros conservan la equivalencia de
-  la ecuación.
-- La solución de un sistema 2x2 representa la intersección de sus rectas componentes.
-al_terminar_debes_poder: Al finalizar este recurso podrás resolver y plantear problemas
-  de detección de solución extraña por restricción del denominador con rigor.
-fuente: Texto escolar MINEDUC — Álgebra / Ecuaciones y Sistemas.
+- Una solución extraña satisface la ecuación entera enterizada pero anula algún denominador de la ecuación fraccionaria inicial.
+- Si todas las soluciones candidatas resultan ser soluciones extrañas, el conjunto solución de la ecuación es vacío ($S =
+  \emptyset$).
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/deteccion-de-solucion-extrana-por-restriccion-del-denominador-resumen.svg)
+
+
+  QUÉ: Detectar y descartar soluciones extrañas en ecuaciones fraccionarias de primer grado.
+
+  CÓMO: Contrastar los valores numéricos obtenidos contra el conjunto de valores prohibidos $V_p$ y declarar el conjunto solución
+  legítimo $S$, distinguiendo casos de inconsistencia $S = \emptyset$.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 1° Medio / Ecuaciones Fraccionarias.
 estado: publicado

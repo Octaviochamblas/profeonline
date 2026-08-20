@@ -1,112 +1,126 @@
 semantic_id: MAT.ALG.AGRUPACION.ERROR_SIGNO_NEGATIVO
-resumen_inicial: 'La detección de error al suprimir agrupación negativa consiste en auditar pasos de simplificación algebraica para identificar la falla común de no cambiar el signo del segundo término o de las constantes internas.'
-explicacion_simple: |
-  El error más frecuente en todo el álgebra escolar ocurre al **eliminar un paréntesis precedido por un signo negativo ($-$)**:
-  - **El error clásico**: Cambiar el signo del primer término dentro del paréntesis pero **olvidar cambiar el signo de los términos que vienen después**.
-  - **Ejemplo del error**:
-    - Expresión: $10 - (x - 4)$.
-    - Paso ERÓNEO: $10 - x - 4 = 6 - x$ (¡ERROR GRAVE!).
-    - Paso CORRECTO: El $-4$ de adentro **DEBE CAMBIAR A $+4$**: $10 - x + 4 = \mathbf{14 - x}$.
-  - **Técnica de auditoría**: Cada vez que veas un signo $-$ antes de un paréntesis, **revisa uno por uno los signos de TODOS los términos liberados**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La detección de error al suprimir agrupación negativa consiste en auditar pasos de simplificación algebraica para identificar la falla común de no cambiar el signo del segundo término o de las constantes internas.
+explicacion_simple: "El error más frecuente en todo el álgebra escolar ocurre al **eliminar un paréntesis precedido por un signo negativo ($-$)**:\n- **El error clásico**: Cambiar el signo del primer término dentro del paréntesis pero **olvidar cambiar el signo de los términos que vienen después**.\n- **Ejemplo del error**:\n  - Expresión: $10 - (x - 4)$.\n  - Paso ERÓNEO: $10 - x - 4 = 6 - x$ (¡ERROR GRAVE!).\n  - Paso CORRECTO: El $-4$ de adentro **DEBE CAMBIAR A $+4$**: $10 - x + 4 = \\mathbf{14 - x}$.\n- **Técnica de auditoría**: Cada vez que veas un signo $-$ antes de un paréntesis, **revisa uno por uno los signos de TODOS los términos liberados**.\n\n![Detección de Error con Signo Negativo](/static/img/nodos/deteccion-de-error-al-suprimir-agrupacion-negativa-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea $\mathcal{A}: E_{\text{inicial}} \to E_{\text{paso}}$ una transformación de supresión de agrupación aplicada sobre $- (T_1 + T_2 + \dots + T_m)$. Se define una **falla de distribución del signo negativo** cuando existe al menos un índice $j \in \{2, \dots, m\}$ tal que la signatura del término liberado viola la negación aditiva:
+
 
   $$\operatorname{sgn}(T_j \text{ en } E_{\text{paso}}) \neq -\operatorname{sgn}(T_j \text{ en } E_{\text{inicial}}) \implies \mathcal{A} \text{ es inválida}$$
 
+
   ### Diagnóstico Algebraico mediante Valorización
+
   Un método formal para detectar la invalidez de un paso de supresión incorrecto es la evaluación numérica de la identidad en un punto del dominio $x = c$:
+
 
   $$E_{\text{correcto}}(c) \neq E_{\text{erróneo}}(c) \implies \text{Falsa equivalencia algebraica}$$
 
+
   ### Síntesis didáctica
+
   Auditar minuciosamente la distribución de signos negativos en corchetes es el control de calidad fundamental para resolver sistemas de ecuaciones y pruebas estandarizadas.
-definiciones_clave: |
-  - **Falla de distribución de signo**: Error algebraico producido por no aplicar la propiedad distributiva del $-1$ a todos los elementos del paréntesis.
+
+  '
+definiciones_clave: '- **Falla de distribución de signo**: Error algebraico producido por no aplicar la propiedad distributiva del $-1$ a todos los elementos del paréntesis.
+
   - **Error del segundo término**: Omisión de la inversión del signo en los términos no iniciales de una agrupación negativa.
+
   - **Prueba por valorización de auditoría**: Verificación de equivalencia sustituyendo valores constantes para comprobar si dos pasos son iguales.
-propiedades_relaciones: |
-  - **Falsa equivalencia**: $-(A - B) \neq -A - B$ (da una diferencia de $2B$ respecto al valor correcto $-A + B$).
+
+  '
+propiedades_relaciones: '- **Falsa equivalencia**: $-(A - B) \neq -A - B$ (da una diferencia de $2B$ respecto al valor correcto $-A + B$).
+
   - **Sensibilidad de las constantes**: Los signos de las constantes numéricas al final del paréntesis son los que con mayor frecuencia sufren omisión de cambio.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita el siguiente procedimiento algebraico y detecta el paso donde se cometió el error:
-  Expresión: $5x - [ 3x - (2x - 7) ]$
-  Paso 1: $5x - [ 3x - 2x - 7 ]$
-  Paso 2: $5x - [ x - 7 ]$
-  Paso 3: $5x - x + 7$
-  Paso 4: $4x + 7$.'
+  enunciado: 'Audita el siguiente procedimiento algebraico y detecta el paso donde se cometió el error: Expresión: $5x - [ 3x - (2x - 7) ]$ Paso 1: $5x - [ 3x - 2x - 7 ]$ Paso 2: $5x - [ x - 7 ]$ Paso 3: $5x - x + 7$ Paso 4: $4x + 7$.'
   pasos:
-    - 'Paso 1: Examinamos el Paso 1: Se eliminó el paréntesis $-(2x - 7)$.'
-    - 'Paso 2: Revisamos los signos liberados: El $+2x$ pasó a $-2x$ (correcto), pero el $-7$ se escribió como $-7$ (¡ERROR!).'
-    - 'Paso 3: Corregimos la supresión del Paso 1: $-(2x - 7) \implies -2x + 7$.'
-    - 'Paso 4: Reescribimos el procedimiento correcto:
-       - Paso 1 corregido: $5x - [ 3x - 2x + 7 ]$.
-       - Paso 2 corregido: $5x - [ x + 7 ]$.
-       - Paso 3 corregido: $5x - x - 7$.
-       - Paso 4 corregido: $4x - 7$.'
-    - 'Conclusión: El error se cometió en el **Paso 1**, por no cambiar el signo del $-7$ a $+7$.'
+  - 'Paso 1: Examinamos el Paso 1: Se eliminó el paréntesis $-(2x - 7)$.'
+  - 'Paso 2: Revisamos los signos liberados: El $+2x$ pasó a $-2x$ (correcto), pero el $-7$ se escribió como $-7$ (¡ERROR!).'
+  - 'Paso 3: Corregimos la supresión del Paso 1: $-(2x - 7) \implies -2x + 7$.'
+  - 'Paso 4: Reescribimos el procedimiento correcto: - Paso 1 corregido: $5x - [ 3x - 2x + 7 ]$. - Paso 2 corregido: $5x - [ x + 7 ]$. - Paso 3 corregido: $5x - x - 7$. - Paso 4 corregido: $4x - 7$.'
+  - 'Conclusión: El error se cometió en el **Paso 1**, por no cambiar el signo del $-7$ a $+7$.'
+  imagen: /static/img/nodos/deteccion-de-error-al-suprimir-agrupacion-negativa-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿En qué consiste el error más común al suprimir un paréntesis precedido por signo negativo?'
-    choices:
-      - {text: 'En cambiar el signo del primer término pero olvidar cambiar el signo de los términos posteriores dentro del paréntesis', is_correct: true}
-      - {text: 'En multiplicar todos los coeficientes por cero', is_correct: false}
-      - {text: 'En sumar los exponentes de las letras', is_correct: false}
-      - {text: 'En cambiar los signos cuando el paréntesis está precedido por un signo positivo', is_correct: false}
-    explanation: 'La alternativa correcta es ''En cambiar el signo del primer término pero olvidar cambiar el signo de los términos posteriores dentro del paréntesis''. Falla de distribución del signo negativo.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al auditar el paso $8 - (x - 5) = 8 - x - 5 = 3 - x$, ¿es este procedimiento correcto o erróneo?'
-    choices:
-      - {text: 'Es erróneo, porque el $-5$ dentro del paréntesis debió cambiar a $+5$, dando $8 - x + 5 = 13 - x$', is_correct: true}
-      - {text: 'Es correcto, porque el signo menos sólo afecta a la $x$', is_correct: false}
-      - {text: 'Es correcto, porque $8 - 5 = 3$', is_correct: false}
-      - {text: 'Es erróneo, porque la $x$ debía ser positiva', is_correct: false}
-    explanation: 'La alternativa correcta es ''Es erróneo, porque el $-5$ dentro del paréntesis debió cambiar a $+5$, dando $8 - x + 5 = 13 - x$''. Inversión no aplicada al $-5$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿En qué consiste el error más común al suprimir un paréntesis precedido por signo negativo?
+  choices:
+  - text: En cambiar el signo del primer término pero olvidar cambiar el signo de los términos posteriores dentro del paréntesis
+    is_correct: true
+  - text: En multiplicar todos los coeficientes por cero
+    is_correct: false
+  - text: En sumar los exponentes de las letras
+    is_correct: false
+  - text: En cambiar los signos cuando el paréntesis está precedido por un signo positivo
+    is_correct: false
+  explanation: La alternativa correcta es 'En cambiar el signo del primer término pero olvidar cambiar el signo de los términos posteriores dentro del paréntesis'. Falla de distribución del signo negativo.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al auditar el paso $8 - (x - 5) = 8 - x - 5 = 3 - x$, ¿es este procedimiento correcto o erróneo?
+  choices:
+  - text: Es erróneo, porque el $-5$ dentro del paréntesis debió cambiar a $+5$, dando $8 - x + 5 = 13 - x$
+    is_correct: true
+  - text: Es correcto, porque el signo menos sólo afecta a la $x$
+    is_correct: false
+  - text: Es correcto, porque $8 - 5 = 3$
+    is_correct: false
+  - text: Es erróneo, porque la $x$ debía ser positiva
+    is_correct: false
+  explanation: La alternativa correcta es 'Es erróneo, porque el $-5$ dentro del paréntesis debió cambiar a $+5$, dando $8 - x + 5 = 13 - x$'. Inversión no aplicada al $-5$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Ubicar todas las supresiones de signos de agrupación precedidos por signo negativo.'
-  - 'Paso 2: Comparar término por término la signatura antes y después de la supresión.'
-  - 'Paso 3: Verificar que el signo de CADA uno de los términos (incluyendo el último) haya sido invertido.'
-  - 'Paso 4: Señalar la línea exacta donde no se efectuó la inversión y reescribir el desarrollo correcto.'
-errores_correccion: |
-  - **Error 1:** Afirmar que $-(a - b) = -a - b$ es correcto por la regla de signos. **Cómo corregirlo:** El signo menos **SE DISTRIBUYE A AMBOS TÉRMINOS ($-1 \cdot -b = +b \implies -a + b$)**.
+- 'Paso 1: Ubicar todas las supresiones de signos de agrupación precedidos por signo negativo.'
+- 'Paso 2: Comparar término por término la signatura antes y después de la supresión.'
+- 'Paso 3: Verificar que el signo de CADA uno de los términos (incluyendo el último) haya sido invertido.'
+- 'Paso 4: Señalar la línea exacta donde no se efectuó la inversión y reescribir el desarrollo correcto.'
+errores_correccion: '- **Error 1:** Afirmar que $-(a - b) = -a - b$ es correcto por la regla de signos. **Cómo corregirlo:** El signo menos **SE DISTRIBUYE A AMBOS TÉRMINOS ($-1 \cdot -b = +b \implies -a + b$)**.
+
   - **Error 2:** Auditar sólo el primer término del paréntesis sin revisar las constantes finales. **Cómo corregirlo:** La auditoría **DEBE REVISAR HASTA EL ÚLTIMO TÉRMINO DENTRO DEL DELIMITADOR**.
+
+  '
 ejemplos:
-  - titulo: 'Detección en resta simple'
-    enunciado: '¿Es erróneo escribir $-(2x - 9) = -2x - 9$?'
-    alternativas:
-      - 'Sí, es erróneo porque debió ser $-2x + 9$'
-      - 'No, es correcto'
-      - 'Depende del valor de x'
-    respuesta: 'Sí, es erróneo porque debió ser $-2x + 9$'
-    solucion_pasos:
-      - '1. $-1 \cdot (-9) = +9$.'
-      - '2. El paso escrito es erróneo.'
-  - titulo: 'Auditoría con valorización'
-    enunciado: 'Para $x = 0$, ¿demuestra $-(0 - 4) = +4 \neq -4$ que $-(x - 4) \neq -x - 4$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, al valorizar en $x=0$ se comprueba la falsedad del desarrollo sin cambiar signo.'
-  - titulo: 'Constante final no cambiada'
-    enunciado: 'En $a - (b + c - d) = a - b - c - d$, ¿se cometió un error en el término $d$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, el $-d$ debió pasar a $+d$.'
-  - titulo: 'Corrección completa'
-    enunciado: '¿Es la corrección de $-(3x - 2y + 5)$ igual a $-3x + 2y - 5$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, se invirtió el signo de los tres términos correctamente.'
+- titulo: Detección en resta simple
+  enunciado: ¿Es erróneo escribir $-(2x - 9) = -2x - 9$?
+  alternativas:
+  - Sí, es erróneo porque debió ser $-2x + 9$
+  - No, es correcto
+  - Depende del valor de x
+  respuesta: Sí, es erróneo porque debió ser $-2x + 9$
+  solucion_pasos:
+  - 1. $-1 \cdot (-9) = +9$.
+  - 2. El paso escrito es erróneo.
+- titulo: Auditoría con valorización
+  enunciado: Para $x = 0$, ¿demuestra $-(0 - 4) = +4 \neq -4$ que $-(x - 4) \neq -x - 4$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, al valorizar en $x=0$ se comprueba la falsedad del desarrollo sin cambiar signo.
+- titulo: Constante final no cambiada
+  enunciado: En $a - (b + c - d) = a - b - c - d$, ¿se cometió un error en el término $d$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el $-d$ debió pasar a $+d$.
+- titulo: Corrección completa
+  enunciado: ¿Es la corrección de $-(3x - 2y + 5)$ igual a $-3x + 2y - 5$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, se invirtió el signo de los tres términos correctamente.
 errores_frecuentes:
-  - 'Declarar correcto un desarrollo donde no se invirtió el signo del segundo término dentro del paréntesis.'
-  - 'La revisión de los signos de las constantes numéricas ubicadas al final de la agrupación no se ejecuta.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Validar que el signo negativo antecedente sólo afecta a la primera variable del paréntesis.'
-  - 'El signo del resultado final es alterado por no realizar una auditoría término por término.'
+- Declarar correcto un desarrollo donde no se invirtió el signo del segundo término dentro del paréntesis.
+- La revisión de los signos de las constantes numéricas ubicadas al final de la agrupación no se ejecuta.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Validar que el signo negativo antecedente sólo afecta a la primera variable del paréntesis.
+- El signo del resultado final es alterado por no realizar una auditoría término por término.
 afirmaciones_verdaderas:
-  - 'Al auditar la supresión de un paréntesis precedido por signo negativo se debe verificar que todos sus términos hayan invertido su signo.'
-  - 'La expresión -(A - B) es idéntica a -A + B, por lo que escribir -A - B constituye un error algebraico.'
-al_terminar_debes_poder: 'Auditar desarrollos algebraicos identificando errores en la supresión de signos de agrupación negativos y corrigiéndolos.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- Al auditar la supresión de un paréntesis precedido por signo negativo se debe verificar que todos sus términos hayan invertido su signo.
+- La expresión -(A - B) es idéntica a -A + B, por lo que escribir -A - B constituye un error algebraico.
+al_terminar_debes_poder: '![Resumen de detección de error](/static/img/nodos/deteccion-de-error-al-suprimir-agrupacion-negativa-resumen.svg)
+
+
+  QUÉ: Detectar y corregir el error común de alteración parcial de signos tras un signo menos.
+
+
+  CÓMO: Verificar que el signo negativo exterior haya modificado la totalidad de los sumandos internos, impidiendo fallos como $-(a - b) \neq -a - b$.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

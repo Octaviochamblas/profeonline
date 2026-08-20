@@ -1,12 +1,14 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.CONCEPTO
 resumen_inicial: 'El interés compuesto es el proceso financiero de capitalización donde los intereses devengados al final de cada período se adicionan al capital inicial para generar nuevos intereses en los períodos siguientes: $M = C \cdot (1 + i)^n$.'
 explicacion_simple: |
-  A diferencia del interés simple (donde la ganancia siempre se calcula sobre el dinero original), en el **interés compuesto** la ganancia de cada año **se suma al dinero guardado**.
+  A diferencia del interés simple (donde la ganancia siempre se calcula sobre el dinero original), en el **interés compuesto** la ganancia de cada período **se suma al dinero acumulado**.
   Por ejemplo, si inviertes $\$100.000$ al $10\%$ anual compuesto:
-  - Año 1: Ganas el $10\%$ de $\$100.000 = \$10.000$. Tu nuevo total es $\$110.000$.
-  - Año 2: Ganas el $10\%$ de $\$110.000 = \$11.000$. Tu nuevo total es $\$121.000$.
-  - Año 3: Ganas el $10\%$ de $\$121.000 = \$12.100$. Tu nuevo total es $\$133.100$.
-  Esto crea el efecto de *"interés sobre interés"* o **crecimiento exponencial**.
+  - Año 1: Ganas el $10\%$ de $\$100.000 = $\$10.00$0$. Tu nuevo capital es $\$110.000$.
+  - Año 2: Ganas el $10\%$ de $\$110.000 = $\$11.00$0$. Tu nuevo capital es $\$121.000$.
+  - Año 3: Ganas el $10\%$ de $\$121.000 = $\$12.10$0$. Tu nuevo capital es $\$133.100$.
+  Esto crea el efecto multiplicativo de *"interés sobre interés"* o **crecimiento exponencial**.
+
+  ![Concepto de interés compuesto](/static/img/nodos/concepto-de-interes-compuesto-intro.svg)
 explicacion_formal: |
   ### Definición formal
   El **régimen de capitalización compuesta** es un modelo dinámico discreto donde la base de cálculo de intereses se actualiza periódicamente sumando los rendimientos obtenidos:
@@ -36,6 +38,7 @@ propiedades_relaciones: |
   - **Efecto de la frecuencia de capitalización**: A mayor frecuencia de capitalización en un año (ej: mensual vs. anual), mayor es el monto final obtenido.
 ejemplo_guiado:
   enunciado: 'Un depósito de $\$200.000$ se coloca a interés compuesto a una tasa del $10\%$ anual durante $3$ años con capitalización anual. Calcula el monto final total acumulado.'
+  imagen: '/static/img/nodos/concepto-de-interes-compuesto-ejemplos.svg'
   pasos:
     - 'Paso 1: Identificamos $C = 200.000$, tasa decimal $i = 0,10$ y número de períodos $n = 3$.'
     - 'Paso 2: Aplicamos la fórmula del monto compuesto: $M = C \cdot (1 + i)^n = 200.000 \cdot (1 + 0,10)^3$.'
@@ -49,7 +52,7 @@ checkpoints:
       - {text: 'Se retiran del banco y el capital permanece siempre constante', is_correct: false}
       - {text: 'Se reducen en un 50% al término de cada año', is_correct: false}
       - {text: 'Se multiplican por el número de días transcurridos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se suman al capital inicial para generar nuevos intereses en los períodos siguientes''. Es el principio de capitalización.'
+    explanation: 'La alternativa correcta es ''Se suman al capital inicial para generar nuevos intereses en los períodos siguientes''. Es el principio de capitalización de rendimientos.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
     question: 'Si se depositan $\$100.000$ al $5\%$ de interés compuesto anual por $2$ años, ¿cuál es el monto acumulado?'
@@ -70,39 +73,57 @@ errores_correccion: |
   - **Error 2:** No ajustar la tasa anual cuando la capitalización es mensual o semestral. **Cómo corregirlo:** Divide la tasa anual entre el número de períodos del año (ej: **$i = r_{\text{anual}} / 12$ para capitalización mensual**).
 ejemplos:
   - titulo: 'Monto compuesto a 2 años'
-    enunciado: '¿El monto compuesto de $\$50.000$ al $10\%$ anual en 2 años es $\$60.500$?'
+    enunciado: '¿Cuál es el monto final compuesto de $\$50.000$ colocado al $10\%$ anual durante 2 años?'
     alternativas:
-      - 'Sí, pues $50.000 \cdot (1,10)^2 = 50.000 \cdot 1.21 = 60.500$'
-      - 'No, es $\$60.000$'
-      - 'No, es $\$55.000$'
-    respuesta: 'Sí, pues $50.000 \cdot (1,10)^2 = 50.000 \cdot 1.21 = 60.500$'
+      - '$\$60.500$'
+      - '$\$60.000$'
+      - '$\$55.000$'
+    respuesta: '$\$60.500$'
     solucion_pasos:
       - '1. Factor: $(1,10)^2 = 1,21$.'
-      - '2. Monto: $50.000 \cdot 1,21 = 60.500$.'
+      - '2. Monto: $M = 50.000 \cdot 1,21 = $\$60.50$0$.'
   - titulo: 'Interés acumulado vs simple'
-    enunciado: 'Para $\$100.000$ al $10\%$ en 2 años, ¿el interés compuesto ($\$21.000$) supera al simple ($\$20.000$)?'
-    respuesta: 'Sí'
+    enunciado: 'Para $\$100.000$ al $10\%$ en 2 años, ¿cuál es el interés compuesto ganado?'
+    alternativas:
+      - '$\$21.000$'
+      - '$\$20.000$'
+      - '$\$10.000$'
+    respuesta: '$\$21.000$'
     solucion_pasos:
-      - 'Sí. $100.000 \cdot 1,21 - 100.000 = \$21.000 > \$20.000$.'
+      - '1. $M = 100.000 \cdot 1,21 = 121.000$.'
+      - '2. $I = 121.000 - 100.000 = $\$21.00$0$.'
   - titulo: 'Efecto de capitalizaciones sucesivas'
-    enunciado: '¿Los intereses generados en el segundo año son mayores que los del primer año?'
-    respuesta: 'Sí'
+    enunciado: '¿Los intereses generados en el segundo año de capitalización compuesta son estrictamente mayores que los del primer año?'
+    alternativas:
+      - 'Sí, pues el capital del segundo año incluye los intereses del primero'
+      - 'No, son exactamente iguales en todos los períodos'
+      - 'No, disminuyen progresivamente'
+    respuesta: 'Sí, pues el capital del segundo año incluye los intereses del primero'
     solucion_pasos:
-      - 'Sí. El capital del segundo año incluye los intereses del primero.'
+      - '1. En el segundo año el porcentaje se calcula sobre un capital mayor ($C + I_1$).'
   - titulo: 'Monto con tasa del 100%'
-    enunciado: 'Si la tasa fuera $100\%$ por período ($i=1$), ¿el monto final se cuadruplica en 2 períodos ($100.000 \cdot 2^2 = 400.000$)?'
-    respuesta: 'Sí'
+    enunciado: 'Si la tasa fuera $100\%$ por período ($i=1$), ¿en cuánto se multiplica el capital al cabo de 2 períodos?'
+    alternativas:
+      - 'Se cuadruplica ($4$ veces el capital inicial)'
+      - 'Se duplica ($2$ veces)'
+      - 'Se triplica ($3$ veces)'
+    respuesta: 'Se cuadruplica ($4$ veces el capital inicial)'
     solucion_pasos:
-      - 'Sí. $(1+1)^2 = 2^2 = 4 \implies 400.000$.'
+      - '1. $(1 + 1)^2 = 2^2 = 4$.'
+      - '2. El monto final es $4C$.'
 errores_frecuentes:
-  - 'Multiplicar la tasa por el número de períodos $n$ aplicando por equivocación la fórmula del interés simple.'
-  - 'Mantener la tasa nominal anual sin dividirla por la frecuencia de capitalización por año.'
-  - 'El monto final a interés compuesto evoluciona mediante una línea recta de pendiente fija.'
-  - 'Los intereses producidos en el período tres son idénticos a los intereses generados en el período uno.'
-  - 'Sumar el capital inicial al factor $(1+i)$ antes de elevar al exponente $n$.'
+  - 'El monto final a interés compuesto se calcula multiplicando la tasa por el número de períodos $n$ en forma lineal ($M = C(1+in)$).'
+  - 'La tasa anual se aplica directamente como base temporal sin dividirla entre la frecuencia de capitalización periódica.'
+  - 'La gráfica del monto final a interés compuesto evoluciona mediante una línea recta de pendiente fija constante.'
+  - 'Los intereses monetarios producidos en el período tres son numéricamente idénticos a los generados en el período uno.'
+  - 'El capital inicial $C$ se suma a la tasa $(1+i)$ antes de elevar al exponente $n$.'
 afirmaciones_verdaderas:
   - 'En el interés compuesto, los intereses de cada período se incorporan al capital para generar nuevos intereses ($M = C(1+i)^n$).'
-  - 'Para plazos superiores a un período ($n > 1$), el interés compuesto genera un rendimiento mayor que el interés simple a la misma tasa.'
-al_terminar_debes_poder: 'Comprender y calcular el monto acumulado por interés compuesto mediante la función exponencial $M = C \cdot (1 + i)^n$.'
+  - 'Para plazos superiores a un período ($n > 1$), el interés compuesto genera un rendimiento estrictamente mayor que el interés simple a la misma tasa.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/concepto-de-interes-compuesto-resumen.svg)
+
+  QUÉ: Comprender y calcular el monto acumulado por interés compuesto mediante el principio de capitalización periódica.
+  CÓMO: Aplicar la función exponencial discreta $M = C \cdot (1 + i)^n$, evaluando el factor de acumulación potenciado al número de períodos $n$.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

@@ -1,117 +1,151 @@
 semantic_id: MAT.ALG.CUADRADO_TRINOMIO.OMISION_PRODUCTOS_DOBLES
-resumen_inicial: 'La detección de error por omisión de productos dobles consiste en auditar la expansión del cuadrado de trinomio identificando la supresión parcial o total de las tres combinaciones pareadas $2ab, 2ac, 2bc$.'
-explicacion_simple: |
-  En el **cuadrado de trinomio** $(a + b + c)^2$, un error grave de omisión consiste en **suprimir los dobles productos mixtos**:
-  - **En qué consiste el error**: Escribir $(a + b + c)^2 = \mathbf{a^2 + b^2 + c^2}$.
-  - **Por qué es un error**:
-    - Se eliminan por completo los tres dobles productos **$2ab + 2ac + 2bc$**.
-    - El exponente 2 **NO ES DISTRIBUTIVO** sobre la adición de tres términos.
-  - **Ejemplo**: $(x + y + 3)^2$:
-    - Respuesta ERRÓNEA: $x^2 + y^2 + 9$.
-    - Respuesta CORRECTA: **$x^2 + y^2 + 9 + 2xy + 6x + 6y$** (¡se omitieron los 3 términos mixtos $2xy + 6x + 6y$!).
-  - **Prueba numérica con $x=1, y=1$**:
-    - Lado izquierdo: $(1 + 1 + 3)^2 = 5^2 = \mathbf{25}$.
-    - Lado derecho erróneo: $1^2 + 1^2 + 9 = 1 + 1 + 9 = \mathbf{11}$.
-    - ¡Como $25 \neq 11$, la fórmula con omisión es falsa!
-explicacion_formal: |
-  ### Definición formal
-  Sea la trinomía $(a + b + c)^2$ en $\mathbb{R}[x,y,z]$. Se define el **operador defectuoso de distributividad trinomial** $\mathcal{H}_{\text{falso}}: \mathbb{R}[x,y,z] \to \mathbb{R}[x,y,z]$ por:
+resumen_inicial: La detección de error por omisión de productos dobles consiste en auditar la expansión del cuadrado de trinomio
+  identificando la supresión parcial o total de las tres combinaciones pareadas $2ab, 2ac, 2bc$.
+explicacion_simple: "En el **cuadrado de trinomio** $(a + b + c)^2$, un error grave de omisión consiste en **suprimir los\
+  \ dobles productos mixtos**:\n- **En qué consiste el error**: Escribir $(a + b + c)^2 = \\mathbf{a^2 + b^2 + c^2}$.\n- **Por\
+  \ qué es un error**:\n  - Se eliminan por completo los tres dobles productos **$2ab + 2ac + 2bc$**.\n  - El exponente 2\
+  \ **NO ES DISTRIBUTIVO** sobre la adición de tres términos.\n- **Ejemplo**: $(x + y + 3)^2$:\n  - Respuesta ERRÓNEA: $x^2\
+  \ + y^2 + 9$.\n  - Respuesta CORRECTA: **$x^2 + y^2 + 9 + 2xy + 6x + 6y$** (¡se omitieron los 3 términos mixtos $2xy + 6x\
+  \ + 6y$!).\n- **Prueba numérica con $x=1, y=1$**:\n  - Lado izquierdo: $(1 + 1 + 3)^2 = 5^2 = \\mathbf{25}$.\n  - Lado derecho\
+  \ erróneo: $1^2 + 1^2 + 9 = 1 + 1 + 9 = \\mathbf{11}$.\n  - ¡Como $25 \\neq 11$, la fórmula con omisión es falsa!\n\n![Detección\
+  \ de error por omisión de productos dobles](/static/img/nodos/deteccion-de-error-por-omision-de-productos-dobles-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
+  Sea la trinomía $(a + b + c)^2$ en $\mathbb{R}[x,y,z]$. Se define el **operador defectuoso de distributividad trinomial**
+  $\mathcal{H}_{\text{falso}}: \mathbb{R}[x,y,z] \to \mathbb{R}[x,y,z]$ por:
+
 
   $$\mathcal{H}_{\text{falso}}((a+b+c)^2) = a^2 + b^2 + c^2 \quad \neq \quad (a+b+c)^2$$
 
+
   ### Cuantificación del Residual de Omisión Trinomial
-  La discrepancia cuantitativa de auditoría $\Delta_{\text{trinomial}}$ provocada por la supresión de las interacciones cruzadas es:
+
+  La discrepancia cuantitativa de auditoría $\Delta_{\text{trinomial}}$ provocada por la supresión de las interacciones cruzadas
+  es:
+
 
   $$\Delta_{\text{trinomial}} = (a+b+c)^2 - (a^2 + b^2 + c^2) = 2ab + 2ac + 2bc = 2(ab + ac + bc)$$
 
-  Para cualesquiera $a, b, c \neq 0$, la discrepancia $\Delta_{\text{trinomial}} = 2(ab + ac + bc) \neq 0$ confirma la invalidez de omitir las tres componentes de interacción par.
+
+  Para cualesquiera $a, b, c \neq 0$, la discrepancia $\Delta_{\text{trinomial}} = 2(ab + ac + bc) \neq 0$ confirma la invalidez
+  de omitir las tres componentes de interacción par.
+
 
   ### Síntesis didáctica
+
   Auditar que toda expansión contenga exactamente 6 términos previene la supresión de los dobles productos mixtos.
-definiciones_clave: |
-  - **Residual de omisión trinomial ($\Delta = 2(ab+ac+bc)$)**: Cantidad algebraica suprimida al distribuir erróneamente la potencia 2 sobre tres sumandos.
+
+  '
+definiciones_clave: '- **Residual de omisión trinomial ($\Delta = 2(ab+ac+bc)$)**: Cantidad algebraica suprimida al distribuir
+  erróneamente la potencia 2 sobre tres sumandos.
+
   - **Falsa distributividad trinomial**: Supuesto erróneo de que $(a+b+c)^2 = a^2 + b^2 + c^2$.
+
   - **Auditoría por recuento de componentes**: Verificación de que el resultado contenga 3 cuadrados más 3 dobles productos.
-propiedades_relaciones: |
-  - **Criterio de auditoría de 6 términos**: Si una expansión de $(a+b+c)^2$ con tres variables independientes presenta menos de 6 términos, contiene obligatoriamente una omisión.
+
+  '
+propiedades_relaciones: '- **Criterio de auditoría de 6 términos**: Si una expansión de $(a+b+c)^2$ con tres variables independientes
+  presenta menos de 6 términos, contiene obligatoriamente una omisión.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita la siguiente respuesta de un estudiante e identifica la omisión cometida:
-  Problema: Desarrollar $(x + 2y + 4)^2$.
-  Respuesta del estudiante: $x^2 + 4y^2 + 16$.'
+  enunciado: 'Audita la siguiente respuesta de un estudiante e identifica la omisión cometida: Problema: Desarrollar $(x +
+    2y + 4)^2$. Respuesta del estudiante: $x^2 + 4y^2 + 16$.'
   pasos:
-    - 'Paso 1: Contamos los términos de la respuesta del estudiante: Presenta sólo **3 términos** cuadráticos.'
-    - 'Paso 2: Recordamos que la expansión debe contener **6 términos**.'
-    - 'Paso 3: Diagnosticamos la falla: El estudiante incurrió en un **error por omisión de los tres dobles productos**.'
-    - 'Paso 4: Calculamos las tres componentes omitidas:
-       - $2 \cdot x \cdot 2y = \mathbf{4xy}$.
-       - $2 \cdot x \cdot 4 = \mathbf{8x}$.
-       - $2 \cdot 2y \cdot 4 = \mathbf{16y}$.'
-    - 'Paso 5: Realizamos la prueba numérica para $x=1, y=1$:
-       - Izquierda: $(1 + 2 + 4)^2 = 7^2 = \mathbf{49}$.
-       - Estudiante: $1^2 + 4(1)^2 + 16 = 1 + 4 + 16 = \mathbf{21}$ (¡$49 \neq 21$!).'
-    - 'Conclusión: La respuesta del estudiante era errónea. El resultado correcto es **$x^2 + 4y^2 + 16 + 4xy + 8x + 16y$**.'
+  - 'Paso 1: Contamos los términos de la respuesta del estudiante: Presenta sólo **3 términos** cuadráticos.'
+  - 'Paso 2: Recordamos que la expansión debe contener **6 términos**.'
+  - 'Paso 3: Diagnosticamos la falla: El estudiante incurrió en un **error por omisión de los tres dobles productos**.'
+  - 'Paso 4: Calculamos las tres componentes omitidas: - $2 \cdot x \cdot 2y = \mathbf{4xy}$. - $2 \cdot x \cdot 4 = \mathbf{8x}$.
+    - $2 \cdot 2y \cdot 4 = \mathbf{16y}$.'
+  - 'Paso 5: Realizamos la prueba numérica para $x=1, y=1$: - Izquierda: $(1 + 2 + 4)^2 = 7^2 = \mathbf{49}$. - Estudiante:
+    $1^2 + 4(1)^2 + 16 = 1 + 4 + 16 = \mathbf{21}$ (¡$49 \neq 21$!).'
+  - 'Conclusión: La respuesta del estudiante era errónea. El resultado correcto es **$x^2 + 4y^2 + 16 + 4xy + 8x + 16y$**.'
+  imagen: /static/img/nodos/deteccion-de-error-por-omision-de-productos-dobles-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué residual cuantitativo se omite al declarar erróneamente que $(a+b+c)^2 = a^2 + b^2 + c^2$?'
-    choices:
-      - {text: 'Se omite la suma de los tres dobles productos mixtos $\Delta = 2ab + 2ac + 2bc = 2(ab + ac + bc)$', is_correct: true}
-      - {text: 'Se omite el término $a^2$', is_correct: false}
-      - {text: 'Se omite la constante 2', is_correct: false}
-      - {text: 'No se omite nada', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se omite la suma de los tres dobles productos mixtos $\Delta = 2ab + 2ac + 2bc = 2(ab + ac + bc)$''. Residual de omisión $\Delta = 2(ab+ac+bc)$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Para $x=1, y=1$, ¿qué discrepancia demuestra que $(x+y+1)^2 \neq x^2 + y^2 + 1$?'
-    choices:
-      - {text: 'Para $x=1, y=1$, $(1+1+1)^2 = 3^2 = 9$, mientras que $1+1+1 = 3$, evidenciando que faltan los dobles productos', is_correct: true}
-      - {text: 'Ambos lados valen 9', is_correct: false}
-      - {text: 'Demuestra que la fórmula es correcta', is_correct: false}
-      - {text: 'El lado izquierdo vale 3 y el derecho 9', is_correct: false}
-    explanation: 'La alternativa correcta es ''Para $x=1, y=1$, $(1+1+1)^2 = 3^2 = 9$, mientras que $1+1+1 = 3$, evidenciando que faltan los dobles productos''. $9 \neq 3$ en sustitución numérica.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué residual cuantitativo se omite al declarar erróneamente que $(a+b+c)^2 = a^2 + b^2 + c^2$?
+  choices:
+  - text: Se omite la suma de los tres dobles productos mixtos $\Delta = 2ab + 2ac + 2bc = 2(ab + ac + bc)$
+    is_correct: true
+  - text: Se omite el término $a^2$
+    is_correct: false
+  - text: Se omite la constante 2
+    is_correct: false
+  - text: No se omite nada
+    is_correct: false
+  explanation: La alternativa correcta es 'Se omite la suma de los tres dobles productos mixtos $\Delta = 2ab + 2ac + 2bc
+    = 2(ab + ac + bc)$'. Residual de omisión $\Delta = 2(ab+ac+bc)$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Para $x=1, y=1$, ¿qué discrepancia demuestra que $(x+y+1)^2 \neq x^2 + y^2 + 1$?
+  choices:
+  - text: Para $x=1, y=1$, $(1+1+1)^2 = 3^2 = 9$, mientras que $1+1+1 = 3$, evidenciando que faltan los dobles productos
+    is_correct: true
+  - text: Ambos lados valen 9
+    is_correct: false
+  - text: Demuestra que la fórmula es correcta
+    is_correct: false
+  - text: El lado izquierdo vale 3 y el derecho 9
+    is_correct: false
+  explanation: La alternativa correcta es 'Para $x=1, y=1$, $(1+1+1)^2 = 3^2 = 9$, mientras que $1+1+1 = 3$, evidenciando
+    que faltan los dobles productos'. $9 \neq 3$ en sustitución numérica.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Contar los términos de la expansión propuesta y comprobar si faltan los productos cruzados.'
-  - 'Paso 2: Identificar si se cometió una supresión total o parcial de $2ab, 2ac, 2bc$.'
-  - 'Paso 3: Realizar una prueba de sustitución numérica para evidenciar la discrepancia.'
-  - 'Paso 4: Reconstruir el desarrollo incorporando las 6 componentes completas.'
-errores_correccion: |
-  - **Error 1:** Afirmar que la potencia cuadrática se distribuye sobre tres sumandos (escribir $(a+b+c)^2 = a^2 + b^2 + c^2$). **Cómo corregirlo:** La potencia sobre tres sumandos **EXIGE LA EXPANSION COMPLETA DE 6 TÉRMINOS CON SUS 3 DOBLES PRODUCTOS**.
-  - **Error 2:** Excluir sólo una o dos combinaciones de dobles productos. **Cómo corregirlo:** Se deben **CALCULAR OBLIGATORIAMENTE LAS TRES COMBINACIONES DE PAREJAS ($2ab, 2ac, 2bc$)**.
+- 'Paso 1: Contar los términos de la expansión propuesta y comprobar si faltan los productos cruzados.'
+- 'Paso 2: Identificar si se cometió una supresión total o parcial de $2ab, 2ac, 2bc$.'
+- 'Paso 3: Realizar una prueba de sustitución numérica para evidenciar la discrepancia.'
+- 'Paso 4: Reconstruir el desarrollo incorporando las 6 componentes completas.'
+errores_correccion: '- **Error 1:** Afirmar que la potencia cuadrática se distribuye sobre tres sumandos (escribir $(a+b+c)^2
+  = a^2 + b^2 + c^2$). **Cómo corregirlo:** La potencia sobre tres sumandos **EXIGE LA EXPANSION COMPLETA DE 6 TÉRMINOS CON
+  SUS 3 DOBLES PRODUCTOS**.
+
+  - **Error 2:** Excluir sólo una o dos combinaciones de dobles productos. **Cómo corregirlo:** Se deben **CALCULAR OBLIGATORIAMENTE
+  LAS TRES COMBINACIONES DE PAREJAS ($2ab, 2ac, 2bc$)**.
+
+  '
 ejemplos:
-  - titulo: 'Detección de omisión en trinomio'
-    enunciado: '¿Es erróneo afirmar que $(a + b + 2)^2 = a^2 + b^2 + 4$?'
-    alternativas:
-      - 'Sí, se omitieron los dobles productos $2ab$, $4a$ y $4b$'
-      - 'No, es correcto'
-      - 'El error está en el 4'
-    respuesta: 'Sí, se omitieron los dobles productos $2ab$, $4a$ y $4b$'
-    solucion_pasos:
-      - '1. $(a+b+2)^2 = a^2 + b^2 + 4 + 2ab + 4a + 4b$.'
-      - '2. Omitió las tres interacciones pareadas.'
-  - titulo: 'Prueba numérica de auditoría'
-    enunciado: 'Para $x=1, y=1, z=1$, ¿demuestra $(1+1+1)^2 = 9 \neq 1+1+1 = 3$ que la omisión es errónea?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $9 \neq 3$ evidencia la omisión.'
-  - titulo: 'Número de términos como control'
-    enunciado: 'Si una respuesta para $(x+y+z)^2$ tiene sólo 3 términos, ¿contiene una omisión?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, debe contener 6 términos.'
-  - titulo: 'Residual de omisión'
-    enunciado: '¿Representa $2ab + 2ac + 2bc$ la cantidad suprimida en la falsa distribución del exponente 2?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, esa es la discrepancia $\Delta$.'
+- titulo: Detección de omisión en trinomio
+  enunciado: ¿Es erróneo afirmar que $(a + b + 2)^2 = a^2 + b^2 + 4$?
+  alternativas:
+  - Sí, se omitieron los dobles productos $2ab$, $4a$ y $4b$
+  - No, es correcto
+  - El error está en el 4
+  respuesta: Sí, se omitieron los dobles productos $2ab$, $4a$ y $4b$
+  solucion_pasos:
+  - 1. $(a+b+2)^2 = a^2 + b^2 + 4 + 2ab + 4a + 4b$.
+  - 2. Omitió las tres interacciones pareadas.
+- titulo: Prueba numérica de auditoría
+  enunciado: Para $x=1, y=1, z=1$, ¿demuestra $(1+1+1)^2 = 9 \neq 1+1+1 = 3$ que la omisión es errónea?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $9 \neq 3$ evidencia la omisión.
+- titulo: Número de términos como control
+  enunciado: Si una respuesta para $(x+y+z)^2$ tiene sólo 3 términos, ¿contiene una omisión?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, debe contener 6 términos.
+- titulo: Residual de omisión
+  enunciado: ¿Representa $2ab + 2ac + 2bc$ la cantidad suprimida en la falsa distribución del exponente 2?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, esa es la discrepancia $\Delta$.
 errores_frecuentes:
-  - 'Distribuir el exponente cuadrático sobre los tres sumandos del trinomio.'
-  - 'Escribir 3 términos cuadráticos puros omitiendo los 3 dobles productos.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Una de las tres combinaciones pareadas intermedias no es incluida.'
-  - 'Ignorar la prueba por sustitución numérica al auditar un desarrollo.'
+- Distribuir el exponente cuadrático sobre los tres sumandos del trinomio.
+- Escribir 3 términos cuadráticos puros omitiendo los 3 dobles productos.
+- Una de las tres combinaciones pareadas intermedias no es incluida.
+- Ignorar la prueba por sustitución numérica al auditar un desarrollo.
+- Creer que $(a+b+c)^2 = a^2 + b^2 + c^2$ es una igualdad algebraica válida.
 afirmaciones_verdaderas:
-  - 'La potencia 2 no es distributiva sobre la adición de tres términos.'
-  - 'La supresión de los dobles productos en $(a+b+c)^2$ genera un residual de omisión de $2(ab+ac+bc)$.'
-al_terminar_debes_poder: 'Detectar y corregir errores por omisión de productos dobles en el cuadrado de trinomio mediante recuento y sustitución.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La potencia 2 no es distributiva sobre la adición de tres términos.
+- La supresión de los dobles productos en $(a+b+c)^2$ genera un residual de omisión de $2(ab+ac+bc)$.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/deteccion-de-error-por-omision-de-productos-dobles-resumen.svg)
+
+
+  QUÉ: Detectar y corregir errores por omisión de productos dobles en el cuadrado de trinomio mediante recuento y sustitución.
+
+  CÓMO: Verificar que la expansión contenga exactamente 6 términos y cuantificar el residual de omisión $\Delta = 2(ab+ac+bc)$
+  mediante pruebas por valorización numérica.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

@@ -1,103 +1,124 @@
 semantic_id: MAT.NUM.PROG_ARITMETICA.RECONOCIMIENTO
-resumen_inicial: 'El reconocimiento de una progresión aritmética exige comprobar que las restas entre pares de términos consecutivos adyacentes arrojen exactamente el mismo valor constante $d$.'
+resumen_inicial: 'El reconocimiento de una progresión aritmética verifica que todas las diferencias consecutivas sean constantes ($a_2 - a_1 = a_3 - a_2 = \dots = d$) o que el término central sea la media aritmética de sus adyacentes.'
 explicacion_simple: |
-  Si te presentan una lista de números (por ejemplo: $4, 7, 10, 14, 17$) y te preguntan **si es o no una progresión aritmética**:
-  1. Restas el 2º término menos el 1º: $7 - 4 = 3$.
-  2. Restas el 3º término menos el 2º: $10 - 7 = 3$.
-  3. Restas el 4º término menos el 3º: $14 - 10 = 4$.
-  ¡Atención! Como la resta dio $3$ al principio pero luego dio $4$, el salto no es constante. Por lo tanto, esa lista **NO es una progresión aritmética**. Para serlo, absolutamente todos los saltos deben dar el mismo número.
+  Para saber si una lista de números es una **progresión aritmética**:
+  - Restas cada número con el que tiene justo a la izquierda:
+    $$a_2 - a_1, \quad a_3 - a_2, \quad a_4 - a_3, \dots$$
+  - Si **todos los resultados dan exactamente el mismo número**, ¡es una PA!
+  - Si al menos una resta da un número diferente, **NO es una PA**.
+  - Por ejemplo, en $4, 9, 14, 19, 24$, las restas son $5, 5, 5, 5 \implies$ Sí es PA.
+  - En $2, 4, 8, 16$, las restas son $2, 4, 8 \implies$ No es PA (las diferencias van cambiando).
+
+  ![Reconocimiento de una PA a partir de sus términos](/static/img/nodos/reconocimiento-de-una-progresion-aritmetica-a-partir-de-sus-terminos-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dada una secuencia finita de términos $(a_1, a_2, a_3, \dots, a_k)$, es una **progresión aritmética** si y solo si el operador de diferencia primera $\Delta a_i$ satisface la condición de constancia estricta:
+  Un conjunto ordenado de $k$ términos $\{a_1, a_2, \dots, a_k\}$ ($k \ge 3$) constituye una **progresión aritmética finita** si y solo si se verifica la condición de invariancia diferencial:
   $$\Delta a_1 = \Delta a_2 = \dots = \Delta a_{k-1} = d$$
   donde $\Delta a_i = a_{i+1} - a_i$.
 
-  ### Criterio de verificación paso a paso
-  1. Calcular $d_1 = a_2 - a_1$.
-  2. Calcular $d_2 = a_3 - a_2$.
-  3. Calcular $d_{k-1} = a_k - a_{k-1}$.
-  4. Si $d_1 = d_2 = \dots = d_{k-1} \implies$ Es una P.A. de diferencia $d = d_1$.
-  5. Si al menos una diferencia $d_i \neq d_j \implies$ No es una P.A.
+  ### Criterio de la Media Aritmética Local
+  Una condición equivalente para todo trío de términos consecutivos $(a_{n-1}, a_n, a_{n+1})$ es:
+  $$a_n = \frac{a_{n-1} + a_{n+1}}{2} \iff 2a_n = a_{n-1} + a_{n+1}$$
+
+  ### Distinción Frente a Otras Sucesiones
+  - **Progresión Geométrica**: Cocientes constantes ($a_{n+1} / a_n = r$).
+  - **Sucesión Cuadrática**: Segundas diferencias constantes ($\Delta^2 a_n = 	ext{cte}$).
+  - **Sucesión de Fibonacci**: $a_n = a_{n-1} + a_{n-2}$ (diferencias crecientes).
 
   ### Síntesis didáctica
-  - Test de constancia: $a_2 - a_1 = a_3 - a_2 = a_4 - a_3 = \dots = d$.
-  - Un solo salto diferente invalida la condición de P.A.
+  - Regla de prueba: $a_{k+1} - a_k = d$ constante para todo $k$.
+  - Propiedad: $2a_k = a_{k-1} + a_{k+1}$.
 definiciones_clave: |
-  - **Test de diferencia constante**: Evaluación sistemática de las restas de todos los pares adyacentes de una muestra.
-  - **Invarianza diferencial**: Propiedad por la cual la resta $a_{n+1} - a_n$ permanece inalterada a lo largo de toda la secuencia.
-  - **Secuencia no aritmética**: Lista de números cuyo patrón de crecimiento no es lineal o cuya diferencia cambia.
+  - **Criterio de equidistancia**: Propiedad de las PA donde cada término equidistante mantiene diferencias constantes.
+  - **Media aritmética local**: Propiedad donde cada término no extremo es el promedio exacto de sus dos vecinos.
+  - **Segunda diferencia**: Diferencia entre las diferencias consecutivas (debe ser cero en una PA).
 propiedades_relaciones: |
-  - **Diferencia con progresiones geométricas**: En una P.A. se comprueba la constancia de la RESTA ($a_{n+1} - a_n = d$); en una P.G. se comprueba la constancia de la DIVISION ($\frac{a_{n+1}}{a_n} = q$).
-  - **Sensibilidad a la muestra completa**: No basta con que los primeros dos pares coincidan; se debe verificar toda la extensión de la lista conocida.
+  - **Comprobación exhaustiva**: Para certificar que una secuencia finita es PA, se deben evaluar todas las diferencias consecutivas disponibles.
+  - **Gráfica colineal**: Si se grafican los puntos $(n, a_n)$, estos quedan perfectamente alineados sobre una línea recta.
 ejemplo_guiado:
-  enunciado: 'Determina si la secuencia $12, 19, 26, 33, 40$ es una progresión aritmética.'
+  enunciado: 'Determina si la secuencia $(3, 8, 13, 18, 23)$ es una progresión aritmética utilizando el criterio de diferencias y verifica la media aritmética en el término central.'
+  imagen: '/static/img/nodos/reconocimiento-de-una-progresion-aritmetica-a-partir-de-sus-terminos-ejemplos.svg'
   pasos:
-    - 'Paso 1: Evaluamos el primer par: $a_2 - a_1 = 19 - 12 = 7$.'
-    - 'Paso 2: Evaluamos el segundo par: $a_3 - a_2 = 26 - 19 = 7$.'
-    - 'Paso 3: Evaluamos el tercer par: $a_4 - a_3 = 33 - 26 = 7$.'
-    - 'Paso 4: Evaluamos el cuarto par: $a_5 - a_4 = 40 - 33 = 7$. Como todas las restas entregan exactamente el mismo valor constante ($d = 7$), la secuencia **sí es una progresión aritmética**.'
+    - 'Paso 1: Calculamos todas las diferencias consecutivas:'
+    - '  - $a_2 - a_1 = 8 - 3 = 5$'
+    - '  - $a_3 - a_2 = 13 - 8 = 5$'
+    - '  - $a_4 - a_3 = 18 - 13 = 5$'
+    - '  - $a_5 - a_4 = 23 - 18 = 5$'
+    - 'Paso 2: Como todas las diferencias son iguales a $5$, **sí es una progresión aritmética con $d = 5$**.'
+    - 'Paso 3: Verificamos el término central $a_3 = 13$ con sus vecinos $a_2 = 8$ y $a_4 = 18$: $\frac{8 + 18}{2} = \frac{26}{2} = 13$. Se cumple la media aritmética.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué prueba matemática permite confirmar que una lista dada de 5 números forma una progresión aritmética?'
+    question: '¿Qué propiedad matemática cumplen obligatoriamente tres términos consecutivos $(x, y, z)$ de una progresión aritmética?'
     choices:
-      - {text: 'Calcular las restas $a_2 - a_1$, $a_3 - a_2$, $a_4 - a_3$ y $a_5 - a_4$ y verificar que todas sean iguales', is_correct: true}
-      - {text: 'Sumar los 5 números y verificar que el resultado sea un número par', is_correct: false}
-      - {text: 'Dividir el último número entre el primero y comprobar que sea un entero', is_correct: false}
-      - {text: 'Multiplicar el primer número por el quinto', is_correct: false}
-    explanation: 'La alternativa correcta es ''Calcular las restas $a_2 - a_1$, $a_3 - a_2$, $a_4 - a_3$ y $a_5 - a_4$ y verificar que todas sean iguales''. Es el test de diferencia constante.'
+      - {text: '$y = \frac{x + z}{2}$ (el término central es la media aritmética de los extremos)', is_correct: true}
+      - {text: '$y = \sqrt{x \cdot z}$ (media geométrica)', is_correct: false}
+      - {text: '$y = x \cdot z$', is_correct: false}
+      - {text: '$x + y + z = 0$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$y = \frac{x + z}{2}$ (el término central es la media aritmética de los extremos)''. En toda PA, el término medio equidista de sus vecinos adyacentes.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Dada la lista $2, 4, 8, 16, 32$, ¿es una progresión aritmética?'
+    question: '¿Cuál de las siguientes secuencias corresponde a una progresión aritmética?'
     choices:
-      - {text: 'No, porque las restas no son constantes ($4-2=2$, mientras que $8-4=4$)', is_correct: true}
-      - {text: 'Sí, porque son todos números pares', is_correct: false}
-      - {text: 'Sí, porque van aumentando de forma constante', is_correct: false}
-      - {text: 'Sí, porque la diferencia es 2', is_correct: false}
-    explanation: 'La alternativa correcta es ''No, porque las restas no son constantes ($4-2=2$, mientras que $8-4=4$)''. Es una progresión geométrica, no aritmética.'
+      - {text: '$(10, 16, 22, 28, 34)$, con diferencia constante $d=6$', is_correct: true}
+      - {text: '$(1, 2, 4, 8, 16)$, con diferencias crecientes', is_correct: false}
+      - {text: '$(1, 4, 9, 16, 25)$, de cuadrados perfectos', is_correct: false}
+      - {text: '$(5, 8, 12, 17, 23)$, con diferencias $3, 4, 5, 6$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$(10, 16, 22, 28, 34)$, con diferencia constante $d=6$''. Presenta diferencias idénticas: $16-10=6, 22-16=6, 28-22=6, 34-28=6$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Tomar los elementos de la secuencia dada en su orden de aparición.'
-  - 'Paso 2: Restar consecutivamente cada término menos el que le antecede.'
-  - 'Paso 3: Comparar todos los resultados obtenidos.'
-  - 'Paso 4: Si todos los resultados son iguales, la lista es una P.A.; si algún resultado difiere, la lista no es una P.A.'
+  - 'Paso 1: Calcular todas las restas consecutivas $a_{k+1} - a_k$ para $k = 1, 2, \dots, n-1$.'
+  - 'Paso 2: Comparar los valores de las restas.'
+  - 'Paso 3: Si todos los valores son idénticos, concluir que la secuencia es una PA con diferencia común $d$.'
+  - 'Paso 4: Si al menos una resta difiere, concluir que la secuencia no es una PA.'
 errores_correccion: |
-  - **Error 1:** Declarar que es una P.A. revisando únicamente la resta entre los dos primeros términos. **Cómo corregirlo:** Se debe **verificar la diferencia en TODOS los pares de términos de la muestra**.
-  - **Error 2:** Confundir un patrón multiplicativo (geométrico) con uno aditivo (aritmético). **Cómo corregirlo:** La P.A. exige que la **RESTA sea constante**, no la multiplicación.
+  - **Error 1:** Probar la resta en una sola pareja y concluir precipitadamente que es PA (ej: en $2, 4, 7$, restar $4-2=2$ e ignorar $7-4=3$). **Cómo corregirlo:** Se deben **calcular y comparar todas las diferencias consecutivas** disponibles.
+  - **Error 2:** Confundir secuencias de potencias ($2, 4, 8, 16$) con progresiones aritméticas. **Cómo corregirlo:** Las potencias tienen **cociente constante** (son geométricas), no diferencia aditiva constante.
 ejemplos:
-  - titulo: 'Verificación de P.A. válida'
-    enunciado: '¿La lista $100, 90, 80, 70, 60$ es una progresión aritmética?'
+  - titulo: 'Verificación de PA aditiva'
+    enunciado: '¿La secuencia $100, 85, 70, 55, 40$ es una progresión aritmética?'
     alternativas:
-      - 'Sí, todas las restas valen -10'
-      - 'No, porque es decreciente'
-      - 'No, porque termina en 60'
-    respuesta: 'Sí, todas las restas valen -10'
+      - 'Sí, es una PA con diferencia constante $d = -15$'
+      - 'No, las diferencias no son constantes'
+      - 'No, los términos son decrecientes'
+    respuesta: 'Sí, es una PA con diferencia constante $d = -15$'
     solucion_pasos:
-      - '1. Restas: $90-100 = -10, 80-90 = -10, 70-80 = -10, 60-70 = -10$.'
-      - '2. La diferencia $d = -10$ es constante $\implies$ Sí es P.A.'
-  - titulo: 'Verificación de secuencia no aritmética'
-    enunciado: '¿La secuencia $1, 3, 6, 10, 15$ es una P.A.?'
-    respuesta: 'No'
+      - '1. $85-100=-15, 70-85=-15, 55-70=-15, 40-55=-15$.'
+  - titulo: 'Detección de no-PA'
+    enunciado: '¿La secuencia $1, 3, 6, 10, 15$ es una progresión aritmética?'
+    alternativas:
+      - 'No, porque las diferencias son $2, 3, 4, 5$ (variables)'
+      - 'Sí, porque los números van aumentando'
+      - 'Sí, con diferencia $d=2$'
+    respuesta: 'No, porque las diferencias son $2, 3, 4, 5$ (variables)'
     solucion_pasos:
-      - 'No. Restas: $3-1=2, 6-3=3, 10-6=4$. Las restas cambian.'
-  - titulo: 'Verificación de P.A. fraccionaria'
-    enunciado: '¿La secuencia $1, \frac{4}{3}, \frac{5}{3}, 2$ es una P.A.?'
+      - '1. Las diferencias no son constantes: $3-1=2 \neq 6-3=3$.'
+  - titulo: 'Media aritmética entre términos'
+    enunciado: 'En la PA $(6, x, 14)$, ¿el valor de $x$ es necesariamente $10$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Restas: $4/3 - 1 = 1/3, 5/3 - 4/3 = 1/3, 2 - 5/3 = 1/3$. $d = 1/3$.'
-  - titulo: 'Verificación con trampa al final'
-    enunciado: '¿La secuencia $5, 10, 15, 20, 26$ es una P.A.?'
-    respuesta: 'No'
+      - '1. $x = (6 + 14) / 2 = 20 / 2 = 10$.'
+  - titulo: 'Sucesión cuadrática vs PA'
+    enunciado: '¿La sucesión de cuadrados $1, 4, 9, 16, 25$ es una progresión aritmética?'
+    alternativas:
+      - 'No, sus primeras diferencias son $3, 5, 7, 9$'
+      - 'Sí, porque sigue un patrón algebraico'
+      - 'Sí, con diferencia 3'
+    respuesta: 'No, sus primeras diferencias son $3, 5, 7, 9$'
     solucion_pasos:
-      - 'No. Las primeras restas dan 5, pero la última da $26-20 = 6$. No es P.A.'
+      - '1. Las diferencias no son constantes.'
 errores_frecuentes:
-  - 'Validar que una secuencia es aritmética probando sólo los primeros dos números.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Una regla multiplicativa constante equivale algebraicamente a una regla aditiva en una P.A.'
-  - 'No considerar los signos negativos al restar términos en sucesiones decrecientes.'
+  - 'Una sucesión es clasificada como progresión aritmética comprobando la diferencia únicamente en los dos primeros términos.'
+  - 'La secuencia de potencias de base dos ($2, 4, 8, 16, 32$) es una progresión aritmética.'
+  - 'El término central de tres elementos consecutivos en una PA es igual al producto de los extremos.'
+  - 'Una sucesión numérica con términos decrecientes no puede ser una progresión aritmética.'
+  - 'Las sucesiones cuadráticas presentan diferencias consecutivas constantes de primer orden.'
 afirmaciones_verdaderas:
-  - 'Una secuencia es una progresión aritmética si y solo si las restas de todos sus términos consecutivos adyacentes arrojan el mismo resultado.'
-  - 'Si una sola resta entre términos consecutivos es distinta de las demás, la secuencia no es una progresión aritmética.'
-al_terminar_debes_poder: 'Reconocer si una secuencia numérica dada es o no una progresión aritmética verificando la constancia de $a_{n+1} - a_n$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Una lista de números es una progresión aritmética si y solo si la resta entre cada término y su predecesor es exactamente la misma constante $d$.'
+  - 'En cualquier progresión aritmética, cada término no extremo es la media aritmética exacta de sus dos términos adyacentes ($a_n = \frac{a_{n-1} + a_{n+1}}{2}$).'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/reconocimiento-de-una-progresion-aritmetica-a-partir-de-sus-terminos-resumen.svg)
+
+  QUÉ: Reconocer y verificar si una secuencia dada constituye una progresión aritmética.
+  CÓMO: Comprobar la constancia de las diferencias consecutivas $a_{k+1} - a_k = d$ y verificar el criterio de media aritmética local $2a_k = a_{k-1} + a_{k+1}$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

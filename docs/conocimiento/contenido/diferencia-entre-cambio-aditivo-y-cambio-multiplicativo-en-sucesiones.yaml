@@ -1,110 +1,125 @@
 semantic_id: MAT.NUM.PROGRESIONES_COMPARACION.CAMBIO_ADITIVO_MULTIPLICATIVO
-resumen_inicial: 'La diferencia entre cambio aditivo y multiplicativo contrapone el incremento por magnitudes absolutas fijas ($+d$) frente al incremento por proporciones o escalas relativas fijas ($\cdot r$).'
+resumen_inicial: 'La diferencia entre cambio aditivo y cambio multiplicativo distingue entre variaciones de magnitud fija constante ($\Delta Y = d$, dependiente solo del paso) y variaciones de tasa porcentual relativa ($\Delta Y = a_n(r-1)$, proporcional a la magnitud presente).'
 explicacion_simple: |
-  Comprender la diferencia entre cambio aditivo y cambio multiplicativo es clave para resolver problemas de la vida cotidiana:
-  - **Cambio Aditivo**: Aumentas o disminuyes **la misma cantidad absoluta** en cada paso.
-    - Ejemplo: Guardar $\$5.000$ fijos en una alcancía cada mes.
-    - Paso 1: $\$5.000$, Paso 2: $\$10.000$, Paso 3: $\$15.000$, Paso 4: $\$20.000$.
-  - **Cambio Multiplicativo**: Aumentas o disminuyes en un **porcentaje o proporción fija** sobre el saldo anterior.
-    - Ejemplo: Ganar el $10\%$ de interés sobre el dinero acumulado.
-    - Paso 1: $\$100.000$, Paso 2: $\$110.000$, Paso 3: $\$121.000$, Paso 4: $\$133.100$.
-  - En el cambio aditivo la ganancia es **constante**; en el multiplicativo la ganancia es **creciente** (interés sobre interés).
+  Comprender la diferencia entre cambio aditivo y multiplicativo es clave para finanzas y ciencias:
+  - **Cambio Aditivo (+ fijo)**:
+    - Si ahorras $\$10.000$ todos los meses en una alcancía:
+      - Mes 1: $\$10.000$, Mes 2: $\$20.000$, Mes 3: $\$30.000$, Mes 4: $\$40.000$
+      - El incremento es siempre el mismo: **+$\$10.000$ fijos**.
+  - **Cambio Multiplicativo ($\cdot$ porcentaje)**:
+    - Si inviertes $\$10.000$ ganando un $10\%$ mensual ($r = 1,10$):
+      - Mes 1: $\$10.000$
+      - Mes 2: $\$11.000$ (ganaste $\$1.000$)
+      - Mes 3: $\$12.100$ (ganaste $\$1.100$)
+      - Mes 4: $\$13.310$ (ganaste $\$1.210$)
+      - El dinero ganado **aumenta cada mes** porque el $10\%$ se calcula sobre el saldo acumulado.
+
+  ![Diferencia entre cambio aditivo y cambio multiplicativo](/static/img/nodos/diferencia-entre-cambio-aditivo-y-cambio-multiplicativo-en-sucesiones-intro.svg)
 explicacion_formal: |
-  ### Definición formal
+  ### Definición y Formalización de las Tasas de Cambio
+  Sea $Y(t)$ el estado de una magnitud en la etapa discreta $t \in \mathbb{N}_0$:
+  1. **Modelo de Cambio Aditivo Puro (PA)**:
+     $$\Delta Y(t) = Y(t+1) - Y(t) = d = \text{constante} \quad [\text{Unidad de } Y]$$
+     $$Y(t) = Y_0 + d \cdot t$$
+     La tasa de variación absoluta es estrictamente independiente del estado actual $Y(t)$.
+  2. **Modelo de Cambio Multiplicativo Puro (PG)**:
+     $$\frac{Y(t+1)}{Y(t)} = r = \text{constante} \quad [\text{Adimensional}]$$
+     $$\Delta Y(t) = Y(t+1) - Y(t) = Y(t)(r - 1) = i \cdot Y(t)$$
+     $$Y(t) = Y_0 \cdot r^t = Y_0 \cdot (1 + i)^t$$
+     El incremento absoluto $\Delta Y(t)$ es directamente proporcional al estado $Y(t)$.
 
-  1. **Modelo de Cambio Aditivo (P.A.)**:
-     $$a_{n+1} = a_n + d \implies \Delta a_n = a_{n+1} - a_n = d \quad (\text{Tasa de cambio absoluta constante})$$
-     - Solución explícita: $a_n = a_1 + (n - 1)d$.
-     - Gráfica: Puntos alineados sobre una función afín/lineal $y = dx + (a_1 - d)$.
-
-  2. **Modelo de Cambio Multiplicativo (P.G.)**:
-     $$b_{n+1} = b_n \cdot r \implies \frac{b_{n+1}}{b_n} = r \implies \Delta b_n = b_n(r - 1) \quad (\text{Tasa de cambio relativa/porcentual constante})$$
-     - Solución explícita: $b_n = b_1 \cdot r^{n-1}$.
-     - Gráfica: Puntos ubicados sobre una curva exponencial $y = \left(\frac{b_1}{r}\right) \cdot r^x$.
-
-  ### Comparación de derivadas / incrementos finitos
-  - En el modelo aditivo, el incremento interetapa $\Delta a_n$ es constante ($d$).
-  - En el modelo multiplicativo, el incremento interetapa $\Delta b_n$ es proporcional al nivel alcanzado ($b_n \cdot (r - 1)$).
+  ### Comparación de Derivadas Discretas
+  - En el cambio aditivo, la razón de cambio es uniforme (función lineal de derivada constante).
+  - En el cambio multiplicativo, la razón de cambio es una función convexa acelerada (propia de la función exponencial $\frac{d}{dt}e^{kt} = k e^{kt}$).
 
   ### Síntesis didáctica
-  - Aditivo $\implies$ Suma $d$ fijo $\implies$ Variación absoluta constante.
-  - Multiplicativo $\implies$ Producto $r$ fijo $\implies$ Variación porcentual/relativa constante.
+  - Aditivo: $\Delta Y = d$ (Independiente del saldo).
+  - Multiplicativo: $\Delta Y = Y(t) \cdot i$ (Proporcional al saldo acumulado).
 definiciones_clave: |
-  - **Variación absoluta ($\Delta a$)**: Diferencia numérica directa entre dos estados consecutivos ($a_{n+1} - a_n$).
-  - **Variación relativa ($\frac{\Delta b}{b}$)**: Proporción o porcentaje de cambio respecto del estado de origen.
-  - **Interés simple vs Interés compuesto**: Ejemplos clásicos de cambio aditivo (interés sobre capital inicial) y multiplicativo (interés sobre saldo acumulado).
+  - **Tasa de cambio absoluta**: Incremento medido en unidades directas de la magnitud ($\Delta Y = d$).
+  - **Tasa de cambio relativa ($i$)**: Proporción $i = \frac{\Delta Y}{Y}$ respecto al valor de referencia previo.
+  - **Efecto multiplicativo compuesto**: Crecimiento donde cada incremento genera base para futuros incrementos.
 propiedades_relaciones: |
-  - **Efecto bola de nieve**: En el cambio multiplicativo con $r > 1$, la diferencia absoluta $\Delta b_n$ crece en cada paso, produciendo una aceleración exponencial.
-  - **Invarianza de escala**: El cambio aditivo depende de las unidades absolutas de medida; el cambio multiplicativo es un número adimensional (escalar).
+  - **Unidades dimensionales**: La diferencia $d$ posee unidades físicas ($[\text{pesos}], [\text{metros}]$); la razón $r$ es un número puro adimensional.
+  - **Interés simple vs compuesto**: El interés simple es la manifestación económica del cambio aditivo; el interés compuesto es la del cambio multiplicativo.
 ejemplo_guiado:
-  enunciado: 'Un empleado puede elegir entre dos opciones de aumento de sueldo anual partiendo de un sueldo inicial de $\$600.000$: Opción A) Aumento aditivo de $\$40.000$ al año. Opción B) Aumento multiplicativo del $5\%$ al año ($r = 1,05$). Compara el sueldo en el año 4 ($n=4$) para ambas opciones.'
+  enunciado: 'Un trabajador recibe dos opciones de aumento salarial sobre su sueldo base de $\$500.000$: Opción A: Aumento fijo de $\$30.000$ cada año. Opción B: Aumento porcentual del $5\%$ cada año. Determina el sueldo al cabo de 3 años en ambas opciones y cuál resulta más conveniente.'
+  imagen: '/static/img/nodos/diferencia-entre-cambio-aditivo-y-cambio-multiplicativo-en-sucesiones-ejemplos.svg'
   pasos:
-    - 'Paso 1: Evaluamos la Opción A (Aditiva): $a_n = 600.000 + (n - 1) \cdot 40.000$. Para $n=4$: $a_4 = 600.000 + 3 \cdot 40.000 = 600.000 + 120.000 = \$720.000$.'
-    - 'Paso 2: Evaluamos la Opción B (Multiplicativa): $b_n = 600.000 \cdot (1,05)^{n-1}$. Para $n=4$: $b_4 = 600.000 \cdot (1,05)^3$.'
-    - 'Paso 3: Calculamos la potencia: $(1,05)^3 = 1,157625$.'
-    - 'Paso 4: Multiplicamos: $b_4 = 600.000 \cdot 1,157625 = \$694.575$. En el año 4 la **Opción A entrega $\$720.000$** y la **Opción B entrega $\$694.575$**.'
+    - 'Paso 1: Para la Opción A (cambio aditivo): $S_3 = \$500.000 + 3 \cdot (\$30.000) = \$500.000 + \$90.000 = **\$590.000$**.'
+    - 'Paso 2: Para la Opción B (cambio multiplicativo): $r = 1 + 0,05 = 1,05$.'
+    - 'Paso 3: Calculamos: $S_3 = \$500.000 \cdot (1,05)^3 = \$500.000 \cdot 1,157625 = **\$578.812,50$**.'
+    - 'Paso 4: Comparación: Al año 3 la Opción A paga más ($\$590.000 > \$578.812,50$).'
+    - 'Paso 5: Sin embargo, debido al crecimiento acelerado de la PG, en el largo plazo (a partir del año 8) la Opción B superará ampliamente a la Opción A.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué tipo de variación caracteriza formalmente a un proceso de cambio multiplicativo en comparación con uno aditivo?'
+    question: '¿Por qué en un cambio multiplicativo con tasa positiva los incrementos absolutos $(\Delta Y)$ crecen con el tiempo?'
     choices:
-      - {text: 'El cambio multiplicativo mantiene constante la variación relativa o porcentaje de cambio sobre la cantidad acumulada', is_correct: true}
-      - {text: 'El cambio multiplicativo mantiene constante la diferencia numérica absoluta entre términos', is_correct: false}
-      - {text: 'El cambio aditivo crece más rápido que el multiplicativo para cualquier número de pasos', is_correct: false}
-      - {text: 'Ambos cambios son exactamente idénticos en todas sus propiedades', is_correct: false}
-    explanation: 'La alternativa correcta es ''El cambio multiplicativo mantiene constante la variación relativa o porcentaje de cambio sobre la cantidad acumulada''. Variación relativa constante.'
+      - {text: 'Porque el porcentaje se aplica sobre una base acumulada cada vez más grande en cada período', is_correct: true}
+      - {text: 'Porque la tasa porcentual se duplica automáticamente en cada año', is_correct: false}
+      - {text: 'Porque la fórmula suma una constante adicional oculta', is_correct: false}
+      - {text: 'Porque la variable de tiempo se multiplica por cero', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque el porcentaje se aplica sobre una base acumulada cada vez más grande en cada período''. El incremento $\Delta Y(t) = i \cdot Y(t)$ crece a medida que $Y(t)$ aumenta.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una población de 100 aves aumenta en 20 aves cada año (aditivo), ¿cuántas aves hay al cabo de 3 años ($n=4$)?'
+    question: 'Si una magnitud cambia según la regla $Y(t+1) = Y(t) + 400$, ¿qué tipo de cambio describe?'
     choices:
-      - {text: '$a_4 = 160$ aves, calculando $100 + 3 \cdot 20 = 160$', is_correct: true}
-      - {text: '$a_4 = 800$ aves, multiplicando $100 \cdot 8$', is_correct: false}
-      - {text: '$a_4 = 120$ aves, sumando sólo 1 año', is_correct: false}
-      - {text: '$a_4 = 200$ aves, duplicando la población', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_4 = 160$ aves, calculando $100 + 3 \cdot 20 = 160$''. $100 + 60 = 160$.'
+      - {text: 'Cambio aditivo puro (progresión aritmética con $d = 400$)', is_correct: true}
+      - {text: 'Cambio multiplicativo puro (progresión geométrica con $r = 400$)', is_correct: false}
+      - {text: 'Crecimiento porcentual continuo', is_correct: false}
+      - {text: 'Decaimiento exponencial', is_correct: false}
+    explanation: 'La alternativa correcta es ''Cambio aditivo puro (progresión aritmética con $d = 400$)''. La variación es una suma constante de 400 unidades.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el estado inicial $a_1$ o $b_1$.'
-  - 'Paso 2: Determinar la naturaleza de la tasa de cambio dada en el problema (monto fijo $+d \implies$ aditivo, tasa o porcentaje $\cdot r \implies$ multiplicativo).'
-  - 'Paso 3: Construir el modelo correspondiente ($a_1 + (n-1)d$ o $b_1 \cdot r^{n-1}$).'
-  - 'Paso 4: Sustituir la etapa $n$ requerida y calcular la cifra solicitada para realizar la comparación.'
+  - 'Paso 1: Identificar en el contexto si la variación periódica es un monto fijo en unidades o un porcentaje relativo.'
+  - 'Paso 2: Si es un monto fijo, establecer el modelo aditivo $Y(t) = Y_0 + d \cdot t$.'
+  - 'Paso 3: Si es un porcentaje relativo, establecer el modelo multiplicativo $Y(t) = Y_0 \cdot (1 \pm p/100)^t$.'
+  - 'Paso 4: Evaluar para los períodos requeridos y analizar las diferencias de comportamiento.'
 errores_correccion: |
-  - **Error 1:** Interpretar un aumento porcentual constante como si fuera un monto de dinero fijo. **Cómo corregirlo:** El aumento porcentual es **MULTIPLICATIVO ($1 + P/100$)**, por lo que el monto ganado **crece en cada período**.
-  - **Error 2:** Creer que el cambio aditivo siempre es superior en las primeras etapas. **Cómo corregirlo:** Depende de los valores de $d$ y $r$; se debe **evaluar explícitamente ambas ecuaciones** para comparar.
+  - **Error 1:** Tratar un incremento del $10\%$ como una suma constante fija de dinero. **Cómo corregirlo:** Un porcentaje **genera montos crecientes** en cada paso ($10\%$ sobre el saldo acumulado), no una suma fija.
+  - **Error 2:** Asumir que la opción con mayor incremento en el año 1 será siempre la ganadora a largo plazo. **Cómo corregirlo:** El modelo multiplicativo **tarda en despegar pero eventualmente supera** a cualquier modelo aditivo.
 ejemplos:
-  - titulo: 'Ahorro aditivo vs multiplicativo'
-    enunciado: 'Para $\$1.000$ iniciales a 3 años: Opción A ($+\$200$/año) vs Opción B ($+20\%$/año). ¿Cuál es el saldo final de la Opción B al año 4?'
+  - titulo: 'Identificación de cambio aditivo'
+    enunciado: 'Un tanque de agua pierde $15\text{ litros}$ cada minuto. ¿Qué tipo de cambio representa?'
     alternativas:
-      - 'Opción B: $\$1.000 \cdot 1,20^3 = \$1.728$'
-      - 'Opción B: $\$1.600$'
-      - 'Opción B: $\$2.000$'
-    respuesta: 'Opción B: $\$1.000 \cdot 1,20^3 = \$1.728$'
+      - 'Cambio aditivo constante ($d = -15\text{ L}$)'
+      - 'Cambio multiplicativo ($r = 15$)'
+      - 'Cambio exponencial decreciente'
+    respuesta: 'Cambio aditivo constante ($d = -15\text{ L}$)'
     solucion_pasos:
-      - '1. Opción A: $1.000 + 3(200) = \$1.600$.'
-      - '2. Opción B: $1.000 \cdot 1,20^3 = 1.000 \cdot 1,728 = \$1.728$. B es mayor.'
-  - titulo: 'Pérdida aditiva vs multiplicativa'
-    enunciado: 'Si una masa de 100 g pierde 10 g por minuto (aditivo), ¿a los 5 minutos quedan $100 - 5(10) = 50$ g?'
+      - '1. La pérdida es una cantidad fija constante en litros por minuto.'
+  - titulo: 'Identificación de cambio multiplicativo'
+    enunciado: 'Un precio se incrementa en un $8\%$ debido a la inflación cada mes. ¿Qué tipo de cambio representa?'
+    alternativas:
+      - 'Cambio multiplicativo ($r = 1,08$)'
+      - 'Cambio aditivo ($d = 8$)'
+      - 'Cambio lineal'
+    respuesta: 'Cambio multiplicativo ($r = 1,08$)'
+    solucion_pasos:
+      - '1. Las tasas porcentuales periódicas corresponden a cambios multiplicativos.'
+  - titulo: 'Adimensionalidad de la razón'
+    enunciado: '¿La tasa de cambio relativo $r = \frac{Y(t+1)}{Y(t)}$ es una cantidad adimensional?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $100 - 50 = 50$ g.'
-  - titulo: 'Bacterias con cambio multiplicativo'
-    enunciado: 'Un cultivo se triplica cada hora. ¿Su cambio es multiplicativo con $r = 3$?'
+      - '1. Las unidades de la magnitud se simplifican en la división.'
+  - titulo: 'Superación exponencial'
+    enunciado: '¿Una inversión al $20\%$ anual multiplicativo superará eventualmente a un bono que suma $\$1.000.000$ fijo anual?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Multiplica por 3 en cada etapa.'
-  - titulo: 'Tarifa telefónica aditiva'
-    enunciado: 'Una tarifa de $\$5.000$ base más $\$50$ por minuto consumido, ¿representa un modelo de cambio aditivo?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Agrega un monto constante $d = \$50$ por cada minuto.'
+      - '1. El crecimiento geométrico supera asintóticamente a cualquier adición fija.'
 errores_frecuentes:
-  - 'La razón multiplicativa r equivale numéricamente a la diferencia aditiva d al formular el término general.'
-  - 'Un cambio aditivo produce incrementos numéricos crecientes en cada período de tiempo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El interés simple (aditivo) y el interés compuesto (multiplicativo) producen rendimientos numéricos idénticos.'
-  - 'Las tasas de cambio multiplicativas se pueden sumar linealmente entre períodos.'
+  - 'Modelar los aumentos porcentuales periódicos sumando un valor fijo igual al primer aumento.'
+  - 'Considerar que el cambio aditivo y el cambio multiplicativo son idénticos si el primer incremento coincide.'
+  - 'Asignar unidades de medida físicas a la tasa de variación relativa porcentual.'
+  - 'Afirmar que un cambio aditivo con pendiente grande siempre supera a un cambio multiplicativo.'
+  - 'Confundir el porcentaje de incremento periódico con la diferencia en dinero del período.'
 afirmaciones_verdaderas:
-  - 'El cambio aditivo se caracteriza por una diferencia absoluta constante ($a_{n+1} - a_n = d$), mientras que el multiplicativo presenta un cociente constante ($\frac{b_{n+1}}{b_n} = r$).'
-  - 'En un proceso de cambio multiplicativo con $r > 1$, la cantidad de incremento por período aumenta de forma acelerada.'
-al_terminar_debes_poder: 'Diferenciar entre cambio aditivo y multiplicativo analizando si la variación es una suma constante o un factor proporcional.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'En el cambio aditivo el incremento por período es constante ($\Delta Y = d$), mientras que en el multiplicativo el incremento escala con la magnitud acumulada ($\Delta Y = i \cdot Y(t)$).'
+  - 'Todo cambio porcentual compuesto periódico corresponde estrictamente a un modelo de cambio multiplicativo discreto.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/diferencia-entre-cambio-aditivo-y-cambio-multiplicativo-en-sucesiones-resumen.svg)
+
+  QUÉ: Diferenciar conceptual y operativamente los regímenes de cambio aditivo y cambio multiplicativo en sucesiones.
+  CÓMO: Contrastar variaciones constantes $\Delta Y = d$ con variaciones proporcionales $\Delta Y = i \cdot Y(t)$ modelando evoluciones discretas.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

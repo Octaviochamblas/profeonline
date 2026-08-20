@@ -1,110 +1,125 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.AMORTIZACION_PRESTAMO
-resumen_inicial: 'El cálculo de la amortización de préstamos (Sistema Francés) determina la cuota fija periódica $R$ requerida para extinguir una deuda inicial $P$ a interés compuesto: $R = P \cdot \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$.'
+resumen_inicial: 'El cálculo de la amortización de préstamos determina la cuota periódica constante $R$ (sistema francés) para extinguir una deuda $P$: $R = P \cdot \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$.'
 explicacion_simple: |
-  Cuando pides un crédito o préstamo hipotecario en el banco (por ejemplo, para comprar una casa o un auto), sueles pagar mediante el **Sistema Francés de Cuota Fija**:
-  - Pagas exactamente la misma cuota de dinero $R$ todos los meses.
-  - Cada cuota se divide en dos partes:
-    1. **Interés**: El cobro del banco por el saldo que aún le debes.
-    2. **Amortización**: La parte de la cuota que realmente descuenta o achica tu deuda.
-  - Al principio pagas mucho interés y poca amortización; al final pagas poco interés y mucha amortización.
+  Cuando pides un crédito bancario (como un crédito de consumo o hipotecario), pagas una **cuota fija $R$ en cada vencimiento** (sistema de amortización francés):
+  - Cada cuota se divide en dos partes: una parte paga los **intereses del saldo adeudado**, y el resto **reduce la deuda original (amortización de capital)**.
+  - Al principio pagas más intereses y amortizas poco capital; hacia el final pagas casi puro capital y muy pocos intereses.
+  - Al pagar la última cuota, la deuda queda completamente extinguida ($0$).
+
+  ![Cálculo de la amortización de préstamos](/static/img/nodos/calculo-de-la-amortizacion-de-prestamos-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  En el **Sistema de Amortización Francés**, una deuda inicial $P$ (Principal o Valor Presente) se cancela mediante $n$ pagos iguales $R$ vencidos a la tasa de interés efectiva $i$:
-  $$P = \sum_{k=1}^n \frac{R}{(1 + i)^k} = R \cdot \left[\frac{1 - (1 + i)^{-n}}{i}\right] = R \cdot \left[\frac{(1 + i)^n - 1}{i \cdot (1 + i)^n}\right]$$
+  El valor presente de un préstamo o principal $P$ amortizable en $n$ pagos periódicos constantes vencidos $R$ a una tasa periódica $i$ es la suma de los valores actuales de cada cuota:
+  $$P = \sum_{k=1}^n \frac{R}{(1 + i)^k} = R \cdot \left[\frac{1 - (1 + i)^{-n}}{i}\right]$$
+  Despejando la **cuota constante de amortización $R$**:
+  $$R = P \cdot \left[\frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}\right] = P \cdot \left[\frac{i}{1 - (1 + i)^{-n}}\right]$$
 
-  ### Despeje de la Cuota Fija de Amortización ($R$)
-  Multiplicando por el factor de recuperación de capital:
-  $$R = P \cdot \left[\frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}\right]$$
-  donde:
-  - $R$ es la **cuota fija periódica constante**.
-  - $P$ es el **monto del préstamo recibido (deuda inicial)**.
-  - $i$ es la tasa de interés periódica efectiva.
-  - $n$ es el número total de dividendos o cuotas.
-
-  ### Descomposición Interna de la Cuota $k$
-  $$R = I_k + A_k$$
-  - Interés del período $k$: $I_k = S_{k-1} \cdot i$ (donde $S_{k-1}$ es el saldo insoluto).
-  - Amortización real del período $k$: $A_k = R - I_k$.
+  ### Composición de la Cuota en el Período $k$
+  Cada pago periódico $R$ se descompone en:
+  $$R = A_k + I_k$$
+  - **Interés del período ($I_k$)**: $I_k = S_{k-1} \cdot i$, donde $S_{k-1}$ es el saldo deudor insoluto.
+  - **Amortización real ($A_k$)**: $A_k = R - I_k = A_1 \cdot (1 + i)^{k-1}$.
+  - **Saldo deudor**: $S_k = S_{k-1} - A_k$.
 
   ### Síntesis didáctica
-  - Ecuación de la cuota fija: $R = P \cdot \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$.
-  - Dinámica de la cuota: Interés decreciente + Amortización creciente = Cuota $R$ constante.
+  - Ecuación de la cuota: $R = P \cdot \left[\frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}\right]$.
+  - Dinámica: Intereses decrecientes, amortizaciones de capital crecientes.
 definiciones_clave: |
-  - **Sistema Francés de Amortización**: Método financiero caracterizado por dividendos o cuotas fijas constantes a lo largo de todo el plazo.
-  - **Saldo insoluto ($S_k$)**: Monto de la deuda que queda pendiente por pagar tras efectuar la cuota $k$.
-  - **Cuota de amortización ($A_k$)**: Porción de la cuota que reduce efectivamente el saldo insoluto de la deuda.
+  - **Sistema de amortización francés**: Esquema de crédito donde la cuota total a pagar es constante en cada vencimiento regular.
+  - **Saldo insoluto deudor ($S_k$)**: Cantidad de capital que aún queda pendiente de pago tras abonar la cuota $k$.
+  - **Amortización de capital ($A_k$)**: Porción de la cuota que reduce directamente el saldo deudor del préstamo.
 propiedades_relaciones: |
-  - **Evolución de los componentes**: La porción de interés $I_k$ disminuye en cada período mientras que la porción de amortización $A_k$ aumenta en progresión geométrica de razón $1+i$.
-  - **Costo total del crédito (CTC)**: La suma total pagada al banco es $n \cdot R$, y los intereses totales pagados son $I_{\text{total}} = n \cdot R - P$.
+  - **Costo financiero total**: La suma total pagada por el deudor es $n \cdot R$; el interés total pagado al banco es $I_{\text{total}} = n \cdot R - P$.
+  - **Progresión de las amortizaciones**: Las porciones de capital amortizado $A_1, A_2, \dots, A_n$ forman una progresión geométrica creciente de razón $(1 + i)$.
 ejemplo_guiado:
-  enunciado: 'Un crédito personal de $\$1.000.000$ se amortiza en $2$ cuotas anuales iguales a una tasa del $10\%$ anual de interés compuesto. Datos: $(1,10)^2 = 1,21$. Calcula el valor de la cuota fija anual $R$ y descompón la primera cuota.'
+  enunciado: 'Un préstamo de $\$100.000$ se amortiza en $2$ cuotas anuales constantes a una tasa del $10\%$ anual compuesto. Calcula el valor de la cuota anual $R$ y el desglose de la primera cuota.'
+  imagen: '/static/img/nodos/calculo-de-la-amortizacion-de-prestamos-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $P = 1.000.000$, $i = 0,10$ y $n = 2$.'
-    - 'Paso 2: Evaluamos la fórmula de cuota fija: $R = 1.000.000 \cdot \left[\frac{0,10 \cdot 1,21}{1,21 - 1}\right] = 1.000.000 \cdot \frac{0,121}{0,21}$.'
-    - 'Paso 3: Calculamos la cuota: $R = 1.000.000 \cdot 0,57619 = \$576.190$.'
-    - 'Paso 4: Descomponemos la cuota 1: Interés $I_1 = 1.000.000 \cdot 0,10 = \$100.000$. Amortización $A_1 = 576.190 - 100.000 = \$476.190$. La cuota fija es de **$\$576.190$**.'
+    - 'Paso 1: Identificamos $P = 100.000$, tasa $i = 0,10$ y número de cuotas $n = 2$.'
+    - 'Paso 2: Calculamos el factor: $\frac{0,10 \cdot (1,10)^2}{(1,10)^2 - 1} = \frac{0,10 \cdot 1,21}{1,21 - 1} = \frac{0,121}{0,21} \approx 0,57619$.'
+    - 'Paso 3: Multiplicamos por el préstamo: $R = 100.000 \cdot 0,57619 = $\$57.61$9$.'
+    - 'Paso 4: Desglose primera cuota: Interés $I_1 = 100.000 \cdot 0,10 = $\$10.00$0$; Amortización $A_1 = 57.619 - 10.000 = $\$47.61$9$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cómo evoluciona la proporción de interés y de amortización dentro de la cuota fija constante del Sistema Francés a lo largo del tiempo?'
+    question: 'En el sistema de amortización francés con cuota constante $R$, ¿cómo evolucionan la porción de interés y la porción de amortización de capital a lo largo del tiempo?'
     choices:
-      - {text: 'El interés disminuye en cada período mientras que la amortización al capital aumenta', is_correct: true}
-      - {text: 'El interés aumenta en cada período y la amortización disminuye', is_correct: false}
-      - {text: 'Tanto el interés como la amortización permanecen exactamente iguales en todas las cuotas', is_correct: false}
-      - {text: 'El interés se paga de forma exclusiva al final del último año', is_correct: false}
-    explanation: 'La alternativa correcta es ''El interés disminuye en cada período mientras que la amortización al capital aumenta''. Como el saldo disminuye, el interés baja y la amortización sube.'
+      - {text: 'El interés disminuye en cada cuota y la amortización de capital aumenta', is_correct: true}
+      - {text: 'El interés y la amortización se mantienen exactamente iguales en todas las cuotas', is_correct: false}
+      - {text: 'El interés aumenta y la amortización disminuye', is_correct: false}
+      - {text: 'La cuota total aumenta exponencialmente', is_correct: false}
+    explanation: 'La alternativa correcta es ''El interés disminuye en cada cuota y la amortización de capital aumenta''. Como el saldo deudor decrece, los intereses bajan y queda más cuota para amortizar capital.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si pides un préstamo de $\$500.000$ pagadero en cuotas donde la suma total pagada es de $\$620.000$, ¿cuál fue el costo total en intereses del préstamo?'
+    question: 'Si un crédito de $\$100.000$ se cancela en 2 cuotas de $\$57.619$, ¿cuánto dinero total se pagó en intereses?'
     choices:
-      - {text: '$\$120.000$, restando la suma total pagada menos el préstamo inicial ($620.000 - 500.000 = 120.000$)', is_correct: true}
-      - {text: '$\$620.000$, considerando la suma total', is_correct: false}
-      - {text: '$\$500.000$, igual al monto prestado', is_correct: false}
-      - {text: '$\$62.000$, dividiendo por 10', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$120.000$, restando la suma total pagada menos el préstamo inicial ($620.000 - 500.000 = 120.000$)''. Intereses totales = $n \cdot R - P$.'
+      - {text: '$\$15.238$, restando $2 \cdot 57.619 - 100.000 = 115.238 - 100.000 = 15.238$', is_correct: true}
+      - {text: '$\$57.619$, igual a una cuota', is_correct: false}
+      - {text: '$\$10.000$, considerando solo el primer período', is_correct: false}
+      - {text: '$\$0$, porque las cuotas no generan intereses', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$15.238$, restando $2 \cdot 57.619 - 100.000 = 115.238 - 100.000 = 15.238$''. Total pagado menos capital original.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la deuda prestada $P$, la tasa de interés periódica $i$ y el número de cuotas $n$.'
-  - 'Paso 2: Calcular el factor de recuperación de capital $\frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$.'
-  - 'Paso 3: Multiplicar el préstamo $P$ por dicho factor para obtener la cuota constante $R$.'
-  - 'Paso 4: Para descomponer una cuota $k$, calcular el interés sobre el saldo insoluto $I_k = S_{k-1} \cdot i$ y restar $A_k = R - I_k$.'
+  - 'Paso 1: Identificar el monto del préstamo $P$, la tasa periódica $i$ y el número de pagos $n$.'
+  - 'Paso 2: Calcular el factor de amortización $\frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$.'
+  - 'Paso 3: Multiplicar por el principal $P$ para obtener la cuota periódica fija $R$.'
+  - 'Paso 4: Construir la tabla de amortización evaluando en cada período $I_k = S_{k-1} \cdot i$, $A_k = R - I_k$ y $S_k = S_{k-1} - A_k$.'
 errores_correccion: |
-  - **Error 1:** Dividir la deuda $P$ entre $n$ y sumarle la tasa como si fuera interés simple. **Cómo corregirlo:** En créditos del Sistema Francés la cuota se calcula con la **fórmula descontada del valor presente: $R = P \cdot \frac{i(1+i)^n}{(1+i)^n - 1}$**.
-  - **Error 2:** Creer que la parte de la cuota dedicada a amortizar la deuda es idéntica en todos los meses. **Cómo corregirlo:** La cuota $R$ es fija, pero **la amortización $A_k$ es creciente mes a mes** a medida que los intereses bajan.
+  - **Error 1:** Calcular la cuota dividiendo $P$ entre $n$ y sumando el interés del primer período. **Cómo corregirlo:** La cuota francesa se obtiene **mediante la fórmula de valor presente de anualidades**: $R = P \cdot \frac{i(1+i)^n}{(1+i)^n - 1}$.
+  - **Error 2:** Creer que la porción de amortización de capital es constante. **Cómo corregirlo:** La amortización $A_k$ **aumenta con cada período** a medida que el saldo deudor se reduce.
 ejemplos:
-  - titulo: 'Cálculo de cuota para préstamo de $1.000'
-    enunciado: 'Para $P = \$1.000$, $i = 10\%$ y $n = 2$, ¿la cuota es $R = 1.000 \cdot \frac{0,121}{0,21} = \$576,19$?'
+  - titulo: 'Cálculo de cuota en 2 períodos'
+    enunciado: 'Para un préstamo de $\$100.000$ al $10\%$ en 2 cuotas ($R \approx $\$57.61$9$), ¿cuál es el interés total del crédito?'
     alternativas:
-      - 'Sí, pues $1.000 \cdot 0,57619 = 576,19$'
-      - 'No, es $\$500$'
-      - 'No, es $\$600$'
-    respuesta: 'Sí, pues $1.000 \cdot 0,57619 = 576,19$'
+      - '$\$15.238$'
+      - '$\$20.000$'
+      - '$\$10.000$'
+    respuesta: '$\$15.238$'
     solucion_pasos:
-      - '1. Factor: $0,10 \cdot 1,21 / 0,21 = 0,121 / 0,21 = 0,57619$.'
-      - '2. Cuota: $1.000 \cdot 0,57619 = \$576,19$.'
-  - titulo: 'Intereses totales del crédito'
-    enunciado: 'En el préstamo anterior, ¿el costo total en intereses es $2 \cdot 576,19 - 1.000 = \$152,38$?'
-    respuesta: 'Sí'
+      - '1. Total pagado: $2 \cdot 57.619 = 115.238$.'
+      - '2. Intereses: $115.238 - 100.000 = $\$15.23$8$.'
+  - titulo: 'Amortización de la primera cuota'
+    enunciado: 'Si la primera cuota es $\$57.619$ y el saldo inicial es $\$100.000$ al $10\%$, ¿cuánto capital se amortiza?'
+    alternativas:
+      - '$\$47.619$'
+      - '$\$50.000$'
+      - '$\$10.000$'
+    respuesta: '$\$47.619$'
     solucion_pasos:
-      - 'Sí. Pago total $1.152,38 - 1.000 = \$152,38$.'
-  - titulo: 'Saldo insoluto tras la primera cuota'
-    enunciado: 'Tras la primera cuota (amortización de $\$476,19$), ¿el saldo insoluto nuevo es $1.000 - 476,19 = \$523,81$?'
-    respuesta: 'Sí'
+      - '1. Interés 1: $100.000 \cdot 0,10 = 10.000$.'
+      - '2. Amortización 1: $57.619 - 10.000 = $\$47.61$9$.'
+  - titulo: 'Saldo deudor tras la primera cuota'
+    enunciado: 'Tras amortizar $\$47.619$ de un crédito de $\$100.000$, ¿el saldo deudor para el segundo período es $\$52.381$?'
+    alternativas:
+      - 'Sí, pues $S_1 = 100.000 - 47.619 = $\$52.38$1$'
+      - 'No, el saldo deudor es $\$50.000$'
+      - 'No, el saldo deudor es $\$42.381$'
+    respuesta: 'Sí, pues $S_1 = 100.000 - 47.619 = $\$52.38$1$'
     solucion_pasos:
-      - 'Sí. $S_1 = S_0 - A_1 = 1.000 - 476,19 = \$523,81$.'
-  - titulo: 'Segunda cuota del crédito'
-    enunciado: 'En la segunda cuota, ¿el interés es $523,81 \cdot 0,10 = \$52,38$ y la amortización es $576,19 - 52,38 = \$523,81$ (extinguiendo la deuda)?'
-    respuesta: 'Sí'
+      - '1. Saldo insoluto: $100.000 - 47.619 = $\$52.38$1$.'
+  - titulo: 'Extinción de la deuda en la última cuota'
+    enunciado: 'Sobre el saldo $S_1 = $\$52.38$1$ al $10\%$, ¿la segunda cuota de $\$57.619$ extingue exactamente el préstamo?'
+    alternativas:
+      - 'Sí, pues $I_2 = $\$5.23$8$ y $A_2 = 57.619 - 5.238 = $\$52.381$ = S_1$'
+      - 'No, queda un remanente impago'
+      - 'No, se sobrepaga la deuda'
+    respuesta: 'Sí, pues $I_2 = $\$5.23$8$ y $A_2 = 57.619 - 5.238 = $\$52.381$ = S_1$'
     solucion_pasos:
-      - 'Sí. La deuda queda cancelada en 0.'
+      - '1. $I_2 = 52.381 \cdot 0,10 = 5.238$.'
+      - '2. $A_2 = 57.619 - 5.238 = 52.381$.'
+      - '3. Saldo final: $52.381 - 52.381 = \$0$.'
 errores_frecuentes:
-  - 'Dividir el préstamo inicial entre el número de cuotas y sumar la tasa entera sin descontar el saldo.'
-  - 'Considerar que la porción de amortización se mantiene idéntica durante todo el desarrollo del crédito.'
-  - 'Sumar directamente las cuotas de amortización sin descontar la tasa de interés en el valor presente.'
-  - 'El saldo insoluto de un préstamo en Sistema Francés aumenta linealmente con cada cuota pagada.'
-  - 'Invertir el numerador y el denominador del factor de recuperación de capital.'
+  - 'La cuota periódica constante se calcula sumando el interés simple total al principal y dividiendo linealmente entre $n$.'
+  - 'La porción de intereses se mantiene constante en cada una de las cuotas del crédito.'
+  - 'La amortización de capital en la primera cuota es idéntica a la amortización en la última cuota.'
+  - 'El saldo deudor se calcula restando la cuota completa $R$ al capital en lugar de restar solo la porción de amortización $A_k$.'
+  - 'El costo financiero total de un crédito equivale numéricamente al valor de una sola cuota periódica.'
 afirmaciones_verdaderas:
-  - 'En el Sistema Francés de Amortización, la cuota periódica $R$ se mantiene constante durante todo el plazo del crédito.'
-  - 'A medida que se pagan las cuotas, la porción dedicada al interés disminuye y la porción dedicada a la amortización aumenta.'
-al_terminar_debes_poder: 'Calcular la cuota fija $R$ y descomponer dividendos en intereses y amortización bajo el Sistema Francés.'
+  - 'La cuota periódica constante en el sistema francés de amortización se calcula mediante $R = P \cdot \left[\frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}\right]$.'
+  - 'En cada cuota del sistema francés, la porción destinada al pago de intereses disminuye y la porción de amortización de capital aumenta.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-la-amortizacion-de-prestamos-resumen.svg)
+
+  QUÉ: Calcular la cuota constante de amortización y estructurar el desglose financiero de un préstamo a interés compuesto.
+  CÓMO: Aplicar la fórmula francesa $R = P \cdot \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$ y descomponer la cuota en interés sobre saldo ($I_k = S_{k-1} \cdot i$) y amortización de capital ($A_k = R - I_k$).
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

@@ -1,104 +1,121 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.TASA_PERIODICA
-resumen_inicial: 'El cálculo de la tasa periódica efectiva $i$ en capitalización compuesta despeja el rendimiento por período extrayendo la raíz $n$-ésima de la razón entre el monto y el capital: $i = \sqrt[n]{\frac{M}{C}} - 1$.'
+resumen_inicial: 'El cálculo de la tasa periódica en capitalización compuesta despeja el rendimiento aplicando la raíz enésima a la razón de acumulación: $i = \sqrt[n]{\frac{M}{C}} - 1$.'
 explicacion_simple: |
-  Si sabes cuánto dinero tenías al principio ($C$), cuánto dinero reuniste al final ($M$) y cuántos períodos pasaron ($n$), pero quieres **averiguar qué tasa de interés periódica te dieron**:
-  1. Divides el monto final entre el capital inicial: $\frac{M}{C}$.
-  2. Le sacas la raíz $n$-ésima a ese resultado: $\sqrt[n]{\frac{M}{C}}$.
-  3. Le restas $1$ al resultado para obtener la tasa en decimal.
-  Por ejemplo, si $\$100.000$ se convirtieron en $\$121.000$ en $2$ años: la razón es $121.000 \div 100.000 = 1,21$. La raíz cuadrada es $\sqrt{1,21} = 1,10$. Al restar $1$ te da $0,10$, es decir, un **$10\%$ de tasa anual**.
+  Si invertiste una cantidad inicial $C$ y al cabo de $n$ años obtuviste un monto final $M$, para calcular **qué tasa de interés anual compuesta te aplicaron**:
+  1. Divides el monto final entre el capital inicial ($M / C$).
+  2. Le extraes la raíz enésima (según los años $n$).
+  3. Le restas 1 al resultado y multiplicas por 100 para tener el porcentaje $\%$.
+  Por ejemplo, si $\$100.000$ se convirtieron en $\$121.000$ en 2 años: $121.000 \div 100.000 = 1,21$. La raíz cuadrada de $1,21$ es $1,10$. Al restar 1 queda $0,10$ (**$10\%$ anual**).
+
+  ![Cálculo de tasa periódica en capitalización compuesta](/static/img/nodos/calculo-de-tasa-periodica-en-capitalizacion-compuesta-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  La **tasa de interés periódica efectiva $i$** obtenida a partir de una meta de acumulación en $n$ períodos se despeja invirtiendo la potencia del factor de acumulación:
-  $$M = C \cdot (1 + i)^n \implies (1 + i)^n = \frac{M}{C} \implies 1 + i = \left(\frac{M}{C}\right)^{1/n} \implies i = \sqrt[n]{\frac{M}{C}} - 1$$
-
-  ### Conversión a Tasa Nominal Porcentual ($r\%$)
-  $$r\% = \left[\left(\sqrt[n]{\frac{M}{C}} - 1\right) \cdot 100\right]\%$$
-
-  ### Propiedades Algebraicas del Despeje
-  - La operación inversa de la potencia $n$-ésima $(1+i)^n$ en $\mathbb{R}^+$ es la radicación $n$-ésima $\sqrt[n]{x} = x^{1/n}$.
-  - Para $n = 2$ períodos $\implies i = \sqrt{\frac{M}{C}} - 1$.
-  - Para $n = 3$ períodos $\implies i = \sqrt[3]{\frac{M}{C}} - 1$.
+  La **tasa de interés periódica decimal $i$** en un modelo de capitalización compuesta se obtiene aislando la incógnita $i$ en la ecuación exponencial fundamental:
+  $$M = C \cdot (1 + i)^n \implies (1 + i)^n = \frac{M}{C}$$
+  Extrayendo la raíz enésima a ambos lados de la igualdad:
+  $$1 + i = \sqrt[n]{\frac{M}{C}} = \left(\frac{M}{C}\right)^{\frac{1}{n}} \implies i = \sqrt[n]{\frac{M}{C}} - 1$$
+  Para expresar la tasa en formato porcentual nominal $r\%$:
+  $$r\% = \left(\sqrt[n]{\frac{M}{C}} - 1\right) \cdot 100\%$$
 
   ### Síntesis didáctica
-  - Ecuación decimal de la tasa: $i = \left(\frac{M}{C}\right)^{1/n} - 1$.
-  - Ecuación porcentual: $r\% = \left[\left(\frac{M}{C}\right)^{1/n} - 1\right] \cdot 100\%$.
+  - Ecuación de la tasa periódica: $i = (M / C)^{1/n} - 1$.
+  - Ecuación porcentual: $r\% = i \cdot 100\%$.
 definiciones_clave: |
-  - **Tasa efectiva por período ($i$)**: Rendimiento percentil real obtenido en cada ciclo de capitalización.
-  - **Raíz $n$-ésima de rendimiento**: Operación matemática empleada para desarmar la potencia del compuesto.
-  - **Factor de crecimiento medio por período**: Valor de la razón multiplicativa $\sqrt[n]{M/C}$.
+  - **Razón de acumulación ($M / C$)**: Factor total en que se multiplicó el capital durante todo el horizonte de inversión.
+  - **Raíz enésima del factor**: Desagregación del factor multiplicativo total en su componente constante por período.
 propiedades_relaciones: |
-  - **Sensibilidad al exponente**: A mayor número de períodos $n$ transcurridos para lograr la misma razón $\frac{M}{C}$, menor resulta ser la tasa de interés periódica $i$ requerida.
-  - **No linealidad de la tasa**: La tasa compuesta necesaria para duplicar el dinero en $n$ años no es simplemente $\frac{100\%}{n}$, sino que es estrictamente menor debido a la capitalización.
+  - **No linealidad del despeje**: La tasa compuesta requiere radicación; a diferencia de la tasa simple que solo requiere división ($i_{\text{simple}} = \frac{M-C}{C \cdot n}$).
+  - **Relación de magnitud**: Para un mismo monto final y plazo ($n > 1$), la tasa periódica compuesta requerida es estrictamente menor que la tasa simple equivalente.
 ejemplo_guiado:
-  enunciado: 'Un capital de $\$500.000$ se convirtió en $\$605.000$ en $2$ años a interés compuesto con capitalización anual. Determina la tasa de interés anual aplicada.'
+  enunciado: 'Un capital de $\$400.000$ colocado a interés compuesto se transformó en un monto final de $\$484.000$ al cabo de $2$ años. Determina la tasa de interés compuesta anual aplicada.'
+  imagen: '/static/img/nodos/calculo-de-tasa-periodica-en-capitalizacion-compuesta-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $C = 500.000$, $M = 605.000$ y períodos $n = 2$.'
-    - 'Paso 2: Calculamos la razón entre el monto y el capital: $\frac{M}{C} = \frac{605.000}{500.000} = 1,21$.'
-    - 'Paso 3: Extraemos la raíz cuadrada (ya que $n = 2$): $\sqrt{1,21} = 1,10$.'
-    - 'Paso 4: Restamos 1 y multiplicamos por 100: $i = 1,10 - 1 = 0,10 \implies r\% = 10\%$. La tasa es del **$10\%$ anual**.'
+    - 'Paso 1: Identificamos $C = 400.000$, $M = 484.000$ y plazo $n = 2\text{ años}$.'
+    - 'Paso 2: Calculamos la razón de acumulación: $\frac{M}{C} = \frac{484.000}{400.000} = 1,21$.'
+    - 'Paso 3: Extraemos la raíz cuadrada ($n = 2$): $\sqrt{1,21} = 1,10$.'
+    - 'Paso 4: Restamos 1 y multiplicamos por 100: $i = 1,10 - 1 = 0,10 \implies r\% = 0,10 \cdot 100 = 10\%$. La tasa es del **$10\%$ anual**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la tasa de interés periódica $i$ en función del monto final $M$, del capital $C$ y de los períodos $n$?'
+    question: '¿Cuál es la fórmula para despejar la tasa de interés periódica $i$ en un régimen de interés compuesto?'
     choices:
-      - {text: 'Restar 1 a la raíz $n$-ésima del cociente entre el monto y el capital ($i = \sqrt[n]{\frac{M}{C}} - 1$)', is_correct: true}
-      - {text: 'Multiplicar el monto por el capital y elevar a $n$', is_correct: false}
-      - {text: 'Dividir el monto entre el capital y restar el tiempo $n$', is_correct: false}
-      - {text: 'Restar el capital al monto y dividir entre $n$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Restar 1 a la raíz $n$-ésima del cociente entre el monto y el capital ($i = \sqrt[n]{\frac{M}{C}} - 1$)''. Despeja $i$ de $M = C(1+i)^n$.'
+      - {text: 'Restar 1 a la raíz enésima de la razón entre monto y capital ($i = \sqrt[n]{\frac{M}{C}} - 1$)', is_correct: true}
+      - {text: 'Dividir el monto entre el capital y el tiempo ($i = \frac{M}{C \cdot n}$)', is_correct: false}
+      - {text: 'Restar el capital al monto y multiplicar por $n$', is_correct: false}
+      - {text: 'Elevar la razón $M/C$ a la potencia $n$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Restar 1 a la raíz enésima de la razón entre monto y capital ($i = \sqrt[n]{\frac{M}{C}} - 1$)''. Se extrae raíz de orden $n$ a $(1+i)^n = M/C$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si $\$100.000$ se convierten en $\$144.000$ en $2$ años a interés compuesto, ¿cuál fue la tasa de interés anual?'
+    question: 'Si $\$100.000$ se transforman en $\$133.100$ en $3$ años a interés compuesto ($\sqrt[3]{1,331} = 1,10$), ¿cuál fue la tasa anual?'
     choices:
-      - {text: 'El $20\%$ anual, calculando $\sqrt{1,44} - 1 = 1,20 - 1 = 0,20 \implies 20\%$', is_correct: true}
-      - {text: 'El $44\%$ anual, dividiendo directamente por 100', is_correct: false}
-      - {text: 'El $22\%$ anual, dividiendo 44 entre 2', is_correct: false}
-      - {text: 'El $12\%$ anual, extrayendo raíz a 144', is_correct: false}
-    explanation: 'La alternativa correcta es ''El $20\%$ anual, calculando $\sqrt{1,44} - 1 = 1,20 - 1 = 0,20 \implies 20\%$''. $\sqrt{1,44} = 1,20 \implies 20\%$.'
+      - {text: 'El $10\%$ anual, pues $\sqrt[3]{1,331} - 1 = 1,10 - 1 = 0,10$', is_correct: true}
+      - {text: 'El $33,1\%$ anual, dividiendo entre 1', is_correct: false}
+      - {text: 'El $11,03\%$ anual, dividiendo linealmente', is_correct: false}
+      - {text: 'El $3\%$ anual', is_correct: false}
+    explanation: 'La alternativa correcta es ''El $10\%$ anual, pues $\sqrt[3]{1,331} - 1 = 1,10 - 1 = 0,10$''. La tasa efectiva es $i = 0,10 = 10\%$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Dividir el monto final $M$ entre el capital inicial $C$ para hallar la razón $\frac{M}{C}$.'
-  - 'Paso 2: Calcular la raíz $n$-ésima de dicho cociente: $\left(\frac{M}{C}\right)^{1/n}$.'
-  - 'Paso 3: Restar 1 al valor numérico obtenido para aislar la tasa decimal $i$.'
-  - 'Paso 4: Multiplicar $i$ por 100 para expresar el resultado como tasa porcentual periódica.'
+  - 'Paso 1: Identificar capital inicial $C$, monto final $M$ y número de períodos $n$.'
+  - 'Paso 2: Calcular el cociente de acumulación $\frac{M}{C}$.'
+  - 'Paso 3: Extraer la raíz enésima $\sqrt[n]{\frac{M}{C}}$ o calcular $\left(\frac{M}{C}\right)^{1/n}$.'
+  - 'Paso 4: Restar 1 al resultado y multiplicar por 100 para obtener la tasa porcentual $r\%$.'
 errores_correccion: |
-  - **Error 1:** Dividir la ganancia entre el número de períodos y el capital como si fuera interés simple (ej: hacer $i = \frac{M-C}{C \cdot n}$). **Cómo corregirlo:** En régimen compuesto el despeje de la potencia $n$ exige la **operación de radicación: $i = \sqrt[n]{M/C} - 1$**.
-  - **Error 2:** Olvidar restar la constante 1 tras calcular la raíz de la razón $\frac{M}{C}$. **Cómo corregirlo:** La raíz entrega el factor completo $1+i$; **DEBES restar 1 para tener la tasa $i$**.
+  - **Error 1:** Despejar la tasa mediante una división lineal (hacer $i = \frac{M - C}{C \cdot n}$). **Cómo corregirlo:** En régimen compuesto la tasa se encuentra en la base de una potencia; **se DEBE aplicar radicación enésima**: **$i = \sqrt[n]{M/C} - 1$**.
+  - **Error 2:** Olvidar restar 1 al valor de la raíz (responder que la tasa es $1,10$ en vez de $0,10$). **Cómo corregirlo:** La raíz entrega $(1 + i)$; **debes restar 1 para aislar la tasa de ganancia**.
 ejemplos:
-  - titulo: 'Despeje de tasa a 2 años'
-    enunciado: 'Si $C = \$200.000$ y $M = \$288.000$ en 2 años, ¿la tasa es $20\%$ anual?'
+  - titulo: 'Tasa en 2 períodos'
+    enunciado: 'Si $\$100.000$ se convierten en $\$121.000$ en 2 años, ¿cuál es la tasa anual compuesta?'
     alternativas:
-      - 'Sí, pues $\sqrt{288.000 / 200.000} - 1 = \sqrt{1,44} - 1 = 1,20 - 1 = 0,20 \implies 20\%$'
-      - 'No, es del 44%'
-      - 'No, es del 22%'
-    respuesta: 'Sí, pues $\sqrt{288.000 / 200.000} - 1 = \sqrt{1,44} - 1 = 1,20 - 1 = 0,20 \implies 20\%$'
+      - '$10\%$ anual'
+      - '$21\%$ anual'
+      - '$10,5\%$ anual'
+    respuesta: '$10\%$ anual'
     solucion_pasos:
-      - '1. Razón: $288.000 / 200.000 = 1,44$.'
-      - '2. Raíz cuadrada: $\sqrt{1,44} = 1,20$.'
-      - '3. Tasa: $1,20 - 1 = 0,20 \implies 20\%$.'
-  - titulo: 'Despeje de tasa a 3 años'
-    enunciado: 'Si $\$100.000$ se convierten en $\$133.100$ en 3 años, ¿la tasa es del $10\%$ anual?'
-    respuesta: 'Sí'
+      - '1. Razón: $121.000 / 100.000 = 1,21$.'
+      - '2. Raíz cuadrada: $\sqrt{1,21} = 1,10$.'
+      - '3. Tasa: $1,10 - 1 = 0,10 \implies 10\%$ anual.'
+  - titulo: 'Tasa en 3 períodos'
+    enunciado: 'Si $\$200.000$ se convierten en $\$266.200$ en 3 años, ¿cuál es la tasa anual compuesta?'
+    alternativas:
+      - '$10\%$ anual'
+      - '$33,1\%$ anual'
+      - '$11\%$ anual'
+    respuesta: '$10\%$ anual'
     solucion_pasos:
-      - 'Sí. $\sqrt[3]{1,331} - 1 = 1,10 - 1 = 0,10 \implies 10\%$.'
-  - titulo: 'Tasa necesaria para duplicar en 2 años'
-    enunciado: 'Para duplicar el dinero ($M/C = 2$) en 2 años a interés compuesto, ¿se requiere una tasa del $\approx 41,4\%$ ($\sqrt{2} - 1 \approx 0,414$)?'
-    respuesta: 'Sí'
+      - '1. Razón: $266.200 / 200.000 = 1,331$.'
+      - '2. Raíz cúbica: $\sqrt[3]{1,331} = 1,10$.'
+      - '3. Tasa: $1,10 - 1 = 0,10 \implies 10\%$ anual.'
+  - titulo: 'Tasa para duplicar en 2 años'
+    enunciado: 'Para duplicar un capital en 2 años a interés compuesto ($M/C = 2$), ¿la tasa anual debe ser aproximadamente $41,4\%$ ($\sqrt{2} \approx 1,414$)?'
+    alternativas:
+      - 'Sí, pues $i = \sqrt{2} - 1 \approx 1,414 - 1 = 0,414 \implies 41,4\%$'
+      - 'No, la tasa debe ser del $50\%$ anual'
+      - 'No, la tasa debe ser del $100\%$ anual'
+    respuesta: 'Sí, pues $i = \sqrt{2} - 1 \approx 1,414 - 1 = 0,414 \implies 41,4\%$'
     solucion_pasos:
-      - 'Sí. $\sqrt{2} \approx 1,4142 \implies 41,42\%$.'
-  - titulo: 'Tasa nula'
-    enunciado: 'Si el monto final $M$ es idéntico al capital $C$, ¿la tasa calculada resulta $0\%$?'
-    respuesta: 'Sí'
+      - '1. $i = \sqrt{2} - 1 \approx 1,4142 - 1 = 0,4142 \implies 41,42\%$.'
+  - titulo: 'Tasa con capitalización semestral'
+    enunciado: 'Si un capital gana $44\%$ en 1 año con 2 capitalizaciones semestrales, ¿la tasa semestral es del $20\%$?'
+    alternativas:
+      - 'Sí, pues $\sqrt{1,44} = 1,20 \implies i_{\text{sem}} = 20\%$'
+      - 'No, es del $22\%$ semestral'
+      - 'No, es del $44\%$ semestral'
+    respuesta: 'Sí, pues $\sqrt{1,44} = 1,20 \implies i_{\text{sem}} = 20\%$'
     solucion_pasos:
-      - 'Sí. $\sqrt[n]{1} - 1 = 1 - 1 = 0\%$.'
+      - '1. $M/C = 1,44$.'
+      - '2. $1 + i_{\text{sem}} = \sqrt{1,44} = 1,20 \implies i_{\text{sem}} = 20\%$.'
 errores_frecuentes:
-  - 'Dividir directamente la ganancia total entre el número de períodos aplicando la fórmula del interés simple.'
-  - 'La raíz $n$-ésima del cociente $M/C$ entrega directamente la tasa decimal sin restar 1.'
-  - 'Extraer la raíz al monto $M$ sin dividir previamente entre el capital inicial $C$.'
-  - 'La tasa periódica calculada resulta ser inversamente proporcional al cuadrado del capital.'
-  - 'Sumar el capital inicial a la razón $M/C$ antes de aplicar el operador raíz.'
+  - 'La tasa periódica compuesta se calcula mediante división lineal del interés entre el producto de capital por tiempo.'
+  - 'El valor de la raíz enésima $\sqrt[n]{M/C}$ se entrega directamente como tasa sin restar la constante 1.'
+  - 'La tasa porcentual periódica se obtiene multiplicando la razón $M/C$ por el número de períodos $n$.'
+  - 'La tasa requerida para duplicar un capital a interés compuesto en dos años es exactamente del $50\%$.'
+  - 'El cálculo de la tasa compuesta omite la radicación y utiliza la resta aritmética simple de porcentajes.'
 afirmaciones_verdaderas:
-  - 'La tasa de interés periódica a interés compuesto se calcula mediante la fórmula $i = \sqrt[n]{\frac{M}{C}} - 1$.'
-  - 'Para despejar la tasa compuesta se requiere aplicar la radicación $n$-ésima a la razón entre el monto y el capital.'
-al_terminar_debes_poder: 'Calcular la tasa periódica en capitalización compuesta aplicando la fórmula $i = \sqrt[n]{\frac{M}{C}} - 1$.'
+  - 'La tasa de interés periódica a interés compuesto se despeja mediante $i = \sqrt[n]{\frac{M}{C}} - 1$.'
+  - 'La tasa compuesta periódica requerida para alcanzar una meta financiera es menor que la tasa simple correspondiente para $n > 1$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-tasa-periodica-en-capitalizacion-compuesta-resumen.svg)
+
+  QUÉ: Calcular la tasa periódica efectiva en un régimen de interés compuesto.
+  CÓMO: Resolver la ecuación radical $i = \sqrt[n]{\frac{M}{C}} - 1$, extrayendo la raíz enésima de la razón de acumulación y restando la unidad.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

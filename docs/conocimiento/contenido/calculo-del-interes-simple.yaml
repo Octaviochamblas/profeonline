@@ -5,7 +5,10 @@ explicacion_simple: |
   1. Tomas la cantidad inicial $C$.
   2. La multiplicas por la tasa en decimal ($i = r / 100$).
   3. La multiplicas por el tiempo $t$.
+
   ¡Ojo con el tiempo! Si la tasa es **anual** pero el tiempo te lo dan en **meses**, debes dividir los meses entre 12. Por ejemplo, 6 meses son $\frac{6}{12} = 0,5$ años. Si te lo dan en **días**, en finanzas comerciales se divide entre 360 (año comercial).
+
+  ![Cálculo del interés simple](/static/img/nodos/calculo-del-interes-simple-intro.svg)
 explicacion_formal: |
   ### Definición formal
   El **cálculo del interés simple acumulado** $I$ para un capital $C$ a una tasa de interés nominal anual $r\%$ viene dado por la expresión:
@@ -35,6 +38,7 @@ propiedades_relaciones: |
   - **Independencia de períodos intermedios**: Calcular el interés total por 3 años da el mismo resultado exacto que sumar 3 cálculos individuales de 1 año.
 ejemplo_guiado:
   enunciado: 'Un préstamo de $\$500.000$ se otorga a una tasa de interés simple anual del $12\%$ durante $9$ meses. Calcula el interés cobrado.'
+  imagen: '/static/img/nodos/calculo-del-interes-simple-ejemplos.svg'
   pasos:
     - 'Paso 1: Identificamos $C = 500.000$, tasa anual $r = 12\%$ e intervalo $m = 9\text{ meses}$.'
     - 'Paso 2: Como el tiempo está en meses y la tasa es anual, usamos la fórmula $I = \frac{C \cdot r \cdot m}{1.200}$.'
@@ -48,7 +52,7 @@ checkpoints:
       - {text: 'Multiplicar el producto por 12 ($I = C \cdot r \cdot m \cdot 12$)', is_correct: false}
       - {text: 'Dividir siempre por 100 sin importar si son meses o años', is_correct: false}
       - {text: 'Dividir entre 360', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir el producto por 1.200 ($I = \frac{C \cdot r \cdot m}{1.200}$)''. Se multiplica $100 \cdot 12 = 1.200$.'
+    explanation: 'La alternativa correcta es ''Dividir el producto por 1.200 ($I = \frac{C \cdot r \cdot m}{1.200}$)''. Se multiplica el divisor estándar por 12 meses.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
     question: '¿Cuánto interés simple genera un capital de $\$100.000$ colocado al $6\%$ anual durante $6$ meses?'
@@ -57,7 +61,7 @@ checkpoints:
       - {text: '$\$6.000$, calculando un año entero', is_correct: false}
       - {text: '$\$36.000$, multiplicando sin dividir', is_correct: false}
       - {text: '$\$300$, dividiendo por 12.000', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$3.000$, calculando $\frac{100.000 \cdot 6 \cdot 6}{1.200} = 3.000$''. 6 meses es medio año ($0.5$), $100.000 \cdot 0.06 \cdot 0.5 = 3.000$.'
+    explanation: 'La alternativa correcta es ''$\$3.000$, calculando $\frac{100.000 \cdot 6 \cdot 6}{1.200} = 3.000$''. 6 meses equivalen a medio año ($0,5$).'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
   - 'Paso 1: Identificar el capital $C$, la tasa $r\%$ y el plazo.'
@@ -69,39 +73,58 @@ errores_correccion: |
   - **Error 2:** Usar 365 días en el año comercial estándar sin verificar el enunciado. **Cómo corregirlo:** En la gran mayoría de los problemas de matemática comercial **el año se estandariza en 360 días (divisor 36.000)**.
 ejemplos:
   - titulo: 'Cálculo de interés por meses'
-    enunciado: '¿El interés de $\$200.000$ al $10\%$ anual en 6 meses es $\$10.000$?'
+    enunciado: '¿Cuál es el interés de $\$200.000$ colocado al $10\%$ anual durante 6 meses?'
     alternativas:
-      - 'Sí, pues $(200.000 \cdot 10 \cdot 6) / 1.200 = 10.000$'
-      - 'No, es $\$20.000$'
-      - 'No, es $\$5.000$'
-    respuesta: 'Sí, pues $(200.000 \cdot 10 \cdot 6) / 1.200 = 10.000$'
+      - '$\$10.000$'
+      - '$\$20.000$'
+      - '$\$5.000$'
+    respuesta: '$\$10.000$'
     solucion_pasos:
-      - '1. Aplicamos $I = (C \cdot r \cdot m) / 1.200$.'
-      - '2. $I = (200.000 \cdot 10 \cdot 6) / 1.200 = 10.000$.'
+      - '1. Aplicamos $I = \frac{C \cdot r \cdot m}{1.200}$.'
+      - '2. $I = \frac{200.000 \cdot 10 \cdot 6}{1.200} = \frac{12.000.000}{1.200} = $\$10.00$0$.'
   - titulo: 'Cálculo de interés por días comerciales'
-    enunciado: '¿El interés de $\$360.000$ al $5\%$ anual en 90 días comerciales es $\$4.500$?'
-    respuesta: 'Sí'
+    enunciado: '¿Cuánto interés simple generan $\$360.000$ al $5\%$ anual en un plazo de 90 días comerciales?'
+    alternativas:
+      - '$\$4.500$'
+      - '$\$18.000$'
+      - '$\$9.000$'
+    respuesta: '$\$4.500$'
     solucion_pasos:
-      - 'Sí. $(360.000 \cdot 5 \cdot 90) / 36.000 = 4.500$.'
+      - '1. Aplicamos $I = \frac{C \cdot r \cdot d}{36.000}$.'
+      - '2. $I = \frac{360.000 \cdot 5 \cdot 90}{36.000} = 10 \cdot 450 = $\$4.50$0$.'
   - titulo: 'Cálculo de interés por 2 años'
-    enunciado: '¿El interés de $\$400.000$ al $8\%$ anual en 2 años es $\$64.000$?'
-    respuesta: 'Sí'
+    enunciado: '¿Cuál es el interés acumulado de $\$400.000$ al $8\%$ anual al cabo de 2 años?'
+    alternativas:
+      - '$\$64.000$'
+      - '$\$32.000$'
+      - '$\$464.000$'
+    respuesta: '$\$64.000$'
     solucion_pasos:
-      - 'Sí. $400.000 \cdot 0.08 \cdot 2 = \$64.000$.'
+      - '1. Aplicamos $I = \frac{C \cdot r \cdot a}{100} = 400.000 \cdot 0,08 \cdot 2$.'
+      - '2. $I = 400.000 \cdot 0,16 = $\$64.00$0$.'
   - titulo: 'Interés mensual directo'
-    enunciado: 'Si la tasa es $1\%$ mensual y el plazo es 5 meses sobre $\$100.000$, ¿el interés es $\$5.000$?'
-    respuesta: 'Sí'
+    enunciado: 'Si la tasa es $1\%$ mensual y el plazo es 5 meses sobre un capital de $\$100.000$, ¿cuál es el interés?'
+    alternativas:
+      - '$\$5.000$'
+      - '$\$500$'
+      - '$\$12.000$'
+    respuesta: '$\$5.000$'
     solucion_pasos:
-      - 'Sí. Como tasa y tiempo están en meses: $100.000 \cdot 0.01 \cdot 5 = 5.000$.'
+      - '1. Como la tasa y el tiempo están en meses, aplicamos $I = C \cdot i \cdot t$.'
+      - '2. $I = 100.000 \cdot 0,01 \cdot 5 = $\$5.00$0$.'
 errores_frecuentes:
-  - 'Utilizar los meses directamente en el numerador dividiendo únicamente entre 100.'
-  - 'Usar 365 en lugar de 360 días para el cálculo del interés comercial estándar.'
-  - 'Multiplicar por la tasa porcentual entera sin efectuar la conversión a decimal o dividir entre 100.'
-  - 'Considerar que el interés calculado incluye también la devolución del capital inicial.'
-  - 'Invertir los términos dividiendo la tasa entre el capital prestado.'
+  - 'El interés simple para un plazo en meses se calcula dividiendo el producto $C \cdot r \cdot m$ únicamente entre $100$.'
+  - 'El año comercial estándar en cálculos financieros de interés simple se define con $365$ días.'
+  - 'El cálculo del interés simple mensual requiere multiplicar la tasa anual por $12$ en lugar de dividirla.'
+  - 'El interés devengado en un préstamo a interés simple incluye automáticamente la devolución del capital inicial.'
+  - 'La fórmula del interés simple en días comerciales utiliza un divisor de $3.600$ en lugar de $36.000$.'
 afirmaciones_verdaderas:
   - 'El interés simple para un plazo en meses $m$ a una tasa anual $r\%$ se calcula mediante $I = \frac{C \cdot r \cdot m}{1.200}$.'
-  - 'El año comercial estandarizado en finanzas consta de 360 días.'
-al_terminar_debes_poder: 'Calcular el interés simple aplicando la fórmula adecuada al plazo en años ($100$), meses ($1.200$) o días ($36.000$).'
+  - 'El año comercial estandarizado en finanzas consta de $360$ días, por lo que el divisor para días es $36.000$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-del-interes-simple-resumen.svg)
+
+  QUÉ: Calcular el interés simple devengado adecuando el modelo a plazos expresados en años, meses o días comerciales.
+  CÓMO: Emplear la fórmula con divisor adaptado: $I = \frac{C \cdot r \cdot a}{100}$ para años, $I = \frac{C \cdot r \cdot m}{1.200}$ para meses, o $I = \frac{C \cdot r \cdot d}{36.000}$ para días comerciales (base 360).
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

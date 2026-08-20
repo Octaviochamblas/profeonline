@@ -1,106 +1,119 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.ANUALIDAD_CAPITALIZACION
-resumen_inicial: 'El cálculo de la anualidad de capitalización determina la cuota fija periódica $R$ depositada regularmente para acumular un valor futuro meta $M$ a interés compuesto: $R = M \cdot \frac{i}{(1 + i)^n - 1}$.'
+resumen_inicial: 'El cálculo de la anualidad de capitalización determina el aporte periódico constante $R$ necesario para constituir un fondo futuro $M_F$: $M_F = R \cdot \frac{(1 + i)^n - 1}{i}$.'
 explicacion_simple: |
-  Una **anualidad o imposición de capitalización** es un plan de ahorro donde depositas una cuota fija de dinero $R$ (por ejemplo, todos los meses o todos los años) para alcanzar una meta de dinero al final ($M$).
-  - Como cada depósito entra en momentos distintos, las cuotas más antiguas ganan más intereses que las más nuevas.
-  - La suma de todas las cuotas con sus respectivos intereses acumulados da el **monto final de la anualidad**:
-    $$M = R \cdot \left[\frac{(1 + i)^n - 1}{i}\right]$$
-  - Si quieres saber **cuánto debes depositar en cada cuota $R$** para juntar $M$, despejas: $R = M \cdot \frac{i}{(1 + i)^n - 1}$.
+  Si quieres reunir una cantidad de dinero fija en el futuro (por ejemplo, para comprar una casa o jubilarte) depositando la **misma cuota $R$ al final de cada mes o año**:
+  - Cada cuota que depositas va ganando intereses compuestos según el tiempo que permanezca en el banco.
+  - La suma de todas las cuotas más todos sus intereses genera el **fondo acumulado final $M_F$**.
+  - Puedes calcular cuánto dinero acumularás o cuánto debes depositar periódicamente ($R$) usando la fórmula de anualidades de capitalización.
+
+  ![Cálculo de la anualidad de capitalización](/static/img/nodos/calculo-de-la-anualidad-de-capitalizacion-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una **anualidad ordinaria de capitalización (o imposición)** es una serie uniforme de $n$ depósitos de cuantía constante $R$ realizados al término de cada período, que se acumulan a una tasa de interés efectiva $i$:
-  $$M = R + R(1 + i) + R(1 + i)^2 + \dots + R(1 + i)^{n-1}$$
-  Esta expresión es la suma de los $n$ términos de una **progresión geométrica** de primer término $R$ y razón $q = 1 + i$:
-  $$M = R \cdot \left[\frac{(1 + i)^n - 1}{i}\right]$$
-
-  ### Despeje de la Cuota Periódica ($R$)
-  Invertiendo el factor de la serie geométrica de acumulación:
-  $$R = M \cdot \left[\frac{i}{(1 + i)^n - 1}\right]$$
-  donde:
-  - $R$ es la **cuota fija constante por período**.
-  - $M$ es el **monto futuro acumulado deseado**.
-  - $i$ es la tasa de interés periódica efectiva.
-  - $n$ es el número total de depósitos o cuotas.
+  Una **anualidad o imposición de capitalización** (serie de pagos uniformes vencidos) con cuota constante $R$, tasa periódica $i$ y $n$ períodos acumula un valor futuro $M_F$ dado por la suma de una progresión geométrica:
+  $$M_F = R \cdot (1 + i)^{n-1} + R \cdot (1 + i)^{n-2} + \dots + R \cdot (1 + i) + R$$
+  Aplicando la suma de términos de una progresión geométrica con razón $(1 + i)$:
+  $$M_F = R \cdot \left[\frac{(1 + i)^n - 1}{i}\right]$$
+  Despejando la **cuota periódica constante de ahorro $R$**:
+  $$R = M_F \cdot \left[\frac{i}{(1 + i)^n - 1}\right]$$
 
   ### Síntesis didáctica
-  - Ecuación del monto total acumulado: $M = R \cdot \frac{(1 + i)^n - 1}{i}$.
-  - Ecuación de la cuota periódica: $R = M \cdot \frac{i}{(1 + i)^n - 1}$.
+  - Fondo acumulado: $M_F = R \cdot \left[\frac{(1 + i)^n - 1}{i}\right]$.
+  - Cuota periódica: $R = M_F \cdot \left[\frac{i}{(1 + i)^n - 1}\right]$.
 definiciones_clave: |
-  - **Anualidad de capitalización ($R$)**: Depósito constante y periódico realizado con el propósito de formar un capital futuro.
-  - **Factor de imposición ($\frac{(1+i)^n - 1}{i}$)**: Operador multiplicativo de la serie geométrica de ahorro.
-  - **Suma de progresión geométrica**: Herramienta matemática empleada para consolidar el valor futuro de depósitos múltiples.
+  - **Fondo de capitalización ($M_F$)**: Monto total acumulado al final de la operación, resultante de la acumulación de las cuotas y sus intereses devengados.
+  - **Cuota o anualidad ($R$)**: Monto monetario constante depositado al término de cada período regular.
+  - **Factor de capitalización de la serie**: Término $\frac{(1+i)^n - 1}{i}$ que escala la cuota individual.
 propiedades_relaciones: |
-  - **Efecto multiplicativo del ahorro sostenido**: El monto total acumulado $M$ es estrictamente mayor que la suma simple de los depósitos ($M > n \cdot R$) debido a los intereses ganados por cada cuota.
-  - **Ventaja de las cuotas tempranas**: La primera cuota depositada es la que genera la mayor cantidad de interés acumulado por permanecer expuesta durante $n-1$ períodos.
+  - **Aporte total vs. Intereses**: El dinero efectivamente desembolsado es $n \cdot R$; los intereses totales ganados corresponden a $I = M_F - n \cdot R$.
+  - **Relación con la serie geométrica**: La fórmula surge directamente de la suma finita $S_n = a_1 \frac{q^n - 1}{q - 1}$ con razón $q = 1 + i$.
 ejemplo_guiado:
-  enunciado: 'Una persona desea juntar un monto de $\$3.100.000$ en $3$ años mediante depósitos anuales iguales $R$ al final de cada año, a una tasa del $10\%$ anual de interés compuesto. Datos: $(1,10)^3 = 1,331$. Calcula el valor de la cuota anual $R$.'
+  enunciado: 'Una persona deposita $\$100.000$ al final de cada año en una cuenta que rinde un $10\%$ anual compuesto. Calcula el fondo total acumulado al término de $3$ años.'
+  imagen: '/static/img/nodos/calculo-de-la-anualidad-de-capitalizacion-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $M = 3.100.000$, $i = 0,10$ y $n = 3$.'
-    - 'Paso 2: Evaluamos el factor de imposición: $\frac{(1,10)^3 - 1}{0,10} = \frac{1,331 - 1}{0,10} = \frac{0,331}{0,10} = 3,31$.'
-    - 'Paso 3: Sustituimos en $M = R \cdot 3,31 \implies 3.100.000 = R \cdot 3,31$.'
-    - 'Paso 4: Despejamos la cuota $R = \frac{3.100.000}{3,31} \approx 936.556$. Debe depositar **apróximadamente $\$936.556$ anuales**.'
+    - 'Paso 1: Identificamos cuota $R = 100.000$, tasa $i = 0,10$ y períodos $n = 3$.'
+    - 'Paso 2: Calculamos el factor de la serie: $\frac{(1,10)^3 - 1}{0,10} = \frac{1,331 - 1}{0,10} = \frac{0,331}{0,10} = 3,31$.'
+    - 'Paso 3: Multiplicamos la cuota por el factor: $M_F = 100.000 \cdot 3,31 = 331.000$.'
+    - 'Paso 4: Conclusión: El fondo total acumulado es de **$\$331.000$** (aportó $\$300.000$ y ganó $\$31.000$ de interés).'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la cuota constante periódica $R$ necesaria para acumular un monto objetivo $M$ a interés compuesto?'
+    question: '¿Cuál es la fórmula para calcular la cuota periódica constante $R$ necesaria para reunir un fondo futuro $M_F$?'
     choices:
-      - {text: 'Multiplicar el monto por la tasa y dividir por el factor neto ($R = M \cdot \frac{i}{(1 + i)^n - 1}$)', is_correct: true}
-      - {text: 'Dividir el monto entre el número de años únicamente', is_correct: false}
-      - {text: 'Multiplicar el monto por el número de cuotas $n$', is_correct: false}
-      - {text: 'Restar la tasa decimal al monto objetivo', is_correct: false}
-    explanation: 'La alternativa correcta es ''Multiplicar el monto por la tasa y dividir por el factor neto ($R = M \cdot \frac{i}{(1 + i)^n - 1}$)''. Se despeja $R$ de la suma geométrica.'
+      - {text: 'Multiplicar el fondo por el factor $\frac{i}{(1+i)^n - 1}$ ($R = M_F \cdot \frac{i}{(1+i)^n - 1}$)', is_correct: true}
+      - {text: 'Dividir el fondo directamente entre el número de períodos ($R = M_F / n$)', is_correct: false}
+      - {text: 'Multiplicar el fondo por $(1+i)^n$', is_correct: false}
+      - {text: 'Restar la tasa de interés al fondo acumulado', is_correct: false}
+    explanation: 'La alternativa correcta es ''Multiplicar el fondo por el factor $\frac{i}{(1+i)^n - 1}$ ($R = M_F \cdot \frac{i}{(1+i)^n - 1}$)''. Se despeja $R$ de la ecuación de anualidad.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si se realizan $2$ depósitos anuales de $\$100.000$ al $10\%$ anual compuesto, ¿cuál es el monto final acumulado al término del segundo año?'
+    question: 'Si se ahorran $\$50.000$ anuales al $10\%$ durante $2$ años con factor $\frac{(1,10)^2 - 1}{0,10} = 2,10$, ¿cuál es el monto reunido?'
     choices:
-      - {text: '$\$210.000$, pues la primera cuota rinde $\$110.000$ y la segunda cuota recién ingresada aporta $\$100.000$', is_correct: true}
-      - {text: '$\$200.000$, sumando sin intereses', is_correct: false}
-      - {text: '$\$220.000$, aplicando el 10% a ambas cuotas por dos años', is_correct: false}
-      - {text: '$\$100.000$, considerando solo una cuota', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$210.000$, pues la primera cuota rinde $\$110.000$ y la segunda cuota recién ingresada aporta $\$100.000$''. $M = 100.000(1,10) + 100.000 = 210.000$.'
+      - {text: '$\$105.000$, calculando $50.000 \cdot 2,10 = 105.000$', is_correct: true}
+      - {text: '$\$100.000$, sin considerar intereses', is_correct: false}
+      - {text: '$\$110.000$, duplicando la tasa', is_correct: false}
+      - {text: '$\$55.000$, considerando solo una cuota', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$105.000$, calculando $50.000 \cdot 2,10 = 105.000$''. La primera cuota gana $\$5.000$ y la segunda se deposita al final ($50.000 + 55.000 = 105.000$).'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el monto objetivo $M$, la tasa por período $i$ y el número total de depósitos $n$.'
-  - 'Paso 2: Calcular el factor de imposición $\frac{(1 + i)^n - 1}{i}$.'
-  - 'Paso 3: Dividir el monto objetivo $M$ entre el factor de imposición para despejar la cuota $R$.'
-  - 'Paso 4: Verificar que el total abonado $n \cdot R$ sea inferior al monto acumulado $M$.'
+  - 'Paso 1: Identificar la cuota $R$ (o meta $M_F$), tasa periódica $i$ y número de depósitos $n$.'
+  - 'Paso 2: Calcular el numerador $(1 + i)^n - 1$.'
+  - 'Paso 3: Dividir entre la tasa $i$ para obtener el factor de la serie.'
+  - 'Paso 4: Multiplicar por $R$ para obtener $M_F$ (o dividir $M_F$ entre el factor para hallar $R$).'
 errores_correccion: |
-  - **Error 1:** Dividir el monto objetivo $M$ simplemente por el número de cuotas $n$ ($M/n$). **Cómo corregirlo:** Las cuotas ganan intereses; **debes aplicar la fórmula de la serie geométrica de capitalización**.
-  - **Error 2:** Asumir que todas las cuotas ganan la misma cantidad de interés. **Cómo corregirlo:** La primera cuota pasa más tiempo guardada y **gana más intereses que las cuotas posteriores**.
+  - **Error 1:** Dividir la meta de ahorro directamente entre $n$ omitiendo la ganancia de intereses. **Cómo corregirlo:** La fórmula de anualidad **aprovecha la capitalización**: $R = M_F \cdot \frac{i}{(1+i)^n - 1} < \frac{M_F}{n}$.
+  - **Error 2:** Omitir la división entre $i$ en el factor de capitalización. **Cómo corregirlo:** El término es un cociente completo: **$\frac{(1+i)^n - 1}{i}$**.
 ejemplos:
-  - titulo: 'Monto acumulado con 2 cuotas de $100'
-    enunciado: 'Para $R = \$100$ e $i = 10\%$ a 2 períodos, ¿el monto es $M = 100 \cdot \frac{1,10^2 - 1}{0,10} = 100 \cdot 2,1 = \$210$?'
+  - titulo: 'Fondo acumulado a 2 años'
+    enunciado: 'Si $R = $\$100.00$0$, $i = 0,10$ y $n = 2$, ¿cuál es el fondo total acumulado?'
     alternativas:
-      - 'Sí, pues $100 \cdot 2,1 = 210$'
-      - 'No, es $\$200$'
-      - 'No, es $\$220$'
-    respuesta: 'Sí, pues $100 \cdot 2,1 = 210$'
+      - '$\$210.000$'
+      - '$\$200.000$'
+      - '$\$220.000$'
+    respuesta: '$\$210.000$'
     solucion_pasos:
-      - '1. Factor: $(1,21 - 1) / 0,10 = 0,21 / 0,10 = 2,1$.'
-      - '2. Monto: $100 \cdot 2,1 = \$210$.'
-  - titulo: 'Cuota para alcanzar $210'
-    enunciado: 'En el caso anterior, para juntar $M = \$210$ en 2 períodos al $10\%$, ¿la cuota es $R = 210 / 2,1 = \$100$?'
-    respuesta: 'Sí'
+      - '1. Factor: $\frac{(1,10)^2 - 1}{0,10} = \frac{1,21 - 1}{0,10} = 2,10$.'
+      - '2. $M_F = 100.000 \cdot 2,10 = $\$210.00$0$.'
+  - titulo: 'Cálculo de la cuota periódica'
+    enunciado: 'Para reunir $\$331.000$ en 3 años al $10\%$ anual, ¿cuál debe ser el depósito anual $R$?'
+    alternativas:
+      - '$\$100.000$'
+      - '$\$110.333$'
+      - '$\$90.000$'
+    respuesta: '$\$100.000$'
     solucion_pasos:
-      - 'Sí. $R = M / 2,1 = \$100$.'
-  - titulo: 'Ahorro simple vs compuesto en cuotas'
-    enunciado: '¿El monto acumulado $M$ supera a la suma de depósitos $n \cdot R$?'
-    respuesta: 'Sí'
+      - '1. Factor: $3,31$.'
+      - '2. $R = 331.000 / 3,31 = $\$100.00$0$.'
+  - titulo: 'Interés total devengado en el plan'
+    enunciado: 'Si un plan acumula $\$331.000$ mediante 3 cuotas de $\$100.000$, ¿los intereses ganados fueron $\$31.000$?'
+    alternativas:
+      - 'Sí, pues $I = M_F - (3 \cdot 100.000) = 331.000 - 300.000 = $\$31.00$0$'
+      - 'No, los intereses fueron $\$331.000$'
+      - 'No, no se ganaron intereses'
+    respuesta: 'Sí, pues $I = M_F - (3 \cdot 100.000) = 331.000 - 300.000 = $\$31.00$0$'
     solucion_pasos:
-      - 'Sí. La diferencia $M - n \cdot R$ representa los intereses ganados por las cuotas.'
-  - titulo: 'Efecto de aumentar la cuota'
-    enunciado: 'Si la cuota $R$ se duplica manteniendo la tasa y el plazo, ¿el monto final acumulado se duplica exactamente?'
-    respuesta: 'Sí'
+      - '1. Aporte propio: $3 \cdot 100.000 = 300.000$.'
+      - '2. Intereses: $331.000 - 300.000 = $\$31.00$0$.'
+  - titulo: 'Efecto de la tasa en el ahorro'
+    enunciado: '¿Una mayor tasa de interés $i$ permite alcanzar la misma meta $M_F$ con una cuota de ahorro $R$ menor?'
+    alternativas:
+      - 'Sí, debido a que el rendimiento generado por los intereses es mayor'
+      - 'No, la cuota siempre es constante e independiente de la tasa'
+      - 'No, a mayor tasa se requiere mayor cuota'
+    respuesta: 'Sí, debido a que el rendimiento generado por los intereses es mayor'
     solucion_pasos:
-      - 'Sí. $M$ es directamente proporcional a la cuota $R$.'
+      - '1. El factor divisor aumenta con la tasa, reduciendo la cuota requerida $R$.'
 errores_frecuentes:
-  - 'Dividir el monto acumulado directamente entre el número de cuotas omitiendo los intereses generados.'
-  - 'Aplicar la potencia $(1+i)^n$ a la suma completa de depósitos $n \cdot R$ en lugar de usar la serie geométrica.'
-  - 'Todas las cuotas periódicas devengan exactamente la misma cantidad de interés al término del plazo.'
-  - 'El numerador de la fórmula de imposición se calcula manteniendo la potencia $(1+i)^n$ sin restar 1.'
-  - 'Considerar que las cuotas pagadas al inicio del plan generan menos interés que las pagadas al final.'
+  - 'La cuota periódica $R$ se calcula dividiendo la meta futura $M_F$ directamente entre el número de depósitos $n$.'
+  - 'El factor de anualidad se multiplica por la tasa $i$ en lugar de dividir por ella.'
+  - 'El valor acumulado final $M_F$ es idéntico a la suma de las cuotas sin considerar la capitalización de intereses.'
+  - 'La fórmula de anualidad de capitalización se utiliza indistintamente para calcular la cuota de una deuda.'
+  - 'La cuota periódica aumenta cuando la tasa de interés ofrecida por el banco aumenta.'
 afirmaciones_verdaderas:
-  - 'El monto acumulado por una anualidad de capitalización se calcula mediante $M = R \cdot \left[\frac{(1 + i)^n - 1}{i}\right]$.'
-  - 'La cuota periódica $R$ requerida para alcanzar una meta $M$ es $R = M \cdot \left[\frac{i}{(1 + i)^n - 1}\right]$.'
-al_terminar_debes_poder: 'Calcular la cuota constante $R$ y el monto acumulado $M$ de una anualidad de capitalización aplicando la suma de progresiones geométricas.'
+  - 'El fondo acumulado por una serie de depósitos constantes uniformes es $M_F = R \cdot \left[\frac{(1 + i)^n - 1}{i}\right]$.'
+  - 'Los intereses totales ganados en un plan de capitalización corresponden a la diferencia $I = M_F - n \cdot R$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-la-anualidad-de-capitalizacion-resumen.svg)
+
+  QUÉ: Calcular el valor futuro constituido y la cuota de ahorro periódica en planes de capitalización uniforme.
+  CÓMO: Aplicar las fórmulas de anualidades de capitalización $M_F = R \cdot \frac{(1 + i)^n - 1}{i}$ y $R = M_F \cdot \frac{i}{(1 + i)^n - 1}$.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

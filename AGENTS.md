@@ -60,18 +60,16 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   algoritmo técnico de resolución en $LaTeX$). Prohibido redactar párrafos de texto corrido
   sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
 - **Fórmulas y Matemáticas en YAML (KaTeX):** Toda expresión matemática, fracción o número decimal con barra periódica ($0,\overline{3}$, $2,45\overline{8}$) en enunciados, alternativas, explicaciones o títulos de `ejemplos` y `checkpoints` DEBE estar estrictamente delimitada con signos de dólar (`$...$` o `$$...$$`). Prohibido dejar comandos LaTeX como `\overline` en texto plano.
+- **Signos de Moneda / Dinero en YAML (KaTeX):** Todo monto monetario con signo peso (ej: $\$500.000$) DEBE estar estrictamente delimitado dentro de un bloque LaTeX como `$\$500.000$` o `$\$500.000\text{ pesos}$`. Está **estrictamente prohibido escribir `\$500.000` o `$500.000` suelto en texto plano sin cerrar**, ya que Markdown consume la barra invertida (`\`) y el renderizador de KaTeX en el cliente toma el signo `$` como apertura de fórmula matemática, devorando todo el texto en español siguiente (eliminando espacios, volviendo cursivas las palabras y convirtiendo guiones bajos en subíndices).
 - **Infografías y Diagramas SVG:** Todo SVG (`static/img/nodos/`) debe respetar el estándar
   *Zero-Overflow*: textos derechos anclados con `text-anchor="end"`, padding seguro $\ge 15\text{px}$,
   y control estricto de longitud de caracteres por caja contenedora y subcaja interna
   ($N_{\text{max}} \le \frac{W_{\text{box}} - 2 \times \text{padding}}{\text{font-size} \times 0.60}$).
-  Prohibido desbordar los bordes de subcajas, cards o del canvas. En números periódicos en SVG, está
-  **estrictamente prohibido usar caracteres combinados Unicode (`\u0304`)**; usar siempre
-  `<tspan style="text-decoration: overline">...</tspan>` o un elemento vectorial `<line>` para cubrir
-  la totalidad del período. En expresiones matemáticas dentro de SVGs, está **estrictamente prohibido
-  usar notación plana de programador con guiones bajos o símbolos crudos** (`E_%`, `E_rel`, `v_real`,
-  `x_def`, `d_k`, `10^-k`, `10^k`); usar siempre etiquetas tipográficas vectoriales
-  `<tspan baseline-shift="sub" font-size="70%">...</tspan>` para subíndices y
-  `<tspan baseline-shift="super" font-size="70%">...</tspan>` para superíndices.
+  Prohibido desbordar los bordes de subcajas, cards o del canvas.
+  - **Auto-Wrapping y Salto de Línea en SVG (Zero-Clipping):** Dado que SVG 1.1 `<text>` no realiza salto de línea automático, está **estrictamente prohibido colocar textos explicativos largos en un solo `<text>` plano**. Todo texto descriptivo, definición o aviso debe formatearse obligatoriamente mediante múltiples elementos `<tspan x="..." y="...">` con límites de caracteres por línea ($\le 68$ caracteres para cajas de ancho completo $\approx 640\text{px}$ y $\le 34$ caracteres para tarjetas divididas $\approx 305\text{px}$), recalculando dinámicamente la altura de la caja contenedora y la posición $Y$ de las cajas siguientes.
+  - **Períodos Decimales en SVG:** En números periódicos en SVG, está **estrictamente prohibido usar caracteres combinados Unicode (`\u0304`)**; usar siempre `<tspan style="text-decoration: overline">...</tspan>` o un elemento vectorial `<line>` para cubrir la totalidad del período.
+  - **Prohibición de Notación Plana de Programador:** En expresiones matemáticas dentro de SVGs, está **estrictamente prohibido usar notación plana de programador con guiones bajos o símbolos crudos** (`E_%`, `E_rel`, `v_real`, `x_def`, `d_k`, `10^-k`, `10^k`, `3√(x)`, `4x^(2/3)`, `ⁿ√(xᵐ)`, `x^(m/n)`); usar siempre etiquetas tipográficas vectoriales o **renderizado vectorial $\LaTeX$ con Computer Modern** (`matplotlib.mathtext` con `ax.set_axis_off()` incrustado como vector data-URI/image).
+- **Estándar $\LaTeX$ Vectorial en Imágenes SVG (Computer Modern):** Toda fórmula matemática o expresión con radicales, fracciones, potencias o variables dentro de los diagramas e infografías SVG DEBE renderizarse con tipografía formal $\LaTeX$ (Computer Modern). Al generar los fragmentos con el motor de Python, se debe asegurar apagar totalmente los ejes (`ax.set_axis_off()`) para evitar la aparición accidental de marcas de graduación o números en el origen `(0, 0)`.
 - **Fracciones Matemáticas en Diagramas SVG:** Toda fracción, división o cociente algebraico o numérico
   en diagramas SVG (`static/img/nodos/`) DEBE representarse obligatoriamente en formato vertical apilado
   con numerador superior, línea horizontal vectorial de fracción (`<line>`) y denominador inferior, con

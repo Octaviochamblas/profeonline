@@ -1,107 +1,121 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.INTERPRETACION_RAZON_CONTEXTO
-resumen_inicial: 'La interpretación contextual de la razón geométrica asigna un significado físico, financiero o práctico a la constante $r = \frac{a_{n+1}}{a_n}$, representando la tasa de escala o factor multiplicativo por período.'
+resumen_inicial: 'La interpretación contextual de la razón geométrica $r$ analiza su significado como factor de escala y tasa relativa de cambio, identificando si representa amplificación ($r > 1$), atenuación ($0 < r < 1$) o alternancia ($r < 0$).'
 explicacion_simple: |
-  En los problemas del mundo real, la **razón geométrica ($r$)** nos indica cómo evoluciona la cantidad en proporción:
-  - **$r = 2$**: La cantidad **se duplica** en cada período.
-  - **$r = 3$**: La cantidad **se triplica** en cada período.
-  - **$r = 1,05$**: La cantidad **aumenta un $5\%$** en cada período.
-  - **$r = 0,5 = 1/2$**: La cantidad **se reduce a la mitad** en cada período (vida media o semidesintegración).
-  - **$r = 0,80$**: La cantidad **se conserva en un $80\%$** (pierde un $20\%$) en cada período.
-explicacion_formal: |
-  ### Definición formal
-  En un modelo de progresión geométrica contextualizado $y(n) = a_1 \cdot r^{n-1}$, el parámetro de **razón geométrica $r$** representa el operador de escala multiplicativa por período de tiempo:
-  $$r = \frac{y(n+1)}{y(n)} \quad \left[\text{Adimensional o Factor de Escala}\right]$$
+  En problemas de la vida real, la **razón geométrica** ($r$) es un multiplicador adimensional que nos dice cómo cambia una cantidad en cada etapa:
+  - Si $r = 2$: la cantidad **se duplica** en cada paso (aumento del $100\%$).
+  - Si $r = 1,05$: la cantidad **aumenta un $5\%$** en cada paso.
+  - Si $r = 0,5$: la cantidad **se reduce a la mitad** en cada paso (pérdida del $50\%$).
+  - Si $r = 0,80$: la cantidad **conserva el $80\%$** de su valor (disminución del $20\%$).
+  - La razón $r$ no lleva signos pesos ni unidades físicas: es una **proporción pura** que multiplica a la magnitud anterior.
 
-  ### Matriz de Interpretación Contextual según $r$
-  | Valor de $r$ | Porcentaje Equivalente | Significado Práctico / Contextual |
-  | :--- | :--- | :--- |
-  | **$r > 1$** (ej: $r = 1,12$) | Aumento del $+12\%$ | Crecimiento constante, inflación, ganancias de interés |
-  | **$r = 2$** | Aumento del $+100\%$ | Duplicación periódica (bacterias, células) |
-  | **$0 < r < 1$** (ej: $r = 0,75$) | Disminución del $-25\%$ | Retención del 75%, depreciación, atenuación de señal |
-  | **$r = 0,5$** | Disminución del $-50\%$ | Semidesintegración radiactiva, pérdida de la mitad |
-  | **$r = 1$** | Sin variación ($0\%$) | Estado estacionario conservativo |
+  ![Interpretación contextual de la razón geométrica](/static/img/nodos/interpretacion-contextual-de-la-razon-geometrica-en-modelos-multiplicativos-intro.svg)
+explicacion_formal: |
+  ### Definición formal y Análisis Adimensional
+  La **razón geométrica ($r$)** en modelos aplicados se define como el cociente de dos estados consecutivos de una misma magnitud $Y$:
+  $$r = \frac{Y(t+1)}{Y(t)} \quad [\text{Adimensional: } \text{Unidad de } Y / \text{Unidad de } Y = 1]$$
+
+  ### Espectro Semántico de la Razón Geométrica ($r > 0$)
+  - **$r > 1$ (Régimen de Expansión / Crecimiento)**:
+    - Factor de amplificación: $Y(t+1) > Y(t)$.
+    - Tasa porcentual de incremento: $p = (r - 1) \cdot 100\%$.
+  - **$r = 1$ (Régimen Estacionario / Invariante)**:
+    - Conservación estricta de la magnitud: $Y(t+1) = Y(t)$.
+  - **$0 < r < 1$ (Régimen de Atenuación / Decaimiento)**:
+    - Factor de reducción o retención: $Y(t+1) < Y(t)$.
+    - Tasa porcentual de pérdida: $p = (1 - r) \cdot 100\%$.
+
+  ### Diferenciación con la Diferencia Común ($d$) de la PA
+  - La diferencia común $d$ tiene dimensiones físicas compuestas ($[Y]/[t]$) y opera de forma aditiva constante.
+  - La razón $r$ es un escalar puro adimensional que actúa de forma proporcional escalada.
 
   ### Síntesis didáctica
-  - $r > 1 \implies$ Crecimiento por factor $r$.
-  - $0 < r < 1 \implies$ Conservación de la fracción $r$ del período anterior.
+  - Escala: $r > 1$ (Expansión), $0 < r < 1$ (Atenuación).
+  - Conversión a tasa: Variación $\% = (r - 1) \cdot 100\%$.
 definiciones_clave: |
-  - **Factor de escala ($r$)**: Multiplicador adimensional que relaciona dos estados consecutivos.
-  - **Período de semidesintegración ($r = 0,5$)**: Intervalo de tiempo necesario para que la cantidad inicial se reduzca al 50%.
-  - **Porcentaje de retención ($r \cdot 100\%$)**: Porcentaje de la cantidad anterior que sobrevive o permanece en el nuevo período.
+  - **Factor de escala**: Número real por el cual se multiplica una dimensión o magnitud para cambiar su tamaño relativo.
+  - **Porcentaje de retención**: Proporción $r \cdot 100\%$ que permanece tras un proceso de filtrado o descuento.
+  - **Adimensionalidad**: Propiedad física donde las unidades del numerador y denominador se cancelan exactamente.
 propiedades_relaciones: |
-  - **Conversión a variación porcentual $P\%$**:
-    $$P\% = (r - 1) \cdot 100\%$$
-    - Si $r = 1,25 \implies P\% = (1,25 - 1) \cdot 100\% = +25\%$.
-    - Si $r = 0,70 \implies P\% = (0,70 - 1) \cdot 100\% = -30\%$.
+  - **Composición multiplicativa**: Si un proceso pasa por $k$ etapas sucesivas con razón $r$, el factor de escala global acumulado es exactamente $r^k$.
+  - **Simetría multiplicativa**: Un incremento por un factor $r$ se anula exactamente mediante un factor inverso $\frac{1}{r}$.
 ejemplo_guiado:
-  enunciado: 'Un medicamento se elimina del cuerpo de modo que la cantidad retenida sigue una progresión geométrica con razón $r = 0,80$. Si el paciente ingiere una dosis inicial de $100$ mg ($n=1$), interpreta el significado de $r = 0,80$ y calcula la cantidad retenida en el cuerpo tras 3 horas ($n=4$).'
+  enunciado: 'Un sistema de purificación de agua pasa por una serie de filtros. Cada filtro retiene el $25\%$ de las impurezas que ingresan. Interpreta contextualmente la razón geométrica $r$ de las impurezas que atraviesan el sistema y calcula la proporción de impurezas restantes tras pasar por 3 filtros consecutivos.'
+  imagen: '/static/img/nodos/interpretacion-contextual-de-la-razon-geometrica-en-modelos-multiplicativos-ejemplos.svg'
   pasos:
-    - 'Paso 1: Interpretamos $r = 0,80$: Significa que en cada hora el cuerpo **retiene el $80\%$** del medicamento presente en la hora anterior (o elimina el $20\%$).'
-    - 'Paso 2: Identificamos los datos: $a_1 = 100$ mg, $r = 0,80$ y la hora 3 corresponde a la etapa $n = 4$.'
-    - 'Paso 3: Evaluamos con el término general: $a_4 = 100 \cdot (0,80)^{4-1} = 100 \cdot (0,80)^3$.'
-    - 'Paso 4: Calculamos: $(0,80)^3 = 0,512 \implies a_4 = 100 \cdot 0,512 = 51,2$ mg. El cuerpo retiene el **$80\%$** cada hora y tras 3 horas quedan **$51,2$ mg**.'
+    - 'Paso 1: Si cada filtro retiene el $25\%$, deja pasar el $100\% - 25\% = 75\%$ de las impurezas.'
+    - 'Paso 2: La razón geométrica es el factor de paso: $r = 1 - 0,25 = 0,75$ (adimensional).'
+    - 'Paso 3: Interpretación: cada filtro multiplica las impurezas por $0,75$ (reducción del $25\%$ por etapa).'
+    - 'Paso 4: Tras 3 filtros consecutivos ($t = 3$), el factor acumulado es $r^3 = (0,75)^3 = 0,421875$.'
+    - 'Paso 5: Conclusión: Tras 3 filtros queda el **$42,19\%$** de las impurezas originales.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'En un problema de devaluación de una moneda donde la razón geométrica es $r = 0,92$, ¿cuál es la interpretación porcentual correcta de este parámetro?'
+    question: 'Si en un modelo biológico la razón geométrica de una población es $r = 1,15$, ¿cuál es la interpretación porcentual del cambio por período?'
     choices:
-      - {text: 'La moneda conserva el $92\%$ de su valor anterior, lo que equivale a una devaluación del $8\%$ en cada período', is_correct: true}
-      - {text: 'La moneda pierde un $92\%$ de su valor en cada período', is_correct: false}
-      - {text: 'La moneda aumenta su valor en un $92\%$ en cada período', is_correct: false}
-      - {text: 'El valor de la moneda es de 92 pesos exactamente', is_correct: false}
-    explanation: 'La alternativa correcta es ''La moneda conserva el $92\%$ de su valor anterior, lo que equivale a una devaluación del $8\%$ en cada período''. $P\% = (0,92 - 1) \cdot 100\% = -8\%$.'
+      - {text: 'La población experimenta un aumento del $15\%$ en cada período', is_correct: true}
+      - {text: 'La población aumenta en $115$ individuos constantes', is_correct: false}
+      - {text: 'La población experimenta un aumento del $115\%$', is_correct: false}
+      - {text: 'La población disminuye un $15\%$', is_correct: false}
+    explanation: 'La alternativa correcta es ''La población experimenta un aumento del $15\%$ en cada período''. El incremento porcentual se obtiene mediante $(1,15 - 1) \cdot 100\% = 15\%$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una especie invasora se triplica cada año, ¿cuál es la razón geométrica $r$ de su modelo y su tasa de variación porcentual $P\%$?'
+    question: '¿Por qué la razón geométrica $r$ es una magnitud adimensional (sin unidades de medida)?'
     choices:
-      - {text: 'La razón geométrica es $r = 3$ y su tasa de variación porcentual es $+200\%$ por año', is_correct: true}
-      - {text: 'La razón geométrica es $r = 3$ y su tasa es $+300\%$ por año', is_correct: false}
-      - {text: 'La razón geométrica es $r = 1,3$ y su tasa es $+30\%$ por año', is_correct: false}
-      - {text: 'La razón geométrica es $r = 300$ y su tasa es $+3\%$ por año', is_correct: false}
-    explanation: 'La alternativa correcta es ''La razón geométrica es $r = 3$ y su tasa de variación porcentual es $+200\%$ por año''. $P\% = (3 - 1) \cdot 100\% = 200\%$.'
+      - {text: 'Porque se calcula dividiendo dos cantidades que tienen la misma unidad de medida, cancelándose entre sí', is_correct: true}
+      - {text: 'Porque las razones nunca se pueden medir en el mundo real', is_correct: false}
+      - {text: 'Porque siempre es igual a un número entero', is_correct: false}
+      - {text: 'Porque se expresa en porcentaje', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque se calcula dividiendo dos cantidades que tienen la misma unidad de medida, cancelándose entre sí''. Al dividir metros por metros o dinero por dinero, las unidades se simplifican.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el valor numérico de la razón geométrica $r$.'
-  - 'Paso 2: Si $r > 1$, restar 1 y multiplicar por 100 para obtener el porcentaje de aumento ($P\% = (r-1) \cdot 100\%$).'
-  - 'Paso 3: Si $0 < r < 1$, restar de 1 y multiplicar por 100 para obtener el porcentaje de reducción (pérdida de $(1-r) \cdot 100\%$).'
-  - 'Paso 4: Redactar la explicación contextual relacionando la tasa de cambio con el fenómeno real estudiado.'
+  - 'Paso 1: Identificar el factor multiplicativo $r$ en el enunciado.'
+  - 'Paso 2: Si $r > 1$, calcular el porcentaje de aumento: $(r - 1) \cdot 100\%$.'
+  - 'Paso 3: Si $0 < r < 1$, calcular el porcentaje de disminución: $(1 - r) \cdot 100\%$.'
+  - 'Paso 4: Redactar la interpretación contextual destacando el comportamiento relativo por etapa.'
 errores_correccion: |
-  - **Error 1:** Confundir el porcentaje de retención $r \cdot 100\%$ con el porcentaje de pérdida $(1-r) \cdot 100\%$. **Cómo corregirlo:** Si $r = 0,70$, la cantidad **retiene el 70%** y por ende **pierde el 30%**.
-  - **Error 2:** Creer que triplicar significa aumentar un 300%. **Cómo corregirlo:** Triplicar ($r=3$) significa que la nueva cantidad es el 300%, lo que representa un **AUMENTO DEL 200%**: $(3-1) \cdot 100\% = 200\%$.
+  - **Error 1:** Interpretar $r = 1,30$ como un incremento del $130\%$. **Cómo corregirlo:** El incremento sobre el valor base es **$(1,30 - 1) \cdot 100\% = 30\%$**.
+  - **Error 2:** Asignar unidades de medida físicas a la razón geométrica (escribir $r = 2\text{ metros}$). **Cómo corregirlo:** La razón $r$ es un **cociente adimensional puro** (se escribe simplemente $r = 2$).
 ejemplos:
-  - titulo: 'Interpretación de duplicación'
-    enunciado: 'Si $r = 2$, ¿significa que la cantidad se duplica en cada período, aumentando un $100\%$?'
+  - titulo: 'Interpretación de razón mayor a 1'
+    enunciado: 'Un cultivo celular tiene $r = 1,40$ por hora. ¿Cuál es el porcentaje de crecimiento horario?'
     alternativas:
-      - 'Sí, $r=2 \implies (2-1) \cdot 100\% = +100\%$'
-      - 'No, aumenta un 200%'
-      - 'No, aumenta un 2%'
-    respuesta: 'Sí, $r=2 \implies (2-1) \cdot 100\% = +100\%$'
+      - '$40\%$ de crecimiento por hora'
+      - '$140\%$ de crecimiento por hora'
+      - '$4\%$ de crecimiento por hora'
+    respuesta: '$40\%$ de crecimiento por hora'
     solucion_pasos:
-      - '1. Razón $r = 2$.'
-      - '2. Aumento porcentual: $(2 - 1) \cdot 100\% = 100\%$.'
-  - titulo: 'Interpretación de semidesintegración'
-    enunciado: 'Si en un laboratorio $r = 0,5$, ¿la muestra pierde el 50% de su masa en cada ciclo?'
+      - '1. $(1,40 - 1) \cdot 100\% = 0,40 \cdot 100\% = 40\%$.'
+  - titulo: 'Interpretación de razón menor a 1'
+    enunciado: 'La intensidad de la luz al atravesar un cristal polarizado tiene $r = 0,85$. ¿Cuánta luz se absorbe?'
+    alternativas:
+      - 'Se absorbe el $15\%$ de la luz'
+      - 'Se absorbe el $85\%$ de la luz'
+      - 'Se absorbe el $8,5\%$ de la luz'
+    respuesta: 'Se absorbe el $15\%$ de la luz'
+    solucion_pasos:
+      - '1. Pasa el $85\% \implies$ se absorbe $100\% - 85\% = 15\%$.'
+  - titulo: 'Adimensionalidad de la razón'
+    enunciado: '¿La razón geométrica $r$ calculada entre dos montos de dinero en pesos carece de unidades monetarias?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Retiene el 50% y pierde el 50%.'
-  - titulo: 'Interpretación de r = 1,15'
-    enunciado: 'Si $r = 1,15$, ¿significa un incremento del 15% por período?'
+      - '1. Pesos dividido por pesos da un valor adimensional.'
+  - titulo: 'Efecto de amplificación'
+    enunciado: '¿Una razón $r = 3$ indica que cada etapa triplica la cantidad de la etapa anterior?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $(1,15 - 1) \cdot 100\% = +15\%$.'
-  - titulo: 'Interpretación de r = 0,90'
-    enunciado: 'Si $r = 0,90$, ¿significa un descuento del 10% por período?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $(1 - 0,90) \cdot 100\% = 10\%$ de descuento.'
+      - '1. $Y(t+1) = 3 \cdot Y(t)$.'
 errores_frecuentes:
-  - 'La razón de retención $r$ equivale cuantitativamente a la tasa de pérdida o descuento porcentual.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Equiparar la razón de triplicación $r=3$ a un aumento del 300% en lugar del 200%.'
-  - 'Considerar que las razones fraccionarias representan reducciones en forma de resta lineal constante.'
+  - 'Interpretar un factor de escala $r = 1,20$ como un crecimiento del ciento veinte por ciento.'
+  - 'Asignar unidades de medida aditivas compuestas a la razón geométrica.'
+  - 'Confundir el porcentaje restante $r \cdot 100\%$ con el porcentaje que se pierde $(1-r) \cdot 100\%$.'
+  - 'Asumir que una razón $r < 1$ produce valores numéricos negativos en la magnitud.'
+  - 'La razón geométrica entre dos términos de una misma magnitud física depende del sistema de unidades utilizado.'
 afirmaciones_verdaderas:
-  - 'La razón geométrica $r$ expresa el factor multiplicativo por el cual se escala una magnitud de un período al siguiente.'
-  - 'Una razón $r = 1 + \frac{P}{100}$ indica un aumento del $P\%$, mientras que $r = 1 - \frac{P}{100}$ indica una disminución del $P\%$.'
-al_terminar_debes_poder: 'Interpretar el significado contextual y la equivalencia porcentual de la razón geométrica $r$ en modelos multiplicativos.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La razón geométrica $r$ es un escalar adimensional puro que cuantifica el factor de escala relativo entre dos estados consecutivos de un sistema.'
+  - 'Un valor de razón $r = 1 + i$ corresponde a un incremento porcentual relativo de $i \cdot 100\%$ por período.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/interpretacion-contextual-de-la-razon-geometrica-en-modelos-multiplicativos-resumen.svg)
+
+  QUÉ: Interpretar el significado contextual, físico y económico de la razón geométrica $r$ en modelos multiplicativos.
+  CÓMO: Convertir la razón $r$ a tasas relativas porcentuales de crecimiento o decaimiento $(r - 1) \cdot 100\%$ fundamentando su carácter adimensional.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

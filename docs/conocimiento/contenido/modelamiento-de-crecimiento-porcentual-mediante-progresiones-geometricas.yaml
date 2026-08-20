@@ -1,107 +1,118 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.MODELO_CRECIMIENTO_PORCENTUAL
-resumen_inicial: 'El modelamiento de crecimiento porcentual mediante progresiones geométricas traduce fenómenos reales de variación proporcional constante (interés compuesto, crecimiento bacteriano, devaluación) a ecuaciones $a_n = a_1 \cdot r^{n-1}$.'
+resumen_inicial: 'El modelamiento de crecimiento y decrecimiento porcentual mediante progresiones geométricas aplica factores multiplicativos $r = 1 \pm \frac{p}{100}$ a magnitudes que varían a tasas relativas constantes por período.'
 explicacion_simple: |
-  Cuando un fenómeno crece o disminuye en un **porcentaje fijo en cada período de tiempo** (variación porcentual constante), su comportamiento se modela con una **progresión geométrica**:
-  - **Crecimiento del $20\%$ mensual**: La cantidad se multiplica en cada paso por $r = 1 + 0,20 = 1,20$.
-  - **Duplicación de bacterias cada hora**: La cantidad se multiplica en cada paso por $r = 2$.
-  - **Descuento del $10\%$ anual (depreciación porcentual)**: La cantidad se multiplica en cada paso por $r = 1 - 0,10 = 0,90$.
-  La clave es hallar la **razón multiplicativa $r = 1 \pm \frac{P}{100}$**.
-explicacion_formal: |
-  ### Definición formal
-  Un fenómeno discreto de variación porcentual constante $P\%$ por período en el tiempo $n \in \mathbb{N}$ se define por una razón multiplicativa fija:
-  $$r = 1 \pm \frac{P}{100}$$
-  El modelo de evolución temporal del estado $y(n)$ viene dado por la progresión geométrica:
-  $$y(n) = a_n = a_1 \cdot \left(1 \pm \frac{P}{100}\right)^{n-1}$$
-  donde:
-  - $a_1$ es la cantidad inicial en el primer período ($n=1$).
-  - $r = 1 + \frac{P}{100}$ es el **factor de crecimiento** ($P\% > 0$).
-  - $r = 1 - \frac{P}{100}$ es el **factor de decrecimiento / decaimiento** ($P\% > 0$).
-  - $n$ representa la etapa o período discreto.
+  Cuando una cantidad aumenta o disminuye en un **porcentaje fijo** en cada período de tiempo, estamos frente a una **progresión geométrica**:
+  - **Aumento porcentual (crecimiento)**: Si una población o inversión crece un $10\%$ cada año:
+    $$r = 1 + \frac{10}{100} = 1 + 0,10 = 1,10$$
+  - **Disminución porcentual (decaimiento/descuento)**: Si el valor de una máquina cae un $15\%$ cada año:
+    $$r = 1 - \frac{15}{100} = 1 - 0,15 = 0,85$$
+  - **Fórmula de evolución**: Si empiezas con una cantidad inicial $M_0$, al cabo de $t$ períodos tienes:
+    $$M_t = M_0 \cdot r^t$$
 
-  ### Dominio de aplicaciones
-  1. **Finanzas**: Interés compuesto discreto ($M = C(1+i)^t$).
-  2. **Biología**: Crecimiento de cultivos celulares / propagación de virus.
-  3. **Física**: Vida media y desintegración radiactiva ($r = 1/2$).
+  ![Modelamiento de crecimiento porcentual mediante PG](/static/img/nodos/modelamiento-de-crecimiento-porcentual-mediante-progresiones-geometricas-intro.svg)
+explicacion_formal: |
+  ### Definición formal del Factor de Capitalización / Decaimiento
+  Sea $M_0$ la magnitud en el instante inicial $t=0$, y sea $p\%$ la tasa porcentual constante por período:
+  - **Para incremento periódico de $p\%$**:
+    $$M_1 = M_0 + M_0\left(\frac{p}{100}\right) = M_0\left(1 + \frac{p}{100}\right)$$
+    $$M_t = M_0\left(1 + \frac{p}{100}\right)^t \quad (r = 1 + i, \; i = p/100)$$
+  - **Para decremento periódico de $p\%$**:
+    $$M_t = M_0\left(1 - \frac{p}{100}\right)^t \quad (r = 1 - i, \; i = p/100)$$
+
+  ### Correspondencia con la Notación de Progresiones
+  - Si indexamos desde $t=0$, el término inicial es $M_0$ y el valor en el período $t$ es $M(t) = M_0 \cdot r^t$.
+  - Si indexamos como términos de sucesión $a_n$ donde $a_1$ es el valor al finalizar el período 1 ($a_1 = M_0 \cdot r$), entonces el término general $a_n = a_1 \cdot r^{n-1} = (M_0 \cdot r) \cdot r^{n-1} = M_0 \cdot r^n$.
 
   ### Síntesis didáctica
-  - Factor de aumento $+P\% \implies r = 1 + \frac{P}{100}$.
-  - Factor de rebaja $-P\% \implies r = 1 - \frac{P}{100}$.
+  - Crecimiento porcentual: $r = 1 + \frac{p}{100} > 1$.
+  - Decrecimiento porcentual: $r = 1 - \frac{p}{100} < 1$.
 definiciones_clave: |
-  - **Factor multiplicativo de crecimiento ($1 + P/100$)**: Razón geométrica asociada a un aumento porcentual constante.
-  - **Factor multiplicativo de decaimiento ($1 - P/100$)**: Razón geométrica asociada a una disminución porcentual constante.
-  - **Crecimiento exponencial discreto**: Evolución donde la variación es proporcional a la cantidad acumulada en ese instante.
+  - **Factor de variación ($r$)**: Multiplicador $1 \pm \frac{p}{100}$ que transforma el valor de un período al siguiente.
+  - **Tasa periódica ($i$)**: Proporción decimal $i = \frac{p}{100}$ de incremento o reducción por unidad de tiempo.
+  - **Interés compuesto**: Modelo financiero geométrico donde los intereses generados se incorporan al capital para producir nuevos intereses.
 propiedades_relaciones: |
-  - **No linealidad del efecto acumulado**: Un incremento del $10\%$ durante 2 períodos no equivale a sumar $20\%$, sino a multiplicar por $1,10^2 = 1,21$ ($+21\%$).
-  - **Invarianza de la escala**: La razón $r$ no depende de la masa o suma inicial $a_1$.
+  - **Efecto acumulativo exponencial**: El crecimiento porcentual continuo genera curvas convexas donde el incremento absoluto en dinero o unidades es cada vez mayor en cada período.
+  - **Principio del interés sobre interés**: A diferencia del interés simple (PA lineal), el interés compuesto (PG exponencial) reinvierte la totalidad de los rendimientos.
 ejemplo_guiado:
-  enunciado: 'Un cultivo de bacterias contiene $1.000$ microorganismos inicialmente ($n=1$) y la población aumenta un $20\%$ cada hora. Determina la fórmula de la P.G. y calcula la cantidad de bacterias al cabo de 4 horas.'
+  enunciado: 'Un capital inicial de $\$100.000$ se deposita en una cuenta bancaria que rinde un $8\%$ de interés compuesto anual. Escribe la razón geométrica del modelo y calcula el monto acumulado al cabo de 3 años.'
+  imagen: '/static/img/nodos/modelamiento-de-crecimiento-porcentual-mediante-progresiones-geometricas-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $a_1 = 1.000$ bacterias.'
-    - 'Paso 2: Calculamos la razón multiplicativa para un aumento del 20%: $r = 1 + \frac{20}{100} = 1,20$.'
-    - 'Paso 3: Escribimos la fórmula del modelo: $a_n = 1.000 \cdot (1,20)^{n-1}$.'
-    - 'Paso 4: Evaluamos para la hora 4 ($n=4$): $a_4 = 1.000 \cdot (1,20)^{4-1} = 1.000 \cdot (1,20)^3 = 1.000 \cdot 1,728 = 1.728$. Al cabo de 4 horas habrá **$1.728$ bacterias**.'
+    - 'Paso 1: Identificamos el capital inicial $M_0 = \$100.000$ y la tasa $p = 8\%$.'
+    - 'Paso 2: Calculamos la razón geométrica: $r = 1 + \frac{8}{100} = 1 + 0,08 = 1,08$.'
+    - 'Paso 3: Aplicamos la fórmula exponencial para $t = 3$ años: $M_3 = M_0 \cdot (1,08)^3$.'
+    - 'Paso 4: Calculamos la potencia: $(1,08)^3 = 1,259712$.'
+    - 'Paso 5: Multiplicamos por el capital inicial: $M_3 = \$100.000 \cdot 1,259712 = **\$125.971,20$** (o $\$125.971$).'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la razón geométrica $r$ correspondiente a un fenómeno que disminuye un $15\%$ en cada período de tiempo?'
+    question: 'Si una población de peces disminuye a una tasa del $12\%$ anual, ¿cuál es la razón geométrica $r$ que modela la población cada año?'
     choices:
-      - {text: 'La razón multiplicativa $r = 0,85$, calculando $1 - \frac{15}{100} = 1 - 0,15 = 0,85$', is_correct: true}
-      - {text: 'La razón multiplicativa $r = -15$, expresando el porcentaje directo', is_correct: false}
-      - {text: 'La razón multiplicativa $r = 1,15$, sumando el porcentaje', is_correct: false}
-      - {text: 'La razón multiplicativa $r = -0,15$, conservando el decimal con signo negativo', is_correct: false}
-    explanation: 'La alternativa correcta es ''La razón multiplicativa $r = 0,85$, calculando $1 - \frac{15}{100} = 1 - 0,15 = 0,85$''. $r = 1 - 0,15 = 0,85$.'
+      - {text: '$r = 1 - 0,12 = 0,88$', is_correct: true}
+      - {text: '$r = 0,12$', is_correct: false}
+      - {text: '$r = 1,12$', is_correct: false}
+      - {text: '$r = -0,12$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$r = 1 - 0,12 = 0,88$''. En una disminución porcentual, la razón es $r = 1 - \frac{p}{100} = 1 - 0,12 = 0,88$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una población de peces de $2.000$ ejemplares se duplica cada año ($r = 2$), ¿cuántos peces habrá al cabo de 5 años ($n=5$)?'
+    question: 'Un bosque tiene $10.000$ árboles y aumenta un $5\%$ su masa forestal cada año ($r=1,05$). ¿Cuántos árboles habrá tras 2 años?'
     choices:
-      - {text: '$a_5 = 32.000$ peces, calculando $2.000 \cdot 2^{5-1} = 2.000 \cdot 2^4 = 2.000 \cdot 16 = 32.000$', is_correct: true}
-      - {text: '$a_5 = 64.000$ peces, elevando a la potencia 5', is_correct: false}
-      - {text: '$a_5 = 20.000$ peces, multiplicando $2.000 \cdot 10$', is_correct: false}
-      - {text: '$a_5 = 10.000$ peces, multiplicando $2.000 \cdot 5$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_5 = 32.000$ peces, calculando $2.000 \cdot 2^{5-1} = 2.000 \cdot 2^4 = 2.000 \cdot 16 = 32.000$''. $2.000 \cdot 16 = 32.000$.'
+      - {text: '$11.025$ árboles, calculando $10.000 \cdot (1,05)^2 = 10.000 \cdot 1,1025 = 11.025$', is_correct: true}
+      - {text: '$11.000$ árboles (usando modelo lineal simple)', is_correct: false}
+      - {text: '$10.500$ árboles', is_correct: false}
+      - {text: '$12.000$ árboles', is_correct: false}
+    explanation: 'La alternativa correcta es ''$11.025$ árboles, calculando $10.000 \cdot (1,05)^2 = 10.000 \cdot 1,1025 = 11.025$''. El segundo año se calcula el 5% sobre los 10.500 del primer año.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el valor inicial de la cantidad en la etapa 1 como $a_1$.'
-  - 'Paso 2: Convertir el porcentaje de cambio $P\%$ en el factor multiplicativo $r = 1 + P/100$ (aumento) o $r = 1 - P/100$ (disminución).'
-  - 'Paso 3: Construir el modelo funcional $a_n = a_1 \cdot r^{n-1}$.'
-  - 'Paso 4: Sustituir la etapa $n$ requerida, resolver la potencia $r^{n-1}$ y multiplicar por $a_1$.'
+  - 'Paso 1: Identificar el valor inicial $M_0$ y la tasa porcentual periódica $p\%$.'
+  - 'Paso 2: Determinar si es aumento ($r = 1 + p/100$) o disminución ($r = 1 - p/100$).'
+  - 'Paso 3: Formular la ecuación exponencial $M(t) = M_0 \cdot r^t$.'
+  - 'Paso 4: Evaluar para el número de períodos $t$ y contextualizar con las unidades correspondientes.'
 errores_correccion: |
-  - **Error 1:** Usar el porcentaje decimal $0,20$ directamente como razón multiplicativa en lugar de $(1 + 0,20) = 1,20$. **Cómo corregirlo:** La razón de crecimiento incluye el 100% base: **$r = 1 + 0,20 = 1,20$**.
-  - **Error 2:** Sumar porcentajes en lugar de multiplicar factores para múltiples períodos (ej: creer que 2 años al 10% es +20%). **Cómo corregirlo:** En P.G. los factores se **multiplican en potencia: $1,10^2 = 1,21$ (+21%)**.
+  - **Error 1:** Usar la tasa $p/100$ directamente como razón (ej: usar $r=0,08$ en vez de $1,08$). **Cómo corregirlo:** La razón de crecimiento **siempre suma la base 1**: $r = 1 + 0,08 = 1,08$.
+  - **Error 2:** Modelar crecimientos porcentuales con sumas lineales (interés simple/PA). **Cómo corregirlo:** Las variaciones en porcentaje **son multiplicativas (PG)**, no adiciones fijas.
 ejemplos:
-  - titulo: 'Crecimiento de ahorro al 10%'
-    enunciado: 'Para $a_1 = \$100.000$ e incremento del $10\%$ anual ($r = 1,10$), ¿al año 3 ($n=3$) el monto es $100.000 \cdot (1,10)^2 = \$121.000$?'
+  - titulo: 'Crecimiento de inversión con interés compuesto'
+    enunciado: 'Un depósito de $\$50.000$ gana $10\%$ compuesto anual. ¿Cuál es el monto tras 2 años?'
     alternativas:
-      - 'Sí, pues $100.000 \cdot 1,21 = 121.000$'
-      - 'No, es $\$120.000$'
-      - 'No, es $\$110.000$'
-    respuesta: 'Sí, pues $100.000 \cdot 1,21 = 121.000$'
+      - '$\$60.500$'
+      - '$\$60.000$'
+      - '$\$55.000$'
+    respuesta: '$\$60.500$'
     solucion_pasos:
-      - '1. $a_1 = 100.000, r = 1,10, n = 3$.'
-      - '2. $a_3 = 100.000 \cdot 1,10^2 = 100.000 \cdot 1,21 = \$121.000$.'
-  - titulo: 'Desintegración radiactiva a la mitad'
-    enunciado: 'Si $100$ gramos de un elemento se reducen a la mitad cada año ($r = 0,5$), ¿al cabo de 4 años quedan $100 \cdot (0,5)^3 = 12,5$ gramos?'
+      - '1. $r = 1 + 0,10 = 1,10$.'
+      - '2. $M_2 = 50.000 \cdot (1,10)^2 = 50.000 \cdot 1,21 = \$60.500$.'
+  - titulo: 'Decaimiento de valor por uso'
+    enunciado: 'Una computadora de $\$400.000$ pierde $20\%$ de su valor por año. ¿Cuál es su valor al año 2?'
+    alternativas:
+      - '$\$256.000$'
+      - '$\$240.000$'
+      - '$\$320.000$'
+    respuesta: '$\$256.000$'
+    solucion_pasos:
+      - '1. $r = 1 - 0,20 = 0,80$.'
+      - '2. $M_2 = 400.000 \cdot (0,80)^2 = 400.000 \cdot 0,64 = \$256.000$.'
+  - titulo: 'Modelo de duplicación'
+    enunciado: '¿Una población que crece un $100\%$ cada período tiene una razón geométrica $r = 2$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $100 \cdot 0,125 = 12,5$ g.'
-  - titulo: 'Crecimiento bacteriano al 50%'
-    enunciado: 'Si una población de 400 bacterias crece al 50% por hora ($r = 1,5$), ¿a las 3 horas hay $400 \cdot 1,5^2 = 900$ bacterias?'
-    respuesta: 'Sí'
+      - '1. $r = 1 + 100/100 = 1 + 1 = 2$.'
+  - titulo: 'Diferenciación entre PA y PG porcentual'
+    enunciado: '¿Un aumento constante del $6\%$ por período se modela mediante una progresión aritmética?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí. $400 \cdot 2,25 = 900$.'
-  - titulo: 'Depreciación de automóvil'
-    enunciado: 'Un auto de $\$10.000.000$ pierde 20% de valor por año ($r = 0,80$). ¿A los 3 años vale $10.000.000 \cdot 0,80^2 = \$6.400.000$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $10.000.000 \cdot 0,64 = \$6.400.000$.'
+      - '1. Las variaciones porcentuales constantes corresponden a progresiones geométricas.'
 errores_frecuentes:
-  - 'Utilizar la tasa porcentual pura sin sumar ni restar la unidad base al construir el factor multiplicativo.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Sumar linealmente los porcentajes de variaciones consecutivas en lugar de elevar la razón a la potencia.'
-  - 'Un modelo de decaimiento porcentual alcanza el valor cero exacto en un número finito de pasos.'
+  - 'Utilizar la tasa porcentual directa $p/100$ como razón geométrica sin sumar la unidad base.'
+  - 'Modelar los aumentos porcentuales periódicos sumando una cantidad constante como en una progresión aritmética.'
+  - 'En decrecimientos porcentuales se resta la tasa porcentual al valor inicial de forma lineal en cada paso.'
+  - 'Asumir que el interés compuesto genera el mismo saldo final que el régimen de interés simple.'
+  - 'Confundir el número de períodos transcurridos $t$ con el monto final acumulado.'
 afirmaciones_verdaderas:
-  - 'Los fenómenos reales de variación porcentual constante se modelan mediante progresiones geométricas de razón $r = 1 \pm \frac{P}{100}$.'
-  - 'En un crecimiento porcentual de $P\%$, la cantidad en la etapa $n$ se calcula mediante $a_n = a_1 \cdot \left(1 + \frac{P}{100}\right)^{n-1}$.'
-al_terminar_debes_poder: 'Modelar y resolver situaciones reales de crecimiento o decrecimiento porcentual mediante progresiones geométricas.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Toda variación porcentual periódica constante $p\%$ se modela mediante una progresión geométrica con razón $r = 1 \pm \frac{p}{100}$.'
+  - 'El crecimiento porcentual periódico genera un efecto exponencial compuesto donde cada incremento absoluto supera al anterior.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/modelamiento-de-crecimiento-porcentual-mediante-progresiones-geometricas-resumen.svg)
+
+  QUÉ: Modelar y resolver problemas reales de crecimiento y decrecimiento porcentual mediante progresiones geométricas.
+  CÓMO: Determinar el factor multiplicativo $r = 1 \pm \frac{p}{100}$ y aplicar la función exponencial $M(t) = M_0 \cdot r^t$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

@@ -1,11 +1,13 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.DEFINICION
 resumen_inicial: 'Una sucesión numérica es un conjunto ordenado de números reales $(a_n)_{n \ge 1}$ generado por una función cuyo dominio es el conjunto de los números naturales $\mathbb{N}$: $f(n) = a_n$.'
 explicacion_simple: |
-  Una **sucesión numérica** es simplemente una lista infinita y ordenada de números que siguen una regla:
+  Una **sucesión numérica** es una lista infinita y ordenada de números que siguen una regla fija:
   $$2, 4, 6, 8, 10, 12, \dots$$
   - Cada número de la lista se llama **término**.
   - El lugar que ocupa cada término es su **posición** ($n = 1, 2, 3, \dots$).
   - Por ejemplo, en la sucesión anterior, el primer término ($n=1$) es $2$, el segundo ($n=2$) es $4$, y el quinto término ($n=5$) es $10$. El orden de los números importa de forma absoluta.
+
+  ![Definición de sucesión numérica](/static/img/nodos/definicion-de-sucesion-numerica-como-lista-ordenada-de-terminos-intro.svg)
 explicacion_formal: |
   ### Definición formal
   Una **sucesión de números reales** es una aplicación o función $a: \mathbb{N} \to \mathbb{R}$ que asigna a cada número natural $n \in \{1, 2, 3, \dots\}$ un único número real $a_n$:
@@ -32,6 +34,7 @@ propiedades_relaciones: |
   - **Distinción entre término y conjunto**: Un conjunto $\{2, 4\}$ ignora el orden y las repeticiones; la sucesión $(2, 4, 2, 4, \dots)$ conserva el orden y la repetición periódica.
 ejemplo_guiado:
   enunciado: 'Dada la sucesión definida por la regla de correspondencia $a_n = 3n - 1$, determina sus cuatro primeros términos y su posición ordinal.'
+  imagen: '/static/img/nodos/definicion-de-sucesion-numerica-como-lista-ordenada-de-terminos-ejemplos.svg'
   pasos:
     - 'Paso 1: Para la posición $n=1$, sustituimos en la fórmula: $a_1 = 3(1) - 1 = 3 - 1 = 2$.'
     - 'Paso 2: Para la posición $n=2$, sustituimos: $a_2 = 3(2) - 1 = 6 - 1 = 5$.'
@@ -45,7 +48,7 @@ checkpoints:
       - {text: 'El conjunto de todos los números reales $\mathbb{R}$', is_correct: false}
       - {text: 'Únicamente el conjunto de los números pares positivos', is_correct: false}
       - {text: 'El intervalo continuo $[0, 1]$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El conjunto de los números naturales $\mathbb{N} = \{1, 2, 3, \dots\}$''. Las sucesiones se definen sobre los naturales.'
+    explanation: 'La alternativa correcta es ''El conjunto de los números naturales $\mathbb{N} = \{1, 2, 3, \dots\}''. Las sucesiones se definen formalmente sobre el dominio discreto de los enteros positivos.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
     question: 'Si los tres primeros términos de una sucesión son $3, 6, 9$, ¿cuál es el valor del término en la posición $n=3$?'
@@ -54,16 +57,16 @@ checkpoints:
       - {text: 'El número $3$, por ser el inicial', is_correct: false}
       - {text: 'El número $6$, calculando el promedio', is_correct: false}
       - {text: 'El número $12$, sumando 3 al final', is_correct: false}
-    explanation: 'La alternativa correcta es ''El número $9$, que ocupa el tercer lugar de la lista''. En $n=3$, el término es $a_3 = 9$.'
+    explanation: 'La alternativa correcta es ''El número $9$, que ocupa el tercer lugar de la lista''. En $n=3$, el término indexado es $a_3 = 9$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la regla de correspondencia o la secuencia de términos en orden.'
+  - 'Paso 1: Identificar la regla de correspondencia o la secuencia ordenada de términos.'
   - 'Paso 2: Asignar a cada elemento su posición entera positiva $n \in \{1, 2, 3, \dots\}$.'
   - 'Paso 3: Evaluar la regla para $n=1, 2, 3, \dots$ para generar los términos ordenados.'
-  - 'Paso 4: Escribir la sucesión entre paréntesis o corchetes respetando la secuencia exacta.'
+  - 'Paso 4: Escribir la sucesión entre paréntesis respetando la secuencia exacta.'
 errores_correccion: |
-  - **Error 1:** Alterar el orden de los elementos creyendo que una sucesión es un conjunto no ordenado. **Cómo corregirlo:** En una sucesión el orden **es fundamental**: cambiar el orden crea una sucesión completamente distinta.
-  - **Error 2:** Iniciar la posición con $n=0$ salvo que se indique explícitamente lo contrario. **Cómo corregirlo:** Por convención estándar en matemáticas, las posiciones de una sucesión **comienzan en $n=1$**.
+  - **Error 1:** Alterar el orden de los elementos creyendo que una sucesión es un conjunto no ordenado. **Cómo corregirlo:** En una sucesión el orden **es fundamental**: cambiar el orden genera una sucesión completamente diferente.
+  - **Error 2:** Iniciar la posición con $n=0$ por defecto. **Cómo corregirlo:** Por convención estándar en matemáticas, las posiciones de una sucesión **comienzan en $n=1$**.
 ejemplos:
   - titulo: 'Sucesión de pares positivos'
     enunciado: '¿La lista $2, 4, 6, 8, 10$ corresponde a los primeros 5 términos de la sucesión $a_n = 2n$?'
@@ -73,32 +76,39 @@ ejemplos:
       - 'No, la fórmula es $n+2$'
     respuesta: 'Sí, evaluando $n=1, 2, 3, 4, 5$'
     solucion_pasos:
-      - '1. Evaluamos $a_1 = 2(1) = 2$.'
-      - '2. Evaluamos $a_2 = 4, a_3 = 6, a_4 = 8, a_5 = 10$.'
+      - '1. $a_1 = 2(1) = 2, a_2 = 2(2) = 4, a_3 = 6, a_4 = 8, a_5 = 10$.'
   - titulo: 'Sucesión constante'
-    enunciado: '¿La lista $5, 5, 5, 5, \dots$ es una sucesión válida donde $a_n = 5$ para todo $n$?'
-    respuesta: 'Sí'
+    enunciado: '¿La secuencia $5, 5, 5, 5, \dots$ es una sucesión válida donde $a_n = 5$ para todo $n \ge 1$?'
+    alternativas:
+      - 'Sí, todos los términos tienen el valor constante 5'
+      - 'No, una sucesión requiere términos estrictamente crecientes'
+      - 'No, no se pueden repetir números en una sucesión'
+    respuesta: 'Sí, todos los términos tienen el valor constante 5'
     solucion_pasos:
-      - 'Sí. Todos los términos tienen el valor 5 en cualquier posición $n$.'
+      - '1. Toda función constante sobre $\mathbb{N}$ define una sucesión válida.'
   - titulo: 'Sucesión alternada de signos'
     enunciado: '¿La fórmula $a_n = (-1)^n$ genera la sucesión $-1, 1, -1, 1, \dots$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Para $n=1 \implies -1$, para $n=2 \implies 1$.'
-  - titulo: 'Sucesión de impares'
+      - '1. Para $n=1 \implies (-1)^1 = -1$; para $n=2 \implies (-1)^2 = 1$.'
+  - titulo: 'Sucesión de números impares'
     enunciado: '¿La fórmula $a_n = 2n - 1$ genera la sucesión $1, 3, 5, 7, \dots$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_1 = 1, a_2 = 3, a_3 = 5, a_4 = 7$.'
+      - '1. $a_1 = 2(1)-1=1, a_2 = 3, a_3 = 5, a_4 = 7$.'
 errores_frecuentes:
-  - 'Considerar que la posición de los términos dentro de una sucesión se puede alterar arbitrariamente.'
-  - 'Iniciar la numeración de los subíndices en 0 por defecto al escribir una sucesión matemática.'
-  - 'Las sucesiones numéricas carecen de una regla de correspondencia que vincule a $n$ con $a_n$.'
-  - 'El conjunto de los números reales constituye el dominio de entrada de una sucesión.'
-  - 'Los términos repetidos en una sucesión deben ser eliminados como si se tratara de un conjunto.'
+  - 'La posición de los términos dentro de una sucesión se puede alterar arbitrariamente sin modificar la sucesión.'
+  - 'La numeración de los subíndices de una sucesión inicia en el número cero por defecto.'
+  - 'Las sucesiones numéricas carecen de una regla de correspondencia funcional entre $n$ y $a_n$.'
+  - 'El conjunto de todos los números reales $\mathbb{R}$ constituye el dominio de entrada de una sucesión.'
+  - 'Los términos repetidos en una sucesión deben eliminarse como si se tratara de un conjunto.'
 afirmaciones_verdaderas:
   - 'Una sucesión es una función $a: \mathbb{N} \to \mathbb{R}$ que asigna a cada número natural $n$ un término real $a_n$.'
-  - 'El orden de los términos en una sucesión es un atributo estructural indispensable que define la secuencia.'
-al_terminar_debes_poder: 'Definir y reconocer una sucesión numérica como una función $a_n = f(n)$ sobre los números naturales $\mathbb{N}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El orden de los términos en una sucesión es estricto e inalterable debido al orden natural del dominio $\mathbb{N}$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/definicion-de-sucesion-numerica-como-lista-ordenada-de-terminos-resumen.svg)
+
+  QUÉ: Definir e interpretar una sucesión numérica como una función discreta ordenada sobre los números naturales.
+  CÓMO: Asignar a cada posición $n \in \mathbb{N}$ su correspondiente término real $a_n = f(n)$ respetando el orden ordinal estricto $\{a_1, a_2, a_3, \dots\}$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

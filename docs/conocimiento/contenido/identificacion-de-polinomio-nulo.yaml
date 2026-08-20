@@ -1,115 +1,123 @@
 semantic_id: MAT.ALG.POLINOMIOS.POLINOMIO_NULO
-resumen_inicial: 'La identificación de polinomio nulo consiste en reconocer aquel polinomio singular cuyos coeficientes numéricos son todos estrictamente iguales a cero, anulando la expresión para cualquier valor de sus variables.'
+resumen_inicial: 'El polinomio nulo es aquel cuyos coeficientes son todos idénticamente iguales a cero, anulándose su valor numérico para cualquier valor de sus variables.'
 explicacion_simple: |
-  El **polinomio nulo** es el equivalente al número cero ($0$) en el mundo de los polinomios:
-  - Se escribe simplemente como $P(x) = 0$ o bien $0x^n + 0x^{n-1} + \dots + 0x + 0$.
-  - **Propiedad esencial**: No importa qué número le asignes a las variables ($x = 5$, $x = -100$, $x = \pi$), al multiplicar cualquier número por cero el resultado **SIEMPRE da cero**.
-  - **¡Cuidado con el grado!** El polinomio nulo es tan especial que **NO tiene grado definido** (o se define formalmente como $-\infty$), porque al ser todos sus coeficientes cero, no existe una potencia dominante.
+  - El **polinomio nulo** es el polinomio donde **todos sus coeficientes valen cero**:
+    - $P(x) = 0x^3 + 0x^2 + 0x + 0 = 0$.
+  - Da como resultado siempre **$0$**, sin importar qué número le asignemos a la $x$.
+  - **Propiedades especiales:**
+    - Actúa como el **elemento neutro de la suma** ($P(x) + 0 = P(x)$).
+    - **¡No tiene grado!** (o formalmente se dice que su grado es $-\infty$). No confundir con el número $5$, cuyo grado es $0$.
+
+  ![Polinomio Nulo](/static/img/nodos/identificacion-de-polinomio-nulo-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **polinomio nulo** (denotado $\mathbf{0} \in \mathbb{R}[x_1, \dots, x_k]$) es el elemento neutro aditivo del anillo de polinomios $\mathbb{R}[x_1, \dots, x_k]$, definido por la condición de nula magnitud escalar sobre todos sus coeficientes:
+  En el anillo de polinomios $\mathbb{K}[x_1, \dots, x_n]$, el **polinomio nulo** (denotado por $\mathbf{0}$ o $P \equiv 0$) es aquel polinomio cuyos coeficientes son todos iguales al elemento cero del cuerpo $\mathbb{K}$:
 
-  $$P(x_1, \dots, x_k) = \mathbf{0} \iff \forall i \in \{0, 1, \dots, n\}, \quad a_i = 0$$
+  $$P(x) = \sum_{i=0}^n a_i x^i \equiv 0 \iff \forall i \in \{0, 1, \dots, n\}, \quad a_i = 0$$
 
-  ### Indefinición del Grado (Convención de Grado $-\infty$)
-  A diferencia de un polinomio constante no nulo (como $P(x) = 7$, cuyo grado es $0$), el grado del polinomio nulo no está definido en $\mathbb{N}_0$. Por convención algebraica rigurosa en teoría de anillos:
+  ### Convención de grado
+  Por consistencia con la ley de grados del producto $\operatorname{gr}(P \cdot Q) = \operatorname{gr}(P) + \operatorname{gr}(Q)$, el grado del polinomio nulo se define formalmente como:
+  $$\operatorname{gr}(\mathbf{0}) = -\infty \quad (\text{o carece de grado})$$
 
-  $$\deg(\mathbf{0}) = -\infty$$
-
-  Esta convención permite preservar la validez de la regla del grado del producto $\deg(P \cdot Q) = \deg(P) + \deg(Q)$ incluso cuando uno de los factores es el polinomio nulo ($n + (-\infty) = -\infty$).
-
-  ### Elemento Neutro Aditivo
-  Para todo polinomio $Q(x) \in \mathbb{R}[x]$:
-
-  $$Q(x) + \mathbf{0} = Q(x)$$
-
-  ### Síntesis didáctica
-  El polinomio nulo es la suma o resta de términos que se cancelan mutuamente por completo. Representa la equivalencia a cero en ecuaciones y sistemas polinómicos.
+  ### Criterio de nulidad funcional
+  En cuerpos infinitos como $\mathbb{R}$ o $\mathbb{C}$, un polinomio es idénticamente nulo si y solo si su función polinomial asociada es nula en todo el dominio:
+  $$P(x) \equiv 0 \iff \forall x \in \mathbb{R}, \; P(x) = 0$$
 definiciones_clave: |
-  - **Polinomio nulo**: Polinomio en el cual todos sus coeficientes numéricos son iguales a cero ($P(x) = 0$).
-  - **Neutro aditivo polinómico**: Propiedad por la cual sumar el polinomio nulo a cualquier polinomio $Q(x)$ no modifica a $Q(x)$.
-  - **Grado indefinido ($-\infty$)**: Valor de grado asignado formalmente al polinomio nulo para mantener la consistencia axiomática del producto.
+  - **Polinomio nulo**: Polinomio con todos sus coeficientes iguales a cero ($P(x) \equiv 0$).
+  - **Grado indefinido / $-\infty$**: Grado formal asignado al polinomio nulo para preservar leyes algebraicas.
+  - **Elemento neutro aditivo**: Rol algebraico del polinomio nulo en el anillo $\mathbb{R}[x]$.
 propiedades_relaciones: |
-  - **Evaluación universal nula**: Para todo vector de valores reales $(v_1, \dots, v_k) \in \mathbb{R}^k$, la evaluación del polinomio nulo da siempre cero ($\mathbf{0}(v_1, \dots, v_k) = 0$).
-  - **Resultado de restar polinomios idénticos**: Restar dos polinomios exactamente iguales $P(x) - P(x)$ produce siempre el polinomio nulo $\mathbf{0}$.
+  - **Absorción en la multiplicación**: Para cualquier polinomio $Q(x)$, se cumple $\mathbf{0} \cdot Q(x) = \mathbf{0}$.
+  - **Determinación de parámetros**: Si un polinomio $(a-3)x^2 + (b+2)x + (c-5) \equiv 0$, entonces necesariamente $a=3, b=-2, c=5$.
 ejemplo_guiado:
-  enunciado: 'Demuestra que la expresión $P(x) = (3x^2 - 5x + 4) - (3x^2 - 5x + 4)$ es el polinomio nulo y evalúa su valor para $x = 10$.'
+  enunciado: 'Si el polinomio $P(x) = (a - 4)x^3 + (b + 3)x^2 + (c - 2)x + (d + 7)$ es idénticamente nulo, halla los valores de los parámetros $a, b, c, d$.'
+  imagen: '/static/img/nodos/identificacion-de-polinomio-nulo-ejemplos.svg'
   pasos:
-    - 'Paso 1: Destruimos paréntesis distribuyendo el signo negativo: $P(x) = 3x^2 - 5x + 4 - 3x^2 + 5x - 4$.'
-    - 'Paso 2: Agrupamos términos semejantes:
-       - En $x^2$: $(3 - 3)x^2 = 0x^2$
-       - En $x$: $(-5 + 5)x = 0x$
-       - Independientes: $4 - 4 = 0$'
-    - 'Paso 3: Obtenemos $P(x) = 0x^2 + 0x + 0 = 0 \implies$ **Es el polinomio nulo**.'
-    - 'Paso 4: Evaluamos en $x = 10$: $P(10) = 0(10)^2 + 0(10) + 0 = 0$.'
-    - 'Conclusión: La expresión reduce a **$P(x) = 0$ (polinomio nulo)** y su evaluación en $x=10$ es **$0$**.'
+    - 'Paso 1: Por la definición de polinomio nulo ($P(x) \equiv 0$), todos sus coeficientes deben ser iguales a cero.'
+    - 'Paso 2: Igualamos el coeficiente de $x^3$: $a - 4 = 0 \implies **a = 4$**.'
+    - 'Paso 3: Igualamos el coeficiente de $x^2$: $b + 3 = 0 \implies **b = -3$**.'
+    - 'Paso 4: Igualamos el coeficiente de $x$: $c - 2 = 0 \implies **c = 2$**.'
+    - 'Paso 5: Igualamos el término independiente: $d + 7 = 0 \implies **d = -7$**.'
+    - 'Paso 6: Conclusión: Los valores son $a = 4, b = -3, c = 2, d = -7$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué valor se asigna formalmente al grado del polinomio nulo $P(x) = 0$ en la teoría de polinomios?'
+    question: '¿Cuál es el grado formal del polinomio nulo $P(x) = 0$?'
     choices:
-      - {text: 'Su grado no está definido (o se define formalmente como $-\infty$)', is_correct: true}
-      - {text: 'Su grado es igual a 0', is_correct: false}
-      - {text: 'Su grado es igual a 1', is_correct: false}
-      - {text: 'Su grado es igual a infinito positivo ($+\infty$)', is_correct: false}
-    explanation: 'La alternativa correcta es ''Su grado no está definido (o se define formalmente como $-\infty$)''. A diferencia de las constantes no nulas (grado 0), el polinomio nulo carece de grado.'
+      - text: 'Carece de grado o su grado se define como $-\infty$'
+        is_correct: true
+      - text: '$0$, igual que cualquier constante'
+        is_correct: false
+      - text: '$1$'
+        is_correct: false
+      - text: 'Infinito positivo ($+\infty$)'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Carece de grado o su grado se define como $-\infty$''. El grado 0 corresponde a constantes no nulas ($c \neq 0$).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si al reducir una expresión polinómica compleja se obtiene $0x^3 + 0x^2 + 0x + 0$, ¿cómo se clasifica dicho resultado?'
+    question: 'Si $(m - 5)x^2 + (n + 1)x \equiv 0$ para todo $x \in \mathbb{R}$, ¿cuánto vale $m + n$?'
     choices:
-      - {text: 'Como el polinomio nulo ($P(x) = 0$)', is_correct: true}
-      - {text: 'Como un polinomio cúbico de 4 términos', is_correct: false}
-      - {text: 'Como una ecuación sin solución', is_correct: false}
-      - {text: 'Como un polinomio incompleto de grado 3', is_correct: false}
-    explanation: 'La alternativa correcta es ''Como el polinomio nulo ($P(x) = 0$)''. Todos los coeficientes son nulos.'
+      - text: '$4$, porque $m = 5$ y $n = -1$, sumando $5 + (-1) = 4$'
+        is_correct: true
+      - text: '$6$'
+        is_correct: false
+      - text: '$0$'
+        is_correct: false
+      - text: '$-4$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$4$, porque $m = 5$ y $n = -1$, sumando $5 + (-1) = 4$''. Los coeficientes se anulan independientemente.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Simplificar la expresión polinómica reduciendo todos los términos semejantes.'
-  - 'Paso 2: Observar si todos los coeficientes resultantes de las potencias y el término independiente son iguales a cero.'
-  - 'Paso 3: Si todos los coeficientes son cero ($0$), declarar que la expresión es el polinomio nulo $P(x) = 0$.'
-  - 'Paso 4: Recordar que su evaluación da siempre $0$ y que su grado carece de definición en $\mathbb{N}_0$.'
+  - 'Paso 1: Reducir la expresión agrupando todos los coeficientes de cada potencia de $x$.'
+  - 'Paso 2: Igualar a cero cada uno de los coeficientes de los términos de igual grado.'
+  - 'Paso 3: Resolver el sistema de ecuaciones resultante para despejar los parámetros.'
+  - 'Paso 4: Verificar que la sustitución anule la totalidad de los monomios.'
 errores_correccion: |
-  - **Error 1:** Afirmar que el grado del polinomio nulo $P(x)=0$ es cero igual que el del número $5$. **Cómo corregirlo:** El número $5 = 5x^0$ tiene grado $0$; el polinomio nulo $0$ **NO tiene grado definido ($-\infty$)**.
-  - **Error 2:** Declarar que evaluar el polinomio nulo en $x=0$ produce una indeterminación. **Cómo corregirlo:** La evaluación del polinomio nulo para cualquier valor **da siempre como resultado $0$**.
+  - **Error 1:** Afirmar que el grado del polinomio nulo es 0. **Cómo corregirlo:** Las constantes no nulas como $P(x)=7$ tienen grado 0; el polinomio nulo **no tiene grado** (o es $-\infty$).
+  - **Error 2:** Confundir un polinomio con raíces (como $x^2 - 4 = 0$) con el polinomio nulo. **Cómo corregirlo:** El polinomio nulo se anula para **todos los números reales**, no solo para valores particulares.
 ejemplos:
-  - titulo: 'Reconocimiento de polinomio nulo'
-    enunciado: '¿Es $0x^2 + 0x + 0$ el polinomio nulo?'
+  - titulo: 'Cálculo de parámetro en polinomio nulo'
+    enunciado: 'Si $(2k - 10)x^4 \equiv 0$, ¿cuál es el valor de $k$?'
     alternativas:
-      - 'Sí, todos sus coeficientes son cero'
-      - 'No, es un trinomio de grado 2'
-      - 'No, es una fracción nula'
-    respuesta: 'Sí, todos sus coeficientes son cero'
+      - '$k = 5$'
+      - '$k = 10$'
+      - '$k = 0$'
+    respuesta: '$k = 5$'
     solucion_pasos:
-      - '1. Todos los coeficientes valen $0$.'
-      - '2. Corresponde al polinomio nulo $P(x)=0$.'
-  - titulo: 'Resta de polinomios iguales'
-    enunciado: 'Al restar $(x^2 + 5x) - (x^2 + 5x)$, ¿obtenemos el polinomio nulo?'
+      - '1. El coeficiente debe ser cero: $2k - 10 = 0$.'
+      - '2. $2k = 10 \implies k = 5$.'
+  - titulo: 'Reducción a polinomio nulo'
+    enunciado: '¿Es la expresión $(3x^2 + 5x) - (3x^2 + 5x)$ el polinomio nulo?'
     alternativas:
-      - 'Sí, se anulan todos sus términos por completo'
-      - 'No, da $2x^2 + 10x$'
-      - 'No, da 1'
-    respuesta: 'Sí, se anulan todos sus términos por completo'
+      - 'Sí, se reducen todos los términos a 0'
+      - 'No, es un monomio de grado 2'
+      - 'No, es un binomio'
+    respuesta: 'Sí, se reducen todos los términos a 0'
     solucion_pasos:
-      - '1. $(1-1)x^2 + (5-5)x = 0x^2 + 0x = 0$.'
+      - '1. $(3-3)x^2 + (5-5)x = 0x^2 + 0x = 0$.'
       - '2. Es el polinomio nulo.'
-  - titulo: 'Evaluación universal'
-    enunciado: 'Si evaluamos el polinomio nulo $P(x) = 0$ en $x = 999$, ¿el resultado es $0$?'
+  - titulo: 'Nulidad universal'
+    enunciado: '¿Es cierto que el polinomio nulo vale 0 para cualquier número real que se sustituya en $x$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, la evaluación del polinomio nulo es siempre 0.'
-  - titulo: 'Neutro aditivo'
-    enunciado: '¿Mantiene un polinomio $Q(x)$ su valor intacto al sumarle el polinomio nulo ($Q(x) + \mathbf{0} = Q(x)$)?'
-    respuesta: 'Sí'
+      - '1. $P(x) = 0$ para todo $x \in \mathbb{R}$.'
+      - '2. Se cumple universalmente.'
+  - titulo: 'Grado cero vs polinomio nulo'
+    enunciado: '¿Es el polinomio $P(x) = 9$ idéntico al polinomio nulo?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, el polinomio nulo es el neutro aditivo.'
+      - '1. $P(x) = 9$ es una constante no nula de grado 0.'
+      - '2. El polinomio nulo vale 0 y carece de grado.'
 errores_frecuentes:
-  - 'El grado del polinomio nulo es igual a cero, exactamente igual que el grado de cualquier constante no nula.'
-  - 'El polinomio nulo no puede ser evaluado para valores de x negativos.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Sumar el polinomio nulo a otro polinomio duplica el valor de sus coeficientes.'
-  - 'El polinomio nulo contiene un término independiente igual a uno.'
+  - 'Asignar grado 0 al polinomio nulo en lugar de reconocer su grado indefinido ($-\infty$).'
+  - 'Confundir una ecuación que tiene solución en cero ($x=0$) con la identidad del polinomio nulo ($P(x) \equiv 0$).'
+  - 'Olvidar igualar el término independiente a cero al resolver problemas de polinomios nulos.'
+  - 'Suponer que el polinomio nulo puede tener algún coeficiente diferente de cero.'
+  - 'Tratar al polinomio nulo como un número indeterminado.'
 afirmaciones_verdaderas:
-  - 'El polinomio nulo es aquel cuyos coeficientes son todos iguales a cero ($P(x)=0$).'
-  - 'El polinomio nulo actúa como el elemento neutro aditivo de la adición de polinomios.'
-al_terminar_debes_poder: 'Identificar el polinomio nulo reconociendo la anulación total de sus coeficientes y comprendiendo la indefinidad de su grado.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'Un polinomio es idénticamente nulo si y solo si todos sus coeficientes son iguales a cero.'
+  - 'El polinomio nulo actúa como el elemento neutro aditivo en el álgebra de polinomios y carece de grado formal.'
+al_terminar_debes_poder: |
+  ![Resumen de Polinomio Nulo](/static/img/nodos/identificacion-de-polinomio-nulo-resumen.svg)
+
+  QUÉ: Identificar el polinomio nulo, diferenciarlo de constantes de grado cero y determinar parámetros igualando coeficientes a cero.
+  CÓMO: Aplicando la condición $a_n = a_{n-1} = \dots = a_0 = 0$ en identidades polinomiales ($P(x) \equiv 0$).

@@ -1,103 +1,119 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.DEFINICION
-resumen_inicial: 'Una progresión geométrica (P.G.) es una sucesión numérica en la que cada término, a partir del segundo, se obtiene multiplicando al anterior por una constante no nula fija denominada razón geométrica $r$: $a_n = a_{n-1} \cdot r$.'
+resumen_inicial: 'Una progresión geométrica (PG) es una sucesión donde cada término se obtiene multiplicando el término anterior por una constante no nula $r \in \mathbb{R}^*$ llamada razón geométrica: $a_{n+1} = a_n \cdot r$.'
 explicacion_simple: |
-  Una **progresión geométrica** es una secuencia de números donde pasas de un número al siguiente **multiplicando siempre por la misma cantidad**:
-  - Si empiezas en $3$ y multiplicas por $2$ cada vez: $3, 6, 12, 24, 48, \dots$
-  - Esa cantidad multiplicativa fija ($\cdot 2$) se llama **razón geométrica ($r$)**.
-  - Si la razón es mayor que 1 ($r > 1$), los números crecen muy rápido (crecimiento exponencial).
-  - Si la razón es una fracción entre 0 y 1 (por ejemplo $r = 1/2$), los números se van achicando a la mitad: $80, 40, 20, 10, 5, \dots$
+  Una **progresión geométrica** es una lista de números donde cada número se obtiene **multiplicando** al anterior por un factor constante llamado **razón** ($r$):
+  - Si empiezas en $2$ y multiplicas por $3$ en cada paso:
+    $$2, 6, 18, 54, 162, \dots \quad (r = 3, \text{crecimiento rápido})$$
+  - Si empiezas en $64$ y multiplicas por $\frac{1}{2}$ (dividir por 2):
+    $$64, 32, 16, 8, 4, 2, \dots \quad (r = 0,5, \text{decreciente})$$
+  - Si multiplicas por un número negativo como $-2$:
+    $$3, -6, 12, -24, 48, \dots \quad (r = -2, \text{signos alternados})$$
+
+  ![Definición de progresión geométrica](/static/img/nodos/definicion-de-progresion-geometrica-mediante-razon-constante-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una sucesión de números reales $(a_n)_{n \ge 1}$ con $a_1 \neq 0$ es una **progresión geométrica** si existe una constante real no nula $r \in \mathbb{R} \setminus \{0\}$ tal que:
-  $$\frac{a_n}{a_{n-1}} = r \quad (\forall n \ge 2)$$
-  o equivalente mediante la ecuación por recurrencia multiplicativa:
-  $$a_n = a_{n-1} \cdot r$$
+  Una sucesión de números reales no nulos $(a_n)_{n \in \mathbb{N}}$ es una **progresión geométrica (PG)** si y solo si existe una constante $r \in \mathbb{R} \setminus \{0\}$, denominada **razón geométrica**, tal que:
+  $$a_{n+1} = a_n \cdot r \quad \forall n \ge 1 \iff \frac{a_{n+1}}{a_n} = r$$
 
-  ### Clasificación según el valor de la razón geométrica ($r$)
-  - **Creciente ($r > 1$ con $a_1 > 0$)**: Los términos aumentan en magnitud.
-  - **Decreciente ($0 < r < 1$ con $a_1 > 0$)**: Los términos disminuyen asintóticamente hacia cero.
-  - **Alternada o Oscilante ($r < 0$)**: Los signos de los términos cambian alternadamente entre positivo y negativo.
-  - **Constante ($r = 1$)**: Todos los términos son idénticos al valor inicial $a_1$.
+  ### Clasificación según la Razón Geométrica ($r$) para $a_1 > 0$
+  - **Creciente**: $r > 1 \implies a_1 < a_2 < a_3 < \dots$
+  - **Constante**: $r = 1 \implies a_1 = a_2 = a_3 = \dots$
+  - **Decreciente**: $0 < r < 1 \implies a_1 > a_2 > a_3 > \dots > 0$
+  - **Alternante u Oscilante**: $r < 0 \implies$ los signos de los términos se alternan consecutivamente.
+
+  ### Término General
+  El término general de la progresión geométrica es una función exponencial discreta:
+  $$a_n = a_1 \cdot r^{n-1}$$
 
   ### Síntesis didáctica
-  - Ecuación recurrente: $a_n = a_{n-1} \cdot r$.
-  - Razón cociente: $r = \frac{a_{n+1}}{a_n}$.
+  - Ecuación de recurrencia: $a_{n+1} = a_n \cdot r$.
+  - Crecimiento: Modelo multiplicativo exponencial.
 definiciones_clave: |
-  - **Progresión Geométrica (P.G.)**: Sucesión numérica generada por el producto repetido de una razón constante.
-  - **Razón geométrica ($r$)**: Factor multiplicativo constante obtenido mediante el cociente $r = \frac{a_{n+1}}{a_n}$.
-  - **Primer término ($a_1$)**: Elemento inicial no nulo que sirve de base multiplicativa.
+  - **Progresión Geométrica (PG)**: Sucesión donde el cociente entre cualquier término y su predecesor es constante.
+  - **Razón geométrica ($r$)**: Factor multiplicativo no nulo que genera la transición entre términos consecutivos.
+  - **Factor alternante**: Comportamiento oscilatorio de signos generado cuando $r < 0$.
 propiedades_relaciones: |
-  - **Comportamiento exponencial**: A diferencia de las progresiones aritméticas (que forman una recta), la progresión geométrica sigue una curva exponencial discreta.
-  - **Prohibición del cero**: Ni el primer término $a_1$ ni la razón $r$ pueden ser nulos para evitar la degeneración de la sucesión.
+  - **Isomorfismo exponencial**: Si $(a_n)$ es una PG con razón $r > 0$, entonces la sucesión $\ln(a_n)$ es una PA con diferencia común $d = \ln(r)$.
+  - **Equidistancia geométrica**: Para todo trío consecutivo, el cuadrado del término medio es igual al producto de los extremos: $(a_k)^2 = a_{k-1} \cdot a_{k+1}$.
 ejemplo_guiado:
-  enunciado: 'Verifica si la sucesión $5, 15, 45, 135, 405, \dots$ es una progresión geométrica, identifica su primer término $a_1$ y el valor de su razón geométrica $r$.'
+  enunciado: 'Dada la progresión geométrica con primer término $a_1 = 5$ y razón geométrica $r = 2$, determina sus primeros cuatro términos y clasifica su tipo de crecimiento.'
+  imagen: '/static/img/nodos/definicion-de-progresion-geometrica-mediante-razon-constante-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos el primer término: $a_1 = 5$.'
-    - 'Paso 2: Calculamos el cociente entre el segundo término y el primero: $\frac{15}{5} = 3$.'
-    - 'Paso 3: Calculamos el cociente entre el tercer término y el segundo: $\frac{45}{15} = 3$, y entre el cuarto y el tercero: $\frac{135}{45} = 3$.'
-    - 'Paso 4: Como el cociente entre términos consecutivos es constante e igual a $3$, la sucesión **es una progresión geométrica con $a_1 = 5$ y $r = 3$**.'
+    - 'Paso 1: Identificamos el término inicial: $a_1 = 5$.'
+    - 'Paso 2: Multiplicamos por la razón $r = 2$ sucesivamente:'
+    - '  - $a_2 = 5 \cdot 2 = 10$'
+    - '  - $a_3 = 10 \cdot 2 = 20$'
+    - '  - $a_4 = 20 \cdot 2 = 40$'
+    - 'Paso 3: Como $a_1 > 0$ y $r = 2 > 1$, la progresión es **estrictamente creciente**.'
+    - 'Conclusión: Los cuatro primeros términos son **$5, 10, 20, 40$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué operación matemática conecta dos términos consecutivos cualesquiera en una progresión geométrica?'
+    question: '¿Cuál es la relación matemática que define a una progresión geométrica de razón $r$?'
     choices:
-      - {text: 'La multiplicación por una constante no nula fija llamada razón geométrica ($a_n = a_{n-1} \cdot r$)', is_correct: true}
-      - {text: 'La suma de una cantidad constante fija llamada diferencia', is_correct: false}
-      - {text: 'La elevación al cuadrado del término anterior', is_correct: false}
-      - {text: 'La extracción de la raíz cuadrada de la posición ordinal', is_correct: false}
-    explanation: 'La alternativa correcta es ''La multiplicación por una constante no nula fija llamada razón geométrica ($a_n = a_{n-1} \cdot r$)''. Es la definición de P.G.'
+      - {text: 'El cociente entre términos consecutivos es constante: $\frac{a_{n+1}}{a_n} = r$', is_correct: true}
+      - {text: 'La resta entre términos consecutivos es constante: $a_{n+1} - a_n = r$', is_correct: false}
+      - {text: 'La suma de términos consecutivos es constante', is_correct: false}
+      - {text: 'El producto de todos los términos es igual a 1', is_correct: false}
+    explanation: 'La alternativa correcta es ''El cociente entre términos consecutivos es constante: $\frac{a_{n+1}}{a_n} = r$''. Es la propiedad definitoria de las progresiones geométricas.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Dada la sucesión $64, 32, 16, 8, 4, \dots$, ¿cuál es el valor del primer término $a_1$ y de la razón $r$?'
+    question: 'Si una PG tiene $a_1 = 3$ y razón $r = -2$, ¿cuál es el valor del tercer término $a_3$?'
     choices:
-      - {text: 'Primer término $a_1 = 64$ y razón geométrica $r = \frac{1}{2}$', is_correct: true}
-      - {text: 'Primer término $a_1 = 64$ y razón geométrica $r = 2$', is_correct: false}
-      - {text: 'Primer término $a_1 = 4$ y razón geométrica $r = -32$', is_correct: false}
-      - {text: 'Primer término $a_1 = 32$ y razón geométrica $r = \frac{1}{4}$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Primer término $a_1 = 64$ y razón geométrica $r = \frac{1}{2}$''. $a_1 = 64$ y $32 / 64 = 1/2$.'
+      - {text: '$12$, calculando $a_2 = -6$ y $a_3 = -6 \cdot (-2) = 12$', is_correct: true}
+      - {text: '$-12$, olvidando la regla de los signos', is_correct: false}
+      - {text: '$-6$', is_correct: false}
+      - {text: '$24$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$12$, calculando $a_2 = -6$ y $a_3 = -6 \cdot (-2) = 12$''. El producto de dos números negativos da un resultado positivo.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer elemento de la lista como $a_1$.'
-  - 'Paso 2: Dividir cada término entre el término que le antecede inmediatamente ($\frac{a_2}{a_1}, \frac{a_3}{a_2}, \frac{a_4}{a_3}$).'
-  - 'Paso 3: Verificar que todos los cocientes obtenidos den exactamente el mismo valor $r$.'
-  - 'Paso 4: Concluir que es una P.G. e indicar si es creciente ($r>1$), decreciente ($0<r<1$) u oscilante ($r<0$).'
+  - 'Paso 1: Identificar el primer término $a_1$ y la razón geométrica $r \neq 0$.'
+  - 'Paso 2: Multiplicar sucesivamente por $r$ para obtener cada nuevo término ($a_{n+1} = a_n \cdot r$).'
+  - 'Paso 3: Analizar la magnitud y signo de $r$ para clasificar la progresión (creciente, decreciente, alternante o constante).'
 errores_correccion: |
-  - **Error 1:** Restar los términos en lugar de dividirlos al buscar la razón geométrica. **Cómo corregirlo:** La progresión geométrica se define mediante la **DIVISIÓN de términos consecutivos: $r = \frac{a_{n+1}}{a_n}$**.
-  - **Error 2:** Creer que una razón fraccionaria entre 0 y 1 ($0 < r < 1$) genera números negativos. **Cómo corregirlo:** Una razón fraccionaria positiva **hace que los términos disminuyan acercándose a 0, pero siguen siendo positivos**.
+  - **Error 1:** Confundir la progresión geométrica con la aritmética (sumar la razón en vez de multiplicar). **Cómo corregirlo:** En la PG **se multiplica por el factor constante $r$** en cada paso.
+  - **Error 2:** Creer que una razón negativa genera solo números negativos. **Cómo corregirlo:** Una razón negativa **alterna los signos** ($+, -, +, -, \dots$) debido a la regla de los signos en la multiplicación.
 ejemplos:
-  - titulo: 'P.G. multiplicativa por 3'
-    enunciado: 'Para $2, 6, 18, 54, \dots$, ¿el primer término es $a_1 = 2$ y la razón es $r = 3$?'
+  - titulo: 'PG con razón entera mayor a 1'
+    enunciado: 'Para $a_1 = 4$ y $r = 3$, ¿cuáles son los tres primeros términos?'
     alternativas:
-      - 'Sí, pues $6 / 2 = 3$ y $18 / 6 = 3$'
-      - 'No, la razón es 4'
-      - 'No, el primer término es 3'
-    respuesta: 'Sí, pues $6 / 2 = 3$ y $18 / 6 = 3$'
+      - '$4, 12, 36$'
+      - '$4, 7, 10$'
+      - '$4, 16, 64$'
+    respuesta: '$4, 12, 36$'
     solucion_pasos:
-      - '1. Primer término: $a_1 = 2$.'
-      - '2. Razón: $6 / 2 = 3$.'
-  - titulo: 'P.G. con razón fraccionaria'
-    enunciado: 'Para $100, 50, 25, 12,5, \dots$, ¿la razón es $r = \frac{1}{2} = 0,5$?'
+      - '1. $a_1 = 4, a_2 = 4 \cdot 3 = 12, a_3 = 12 \cdot 3 = 36$.'
+  - titulo: 'PG con razón fraccionaria'
+    enunciado: 'Para $a_1 = 80$ y $r = \frac{1}{2}$, ¿cuál es el cuarto término $a_4$?'
+    alternativas:
+      - '$10$'
+      - '$20$'
+      - '$5$'
+    respuesta: '$10$'
+    solucion_pasos:
+      - '1. $a_1 = 80, a_2 = 40, a_3 = 20, a_4 = 10$.'
+  - titulo: 'Signos alternados'
+    enunciado: '¿La sucesión $2, -4, 8, -16, 32$ es una progresión geométrica con razón $r = -2$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $50 / 100 = 0,5$. Es decreciente hacia cero.'
-  - titulo: 'P.G. alternada por razón negativa'
-    enunciado: 'Para $4, -12, 36, -108, \dots$, ¿la razón es $r = -3$?'
+      - '1. $-4/2 = -2, 8/-4 = -2, -16/8 = -2$.'
+  - titulo: 'Razón unitaria'
+    enunciado: '¿La sucesión constante $7, 7, 7, 7, \dots$ es una progresión geométrica con razón $r = 1$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $-12 / 4 = -3$, $36 / (-12) = -3$. Los signos van alternando.'
-  - titulo: 'P.G. constante'
-    enunciado: 'Para $7, 7, 7, 7, \dots$, ¿es una P.G. con razón $r = 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $7 / 7 = 1$.'
+      - '1. $7/7 = 1$ en todos los términos.'
 errores_frecuentes:
-  - 'Restar el término anterior al posterior al calcular la razón geométrica.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Considerar que las progresiones geométricas avanzan por adición constante.'
-  - 'Evaluar únicamente la división del primer par de términos para declarar que toda la sucesión es geométrica.'
+  - 'En una progresión geométrica cada término se obtiene sumando una cantidad constante al término anterior.'
+  - 'Una progresión geométrica con razón $r = -1$ tiene todos sus términos con valor numérico negativo.'
+  - 'La razón geométrica $r$ puede ser igual a cero en una progresión geométrica estándar.'
+  - 'Una progresión geométrica con razón fraccionaria $0 < r < 1$ es estrictamente creciente.'
+  - 'El cociente entre términos consecutivos de una PG varía en función de la posición $n$.'
 afirmaciones_verdaderas:
-  - 'En una progresión geométrica, la razón $r = \frac{a_{n+1}}{a_n}$ permanece constante para todo $n \ge 1$.'
-  - 'Si la razón geométrica está comprendida entre 0 y 1 ($0 < r < 1$) con $a_1 > 0$, la progresión es decreciente.'
-al_terminar_debes_poder: 'Definir una progresión geométrica $a_n = a_{n-1} \cdot r$ e identificar su primer término $a_1$ y su razón $r$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'En una progresión geométrica el cociente entre cualquier término y su predecesor inmediato es constante: $\frac{a_{n+1}}{a_n} = r$.'
+  - 'Si la razón geométrica es negativa ($r < 0$), los signos de los términos se alternan estrictamente entre positivos y negativos.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/definicion-de-progresion-geometrica-mediante-razon-constante-resumen.svg)
+
+  QUÉ: Definir, clasificar y construir progresiones geométricas mediante la razón multiplicativa constante.
+  CÓMO: Aplicar la relación recurrente $a_{n+1} = a_n \cdot r$ evaluando el comportamiento según el valor y signo de $r \in \mathbb{R}^*$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

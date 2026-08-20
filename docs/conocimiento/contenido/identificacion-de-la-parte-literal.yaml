@@ -1,106 +1,121 @@
 semantic_id: MAT.ALG.TERMINO.PARTE_LITERAL
-resumen_inicial: 'La identificación de la parte literal de un término algebraico consiste en extraer las variables y sus respectivos exponentes que acompañan al coeficiente numérico.'
+resumen_inicial: 'La parte literal de un término algebraico está constituida por el conjunto de todas sus variables junto con sus respectivos exponentes.'
 explicacion_simple: |
-  La **parte literal** son las letras con sus exponentes que están en un término algebraico:
-  - En $-8x^3 y^2$, la parte literal es **$x^3 y^2$** (se excluye el $-8$).
-  - En el término $5a$, la parte literal es la letra **$a$** (cuyo exponente implícito es $1$).
-  - **Regla de oro de la semejanza**: Dos términos algebraicos son **términos semejantes** si tienen **exactamente la misma parte literal** (mismas letras elevadas a los mismos exponentes).
-  - Por ejemplo, $4x^2 y$ y $-9x^2 y$ son semejantes porque ambos tienen la parte literal $x^2 y$. Pero $4x^2 y$ y $4xy^2$ **NO son semejantes** porque los exponentes de las letras son distintos.
+  - La **parte literal** son todas las letras del término con sus potencias incluidas.
+  - En $-8x^3y^2z$, la parte literal es exactamente **$x^3y^2z$**.
+  - **Importancia fundamental:**
+    - Los **términos semejantes** son aquellos que tienen **exactamente la misma parte literal** (mismas letras y mismos exponentes).
+    - Por ejemplo, $5x^2y$ y $-3x^2y$ son semejantes porque ambos tienen parte literal $x^2y$; se pueden sumar ($5x^2y - 3x^2y = 2x^2y$).
+    - Pero $4x^2y$ y $4xy^2$ **no son semejantes**, porque sus exponentes están en letras distintas ($x^2y \neq xy^2$).
+
+  ![Parte Literal de un Término](/static/img/nodos/identificacion-de-la-parte-literal-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dado un término algebraico $M(x_1, \dots, x_k) = c \cdot x_1^{\alpha_1} x_2^{\alpha_2} \cdots x_k^{\alpha_k}$, la **parte literal** es el monomio mónico $L \in \mathbb{R}[x_1, \dots, x_k]$ definido por el producto de potencias de variables:
+  Dado un término algebraico $T = c \cdot X$, la **parte literal** $X$ es el producto monomial de potencias de variables:
 
-  $$L(x_1, \dots, x_k) = \prod_{i=1}^k x_i^{\alpha_i} = x_1^{\alpha_1} x_2^{\alpha_2} \cdots x_k^{\alpha_k}$$
+  $$X = x_1^{e_1} x_2^{e_2} \cdots x_k^{e_k}, \quad x_i \in \text{Variables}, \; e_i \in \mathbb{R}$$
 
-  ### Criterio de Semejanza Polinómica
-  Dos términos $M_1 = c_1 \cdot L_1$ y $M_2 = c_2 \cdot L_2$ con $c_1, c_2 \neq 0$ son **semejantes** ($M_1 \sim M_2$) si y solo si sus partes literales son idénticas:
+  ### Criterio de semejanza monomial
+  Dos términos $T_1 = c_1 X_1$ y $T_2 = c_2 X_2$ son **términos semejantes** si y solo si sus partes literales son formalmente idénticas:
 
-  $$M_1 \sim M_2 \iff L_1 = L_2 \iff \forall i \in \{1, \dots, k\}, \quad \alpha_{1,i} = \alpha_{2,i}$$
+  $$T_1 \sim T_2 \iff X_1 \equiv X_2$$
 
-  ### Síntesis didáctica
-  La parte literal determina la "naturaleza" o "tipo" de magnitud que representa el término. En la adición polinómica, la parte literal actúa como una unidad inalterable.
+  La semejanza es una relación de equivalencia que particiona a los términos en clases sumables bajo distributividad:
+  $$c_1 X + c_2 X = (c_1 + c_2)X$$
 definiciones_clave: |
-  - **Parte literal**: Bloque de variables con sus respectivos exponentes que multiplica al coeficiente escalar.
-  - **Monomio mónico**: Expresión literal cuyo coeficiente numérico es exactamente igual a $1$.
-  - **Términos semejantes**: Monomios que comparten idéntica parte literal (mismas bases variables y mismos exponentes).
+  - **Parte literal**: Bloque de variables con sus respectivos exponentes que define la dimensión algebraica del término.
+  - **Términos semejantes**: Monomios que comparten idéntica parte literal (mismas variables con los mismos exponentes).
+  - **Factor literal**: Cada una de las potencias de variables individuales que integran la parte literal.
 propiedades_relaciones: |
-  - **Conservación en la adición**: Al sumar o restar términos semejantes, la parte literal se transcribe **exactamente igual** al resultado sin modificar ninguno de sus exponentes.
-  - **Modificación en la multiplicación**: Al multiplicar términos algebraicos, las partes literales se combinan sumando los exponentes de las bases iguales ($x^a \cdot x^b = x^{a+b}$).
+  - **Conmutatividad de factores literales**: El orden de las letras en la parte literal no altera el término ($x^2y \equiv yx^2$).
+  - **Condición necesaria y suficiente para reducción**: Solo los términos con idéntica parte literal pueden combinarse mediante adición o sustracción en un solo término.
 ejemplo_guiado:
-  enunciado: 'En los términos algebraicos $T_1 = -12 x^3 y^4$, $T_2 = 5 x^4 y^3$ y $T_3 = 7 x^3 y^4$, identifica la parte literal de cada uno y determina cuáles de ellos son términos semejantes.'
+  enunciado: 'En el término $-\frac{5}{9}a^3b^2c$, identifica la parte literal y determina si es semejante con el término $12b^2a^3c$.'
+  imagen: '/static/img/nodos/identificacion-de-la-parte-literal-ejemplos.svg'
   pasos:
-    - 'Paso 1: Extraemos la parte literal de $T_1 = -12 x^3 y^4$ removiendo el coeficiente $-12 \implies \mathbf{x^3 y^4}$.'
-    - 'Paso 2: Extraemos la parte literal de $T_2 = 5 x^4 y^3$ removiendo el coeficiente $5 \implies \mathbf{x^4 y^3}$.'
-    - 'Paso 3: Extraemos la parte literal de $T_3 = 7 x^3 y^4$ removiendo el coeficiente $7 \implies \mathbf{x^3 y^4}$.'
-    - 'Paso 4: Comparamos las partes literales: $T_1$ y $T_3$ tienen exactamente $x^3 y^4$. En cambio, $T_2$ tiene exponentes invertidos ($x^4 y^3$).'
-    - 'Conclusión: **$T_1$ y $T_3$ son términos semejantes**.'
+    - 'Paso 1: Separamos el coeficiente numérico ($-\frac{5}{9}$).'
+    - 'Paso 2: La parte literal restante con todas sus letras y exponentes es **$a^3b^2c$**.'
+    - 'Paso 3: Analizamos la parte literal del segundo término: $b^2a^3c = a^3b^2c$ (por conmutatividad).'
+    - 'Paso 4: Conclusión: Ambos términos tienen la misma parte literal ($a^3b^2c$), por lo tanto **sí son términos semejantes** y se pueden sumar: $(-\frac{5}{9} + 12)a^3b^2c = \frac{103}{9}a^3b^2c$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué elementos componen exactamente la parte literal de un término algebraico?'
+    question: '¿Cuál es la parte literal del término algebraico $-13x^4y^2z$?'
     choices:
-      - {text: 'Las variables literales junto con sus respectivos exponentes, excluyendo el coeficiente numérico', is_correct: true}
-      - {text: 'Únicamente los números que figuran como exponentes', is_correct: false}
-      - {text: 'El signo del término y el coeficiente numérico', is_correct: false}
-      - {text: 'Las letras sin incluir sus exponentes', is_correct: false}
-    explanation: 'La alternativa correcta es ''Las variables literales junto con sus respectivos exponentes, excluyendo el coeficiente numérico''. Definición de parte literal.'
+      - text: '$x^4y^2z$'
+        is_correct: true
+      - text: '$xyz$'
+        is_correct: false
+      - text: '$-13$'
+        is_correct: false
+      - text: '$4, 2, 1$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$x^4y^2z$''. La parte literal incluye todas las letras junto con sus exponentes.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Por qué los términos algebraicos $6a^2 b$ y $-4ab^2$ NO son términos semejantes?'
+    question: '¿Por qué los términos $7x^3y^2$ y $-2x^2y^3$ NO son semejantes?'
     choices:
-      - {text: 'Porque aunque tienen las mismas letras $a$ y $b$, los exponentes de cada letra son distintos ($a^2 b \neq ab^2$)', is_correct: true}
-      - {text: 'Porque sus coeficientes numéricos tienen diferente signo', is_correct: false}
-      - {text: 'Porque uno de ellos tiene coeficiente par y el otro impar', is_correct: false}
-      - {text: 'Porque las letras deben escribirse siempre en orden inverso', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque aunque tienen las mismas letras $a$ y $b$, los exponentes de cada letra son distintos ($a^2 b \neq ab^2$)''. Deben tener idénticos exponentes.'
+      - text: 'Porque los exponentes de las letras $x$ e $y$ son diferentes en cada término'
+        is_correct: true
+      - text: 'Porque tienen coeficientes numéricos distintos'
+        is_correct: false
+      - text: 'Porque uno es positivo y el otro es negativo'
+        is_correct: false
+      - text: 'Porque contienen dos variables'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque los exponentes de las letras $x$ e $y$ son diferentes en cada término''. Para ser semejantes, cada letra debe tener exactamente el mismo exponente.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Localizar el coeficiente numérico constante del término algebraico.'
-  - 'Paso 2: Retirar el coeficiente numérico y su signo del término.'
-  - 'Paso 3: Conservar todas las letras y sus exponentes (incluyendo exponentes implícitos 1).'
-  - 'Paso 4: Para verificar semejanza entre dos términos, comparar si sus partes literales coinciden letra por letra y exponente por exponente.'
+  - 'Paso 1: Quitar el coeficiente numérico y su signo.'
+  - 'Paso 2: Escribir la lista de variables conservando sus exponentes respectivos.'
+  - 'Paso 3: Para comparar semejanza con otro término, ordenar alfabéticamente las letras.'
+  - 'Paso 4: Verificar que coincidan tanto las variables como sus potencias.'
 errores_correccion: |
-  - **Error 1:** Considerar que $x^2 y$ y $xy^2$ tienen la misma parte literal por tener las mismas letras. **Cómo corregirlo:** La parte literal exige que **cada variable tenga exactamente el mismo exponente**.
-  - **Error 2:** Alterar o sumar los exponentes de la parte literal al efectuar una adición (ej: decir que $3x^2 + 2x^2 = 5x^4$). **Cómo corregirlo:** En la suma de semejantes **la parte literal no se modifica** ($3x^2 + 2x^2 = 5x^2$).
+  - **Error 1:** Excluir los exponentes al indicar la parte literal (decir que la parte literal de $x^3y^2$ es $xy$). **Cómo corregirlo:** La parte literal **incluye obligatoriamente los exponentes**: $x^3y^2$.
+  - **Error 2:** Sumar términos no semejantes como $3x^2 + 2x = 5x^3$. **Cómo corregirlo:** Términos con diferente exponente **no se pueden sumar** en un solo término.
 ejemplos:
-  - titulo: 'Extracción de parte literal'
-    enunciado: '¿Cuál es la parte literal del término $-25u^4 v^7$?'
+  - titulo: 'Identificación de parte literal múltiple'
+    enunciado: '¿Cuál es la parte literal del término $\frac{4}{7}u^5v^3w$?'
     alternativas:
-      - '$u^4 v^7$'
-      - '$-25$'
-      - '$u v$'
-    respuesta: '$u^4 v^7$'
+      - '$u^5v^3w$'
+      - '$uvw$'
+      - '$\frac{4}{7}$'
+    respuesta: '$u^5v^3w$'
     solucion_pasos:
-      - '1. Retiramos el coeficiente $-25$.'
-      - '2. La parte literal es $u^4 v^7$.'
-  - titulo: 'Identificación de términos semejantes'
-    enunciado: '¿Cuáles de los siguientes términos son semejantes a $3x^2 y^3$?'
+      - '1. Se elimina el coeficiente fraccionario $\frac{4}{7}$.'
+      - '2. La parte literal es el bloque $u^5v^3w$.'
+  - titulo: 'Discriminación de términos semejantes'
+    enunciado: '¿Cuál de los siguientes términos es semejante a $-5a^2b^4$?'
     alternativas:
-      - '$-10x^2 y^3$'
-      - '$3x^3 y^2$'
-      - '$3x^2 y$'
-    respuesta: '$-10x^2 y^3$'
+      - '$9b^4a^2$'
+      - '$9a^4b^2$'
+      - '$-5ab^4$'
+    respuesta: '$9b^4a^2$'
     solucion_pasos:
-      - '1. Comparamos partes literales.'
-      - '2. $-10x^2 y^3$ tiene exactamente la misma parte literal $x^2 y^3$.'
-  - titulo: 'Parte literal con exponente 1'
-    enunciado: 'En el término $-7m$, ¿la parte literal es la letra $m$ (con exponente implícito 1)?'
+      - '1. $9b^4a^2 = 9a^2b^4$ por conmutatividad.'
+      - '2. Tienen exactamente la misma parte literal $a^2b^4$.'
+  - titulo: 'Orden de factores literales'
+    enunciado: '¿Son $3xy$ y $5yx$ términos semejantes?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, $m$ equivale a $m^1$.'
-  - titulo: 'Invarianza en la adición'
-    enunciado: 'Al sumar $4ab + 9ab = 13ab$, ¿la parte literal $ab$ se mantiene intacta en el resultado?'
-    respuesta: 'Sí'
+      - '1. Por la conmutatividad del producto, $xy = yx$.'
+      - '2. Tienen idéntica parte literal.'
+  - titulo: 'Semejanza con exponentes permutados'
+    enunciado: '¿Son $2x^3y$ y $2xy^3$ términos semejantes?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, en la adición polinómica la parte literal no cambia sus exponentes.'
+      - '1. En el primero $x$ está al cubo y en el segundo $y$ está al cubo.'
+      - '2. $x^3y \neq xy^3$, por lo que no son semejantes.'
 errores_frecuentes:
-  - 'Dos términos algebraicos son semejantes si comparten las mismas letras sin importar sus exponentes.'
-  - 'Al sumar dos términos semejantes se deben sumar los exponentes de sus partes literales.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'La parte literal de un término incluye el coeficiente numérico cuando este es fraccionario.'
-  - 'Cambiar el orden alfabético de las letras de una parte literal altera el valor del término.'
+  - 'Omitir los exponentes de las letras al nombrar la parte literal de un monomio.'
+  - 'Considerar semejantes a términos que tienen las mismas letras pero con exponentes permutados ($x^2y$ y $xy^2$).'
+  - 'Intentar sumar algebraicamente términos con diferente parte literal ($3x + 2y = 5xy$).'
+  - 'Creer que cambiar el orden alfabético de las letras ($ab$ por $ba$) altera la parte literal.'
+  - 'Incluir el coeficiente numérico dentro de la parte literal.'
 afirmaciones_verdaderas:
-  - 'La parte literal de un término algebraico la constituyen las variables con sus respectivos exponentes.'
-  - 'Dos o más términos algebraicos son semejantes si poseen exactamente la misma parte literal.'
-al_terminar_debes_poder: 'Identificar la parte literal de cualquier término algebraico y comparar la coincidencia de bases y exponentes para determinar términos semejantes.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Nomenclatura.'
-estado: publicado
+  - 'La parte literal de un término está formada por todas sus letras con sus respectivos exponentes.'
+  - 'Dos términos pueden sumarse en un solo monomio si y solo si tienen idéntica parte literal.'
+al_terminar_debes_poder: |
+  ![Resumen de Parte Literal](/static/img/nodos/identificacion-de-la-parte-literal-resumen.svg)
+
+  QUÉ: Identificar la parte literal completa de un término algebraico y aplicar el criterio de semejanza monomial para la reducción algebraica.
+  CÓMO: Extrayendo el bloque de variables y potencias ($x^3y^2z$) y comparando exponentes letra por letra para validar términos semejantes.

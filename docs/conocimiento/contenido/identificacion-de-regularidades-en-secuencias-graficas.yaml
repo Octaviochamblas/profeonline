@@ -1,108 +1,117 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.REGULARIDAD_GRAFICA
-resumen_inicial: 'La identificación de regularidades en secuencias gráficas traduce patrones visuales de figuras geométricas continuas a secuencias numéricas discretas mediante tablas de conteo de elementos para formular el término general $a_n$.'
+resumen_inicial: 'La identificación de regularidades gráficas traduce patrones visuales y geométricos de etapas consecutivas $n = 1, 2, 3, \dots$ en expresiones algebraicas de conteo $C_n = f(n)$.'
 explicacion_simple: |
-  En muchos problemas te muestran patrones de dibujos que van creciendo paso a paso (por ejemplo, figuras armadas con fósforos o cuadritos):
-  - **Paso 1 (Figura 1)**: Tiene $3$ fósforos (un triángulo).
-  - **Paso 2 (Figura 2)**: Tiene $5$ fósforos (dos triángulos unidos).
-  - **Paso 3 (Figura 3)**: Tiene $7$ fósforos (tres triángulos unidos).
-  Para saber cuántos fósforos tendrá la **Figura 100**:
-  1. Haces una tabla registrando los números: $3, 5, 7, 9, \dots$
-  2. Buscas la regularidad numérica: aumenta de $2$ en $2$ ($+2$).
-  3. Encuentras la fórmula: $a_n = 2n + 1$.
-  4. Para la Figura 100: $a_{100} = 2(100) + 1 = 201$ fósforos.
+  En problemas visuales con figuras geométricas (como figuras hechas con fósforos, puntos o baldosas):
+  - La **etapa** o número de figura es la variable de posición: **$n = 1, 2, 3, \dots$**
+  - El **conteo** es la cantidad de elementos que tiene esa figura ($C_n$).
+  - Por ejemplo, si un cuadrado usa 4 fósforos, dos cuadrados unidos usan 7 fósforos, y tres cuadrados unidos usan 10 fósforos:
+    - Etapa 1: 4 fósforos
+    - Etapa 2: 7 fósforos ($+3$)
+    - Etapa 3: 10 fósforos ($+3$)
+  - Como cada nuevo cuadrado añade 3 fósforos, la fórmula es **$C_n = 3n + 1$**.
+
+  ![Regularidades en secuencias gráficas](/static/img/nodos/identificacion-de-regularidades-en-secuencias-graficas-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  La **regularidad gráfica** es la iteración espacial de un módulo o patrón geométrico $G_n$ según una regla de crecimiento construida sobre la posición $n \in \mathbb{N}$.
+  Sea $(F_n)_{n \ge 1}$ una secuencia ordenada de configuraciones geométricas o grafos conexos. El problema de modelamiento consiste en determinar la función de conteo cardinal $C: \mathbb{N} \to \mathbb{N}$ tal que:
+  $$n \longmapsto C_n = |V(F_n)| \quad \text{o} \quad C_n = |E(F_n)|$$
+  donde $V$ y $E$ representan respectivamente el conjunto de vértices (puntos) o aristas (segmentos/fósforos) de la figura en la etapa $n$.
 
-  ### Metodología de Traducción Gráfico-Numérica
-  1. **Conteo cuantitativo discreto**: Definir una variable de interés $a_n$ (número de segmentos, puntos, vértices, polígonos, cuadrados sombreados).
-  2. **Tabulación orden-valor**:
-     $$\begin{array}{|c|c|c|c|c|} \hline \text{Figura } (n) & 1 & 2 & 3 & 4 \\ \hline \text{Elementos } (a_n) & a_1 & a_2 & a_3 & a_4 \\ \hline \end{array}$$
-  3. **Análisis de la diferencia espacial ($\Delta a_n$)**:
-     - Conteo de elementos añadidos en cada nueva etapa $n \to n+1$.
-  4. **Formulación explícita $a_n = f(n)$**:
-     - Estructurar el modelo algebraico (lineal, cuadrático) que rige la cantidad de elementos en función de la etapa $n$.
+  ### Metodología de Traducción Gráfico-Algebraica
+  1. **Construcción de la tabla de valores discretos**:
+     $$\begin{array}{c|ccccc} n & 1 & 2 & 3 & 4 & \dots \\ \hline C_n & C_1 & C_2 & C_3 & C_4 & \dots \end{array}$$
+  2. **Identificación de partes fijas y partes variables**:
+     $$C_n = \text{Base fija} + (n - 1) \cdot \text{Incremento por etapa}$$
+  3. **Control de elementos compartidos**: Descontar aristas o vértices adyacentes comunes para evitar sobreconteo.
 
   ### Síntesis didáctica
-  - Paso 1: Contar elementos en cada figura ($n=1, 2, 3$).
-  - Paso 2: Construir tabla de valores.
-  - Paso 3: Hallar el término general $a_n$.
+  - Ecuación de conteo: $C_n = d \cdot n + c$.
+  - Descomposición: Identificar qué piezas se conservan y cuántas se agregan por paso.
 definiciones_clave: |
-  - **Secuencia gráfica**: Serie ordenada de figuras o patrones geométricos que evolucionan según una regla geométrica fija.
-  - **Módulo o figura base ($G_1$)**: Estructura visual inicial correspondiente a la posición $n=1$.
-  - **Patrón de adición espacial**: Cantidad fija o variable de elementos geométricos agregados en cada paso.
+  - **Secuencia gráfica**: Serie ordenada de figuras o patrones geométricos que evolucionan según una regla espacial.
+  - **Función de conteo ($C_n$)**: Expresión algebraica que entrega el número total de elementos en la figura $n$.
+  - **Elemento compartido**: Arista o vértice que pertenece simultáneamente a dos subfiguras adyacentes.
 propiedades_relaciones: |
-  - **Isomorfismo gráfico-numérico**: La secuencia de conteo numérico $a_n$ conserva exactamente el mismo comportamiento algebraico que el patrón geométrico.
-  - **Conservación de la regla estructural**: El modo en que se ensamblan los componentes en la figura $n$ debe aplicarse sistemáticamente a la figura $n+1$.
+  - **Isomorfismo visual-numérico**: Toda secuencia gráfica regular es equivalente a una sucesión numérica de conteo discreto.
+  - **Números figurados**: Patrones bidimensionales (triángulos de puntos, cuadrados de puntos) generan sucesiones cuadráticas $C_n = \frac{n(n+1)}{2}$ o $C_n = n^2$.
 ejemplo_guiado:
-  enunciado: 'Se construyen figuras con fósforos formando cuadrados en fila: la Figura 1 usa 4 fósforos (1 cuadrado), la Figura 2 usa 7 fósforos (2 cuadrados unidos), la Figura 3 usa 10 fósforos. Determina la fórmula para la Figura $n$ y calcula cuántos fósforos se necesitan para la Figura 15.'
+  enunciado: 'Una secuencia de figuras se forma con hexágonos regulares unidos por un lado. La figura 1 tiene 1 hexágono (6 fósforos), la figura 2 tiene 2 hexágonos (11 fósforos) y la figura 3 tiene 3 hexágonos (16 fósforos). Encuentra la fórmula de fósforos $F_n$ y calcula cuántos fósforos se necesitan para la figura 15.'
+  imagen: '/static/img/nodos/identificacion-de-regularidades-en-secuencias-graficas-ejemplos.svg'
   pasos:
-    - 'Paso 1: Registramos la secuencia numérica de fósforos: $a_1 = 4$, $a_2 = 7$, $a_3 = 10$.'
-    - 'Paso 2: Calculamos la diferencia entre figuras consecutivas: $7-4 = 3$, $10-7 = 3$. La diferencia constante es $d = +3$ fósforos por figura.'
-    - 'Paso 3: Formamos la fórmula general $a_n = 3n + c$. Para $n=1 \implies 3(1) + c = 4 \implies c = 1$. La fórmula es **$a_n = 3n + 1$**.'
-    - 'Paso 4: Evaluamos para la Figura 15: $a_{15} = 3(15) + 1 = 45 + 1 = 46$. Se necesitan **$46$ fósforos**.'
+    - 'Paso 1: Armamos la tabla de conteo: $F_1 = 6, F_2 = 11, F_3 = 16$.'
+    - 'Paso 2: Calculamos la diferencia entre etapas: $11 - 6 = 5$ y $16 - 11 = 5$. Cada nuevo hexágono agrega 5 fósforos ($d = 5$).'
+    - 'Paso 3: Formulamos $F_n = 5n + c$. Para $n=1 \implies 5(1) + c = 6 \implies c = 1$. Fórmula: **$F_n = 5n + 1$**.'
+    - 'Paso 4: Evaluamos para la figura 15 ($n=15$): $F_{15} = 5(15) + 1 = 75 + 1 = **76\text{ fósforos}$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la estrategia recomendada para determinar cuántos elementos tendrá la figura $n=50$ en una secuencia gráfica?'
+    question: 'En una secuencia gráfica donde la figura 1 tiene 4 fósforos y cada figura siguiente agrega 3 fósforos, ¿cuál es la fórmula general de conteo $F_n$?'
     choices:
-      - {text: 'Contar los elementos de las primeras figuras, armar una tabla de valores y deducir la fórmula del término general $a_n$', is_correct: true}
-      - {text: 'Dibujar a mano las 50 figuras una por una en el papel', is_correct: false}
-      - {text: 'Multiplicar el número de elementos de la Figura 1 por 50', is_correct: false}
-      - {text: 'Sumar el número de figura más el número de elementos inicial', is_correct: false}
-    explanation: 'La alternativa correcta es ''Contar los elementos de las primeras figuras, armar una tabla de valores y deducir la fórmula del término general $a_n$''. Es la estrategia de traducción gráfico-numérica.'
+      - {text: '$F_n = 3n + 1$', is_correct: true}
+      - {text: '$F_n = 4n + 3$', is_correct: false}
+      - {text: '$F_n = 3n + 4$', is_correct: false}
+      - {text: '$F_n = 4n$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$F_n = 3n + 1$''. Con diferencia $d=3$, para $n=1$ se cumple $3(1) + 1 = 4$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una secuencia gráfica de triángulos agrupados requiere $3, 5, 7, 9$ palitos en las figuras 1, 2, 3, 4, ¿cuál es la fórmula $a_n$ del número de palitos para la figura $n$?'
+    question: 'Si la fórmula de una secuencia de figuras es $P_n = 2n + 5$, ¿cuántos puntos contiene la figura 8?'
     choices:
-      - {text: '$a_n = 2n + 1$, pues aumenta de 2 en 2 y para $n=1$ da $3$', is_correct: true}
-      - {text: '$a_n = 3n$, pues la primera figura tiene 3 palitos', is_correct: false}
-      - {text: '$a_n = n + 2$, sumando 2 a la posición', is_correct: false}
-      - {text: '$a_n = 4n - 1$, multiplicando por 4', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_n = 2n + 1$, pues aumenta de 2 en 2 y para $n=1$ da $3$''. Diferencia $+2 \implies 2n + 1$.'
+      - {text: '$21$ puntos, calculando $2(8) + 5 = 16 + 5 = 21$', is_correct: true}
+      - {text: '$26$ puntos, multiplicando $8 \cdot 3 + 2$', is_correct: false}
+      - {text: '$13$ puntos, sumando $8 + 5$', is_correct: false}
+      - {text: '$16$ puntos, olvidando sumar 5', is_correct: false}
+    explanation: 'La alternativa correcta es ''$21$ puntos, calculando $2(8) + 5 = 16 + 5 = 21$''. Sustituyendo $n=8$: $2(8) + 5 = 21$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Contar cuidadosamente la cantidad de elementos de interés en las primeras 3 o 4 figuras.'
-  - 'Paso 2: Escribir la secuencia de números correspondiente a las posiciones $n=1, 2, 3, 4$.'
-  - 'Paso 3: Analizar el incremento o patrón entre los términos de la secuencia numérica.'
-  - 'Paso 4: Deducir el término general $a_n$ y evaluar en la posición deseada.'
+  - 'Paso 1: Contar cuidadosamente el número de elementos (puntos, segmentos, baldosas) en las figuras $n=1, 2, 3$.'
+  - 'Paso 2: Registrar los valores en una tabla discreta $(n, C_n)$.'
+  - 'Paso 3: Calcular la diferencia constante $d$ entre etapas sucesivas para establecer el término lineal $d \cdot n$.'
+  - 'Paso 4: Ajustar la constante aditiva $c$ con la figura $n=1$ y validar en las figuras posteriores.'
 errores_correccion: |
-  - **Error 1:** Multiplicar el total de elementos de la Figura 1 directamente por $n$ (ej: si la Figura 1 tiene 4 fósforos, asumir que la Figura $n$ tiene $4n$). **Cómo corregirlo:** Las figuras suelen compartir lados o vértices; **debes analizar la diferencia de incremento real ($d$) entre etapas**.
-  - **Error 2:** Olvidar contar los elementos que son compartidos entre figuras adyacentes. **Cómo corregirlo:** Realiza un **conteo visual meticuloso** de cada componente geométrico.
+  - **Error 1:** Multiplicar el número de piezas de una figura aislada por $n$ sin descontar los lados compartidos. **Cómo corregirlo:** Las figuras adyacentes **comparten aristas**: calcula siempre la diferencia real observada entre etapas.
+  - **Error 2:** Confundir el número de etapa $n$ con el número de elementos contados. **Cómo corregirlo:** $n$ es el **número de la figura** y $C_n$ es el **total de elementos** que contiene.
 ejemplos:
-  - titulo: 'Secuencia gráfica de cuadrados en grilla'
-    enunciado: 'Si la Figura 1 tiene 1 cuadrito, la Figura 2 tiene 4, la Figura 3 tiene 9, ¿la fórmula para la Figura $n$ es $a_n = n^2$?'
+  - titulo: 'Conteo de fósforos en triángulos en hilera'
+    enunciado: 'Un triángulo usa 3 fósforos, 2 triángulos unidos usan 5 fósforos y 3 usan 7 fósforos. ¿Cuál es la fórmula $F_n$?'
     alternativas:
-      - 'Sí, representa el área de cuadrados de lado n'
-      - 'No, la fórmula es $3n - 2$'
-      - 'No, la fórmula es $2^n$'
-    respuesta: 'Sí, representa el área de cuadrados de lado n'
+      - '$F_n = 2n + 1$'
+      - '$F_n = 3n$'
+      - '$F_n = 2n + 3$'
+    respuesta: '$F_n = 2n + 1$'
     solucion_pasos:
-      - '1. Conteo: 1, 4, 9, 16.'
-      - '2. Patrón: $1^2, 2^2, 3^2, n^2$.'
-  - titulo: 'Construcción de hexágonos unidos'
-    enunciado: 'La Figura 1 usa 6 palitos (1 hexágono), la Figura 2 usa 11 palitos (2 hexágonos unidos con 1 lado común). ¿La fórmula es $a_n = 5n + 1$?'
+      - '1. $F_1 = 3, F_2 = 5, F_3 = 7 \implies d = 2$.'
+      - '2. $F_n = 2n + c \implies 2(1) + c = 3 \implies c = 1$.'
+  - titulo: 'Puntos en cuadrícula cuadrada'
+    enunciado: 'Si la figura $n$ es una cuadrícula de $n \times n$ puntos, ¿cuántos puntos tiene la figura 6?'
+    alternativas:
+      - '$36$ puntos'
+      - '$12$ puntos'
+      - '$24$ puntos'
+    respuesta: '$36$ puntos'
+    solucion_pasos:
+      - '1. Fórmula cuadrática: $C_n = n^2 \implies C_6 = 6^2 = 36$.'
+  - titulo: 'Baldosas perimetrales'
+    enunciado: '¿La regularidad en patrones geométricos permite predecir el número de piezas de una figura de tamaño 100 sin dibujarla?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Incremento $+5$ palitos por cada nuevo hexágono unido $\implies a_n = 5n + 1$.'
-  - titulo: 'Secuencia de puntos perimetrales'
-    enunciado: 'Si los puntos en las figuras 1, 2, 3 son $4, 8, 12, 16$, ¿la fórmula para la figura $n$ es $a_n = 4n$?'
+      - '1. La fórmula algebraica modela exactamente cualquier etapa $n$.'
+  - titulo: 'Incremento constante'
+    enunciado: '¿Si cada nueva figura de una serie agrega exactamente 4 elementos, la función de conteo es lineal?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Incremento $+4 \implies a_n = 4n$.'
-  - titulo: 'Conteo en la Figura 10'
-    enunciado: 'En el patrón $a_n = 5n + 1$, ¿la Figura 10 requiere 51 elementos?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $a_{10} = 5(10) + 1 = 51$.'
+      - '1. Todo incremento aditivo constante genera un modelo de primer grado $C_n = 4n + c$.'
 errores_frecuentes:
-  - 'Multiplicar la cantidad de elementos de la primera figura directamente por el número de etapa deseada.'
-  - 'El conteo de elementos en figuras adyacentes se efectúa ignorando los lados o vértices compartidos.'
-  - 'Las secuencias gráficas no admiten representación mediante expresiones algebraicas generales.'
-  - 'Todos los patrones geométricos secuenciales responden exclusivamente a modelos de crecimiento cuadrático.'
-  - 'Contar incorrectamente los elementos de la muestra inicial distorsionando la diferencia entre términos.'
+  - 'El conteo total de fósforos en figuras compuestas se obtiene multiplicando los lados del polígono aislado por el número de figuras sin descontar bordes comunes.'
+  - 'El número de etapa $n$ de la figura es idéntico a la cantidad total de piezas que la forman.'
+  - 'Las secuencias gráficas no pueden modelarse mediante ecuaciones algebraicas formales.'
+  - 'Una figura compuesta por cuadrados unidos siempre agrega cuatro fósforos por cada nuevo cuadrado.'
+  - 'Los números triangulares de puntos crecen de forma lineal con diferencia constante.'
 afirmaciones_verdaderas:
-  - 'Las secuencias gráficas pueden traducirse a secuencias numéricas registrando la cantidad de elementos de cada figura en una tabla.'
-  - 'Si el incremento de elementos entre figura y figura es constante $d$, la fórmula del término general es lineal de la forma $a_n = dn + c$.'
-al_terminar_debes_poder: 'Traducir secuencias gráficas a secuencias numéricas y calcular la cantidad de elementos de cualquier figura $n$ mediante $a_n$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Toda secuencia gráfica con incremento aditivo constante entre figuras sucesivas se modela mediante una función lineal $C_n = d \cdot n + c$.'
+  - 'Al unir figuras geométricas contiguas, los elementos compartidos reducen el número de piezas necesarias respecto a figuras independientes.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/identificacion-de-regularidades-en-secuencias-graficas-resumen.svg)
+
+  QUÉ: Modelar algebraicamente secuencias y patrones gráficos determinando su regla general de conteo.
+  CÓMO: Tabular la cantidad de elementos por etapa $(n, C_n)$, deducir la razón de cambio considerando partes compartidas y formular la ecuación $C_n = f(n)$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

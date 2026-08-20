@@ -1,117 +1,158 @@
 semantic_id: MAT.ALG.GENERALIZACIONES_PRODUCTOS.PASCAL_COEFICIENTES
-resumen_inicial: 'El uso del Triángulo de Pascal para determinar coeficientes binomiales consiste en construir la matriz triangular numérica donde cada elemento es la suma de los dos números superiores para hallar los coeficientes de $(a+b)^n$.'
-explicacion_simple: |
-  El **Triángulo de Pascal** es un arreglo triangular de números que te da los coeficientes exactos para expandir cualquier potencia de un binomio $(a + b)^n$:
-  - **CONSTRUCCIÓN DEL TRIÁNGULO DE PASCAL**:
-    - Fila 0 ($n=0$): **1** $\implies (a+b)^0 = 1$.
-    - Fila 1 ($n=1$): **1 1** $\implies (a+b)^1 = 1a + 1b$.
-    - Fila 2 ($n=2$): **1 2 1** $\implies (a+b)^2 = 1a^2 + 2ab + 1b^2$.
-    - Fila 3 ($n=3$): **1 3 3 1** $\implies (a+b)^3 = 1a^3 + 3a^2b + 3ab^2 + 1b^3$.
-    - Fila 4 ($n=4$): **1 4 6 4 1** $\implies (a+b)^4 = 1a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + 1b^4$.
-    - Fila 5 ($n=5$): **1 5 10 10 5 1** $\implies (a+b)^5 = a^5 + 5a^4b + 10a^3b^2 + 10a^2b^3 + 5ab^4 + b^5$.
-  - **REGLA DE CONSTRUCCIÓN**:
-    - Cada número del interior es la **SUMA de los dos números justo arriba de él** (ej: $1 + 3 = 4$, $3 + 3 = 6$).
-    - Las esquinas exteriores son **siempre 1**.
-explicacion_formal: |
-  ### Definición formal
-  Sea la matriz triangular infinita $P_{n,k}$ definida para enteros no negativos $n \ge k \ge 0$. Se define el **Triángulo de Pascal** mediante la relación de recurrencia aditiva de Pascal:
+resumen_inicial: El uso del Triángulo de Pascal para determinar coeficientes binomiales consiste en construir la matriz triangular
+  numérica donde cada elemento es la suma de los dos números superiores para hallar los coeficientes de $(a+b)^n$.
+explicacion_simple: "El **Triángulo de Pascal** es un arreglo triangular de números que te da los coeficientes exactos para\
+  \ expandir cualquier potencia de un binomio $(a + b)^n$:\n- **CONSTRUCCIÓN DEL TRIÁNGULO DE PASCAL**:\n  - Fila 0 ($n=0$):\
+  \ **1** $\\implies (a+b)^0 = 1$.\n  - Fila 1 ($n=1$): **1 1** $\\implies (a+b)^1 = 1a + 1b$.\n  - Fila 2 ($n=2$): **1 2\
+  \ 1** $\\implies (a+b)^2 = 1a^2 + 2ab + 1b^2$.\n  - Fila 3 ($n=3$): **1 3 3 1** $\\implies (a+b)^3 = 1a^3 + 3a^2b + 3ab^2\
+  \ + 1b^3$.\n  - Fila 4 ($n=4$): **1 4 6 4 1** $\\implies (a+b)^4 = 1a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + 1b^4$.\n  - Fila 5 ($n=5$):\
+  \ **1 5 10 10 5 1** $\\implies (a+b)^5 = a^5 + 5a^4b + 10a^3b^2 + 10a^2b^3 + 5ab^4 + b^5$.\n- **REGLA DE CONSTRUCCIÓN**:\n\
+  \  - Cada número del interior es la **SUMA de los dos números justo arriba de él** (ej: $1 + 3 = 4$, $3 + 3 = 6$).\n  -\
+  \ Las esquinas exteriores son **siempre 1**.\n\n![Uso del Triángulo de Pascal](/static/img/nodos/uso-del-triangulo-de-pascal-para-determinar-coeficientes-binomiales-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
+  Sea la matriz triangular infinita $P_{n,k}$ definida para enteros no negativos $n \ge k \ge 0$. Se define el **Triángulo
+  de Pascal** mediante la relación de recurrencia aditiva de Pascal:
+
 
   $$P_{n,k} = \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$$
 
+
   con condiciones de frontera iniciales $\binom{n}{0} = 1$ y $\binom{n}{n} = 1$ para todo $n \in \mathbb{N}_0$.
 
+
   ### Conexión con los Coeficientes Binomiales
-  La fila $n$-ésima del Triángulo de Pascal contiene exactamente los $n+1$ coeficientes de la expansión polinómica del binomio mónico $(a + b)^n$:
+
+  La fila $n$-ésima del Triángulo de Pascal contiene exactamente los $n+1$ coeficientes de la expansión polinómica del binomio
+  mónico $(a + b)^n$:
+
 
   $$(a + b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k$$
 
+
   ### Propiedad de Simetría Aditiva
-  El arreglo satisface la simetría axial $\binom{n}{k} = \binom{n}{n-k}$, reflejando la conmutatividad de la adición en $(a+b)^n = (b+a)^n$.
+
+  El arreglo satisface la simetría axial $\binom{n}{k} = \binom{n}{n-k}$, reflejando la conmutatividad de la adición en $(a+b)^n
+  = (b+a)^n$.
+
 
   ### Síntesis didáctica
-  Construir rápidamente el Triángulo de Pascal hasta la fila $n$ evita calcular factoriales $\frac{n!}{k!(n-k)!}$ uno por uno al expandir potencias elevadas.
-definiciones_clave: |
-  - **Triángulo de Pascal**: Arreglo geométrico numérico donde cada posición representa la combinación $\binom{n}{k}$.
-  - **Recurrencia de Pascal ($\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$)**: Regla que establece que cualquier número del triángulo es la suma de los dos números adyacentes de la fila superior.
+
+  Construir rápidamente el Triángulo de Pascal hasta la fila $n$ evita calcular factoriales $\frac{n!}{k!(n-k)!}$ uno por
+  uno al expandir potencias elevadas.
+
+  '
+definiciones_clave: '- **Triángulo de Pascal**: Arreglo geométrico numérico donde cada posición representa la combinación
+  $\binom{n}{k}$.
+
+  - **Recurrencia de Pascal ($\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$)**: Regla que establece que cualquier número
+  del triángulo es la suma de los dos números adyacentes de la fila superior.
+
   - **Fila $n$-ésima del triángulo**: Lista de $n+1$ enteros que corresponden a los coeficientes de $(a+b)^n$.
-propiedades_relaciones: |
-  - **Suma de la fila $n$-ésima**: La suma de todos los números de la fila $n$ es igual a $2^n$ (ej: fila 4 $\to 1+4+6+4+1 = 16 = 2^4$).
-  - **Simetría horizontal**: El arreglo leíble de izquierda a derecha o de derecha a izquierda produce exactamente la misma secuencia de coeficientes.
+
+  '
+propiedades_relaciones: '- **Suma de la fila $n$-ésima**: La suma de todos los números de la fila $n$ es igual a $2^n$ (ej:
+  fila 4 $\to 1+4+6+4+1 = 16 = 2^4$).
+
+  - **Simetría horizontal**: El arreglo leíble de izquierda a derecha o de derecha a izquierda produce exactamente la misma
+  secuencia de coeficientes.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Utiliza el Triángulo de Pascal para determinar la Fila 4 e expandir el binomio $(x + y)^4$.'
+  enunciado: Utiliza el Triángulo de Pascal para determinar la Fila 4 e expandir el binomio $(x + y)^4$.
   pasos:
-    - 'Paso 1: Escribimos la Fila 3: $1, 3, 3, 1$.'
-    - 'Paso 2: Generamos la Fila 4 sumando términos adyacentes:
-       - Esquina: $1$.
-       - $1 + 3 = \mathbf{4}$.
-       - $3 + 3 = \mathbf{6}$.
-       - $3 + 1 = \mathbf{4}$.
-       - Esquina: $1$.
-       - Fila 4 obtenida: **$1, 4, 6, 4, 1$**.'
-    - 'Paso 3: Escribimos las potencias decrecientes de $x$ y crecientes de $y$:
-       $x^4, x^3 y, x^2 y^2, x y^3, y^4$.'
-    - 'Paso 4: Multiplicamos cada variable por su coeficiente correspondiente de la Fila 4:
-       $1x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + 1y^4$.'
-    - 'Conclusión: La expansión es **$x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + y^4$**.'
+  - 'Paso 1: Escribimos la Fila 3: $1, 3, 3, 1$.'
+  - 'Paso 2: Generamos la Fila 4 sumando términos adyacentes: - Esquina: $1$. - $1 + 3 = \mathbf{4}$. - $3 + 3 = \mathbf{6}$.
+    - $3 + 1 = \mathbf{4}$. - Esquina: $1$. - Fila 4 obtenida: **$1, 4, 6, 4, 1$**.'
+  - 'Paso 3: Escribimos las potencias decrecientes de $x$ y crecientes de $y$: $x^4, x^3 y, x^2 y^2, x y^3, y^4$.'
+  - 'Paso 4: Multiplicamos cada variable por su coeficiente correspondiente de la Fila 4: $1x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3
+    + 1y^4$.'
+  - 'Conclusión: La expansión es **$x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + y^4$**.'
+  imagen: /static/img/nodos/uso-del-triangulo-de-pascal-para-determinar-coeficientes-binomiales-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué secuencia numérica contiene la Fila 5 del Triángulo de Pascal y a qué potencias de $2^n$ equivale su suma?'
-    choices:
-      - {text: 'La secuencia es $1, 5, 10, 10, 5, 1$ y su suma es $1 + 5 + 10 + 10 + 5 + 1 = 32 = 2^5$', is_correct: true}
-      - {text: 'La secuencia es $1, 4, 6, 4, 1$ y su suma es 16', is_correct: false}
-      - {text: 'La secuencia es $1, 5, 5, 1$ y su suma es 12', is_correct: false}
-      - {text: 'La secuencia es $1, 6, 15, 20, 15, 6, 1$ y su suma es 64', is_correct: false}
-    explanation: 'La alternativa correcta es ''La secuencia es $1, 5, 10, 10, 5, 1$ y su suma es $1 + 5 + 10 + 10 + 5 + 1 = 32 = 2^5$''. Fila 5 del Triángulo de Pascal y propiedad de suma $2^5 = 32$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al construir la Fila 6 del Triángulo de Pascal a partir de la Fila 5 ($1, 5, 10, 10, 5, 1$), ¿cuál es el coeficiente numérico central?'
-    choices:
-      - {text: 'El coeficiente central es 20, obtenido de la suma $10 + 10 = 20$', is_correct: true}
-      - {text: 'El coeficiente central es 15', is_correct: false}
-      - {text: 'El coeficiente central es 10', is_correct: false}
-      - {text: 'El coeficiente central es 25', is_correct: false}
-    explanation: 'La alternativa correcta es ''El coeficiente central es 20, obtenido de la suma $10 + 10 = 20$''. Recurrencia aditiva de Pascal $10 + 10 = 20$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué secuencia numérica contiene la Fila 5 del Triángulo de Pascal y a qué potencias de $2^n$ equivale su suma?
+  choices:
+  - text: La secuencia es $1, 5, 10, 10, 5, 1$ y su suma es $1 + 5 + 10 + 10 + 5 + 1 = 32 = 2^5$
+    is_correct: true
+  - text: La secuencia es $1, 4, 6, 4, 1$ y su suma es 16
+    is_correct: false
+  - text: La secuencia es $1, 5, 5, 1$ y su suma es 12
+    is_correct: false
+  - text: La secuencia es $1, 6, 15, 20, 15, 6, 1$ y su suma es 64
+    is_correct: false
+  explanation: La alternativa correcta es 'La secuencia es $1, 5, 10, 10, 5, 1$ y su suma es $1 + 5 + 10 + 10 + 5 + 1 = 32
+    = 2^5$'. Fila 5 del Triángulo de Pascal y propiedad de suma $2^5 = 32$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al construir la Fila 6 del Triángulo de Pascal a partir de la Fila 5 ($1, 5, 10, 10, 5, 1$), ¿cuál es el coeficiente
+    numérico central?
+  choices:
+  - text: El coeficiente central es 20, obtenido de la suma $10 + 10 = 20$
+    is_correct: true
+  - text: El coeficiente central es 15
+    is_correct: false
+  - text: El coeficiente central es 10
+    is_correct: false
+  - text: El coeficiente central es 25
+    is_correct: false
+  explanation: La alternativa correcta es 'El coeficiente central es 20, obtenido de la suma $10 + 10 = 20$'. Recurrencia
+    aditiva de Pascal $10 + 10 = 20$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Iniciar el arreglo con la fila inicial 1.'
-  - 'Paso 2: Construir cada nueva fila colocando unos en los extremos y sumando las parejas superiores adyacentes.'
-  - 'Paso 3: Identificar la fila $n$ que corresponde al exponente del binomio $(a+b)^n$.'
-  - 'Paso 4: Asignar cada coeficiente de la fila a la combinación graduada de variables $a^{n-k} b^k$.'
-errores_correccion: |
-  - **Error 1:** Intercambiar la Fila n contando las filas desde 1 en lugar de iniciar desde n=0. **Cómo corregirlo:** La Fila con coeficientes $1, 2, 1$ corresponde a **$n=2$ (la segunda fila interna después de $n=0$ y $n=1$)**.
-  - **Error 2:** Multiplicar los números superiores en lugar de sumarlos al construir el triángulo. **Cómo corregirlo:** En la recurrencia de Pascal **LOS DOS NÚMEROS SUPERIORES SE SUMAN ($1 + 3 = 4$)**.
+- 'Paso 1: Iniciar el arreglo con la fila inicial 1.'
+- 'Paso 2: Construir cada nueva fila colocando unos en los extremos y sumando las parejas superiores adyacentes.'
+- 'Paso 3: Identificar la fila $n$ que corresponde al exponente del binomio $(a+b)^n$.'
+- 'Paso 4: Asignar cada coeficiente de la fila a la combinación graduada de variables $a^{n-k} b^k$.'
+errores_correccion: '- **Error 1:** Intercambiar la Fila n contando las filas desde 1 en lugar de iniciar desde n=0. **Cómo
+  corregirlo:** La Fila con coeficientes $1, 2, 1$ corresponde a **$n=2$ (la segunda fila interna después de $n=0$ y $n=1$)**.
+
+  - **Error 2:** Multiplicar los números superiores en lugar de sumarlos al construir el triángulo. **Cómo corregirlo:** En
+  la recurrencia de Pascal **LOS DOS NÚMEROS SUPERIORES SE SUMAN ($1 + 3 = 4$)**.
+
+  '
 ejemplos:
-  - titulo: 'Suma de la fila de Pascal'
-    enunciado: 'Para la Fila 3 ($1, 3, 3, 1$), ¿es la suma de sus términos igual a $2^3 = 8$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - '1. $1 + 3 + 3 + 1 = 8$.'
-      - '2. $2^3 = 8$.'
-  - titulo: 'Construcción de Fila 4'
-    enunciado: 'A partir de $1, 3, 3, 1$, ¿se obtiene la Fila 4 como $1, 4, 6, 4, 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - '1. $1+3=4, 3+3=6, 3+1=4$.'
-      - '2. Fila 4: $1, 4, 6, 4, 1$.'
-  - titulo: 'Simetría de coeficientes'
-    enunciado: 'En la Fila 5 ($1, 5, 10, 10, 5, 1$), ¿son los coeficientes idénticos leídos de izquierda a derecha que de derecha a izquierda?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, por la propiedad $\binom{n}{k} = \binom{n}{n-k}$.'
-  - titulo: 'Número de coeficientes'
-    enunciado: 'Para $(a+b)^n$, ¿contiene la fila del Triángulo de Pascal exactamente $n+1$ números?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, incluye las combinaciones desde $k=0$ hasta $k=n$.'
+- titulo: Suma de la fila de Pascal
+  enunciado: Para la Fila 3 ($1, 3, 3, 1$), ¿es la suma de sus términos igual a $2^3 = 8$?
+  respuesta: Sí
+  solucion_pasos:
+  - 1. $1 + 3 + 3 + 1 = 8$.
+  - 2. $2^3 = 8$.
+- titulo: Construcción de Fila 4
+  enunciado: A partir de $1, 3, 3, 1$, ¿se obtiene la Fila 4 como $1, 4, 6, 4, 1$?
+  respuesta: Sí
+  solucion_pasos:
+  - 1. $1+3=4, 3+3=6, 3+1=4$.
+  - '2. Fila 4: $1, 4, 6, 4, 1$.'
+- titulo: Simetría de coeficientes
+  enunciado: En la Fila 5 ($1, 5, 10, 10, 5, 1$), ¿son los coeficientes idénticos leídos de izquierda a derecha que de derecha
+    a izquierda?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por la propiedad $\binom{n}{k} = \binom{n}{n-k}$.
+- titulo: Número de coeficientes
+  enunciado: Para $(a+b)^n$, ¿contiene la fila del Triángulo de Pascal exactamente $n+1$ números?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, incluye las combinaciones desde $k=0$ hasta $k=n$.
 errores_frecuentes:
-  - 'Intercambiar el índice de la fila n por no contabilizar la fila inicial n=0.'
-  - 'Multiplicar los números superiores en lugar de sumarlos al generar los elementos del triángulo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El número 1 en las esquinas exteriores de cada fila no es colocado.'
-  - 'Invertir el orden de los coeficientes al asociarlos con las potencias decrecientes.'
+- Intercambiar el índice de la fila n por no contabilizar la fila inicial n=0.
+- Multiplicar los números superiores en lugar de sumarlos al generar los elementos del triángulo.
+- El número 1 en las esquinas exteriores de cada fila no es colocado.
+- Invertir el orden de los coeficientes al asociarlos con las potencias decrecientes.
+- Olvidar que la suma de todos los elementos de la fila n es igual a 2ⁿ.
 afirmaciones_verdaderas:
-  - 'La fila $n$ del Triángulo de Pascal contiene los $n+1$ coeficientes binomiales de $(a+b)^n$.'
-  - 'Cada número interno del triángulo se obtiene mediante la suma aditiva de los dos números situados inmediatamente arriba de él.'
-al_terminar_debes_poder: 'Construir el Triángulo de Pascal hasta cualquier fila $n$ y extraer los coeficientes para expandir potencias binomiales.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La fila $n$ del Triángulo de Pascal contiene los $n+1$ coeficientes binomiales de $(a+b)^n$.
+- Cada número interno del triángulo se obtiene mediante la suma aditiva de los dos números situados inmediatamente arriba
+  de él.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/uso-del-triangulo-de-pascal-para-determinar-coeficientes-binomiales-resumen.svg)
+
+
+  QUÉ: Construir el Triángulo de Pascal hasta cualquier fila $n$ y extraer los coeficientes para expandir potencias binomiales.
+
+  CÓMO: Aplicar la relación de recurrencia $\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}$ sumando elementos adyacentes
+  de la fila superior e iniciando desde la fila $n=0$.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

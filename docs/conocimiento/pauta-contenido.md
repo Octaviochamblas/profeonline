@@ -136,8 +136,13 @@ ejemplo_guiado:
 #    `<tspan baseline-shift="super" font-size="70%">...</tspan>` para superíndices (o variantes con estilo),
 #    garantizando una tipografía matemática profesional, estética y perfectamente renderizada en navegadores.
 # 5. Margen de seguridad: Ningún texto puede quedar a menos de 15px de los bordes del canvas (`viewBox`) o de su caja contenedora.
-# 6. Prohibido ubicar textos largos con `text-anchor="start"` en posiciones `x > 450` dentro de canvas de 800px.
-# 7. Textos multilinea: Dividir textos largos en múltiples `<tspan>` o `<text>` apilados verticalmente con $\Delta y \ge 20\text{px}$.
+# 7. Textos multilinea y Salto Automático (Zero-Clipping):
+#    Dado que SVG 1.1 `<text>` no realiza salto de línea automático, está ESTRICTAMENTE PROHIBIDO
+#    colocar textos explicativos largos en un solo `<text>` plano sin saltos. Todo texto descriptivo,
+#    definición o aviso debe dividirse obligatoriamente en múltiples elementos `<tspan x="..." y="...">`
+#    con límites estrictos de caracteres por línea ($\le 68$ caracteres para cajas de ancho completo
+#    de 640px y $\le 34$ caracteres para tarjetas de 305px), recalculando la altura del contenedor
+#    y la posición $Y$ de las cajas siguientes.
 # 8. Fracciones Matemáticas Verticales en SVG:
 #    PROHIBIDO usar notación plana horizontal de programador con barra inclinada (`a / b`, `1 / (√3 - 1)`,
 #    `6 / √3`, `(a·d + b·c) / 12`, `(3² - 5) = 4`) dentro de diagramas SVG.
@@ -145,7 +150,13 @@ ejemplo_guiado:
 #    apilado: un elemento `<text>` para el numerador en la parte superior, una línea horizontal vectorial
 #    `<line x1="..." y1="..." x2="..." y2="..." stroke="..." stroke-width="1.5"/>` en el medio, y un elemento
 #    `<text>` para el denominador en la parte inferior, con los signos operativos ($\cdot$, $=$, $+$, $-$)
-#    centrados respecto a la barra de fracción. En contenido YAML, usar siempre $\LaTeX$ vertical $\frac{a}{b}$ en `$...$`.
+# ⚠️ SÉPTIMA REGLA DURA (agregada 2026-08-19): Estándar LaTeX Vectorial en Imágenes SVG (Computer Modern)
+# Toda fórmula matemática o expresión con radicales, fracciones, potencias o variables dentro de los diagramas
+# e infografías SVG (`static/img/nodos/*.svg`) DEBE renderizarse con tipografía formal $\LaTeX$ (Computer Modern).
+# Queda ESTRICTAMENTE PROHIBIDO usar notación plana de programador como `3√(x)`, `4x^(2/3)`, `ⁿ√(xᵐ)`, `x^(m/n)`.
+# Al generar los fragmentos con el motor de Python (`matplotlib.mathtext`), se DEBE asegurar apagar totalmente los
+# ejes (`ax.set_axis_off()`) para evitar la aparición accidental de marcas de graduación o números en el origen `(0, 0)`.
+#
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal
     question: "Pregunta conceptual sobre $a^2 + b^2$ explicada arriba."
@@ -236,6 +247,7 @@ estado: publicado    # o borrador
 > 2. **CÓMO (Mecanismo explícito):** El procedimiento matemático o algoritmo técnico específico para resolverlo (ej: *igualando a cero el binomio interno $(x-h)=0$*, *excluyendo las raíces del denominador*, *clasificando en orden decreciente de exponentes y sumando los coeficientes de los términos semejantes*).
 > 3. **SIN AMBIGÜEDAD (Precisión de objetos y operaciones):** El CÓMO debe especificar con claridad los objetos matemáticos involucrados (ej. *exponentes*, *grados*, *coeficientes numéricos*, *bases*) y la operación matemática exacta ejecutada, evitando abstracciones vagas.
 
+> **Nota — signos de moneda y montos en dinero en YAML (KaTeX):** Todo monto monetario con signo peso (ej: $\$500.000$) DEBE estar estrictamente delimitado dentro de un bloque LaTeX como `$\$500.000$` o `$\$500.000\text{ pesos}$`. Está **estrictamente prohibido escribir `\$500.000` o `$500.000` suelto en texto plano sin cerrar**, ya que Markdown consume la barra invertida (`\`) y el renderizador de KaTeX en el cliente toma el signo `$` como apertura de fórmula matemática, devorando todo el texto en español siguiente (eliminando espacios, volviendo cursivas las palabras y convirtiendo guiones bajos en subíndices).
 
 ---
 

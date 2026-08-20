@@ -1,108 +1,121 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.TERMINO_GENERAL
-resumen_inicial: 'La fórmula del término general de una progresión geométrica es $a_n = a_1 \cdot r^{n-1}$, la cual calcula directamente el valor del término en la posición $n$ conociendo el primer término $a_1$ y la razón geométrica $r$.'
+resumen_inicial: 'La fórmula del término general de una progresión geométrica $a_n = a_1 \cdot r^{n-1}$ calcula directamente cualquier término multiplicando $a_1$ por la razón $r$ elevada a la potencia $(n - 1)$.'
 explicacion_simple: |
-  Para hallar cualquier término de una progresión geométrica (por ejemplo, el término $10$) sin tener que multiplicar uno a uno:
-  - Partes desde el **primer término ($a_1$)**.
-  - Como para llegar a la casilla $n$ debes multiplicar por la razón $r$ exactamente **$(n - 1)$ veces**, elevas la razón a la potencia $(n - 1)$.
-  - La fórmula es:
+  Para calcular cualquier número de una progresión geométrica sin multiplicar uno por uno:
+  - Usamos la **fórmula del término general**:
     $$a_n = a_1 \cdot r^{n-1}$$
-  Por ejemplo, si $a_1 = 5$ y $r = 2$, para saber el término $a_6$:
-  $a_6 = 5 \cdot 2^{6-1} = 5 \cdot 2^5 = 5 \cdot 32 = 160$.
+  - ¿Por qué el exponente es $(n - 1)$?
+    - Para el $1^{\circ}$ término ($n=1$): $r^{1-1} = r^0 = 1 \implies a_1$ (sin multiplicar por $r$).
+    - Para el $2^{\circ}$ término ($n=2$): multiplicas por $r$ una vez ($r^1$).
+    - Para el término $n$: multiplicas por $r$ exactamente **$(n - 1)$ veces** ($r^{n-1}$).
+  - Por ejemplo, si $a_1 = 3$ y $r = 2$, el término $8$ es:
+    $$a_8 = 3 \cdot 2^{8-1} = 3 \cdot 2^7 = 3 \cdot 128 = 384$$
+
+  ![Aplicación de la fórmula del término general de una PG](/static/img/nodos/aplicacion-de-la-formula-del-termino-general-de-una-progresion-geometrica-intro.svg)
 explicacion_formal: |
-  ### Definición formal
-  El **término $n$-ésimo de una progresión geométrica** de primer término $a_1 \in \mathbb{R} \setminus \{0\}$ y razón $r \in \mathbb{R} \setminus \{0\}$ viene dado por la ecuación exponencial discreta:
-  $$a_n = a_1 \cdot r^{n-1} \quad (\forall n \in \mathbb{N})$$
-
-  ### Demostración inductiva por producto continuado
-  - $a_1 = a_1 \cdot r^0 = a_1 \cdot 1$
-  - $a_2 = a_1 \cdot r^1$
+  ### Demostración inductiva
+  Por definición recurrente de una PG:
+  - $a_1 = a_1$
+  - $a_2 = a_1 \cdot r$
   - $a_3 = a_2 \cdot r = (a_1 \cdot r) \cdot r = a_1 \cdot r^2$
-  - $\dots$
-  - $a_n = a_1 \cdot r^{n-1}$
+  - $a_4 = a_3 \cdot r = (a_1 \cdot r^2) \cdot r = a_1 \cdot r^3$
+  - Por inducción completa sobre $n \in \mathbb{N}$:
+    $$a_n = a_1 \cdot r^{n-1}$$
 
-  ### Generalización entre posiciones arbitrarias
-  Para cualquier par de posiciones $n$ y $k$:
-  $$a_n = a_k \cdot r^{n-k}$$
+  ### Protocolo de Jerarquía Operacional
+  1. **Evaluar el exponente**: Calcular $k = n - 1$.
+  2. **Calcular la potencia**: Evaluar $r^k = r^{n-1}$.
+  3. **Efectuar el producto**: Multiplicar $a_1 \cdot (r^{n-1})$.
+  **Regla fundamental**: $a_1 \cdot r^{n-1} \neq (a_1 \cdot r)^{n-1}$.
 
   ### Síntesis didáctica
   - Ecuación canónica: $a_n = a_1 \cdot r^{n-1}$.
-  - Exponente de la razón: Siempre equivale al número de posición menos 1 ($(n - 1)$).
+  - Comportamiento: Función exponencial de base $r$.
 definiciones_clave: |
-  - **Fórmula del término general de P.G.**: $a_n = a_1 \cdot r^{n-1}$.
-  - **Exponente posicional ($(n-1)$)**: Cantidad de factores de multiplicación acumulados desde $a_1$.
-  - **Potencia de la razón ($r^{n-1}$)**: Factor de escala que amplifica o reduce el término inicial $a_1$.
+  - **Fórmula del término general**: Ecuación explícita que determina el valor de $a_n$ a partir de $a_1$, $r$ y $n$.
+  - **Exponente posicional ($(n-1)$)**: Número de factores de la razón acumulados desde el término inicial.
+  - **Base de la potencia ($r$)**: Razón geométrica sobre la cual actúa el exponente.
 propiedades_relaciones: |
-  - **Crecimiento exponencial discreto**: El término $a_n$ varía en función exponencial del subíndice de posición $n$.
-  - **Prioridad de operaciones**: Al calcular $a_1 \cdot r^{n-1}$, primero se debe resolver la potencia $r^{n-1}$ y posteriormente multiplicar por el coeficiente $a_1$.
+  - **Crecimiento exponencial rápido**: Para $|r| > 1$, la magnitud de los términos supera a cualquier progresión aritmética para valores suficientemente grandes de $n$.
+  - **Tratamiento de signos**: Si $r < 0$, el signo del término $a_n$ depende de la paridad de $(n-1)$: positivo si $(n-1)$ es par, negativo si $(n-1)$ es impar (para $a_1 > 0$).
 ejemplo_guiado:
-  enunciado: 'Dada la progresión geométrica $3, 6, 12, 24, \dots$, determina la fórmula de su término general $a_n$ y calcula el valor del término en la posición $n=8$.'
+  enunciado: 'En la progresión geométrica $(2, 6, 18, 54, \dots)$, determina el término general $a_n$ y calcula el valor del término en la posición $n = 7$.'
+  imagen: '/static/img/nodos/aplicacion-de-la-formula-del-termino-general-de-una-progresion-geometrica-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos el primer término $a_1 = 3$ y la razón $r = \frac{6}{3} = 2$.'
-    - 'Paso 2: Escribimos la fórmula del término general: $a_n = 3 \cdot 2^{n-1}$.'
-    - 'Paso 3: Para hallar $a_8$, sustituimos $n=8$: $a_8 = 3 \cdot 2^{8-1} = 3 \cdot 2^7$.'
-    - 'Paso 4: Evaluamos la potencia $2^7 = 128$ y multiplicamos: $a_8 = 3 \cdot 128 = 384$. El octavo término es **$384$**.'
+    - 'Paso 1: Identificamos el primer término: $a_1 = 2$.'
+    - 'Paso 2: Calculamos la razón geométrica: $r = \frac{6}{2} = 3$.'
+    - 'Paso 3: Construimos la fórmula general: $a_n = 2 \cdot 3^{n-1}$.'
+    - 'Paso 4: Evaluamos para $n = 7$: $a_7 = 2 \cdot 3^{7-1} = 2 \cdot 3^6$.'
+    - 'Paso 5: Calculamos la potencia $3^6 = 729$ y multiplicamos: $a_7 = 2 \cdot 729 = **1.458$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Por qué en la fórmula del término general de una P.G. ($a_n = a_1 \cdot r^{n-1}$) la razón $r$ está elevada a la potencia $(n - 1)$?'
+    question: '¿Por qué en la fórmula del término general de una PG el exponente de la razón es $(n - 1)$ en lugar de $n$?'
     choices:
-      - {text: 'Porque para llegar a la casilla $n$ desde la primera casilla se multiplica por la razón exactamente $(n - 1)$ veces', is_correct: true}
-      - {text: 'Porque se debe restar 1 al exponente por regla de los números negativos', is_correct: false}
-      - {text: 'Porque el primer término siempre es igual a 1', is_correct: false}
-      - {text: 'Porque la razón es la mitad del primer término', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque para llegar a la casilla $n$ desde la primera casilla se multiplica por la razón exactamente $(n - 1)$ veces''. De $a_1$ a $a_n$ hay $n-1$ pasos multiplicativos.'
+      - {text: 'Porque el primer término $a_1$ ya está fijado y para llegar a la posición $n$ se multiplica por $r$ solo $(n-1)$ veces', is_correct: true}
+      - {text: 'Porque las potencias siempre deben llevar números pares', is_correct: false}
+      - {text: 'Porque el término $a_0$ vale cero', is_correct: false}
+      - {text: 'Para que el resultado siempre sea positivo', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque el primer término $a_1$ ya está fijado y para llegar a la posición $n$ se multiplica por $r$ solo $(n-1)$ veces''. Para $n=1$, $r^{1-1} = r^0 = 1$, dando $a_1$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una progresión geométrica $a_1 = 5$ y $r = 3$, ¿cuál es el valor del cuarto término ($a_4$)?'
+    question: 'Si una PG tiene $a_1 = 4$ y razón $r = 2$, ¿cuál es el valor del quinto término $a_5$?'
     choices:
-      - {text: '$a_4 = 135$, calculando $5 \cdot 3^{4-1} = 5 \cdot 3^3 = 5 \cdot 27 = 135$', is_correct: true}
-      - {text: '$a_4 = 405$, elevando a la potencia 4 en vez de 3', is_correct: false}
-      - {text: '$a_4 = 60$, multiplicando $(5 \cdot 3) \cdot 4$', is_correct: false}
-      - {text: '$a_4 = 45$, multiplicando $5 \cdot 9$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_4 = 135$, calculando $5 \cdot 3^{4-1} = 5 \cdot 3^3 = 5 \cdot 27 = 135$''. $5 \cdot 27 = 135$.'
+      - {text: '$64$, calculando $4 \cdot 2^{5-1} = 4 \cdot 2^4 = 4 \cdot 16 = 64$', is_correct: true}
+      - {text: '$128$, usando exponente 5 en lugar de 4', is_correct: false}
+      - {text: '$32$', is_correct: false}
+      - {text: '$40$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$64$, calculando $4 \cdot 2^{5-1} = 4 \cdot 2^4 = 4 \cdot 16 = 64$''. Se evalúa primero $2^4 = 16$ y luego $4 \cdot 16 = 64$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer término $a_1$ y la razón geométrica $r$.'
-  - 'Paso 2: Escribir la fórmula canónica $a_n = a_1 \cdot r^{n-1}$.'
-  - 'Paso 3: Sustituir la posición $n$ requerida y restar $1$ al exponente para obtener $(n - 1)$.'
-  - 'Paso 4: Resolver la potencia $r^{n-1}$ en primer lugar y multiplicar por $a_1$ para obtener el valor del término.'
+  - 'Paso 1: Identificar el primer término $a_1$, la razón geométrica $r$ y la posición $n$.'
+  - 'Paso 2: Restar 1 a la posición para obtener el exponente: $k = n - 1$.'
+  - 'Paso 3: Elevar la razón a dicho exponente: $r^{n-1}$.'
+  - 'Paso 4: Multiplicar el resultado de la potencia por el primer término $a_1$.'
 errores_correccion: |
-  - **Error 1:** Multiplicar $a_1 \cdot r$ antes de elevar a la potencia $(n-1)$ (ej: en $5 \cdot 2^{n-1}$, calcular $(5 \cdot 2)^{n-1} = 10^{n-1}$). **Cómo corregirlo:** La jerarquía de operaciones exige **evaluar la POTENCIA $r^{n-1}$ primero**, y al final multiplicar por $a_1$.
-  - **Error 2:** Usar la posición $n$ como exponente en lugar de $(n-1)$ (ej: escribir $a_n = a_1 \cdot r^n$). **Cómo corregirlo:** El exponente correcto es **$(n-1)$**: $a_n = a_1 \cdot r^{n-1}$.
+  - **Error 1:** Multiplicar $a_1$ por $r$ antes de elevar a la potencia (calcular $(a_1 \cdot r)^{n-1}$). **Cómo corregirlo:** Por jerarquía de operaciones, **primero se calcula la potencia $r^{n-1}$** y luego se multiplica por $a_1$.
+  - **Error 2:** Usar exponente $n$ en lugar de $(n - 1)$ (escribir $a_n = a_1 \cdot r^n$). **Cómo corregirlo:** La fórmula del término general **siempre lleva exponente $(n - 1)$**.
 ejemplos:
-  - titulo: 'Cálculo de a5 en P.G.'
-    enunciado: 'Para $a_1 = 4$ y $r = 3$, ¿el término $a_5$ es $324$?'
+  - titulo: 'Cálculo de término en PG creciente'
+    enunciado: 'Para $a_1 = 5$ y $r = 3$, ¿cuál es el cuarto término $a_4$?'
     alternativas:
-      - 'Sí, pues $4 \cdot 3^4 = 4 \cdot 81 = 324$'
-      - 'No, es $972$'
-      - 'No, es $120$'
-    respuesta: 'Sí, pues $4 \cdot 3^4 = 4 \cdot 81 = 324$'
+      - '$135$'
+      - '$405$'
+      - '$45$'
+    respuesta: '$135$'
     solucion_pasos:
-      - '1. $a_5 = 4 \cdot 3^{5-1} = 4 \cdot 3^4$.'
-      - '2. $3^4 = 81 \implies 4 \cdot 81 = 324$.'
-  - titulo: 'Cálculo de a6 con razón fraccionaria'
-    enunciado: 'Para $a_1 = 64$ y $r = 1/2$, ¿el término $a_6$ es $64 \cdot (1/2)^5 = 64 \cdot (1/32) = 2$?'
+      - '1. $a_4 = 5 \cdot 3^{4-1} = 5 \cdot 3^3 = 5 \cdot 27 = 135$.'
+  - titulo: 'Cálculo de término en PG decreciente'
+    enunciado: 'Para $a_1 = 64$ y $r = \frac{1}{2}$, ¿cuál es el sexto término $a_6$?'
+    alternativas:
+      - '$2$'
+      - '$4$'
+      - '$1$'
+    respuesta: '$2$'
+    solucion_pasos:
+      - '1. $a_6 = 64 \cdot (1/2)^5 = 64 \cdot (1/32) = 2$.'
+  - titulo: 'Signo alternado con potencia par'
+    enunciado: '¿Para $a_1 = 3$ y $r = -2$, el término $a_5$ es positivo ($a_5 = +48$)?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $64 \cdot (1/32) = 2$.'
-  - titulo: 'Cálculo de a4 con razón negativa'
-    enunciado: 'Para $a_1 = 3$ y $r = -2$, ¿el término $a_4$ es $3 \cdot (-2)^3 = 3 \cdot (-8) = -24$?'
-    respuesta: 'Sí'
+      - '1. $a_5 = 3 \cdot (-2)^{5-1} = 3 \cdot (-2)^4 = 3 \cdot 16 = 48$.'
+  - titulo: 'Jerarquía de operaciones'
+    enunciado: '¿La expresión $2 \cdot 3^4$ es igual a $(2 \cdot 3)^4 = 6^4$?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí. Un exponente impar mantiene el signo negativo: $-24$.'
-  - titulo: 'Término a10 con razón 1'
-    enunciado: 'Para $a_1 = 9$ y $r = 1$, ¿$a_{10} = 9 \cdot 1^9 = 9$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $9 \cdot 1 = 9$.'
+      - '1. $2 \cdot 3^4 = 2 \cdot 81 = 162$, mientras que $6^4 = 1.296$.'
 errores_frecuentes:
-  - 'Multiplicar el primer término por la razón antes de calcular la elevación a la potencia.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Colocar la posición $n$ como exponente sin restar 1 en la fórmula del término general.'
-  - 'Invertir el signo de la base de la potencia al trabajar con razones negativas elevadas a exponentes pares.'
+  - 'En la fórmula del término general de una PG se multiplica $a_1$ por $r$ antes de calcular la potencia.'
+  - 'El exponente de la razón en la fórmula del término general es $n$ en lugar de $(n - 1)$.'
+  - 'Una razón negativa elevada a un exponente par produce un resultado numérico negativo.'
+  - 'Las progresiones geométricas con primer término fraccionario no admiten evaluación mediante la fórmula general.'
+  - 'El primer término $a_1$ se obtiene evaluando la fórmula general con exponente $n=1$ en lugar de $n-1=0$.'
 afirmaciones_verdaderas:
-  - 'La fórmula del término general de una progresión geométrica es $a_n = a_1 \cdot r^{n-1}$.'
-  - 'En la evaluación de $a_n = a_1 \cdot r^{n-1}$, se resuelve primero la potencia $r^{n-1}$ antes de multiplicar por el término inicial $a_1$.'
-al_terminar_debes_poder: 'Aplicar la fórmula $a_n = a_1 \cdot r^{n-1}$ para hallar cualquier término de una progresión geométrica.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El término general de toda progresión geométrica es $a_n = a_1 \cdot r^{n-1}$, donde $(n-1)$ representa el número de veces que se multiplica por la razón.'
+  - 'Por jerarquía operacional matemática, en $a_1 \cdot r^{n-1}$ se evalúa primero la potencia $r^{n-1}$ y luego el producto por $a_1$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/aplicacion-de-la-formula-del-termino-general-de-una-progresion-geometrica-resumen.svg)
+
+  QUÉ: Aplicar y evaluar la fórmula del término general $a_n = a_1 \cdot r^{n-1}$ en progresiones geométricas.
+  CÓMO: Resolver la potencia $r^{n-1}$ respetando la prioridad sobre el producto y las leyes de los signos exponenciales.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

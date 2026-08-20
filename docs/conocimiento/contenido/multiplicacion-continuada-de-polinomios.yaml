@@ -1,128 +1,136 @@
 semantic_id: MAT.ALG.MULT_POLINOMIOS.MULTIPLES_POLINOMIOS
-resumen_inicial: 'La multiplicación continuada de polinomios consiste en resolver el producto de tres o más polinomios multiplicando secuencialmente de a dos factores y reduciendo los términos semejantes intermedios.'
-explicacion_simple: |
-  Cuando debes multiplicar **tres o más polinomios en cadena** (ej: $(x + 1) \cdot (x + 2) \cdot (x + 3)$):
-  - **REGLA DE RESOLUCIÓN POR ETAPAS**: **Multiplica los dos primeros factores, reduce el resultado, y luego multiplica por el tercer factor**.
-  - **Paso a paso**:
-    1. **Etapa 1**: Multiplica el primer polinomio por el segundo:
-       - $(x + 1)(x + 2) = x^2 + 2x + 1x + 2 = \mathbf{x^2 + 3x + 2}$.
-    2. **Etapa 2**: Encierra ese resultado intermedio entre paréntesis y multiplícalo por el tercer polinomio:
-       - $(\mathbf{x^2 + 3x + 2}) \cdot (x + 3)$.
-    3. **Etapa 3**: Distribuye todos los términos de la suma intermedia sobre el tercer polinomio y reduce:
-       - $x^2(x + 3) + 3x(x + 3) + 2(x + 3) = x^3 + 3x^2 + 3x^2 + 9x + 2x + 6$.
-       - Reducción final: **$x^3 + 6x^2 + 11x + 6$**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La multiplicación continuada de polinomios consiste en resolver el producto de tres o más polinomios multiplicando secuencialmente de a dos factores y reduciendo los términos semejantes intermedios.
+explicacion_simple: "Cuando debes multiplicar **tres o más polinomios en cadena** (ej: $(x + 1) \\cdot (x + 2) \\cdot (x + 3)$):\n- **REGLA DE RESOLUCIÓN POR ETAPAS**: **Multiplica los dos primeros factores, reduce el resultado, y luego multiplica por el tercer factor**.\n- **Paso a paso**:\n  1. **Etapa 1**: Multiplica el primer polinomio por el segundo:\n     - $(x + 1)(x + 2) = x^2 + 2x + 1x + 2 = \\mathbf{x^2 + 3x + 2}$.\n  2. **Etapa 2**: Encierra ese resultado intermedio entre paréntesis y multiplícalo por el tercer polinomio:\n     - $(\\mathbf{x^2 + 3x + 2}) \\cdot (x + 3)$.\n  3. **Etapa 3**: Distribuye todos los términos de la suma intermedia sobre el tercer polinomio y reduce:\n     - $x^2(x + 3) + 3x(x + 3) + 2(x + 3) = x^3 + 3x^2 + 3x^2 + 9x + 2x + 6$.\n     - Reducción final: **$x^3 + 6x^2 + 11x + 6$**.\n\n![Multiplicación Continuada de Polinomios](/static/img/nodos/multiplicacion-continuada-de-polinomios-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea la secuencia de $k$ polinomios $\{P_j(x)\}_{j=1}^k$ en $\mathbb{R}[x]$. La **multiplicación continuada de polinomios** se define inductivamente aplicando la asociatividad del anillo:
+
 
   $$\prod_{j=1}^k P_j(x) = \left( \dots \left( P_1(x) \cdot P_2(x) \right) \cdot P_3(x) \dots \right) \cdot P_k(x)$$
 
+
   donde cada iteración $I_s(x) = I_{s-1}(x) \cdot P_s(x)$ (con $I_1 = P_1$) requiere la proyección reductiva de términos semejantes para mantener la cota de productos parciales en la siguiente fase.
 
+
   ### Cota de Grado del Producto Continuado
+
   Por la propiedad aditiva del grado en productos sobre $\mathbb{R}[x]$:
+
 
   $$\operatorname{deg}\left( \prod_{j=1}^k P_j(x) \right) = \sum_{j=1}^k \operatorname{deg}(P_j(x))$$
 
+
   ### Síntesis didáctica
+
   Reducir términos semejantes al final de cada etapa intermedia minimiza la cantidad de multiplicaciones parciales necesarias en la fase posterior.
-definiciones_clave: |
-  - **Multiplicación continuada de polinomios**: Producto n-ario compuesto por tres o más expresiones polinómicas encadenadas.
+
+  '
+definiciones_clave: '- **Multiplicación continuada de polinomios**: Producto n-ario compuesto por tres o más expresiones polinómicas encadenadas.
+
   - **Polinomio resultado intermedio ($I_s$)**: Expresión expandida y reducida generada tras multiplicar el acumulado por el siguiente factor.
+
   - **Reducción aditiva por etapa**: Eliminación de monomios semejantes entre pasos para evitar la explosión combinatoria de sumandos.
-propiedades_relaciones: |
-  - **Asociatividad global**: Multiplicar $P_1(P_2 P_3)$ o $(P_1 P_2)P_3$ produce exactamente el mismo polinomio final.
+
+  '
+propiedades_relaciones: '- **Asociatividad global**: Multiplicar $P_1(P_2 P_3)$ o $(P_1 P_2)P_3$ produce exactamente el mismo polinomio final.
+
   - **Preservación de raíces**: El conjunto de raíces del polinomio producto continuado es la unión de las raíces de cada polinomio factor.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Calcula el producto continuado de los tres polinomios $(x - 1) \cdot (x + 2) \cdot (2x - 3)$.'
+  enunciado: Calcula el producto continuado de los tres polinomios $(x - 1) \cdot (x + 2) \cdot (2x - 3)$.
   pasos:
-    - 'Paso 1: Multiplicamos los dos primeros binomios $(x - 1) \cdot (x + 2)$:
-       - $x \cdot x = x^2$
-       - $x \cdot 2 = +2x$
-       - $-1 \cdot x = -1x$
-       - $-1 \cdot 2 = -2$.'
-    - 'Paso 2: Reducimos el resultado intermedio:
-       $x^2 + 2x - 1x - 2 = \mathbf{x^2 + x - 2}$.'
-    - 'Paso 3: Planteamos el producto del resultado intermedio por el tercer polinomio:
-       $(x^2 + x - 2) \cdot (2x - 3)$.'
-    - 'Paso 4: Distribuimos los 3 términos del trinomio intermedio sobre $(2x - 3)$:
-       - $x^2 \cdot (2x - 3) = \mathbf{2x^3 - 3x^2}$.
-       - $+x \cdot (2x - 3) = \mathbf{+2x^2 - 3x}$.
-       - $-2 \cdot (2x - 3) = \mathbf{-4x + 6}$.'
-    - 'Paso 5: Reunimos y reducimos términos semejantes:
-       - Clase $x^3$: $\mathbf{2x^3}$.
-       - Clase $x^2$: $-3x^2 + 2x^2 = \mathbf{-x^2}$.
-       - Clase $x$: $-3x - 4x = \mathbf{-7x}$.
-       - Constante: $\mathbf{+6}$.'
-    - 'Conclusión: El polinomio producto final es **$2x^3 - x^2 - 7x + 6$**.'
+  - 'Paso 1: Multiplicamos los dos primeros binomios $(x - 1) \cdot (x + 2)$: - $x \cdot x = x^2$ - $x \cdot 2 = +2x$ - $-1 \cdot x = -1x$ - $-1 \cdot 2 = -2$.'
+  - 'Paso 2: Reducimos el resultado intermedio: $x^2 + 2x - 1x - 2 = \mathbf{x^2 + x - 2}$.'
+  - 'Paso 3: Planteamos el producto del resultado intermedio por el tercer polinomio: $(x^2 + x - 2) \cdot (2x - 3)$.'
+  - 'Paso 4: Distribuimos los 3 términos del trinomio intermedio sobre $(2x - 3)$: - $x^2 \cdot (2x - 3) = \mathbf{2x^3 - 3x^2}$. - $+x \cdot (2x - 3) = \mathbf{+2x^2 - 3x}$. - $-2 \cdot (2x - 3) = \mathbf{-4x + 6}$.'
+  - 'Paso 5: Reunimos y reducimos términos semejantes: - Clase $x^3$: $\mathbf{2x^3}$. - Clase $x^2$: $-3x^2 + 2x^2 = \mathbf{-x^2}$. - Clase $x$: $-3x - 4x = \mathbf{-7x}$. - Constante: $\mathbf{+6}$.'
+  - 'Conclusión: El polinomio producto final es **$2x^3 - x^2 - 7x + 6$**.'
+  imagen: /static/img/nodos/multiplicacion-continuada-de-polinomios-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué se recomienda reducir los términos semejantes al finalizar cada etapa intermedia en una multiplicación continuada de 3 o más polinomios?'
-    choices:
-      - {text: 'Porque simplifica la expresión intermedia y reduce significativamente la cantidad de multiplicaciones en las etapas posteriores', is_correct: true}
-      - {text: 'Porque si no se reduce, el grado del polinomio aumenta en forma errónea', is_correct: false}
-      - {text: 'Porque las variables pierden sus exponentes si no se reducen', is_correct: false}
-      - {text: 'Porque el tercer polinomio no se puede multiplicar si hay más de dos términos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque simplifica la expresión intermedia y reduce significativamente la cantidad de multiplicaciones en las etapas posteriores''. Reducción aditiva por etapa.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el resultado de la multiplicación continuada de $(x - 1) \cdot (x + 1) \cdot (x + 2)$?'
-    choices:
-      - {text: 'El resultado es $x^3 + 2x^2 - x - 2$, al multiplicar $(x^2 - 1) \cdot (x + 2) = x^3 + 2x^2 - x - 2$', is_correct: true}
-      - {text: 'El resultado es $x^3 - 2$', is_correct: false}
-      - {text: 'El resultado es $x^3 + x^2 - 2$', is_correct: false}
-      - {text: 'El resultado es $x^2 + 2x - 2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El resultado es $x^3 + 2x^2 - x - 2$, al multiplicar $(x^2 - 1) \cdot (x + 2) = x^3 + 2x^2 - x - 2$''. Etapa 1: $(x-1)(x+1)=x^2-1$. Etapa 2: $(x^2-1)(x+2) = x^3+2x^2-x-2$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué se recomienda reducir los términos semejantes al finalizar cada etapa intermedia en una multiplicación continuada de 3 o más polinomios?
+  choices:
+  - text: Porque simplifica la expresión intermedia y reduce significativamente la cantidad de multiplicaciones en las etapas posteriores
+    is_correct: true
+  - text: Porque si no se reduce, el grado del polinomio aumenta en forma errónea
+    is_correct: false
+  - text: Porque las variables pierden sus exponentes si no se reducen
+    is_correct: false
+  - text: Porque el tercer polinomio no se puede multiplicar si hay más de dos términos
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque simplifica la expresión intermedia y reduce significativamente la cantidad de multiplicaciones en las etapas posteriores'. Reducción aditiva por etapa.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el resultado de la multiplicación continuada de $(x - 1) \cdot (x + 1) \cdot (x + 2)$?
+  choices:
+  - text: El resultado es $x^3 + 2x^2 - x - 2$, al multiplicar $(x^2 - 1) \cdot (x + 2) = x^3 + 2x^2 - x - 2$
+    is_correct: true
+  - text: El resultado es $x^3 - 2$
+    is_correct: false
+  - text: El resultado es $x^3 + x^2 - 2$
+    is_correct: false
+  - text: El resultado es $x^2 + 2x - 2$
+    is_correct: false
+  explanation: 'La alternativa correcta es ''El resultado es $x^3 + 2x^2 - x - 2$, al multiplicar $(x^2 - 1) \cdot (x + 2) = x^3 + 2x^2 - x - 2$''. Etapa 1: $(x-1)(x+1)=x^2-1$. Etapa 2: $(x^2-1)(x+2) = x^3+2x^2-x-2$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Seleccionar los dos primeros polinomios de la cadena y multiplicarlos mediante la regla general.'
-  - 'Paso 2: Reducir los términos semejantes para obtener el polinomio resultado intermedio en forma canónica.'
-  - 'Paso 3: Multiplicar el polinomio resultado intermedio por el siguiente polinomio de la cadena.'
-  - 'Paso 4: Repetir el ciclo de multiplicación y reducción hasta agotar todos los factores de la cadena.'
-errores_correccion: |
-  - **Error 1:** Intentar multiplicar los 3 polinomios simultáneamente multiplicando todos sus términos a la vez. **Cómo corregirlo:** La multiplicación **ES UNA OPERACIÓN BINARIA; se debe resolver en etapas de dos en dos**.
+- 'Paso 1: Seleccionar los dos primeros polinomios de la cadena y multiplicarlos mediante la regla general.'
+- 'Paso 2: Reducir los términos semejantes para obtener el polinomio resultado intermedio en forma canónica.'
+- 'Paso 3: Multiplicar el polinomio resultado intermedio por el siguiente polinomio de la cadena.'
+- 'Paso 4: Repetir el ciclo de multiplicación y reducción hasta agotar todos los factores de la cadena.'
+errores_correccion: '- **Error 1:** Intentar multiplicar los 3 polinomios simultáneamente multiplicando todos sus términos a la vez. **Cómo corregirlo:** La multiplicación **ES UNA OPERACIÓN BINARIA; se debe resolver en etapas de dos en dos**.
+
   - **Error 2:** Excluir la reducción de los términos semejantes del resultado intermedio antes de multiplicar por el tercer factor. **Cómo corregirlo:** Se debe **REDUCIR EL INTERMEDIO para trabajar con menos sumandos**.
+
+  '
 ejemplos:
-  - titulo: 'Tres binomios idénticos (Cubo)'
-    enunciado: '¿Cuál es el producto de $(x + 1) \cdot (x + 1) \cdot (x + 1)$?'
-    alternativas:
-      - '$x^3 + 3x^2 + 3x + 1$'
-      - '$x^3 + 1$'
-      - '$x^3 + 3x + 1$'
-    respuesta: '$x^3 + 3x^2 + 3x + 1$'
-    solucion_pasos:
-      - '1. $(x+1)(x+1) = x^2 + 2x + 1$.'
-      - '2. $(x^2 + 2x + 1)(x + 1) = x^3 + x^2 + 2x^2 + 2x + x + 1$.'
-      - '3. Reducción: $x^3 + 3x^2 + 3x + 1$.'
-  - titulo: 'Grado acumulado'
-    enunciado: 'Si multiplicamos cuatro binomios de grado 1 en cadena, ¿cuál es el grado del polinomio resultante?'
-    alternativas:
-      - '4'
-      - '1'
-      - '16'
-    respuesta: '4'
-    solucion_pasos:
-      - '1. Suma de grados: $1 + 1 + 1 + 1 = 4$.'
-      - '2. Resultado: 4.'
-  - titulo: 'Asociatividad libre'
-    enunciado: 'En la cadena $A \cdot B \cdot C$, ¿se obtiene la misma respuesta si se multiplica primero $B \cdot C$ y el resultado por $A$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, por la propiedad asociativa multiplicativa.'
-  - titulo: 'Factor cero en cadena'
-    enunciado: 'Para $(x + 2) \cdot 0 \cdot (x^2 - 5)$, ¿es el producto resultado idénticamente nulo $0$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, el cero cancela toda la cadena.'
+- titulo: Tres binomios idénticos (Cubo)
+  enunciado: ¿Cuál es el producto de $(x + 1) \cdot (x + 1) \cdot (x + 1)$?
+  alternativas:
+  - $x^3 + 3x^2 + 3x + 1$
+  - $x^3 + 1$
+  - $x^3 + 3x + 1$
+  respuesta: $x^3 + 3x^2 + 3x + 1$
+  solucion_pasos:
+  - 1. $(x+1)(x+1) = x^2 + 2x + 1$.
+  - 2. $(x^2 + 2x + 1)(x + 1) = x^3 + x^2 + 2x^2 + 2x + x + 1$.
+  - '3. Reducción: $x^3 + 3x^2 + 3x + 1$.'
+- titulo: Grado acumulado
+  enunciado: Si multiplicamos cuatro binomios de grado 1 en cadena, ¿cuál es el grado del polinomio resultante?
+  alternativas:
+  - '4'
+  - '1'
+  - '16'
+  respuesta: '4'
+  solucion_pasos:
+  - '1. Suma de grados: $1 + 1 + 1 + 1 = 4$.'
+  - '2. Resultado: 4.'
+- titulo: Asociatividad libre
+  enunciado: En la cadena $A \cdot B \cdot C$, ¿se obtiene la misma respuesta si se multiplica primero $B \cdot C$ y el resultado por $A$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por la propiedad asociativa multiplicativa.
+- titulo: Factor cero en cadena
+  enunciado: Para $(x + 2) \cdot 0 \cdot (x^2 - 5)$, ¿es el producto resultado idénticamente nulo $0$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el cero cancela toda la cadena.
 errores_frecuentes:
-  - 'Intentar multiplicar más de dos factores polinómicos al mismo tiempo.'
-  - 'La reducción de términos semejantes en los polinomios intermedios no se aplica.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Perder paréntesis en las expresiones intermedias provocando distribuciones incompletas.'
-  - 'Multiplicar los exponentes de las variables al pasar a la siguiente etapa.'
+- Intentar multiplicar más de dos factores polinómicos al mismo tiempo.
+- La reducción de términos semejantes en los polinomios intermedios no se aplica.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Perder paréntesis en las expresiones intermedias provocando distribuciones incompletas.
+- Multiplicar los exponentes de las variables al pasar a la siguiente etapa.
 afirmaciones_verdaderas:
-  - 'La multiplicación continuada de tres o más polinomios se resuelve secuencialmente multiplicando de a dos factores.'
-  - 'Reducir los términos semejantes en cada etapa intermedia simplifica la multiplicación con los factores posteriores.'
-al_terminar_debes_poder: 'Resolver multiplicaciones continuadas de tres o más polinomios mediante resolución binaria por etapas.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La multiplicación continuada de tres o más polinomios se resuelve secuencialmente multiplicando de a dos factores.
+- Reducir los términos semejantes en cada etapa intermedia simplifica la multiplicación con los factores posteriores.
+al_terminar_debes_poder: '![Resumen de multiplicación continuada de polinomios](/static/img/nodos/multiplicacion-continuada-de-polinomios-resumen.svg)
+
+
+  QUÉ: Resolver el producto de tres o más polinomios encadenados $P_1 \cdot P_2 \cdot P_3$.
+
+
+  CÓMO: Multiplicar de dos en dos, reduciendo completamente los términos semejantes del producto intermedio antes de multiplicarlo por el siguiente factor polinomial.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

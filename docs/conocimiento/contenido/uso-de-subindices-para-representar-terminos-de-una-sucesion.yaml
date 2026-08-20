@@ -1,107 +1,121 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.NOTACION_SUBINDICE
-resumen_inicial: 'El uso de subíndices en sucesiones es el sistema de notación simbólica $a_n$ donde la letra minúscula representa la sucesión y el subíndice inferior $n$ especifica el número de posición del término.'
+resumen_inicial: 'El uso de subíndices representa los términos de una sucesión mediante $a_n$, donde la letra principal denota la sucesión y el subíndice inferior $n$ denota su posición ordinal.'
 explicacion_simple: |
-  En matemáticas, para no tener que escribir *"el quinto término de la lista a"*, usamos **subíndices**:
-  - Escribimos **$a_5$** (se lee *"a sub cinco"*).
-  - La letra minúscula $a$ nombra a la sucesión completa.
-  - El numerito pequeño abajo ($5$) nos dice que estamos en la quinta casilla.
-  Si la sucesión se llama $b$, el primer término es $b_1$, el segundo es $b_2$, el décimo es $b_{10}$ y el término general se escribe $b_n$.
+  Para nombrar los términos de una sucesión sin confundirnos, usamos **subíndices** (números pequeños abajo a la derecha):
+  $$a_1, a_2, a_3, a_4, \dots, a_n, a_{n+1}$$
+  - $a_1$ se lee *"a sub uno"* y es el primer término.
+  - $a_n$ se lee *"a sub n"* y es el término en la posición $n$.
+  - $a_{n-1}$ es el **término anterior** y $a_{n+1}$ es el **término siguiente**.
+  - El subíndice NO es una multiplicación: $a_3$ **no significa** $a \cdot 3$.
+
+  ![Uso de subíndices](/static/img/nodos/uso-de-subindices-para-representar-terminos-de-una-sucesion-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  La **notación por subíndice** es la convención algebraica estandarizada para etiquetar los elementos de una secuencia ordenada. Para una función $a: \mathbb{N} \to \mathbb{R}$:
-  $$a(n) \equiv a_n$$
+  En el lenguaje algebraico formal, la notación de subíndices $x_k$ representa el valor de la función $x$ evaluada en el argumento $k \in \mathbb{N}$:
+  $$x_k \equiv x(k)$$
   donde:
-  - $a$ es el **identificador nominal de la sucesión** (se pueden usar $b, c, x, y, u, v$).
-  - $n$ es el **subíndice de posición u orden** ($n \in \mathbb{N}$).
+  - $x$ es la **variable que nombra a la sucesión**.
+  - $k$ es el **subíndice o índice entero positivo**.
 
-  ### Operaciones con subíndices en expresiones algebraicas
-  Los subíndices admiten operaciones aritméticas internas que modifican el puntero posicional de la sucesión:
-  - $a_{n+1}$: Término ubicado una posición adelante respecto a $a_n$.
-  - $a_{n-1}$: Término ubicado una posición atrás respecto a $a_n$.
-  - $a_{2n}$: Término ubicado en las posiciones pares ($a_2, a_4, a_6, a_8, \dots$).
-  - $a_{2n-1}$: Término ubicado en las posiciones impares ($a_1, a_3, a_5, a_7, \dots$).
+  ### Relaciones de Adyacencia Posicional
+  - **Término actual**: $a_n$ (posición $n$).
+  - **Término anterior**: $a_{n-1}$ (definido para $n \ge 2$).
+  - **Término posterior o sucesor**: $a_{n+1}$ (posición $n+1$).
+
+  ### Distinción Crítica: Subíndices vs Operaciones Algebraicas
+  - $a_{n+1} \neq a_n + 1$ (el término siguiente no es sumar 1 al valor actual).
+  - $a_{2n} \neq 2 \cdot a_n$ (el término en la posición doble no es el doble del término).
 
   ### Síntesis didáctica
-  - Notación básica: $a_n = \text{Término en la posición } n$.
-  - Desplazamiento posicional: $a_{n+k} = \text{Avanzar } k \text{ casillas}$; $a_{n-k} = \text{Retroceder } k \text{ casillas}$.
+  - Notación: $a_n$ indexa el elemento de posición $n$.
+  - Adyacencia: $a_{n-1} \to a_n \to a_{n+1}$.
 definiciones_clave: |
-  - **Subíndice posicional**: Número o variable en formato pequeño inferior que indica la posición del término.
-  - **Identificador nominal**: Letra que distingue a una sucesión de otras en un mismo problema ($a_n, b_n, c_n$).
-  - **Subíndice compuesto**: Expresión algebraica en el subíndice que selecciona subsecuencias ($a_{2n}, a_{n+1}$).
+  - **Subíndice**: Número o símbolo escrito en tamaño reducido en la parte inferior derecha que especifica la posición ordinal.
+  - **Término sucesor ($a_{n+1}$)**: Elemento que ocupa la posición inmediatamente posterior a $n$.
+  - **Término predecesor ($a_{n-1}$)**: Elemento que ocupa la posición inmediatamente anterior a $n$.
 propiedades_relaciones: |
-  - **Diferencia entre $a_n + 1$ y $a_{n+1}$**:
-    - $a_n + 1$: Suma la unidad al **valor** del término $a_n$.
-    - $a_{n+1}$: Selecciona el **siguiente término** en la secuencia.
-  - **Identidad de notación de función**: $a_n$ es exactamente equivalente a la notación funcional $a(n)$.
+  - **Ecuaciones en diferencias**: Las relaciones que vinculan $a_{n+1}$ con $a_n$ permiten modelar crecimientos y recurrencias.
+  - **Sub-sucesiones**: Expresiones como $a_{2n}$ seleccionan los términos en posiciones pares $(a_2, a_4, a_6, \dots)$.
 ejemplo_guiado:
-  enunciado: 'Si una sucesión $b_n$ está dada por $b_n = 2^n + 3$, calcula la diferencia entre la expresión $b_{n+1}$ y la expresión $b_n + 1$. Luego evalúa ambas para $n=2$.'
+  enunciado: 'En la sucesión $a = (4, 7, 10, 13, 16)$, identifica los términos $a_1, a_4$, el término anterior a $a_3$ y comprueba que $a_{3+1} \neq a_3 + 1$.'
+  imagen: '/static/img/nodos/uso-de-subindices-para-representar-terminos-de-una-sucesion-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para $b_{n+1}$, reemplazamos $(n+1)$ en la variable $n$: $b_{n+1} = 2^{n+1} + 3$.'
-    - 'Paso 2: Para $b_n + 1$, le sumamos 1 a la fórmula completa: $b_n + 1 = (2^n + 3) + 1 = 2^n + 4$.'
-    - 'Paso 3: Evaluamos $b_{n+1}$ para $n=2$ (que es el término $b_3$): $b_3 = 2^{2+1} + 3 = 2^3 + 3 = 8 + 3 = 11$.'
-    - 'Paso 4: Evaluamos $b_n + 1$ para $n=2$: $b_2 + 1 = (2^2 + 3) + 1 = 7 + 1 = 8$. Comprobamos que **$b_{n+1} \neq b_n + 1$** ($11 \neq 8$).'
+    - 'Paso 1: Identificamos cada término por su subíndice: $a_1 = 4, a_2 = 7, a_3 = 10, a_4 = 13, a_5 = 16$.'
+    - 'Paso 2: El primer término es **$a_1 = 4$** y el cuarto es **$a_4 = 13$**.'
+    - 'Paso 3: El término anterior a $a_3$ es $a_{3-1} = a_2 = **7$**.'
+    - 'Paso 4: Evaluamos $a_{3+1} = a_4 = 13$, mientras que $a_3 + 1 = 10 + 1 = 11$. Como $13 \neq 11$, confirmamos que **$a_{n+1} \neq a_n + 1$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué diferencia existe entre la notación $a_{n+1}$ y la notación $a_n + 1$?'
+    question: '¿Qué representa la expresión algebraica $a_{n+1}$ en la teoría de sucesiones?'
     choices:
-      - {text: '$a_{n+1}$ es el término de la siguiente posición, mientras que $a_n + 1$ le suma 1 al valor del término actual', is_correct: true}
-      - {text: 'Ambas expresiones representan exactamente lo mismo', is_correct: false}
-      - {text: '$a_{n+1}$ multiplica el término por 2', is_correct: false}
-      - {text: '$a_n + 1$ retrocede una posición en la lista', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_{n+1}$ es el término de la siguiente posición, mientras que $a_n + 1$ le suma 1 al valor del término actual''. El subíndice cambia la posición.'
+      - {text: 'El término que ocupa la posición inmediatamente siguiente ($n+1$)', is_correct: true}
+      - {text: 'Sumar el número 1 al valor del término $a_n$', is_correct: false}
+      - {text: 'Multiplicar el término $a_n$ por $(n+1)$', is_correct: false}
+      - {text: 'El primer término de la sucesión', is_correct: false}
+    explanation: 'La alternativa correcta es ''El término que ocupa la posición inmediatamente siguiente ($n+1$)''. El subíndice $(n+1)$ indexa la posición siguiente en la secuencia.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en la sucesión $x_n$, el término $x_4 = 15$, ¿cómo se representa simbólicamente el valor del cuarto término de la sucesión $x$?'
+    question: 'Si en una sucesión $b_n$ se tiene que $b_5 = 20$, ¿cuál es la notación para el término anterior?'
     choices:
-      - {text: 'Mediante la notación por subíndice $x_4 = 15$', is_correct: true}
-      - {text: 'Mediante la potencia $x^4 = 15$', is_correct: false}
-      - {text: 'Mediante el producto $x \cdot 4 = 15$', is_correct: false}
-      - {text: 'Mediante la división $x / 4 = 15$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Mediante la notación por subíndice $x_4 = 15$''. Se usa el subíndice 4.'
+      - {text: '$b_4$, que corresponde a $b_{5-1}$', is_correct: true}
+      - {text: '$b_5 - 1 = 19$', is_correct: false}
+      - {text: '$b_6$', is_correct: false}
+      - {text: '$b_{10}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$b_4$, que corresponde a $b_{5-1}$''. El término anterior a la posición 5 es la posición 4 ($b_4$).'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la letra minúscula asignada a la sucesión ($a, b, c, x$).'
-  - 'Paso 2: Escribir la posición deseada en forma de subíndice numérico inferior ($a_1, a_2, a_{10}$).'
-  - 'Paso 3: Para sustituir un subíndice compuesto (como $n+1$ o $2n$), reemplazar toda la variable $n$ por la nueva expresión entre paréntesis.'
-  - 'Paso 4: Distinguir con precisión los operadores que afectan al subíndice de los que afectan al valor del término.'
+  - 'Paso 1: Escribir la letra de la sucesión seguida del subíndice posicional (ej: $a_n$).'
+  - 'Paso 2: Utilizar $a_{n-1}$ para el término previo y $a_{n+1}$ para el término posterior.'
+  - 'Paso 3: Evitar confundir operaciones sobre el subíndice con operaciones aritméticas sobre el valor del término.'
 errores_correccion: |
-  - **Error 1:** Confundir un subíndice con un exponente o potencia (ej: confundir $a_2$ con $a^2$). **Cómo corregirlo:** El subíndice está escrito **abajo en pequeño ($a_2$)** e indica posición; el exponente está arriba ($a^2$) e indica potencia.
-  - **Error 2:** Confundir $a_{n+1}$ con $a_n + 1$. **Cómo corregirlo:** En $a_{n+1}$ el $+1$ está dentro del subíndice e indica la **siguiente casilla**; en $a_n + 1$ el $+1$ le suma 1 al **resultado de la cifra**.
+  - **Error 1:** Interpretar el subíndice como una multiplicación (creer que $a_4 = a \cdot 4$). **Cómo corregirlo:** El subíndice es una **etiqueta de posición**, no un factor multiplicativo.
+  - **Error 2:** Confundir $a_{n+1}$ con $a_n + 1$. **Cómo corregirlo:** $a_{n+1}$ es el **siguiente elemento de la lista**, mientras que $a_n + 1$ es **sumar una unidad al número actual**.
 ejemplos:
-  - titulo: 'Lectura de notación por subíndices'
-    enunciado: '¿El símbolo $a_7$ se lee "a sub siete" y representa el séptimo término de la sucesión $a$?'
+  - titulo: 'Identificación de notación de subíndice'
+    enunciado: '¿La notación $x_7$ representa el séptimo término de la sucesión $x$?'
     alternativas:
-      - 'Sí, por convención de subíndices'
-      - 'No, significa a elevado a 7'
-      - 'No, significa 7 veces a'
-    respuesta: 'Sí, por convención de subíndices'
+      - 'Sí, el subíndice 7 indica la séptima posición'
+      - 'No, significa la variable x multiplicada por 7'
+      - 'No, significa x elevado a la potencia 7'
+    respuesta: 'Sí, el subíndice 7 indica la séptima posición'
     solucion_pasos:
-      - '1. Letra $a$: nombre de la sucesión.'
-      - '2. Subíndice $7$: posición 7.'
-  - titulo: 'Subíndice para términos pares'
-    enunciado: '¿La notación $a_{2n}$ representa la secuencia de términos en posiciones pares ($a_2, a_4, a_6, \dots$)?'
+      - '1. El subíndice indica la posición ordinal $n=7$.'
+  - titulo: 'Término predecesor'
+    enunciado: 'Para el término $a_8$, ¿cuál es su término predecesor inmediato?'
+    alternativas:
+      - '$a_7$'
+      - '$a_9$'
+      - '$a_8 - 1$'
+    respuesta: '$a_7$'
+    solucion_pasos:
+      - '1. El predecesor de $n=8$ es $n-1 = 7 \implies a_7$.'
+  - titulo: 'Distinción entre $a_{n+1}$ y $a_n + 1$'
+    enunciado: '¿La expresión $a_{n+1}$ es equivalente algebraicamente a $a_n + 1$ en general?'
+    alternativas:
+      - 'No, $a_{n+1}$ es el término siguiente y $a_n + 1$ es sumar 1 al valor'
+      - 'Sí, siempre representan la misma operación'
+      - 'Sí, por propiedad distributiva'
+    respuesta: 'No, $a_{n+1}$ es el término siguiente y $a_n + 1$ es sumar 1 al valor'
+    solucion_pasos:
+      - '1. Son conceptos completamente diferentes: índice versus valor.'
+  - titulo: 'Notación de posición par'
+    enunciado: '¿El término $a_{2n}$ indexa los términos que ocupan posiciones pares ($n=1 \implies a_2$, $n=2 \implies a_4$)?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Para $n=1 \implies a_2$, para $n=2 \implies a_4$, para $n=3 \implies a_6$.'
-  - titulo: 'Sucesión con nombre b'
-    enunciado: 'Si una sucesión se denota $b_n = n^2$, ¿el término $b_3 = 3^2 = 9$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $b_3 = 3^2 = 9$.'
-  - titulo: 'Subíndice del término antecesor'
-    enunciado: '¿La notación $x_{n-1}$ representa el término anterior al término $x_n$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $n-1$ indica una casilla atrás.'
+      - '1. Para $n=1, 2, 3 \implies 2n = 2, 4, 6 \implies a_2, a_4, a_6$.'
 errores_frecuentes:
-  - 'Escribir el subíndice de posición en la parte superior del término como si fuera un exponente o potencia.'
-  - 'Igualar la expresión del sucesor posicional $a_{n+1}$ con la suma del valor $a_n + 1$.'
-  - 'Tratar la letra del subíndice como una variable multiplicativa que escala el valor del término.'
-  - 'Usar letras mayúsculas para los subíndices de posición por defecto.'
-  - 'Considerar que cambiar la letra nominal ($a_n$ por $b_n$) altera la fórmula matemática de la regla.'
+  - 'La expresión con subíndice $a_n$ representa la multiplicación algebraica entre la letra $a$ y el número $n$.'
+  - 'El término siguiente $a_{n+1}$ equivale a sumar algebraicamente el número uno al término $a_n$.'
+  - 'El término anterior a $a_n$ se representa como $a_n - 1$ en lugar de $a_{n-1}$.'
+  - 'El término $a_{2n}$ es exactamente el doble del valor numérico del término $a_n$.'
+  - 'El subíndice de una sucesión puede ser un número fraccionario o negativo.'
 afirmaciones_verdaderas:
-  - 'La notación por subíndice $a_n$ indica que el término pertenece a la sucesión $a$ y ocupa la posición $n$.'
-  - 'La expresión $a_{n+1}$ denota el término en la posición siguiente, mientras que $a_n + 1$ suma 1 al valor de $a_n$.'
-al_terminar_debes_poder: 'Utilizar y manipular correctamente la notación de subíndices $a_n, a_{n+1}, a_{n-1}$ en sucesiones numéricas.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El subíndice $n$ en $a_n$ indica de forma unívoca la posición ordinal del término dentro de la sucesión.'
+  - 'Las expresiones $a_{n-1}$ y $a_{n+1}$ denotan respectivamente el término anterior y posterior a la posición $n$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/uso-de-subindices-para-representar-terminos-de-una-sucesion-resumen.svg)
+
+  QUÉ: Utilizar la notación de subíndices para representar, indexar y relacionar términos en sucesiones numéricas.
+  CÓMO: Representar la posición mediante $a_n$ y diferenciar con precisión las relaciones de adyacencia $a_{n-1}$, $a_n$, $a_{n+1}$ de las operaciones aritméticas sobre los valores.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

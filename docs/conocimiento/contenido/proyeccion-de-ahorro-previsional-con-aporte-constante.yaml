@@ -1,124 +1,123 @@
-resumen_inicial: La proyección del fondo de ahorro previsional acumulado con aportes
-  constantes $C$ y rentabilidad periódica $r$ se modela mediante la suma de capitalización
-  de una anualidad.
-explicacion_simple: Para proyectar cuánto dinero tendremos al jubilar, calculamos
-  la suma de todos los aportes mensuales que guardamos en la AFP más los intereses
-  ganados gracias a la rentabilidad del fondo a lo largo de los años.
-explicacion_formal: 'Para un aporte periódico constante $C$ abonado al final de cada
-  período durante $n$ meses a una tasa de rentabilidad mensual $r$, el **Fondo Previsional
-  Acumulado $F_n$** (sin saldo inicial) es:
+semantic_id: MAT.NUM.FINANZAS.PROYECCION_PREVISIONAL
+resumen_inicial: 'La proyección de ahorro previsional modela el fondo acumulado para jubilación con aportes periódicos constantes $R$ y rentabilidad compuesta $i$: $M_{\text{Fondo}} = R \cdot \frac{(1 + i)^N - 1}{i}$.'
+explicacion_simple: |
+  Tu pensión futura depende de dos factores decisivos:
+  1. La cantidad de dinero que aportas mes a mes (tu $10\%$ obligatorio más cualquier Ahorro Previsional Voluntario - APV).
+  2. La **rentabilidad del interés compuesto** a lo largo de 30 o 40 años de trabajo.
+  Gracias a la capitalización en el largo plazo, más de la mitad del dinero con el que te jubilas no proviene de tu bolsillo, sino de los **intereses generados por tus ahorros de los primeros años**.
 
+  ![Proyección de ahorro previsional con aporte constante](/static/img/nodos/proyeccion-de-ahorro-previsional-con-aporte-constante-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  El fondo total previsional acumulado $M_{\text{Fondo}}$ al cabo de $N$ meses de cotización con un aporte mensual constante $R$ y una tasa de rentabilidad real periódica $i$ se modela mediante la suma de la progresión geométrica de anualidades:
+  $$M_{\text{Fondo}} = R \cdot \left[\frac{(1 + i)^N - 1}{i}\right]$$
+  donde:
+  - $R = S_{\text{imp}} \cdot 0,10 + \text{APV}$ es el **aporte mensual constante**.
+  - $i$ es la **tasa de rentabilidad real mensual de los multifondos**.
+  - $N = 12 \cdot \text{años de cotización}$ es el **número total de meses cotizados**.
 
-  $$F_n = C \cdot \left[ \frac{(1 + r)^n - 1}{r} \right]$$
+  ### Composición del Fondo de Jubilación
+  - **Aporte propio acumulado ($A_{\text{propio}}$)**: $A_{\text{propio}} = N \cdot R$.
+  - **Ganancia por rentabilidad ($I_{\text{ganado}}$)**: $I_{\text{ganado}} = M_{\text{Fondo}} - N \cdot R$.
 
+  ### Efecto de la Cotización Temprana
+  Una cuota $R$ aportada en el mes 1 capitaliza durante $N$ períodos ($(1+i)^N$), multiplicando su valor exponencialmente frente a una cuota aportada en los últimos años de vida laboral.
 
-  **Efecto del interés compuesto:**
-
-  - El crecimiento exponencial del fondo proyectado se intensifica en los últimos
-  años del período $n$ debido a la capitalización continua de rentabilidades previas.'
-definiciones_clave: '- **Proyección previsional**: Acumulación de saldo $F_n = C \cdot
-  \left[ \frac{(1+r)^n - 1}{r} \right]$ con interés compuesto.'
-propiedades_relaciones: '- **Capitalización continua**: Crecimiento exponencial del
-  fondo de ahorro en el tiempo $n$.'
+  ### Síntesis didáctica
+  - Ecuación del fondo: $M_{\text{Fondo}} = R \cdot \frac{(1 + i)^N - 1}{i}$.
+  - Ganancia por intereses: $I = M_{\text{Fondo}} - N \cdot R$.
+definiciones_clave: |
+  - **Fondo de Pensión Acumulado**: Masa total de capital acumulada en la cuenta individual al momento del retiro laboral.
+  - **Ahorro Previsional Voluntario (APV)**: Mecanismo de ahorro adicional con incentivos tributarios para incrementar el fondo de jubilación.
+  - **Densidad de cotización**: Porcentaje del tiempo en edad de trabajar en que la persona efectivamente realizó aportes a su fondo.
+propiedades_relaciones: |
+  - **Multiplicador del tiempo**: En horizontes de 35 años al $5\%$ real anual, los intereses acumulados representan entre el $60\%$ y el $70\%$ del fondo total final.
+  - **Impacto de las lagunas previsionales**: Dejar de cotizar en los primeros años de juventud tiene un costo de oportunidad exponencial mucho mayor que en la etapa previa al retiro.
 ejemplo_guiado:
-  enunciado: Si una persona ahorra un aporte constante $C = \$50.000$ mensual durante
-    $2\text{ meses}$ a una rentabilidad mensual del $1\%$ ($r = 0,01$), calcule el
-    fondo final.
+  enunciado: 'Un afiliado realiza un aporte constante anual de $\$500.000$ a su fondo previsional a una tasa de rentabilidad anual compuesta del $5\%$ durante $3$ años. Calcula el fondo total acumulado y la ganancia por rentabilidad.'
+  imagen: '/static/img/nodos/proyeccion-de-ahorro-previsional-con-aporte-constante-ejemplos.svg'
   pasos:
-  - 'Paso 1: Primer mes: el aporte de \$50.000 gana $1\% \implies 50.000 \cdot 1,01
-    = 50.500$.'
-  - 'Paso 2: Segundo mes: sumar nuevo aporte de \$50.000 \implies 100.500$ y aplicar
-    rentabilidad: $100.500 \cdot 1,01 = 101.505$.'
-  - 'Conclusión: El fondo acumulado al segundo mes es \$101.505.'
+    - 'Paso 1: Identificamos $R = 500.000$, $i = 0,05$ y $N = 3\text{ años}$.'
+    - 'Paso 2: Evaluamos el factor de anualidad: $\frac{(1,05)^3 - 1}{0,05} = \frac{1,157625 - 1}{0,05} = \frac{0,157625}{0,05} = 3,1525$.'
+    - 'Paso 3: Multiplicamos por el aporte: $M_{\text{Fondo}} = 500.000 \cdot 3,1525 = $\$1.576.25$0$.'
+    - 'Paso 4: Calculamos los intereses: Aporte propio $= 3 \cdot 500.000 = $\$1.500.000$ \implies I = 1.576.250 - 1.500.000 = $\$76.25$0$. El fondo acumulado es **$\$1.576.250$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Qué fenómeno financiero acelera la acumulación en la proyección de un
-    fondo previsional con el tiempo?
-  choices:
-  - text: El interés compuesto acumulado por la capitalización continua de rentabilidades
-    is_correct: true
-  - text: La inflación constante del IPC
-    is_correct: false
-  - text: El cobro de comisiones fijas
-    is_correct: false
-  - text: La pérdida del capital invertido
-    is_correct: false
-  explanation: La alternativa correcta es 'El interés compuesto acumulado por la capitalización
-    continua de rentabilidades'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para $50.000 mensuales al 1% en 2 meses, ¿cuál fue
-    el saldo final acumulado?
-  choices:
-  - text: 101.505 $
-    is_correct: true
-  - text: 100.000 $
-    is_correct: false
-  - text: 101.000 $
-    is_correct: false
-  - text: 105.000 $
-    is_correct: false
-  explanation: La alternativa correcta es '101.505 $'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de proyectar fondos previsionales
-  acumulados considerando aportes constantes e interés compuesto por rentabilidad.
-semantic_id: MAT.NUM.FINANZAS_PERSONALES.PROYECCION_PREVISIONAL
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la fórmula para modelar la proyección de un fondo previsional con aporte periódico constante $R$ y rentabilidad compuesta $i$?'
+    choices:
+      - {text: 'Multiplicar el aporte por el factor de capitalización de anualidades ($M_{\text{Fondo}} = R \cdot \frac{(1+i)^N - 1}{i}$)', is_correct: true}
+      - {text: 'Multiplicar el aporte linealmente por el número de meses sin interés ($M = N \cdot R$)', is_correct: false}
+      - {text: 'Dividir el aporte entre la tasa de interés únicamente', is_correct: false}
+      - {text: 'Elevar el aporte a la potencia de los años cotizados', is_correct: false}
+    explanation: 'La alternativa correcta es ''Multiplicar el aporte por el factor de capitalización de anualidades ($M_{\text{Fondo}} = R \cdot \frac{(1+i)^N - 1}{i}$)''. Modela la suma acumulada de cuotas uniformes con capitalización compuesta.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si un trabajador ahorra $\$100.000$ mensuales durante 2 años ($24$ meses) y reúne un fondo de $\$2.600.000$, ¿cuánto dinero ganó por rentabilidad?'
+    choices:
+      - {text: '$\$200.000$, restando $2.600.000 - (24 \cdot 100.000) = 2.600.000 - 2.400.000 = 200.000$', is_correct: true}
+      - {text: '$\$2.600.000$, considerando todo el fondo', is_correct: false}
+      - {text: '$\$2.400.000$, correspondiente solo a los aportes', is_correct: false}
+      - {text: '$\$100.000$, igual a una cuota', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$200.000$, restando $2.600.000 - (24 \cdot 100.000) = 2.600.000 - 2.400.000 = 200.000$''. Representa el interés devengado.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar las variables financieras de ingresos, gastos, tasas de interés
-  o sueldos imponibles.'
-- 'Paso 2: Aplicar la fórmula financiera correspondiente ($B = I - G$, $R\%$, $r_{real}$
-  o $10\% \text{ AFP}$).'
-- 'Paso 3: Calcular el resultado y evaluar la estabilidad presupuestaria.'
-errores_correccion: '- **Error 1: Confundir la tasa de interés nominal con la tasa
-  real sin restar la inflación del IPC.** **Cómo corregirlo:** La ganancia real de
-  poder adquisitivo exige descontar el IPC ($r_{real} \approx r_{nominal} - \text{IPC}$).
-
-
-  - **Error 2: Calcular la cotización previsional de AFP sobre el sueldo líquido en
-  vez del imponible.** **Cómo corregirlo:** El $10\%$ obligatorio se aplica estrictamente
-  sobre el SUELDO IMPONIBLE (hasta el tope legal).'
+  - 'Paso 1: Determinar el aporte periódico constante $R$ y el número total de períodos de cotización $N$.'
+  - 'Paso 2: Convertir la tasa de rentabilidad real a la periodicidad del aporte (tasa periódica $i$).'
+  - 'Paso 3: Calcular el factor de acumulación de anualidad $\frac{(1 + i)^N - 1}{i}$.'
+  - 'Paso 4: Multiplicar el aporte $R$ por el factor para determinar el fondo previsional proyectado $M_{\text{Fondo}}$ y deducir los intereses generados.'
+errores_correccion: |
+  - **Error 1:** Proyectar el fondo de jubilación multiplicando simplemente el aporte por los años trabajados ($N \cdot R$). **Cómo corregirlo:** La rentabilidad compuesta **multiplica los aportes a lo largo del tiempo**: **$M_{\text{Fondo}} = R \cdot \frac{(1+i)^N - 1}{i}$**.
+  - **Error 2:** Postergar el inicio del ahorro creyendo que los aportes de los últimos años compensan los de la juventud. **Cómo corregirlo:** Los aportes tempranos **tienen más años de capitalización exponencial acumulada**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.FINANZAS_PERSONALES.PROYECCION_PREVISIONAL.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de finanzas personales.
-- titulo: Ejemplo 2
-  enunciado: Verificación de equilibrio financiero.
-  alternativas:
-  - Cumple la regla
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la regla
-  solucion_pasos:
-  - Demostración formal de balance o cotización.
-- titulo: ¿Es el 10% el porcentaje obligatorio de cotización previsional a la AFP?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, sobre el sueldo imponible hasta el tope legal.
-- titulo: ¿Genera un balance B = I - G positivo capacidad de ahorro?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, representa un superávit mensual de caja.
+  - titulo: 'Fondo acumulado a 2 años'
+    enunciado: 'Si $R = $\$100.00$0$ anual al $10\%$ en 2 años (factor $2,10$), ¿cuál es el fondo previsional acumulado?'
+    alternativas:
+      - '$\$210.000$'
+      - '$\$200.000$'
+      - '$\$220.000$'
+    respuesta: '$\$210.000$'
+    solucion_pasos:
+      - '1. $M_{\text{Fondo}} = 100.000 \cdot 2,10 = $\$210.00$0$.'
+  - titulo: 'Ganancia por rentabilidad'
+    enunciado: 'En el plan anterior con $M = $\$210.00$0$ y aportes propios de $\$200.000$, ¿cuánto fue la ganancia por rentabilidad?'
+    alternativas:
+      - '$\$10.000$'
+      - '$\$210.000$'
+      - '$\$0$'
+    respuesta: '$\$10.000$'
+    solucion_pasos:
+      - '1. $I = 210.000 - 200.000 = $\$10.00$0$.'
+  - titulo: 'Efecto del Ahorro Previsional Voluntario'
+    enunciado: '¿Realizar un aporte voluntario (APV) constante incrementa el fondo final de jubilación por la vía del interés compuesto?'
+    alternativas:
+      - 'Sí, porque aumenta la cuota periódica $R$ sujeta a rentabilidad acumulada'
+      - 'No, el APV no genera intereses'
+      - 'No, el APV reduce la pensión futura'
+    respuesta: 'Sí, porque aumenta la cuota periódica $R$ sujeta a rentabilidad acumulada'
+    solucion_pasos:
+      - '1. Todo aporte adicional $R_{\text{APV}}$ capitaliza a la tasa compuesta del fondo.'
+  - titulo: 'Importancia de la cotización temprana'
+    enunciado: '¿Un aporte previsional realizado a los 25 años genera mayor monto al momento de jubilar que el mismo aporte realizado a los 60 años?'
+    alternativas:
+      - 'Sí, debido a que acumula más de 35 años de interés compuesto'
+      - 'No, ambos aportes valen exactamente lo mismo'
+      - 'No, el aporte a los 60 años rinde más'
+    respuesta: 'Sí, debido a que acumula más de 35 años de interés compuesto'
+    solucion_pasos:
+      - '1. A mayor tiempo de permanencia $N$, mayor es la potencia $(1 + i)^N$.'
 errores_frecuentes:
-- Calcular el porcentaje de cotización previsional a la AFP sobre el sueldo líquido
-  recibido en cuenta corriente.
-- Sumar directamente la tasa de interés nominal y la inflación pretendiendo obtener
-  la rentabilidad real.
-- Considerar los gastos variables como egresos de costo fijo que no se pueden modificar
-  mensualmente.
-- La tasa de inflación del IPC incrementa el poder adquisitivo del dinero depositado
-  a tasa fija.
-- Clasificar el dividendo pagado por acciones como un gasto imprevisto en el presupuesto
-  personal.
+  - 'El fondo previsional de retiro se proyecta como la suma lineal de los aportes sin considerar la rentabilidad compuesta.'
+  - 'Los aportes previsionales realizados en la juventud tienen el mismo impacto final que los realizados un año antes de jubilar.'
+  - 'El fondo de pensiones no genera intereses durante los períodos en que el trabajador permanece cesante.'
+  - 'El Ahorro Previsional Voluntario está afecto a pérdidas obligatorias impuestas por ley.'
+  - 'La ganancia por rentabilidad en un horizonte de treinta años es menor al cinco por ciento del total ahorrado.'
 afirmaciones_verdaderas:
-- 'El balance financiero de caja se calcula restando los egresos totales a los ingresos
-  recibidos: $B_{neto} = I_{total} - G_{total}$.'
-- La cotización previsional obligatoria a la AFP en Chile equivale al 10% del sueldo
-  imponible ajustado al tope legal.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
-estado: publicado
+  - 'El fondo previsional proyectado con aportes constantes se modela mediante $M_{\text{Fondo}} = R \cdot \left[\frac{(1 + i)^N - 1}{i}\right]$.'
+  - 'En un horizonte de largo plazo, los intereses devengados por rentabilidad compuesta constituyen la mayor parte del fondo acumulado para jubilación.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/proyeccion-de-ahorro-previsional-con-aporte-constante-resumen.svg)
+
+  QUÉ: Proyectar el fondo de ahorro previsional para jubilación bajo un esquema de aportes constantes y rentabilidad compuesta.
+  CÓMO: Aplicar el modelo de anualidad de capitalización $M_{\text{Fondo}} = R \cdot \frac{(1 + i)^N - 1}{i}$ evaluando el impacto del plazo $N$, los aportes periódicos $R$ y el interés acumulado.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+estado: publicado\n

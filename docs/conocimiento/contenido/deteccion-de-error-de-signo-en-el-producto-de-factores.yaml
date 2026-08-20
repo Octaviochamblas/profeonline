@@ -1,104 +1,153 @@
 semantic_id: MAT.ALG.FACTOR_TRINOMIOS.ERROR_SIGNO_PRODUCTO
-resumen_inicial: 'La detección de error de signo en el producto de factores consiste en auditar minuciosamente la multiplicación de los signos en la factorización de trinomios mediante la comprobación del producto constante $q = r \cdot s$ y la suma $p = r + s$.'
-explicacion_simple: |
-  El error más común al factorizar trinomios es **equivocarse de signo en los paréntesis** (ej: escribir $(x - 6)(x + 1)$ para $x^2 - 5x - 6$):
-  - **CONTROL DE CALIDAD DE SIGNOS EN 2 PRUEBAS**:
-    1. **Prueba de la Multiplicación Constante ($r \cdot s = q$)**:
-       - Multiplica los dos números con sus signos: $(-6) \cdot (+1) = \mathbf{-6}$.
-       - Compara con el último término de tu expresión original. (Si querías $-6$, ¡pasa la prueba 1!).
-    2. **Prueba de la Suma Lineal ($r + s = p$)**:
-       - Suma los dos números con sus signos: $(-6) + (+1) = \mathbf{-5}$.
-       - Compara con el término central de tu expresión original. (Si querías $-5x$, ¡pasa la prueba 2!).
-  - **Detección de Error típico**:
-    - Si al multiplicar $(x + 6)(x - 1)$ obtienes $+6 - 1 = +5x$, ¡el término central da positivo cuando debía ser negativo!
-    - **Corrección**: Invierte los signos a **$(x - 6)(x + 1)$**.
-explicacion_formal: |
-  ### Definición formal
-  Sea la factorización propuesta $P_{\text{prop}}(x) = (x + r_1)(x + s_1)$ para un trinomio cuadrático mónico $P(x) = x^2 + px + q \in \mathbb{Z}[x]$. El protocolo de **auditoría y detección de error de signo** establece las funciones de validación de consistencia:
+resumen_inicial: La detección de error de signo en el producto de factores consiste en auditar minuciosamente la multiplicación
+  de los signos en la factorización de trinomios mediante la comprobación del producto constante $q = r \cdot s$ y la suma
+  $p = r + s$.
+explicacion_simple: "El error más común al factorizar trinomios es **equivocarse de signo en los paréntesis** (ej: escribir\
+  \ $(x - 6)(x + 1)$ para $x^2 - 5x - 6$):\n- **CONTROL DE CALIDAD DE SIGNOS EN 2 PRUEBAS**:\n  1. **Prueba de la Multiplicación\
+  \ Constante ($r \\cdot s = q$)**:\n     - Multiplica los dos números con sus signos: $(-6) \\cdot (+1) = \\mathbf{-6}$.\n\
+  \     - Compara con el último término de tu expresión original. (Si querías $-6$, ¡pasa la prueba 1!).\n  2. **Prueba de\
+  \ la Suma Lineal ($r + s = p$)**:\n     - Suma los dos números con sus signos: $(-6) + (+1) = \\mathbf{-5}$.\n     - Compara\
+  \ con el término central de tu expresión original. (Si querías $-5x$, ¡pasa la prueba 2!).\n- **Detección de Error típico**:\n\
+  \  - Si al multiplicar $(x + 6)(x - 1)$ obtienes $+6 - 1 = +5x$, ¡el término central da positivo cuando debía ser negativo!\n\
+  \  - **Corrección**: Invierte los signos a **$(x - 6)(x + 1)$**.\n\n![Detección de error de signo en producto de factores](/static/img/nodos/deteccion-de-error-de-signo-en-el-producto-de-factores-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
+  Sea la factorización propuesta $P_{\text{prop}}(x) = (x + r_1)(x + s_1)$ para un trinomio cuadrático mónico $P(x) = x^2
+  + px + q \in \mathbb{Z}[x]$. El protocolo de **auditoría y detección de error de signo** establece las funciones de validación
+  de consistencia:
+
 
   $$\begin{cases} V_{\text{prod}}(r_1, s_1) = (r_1 \cdot s_1 == q) \\ V_{\text{suma}}(r_1, s_1) = (r_1 + s_1 == p) \end{cases}$$
 
+
   ### Caso Frecuente de Inversión de Signos Opuestos
-  Si $V_{\text{prod}}$ es verdadero ($r_1 \cdot s_1 = q$) pero $V_{\text{suma}}$ devuelve la magnitud opuesta $r_1 + s_1 = -p$, se concluye formalmente que el error reside en una **inversión de signos cruzada**. La corrección se efectúa sustituyendo:
+
+  Si $V_{\text{prod}}$ es verdadero ($r_1 \cdot s_1 = q$) pero $V_{\text{suma}}$ devuelve la magnitud opuesta $r_1 + s_1 =
+  -p$, se concluye formalmente que el error reside en una **inversión de signos cruzada**. La corrección se efectúa sustituyendo:
+
 
   $$(r_{\text{corr}}, s_{\text{corr}}) = (-r_1, -s_1)$$
 
+
   ### Síntesis didáctica
-  Probar siempre la expansión por multiplicación distributiva F.O.I.L. expone de inmediato los errores de signo cometidos durante la selección del par numérico.
-definiciones_clave: |
-  - **Auditoría de signos**: Verificación mediante expansión multiplicativa para garantizar que $r \cdot s = q$ y $r + s = p$.
-  - **Inversión de signos cruzada**: Error por el cual se intercambian las polaridades de la pareja numérica produciendo el signo opuesto en el término lineal.
-  - **Validación F.O.I.L.**: Comprobación multiplicativa (First, Outside, Inside, Last) para confirmar la exactitud de los cuatro productos parciales.
-propiedades_relaciones: |
-  - **Sensibilidad del término central**: Invertir el signo de ambos componentes en $(x+r)(x+s)$ invierte el signo de $p$ dejando intacto a $q$.
+
+  Probar siempre la expansión por multiplicación distributiva F.O.I.L. expone de inmediato los errores de signo cometidos
+  durante la selección del par numérico.
+
+  '
+definiciones_clave: '- **Auditoría de signos**: Verificación mediante expansión multiplicativa para garantizar que $r \cdot
+  s = q$ y $r + s = p$.
+
+  - **Inversión de signos cruzada**: Error por el cual se intercambian las polaridades de la pareja numérica produciendo el
+  signo opuesto en el término lineal.
+
+  - **Validación F.O.I.L.**: Comprobación multiplicativa (First, Outside, Inside, Last) para confirmar la exactitud de los
+  cuatro productos parciales.
+
+  '
+propiedades_relaciones: '- **Sensibilidad del término central**: Invertir el signo de ambos componentes en $(x+r)(x+s)$ invierte
+  el signo de $p$ dejando intacto a $q$.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita la propuesta de factorización $(x + 8)(x - 3)$ para el trinomio $x^2 - 5x - 24$ y detecta si contiene algún error de signo.'
+  enunciado: Audita la propuesta de factorización $(x + 8)(x - 3)$ para el trinomio $x^2 - 5x - 24$ y detecta si contiene
+    algún error de signo.
   pasos:
-    - 'Paso 1: Multiplicamos las constantes de la propuesta para la prueba de producto:
-       $(+8) \cdot (-3) = \mathbf{-24}$ (¡Coincide con $q = -24$!).'
-    - 'Paso 2: Sumamos las constantes de la propuesta para la prueba de suma:
-       $(+8) + (-3) = \mathbf{+5}$.'
-    - 'Paso 3: Comparamos $+5$ con el término lineal del trinomio original: $p = \mathbf{-5}$.'
-    - 'Paso 4: Detectamos que la suma dio $+5$ en lugar de $-5$ (error de signo en el término central).'
-    - 'Paso 5: Corregimos invirtiendo los signos del par: $r = -8$ y $s = +3$.'
-    - 'Conclusión: La propuesta $(x+8)(x-3)$ contiene un error de signo en el término central; la factorización correcta es **$(x - 8)(x + 3)$**.'
+  - 'Paso 1: Multiplicamos las constantes de la propuesta para la prueba de producto: $(+8) \cdot (-3) = \mathbf{-24}$ (¡Coincide
+    con $q = -24$!).'
+  - 'Paso 2: Sumamos las constantes de la propuesta para la prueba de suma: $(+8) + (-3) = \mathbf{+5}$.'
+  - 'Paso 3: Comparamos $+5$ con el término lineal del trinomio original: $p = \mathbf{-5}$.'
+  - 'Paso 4: Detectamos que la suma dio $+5$ en lugar de $-5$ (error de signo en el término central).'
+  - 'Paso 5: Corregimos invirtiendo los signos del par: $r = -8$ y $s = +3$.'
+  - 'Conclusión: La propuesta $(x+8)(x-3)$ contiene un error de signo en el término central; la factorización correcta es
+    **$(x - 8)(x + 3)$**.'
+  imagen: /static/img/nodos/deteccion-de-error-de-signo-en-el-producto-de-factores-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si al auditar una factorización propuesta $(x - 7)(x - 2)$ para $x^2 - 9x + 14$ realizas la multiplicación, ¿cuáles son los valores del producto y de la suma que confirman que la factorización es correcta?'
-    choices:
-      - {text: 'El producto es $(-7) \cdot (-2) = +14$ y la suma es $(-7) + (-2) = -9$, coincidiendo con $q = +14$ y $p = -9$', is_correct: true}
-      - {text: 'El producto es $-14$ y la suma es $+9$', is_correct: false}
-      - {text: 'El producto es $+9$ y la suma es $-14$', is_correct: false}
-      - {text: 'No coinciden', is_correct: false}
-    explanation: 'La alternativa correcta es ''El producto es $(-7) \cdot (-2) = +14$ y la suma es $(-7) + (-2) = -9$, coincidiendo con $q = +14$ y $p = -9$''. Verificación $V_{\text{prod}} = \text{Verdadero}$ y $V_{\text{suma}} = \text{Verdadero}$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al multiplicar la expresión $(x - 5)(x - 2)$ obtienes $x^2 - 7x + 10$. Si el trinomio original era $x^2 + 3x - 10$, ¿cuál fue el error cometido?'
-    choices:
-      - {text: 'Se seleccionó un par con signos iguales $(-5, -2)$ que dio producto $+10$, cuando se requerían signos opuestos $(+5, -2)$ para dar producto $-10$ y suma $+3$', is_correct: true}
-      - {text: 'No hay ningún error', is_correct: false}
-      - {text: 'Se sumó mal los números', is_correct: false}
-      - {text: 'Faltó multiplicar por 2', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se seleccionó un par con signos iguales $(-5, -2)$ que dio producto $+10$, cuando se requerían signos opuestos $(+5, -2)$ para dar producto $-10$ y suma $+3$''. Error en la polaridad de $q < 0 \implies (+5, -2) \to (x+5)(x-2)$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: Si al auditar una factorización propuesta $(x - 7)(x - 2)$ para $x^2 - 9x + 14$ realizas la multiplicación, ¿cuáles
+    son los valores del producto y de la suma que confirman que la factorización es correcta?
+  choices:
+  - text: El producto es $(-7) \cdot (-2) = +14$ y la suma es $(-7) + (-2) = -9$, coincidiendo con $q = +14$ y $p = -9$
+    is_correct: true
+  - text: El producto es $-14$ y la suma es $+9$
+    is_correct: false
+  - text: El producto es $+9$ y la suma es $-14$
+    is_correct: false
+  - text: No coinciden
+    is_correct: false
+  explanation: La alternativa correcta es 'El producto es $(-7) \cdot (-2) = +14$ y la suma es $(-7) + (-2) = -9$, coincidiendo
+    con $q = +14$ y $p = -9$'. Verificación $V_{\text{prod}} = \text{Verdadero}$ y $V_{\text{suma}} = \text{Verdadero}$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al multiplicar la expresión $(x - 5)(x - 2)$ obtienes $x^2 - 7x + 10$. Si el trinomio original era $x^2 + 3x -
+    10$, ¿cuál fue el error cometido?
+  choices:
+  - text: Se seleccionó un par con signos iguales $(-5, -2)$ que dio producto $+10$, cuando se requerían signos opuestos $(+5,
+      -2)$ para dar producto $-10$ y suma $+3$
+    is_correct: true
+  - text: No hay ningún error
+    is_correct: false
+  - text: Se sumó mal los números
+    is_correct: false
+  - text: Faltó multiplicar por 2
+    is_correct: false
+  explanation: La alternativa correcta es 'Se seleccionó un par con signos iguales $(-5, -2)$ que dio producto $+10$, cuando
+    se requerían signos opuestos $(+5, -2)$ para dar producto $-10$ y suma $+3$'. Error en la polaridad de $q < 0 \implies
+    (+5, -2) \to (x+5)(x-2)$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Multiplicar los dos términos numéricos de los factores propuestos conservando sus signos.'
-  - 'Paso 2: Comparar el producto obtenido con el término independiente $q$ del trinomio original.'
-  - 'Paso 3: Sumar los dos términos numéricos conservando sus signos.'
-  - 'Paso 4: Comparar la suma obtenida con el coeficiente del término lineal $p$ del trinomio original e invertir los signos si la suma da el valor opuesto.'
-errores_correccion: |
-  - **Error 1:** Dar por válida una factorización sin realizar la multiplicación distributiva de comprobación. **Cómo corregirlo:** Se debe **EFECTUAR SIEMPRE LA MULTIPLICACIÓN F.O.I.L. DE LOS FACTORES PARA DETECTAR ERRORES DE SIGNO O MULTIPLICACIÓN**.
-  - **Error 2:** Declarar que un producto de dos números negativos da un resultado negativo (escribir $(-3)(-4) = -12$). **Cómo corregirlo:** La regla de signos **ESTABLECE QUE EL PRODUCTO DE DOS NÚMEROS NEGATIVOS ES ESTRICTAMENTE POSITIVO ($(-3)(-4) = +12$)**.
+- 'Paso 1: Multiplicar los dos términos numéricos de los factores propuestos conservando sus signos.'
+- 'Paso 2: Comparar el producto obtenido con el término independiente $q$ del trinomio original.'
+- 'Paso 3: Sumar los dos términos numéricos conservando sus signos.'
+- 'Paso 4: Comparar la suma obtenida con el coeficiente del término lineal $p$ del trinomio original e invertir los signos
+  si la suma da el valor opuesto.'
+errores_correccion: '- **Error 1:** Dar por válida una factorización sin realizar la multiplicación distributiva de comprobación.
+  **Cómo corregirlo:** Se debe **EFECTUAR SIEMPRE LA MULTIPLICACIÓN F.O.I.L. DE LOS FACTORES PARA DETECTAR ERRORES DE SIGNO
+  O MULTIPLICACIÓN**.
+
+  - **Error 2:** Declarar que un producto de dos números negativos da un resultado negativo (escribir $(-3)(-4) = -12$). **Cómo
+  corregirlo:** La regla de signos **ESTABLECE QUE EL PRODUCTO DE DOS NÚMEROS NEGATIVOS ES ESTRICTAMENTE POSITIVO ($(-3)(-4)
+  = +12$)**.
+
+  '
 ejemplos:
-  - titulo: 'Comprobación de producto positivo'
-    enunciado: 'Para $(x - 4)(x - 3)$, ¿es $(-4) \cdot (-3) = +12$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, negativo por negativo da positivo.'
-  - titulo: 'Comprobación de suma negativa'
-    enunciado: 'Para $(x - 4)(x - 3)$, ¿es $(-4) + (-3) = -7$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, suma de negativos da negativo.'
-  - titulo: 'Detección de signo opuesto'
-    enunciado: 'Si $(x+5)(x-2)$ da suma $+3x$ y requeríamos $-3x$, ¿se corrige invirtiendo a $(x-5)(x+2)$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, invertimos ambos signos.'
-  - titulo: 'Validación F.O.I.L.'
-    enunciado: '¿Demuestra $(x-6)(x+1) = x^2 - 5x - 6$ la corrección de los signos?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, la expansión es exacta.'
+- titulo: Comprobación de producto positivo
+  enunciado: Para $(x - 4)(x - 3)$, ¿es $(-4) \cdot (-3) = +12$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, negativo por negativo da positivo.
+- titulo: Comprobación de suma negativa
+  enunciado: Para $(x - 4)(x - 3)$, ¿es $(-4) + (-3) = -7$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, suma de negativos da negativo.
+- titulo: Detección de signo opuesto
+  enunciado: Si $(x+5)(x-2)$ da suma $+3x$ y requeríamos $-3x$, ¿se corrige invirtiendo a $(x-5)(x+2)$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, invertimos ambos signos.
+- titulo: Validación F.O.I.L.
+  enunciado: ¿Demuestra $(x-6)(x+1) = x^2 - 5x - 6$ la corrección de los signos?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la expansión es exacta.
 errores_frecuentes:
-  - 'No realizar la comprobación distributiva F.O.I.L. dejando pasar errores de signo en el término lineal.'
-  - 'Declarar que la multiplicación de dos enteros negativos resulta en un número negativo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Modificar sólo un signo al corregir una suma opuesta alterando el signo del término independiente.'
-  - 'Intercambiar la suma de números enteros con su producto multiplicativo.'
+- No realizar la comprobación distributiva F.O.I.L. dejando pasar errores de signo en el término lineal.
+- Declarar que la multiplicación de dos enteros negativos resulta en un número negativo.
+- Modificar sólo un signo al corregir una suma opuesta alterando el signo del término independiente.
+- Intercambiar la suma de números enteros con su producto multiplicativo.
+- Olvidar verificar tanto el término central como el término libre constante.
 afirmaciones_verdaderas:
-  - 'La auditoría de signos se efectúa comprobando que $r \cdot s = q$ y $r + s = p$ mediante multiplicación distributiva.'
-  - 'Si la suma de los números elegidos da el signo opuesto a $p$, se deben invertir los signos de ambos factores.'
-al_terminar_debes_poder: 'Auditar y corregir errores de signo en la factorización de trinomios mediante comprobación distributiva.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La auditoría de signos se efectúa comprobando que $r \cdot s = q$ y $r + s = p$ mediante multiplicación distributiva.
+- Si la suma de los números elegidos da el signo opuesto a $p$, se deben invertir los signos de ambos factores.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/deteccion-de-error-de-signo-en-el-producto-de-factores-resumen.svg)
+
+
+  QUÉ: Auditar y corregir errores de signo en la factorización de trinomios mediante comprobación distributiva.
+
+  CÓMO: Comprobar las identidades $V_{\text{prod}}(r,s) = (r \cdot s == q)$ y $V_{\text{suma}}(r,s) = (r + s == p)$ mediante
+  multiplicación distributiva F.O.I.L., invirtiendo los signos a $(-r, -s)$ si la suma resulta opuesta a $p$.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

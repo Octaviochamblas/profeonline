@@ -1,123 +1,121 @@
-resumen_inicial: 'La tasa de interés real descuenta el efecto de la inflación (IPC)
-  sobre la tasa nominal, midiendo la variación efectiva del poder adquisitivo: $r_{real}
-  \approx r_{nominal} - \text{IPC}$.'
-explicacion_simple: La tasa de interés real nos muestra cuánto gana realmente nuestro
-  dinero descontando el encarecimiento de la vida (inflación). Si un banco nos paga
-  una tasa del 6% al año pero los precios subieron un 4% por inflación, nuestra ganancia
-  real de poder de compra fue solo de un 2%.
-explicacion_formal: 'La **Tasa de Interés Real $r_{real}$** ajustada por la tasa de
-  inflación $i$ (Ecuación de Fisher exacta) se define por:
+semantic_id: MAT.NUM.FINANZAS.TASA_INTERES_REAL
+resumen_inicial: 'El cálculo de la tasa de interés real descuenta el efecto de la inflación sobre la rentabilidad nominal mediante la ecuación de Fisher: $1 + r_{\text{real}} = \frac{1 + r_{\text{nominal}}}{1 + \pi}$.'
+explicacion_simple: |
+  Si un banco te ofrece pagar un $10\%$ anual de interés por tu dinero, esa es la **tasa nominal**.
+  Pero si durante ese mismo año los precios de las cosas subieron un $4\%$ (inflación $\pi$):
+  - No ganaste realmente un $10\%$ en cosas que puedes comprar; ganaste aproximadamente $10\% - 4\% = 6\%$.
+  - Esa ganancia real en poder de compra es la **tasa de interés real**.
+  - Si la inflación fuera mayor que la tasa del banco (por ejemplo, inflación del $12\%$ frente a una tasa del $5\%$), tu tasa real es **negativa** (tu dinero pierde poder adquisitivo a pesar de ganar intereses).
 
+  ![Cálculo de tasa de interés real](/static/img/nodos/calculo-de-tasa-de-interes-real-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  La **tasa de interés real ($r_{\text{real}}$)** expresa la variación neta en el poder de compra del capital una vez descontada la tasa de inflación $\pi$ del período. Se define formalmente mediante la **Ecuación Exacta de Fisher**:
+  $$1 + r_{\text{real}} = \frac{1 + r_{\text{nom}}}{1 + \pi}$$
+  Despejando la tasa real:
+  $$r_{\text{real}} = \frac{1 + r_{\text{nom}}}{1 + \pi} - 1 = \frac{r_{\text{nom}} - \pi}{1 + \pi}$$
 
-  $$1 + r_{real} = \frac{1 + r_{nominal}}{1 + i} \implies r_{real} = \frac{r_{nominal}
-  - i}{1 + i}$$
+  ### Aproximación Lineal Clásica
+  Para tasas de interés e inflación bajas ($\pi < 5\%$, $r_{\text{nom}} < 10\%$), el denominador $1 + \pi \approx 1$, lo que da la aproximación tradicional:
+  $$r_{\text{real}} \approx r_{\text{nom}} - \pi$$
 
-
-  **Aproximación lineal práctica:**
-
-  $$r_{real} \approx r_{nominal} - i \quad (\text{válida para tasas bajas } i, r <
-  10\%)$$.'
-definiciones_clave: '- **Tasa de interés real $r_{real}$**: Tasa nominal ajustada
-  por inflación $r_{real} \approx r_{nominal} - i$.'
-propiedades_relaciones: '- **Ajuste de poder adquisitivo**: Descuenta el IPC para
-  medir el crecimiento real de la capacidad de compra.'
+  ### Síntesis didáctica
+  - Ecuación exacta: $r_{\text{real}} = \frac{r_{\text{nom}} - \pi}{1 + \pi}$.
+  - Ecuación aproximada: $r_{\text{real}} \approx r_{\text{nom}} - \pi$.
+  - Condición de ganancia real: $r_{\text{nom}} > \pi \implies r_{\text{real}} > 0$.
+definiciones_clave: |
+  - **Tasa de interés nominal ($r_{\text{nom}}$)**: Tasa de interés expresada en términos monetarios corrientes sin ajustar por inflación.
+  - **Tasa de interés real ($r_{\text{real}}$)**: Tasa de rendimiento expresada en términos de capacidad de compra de bienes y servicios.
+  - **Ecuación de Fisher**: Relación matemática fundamental que vincula las tasas nominales, reales y la tasa de inflación.
+propiedades_relaciones: |
+  - **Ilusión monetaria**: Error cognitivo de evaluar la rentabilidad mirando únicamente la tasa nominal sin considerar la pérdida de valor por inflación.
+  - **Depósitos en UF**: Al estar denominados en UF, garantizan directamente una tasa real constante sobre la inflación ($r_{\text{nom}} = r_{\text{UF}} + \pi$).
 ejemplo_guiado:
-  enunciado: Un depósito paga una tasa de interés nominal del $7\%$ anual. Si la inflación
-    del año (IPC) fue del $4\%$, calcule la tasa de interés real aproximada.
+  enunciado: 'Un depósito a plazo ofrece una tasa de interés nominal del $10\%$ anual ($r_{\text{nom}} = 0,10$) en un año donde la inflación fue del $4\%$ anual ($\pi = 0,04$). Calcula la tasa de interés real exacta y la aproximada.'
+  imagen: '/static/img/nodos/calculo-de-tasa-de-interes-real-ejemplos.svg'
   pasos:
-  - 'Paso 1: Aplicar la fórmula aproximada: $r_{real} \approx r_{nominal} - i$.'
-  - 'Paso 2: Restar la inflación: $r_{real} \approx 7\% - 4\% = 3\%$.'
-  - 'Conclusión: La ganancia real de poder adquisitivo fue del $3\%$ anual.'
+    - 'Paso 1: Aplicamos la aproximación lineal: $r_{\text{real}} \approx 10\% - 4\% = 6\%$.'
+    - 'Paso 2: Aplicamos la Ecuación de Fisher exacta: $1 + r_{\text{real}} = \frac{1 + 0,10}{1 + 0,04} = \frac{1,10}{1,04}$.'
+    - 'Paso 3: Calculamos la división: $\frac{1,10}{1,04} \approx 1,05769$.'
+    - 'Paso 4: Restamos 1 y multiplicamos por 100: $r_{\text{real}} = 0,05769 \cdot 100\% = 5,77\%$. La tasa real exacta es de **$5,77\%$ anual**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Cómo se calcula en forma aproximada la tasa de interés real a partir
-    de la tasa nominal e inflación?
-  choices:
-  - text: Restando la tasa de inflación a la tasa nominal (r_real approx r_nominal
-      - IPC)
-    is_correct: true
-  - text: Sumando ambas tasas
-    is_correct: false
-  - text: Multiplicando ambas tasas
-    is_correct: false
-  - text: Dividiendo por 100
-    is_correct: false
-  explanation: La alternativa correcta es 'Restando la tasa de inflación a la tasa
-    nominal (r_real approx r_nominal - IPC)'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para tasa nominal 7% e inflación 4%, ¿cuál fue la
-    tasa real aproximada?
-  choices:
-  - text: 3%
-    is_correct: true
-  - text: 11%
-    is_correct: false
-  - text: 28%
-    is_correct: false
-  - text: 1,75%
-    is_correct: false
-  explanation: La alternativa correcta es '3%'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular la tasa de interés real
-  $r_{real} \approx r_{nominal} - \text{IPC}$ descontando la inflación.
-semantic_id: MAT.NUM.FINANZAS_PERSONALES.TASA_INTERES_REAL
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la Ecuación Exacta de Fisher para determinar la tasa de interés real $r_{\text{real}}$?'
+    choices:
+      - {text: '$1 + r_{\text{real}} = \frac{1 + r_{\text{nom}}}{1 + \pi}$', is_correct: true}
+      - {text: '$r_{\text{real}} = r_{\text{nom}} \cdot \pi$', is_correct: false}
+      - {text: '$r_{\text{real}} = \frac{r_{\text{nom}}}{\pi}$', is_correct: false}
+      - {text: '$1 + r_{\text{real}} = (1 + r_{\text{nom}}) \cdot (1 + \pi)$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$1 + r_{\text{real}} = \frac{1 + r_{\text{nom}}}{1 + \pi}$''. Relaciona de manera exacta los factores de acumulación nominal e inflacionario.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si una cuenta de ahorro paga un $3\%$ nominal en un año con inflación del $7\%$, ¿cuál es la tasa real aproximada?'
+    choices:
+      - {text: '$-4\%$, calculando $3\% - 7\% = -4\%$ (pérdida de poder de compra)', is_correct: true}
+      - {text: '$+4\%$, restando en orden inverso', is_correct: false}
+      - {text: '$10\%$, sumando ambas tasas', is_correct: false}
+      - {text: '$0\%$, anulando el rendimiento', is_correct: false}
+    explanation: 'La alternativa correcta es ''$-4\%$, calculando $3\% - 7\% = -4\%$ (pérdida de poder de compra)''. Cuando la inflación supera la tasa nominal, la tasa real es negativa.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar las variables financieras de ingresos, gastos, tasas de interés
-  o sueldos imponibles.'
-- 'Paso 2: Aplicar la fórmula financiera correspondiente ($B = I - G$, $R\%$, $r_{real}$
-  o $10\% \text{ AFP}$).'
-- 'Paso 3: Calcular el resultado y evaluar la estabilidad presupuestaria.'
-errores_correccion: '- **Error 1: Confundir la tasa de interés nominal con la tasa
-  real sin restar la inflación del IPC.** **Cómo corregirlo:** La ganancia real de
-  poder adquisitivo exige descontar el IPC ($r_{real} \approx r_{nominal} - \text{IPC}$).
-
-
-  - **Error 2: Calcular la cotización previsional de AFP sobre el sueldo líquido en
-  vez del imponible.** **Cómo corregirlo:** El $10\%$ obligatorio se aplica estrictamente
-  sobre el SUELDO IMPONIBLE (hasta el tope legal).'
+  - 'Paso 1: Identificar la tasa de interés nominal periódica ($r_{\text{nom}}$) y la tasa de inflación periódica ($\pi$) en formato decimal.'
+  - 'Paso 2: Sumar la unidad a cada tasa para formar los factores $(1 + r_{\text{nom}})$ y $(1 + \pi)$.'
+  - 'Paso 3: Evaluar el cociente $\frac{1 + r_{\text{nom}}}{1 + \pi}$.'
+  - 'Paso 4: Restar 1 al resultado y multiplicar por 100 para expresar la tasa de interés real en porcentaje $r_{\text{real}}\%$.'
+errores_correccion: |
+  - **Error 1:** Evaluar el éxito de una inversión considerando únicamente la tasa nominal sin descontar la inflación. **Cómo corregirlo:** La rentabilidad verdadera en bienes **es la tasa de interés real**: **$r_{\text{real}} = \frac{1+r_{\text{nom}}}{1+\pi} - 1$**.
+  - **Error 2:** Utilizar la resta simple en períodos de alta inflación donde el error de aproximación es significativo. **Cómo corregirlo:** Para inflaciones elevadas **usa siempre la fórmula exacta de Fisher**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.FINANZAS_PERSONALES.TASA_INTERES_REAL.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de finanzas personales.
-- titulo: Ejemplo 2
-  enunciado: Verificación de equilibrio financiero.
-  alternativas:
-  - Cumple la regla
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la regla
-  solucion_pasos:
-  - Demostración formal de balance o cotización.
-- titulo: ¿Es el 10% el porcentaje obligatorio de cotización previsional a la AFP?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, sobre el sueldo imponible hasta el tope legal.
-- titulo: ¿Genera un balance B = I - G positivo capacidad de ahorro?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, representa un superávit mensual de caja.
+  - titulo: 'Tasa real con inflación moderada'
+    enunciado: 'Si $r_{\text{nom}} = 8\%$ e inflación $\pi = 3\%$, ¿cuál es la tasa real aproximada?'
+    alternativas:
+      - '$5\%$'
+      - '$11\%$'
+      - '$2,67\%$'
+    respuesta: '$5\%$'
+    solucion_pasos:
+      - '1. $r_{\text{real}} \approx 8\% - 3\% = 5\%$.'
+  - titulo: 'Tasa real exacta de Fisher'
+    enunciado: 'Para $r_{\text{nom}} = 10\%$ e inflación $\pi = 5\%$, ¿la tasa real exacta es $4,76\%$?'
+    alternativas:
+      - 'Sí, pues $1,10 / 1,05 = 1,0476 \implies 4,76\%$'
+      - 'No, es exactamente $5\%$'
+      - 'No, es $15\%$'
+    respuesta: 'Sí, pues $1,10 / 1,05 = 1,0476 \implies 4,76\%$'
+    solucion_pasos:
+      - '1. $1 + r_{\text{real}} = 1,10 / 1,05 = 1,047619$.'
+      - '2. $r_{\text{real}} = 0,047619 \implies 4,76\%$.'
+  - titulo: 'Tasa real negativa'
+    enunciado: 'Si un depósito paga $2\%$ nominal y la inflación es $6\%$, ¿el dinero pierde poder adquisitivo?'
+    alternativas:
+      - 'Sí, la tasa real es negativa ($\approx -4\%$)'
+      - 'No, porque el $2\%$ siempre es ganancia'
+      - 'No, se mantiene en equilibrio'
+    respuesta: 'Sí, la tasa real es negativa ($\approx -4\%$)'
+    solucion_pasos:
+      - '1. $r_{\text{real}} \approx 2\% - 6\% = -4\% < 0$.'
+  - titulo: 'Condición de preservación del poder de compra'
+    enunciado: '¿Para que una inversión mantenga intacto el poder adquisitivo del capital ($r_{\text{real}} = 0$), la tasa nominal debe ser igual a la inflación?'
+    alternativas:
+      - 'Sí, $r_{\text{nom}} = \pi \implies r_{\text{real}} = 0$'
+      - 'No, la tasa nominal debe ser el doble de la inflación'
+      - 'No, la tasa nominal debe ser cero'
+    respuesta: 'Sí, $r_{\text{nom}} = \pi \implies r_{\text{real}} = 0$'
+    solucion_pasos:
+      - '1. Si $r_{\text{nom}} = \pi$, $(1 + \pi)/(1 + \pi) = 1 \implies r_{\text{real}} = 0$.'
 errores_frecuentes:
-- Calcular el porcentaje de cotización previsional a la AFP sobre el sueldo líquido
-  recibido en cuenta corriente.
-- Sumar directamente la tasa de interés nominal y la inflación pretendiendo obtener
-  la rentabilidad real.
-- Considerar los gastos variables como egresos de costo fijo que no se pueden modificar
-  mensualmente.
-- La tasa de inflación del IPC incrementa el poder adquisitivo del dinero depositado
-  a tasa fija.
-- Clasificar el dividendo pagado por acciones como un gasto imprevisto en el presupuesto
-  personal.
+  - 'La tasa de interés nominal se asume idéntica a la tasa de interés real ignorando el impacto de la inflación.'
+  - 'La tasa de interés real se calcula multiplicando la tasa nominal por la tasa de inflación.'
+  - 'Una tasa de interés real negativa implica que el saldo nominal en dinero disminuye en la cuenta bancaria.'
+  - 'La ecuación de Fisher suma directamente la tasa nominal con la tasa de inflación.'
+  - 'El poder adquisitivo real aumenta cuando la tasa de inflación supera a la tasa de interés nominal.'
 afirmaciones_verdaderas:
-- 'El balance financiero de caja se calcula restando los egresos totales a los ingresos
-  recibidos: $B_{neto} = I_{total} - G_{total}$.'
-- La cotización previsional obligatoria a la AFP en Chile equivale al 10% del sueldo
-  imponible ajustado al tope legal.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
-estado: publicado
+  - 'La Ecuación de Fisher establece la relación exacta $1 + r_{\text{real}} = \frac{1 + r_{\text{nominal}}}{1 + \pi}$.'
+  - 'Cuando la tasa de inflación es superior a la tasa nominal, la tasa de interés real es negativa y se pierde poder adquisitivo.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-tasa-de-interes-real-resumen.svg)
+
+  QUÉ: Calcular la tasa de interés real evaluando el verdadero rendimiento del capital ajustado por inflación.
+  CÓMO: Aplicar la Ecuación Exacta de Fisher $1 + r_{\text{real}} = \frac{1 + r_{\text{nom}}}{1 + \pi}$ y la aproximación lineal $r_{\text{real}} \approx r_{\text{nom}} - \pi$.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+estado: publicado\n

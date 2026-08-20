@@ -199,12 +199,12 @@ def _checkpoint_context(content, placement):
         return None
     for checkpoint in content.checkpoints:
         if checkpoint.get("placement") == placement:
-            choices = [choice["text"] for choice in checkpoint["choices"]]
+            choices = [choice.get("text", "") for choice in checkpoint.get("choices", [])]
             random.shuffle(choices)
             return {
-                "question": checkpoint["question"],
+                "question": checkpoint.get("question", ""),
                 "choices": choices,
-                "explanation": checkpoint["explanation"],
+                "explanation": checkpoint.get("explanation", ""),
                 "correct_answer": correct_choice_text(checkpoint),
             }
     return None

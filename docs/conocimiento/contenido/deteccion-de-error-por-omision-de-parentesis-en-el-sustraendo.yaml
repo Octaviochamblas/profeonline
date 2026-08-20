@@ -1,114 +1,127 @@
 semantic_id: MAT.ALG.SUSTRACCION_POL.OMISION_PARENTESIS
-resumen_inicial: 'La detección de error por omisión de paréntesis en el sustraendo consiste en auditar restar polinomios identificando la falla de no encerrar el sustraendo entre paréntesis, afectando únicamente al primer término.'
-explicacion_simple: |
-  Un error sumamente común en las pruebas de álgebra ocurre al escribir la resta de un polinomio **sin ponerle paréntesis al sustraendo**:
-  - **Ejemplo del error**:
-    - Se pide: Restar $(2x - 5)$ de $(6x + 1)$.
-    - Paso ERÓNEO: $6x + 1 - 2x - 5$ (¡SIN PARÉNTESIS!).
-      - Aquí el signo minus solo afectó al $2x$, dejando el $-5$ sin cambiar a $+5$.
-      - Da como resultado equivocado: $4x - 4$.
-    - Paso CORRECTO: **$(6x + 1) - (2x - 5)$**.
-      - Invertimos el signo de todo el sustraendo: $6x + 1 - 2x + 5$.
-      - Da el resultado correcto: **$4x + 6$**.
-  - **REGLA DE AUDITORÍA**: El sustraendo **SIEMPRE DEBE LLEVAR PARÉNTESIS** antes de restar.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La detección de error por omisión de paréntesis en el sustraendo consiste en auditar restar polinomios identificando la falla de no encerrar el sustraendo entre paréntesis, afectando únicamente al primer término.
+explicacion_simple: "Un error sumamente común en las pruebas de álgebra ocurre al escribir la resta de un polinomio **sin ponerle paréntesis al sustraendo**:\n- **Ejemplo del error**:\n  - Se pide: Restar $(2x - 5)$ de $(6x + 1)$.\n  - Paso ERÓNEO: $6x + 1 - 2x - 5$ (¡SIN PARÉNTESIS!).\n    - Aquí el signo minus solo afectó al $2x$, dejando el $-5$ sin cambiar a $+5$.\n    - Da como resultado equivocado: $4x - 4$.\n  - Paso CORRECTO: **$(6x + 1) - (2x - 5)$**.\n    - Invertimos el signo de todo el sustraendo: $6x + 1 - 2x + 5$.\n    - Da el resultado correcto: **$4x + 6$**.\n- **REGLA DE AUDITORÍA**: El sustraendo **SIEMPRE DEBE LLEVAR PARÉNTESIS** antes de restar.\n\n![Error por Omisión de Paréntesis en el Sustraendo](/static/img/nodos/deteccion-de-error-por-omision-de-parentesis-en-el-sustraendo-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea la operación de sustracción $P(x) - Q(x)$ donde $Q(x) = \sum_{i=0}^m b_i x^i$ con $m \ge 1$. Se define la **falla por omisión parentética del sustraendo** como la sustitución inválida de la resta de polinomio por una sustracción monómica aislada sobre el término de mayor grado:
+
 
   $$P(x) - b_m x^m + b_{m-1} x^{m-1} + \dots + b_0 \quad \neq \quad P(x) - \left( \sum_{i=0}^m b_i x^i \right)$$
 
+
   ### Diferencia Algebraica de Auditoría
+
   La discrepancia numérica producida por la omisión de los paréntesis en el sustraendo equivale exactamente a dos veces la suma de los términos secundarios de $Q(x)$:
+
 
   $$\text{Error} = (P - Q)_{\text{erróneo}} - (P - Q)_{\text{correcto}} = 2 \cdot \sum_{i=0}^{m-1} b_i x^i \neq 0$$
 
+
   ### Síntesis didáctica
+
   Exigir el paréntesis en el sustraendo es el control formal obligatorio para garantizar la distribución del signo negativo sobre todos los coeficientes.
-definiciones_clave: |
-  - **Omisión parentética del sustraendo**: Error de sintaxis donde el polinomio a restar se escribe sin delimitadores tras el signo menos.
+
+  '
+definiciones_clave: '- **Omisión parentética del sustraendo**: Error de sintaxis donde el polinomio a restar se escribe sin delimitadores tras el signo menos.
+
   - **Distribución incompleta**: Inversión restringida únicamente al término inicial del sustraendo.
+
   - **Falsa diferencia**: Resultado erróneo producido por no afectar a los términos secundarios del sustraendo.
-propiedades_relaciones: |
-  - **Desviación constante o lineal**: Omite invertir los signos de todos los términos posteriores del sustraendo, alterando gravemente el polinomio resultante.
+
+  '
+propiedades_relaciones: '- **Desviación constante o lineal**: Omite invertir los signos de todos los términos posteriores del sustraendo, alterando gravemente el polinomio resultante.
+
   - **Prueba por sustitución constante**: Valorizar la expresión en $x=0$ evidencia de inmediato el error en los términos constantes.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita el siguiente procedimiento de sustracción e identifica el error cometido:
-  Problema: Restar $(3x^2 - 4x + 5)$ de $(8x^2 + 2x - 1)$.
-  Procedimiento escrito:
-  Paso 1: $8x^2 + 2x - 1 - 3x^2 - 4x + 5$
-  Paso 2: $5x^2 - 2x + 4$.'
+  enunciado: 'Audita el siguiente procedimiento de sustracción e identifica el error cometido: Problema: Restar $(3x^2 - 4x + 5)$ de $(8x^2 + 2x - 1)$. Procedimiento escrito: Paso 1: $8x^2 + 2x - 1 - 3x^2 - 4x + 5$ Paso 2: $5x^2 - 2x + 4$.'
   pasos:
-    - 'Paso 1: Revisamos el Paso 1: Se escribió $- 3x^2 - 4x + 5$ sin encerrar el sustraendo $(3x^2 - 4x + 5)$ entre paréntesis.'
-    - 'Paso 2: Observamos la consecuencia: El signo negativo sólo afectó al $3x^2$, mientras que los términos $-4x$ y $+5$ mantuvieron sus signos originales.'
-    - 'Paso 3: Formulamos el planteamiento correcto con paréntesis: $(8x^2 + 2x - 1) - (3x^2 - 4x + 5)$.'
-    - 'Paso 4: Distribuimos el signo negativo a TODO el sustraendo: $8x^2 + 2x - 1 - 3x^2 + 4x - 5$.'
-    - 'Paso 5: Reducimos correctamente:
-       - Clase $x^2$: $8x^2 - 3x^2 = \mathbf{5x^2}$.
-       - Clase $x$: $+2x + 4x = \mathbf{+6x}$.
-       - Constantes: $-1 - 5 = \mathbf{-6}$.'
-    - 'Conclusión: El procedimiento era erróneo por **omisión de paréntesis en el sustraendo**. El resultado correcto es **$5x^2 + 6x - 6$**.'
+  - 'Paso 1: Revisamos el Paso 1: Se escribió $- 3x^2 - 4x + 5$ sin encerrar el sustraendo $(3x^2 - 4x + 5)$ entre paréntesis.'
+  - 'Paso 2: Observamos la consecuencia: El signo negativo sólo afectó al $3x^2$, mientras que los términos $-4x$ y $+5$ mantuvieron sus signos originales.'
+  - 'Paso 3: Formulamos el planteamiento correcto con paréntesis: $(8x^2 + 2x - 1) - (3x^2 - 4x + 5)$.'
+  - 'Paso 4: Distribuimos el signo negativo a TODO el sustraendo: $8x^2 + 2x - 1 - 3x^2 + 4x - 5$.'
+  - 'Paso 5: Reducimos correctamente: - Clase $x^2$: $8x^2 - 3x^2 = \mathbf{5x^2}$. - Clase $x$: $+2x + 4x = \mathbf{+6x}$. - Constantes: $-1 - 5 = \mathbf{-6}$.'
+  - 'Conclusión: El procedimiento era erróneo por **omisión de paréntesis en el sustraendo**. El resultado correcto es **$5x^2 + 6x - 6$**.'
+  imagen: /static/img/nodos/deteccion-de-error-por-omision-de-parentesis-en-el-sustraendo-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué escribir una resta de polinomios sin paréntesis en el sustraendo como $A - B + C$ produce un resultado erróneo?'
-    choices:
-      - {text: 'Porque el signo negativo antecedente sólo afecta al primer término ($B$) en lugar de distribuirse sobre todo el sustraendo', is_correct: true}
-      - {text: 'Porque se deben multiplicar los coeficientes', is_correct: false}
-      - {text: 'Porque las variables pierden sus exponentes', is_correct: false}
-      - {text: 'Porque el minuendo se convierte en cero', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque el signo negativo antecedente sólo afecta al primer término ($B$) en lugar de distribuirse sobre todo el sustraendo''. Distribución incompleta del signo menos.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al evaluar la expresión $10 - (2x - 3)$, un estudiante escribe $10 - 2x - 3 = 7 - 2x$. ¿Qué error cometió?'
-    choices:
-      - {text: 'Omitió la aplicación del paréntesis negativo sobre el $-3$, debiendo ser $+3$ para dar $13 - 2x$', is_correct: true}
-      - {text: 'Sumó correctamente los números constantes', is_correct: false}
-      - {text: 'Multiplicó $10$ por $2x$', is_correct: false}
-      - {text: 'Eliminó la variable $x$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Omitió la aplicación del paréntesis negativo sobre el $-3$, debiendo ser $+3$ para dar $13 - 2x$''. Falla al no transformar el $-3$ en $+3$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué escribir una resta de polinomios sin paréntesis en el sustraendo como $A - B + C$ produce un resultado erróneo?
+  choices:
+  - text: Porque el signo negativo antecedente sólo afecta al primer término ($B$) en lugar de distribuirse sobre todo el sustraendo
+    is_correct: true
+  - text: Porque se deben multiplicar los coeficientes
+    is_correct: false
+  - text: Porque las variables pierden sus exponentes
+    is_correct: false
+  - text: Porque el minuendo se convierte en cero
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el signo negativo antecedente sólo afecta al primer término ($B$) en lugar de distribuirse sobre todo el sustraendo'. Distribución incompleta del signo menos.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al evaluar la expresión $10 - (2x - 3)$, un estudiante escribe $10 - 2x - 3 = 7 - 2x$. ¿Qué error cometió?
+  choices:
+  - text: Omitió la aplicación del paréntesis negativo sobre el $-3$, debiendo ser $+3$ para dar $13 - 2x$
+    is_correct: true
+  - text: Sumó correctamente los números constantes
+    is_correct: false
+  - text: Multiplicó $10$ por $2x$
+    is_correct: false
+  - text: Eliminó la variable $x$
+    is_correct: false
+  explanation: La alternativa correcta es 'Omitió la aplicación del paréntesis negativo sobre el $-3$, debiendo ser $+3$ para dar $13 - 2x$'. Falla al no transformar el $-3$ en $+3$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Verificar si el polinomio sustraendo fue escrito encerrado entre paréntesis tras el signo de resta.'
-  - 'Paso 2: Comprobar si los signos de los términos secundarios del sustraendo fueron invertidos.'
-  - 'Paso 3: Señalar la falla de omisión parentética si los términos posteriores conservaron su signatura.'
-  - 'Paso 4: Reescribir el planteamiento con el paréntesis explícito y calcular la diferencia correcta.'
-errores_correccion: |
-  - **Error 1:** Considerar que escribir $A - B + C$ es equivalente a $A - (B + C)$. **Cómo corregirlo:** La expresión sin paréntesis **NO DISTRIBUYE EL SIGNO MENOS SOBRE $+C$ (debe escribirse $A - B - C$)**.
+- 'Paso 1: Verificar si el polinomio sustraendo fue escrito encerrado entre paréntesis tras el signo de resta.'
+- 'Paso 2: Comprobar si los signos de los términos secundarios del sustraendo fueron invertidos.'
+- 'Paso 3: Señalar la falla de omisión parentética si los términos posteriores conservaron su signatura.'
+- 'Paso 4: Reescribir el planteamiento con el paréntesis explícito y calcular la diferencia correcta.'
+errores_correccion: '- **Error 1:** Considerar que escribir $A - B + C$ es equivalente a $A - (B + C)$. **Cómo corregirlo:** La expresión sin paréntesis **NO DISTRIBUYE EL SIGNO MENOS SOBRE $+C$ (debe escribirse $A - B - C$)**.
+
   - **Error 2:** Declarar el signo de resta como el signo del primer término del sustraendo. **Cómo corregirlo:** El signo menos **PERTENECE A LA OPERACIÓN DE RESTA y debe envolver a todo el polinomio**.
+
+  '
 ejemplos:
-  - titulo: 'Detección en binomio'
-    enunciado: '¿Es erróneo el planteamiento $5x - 2x - 4$ para restar $(2x - 4)$ de $5x$?'
-    alternativas:
-      - 'Sí, debió ser $5x - (2x - 4) = 5x - 2x + 4$'
-      - 'No, es totalmente correcto'
-      - 'Depende del valor de x'
-    respuesta: 'Sí, debió ser $5x - (2x - 4) = 5x - 2x + 4$'
-    solucion_pasos:
-      - '1. La omisión del paréntesis no invirtió el $-4$.'
-      - '2. Desarrollo correcto: $5x - 2x + 4 = 3x + 4$.'
-  - titulo: 'Prueba numérica de omisión'
-    enunciado: 'Para $x=0$, ¿demuestra $6 - (0 - 2) = 8 \neq 4$ que escribir $6 - 0 - 2 = 4$ es un error?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, la valorización en cero confirma la diferencia de resultados.'
-  - titulo: 'Obligatoriedad de paréntesis'
-    enunciado: '¿Exige toda resta de polinomios encerrar el sustraendo entre paréntesis antes de suprimir?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, para garantizar la inversión de todos los términos.'
-  - titulo: 'Corrección de planteamiento'
-    enunciado: '¿Es el planteamiento correcto de restar $(a - b)$ de $(2a + b)$ la forma $(2a + b) - (a - b)$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, incluye paréntesis en el sustraendo.'
+- titulo: Detección en binomio
+  enunciado: ¿Es erróneo el planteamiento $5x - 2x - 4$ para restar $(2x - 4)$ de $5x$?
+  alternativas:
+  - Sí, debió ser $5x - (2x - 4) = 5x - 2x + 4$
+  - No, es totalmente correcto
+  - Depende del valor de x
+  respuesta: Sí, debió ser $5x - (2x - 4) = 5x - 2x + 4$
+  solucion_pasos:
+  - 1. La omisión del paréntesis no invirtió el $-4$.
+  - '2. Desarrollo correcto: $5x - 2x + 4 = 3x + 4$.'
+- titulo: Prueba numérica de omisión
+  enunciado: Para $x=0$, ¿demuestra $6 - (0 - 2) = 8 \neq 4$ que escribir $6 - 0 - 2 = 4$ es un error?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la valorización en cero confirma la diferencia de resultados.
+- titulo: Obligatoriedad de paréntesis
+  enunciado: ¿Exige toda resta de polinomios encerrar el sustraendo entre paréntesis antes de suprimir?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, para garantizar la inversión de todos los términos.
+- titulo: Corrección de planteamiento
+  enunciado: ¿Es el planteamiento correcto de restar $(a - b)$ de $(2a + b)$ la forma $(2a + b) - (a - b)$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, incluye paréntesis en el sustraendo.
 errores_frecuentes:
-  - 'Escribir la sustracción de polinomios sin paréntesis en el sustraendo afectando sólo al primer término.'
-  - 'Declarar equivalente la expresión A - B + C con A - (B + C).'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'La inversión del signo de los términos constantes del sustraendo no se ejecuta.'
-  - 'Cambiar los signos del minuendo al intentar corregir la omisión de paréntesis.'
+- Escribir la sustracción de polinomios sin paréntesis en el sustraendo afectando sólo al primer término.
+- Declarar equivalente la expresión A - B + C con A - (B + C).
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- La inversión del signo de los términos constantes del sustraendo no se ejecuta.
+- Cambiar los signos del minuendo al intentar corregir la omisión de paréntesis.
 afirmaciones_verdaderas:
-  - 'Omite los paréntesis en el sustraendo provoca que el signo menos afecte únicamente al primer término.'
-  - 'Toda sustracción polinómica exige encerrar el sustraendo entre paréntesis para distribuir la negación sobre todos sus términos.'
-al_terminar_debes_poder: 'Detectar errores por omisión de paréntesis en el sustraendo y corregir el procedimiento de sustracción.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- Omite los paréntesis en el sustraendo provoca que el signo menos afecte únicamente al primer término.
+- Toda sustracción polinómica exige encerrar el sustraendo entre paréntesis para distribuir la negación sobre todos sus términos.
+al_terminar_debes_poder: '![Resumen de error por omisión de paréntesis](/static/img/nodos/deteccion-de-error-por-omision-de-parentesis-en-el-sustraendo-resumen.svg)
+
+
+  QUÉ: Identificar y corregir el error de omitir los paréntesis al plantear una resta de polinomios.
+
+
+  CÓMO: Encerrar obligatoriamente la totalidad del sustraendo entre paréntesis $P - (Q)$ para garantizar que el signo menos distribuya sobre todos los términos.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

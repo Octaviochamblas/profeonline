@@ -1,103 +1,121 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.CALCULO_INDICE
-resumen_inicial: 'La determinación de la posición de un término despeja el exponente $n$ en la fórmula del término general de una progresión geométrica aplicando logaritmos: $n = \frac{\ln(a_n / a_1)}{\ln(r)} + 1$.'
+resumen_inicial: 'La determinación de la posición $n$ de un término en una PG resuelve la ecuación exponencial $r^{n-1} = \frac{a_n}{a_1}$ mediante igualación de bases o logaritmos $n = \log_r(\frac{a_n}{a_1}) + 1$, validando que $n \in \mathbb{N}$.'
 explicacion_simple: |
-  Si sabes que en una progresión geométrica (por ejemplo $3, 6, 12, 24, \dots$) figura el número $384$ y quieres saber **en qué posición o número de lugar ($n$) está ubicado**:
-  1. Divides el número entre el primero ($a_1 = 3$): $\frac{384}{3} = 128$.
-  2. Como la razón es $r = 2$, buscas a qué potencia hay que elevar $2$ para que dé $128$ ($2^7 = 128$).
-  3. Como el exponente dio $7$, la posición es $n = 7 + 1 = 8$.
-  El número $384$ ocupa el **lugar 8** ($a_8 = 384$).
-explicacion_formal: |
-  ### Definición formal
-  La **posición ordinal $n$** de un término positivo $a_n$ en una progresión geométrica de términos positivos ($a_1 > 0, r > 1$) se despeja aplicando logaritmos a la ecuación canónica:
-  $$a_n = a_1 \cdot r^{n-1} \implies \frac{a_n}{a_1} = r^{n-1}$$
-  Aplicando logaritmo natural ($\ln$) a ambos miembros:
-  $$\ln\left(\frac{a_n}{a_1}\right) = \ln(r^{n-1}) = (n - 1) \cdot \ln(r) \implies n - 1 = \frac{\ln(a_n / a_1)}{\ln(r)} \implies n = \frac{\ln(a_n / a_1)}{\ln(r)} + 1$$
+  Si te dan un número de una progresión geométrica y quieres saber **en qué posición está**:
+  - Pasos a seguir:
+    1. Divides el número entre el primer término: $\frac{a_n}{a_1}$.
+    2. Expresas ese resultado como una potencia de la razón: $r^{n-1} = r^k$.
+    3. Igualas los exponentes: $n - 1 = k \implies n = k + 1$.
+  - Por ejemplo, en la progresión $3, 6, 12, 24, \dots$ ($a_1 = 3, r = 2$), ¿qué posición ocupa el $384$?
+    - $\frac{384}{3} = 128$
+    - Como $128 = 2^7$, tenemos que $n - 1 = 7 \implies n = 8$.
+    - ¡El número $384$ está en la posición $n = 8$!
 
-  ### Condición de Pertenencia a la Progresión
-  Un número $V > 0$ pertenece a la progresión geométrica si y solo si la posición calculada $n$ satisface:
-  $$n = \frac{\ln(V / a_1)}{\ln(r)} + 1 \in \mathbb{N} = \{1, 2, 3, \dots\}$$
-  Si el resultado $n$ es un entero positivo, $V$ pertenece a la P.G.; en caso contrario, $V$ no pertenece.
+  ![Determinación de la posición de un término en una PG](/static/img/nodos/determinacion-de-la-posicion-de-un-termino-en-una-progresion-geometrica-intro.svg)
+explicacion_formal: |
+  ### Deducción formal por Resolución de Ecuación Exponencial
+  A partir de la fórmula del término general de la PG:
+  $$a_n = a_1 \cdot r^{n-1}$$
+  1. Aislamos la potencia de la razón:
+     $$r^{n-1} = \frac{a_n}{a_1}$$
+  2. Aplicando logaritmo en base $r$ (para $r > 0, r \neq 1$ y $\frac{a_n}{a_1} > 0$):
+     $$n - 1 = \log_r\left(\frac{a_n}{a_1}\right) = \frac{\ln(a_n / a_1)}{\ln(r)}$$
+  3. Despejamos el índice ordinal $n$:
+     $$n = \frac{\ln(a_n) - \ln(a_1)}{\ln(r)} + 1$$
+
+  ### Criterio de Pertenencia
+  Un valor real $x$ pertenece a la progresión geométrica si y solo si $\frac{x}{a_1} = r^k$ para algún entero no negativo $k \in \mathbb{N}_0$, lo que garantiza que **$n = k + 1 \in \mathbb{N}$**.
 
   ### Síntesis didáctica
-  - Despeje exponencial directo: $r^{n-1} = \frac{a_n}{a_1}$.
-  - Despeje por logaritmos: $n = \frac{\ln(a_n / a_1)}{\ln(r)} + 1$.
+  - Ecuación exponencial: $r^{n-1} = \frac{a_n}{a_1}$.
+  - Solución entera: $n = \log_r(a_n / a_1) + 1 \in \{1, 2, 3, \dots\}$.
 definiciones_clave: |
-  - **Índice de posición ($n$)**: Exponente incrementado en 1 que indica la ubicación ordinal del término.
-  - **Ecuación exponencial**: Ecuación donde la incógnita de posición $n$ figura como exponente.
-  - **Logaritmo natural ($\ln$)**: Herramienta matemática empleada para despejar incógnitas ubicadas en el exponente.
+  - **Ecuación exponencial**: Ecuación donde la incógnita de posición $n$ se encuentra en el exponente.
+  - **Igualación de bases**: Método algebraico que utiliza la propiedad $r^u = r^v \iff u = v$.
+  - **Criterio de pertenencia en PG**: Condición donde $\frac{a_n}{a_1}$ debe ser una potencia entera exacta de $r$.
 propiedades_relaciones: |
-  - **Uso de potencias conocidas**: Para bases enteras simples (como $2^k$ o $3^k$), la posición se halla igualando exponentes sin necesidad de calculadora.
-  - **Dominio entero positivo**: La validez de la pertenencia exige de forma estricta que $n \in \mathbb{N}$.
+  - **Inyectividad de la función exponencial**: Para cada valor que pertenece a la PG le corresponde una única posición ordinal $n$.
+  - **Crecimiento superlineal del índice**: La posición $n$ crece de forma logarítmica respecto al valor numérico $a_n$.
 ejemplo_guiado:
-  enunciado: 'En la progresión geométrica $5, 15, 45, 135, \dots$, determina qué lugar ocupa el número $1.215$.'
+  enunciado: 'En la progresión geométrica $(5, 15, 45, 135, \dots)$, determina qué posición ocupa el número $1.215$ y averigua si el número $500$ pertenece a la progresión.'
+  imagen: '/static/img/nodos/determinacion-de-la-posicion-de-un-termino-en-una-progresion-geometrica-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $a_1 = 5$, la razón $r = \frac{15}{5} = 3$ y el valor $a_n = 1.215$.'
-    - 'Paso 2: Igualamos a la fórmula: $1.215 = 5 \cdot 3^{n-1} \implies \frac{1.215}{5} = 3^{n-1}$.'
-    - 'Paso 3: Dividimos: $243 = 3^{n-1}$. Expressamos $243$ como potencia de $3$: $3^5 = 243$.'
-    - 'Paso 4: Igualamos los exponentes: $n - 1 = 5 \implies n = 6$. El número $1.215$ ocupa la **posición 6** ($a_6 = 1.215$).'
+    - 'Paso 1: Identificamos $a_1 = 5$ y la razón $r = \frac{15}{5} = 3$.'
+    - 'Paso 2: Para $a_n = 1.215$: planteamos $3^{n-1} = \frac{1.215}{5} = 243$.'
+    - 'Paso 3: Expresamos $243$ como potencia de $3$: $243 = 3^5$.'
+    - 'Paso 4: Igualamos exponentes: $n - 1 = 5 \implies n = 6$. El número $1.215$ ocupa la **posición $n = 6$**.'
+    - 'Paso 5: Para el número $500$: $3^{n-1} = \frac{500}{5} = 100$. Como $100$ no es potencia entera de $3$ ($3^4=81, 3^5=243$), el número $500$ **no pertenece** a la progresión.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué herramienta matemática permite despejar el número de posición $n$ cuando figura en el exponente de la fórmula de progresión geométrica?'
+    question: 'En la PG $(2, 8, 32, 128, \dots)$ con $a_1 = 2$ y $r = 4$, ¿qué lugar ocupa el número $512$?'
     choices:
-      - {text: 'El logaritmo, aplicando la fórmula $n = \frac{\ln(a_n / a_1)}{\ln(r)} + 1$', is_correct: true}
-      - {text: 'La regla de tres simple directa', is_correct: false}
-      - {text: 'La resta simple entre el último término y el primero', is_correct: false}
-      - {text: 'La división del último término entre la posición', is_correct: false}
-    explanation: 'La alternativa correcta es ''El logaritmo, aplicando la fórmula $n = \frac{\ln(a_n / a_1)}{\ln(r)} + 1$''. Se aplica la propiedad de logaritmos para bajar el exponente.'
+      - {text: '$n = 5$, calculando $4^{n-1} = \frac{512}{2} = 256 = 4^4 \implies n = 4 + 1 = 5$', is_correct: true}
+      - {text: '$n = 4$, olvidando sumar 1 al exponente', is_correct: false}
+      - {text: '$n = 6$', is_correct: false}
+      - {text: '$n = 8$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$n = 5$, calculando $4^{n-1} = \frac{512}{2} = 256 = 4^4 \implies n = 4 + 1 = 5$''. El exponente 4 indica que $n-1=4 \implies n=5$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en la P.G. $2, 4, 8, 16, \dots$ ($a_1 = 2, r = 2$), calculas $2^{n-1} = 64$, ¿cuál es el valor de la posición $n$?'
+    question: '¿Qué ocurre si al calcular la posición $n$ de un valor en una PG el cociente $\frac{a_n}{a_1}$ no es una potencia entera de $r$?'
     choices:
-      - {text: 'La posición es $n = 7$, porque $64 = 2^6 \implies n - 1 = 6 \implies n = 7$', is_correct: true}
-      - {text: 'La posición es $n = 6$, tomando directamente el exponente 6', is_correct: false}
-      - {text: 'La posición es $n = 32$, dividiendo $64 / 2$', is_correct: false}
-      - {text: 'La posición es $n = 128$, multiplicando por 2', is_correct: false}
-    explanation: 'La alternativa correcta es ''La posición es $n = 7$, porque $64 = 2^6 \implies n - 1 = 6 \implies n = 7$''. $n = 6 + 1 = 7$.'
+      - {text: 'El valor evaluado no pertenece a la progresión geométrica', is_correct: true}
+      - {text: 'Se debe redondear el exponente al entero más cercano', is_correct: false}
+      - {text: 'La razón geométrica cambia de valor', is_correct: false}
+      - {text: 'Se convierte automáticamente en una progresión aritmética', is_correct: false}
+    explanation: 'La alternativa correcta es ''El valor evaluado no pertenece a la progresión geométrica''. La pertenencia exige un exponente entero exacto en el dominio $\mathbb{N}$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer término $a_1$, la razón $r$ y el valor del término $a_n$.'
-  - 'Paso 2: Dividir el valor del término entre el primer término: $\frac{a_n}{a_1}$.'
-  - 'Paso 3: Expresar el cociente como potencia de la razón $r^{k} = \frac{a_n}{a_1}$ o aplicar logaritmos $\frac{\ln(a_n/a_1)}{\ln(r)}$.'
-  - 'Paso 4: Igualar el exponente $n - 1 = k$ y sumar 1 para obtener la posición ordinal final $n = k + 1$.'
+  - 'Paso 1: Identificar el primer término $a_1$, la razón $r$ y el valor a evaluar $a_n$.'
+  - 'Paso 2: Dividir $a_n$ entre $a_1$: $\frac{a_n}{a_1}$.'
+  - 'Paso 3: Escribir el cociente como una potencia de base $r$: $r^k$.'
+  - 'Paso 4: Despejar la posición sumando 1 al exponente: $n = k + 1$.'
+  - 'Paso 5: Comprobar que $n$ sea un número natural positivo.'
 errores_correccion: |
-  - **Error 1:** Olvidar sumar 1 al exponente obtenido (quedarse con $n = k$ en vez de $n = k + 1$). **Cómo corregirlo:** La ecuación es $n - 1 = k$; **DEBES SUMAR 1 para hallar la posición $n = k + 1$**.
-  - **Error 2:** Aplicar logaritmos sin haber dividido previamente entre el primer término $a_1$. **Cómo corregirlo:** Primero se debe **aislar la potencia $r^{n-1} = \frac{a_n}{a_1}$** antes de aplicar logaritmos.
+  - **Error 1:** Olvidar sumar 1 al exponente obtenido (confundir $n - 1$ con $n$). **Cómo corregirlo:** La ecuación es $r^{n-1} = r^k$, por lo que la posición es **$n = k + 1$** (sumar obligatoriamente 1).
+  - **Error 2:** Dividir $a_n$ entre la razón $r$ en lugar de dividirlo entre el primer término $a_1$. **Cómo corregirlo:** La base exponencial se aísla **dividiendo entre $a_1$**: $r^{n-1} = \frac{a_n}{a_1}$.
 ejemplos:
-  - titulo: 'Posición de término por potencias'
-    enunciado: 'En $a_1 = 3$ y $r = 2$, ¿el término $a_n = 96$ ocupa la posición $n = 6$?'
+  - titulo: 'Posición mediante potencias conocidas'
+    enunciado: 'En la PG $(3, 12, 48, 192, \dots)$, ¿qué posición ocupa el número $768$?'
     alternativas:
-      - 'Sí, pues $96 / 3 = 32 = 2^5 \implies n = 5 + 1 = 6$'
-      - 'No, ocupa la posición 5'
-      - 'No, ocupa la posición 32'
-    respuesta: 'Sí, pues $96 / 3 = 32 = 2^5 \implies n = 5 + 1 = 6$'
+      - '$n = 5$'
+      - '$n = 4$'
+      - '$n = 6$'
+    respuesta: '$n = 5$'
     solucion_pasos:
-      - '1. Cociente: $96 / 3 = 32$.'
-      - '2. Potencia: $32 = 2^5 \implies n - 1 = 5$.'
-      - '3. Posición: $n = 6$.'
-  - titulo: 'Prueba de pertenencia en P.G.'
-    enunciado: 'En $a_1 = 2$ y $r = 3$, ¿el número $50$ pertenece a la progresión?'
+      - '1. $a_1 = 3, r = 4$.'
+      - '2. $4^{n-1} = 768 / 3 = 256 = 4^4 \implies n - 1 = 4 \implies n = 5$.'
+  - titulo: 'Verificación de pertenencia en PG'
+    enunciado: '¿El número $200$ pertenece a la progresión geométrica $2, 6, 18, 54, \dots$?'
+    alternativas:
+      - 'No, porque $200/2 = 100$, que no es potencia exacta de 3'
+      - 'Sí, ocupa la posición 5'
+      - 'Sí, ocupa la posición 4'
+    respuesta: 'No, porque $200/2 = 100$, que no es potencia exacta de 3'
+    solucion_pasos:
+      - '1. $3^4 = 81$ y $3^5 = 243 \implies 100$ no es potencia entera de 3.'
+  - titulo: 'Posición en PG con razón 2'
+    enunciado: 'En la PG $(1, 2, 4, 8, 16, \dots)$, ¿el número $1.024$ ocupa la posición $n=11$?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - '1. $2^{n-1} = 1.024 = 2^{10} \implies n - 1 = 10 \implies n = 11$.'
+  - titulo: 'Posición entera obligatoria'
+    enunciado: '¿Un término de una progresión geométrica puede ocupar una posición no entera como $n = 4,3$?'
     respuesta: 'No'
     solucion_pasos:
-      - 'No. $50 / 2 = 25$, y 25 no es una potencia entera de 3 ($3^2 = 9, 3^3 = 27$).'
-  - titulo: 'Posición en P.G. fraccionaria'
-    enunciado: 'En $a_1 = 100$ y $r = 1/2$, ¿el término $a_n = 12,5$ ocupa la posición $n = 4$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $12,5 / 100 = 1/8 = (1/2)^3 \implies n - 1 = 3 \implies n = 4$.'
-  - titulo: 'Lugar del primer término'
-    enunciado: 'Para $a_n = a_1$, ¿$a_1 / a_1 = 1 = r^0 \implies n - 1 = 0 \implies n = 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. El primer término ocupa la posición 1.'
+      - '1. El índice de posición $n$ debe pertenecer estrictamente a $\mathbb{N}$.'
 errores_frecuentes:
-  - 'La posición ordinal $n$ equivale directamente al exponente $k$ de la razón sin necesidad de sumar 1.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Aplicar logaritmos sobre el término $a_n$ sin dividir previamente por el primer término $a_1$.'
-  - 'Aceptar exponentes o posiciones no enteras como respuestas válidas a problemas de conteo.'
+  - 'Al resolver la ecuación exponencial $r^{n-1} = r^k$ se toma $n = k$ omitiendo sumar uno al resultado.'
+  - 'Se divide el término objetivo $a_n$ por la razón $r$ en lugar del primer término $a_1$.'
+  - 'Cuando un valor no es potencia exacta de la razón se redondea el logaritmo para forzar su pertenencia.'
+  - 'Al aplicar logaritmos se divide el logaritmo del término por el producto $a_1 \cdot r$.'
+  - 'Se asume que cualquier número entero positivo pertenece a una progresión geométrica.'
 afirmaciones_verdaderas:
-  - 'La posición $n$ de un término en una P.G. se calcula despejando el exponente en $r^{n-1} = \frac{a_n}{a_1}$.'
-  - 'Un valor numérico pertenece a una P.G. de base $r$ si y solo si la razón $\frac{a_n}{a_1}$ es una potencia entera exacta de $r$.'
-al_terminar_debes_poder: 'Calcular la posición ordinal $n$ de un término en una progresión geométrica resolviendo la ecuación $r^{n-1} = \frac{a_n}{a_1}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La posición $n$ de un término se obtiene resolviendo $r^{n-1} = \frac{a_n}{a_1}$, lo que equivale a $n = \log_r(\frac{a_n}{a_1}) + 1$.'
+  - 'Un valor numérico $x$ pertenece a la progresión si y solo si $\frac{x}{a_1}$ es una potencia exacta de exponente entero no negativo de la razón $r$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/determinacion-de-la-posicion-de-un-termino-en-una-progresion-geometrica-resumen.svg)
+
+  QUÉ: Calcular la posición ordinal $n$ de un término y verificar su pertenencia a una progresión geométrica.
+  CÓMO: Resolver la ecuación exponencial $r^{n-1} = \frac{a_n}{a_1}$ por igualación de bases o logaritmos comprobando que $n \in \mathbb{N}$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

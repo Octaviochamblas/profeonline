@@ -1,108 +1,124 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.MODELO_EXPONENCIAL
-resumen_inicial: 'El modelamiento exponencial del interés compuesto expresa la evolución temporal del capital mediante la función exponencial $f(x) = C \cdot b^x$, donde $C$ es el valor inicial y $b = (1 + i) > 1$ es la base de crecimiento.'
+resumen_inicial: 'El modelamiento exponencial del interés compuesto representa el valor acumulado en el tiempo mediante la función $f(t) = C \cdot a^t$ con base de crecimiento $a = (1 + i) > 1$.'
 explicacion_simple: |
-  En matemáticas, el crecimiento del dinero a interés compuesto es un ejemplo clásico de **función exponencial**.
-  Si graficas el tiempo en el eje horizontal ($x$) y el dinero en el eje vertical ($y$):
-  - No obtienes una línea recta (como en el interés simple).
-  - Obtienes una **curva que se va inclinando hacia arriba cada vez más rápido**, del tipo $y = C \cdot b^x$.
-  La base de la función es $b = 1 + i$. Si la tasa es del $8\%$ ($0,08$), la función es $f(x) = C \cdot (1,08)^x$.
+  El interés compuesto se comporta exactamente como una **función exponencial**:
+  - En el tiempo $t = 0$, el dinero es el capital inicial $C$.
+  - Con cada año que pasa, el dinero se multiplica por el factor constante $a = (1 + i)$.
+  - Al graficarlo, en lugar de una línea recta plana, se forma una curva que se empina cada vez más hacia arriba (crecimiento acelerado).
+
+  ![Modelamiento exponencial del interés compuesto](/static/img/nodos/modelamiento-exponencial-del-interes-compuesto-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El valor futuro a interés compuesto se modela mediante la **función exponencial continua de dominio real positivo** $f: \mathbb{R}^+ \to \mathbb{R}^+$:
-  $$f(x) = C \cdot b^x \quad \text{con} \quad b = 1 + i > 1$$
+  El valor de un capital $C$ sometido a capitalización compuesta continua o periódica como función del tiempo $t \ge 0$ se modela mediante la **función exponencial**:
+  $$f(t) = C \cdot a^t = C \cdot (1 + i)^t$$
   donde:
-  - $x \ge 0$ representa la variable continua de tiempo.
-  - $C = f(0)$ representa la ordenada al origen (capital inicial).
-  - $b = 1 + i$ es el **factor base de crecimiento por período**.
+  - $C = f(0) > 0$ es el **coeficiente de escala** (capital inicial / intercepto vertical con el eje de ordenadas).
+  - $a = 1 + i > 1$ es la **base del modelo exponencial** (factor de crecimiento por unidad de tiempo).
+  - $t \in \mathbb{R}^+_0$ es la variable temporal continua o discreta.
 
   ### Propiedades del Modelo Exponencial
-  1. **Invarianza del tiempo de duplicación ($T_2$)**:
-     El tiempo necesario para que cualquier capital se duplique depende únicamente de la base $b$:
-     $$b^{T_2} = 2 \implies T_2 = \frac{\ln(2)}{\ln(1 + i)} \approx \frac{72}{r\%} \quad (\text{Regla del 72})$$
-  2. **Derivada y Tasa Instantánea de Crecimiento**:
-     $$f'(x) = C \cdot \ln(b) \cdot b^x = \ln(1 + i) \cdot f(x)$$
-     La velocidad de crecimiento instantáneo es directamente proporcional al valor acumulado en dicho instante.
+  1. **Monotonía estricta**: Como $a > 1$, la función $f(t)$ es estrictamente creciente en todo su dominio $[0, +\infty)$.
+  2. **Tasa de crecimiento instantáneo**: La derivada $f'(t) = C \cdot \ln(a) \cdot a^t = \ln(1+i) \cdot f(t)$ es proporcional al valor acumulado en cada instante.
+  3. **Tiempo de duplicación ($t_d$)**: Período requerido para que $f(t) = 2C$:
+     $$2C = C \cdot (1 + i)^{t_d} \implies t_d = \frac{\ln 2}{\ln(1 + i)}$$
 
   ### Síntesis didáctica
-  - Ecuación del modelo: $f(x) = C \cdot (1 + i)^x$.
-  - Intercepto: $(0, C)$.
-  - Comportamiento gráfico: Curva estrictamente convexa con crecimiento acelerado.
+  - Ecuación exponencial: $f(t) = C \cdot (1 + i)^t$.
+  - Intercepto con el eje $y$: Punto $(0, C)$.
+  - Concavidad: Hacia arriba (crecimiento acelerado).
 definiciones_clave: |
-  - **Función exponencial ($f(x) = C \cdot b^x$)**: Modelo matemático donde la variable independiente figura como exponente.
-  - **Factor base de crecimiento ($b = 1 + i$)**: Razón constante entre dos valores consecutivos del capital ($M_{k+1} / M_k = b$).
-  - **Regla del 72**: Estimación práctica del tiempo de duplicación dividiendo 72 entre la tasa de interés porcentual ($T_2 \approx 72 / r$).
+  - **Base de crecimiento ($a$)**: Razón multiplicativa constante por unidad de tiempo ($a = 1 + i$).
+  - **Tiempo de duplicación**: Intervalo de tiempo constante en el que cualquier suma invertida se multiplica exactamente por dos.
+  - **Crecimiento geométrico**: Progresión donde cada término se obtiene multiplicando el anterior por una razón fija.
 propiedades_relaciones: |
-  - **Concavidad positiva**: La curva $f(x)$ es convexa ($f''(x) > 0$), reflejando el fenómeno de aceleración en la acumulación de ganancias.
-  - **Continuidad de dominios**: Permite evaluar montos para tiempos no enteros (ej: $x = 2,5$ años) mediante exponentes fraccionarios $b^{5/2} = \sqrt{b^5}$.
+  - **Regla del 72**: Aproximación financiera clásica que estima el tiempo de duplicación en años como $t_d \approx 72 / r$ (para tasas $r\%$ moderadas).
+  - **Divergencia con el modelo lineal**: Para plazos largos, la distancia vertical entre la curva exponencial y la recta simple tiende a infinito.
 ejemplo_guiado:
-  enunciado: 'Determina la función exponencial que modela la evolución de un capital inicial de $\$800.000$ colocado a una tasa de interés compuesto del $6\%$ anual, y estima en cuántos años aproximadamente se duplica ese dinero usando la Regla del 72.'
+  enunciado: 'Un fondo de inversión se modela mediante la función $M(t) = 100.000 \cdot (1,08)^t$, donde $t$ está en años. Determina el capital inicial, la tasa anual compuesta y el valor del fondo al cabo de $2$ años.'
+  imagen: '/static/img/nodos/modelamiento-exponencial-del-interes-compuesto-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos la ordenada al origen $C = 800.000$ y la tasa $i = 0,06$.'
-    - 'Paso 2: Formamos la base $b = 1 + i = 1 + 0,06 = 1,06$.'
-    - 'Paso 3: Escribimos la función exponencial modelada: $f(x) = 800.000 \cdot (1,06)^x$.'
-    - 'Paso 4: Aplicamos la Regla del 72 para el tiempo de duplicación: $T_2 \approx \frac{72}{6} = 12\text{ años}$. El dinero se duplica en **apróximadamente 12 años**.'
+    - 'Paso 1: Identificamos el capital inicial en $t = 0$: $M(0) = 100.000 \cdot (1,08)^0 = $\$100.00$0$.'
+    - 'Paso 2: La base es $a = 1 + i = 1,08 \implies i = 0,08$, lo que corresponde a una tasa anual del **$8\%$**.'
+    - 'Paso 3: Evaluamos para $t = 2$: $M(2) = 100.000 \cdot (1,08)^2 = 100.000 \cdot 1,1664$.'
+    - 'Paso 4: Calculamos: $M(2) = 116.640$. El valor del fondo es de **$\$116.640$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'En la función exponencial de interés compuesto $f(x) = C \cdot b^x$, ¿qué representa la base $b$?'
+    question: 'En el modelo exponencial financiero $f(t) = C \cdot a^t$, ¿qué representa el parámetro $C$ y qué condición cumple la base $a$ para representar crecimiento?'
     choices:
-      - {text: 'El factor base de crecimiento por período ($b = 1 + i$)', is_correct: true}
-      - {text: 'El capital inicial depositado en el banco', is_correct: false}
-      - {text: 'El número total de días transcurridos', is_correct: false}
-      - {text: 'La resta de la tasa menos el tiempo', is_correct: false}
-    explanation: 'La alternativa correcta es ''El factor base de crecimiento por período ($b = 1 + i$)''. Es la razón constante $1 + i$.'
+      - {text: 'El capital inicial $C = f(0)$ y la base debe ser estrictamente mayor que 1 ($a > 1$)', is_correct: true}
+      - {text: 'La tasa de interés y la base debe ser menor que 1', is_correct: false}
+      - {text: 'El tiempo total y la base debe ser igual a cero', is_correct: false}
+      - {text: 'El interés ganado y la base debe ser negativa', is_correct: false}
+    explanation: 'La alternativa correcta es ''El capital inicial $C = f(0)$ y la base debe ser estrictamente mayor que 1 ($a > 1$)''. Para $t=0$, $f(0)=C$, y si $a>1$ la función crece exponencialmente.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Usando la Regla del 72, ¿cuántos años aproximadamente tardará un capital en duplicarse si la tasa de interés compuesto es del $9\%$ anual?'
+    question: 'Dada la función de capitalización $f(t) = 50.000 \cdot (1,06)^t$, ¿cuál es la tasa anual de interés?'
     choices:
-      - {text: 'Aproximadamente $8$ años, dividiendo $72 / 9 = 8$', is_correct: true}
-      - {text: 'Aproximadamente $18$ años, multiplicando $9 \cdot 2$', is_correct: false}
-      - {text: 'Aproximadamente $72$ años, manteniendo el número', is_correct: false}
-      - {text: 'Aproximadamente $4$ años, dividiendo $36 / 9$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Aproximadamente $8$ años, dividiendo $72 / 9 = 8$''. Regla del 72: $T_2 \approx 72 / 9 = 8$ años.'
+      - {text: 'El $6\%$ anual, pues $a = 1 + i = 1,06 \implies i = 0,06$', is_correct: true}
+      - {text: 'El $60\%$ anual', is_correct: false}
+      - {text: 'El $0,6\%$ anual', is_correct: false}
+      - {text: 'El $1,06\%$ anual', is_correct: false}
+    explanation: 'La alternativa correcta es ''El $6\%$ anual, pues $a = 1 + i = 1,06 \implies i = 0,06$''. Restando 1 a la base obtenemos $i = 0,06 = 6\%$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la suma inicial $C$ (intercepto $y$).'
-  - 'Paso 2: Determinar la tasa decimal $i$ y construir la base $b = 1 + i$.'
-  - 'Paso 3: Formular la ecuación exponencial $f(x) = C \cdot b^x$.'
-  - 'Paso 4: Evaluar la función para cualquier valor del tiempo $x$ o estimar el tiempo de duplicación con $72/r$.'
+  - 'Paso 1: Identificar el modelo en la forma canónica $f(t) = C \cdot (1 + i)^t$.'
+  - 'Paso 2: Reconocer el coeficiente $C$ como el valor inicial en $t = 0$.'
+  - 'Paso 3: Determinar la tasa periódica despejando $i = a - 1$.'
+  - 'Paso 4: Evaluar la función en valores específicos de $t$ o resolver ecuaciones exponenciales para determinar el tiempo.'
 errores_correccion: |
-  - **Error 1:** Confundir la gráfica del modelo exponencial con una recta lineal de interés simple. **Cómo corregirlo:** El gráfico del modelo de interés compuesto es una **curva curva hacia arriba (convexa)** debido al factor $b^x$.
-  - **Error 2:** Usar la tasa porcentual entera en la base (ej: escribir $b = 1 + 6 = 7$ para el 6%). **Cómo corregirlo:** La tasa debe convertirse a decimal antes de sumar 1: **$b = 1 + 0,06 = 1,06$**.
+  - **Error 1:** Confundir la base exponencial $a = 1 + i$ con la tasa de interés directa (creer que la tasa es $108\%$ cuando la base es $1,08$). **Cómo corregirlo:** La tasa porcentual es el **excedente sobre la unidad**: $i = a - 1 \implies 1,08 - 1 = 0,08 = 8\%$.
+  - **Error 2:** Tratar la función exponencial como una función lineal multiplicando $C \cdot a \cdot t$. **Cómo corregirlo:** La variable temporal $t$ se encuentra en el **EXPONENTE**, no como factor multiplicativo.
 ejemplos:
-  - titulo: 'Modelo exponencial básico'
-    enunciado: 'Para $C = \$100.000$ e $i = 5\%$, ¿la función es $f(x) = 100.000 \cdot (1,05)^x$?'
+  - titulo: 'Identificación de parámetros'
+    enunciado: 'En la función $f(t) = 80.000 \cdot (1,05)^t$, ¿cuál es el capital inicial y la tasa anual?'
     alternativas:
-      - 'Sí, pues $b = 1 + 0,05 = 1,05$'
-      - 'No, es $f(x) = 100.000 + 1,05x$'
-      - 'No, es $f(x) = 5.000^x$'
-    respuesta: 'Sí, pues $b = 1 + 0,05 = 1,05$'
+      - '$C = $\$80.00$0$ y tasa $5\%$ anual'
+      - '$C = $\$80.00$0$ y tasa $105\%$ anual'
+      - '$C = $\$1,0$5$ y tasa $80.000\%$ anual'
+    respuesta: '$C = $\$80.00$0$ y tasa $5\%$ anual'
     solucion_pasos:
-      - '1. Base $b = 1 + 0,05 = 1,05$.'
-      - '2. Función: $f(x) = 100.000 \cdot (1,05)^x$.'
-  - titulo: 'Estimación por Regla del 72 al 12%'
-    enunciado: 'Al $12\%$ anual, ¿el dinero se duplica en aproximadamente 6 años ($72 / 12 = 6$)?'
-    respuesta: 'Sí'
+      - '1. Coeficiente inicial $C = 80.000$.'
+      - '2. Tasa $i = 1,05 - 1 = 0,05 = 5\%$.'
+  - titulo: 'Evaluación a 2 años'
+    enunciado: 'Si $f(t) = 100.000 \cdot (1,10)^t$, ¿cuál es el valor en $t = 2$?'
+    alternativas:
+      - '$\$121.000$'
+      - '$\$120.000$'
+      - '$\$220.000$'
+    respuesta: '$\$121.000$'
     solucion_pasos:
-      - 'Sí. $T_2 \approx 72 / 12 = 6\text{ años}$.'
-  - titulo: 'Valor de la función en t=0'
-    enunciado: '¿El valor de $f(0) = C \cdot b^0 = C \cdot 1 = C$?'
-    respuesta: 'Sí'
+      - '1. $f(2) = 100.000 \cdot (1,10)^2 = 100.000 \cdot 1,21 = $\$121.00$0$.'
+  - titulo: 'Propiedad de concavidad'
+    enunciado: '¿La gráfica de una función exponencial de interés compuesto $f(t) = C(1+i)^t$ con $i > 0$ es cóncava hacia arriba?'
+    alternativas:
+      - 'Sí, su pendiente es estrictamente creciente'
+      - 'No, es una línea recta con pendiente constante'
+      - 'No, es cóncava hacia abajo'
+    respuesta: 'Sí, su pendiente es estrictamente creciente'
     solucion_pasos:
-      - 'Sí. En el instante inicial el monto equivale exactamente al capital depositado.'
-  - titulo: 'Razón entre valores consecutivos'
-    enunciado: '¿El cociente $\frac{f(x+1)}{f(x)}$ es igual a la constante $b = 1+i$?'
-    respuesta: 'Sí'
+      - '1. La segunda derivada $f''(t) > 0$, lo que confirma la concavidad positiva.'
+  - titulo: 'Tiempo de duplicación aproximado'
+    enunciado: 'Para una tasa del $7,2\%$ anual compuesta, ¿el capital se duplica aproximadamente en 10 años?'
+    alternativas:
+      - 'Sí, aplicando la regla del 72 ($72 / 7,2 = 10\text{ años}$)'
+      - 'No, se duplica en 5 años'
+      - 'No, se duplica en 20 años'
+    respuesta: 'Sí, aplicando la regla del 72 ($72 / 7,2 = 10\text{ años}$)'
     solucion_pasos:
-      - 'Sí. $\frac{C b^{x+1}}{C b^x} = b$.'
+      - '1. $t_d \approx 72 / 7,2 = 10\text{ años}$.'
 errores_frecuentes:
-  - 'Representar el crecimiento del dinero a interés compuesto con una función lineal del tipo $y = mx + b$.'
-  - 'Ingresar el porcentaje entero dentro de la base sin dividir previamente entre 100.'
-  - 'La Regla del 72 entrega el valor exacto del interés en lugar del tiempo aproximado de duplicación.'
-  - 'Considerar que la curva del modelo de crecimiento se aplana asintóticamente hacia abajo.'
-  - 'Invertir la variable colocando el tiempo en la base y el factor en el exponente.'
+  - 'La base de la función exponencial $a = 1 + i$ se interpreta directamente como la tasa porcentual sin restar la unidad.'
+  - 'La función exponencial de interés compuesto se grafica como una línea recta de pendiente fija.'
+  - 'El coeficiente $C$ representa el monto final en lugar del capital inicial en $t = 0$.'
+  - 'La tasa de crecimiento porcentual periódica varía continuamente en lugar de mantenerse constante.'
+  - 'El modelo exponencial financiero decrece cuando la tasa de interés $i$ es positiva.'
 afirmaciones_verdaderas:
-  - 'El crecimiento del dinero a interés compuesto sigue una función exponencial $f(x) = C \cdot b^x$ con base $b = 1 + i > 1$.'
-  - 'La Regla del 72 permite estimar el tiempo de duplicación de un capital dividiendo 72 por la tasa de interés porcentual ($T_2 \approx 72 / r$).'
-al_terminar_debes_poder: 'Modelar el interés compuesto mediante funciones exponenciales $f(x) = C \cdot b^x$ y estimar tiempos de duplicación con la Regla del 72.'
+  - 'El modelo exponencial de interés compuesto tiene la forma $f(t) = C \cdot (1 + i)^t$, con intercepto vertical en $(0, C)$.'
+  - 'La base del modelo exponencial $a = 1 + i$ es estrictamente mayor que 1 para cualquier tasa de interés positiva.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/modelamiento-exponencial-del-interes-compuesto-resumen.svg)
+
+  QUÉ: Modelar situaciones financieras de capitalización compuesta mediante funciones exponenciales $f(t) = C \cdot a^t$.
+  CÓMO: Determinar el intercepto $(0, C)$ y la base de crecimiento $a = (1 + i)$, interpretando algebraicamente la tasa porcentual periódica y la concavidad de la curva.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

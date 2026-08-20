@@ -1,105 +1,117 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.TERMINO_GENERAL_CONCEPTO
-resumen_inicial: 'El término general de una sucesión es la fórmula explícita $a_n = f(n)$ que expresa el valor de cualquier término en función directa de su número de posición $n$.'
+resumen_inicial: 'El término general de una sucesión es una fórmula explícita $a_n = f(n)$ que determina el valor del término en cualquier posición $n \in \mathbb{N}$ sin calcular los términos previos.'
 explicacion_simple: |
-  El **término general** (escrito como $a_n$) es como una *"máquina o receta matemática"*:
-  - Le ingresas la posición que quieres averiguar (por ejemplo, la posición $n=100$).
-  - La fórmula hace el cálculo y te da inmediatamente el valor de esa casilla sin necesidad de calcular los $99$ términos anteriores.
-  Por ejemplo, si el término general es $a_n = 5n$, para saber el término $100$ sólo calculas $a_{100} = 5 \cdot 100 = 500$.
+  El **término general** ($a_n$) es la "fórmula mágica" que fabrica cualquier número de la sucesión:
+  - En vez de sumar paso a paso para llegar al número en el lugar 100, simplemente pones $n = 100$ en la fórmula.
+  - Por ejemplo, si $a_n = 4n + 1$:
+    - Para $n = 1 \implies a_1 = 4(1) + 1 = 5$
+    - Para $n = 2 \implies a_2 = 4(2) + 1 = 9$
+    - Para $n = 100 \implies a_{100} = 4(100) + 1 = 401$
+  - El término general te da acceso instantáneo a cualquier posición.
+
+  ![Concepto de término general](/static/img/nodos/concepto-de-termino-general-de-una-sucesion-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **término general o regla explícita** de una sucesión es la ecuación funcional $a_n = f(n)$ con $n \in \mathbb{N}$ que genera el recorrido completo de la sucesión mediante evaluación directa:
-  $$a_n = f(n) \quad \implies \quad (a_n)_{n \ge 1} = \{f(1), f(2), f(3), \dots, f(n), \dots\}$$
+  El **término general** o **fórmula explícita** de una sucesión $(a_n)_{n \ge 1}$ es la expresión analítica cerrada $f: \mathbb{N} \to \mathbb{R}$ que define la regla de correspondencia directa:
+  $$a_n = f(n) \quad \forall n \in \mathbb{N}$$
+  donde la variable independiente $n$ representa la posición ordinal entera positiva.
 
-  ### Ventajas del Término General
-  1. **Evaluación no recursiva**: Permite hallar el término de posición $n = 1.000$ en tiempo constante $\mathcal{O}(1)$ sin depender de términos previos.
-  2. **Modelamiento algebraico**: Representa la ley estructural de formación de la secuencia.
-  3. **Identificación de límites y comportamientos**: Permite estudiar el comportamiento asintótico cuando $n \to \infty$.
+  ### Propiedad de Independencia de Cálculo
+  A diferencia de los métodos recursivos, la fórmula explícita permite evaluar $a_k$ con una sola operación algebraica de sustitución $n=k$, con costo computacional constante $O(1)$, sin requerir el conocimiento de los $k-1$ términos precedentes.
 
-  ### Clasificación de fórmulas generales por su estructura
-  - **Lineales**: $a_n = dn + c$ (Progresiones Aritméticas).
-  - **Cuadráticas**: $a_n = an^2 + bn + c$.
-  - **Exponenciales**: $a_n = c \cdot r^n$ (Progresiones Geométricas).
-  - **Racionales**: $a_n = \frac{P(n)}{Q(n)}$.
+  ### Tipología de Términos Generales
+  - **Polinomiales lineales**: $a_n = d \cdot n + c$ (crecimiento aditivo constante).
+  - **Polinomiales cuadráticos**: $a_n = a n^2 + b n + c$ (segundas diferencias constantes).
+  - **Exponenciales**: $a_n = c \cdot r^n$ (crecimiento multiplicativo geométrico).
+  - **Alternantes**: $a_n = (-1)^n \cdot g(n)$ (cambio periódico de signo).
 
   ### Síntesis didáctica
-  - Ecuación del término general: $a_n = f(n)$.
-  - Propiedad clave: Permite calcular el término $a_k$ reemplazando $n = k$ en la fórmula.
+  - Ecuación explícita: $a_n = f(n)$.
+  - Eficiencia: Obtención directa de $a_{1000}$ evaluando $n=1000$.
 definiciones_clave: |
-  - **Término general ($a_n$)**: Expresión algebraica que define a todos los elementos de la sucesión según la variable de posición $n$.
-  - **Fórmula explícita**: Regla matemática que entrega el valor directo de $a_n$ en función única de $n$.
-  - **Ley de formación**: Principio o patrón regular que rige el paso de la posición $n$ al valor $a_n$.
+  - **Término general ($a_n$)**: Expresión algebraica en función de $n$ que define todos los términos de una sucesión.
+  - **Fórmula explícita**: Regla matemática que entrega directamente el valor de un término a partir de su posición.
+  - **Forma cerrada**: Expresión que se evalúa mediante un número finito de operaciones aritméticas estándar.
 propiedades_relaciones: |
-  - **Unicidad de la imagen**: Para una posición $n$ dada, el término general $a_n$ entrega un único valor numérico bien definido.
-  - **Independencia de cálculo**: A diferencia de las fórmulas por recurrencia, la fórmula explícita no requiere conocer $a_{n-1}$.
+  - **Generación universal**: El término general determina por completo el comportamiento asintótico, la monotonía y los límites de la sucesión.
+  - **Conexión con funciones continuas**: $a_n$ corresponde a la restricción al dominio discreto $\mathbb{N}$ de una función real $f(x)$.
 ejemplo_guiado:
-  enunciado: 'Dada la sucesión con término general $a_n = \frac{n}{n+1}$, determina el valor del término en la posición $n=9$ y deduce el comportamiento cuando $n$ es muy grande.'
+  enunciado: 'Dada la sucesión con término general $a_n = 5n - 2$, calcula los términos $a_1, a_3$ y determina el valor del término en la posición $n=20$.'
+  imagen: '/static/img/nodos/concepto-de-termino-general-de-una-sucesion-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para hallar $a_9$, reemplazamos $n=9$ en la fórmula del término general.'
-    - 'Paso 2: Evaluamos el numerador y denominador: $a_9 = \frac{9}{9+1} = \frac{9}{10} = 0,9$.'
-    - 'Paso 3: Observamos los términos para $n=1, 2, 3, 9$: $a_1 = 1/2 = 0,5$, $a_2 = 2/3 \approx 0,67$, $a_9 = 0,9$.'
-    - 'Paso 4: Conclusión: El término $a_9 = \mathbf{\frac{9}{10}}$ y los valores se van aproximando cada vez más al número $1$.'
+    - 'Paso 1: Para $n=1$, evaluamos: $a_1 = 5(1) - 2 = 5 - 2 = 3$.'
+    - 'Paso 2: Para $n=3$, evaluamos: $a_3 = 5(3) - 2 = 15 - 2 = 13$.'
+    - 'Paso 3: Para la posición $n=20$, sustituimos directamente: $a_{20} = 5(20) - 2 = 100 - 2 = 98$.'
+    - 'Paso 4: Conclusión: $a_1 = 3$, $a_3 = 13$ y el término vigésimo es **$a_{20} = 98$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la principal ventaja práctica de contar con la fórmula del término general $a_n = f(n)$ en una sucesión?'
+    question: '¿Cuál es la principal ventaja de conocer el término general $a_n$ de una sucesión?'
     choices:
-      - {text: 'Permite calcular cualquier término $a_n$ directamente sustituyendo la posición $n$, sin calcular los términos anteriores', is_correct: true}
-      - {text: 'Permite sumar todos los números de la lista en una sola operación', is_correct: false}
-      - {text: 'Garantiza que todos los términos de la sucesión sean números enteros pares', is_correct: false}
-      - {text: 'Elimina la necesidad de usar subíndices de posición', is_correct: false}
-    explanation: 'La alternativa correcta es ''Permite calcular cualquier término $a_n$ directamente sustituyendo la posición $n$, sin calcular los términos anteriores''. Es la definición de fórmula explícita.'
+      - {text: 'Calcular directamente cualquier término $a_k$ sustituyendo $n=k$ sin calcular los términos previos', is_correct: true}
+      - {text: 'Cambiar el orden de los términos de la lista a voluntad', is_correct: false}
+      - {text: 'Convertir la sucesión en un conjunto finito de números', is_correct: false}
+      - {text: 'Eliminar los números negativos de la sucesión', is_correct: false}
+    explanation: 'La alternativa correcta es ''Calcular directamente cualquier término $a_k$ sustituyendo $n=k$ sin calcular los términos previos''. El término general es una fórmula explícita directa e independiente.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si el término general de una sucesión es $a_n = n^2 + 1$, ¿cuál es el valor del quinto término ($a_5$)?'
+    question: 'Si el término general de una sucesión es $a_n = n^2 + 1$, ¿cuál es el valor de $a_5$?'
     choices:
-      - {text: 'El número $26$, calculando $5^2 + 1 = 25 + 1 = 26$', is_correct: true}
-      - {text: 'El número $11$, multiplicando $5 \cdot 2 + 1$', is_correct: false}
-      - {text: 'El número $25$, elevando solo al cuadrado', is_correct: false}
-      - {text: 'El número $36$, sumando $5+1$ y elevando al cuadrado', is_correct: false}
-    explanation: 'La alternativa correcta es ''El número $26$, calculando $5^2 + 1 = 25 + 1 = 26$''. $a_5 = 5^2 + 1 = 26$.'
+      - {text: '$26$, calculando $5^2 + 1 = 25 + 1 = 26$', is_correct: true}
+      - {text: '$11$, multiplicando $5 \cdot 2 + 1$', is_correct: false}
+      - {text: '$25$, olvidando sumar 1', is_correct: false}
+      - {text: '$36$, evaluando en $(5+1)^2$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$26$, calculando $5^2 + 1 = 25 + 1 = 26$''. Sustituyendo $n=5$: $a_5 = 5^2 + 1 = 26$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
   - 'Paso 1: Identificar la expresión algebraica del término general $a_n = f(n)$.'
-  - 'Paso 2: Sustituir la variable de posición $n$ por el número ordinal deseado (ej: $n=5, n=100$).'
-  - 'Paso 3: Realizar las operaciones aritméticas respetando el orden de jerarquía de operaciones.'
-  - 'Paso 4: Expresar el valor numérico obtenido como el término $a_n$.'
+  - 'Paso 2: Sustituir la variable $n$ por el número de posición deseado.'
+  - 'Paso 3: Realizar las operaciones aritméticas respetando la jerarquía (potencias, productos, sumas).'
+  - 'Paso 4: Expresar el resultado como el valor del término indexado $a_n$.'
 errores_correccion: |
-  - **Error 1:** Reemplazar el valor numérico del término en lugar de la posición $n$ en la fórmula. **Cómo corregirlo:** La variable $n$ representa la **POSICIÓN u ORDEN** ($1, 2, 3, \dots$), no el valor del término.
-  - **Error 2:** Olvidar aplicar los paréntesis adecuadamente al sustituir $n$ en expresiones compuestas (ej: para $a_n = 3n^2$, evaluar $n=2$ como $(3 \cdot 2)^2 = 36$ en vez de $3 \cdot 2^2 = 12$). **Cómo corregirlo:** Las potencias se aplican **primero a la variable $n$**, y luego se multiplica por el coeficiente.
+  - **Error 1:** Creer que para hallar el término 50 es obligatorio calcular los 49 anteriores. **Cómo corregirlo:** La ventaja del término general es que **evalúa directamente en $n=50$** en un solo paso.
+  - **Error 2:** Sustituir valores decimales o no enteros en la variable $n$. **Cómo corregirlo:** En sucesiones estándar, la variable $n$ **siempre pertenece al conjunto de los números naturales $\mathbb{N}$**.
 ejemplos:
-  - titulo: 'Término general de múltiplos de 3'
-    enunciado: '¿El término general $a_n = 3n$ genera los términos $3, 6, 9, 12, \dots$?'
+  - titulo: 'Cálculo de término lejano'
+    enunciado: 'Para $a_n = 3n + 7$, ¿cuál es el valor del término $a_{30}$?'
     alternativas:
-      - 'Sí, sustituyendo $n=1, 2, 3, 4$'
-      - 'No, el primer término es 1'
-      - 'No, genera $1, 3, 9, 27$'
-    respuesta: 'Sí, sustituyendo $n=1, 2, 3, 4$'
+      - '$97$'
+      - '$90$'
+      - '$100$'
+    respuesta: '$97$'
     solucion_pasos:
-      - '1. Para $n=1 \implies a_1 = 3(1) = 3$.'
-      - '2. Para $n=2 \implies a_2 = 6, n=3 \implies a_3 = 9, n=4 \implies a_4 = 12$.'
-  - titulo: 'Cálculo directo de término lejano'
-    enunciado: 'Si $a_n = 2n + 5$, ¿el término de la posición 50 ($a_{50}$) es $105$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $a_{50} = 2(50) + 5 = 100 + 5 = 105$.'
+      - '1. $a_{30} = 3(30) + 7 = 90 + 7 = 97$.'
   - titulo: 'Término general fraccionario'
-    enunciado: 'Si $a_n = \frac{1}{n}$, ¿los primeros términos son $1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}$?'
+    enunciado: 'Para $a_n = \frac{n}{n+1}$, ¿cuál es el tercer término $a_3$?'
+    alternativas:
+      - '$\frac{3}{4}$'
+      - '$\frac{1}{2}$'
+      - '$\frac{4}{3}$'
+    respuesta: '$\frac{3}{4}$'
+    solucion_pasos:
+      - '1. $a_3 = \frac{3}{3+1} = \frac{3}{4}$.'
+  - titulo: 'Término general cuadrático'
+    enunciado: '¿La fórmula $a_n = 2n^2$ genera los términos $2, 8, 18, 32$ para $n=1, 2, 3, 4$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Reemplazando $n=1, 2, 3, 4$.'
-  - titulo: 'Término general con signo alternado'
-    enunciado: 'Si $a_n = (-1)^n \cdot n$, ¿la sucesión es $-1, 2, -3, 4, -5$?'
+      - '1. $a_1 = 2(1)^2 = 2$, $a_2 = 2(4) = 8$, $a_3 = 2(9) = 18$, $a_4 = 2(16) = 32$.'
+  - titulo: 'Independencia de cálculo'
+    enunciado: '¿Se puede calcular $a_{100}$ en $a_n = 5n - 1$ sin conocer el valor de $a_{99}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Para $n=1 \implies -1(1)=-1$; para $n=2 \implies 1(2)=2$; para $n=3 \implies -1(3)=-3$.'
+      - '1. Sí, la fórmula explícita solo depende del valor $n=100$.'
 errores_frecuentes:
-  - 'Sustituir el valor numérico del término en la variable $n$ en lugar de sustituir su posición ordinal.'
-  - 'La fórmula del término general explícito $a_n = f(n)$ requiere conocer previamente el valor de $a_{n-1}$.'
-  - 'Aplicar la multiplicación de un coeficiente antes de resolver la potencia de la variable de posición $n$.'
-  - 'El término general $a_n = f(n)$ entrega exclusivamente números enteros positivos para todo $n$.'
-  - 'Considerar que todas las sucesiones poseen obligatoriamente un término general expresable mediante funciones elementales.'
+  - 'Para calcular un término lejano en una fórmula explícita es obligatorio calcular secuencialmente todos los términos anteriores.'
+  - 'La variable $n$ del término general puede reemplazarse por números negativos o fracciones.'
+  - 'El término general $a_n = 3n$ genera una sucesión constante donde todos los términos valen tres.'
+  - 'La expresión $a_n$ se interpreta como la multiplicación de una constante $a$ por la variable $n$.'
+  - 'Una sucesión con término general cuadrático presenta diferencias constantes de primer orden entre términos.'
 afirmaciones_verdaderas:
-  - 'El término general $a_n = f(n)$ es la fórmula explícita que permite calcular directamente cualquier término dada su posición $n$.'
-  - 'Para hallar el término en la posición $k$, se reemplaza $n = k$ en la fórmula del término general.'
-al_terminar_debes_poder: 'Comprender y utilizar la fórmula del término general $a_n = f(n)$ para calcular cualquier elemento de una sucesión.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El término general $a_n = f(n)$ permite obtener el valor de cualquier término de la sucesión evaluando directamente su posición $n$.'
+  - 'El cálculo de un término a partir de su fórmula explícita no requiere el conocimiento de los términos previos de la secuencia.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/concepto-de-termino-general-de-una-sucesion-resumen.svg)
+
+  QUÉ: Comprender y utilizar el concepto de término general $a_n$ como fórmula explícita de una sucesión.
+  CÓMO: Evaluar la regla analítica $a_n = f(n)$ sustituyendo directamente el índice de posición $n \in \mathbb{N}$ para hallar cualquier término.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

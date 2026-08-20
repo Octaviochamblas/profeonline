@@ -1,118 +1,137 @@
 semantic_id: MAT.ALG.AGRUPACION.SUPRESION_ANIDADA
-resumen_inicial: 'La supresión de agrupaciones anidadas consiste en eliminar secuencialmente los signos de agrupación múltiples desde el nivel más interno hacia el más externo aplicando las reglas de signos antecedentes.'
-explicacion_simple: |
-  Cuando una expresión tiene varios signos de agrupación uno dentro de otro (ej: llaves que contienen corchetes que contienen paréntesis):
-  - **REGLA FUNDAMENTAL DE TRABAJO**: **Elimina los signos de agrupación de ADENTRO HACIA AFUERA**.
-  - **Procedimiento por etapas**:
-    1. **Identifica el paréntesis más interno** y elimínalo aplicando la regla de su signo antecedente ($+$ o $-$).
-    2. **Reduce los términos semejantes** que hayan quedado dentro del siguiente nivel (corchete).
-    3. **Elimina el corchete** aplicando la regla de su signo antecedente.
-    4. **Repite el proceso** con las llaves hasta liberar toda la expresión.
-  - **Ejemplo**: Reducir $3x - [ 2y - (x - 4y) ]$:
-    - Eliminamos $(x - 4y)$ con signo $-$: $3x - [ 2y - x + 4y ]$.
-    - Reducimos dentro del corchete: $3x - [ 6y - x ]$.
-    - Eliminamos el corchete con signo $-$: $3x - 6y + x$.
-    - Reducimos la clase $x$: **$4x - 6y$**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La supresión de agrupaciones anidadas consiste en eliminar secuencialmente los signos de agrupación múltiples desde el nivel más interno hacia el más externo aplicando las reglas de signos antecedentes.
+explicacion_simple: "Cuando una expresión tiene varios signos de agrupación uno dentro de otro (ej: llaves que contienen corchetes que contienen paréntesis):\n- **REGLA FUNDAMENTAL DE TRABAJO**: **Elimina los signos de agrupación de ADENTRO HACIA AFUERA**.\n- **Procedimiento por etapas**:\n  1. **Identifica el paréntesis más interno** y elimínalo aplicando la regla de su signo antecedente ($+$ o $-$).\n  2. **Reduce los términos semejantes** que hayan quedado dentro del siguiente nivel (corchete).\n  3. **Elimina el corchete** aplicando la regla de su signo antecedente.\n  4. **Repite el proceso** con las llaves hasta liberar toda la expresión.\n- **Ejemplo**: Reducir $3x - [ 2y - (x - 4y) ]$:\n  - Eliminamos $(x - 4y)$ con signo $-$: $3x - [ 2y - x + 4y ]$.\n  - Reducimos dentro del corchete: $3x - [ 6y - x ]$.\n  - Eliminamos el corchete con signo $-$: $3x - 6y + x$.\n  - Reducimos la clase $x$: **$4x - 6y$**.\n\n![Supresión de Agrupaciones Anidadas](/static/img/nodos/supresion-de-agrupaciones-anidadas-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea $E_0 = \mathcal{D}_k \big( A_k + \mathcal{D}_{k-1}( A_{k-1} + \dots + \mathcal{D}_1(A_1) \dots ) \big)$ una estructura de $k$ niveles de anidamiento parentético donde $\mathcal{D}_j$ representan pares de delimitadores antecedidos por signos $\sigma_j \in \{-1, +1\}$. La **supresión anidada inductiva** define una secuencia de expresiones equivalentes $(E_0, E_1, \dots, E_k)$:
+
 
   $$E_j = \operatorname{Supresión}\Big( E_{j-1}, \text{Nivel Interno } j \Big)$$
 
+
   donde cada paso resuelve la capa más interna conservando la validez algebraica de la estructura envolvente.
 
+
   ### Multiplicación Acumulada de Signos Antecedentes
+
   El signo efectivo de un monomio liberado $T \in A_1$ situado en el nivel más interno viene determinado por el producto de las signaturas de todos los delimitadores que lo contienen:
+
 
   $$\operatorname{sgn}_{\text{final}}(T) = \operatorname{sgn}_{\text{inicial}}(T) \cdot \prod_{j=1}^k \sigma_j$$
 
+
   ### Síntesis didáctica
+
   Resolver de adentro hacia afuera es el método más ordenado y menos propenso a errores para simplificar expresiones complejas en álgebra superior.
-definiciones_clave: |
-  - **Agrupaciones anidadas**: Delimitadores colocados sucesivamente en capas internas y externas ($\{[\overline{\quad}]\}$).
+
+  '
+definiciones_clave: '- **Agrupaciones anidadas**: Delimitadores colocados sucesivamente en capas internas y externas ($\{[\overline{\quad}]\}$).
+
   - **Eliminación inductiva**: Estrategia paso a paso de supresión desde la capa más profunda hasta la superficie.
+
   - **Producto de signos antecedentes ($\prod \sigma_j$)**: Efecto combinado de los signos negativos externos sobre la signatura de un término interno.
-propiedades_relaciones: |
-  - **Invarianza por método alternativo**: Eliminar de afuera hacia adentro multiplicando los signos antecedentes produce exactamente el mismo resultado final.
+
+  '
+propiedades_relaciones: '- **Invarianza por método alternativo**: Eliminar de afuera hacia adentro multiplicando los signos antecedentes produce exactamente el mismo resultado final.
+
   - **Reducción intermedia voluntaria**: Reducir términos semejantes dentro del corchete antes de eliminarlo acorta los cálculos de los pasos siguientes.
+
+  '
 ejemplo_guiado:
   enunciado: 'Simplifica la expresión eliminando agrupaciones anidadas: $2a - \{ 3b - [ 5a - (2b - a) ] \}$.'
   pasos:
-    - 'Paso 1: Localizamos el nivel más interno: el paréntesis $(2b - a)$ antecedido por un signo $-$.'
-    - 'Paso 2: Suprimimos el paréntesis invirtiendo sus signos internos: $2a - \{ 3b - [ 5a - 2b + a ] \}$.'
-    - 'Paso 3: Reducimos términos semejantes dentro del corchete: $5a + a = 6a \implies 2a - \{ 3b - [ 6a - 2b ] \}$.'
-    - 'Paso 4: Suprimimos el corchete precedido por $-$, invirtiendo los signos del corchete: $2a - \{ 3b - 6a + 2b \}$.'
-    - 'Paso 5: Reducimos términos semejantes dentro de la llave: $3b + 2b = 5b \implies 2a - \{ 5b - 6a \}$.'
-    - 'Paso 6: Suprimimos la llave precedida por $-$, invirtiendo sus signos: $2a - 5b + 6a$.'
-    - 'Paso 7: Reducimos la expresión final: $2a + 6a - 5b = \mathbf{8a - 5b}$.'
-    - 'Conclusión: El resultado simplificado es **$8a - 5b$**.'
+  - 'Paso 1: Localizamos el nivel más interno: el paréntesis $(2b - a)$ antecedido por un signo $-$.'
+  - 'Paso 2: Suprimimos el paréntesis invirtiendo sus signos internos: $2a - \{ 3b - [ 5a - 2b + a ] \}$.'
+  - 'Paso 3: Reducimos términos semejantes dentro del corchete: $5a + a = 6a \implies 2a - \{ 3b - [ 6a - 2b ] \}$.'
+  - 'Paso 4: Suprimimos el corchete precedido por $-$, invirtiendo los signos del corchete: $2a - \{ 3b - 6a + 2b \}$.'
+  - 'Paso 5: Reducimos términos semejantes dentro de la llave: $3b + 2b = 5b \implies 2a - \{ 5b - 6a \}$.'
+  - 'Paso 6: Suprimimos la llave precedida por $-$, invirtiendo sus signos: $2a - 5b + 6a$.'
+  - 'Paso 7: Reducimos la expresión final: $2a + 6a - 5b = \mathbf{8a - 5b}$.'
+  - 'Conclusión: El resultado simplificado es **$8a - 5b$**.'
+  imagen: /static/img/nodos/supresion-de-agrupaciones-anidadas-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué se recomienda reducir los términos semejantes internos antes de suprimir el siguiente nivel de agrupación en estructuras anidadas?'
-    choices:
-      - {text: 'Porque simplifica la expresión intermedia y reduce la cantidad de términos sobre los cuales aplicar el cambio de signo', is_correct: true}
-      - {text: 'Porque altera el resultado numérico final haciendo la expresión positiva', is_correct: false}
-      - {text: 'Porque elimina las variables de la expresión', is_correct: false}
-      - {text: 'Porque multiplica los exponentes por cero', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque simplifica la expresión intermedia y reduce la cantidad de términos sobre los cuales aplicar el cambio de signo''. Reducción intermedia eficiente.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el resultado de simplificar $x - [ y - (x + y) ]$?'
-    choices:
-      - {text: 'El resultado es $2x$, al suprimir el paréntesis $x - [ y - x - y ] = x - [ -x ] = x + x = 2x$', is_correct: true}
-      - {text: 'El resultado es $0$', is_correct: false}
-      - {text: 'El resultado es $2y$', is_correct: false}
-      - {text: 'El resultado es $x - 2y$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El resultado es $2x$, al suprimir el paréntesis $x - [ y - x - y ] = x - [ -x ] = x + x = 2x$''. Paso 1: $y - x - y = -x$; Paso 2: $x - (-x) = 2x$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué se recomienda reducir los términos semejantes internos antes de suprimir el siguiente nivel de agrupación en estructuras anidadas?
+  choices:
+  - text: Porque simplifica la expresión intermedia y reduce la cantidad de términos sobre los cuales aplicar el cambio de signo
+    is_correct: true
+  - text: Porque altera el resultado numérico final haciendo la expresión positiva
+    is_correct: false
+  - text: Porque elimina las variables de la expresión
+    is_correct: false
+  - text: Porque multiplica los exponentes por cero
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque simplifica la expresión intermedia y reduce la cantidad de términos sobre los cuales aplicar el cambio de signo'. Reducción intermedia eficiente.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el resultado de simplificar $x - [ y - (x + y) ]$?
+  choices:
+  - text: El resultado es $2x$, al suprimir el paréntesis $x - [ y - x - y ] = x - [ -x ] = x + x = 2x$
+    is_correct: true
+  - text: El resultado es $0$
+    is_correct: false
+  - text: El resultado es $2y$
+    is_correct: false
+  - text: El resultado es $x - 2y$
+    is_correct: false
+  explanation: 'La alternativa correcta es ''El resultado es $2x$, al suprimir el paréntesis $x - [ y - x - y ] = x - [ -x ] = x + x = 2x$''. Paso 1: $y - x - y = -x$; Paso 2: $x - (-x) = 2x$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el par de signos de agrupación situado en el nivel más interno.'
-  - 'Paso 2: Eliminar dicho nivel aplicando la regla del signo antecedente ($+$ conserva, $-$ invierte).'
-  - 'Paso 3: Reducir los términos semejantes dentro del nivel envolvente resultante.'
-  - 'Paso 4: Repetir el proceso hacia afuera hasta eliminar todas las llaves, corchetes y paréntesis.'
-errores_correccion: |
-  - **Error 1:** Tratar de eliminar todos los niveles de agrupación al mismo tiempo en un solo paso. **Cómo corregirlo:** Se debe avanzar **PASO A PASO DE ADENTRO HACIA AFUERA** para evitar confusiones de signos.
+- 'Paso 1: Identificar el par de signos de agrupación situado en el nivel más interno.'
+- 'Paso 2: Eliminar dicho nivel aplicando la regla del signo antecedente ($+$ conserva, $-$ invierte).'
+- 'Paso 3: Reducir los términos semejantes dentro del nivel envolvente resultante.'
+- 'Paso 4: Repetir el proceso hacia afuera hasta eliminar todas las llaves, corchetes y paréntesis.'
+errores_correccion: '- **Error 1:** Tratar de eliminar todos los niveles de agrupación al mismo tiempo en un solo paso. **Cómo corregirlo:** Se debe avanzar **PASO A PASO DE ADENTRO HACIA AFUERA** para evitar confusiones de signos.
+
   - **Error 2:** Excluir el signo antecedente del corchete sobre los términos generados al suprimir el paréntesis interno. **Cómo corregirlo:** Es conveniente **REDUCIR LOS TÉRMINOS DENTRO DEL CORCHETE** antes de eliminarlo.
+
+  '
 ejemplos:
-  - titulo: 'Dos niveles anidados'
-    enunciado: '¿Cuál es la simplificación de $a + [ b - (a + b) ]$?'
-    alternativas:
-      - '$0$'
-      - '$2a$'
-      - '$2b$'
-    respuesta: '$0$'
-    solucion_pasos:
-      - '1. Paréntesis: $a + [ b - a - b ]$.'
-      - '2. Corchete: $a + [ -a ] = a - a = 0$.'
-  - titulo: 'Tres niveles de agrupación'
-    enunciado: '¿Cuál es el resultado de $- \{ - [ -(x) ] \}$?'
-    alternativas:
-      - '$-x$'
-      - '$+x$'
-      - '$0$'
-    respuesta: '$-x$'
-    solucion_pasos:
-      - '1. Tres signos negativos multiplicados: $(-1)(-1)(-1) = -1$.'
-      - '2. Resultado: $-x$.'
-  - titulo: 'Reducción intermedia'
-    enunciado: 'En la expresión $x + [ 3x - (x - 2x) ]$, ¿ayuda reducir $(x - 2x) = -x$ antes de eliminar el corchete?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, simplifica la operación a $x + [ 3x - (-x) ] = x + 4x = 5x$.'
-  - titulo: 'Preservación de jerarquía'
-    enunciado: '¿Produce el método de afuera hacia adentro el mismo resultado final si se aplican correctamente los signos?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, algebraicamente ambos métodos son equivalentes.'
+- titulo: Dos niveles anidados
+  enunciado: ¿Cuál es la simplificación de $a + [ b - (a + b) ]$?
+  alternativas:
+  - $0$
+  - $2a$
+  - $2b$
+  respuesta: $0$
+  solucion_pasos:
+  - '1. Paréntesis: $a + [ b - a - b ]$.'
+  - '2. Corchete: $a + [ -a ] = a - a = 0$.'
+- titulo: Tres niveles de agrupación
+  enunciado: ¿Cuál es el resultado de $- \{ - [ -(x) ] \}$?
+  alternativas:
+  - $-x$
+  - $+x$
+  - $0$
+  respuesta: $-x$
+  solucion_pasos:
+  - '1. Tres signos negativos multiplicados: $(-1)(-1)(-1) = -1$.'
+  - '2. Resultado: $-x$.'
+- titulo: Reducción intermedia
+  enunciado: En la expresión $x + [ 3x - (x - 2x) ]$, ¿ayuda reducir $(x - 2x) = -x$ antes de eliminar el corchete?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, simplifica la operación a $x + [ 3x - (-x) ] = x + 4x = 5x$.
+- titulo: Preservación de jerarquía
+  enunciado: ¿Produce el método de afuera hacia adentro el mismo resultado final si se aplican correctamente los signos?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, algebraicamente ambos métodos son equivalentes.
 errores_frecuentes:
-  - 'Eliminar múltiples niveles de agrupación simultáneamente sin registrar los cambios de signo parciales.'
-  - 'El signo del corchete no es aplicado a los términos liberados por el paréntesis interno.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Intercambiar las marcas de cierre de los corchetes con las llaves al avanzar de adentro hacia afuera.'
-  - 'La reducción de términos semejantes intermedia dentro de cada nivel de agrupación no se efectúa.'
+- Eliminar múltiples niveles de agrupación simultáneamente sin registrar los cambios de signo parciales.
+- El signo del corchete no es aplicado a los términos liberados por el paréntesis interno.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Intercambiar las marcas de cierre de los corchetes con las llaves al avanzar de adentro hacia afuera.
+- La reducción de términos semejantes intermedia dentro de cada nivel de agrupación no se efectúa.
 afirmaciones_verdaderas:
-  - 'La supresión de agrupaciones anidadas se ejecuta preferentemente de adentro hacia afuera resolviendo primero los niveles más profundos.'
-  - 'Reducir los términos semejantes dentro de cada nivel antes de eliminar la capa envolvente acorta y asegura el procedimiento.'
-al_terminar_debes_poder: 'Suprimir agrupaciones anidadas resolviendo secuencialmente de adentro hacia afuera y reduciendo la expresión final.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La supresión de agrupaciones anidadas se ejecuta preferentemente de adentro hacia afuera resolviendo primero los niveles más profundos.
+- Reducir los términos semejantes dentro de cada nivel antes de eliminar la capa envolvente acorta y asegura el procedimiento.
+al_terminar_debes_poder: '![Resumen de agrupaciones anidadas](/static/img/nodos/supresion-de-agrupaciones-anidadas-resumen.svg)
+
+
+  QUÉ: Simplificar expresiones algebraicas con múltiples niveles de paréntesis encajados.
+
+
+  CÓMO: Suprimir los signos de agrupación progresivamente de adentro hacia afuera $( ) \to [ ] \to \{ \}$, reduciendo términos semejantes en cada etapa.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

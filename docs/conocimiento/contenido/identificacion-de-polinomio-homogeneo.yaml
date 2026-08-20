@@ -1,111 +1,128 @@
 semantic_id: MAT.ALG.POLINOMIOS.POLINOMIO_HOMOGENEO
-resumen_inicial: 'La identificación de polinomio homogéneo consiste en verificar que todos los términos algebraicos del polinomio posean exactamente el mismo grado absoluto.'
+resumen_inicial: 'Un polinomio es homogéneo cuando todos y cada uno de sus términos monomios poseen exactamente el mismo grado absoluto.'
 explicacion_simple: |
-  Un polinomio se llama **homogéneo** si **todos y cada uno de sus términos tienen exactamente la misma "potencia total" (grado absoluto)**:
-  - "Homo" significa "igual" y "géneo" significa "tipo o grado".
-  - Ejemplo: En $P(x,y) = 4x^3 - 5x^2 y + 2xy^2 - 8y^3$:
-    - Grado de $4x^3 \implies 3$.
-    - Grado de $-5x^2 y \implies 2 + 1 = 3$.
-    - Grado de $2xy^2 \implies 1 + 2 = 3$.
-    - Grado de $-8y^3 \implies 3$.
-  - Como **todos los términos son de grado $3$**, el polinomio es **homogéneo de grado 3**.
-  - Este grado común se conoce como el **grado de homogeneidad** del polinomio.
+  - Un polinomio es **homogéneo** si **todos sus términos suman lo mismo en sus exponentes**.
+  - Por ejemplo, en $P(x, y) = 3x^3 - 5x^2y + 2xy^2 - y^3$:
+    - Primer término: $3$ ($x^3$).
+    - Segundo término: $2 + 1 = 3$ ($x^2y$).
+    - Tercer término: $1 + 2 = 3$ ($xy^2$).
+    - Cuarto término: $3$ ($y^3$).
+    - ¡Todos los términos tienen grado absoluto $3$!
+  - A este valor común se le llama **grado de homogeneidad** del polinomio.
+
+  ![Polinomio Homogéneo](/static/img/nodos/identificacion-de-polinomio-homogeneo-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Un polinomio $P(x_1, \dots, x_k) = \sum_{i=1}^n M_i \in \mathbb{R}[x_1, \dots, x_k]$ es **homogéneo de grado $d$** (o una forma de grado $d$) si y solo si todos sus monomios constituyentes no nulos poseen el mismo grado absoluto $d$:
+  Un polinomio $P(x_1, \dots, x_n) \in \mathbb{K}[x_1, \dots, x_n]$ es **homogéneo de grado $k$** si todos sus monomios componentes no nulos $T_j$ tienen idéntico grado absoluto:
 
-  $$\forall i \in \{1, \dots, n\}, \quad \operatorname{grabs}(M_i) = d$$
+  $$\forall T_j \in \operatorname{supp}(P), \quad \operatorname{GA}(T_j) = k$$
 
-  ### Teorema de la Escala de Euler para Funciones Homogéneas
-  Una función polinómica $P(x_1, \dots, x_k)$ es homogénea de grado $d$ si y solo si al escalar todas sus variables por una constante $\lambda \in \mathbb{R}$, el resultado se escala por $\lambda^d$:
+  ### Teorema de homogeneidad de Euler
+  Una función polinomial $P(x_1, \dots, x_n)$ es homogénea de grado $k$ si y solo si para todo escalar $t \in \mathbb{R}$:
 
-  $$P(\lambda x_1, \lambda x_2, \dots, \lambda x_k) = \lambda^d \cdot P(x_1, x_2, \dots, x_k)$$
+  $$P(t x_1, t x_2, \dots, t x_n) = t^k \cdot P(x_1, x_2, \dots, x_n)$$
 
-  ### Síntesis didáctica
-  La homogeneidad garantiza invarianza geométrica bajo dilataciones cartesianas. Es un concepto central en la física (ecuaciones dimensionales) y en el cálculo multivariable.
+  ### Propiedades estructurales
+  1. **Término independiente:** Todo polinomio homogéneo de grado $k \ge 1$ tiene término independiente nulo (no puede tener números sueltos).
+  2. **Cierre de operaciones:** El producto de dos polinomios homogéneos de grados $k_1$ y $k_2$ es un polinomio homogéneo de grado $k_1 + k_2$.
 definiciones_clave: |
-  - **Polinomio homogéneo**: Polinomio en el cual todos sus términos poseen el mismo grado absoluto.
-  - **Grado de homogeneidad ($d$)**: Valor numérico común del grado absoluto de todos los monomios de un polinomio homogéneo.
-  - **Forma algebraica**: Denominación tradicional dada a un polinomio homogéneo multivariable.
+  - **Polinomio homogéneo**: Polinomio cuyos términos tienen todos el mismo grado absoluto.
+  - **Grado de homogeneidad**: Valor constante común del grado absoluto de todos sus monomios.
+  - **Factor de escala ($t^k$)**: Potencia escalar que factoriza el polinomio al multiplicar todas las variables por $t$.
 propiedades_relaciones: |
-  - **Producto de polinomios homogéneos**: El producto de un polinomio homogéneo de grado $d_1$ por uno de grado $d_2$ es un polinomio homogéneo de grado $d_1 + d_2$.
-  - **Ausencia de término independiente constante**: Todo polinomio homogéneo de grado $d \ge 1$ carece de término independiente no nulo (salvo que todas las variables sean cero).
+  - **Formas cuadráticas y cúbicas**: Las formas algebraicas puras en geometría y física (como $Ax^2 + Bxy + Cy^2$) son polinomios homogéneos de grado 2.
+  - **Descomposición en componentes homogéneas**: Cualquier polinomio general puede descomponerse de forma única como la suma de polinomios homogéneos de grados crecientes.
 ejemplo_guiado:
-  enunciado: 'Verifica si el polinomio $P(a,b) = 5a^4 - 2a^3 b + 7a^2 b^2 - b^4$ es un polinomio homogéneo y determina su grado de homogeneidad.'
+  enunciado: 'Determina si el polinomio $P(x, y) = 4x^4 - 7x^3y + 2x^2y^2 - 9y^4$ es homogéneo y calcula su grado de homogeneidad.'
+  imagen: '/static/img/nodos/identificacion-de-polinomio-homogeneo-ejemplos.svg'
   pasos:
-    - 'Paso 1: Calculamos el grado del 1.er término $5a^4$: Exponente $4 \implies$ Grado $4$.'
-    - 'Paso 2: Calculamos el grado del 2.º término $-2a^3 b$: Exponentes $3 + 1 \implies$ Grado $4$.'
-    - 'Paso 3: Calculamos el grado del 3.er término $7a^2 b^2$: Exponentes $2 + 2 \implies$ Grado $4$.'
-    - 'Paso 4: Calculamos el grado del 4.º término $-b^4$: Exponente $4 \implies$ Grado $4$.'
-    - 'Paso 5: Comparamos: Todos los términos tienen grado igual a $4$.'
-    - 'Conclusión: **Es un polinomio homogéneo de grado de homogeneidad $4$**.'
+    - 'Paso 1: Calculamos el grado absoluto del término $4x^4$: grado **$4$**.'
+    - 'Paso 2: Calculamos el grado absoluto del término $-7x^3y$: $3 + 1 = **4$**.'
+    - 'Paso 3: Calculamos el grado absoluto del término $2x^2y^2$: $2 + 2 = **4$**.'
+    - 'Paso 4: Calculamos el grado absoluto del término $-9y^4$: grado **$4$**.'
+    - 'Paso 5: Comparamos los grados: todos los términos tienen exactamente grado absoluto $4$.'
+    - 'Paso 6: Conclusión: $P(x, y)$ **es un polinomio homogéneo** con grado de homogeneidad igual a **$4$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué propiedad matemática debe cumplirse en un polinomio para ser clasificado como homogéneo?'
+    question: '¿Cuál de los siguientes polinomios es homogéneo?'
     choices:
-      - {text: 'Todos sus términos algebraicos componentes deben poseer exactamente el mismo grado absoluto', is_correct: true}
-      - {text: 'Todos sus coeficientes numéricos deben ser iguales entre sí', is_correct: false}
-      - {text: 'Debe estar compuesto únicamente por una sola variable', is_correct: false}
-      - {text: 'El término independiente debe ser igual a cero y tener coeficientes impares', is_correct: false}
-    explanation: 'La alternativa correcta es ''Todos sus términos algebraicos componentes deben poseer exactamente el mismo grado absoluto''. Definición de polinomio homogéneo.'
+      - text: '$x^3 + 3x^2y + 3xy^2 + y^3$'
+        is_correct: true
+      - text: '$x^3 + x^2 + x + 1$'
+        is_correct: false
+      - text: '$2x^2y - 4xy + 5$'
+        is_correct: false
+      - text: '$x^4 + y^2$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$x^3 + 3x^2y + 3xy^2 + y^3$''. Todos sus términos tienen exactamente grado absoluto 3.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Es el polinomio $Q(x,y) = 3x^2 y^3 - 8x^4 y + 6y^5$ un polinomio homogéneo? ¿Por qué?'
+    question: 'Si en un polinomio homogéneo $P(x, y)$ de grado 3 sustituimos $(x, y)$ por $(2x, 2y)$, ¿por cuánto queda multiplicado el valor del polinomio?'
     choices:
-      - {text: 'Sí, porque todos sus términos tienen grado absoluto igual a $5$ ($3+2=5, 4+1=5, 5$)', is_correct: true}
-      - {text: 'No, porque las letras $x$ e $y$ tienen exponentes distintos en cada término', is_correct: false}
-      - {text: 'No, porque el segundo término es negativo', is_correct: false}
-      - {text: 'Sí, porque posee tres términos en total', is_correct: false}
-    explanation: 'La alternativa correcta es ''Sí, porque todos sus términos tienen grado absoluto igual a $5$ ($3+2=5, 4+1=5, 5$)''. Homogéneo de grado 5.'
+      - text: 'Por $2^3 = 8$'
+        is_correct: true
+      - text: 'Por 2'
+        is_correct: false
+      - text: 'Por 6'
+        is_correct: false
+      - text: 'Por 3'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Por $2^3 = 8$''. Por el teorema de Euler, $P(tx, ty) = t^k P(x, y)$, y para $t=2, k=3$ resulta $2^3 = 8$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Calcular el grado absoluto de cada uno de los términos del polinomio sumando sus exponentes literales.'
-  - 'Paso 2: Comparar los grados absolutos obtenidos en todos los términos.'
-  - 'Paso 3: Si todos los términos arrojan exactamente el mismo valor $d$, declarar que es un polinomio homogéneo de grado $d$.'
-  - 'Paso 4: Si al menos un término arroja un grado absoluto distinto, declarar que no es homogéneo (heterogéneo).'
+  - 'Paso 1: Calcular el grado absoluto de cada monomio del polinomio sumando sus exponentes.'
+  - 'Paso 2: Comparar los grados absolutos de todos los términos.'
+  - 'Paso 3: Si todos los grados son idénticos, clasificar como polinomio homogéneo e indicar el grado común.'
+  - 'Paso 4: Si al menos un término tiene grado distinto, clasificar como heterogéneo.'
 errores_correccion: |
-  - **Error 1:** Evaluar sólo los exponentes de una letra en lugar del grado absoluto total del término (ej: en $x^2 y^2 + x^3 y$ decir que no es homogéneo porque $x^2 \neq x^3$). **Cómo corregirlo:** La homogeneidad exige comparar la **SUMA de todos los exponentes de cada término** ($2+2=4$ y $3+1=4 \implies$ homogéneo).
-  - **Error 2:** Declarar que un polinomio homogéneo exige coeficientes numéricos iguales. **Cómo corregirlo:** Los coeficientes pueden ser números reales **totalmente distintos**; lo único igual debe ser el grado de las letras.
+  - **Error 1:** Creer que un polinomio con término constante no nulo (como $x^2 + y^2 + 5$) puede ser homogéneo. **Cómo corregirlo:** La constante tiene grado 0, por lo que **rompe la homogeneidad**.
+  - **Error 2:** Confundir homogeneidad con igualdad de coeficientes. **Cómo corregirlo:** La homogeneidad depende exclusivamente de **los grados de las letras**, no de los números coeficientes.
 ejemplos:
-  - titulo: 'Homogeneidad de grado 2'
-    enunciado: '¿Es $x^2 + 2xy + y^2$ un polinomio homogéneo?'
+  - titulo: 'Forma cuadrática homogénea'
+    enunciado: '¿Es $P(x, y) = 3x^2 - 4xy + 5y^2$ un polinomio homogéneo de segundo grado?'
     alternativas:
-      - 'Sí, es homogéneo de grado 2 (grados: 2, 1+1=2, 2)'
-      - 'No, porque el término central tiene coeficiente 2'
-      - 'No, es heterogéneo'
-    respuesta: 'Sí, es homogéneo de grado 2 (grados: 2, 1+1=2, 2)'
+      - 'Sí, porque todos sus términos tienen grado 2'
+      - 'No, porque los coeficientes son distintos'
+      - 'No, porque el término central tiene dos variables'
+    respuesta: 'Sí, porque todos sus términos tienen grado 2'
     solucion_pasos:
-      - '1. Grados: $x^2 \to 2$, $2xy \to 1+1=2$, $y^2 \to 2$.'
-      - '2. Es homogéneo de grado 2.'
-  - titulo: 'Escala de Euler'
-    enunciado: 'Si en el polinomio homogéneo de grado 3 $P(x,y) = x^3 + y^3$ reemplazamos $x \to 2x, y \to 2y$, ¿el resultado se multiplica por $2^3 = 8$?'
+      - '1. $\operatorname{GA}(3x^2) = 2$.'
+      - '2. $\operatorname{GA}(-4xy) = 1 + 1 = 2$.'
+      - '3. $\operatorname{GA}(5y^2) = 2$.'
+      - '4. Es homogéneo de grado 2.'
+  - titulo: 'Polinomio no homogéneo por constante'
+    enunciado: '¿Por qué $x^3 + y^3 - 8$ no es homogéneo?'
     alternativas:
-      - 'Sí, $P(2x, 2y) = 8 P(x,y)$ por la propiedad de homogeneidad'
-      - 'No, se multiplica por 2'
-      - 'No, el resultado se duplica'
-    respuesta: 'Sí, $P(2x, 2y) = 8 P(x,y)$ por la propiedad de homogeneidad'
+      - 'Porque el número $-8$ tiene grado 0 mientras los otros términos tienen grado 3'
+      - 'Porque tiene signo menos'
+      - 'Porque tiene 3 términos'
+    respuesta: 'Porque el número $-8$ tiene grado 0 mientras los otros términos tienen grado 3'
     solucion_pasos:
-      - '1. $(2x)^3 + (2y)^3 = 8x^3 + 8y^3 = 8(x^3 + y^3)$.'
-      - '2. Cumple la escala de Euler.'
-  - titulo: 'Polinomio heterogéneo descartado'
-    enunciado: 'El polinomio $x^3 + y^2$, ¿es un polinomio homogéneo?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No, los grados absolutos son $3$ y $2$ (diferentes).'
-  - titulo: 'Producto de homogéneos'
-    enunciado: 'Al multiplicar dos polinomios homogéneos de grado $2$ y grado $3$, ¿se obtiene un polinomio homogéneo de grado $5$?'
+      - '1. Grados de los términos: 3, 3 y 0.'
+      - '2. Como $0 \neq 3$, no es homogéneo.'
+  - titulo: 'Producto notable como homogéneo'
+    enunciado: '¿Es el desarrollo de $(x + y)^2 = x^2 + 2xy + y^2$ un polinomio homogéneo?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, el producto suma sus grados de homogeneidad $2+3=5$.'
+      - '1. Los tres términos tienen grado absoluto 2.'
+      - '2. Es homogéneo de segundo grado.'
+  - titulo: 'Homogeneidad en una variable'
+    enunciado: '¿Puede un polinomio de una sola variable con dos o más términos no nulos ser homogéneo?'
+    respuesta: 'No'
+    solucion_pasos:
+      - '1. En una variable, dos términos de igual grado son semejantes y se reducen a un solo monomio.'
+      - '2. Un polinomio de una variable con $\ge 2$ términos irreducibles es siempre heterogéneo.'
 errores_frecuentes:
-  - 'Un polinomio homogéneo requiere que todos sus coeficientes numéricos sean exactamente iguales.'
-  - 'La homogeneidad de un polinomio se verifica comparando los exponentes de una sola variable.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Un polinomio homogéneo de grado superior a cero incluye un término independiente constante no nulo.'
-  - 'Sumar dos polinomios homogéneos del mismo grado produce un polinomio de grado doble.'
+  - 'Olvidar que las constantes numéricas no nulas tienen grado cero y rompen la homogeneidad.'
+  - 'Confundir polinomios homogéneos con polinomios que tienen coeficientes numéricos iguales.'
+  - 'Creer que un polinomio de una sola variable (ej: $x^3 + x^2$) puede ser homogéneo.'
+  - 'No sumar los exponentes de todas las variables en términos multivariables como $x^2y^2$.'
+  - 'Suponer que cambiar los signos de los términos altera la propiedad de homogeneidad.'
 afirmaciones_verdaderas:
-  - 'Un polinomio es homogéneo si todos sus términos poseen exactamente el mismo grado absoluto.'
-  - 'El escalamiento de las variables de un polinomio homogéneo de grado d por una constante k produce el factor k^d.'
-al_terminar_debes_poder: 'Identificar polinomios homogéneos calculando el grado absoluto de cada término y comprobando la igualdad del grado de homogeneidad.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'Un polinomio es homogéneo si todos sus términos componentes tienen exactamente el mismo grado absoluto.'
+  - 'Todo polinomio homogéneo $P(x, y)$ de grado $k$ satisface la identidad de escala $P(tx, ty) = t^k P(x, y)$.'
+al_terminar_debes_poder: |
+  ![Resumen de Polinomio Homogéneo](/static/img/nodos/identificacion-de-polinomio-homogeneo-resumen.svg)
+
+  QUÉ: Identificar polinomios homogéneos, calcular su grado de homogeneidad y aplicar la propiedad de escalamiento de Euler ($P(tx, ty) = t^k P(x, y)$).
+  CÓMO: Verificando la igualdad estricta de grados absolutos en todos los monomios ($\operatorname{GA}(T_j) = k$) en expresiones como $3x^3 - 5x^2y + 2xy^2 - y^3$.

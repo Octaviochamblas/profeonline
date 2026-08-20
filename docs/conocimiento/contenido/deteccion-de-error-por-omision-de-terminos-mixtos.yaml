@@ -1,116 +1,153 @@
 semantic_id: MAT.ALG.CUBO_BINOMIO.ERROR_TERMINOS_MIXTOS
-resumen_inicial: 'La detección de error por omisión de términos mixtos consiste en auditar expansiones de cubos de binomios identificando la falsa distribución del exponente 3 sobre la suma o la resta que suprime los triples productos intermedios.'
-explicacion_simple: |
-  El error más grave y frecuente en el cubo de binomio es la **omisión de los términos mixtos**:
-  - **En qué consiste el error**: Escribir $(a + b)^3 = \mathbf{a^3 + b^3}$ o bien $(a - b)^3 = \mathbf{a^3 - b^3}$.
-  - **Por qué es un error de omisión**:
-    - El exponente **NO ES DISTRIBUTIVO** sobre la suma o la resta.
-    - Se eliminan los dos términos mixtos intermedios: **$3a^2b$** y **$3ab^2$**.
-  - **Ejemplo**: $(x + 2)^3$:
-    - Desarrollo ERRÓNEO: $x^3 + 8$.
-    - Desarrollo CORRECTO: **$x^3 + 6x^2 + 12x + 8$** (¡falta la cantidad $6x^2 + 12x$!).
-  - **Comprobación numérica rápida con $x=1$**:
-    - Lado izquierdo: $(1 + 2)^3 = 3^3 = \mathbf{27}$.
-    - Lado derecho erróneo: $1^3 + 2^3 = 1 + 8 = \mathbf{9}$.
-    - ¡Como $27 \neq 9$, la fórmula errónea falla!
-explicacion_formal: |
-  ### Definición formal
-  Sea la potencia cúbica $(a + b)^3$ en $\mathbb{R}[x,y]$. Se define el **operador defectuoso de distributividad sobre la adición** $\mathcal{D}_{\text{falso}}: \mathbb{R}[x,y] \to \mathbb{R}[x,y]$ mediante:
+resumen_inicial: La detección de error por omisión de términos mixtos consiste en auditar expansiones de cubos de binomios
+  identificando la falsa distribución del exponente 3 sobre la suma o la resta que suprime los triples productos intermedios.
+explicacion_simple: "El error más grave y frecuente en el cubo de binomio es la **omisión de los términos mixtos**:\n- **En\
+  \ qué consiste el error**: Escribir $(a + b)^3 = \\mathbf{a^3 + b^3}$ o bien $(a - b)^3 = \\mathbf{a^3 - b^3}$.\n- **Por\
+  \ qué es un error de omisión**:\n  - El exponente **NO ES DISTRIBUTIVO** sobre la suma o la resta.\n  - Se eliminan los\
+  \ dos términos mixtos intermedios: **$3a^2b$** y **$3ab^2$**.\n- **Ejemplo**: $(x + 2)^3$:\n  - Desarrollo ERRÓNEO: $x^3\
+  \ + 8$.\n  - Desarrollo CORRECTO: **$x^3 + 6x^2 + 12x + 8$** (¡falta la cantidad $6x^2 + 12x$!).\n- **Comprobación numérica\
+  \ rápida con $x=1$**:\n  - Lado izquierdo: $(1 + 2)^3 = 3^3 = \\mathbf{27}$.\n  - Lado derecho erróneo: $1^3 + 2^3 = 1 +\
+  \ 8 = \\mathbf{9}$.\n  - ¡Como $27 \\neq 9$, la fórmula errónea falla!\n\n![Detección de error por omisión de términos mixtos](/static/img/nodos/deteccion-de-error-por-omision-de-terminos-mixtos-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
+  Sea la potencia cúbica $(a + b)^3$ en $\mathbb{R}[x,y]$. Se define el **operador defectuoso de distributividad sobre la
+  adición** $\mathcal{D}_{\text{falso}}: \mathbb{R}[x,y] \to \mathbb{R}[x,y]$ mediante:
+
 
   $$\mathcal{D}_{\text{falso}}((a+b)^3) = a^3 + b^3 \quad \neq \quad (a+b)^3$$
 
+
   ### Cuantificación del Residual de Omisión
+
   La discrepancia cuantitativa de auditoría $\Delta_{\text{omisión}}$ generada por suprimir los triples productos mixtos es:
+
 
   $$\Delta_{\text{omisión}} = (a+b)^3 - (a^3 + b^3) = 3a^2 b + 3ab^2 = 3ab(a + b)$$
 
-  Para cualesquiera $a, b \neq 0$, el residual de omisión $\Delta_{\text{omisión}} = 3ab(a+b) \neq 0$ demuestra la falsedad matemática de la distributividad.
+
+  Para cualesquiera $a, b \neq 0$, el residual de omisión $\Delta_{\text{omisión}} = 3ab(a+b) \neq 0$ demuestra la falsedad
+  matemática de la distributividad.
+
 
   ### Síntesis didáctica
-  Utilizar pruebas de sustitución numérica o verificar la presencia obligatoria de 4 términos en el desarrollo permite detectar y corregir de inmediato la omisión de los triples productos.
-definiciones_clave: |
-  - **Residual de omisión ($\Delta_{\text{omisión}} = 3ab(a+b)$)**: Cantidad algebraica o numérica suprimida al cometer el error de distributividad.
+
+  Utilizar pruebas de sustitución numérica o verificar la presencia obligatoria de 4 términos en el desarrollo permite detectar
+  y corregir de inmediato la omisión de los triples productos.
+
+  '
+definiciones_clave: '- **Residual de omisión ($\Delta_{\text{omisión}} = 3ab(a+b)$)**: Cantidad algebraica o numérica suprimida
+  al cometer el error de distributividad.
+
   - **Falsa distributividad de la potencia**: Suposición errónea de que $(a+b)^n = a^n + b^n$ para sumas o restas.
-  - **Prueba de sustitución numérica de auditoría**: Evaluación de expresiones con valores numéricos sencillos para comprobar equivalencias algebraicas.
-propiedades_relaciones: |
-  - **Criterio del número de términos**: Todo desarrollo correcto de un cubo de binomio en una variable produce estrictamente 4 términos ($n+1$ términos para grado $n=3$).
+
+  - **Prueba de sustitución numérica de auditoría**: Evaluación de expresiones con valores numéricos sencillos para comprobar
+  equivalencias algebraicas.
+
+  '
+propiedades_relaciones: '- **Criterio del número de términos**: Todo desarrollo correcto de un cubo de binomio en una variable
+  produce estrictamente 4 términos ($n+1$ términos para grado $n=3$).
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita la siguiente respuesta de un estudiante e identifica el error por omisión cometido:
-  Problema: Desarrollar $(x + 3)^3$.
-  Respuesta del estudiante: $x^3 + 27$.'
+  enunciado: 'Audita la siguiente respuesta de un estudiante e identifica el error por omisión cometido: Problema: Desarrollar
+    $(x + 3)^3$. Respuesta del estudiante: $x^3 + 27$.'
   pasos:
-    - 'Paso 1: Contamos los términos de la respuesta del estudiante: Presenta **2 términos** ($x^3$ y $27$).'
-    - 'Paso 2: Recordamos que el cubo de binomio debe producir **4 términos** (un tetranomio).'
-    - 'Paso 3: Diagnosticamos la falla: El estudiante incurrió en la **omisión de los términos mixtos** al distribuir el exponente 3.'
-    - 'Paso 4: Calculamos los términos omitidos:
-       - $3a^2b = 3 \cdot x^2 \cdot 3 = \mathbf{9x^2}$.
-       - $3ab^2 = 3 \cdot x \cdot 3^2 = \mathbf{27x}$.'
-    - 'Paso 5: Realizamos la prueba de sustitución numérica para $x=1$:
-       - $(1+3)^3 = 4^3 = \mathbf{64}$.
-       - Estudiante: $1^3 + 27 = \mathbf{28}$ (¡$64 \neq 28$!).'
-    - 'Conclusión: La respuesta es errónea. El resultado correcto es **$x^3 + 9x^2 + 27x + 27$**.'
+  - 'Paso 1: Contamos los términos de la respuesta del estudiante: Presenta **2 términos** ($x^3$ y $27$).'
+  - 'Paso 2: Recordamos que el cubo de binomio debe producir **4 términos** (un tetranomio).'
+  - 'Paso 3: Diagnosticamos la falla: El estudiante incurrió en la **omisión de los términos mixtos** al distribuir el exponente
+    3.'
+  - 'Paso 4: Calculamos los términos omitidos: - $3a^2b = 3 \cdot x^2 \cdot 3 = \mathbf{9x^2}$. - $3ab^2 = 3 \cdot x \cdot
+    3^2 = \mathbf{27x}$.'
+  - 'Paso 5: Realizamos la prueba de sustitución numérica para $x=1$: - $(1+3)^3 = 4^3 = \mathbf{64}$. - Estudiante: $1^3
+    + 27 = \mathbf{28}$ (¡$64 \neq 28$!).'
+  - 'Conclusión: La respuesta es errónea. El resultado correcto es **$x^3 + 9x^2 + 27x + 27$**.'
+  imagen: /static/img/nodos/deteccion-de-error-por-omision-de-terminos-mixtos-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué cantidad algebraica se omite al declarar erróneamente que $(a+b)^3 = a^3 + b^3$?'
-    choices:
-      - {text: 'Se omiten los dos triples productos mixtos intermedios $3a^2b + 3ab^2 = 3ab(a+b)$', is_correct: true}
-      - {text: 'Se omite el término $a^2$', is_correct: false}
-      - {text: 'Se omite el exponente 3', is_correct: false}
-      - {text: 'No se omite ninguna cantidad', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se omiten los dos triples productos mixtos intermedios $3a^2b + 3ab^2 = 3ab(a+b)$''. Residual de omisión $\Delta = 3ab(a+b)$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Para $x=2$, ¿qué valor demuestra que $(x+1)^3 \neq x^3 + 1$?'
-    choices:
-      - {text: 'Para $x=2$, $(2+1)^3 = 3^3 = 27$, mientras que $2^3 + 1 = 8 + 1 = 9$, evidenciando la omisión de los términos medios', is_correct: true}
-      - {text: 'Para $x=2$ ambos lados dan 27', is_correct: false}
-      - {text: 'Demuestra que no hay error', is_correct: false}
-      - {text: 'El lado izquierdo da 9 y el derecho 27', is_correct: false}
-    explanation: 'La alternativa correcta es ''Para $x=2$, $(2+1)^3 = 3^3 = 27$, mientras que $2^3 + 1 = 8 + 1 = 9$, evidenciando la omisión de los términos medios''. $27 \neq 9$ en sustitución numérica.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué cantidad algebraica se omite al declarar erróneamente que $(a+b)^3 = a^3 + b^3$?
+  choices:
+  - text: Se omiten los dos triples productos mixtos intermedios $3a^2b + 3ab^2 = 3ab(a+b)$
+    is_correct: true
+  - text: Se omite el término $a^2$
+    is_correct: false
+  - text: Se omite el exponente 3
+    is_correct: false
+  - text: No se omite ninguna cantidad
+    is_correct: false
+  explanation: La alternativa correcta es 'Se omiten los dos triples productos mixtos intermedios $3a^2b + 3ab^2 = 3ab(a+b)$'.
+    Residual de omisión $\Delta = 3ab(a+b)$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Para $x=2$, ¿qué valor demuestra que $(x+1)^3 \neq x^3 + 1$?
+  choices:
+  - text: Para $x=2$, $(2+1)^3 = 3^3 = 27$, mientras que $2^3 + 1 = 8 + 1 = 9$, evidenciando la omisión de los términos medios
+    is_correct: true
+  - text: Para $x=2$ ambos lados dan 27
+    is_correct: false
+  - text: Demuestra que no hay error
+    is_correct: false
+  - text: El lado izquierdo da 9 y el derecho 27
+    is_correct: false
+  explanation: La alternativa correcta es 'Para $x=2$, $(2+1)^3 = 3^3 = 27$, mientras que $2^3 + 1 = 8 + 1 = 9$, evidenciando
+    la omisión de los términos medios'. $27 \neq 9$ en sustitución numérica.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Contar los términos de la expansión propuesta y verificar si faltan los elementos centrales.'
-  - 'Paso 2: Comprobar la supresión de los productos mixtos $3a^2b$ y $3ab^2$.'
-  - 'Paso 3: Realizar una prueba por sustitución numérica con $x=1$ o $x=2$ para evidenciar la discrepancia de valores.'
-  - 'Paso 4: Reconstruir la expansión incorporando los 4 términos completos del tetranomio.'
-errores_correccion: |
-  - **Error 1:** Afirmar que las potencias son distributivas sobre la suma o la resta (escribir $(a+b)^n = a^n + b^n$). **Cómo corregirlo:** La potencia sobre la suma **EXIGE LA EXPANSION COMPLETA DE 4 TÉRMINOS CON SUS TRIPLES PRODUCTOS**.
-  - **Error 2:** Suprimir los términos mixtos intermedios por considerarlos innecesarios. **Cómo corregirlo:** Los términos mixtos **REPRESENTAN LA MAYOR PARTE DE LA SUPERFICIE VOLUMÉTRICA O DEL VALOR NUMÉRICO**.
+- 'Paso 1: Contar los términos de la expansión propuesta y verificar si faltan los elementos centrales.'
+- 'Paso 2: Comprobar la supresión de los productos mixtos $3a^2b$ y $3ab^2$.'
+- 'Paso 3: Realizar una prueba por sustitución numérica con $x=1$ o $x=2$ para evidenciar la discrepancia de valores.'
+- 'Paso 4: Reconstruir la expansión incorporando los 4 términos completos del tetranomio.'
+errores_correccion: '- **Error 1:** Afirmar que las potencias son distributivas sobre la suma o la resta (escribir $(a+b)^n
+  = a^n + b^n$). **Cómo corregirlo:** La potencia sobre la suma **EXIGE LA EXPANSION COMPLETA DE 4 TÉRMINOS CON SUS TRIPLES
+  PRODUCTOS**.
+
+  - **Error 2:** Suprimir los términos mixtos intermedios por considerarlos innecesarios. **Cómo corregirlo:** Los términos
+  mixtos **REPRESENTAN LA MAYOR PARTE DE LA SUPERFICIE VOLUMÉTRICA O DEL VALOR NUMÉRICO**.
+
+  '
 ejemplos:
-  - titulo: 'Detección de omisión simple'
-    enunciado: '¿Es erróneo afirmar que $(x + 5)^3 = x^3 + 125$?'
-    alternativas:
-      - 'Sí, se omitieron los términos $15x^2$ y $75x$'
-      - 'No, es correcto'
-      - 'El error está en el 125'
-    respuesta: 'Sí, se omitieron los términos $15x^2$ y $75x$'
-    solucion_pasos:
-      - '1. $(x+5)^3 = x^3 + 15x^2 + 75x + 125$.'
-      - '2. La ausencia de los términos intermedios es una omisión errónea.'
-  - titulo: 'Prueba numérica con x=1'
-    enunciado: 'Para $x=1$, ¿demuestra $(1+2)^3 = 27 \neq 1^3 + 8 = 9$ la incorrección de suprimir los términos medios?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $27 \neq 9$ evidencia el error.'
-  - titulo: 'Criterio del número de términos'
-    enunciado: 'Si el desarrollo de un cubo de binomio en una variable contiene sólo 2 términos, ¿es seguro que presenta un error de omisión?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, todo cubo de binomio produce 4 términos.'
-  - titulo: 'Residual de omisión'
-    enunciado: 'Para $(a+b)^3$, ¿representan $3a^2b + 3ab^2$ los términos omitidos por una falsa distribución del exponente 3?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, esa es la diferencia $\Delta = 3ab(a+b)$.'
+- titulo: Detección de omisión simple
+  enunciado: ¿Es erróneo afirmar que $(x + 5)^3 = x^3 + 125$?
+  alternativas:
+  - Sí, se omitieron los términos $15x^2$ y $75x$
+  - No, es correcto
+  - El error está en el 125
+  respuesta: Sí, se omitieron los términos $15x^2$ y $75x$
+  solucion_pasos:
+  - 1. $(x+5)^3 = x^3 + 15x^2 + 75x + 125$.
+  - 2. La ausencia de los términos intermedios es una omisión errónea.
+- titulo: Prueba numérica con x=1
+  enunciado: Para $x=1$, ¿demuestra $(1+2)^3 = 27 \neq 1^3 + 8 = 9$ la incorrección de suprimir los términos medios?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $27 \neq 9$ evidencia el error.
+- titulo: Criterio del número de términos
+  enunciado: Si el desarrollo de un cubo de binomio en una variable contiene sólo 2 términos, ¿es seguro que presenta un error
+    de omisión?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, todo cubo de binomio produce 4 términos.
+- titulo: Residual de omisión
+  enunciado: Para $(a+b)^3$, ¿representan $3a^2b + 3ab^2$ los términos omitidos por una falsa distribución del exponente 3?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, esa es la diferencia $\Delta = 3ab(a+b)$.
 errores_frecuentes:
-  - 'Distribuir el exponente cúbico sobre la suma o la resta suprimiendo los términos intermedios.'
-  - 'Considerar que la expansión de un cubo de binomio sólo requiere elevar cada término al cubo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Escribir dos términos en lugar de los cuatro términos del tetranomio completo.'
-  - 'Ignorar las discrepancias numéricas en las pruebas de sustitución.'
+- Distribuir el exponente cúbico sobre la suma o la resta suprimiendo los términos intermedios.
+- Considerar que la expansión de un cubo de binomio sólo requiere elevar cada término al cubo.
+- Escribir dos términos en lugar de los cuatro términos del tetranomio completo.
+- Ignorar las discrepancias numéricas en las pruebas de sustitución.
+- Creer que $(a+b)^3 = a^3 + b^3$ es una propiedad distributiva válida.
 afirmaciones_verdaderas:
-  - 'El exponente cúbico no es distributivo sobre la suma ni sobre la resta.'
-  - 'La omisión de los triples productos mixtos $3a^2b$ y $3ab^2$ genera una discrepancia cuantitativa de $3ab(a+b)$.'
-al_terminar_debes_poder: 'Detectar y corregir errores por omisión de términos mixtos en el cubo de binomio mediante auditoría y sustitución numérica.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- El exponente cúbico no es distributivo sobre la suma ni sobre la resta.
+- La omisión de los triples productos mixtos $3a^2b$ y $3ab^2$ genera una discrepancia cuantitativa de $3ab(a+b)$.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/deteccion-de-error-por-omision-de-terminos-mixtos-resumen.svg)
+
+
+  QUÉ: Detectar y corregir errores por omisión de términos mixtos en el cubo de binomio mediante auditoría y sustitución numérica.
+
+  CÓMO: Verificar la presencia obligatoria de los 4 términos del tetranomio y evaluar por sustitución numérica cuantificando
+  la discrepancia $\Delta = 3ab(a+b)$.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

@@ -1,109 +1,127 @@
 semantic_id: MAT.ALG.MULT_MON_POL.DISTRIBUCION_PARCIAL_ERROR
-resumen_inicial: 'La detección de error por distribución parcial del monomio consiste en auditar multiplicaciones identificando el fallo de multiplicar el monomio por el primer término omitiendo la distribución a los demás.'
-explicacion_simple: |
-  Un error de distracción muy frecuente en las evaluaciones de álgebra es la **distribución parcial**:
-  - **En qué consiste el error**: El estudiante multiplica el monomio de afuera **ÚNICAMENTE por el primer término del paréntesis**, y deja los demás términos copiados igual sin multiplicar.
-  - **Ejemplo del error**:
-    - Problema: $4x \cdot (3x^2 - 5x + 2)$.
-    - Paso ERÓNEO: $12x^3 - 5x + 2$ (¡El $4x$ sólo multiplicó al $3x^2$!).
-    - Paso CORRECTO: **$4x \cdot (3x^2) + 4x \cdot (-5x) + 4x \cdot (2) = \mathbf{12x^3 - 20x^2 + 8x}$**.
-  - **Criterio de auditoría**: Si un polinomio tiene 3 términos dentro del paréntesis, **LOS 3 TÉRMINOS deben quedar multiplicados por el monomio exterior**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La detección de error por distribución parcial del monomio consiste en auditar multiplicaciones identificando el fallo de multiplicar el monomio por el primer término omitiendo la distribución a los demás.
+explicacion_simple: "Un error de distracción muy frecuente en las evaluaciones de álgebra es la **distribución parcial**:\n- **En qué consiste el error**: El estudiante multiplica el monomio de afuera **ÚNICAMENTE por el primer término del paréntesis**, y deja los demás términos copiados igual sin multiplicar.\n- **Ejemplo del error**:\n  - Problema: $4x \\cdot (3x^2 - 5x + 2)$.\n  - Paso ERÓNEO: $12x^3 - 5x + 2$ (¡El $4x$ sólo multiplicó al $3x^2$!).\n  - Paso CORRECTO: **$4x \\cdot (3x^2) + 4x \\cdot (-5x) + 4x \\cdot (2) = \\mathbf{12x^3 - 20x^2 + 8x}$**.\n- **Criterio de auditoría**: Si un polinomio tiene 3 términos dentro del paréntesis, **LOS 3 TÉRMINOS deben quedar multiplicados por el monomio exterior**.\n\n![Error por Distribución Parcial del Monomio](/static/img/nodos/deteccion-de-error-por-distribucion-parcial-del-monomio-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea la multiplicación $M \cdot P(x)$ donde $M = c x^\alpha$ y $P(x) = \sum_{j=1}^m a_j x^{\beta_j}$ con $m \ge 2$. Se define la **falla de distribución parcial del monomio** como la transformación defectuosa $\mathcal{D}_{\text{parcial}}$ que restringe el operador producto a un subconjunto propio de sumandos $\mathcal{J} \subset \{1, \dots, m\}$ (habitualmente $\mathcal{J} = \{1\}$):
+
 
   $$\mathcal{D}_{\text{parcial}}(M \cdot P) = \sum_{j \in \mathcal{J}} (M \cdot a_j x^{\beta_j}) + \sum_{k \notin \mathcal{J}} a_k x^{\beta_k} \quad \neq \quad M \cdot P(x)$$
 
+
   ### Cuantificación de la Discrepancia Algebraica
+
   La diferencia numérica de auditoría generada por la distribución parcial sobre los sumandos no multiplicados es proporcional al factor escalar $(M - 1)$:
+
 
   $$\Delta = (M \cdot P)_{\text{correcto}} - \mathcal{D}_{\text{parcial}}(M \cdot P) = (M - 1) \cdot \sum_{k \notin \mathcal{J}} a_k x^{\beta_k} \neq 0$$
 
+
   ### Síntesis didáctica
+
   Exigir el conteo estricto de productos parciales es la herramienta de control para eliminar la distribución incompleta de monomios.
-definiciones_clave: |
-  - **Distribución parcial del monomio**: Error operacional donde el factor monómico exterior no se aplica sobre la totalidad de los sumandos del polinomio.
+
+  '
+definiciones_clave: '- **Distribución parcial del monomio**: Error operacional donde el factor monómico exterior no se aplica sobre la totalidad de los sumandos del polinomio.
+
   - **Distribución trunca sobre $T_1$**: Omisión de la multiplicación del monomio sobre los términos $T_2, T_3, \dots, T_m$.
+
   - **Discrepancia por omisión escalar ($(M-1) \sum T_k$)**: Error cuantitativo generado al copiar términos sin haber sido multiplicados por el monomio.
-propiedades_relaciones: |
-  - **Invalidez de equivalencia**: $M(A + B) \neq MA + B$ (salvo el caso trivial $M=1$).
+
+  '
+propiedades_relaciones: '- **Invalidez de equivalencia**: $M(A + B) \neq MA + B$ (salvo el caso trivial $M=1$).
+
   - **Sensibilidad de los términos finales**: Las constantes y términos al final del paréntesis son estadísticamente los más omitidos en este error.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita el siguiente procedimiento de multiplicación e identifica el error cometido:
-  Problema: Simplificar $3a^2 \cdot (2a^3 - 4a + 5)$.
-  Paso escrito por el estudiante: $6a^5 - 4a + 5$.'
+  enunciado: 'Audita el siguiente procedimiento de multiplicación e identifica el error cometido: Problema: Simplificar $3a^2 \cdot (2a^3 - 4a + 5)$. Paso escrito por el estudiante: $6a^5 - 4a + 5$.'
   pasos:
-    - 'Paso 1: Examinamos el primer término del desarrollo: $3a^2 \cdot 2a^3 = 6a^5$ (correcto).'
-    - 'Paso 2: Examinamos los términos siguientes en el paso del estudiante: $-4a + 5$.'
-    - 'Paso 3: Notamos que el estudiante copió $-4a + 5$ tal como estaba, sin haberlos multiplicado por el monomio $3a^2$.'
-    - 'Paso 4: Diagnosticamos la falla: Se cometió una **distribución parcial del monomio** $3a^2$ sobre el trinomio.'
-    - 'Paso 5: Formulamos el desarrollo correcto multiplicando el monomio por CADA término:
-       - $3a^2 \cdot 2a^3 = 6a^5$.
-       - $3a^2 \cdot (-4a) = -12a^3$.
-       - $3a^2 \cdot (+5) = +15a^2$.'
-    - 'Conclusión: El desarrollo del estudiante era erróneo. El resultado correcto es **$6a^5 - 12a^3 + 15a^2$**.'
+  - 'Paso 1: Examinamos el primer término del desarrollo: $3a^2 \cdot 2a^3 = 6a^5$ (correcto).'
+  - 'Paso 2: Examinamos los términos siguientes en el paso del estudiante: $-4a + 5$.'
+  - 'Paso 3: Notamos que el estudiante copió $-4a + 5$ tal como estaba, sin haberlos multiplicado por el monomio $3a^2$.'
+  - 'Paso 4: Diagnosticamos la falla: Se cometió una **distribución parcial del monomio** $3a^2$ sobre el trinomio.'
+  - 'Paso 5: Formulamos el desarrollo correcto multiplicando el monomio por CADA término: - $3a^2 \cdot 2a^3 = 6a^5$. - $3a^2 \cdot (-4a) = -12a^3$. - $3a^2 \cdot (+5) = +15a^2$.'
+  - 'Conclusión: El desarrollo del estudiante era erróneo. El resultado correcto es **$6a^5 - 12a^3 + 15a^2$**.'
+  imagen: /static/img/nodos/deteccion-de-error-por-distribucion-parcial-del-monomio-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué la expresión $2x(3x + 5) = 6x^2 + 5$ representa un error por distribución parcial del monomio?'
-    choices:
-      - {text: 'Porque el monomio $2x$ multiplicó únicamente al primer término ($3x$) y no multiplicó al segundo término ($+5$)', is_correct: true}
-      - {text: 'Porque $2x \cdot 3x$ no da $6x^2$', is_correct: false}
-      - {text: 'Porque debieron sumarse los exponentes $2 + 3 + 5$', is_correct: false}
-      - {text: 'Porque el resultado debió ser una fracción', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque el monomio $2x$ multiplicó únicamente al primer término ($3x$) y no multiplicó al segundo término ($+5$)''. Distribución trunca sobre el primer término.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al resolver $-3(x^2 - 4)$, un estudiante escribe $-3x^2 - 4$. ¿Qué falla ocurrió en su respuesta?'
-    choices:
-      - {text: 'Omitió multiplicar el monomio $-3$ por el segundo término $-4$, debiendo dar $+12$ para obtener $-3x^2 + 12$', is_correct: true}
-      - {text: 'Multiplicó correctamente ambos términos', is_correct: false}
-      - {text: 'El resultado correcto es $-3x^2 - 12$', is_correct: false}
-      - {text: 'El resultado correcto es $3x^2 + 4$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Omitió multiplicar el monomio $-3$ por el segundo término $-4$, debiendo dar $+12$ para obtener $-3x^2 + 12$''. Falla al no multiplicar $-3 \cdot (-4) = +12$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué la expresión $2x(3x + 5) = 6x^2 + 5$ representa un error por distribución parcial del monomio?
+  choices:
+  - text: Porque el monomio $2x$ multiplicó únicamente al primer término ($3x$) y no multiplicó al segundo término ($+5$)
+    is_correct: true
+  - text: Porque $2x \cdot 3x$ no da $6x^2$
+    is_correct: false
+  - text: Porque debieron sumarse los exponentes $2 + 3 + 5$
+    is_correct: false
+  - text: Porque el resultado debió ser una fracción
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el monomio $2x$ multiplicó únicamente al primer término ($3x$) y no multiplicó al segundo término ($+5$)'. Distribución trunca sobre el primer término.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al resolver $-3(x^2 - 4)$, un estudiante escribe $-3x^2 - 4$. ¿Qué falla ocurrió en su respuesta?
+  choices:
+  - text: Omitió multiplicar el monomio $-3$ por el segundo término $-4$, debiendo dar $+12$ para obtener $-3x^2 + 12$
+    is_correct: true
+  - text: Multiplicó correctamente ambos términos
+    is_correct: false
+  - text: El resultado correcto es $-3x^2 - 12$
+    is_correct: false
+  - text: El resultado correcto es $3x^2 + 4$
+    is_correct: false
+  explanation: La alternativa correcta es 'Omitió multiplicar el monomio $-3$ por el segundo término $-4$, debiendo dar $+12$ para obtener $-3x^2 + 12$'. Falla al no multiplicar $-3 \cdot (-4) = +12$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Contar el número de términos contenidos dentro del paréntesis del polinomio.'
-  - 'Paso 2: Verificar si cada uno de esos términos sufrió una multiplicación de su coeficiente y un incremento en los exponentes de sus variables.'
-  - 'Paso 3: Señalar la falla de distribución parcial si algún término fue transcrito sin multiplicar.'
-  - 'Paso 4: Corregir el desarrollo aplicando la multiplicación del monomio sobre la totalidad de los sumandos.'
-errores_correccion: |
-  - **Error 1:** Considerar que multiplicar el primer término es suficiente para eliminar los paréntesis (escribir $x(a + b) = xa + b$). **Cómo corregirlo:** La distributividad **EXIGE MULTIPLICAR TODOS LOS TÉRMINOS ($xa + xb$)**.
+- 'Paso 1: Contar el número de términos contenidos dentro del paréntesis del polinomio.'
+- 'Paso 2: Verificar si cada uno de esos términos sufrió una multiplicación de su coeficiente y un incremento en los exponentes de sus variables.'
+- 'Paso 3: Señalar la falla de distribución parcial si algún término fue transcrito sin multiplicar.'
+- 'Paso 4: Corregir el desarrollo aplicando la multiplicación del monomio sobre la totalidad de los sumandos.'
+errores_correccion: '- **Error 1:** Considerar que multiplicar el primer término es suficiente para eliminar los paréntesis (escribir $x(a + b) = xa + b$). **Cómo corregirlo:** La distributividad **EXIGE MULTIPLICAR TODOS LOS TÉRMINOS ($xa + xb$)**.
+
   - **Error 2:** Intercambiar la distribución de un monomio con la adición de expresiones (escribir $2x + (x + 3) = 2x^2 + 6x$). **Cómo corregirlo:** La suma **NO MULTIPLICA; se deben distinguir los signos $+$ y $\cdot$**.
+
+  '
 ejemplos:
-  - titulo: 'Detección en binomio simple'
-    enunciado: '¿Es erróneo afirmar que $5(x + 2) = 5x + 2$?'
-    alternativas:
-      - 'Sí, debió multiplicarse $5 \cdot 2 = 10$ dando $5x + 10$'
-      - 'No, es correcto'
-      - 'El error está en 5x'
-    respuesta: 'Sí, debió multiplicarse $5 \cdot 2 = 10$ dando $5x + 10$'
-    solucion_pasos:
-      - '1. El 2 no fue multiplicado por 5.'
-      - '2. Desarrollo correcto: $5x + 10$.'
-  - titulo: 'Prueba de valorización'
-    enunciado: 'Para $x=1$, ¿demuestra $2(1+3)=8 \neq 5$ que escribir $2x(x+3) = 2x^2 + 3$ es erróneo?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, la evaluación numérica evidencia la falla.'
-  - titulo: 'Verificación por conteo de términos'
-    enunciado: 'Si un polinomio tiene 4 términos, ¿deben generarse 4 productos parciales multiplicados por el monomio?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, 4 términos exigen 4 multiplicaciones individuales.'
-  - titulo: 'Falla en constante final'
-    enunciado: 'En $x^2(x + 5) = x^3 + 5$, ¿ocurrió una distribución parcial por no multiplicar $x^2 \cdot 5 = 5x^2$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, faltó multiplicar el 5 por $x^2$.'
+- titulo: Detección en binomio simple
+  enunciado: ¿Es erróneo afirmar que $5(x + 2) = 5x + 2$?
+  alternativas:
+  - Sí, debió multiplicarse $5 \cdot 2 = 10$ dando $5x + 10$
+  - No, es correcto
+  - El error está en 5x
+  respuesta: Sí, debió multiplicarse $5 \cdot 2 = 10$ dando $5x + 10$
+  solucion_pasos:
+  - 1. El 2 no fue multiplicado por 5.
+  - '2. Desarrollo correcto: $5x + 10$.'
+- titulo: Prueba de valorización
+  enunciado: Para $x=1$, ¿demuestra $2(1+3)=8 \neq 5$ que escribir $2x(x+3) = 2x^2 + 3$ es erróneo?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la evaluación numérica evidencia la falla.
+- titulo: Verificación por conteo de términos
+  enunciado: Si un polinomio tiene 4 términos, ¿deben generarse 4 productos parciales multiplicados por el monomio?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, 4 términos exigen 4 multiplicaciones individuales.
+- titulo: Falla en constante final
+  enunciado: En $x^2(x + 5) = x^3 + 5$, ¿ocurrió una distribución parcial por no multiplicar $x^2 \cdot 5 = 5x^2$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, faltó multiplicar el 5 por $x^2$.
 errores_frecuentes:
-  - 'Multiplicar el monomio exterior únicamente por el primer término del polinomio dejando los demás copiados sin cambios.'
-  - 'Declarar equivalente la expresión M(A + B) con MA + B.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'La multiplicación del monomio por los términos constantes ubicados al final del paréntesis no es efectuada.'
-  - 'Intercambiar la multiplicación distributiva con una simple adición de expresiones parentéticas.'
+- Multiplicar el monomio exterior únicamente por el primer término del polinomio dejando los demás copiados sin cambios.
+- Declarar equivalente la expresión M(A + B) con MA + B.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- La multiplicación del monomio por los términos constantes ubicados al final del paréntesis no es efectuada.
+- Intercambiar la multiplicación distributiva con una simple adición de expresiones parentéticas.
 afirmaciones_verdaderas:
-  - 'La distribución parcial ocurre cuando se olvida multiplicar el monomio exterior por algunos de los términos del polinomio.'
-  - 'La propiedad distributiva requiere que el monomio afecte con multiplicación a todos los sumandos del polinomio.'
-al_terminar_debes_poder: 'Detectar errores por distribución parcial del monomio y corregir el desarrollo expandido del polinomio.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La distribución parcial ocurre cuando se olvida multiplicar el monomio exterior por algunos de los términos del polinomio.
+- La propiedad distributiva requiere que el monomio afecte con multiplicación a todos los sumandos del polinomio.
+al_terminar_debes_poder: '![Resumen de error por distribución parcial](/static/img/nodos/deteccion-de-error-por-distribucion-parcial-del-monomio-resumen.svg)
+
+
+  QUÉ: Prevenir y corregir la omisión de la distributiva en términos no iniciales de un polinomio.
+
+
+  CÓMO: Verificar que la cantidad de términos del producto resultante coincida exactamente con la cantidad de sumandos del polinomio interior antes de cualquier reducción.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

@@ -1,111 +1,127 @@
 semantic_id: MAT.ALG.POLINOMIOS.POLINOMIO_COMPLETO
-resumen_inicial: 'La identificación de polinomio completo respecto a una letra consiste en comprobar que la expresión contenga todos los exponentes enteros consecutivos desde el grado máximo hasta el grado cero.'
+resumen_inicial: 'Un polinomio es completo con respecto a una variable si contiene todos los exponentes consecutivos desde el grado máximo hasta el término independiente (grado cero).'
 explicacion_simple: |
-  Un polinomio se llama **completo respecto a una letra** si **no le falta ningún exponente** en la "escala" hasta llegar al término independiente:
-  - Ejemplo: Si el exponente más alto es $3$, para estar **completo** debe tener términos con exponente $3, 2, 1$ y $0$ (término independiente).
-    - $P(x) = 5x^3 - 2x^2 + 4x - 7$ $\implies$ **¡Es completo!** Tiene potencias $3, 2, 1$ y $0$.
-  - Ejemplo de polinomio **incompleto**:
-    - $Q(x) = 8x^3 + 5$ $\implies$ **Incompleto** (le faltan los términos con $x^2$ y $x^1$).
-  - **Completar un polinomio**: Para algoritmos como la división sintética o la división larga, si a un polinomio le falta una potencia, se completa **agregando un cero como coeficiente** (ejemplo: $8x^3 + 0x^2 + 0x + 5$).
+  - Decimos que un polinomio está **completo** respecto a una letra si **no le falta ningún exponente** entre su grado máximo y el término independiente ($x^0$).
+  - Por ejemplo, para un polinomio de 3° grado ($x^3$), debe tener términos con:
+    - $x^3$, $x^2$, $x^1$ y el número sin $x$ ($x^0$).
+    - $P(x) = 2x^3 - 5x^2 + 4x - 7$ está **completo** (tiene los 4 exponentes: 3, 2, 1, 0).
+  - En cambio, $Q(x) = 5x^3 - 7$ está **incompleto** porque le faltan los términos con $x^2$ y con $x^1$.
+  - **Propiedad clave:** Un polinomio completo de grado $n$ tiene como mínimo **$n + 1$ términos**.
+
+  ![Polinomio Completo](/static/img/nodos/identificacion-de-polinomio-completo-respecto-de-una-letra-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Un polinomio $P(x) = \sum_{k=0}^n a_k x^k \in \mathbb{R}[x]$ de grado $n = \deg(P)$ es **completo respecto a la variable $x$** si y solo si todos los coeficientes de las potencias intermedias son estrictamente no nulos:
+  Sea $P(x) = \sum_{i=0}^n a_i x^i \in \mathbb{K}[x]$ con grado $\operatorname{gr}(P) = n$.
+  El polinomio $P(x)$ es **completo respecto a la variable $x$** si y solo si ningún coeficiente es nulo en el intervalo discreto de grados:
 
   $$\forall k \in \{0, 1, 2, \dots, n\}, \quad a_k \neq 0$$
 
-  ### Cantidad de Términos de un Polinomio Completo
-  En una sola variable, un polinomio completo de grado $n$ posee un número exacto de términos no semejantes $N$ dado por:
-
+  ### Teorema del número de términos
+  Si $P(x)$ es un polinomio de una variable completo y reducido de grado $n$, su número de términos $N$ satisface exactamente:
   $$N = n + 1$$
 
-  ### Completitud Sintáctica para Algoritmos
-  Todo polinomio incompleto de grado $n$ se puede extender a su forma completa canónica mediante la adición de monomios nulos de la forma $0 \cdot x^k$:
-
-  $$P_{\text{ext}}(x) = \sum_{k=0}^n a_k x^k \quad \text{donde } a_k = 0 \text{ para los exponentes faltantes}$$
-
-  ### Síntesis didáctica
-  La propiedad de completitud garantiza que no existan "huecos" sintácticos en la estructura de potencias. Es un requisito técnico en la regla de Ruffini y en la división de polinomios.
+  ### Completitud en polinomios multivariables
+  Un polinomio $P(x, y)$ es completo respecto a $x$ si para todo grado $k \in \{0, \dots, \operatorname{GR}_x(P)\}$ existe al menos un término cuyo exponente en $x$ sea exactamente $k$.
 definiciones_clave: |
-  - **Polinomio completo**: Polinomio que contiene términos para todos los exponentes consecutivos desde el grado máximo hasta el grado cero.
-  - **Polinomio incompleto**: Polinomio al que le falta uno o más términos de grado intermedio entre su grado máximo y el término independiente.
-  - **Completado de polinomio**: Procedimiento de insertar monomios con coeficiente $0$ ($0x^k$) para rellenar las potencias faltantes.
+  - **Polinomio completo**: Polinomio que posee todos los términos de grado consecutivo desde el mayor hasta cero.
+  - **Polinomio incompleto**: Aquel donde al menos un término intermedio tiene coeficiente nulo ($a_k = 0$).
+  - **Completación de polinomios**: Técnica de insertar términos con coeficiente cero ($0x^k$) para aplicar algoritmos de división.
 propiedades_relaciones: |
-  - **Número de términos en 1 variable**: Un polinomio completo de grado $n$ en una variable posee exactamente $n+1$ términos.
-  - **Completitud multivariable**: Un polinomio puede ser completo respecto a una variable $x$ pero incompleto respecto a otra variable $y$ (ej: $x^2 y + x + 1$).
+  - **Completitud y orden**: Un polinomio puede estar completo sin estar ordenado (ej. $3x + 5x^2 - 1 + x^3$ está completo pero desordenado).
+  - **Uso en división y Ruffini**: Para dividir polinomios incompletos se deben completar previamente rellenando con ceros los grados faltantes.
 ejemplo_guiado:
-  enunciado: 'Verifica si los siguientes polinomios son completos respecto a $x$: a) $P(x) = -4x^3 + 7x^2 - x + 9$, b) $Q(x) = 2x^4 - 5x + 3$. Si $Q(x)$ es incompleto, complétalo con ceros.'
+  enunciado: 'Determina si el polinomio $P(x) = 4x^4 - 2x^2 + 5x + 3x^3 - 8$ es completo respecto a $x$ y ordénalo en forma canónica descendente.'
+  imagen: '/static/img/nodos/identificacion-de-polinomio-completo-respecto-de-una-letra-ejemplos.svg'
   pasos:
-    - 'Paso 1: Analizamos $P(x) = -4x^3 + 7x^2 - x + 9$: Grado $3$. Tiene potencias $3, 2, 1$ y $0 \implies$ **$P(x)$ es un polinomio completo** (posee $3+1=4$ términos).'
-    - 'Paso 2: Analizamos $Q(x) = 2x^4 - 5x + 3$: Grado $4$. Presenta potencias $4, 1, 0 \implies$ Le faltan las potencias $3$ y $2 \implies$ **$Q(x)$ es un polinomio incompleto**.'
-    - 'Paso 3: Completamos $Q(x)$ agregando coeficientes nulos $0x^3$ y $0x^2$.'
-    - 'Conclusión: $Q(x)$ completado es **$2x^4 + 0x^3 + 0x^2 - 5x + 3$**.'
+    - 'Paso 1: Identificamos el grado máximo del polinomio: es $n = 4$ ($4x^4$).'
+    - 'Paso 2: Verificamos la existencia de cada potencia consecutiva desde 4 hasta 0:'
+    - '  - Grado 4: $4x^4$ (Presente)'
+    - '  - Grado 3: $+3x^3$ (Presente)'
+    - '  - Grado 2: $-2x^2$ (Presente)'
+    - '  - Grado 1: $+5x$ (Presente)'
+    - '  - Grado 0: $-8$ (Presente)'
+    - 'Paso 3: Como no falta ningún exponente, **$P(x)$ es un polinomio completo** (posee $4 + 1 = 5$ términos).'
+    - 'Paso 4: Forma descendente ordenada: **$P(x) = 4x^4 + 3x^3 - 2x^2 + 5x - 8$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuántos términos debe poseer un polinomio completo en una variable de grado $n$ en su forma reducida?'
+    question: '¿Cuántos términos debe tener como mínimo un polinomio de grado 5 en una variable para ser completo?'
     choices:
-      - {text: 'Exactamente $n + 1$ términos no nulos', is_correct: true}
-      - {text: 'Exactamente $n$ términos', is_correct: false}
-      - {text: 'Exactamente $2n$ términos', is_correct: false}
-      - {text: 'Indefinidos términos según el coeficiente', is_correct: false}
-    explanation: 'La alternativa correcta es ''Exactamente $n + 1$ términos no nulos''. Para grado $n$ requiere potencias desde $n$ hasta $0$, es decir $n+1$ términos.'
+      - text: '$6$ términos ($n + 1 = 5 + 1 = 6$)'
+        is_correct: true
+      - text: '$5$ términos'
+        is_correct: false
+      - text: '$10$ términos'
+        is_correct: false
+      - text: '$4$ términos'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$6$ términos ($n + 1 = 5 + 1 = 6$)''. Un polinomio completo de grado $n$ incluye los grados desde $n$ hasta 0.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Cómo se completa formalmente el polinomio incompleto $5x^3 - 8$ para ser utilizado en el algoritmo de división polinómica?'
+    question: '¿Por qué el polinomio $Q(x) = 3x^3 - 5x + 2$ es un polinomio incompleto?'
     choices:
-      - {text: 'Agregando coeficientes nulos para los exponentes faltantes: $5x^3 + 0x^2 + 0x - 8$', is_correct: true}
-      - {text: 'Sumando el número 3 a todos los coeficientes: $8x^3 - 5$', is_correct: false}
-      - {text: 'Multiplicando la expresión por $x^2$: $5x^5 - 8x^2$', is_correct: false}
-      - {text: 'Cambiando el signo del término independiente: $5x^3 + 8$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Agregando coeficientes nulos para los exponentes faltantes: $5x^3 + 0x^2 + 0x - 8$''. Se inserta $0x^2$ y $0x$.'
+      - text: 'Porque carece del término cuadrático de grado 2 ($x^2$)'
+        is_correct: true
+      - text: 'Porque no está ordenado'
+        is_correct: false
+      - text: 'Porque su coeficiente principal es 3'
+        is_correct: false
+      - text: 'Porque el término independiente es positivo'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque carece del término cuadrático de grado 2 ($x^2$)''. Le falta el exponente 2 en la secuencia 3, 2, 1, 0.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el grado absoluto del polinomio (exponente máximo $n$).'
-  - 'Paso 2: Enumerar la lista de todos los exponentes enteros consecutivos requeridos desde $n$ hasta $0$.'
-  - 'Paso 3: Verificar que la parte literal del polinomio contenga al menos un término para cada uno de dichos exponentes.'
-  - 'Paso 4: Si falta algún exponente, declarar incompleto. Para completarlo, añadir $+ 0x^k$ para cada grado ausente.'
+  - 'Paso 1: Identificar el grado máximo $n$ de la variable de referencia.'
+  - 'Paso 2: Comprobar la presencia de cada exponente $k \in \{n, n-1, \dots, 2, 1, 0\}$.'
+  - 'Paso 3: Si todos los exponentes existen con coeficientes no nulos, clasificar como completo.'
+  - 'Paso 4: Si falta al menos una potencia intermedia o el término independiente, clasificar como incompleto.'
 errores_correccion: |
-  - **Error 1:** Considerar que un polinomio está completo si sólo posee el término de mayor grado y el término independiente (ej: $x^4 + 1$). **Cómo corregirlo:** Para ser completo **debe tener TODAS las potencias intermedias** ($x^3, x^2, x^1$).
-  - **Error 2:** Declarar que un polinomio de grado $n$ completo tiene $n$ términos. **Cómo corregirlo:** Tiene **$n + 1$ términos** porque se debe contar también el término independiente de grado cero.
+  - **Error 1:** Creer que un polinomio debe estar ordenado para ser completo. **Cómo corregirlo:** La completitud es la **existencia de los términos**, independientemente de su posición.
+  - **Error 2:** Olvidar que el término independiente ($x^0$) es obligatorio para estar completo. **Cómo corregirlo:** Sin término constante, el polinomio **está incompleto** en el grado 0.
 ejemplos:
-  - titulo: 'Identificación de polinomio completo'
-    enunciado: '¿Es $x^3 - 2x^2 + 4x - 9$ un polinomio completo de grado 3?'
+  - titulo: 'Polinomio completo desordenado'
+    enunciado: '¿Es el polinomio $P(x) = 5 - 2x + 4x^3 - x^2$ completo en $x$?'
     alternativas:
-      - 'Sí, tiene todos los exponentes del 3 al 0 (4 términos)'
-      - 'No, le falta la potencia 4'
-      - 'No, es incompleto'
-    respuesta: 'Sí, tiene todos los exponentes del 3 al 0 (4 términos)'
+      - 'Sí, contiene los grados 3, 2, 1 y 0'
+      - 'No, porque está desordenado'
+      - 'No, le falta el grado 4'
+    respuesta: 'Sí, contiene los grados 3, 2, 1 y 0'
     solucion_pasos:
-      - '1. Grado es 3. Potencias presentes: $3, 2, 1, 0$.'
-      - '2. Es un polinomio completo.'
-  - titulo: 'Identificación de polinomio incompleto'
-    enunciado: '¿Es el polinomio $6x^5 - 3x^2 + 1$ un polinomio completo o incompleto?'
+      - '1. Grado máximo = 3.'
+      - '2. Exponentes: $x^3 (4x^3), x^2 (-x^2), x^1 (-2x), x^0 (5)$.'
+      - '3. Contiene todos los exponentes consecutivos $\implies$ Completo.'
+  - titulo: 'Completar polinomio para división'
+    enunciado: '¿Cómo se escribe el polinomio incompleto $x^3 - 8$ en forma completa y ordenada?'
     alternativas:
-      - 'Incompleto, le faltan los términos en $x^4, x^3$ y $x^1$'
-      - 'Completo, porque llega hasta el término independiente'
-      - 'Monomio completo'
-    respuesta: 'Incompleto, le faltan los términos en $x^4, x^3$ y $x^1$'
+      - '$x^3 + 0x^2 + 0x - 8$'
+      - '$x^3 - 8x^2 + 0x$'
+      - '$x^3 + x^2 + x - 8$'
+    respuesta: '$x^3 + 0x^2 + 0x - 8$'
     solucion_pasos:
-      - '1. Grado es 5. Potencias ausentes: $4, 3, 1$.'
+      - '1. Faltan los términos de grado 2 y grado 1.'
+      - '2. Se insertan con coeficiente cero: $x^3 + 0x^2 + 0x - 8$.'
+  - titulo: 'Completitud de polinomios lineales'
+    enunciado: '¿Es todo binomio lineal $ax + b$ con $a, b \neq 0$ un polinomio completo de primer grado?'
+    respuesta: 'Sí'
+    solucion_pasos:
+      - '1. Grado 1 ($ax$) y Grado 0 ($b$) están presentes.'
+      - '2. Tiene $1 + 1 = 2$ términos $\implies$ Completo.'
+  - titulo: 'Polinomio sin término independiente'
+    enunciado: '¿Es el polinomio $x^3 + x^2 + x$ completo?'
+    respuesta: 'No'
+    solucion_pasos:
+      - '1. Le falta el término independiente constante ($x^0$).'
       - '2. Es un polinomio incompleto.'
-  - titulo: 'Completado con ceros'
-    enunciado: 'Al completar el polinomio $x^2 - 4$, ¿obtenemos la expresión $x^2 + 0x - 4$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, se añade $0x$ para la potencia faltante $x^1$.'
-  - titulo: 'Polinomio completo de grado 2'
-    enunciado: '¿Tiene todo trinomio de segundo grado completo de la forma $ax^2 + bx + c$ exactamente 3 términos?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $n=2 \implies n+1 = 3$ términos.'
 errores_frecuentes:
-  - 'Un polinomio es completo si posee el término de mayor grado y el término independiente sin importar los grados intermedios.'
-  - 'Un polinomio completo de grado N posee N términos en su forma simplificada.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Completar un polinomio con términos de coeficiente cero altera el grado del polinomio.'
-  - 'Un polinomio en dos letras no puede ser completo respecto a una sola de sus variables.'
+  - 'Creer que un polinomio desordenado no puede ser completo.'
+  - 'Olvidar verificar la presencia del término independiente de grado 0.'
+  - 'Confundir un polinomio completo con un polinomio homogéneo.'
+  - 'Contar términos semejantes repetidos sin reducir para afirmar que el polinomio está completo.'
+  - 'Omitir insertar ceros al completar polinomios para la división sintética o clásica.'
 afirmaciones_verdaderas:
-  - 'Un polinomio es completo respecto a una letra si contiene todas las potencias consecutivas desde su grado máximo hasta el grado cero.'
-  - 'Un polinomio completo en una sola variable de grado n posee exactamente n + 1 términos no nulos.'
-al_terminar_debes_poder: 'Identificar polinomios completos e incompletos respecto a una letra y completarlos mediante la adición de coeficientes nulos.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'Un polinomio es completo respecto a una variable si posee todos los exponentes consecutivos desde el grado máximo hasta cero.'
+  - 'Un polinomio de una variable completo y reducido de grado $n$ tiene exactamente $n + 1$ términos.'
+al_terminar_debes_poder: |
+  ![Resumen de Polinomio Completo](/static/img/nodos/identificacion-de-polinomio-completo-respecto-de-una-letra-resumen.svg)
+
+  QUÉ: Identificar si un polinomio es completo respecto a una variable y completarlo canónicamente con coeficientes nulos ($0x^k$).
+  CÓMO: Verificando la presencia ininterrumpida de todos los exponentes ($n, n-1, \dots, 0$) y aplicando la relación $N = n + 1$.

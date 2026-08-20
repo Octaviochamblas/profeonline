@@ -1,114 +1,126 @@
 semantic_id: MAT.ALG.POLINOMIOS.GRADO_ABSOLUTO_POLINOMIO
-resumen_inicial: 'El cálculo del grado absoluto de un polinomio consiste en determinar el mayor de los grados absolutos de sus términos algebraicos componentes.'
+resumen_inicial: 'El grado absoluto de un polinomio es el mayor grado absoluto entre todos los términos monomios no nulos que lo componen.'
 explicacion_simple: |
-  El **grado absoluto de un polinomio** mide la potencia máxima global que alcanza la expresión:
-  - Para calcularlo:
-    1. Calculas el grado absoluto de **cada término por separado** (sumando los exponentes de sus letras).
-    2. Comparas los resultados obtenidos.
-    3. El **número mayor** es el grado absoluto de todo el polinomio.
-  - Ejemplo: En $P(x,y) = 5x^2 y^3 - 7x^4 y^2 + 2x y^6$:
-    - Primer término: $2 + 3 = 5$.
-    - Segundo término: $4 + 2 = 6$.
-    - Tercer término: $1 + 6 = 7$.
-    - El mayor de todos es $7 \implies$ Grado absoluto del polinomio = **$7$**.
+  - Para calcular el **grado absoluto (GA)** de un polinomio:
+    1. Se calcula el grado absoluto de **cada uno de sus términos** por separado (sumando los exponentes de las letras en cada término).
+    2. Se elige el **número mayor** de todos.
+  - Por ejemplo, en $P(x, y) = 4x^3y^2 - 7x^2y^4 + 9xy$:
+    - Primer término: $3 + 2 = 5$.
+    - Segundo término: $2 + 4 = 6$.
+    - Tercer término: $1 + 1 = 2$.
+    - El grado absoluto del polinomio es el número mayor: **$6$ ($6^{\circ}$ grado)**.
+  - **¡Importante!** No se suman los grados entre los distintos términos (no se hace $5 + 6 + 2$).
+
+  ![Grado Absoluto de un Polinomio](/static/img/nodos/calculo-del-grado-absoluto-de-un-polinomio-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dado un polinomio no nulo $P(x_1, \dots, x_k) = \sum_{i=1}^n M_i \in \mathbb{R}[x_1, \dots, x_k]$, el **grado absoluto del polinomio** $\operatorname{grabs}(P)$ es el máximo entre los grados absolutos de sus términos monómicos componentes no nulos:
+  Sea $P(x_1, \dots, x_n) = \sum_{j=1}^m T_j$ un polinomio no nulo en $\mathbb{K}[x_1, \dots, x_n]$, donde cada $T_j = c_j x_1^{e_{j,1}} \cdots x_n^{e_{j,n}}$ es un monomio con $c_j \neq 0$.
+  El **grado absoluto de $P$**, denotado $\operatorname{GA}(P)$ o $\operatorname{gr}(P)$, es el supremo de los grados absolutos de sus monomios constitutivos:
 
-  $$\operatorname{grabs}(P) = \max_{i \in \{1, \dots, n\}} (\operatorname{grabs}(M_i))$$
+  $$\operatorname{GA}(P) = \max_{1 \le j \le m} \operatorname{GA}(T_j) = \max_{1 \le j \le m} \left( \sum_{i=1}^n e_{j,i} \right)$$
 
-  donde $\operatorname{grabs}(M_i)$ representa la suma de los exponentes del $i$-ésimo monomio.
-
-  ### Grado de Polinomios en Una Variable
-  En polinomios de una sola variable $P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_0$ con $a_n \neq 0$, el grado absoluto coincide con el exponente del término principal:
-
-  $$\operatorname{grabs}(P) = n = \deg(P)$$
-
-  ### Síntesis didáctica
-  El grado absoluto establece la complejidad de comportamiento de la función polinómica, determinando el número máximo de raíces reales o complejas que puede tener.
+  ### Propiedades algebraicas del grado
+  1. **Grado de la suma:** $\operatorname{gr}(P + Q) \le \max(\operatorname{gr}(P), \operatorname{gr}(Q))$ (con igualdad estricta si $\operatorname{gr}(P) \neq \operatorname{gr}(Q)$).
+  2. **Grado del producto:** $\operatorname{gr}(P \cdot Q) = \operatorname{gr}(P) + \operatorname{gr}(Q)$.
+  3. **Grado de la potencia:** $\operatorname{gr}(P^k) = k \cdot \operatorname{gr}(P)$ para $k \in \mathbb{N}$.
 definiciones_clave: |
-  - **Grado absoluto de un polinomio**: Máximo valor numérico entre los grados absolutos de todos sus términos constituyentes.
-  - **Término principal**: Término algebraico no nulo que posee el mayor grado absoluto en el polinomio.
-  - **Polinomio cuadrático / cúbico**: Polinomios cuyo grado absoluto es igual a $2$ y $3$ respectivamente.
+  - **Grado absoluto de un polinomio**: Máximo grado monomio entre todos los términos de la expresión.
+  - **Término principal**: Monomio que alcanza el grado absoluto máximo del polinomio.
+  - **Polinomio homogéneo**: Polinomio donde todos sus términos poseen idéntico grado absoluto.
 propiedades_relaciones: |
-  - **Grado de la suma**: $\operatorname{grabs}(P + Q) \le \max(\operatorname{grabs}(P), \operatorname{grabs}(Q))$.
-  - **Grado del producto**: $\operatorname{grabs}(P \cdot Q) = \operatorname{grabs}(P) + \operatorname{grabs}(Q)$.
+  - **Independencia de la cantidad de términos**: Un polinomio de alto grado puede tener pocos términos ($x^{10} + 1$ tiene grado 10 con solo 2 términos).
+  - **Invarianza bajo reordenamiento**: El grado no cambia si se permutan las posiciones de los monomios.
 ejemplo_guiado:
-  enunciado: 'Calcula el grado absoluto del polinomio multivariable $P(a,b) = 9a^3 b^4 - 2a^6 b + 11a^2 b^2 - 15$.'
+  enunciado: 'Calcula el grado absoluto del polinomio multivariable $P(x, y, z) = 5x^4y^2z - 8x^3y^5 + 2x^2y^2z^3 - 11$.'
+  imagen: '/static/img/nodos/calculo-del-grado-absoluto-de-un-polinomio-ejemplos.svg'
   pasos:
-    - 'Paso 1: Calculamos el grado del 1.er término $9a^3 b^4$: Sumamos exponentes $3 + 4 = 7$.'
-    - 'Paso 2: Calculamos el grado del 2.º término $-2a^6 b$: Sumamos exponentes $6 + 1 = 7$.'
-    - 'Paso 3: Calculamos el grado del 3.er término $11a^2 b^2$: Sumamos exponentes $2 + 2 = 4$.'
-    - 'Paso 4: Calculamos el grado del 4.º término $-15$: Al ser constante sin letras, su grado es $0$.'
-    - 'Paso 5: Tomamos el valor máximo entre $\{7, 7, 4, 0\}$, que resulta ser $7$.'
-    - 'Conclusión: El grado absoluto del polinomio es **$7$**.'
+    - 'Paso 1: Calculamos el grado absoluto del primer término $5x^4y^2z$: $4 + 2 + 1 = **7$**.'
+    - 'Paso 2: Calculamos el grado absoluto del segundo término $-8x^3y^5$: $3 + 5 = **8$**.'
+    - 'Paso 3: Calculamos el grado absoluto del tercer término $2x^2y^2z^3$: $2 + 2 + 3 = **7$**.'
+    - 'Paso 4: Calculamos el grado del término independiente $-11$: **$0$**.'
+    - 'Paso 5: Tomamos el valor máximo: $\operatorname{GA}(P) = \max(7, 8, 7, 0) = **8$**.'
+    - 'Paso 6: Conclusión: El polinomio es de **octavo grado ($8^{\circ}$)**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cómo se determina el grado absoluto de un polinomio compuesto por varios términos algebraicos?'
+    question: '¿Cuál es el grado absoluto del polinomio $P(x, y) = 3x^5y^2 - 4x^3y^6 + 2x^8$?'
     choices:
-      - {text: 'Identificando el término con el mayor grado absoluto y tomando dicho valor como el grado del polinomio', is_correct: true}
-      - {text: 'Sumando los grados de todos los términos que componen la expresión', is_correct: false}
-      - {text: 'Multiplicando los coeficientes de los términos principales', is_correct: false}
-      - {text: 'Restando el grado menor al grado mayor', is_correct: false}
-    explanation: 'La alternativa correcta es ''Identificando el término con el mayor grado absoluto y tomando dicho valor como el grado del polinomio''. Criterio del grado máximo.'
+      - text: '$9$, porque el término $-4x^3y^6$ tiene grado $3 + 6 = 9$'
+        is_correct: true
+      - text: '$8$, porque es el mayor exponente de $x$'
+        is_correct: false
+      - text: '$7$, correspondiente al primer término'
+        is_correct: false
+      - text: '$24$, sumando todos los exponentes'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$9$, porque el término $-4x^3y^6$ tiene grado $3 + 6 = 9$''. El grado absoluto del polinomio es el máximo grado entre todos sus términos.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Cuál es el grado absoluto del polinomio $Q(x,y) = 4x^3 y^2 - 8x^5 y^4 + 10x y^3$?'
+    question: 'Si multiplicamos un polinomio de grado 3 con un polinomio de grado 4, ¿cuál es el grado del polinomio resultante?'
     choices:
-      - {text: 'El grado absoluto es $9$, correspondiente al término $-8x^5 y^4$ ($5 + 4 = 9$)', is_correct: true}
-      - {text: 'El grado absoluto es $5$, sumando $3 + 2$', is_correct: false}
-      - {text: 'El grado absoluto es $18$, sumando todos los exponentes', is_correct: false}
-      - {text: 'El grado absoluto es $-8$, igual a su coeficiente principal', is_correct: false}
-    explanation: 'La alternativa correcta es ''El grado absoluto es $9$, correspondiente al término $-8x^5 y^4$ ($5 + 4 = 9$)''. Término de mayor grado: $5+4=9$.'
+      - text: '$7$, porque los grados de los factores se suman en la multiplicación ($3 + 4 = 7$)'
+        is_correct: true
+      - text: '$12$, porque se multiplican los grados'
+        is_correct: false
+      - text: '$4$, porque es el grado mayor'
+        is_correct: false
+      - text: '$1$, porque se restan'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$7$, porque los grados de los factores se suman en la multiplicación ($3 + 4 = 7$)''. $\operatorname{gr}(P \cdot Q) = \operatorname{gr}(P) + \operatorname{gr}(Q)$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Calcular el grado absoluto de cada término del polinomio sumando sus exponentes literales.'
-  - 'Paso 2: Comparar los grados absolutos de todos los términos.'
-  - 'Paso 3: Seleccionar el número más alto entre los valores calculados.'
-  - 'Paso 4: Declarar ese valor máximo como el grado absoluto del polinomio.'
+  - 'Paso 1: Sumar los exponentes de las variables en cada monomio individual.'
+  - 'Paso 2: Registrar el grado absoluto obtenido para cada término.'
+  - 'Paso 3: Identificar el mayor de todos los grados calculados.'
+  - 'Paso 4: Enunciar el valor máximo como el grado absoluto global del polinomio.'
 errores_correccion: |
-  - **Error 1:** Sumar los grados de todos los términos del polinomio juntos. **Cómo corregirlo:** El grado del polinomio **es el MAYOR de los grados**, no la suma de todos.
-  - **Error 2:** Excluir el exponente implícito $1$ de una letra al evaluar los términos (ej: en $x^4 y$ contar grado $4$ en vez de $4+1=5$). **Cómo corregirlo:** Las letras sin exponente escrito **aportan $1$ al cálculo del término**.
+  - **Error 1:** Sumar los grados de todos los términos del polinomio. **Cómo corregirlo:** El grado del polinomio es el **máximo individual**, no la suma de todos.
+  - **Error 2:** Olvidar sumar el exponente 1 de las variables sin superíndice escrito. **Cómo corregirlo:** En $x^3y$, el grado es $3 + 1 = 4$.
 ejemplos:
-  - titulo: 'Grado en una variable'
-    enunciado: '¿Cuál es el grado absoluto del polinomio $P(x) = 3x^2 - 5x^8 + 12x^4 - 1$?'
+  - titulo: 'Grado en una variable desordenado'
+    enunciado: '¿Cuál es el grado del polinomio $P(x) = 6 - 2x^3 + 5x^7 - x^4$?'
     alternativas:
-      - '$8$'
-      - '$2$'
-      - '$14$'
-    respuesta: '$8$'
+      - '$7$, porque es el mayor exponente de la variable'
+      - '$3$, porque es el primer término con $x$'
+      - '$14$, sumando todos los exponentes'
+    respuesta: '$7$, porque es el mayor exponente de la variable'
     solucion_pasos:
-      - '1. El mayor exponente de $x$ es $8$ (en $-5x^8$).'
-      - '2. El grado del polinomio es $8$.'
-  - titulo: 'Grado en polinomio de dos variables'
-    enunciado: 'En el polinomio $u^3 v^5 - u^7 v + u^2 v^2$, ¿cuál es el grado absoluto?'
+      - '1. Los exponentes presentes son 0, 3, 7 y 4.'
+      - '2. El exponente máximo es 7.'
+      - '3. El grado del polinomio es 7.'
+  - titulo: 'Grado del producto de polinomios'
+    enunciado: 'Si $P(x) = x^3 - 1$ y $Q(x) = x^2 + 4$, ¿cuál es el grado de $P(x) \cdot Q(x)$?'
     alternativas:
-      - '$8$'
-      - '$7$'
-      - '$4$'
-    respuesta: '$8$'
+      - '$5$'
+      - '$6$'
+      - '$3$'
+    respuesta: '$5$'
     solucion_pasos:
-      - '1. Grados: $3+5=8$, $7+1=8$, $2+2=4$.'
-      - '2. El grado máximo es $8$.'
-  - titulo: 'Grado de suma de polinomios'
-    enunciado: 'Al sumar un polinomio de grado $3$ con uno de grado $5$, ¿el grado absoluto resultante es como máximo $5$?'
+      - '1. $\operatorname{gr}(P) = 3$ y $\operatorname{gr}(Q) = 2$.'
+      - '2. $\operatorname{gr}(P \cdot Q) = 3 + 2 = 5$.'
+  - titulo: 'Grado absoluto multivariable'
+    enunciado: '¿Tiene el polinomio $x^4y + y^3$ un grado absoluto igual a 5?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, $\operatorname{grabs}(P+Q) \le \max(\operatorname{grabs}(P), \operatorname{grabs}(Q))$.'
-  - titulo: 'Grado de polinomio cuadrático'
-    enunciado: '¿Es el polinomio $2x^2 + 3x - 5$ de grado absoluto igual a $2$?'
-    respuesta: 'Sí'
+      - '1. Grado de $x^4y = 4 + 1 = 5$.'
+      - '2. Grado de $y^3 = 3$.'
+      - '3. El máximo es 5.'
+  - titulo: 'Suma de exponentes de distintos términos'
+    enunciado: '¿Es el grado del polinomio $x^3 + x^2 + x$ igual a 6?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, la mayor potencia es $x^2$.'
+      - '1. Los grados de los términos no se suman entre sí.'
+      - '2. El grado del polinomio es $\max(3, 2, 1) = 3$.'
 errores_frecuentes:
-  - 'El grado absoluto de un polinomio se calcula sumando los grados de todos sus términos juntos.'
-  - 'El coeficiente numérico principal de un polinomio determina directamente su grado absoluto.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El grado absoluto de un polinomio disminuye si este contiene un término independiente negativo.'
-  - 'Sumar dos polinomios de grado N genera siempre un polinomio de grado 2N.'
+  - 'Sumar los grados de todos los términos en vez de seleccionar el valor máximo.'
+  - 'Asumir que el grado es siempre el exponente del primer término en polinomios no ordenados.'
+  - 'Omitir el exponente 1 de las variables sin superíndice al calcular el grado de cada monomio.'
+  - 'Multiplicar los grados al calcular el grado del producto en lugar de sumarlos.'
+  - 'Confundir el coeficiente numérico mayor con el término de mayor grado.'
 afirmaciones_verdaderas:
-  - 'El grado absoluto de un polinomio es el mayor grado absoluto entre todos sus términos algebraicos.'
-  - 'En un polinomio de una sola variable, el grado absoluto coincide con el exponente más alto de la variable.'
-al_terminar_debes_poder: 'Calcular el grado absoluto de cualquier polinomio identificando el término algebraico con la suma de exponentes máxima.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'El grado absoluto de un polinomio es el mayor grado absoluto entre todos sus términos componentes.'
+  - 'El grado del producto de dos polinomios no nulos es igual a la suma de los grados de cada factor.'
+al_terminar_debes_poder: |
+  ![Resumen de Grado Absoluto](/static/img/nodos/calculo-del-grado-absoluto-de-un-polinomio-resumen.svg)
+
+  QUÉ: Determinar con exactitud el grado absoluto de cualquier polinomio en una o más variables y aplicar las propiedades de grado en operaciones algebraicas.
+  CÓMO: Calculando el grado de cada monomio ($\sum e_{j,i}$) y seleccionando el valor máximo $\operatorname{GA}(P) = \max(\operatorname{GA}(T_j))$.

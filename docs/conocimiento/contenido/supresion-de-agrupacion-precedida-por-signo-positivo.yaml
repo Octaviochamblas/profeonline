@@ -1,112 +1,132 @@
 semantic_id: MAT.ALG.AGRUPACION.SUPRESION_SIGNO_MAS
-resumen_inicial: 'La supresión de agrupación precedida por signo positivo consiste en eliminar los delimitadores conservando intactos cada uno de los signos y coeficientes de los términos contenidos en su interior.'
-explicacion_simple: |
-  Cuando un signo de agrupación (paréntesis, corchete o llave) está precedido por un **signo positivo ($+$)**:
-  - **REGLA DE ORO**: **El signo $+$ simplemente se elimina junto con el paréntesis, y TODOS LOS TÉRMINOS DE ADENTRO MANTIENEN SU PROPIO SIGNO EXACTAMENTE IGUAL**.
-  - **Pasos**:
-    1. Borras el signo $+$ antecedente y las marcas de apertura y cierre del paréntesis.
-    2. Copias todos los términos de adentro conservando su signo ($+$ o $-$).
-    3. Reduces los términos semejantes si los hay.
-  - **Ejemplo**: Eliminar paréntesis en $3x + (5x - 2y + 4)$:
-    - Como antecede un $+$, quitamos $+ ( \quad )$ sin cambiar nada adentro.
-    - Queda: $3x + 5x - 2y + 4$.
-    - Reducimos la clase $x$: **$8x - 2y + 4$**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La supresión de agrupación precedida por signo positivo consiste en eliminar los delimitadores conservando intactos cada uno de los signos y coeficientes de los términos contenidos en su interior.
+explicacion_simple: "Cuando un signo de agrupación (paréntesis, corchete o llave) está precedido por un **signo positivo ($+$)**:\n- **REGLA DE ORO**: **El signo $+$ simplemente se elimina junto con el paréntesis, y TODOS LOS TÉRMINOS DE ADENTRO MANTIENEN SU PROPIO SIGNO EXACTAMENTE IGUAL**.\n- **Pasos**:\n  1. Borras el signo $+$ antecedente y las marcas de apertura y cierre del paréntesis.\n  2. Copias todos los términos de adentro conservando su signo ($+$ o $-$).\n  3. Reduces los términos semejantes si los hay.\n- **Ejemplo**: Eliminar paréntesis en $3x + (5x - 2y + 4)$:\n  - Como antecede un $+$, quitamos $+ ( \\quad )$ sin cambiar nada adentro.\n  - Queda: $3x + 5x - 2y + 4$.\n  - Reducimos la clase $x$: **$8x - 2y + 4$**.\n\n![Supresión con Signo Positivo Previo](/static/img/nodos/supresion-de-agrupacion-precedida-por-signo-positivo-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea $+ \mathcal{D}(A)$ una subexpresión delimitada por $\mathcal{D} \in \{ (), [], \{\} \}$ precedida por el operador aditivo neutro $+1$. Por la propiedad de elemento neutro multiplicativo $+1 \cdot T = T$ sobre cada término $T_i \in A$:
+
 
   $$+ \big( T_1 + T_2 - T_3 \big) = +1 \cdot T_1 + +1 \cdot T_2 + +1 \cdot (-T_3) = T_1 + T_2 - T_3$$
 
+
   ### Preservación de la Signatura Interna
+
   La aplicación del signo positivo externo es una transformación identidad $\operatorname{id}: \operatorname{Signos}(A) \to \operatorname{Signos}(A)$:
+
 
   $$\operatorname{sgn}(\text{término}_i \text{ liberado}) = \operatorname{sgn}(\text{término}_i \text{ encerrado}) \quad \forall i$$
 
+
   ### Síntesis didáctica
+
   La supresión con signo positivo no altera la signatura de la subexpresión, permitiendo la disolución directa de los delimitadores en la cadena algebraica.
-definiciones_clave: |
-  - **Supresión con signo positivo**: Eliminación de paréntesis precedidos por $+$ sin modificar ningún signo interno.
+
+  '
+definiciones_clave: '- **Supresión con signo positivo**: Eliminación de paréntesis precedidos por $+$ sin modificar ningún signo interno.
+
   - **Transformación identidad**: Operación que mantiene inalterados los coeficientes y signos de los términos liberados.
+
   - **Término inicial implícito**: Si el primer término dentro del paréntesis no tiene signo escrito, es positivo ($+1 \cdot A = +A$).
-propiedades_relaciones: |
-  - **Invarianza de los términos**: $(+A + B - C) = A + B - C$.
+
+  '
+propiedades_relaciones: '- **Invarianza de los términos**: $(+A + B - C) = A + B - C$.
+
   - **Asociatividad aditiva**: $X + (Y + Z) = (X + Y) + Z = X + Y + Z$.
+
+  '
 ejemplo_guiado:
   enunciado: 'Elimina los signos de agrupación y reduce la expresión: $7a + (3a - 5b + 2) + 4b$.'
   pasos:
-    - 'Paso 1: Observamos que el paréntesis está precedido por un signo $+ \implies +(3a - 5b + 2)$.'
-    - 'Paso 2: Eliminamos el $+1$ antecedente y los paréntesis manteniendo intactos todos los signos internos: $7a + 3a - 5b + 2 + 4b$.'
-    - 'Paso 3: Agrupamos y reducimos la Clase $a$: $7a + 3a = \mathbf{10a}$.'
-    - 'Paso 4: Agrupamos y reducimos la Clase $b$: $-5b + 4b = \mathbf{-b}$.'
-    - 'Paso 5: Agregamos la constante $\mathbf{+2}$.'
-    - 'Conclusión: La expresión reducida es **$10a - b + 2$**.'
+  - 'Paso 1: Observamos que el paréntesis está precedido por un signo $+ \implies +(3a - 5b + 2)$.'
+  - 'Paso 2: Eliminamos el $+1$ antecedente y los paréntesis manteniendo intactos todos los signos internos: $7a + 3a - 5b + 2 + 4b$.'
+  - 'Paso 3: Agrupamos y reducimos la Clase $a$: $7a + 3a = \mathbf{10a}$.'
+  - 'Paso 4: Agrupamos y reducimos la Clase $b$: $-5b + 4b = \mathbf{-b}$.'
+  - 'Paso 5: Agregamos la constante $\mathbf{+2}$.'
+  - 'Conclusión: La expresión reducida es **$10a - b + 2$**.'
+  imagen: /static/img/nodos/supresion-de-agrupacion-precedida-por-signo-positivo-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué ocurre con los signos de los términos dentro de un paréntesis cuando este es suprimido precedido por un signo positivo ($+$)?'
-    choices:
-      - {text: 'Todos los términos dentro del paréntesis conservan exactamente sus signos originales', is_correct: true}
-      - {text: 'Todos los términos cambian obligatoriamente de signo', is_correct: false}
-      - {text: 'Los términos se convierten en cero', is_correct: false}
-      - {text: 'Se multiplican los exponentes por dos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Todos los términos dentro del paréntesis conservan exactamente sus signos originales''. Preservación de la signatura interna.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el resultado de eliminar el paréntesis en la expresión $4x + (-2x + 9)$?'
-    choices:
-      - {text: 'El resultado es $4x - 2x + 9$, que se reduce a $2x + 9$', is_correct: true}
-      - {text: 'El resultado es $4x + 2x - 9$', is_correct: false}
-      - {text: 'El resultado es $4x - 2x - 9$', is_correct: false}
-      - {text: 'El resultado es $6x + 9$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El resultado es $4x - 2x + 9$, que se reduce a $2x + 9$''. Mantiene $-2x + 9 \implies 4x - 2x + 9 = 2x + 9$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué ocurre con los signos de los términos dentro de un paréntesis cuando este es suprimido precedido por un signo positivo ($+$)?
+  choices:
+  - text: Todos los términos dentro del paréntesis conservan exactamente sus signos originales
+    is_correct: true
+  - text: Todos los términos cambian obligatoriamente de signo
+    is_correct: false
+  - text: Los términos se convierten en cero
+    is_correct: false
+  - text: Se multiplican los exponentes por dos
+    is_correct: false
+  explanation: La alternativa correcta es 'Todos los términos dentro del paréntesis conservan exactamente sus signos originales'. Preservación de la signatura interna.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el resultado de eliminar el paréntesis en la expresión $4x + (-2x + 9)$?
+  choices:
+  - text: El resultado es $4x - 2x + 9$, que se reduce a $2x + 9$
+    is_correct: true
+  - text: El resultado es $4x + 2x - 9$
+    is_correct: false
+  - text: El resultado es $4x - 2x - 9$
+    is_correct: false
+  - text: El resultado es $6x + 9$
+    is_correct: false
+  explanation: La alternativa correcta es 'El resultado es $4x - 2x + 9$, que se reduce a $2x + 9$'. Mantiene $-2x + 9 \implies 4x - 2x + 9 = 2x + 9$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Comprobar que el signo inmediatamente anterior al paréntesis de apertura sea un signo positivo ($+$).'
-  - 'Paso 2: Eliminar el signo positivo antecedente junto con los símbolos de paréntesis $( \quad )$.'
-  - 'Paso 3: Escribir los términos liberados conservando sus signos originales.'
-  - 'Paso 4: Identificar y reducir los términos semejantes del resultado.'
-errores_correccion: |
-  - **Error 1:** Cambiar el signo del primer término dentro del paréntesis cuando antecede un signo más (escribir $x + (y - z) = x - y - z$). **Cómo corregirlo:** El signo más **MANTIENE LOS SIGNOS INTACTOS ($x + y - z$)**.
+- 'Paso 1: Comprobar que el signo inmediatamente anterior al paréntesis de apertura sea un signo positivo ($+$).'
+- 'Paso 2: Eliminar el signo positivo antecedente junto con los símbolos de paréntesis $( \quad )$.'
+- 'Paso 3: Escribir los términos liberados conservando sus signos originales.'
+- 'Paso 4: Identificar y reducir los términos semejantes del resultado.'
+errores_correccion: '- **Error 1:** Cambiar el signo del primer término dentro del paréntesis cuando antecede un signo más (escribir $x + (y - z) = x - y - z$). **Cómo corregirlo:** El signo más **MANTIENE LOS SIGNOS INTACTOS ($x + y - z$)**.
+
   - **Error 2:** Dejar el signo positivo antecedente escrito como un término extra (escribir $4 + (3x) = 4 + + 3x$). **Cómo corregirlo:** El signo $+$ antecedente **SE ELIMINA JUNTO CON EL PARÉNTESIS ($4 + 3x$)**.
+
+  '
 ejemplos:
-  - titulo: 'Supresión simple'
-    enunciado: '¿Cuál es la supresión de $5a + (2b - c)$?'
-    alternativas:
-      - '$5a + 2b - c$'
-      - '$5a - 2b + c$'
-      - '$5a + 2b + c$'
-    respuesta: '$5a + 2b - c$'
-    solucion_pasos:
-      - '1. Precedido por $+ \implies$ Mantiene signos.'
-      - '2. Resultado: $5a + 2b - c$.'
-  - titulo: 'Supresión y reducción'
-    enunciado: '¿Cuál es la simplificación de $9x + (3x - 4)$?'
-    alternativas:
-      - '$12x - 4$'
-      - '$6x - 4$'
-      - '$12x + 4$'
-    respuesta: '$12x - 4$'
-    solucion_pasos:
-      - '1. Supresión: $9x + 3x - 4$.'
-      - '2. Reducción: $12x - 4$.'
-  - titulo: 'Primer término positivo implícito'
-    enunciado: 'Para $m + (n - p)$, ¿el término $n$ sale con signo positivo $+n$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, el signo positivo implícito de $n$ se mantiene como $+n$.'
-  - titulo: 'Conservación de resta interna'
-    enunciado: 'En la expresión $a + (-b)$, ¿es la supresión correcta igual a $a - b$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $+ (-b) = -b \implies a - b$.'
+- titulo: Supresión simple
+  enunciado: ¿Cuál es la supresión de $5a + (2b - c)$?
+  alternativas:
+  - $5a + 2b - c$
+  - $5a - 2b + c$
+  - $5a + 2b + c$
+  respuesta: $5a + 2b - c$
+  solucion_pasos:
+  - 1. Precedido por $+ \implies$ Mantiene signos.
+  - '2. Resultado: $5a + 2b - c$.'
+- titulo: Supresión y reducción
+  enunciado: ¿Cuál es la simplificación de $9x + (3x - 4)$?
+  alternativas:
+  - $12x - 4$
+  - $6x - 4$
+  - $12x + 4$
+  respuesta: $12x - 4$
+  solucion_pasos:
+  - '1. Supresión: $9x + 3x - 4$.'
+  - '2. Reducción: $12x - 4$.'
+- titulo: Primer término positivo implícito
+  enunciado: Para $m + (n - p)$, ¿el término $n$ sale con signo positivo $+n$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el signo positivo implícito de $n$ se mantiene como $+n$.
+- titulo: Conservación de resta interna
+  enunciado: En la expresión $a + (-b)$, ¿es la supresión correcta igual a $a - b$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $+ (-b) = -b \implies a - b$.
 errores_frecuentes:
-  - 'Cambiar erróneamente los signos de los términos internos al suprimir un paréntesis precedido por signo positivo.'
-  - 'Dejar dos signos más consecutivos ++ al eliminar el paréntesis de apertura.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Multiplicar los coeficientes internos por el signo positivo antecedente alterando sus magnitudes.'
-  - 'La reducción de términos semejantes no se efectúa tras liberar las subexpresiones.'
+- Cambiar erróneamente los signos de los términos internos al suprimir un paréntesis precedido por signo positivo.
+- Dejar dos signos más consecutivos ++ al eliminar el paréntesis de apertura.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Multiplicar los coeficientes internos por el signo positivo antecedente alterando sus magnitudes.
+- La reducción de términos semejantes no se efectúa tras liberar las subexpresiones.
 afirmaciones_verdaderas:
-  - 'Un signo de agrupación precedido por signo positivo se puede eliminar manteniendo intactos todos los signos de su interior.'
-  - 'El signo positivo antecedente desaparece junto con las marcas de apertura y cierre del paréntesis.'
-al_terminar_debes_poder: 'Suprimir signos de agrupación precedidos por signo positivo manteniendo los signos internos y reduciendo la expresión.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- Un signo de agrupación precedido por signo positivo se puede eliminar manteniendo intactos todos los signos de su interior.
+- El signo positivo antecedente desaparece junto con las marcas de apertura y cierre del paréntesis.
+al_terminar_debes_poder: '![Resumen de supresión con signo positivo](/static/img/nodos/supresion-de-agrupacion-precedida-por-signo-positivo-resumen.svg)
+
+
+  QUÉ: Eliminar signos de agrupación precedidos por un signo más $(+)$.
+
+
+  CÓMO: Retirar directamente los paréntesis conservando idénticos los signos de todos los términos interiores $+ (a - b + c) = a - b + c$.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

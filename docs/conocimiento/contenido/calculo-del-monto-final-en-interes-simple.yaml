@@ -4,7 +4,10 @@ explicacion_simple: |
   El **monto final** (también llamado valor futuro) es todo el dinero que recibes de vuelta o que terminas pagando al final del período. Consta de dos partes:
   1. El dinero original que pusiste (Capital $C$).
   2. La ganancia adicional por los intereses ($I$).
+
   Por ejemplo, si inviertes $\$100.000$ y ganas $\$15.000$ de interés, el monto final es $\$115.000$. Puedes usar la fórmula reducida $M = C \cdot (1 + i \cdot t)$ para calcularlo de un solo viaje sin tener que sumar después.
+
+  ![Monto final en interés simple](/static/img/nodos/calculo-del-monto-final-en-interes-simple-intro.svg)
 explicacion_formal: |
   ### Definición formal
   El **monto acumulado o valor futuro $M$** al término de un período $t$ en un régimen de interés simple es la suma del principal $C$ y el interés total devengado $I$:
@@ -33,6 +36,7 @@ propiedades_relaciones: |
   - **Linearidad acumulativa**: El monto final crece a un ritmo fijo por unidad de tiempo, a diferencia del interés compuesto que crece exponencialmente.
 ejemplo_guiado:
   enunciado: 'Un inversionista coloca $\$300.000$ a una tasa de interés simple del $8\%$ anual durante $3$ años. Calcula el monto final total acumulado al cabo de ese tiempo.'
+  imagen: '/static/img/nodos/calculo-del-monto-final-en-interes-simple-ejemplos.svg'
   pasos:
     - 'Paso 1: Identificamos $C = 300.000$, tasa decimal $i = 0,08$ y tiempo $t = 3\text{ años}$.'
     - 'Paso 2: Calculamos el factor de acumulación $(1 + i \cdot t) = 1 + (0,08 \cdot 3) = 1 + 0,24 = 1,24$.'
@@ -55,7 +59,7 @@ checkpoints:
       - {text: '$\$132.000$, restando los intereses', is_correct: false}
       - {text: '$\$18.000$, considerando solo el interés', is_correct: false}
       - {text: '$\$300.000$, duplicando el préstamo', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$168.000$, sumando el capital inicial y los intereses ($150.000 + 18.000 = 168.000$)''. $M = C + I$.'
+    explanation: 'La alternativa correcta es ''$\$168.000$, sumando el capital inicial y los intereses ($150.000 + 18.000 = 168.000$)''. El monto corresponde a $M = C + I$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
   - 'Paso 1: Identificar el capital inicial $C$, la tasa de interés $i$ en decimal y el tiempo $t$.'
@@ -67,39 +71,58 @@ errores_correccion: |
   - **Error 2:** Multiplicar $1 + i$ antes de multiplicar por $t$ en la fórmula factorizada (error de orden de operaciones). **Cómo corregirlo:** En la expresión $(1 + i \cdot t)$, **PRIMERO se multiplica $i \cdot t$** y luego se le suma 1.
 ejemplos:
   - titulo: 'Monto final con suma simple'
-    enunciado: 'Si un capital de $\$50.000$ genera $\$5.000$ de interés, ¿el monto final es $\$55.000$?'
+    enunciado: 'Si un capital de $\$50.000$ genera $\$5.000$ de interés, ¿cuál es el monto final acumulado?'
     alternativas:
-      - 'Sí, pues $M = 50.000 + 5.000 = 55.000$'
-      - 'No, el monto final es $\$5.000$'
-      - 'No, el monto final es $\$45.000$'
-    respuesta: 'Sí, pues $M = 50.000 + 5.000 = 55.000$'
+      - '$\$55.000$'
+      - '$\$5.000$'
+      - '$\$45.000$'
+    respuesta: '$\$55.000$'
     solucion_pasos:
-      - '1. Aplicamos $M = C + I$.'
-      - '2. $M = 50.000 + 5.000 = 55.000$.'
+      - '1. Aplicamos la suma fundamental $M = C + I$.'
+      - '2. $M = 50.000 + 5.000 = $\$55.00$0$.'
   - titulo: 'Monto final mediante fórmula factorizada'
-    enunciado: 'Para $\$100.000$ al $10\%$ anual por 2 años, ¿el factor es $1 + 0,20 = 1,20$ y el monto es $\$120.000$?'
-    respuesta: 'Sí'
+    enunciado: 'Para un capital de $\$100.000$ colocado al $10\%$ anual durante 2 años, ¿cuál es el monto final?'
+    alternativas:
+      - '$\$120.000$'
+      - '$\$110.000$'
+      - '$\$200.000$'
+    respuesta: '$\$120.000$'
     solucion_pasos:
-      - 'Sí. $M = 100.000 \cdot (1 + 0.10 \cdot 2) = 100.000 \cdot 1.20 = \$120.000$.'
+      - '1. Calculamos el factor: $1 + i \cdot t = 1 + (0,10 \cdot 2) = 1,20$.'
+      - '2. $M = 100.000 \cdot 1,20 = $\$120.00$0$.'
   - titulo: 'Despeje del interés a partir del monto'
-    enunciado: 'Si el monto final acumulado es $\$250.000$ y el capital original fue $\$200.000$, ¿el interés ganado fue $\$50.000$?'
-    respuesta: 'Sí'
+    enunciado: 'Si el monto final acumulado es $\$250.000$ y el capital original fue $\$200.000$, ¿cuánto interés se generó?'
+    alternativas:
+      - '$\$50.000$'
+      - '$\$450.000$'
+      - '$\$25.000$'
+    respuesta: '$\$50.000$'
     solucion_pasos:
-      - 'Sí. $I = M - C = 250.000 - 200.000 = \$50.000$.'
+      - '1. Despejamos el interés: $I = M - C$.'
+      - '2. $I = 250.000 - 200.000 = $\$50.00$0$.'
   - titulo: 'Monto final en 6 meses'
-    enunciado: 'Para $\$80.000$ al $12\%$ anual por 6 meses ($0,5$ años), ¿el monto final es $\$84.800$?'
-    respuesta: 'Sí'
+    enunciado: 'Para un capital de $\$80.000$ al $12\%$ anual durante 6 meses ($0,5$ años), ¿cuál es el monto final?'
+    alternativas:
+      - '$\$84.800$'
+      - '$\$89.600$'
+      - '$\$4.800$'
+    respuesta: '$\$84.800$'
     solucion_pasos:
-      - 'Sí. $I = 80.000 \cdot 0.12 \cdot 0.5 = 4.800 \implies M = 80.000 + 4.800 = 84.800$.'
+      - '1. $I = 80.000 \cdot 0,12 \cdot 0,5 = $\$4.80$0$.'
+      - '2. $M = C + I = 80.000 + 4.800 = $\$84.80$0$.'
 errores_frecuentes:
   - 'El valor del interés ganado $I$ es numéricamente idéntico al monto final total acumulado $M$.'
-  - 'Sumar el término 1 a la tasa decimal antes de multiplicar por el tiempo $t$.'
-  - 'Restar el interés ganado al capital inicial en lugar de sumar para obtener el monto.'
-  - 'Considerar que el monto final a interés simple sigue una trayectoria curva exponencial.'
-  - 'La tasa porcentual se ingresa directamente como número entero en el factor de acumulación sin dividir por 100.'
+  - 'En la fórmula factorizada $M = C \cdot (1 + i \cdot t)$, el término $1$ se suma a la tasa $i$ antes de multiplicar por el tiempo $t$.'
+  - 'El monto final acumulado a interés simple se obtiene restando el interés devengado al capital inicial ($M = C - I$).'
+  - 'La gráfica del monto final $M(t)$ respecto al tiempo describe una curva exponencial creciente.'
+  - 'El factor de acumulación $(1 + i \cdot t)$ utiliza la tasa porcentual entera $r$ sin dividir previamente por $100$.'
 afirmaciones_verdaderas:
-  - 'El monto final a interés simple es la suma del capital inicial y los intereses ganados ($M = C + I = C(1 + it)$).'
+  - 'El monto final a interés simple es la suma del capital inicial y los intereses ganados ($M = C + I = C \cdot (1 + i \cdot t)$).'
   - 'La diferencia entre el monto final $M$ y el capital inicial $C$ equivale exactamente al interés total devengado ($I = M - C$).'
-al_terminar_debes_poder: 'Calcular el monto final $M$ mediante la suma $C + I$ o la fórmula factorizada $M = C \cdot (1 + i \cdot t)$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-del-monto-final-en-interes-simple-resumen.svg)
+
+  QUÉ: Calcular el monto final o valor futuro acumulado en operaciones financieras a interés simple.
+  CÓMO: Aplicar la relación aditiva $M = C + I$ o la ecuación factorizada directa $M = C \cdot (1 + i \cdot t)$, evaluando previamente el factor de acumulación lineal.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

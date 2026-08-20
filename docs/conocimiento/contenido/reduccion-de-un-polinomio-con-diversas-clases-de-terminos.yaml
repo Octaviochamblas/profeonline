@@ -1,116 +1,134 @@
 semantic_id: MAT.ALG.REDUCCION_OPERATIVA.DIVERSAS_CLASES
-resumen_inicial: 'La reducción de un polinomio con diversas clases de términos consiste en agrupar independientemente los monomios que comparten la misma clase de factor literal y reducir cada grupo por separado.'
-explicacion_simple: |
-  En polinomios largos suele haber **distintas clases de términos semejantes** (por ejemplo, términos con $x$, términos con $y$ y números solos):
-  - **REGLA FUNDAMENTAL**: Solo se pueden reducir los términos que pertenecen a la **MISMÍSIMA CLASE** de factor literal. No se pueden mezclar distintas letras entre sí.
-  - **Estrategia paso a paso**:
-    1. **Identificar y marcar** cada clase con un color, subrayado o símbolo diferente.
-    2. **Agrupar** los términos semejantes de la misma clase juntos.
-    3. **Reducir cada clase** independientemente.
-    4. **Escribir el polinomio resultante** uniendo los términos reducidos de cada clase.
-  - **Ejemplo**: Reducir $5x + 3y - 2x + 7y - 4$:
-    - Clase $x$: $5x - 2x = \mathbf{3x}$.
-    - Clase $y$: $3y + 7y = \mathbf{+10y}$.
-    - Constantes: $\mathbf{-4}$.
-    - Resultado final reduciendo las tres clases: **$3x + 10y - 4$**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La reducción de un polinomio con diversas clases de términos consiste en agrupar independientemente los monomios que comparten la misma clase de factor literal y reducir cada grupo por separado.
+explicacion_simple: "En polinomios largos suele haber **distintas clases de términos semejantes** (por ejemplo, términos con $x$, términos con $y$ y números solos):\n- **REGLA FUNDAMENTAL**: Solo se pueden reducir los términos que pertenecen a la **MISMÍSIMA CLASE** de factor literal. No se pueden mezclar distintas letras entre sí.\n- **Estrategia paso a paso**:\n  1. **Identificar y marcar** cada clase con un color, subrayado o símbolo diferente.\n  2. **Agrupar** los términos semejantes de la misma clase juntos.\n  3. **Reducir cada clase** independientemente.\n  4. **Escribir el polinomio resultante** uniendo los términos reducidos de cada clase.\n- **Ejemplo**: Reducir $5x + 3y - 2x + 7y - 4$:\n  - Clase $x$: $5x - 2x = \\mathbf{3x}$.\n  - Clase $y$: $3y + 7y = \\mathbf{+10y}$.\n  - Constantes: $\\mathbf{-4}$.\n  - Resultado final reduciendo las tres clases: **$3x + 10y - 4$**.\n\n![Reducción de un Polinomio con Diversas Clases de Términos](/static/img/nodos/reduccion-de-un-polinomio-con-diversas-clases-de-terminos-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea $P(x_1, \dots, x_k) = \sum_{i=1}^m T_i$ un polinomio compuesto por $m$ monomios distribuidos en $p$ clases de equivalencia de semejanza disjuntas $\mathcal{C}_1, \mathcal{C}_2, \dots, \mathcal{C}_p$ caracterizadas por factores literales distintos $M_1, M_2, \dots, M_p$. La **reducción multiclase de un polinomio** es la proyección canónica sobre el espacio cociente $\mathbb{R}[x_1, \dots, x_k] / \sim$:
+
 
   $$P(x_1, \dots, x_k) = \sum_{j=1}^p \left( \sum_{T_i \in \mathcal{C}_j} c_i \right) M_j = \sum_{j=1}^p C_j M_j$$
 
+
   donde $C_j = \sum_{T_i \in \mathcal{C}_j} c_i$ es el coeficiente consolidado de la clase $j$.
 
+
   ### Invarianza del Número de Clases Distintas
+
   El polinomio reducido posee un número final de términos menor o igual al número de clases distintas iniciales $p$. Dos clases distintas jamás pueden colapsar entre sí ($M_r \not\sim M_s \implies C_r M_r + C_s M_s$ es irreducible).
 
+
   ### Síntesis didáctica
+
   La clasificación y reducción multiclase es la herramienta central para simplificar ecuaciones de sistemas lineales y expresiones polinómicas multivariables.
-definiciones_clave: |
-  - **Clase de semejanza ($\mathcal{C}_j$)**: Subconjunto de términos que comparten exactamente el mismo factor literal $M_j$.
+
+  '
+definiciones_clave: '- **Clase de semejanza ($\mathcal{C}_j$)**: Subconjunto de términos que comparten exactamente el mismo factor literal $M_j$.
+
   - **Reducción multiclase**: Simplificación paralela e independiente de cada clase de términos semejantes dentro de un polinomio.
+
   - **Polinomio reducido**: Expresión final en la que ningún par de términos pertenece a la misma clase de semejanza.
-propiedades_relaciones: |
-  - **Irreductibilidad entre clases**: Los términos resultantes de clases distintas no se pueden fusionar bajo ninguna circunstancia.
+
+  '
+propiedades_relaciones: '- **Irreductibilidad entre clases**: Los términos resultantes de clases distintas no se pueden fusionar bajo ninguna circunstancia.
+
   - **Invarianza del orden de las clases**: Escribir $3x + 10y - 4$ o $10y + 3x - 4$ representa el mismo polinomio reducido.
+
+  '
 ejemplo_guiado:
   enunciado: 'Reduce el siguiente polinomio: $8a^2 - 5b + 3 - 2a^2 + 9b - 7 + a^2$.'
   pasos:
-    - 'Paso 1: Identificamos las clases de términos presentes: Clase $a^2$, Clase $b$ y Clase constante (números solos).'
-    - 'Paso 2: Agrupamos y reducimos la Clase $a^2$: $8a^2 - 2a^2 + 1a^2 = (8 - 2 + 1)a^2 = \mathbf{7a^2}$.'
-    - 'Paso 3: Agrupamos y reducimos la Clase $b$: $-5b + 9b = (-5 + 9)b = \mathbf{+4b}$.'
-    - 'Paso 4: Agrupamos y reducimos las Constantes: $+3 - 7 = \mathbf{-4}$.'
-    - 'Paso 5: Consolidamos el polinomio final uniendo los tres resultados: $7a^2 + 4b - 4$.'
-    - 'Conclusión: El polinomio reducido es **$7a^2 + 4b - 4$**.'
+  - 'Paso 1: Identificamos las clases de términos presentes: Clase $a^2$, Clase $b$ y Clase constante (números solos).'
+  - 'Paso 2: Agrupamos y reducimos la Clase $a^2$: $8a^2 - 2a^2 + 1a^2 = (8 - 2 + 1)a^2 = \mathbf{7a^2}$.'
+  - 'Paso 3: Agrupamos y reducimos la Clase $b$: $-5b + 9b = (-5 + 9)b = \mathbf{+4b}$.'
+  - 'Paso 4: Agrupamos y reducimos las Constantes: $+3 - 7 = \mathbf{-4}$.'
+  - 'Paso 5: Consolidamos el polinomio final uniendo los tres resultados: $7a^2 + 4b - 4$.'
+  - 'Conclusión: El polinomio reducido es **$7a^2 + 4b - 4$**.'
+  imagen: /static/img/nodos/reduccion-de-un-polinomio-con-diversas-clases-de-terminos-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué ocurre con los términos resultantes de distintas clases tras realizar la reducción de un polinomio?'
-    choices:
-      - {text: 'Se conservan como términos separados en el polinomio final porque pertenecen a clases de semejanza disjuntas', is_correct: true}
-      - {text: 'Se suman todos entre sí para formar un monomio único', is_correct: false}
-      - {text: 'Se multiplican todas las variables', is_correct: false}
-      - {text: 'Se eliminan todas las variables', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se conservan como términos separados en el polinomio final porque pertenecen a clases de semejanza disjuntas''. Clases distintas se mantienen separadas.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el resultado de reducir $6x + 4y - 2x + y$?'
-    choices:
-      - {text: 'El resultado es $4x + 5y$, reduciendo $6x - 2x = 4x$ y $4y + y = 5y$', is_correct: true}
-      - {text: 'El resultado es $9xy$', is_correct: false}
-      - {text: 'El resultado es $8x + 5y$', is_correct: false}
-      - {text: 'El resultado es $4x - 5y$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El resultado es $4x + 5y$, reduciendo $6x - 2x = 4x$ y $4y + y = 5y$''. Clase $x: 4x$, Clase $y: 5y$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué ocurre con los términos resultantes de distintas clases tras realizar la reducción de un polinomio?
+  choices:
+  - text: Se conservan como términos separados en el polinomio final porque pertenecen a clases de semejanza disjuntas
+    is_correct: true
+  - text: Se suman todos entre sí para formar un monomio único
+    is_correct: false
+  - text: Se multiplican todas las variables
+    is_correct: false
+  - text: Se eliminan todas las variables
+    is_correct: false
+  explanation: La alternativa correcta es 'Se conservan como términos separados en el polinomio final porque pertenecen a clases de semejanza disjuntas'. Clases distintas se mantienen separadas.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el resultado de reducir $6x + 4y - 2x + y$?
+  choices:
+  - text: El resultado es $4x + 5y$, reduciendo $6x - 2x = 4x$ y $4y + y = 5y$
+    is_correct: true
+  - text: El resultado es $9xy$
+    is_correct: false
+  - text: El resultado es $8x + 5y$
+    is_correct: false
+  - text: El resultado es $4x - 5y$
+    is_correct: false
+  explanation: 'La alternativa correcta es ''El resultado es $4x + 5y$, reduciendo $6x - 2x = 4x$ y $4y + y = 5y$''. Clase $x: 4x$, Clase $y: 5y$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar todas las clases de factores literales distintos presentes en el polinomio.'
-  - 'Paso 2: Marcar o reagrupar los términos pertenecientes a cada clase por separado.'
-  - 'Paso 3: Reducir los coeficientes de cada clase independientemente respetando sus reglas de signo.'
-  - 'Paso 4: Escribir el polinomio reducido consolidando los términos de cada clase.'
-errores_correccion: |
-  - **Error 1:** Mezclar y sumar coeficientes de clases distintas (escribir $3x + 4y = 7xy$). **Cómo corregirlo:** Clases distintas **NO SE MEZCLAN EN SUMA ($3x + 4y$ se mantiene separado)**.
+- 'Paso 1: Identificar todas las clases de factores literales distintos presentes en el polinomio.'
+- 'Paso 2: Marcar o reagrupar los términos pertenecientes a cada clase por separado.'
+- 'Paso 3: Reducir los coeficientes de cada clase independientemente respetando sus reglas de signo.'
+- 'Paso 4: Escribir el polinomio reducido consolidando los términos de cada clase.'
+errores_correccion: '- **Error 1:** Mezclar y sumar coeficientes de clases distintas (escribir $3x + 4y = 7xy$). **Cómo corregirlo:** Clases distintas **NO SE MEZCLAN EN SUMA ($3x + 4y$ se mantiene separado)**.
+
   - **Error 2:** Sumar las potencias de términos con la misma letra pero distinto exponente (ej: escribir $2x^2 + 5x = 7x^3$). **Cómo corregirlo:** $x^2$ y $x$ son **CLASES DIFERENTES y NO se pueden reducir en suma**.
+
+  '
 ejemplos:
-  - titulo: 'Dos clases de variables'
-    enunciado: '¿Cuál es la reducción de $9a - 3b + 2a + 8b$?'
-    alternativas:
-      - '$11a + 5b$'
-      - '$16ab$'
-      - '$6a + 5b$'
-    respuesta: '$11a + 5b$'
-    solucion_pasos:
-      - '1. Clase $a$: $9a + 2a = 11a$.'
-      - '2. Clase $b$: $-3b + 8b = +5b$.'
-      - '3. Resultado: $11a + 5b$.'
-  - titulo: 'Variables y constantes'
-    enunciado: '¿Cuál es la reducción de $4x + 7 - x - 2$?'
-    alternativas:
-      - '$3x + 5$'
-      - '$8x$'
-      - '$3x - 5$'
-    respuesta: '$3x + 5$'
-    solucion_pasos:
-      - '1. Clase $x$: $4x - 1x = 3x$.'
-      - '2. Constantes: $7 - 2 = +5$.'
-      - '3. Resultado: $3x + 5$.'
-  - titulo: 'Distintos exponentes de la misma letra'
-    enunciado: '¿Es la reducción de $5x^2 + 3x - 2x^2 + 4x$ igual a $3x^2 + 7x$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, clase $x^2: 5 - 2 = 3x^2$; clase $x: 3 + 4 = 7x$.'
-  - titulo: 'Independencia de clases'
-    enunciado: '¿Es la expresión $3x^2 + 7x$ completamente irreducible?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, por ser suma de términos de clases no semejantes.'
+- titulo: Dos clases de variables
+  enunciado: ¿Cuál es la reducción de $9a - 3b + 2a + 8b$?
+  alternativas:
+  - $11a + 5b$
+  - $16ab$
+  - $6a + 5b$
+  respuesta: $11a + 5b$
+  solucion_pasos:
+  - '1. Clase $a$: $9a + 2a = 11a$.'
+  - '2. Clase $b$: $-3b + 8b = +5b$.'
+  - '3. Resultado: $11a + 5b$.'
+- titulo: Variables y constantes
+  enunciado: ¿Cuál es la reducción de $4x + 7 - x - 2$?
+  alternativas:
+  - $3x + 5$
+  - $8x$
+  - $3x - 5$
+  respuesta: $3x + 5$
+  solucion_pasos:
+  - '1. Clase $x$: $4x - 1x = 3x$.'
+  - '2. Constantes: $7 - 2 = +5$.'
+  - '3. Resultado: $3x + 5$.'
+- titulo: Distintos exponentes de la misma letra
+  enunciado: ¿Es la reducción de $5x^2 + 3x - 2x^2 + 4x$ igual a $3x^2 + 7x$?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, clase $x^2: 5 - 2 = 3x^2$; clase $x: 3 + 4 = 7x$.'
+- titulo: Independencia de clases
+  enunciado: ¿Es la expresión $3x^2 + 7x$ completamente irreducible?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por ser suma de términos de clases no semejantes.
 errores_frecuentes:
-  - 'Mezclar y sumar coeficientes pertenecientes a clases de variables distintas como 3x + 4y = 7xy.'
-  - 'Considerar semejantes términos que comparten la misma letra pero con exponentes diferentes.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Las constantes numéricas sueltas no son incluidas en la reducción final del polinomio.'
-  - 'Alterar los signos de las clases al reordenar los términos del polinomio.'
+- Mezclar y sumar coeficientes pertenecientes a clases de variables distintas como 3x + 4y = 7xy.
+- Considerar semejantes términos que comparten la misma letra pero con exponentes diferentes.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Las constantes numéricas sueltas no son incluidas en la reducción final del polinomio.
+- Alterar los signos de las clases al reordenar los términos del polinomio.
 afirmaciones_verdaderas:
-  - 'La reducción de un polinomio con diversas clases de términos exige reducir cada clase de semejanza de forma independiente.'
-  - 'Los términos reducidos de clases distintas no se pueden fusionar y forman el polinomio final de términos separados.'
-al_terminar_debes_poder: 'Reducir polinomios con diversas clases de términos agrupando y simplificando cada clase de factor literal por separado.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La reducción de un polinomio con diversas clases de términos exige reducir cada clase de semejanza de forma independiente.
+- Los términos reducidos de clases distintas no se pueden fusionar y forman el polinomio final de términos separados.
+al_terminar_debes_poder: '![Resumen de polinomio con diversas clases](/static/img/nodos/reduccion-de-un-polinomio-con-diversas-clases-de-terminos-resumen.svg)
+
+
+  QUÉ: Reducir polinomios multivariables clasificando los términos en familias independientes.
+
+
+  CÓMO: Agrupar por clases de semejanza $(\{x^2\}, \{xy\}, \{y^2\}, \dots, \{\text{constantes}\})$, reducir cada bloque por separado y consolidar la expresión final irreductible.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

@@ -1,108 +1,123 @@
 semantic_id: MAT.NUM.PROGRESIONES_COMPARACION.PA_VS_PG
-resumen_inicial: 'La distinción entre progresión aritmética (P.A.) y progresión geométrica (P.G.) contrasta la ley de formación aditiva constante ($a_n = a_{n-1} + d$) frente a la ley de formación multiplicativa constante ($a_n = a_{n-1} \cdot r$).'
+resumen_inicial: 'La distinción entre progresión aritmética (PA) y progresión geométrica (PG) radica en el operador generador: la PA aplica adición constante ($a_{n+1} - a_n = d$, crecimiento lineal) mientras que la PG aplica multiplicación constante ($\frac{a_{n+1}}{a_n} = r$, crecimiento exponencial).'
 explicacion_simple: |
-  Para comparar rápidamente una P.A. y una P.G.:
-  - **Progresión Aritmética (P.A.)**: Se construye **SUMANDO** siempre la misma cantidad ($d$).
-    - Ejemplo: $5, 8, 11, 14, 17, \dots$ ($+3$ cada vez). Su crecimiento es una **recta (lineal)**.
-  - **Progresión Geométrica (P.G.)**: Se construye **MULTIPLICANDO** siempre por la misma cantidad ($r$).
-    - Ejemplo: $5, 10, 20, 40, 80, \dots$ ($\cdot 2$ cada vez). Su crecimiento es una **curva acelerada (exponencial)**.
-  - **Prueba diferencial**: Restas constantes $\implies$ P.A. | Divisiones constantes $\implies$ P.G.
+  Para saber si una sucesión es una **progresión aritmética (PA)** o una **progresión geométrica (PG)**, analiza cómo se pasa de un término al siguiente:
+  - **Progresión Aritmética (PA)**:
+    - Se **suma o resta** un número fijo (diferencia común $d$).
+    - Ejemplo: $3, 6, 9, 12, 15 \dots$ ($+3$ en cada paso).
+    - Crecimiento en línea recta (**lineal**).
+  - **Progresión Geométrica (PG)**:
+    - Se **multiplica** por un número fijo (razón geométrica $r$).
+    - Ejemplo: $3, 6, 12, 24, 48 \dots$ ($\cdot 2$ en cada paso).
+    - Crecimiento acelerado en curva (**exponencial**).
+  - Aunque empiecen con los mismos primeros números ($3$ y $6$), a largo plazo la progresión geométrica crece a una velocidad inmensamente mayor.
+
+  ![Distinción entre PA y PG](/static/img/nodos/distincion-entre-progresion-aritmetica-y-progresion-geometrica-intro.svg)
 explicacion_formal: |
-  ### Definición formal y cuadro comparativo
-
-  | Criterio | Progresión Aritmética (P.A.) | Progresión Geométrica (P.G.) |
+  ### Tabla Comparativa Estructural y Analítica
+  | Propiedad | Progresión Aritmética (PA) | Progresión Geométrica (PG) |
   | :--- | :--- | :--- |
-  | **Operación Generadora** | Adición o Sustracción constante ($d$) | Multiplicación o División constante ($r$) |
-  | **Constante Característica** | Diferencia común: $d = a_{n+1} - a_n$ | Razón geométrica: $r = \frac{a_{n+1}}{a_n}$ |
-  | **Término General ($a_n$)** | $a_n = a_1 + (n - 1)d$ | $a_n = a_1 \cdot r^{n-1}$ |
-  | **Naturaleza del Crecimiento** | Función lineal discreta: $f(n) = dn + c$ | Función exponencial discreta: $g(n) = a_1 \cdot r^{n-1}$ |
-  | **Suma Finita de $n$ Términos** | $S_n = \frac{n(a_1 + a_n)}{2}$ | $S_n = a_1 \cdot \frac{r^n - 1}{r - 1} \quad (r \neq 1)$ |
+  | **Operador base** | Adición / Sustracción | Multiplicación / División |
+  | **Invariante característico** | Diferencia: $a_{k+1} - a_k = d$ | Cociente: $\frac{a_{k+1}}{a_k} = r$ |
+  | **Término general** | $a_n = a_1 + (n - 1)d$ | $a_n = a_1 \cdot r^{n-1}$ |
+  | **Naturaleza funcional** | Función afín/lineal $f(n) = dn + c$ | Función exponencial $f(n) = c \cdot r^n$ |
+  | **Media local** | Aritmética: $a_k = \frac{a_{k-1} + a_{k+1}}{2}$ | Geométrica: $(a_k)^2 = a_{k-1} \cdot a_{k+1}$ |
+  | **Suma de $n$ términos** | $S_n = \frac{n(a_1 + a_n)}{2}$ | $S_n = \frac{a_1(r^n - 1)}{r - 1}$ |
 
-  ### Criterio analítico de clasificación
-  Dada la muestra $(a_1, a_2, a_3, a_4)$:
-  1. Si $a_2 - a_1 = a_3 - a_2 = a_4 - a_3 = d \implies$ **Progresión Aritmética**.
-  2. Si $\frac{a_2}{a_1} = \frac{a_3}{a_2} = \frac{a_4}{a_3} = r \implies$ **Progresión Geométrica**.
+  ### Teorema de Dominancia Asintótica
+  Para cualesquiera $a_1 > 0$, $d > 0$ y $r > 1$:
+  $$\lim_{n \to \infty} \frac{a_1 + (n-1)d}{a_1 \cdot r^{n-1}} = 0$$
+  Toda progresión geométrica creciente eventualmente supera en magnitud a cualquier progresión aritmética, independientemente de cuán grande sea la diferencia $d$ de la PA.
 
   ### Síntesis didáctica
-  - Test de Resta: $a_{n+1} - a_n = d \implies$ P.A. (Lineal).
-  - Test de División: $\frac{a_{n+1}}{a_n} = r \implies$ P.G. (Exponencial).
+  - PA: $a_{n+1} - a_n = d$ (adición constante).
+  - PG: $\frac{a_{n+1}}{a_n} = r$ (multiplicación constante).
 definiciones_clave: |
-  - **Cambio aditivo (P.A.)**: Variación de magnitud constante que se adiciona periodo a periodo.
-  - **Cambio multiplicativo (P.G.)**: Variación proporcional constante que escala la cantidad acumulada.
-  - **Tasa de crecimiento lineal vs exponencial**: Ritmo de incremento constante (recta) vs ritmo de incremento acelerado (potencia).
+  - **Diferencia común ($d$)**: Constante aditiva que define una progresión aritmética.
+  - **Razón geométrica ($r$)**: Constante multiplicativa que define una progresión geométrica.
+  - **Dominancia asintótica**: Principio por el cual el crecimiento exponencial supera a todo crecimiento polinomial o lineal.
 propiedades_relaciones: |
-  - **Dominancia exponencial a largo plazo**: Para valores grandes de $n$, cualquier P.G. con $r > 1$ superará a cualquier P.A. positiva.
-  - **Transformación logarítmica**: Al aplicar logaritmos a los términos de una P.G. de números positivos, se obtiene una P.A. de diferencia $d = \log(r)$.
+  - **Isomorfismo logarítmico**: Si $(a_n)$ es una PG con términos positivos y razón $r$, entonces $(\log a_n)$ es una PA con diferencia $d = \log r$.
+  - **Puntos de coincidencia inicial**: Dos progresiones pueden compartir sus dos primeros términos ($a_1, a_2$) y discrepar drásticamente a partir del tercer término ($a_3$).
 ejemplo_guiado:
-  enunciado: 'Dada la secuencia $4, 12, 36, 108, \dots$, clasifícala como P.A. o P.G., calcula su constante característica y halla la fórmula de su término general.'
+  enunciado: 'Se tienen dos sucesiones con $a_1 = 4$ y $a_2 = 12$. Determina el valor del término $a_5$ si la sucesión es: a) una progresión aritmética, y b) una progresión geométrica.'
+  imagen: '/static/img/nodos/distincion-entre-progresion-aritmetica-y-progresion-geometrica-ejemplos.svg'
   pasos:
-    - 'Paso 1: Evaluamos las restas: $12 - 4 = 8$ y $36 - 12 = 24$. Como las restas cambian ($8 \neq 24$), **no es una P.A.**'
-    - 'Paso 2: Evaluamos los cocientes: $\frac{12}{4} = 3$, $\frac{36}{12} = 3$ y $\frac{108}{36} = 3$. Como el cociente es constante ($3$), **es una P.G. con $r = 3$**.'
-    - 'Paso 3: Identificamos $a_1 = 4$ y la razón $r = 3$.'
-    - 'Paso 4: Escribimos la fórmula del término general: $a_n = 4 \cdot 3^{n-1}$. La secuencia es una **P.G. de razón $r=3$ y $a_n = 4 \cdot 3^{n-1}$**.'
+    - 'Paso 1: Si es una **PA**, la diferencia es $d = a_2 - a_1 = 12 - 4 = 8$.'
+    - 'Paso 2: Calculamos el término $a_5$ en la PA: $a_5 = a_1 + 4d = 4 + 4(8) = 4 + 32 = **36$**.'
+    - 'Paso 3: Si es una **PG**, la razón es $r = \frac{a_2}{a_1} = \frac{12}{4} = 3$.'
+    - 'Paso 4: Calculamos el término $a_5$ en la PG: $a_5 = a_1 \cdot r^4 = 4 \cdot 3^4 = 4 \cdot 81 = **324$**.'
+    - 'Paso 5: Conclusión: En la posición $n=5$, el término de la PG ($324$) es nueve veces mayor que el de la PA ($36$).'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué prueba matemática permite distinguir de forma categórica si una secuencia numérica es una P.A. o una P.G.?'
+    question: '¿Cuál es la prueba matemática para distinguir si una sucesión es aritmética o geométrica?'
     choices:
-      - {text: 'Calcular las restas entre términos consecutivos (constantes en P.A.) y los cocientes entre términos consecutivos (constantes en P.G.)', is_correct: true}
-      - {text: 'Contar si la cantidad de números es par o impar', is_correct: false}
-      - {text: 'Multiplicar el primer término por 100', is_correct: false}
-      - {text: 'Sumar todos los números y dividirlos por la mitad', is_correct: false}
-    explanation: 'La alternativa correcta es ''Calcular las restas entre términos consecutivos (constantes en P.A.) y los cocientes entre términos consecutivos (constantes en P.G.)''. Test de resta vs cociente.'
+      - {text: 'Calcular si las diferencias consecutivas son constantes ($a_{n+1} - a_n = d$) o si los cocientes consecutivos son constantes ($\frac{a_{n+1}}{a_n} = r$)', is_correct: true}
+      - {text: 'Comprobar si los números son pares o impares', is_correct: false}
+      - {text: 'Multiplicar el primer término por el último', is_correct: false}
+      - {text: 'Calcular únicamente la raíz cuadrada del primer término', is_correct: false}
+    explanation: 'La alternativa correcta es ''Calcular si las diferencias consecutivas son constantes ($a_{n+1} - a_n = d$) o si los cocientes consecutivos son constantes ($\frac{a_{n+1}}{a_n} = r$)''. Es el criterio definitorio entre crecimiento aditivo y multiplicativo.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Dada la secuencia $10, 20, 30, 40, 50$, ¿cómo se clasifica y cuál es su constante?'
+    question: 'Dada la sucesión $(5, 10, 20, 40, \dots)$, ¿qué tipo de progresión es?'
     choices:
-      - {text: 'Es una Progresión Aritmética (P.A.) de diferencia constante $d = 10$', is_correct: true}
-      - {text: 'Es una Progresión Geométrica (P.G.) de razón constante $r = 2$', is_correct: false}
-      - {text: 'Es una serie geométrica infinita convergente', is_correct: false}
-      - {text: 'Es una función cuadrática de vértice en $(0,0)$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Es una Progresión Aritmética (P.A.) de diferencia constante $d = 10$''. $20-10=10, 30-20=10$. Sus restas son constantes.'
+      - {text: 'Progresión geométrica con razón $r = 2$', is_correct: true}
+      - {text: 'Progresión aritmética con diferencia $d = 5$', is_correct: false}
+      - {text: 'Progresión aritmética con diferencia $d = 10$', is_correct: false}
+      - {text: 'Ninguna de las dos', is_correct: false}
+    explanation: 'La alternativa correcta es ''Progresión geométrica con razón $r = 2$''. Los cocientes son constantes: $10/5 = 2, 20/10 = 2, 40/20 = 2$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Calcular la diferencia entre pares consecutivos: $a_2 - a_1$ y $a_3 - a_2$.'
-  - 'Paso 2: Calcular el cociente entre pares consecutivos: $\frac{a_2}{a_1}$ y $\frac{a_3}{a_2}$.'
-  - 'Paso 3: Si las restas son constantes, clasificar como P.A. ($d = a_{n+1} - a_n$); si los cocientes son constantes, clasificar como P.G. ($r = \frac{a_{n+1}}{a_n}$).'
-  - 'Paso 4: Escribir la fórmula del término general correspondiente ($a_1 + (n-1)d$ para P.A. o $a_1 \cdot r^{n-1}$ para P.G.).'
+  - 'Paso 1: Calcular las diferencias consecutivas $\Delta_k = a_{k+1} - a_k$ para los términos disponibles.'
+  - 'Paso 2: Calcular los cocientes consecutivos $R_k = \frac{a_{k+1}}{a_k}$.'
+  - 'Paso 3: Si todos los $\Delta_k$ son iguales a una constante $d$, clasificar como PA.'
+  - 'Paso 4: Si todos los $R_k$ son iguales a una constante $r$, clasificar como PG.'
+  - 'Paso 5: Aplicar la fórmula correspondiente de término general o suma según la clasificación.'
 errores_correccion: |
-  - **Error 1:** Tratar a una progresión geométrica como si aumentara por una diferencia constante. **Cómo corregirlo:** La P.G. avanza multiplicando por $r$; **su término general usa potencias $a_1 \cdot r^{n-1}$**.
-  - **Error 2:** Creer que una P.A. con diferencia grande crecerá más rápido a largo plazo que una P.G. **Cómo corregirlo:** A largo plazo, el **crecimiento exponencial de la P.G. siempre supera al lineal de la P.A.**.
+  - **Error 1:** Clasificar una sucesión mirando solo los dos primeros términos ($a_1, a_2$). **Cómo corregirlo:** Se requieren **al menos tres términos** ($a_1, a_2, a_3$) para comparar si la relación constante es aditiva o multiplicativa.
+  - **Error 2:** Aplicar la fórmula de Gauss de la PA para sumar términos de una PG. **Cómo corregirlo:** La PG requiere la **fórmula telescópica exponencial**: $S_n = \frac{a_1(r^n - 1)}{r - 1}$.
 ejemplos:
-  - titulo: 'Clasificación de secuencia aditiva'
-    enunciado: 'Para $7, 12, 17, 22$, ¿es una P.A. con $d = 5$?'
+  - titulo: 'Clasificación de sucesión por restas'
+    enunciado: '¿La sucesión $7, 12, 17, 22, 27$ es una PA o una PG?'
     alternativas:
-      - 'Sí, pues $12 - 7 = 5$ y $17 - 12 = 5$'
-      - 'No, es una P.G.'
-      - 'No, la diferencia es 7'
-    respuesta: 'Sí, pues $12 - 7 = 5$ y $17 - 12 = 5$'
+      - 'Es una PA con diferencia común $d = 5$'
+      - 'Es una PG con razón $r = 5$'
+      - 'Es una PG con razón $r = 1,7$'
+    respuesta: 'Es una PA con diferencia común $d = 5$'
     solucion_pasos:
-      - '1. Restas: $12-7=5, 17-12=5, 22-17=5$.'
-      - '2. Restas constantes $\implies$ P.A. con $d=5$.'
-  - titulo: 'Clasificación de secuencia multiplicativa'
-    enunciado: 'Para $3, 6, 12, 24$, ¿es una P.G. con $r = 2$?'
+      - '1. $12-7=5, 17-12=5, 22-17=5$. Restas constantes $\implies$ PA.'
+  - titulo: 'Clasificación de sucesión por cocientes'
+    enunciado: '¿La sucesión $2, 6, 18, 54, 162$ es una PA o una PG?'
+    alternativas:
+      - 'Es una PG con razón geométrica $r = 3$'
+      - 'Es una PA con diferencia común $d = 4$'
+      - 'Es una PA con diferencia común $d = 12$'
+    respuesta: 'Es una PG con razón geométrica $r = 3$'
+    solucion_pasos:
+      - '1. $6/2=3, 18/6=3, 54/18=3$. Cocientes constantes $\implies$ PG.'
+  - titulo: 'Comparación asintótica'
+    enunciado: '¿A partir de un número $n$ suficientemente grande, una PG con $r > 1$ siempre supera a una PA con $d > 0$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Cocientes: $6/3=2, 12/6=2, 24/12=2 \implies$ P.G. con $r=2$.'
-  - titulo: 'Comparación a largo plazo'
-    enunciado: 'Para $n=10$, ¿qué término es mayor: la P.A. $a_n = 100 + 10(n-1)$ o la P.G. $b_n = 2 \cdot 2^{n-1}$?'
-    respuesta: 'La P.G. bn'
-    solucion_pasos:
-      - 'P.A.: $a_{10} = 100 + 90 = 190$.'
-      - 'P.G.: $b_{10} = 2 \cdot 2^9 = 2 \cdot 512 = 1.024$. La P.G. es mayor.'
-  - titulo: 'Secuencia constante'
-    enunciado: 'La secuencia $5, 5, 5, 5$ ¿puede considerarse P.A. con $d=0$ y P.G. con $r=1$?'
+      - '1. Por el teorema de dominancia exponencial sobre el crecimiento lineal.'
+  - titulo: 'Sucesión constante compartida'
+    enunciado: '¿La sucesión constante $5, 5, 5, 5, \dots$ puede considerarse simultáneamente una PA (con $d=0$) y una PG (con $r=1$)?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Cumple $5-5=0$ y $5/5=1$.'
+      - '1. $5-5=0$ (PA con $d=0$) y $5/5=1$ (PG con $r=1$).'
 errores_frecuentes:
-  - 'La razón multiplicativa r equivale numéricamente a la diferencia aditiva d al formular el término general.'
-  - 'Una progresión aritmética con diferencia positiva supera a largo plazo a cualquier progresión geométrica.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Clasificar una progresión como geométrica evaluando únicamente las restas de los primeros dos términos.'
-  - 'Las progresiones geométricas no pueden tener términos con signos alternados.'
+  - 'Determinar si una progresión es aritmética o geométrica considerando únicamente dos términos iniciales.'
+  - 'Aplicar la fórmula de la media aritmética a los extremos de una progresión geométrica.'
+  - 'Asumir que toda progresión aritmética termina superando a una geométrica si la diferencia inicial es muy grande.'
+  - 'Utilizar la fórmula de la suma de Gauss $S_n = \frac{n(a_1+a_n)}{2}$ para calcular la suma de una PG.'
+  - 'Confundir la razón geométrica $r$ con la diferencia común $d$ en problemas de enunciados verbales.'
 afirmaciones_verdaderas:
-  - 'Una progresión es aritmética si la diferencia entre términos consecutivos es constante ($d = a_{n+1} - a_n$) y geométrica si el cociente es constante ($r = \frac{a_{n+1}}{a_n}$).'
-  - 'El crecimiento de una progresión aritmética es lineal ($dn + c$), mientras que el de una progresión geométrica es exponencial ($a_1 \cdot r^{n-1}$).'
-al_terminar_debes_poder: 'Distinguir entre una progresión aritmética y una progresión geométrica mediante el test de restas y cocientes.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'En una progresión aritmética la diferencia entre términos consecutivos es constante ($a_{n+1} - a_n = d$), mientras que en una geométrica el cociente es constante ($\frac{a_{n+1}}{a_n} = r$).'
+  - 'Para términos positivos y $r > 1$, una progresión geométrica supera asintóticamente a cualquier progresión aritmética para valores de $n$ suficientemente grandes.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/distincion-entre-progresion-aritmetica-y-progresion-geometrica-resumen.svg)
+
+  QUÉ: Distinguir rigurosamente entre progresiones aritméticas y progresiones geométricas según sus propiedades estructurales y funcionales.
+  CÓMO: Comparar invariantes consecutivos ($a_{n+1} - a_n = d$ vs $\frac{a_{n+1}}{a_n} = r$) y seleccionar las fórmulas canónicas de término general y suma.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

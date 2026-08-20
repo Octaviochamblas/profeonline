@@ -1,104 +1,120 @@
-semantic_id: MAT.NUM.PROG_ARITMETICA.SUMA_FINITA
-resumen_inicial: 'El cálculo de la suma de los $n$ primeros términos de una progresión aritmética $S_n$ multiplica el número de términos $n$ por el promedio entre el primer término y el último: $S_n = \frac{n(a_1 + a_n)}{2} = \frac{n [2a_1 + (n - 1)d]}{2}$.'
+semantic_id: MAT.NUM.PROG_ARITMETICA.SUMA_TERMINOS
+resumen_inicial: 'El cálculo de la suma de los $n$ primeros términos de una PA utiliza la fórmula de Gauss $S_n = \frac{n(a_1 + a_n)}{2}$ o su equivalente $S_n = \frac{n}{2}[2a_1 + (n - 1)d]$.'
 explicacion_simple: |
-  Para sumar rápidamente todos los números de una progresión aritmética (por ejemplo, los números del $1$ al $100$):
-  - El famoso matemático **Gauss** descubrió que si sumas el primer número con el último ($1 + 100 = 101$), el segundo con el penúltimo ($2 + 99 = 101$), ¡todas las parejas suman exactamente lo mismo!
-  - Como hay $n$ números, se forman $\frac{n}{2}$ parejas que suman $(a_1 + a_n)$.
-  - Por eso la fórmula de la suma es:
+  Para sumar muchos términos de una progresión aritmética (por ejemplo, los primeros 50 números):
+  - No necesitas sumarlos uno a uno gracias al método descubierto por el matemático Carl Friedrich Gauss:
     $$S_n = \frac{n \cdot (a_1 + a_n)}{2}$$
-  Para los números del 1 al 100: $S_{100} = \frac{100 \cdot (1 + 100)}{2} = \frac{100 \cdot 101}{2} = 5.050$.
+  - ¿Cómo funciona?
+    1. Sumas el **primer término** con el **último término** ($a_1 + a_n$).
+    2. Multiplicas esa suma por la **cantidad de términos** ($n$).
+    3. Divides el resultado **entre 2** (porque los términos se emparejan de a dos).
+  - Por ejemplo, para sumar del $1$ al $100$:
+    $$S_{100} = \frac{100 \cdot (1 + 100)}{2} = 50 \cdot 101 = 5.050$$
+
+  ![Cálculo de la suma de los n primeros términos](/static/img/nodos/calculo-de-la-suma-de-los-n-primeros-terminos-de-una-progresion-aritmetica-intro.svg)
 explicacion_formal: |
-  ### Definición formal y deducción de Gauss
-  La **suma finita $S_n$** de los $n$ primeros términos de una progresión aritmética $(a_k)_{k=1}^n$ es:
-  $$S_n = \sum_{k=1}^n a_k = a_1 + a_2 + a_3 + \dots + a_{n-1} + a_n$$
-  Escribiendo la suma en orden inverso y sumando miembro a miembro:
-  $$\begin{array}{rccccccc} S_n & = & a_1 & + & a_2 & + \dots + & a_n \\ S_n & = & a_n & + & a_{n-1} & + \dots + & a_1 \\ \hline 2S_n & = & (a_1 + a_n) & + & (a_1 + a_n) & + \dots + & (a_1 + a_n) \end{array}$$
-  Como hay $n$ términos idénticos en la suma:
+  ### Deducción por el Método de Simetría de Gauss
+  Escribimos la suma $S_n$ en orden directo e inverso:
+  $$\begin{aligned} S_n &= a_1 + a_2 + a_3 + \dots + a_{n-1} + a_n \\ S_n &= a_n + a_{n-1} + a_{n-2} + \dots + a_2 + a_1 \end{aligned}$$
+  Sumando miembro a miembro ambas identidades:
+  $$2S_n = (a_1 + a_n) + (a_2 + a_{n-1}) + \dots + (a_n + a_1)$$
+  Dado que en una PA la suma de términos equidistantes es invariante:
+  $$a_k + a_{n-k+1} = a_1 + a_n \quad \forall k$$
+  Se obtienen exactamente $n$ pares idénticos de valor $(a_1 + a_n)$:
   $$2S_n = n(a_1 + a_n) \implies S_n = \frac{n(a_1 + a_n)}{2}$$
 
-  ### Formulación en función de $a_1$ y $d$
-  Sustituyendo el término general $a_n = a_1 + (n - 1)d$:
-  $$S_n = \frac{n \cdot \left[a_1 + a_1 + (n - 1)d\right]}{2} = \frac{n \cdot \left[2a_1 + (n - 1)d\right]}{2}$$
+  ### Forma Alternativa en Función de $a_1$ y $d$
+  Sustituyendo el término general $a_n = a_1 + (n-1)d$ en la fórmula:
+  $$S_n = \frac{n [a_1 + a_1 + (n-1)d]}{2} = \frac{n [2a_1 + (n-1)d]}{2}$$
 
   ### Síntesis didáctica
-  - Ecuación con último término: $S_n = \frac{n(a_1 + a_n)}{2}$.
-  - Ecuación con diferencia: $S_n = \frac{n[2a_1 + (n - 1)d]}{2}$.
+  - Con extremos conocidos: $S_n = \frac{n(a_1 + a_n)}{2}$.
+  - Con $d$ conocida: $S_n = \frac{n}{2}[2a_1 + (n-1)d]$.
 definiciones_clave: |
-  - **Serie o suma finita ($S_n$)**: Acumulación o suma de los $n$ primeros elementos consecutivos de la progresión.
-  - **Pareja simétrica de Gauss**: Par de términos ubicados a igual distancia de los extremos cuya suma equivale a $(a_1 + a_n)$.
-  - **Promedio de extremos ($\frac{a_1 + a_n}{2}$)**: Valor medio central de la serie aritmética.
+  - **Suma de Gauss ($S_n$)**: Total acumulado al sumar los primeros $n$ términos de una progresión aritmética.
+  - **Términos equidistantes**: Parejas de términos $(a_k, a_{n-k+1})$ cuya suma es constante e igual a $(a_1 + a_n)$.
+  - **Semisuma de extremos**: Promedio aritmético entre el primer y último término $(\frac{a_1 + a_n}{2})$.
 propiedades_relaciones: |
-  - **Comportamiento cuadrático respecto a $n$**: Al desarrollar la fórmula de $S_n$, se obtiene una función cuadrática pura o afín de la forma $S_n = \frac{d}{2} n^2 + \left(a_1 - \frac{d}{2}\right)n$.
-  - **Diferencia de sumas consecutivas**: La resta entre dos sumas parciales consecutivas entrega el término de esa posición: $S_n - S_{n-1} = a_n$.
+  - **Crecimiento cuadrático de la suma**: La función $S_n$ es una función cuadrática de la variable $n$: $S_n = \frac{d}{2}n^2 + (a_1 - \frac{d}{2})n$.
+  - **Relación con el término general**: $a_n = S_n - S_{n-1}$ para todo $n \ge 2$.
 ejemplo_guiado:
-  enunciado: 'Calcula la suma de los primeros $20$ términos de la progresión aritmética $3, 7, 11, 15, \dots$'
+  enunciado: 'Calcula la suma de los primeros 20 términos de la progresión aritmética $(3, 7, 11, 15, \dots)$.'
+  imagen: '/static/img/nodos/calculo-de-la-suma-de-los-n-primeros-terminos-de-una-progresion-aritmetica-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $n = 20$, primer término $a_1 = 3$ y diferencia $d = 7 - 3 = 4$.'
-    - 'Paso 2: Calculamos el término $a_{20}$: $a_{20} = a_1 + (20 - 1)d = 3 + 19(4) = 3 + 76 = 79$.'
-    - 'Paso 3: Aplicamos la fórmula de la suma $S_{20} = \frac{20 \cdot (a_1 + a_{20})}{2}$.'
-    - 'Paso 4: Sustituimos y evaluamos: $S_{20} = \frac{20 \cdot (3 + 79)}{2} = 10 \cdot 82 = 820$. La suma de los 20 primeros términos es **$820$**.'
+    - 'Paso 1: Identificamos los datos: $a_1 = 3, d = 4, n = 20$.'
+    - 'Paso 2: Calculamos el término vigésimo $a_{20}$: $a_{20} = 3 + (20 - 1) \cdot 4 = 3 + 19 \cdot 4 = 3 + 76 = 79$.'
+    - 'Paso 3: Aplicamos la fórmula de la suma: $S_{20} = \frac{20 \cdot (a_1 + a_{20})}{2} = \frac{20 \cdot (3 + 79)}{2}$.'
+    - 'Paso 4: Realizamos las operaciones: $S_{20} = 10 \cdot 82 = **820$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la suma de los $n$ primeros términos de una P.A. cuando se conoce el primer término $a_1$ y el último término $a_n$?'
+    question: '¿Cuál es la fórmula que calcula la suma de los primeros $n$ términos de una PA cuando se conocen $a_1$ y el último término $a_n$?'
     choices:
-      - {text: 'Multiplicar el número de términos $n$ por la suma de extremos y dividir entre 2 ($S_n = \frac{n(a_1 + a_n)}{2}$)', is_correct: true}
-      - {text: 'Multiplicar el primer término por el último término y elevar a $n$', is_correct: false}
-      - {text: 'Restar el primer término al último término y dividir por la diferencia', is_correct: false}
-      - {text: 'Sumar todos los números y multiplicar por $n^2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Multiplicar el número de términos $n$ por la suma de extremos y dividir entre 2 ($S_n = \frac{n(a_1 + a_n)}{2}$)''. Deducción de Gauss.'
+      - {text: '$S_n = \frac{n(a_1 + a_n)}{2}$', is_correct: true}
+      - {text: '$S_n = n(a_1 + a_n)$', is_correct: false}
+      - {text: '$S_n = \frac{a_1 + a_n}{2}$', is_correct: false}
+      - {text: '$S_n = n \cdot a_1 + d$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$S_n = \frac{n(a_1 + a_n)}{2}$''. Es la clásica fórmula de Gauss que promedia los extremos y multiplica por la cantidad de términos.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una P.A. de 10 términos el primer término es $a_1 = 2$ y el décimo término es $a_{10} = 20$, ¿cuál es la suma total $S_{10}$?'
+    question: '¿Cuál es la suma de los primeros 10 términos de una PA con $a_1 = 2$ y $a_{10} = 20$?'
     choices:
-      - {text: '$S_{10} = 110$, calculando $\frac{10 \cdot (2 + 20)}{2} = \frac{10 \cdot 22}{2} = 110$', is_correct: true}
-      - {text: '$S_{10} = 220$, omitiendo la división por 2', is_correct: false}
-      - {text: '$S_{10} = 100$, multiplicando $10 \cdot 10$', is_correct: false}
-      - {text: '$S_{10} = 55$, dividiendo $110$ entre 2 por error', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S_{10} = 110$, calculando $\frac{10 \cdot (2 + 20)}{2} = \frac{10 \cdot 22}{2} = 110$''. $10 \cdot 22 / 2 = 110$.'
+      - {text: '$110$, calculando $\frac{10 \cdot (2 + 20)}{2} = 5 \cdot 22 = 110$', is_correct: true}
+      - {text: '$220$, olvidando dividir por 2', is_correct: false}
+      - {text: '$22$', is_correct: false}
+      - {text: '$100$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$110$, calculando $\frac{10 \cdot (2 + 20)}{2} = 5 \cdot 22 = 110$''. Aplicando Gauss con $n=10$, $a_1=2$ y $a_{10}=20$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la cantidad de términos a sumar $n$ y el primer término $a_1$.'
-  - 'Paso 2: Calcular el último término $a_n = a_1 + (n - 1)d$ (o identificar la diferencia $d$).'
-  - 'Paso 3: Sumar el primer y último término: $(a_1 + a_n)$.'
-  - 'Paso 4: Multiplicar por $n$ y dividir la suma entre 2: $S_n = \frac{n(a_1 + a_n)}{2}$.'
+  - 'Paso 1: Identificar el primer término $a_1$, la cantidad de términos $n$ y el término final $a_n$ (o la diferencia $d$).'
+  - 'Paso 2: Si no se conoce $a_n$, calcularlo mediante $a_n = a_1 + (n - 1)d$.'
+  - 'Paso 3: Sumar los extremos: $a_1 + a_n$.'
+  - 'Paso 4: Multiplicar por $n$ y dividir el resultado entre 2: $S_n = \frac{n(a_1 + a_n)}{2}$.'
 errores_correccion: |
-  - **Error 1:** Olvidar dividir por 2 la fórmula de la suma (calcular $n(a_1 + a_n)$). **Cómo corregirlo:** Las parejas se forman de dos en dos, por lo que **es obligatorio DIVIDIR ENTRE 2: $S_n = \frac{n(a_1 + a_n)}{2}$**.
-  - **Error 2:** Reemplazar el valor de la diferencia $d$ en el lugar de $a_n$. **Cómo corregirlo:** La fórmula requiere el **VALOR DEL ÚLTIMO TÉRMINO $a_n$**, no la diferencia común.
+  - **Error 1:** Olvidar dividir por 2 en la fórmula de la suma. **Cómo corregirlo:** La fórmula siempre lleva **división por 2**: $S_n = \frac{n(a_1 + a_n)}{2}$.
+  - **Error 2:** Confundir el valor del último término $a_n$ con la cantidad total de términos $n$. **Cómo corregirlo:** $n$ es la **cantidad de términos sumados** y $a_n$ es el **valor numérico del último elemento**.
 ejemplos:
-  - titulo: 'Suma de los primeros 100 enteros'
-    enunciado: 'Para los enteros de 1 a 100 ($a_1 = 1, a_{100} = 100$), ¿la suma es $S_{100} = \frac{100 \cdot 101}{2} = 5.050$?'
+  - titulo: 'Suma con fórmula alternativa'
+    enunciado: 'Para $a_1 = 5, d = 3, n = 10$, ¿cuál es el valor de la suma $S_{10}$?'
     alternativas:
-      - 'Sí, por la fórmula de Gauss'
-      - 'No, la suma es 10.100'
-      - 'No, la suma es 5.000'
-    respuesta: 'Sí, por la fórmula de Gauss'
+      - '$185$'
+      - '$170$'
+      - '$370$'
+    respuesta: '$185$'
     solucion_pasos:
-      - '1. $a_1 = 1, a_{100} = 100, n = 100$.'
-      - '2. $S_{100} = \frac{100(1 + 100)}{2} = \frac{10.100}{2} = 5.050$.'
-  - titulo: 'Suma de los 10 primeros números pares'
-    enunciado: 'Para los pares $2, 4, 6, \dots, 20$, ¿$a_1 = 2, a_{100} = 20 \implies S_{10} = \frac{10(2 + 20)}{2} = 110$?'
+      - '1. $a_{10} = 5 + 9(3) = 32$.'
+      - '2. $S_{10} = 10(5 + 32)/2 = 5 \cdot 37 = 185$.'
+  - titulo: 'Suma de impares consecutivos'
+    enunciado: '¿La suma de los primeros 10 números impares ($1, 3, 5, \dots, 19$) es igual a $100$?'
+    alternativas:
+      - 'Sí, evaluando $S_{10} = 10(1 + 19)/2 = 100$'
+      - 'No, es igual a 90'
+      - 'No, es igual a 110'
+    respuesta: 'Sí, evaluando $S_{10} = 10(1 + 19)/2 = 100$'
+    solucion_pasos:
+      - '1. $S_{10} = 10(20)/2 = 100$. (Coincide con $n^2$).'
+  - titulo: 'Suma de números negativos'
+    enunciado: '¿La suma de términos en una PA puede dar un total negativo?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $S_{10} = 10(22) / 2 = 110$.'
-  - titulo: 'Suma con fórmula de diferencia d'
-    enunciado: 'Para $n=5, a_1=3, d=2$, ¿$S_5 = \frac{5[2(3) + 4(2)]}{2} = \frac{5[6 + 8]}{2} = \frac{70}{2} = 35$?'
+      - '1. Si los términos sumados son negativos, la suma resultante es negativa.'
+  - titulo: 'Propiedad de Gauss'
+    enunciado: '¿En toda PA la suma de los extremos $a_1 + a_n$ es igual a la suma del segundo más el penúltimo $a_2 + a_{n-1}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $S_5 = 35$. Comprobación: $3+5+7+9+11 = 35$.'
-  - titulo: 'Suma de P.A. decreciente'
-    enunciado: 'Para $10, 8, 6, 4, 2$ ($n=5, a_1=10, a_5=2$), ¿$S_5 = \frac{5(10 + 2)}{2} = \frac{60}{2} = 30$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $10+8+6+4+2 = 30$.'
+      - '1. $a_2 + a_{n-1} = (a_1+d) + (a_n-d) = a_1 + a_n$.'
 errores_frecuentes:
-  - 'La suma de los $n$ primeros términos equivale al producto directo $n(a_1 + a_n)$ sin dividir entre 2.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Sustituir la diferencia común $d$ directamente en la posición de $a_n$ en la fórmula abreviada.'
-  - 'Multiplicar el número de términos por la diferencia sin considerar el valor del primer término.'
+  - 'En la fórmula de Gauss de la suma de una PA se omite la división por dos.'
+  - 'La cantidad de términos $n$ se confunde con el valor numérico del último término $a_n$.'
+  - 'La suma de los primeros $n$ números impares positivos no es igual al cuadrado de la cantidad de términos.'
+  - 'Al aplicar la fórmula con términos negativos, se suman los valores absolutos ignorando los signos.'
+  - 'Para calcular la suma de una PA es obligatorio sumar uno por uno todos los términos intermedios.'
 afirmaciones_verdaderas:
-  - 'La suma de los $n$ primeros términos de una P.A. se calcula mediante $S_n = \frac{n(a_1 + a_n)}{2}$.'
-  - 'La fórmula de la suma equivale a multiplicar la cantidad de términos $n$ por el promedio entre el primer y último término.'
-al_terminar_debes_poder: 'Calcular la suma de los $n$ primeros términos de una progresión aritmética mediante $S_n = \frac{n(a_1 + a_n)}{2}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La suma de los $n$ primeros términos de una PA es $S_n = \frac{n(a_1 + a_n)}{2}$, fundamentada en la simetría de términos equidistantes.'
+  - 'La suma de los primeros $n$ números impares positivos ($a_1=1, d=2$) equivale exactamente a $n^2$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-la-suma-de-los-n-primeros-terminos-de-una-progresion-aritmetica-resumen.svg)
+
+  QUÉ: Calcular la suma acumulada $S_n$ de los primeros $n$ términos de una progresión aritmética.
+  CÓMO: Aplicar las fórmulas de Gauss $S_n = \frac{n(a_1 + a_n)}{2}$ o $S_n = \frac{n}{2}[2a_1 + (n - 1)d]$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

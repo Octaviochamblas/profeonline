@@ -1,113 +1,123 @@
 semantic_id: MAT.ALG.TERMINO.GRADO_RELATIVO_TERMINO
-resumen_inicial: 'El cálculo del grado relativo de un término algebraico consiste en determinar el exponente específico asociado a una variable particular elegida como referencia dentro de la parte literal.'
+resumen_inicial: 'El grado relativo de un término algebraico con respecto a una variable específica es el exponente que tiene dicha letra en el término.'
 explicacion_simple: |
-  Mientras que el grado absoluto suma todas las letras juntas, el **grado relativo** mira **una sola letra a la vez**:
-  - Es simplemente **el exponente que tiene esa letra específica**.
-  - Ejemplo: En el término $8x^4 y^7 z$:
-    - El grado relativo respecto a la letra $x$ es **$4$**.
-    - El grado relativo respecto a la letra $y$ es **$7$**.
-    - El grado relativo respecto a la letra $z$ es **$1$**.
-  - Si una letra no aparece en el término, su grado relativo respecto a esa letra ausente es **$0$**.
+  - Mientras el grado absoluto suma todas las letras, el **grado relativo (GR)** se fija en **una sola letra a la vez**.
+  - **¿Cómo se determina?** Es simplemente el exponente de la letra elegida:
+    - En el término $7x^5y^3z$:
+      - El grado relativo respecto a $x$ es **$5$** ($\text{GR}(x) = 5$).
+      - El grado relativo respecto a $y$ es **$3$** ($\text{GR}(y) = 3$).
+      - El grado relativo respecto a $z$ es **$1$** ($\text{GR}(z) = 1$).
+    - Si una letra no aparece en el término, su grado relativo respecto a esa letra es **$0$** (porque $w^0 = 1$).
+
+  ![Grado Relativo de un Término](/static/img/nodos/calculo-del-grado-relativo-de-un-termino-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dado un término algebraico no nulo $M(x_1, \dots, x_k) = c \cdot x_1^{\alpha_1} x_2^{\alpha_2} \cdots x_k^{\alpha_k}$, el **grado relativo respecto a la variable $x_i$** (denotado $\operatorname{grrel}(M, x_i)$) es el exponente $\alpha_i \in \mathbb{N}_0$ asignado a dicha base variable:
+  Sea $T = c \cdot x_1^{e_1} x_2^{e_2} \cdots x_k^{e_k}$ un monomio no nulo con $c \neq 0$. El **grado relativo de $T$ respecto a la variable $x_j$**, denotado por $\operatorname{GR}_{x_j}(T)$ o $\operatorname{gr}(T, x_j)$, es el exponente que afecta a $x_j$:
 
-  $$\operatorname{grrel}(M, x_i) = \alpha_i$$
+  $$\operatorname{GR}_{x_j}(T) = e_j$$
 
-  ### Caso de Variable Ausente
-  Si la variable de referencia $y$ no figura en la parte literal del término $M$, su exponente implícito es cero por la propiedad del neutro escalar ($y^0 = 1$):
-
-  $$y \notin \operatorname{Var}(M) \implies \operatorname{grrel}(M, y) = 0$$
-
-  ### Relación entre Grado Relativo y Grado Absoluto
-  El grado absoluto equivale a la suma de todos los grados relativos de las variables que componen el término:
-
-  $$\operatorname{grabs}(M) = \sum_{i=1}^k \operatorname{grrel}(M, x_i)$$
-
-  ### Síntesis didáctica
-  El grado relativo analiza la potencia individual de una variable de interés. Permite evaluar el grado de polinomios en una variable seleccionada cuando se trabaja con modelos multivariables.
+  ### Propiedades y relaciones con el grado absoluto
+  1. **Relación de suma:** El grado absoluto es la suma de todos los grados relativos de las variables presentes:
+     $$\operatorname{GA}(T) = \sum_{j=1}^k \operatorname{GR}_{x_j}(T)$$
+  2. **Variable no presente:** Si una variable $w$ no figura explícitamente en el monomio, $\operatorname{GR}_w(T) = 0$.
+  3. **Desigualdad canónica:** Para cualquier variable $x_j$ con $e_j \ge 0$, siempre se cumple:
+     $$\operatorname{GR}_{x_j}(T) \le \operatorname{GA}(T)$$
 definiciones_clave: |
-  - **Grado relativo respecto a una variable**: Exponente de una letra específica elegida como referencia dentro del término algebraico.
-  - **Variable de referencia**: Letra seleccionada respecto a la cual se mide la potencia individual en un monomio o polinomio.
-  - **Grado relativo nulo ($0$)**: Grado asignado respecto a una variable que no figura explícitamente en el término algebraico.
+  - **Grado relativo (GR)**: Exponente que tiene una letra específica en un término algebraico.
+  - **Variable de referencia**: Letra respecto a la cual se mide el grado relativo.
+  - **Relación GR vs GA**: El grado relativo es puntual por variable, mientras el grado absoluto es la suma total.
 propiedades_relaciones: |
-  - **Límite superior del grado absoluto**: El grado relativo respecto a cualquier variable es siempre menor o igual al grado absoluto del término ($\operatorname{grrel}(M, x_i) \le \operatorname{grabs}(M)$).
-  - **Ordenamiento polinómico**: El grado relativo respecto a una variable elegida permite ordenar un polinomio multivariable de forma creciente o decreciente respecto a esa letra.
+  - **Independencia entre grados relativos**: El grado relativo respecto a una letra no depende de los exponentes de las demás variables.
+  - **Ordenamiento polinomial**: Los grados relativos permiten ordenar polinomios de forma ascendente o descendente respecto a una letra guía.
 ejemplo_guiado:
-  enunciado: 'Dado el término algebraico $-15 a^6 b^2 c$, determina: a) El grado relativo respecto a la variable $a$, b) El grado relativo respecto a $b$, c) El grado relativo respecto a $c$, d) El grado relativo respecto a la variable $x$.'
+  enunciado: 'En el término algebraico $T = -14a^4b^7c$, calcula el grado relativo respecto a cada una de las variables $a$, $b$, $c$ y verifica la suma con el grado absoluto.'
+  imagen: '/static/img/nodos/calculo-del-grado-relativo-de-un-termino-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para la variable $a$, observamos su superíndice: $\operatorname{grrel}(M, a) = \mathbf{6}$.'
-    - 'Paso 2: Para la variable $b$, observamos su superíndice: $\operatorname{grrel}(M, b) = \mathbf{2}$.'
-    - 'Paso 3: Para la variable $c$, como no tiene superíndice escrito, su exponente es $1 \implies \operatorname{grrel}(M, c) = \mathbf{1}$.'
-    - 'Paso 4: Para la variable $x$, como la letra $x$ no aparece en el término, su exponente implícito es $0 \implies \operatorname{grrel}(M, x) = \mathbf{0}$.'
-    - 'Conclusión: Los grados relativos son **$6, 2, 1$ y $0$** respectivamente.'
+    - 'Paso 1: Localizamos la variable $a$: su exponente es $4 \implies **\operatorname{GR}(a) = 4$**.'
+    - 'Paso 2: Localizamos la variable $b$: su exponente es $7 \implies **\operatorname{GR}(b) = 7$**.'
+    - 'Paso 3: Localizamos la variable $c$: no tiene número visible $\implies **\operatorname{GR}(c) = 1$**.'
+    - 'Paso 4: Calculamos el grado absoluto sumando los grados relativos: $\operatorname{GA}(T) = 4 + 7 + 1 = **12$**.'
+    - 'Paso 5: Conclusión: Los grados relativos son $\operatorname{GR}(a)=4, \operatorname{GR}(b)=7, \operatorname{GR}(c)=1$, y su suma valida $\operatorname{GA}=12$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué mide específicamente el grado relativo de un término algebraico?'
+    question: 'En el término algebraico $-9x^6y^2$, ¿cuál es el grado relativo respecto a la variable $x$?'
     choices:
-      - {text: 'El exponente específico que posee una variable particular elegida como referencia', is_correct: true}
-      - {text: 'La suma de todos los exponentes de todas las letras juntas', is_correct: false}
-      - {text: 'El valor absoluto de su coeficiente numérico', is_correct: false}
-      - {text: 'La cantidad de términos que componen la expresión', is_correct: false}
-    explanation: 'La alternativa correcta es ''El exponente específico que posee una variable particular elegida como referencia''. Definición de grado relativo.'
+      - text: '$6$, porque es el exponente individual de la letra $x$'
+        is_correct: true
+      - text: '$8$, porque es la suma de $6 + 2$'
+        is_correct: false
+      - text: '$2$, porque es el exponente de $y$'
+        is_correct: false
+      - text: '$-9$, porque es el coeficiente'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$6$, porque es el exponente individual de la letra $x$''. El grado relativo respecto a una letra es su propio exponente.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'En el término algebraico $4 x^5 y^3$, ¿cuál es el grado relativo respecto a la letra $y$ y cuál respecto a la letra $z$?'
+    question: 'En el término $5x^3y^4$, ¿cuál es el grado relativo respecto a la variable $z$?'
     choices:
-      - {text: 'El grado relativo respecto a $y$ es $3$, y respecto a $z$ es $0$', is_correct: true}
-      - {text: 'El grado relativo respecto a $y$ es $5$, y respecto a $z$ es $3$', is_correct: false}
-      - {text: 'El grado relativo respecto a $y$ es $8$, y respecto a $z$ es $4$', is_correct: false}
-      - {text: 'Ambos grados relativos son iguales a $3$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El grado relativo respecto a $y$ es $3$, y respecto a $z$ es $0$''. El exponente de $y$ es 3 y la letra $z$ no figura.'
+      - text: '$0$, porque la variable $z$ no aparece en el término ($z^0 = 1$)'
+        is_correct: true
+      - text: '$1$'
+        is_correct: false
+      - text: '$7$'
+        is_correct: false
+      - text: 'No existe'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$0$, porque la variable $z$ no aparece en el término ($z^0 = 1$)''. Una variable ausente tiene exponente cero.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la variable específica de referencia respecto a la cual se solicita el grado relativo.'
-  - 'Paso 2: Buscar esa letra dentro de la parte literal del término algebraico.'
-  - 'Paso 3: Si la letra está presente con superíndice, ese superíndice es el grado relativo. Si está sola sin superíndice, el grado es $1$.'
-  - 'Paso 4: Si la letra de referencia no está presente en el término, declarar que el grado relativo es $0$.'
+  - 'Paso 1: Identificar la variable específica respecto a la cual se solicita el grado.'
+  - 'Paso 2: Localizar dicha variable en la parte literal del término.'
+  - 'Paso 3: Leer el exponente de la variable (si no lleva número visible, su grado es $1$; si no aparece la letra, su grado es $0$).'
+  - 'Paso 4: Enunciar el grado relativo $\operatorname{GR}(x) = e$.'
 errores_correccion: |
-  - **Error 1:** Calcular la suma de todos los exponentes de las letras en lugar del exponente de la variable indicada. **Cómo corregirlo:** El grado relativo **evalúa únicamente una letra a la vez**, no la suma de todas.
-  - **Error 2:** Afirmar que el grado relativo respecto a una letra ausente es 1. **Cómo corregirlo:** Si la letra no figura en el término, su **grado relativo es cero ($0$)**.
+  - **Error 1:** Confundir grado relativo con grado absoluto (sumar todas las letras cuando se pregunta por una sola). **Cómo corregirlo:** El grado relativo **pertenece exclusivamente a una variable**: $\operatorname{GR}(x) = e_x$.
+  - **Error 2:** Asignar grado relativo 0 a una letra sin exponente escrito. **Cómo corregirlo:** Si la letra está presente, su exponente es **$1$**, por lo que $\operatorname{GR} = 1$.
 ejemplos:
-  - titulo: 'Grado relativo de variable simple'
-    enunciado: '¿Cuál es el grado relativo respecto a la variable $y$ en el término $-9 x^2 y^8$?'
+  - titulo: 'Identificación de GR en monomio tridimensional'
+    enunciado: 'En el término $-3x^5y^8z^2$, ¿cuál es el valor de $\operatorname{GR}(y)$?'
     alternativas:
       - '$8$'
-      - '$2$'
-      - '$10$'
+      - '$15$'
+      - '$5$'
     respuesta: '$8$'
     solucion_pasos:
-      - '1. El exponente de la variable $y$ es $8$.'
-      - '2. El grado relativo respecto a $y$ es $8$.'
-  - titulo: 'Grado relativo respecto a letra ausente'
-    enunciado: 'En el término $14a^3 b^5$, ¿cuál es el grado relativo respecto a la letra $c$?'
+      - '1. Se busca la variable $y$.'
+      - '2. El exponente de $y$ es 8.'
+      - '3. $\operatorname{GR}(y) = 8$.'
+  - titulo: 'Comparación GR vs GA'
+    enunciado: 'Si en un término $\operatorname{GR}(a) = 3$ y $\operatorname{GR}(b) = 5$, ¿cuál es su grado absoluto si son las únicas variables?'
     alternativas:
-      - '$0$'
-      - '$1$'
       - '$8$'
-    respuesta: '$0$'
+      - '$15$'
+      - '$5$'
+    respuesta: '$8$'
     solucion_pasos:
-      - '1. La letra $c$ no figura en la parte literal.'
-      - '2. El grado relativo respecto a $c$ es $0$.'
-  - titulo: 'Grado relativo de variable con exponente 1'
-    enunciado: 'En el término $7u^4 v$, ¿el grado relativo respecto a la variable $v$ es igual a $1$?'
+      - '1. $\operatorname{GA} = \operatorname{GR}(a) + \operatorname{GR}(b)$.'
+      - '2. $\operatorname{GA} = 3 + 5 = 8$.'
+  - titulo: 'Grado relativo de letra sin exponente escrito'
+    enunciado: '¿Es el grado relativo respecto a $b$ en el término $4a^3b$ igual a 1?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, la variable $v$ tiene exponente implícito $1$.'
-  - titulo: 'Suma de grados relativos'
-    enunciado: '¿La suma de los grados relativos respecto a todas las variables de un término es igual a su grado absoluto?'
-    respuesta: 'Sí'
+      - '1. $b$ tiene exponente implícito 1 ($b = b^1$).'
+      - '2. $\operatorname{GR}(b) = 1$.'
+  - titulo: 'Grado relativo vs coeficiente'
+    enunciado: '¿Es el grado relativo respecto a $x$ en $-7x^4$ igual a $-7$?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, $\operatorname{grabs}(M) = \sum \operatorname{grrel}(M, x_i)$.'
+      - '1. $-7$ es el coeficiente numérico constante.'
+      - '2. El grado relativo respecto a $x$ es su exponente, que vale 4.'
 errores_frecuentes:
-  - 'El grado relativo de un término algebraico es la suma de los exponentes de todas sus letras.'
-  - 'El grado relativo respecto a una letra ausente en el término es igual a uno.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El grado relativo respecto a una variable cambia si el coeficiente numérico se multiplica por dos.'
-  - 'El grado relativo de un término negativo es igual a la resta de los exponentes.'
+  - 'Sumar los exponentes de todas las variables al responder por el grado relativo de una sola letra.'
+  - 'Confundir el coeficiente numérico constante con el grado relativo de la variable principal.'
+  - 'Asignar grado relativo 0 a una letra que figura explícitamente sin superíndice escrito.'
+  - 'Creer que el grado relativo respecto a una variable depende de los coeficientes del término.'
+  - 'Afirmar que el grado relativo puede ser mayor que el grado absoluto en un monomio entero.'
 afirmaciones_verdaderas:
-  - 'El grado relativo de un término algebraico respecto a una variable es el exponente que tiene esa letra específica.'
-  - 'La suma de los grados relativos de todas las variables de un término es igual a su grado absoluto.'
-al_terminar_debes_poder: 'Calcular el grado relativo de cualquier término algebraico respecto a una variable específica e identificar grados nulos en variables ausentes.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Nomenclatura.'
-estado: publicado
+  - 'El grado relativo de un término respecto a una letra es el exponente que tiene dicha variable en el monomio.'
+  - 'La suma de todos los grados relativos de las variables presentes es igual al grado absoluto del término.'
+al_terminar_debes_poder: |
+  ![Resumen de Grado Relativo](/static/img/nodos/calculo-del-grado-relativo-de-un-termino-resumen.svg)
+
+  QUÉ: Calcular el grado relativo de un término algebraico respecto a cualquier variable específica y relacionarlo coherentemente con el grado absoluto.
+  CÓMO: Extrayendo el exponente individual de la letra seleccionada ($\operatorname{GR}(x_j) = e_j$) y verificando que la suma de grados relativos iguale al grado absoluto.

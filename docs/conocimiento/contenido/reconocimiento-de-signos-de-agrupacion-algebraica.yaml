@@ -1,110 +1,136 @@
 semantic_id: MAT.ALG.AGRUPACION.SIGNOS_AGRUPACION
-resumen_inicial: 'El reconocimiento de signos de agrupación algebraica consiste en identificar la jerarquía y función operacional de paréntesis, corchetes, llaves y vínculos como delimitadores de subexpresiones.'
-explicacion_simple: |
-  En álgebra, los **signos de agrupación** se usan para encerrar dos o más términos y tratarlos como una **única entidad o bloque**:
-  - **Principales signos de agrupación**:
-    1. **Paréntesis ordinarios $( \quad )$**: Es el primer nivel de agrupación.
-    2. **Corchetes $[ \quad ]$**: Se usan para encerrar expresiones que ya contienen paréntesis.
-    3. **Llaves $\{ \quad \}$**: Se usan para encerrar expresiones que ya contienen corchetes y paréntesis.
-    4. **Vínculo o Barra $\overline{\quad}$**: Una barra horizontal escrita sobre los términos (ej: $\overline{a + b}$).
-  - **Función matemática**: Indican prioridad en las operaciones. Todo lo que esté dentro de un signo de agrupación debe ser resuelto o eliminado en orden **de adentro hacia afuera**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: El reconocimiento de signos de agrupación algebraica consiste en identificar la jerarquía y función operacional de paréntesis, corchetes, llaves y vínculos como delimitadores de subexpresiones.
+explicacion_simple: "En álgebra, los **signos de agrupación** se usan para encerrar dos o más términos y tratarlos como una **única entidad o bloque**:\n- **Principales signos de agrupación**:\n  1. **Paréntesis ordinarios $( \\quad )$**: Es el primer nivel de agrupación.\n  2. **Corchetes $[ \\quad ]$**: Se usan para encerrar expresiones que ya contienen paréntesis.\n  3. **Llaves $\\{ \\quad \\}$**: Se usan para encerrar expresiones que ya contienen corchetes y paréntesis.\n  4. **Vínculo o Barra $\\overline{\\quad}$**: Una barra horizontal escrita sobre los términos (ej: $\\overline{a + b}$).\n- **Función matemática**: Indican prioridad en las operaciones. Todo lo que esté dentro de un signo de agrupación debe ser resuelto o eliminado en orden **de adentro hacia afuera**.\n\n![Reconocimiento de Signos de Agrupación](/static/img/nodos/reconocimiento-de-signos-de-agrupacion-algebraica-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea $E$ un árbol de sintaxis abstracta que representa una expresión algebraica. Un **signo de agrupación** es un operador delimitador $\mathcal{D} \in \{ (), [], \{\}, \overline{\quad} \}$ que define un subárbol completo $E_{\text{sub}}$, imponiendo la precedencia estricta en la evaluación del conjunto:
+
 
   $$\operatorname{ev}(\mathcal{D}(E_{\text{sub}})) = \operatorname{ev}(E_{\text{sub}})$$
 
+
   ### Jerarquía Convencional Anidada
+
   La estructura estándar de encapsulamiento multinivel de adentro hacia afuera se define por la inclusión formal:
+
 
   $$\Big\{ \quad \Big[ \quad \big( \quad \overline{A + B} \quad \big) \quad \Big] \quad \Big\}$$
 
+
   1. **Nivel 1 (Interno)**: Vínculo $\overline{\quad}$ y Paréntesis $( \quad )$.
+
   2. **Nivel 2 (Intermedio)**: Corchetes $[ \quad ]$.
+
   3. **Nivel 3 (Externo)**: Llaves $\{ \quad \}$.
 
+
   ### Síntesis didáctica
+
   Identificar correctamente el tipo y nivel del signo de agrupación previene la destrucción prematura de la estructura operacional en simplificaciones algebraicas.
-definiciones_clave: |
-  - **Signos de agrupación**: Símbolos delimitadores utilizados para cambiar el orden estándar de las operaciones algebraicas.
+
+  '
+definiciones_clave: '- **Signos de agrupación**: Símbolos delimitadores utilizados para cambiar el orden estándar de las operaciones algebraicas.
+
   - **Encapsulamiento de subexpresión**: Tratamiento de una suma o resta de términos como una unidad multiplicativa o aditiva única.
+
   - **Jerarquía de adentro hacia afuera**: Regla de resolución que exige eliminar los delimitadores desde el nivel más interno al más externo.
-propiedades_relaciones: |
-  - **Equivalencia de delimitadores**: Matemáticamente, $(A)$, $[A]$, $\{A\}$ y $\overline{A}$ cumplen exactamente la misma función de aislar la subexpresión $A$.
+
+  '
+propiedades_relaciones: '- **Equivalencia de delimitadores**: Matemáticamente, $(A)$, $[A]$, $\{A\}$ y $\overline{A}$ cumplen exactamente la misma función de aislar la subexpresión $A$.
+
   - **Invarianza de valor**: Los signos de agrupación no alteran el valor de la subexpresión, sólo modifican el momento en que se aplican los operadores externos.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Identifica la estructura de agrupación y los niveles presentes en la expresión $2x - \{ 5 + [ 3x - (y + 1) ] \}$.'
+  enunciado: Identifica la estructura de agrupación y los niveles presentes en la expresión $2x - \{ 5 + [ 3x - (y + 1) ] \}$.
   pasos:
-    - 'Paso 1: Identificamos el nivel más interno: $(y + 1)$ entre paréntesis ordinarios.'
-    - 'Paso 2: Identificamos el nivel intermedio: $[ 3x - (y + 1) ]$ entre corchetes.'
-    - 'Paso 3: Identificamos el nivel más externo: $\{ 5 + [ 3x - (y + 1) ] \}$ entre llaves.'
-    - 'Paso 4: Determinamos el orden de eliminación necesario: Eliminar primero $( \quad )$, luego $[ \quad ]$ y finalmente $\{ \quad \}$.'
-    - 'Conclusión: La expresión contiene **tres niveles de agrupación anidada**.'
+  - 'Paso 1: Identificamos el nivel más interno: $(y + 1)$ entre paréntesis ordinarios.'
+  - 'Paso 2: Identificamos el nivel intermedio: $[ 3x - (y + 1) ]$ entre corchetes.'
+  - 'Paso 3: Identificamos el nivel más externo: $\{ 5 + [ 3x - (y + 1) ] \}$ entre llaves.'
+  - 'Paso 4: Determinamos el orden de eliminación necesario: Eliminar primero $( \quad )$, luego $[ \quad ]$ y finalmente $\{ \quad \}$.'
+  - 'Conclusión: La expresión contiene **tres niveles de agrupación anidada**.'
+  imagen: /static/img/nodos/reconocimiento-de-signos-de-agrupacion-algebraica-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es el orden estándar de resolución o eliminación al trabajar con signos de agrupación anidados?'
-    choices:
-      - {text: 'Se debe resolver de adentro hacia afuera, comenzando por el nivel de agrupación más interno', is_correct: true}
-      - {text: 'Se debe resolver de afuera hacia adentro, eliminando primero las llaves', is_correct: false}
-      - {text: 'Se deben eliminar todos los signos simultáneamente', is_correct: false}
-      - {text: 'El orden de resolución es irrelevante', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se debe resolver de adentro hacia afuera, comenzando por el nivel de agrupación más interno''. Jerarquía de dentro hacia afuera.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Qué función matemática cumplen los signos de agrupación en una expresión algebraica?'
-    choices:
-      - {text: 'Delimitan subexpresiones para tratarlas como un solo bloque y alterar el orden normal de operaciones', is_correct: true}
-      - {text: 'Multiplican la expresión por cero', is_correct: false}
-      - {text: 'Invierten siempre los signos de los coeficientes', is_correct: false}
-      - {text: 'Convierten las variables en números enteros', is_correct: false}
-    explanation: 'La alternativa correcta es ''Delimitan subexpresiones para tratarlas como un solo bloque y alterar el orden normal de operaciones''. Delimitadores de subexpresiones.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Cuál es el orden estándar de resolución o eliminación al trabajar con signos de agrupación anidados?
+  choices:
+  - text: Se debe resolver de adentro hacia afuera, comenzando por el nivel de agrupación más interno
+    is_correct: true
+  - text: Se debe resolver de afuera hacia adentro, eliminando primero las llaves
+    is_correct: false
+  - text: Se deben eliminar todos los signos simultáneamente
+    is_correct: false
+  - text: El orden de resolución es irrelevante
+    is_correct: false
+  explanation: La alternativa correcta es 'Se debe resolver de adentro hacia afuera, comenzando por el nivel de agrupación más interno'. Jerarquía de dentro hacia afuera.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Qué función matemática cumplen los signos de agrupación en una expresión algebraica?
+  choices:
+  - text: Delimitan subexpresiones para tratarlas como un solo bloque y alterar el orden normal de operaciones
+    is_correct: true
+  - text: Multiplican la expresión por cero
+    is_correct: false
+  - text: Invierten siempre los signos de los coeficientes
+    is_correct: false
+  - text: Convierten las variables en números enteros
+    is_correct: false
+  explanation: La alternativa correcta es 'Delimitan subexpresiones para tratarlas como un solo bloque y alterar el orden normal de operaciones'. Delimitadores de subexpresiones.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Examinar la expresión algebraica para detectar todos los pares de apertura y cierre de delimitadores.'
-  - 'Paso 2: Clasificar los delimitadores presentes (paréntesis, corchetes, llaves, vínculos).'
-  - 'Paso 3: Determinar los niveles de anidamiento de cada pareja de signos.'
-  - 'Paso 4: Planificar la secuencia de eliminación del nivel más interno al más externo.'
-errores_correccion: |
-  - **Error 1:** Intentar eliminar la llave externa antes de resolver el paréntesis interno. **Cómo corregirlo:** La eliminación debe ser **DE ADENTRO HACIA AFUERA (paréntesis primero, corchete después, llave al final)**.
+- 'Paso 1: Examinar la expresión algebraica para detectar todos los pares de apertura y cierre de delimitadores.'
+- 'Paso 2: Clasificar los delimitadores presentes (paréntesis, corchetes, llaves, vínculos).'
+- 'Paso 3: Determinar los niveles de anidamiento de cada pareja de signos.'
+- 'Paso 4: Planificar la secuencia de eliminación del nivel más interno al más externo.'
+errores_correccion: '- **Error 1:** Intentar eliminar la llave externa antes de resolver el paréntesis interno. **Cómo corregirlo:** La eliminación debe ser **DE ADENTRO HACIA AFUERA (paréntesis primero, corchete después, llave al final)**.
+
   - **Error 2:** Declarar que el vínculo o barra superior es un signo de resta. **Cómo corregirlo:** La barra $\overline{a+b}$ **ES UN SIGNO DE AGRUPACIÓN (equivale a $(a+b)$)**.
+
+  '
 ejemplos:
-  - titulo: 'Reconocimiento de delimitadores'
-    enunciado: '¿Cuáles son los tres signos de agrupación más comunes en álgebra?'
-    alternativas:
-      - 'Paréntesis ( ), corchetes [ ] y llaves { }'
-      - 'Puntos, comas y comillas'
-      - 'Exponentes, coeficientes y bases'
-    respuesta: 'Paréntesis ( ), corchetes [ ] y llaves { }'
-    solucion_pasos:
-      - '1. $( )$, $[ ]$, $\{ \}$ son los delimitadores principales.'
-  - titulo: 'Nivel más interno'
-    enunciado: 'En la expresión $\{ 2 + [ 5x - (x - 3) ] \}$, ¿cuál es la agrupación más interna?'
-    alternativas:
-      - '$(x - 3)$'
-      - '$[ 5x - (x - 3) ]$'
-      - '$\{ 2 + \dots \}$'
-    respuesta: '$(x - 3)$'
-    solucion_pasos:
-      - '1. $(x - 3)$ está encerrado dentro del corchete y la llave.'
-  - titulo: 'Equivalencia del vínculo'
-    enunciado: '¿Es la expresión $x - \overline{y + z}$ equivalente a $x - (y + z)$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, el vínculo sobre $y+z$ funciona idénticamente a un paréntesis.'
-  - titulo: 'Tratamiento como unidad'
-    enunciado: '¿Representa $(a + b)$ en la expresión $3(a + b)$ una sola entidad que debe ser multiplicada por $3$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, el paréntesis agrupa la suma $a+b$ como un solo bloque.'
+- titulo: Reconocimiento de delimitadores
+  enunciado: ¿Cuáles son los tres signos de agrupación más comunes en álgebra?
+  alternativas:
+  - Paréntesis ( ), corchetes [ ] y llaves { }
+  - Puntos, comas y comillas
+  - Exponentes, coeficientes y bases
+  respuesta: Paréntesis ( ), corchetes [ ] y llaves { }
+  solucion_pasos:
+  - 1. $( )$, $[ ]$, $\{ \}$ son los delimitadores principales.
+- titulo: Nivel más interno
+  enunciado: En la expresión $\{ 2 + [ 5x - (x - 3) ] \}$, ¿cuál es la agrupación más interna?
+  alternativas:
+  - $(x - 3)$
+  - $[ 5x - (x - 3) ]$
+  - $\{ 2 + \dots \}$
+  respuesta: $(x - 3)$
+  solucion_pasos:
+  - 1. $(x - 3)$ está encerrado dentro del corchete y la llave.
+- titulo: Equivalencia del vínculo
+  enunciado: ¿Es la expresión $x - \overline{y + z}$ equivalente a $x - (y + z)$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el vínculo sobre $y+z$ funciona idénticamente a un paréntesis.
+- titulo: Tratamiento como unidad
+  enunciado: ¿Representa $(a + b)$ en la expresión $3(a + b)$ una sola entidad que debe ser multiplicada por $3$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, el paréntesis agrupa la suma $a+b$ como un solo bloque.
 errores_frecuentes:
-  - 'Intentar suprimir las llaves o corchetes externos antes de eliminar los paréntesis internos.'
-  - 'Considerar que la barra o vínculo horizontal es una resta en lugar de un signo de agrupación.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Eliminar únicamente el signo de apertura dejando el signo de cierre en la expresión.'
-  - 'Declarar que los corchetes y paréntesis cumplen funciones matemáticas totalmente distintas.'
+- Intentar suprimir las llaves o corchetes externos antes de eliminar los paréntesis internos.
+- Considerar que la barra o vínculo horizontal es una resta en lugar de un signo de agrupación.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Eliminar únicamente el signo de apertura dejando el signo de cierre en la expresión.
+- Declarar que los corchetes y paréntesis cumplen funciones matemáticas totalmente distintas.
 afirmaciones_verdaderas:
-  - 'Los signos de agrupación encierran subexpresiones para alterar la prioridad estándar de las operaciones.'
-  - 'La eliminación de signos de agrupación anidados debe realizarse de adentro hacia afuera.'
-al_terminar_debes_poder: 'Reconocer los signos de agrupación e identificar su nivel de anidamiento para planificar su supresión.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- Los signos de agrupación encierran subexpresiones para alterar la prioridad estándar de las operaciones.
+- La eliminación de signos de agrupación anidados debe realizarse de adentro hacia afuera.
+al_terminar_debes_poder: '![Resumen de signos de agrupación](/static/img/nodos/reconocimiento-de-signos-de-agrupacion-algebraica-resumen.svg)
+
+
+  QUÉ: Identificar y jerarquizar los diferentes signos de agrupación algebraicos.
+
+
+  CÓMO: Distinguir paréntesis $( )$, corchetes $[ ]$, llaves $\{ \}$ y vínculos $\overline{a+b}$, tratando su contenido como una sola unidad operacional.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

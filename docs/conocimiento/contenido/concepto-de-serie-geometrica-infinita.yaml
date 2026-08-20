@@ -1,105 +1,122 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.SERIE_INFINITA_CONCEPTO
-resumen_inicial: 'Una serie geométrica infinita es la suma conceptual de infinitos términos de una progresión geométrica: $\sum_{k=1}^\infty a_1 r^{k-1} = a_1 + a_1 r + a_1 r^2 + \dots$, cuyo valor depende del comportamiento del límite cuando $n \to \infty$.'
+resumen_inicial: 'Una serie geométrica infinita es la suma formal de infinitos términos $\sum_{k=1}^\infty a_1 r^{k-1}$, cuyo valor se define rigurosamente como el límite de su sucesión de sumas parciales $S_\infty = \lim_{n \to \infty} S_n$.'
 explicacion_simple: |
-  ¿Es posible **sumar infinitos números** y obtener un número finito en la vida real?
-  - Imagina que caminas hacia una pared que está a $1$ metro:
-    1. Primer paso: caminas la mitad ($1/2$ metro).
-    2. Segundo paso: caminas la mitad de lo que queda ($1/4$ metro).
-    3. Tercer paso: caminas la mitad de lo que queda ($1/8$ metro).
-    4. Y así infinitamente: $\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \dots$
-  - ¡Aunque estés sumando infinitos pedacitos, la suma total de las distancias **nunca pasa de $1$ metro**!
-  - Ese es el concepto de una **serie geométrica infinita**: la suma infinita se va acercando cada vez más a una meta fija.
+  ¿Es posible sumar **infinitos números positivos** y que el resultado dé un número finito y exacto?
+  - ¡Sí! Piensa en cortar un pastel por la mitad:
+    - Primero tomas $\frac{1}{2}$
+    - Luego la mitad de lo que queda: $\frac{1}{4}$
+    - Luego la mitad de lo que queda: $\frac{1}{8}$
+    - Y sigues así: $\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \dots$
+  - Por muchos trozos que sumes, **nunca superarás el pastel entero**: la suma de todos esos infinitos trozos es **exactamente $1$**.
+  - Esto es una **serie geométrica infinita convergente**.
+
+  ![Concepto de serie geométrica infinita](/static/img/nodos/concepto-de-serie-geometrica-infinita-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una **serie geométrica infinita** es la expresión analítica definida por el límite de la secuencia de sumas parciales $S_n$ cuando el número de términos tiende a infinito:
-  $$S = \sum_{k=1}^\infty a_1 r^{k-1} = \lim_{n \to \infty} S_n = \lim_{n \to \infty} \left[ a_1 \cdot \frac{1 - r^n}{1 - r} \right]$$
+  Sea $(a_n)_{n \in \mathbb{N}}$ una progresión geométrica con término general $a_n = a_1 r^{n-1}$. La **serie geométrica infinita** es la expresión formal:
+  $$\sum_{k=1}^\infty a_1 r^{k-1} = a_1 + a_1 r + a_1 r^2 + a_1 r^3 + \dots$$
 
-  ### Comportamiento del término $r^n$ según la razón $r$
-  1. **Si $|r| < 1$ (Razón propia en valor absoluto)**:
-     $$\lim_{n \to \infty} r^n = 0 \implies S = a_1 \cdot \frac{1 - 0}{1 - r} = \frac{a_1}{1 - r}$$
-     La serie es **convergente** y su suma infinita es el número finito $S = \frac{a_1}{1 - r}$.
-  2. **Si $|r| \ge 1$**:
-     El término $r^n$ no tiende a cero (oscila o crece sin límite) $\implies$ La serie es **divergente** (su suma no existe en $\mathbb{R}$).
+  ### Definición del Valor de la Serie mediante Límites
+  El valor o suma de la serie infinita $S_\infty$ es el límite funcional de su sucesión de sumas parciales $(S_n)_{n \in \mathbb{N}}$:
+  $$S_\infty = \lim_{n \to \infty} S_n = \lim_{n \to \infty} \left[ \frac{a_1(1 - r^n)}{1 - r} \right]$$
+
+  ### Dicotomía: Convergencia vs Divergencia
+  - **Convergente**: Si el límite $\lim_{n \to \infty} S_n = L \in \mathbb{R}$ existe y es finito. Se dice que la serie "suma $L$".
+  - **Divergente**: Si el límite no existe o tiende a $\pm \infty$. La serie no posee un valor real finito.
 
   ### Síntesis didáctica
-  - Notación infinita: $\sum_{k=1}^\infty a_1 r^{k-1}$.
-  - Condición de número finito: $|r| < 1 \implies S = \frac{a_1}{1 - r}$.
+  - Definición: $S_\infty = \lim_{n \to \infty} \sum_{k=1}^n a_k$.
+  - Principio: Acotación asintótica mediante términos que decrecen a cero.
 definiciones_clave: |
-  - **Serie infinita**: Suma de una cantidad ilimitada de términos de una sucesión.
-  - **Convergencia de una serie**: Propiedad por la cual la suma infinita da como resultado un número real finito $S$.
-  - **Divergencia de una serie**: Propiedad por la cual la suma infinita crece hacia $\pm \infty$ o no se aproxima a ningún número real.
+  - **Serie infinita**: Suma indicada de una cantidad infinita de términos numerables.
+  - **Convergencia de una serie**: Existencia de un límite numérico finito para la sucesión de sumas parciales.
+  - **Divergencia de una serie**: Comportamiento de una serie cuyas sumas parciales no se aproximan a ningún número real finito.
 propiedades_relaciones: |
-  - **Paradojas del infinito (Zeno)**: El concepto de serie geométrica infinita resuelve la famosa paradoja de Aquiles y la Tortuga mediante el cálculo de límites.
-  - **Expresión como fracción de decimales periódicos**: Cualquier número decimal periódico como $0,333\dots = 0,\overline{3}$ se define exactamente como una serie geométrica infinita convergente ($\frac{3}{10} + \frac{3}{100} + \dots = \frac{1}{3}$).
+  - **Condición necesaria (Criterio del Término General)**: Si una serie $\sum a_k$ converge, necesariamente $\lim_{k \to \infty} a_k = 0$. (Para la serie geométrica, $\lim a_k = 0 \iff |r| < 1$).
+  - **Paradojas de Zenón**: La célebre paradoja de Aquiles y la tortuga se resuelve matemáticamente mediante la convergencia de una serie geométrica infinita.
 ejemplo_guiado:
-  enunciado: 'Analiza el concepto de serie infinita para la suma de distancias $S = \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} + \dots$ e identifica el valor al que converge.'
+  enunciado: 'Analiza el comportamiento de las sumas parciales de la serie geométrica infinita $\sum_{k=1}^\infty \left(\frac{1}{2}\right)^k = \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \dots$ y determina su valor límite.'
+  imagen: '/static/img/nodos/concepto-de-serie-geometrica-infinita-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos el primer término $a_1 = \frac{1}{2}$ y la razón geométrica $r = \frac{1/4}{1/2} = \frac{1}{2}$.'
-    - 'Paso 2: Verificamos si la razón cumple $|r| < 1$: $|1/2| = 0,5 < 1$, por lo que la serie **es convergente**.'
-    - 'Paso 3: Aplicamos la fórmula de la suma infinita: $S = \frac{a_1}{1 - r} = \frac{1/2}{1 - 1/2}$.'
-    - 'Paso 4: Evaluamos el denominador $1 - 1/2 = 1/2$. Dividimos: $S = \frac{1/2}{1/2} = 1$. La suma infinita de todas las fracciones **converge exactamente a $1$**.'
+    - 'Paso 1: Calculamos las sumas parciales sucesivas:'
+    - '  - $S_1 = \frac{1}{2} = 0,5$'
+    - '  - $S_2 = \frac{1}{2} + \frac{1}{4} = \frac{3}{4} = 0,75$'
+    - '  - $S_3 = \frac{3}{4} + \frac{1}{8} = \frac{7}{8} = 0,875$'
+    - '  - $S_n = \frac{2^n - 1}{2^n} = 1 - \left(\frac{1}{2}\right)^n$'
+    - 'Paso 2: Tomamos el límite cuando $n \to \infty$:'
+    - '  - $\lim_{n \to \infty} \left(\frac{1}{2}\right)^n = 0$'
+    - '  - $S_\infty = 1 - 0 = 1$.'
+    - 'Paso 3: Conclusión: La serie infinita **converge exactamente al valor $1$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Bajo qué condición una serie geométrica infinita de razón $r$ tiene una suma total que es un número real finito?'
+    question: '¿Qué significa formalmente que una serie infinita sea convergente?'
     choices:
-      - {text: 'Cuando el valor absoluto de la razón es estrictamente menor que 1 ($|r| < 1$)', is_correct: true}
-      - {text: 'Cuando la razón es un número entero mayor que 10', is_correct: false}
-      - {text: 'Cuando el primer término es igual a 0', is_correct: false}
-      - {text: 'Todas las series geométricas infinitas suman siempre un valor finito', is_correct: false}
-    explanation: 'La alternativa correcta es ''Cuando el valor absoluto de la razón es estrictamente menor que 1 ($|r| < 1$)''. Para $|r|<1$, $r^n \to 0$.'
+      - {text: 'Que el límite de sus sumas parciales cuando $n \to \infty$ existe y es un número real finito', is_correct: true}
+      - {text: 'Que todos sus términos son iguales a cero', is_correct: false}
+      - {text: 'Que la serie tiene un número finito de términos', is_correct: false}
+      - {text: 'Que la suma crece indefinidamente hacia el infinito', is_correct: false}
+    explanation: 'La alternativa correcta es ''Que el límite de sus sumas parciales cuando $n \to \infty$ existe y es un número real finito''. La convergencia se define por el límite de $(S_n)$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una serie geométrica infinita $a_1 = 6$ y la razón es $r = \frac{1}{3}$, ¿cuál es la suma infinita $S$?'
+    question: '¿Por qué la serie $1 + 2 + 4 + 8 + 16 + \dots$ es divergente?'
     choices:
-      - {text: '$S = 9$, calculando $\frac{6}{1 - 1/3} = \frac{6}{2/3} = 6 \cdot \frac{3}{2} = 9$', is_correct: true}
-      - {text: '$S = 18$, multiplicando $6 \cdot 3$', is_correct: false}
-      - {text: '$S = 4$, restando $6 - 2$', is_correct: false}
-      - {text: '$S = 2$, dividiendo $6 / 3$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S = 9$, calculando $\frac{6}{1 - 1/3} = \frac{6}{2/3} = 6 \cdot \frac{3}{2} = 9$''. $6 / (2/3) = 9$.'
+      - {text: 'Porque sus sumas parciales crecen sin límite ($S_n \to \infty$) ya que la razón $r = 2 > 1$', is_correct: true}
+      - {text: 'Porque tiene términos pares', is_correct: false}
+      - {text: 'Porque el primer término es 1', is_correct: false}
+      - {text: 'Porque sus términos se alternan', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque sus sumas parciales crecen sin límite ($S_n \to \infty$) ya que la razón $r = 2 > 1$''. Al ser $r \ge 1$, los términos no decrecen a cero y la suma diverge.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer término $a_1$ y la razón $r$ de la serie infinita.'
-  - 'Paso 2: Evaluar la condición de convergencia $|r| < 1$.'
-  - 'Paso 3: Si $|r| < 1$, aplicar la fórmula de suma infinita $S = \frac{a_1}{1 - r}$.'
-  - 'Paso 4: Si $|r| \ge 1$, declarar que la serie es divergente y no posee una suma real finita.'
+  - 'Paso 1: Identificar el primer término $a_1$ y la razón geométrica $r$.'
+  - 'Paso 2: Formular la sucesión de sumas parciales $S_n = \frac{a_1(1 - r^n)}{1 - r}$.'
+  - 'Paso 3: Evaluar el comportamiento asintótico del término $r^n$ cuando $n \to \infty$.'
+  - 'Paso 4: Concluir si la serie converge a un valor finito o diverge hacia el infinito.'
 errores_correccion: |
-  - **Error 1:** Intentar usar la fórmula de la suma finita con un $n$ determinado al trabajar con el concepto de serie infinita. **Cómo corregirlo:** La suma de una serie infinita convergente se calcula directamente con **$S = \frac{a_1}{1-r}$** (sin el término $r^n$).
-  - **Error 2:** Restar $1-r$ al revés en el denominador (hacer $r-1$). **Cómo corregirlo:** En la suma infinita convergente el denominador es **$(1-r)$**.
+  - **Error 1:** Creer que sumar infinitos números positivos obligatoriamente da como resultado infinito. **Cómo corregirlo:** Si los números **se hacen cada vez más pequeños con $|r| < 1$**, la suma total acumulada **es un número finito exacto**.
+  - **Error 2:** Asumir que la suma infinita es un proceso que "nunca termina" y por ende no tiene valor definido. **Cómo corregirlo:** En matemáticas la suma infinita **se define como el límite exacto** de las sumas parciales.
 ejemplos:
-  - titulo: 'Serie infinita convergente básica'
-    enunciado: 'Para $a_1 = 4$ y $r = 1/2$, ¿la suma infinita es $S = \frac{4}{1 - 1/2} = \frac{4}{1/2} = 8$?'
+  - titulo: 'Suma de serie infinita geométrica de cuartos'
+    enunciado: '¿La serie infinita $\frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \dots$ converge a $\frac{1}{3}$?'
     alternativas:
-      - 'Sí, converge a 8'
-      - 'No, da infinito'
-      - 'No, da 4'
-    respuesta: 'Sí, converge a 8'
+      - 'Sí, converge al valor finito exacto $\frac{1}{3}$'
+      - 'No, diverge a infinito'
+      - 'No, converge a $\frac{1}{2}$'
+    respuesta: 'Sí, converge al valor finito exacto $\frac{1}{3}$'
     solucion_pasos:
-      - '1. $|r| = 1/2 < 1 \implies$ Converge.'
-      - '2. $S = 4 / (1/2) = 8$.'
-  - titulo: 'Serie infinita divergente'
-    enunciado: 'Para la serie $2 + 4 + 8 + 16 + \dots$ ($r=2$), ¿la suma es infinita (divergente)?'
+      - '1. $a_1 = 1/4, r = 1/4$.'
+      - '2. $S_\infty = (1/4) / (1 - 1/4) = (1/4) / (3/4) = 1/3$.'
+  - titulo: 'Divergencia con razón unitaria'
+    enunciado: '¿La serie infinita $1 + 1 + 1 + 1 + \dots$ es convergente?'
+    alternativas:
+      - 'No, es divergente porque $S_n = n \to \infty$'
+      - 'Sí, converge a 1'
+      - 'Sí, converge a 0'
+    respuesta: 'No, es divergente porque $S_n = n \to \infty$'
+    solucion_pasos:
+      - '1. La suma parcial $S_n = n$ crece indefinidamente sin cota.'
+  - titulo: 'Existencia de límite finito'
+    enunciado: '¿Una serie infinita de números estrictamente positivos puede converger a un número finito?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Como $|r| = 2 \ge 1$, los términos crecen sin límite $\implies$ Diverge.'
-  - titulo: 'Representación de decimal periódico 0,999...'
-    enunciado: '¿El decimal $0,999\dots = \frac{9}{10} + \frac{9}{100} + \dots$ es una serie geométrica infinita que converge a 1?'
+      - '1. Toda serie geométrica con $|r| < 1$ y $a_1 > 0$ converge a un valor finito positivo.'
+  - titulo: 'Criterio del término n-ésimo'
+    enunciado: '¿Si los términos individuales $a_n$ no tienden a cero cuando $n \to \infty$, la serie infinita diverge?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_1 = 0,9, r = 0,1 \implies S = 0,9 / (1 - 0,1) = 0,9 / 0,9 = 1$.'
-  - titulo: 'Serie infinita con razón negativa'
-    enunciado: 'Para $a_1 = 3$ y $r = -1/2$, ¿la suma infinita es $S = \frac{3}{1 - (-1/2)} = \frac{3}{3/2} = 2$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $1 - (-1/2) = 3/2 \implies 3 / (3/2) = 2$.'
+      - '1. Es la condición necesaria de convergencia.'
 errores_frecuentes:
-  - 'La suma de una cantidad infinita de números positivos debe ser siempre infinitamente grande.'
-  - 'La suma de una serie geométrica infinita siempre entrega un número entero positivo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Escribir el denominador de la suma infinita como $(r-1)$ invirtiendo el signo del resultado.'
-  - 'Aplicar la fórmula de suma infinita sobre series donde la razón es mayor que 1.'
+  - 'Creer que la adición de una cantidad infinita de sumandos positivos siempre genera una suma infinita.'
+  - 'Confundir el límite del término general $\lim a_n = 0$ con el valor total de la serie $S_\infty$.'
+  - 'Considerar que una serie infinita con $r = 1$ converge porque los términos no aumentan de tamaño.'
+  - 'Asumir que las sumas parciales $S_n$ son siempre iguales al valor límite $S_\infty$.'
+  - 'Interpretar la convergencia como una aproximación inexacta en vez de un límite matemático exacto.'
 afirmaciones_verdaderas:
-  - 'Una serie geométrica infinita de razón $r$ converge a un valor finito $S = \frac{a_1}{1 - r}$ si y solo si $|r| < 1$.'
-  - 'Sumar infinitos números reales positivos puede dar como resultado un número real finito cuando los términos disminuyen suficientemente rápido.'
-al_terminar_debes_poder: 'Comprender el concepto de serie geométrica infinita $\sum_{k=1}^\infty a_1 r^{k-1}$ y verificar su convergencia.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Una serie geométrica infinita es el límite de su sucesión de sumas parciales: $S_\infty = \lim_{n \to \infty} S_n$.'
+  - 'Una serie infinita con infinitos términos positivos puede converger a un valor real finito exacto si sus términos decrecen con $|r| < 1$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/concepto-de-serie-geometrica-infinita-resumen.svg)
+
+  QUÉ: Comprender el concepto de serie geométrica infinita y su definición como límite de sumas parciales.
+  CÓMO: Evaluar el comportamiento asintótico $S_\infty = \lim_{n \to \infty} S_n$ distinguiendo situaciones de convergencia finita y divergencia.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

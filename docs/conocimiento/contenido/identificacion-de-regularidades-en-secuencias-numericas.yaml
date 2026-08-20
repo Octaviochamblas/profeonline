@@ -1,106 +1,115 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.REGULARIDAD_NUMERICA
-resumen_inicial: 'La identificación de regularidades en secuencias numéricas deduce el patrón matemático subyacente analizando las diferencias o razones entre términos consecutivos para formular el término general $a_n$.'
+resumen_inicial: 'La identificación de regularidades numéricas analiza las diferencias sucesivas $a_{n+1} - a_n$ o razones $a_{n+1} / a_n$ para deducir el patrón de cambio y modelar el término general.'
 explicacion_simple: |
-  Para descubrir la "regla secreta" de una lista de números (por ejemplo, $3, 7, 11, 15, 19, \dots$):
-  1. Miras cuánto cambia un número respecto al anterior. Aquí ves que **siempre se le suma 4** (+4).
-  2. Cuando la diferencia es constante (+4), la fórmula tiene la forma $4n$.
-  3. Ajustas el primer número: para $n=1$, $4(1) = 4$, pero queremos $3$, así que restamos 1.
-  4. La regla de la secuencia es **$a_n = 4n - 1$**.
+  Para descubrir el "secreto" de una lista de números, debemos observar cómo cambia de un paso al siguiente:
+  - **Patrón aditivo**: Si a cada número se le suma (o resta) siempre la misma cantidad:
+    $$3, 7, 11, 15, 19, \dots \implies \text{se suma } 4$$
+    Es una regla lineal que tiene la forma $a_n = 4n - 1$.
+  - **Patrón multiplicativo**: Si cada número se multiplica por un factor constante:
+    $$2, 6, 18, 54, \dots \implies \text{se multiplica por } 3$$
+    Es una regla exponencial que tiene la forma $a_n = 2 \cdot 3^{n-1}$.
+
+  ![Regularidades en secuencias numéricas](/static/img/nodos/identificacion-de-regularidades-en-secuencias-numericas-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  La **identificación de una regularidad numérica** es el proceso inductivo de determinar la ley de formación $a_n = f(n)$ a partir de un subconjunto finito de términos consecutivos $\{a_1, a_2, a_3, \dots, a_k\}$.
+  Dada una secuencia finita de términos $\{a_1, a_2, \dots, a_k\}$, la identificación de regularidades consiste en determinar un operador de recurrencia $T$ tal que $a_{n+1} = T(a_n)$ o deducir una función explícita $a_n = f(n)$.
 
-  ### Métodos de Análisis de Regularidades
-  1. **Método de Diferencias Primeras ($\Delta a_n = a_{n+1} - a_n$)**:
-     - Si $\Delta a_n = d$ es constante $\implies$ Patrón **lineal** (Progresión Aritmética):
-       $$a_n = d \cdot n + (a_1 - d)$$
-  2. **Método de Razones Consecutivas ($r_n = \frac{a_{n+1}}{a_n}$)**:
-     - Si $r_n = q$ es constante $\implies$ Patrón **exponencial** (Progresión Geométrica):
-       $$a_n = a_1 \cdot q^{n-1}$$
-  3. **Método de Diferencias Segundas ($\Delta^2 a_n$)**:
-     - Si las segundas diferencias son constantes $\implies$ Patrón **cuadrático**:
-       $$a_n = A n^2 + B n + C$$
+  ### Clasificación de Regularidades
+  1. **Primeras diferencias constantes (Progresión Aritmética / Cambio Lineal)**:
+     $$\Delta a_n = a_{n+1} - a_n = d \quad (\text{constante}) \implies a_n = d \cdot n + (a_1 - d)$$
+  2. **Segundas diferencias constantes (Crecimiento Cuadrático)**:
+     $$\Delta^2 a_n = \Delta a_{n+1} - \Delta a_n = 2a \quad (\text{constante}) \implies a_n = a n^2 + b n + c$$
+  3. **Razones constantes (Progresión Geométrica / Cambio Exponencial)**:
+     $$\frac{a_{n+1}}{a_n} = r \quad (\text{constante}) \implies a_n = a_1 \cdot r^{n-1}$$
 
   ### Síntesis didáctica
-  - Diferencia constante $+d \implies a_n = dn + c$.
-  - Razón multiplicativa $\cdot q \implies a_n = a_1 \cdot q^{n-1}$.
+  - Diferencias constantes $\implies$ Modelo lineal $a_n = dn + c$.
+  - Razones constantes $\implies$ Modelo exponencial $a_n = a_1 r^{n-1}$.
 definiciones_clave: |
-  - **Regularidad o patrón**: Regla lógica o aritmética constante que vincula a cada término con su sucesor.
-  - **Diferencia consecutiva ($\Delta a_n$)**: Resta entre un término y su antecesor inmediato ($a_{n+1} - a_n$).
-  - **Inducción empírica**: Proceso de abstraer una regla general $a_n$ a partir de ejemplos particulares observados.
+  - **Regularidad numérica**: Patrón lógico o regla matemática determinista que gobierna la transición entre términos consecutivos.
+  - **Primera diferencia ($\Delta a_n$)**: Resta entre un término y su predecesor inmediato ($a_{n+1} - a_n$).
+  - **Razón de cambio ($r$)**: Cociente constante entre términos consecutivos en secuencias multiplicativas.
 propiedades_relaciones: |
-  - **Constancia de la regla**: Una regularidad válida debe cumplirse sin excepción para absolutamente todos los términos conocidos de la secuencia.
-  - **Unicidad de la fórmula simplificada**: Diferentes formas de escribir el patrón lineal (ej: $3 + 4(n-1)$ y $4n - 1$) son algebraicamente equivalentes.
+  - **Unicidad de la interpolación**: Un patrón aditivo con diferencia $d$ genera una recta discreta con pendiente $d$.
+  - **Extrapolación de términos**: Conocer la regularidad permite predecir cualquier término futuro sin ambigüedad.
 ejemplo_guiado:
-  enunciado: 'Identifica la regularidad y deduce el término general $a_n$ de la secuencia numérica $5, 8, 11, 14, 17, \dots$. Luego halla el término $a_{20}$.'
+  enunciado: 'Identifica la regularidad en la secuencia $5, 9, 13, 17, 21, \dots$, deduce su término general $a_n$ y halla el décimo término.'
+  imagen: '/static/img/nodos/identificacion-de-regularidades-en-secuencias-numericas-ejemplos.svg'
   pasos:
-    - 'Paso 1: Calculamos las diferencias entre términos consecutivos: $8-5=3$, $11-8=3$, $14-11=3$. La diferencia constante es $d = +3$.'
-    - 'Paso 2: Como $d=3$, la fórmula contiene $3n$.'
-    - 'Paso 3: Ajustamos para $n=1$: $3(1) = 3$. Como el primer término es $5$, sumamos $2$. El término general es **$a_n = 3n + 2$**.'
-    - 'Paso 4: Evaluamos para $n=20$: $a_{20} = 3(20) + 2 = 60 + 2 = 62$. El vigésimo término es **$62$**.'
+    - 'Paso 1: Calculamos las diferencias consecutivas: $9 - 5 = 4$, $13 - 9 = 4$, $17 - 13 = 4$. La diferencia constante es $d = 4$.'
+    - 'Paso 2: Como $d=4$, la fórmula es lineal de la forma $a_n = 4n + c$.'
+    - 'Paso 3: Hallamos $c$ con $n=1$: $a_1 = 4(1) + c = 5 \implies 4 + c = 5 \implies c = 1$. Término general: $a_n = 4n + 1$.'
+    - 'Paso 4: Calculamos el décimo término ($n=10$): $a_{10} = 4(10) + 1 = 40 + 1 = **41**$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'Si al restar cada término menos el anterior en una secuencia numérica se obtiene siempre la misma diferencia constante $d = 5$, ¿qué tipo de patrón tiene la secuencia?'
+    question: 'Si las diferencias consecutivas $a_{n+1} - a_n$ de una secuencia son siempre iguales a $6$, ¿qué tipo de término general modela la secuencia?'
     choices:
-      - {text: 'Un patrón lineal de la forma $a_n = 5n + c$', is_correct: true}
-      - {text: 'Un patrón exponencial de la forma $a_n = 5^n$', is_correct: false}
-      - {text: 'Un patrón cuadrático de la forma $a_n = 5n^2$', is_correct: false}
-      - {text: 'Un patrón alternante sin fórmula matemática posible', is_correct: false}
-    explanation: 'La alternativa correcta es ''Un patrón lineal de la forma $a_n = 5n + c$''. Una diferencia constante genera una función lineal con pendiente $d$.'
+      - {text: 'Un modelo lineal de la forma $a_n = 6n + c$', is_correct: true}
+      - {text: 'Un modelo exponencial de la forma $a_n = 6^n$', is_correct: false}
+      - {text: 'Un modelo cuadrático de la forma $a_n = 6n^2$', is_correct: false}
+      - {text: 'Una sucesión constante donde todos los términos valen 6', is_correct: false}
+    explanation: 'La alternativa correcta es ''Un modelo lineal de la forma $a_n = 6n + c$''. Las primeras diferencias constantes caracterizan a las funciones lineales con pendiente igual a la diferencia.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'En la secuencia $2, 6, 18, 54, \dots$, ¿cuál es la regularidad multiplicativa entre términos consecutivos?'
+    question: 'En la secuencia $4, 12, 36, 108, \dots$, ¿cuál es el patrón de regularidad y el siguiente término?'
     choices:
-      - {text: 'Cada término se obtiene multiplicando el término anterior por $3$', is_correct: true}
-      - {text: 'Cada término se obtiene sumando $4$ al término anterior', is_correct: false}
-      - {text: 'Cada término se obtiene elevando el anterior al cuadrado', is_correct: false}
-      - {text: 'Cada término se obtiene dividiendo entre $2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Cada término se obtiene multiplicando el término anterior por $3$''. $6/2 = 3, 18/6 = 3, 54/18 = 3$.'
+      - {text: 'Multiplicar por $3$; el siguiente término es $108 \cdot 3 = 324$', is_correct: true}
+      - {text: 'Sumar $8$; el siguiente término es $116$', is_correct: false}
+      - {text: 'Multiplicar por $2$; el siguiente término es $216$', is_correct: false}
+      - {text: 'Sumar $24$; el siguiente término es $132$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Multiplicar por $3$; el siguiente término es $108 \cdot 3 = 324$''. La razón es $12/4 = 3, 36/12 = 3 \implies 108 \cdot 3 = 324$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Calcular las diferencias entre cada par de términos consecutivos ($a_2 - a_1, a_3 - a_2, \dots$).'
-  - 'Paso 2: Si las diferencias son constantes $d$, la fórmula base es $dn$.'
-  - 'Paso 3: Si las diferencias no son constantes, calcular los cocientes $\frac{a_{n+1}}{a_n}$ para verificar si hay una razón multiplicativa $q$.'
-  - 'Paso 4: Ajustar la constante de la fórmula probando la posición $n=1$ y verificar con los demás términos conocidos.'
+  - 'Paso 1: Calcular las restas consecutivas $a_{n+1} - a_n$ entre todos los términos dados.'
+  - 'Paso 2: Si la resta es constante ($d$), el término general es lineal: $a_n = dn + c$.'
+  - 'Paso 3: Si las restas no son constantes, calcular los cocientes $a_{n+1} / a_n$ para evaluar si es multiplicativa.'
+  - 'Paso 4: Validar la fórmula obtenida evaluando los primeros términos de la lista original.'
 errores_correccion: |
-  - **Error 1:** Probar la regla únicamente en el primer término sin verificar en los términos siguientes. **Cómo corregirlo:** Para confirmar una regularidad **DEBES probar la fórmula en al menos 3 términos consecutivos**.
-  - **Error 2:** Confundir la diferencia sumada con el coeficiente (ej: en $+3$, escribir $a_n = n + 3$ en lugar de $a_n = 3n + c$). **Cómo corregirlo:** La diferencia constante $d$ es el **COEFICIENTE que multiplica a $n$ ($dn$)**.
+  - **Error 1:** Asumir un patrón lineal comprobando la resta en solo dos términos. **Cómo corregirlo:** Debes **verificar la diferencia en todos los términos consecutivos dados** para confirmar la regularidad.
+  - **Error 2:** Confundir el coeficiente de $n$ en la fórmula lineal (usar $a_1$ en vez de la diferencia $d$). **Cómo corregirlo:** El coeficiente que multiplica a $n$ **es siempre la diferencia común $d$**: $a_n = d \cdot n + c$.
 ejemplos:
-  - titulo: 'Deducción de patrón suma constante'
-    enunciado: 'En la secuencia $4, 9, 14, 19, \dots$, ¿el término general es $a_n = 5n - 1$?'
+  - titulo: 'Deducción de patrón aditivo'
+    enunciado: '¿Cuál es el siguiente término de la secuencia $12, 19, 26, 33, \dots$?'
     alternativas:
-      - 'Sí, pues la diferencia es +5 y $5(1)-1 = 4$'
-      - 'No, la fórmula es $a_n = 4n + 1$'
-      - 'No, la fórmula es $a_n = 5n + 4$'
-    respuesta: 'Sí, pues la diferencia es +5 y $5(1)-1 = 4$'
+      - '$40$'
+      - '$42$'
+      - '$39$'
+    respuesta: '$40$'
     solucion_pasos:
-      - '1. Diferencias: $9-4 = 5$, $14-9 = 5$. Diferencia $d=5$.'
-      - '2. Ajuste $n=1$: $5(1) + c = 4 \implies c = -1$.'
-      - '3. Fórmula: $a_n = 5n - 1$.'
-  - titulo: 'Patrón de cuadrados perfectos'
-    enunciado: '¿La secuencia $1, 4, 9, 16, 25, \dots$ responde a la regularidad $a_n = n^2$?'
+      - '1. Diferencia: $19 - 12 = 7, 26 - 19 = 7$.'
+      - '2. Siguiente término: $33 + 7 = 40$.'
+  - titulo: 'Término general de secuencia aditiva'
+    enunciado: 'Para la secuencia $2, 5, 8, 11, \dots$, ¿el término general es $a_n = 3n - 1$?'
+    alternativas:
+      - 'Sí, con $d=3$ y $a_1 = 3(1) - 1 = 2$'
+      - 'No, el término general es $3n + 2$'
+      - 'No, es $2n + 1$'
+    respuesta: 'Sí, con $d=3$ y $a_1 = 3(1) - 1 = 2$'
+    solucion_pasos:
+      - '1. Diferencia $d=3$. Para $n=1 \implies 3(1)+c=2 \implies c=-1$.'
+  - titulo: 'Deducción de patrón multiplicativo'
+    enunciado: '¿En la secuencia $5, 10, 20, 40, \dots$, el patrón consiste en duplicar cada término?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $1^2 = 1, 2^2 = 4, 3^2 = 9, 4^2 = 16$.'
-  - titulo: 'Patrón multiplicativo por 2'
-    enunciado: 'En $5, 10, 20, 40, 80, \dots$, ¿el término general es $a_n = 5 \cdot 2^{n-1}$?'
+      - '1. $10/5 = 2, 20/10 = 2, 40/20 = 2$.'
+  - titulo: 'Secuencia de cuadrados perfectos'
+    enunciado: '¿La secuencia $1, 4, 9, 16, 25, \dots$ corresponde a la regla $a_n = n^2$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Se duplica en cada paso: $q = 2$.'
-  - titulo: 'Patrón decreciente'
-    enunciado: 'En la secuencia $20, 17, 14, 11, \dots$, ¿la regularidad es restar 3 ($d = -3$) y la fórmula es $a_n = 23 - 3n$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $17-20 = -3 \implies a_n = -3n + 23$.'
+      - '1. $1^2 = 1, 2^2 = 4, 3^2 = 9, 4^2 = 16, 5^2 = 25$.'
 errores_frecuentes:
-  - 'Probar la hipótesis de la regularidad en un solo término de la muestra.'
-  - 'Colocar la diferencia constante como una suma directa a la variable en lugar de un coeficiente multiplicativo.'
-  - 'Las secuencias numéricas sólo aceptan operaciones de suma o resta entre términos consecutivos.'
-  - 'Considerar que la primera diferencia observada aplica por defecto a infinitos términos sin una regla definida.'
-  - 'Invertir el signo de la diferencia al armar la fórmula lineal del término general.'
+  - 'La regularidad de una secuencia numérica se comprueba calculando la diferencia en una sola pareja de términos.'
+  - 'El coeficiente que multiplica a la variable $n$ en una regla lineal es siempre el primer término $a_1$.'
+  - 'Una secuencia con diferencias variables siempre carece de cualquier regularidad matemática.'
+  - 'El siguiente término de una progresión geométrica se calcula sumando la razón en lugar de multiplicarla.'
+  - 'Toda secuencia numérica debe tener obligatoriamente un patrón de crecimiento aditivo.'
 afirmaciones_verdaderas:
-  - 'Si las diferencias entre términos consecutivos de una secuencia son constantes $d$, el término general es lineal de la forma $a_n = dn + c$.'
-  - 'Una regularidad numérica debe verificarse en todos los términos conocidos de la secuencia.'
-al_terminar_debes_poder: 'Identificar regularidades en secuencias numéricas analizando diferencias o razones y deducir la fórmula del término general $a_n$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Una secuencia con diferencias consecutivas constantes ($a_{n+1} - a_n = d$) se modela mediante una función lineal $a_n = dn + c$.'
+  - 'Una secuencia con cocientes consecutivos constantes ($a_{n+1} / a_n = r$) se modela mediante una función exponencial $a_n = a_1 r^{n-1}$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/identificacion-de-regularidades-en-secuencias-numericas-resumen.svg)
+
+  QUÉ: Identificar regularidades numéricas, deducir la regla de formación y predecir términos en secuencias.
+  CÓMO: Calcular las diferencias sucesivas $\Delta a_n = a_{n+1} - a_n$ o cocientes $a_{n+1}/a_n$ para formular la ecuación explícita lineal o geométrica correspondiente.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

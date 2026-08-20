@@ -1,128 +1,166 @@
-resumen_inicial: 'La aplicación de porcentajes sucesivos (aumentos o descuentos encadenados)
-  sobre una cantidad inicial equivale a multiplicar consecutivamente los factores
-  de cada variación: $V_f = V_i \cdot F_1 \cdot F_2 \dots F_n$.'
-explicacion_simple: Cuando un producto recibe varios aumentos o descuentos seguidos
-  (por ejemplo, un 10% de descuento y luego un 20% extra), NUNCA debemos sumar los
-  porcentajes directamente. Se deben multiplicar los factores decimales de cada paso
-  uno tras otro sobre la cantidad inicial.
-explicacion_formal: 'Para un valor inicial $V_i$ expuesto a $n$ variaciones porcentuales
-  sucesivas $P_1, P_2, \dots, P_n$, el **Valor Final Sucesivo $V_f$** se determina
-  mediante el producto de factores:
+semantic_id: MAT.NUM.VARIACION_PORCENTUAL.PORCENTAJES_SUCESIVOS
+estado: publicado
+fuente: Texto escolar MINEDUC — Números 1° Medio / PAES
+resumen_inicial: 'Las variaciones porcentuales sucesivas se calculan mediante la multiplicación
+  encadenada de sus factores multiplicadores: $V_f = V_i \cdot (1 \pm p_1) \cdot (1
+  \pm p_2) \cdot \dots \cdot (1 \pm p_k)$, ¡nunca sumando los porcentajes aritméticamente!'
+explicacion_simple: 'Cuando se aplican dos o más variaciones seguidas a una cantidad,
+  cada nueva variación actúa sobre el saldo acumulado del paso anterior, no sobre
+  la cantidad original. Por eso, dos descuentos del $20\%$ y $10\%$ NO dan un $30\%$
+  de descuento, sino que se multiplican sus factores: $0,80 \cdot 0,90 = 0,72$ (lo
+  que equivale a un $28\%$ de descuento real).
 
 
-  $$V_f = V_i \cdot \prod_{k=1}^n F_k = V_i \cdot \left(1 \pm \frac{P_1}{100}\right)
-  \cdot \left(1 \pm \frac{P_2}{100}\right) \dots \left(1 \pm \frac{P_n}{100}\right)$$
+  ![calculo-del-valor-final-por-porcentajes-sucesivos](/static/img/nodos/calculo-del-valor-final-por-porcentajes-sucesivos-intro.svg)
+
+  '
+explicacion_formal: 'Para un valor inicial $V_i$ sometido a una sucesión de $k$ variaciones
+  porcentuales $p_1, p_2, \dots, p_k$ (positivas para aumentos, negativas para descuentos),
+  el **Valor Final Encadenado** se define como:
 
 
-  **Demostración de no aditividad:**
+  $$V_f = V_i \cdot \prod_{j=1}^k \left(1 \pm \frac{p_j}{100}\right) = V_i \cdot F_{\text{global}}$$
 
-  - Dos descuentos del $20\%$ sucesivos rinden $F_{tot} = 0,80 \cdot 0,80 = 0,64 \implies$
-  Descuento real del $36\%$ (NO del $40\%$).'
-definiciones_clave: '- **Porcentajes sucesivos**: Multiplicación encadenada de factores
-  $V_f = V_i \cdot F_1 \cdot F_2 \dots F_n$.'
-propiedades_relaciones: '- **Independencia del orden (Conmutatividad)**: El orden
-  de aplicación de los aumentos o descuentos no altera el valor final.'
+
+  Donde $F_{\text{global}} = F_1 \cdot F_2 \cdot \dots \cdot F_k$ es el **factor multiplicativo
+  compuesto**. La variación porcentual neta global es $(F_{\text{global}} - 1) \cdot
+  100\%$.'
+definiciones_clave: '- **Variaciones sucesivas**: Modificaciones porcentuales encadenadas
+  donde la base de cálculo cambia en cada etapa.
+
+  - **Factor global**: Producto de todos los factores multiplicativos individuales.
+
+  - **Variación neta equivalente**: Porcentaje único que produce el mismo efecto final
+  que las variaciones sucesivas.'
+propiedades_relaciones: '- **Conmutatividad**: El orden en que se apliquen las variaciones
+  sucesivas no altera el resultado final, pues el producto de factores es conmutativo
+  ($F_1 \cdot F_2 = F_2 \cdot F_1$).
+
+  - **Efecto asimétrico de aumento y baja iguales**: Un aumento del $p\%$ seguido
+  de una baja del $p\%$ siempre genera una pérdida neta: $(1 + p)(1 - p) = 1 - p^2
+  < 1$.'
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/calculo-del-valor-final-por-porcentajes-sucesivos-resumen.svg)
+
+
+  QUÉ: Calcular el valor final y la variación neta de porcentajes sucesivos. CÓMO:
+  Multiplicando los factores individuales $F_{\text{global}} = \prod (1 \pm p_j)$
+  y evaluando el valor final mediante $V_f = V_i \cdot F_{\text{global}}$.'
+visual_briefs:
+  intro:
+    svg_path: static/img/nodos/calculo-del-valor-final-por-porcentajes-sucesivos-intro.svg
+    description: Infografía sobre la multiplicación encadenada de factores y la demostración
+      de por qué no se deben sumar porcentajes.
+  ejemplos:
+    svg_path: static/img/nodos/calculo-del-valor-final-por-porcentajes-sucesivos-ejemplos.svg
+    description: Resolución de alzas acumuladas y análisis del caso de subida y bajada
+      del 50% en inversiones.
+  resumen:
+    svg_path: static/img/nodos/calculo-del-valor-final-por-porcentajes-sucesivos-resumen.svg
+    description: Regla fundamental de encadenamiento multiplicativo y resumen de propiedades
+      conmutativas.
+procedimiento:
+- 'Paso 1: Escribir el factor multiplicativo de cada variación individual ($1 + a_{\text{dec}}$
+  para alzas, $1 - d_{\text{dec}}$ para descuentos).'
+- 'Paso 2: Multiplicar todos los factores entre sí para obtener el factor compuesto
+  global $F_{\text{global}}$.'
+- 'Paso 3: Multiplicar el valor inicial por el factor global: $V_f = V_i \cdot F_{\text{global}}$.'
 ejemplo_guiado:
-  enunciado: Una chaqueta de \$100.000 sufre un primer descuento del $20\%$ y luego
-    un descuento adicional del $10\%$. Calcule el precio final y el porcentaje de
-    descuento único equivalente.
+  enunciado: Un artículo de $\$100.000$ sufre un descuento del $20\%$ y posteriormente
+    un descuento adicional del $10\%$. ¿Cuál es el precio final y el descuento único
+    equivalente?
   pasos:
-  - 'Paso 1: Determinar los factores de cada descuento: $F_1 = 0,80$ y $F_2 = 0,90$.'
-  - 'Paso 2: Calcular el factor total: $F_{tot} = 0,80 \cdot 0,90 = 0,72$.'
-  - 'Paso 3: Multiplicar el precio inicial por el factor total: $V_f = 100.000 \cdot
-    0,72 = 72.000$.'
-  - 'Paso 4: Determinar el descuento equivalente: $1 - 0,72 = 0,28 \implies 28\%$.'
-  - 'Conclusión: El precio final es \$72.000 y equivale a un descuento único del $28\%$
-    (NO del $30\%$).'
+  - 'Paso 1: Determinar los factores individuales: $F_1 = 1 - 0,20 = 0,80$ y $F_2
+    = 1 - 0,10 = 0,90$.'
+  - 'Paso 2: Calcular el factor global multiplicando: $F_{\text{global}} = 0,80 \cdot
+    0,90 = 0,72$.'
+  - 'Paso 3: Calcular el precio final: $V_f = 100.000 \cdot 0,72 = 72.000$.'
+  - 'Paso 4: Hallar el descuento equivalente: $1 - 0,72 = 0,28 \implies 28\%$ de descuento
+    real.'
+  - 'Conclusión: El precio final es $\$72.000$, lo que equivale a un descuento único
+    del $28\%$ (no del $30\%$).'
+  imagen: /static/img/nodos/calculo-del-valor-final-por-porcentajes-sucesivos-ejemplos.svg
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cómo se calcula el valor final Vf ante dos descuentos sucesivos del 20%
-    y 10%?
+  question: 'Si una cantidad aumenta un $20\%$ y luego disminuye un $20\%$, el resultado
+    final es:'
   choices:
-  - text: 'Multiplicando consecutivamente los factores: Vf = Vi · 0,80 · 0,90'
+  - text: Un $4\%$ menor que el valor original
     is_correct: true
-  - text: Restando el 30% directamente al valor inicial (Vf = Vi · 0,70)
+  - text: Igual al valor original
     is_correct: false
-  - text: Sumando los factores 0,80 + 0,90
+  - text: Un $4\%$ mayor que el valor original
     is_correct: false
-  - text: Dividiendo entre 2
+  - text: Un $20\%$ menor que el valor original
     is_correct: false
-  explanation: 'La alternativa correcta es ''Multiplicando consecutivamente los factores:
-    Vf = Vi · 0,80 · 0,90''.'
+  explanation: El factor compuesto es $1,20 \cdot 0,80 = 0,96$, lo que representa
+    un $4\%$ de pérdida neta ($1 - 0,96 = 0,04$).
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para la chaqueta de $100.000 con 20% y 10% sucesivos,
-    ¿cuál fue el descuento único equivalente?
+  question: ¿Cuál es el factor global correspondiente a dos aumentos sucesivos del
+    $10\%$ y $20\%$?
   choices:
-  - text: 28%
+  - text: $1,32$
     is_correct: true
-  - text: 30%
+  - text: $1,30$
     is_correct: false
-  - text: 20%
+  - text: $1,20$
     is_correct: false
-  - text: 72%
+  - text: $1,02$
     is_correct: false
-  explanation: La alternativa correcta es '28%'.
+  explanation: $F_{\text{global}} = 1,10 \cdot 1,20 = 1,32$ (equivalente a $+32\%$
+    de aumento).
   reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular el valor final $V_f =
-  V_i \cdot F_1 \cdot F_2 \dots F_n$ tras variaciones porcentuales sucesivas.
-semantic_id: MAT.NUM.VARIACION_PORCENTUAL.PORCENTAJES_SUCESIVOS
-procedimiento:
-- 'Paso 1: Identificar la tasa de variación $P\%$ y determinar si es aumento ($1 +
-  p$) o descuento ($1 - p$).'
-- 'Paso 2: Multiplicar el valor inicial por el factor multiplicativo correspondiente.'
-- 'Paso 3: Resolver numéricamente y verificar que el resultado final responda a la
-  situación planteada.'
-errores_correccion: '- **Error 1: Sumar o restar porcentajes sucesivos directamente
-  (pensar que $-20\%$ y $-10\%$ dan $-30\%$).** **Cómo corregirlo:** Los porcentajes
-  sucesivos se MULTIPLICAN por sus factores decimales ($0,80 \cdot 0,90 = 0,72 \implies
-  -28\%$).
+errores_correccion: '- **Error 1: Sumar aritméticamente los porcentajes (ej: pensar
+  que $+10\%$ y $+20\%$ es $+30\%$).** **Cómo corregirlo:** La segunda variación opera
+  sobre el valor ya incrementado, por lo que se multiplican los factores ($1,10 \cdot
+  1,20 = 1,32 \implies +32\%$).
 
-
-  - **Error 2: Usar el valor final como denominador al calcular la variación porcentual.**
-  **Cómo corregirlo:** El denominador para el cambio relativo es SIEMPRE el valor
-  inicial $V_i$.'
+  - **Error 2: Creer que el orden de las variaciones altera el resultado.** **Cómo
+  corregirlo:** El producto de números reales es conmutativo ($F_1 \cdot F_2 = F_2
+  \cdot F_1$).'
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.VARIACION_PORCENTUAL.PORCENTAJES_SUCESIVOS.
+- titulo: Aumentos salariales escalonados
+  enunciado: Un sueldo de $\$500.000$ aumenta un $10\%$ en enero y un $10\%$ adicional
+    en julio. ¿Cuál es el sueldo final?
   alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
+  - $\$605.000$
+  - $\$600.000$
+  - $\$550.000$
+  - $\$610.000$
+  respuesta: $\$605.000$
   solucion_pasos:
-  - Aplicación directa de factores de variación porcentual.
-- titulo: Ejemplo 2
-  enunciado: Verificación de factor multiplicativo.
+  - 'Factor global: $1,10 \cdot 1,10 = 1,21$ (+21%).'
+  - 'Multiplicar: $500.000 \cdot 1,21 = 605.000$ pesos.'
+- titulo: Descuento en tienda por membresía
+  enunciado: Un producto de $\$80.000$ tiene $25\%$ de liquidación y un $20\%$ adicional
+    por pagar con tarjeta de la tienda. ¿Cuál es el precio final?
   alternativas:
-  - Cumple el factor
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple el factor
+  - $\$48.000$
+  - $\$44.000$
+  - $\$40.000$
+  - $\$52.000$
+  respuesta: $\$48.000$
   solucion_pasos:
-  - Demostración formal por $1 \pm p$.
-- titulo: ¿Equivale el IVA en Chile a multiplicar el neto por 1,19?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, porque $1 + 0,19 = 1,19$.
-- titulo: ¿Altera el orden en que se aplican dos descuentos sucesivos el precio final?
+  - 'Factor global: $(1 - 0,25) \cdot (1 - 0,20) = 0,75 \cdot 0,80 = 0,60$.'
+  - 'Multiplicar: $80.000 \cdot 0,60 = 48.000$ pesos.'
+- titulo: ¿El orden en que se aplican dos descuentos sucesivos altera el precio final?
   respuesta: 'No'
   solucion_pasos:
-  - No, por la propiedad conmutativa del producto de factores.
+  - No, porque la multiplicación de factores decimales es conmutativa ($F_1 \cdot
+    F_2 = F_2 \cdot F_1$).
+- titulo: ¿Un aumento del 50% seguido de una disminución del 50% devuelve la cantidad
+    a su valor inicial?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, porque $1,50 \cdot 0,50 = 0,75$, dejando una pérdida neta del $25\%$.
 errores_frecuentes:
-- Sumar directamente dos porcentajes de descuento sucesivos aplicados sobre un mismo
-  producto.
-- Utilizar el precio final como el denominador de referencia al calcular la variación
-  porcentual relativa.
-- Dividir por 0,19 para extraer el Impuesto al Valor Agregado (IVA) de un precio Bruto.
-- Un descuento del $20\%$ seguido de un aumento del $20\%$ devuelve el producto a
-  su precio original.
-- Restar el número entero del porcentaje al precio sin convertirlo a su factor decimal
-  $1 - d$.
+- Sumar o restar algebraicamente los porcentajes sucesivos.
+- Creer que un aumento del $x\%$ seguido de un descuento del $x\%$ deja la cantidad
+  sin cambios.
+- Calcular todas las variaciones respecto al valor inicial original en lugar del valor
+  acumulado.
 afirmaciones_verdaderas:
-- El aumento o descuento porcentual se calcula directamente multiplicando el valor
-  inicial por el factor $(1 \pm p)$.
-- Dos descuentos sucesivos del $a\%$ y $b\%$ equivalen al factor acumulado $(1 - a/100)(1
-  - b/100)$.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
-estado: publicado
+- Las variaciones sucesivas se calculan multiplicando los factores multiplicativos
+  de cada etapa.
+- El orden en que se apliquen dos o más variaciones porcentuales sucesivas no altera
+  el valor final obtenido.

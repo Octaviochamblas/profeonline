@@ -1,107 +1,149 @@
 semantic_id: MAT.ALG.TEOREMA_FACTOR.DIVISION_SINTETICA
-resumen_inicial: 'La aplicación de división sintética es un método abreviado para dividir un polinomio $P(x)$ por un binomio lineal $(x - r)$ operando exclusivamente con la fila de coeficientes numéricos.'
-explicacion_simple: |
-  La **División Sintética** te permite dividir polinomios muy rápido sin tener que escribir todas las letras $x$:
-  - **MECÁNICA DEL ALGORITMO SINTÉTICO**:
-    1. **Organiza la primera fila**: Escribe los coeficientes de $P(x)$ ordenados en potencia decreciente. (¡Si falta una potencia de $x$, debes colocar un **0**!).
-    2. **Escribe la raíz $r$ a la izquierda**: Si divides por $(x - 2)$, la raíz es **$2$**.
-    3. **Baja el primer coeficiente principal**: Pasa directo a la tercera fila.
-    4. **Multiplica y Suma en diagonal**:
-       - Multiplica el número de abajo por $r$.
-       - Escribe el resultado en la segunda fila debajo del siguiente coeficiente.
-       - Suma la columna verticalmente.
-       - ¡Repite hasta la última columna!
-  - **Interpretación del resultado**:
-    - La última columna de abajo es el **RESTO** ($R$).
-    - Las columnas anteriores son los coeficientes del **Polinomio Cociente** $Q(x)$ (¡de un grado menor que el polinomio original!).
-explicacion_formal: |
-  ### Definición formal
-  Sea $P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 \in \mathbb{R}[x]$ un polinomio de grado $n \ge 1$ y sea $(x - r)$ un divisor de primer grado. La **división sintética** es la implementación algorítmica matricial de la división euclidiana que calcula los coeficientes del cociente $Q(x) = c_{n-1} x^{n-1} + \dots + c_1 x + c_0$ y el resto $R$ mediante las relaciones de recurrencia:
+resumen_inicial: La aplicación de división sintética es un método abreviado para dividir un polinomio $P(x)$ por un binomio
+  lineal $(x - r)$ operando exclusivamente con la fila de coeficientes numéricos.
+explicacion_simple: "La **División Sintética** te permite dividir polinomios muy rápido sin tener que escribir todas las letras\
+  \ $x$:\n- **MECÁNICA DEL ALGORITMO SINTÉTICO**:\n  1. **Organiza la primera fila**: Escribe los coeficientes de $P(x)$ ordenados\
+  \ en potencia decreciente. (¡Si falta una potencia de $x$, debes colocar un **0**!).\n  2. **Escribe la raíz $r$ a la izquierda**:\
+  \ Si divides por $(x - 2)$, la raíz es **$2$**.\n  3. **Baja el primer coeficiente principal**: Pasa directo a la tercera\
+  \ fila.\n  4. **Multiplica y Suma en diagonal**:\n     - Multiplica el número de abajo por $r$.\n     - Escribe el resultado\
+  \ en la segunda fila debajo del siguiente coeficiente.\n     - Suma la columna verticalmente.\n     - ¡Repite hasta la última\
+  \ columna!\n- **Interpretación del resultado**:\n  - La última columna de abajo es el **RESTO** ($R$).\n  - Las columnas\
+  \ anteriores son los coeficientes del **Polinomio Cociente** $Q(x)$ (¡de un grado menor que el polinomio original!).\n\n\
+  ![Aplicación de división sintética](/static/img/nodos/aplicacion-de-division-sintetica-intro.svg)\n"
+explicacion_formal: '### Definición formal
 
-  $$\begin{cases} c_{n-1} = a_n \\ c_k = a_{k+1} + r \cdot c_{k+1} & \text{para } k = n-2, n-3, \dots, 0 \\ R = a_0 + r \cdot c_0 \end{cases}$$
+  Sea $P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 \in \mathbb{R}[x]$ un polinomio de grado $n \ge 1$ y sea $(x
+  - r)$ un divisor de primer grado. La **división sintética** es la implementación algorítmica matricial de la división euclidiana
+  que calcula los coeficientes del cociente $Q(x) = c_{n-1} x^{n-1} + \dots + c_1 x + c_0$ y el resto $R$ mediante las relaciones
+  de recurrencia:
+
+
+  $$\begin{cases} c_{n-1} = a_n \\ c_k = a_{k+1} + r \cdot c_{k+1} & \text{para } k = n-2, n-3, \dots, 0 \\ R = a_0 + r \cdot
+  c_0 \end{cases}$$
+
 
   ### Tabla de Recurrencia Algorítmica
-  $$\begin{array}{c|ccccc} & a_n & a_{n-1} & a_{n-2} & \dots & a_0 \\ r & & r \cdot c_{n-1} & r \cdot c_{n-2} & \dots & r \cdot c_0 \\\hline & c_{n-1} & c_{n-2} & c_{n-3} & \dots & R \end{array}$$
+
+  $$\begin{array}{c|ccccc} & a_n & a_{n-1} & a_{n-2} & \dots & a_0 \\ r & & r \cdot c_{n-1} & r \cdot c_{n-2} & \dots & r
+  \cdot c_0 \\\hline & c_{n-1} & c_{n-2} & c_{n-3} & \dots & R \end{array}$$
+
 
   ### Síntesis didáctica
-  La división sintética simplifica la división de un polinomio por $(x - r)$ trabajando únicamente con sus coeficientes numéricos mediante multiplicaciones continuas por $r$ y adiciones de columna.
-definiciones_clave: |
-  - **División sintética**: Algoritmo numérico simplificado para dividir $P(x)$ por $(x - r)$ usando solo coeficientes.
-  - **Coeficiente cero de relleno**: Valor 0 que se inserta obligatoriamente en la fila superior por cada potencia de $x$ ausente en $P(x)$.
-  - **Fila de coeficientes del cociente**: Valores numéricos obtenidos en la fila inferior de la tabla excluyendo el último término (el resto).
-propiedades_relaciones: |
-  - **Grado del cociente**: El polinomio cociente $Q(x)$ resultante posee un grado idénticamente menor en 1 unidad que el grado de $P(x)$ ($\operatorname{grado}(Q) = n-1$).
+
+  La división sintética simplifica la división de un polinomio por $(x - r)$ trabajando únicamente con sus coeficientes numéricos
+  mediante multiplicaciones continuas por $r$ y adiciones de columna.
+
+  '
+definiciones_clave: '- **División sintética**: Algoritmo numérico simplificado para dividir $P(x)$ por $(x - r)$ usando solo
+  coeficientes.
+
+  - **Coeficiente cero de relleno**: Valor 0 que se inserta obligatoriamente en la fila superior por cada potencia de $x$
+  ausente en $P(x)$.
+
+  - **Fila de coeficientes del cociente**: Valores numéricos obtenidos en la fila inferior de la tabla excluyendo el último
+  término (el resto).
+
+  '
+propiedades_relaciones: '- **Grado del cociente**: El polinomio cociente $Q(x)$ resultante posee un grado idénticamente menor
+  en 1 unidad que el grado de $P(x)$ ($\operatorname{grado}(Q) = n-1$).
+
+  '
 ejemplo_guiado:
-  enunciado: 'Aplica la división sintética para dividir $P(x) = 2x^3 - 7x^2 + 5x - 3$ por el binomio $(x - 3)$.'
+  enunciado: Aplica la división sintética para dividir $P(x) = 2x^3 - 7x^2 + 5x - 3$ por el binomio $(x - 3)$.
   pasos:
-    - 'Paso 1: Escribimos los coeficientes de $P(x)$ en la primera fila: $2, -7, 5, -3$.'
-    - 'Paso 2: Colocamos la raíz $r = 3$ a la izquierda.'
-    - 'Paso 3: Ejecutamos el algoritmo:
-       - Bajamos el primer coeficiente: $2$.
-       - Multiplicamos $2 \cdot 3 = 6$. Sumamos en columna: $-7 + 6 = \mathbf{-1}$.
-       - Multiplicamos $-1 \cdot 3 = -3$. Sumamos en columna: $5 + (-3) = \mathbf{2}$.
-       - Multiplicamos $2 \cdot 3 = 6$. Sumamos en columna: $-3 + 6 = \mathbf{3}$.'
-    - 'Paso 4: Leemos la fila de abajo $(2, -1, 2 \mid 3)$:
-       - Coeficientes del cociente de grado 2: $Q(x) = 2x^2 - x + 2$.
-       - Resto de la división: $R = 3$.'
-    - 'Conclusión: El cociente es **$Q(x) = 2x^2 - x + 2$** y el resto es **$R = 3$**.'
+  - 'Paso 1: Escribimos los coeficientes de $P(x)$ en la primera fila: $2, -7, 5, -3$.'
+  - 'Paso 2: Colocamos la raíz $r = 3$ a la izquierda.'
+  - 'Paso 3: Ejecutamos el algoritmo: - Bajamos el primer coeficiente: $2$. - Multiplicamos $2 \cdot 3 = 6$. Sumamos en columna:
+    $-7 + 6 = \mathbf{-1}$. - Multiplicamos $-1 \cdot 3 = -3$. Sumamos en columna: $5 + (-3) = \mathbf{2}$. - Multiplicamos
+    $2 \cdot 3 = 6$. Sumamos en columna: $-3 + 6 = \mathbf{3}$.'
+  - 'Paso 4: Leemos la fila de abajo $(2, -1, 2 \mid 3)$: - Coeficientes del cociente de grado 2: $Q(x) = 2x^2 - x + 2$. -
+    Resto de la división: $R = 3$.'
+  - 'Conclusión: El cociente es **$Q(x) = 2x^2 - x + 2$** y el resto es **$R = 3$**.'
+  imagen: /static/img/nodos/aplicacion-de-division-sintetica-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Al dividir el polinomio de grado 4 $P(x) = x^4 - 3x^2 + 5$ por $(x - 1)$ mediante división sintética, ¿qué coeficientes deben colocarse en la primera fila?'
-    choices:
-      - {text: 'Deben colocarse $1, 0, -3, 0, 5$, agregando ceros de relleno en las potencias faltantes $x^3$ y $x^1$', is_correct: true}
-      - {text: 'Deben colocarse $1, -3, 5$', is_correct: false}
-      - {text: 'Deben colocarse $1, 1, -3, 1, 5$', is_correct: false}
-      - {text: 'Deben colocarse $4, 2, 0$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Deben colocarse $1, 0, -3, 0, 5$, agregando ceros de relleno en las potencias faltantes $x^3$ y $x^1$''. Relleno obligatorio de ceros en términos ausentes de $P(x)$.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Si la última fila de una división sintética efectuada sobre un polinomio de grado 3 da los valores $3, 4, -1 \mid 0$, ¿cuál es la interpretación del cociente y del resto?'
-    choices:
-      - {text: 'El cociente es $Q(x) = 3x^2 + 4x - 1$ y el resto es $R = 0$ (división exacta)', is_correct: true}
-      - {text: 'El cociente es $Q(x) = 3x^3 + 4x^2 - x$', is_correct: false}
-      - {text: 'El cociente es 341 y el resto es 0', is_correct: false}
-      - {text: 'El polinomio no es divisible', is_correct: false}
-    explanation: 'La alternativa correcta es ''El cociente es $Q(x) = 3x^2 + 4x - 1$ y el resto es $R = 0$ (división exacta)''. Los coeficientes forman un polinomio de grado $3-1=2$ y el último término es el residuo.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: Al dividir el polinomio de grado 4 $P(x) = x^4 - 3x^2 + 5$ por $(x - 1)$ mediante división sintética, ¿qué coeficientes
+    deben colocarse en la primera fila?
+  choices:
+  - text: Deben colocarse $1, 0, -3, 0, 5$, agregando ceros de relleno en las potencias faltantes $x^3$ y $x^1$
+    is_correct: true
+  - text: Deben colocarse $1, -3, 5$
+    is_correct: false
+  - text: Deben colocarse $1, 1, -3, 1, 5$
+    is_correct: false
+  - text: Deben colocarse $4, 2, 0$
+    is_correct: false
+  explanation: La alternativa correcta es 'Deben colocarse $1, 0, -3, 0, 5$, agregando ceros de relleno en las potencias faltantes
+    $x^3$ y $x^1$'. Relleno obligatorio de ceros en términos ausentes de $P(x)$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si la última fila de una división sintética efectuada sobre un polinomio de grado 3 da los valores $3, 4, -1 \mid
+    0$, ¿cuál es la interpretación del cociente y del resto?
+  choices:
+  - text: El cociente es $Q(x) = 3x^2 + 4x - 1$ y el resto es $R = 0$ (división exacta)
+    is_correct: true
+  - text: El cociente es $Q(x) = 3x^3 + 4x^2 - x$
+    is_correct: false
+  - text: El cociente es 341 y el resto es 0
+    is_correct: false
+  - text: El polinomio no es divisible
+    is_correct: false
+  explanation: La alternativa correcta es 'El cociente es $Q(x) = 3x^2 + 4x - 1$ y el resto es $R = 0$ (división exacta)'.
+    Los coeficientes forman un polinomio de grado $3-1=2$ y el último término es el residuo.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Escribir los coeficientes del polinomio de mayor a menor grado, incluyendo un 0 por cada término ausente.'
-  - 'Paso 2: Colocar la raíz $r$ del divisor a la izquierda de la tabla.'
-  - 'Paso 3: Bajar el primer coeficiente a la fila inferior sin modificar.'
-  - 'Paso 4: Multiplicar el valor de la fila inferior por $r$, escribirlo debajo del siguiente coeficiente y sumar verticalmente en columna hasta completar la tabla.'
-errores_correccion: |
-  - **Error 1:** Excluir el coeficiente 0 en las potencias de $x$ que no están presentes en el polinomio. **Cómo corregirlo:** Si una potencia de $x$ no aparece **SE DEBE COLOCAR OBLIGATORIAMENTE UN COEFICIENTES 0 EN LA TABLA DE DIVISIÓN SINTÉTICA**.
-  - **Error 2:** Multiplicar la raíz por el número de la fila superior en lugar del número obtenido en la fila inferior. **Cómo corregirlo:** La multiplicación **SE REALIZA SIEMPRE ENTRE LA RAÍZ $r$ Y EL RESULTADO DE LA SUMA DE LA FILA INFERIOR**.
+- 'Paso 1: Escribir los coeficientes del polinomio de mayor a menor grado, incluyendo un 0 por cada término ausente.'
+- 'Paso 2: Colocar la raíz $r$ del divisor a la izquierda de la tabla.'
+- 'Paso 3: Bajar el primer coeficiente a la fila inferior sin modificar.'
+- 'Paso 4: Multiplicar el valor de la fila inferior por $r$, escribirlo debajo del siguiente coeficiente y sumar verticalmente
+  en columna hasta completar la tabla.'
+errores_correccion: '- **Error 1:** Excluir el coeficiente 0 en las potencias de $x$ que no están presentes en el polinomio.
+  **Cómo corregirlo:** Si una potencia de $x$ no aparece **SE DEBE COLOCAR OBLIGATORIAMENTE UN COEFICIENTES 0 EN LA TABLA
+  DE DIVISIÓN SINTÉTICA**.
+
+  - **Error 2:** Multiplicar la raíz por el número de la fila superior en lugar del número obtenido en la fila inferior. **Cómo
+  corregirlo:** La multiplicación **SE REALIZA SIEMPRE ENTRE LA RAÍZ $r$ Y EL RESULTADO DE LA SUMA DE LA FILA INFERIOR**.
+
+  '
 ejemplos:
-  - titulo: 'Bajada de primer coeficiente'
-    enunciado: 'En la división sintética, ¿se baja el primer coeficiente principal directamente?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, pasa sin cambiar.'
-  - titulo: 'Multiplicación diagonal'
-    enunciado: 'Si bajamos 2 y la raíz es 3, ¿es el producto en diagonal $2 \cdot 3 = 6$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $2 \cdot 3 = 6$.'
-  - titulo: 'Suma de columna'
-    enunciado: 'Si en la columna hay $-5$ y entra $6$, ¿es la suma $-5 + 6 = 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $-5 + 6 = 1$.'
-  - titulo: 'Grado del cociente'
-    enunciado: 'Al dividir un polinomio de grado 4, ¿es el cociente de grado 3?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, disminuye en 1.'
+- titulo: Bajada de primer coeficiente
+  enunciado: En la división sintética, ¿se baja el primer coeficiente principal directamente?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, pasa sin cambiar.
+- titulo: Multiplicación diagonal
+  enunciado: Si bajamos 2 y la raíz es 3, ¿es el producto en diagonal $2 \cdot 3 = 6$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $2 \cdot 3 = 6$.
+- titulo: Suma de columna
+  enunciado: Si en la columna hay $-5$ y entra $6$, ¿es la suma $-5 + 6 = 1$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $-5 + 6 = 1$.
+- titulo: Grado del cociente
+  enunciado: Al dividir un polinomio de grado 4, ¿es el cociente de grado 3?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, disminuye en 1.
 errores_frecuentes:
-  - 'La inserción del coeficiente 0 no es ejecutada en los términos con potencias de x ausentes.'
-  - 'Multiplicar la raíz r por los números de la fila de coeficientes originales en lugar de la fila de abajo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Invertir el signo de la raíz r al colocarla en el margen izquierdo del algoritmo.'
-  - 'Intercambiar los coeficientes del cociente asignándoles un grado mayor o menor al correcto.'
+- La inserción del coeficiente 0 no es ejecutada en los términos con potencias de x ausentes.
+- Multiplicar la raíz r por los números de la fila de coeficientes originales en lugar de la fila de abajo.
+- Invertir el signo de la raíz r al colocarla en el margen izquierdo del algoritmo.
+- Intercambiar los coeficientes del cociente asignándoles un grado mayor o menor al correcto.
+- Olvidar que el último valor numérico de la fila inferior representa el residuo.
 afirmaciones_verdaderas:
-  - 'La división sintética opera únicamente con los coeficientes numéricos de $P(x)$ para hallar el cociente y el resto.'
-  - 'El polinomio cociente $Q(x)$ resultante posee un grado idénticamente menor en 1 unidad que el polinomio inicial.'
-al_terminar_debes_poder: 'Aplicar el algoritmo de división sintética para dividir polinomios entre binomios de la forma $(x - r)$.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La división sintética opera únicamente con los coeficientes numéricos de $P(x)$ para hallar el cociente y el resto.
+- El polinomio cociente $Q(x)$ resultante posee un grado idénticamente menor en 1 unidad que el polinomio inicial.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/aplicacion-de-division-sintetica-resumen.svg)
+
+
+  QUÉ: Aplicar el algoritmo de división sintética para dividir polinomios entre binomios de la forma (x - r).
+
+  CÓMO: Disponer los coeficientes descendentes de $P(x)$ (insertando ceros en potencias faltantes), bajar el coeficiente principal
+  $a_n$ y multiplicar sucesivamente por $r$ sumando en columna hasta obtener el cociente $Q(x)$ de grado $n-1$ y el resto
+  $R$.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

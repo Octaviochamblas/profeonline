@@ -1,99 +1,142 @@
 semantic_id: MAT.ALG.FACTOR_COMUN.RECONOCIMIENTO_MONOMIO
-resumen_inicial: 'El reconocimiento del factor común monomio consiste en examinar todos los términos de un polinomio para identificar el máximo divisor común numérico y las letras repetidas con su menor exponente.'
-explicacion_simple: |
-  Para hallar el **factor común monomio** en una expresión algebraica (ej: $12x^3 + 18x^2$):
-  - **DOS PASOS DE RECONOCIMIENTO**:
-    1. **Parte Numérica (MCD Coeficientes)**: Busca el **Máximo Común Divisor (MCD)** entre los coeficientes de los términos.
-       - En $12$ y $18$, el número mayor que los divide a ambos es **$6$**.
-    2. **Parte Literal (Variables Repetidas)**: Busca las **letras que están presentes en TODOS los términos**, y elige la que tiene el **MENOR exponente**.
-       - Entre $x^3$ y $x^2$, la letra común con menor exponente es **$x^2$**.
-  - **Factor Común Monomio Unificado**: Unes la parte numérica y la literal $\implies \mathbf{6x^2}$.
-explicacion_formal: |
-  ### Definición formal
-  Sea un polinomio $P(x_1, \dots, x_m) = \sum_{i=1}^k c_i \prod_{j=1}^m x_j^{\alpha_{i,j}} \in \mathbb{R}[x_1, \dots, x_m]$. El **factor común monomio de máxima dimensión** $M$ se define formalmente como:
+resumen_inicial: El reconocimiento del factor común monomio consiste en examinar todos los términos de un polinomio para identificar
+  el máximo divisor común numérico y las letras repetidas con su menor exponente.
+explicacion_simple: "Para hallar el **factor común monomio** en una expresión algebraica (ej: $12x^3 + 18x^2$):\n- **DOS PASOS\
+  \ DE RECONOCIMIENTO**:\n  1. **Parte Numérica (MCD Coeficientes)**: Busca el **Máximo Común Divisor (MCD)** entre los coeficientes\
+  \ de los términos.\n     - En $12$ y $18$, el número mayor que los divide a ambos es **$6$**.\n  2. **Parte Literal (Variables\
+  \ Repetidas)**: Busca las **letras que están presentes en TODOS los términos**, y elige la que tiene el **MENOR exponente**.\n\
+  \     - Entre $x^3$ y $x^2$, la letra común con menor exponente es **$x^2$**.\n- **Factor Común Monomio Unificado**: Unes\
+  \ la parte numérica y la literal $\\implies \\mathbf{6x^2}$.\n\n![Reconocimiento del factor común monomio](/static/img/nodos/reconocimiento-del-factor-comun-monomio-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
+  Sea un polinomio $P(x_1, \dots, x_m) = \sum_{i=1}^k c_i \prod_{j=1}^m x_j^{\alpha_{i,j}} \in \mathbb{R}[x_1, \dots, x_m]$.
+  El **factor común monomio de máxima dimensión** $M$ se define formalmente como:
+
 
   $$M = \operatorname{MCD}(c_1, \dots, c_k) \cdot \prod_{j=1}^m x_j^{\min_{i} (\alpha_{i,j})}$$
 
-  donde $\operatorname{MCD}(c_1, \dots, c_k)$ representa el Máximo Común Divisor entero de los coeficientes, y $\min_{i} (\alpha_{i,j})$ representa el exponente mínimo alcanzado por la variable $x_j$ a lo largo de los $k$ términos del polinomio.
+
+  donde $\operatorname{MCD}(c_1, \dots, c_k)$ representa el Máximo Común Divisor entero de los coeficientes, y $\min_{i} (\alpha_{i,j})$
+  representa el exponente mínimo alcanzado por la variable $x_j$ a lo largo de los $k$ términos del polinomio.
+
 
   ### Condición de Pertenencia Estricta
-  Si para alguna variable $x_r$ existe al menos un término con exponente $\alpha_{i,r} = 0$ (la variable no está presente), entonces $\min_i (\alpha_{i,r}) = 0$, por lo que $x_r^0 = 1$ y la variable **no forma parte del factor común monomio**.
+
+  Si para alguna variable $x_r$ existe al menos un término con exponente $\alpha_{i,r} = 0$ (la variable no está presente),
+  entonces $\min_i (\alpha_{i,r}) = 0$, por lo que $x_r^0 = 1$ y la variable **no forma parte del factor común monomio**.
+
 
   ### Síntesis didáctica
-  Un factor común monomio debe dividir exactamente a todos los coeficientes numéricos y contener únicamente las variables que se repitan en todos los términos del polinomio.
-definiciones_clave: |
-  - **Factor común monomio**: Monomio $M = c \cdot x_1^{a_1} \dots x_m^{a_m}$ compuesto por el MCD de los coeficientes y las variables comunes elevadas al menor exponente.
-  - **Máximo Común Divisor (MCD)**: El mayor número entero que divide exactamente a todos los coeficientes numéricos sin dejar resto.
+
+  Un factor común monomio debe dividir exactamente a todos los coeficientes numéricos y contener únicamente las variables
+  que se repitan en todos los términos del polinomio.
+
+  '
+definiciones_clave: '- **Factor común monomio**: Monomio $M = c \cdot x_1^{a_1} \dots x_m^{a_m}$ compuesto por el MCD de los
+  coeficientes y las variables comunes elevadas al menor exponente.
+
+  - **Máximo Común Divisor (MCD)**: El mayor número entero que divide exactamente a todos los coeficientes numéricos sin dejar
+  resto.
+
   - **Menor exponente común**: La menor potencia a la que aparece elevada una variable repetida a lo largo de todos los sumandos.
-propiedades_relaciones: |
-  - **Extracción completa**: Si se reconoce el MCD y el menor exponente de todas las letras comunes, los términos dentro del paréntesis no compartirán ningún factor en común.
+
+  '
+propiedades_relaciones: '- **Extracción completa**: Si se reconoce el MCD y el menor exponente de todas las letras comunes,
+  los términos dentro del paréntesis no compartirán ningún factor en común.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Reconoce el factor común monomio del polinomio $15a^4 b^2 - 10a^2 b^3 + 20a^3 b^5$.'
+  enunciado: Reconoce el factor común monomio del polinomio $15a^4 b^2 - 10a^2 b^3 + 20a^3 b^5$.
   pasos:
-    - 'Paso 1: Examinamos la parte numérica (coeficientes $15, 10, 20$).'
-    - 'Paso 2: Calculamos el MCD de $15, 10, 20$: El mayor entero que divide a los tres es **$5$**.'
-    - 'Paso 3: Examinamos las variables comunes en los tres términos:
-       - La variable $a$ aparece en los tres ($a^4, a^2, a^3$). Su menor exponente es **$a^2$**.
-       - La variable $b$ aparece en los tres ($b^2, b^3, b^5$). Su menor exponente es **$b^2$**.'
-    - 'Paso 4: Unificamos la parte numérica y la parte literal.'
-    - 'Conclusión: El factor común monomio reconocido es **$5a^2 b^2$**.'
+  - 'Paso 1: Examinamos la parte numérica (coeficientes $15, 10, 20$).'
+  - 'Paso 2: Calculamos el MCD de $15, 10, 20$: El mayor entero que divide a los tres es **$5$**.'
+  - 'Paso 3: Examinamos las variables comunes en los tres términos: - La variable $a$ aparece en los tres ($a^4, a^2, a^3$).
+    Su menor exponente es **$a^2$**. - La variable $b$ aparece en los tres ($b^2, b^3, b^5$). Su menor exponente es **$b^2$**.'
+  - 'Paso 4: Unificamos la parte numérica y la parte literal.'
+  - 'Conclusión: El factor común monomio reconocido es **$5a^2 b^2$**.'
+  imagen: /static/img/nodos/reconocimiento-del-factor-comun-monomio-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué condiciones debe cumplir un monomio para ser clasificado como el Máximo Factor Común Monomio de un polinomio?'
-    choices:
-      - {text: 'Debe contener el MCD de los coeficientes numéricos y las variables que estén en TODOS los términos elevadas al MENOR exponente', is_correct: true}
-      - {text: 'Debe contener el menor número de los coeficientes y el mayor exponente de todas las variables', is_correct: false}
-      - {text: 'Debe contener sólo los números pero ninguna variable', is_correct: false}
-      - {text: 'Debe incluir variables que estén presentes en al menos un término', is_correct: false}
-    explanation: 'La alternativa correcta es ''Debe contener el MCD de los coeficientes numéricos y las variables que estén en TODOS los términos elevadas al MENOR exponente''. MCD numérico + variables comunes al menor exponente.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el factor común monomio del polinomio $8x^5 y^2 + 12x^3 y^4$?'
-    choices:
-      - {text: 'El factor común monomio es $4x^3 y^2$, obteniendo MCD(8,12)=4 y los menores exponentes de $x$ ($x^3$) e $y$ ($y^2$)', is_correct: true}
-      - {text: 'El factor común monomio es $2x^5 y^4$', is_correct: false}
-      - {text: 'El factor común monomio es $8x^3 y^2$', is_correct: false}
-      - {text: 'El factor común monomio es $4xy$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El factor común monomio es $4x^3 y^2$, obteniendo MCD(8,12)=4 y los menores exponentes de $x$ ($x^3$) e $y$ ($y^2$)''. $\operatorname{MCD}(8,12)=4, \min(5,3)=3, \min(2,4)=2 \implies 4x^3 y^2$.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Qué condiciones debe cumplir un monomio para ser clasificado como el Máximo Factor Común Monomio de un polinomio?
+  choices:
+  - text: Debe contener el MCD de los coeficientes numéricos y las variables que estén en TODOS los términos elevadas al MENOR
+      exponente
+    is_correct: true
+  - text: Debe contener el menor número de los coeficientes y el mayor exponente de todas las variables
+    is_correct: false
+  - text: Debe contener sólo los números pero ninguna variable
+    is_correct: false
+  - text: Debe incluir variables que estén presentes en al menos un término
+    is_correct: false
+  explanation: La alternativa correcta es 'Debe contener el MCD de los coeficientes numéricos y las variables que estén en
+    TODOS los términos elevadas al MENOR exponente'. MCD numérico + variables comunes al menor exponente.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el factor común monomio del polinomio $8x^5 y^2 + 12x^3 y^4$?
+  choices:
+  - text: El factor común monomio es $4x^3 y^2$, obteniendo MCD(8,12)=4 y los menores exponentes de $x$ ($x^3$) e $y$ ($y^2$)
+    is_correct: true
+  - text: El factor común monomio es $2x^5 y^4$
+    is_correct: false
+  - text: El factor común monomio es $8x^3 y^2$
+    is_correct: false
+  - text: El factor común monomio es $4xy$
+    is_correct: false
+  explanation: La alternativa correcta es 'El factor común monomio es $4x^3 y^2$, obteniendo MCD(8,12)=4 y los menores exponentes
+    de $x$ ($x^3$) e $y$ ($y^2$)'. $\operatorname{MCD}(8,12)=4, \min(5,3)=3, \min(2,4)=2 \implies 4x^3 y^2$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Calcular el Máximo Común Divisor (MCD) de los coeficientes numéricos del polinomio.'
-  - 'Paso 2: Identificar las letras que aparecen en todos y cada uno de los sumandos.'
-  - 'Paso 3: Seleccionar para cada letra común el menor exponente con el que figura en el polinomio.'
-  - 'Paso 4: Multiplicar el MCD numérico por las letras comunes con sus menores exponentes.'
-errores_correccion: |
-  - **Error 1:** Incluir en el factor común letras que no están presentes en todos los términos (incluir $z$ cuando un término no tiene $z$). **Cómo corregirlo:** Las letras del factor común **DEBEN ESTAR OBLIGATORIAMENTE EN TODOS LOS TÉRMINOS**.
-  - **Error 2:** Seleccionar el mayor exponente de las variables en lugar del menor (elegir $x^5$ en lugar de $x^2$). **Cómo corregirlo:** Se debe **ELEGIR SIEMPRE EL MENOR EXPONENTE CON EL QUE FIGURA LA VARIABLE**.
+- 'Paso 1: Calcular el Máximo Común Divisor (MCD) de los coeficientes numéricos del polinomio.'
+- 'Paso 2: Identificar las letras que aparecen en todos y cada uno de los sumandos.'
+- 'Paso 3: Seleccionar para cada letra común el menor exponente con el que figura en el polinomio.'
+- 'Paso 4: Multiplicar el MCD numérico por las letras comunes con sus menores exponentes.'
+errores_correccion: '- **Error 1:** Incluir en el factor común letras que no están presentes en todos los términos (incluir
+  $z$ cuando un término no tiene $z$). **Cómo corregirlo:** Las letras del factor común **DEBEN ESTAR OBLIGATORIAMENTE EN
+  TODOS LOS TÉRMINOS**.
+
+  - **Error 2:** Seleccionar el mayor exponente de las variables en lugar del menor (elegir $x^5$ en lugar de $x^2$). **Cómo
+  corregirlo:** Se debe **ELEGIR SIEMPRE EL MENOR EXPONENTE CON EL QUE FIGURA LA VARIABLE**.
+
+  '
 ejemplos:
-  - titulo: 'MCD numérico'
-    enunciado: 'Para los coeficientes $14, 21, 35$, ¿es el MCD numérico igual a $7$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, 7 es el mayor divisor de 14, 21 y 35.'
-  - titulo: 'Variable no común'
-    enunciado: 'En el polinomio $x^2 y + x^3$, ¿forma la variable $y$ parte del factor común monomio?'
-    respuesta: 'No'
-    solucion_pasos:
-      - 'No, $y$ no está presente en el segundo término.'
-  - titulo: 'Menor exponente'
-    enunciado: 'Entre $m^6, m^4, m^2$, ¿es $m^2$ la componente literal del factor común?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, 2 es el menor exponente.'
-  - titulo: 'Factor común unificado'
-    enunciado: 'En $9a^3 - 6a^2$, ¿es $3a^2$ el factor común monomio completo?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $\operatorname{MCD}(9,6)=3$ y menor exponente $a^2 \implies 3a^2$.'
+- titulo: MCD numérico
+  enunciado: Para los coeficientes $14, 21, 35$, ¿es el MCD numérico igual a $7$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, 7 es el mayor divisor de 14, 21 y 35.
+- titulo: Variable no común
+  enunciado: En el polinomio $x^2 y + x^3$, ¿forma la variable $y$ parte del factor común monomio?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, $y$ no está presente en el segundo término.
+- titulo: Menor exponente
+  enunciado: Entre $m^6, m^4, m^2$, ¿es $m^2$ la componente literal del factor común?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, 2 es el menor exponente.
+- titulo: Factor común unificado
+  enunciado: En $9a^3 - 6a^2$, ¿es $3a^2$ el factor común monomio completo?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $\operatorname{MCD}(9,6)=3$ y menor exponente $a^2 \implies 3a^2$.
 errores_frecuentes:
-  - 'Incluir en el factor común variables que no se encuentran repetidas en todos los sumandos.'
-  - 'Seleccionar el exponente máximo de las letras en lugar del exponente mínimo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Elegir un divisor numérico que no sea el Máximo Común Divisor (por ejemplo, elegir 2 en lugar de 4).'
-  - 'La parte numérica o la parte literal no es incluida al armar el factor común.'
+- Incluir en el factor común variables que no se encuentran repetidas en todos los sumandos.
+- Seleccionar el exponente máximo de las letras en lugar del exponente mínimo.
+- Elegir un divisor numérico que no sea el Máximo Común Divisor (por ejemplo, elegir 2 en lugar de 4).
+- La parte numérica o la parte literal no es incluida al armar el factor común.
+- Olvidar verificar la presencia de la variable en todos los términos del polinomio.
 afirmaciones_verdaderas:
-  - 'El factor común monomio es el producto del MCD de los coeficientes numéricos por las variables comunes elevadas al menor exponente.'
-  - 'Una variable sólo forma parte del factor común si está presente en todos los términos del polinomio.'
-al_terminar_debes_poder: 'Reconocer el factor común monomio de cualquier polinomio hallando el MCD numérico y los menores exponentes comunes.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- El factor común monomio es el producto del MCD de los coeficientes numéricos por las variables comunes elevadas al menor
+  exponente.
+- Una variable sólo forma parte del factor común si está presente en todos los términos del polinomio.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/reconocimiento-del-factor-comun-monomio-resumen.svg)
+
+
+  QUÉ: Reconocer el factor común monomio de cualquier polinomio hallando el MCD numérico y los menores exponentes comunes.
+
+  CÓMO: Calcular $M = \operatorname{MCD}(c_1, \dots, c_k) \cdot \prod x_j^{\min(\alpha_{i,j})}$ seleccionando los divisores
+  comunes máximos y las variables presentes en todos los sumandos con su menor exponente.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

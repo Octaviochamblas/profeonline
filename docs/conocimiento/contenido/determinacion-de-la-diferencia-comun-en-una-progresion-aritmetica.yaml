@@ -1,105 +1,115 @@
 semantic_id: MAT.NUM.PROG_ARITMETICA.DIFERENCIA_COMUN
-resumen_inicial: 'La determinación de la diferencia común $d$ en una progresión aritmética se calcula mediante la resta directa entre dos términos consecutivos ($d = a_{n+1} - a_n$) o a partir de dos términos no consecutivos arbitrarios: $d = \frac{a_k - a_m}{k - m}$.'
+resumen_inicial: 'La determinación de la diferencia común $d$ calcula la tasa de cambio aditiva constante como la resta entre términos consecutivos $d = a_{n+1} - a_n$ o mediante la razón $d = \frac{a_q - a_p}{q - p}$.'
 explicacion_simple: |
-  Para hallar la **diferencia común ($d$)** de una progresión aritmética:
-  - Si tienes términos seguidos (por ejemplo, el término 3 que vale 11 y el término 4 que vale 15):
-    Simplemente restas el posterior menos el anterior: $d = 15 - 11 = 4$.
-  - Si los términos **no están seguidos** (por ejemplo, sabes que el término $a_2 = 8$ y el término $a_6 = 20$):
-    Divides la resta de sus valores entre la resta de sus posiciones:
-    $$d = \frac{a_6 - a_2}{6 - 2} = \frac{20 - 8}{4} = \frac{12}{4} = 3$$
+  La **diferencia común** ($d$) es el tamaño del paso entre los números de la progresión:
+  - Si tienes términos seguidos: simplemente restas el de la derecha menos el de la izquierda:
+    $$d = a_2 - a_1$$
+  - Si tienes términos separados (por ejemplo, el término 3 y el término 7): divides la diferencia de sus valores entre la distancia de sus posiciones:
+    $$d = \frac{a_7 - a_3}{7 - 3}$$
+  - Si los números van subiendo, $d$ es positiva ($+$); si van bajando, $d$ es negativa ($-$).
+
+  ![Determinación de la diferencia común](/static/img/nodos/determinacion-de-la-diferencia-comun-en-una-progresion-aritmetica-intro.svg?v=2)
 explicacion_formal: |
   ### Definición formal
-  La **diferencia común $d$** es la pendiente de cambio constante de una progresión aritmética.
+  En una progresión aritmética $(a_n)_{n \ge 1}$, la **diferencia común ($d$)** es el invariante aditivo definido por:
+  $$d = a_{k+1} - a_k \quad \forall k \in \mathbb{N}$$
 
-  ### Métodos de Cálculo
-  1. **A partir de términos consecutivos**:
-     $$d = a_{n+1} - a_n \quad (\forall n \ge 1)$$
-  2. **A partir de dos términos arbitrarios $a_m$ y $a_k$ (con $k \neq m$)**:
-     Dado que $a_k = a_1 + (k-1)d$ y $a_m = a_1 + (m-1)d$:
-     $$a_k - a_m = (k - m)d \implies d = \frac{a_k - a_m}{k - m}$$
+  ### Fórmula General para Términos No Consecutivos
+  Dados dos términos cualesquiera $a_p$ y $a_q$ con índices $p, q \in \mathbb{N}$ ($q \neq p$):
+  $$a_q = a_p + (q - p)d \implies d = \frac{a_q - a_p}{q - p}$$
+  Esta fórmula corresponde a la pendiente discreta de la recta que conecta los puntos $(p, a_p)$ y $(q, a_q)$ en el plano cartesiano.
 
-  ### Propiedad de la Pendiente Lineal
-  El valor de $d$ coincide exactamente con la pendiente $m$ de la función afín $f(x) = dx + (a_1 - d)$ que interpola la progresión en los números reales.
+  ### Propiedades del Signo
+  - $a_q > a_p$ para $q > p \implies d > 0$ (Creciente).
+  - $a_q < a_p$ para $q > p \implies d < 0$ (Decreciente).
 
   ### Síntesis didáctica
-  - Términos consecutivos: $d = a_{n+1} - a_n$.
-  - Términos distantes: $d = \frac{a_k - a_m}{k - m}$.
+  - Caso consecutivo: $d = a_2 - a_1$.
+  - Caso general: $d = \frac{a_q - a_p}{q - p}$.
 definiciones_clave: |
-  - **Diferencia común ($d$)**: Constante aditiva que marca el incremento o decremento por período en una P.A.
-  - **Intervalo posicional ($k - m$)**: Cantidad de saltos o pasos existentes entre las posiciones $m$ y $k$.
-  - **Variación de valor ($a_k - a_m$)**: Cambio numérico acumulado entre los términos $a_m$ y $a_k$.
+  - **Diferencia común ($d$)**: Valor constante que se suma a cada término para generar el siguiente.
+  - **Pendiente discreta**: Cociente entre la variación de los valores y la variación de las posiciones ordinales.
+  - **Términos no consecutivos**: Términos de la sucesión separados por más de una posición ($q - p > 1$).
 propiedades_relaciones: |
-  - **Invarianza del cociente**: La razón $\frac{a_k - a_m}{k - m}$ entrega exactamente la misma cifra $d$ independientemente del par de términos elegidos.
-  - **Relación con la diferencia en $N$ pasos**: Para avanzar $N$ casillas en la progresión, se debe sumar $N \cdot d$ al término inicial: $a_{m+N} = a_m + N \cdot d$.
+  - **Invarianza de cálculo**: La diferencia común calculada entre cualquier par de términos congruentes produce exactamente el mismo valor real $d$.
+  - **Número de pasos aditivos**: Entre $a_p$ y $a_q$ existen exactamente $q - p$ adiciones de la diferencia $d$.
 ejemplo_guiado:
-  enunciado: 'En una progresión aritmética se conoce que el tercer término es $a_3 = 14$ y el octavo término es $a_8 = 39$. Determina el valor de la diferencia común $d$.'
+  enunciado: 'En una progresión aritmética, el tercer término es $a_3 = 11$ y el séptimo término es $a_7 = 27$. Determina el valor de la diferencia común $d$ y clasifica la progresión.'
+  imagen: '/static/img/nodos/determinacion-de-la-diferencia-comun-en-una-progresion-aritmetica-ejemplos.svg?v=2'
   pasos:
-    - 'Paso 1: Identificamos los datos: $m=3, a_3=14$ y $k=8, a_8=39$.'
-    - 'Paso 2: Aplicamos la fórmula para términos no consecutivos: $d = \frac{a_8 - a_3}{8 - 3}$.'
-    - 'Paso 3: Restamos los valores en el numerador: $a_8 - a_3 = 39 - 14 = 25$.'
-    - 'Paso 4: Restamos las posiciones en el denominador: $8 - 3 = 5$. Dividimos: $d = \frac{25}{5} = 5$. La diferencia común es **$d = 5$**.'
+    - 'Paso 1: Identificamos los datos: $p = 3, a_3 = 11, q = 7, a_7 = 27$.'
+    - 'Paso 2: Aplicamos la fórmula para términos distantes: $d = \frac{a_7 - a_3}{7 - 3}$.'
+    - 'Paso 3: Sustituimos los valores numéricos: $d = \frac{27 - 11}{4} = \frac{16}{4} = 4$.'
+    - 'Paso 4: Como $d = 4 > 0$, la diferencia común es **$d = 4$** y la progresión es creciente.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la diferencia común $d$ dados dos términos no consecutivos $a_m$ y $a_k$?'
+    question: '¿Cuál es la fórmula para calcular la diferencia común $d$ a partir de dos términos distantes $a_p$ y $a_q$ ($q > p$)?'
     choices:
-      - {text: 'Dividir la resta de los valores entre la resta de sus posiciones ($d = \frac{a_k - a_m}{k - m}$)', is_correct: true}
-      - {text: 'Multiplicar los valores de ambos términos y dividir por 2', is_correct: false}
-      - {text: 'Sumar las posiciones $k+m$ y restar el primer término', is_correct: false}
-      - {text: 'Elevar el segundo término al cuadrado y restar el primero', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir la resta de los valores entre la resta de sus posiciones ($d = \frac{a_k - a_m}{k - m}$)''. Sale de aislar $d$ en $a_k - a_m = (k-m)d$.'
+      - {text: '$d = \frac{a_q - a_p}{q - p}$', is_correct: true}
+      - {text: '$d = \frac{a_q + a_p}{q + p}$', is_correct: false}
+      - {text: '$d = (a_q - a_p) \cdot (q - p)$', is_correct: false}
+      - {text: '$d = a_q - a_p$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$d = \frac{a_q - a_p}{q - p}$''. Representa la razón entre el incremento del valor y la distancia entre posiciones.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una progresión aritmética $a_2 = 10$ y $a_5 = 22$, ¿cuál es el valor de la diferencia común $d$?'
+    question: 'En la progresión $(18, 14, 10, 6, \dots)$, ¿cuál es el valor de la diferencia común $d$?'
     choices:
-      - {text: '$d = 4$, calculando $\frac{22 - 10}{5 - 2} = \frac{12}{3} = 4$', is_correct: true}
-      - {text: '$d = 12$, restando únicamente los valores', is_correct: false}
-      - {text: '$d = 3$, dividiendo entre el número de posición', is_correct: false}
-      - {text: '$d = 6$, calculando la mitad de 12', is_correct: false}
-    explanation: 'La alternativa correcta es ''$d = 4$, calculando $\frac{22 - 10}{5 - 2} = \frac{12}{3} = 4$''. $d = 12 / 3 = 4$.'
+      - {text: '$-4$, calculando $14 - 18 = -4$', is_correct: true}
+      - {text: '$+4$, restando en orden invertido$', is_correct: false}
+      - {text: '$-2$', is_correct: false}
+      - {text: '$18$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$-4$, calculando $14 - 18 = -4$''. Al ser decreciente, la resta del segundo término menos el primero da $14 - 18 = -4$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar si los términos proporcionados son consecutivos o distantes.'
-  - 'Paso 2: Para términos consecutivos, calcular $d = a_{n+1} - a_n$.'
-  - 'Paso 3: Para términos distantes $a_m$ y $a_k$, calcular la variación de valor $(a_k - a_m)$ y el intervalo de posiciones $(k - m)$.'
-  - 'Paso 4: Calcular el cociente $d = \frac{a_k - a_m}{k - m}$ asegurando la coherencia de signos.'
+  - 'Paso 1: Identificar los términos dados y sus respectivas posiciones $(p, a_p)$ y $(q, a_q)$.'
+  - 'Paso 2: Restar los valores de los términos: $\Delta a = a_q - a_p$.'
+  - 'Paso 3: Restar las posiciones ordinales correspondientes: $\Delta n = q - p$.'
+  - 'Paso 4: Dividir $\Delta a / \Delta n$ para obtener el valor de la diferencia común $d$.'
 errores_correccion: |
-  - **Error 1:** Invertir las posiciones en el denominador al calcular términos distantes (ej: hacer $\frac{a_8 - a_3}{3 - 8}$). **Cómo corregirlo:** El orden en el denominador debe coincidir exactamente con el numerador: **$d = \frac{a_k - a_m}{k - m}$**.
-  - **Error 2:** Dividir por la posición $k$ en lugar de la diferencia de posiciones $(k-m)$. **Cómo corregirlo:** Se debe **restar las dos posiciones en el denominador: $k - m$**.
+  - **Error 1:** Restar el término mayor menos el menor sin respetar el orden de los subíndices (perdiendo el signo negativo). **Cómo corregirlo:** La resta debe mantener el orden estricto **$a_q - a_p$ dividido por $q - p$**.
+  - **Error 2:** Dividir los términos ($a_2 / a_1$) creyendo que la diferencia es un cociente. **Cómo corregirlo:** En progresiones aritméticas **la diferencia se obtiene restando**, no dividiendo.
 ejemplos:
-  - titulo: 'Diferencia con consecutivos'
-    enunciado: 'Si $a_4 = 18$ y $a_5 = 23$, ¿la diferencia es $d = 23 - 18 = 5$?'
+  - titulo: 'Diferencia con términos consecutivos'
+    enunciado: 'Para la PA $(5, 12, 19, 26)$, ¿cuál es la diferencia común?'
     alternativas:
-      - 'Sí, restando el término 5 menos el término 4'
-      - 'No, la diferencia es 18'
-      - 'No, la diferencia es 23'
-    respuesta: 'Sí, restando el término 5 menos el término 4'
+      - '$7$'
+      - '$5$'
+      - '$-7$'
+    respuesta: '$7$'
     solucion_pasos:
-      - '1. Aplicamos $d = a_5 - a_4$.'
-      - '2. $d = 23 - 18 = 5$.'
-  - titulo: 'Diferencia con términos distantes'
-    enunciado: 'Si $a_1 = 4$ y $a_4 = 16$, ¿la diferencia es $d = \frac{16 - 4}{4 - 1} = \frac{12}{3} = 4$?'
+      - '1. $d = a_2 - a_1 = 12 - 5 = 7$.'
+  - titulo: 'Diferencia con términos separados'
+    enunciado: 'Si $a_2 = 10$ y $a_6 = 22$, ¿cuál es la diferencia común $d$?'
+    alternativas:
+      - '$3$'
+      - '$4$'
+      - '$12$'
+    respuesta: '$3$'
+    solucion_pasos:
+      - '1. $d = (22 - 10) / (6 - 2) = 12 / 4 = 3$.'
+  - titulo: 'Diferencia negativa'
+    enunciado: 'Si $a_1 = 30$ y $a_4 = 18$, ¿la diferencia común es $d = -4$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $d = 12 / 3 = 4$.'
-  - titulo: 'Diferencia negativa con distantes'
-    enunciado: 'Si $a_2 = 20$ y $a_6 = 8$, ¿la diferencia es $d = \frac{8 - 20}{6 - 2} = \frac{-12}{4} = -3$?'
+      - '1. $d = (18 - 30) / (4 - 1) = -12 / 3 = -4$.'
+  - titulo: 'Diferencia fraccionaria'
+    enunciado: 'Para $a_1 = 1$ y $a_3 = 2$, ¿la diferencia común es $d = \frac{1}{2}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $d = -12 / 4 = -3$.'
-  - titulo: 'Diferencia nula'
-    enunciado: 'Si $a_3 = 7$ y $a_9 = 7$, ¿la diferencia es $d = \frac{7 - 7}{9 - 3} = 0$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $0 / 6 = 0$.'
+      - '1. $d = (2 - 1) / (3 - 1) = 1/2$.'
 errores_frecuentes:
-  - 'Invertir el orden del subíndice en el denominador distorsionando el signo de la diferencia común.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Dividir el valor del término distante por su posición sin restar el término inicial.'
-  - 'La diferencia entre términos no consecutivos es siempre un número entero positivo.'
+  - 'La diferencia común se calcula dividiendo el término posterior entre el término anterior en una progresión aritmética.'
+  - 'Al calcular $d$ entre términos no consecutivos se omite dividir por la distancia entre las posiciones $q - p$.'
+  - 'La diferencia común de una progresión decreciente se considera positiva suprimiendo el signo menos.'
+  - 'La diferencia común calculada entre los términos $a_1$ y $a_2$ puede ser distinta a la calculada entre $a_5$ y $a_6$ en una misma PA.'
+  - 'La diferencia común $d$ no puede ser un número fraccionario.'
 afirmaciones_verdaderas:
-  - 'La diferencia común en una P.A. dados dos términos distantes $a_m$ y $a_k$ es $d = \frac{a_k - a_m}{k - m}$.'
-  - 'El valor de la diferencia común $d$ puede ser positivo, negativo o igual a cero.'
-al_terminar_debes_poder: 'Calcular la diferencia común $d$ de una progresión aritmética utilizando términos consecutivos o distantes.'
-fuente: 'Currículum Nacional MINEDUC y elaboration pedagógica ProfeOnline.'
+  - 'La diferencia común en una PA se calcula mediante $d = \frac{a_q - a_p}{q - p}$ para cualquier par de términos con posiciones $q \neq p$.'
+  - 'La diferencia común $d$ es numéricamente igual a la pendiente de la recta discreta que modela a la progresión aritmética.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/determinacion-de-la-diferencia-comun-en-una-progresion-aritmetica-resumen.svg?v=2)
+
+  QUÉ: Determinar la diferencia común $d$ de una progresión aritmética a partir de términos consecutivos o distantes.
+  CÓMO: Aplicar el cociente de incrementos $d = \frac{a_q - a_p}{q - p}$ preservando los signos algebraicos de la variación.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

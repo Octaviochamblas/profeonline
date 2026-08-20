@@ -1,106 +1,116 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.CALCULO_INTERES
-resumen_inicial: 'El cálculo del interés ganado en capitalización compuesta determina la utilidad neta $I$ mediante la resta entre el monto final y el capital inicial: $I = M - C = C \cdot \left[(1 + i)^n - 1\right]$.'
+resumen_inicial: 'El cálculo del interés ganado en capitalización compuesta evalúa el beneficio neto restando el principal al monto acumulado: $I = M - C = C \cdot [(1 + i)^n - 1]$.'
 explicacion_simple: |
-  Para saber **únicamente cuánto dinero ganaste de intereses** (sin incluir tu capital original):
-  1. Calculas primero el monto final total acumulado $M = C \cdot (1 + i)^n$.
-  2. Le restas el dinero original que pusiste $C$: $I = M - C$.
-  Por ejemplo, si invertiste $\$100.000$ y al cabo de 3 años tienes un monto final de $\$133.100$, la ganancia pura en intereses es $\$133.100 - \$100.000 = \$33.100$. También puedes usar la fórmula directa multiplicando el capital por la expresión $[(1+i)^n - 1]$.
+  Si colocas un dinero $C$ en el banco y al final del plazo retiras un monto total $M$, la ganancia que obtuviste por intereses es simplemente la **diferencia entre lo que retiraste y lo que depositaste al inicio**.
+  Por ejemplo, si depositaste $\$300.000$ y al cabo de 2 años tienes $\$363.000$, tu interés ganado fue $\$363.000 - $\$300.000$ = $\$63.00$0$.
+
+  ![Interés ganado en capitalización compuesta](/static/img/nodos/calculo-del-interes-ganado-en-capitalizacion-compuesta-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **interés ganado o costo financiero acumulado $I$** bajo régimen de capitalización compuesta es la diferencia entre el valor futuro $M$ y el principal original $C$:
+  El **interés total devengado $I$** en un régimen de interés compuesto es el excedente financiero producido por el capital $C$ al término de $n$ períodos de capitalización a la tasa periódica $i$:
   $$I = M - C$$
-
-  ### Expresión en función del Capital Inicial
-  Sustituyendo la fórmula del monto $M = C \cdot (1 + i)^n$:
+  Sustituyendo la expresión del monto compuesto $M = C \cdot (1 + i)^n$:
   $$I = C \cdot (1 + i)^n - C = C \cdot \left[(1 + i)^n - 1\right]$$
   donde:
-  - $[(1 + i)^n - 1]$ es el **factor de interés compuesto neto**.
-  - $i$ es la tasa periódica efectiva.
-  - $n$ es el número total de períodos de capitalización.
-
-  ### Comparación de Rendimientos por Período
-  A diferencia del régimen simple (donde la ganancia de cada período es fija $I_k = C \cdot i$), en capitalización compuesta la ganancia del período $k$ es estrictamente mayor que la del período $k-1$:
-  $$\Delta I_k = M_k - M_{k-1} = C \cdot i \cdot (1 + i)^{k-1}$$
+  - $\left[(1 + i)^n - 1\right]$ es el **factor de interés compuesto**.
 
   ### Síntesis didáctica
-  - Ecuación por resta: $I = M - C$.
-  - Ecuación por factor neto: $I = C \cdot \left[(1 + i)^n - 1\right]$.
+  - Ecuación por diferencia: $I = M - C$.
+  - Ecuación factorizada directa: $I = C \cdot \left[(1 + i)^n - 1\right]$.
 definiciones_clave: |
-  - **Interés ganado ($I$)**: Ganancia monetaria neta resultante del proceso de capitalización.
-  - **Factor de interés neto**: Término $[(1 + i)^n - 1]$ que escala el capital para entregar solo la utilidad.
-  - **Margen de rentabilidad sobre el principal**: Razón $\frac{I}{C} = (1 + i)^n - 1$.
+  - **Interés devengado ($I$)**: Rentabilidad neta generada exclusivamente por la capitalización del principal.
+  - **Factor de interés compuesto**: Expresión adimensional $[(1+i)^n - 1]$ que escala directamente el capital inicial.
 propiedades_relaciones: |
-  - **Crecimiento acelerado**: El interés generado en el período $n$ es mayor que el generado en cualquier período anterior debido a la acumulación de la base.
-  - **Independencia del capital depositado**: La tasa de rendimiento relativo $\frac{I}{C}$ depende únicamente de la tasa $i$ y del número de períodos $n$.
+  - **Descomposición del monto**: El monto final siempre satisface $M = C + I$.
+  - **Crecimiento no lineal del interés**: El interés generado en el período $k+1$ es estrictamente mayor que el generado en el período $k$ ($I_{k+1} = I_k \cdot (1+i)$).
 ejemplo_guiado:
-  enunciado: 'Un inversionista deposita $\$500.000$ a una tasa del $10\%$ anual de interés compuesto durante $2$ años. Calcula únicamente el monto del interés ganado.'
+  enunciado: 'Un capital de $\$300.000$ se deposita al $10\%$ de interés compuesto anual durante $2$ años. Calcula el interés total ganado.'
+  imagen: '/static/img/nodos/calculo-del-interes-ganado-en-capitalizacion-compuesta-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $C = 500.000$, tasa decimal $i = 0,10$ y períodos $n = 2$.'
-    - 'Paso 2: Calculamos el monto acumulado final $M = 500.000 \cdot (1,10)^2 = 500.000 \cdot 1,21 = 605.000$.'
-    - 'Paso 3: Restamos el capital inicial al monto acumulado: $I = M - C = 605.000 - 500.000$.'
-    - 'Paso 4: Calculamos: $I = 105.000$. El interés neto ganado es de **$\$105.000$**.'
+    - 'Paso 1: Identificamos $C = 300.000$, tasa decimal $i = 0,10$ y períodos $n = 2$.'
+    - 'Paso 2: Calculamos el monto final: $M = 300.000 \cdot (1 + 0,10)^2 = 300.000 \cdot 1,21 = 363.000$.'
+    - 'Paso 3: Restamos el capital inicial: $I = M - C = 363.000 - 300.000 = 63.000$.'
+    - 'Paso 4: Conclusión: El interés total ganado es de **$\$63.000$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular directamente el interés neto ganado $I$ sin obtener previamente la cifra del monto final?'
+    question: '¿Cuál es la fórmula factorizada para calcular directamente el interés ganado $I$ en régimen compuesto?'
     choices:
-      - {text: 'Multiplicar el capital inicial por el factor neto ($I = C \cdot \left[(1 + i)^n - 1\right]$)', is_correct: true}
+      - {text: 'Multiplicar el capital por el factor $[(1+i)^n - 1]$ ($I = C \cdot [(1+i)^n - 1]$)', is_correct: true}
       - {text: 'Multiplicar el capital por la tasa y el tiempo ($I = C \cdot i \cdot n$)', is_correct: false}
-      - {text: 'Restar la tasa decimal al capital inicial', is_correct: false}
-      - {text: 'Dividir el capital entre el número de períodos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Multiplicar el capital inicial por el factor neto ($I = C \cdot \left[(1 + i)^n - 1\right]$)''. Factoriza $C$ en $M - C$.'
+      - {text: 'Dividir el monto final entre el capital inicial', is_correct: false}
+      - {text: 'Elevar el capital a la potencia $n$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Multiplicar el capital por el factor $[(1+i)^n - 1]$ ($I = C \cdot [(1+i)^n - 1]$)''. Se factoriza $C$ de $M - C$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una inversión de $\$200.000$ alcanza un monto final de $\$242.000$ a interés compuesto, ¿cuánto fue el interés ganado?'
+    question: 'Si inviertes $\$100.000$ al $20\%$ anual compuesto durante $2$ años ($(1,20)^2 = 1,44$), ¿cuánto interés ganas?'
     choices:
-      - {text: '$\$42.000$, restando el monto final menos el capital inicial ($242.000 - 200.000 = 42.000$)', is_correct: true}
-      - {text: '$\$242.000$, entregando el monto final', is_correct: false}
-      - {text: '$\$20.000$, dividiendo por dos', is_correct: false}
-      - {text: '$\$442.000$, sumando ambas cifras', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$42.000$, restando el monto final menos el capital inicial ($242.000 - 200.000 = 42.000$)''. $I = M - C$.'
+      - {text: '$\$44.000$, calculando $100.000 \cdot (1,44 - 1) = 44.000$', is_correct: true}
+      - {text: '$\$144.000$, confundiendo el interés con el monto final', is_correct: false}
+      - {text: '$\$40.000$, usando interés simple', is_correct: false}
+      - {text: '$\$20.000$, calculando solo 1 año', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$44.000$, calculando $100.000 \cdot (1,44 - 1) = 44.000$''. $I = 144.000 - 100.000 = $\$44.00$0$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Calcular el monto acumulado total $M = C \cdot (1 + i)^n$.'
-  - 'Paso 2: Restar el capital inicial $C$ al monto final obtenido ($I = M - C$).'
-  - 'Paso 3: Alternativamente, evaluar el factor neto $[(1 + i)^n - 1]$ y multiplicarlo por el capital $C$.'
-  - 'Paso 4: Expresar el interés ganado en unidades monetarias.'
+  - 'Paso 1: Identificar capital inicial $C$, tasa decimal $i$ y plazo $n$.'
+  - 'Paso 2: Calcular el monto acumulado $M = C \cdot (1 + i)^n$.'
+  - 'Paso 3: Restar el capital inicial al monto ($I = M - C$).'
+  - 'Paso 4: Alternativamente, calcular $I = C \cdot [(1 + i)^n - 1]$.'
 errores_correccion: |
-  - **Error 1:** Confundir el monto acumulado final $M$ con la respuesta del interés ganado $I$. **Cómo corregirlo:** La ganancia neta exige **restar el capital inicial: $I = M - C$**.
-  - **Error 2:** Usar la fórmula de interés simple $C \cdot i \cdot n$ para calcular las ganancias. **Cómo corregirlo:** En régimen compuesto los intereses crecen; la fórmula correcta es **$I = C \cdot [(1+i)^n - 1]$**.
+  - **Error 1:** Entregar el monto acumulado $M$ como respuesta cuando se solicita el interés ganado. **Cómo corregirlo:** Debes **restar siempre el capital inicial**: **$I = M - C$**.
+  - **Error 2:** Restar el 1 antes de elevar a la potencia (hacer $(1+i-1)^n = i^n$). **Cómo corregirlo:** La potencia se calcula **PRIMERO sobre $(1+i)$** y luego se resta 1 al resultado.
 ejemplos:
-  - titulo: 'Cálculo de interés neto a 3 años'
-    enunciado: 'Para $\$100.000$ al $10\%$ compuesto por 3 años ($M = \$133.100$), ¿el interés ganado es $\$33.100$?'
+  - titulo: 'Interés compuesto a 2 años'
+    enunciado: 'Si $C = $\$200.00$0$, $i = 0,10$ anual y $n = 2$ años ($(1,10)^2 = 1,21$), ¿cuál es el interés ganado?'
     alternativas:
-      - 'Sí, pues $I = 133.100 - 100.000 = 33.100$'
-      - 'No, es $\$30.000$'
-      - 'No, es $\$133.100$'
-    respuesta: 'Sí, pues $I = 133.100 - 100.000 = 33.100$'
+      - '$\$42.000$'
+      - '$\$40.000$'
+      - '$\$242.000$'
+    respuesta: '$\$42.000$'
     solucion_pasos:
-      - '1. Monto $M = 100.000 \cdot 1,1^3 = 133.100$.'
-      - '2. Interés $I = 133.100 - 100.000 = 33.100$.'
-  - titulo: 'Interés neto con factor directo'
-    enunciado: 'Para $\$200.000$ al $5\%$ por 2 años, ¿el factor neto es $1,05^2 - 1 = 0,1025$ y el interés es $\$20.500$?'
-    respuesta: 'Sí'
+      - '1. $M = 200.000 \cdot 1,21 = 242.000$.'
+      - '2. $I = 242.000 - 200.000 = $\$42.00$0$.'
+  - titulo: 'Interés con tasa del 5%'
+    enunciado: 'Para $\$100.000$ al $5\%$ anual compuesto en 2 años ($(1,05)^2 = 1,1025$), ¿cuánto es el interés?'
+    alternativas:
+      - '$\$10.250$'
+      - '$\$10.000$'
+      - '$\$110.250$'
+    respuesta: '$\$10.250$'
     solucion_pasos:
-      - 'Sí. $200.000 \cdot 0,1025 = \$20.500$.'
-  - titulo: 'Ganancia en el segundo período'
-    enunciado: 'En el ejemplo anterior, ¿el interés del año 1 es $\$10.000$ y el del año 2 es $\$10.500$?'
-    respuesta: 'Sí'
+      - '1. $I = 100.000 \cdot (1,1025 - 1) = 100.000 \cdot 0,1025 = $\$10.25$0$.'
+  - titulo: 'Despeje del capital inicial desde el interés'
+    enunciado: 'Si el interés ganado a interés compuesto es $I = $\$21.00$0$ en 2 años al $10\%$ anual, ¿el capital inicial fue $\$100.000$?'
+    alternativas:
+      - 'Sí, pues $C = 21.000 / [(1,10)^2 - 1] = 21.000 / 0,21 = $\$100.00$0$'
+      - 'No, el capital fue $\$210.000$'
+      - 'No, el capital fue $\$50.000$'
+    respuesta: 'Sí, pues $C = 21.000 / [(1,10)^2 - 1] = 21.000 / 0,21 = $\$100.00$0$'
     solucion_pasos:
-      - 'Sí. Año 1: $100.000 \cdot 0,05 = 5.000$. Año 2: $105.000 \cdot 0,05 = 5.250$ (para $100k$). Para $200k$: $10k$ y $10,5k$.'
-  - titulo: 'Porcentaje de ganancia sobre el principal'
-    enunciado: '¿El porcentaje de ganancia sobre el principal es $\frac{I}{C} \cdot 100\%$?'
-    respuesta: 'Sí'
+      - '1. $C = I / [(1+i)^n - 1] = 21.000 / 0,21 = $\$100.00$0$.'
+  - titulo: 'Comparación con ganancia a interés simple'
+    enunciado: '¿El interés ganado a interés compuesto en 3 períodos al $10\%$ supera al interés simple en $\$3.100$ para un capital de $\$100.000$?'
+    alternativas:
+      - 'Sí, pues $I_{\text{comp}} = $\$33.10$0$ e $I_{\text{simp}} = $\$30.00$0$'
+      - 'No, rinden exactamente lo mismo'
+      - 'No, el interés simple es mayor'
+    respuesta: 'Sí, pues $I_{\text{comp}} = $\$33.10$0$ e $I_{\text{simp}} = $\$30.00$0$'
     solucion_pasos:
-      - 'Sí. Mide el rendimiento relativo acumulado.'
+      - '1. $I_{\text{comp}} = 100.000 \cdot (1,331 - 1) = 33.100$.'
+      - '2. $I_{\text{simp}} = 100.000 \cdot 0,10 \cdot 3 = 30.000$.'
+      - '3. Diferencia: $33.100 - 30.000 = $\$3.10$0$.'
 errores_frecuentes:
-  - 'Entregar la cifra del monto acumulado $M$ como respuesta final omitiendo la resta del capital inicial.'
-  - 'Calcular los intereses mediante el producto lineal de interés simple $C \cdot i \cdot n$.'
-  - 'La ganancia de interés acumulado en régimen compuesto permanece constante año a año.'
-  - 'Restar la constante 1 antes de elevar el factor a la potencia del número de períodos.'
-  - 'Dividir el monto final entre el tiempo para intentar hallar el interés ganado.'
+  - 'El valor del monto final acumulado $M$ se entrega como el interés ganado sin restar el capital inicial $C$.'
+  - 'La resta de la constante $1$ se efectúa dentro de la base del paréntesis antes de elevar al exponente $n$.'
+  - 'El interés ganado a interés compuesto se evalúa sumando multiplicativamente los intereses de un solo período.'
+  - 'La cantidad de interés producida en el segundo período es idéntica a la generada en el primer período.'
+  - 'El factor de interés $[(1+i)^n - 1]$ se multiplica por la tasa $i$ en lugar de multiplicar por el capital $C$.'
 afirmaciones_verdaderas:
-  - 'El interés ganado en capitalización compuesta se calcula restando el capital inicial al monto final ($I = M - C$).'
-  - 'La ganancia periódica a interés compuesto es estrictamente creciente a lo largo del tiempo.'
-al_terminar_debes_poder: 'Calcular la ganancia o utilidad neta $I = M - C = C \cdot \left[(1 + i)^n - 1\right]$ en operaciones compuestas.'
+  - 'El interés ganado a interés compuesto es la diferencia entre el monto final y el capital inicial ($I = M - C$).'
+  - 'La fórmula factorizada del interés compuesto corresponde a $I = C \cdot \left[(1 + i)^n - 1\right]$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-del-interes-ganado-en-capitalizacion-compuesta-resumen.svg)
+
+  QUÉ: Calcular el interés neto devengado en operaciones de capitalización compuesta.
+  CÓMO: Evaluar la diferencia $I = M - C$ o aplicar la expresión factorizada $I = C \cdot \left[(1 + i)^n - 1\right]$, aislando el rendimiento del principal.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

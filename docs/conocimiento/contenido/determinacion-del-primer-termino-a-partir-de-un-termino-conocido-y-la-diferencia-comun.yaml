@@ -1,102 +1,114 @@
-semantic_id: MAT.NUM.PROG_ARITMETICA.CALCULO_PRIMER_TERMINO
-resumen_inicial: 'La determinación del primer término $a_1$ en una progresión aritmética retrocede algebraicamente desde un término conocido $a_k$ descontando $(k-1)$ veces la diferencia común $d$: $a_1 = a_k - (k - 1)d$.'
+semantic_id: MAT.NUM.PROG_ARITMETICA.CALCULO_A1
+resumen_inicial: 'La determinación del primer término $a_1$ despeja la fórmula del término general mediante $a_1 = a_k - (k - 1)d$, retrocediendo $k - 1$ pasos desde un término conocido $a_k$.'
 explicacion_simple: |
-  Si no conoces con qué número empieza la lista ($a_1$), pero sabes cuánto vale un término más adelante (por ejemplo, el término $6$ vale $23$) y sabes la diferencia común ($d = 4$):
-  - Sabes que para ir desde el primer término hasta el término $6$ se sumó la diferencia $5$ veces ($(6-1) = 5$).
-  - Por lo tanto, para **volver al inicio**, simplemente le restas $5$ veces la diferencia a ese término:
-    $$a_1 = 23 - (6 - 1) \cdot 4 = 23 - 5 \cdot 4 = 23 - 20 = 3$$
-  El primer término $a_1$ de la lista es $3$.
-explicacion_formal: |
-  ### Definición formal
-  El **primer término $a_1$** de una progresión aritmética se despeja de la ecuación funcional del término $k$-ésimo:
-  $$a_k = a_1 + (k - 1)d \implies a_1 = a_k - (k - 1)d$$
-  donde:
-  - $a_k$ es el valor conocido del término en la posición $k$.
-  - $k$ es el índice de posición del término conocido ($k \in \mathbb{N}$).
-  - $d$ es la diferencia común de la progresión.
+  Si conoces un número de la lista (por ejemplo, el término 12) y sabes cuánto sumas en cada paso ($d$), puedes **retroceder en el tiempo** para descubrir con qué número empezó la progresión ($a_1$):
+  - Desde el término $k$, retrocedes $(k - 1)$ pasos restando la diferencia:
+    $$a_1 = a_k - (k - 1) \cdot d$$
+  - Por ejemplo, si el término $12$ vale $47$ y la diferencia es $d = 4$:
+    $$a_1 = 47 - (12 - 1) \cdot 4 = 47 - 11 \cdot 4 = 47 - 44 = 3$$
+  - ¡El primer término con el que empezó todo es $a_1 = 3$!
 
-  ### Caso con dos términos distantes sin conocer $d$
-  Si no se conoce $d$, se calcula primero $d = \frac{a_k - a_m}{k - m}$ y luego se sustituye en $a_1 = a_k - (k - 1)d$.
+  ![Determinación del primer término](/static/img/nodos/determinacion-del-primer-termino-a-partir-de-un-termino-conocido-y-la-diferencia-comun-intro.svg)
+explicacion_formal: |
+  ### Deducción formal por Despeje
+  Dada la ecuación del término general para el índice $k \in \mathbb{N}$:
+  $$a_k = a_1 + (k - 1)d$$
+  Aplicando las propiedades del inverso aditivo en $\mathbb{R}$, restamos $(k - 1)d$ a ambos miembros:
+  $$a_1 = a_k - (k - 1)d$$
+
+  ### Interpretación Geométrica y Operativa
+  - Se conoce el punto $(k, a_k)$ y la pendiente $d$.
+  - El primer término $a_1$ corresponde a la ordenada en la abscisa $n=1$.
+  - Si la progresión es creciente ($d > 0$), el valor inicial $a_1$ es menor que $a_k$.
+  - Si la progresión es decreciente ($d < 0$), el valor inicial $a_1$ es mayor que $a_k$.
 
   ### Síntesis didáctica
-  - Ecuación de despeje: $a_1 = a_k - (k - 1)d$.
-  - Principio: Retroceder en la sucesión resta $(k-1)$ veces la diferencia común.
+  - Ecuación de despeje: $a_1 = a_k - (k-1)d$.
+  - Principio: Retroceso de $(k-1)$ pasos diferenciales.
 definiciones_clave: |
-  - **Término conocido ($a_k$)**: Cifra dada de la progresión asociada a una posición $k$.
-  - **Retroceso posicional**: Acción algebraica de restar diferencias para hallar términos de menor índice.
-  - **Primer término despejado ($a_1$)**: Punto de origen de la progresión obtenido tras el retroceso.
+  - **Primer término ($a_1$)**: Valor de inicio de la secuencia en la posición ordinal $n=1$.
+  - **Término de referencia ($a_k$)**: Término conocido en una posición cualquiera $k$.
+  - **Retroceso aditivo**: Operación de sustracción de los pasos acumulados $(k-1)d$.
 propiedades_relaciones: |
-  - **Invarianza del origen**: Independientemente de cuál término $a_k$ se utilice en la fórmula ($a_2, a_5, a_{100}$), el cálculo de $a_1$ entregará exactamente la misma cifra única.
-  - **Simetría de traslación**: Avanzar suma diferencias ($a_k = a_1 + (k-1)d$); retroceder resta diferencias ($a_1 = a_k - (k-1)d$).
+  - **Unicidad de la solución**: Para un término $a_k$ y una diferencia $d$ dados, existe un único primer término $a_1 \in \mathbb{R}$.
+  - **Reversibilidad**: Con $a_1$ obtenido, la evaluación de la fórmula general en $n=k$ debe regenerar exactamente el valor $a_k$.
 ejemplo_guiado:
-  enunciado: 'El séptimo término de una progresión aritmética es $a_7 = 45$ y la diferencia común es $d = 6$. Calcula el primer término $a_1$.'
+  enunciado: 'En una progresión aritmética, el vigésimo término es $a_{20} = 98$ y la diferencia común es $d = 5$. Encuentra el primer término $a_1$ y escribe los tres primeros términos.'
+  imagen: '/static/img/nodos/determinacion-del-primer-termino-a-partir-de-un-termino-conocido-y-la-diferencia-comun-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los datos: $k = 7$, $a_7 = 45$ y $d = 6$.'
-    - 'Paso 2: Escribimos la fórmula de despeje para $a_1$: $a_1 = a_7 - (7 - 1) \cdot d$.'
-    - 'Paso 3: Sustituimos los valores numéricos: $a_1 = 45 - 6 \cdot 6$.'
-    - 'Paso 4: Evaluamos el producto y la resta: $a_1 = 45 - 36 = 9$. El primer término es **$a_1 = 9$**.'
+    - 'Paso 1: Identificamos los datos: $k = 20, a_{20} = 98, d = 5$.'
+    - 'Paso 2: Aplicamos la fórmula de despeje: $a_1 = a_{20} - (20 - 1) \cdot 5$.'
+    - 'Paso 3: Realizamos las operaciones: $a_1 = 98 - 19 \cdot 5 = 98 - 95 = 3$.'
+    - 'Paso 4: El primer término es **$a_1 = 3$**, y los tres primeros términos son **$3, 8, 13$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular el primer término $a_1$ si se conoce el término en la posición $k$ ($a_k$) y la diferencia común $d$?'
+    question: 'Si en una PA se conoce que $a_{10} = 45$ y $d = 4$, ¿cuál es la ecuación correcta para hallar el primer término $a_1$?'
     choices:
-      - {text: 'Restar al término conocido el producto de la diferencia por $(k - 1)$: $a_1 = a_k - (k - 1)d$', is_correct: true}
-      - {text: 'Sumar al término conocido el producto $k \cdot d$', is_correct: false}
-      - {text: 'Dividir el término conocido entre el número de posición $k$', is_correct: false}
-      - {text: 'Multiplicar el término conocido por la diferencia $d$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Restar al término conocido el producto de la diferencia por $(k - 1)$: $a_1 = a_k - (k - 1)d$''. Despeja $a_1$ de $a_k = a_1 + (k-1)d$.'
+      - {text: '$a_1 = 45 - 9 \cdot 4 = 45 - 36 = 9$', is_correct: true}
+      - {text: '$a_1 = 45 + 9 \cdot 4 = 81$', is_correct: false}
+      - {text: '$a_1 = 45 - 10 \cdot 4 = 5$', is_correct: false}
+      - {text: '$a_1 = 45 / 4$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_1 = 45 - 9 \cdot 4 = 45 - 36 = 9$''. Se retroceden $(10-1)=9$ pasos multiplicados por la diferencia 4.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una progresión aritmética $a_4 = 18$ y la diferencia es $d = 5$, ¿cuál es el valor del primer término $a_1$?'
+    question: 'En una PA decreciente con $d = -3$, si el octavo término es $a_8 = -5$, ¿cuál es el valor de $a_1$?'
     choices:
-      - {text: '$a_1 = 3$, calculando $18 - (4 - 1) \cdot 5 = 18 - 3 \cdot 5 = 18 - 15 = 3$', is_correct: true}
-      - {text: '$a_1 = 2$, restando $18 - 20$', is_correct: false}
-      - {text: '$a_1 = 33$, sumando en lugar de restar', is_correct: false}
-      - {text: '$a_1 = 8$, calculando $18 - 10$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_1 = 3$, calculando $18 - (4 - 1) \cdot 5 = 18 - 3 \cdot 5 = 18 - 15 = 3$''. $18 - 15 = 3$.'
+      - {text: '$16$, calculando $-5 - 7(-3) = -5 + 21 = 16$', is_correct: true}
+      - {text: '$-26$, restando $-5 - 21 = -26$', is_correct: false}
+      - {text: '$19$', is_correct: false}
+      - {text: '$-15$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$16$, calculando $-5 - 7(-3) = -5 + 21 = 16$''. Al ser decreciente, el primer término debe ser mayor que el término posterior.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el valor del término conocido $a_k$, su posición $k$ y la diferencia común $d$.'
-  - 'Paso 2: Calcular el número de saltos de retroceso $(k - 1)$.'
-  - 'Paso 3: Multiplicar el número de saltos por la diferencia común: $(k - 1) \cdot d$.'
-  - 'Paso 4: Restar dicho producto al valor conocido: $a_1 = a_k - (k - 1)d$.'
+  - 'Paso 1: Identificar el término conocido $a_k$, su posición $k$ y la diferencia común $d$.'
+  - 'Paso 2: Calcular el número de pasos a retroceder: $k - 1$.'
+  - 'Paso 3: Multiplicar $(k - 1) \cdot d$.'
+  - 'Paso 4: Restar este producto al valor del término conocido: $a_1 = a_k - (k - 1)d$.'
 errores_correccion: |
-  - **Error 1:** Sumar la diferencia en lugar de restarla al intentar volver al primer término. **Cómo corregirlo:** Para **retroceder hacia el inicio se debe RESTAR** la acumulación de diferencias.
-  - **Error 2:** Multiplicar por $k$ en lugar de $(k-1)$ al retroceder. **Cómo corregirlo:** La distancia en saltos desde la posición 1 hasta la posición $k$ es **$(k-1)$**.
+  - **Error 1:** Sumar $(k-1)d$ en vez de restarlo al despejar $a_1$. **Cómo corregirlo:** Para retroceder hacia el inicio se debe **restar la acumulación de pasos**: $a_1 = a_k - (k-1)d$.
+  - **Error 2:** Usar $k$ en vez de $(k-1)$ al retroceder. **Cómo corregirlo:** La distancia en pasos desde $a_1$ hasta $a_k$ es exactamente **$k - 1$**.
 ejemplos:
-  - titulo: 'Cálculo de a1 desde a5'
-    enunciado: 'Si $a_5 = 27$ y $d = 4$, ¿el primer término es $a_1 = 27 - 4(4) = 11$?'
+  - titulo: 'Cálculo de $a_1$ con diferencia positiva'
+    enunciado: 'Si $a_{15} = 60$ y $d = 4$, ¿cuál es el primer término $a_1$?'
     alternativas:
-      - 'Sí, pues $27 - 16 = 11$'
-      - 'No, es $7$'
-      - 'No, es $43$'
-    respuesta: 'Sí, pues $27 - 16 = 11$'
+      - '$4$'
+      - '$16$'
+      - '$8$'
+    respuesta: '$4$'
     solucion_pasos:
-      - '1. $a_1 = 27 - (5 - 1) \cdot 4$.'
-      - '2. $a_1 = 27 - 4 \cdot 4 = 27 - 16 = 11$.'
-  - titulo: 'Cálculo de a1 con diferencia negativa'
-    enunciado: 'Si $a_3 = 10$ y $d = -2$, ¿el primer término es $a_1 = 10 - 2(-2) = 10 + 4 = 14$?'
+      - '1. $a_1 = 60 - (15 - 1) \cdot 4 = 60 - 14 \cdot 4 = 60 - 56 = 4$.'
+  - titulo: 'Cálculo de $a_1$ con diferencia negativa'
+    enunciado: 'Si $a_6 = 10$ y $d = -5$, ¿cuál es el primer término $a_1$?'
+    alternativas:
+      - '$35$'
+      - '$-15$'
+      - '$25$'
+    respuesta: '$35$'
+    solucion_pasos:
+      - '1. $a_1 = 10 - 5(-5) = 10 + 25 = 35$.'
+  - titulo: 'Comprobación de valor inicial'
+    enunciado: '¿Si $a_4 = 19$ y $d = 5$, el primer término es $a_1 = 4$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $10 - (3-1)(-2) = 10 - 2(-2) = 10 + 4 = 14$.'
-  - titulo: 'Cálculo de a1 desde a2'
-    enunciado: 'Si el segundo término $a_2 = 9$ y $d = 3$, ¿$a_1 = 9 - 3 = 6$?'
+      - '1. $a_1 = 19 - 3(5) = 19 - 15 = 4$.'
+  - titulo: 'Primer término negativo'
+    enunciado: '¿Una progresión aritmética puede tener un primer término negativo como $a_1 = -12$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_1 = a_2 - d = 9 - 3 = 6$.'
-  - titulo: 'Cálculo de a1 en P.A. de impares'
-    enunciado: 'Si el décimo impar es $a_{10} = 19$ y $d = 2$, ¿$a_1 = 19 - 9(2) = 1$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $19 - 18 = 1$.'
+      - '1. El primer término $a_1$ puede ser cualquier número real.'
 errores_frecuentes:
-  - 'Sumar el producto de la diferencia en lugar de restarlo al retroceder hacia el primer término.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Multiplicar la diferencia común por la posición $k$ completa sin restar 1.'
-  - 'Invertir los signos al trabajar con diferencias comunes negativas en el proceso de retroceso.'
+  - 'Para calcular el primer término $a_1$ se suma $(k-1)d$ al término conocido $a_k$ en lugar de restarlo.'
+  - 'Al despejar el primer término se retroceden $k$ pasos completos en lugar de $(k-1)$ pasos.'
+  - 'El primer término $a_1$ de una PA decreciente es menor que cualquiera de los términos posteriores.'
+  - 'En presencia de una diferencia negativa $d$, se cambia el signo del término conocido $a_k$.'
+  - 'El primer término no puede ser calculado a partir de un término intermedio sin conocer todos los anteriores.'
 afirmaciones_verdaderas:
-  - 'El primer término $a_1$ de una P.A. se calcula mediante la fórmula $a_1 = a_k - (k - 1)d$.'
-  - 'Para retroceder desde la posición $k$ hasta la posición 1 se deben restar $(k - 1)$ diferencias comunes.'
-al_terminar_debes_poder: 'Calcular el primer término $a_1$ de una progresión aritmética a partir de un término conocido $a_k$ y la diferencia $d$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El primer término de una PA se calcula mediante $a_1 = a_k - (k - 1)d$ a partir de cualquier término $a_k$ y su diferencia común $d$.'
+  - 'En una progresión estrictamente decreciente ($d < 0$), el primer término $a_1$ es estrictamente mayor que cualquier término posterior $a_k$ ($k > 1$).'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/determinacion-del-primer-termino-a-partir-de-un-termino-conocido-y-la-diferencia-comun-resumen.svg)
+
+  QUÉ: Determinar el primer término $a_1$ de una progresión aritmética a partir de un término conocido $a_k$ y la diferencia común $d$.
+  CÓMO: Despejar algebraicamente la ecuación general aplicando $a_1 = a_k - (k - 1)d$ considerando la regla de los signos.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

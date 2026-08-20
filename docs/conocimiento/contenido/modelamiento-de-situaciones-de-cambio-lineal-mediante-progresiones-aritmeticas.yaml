@@ -1,106 +1,118 @@
-semantic_id: MAT.NUM.PROG_ARITMETICA.MODELO_CAMBIO_LINEAL
-resumen_inicial: 'El modelamiento de situaciones de cambio lineal mediante progresiones aritméticas traduce problemas del mundo real caracterizados por variaciones aditivas constantes a ecuaciones del tipo $a_n = a_1 + (n - 1)d$ o $S_n$.'
+semantic_id: MAT.NUM.PROG_ARITMETICA.MODELAMIENTO_LINEAL
+resumen_inicial: 'El modelamiento de situaciones de cambio lineal utiliza progresiones aritméticas para representar problemas discretos reales donde una magnitud experimenta aumentos o disminuciones fijas por período.'
 explicacion_simple: |
-  Muchas situaciones de la vida diaria crecen o decrecen en una **cantidad fija por cada período de tiempo** (cambio lineal constante):
-  - **Ahorro fijo**: Si empiezas con $\$10.000$ en tu alcancía y guardas $\$2.000$ todas las semanas, tu dinero forma una progresión aritmética:
-    $$\text{Semana 1: } \$10.000, \quad \text{Semana 2: } \$12.000, \quad \text{Semana 3: } \$14.000$$
-  - **Depreciación constante**: Un auto pierde $\$500.000$ de valor por año.
-  - **Planes de entrenamiento**: Correr $500$ metros adicionales cada día.
-  Cualquier fenómeno que sume o reste una cantidad constante en cada etapa se modela con una P.A.
-explicacion_formal: |
-  ### Definición formal
-  Un fenómeno discreto de cambio lineal en el tiempo $n \in \mathbb{N}$ se define por una tasa de variación instantánea discreta constante:
-  $$\frac{\Delta y}{\Delta n} = d \quad (\text{Constante aditiva})$$
-  Su dinámica temporal se modela mediante el sistema discreto de P.A.:
-  $$y(n) = a_n = a_1 + (n - 1)d$$
-  donde:
-  - $a_1$ es el estado inicial en el período $n=1$.
-  - $d$ es la tasa constante de incremento ($d > 0$) o amortización ($d < 0$).
-  - $n$ representa la etapa, período o ciclo temporal discreto.
+  Muchos problemas de la vida cotidiana siguen una **progresión aritmética**:
+  - **Ahorro con cuota fija**: Si tienes $\$10.000$ en tu alcancía y cada mes agregas $\$2.000$, la cantidad acumulada cada mes es una PA con $d = +\$2.000$.
+  - **Depreciación constante**: Si compras un teléfono en $\$300.000$ y cada año pierde $\$30.000$ de valor, su precio forma una PA con $d = -\$30.000$.
+  - **Filas de un teatro o estadio**: Si la primera fila tiene 20 asientos y cada fila siguiente tiene 2 asientos más, el número de asientos es una PA con $a_1 = 20$ y $d = 2$.
 
-  ### Identificación del modelo adecuado
-  - **Cálculo de estado en la etapa $n$**: Usar término general $a_n = a_1 + (n - 1)d$.
-  - **Cálculo del acumulado total en $n$ etapas**: Usar serie aritmética $S_n = \frac{n(a_1 + a_n)}{2}$.
+  ![Modelamiento de situaciones de cambio lineal](/static/img/nodos/modelamiento-de-situaciones-de-cambio-lineal-mediante-progresiones-aritmeticas-intro.svg)
+explicacion_formal: |
+  ### Definición formal y Proceso de Modelamiento
+  Un fenómeno discreto temporal o espacial $M(t)$ ($t \in \mathbb{N}$) se modela mediante una **progresión aritmética** si su tasa de variación media por período unitario es constante:
+  $$\frac{\Delta M}{\Delta t} = \frac{M(t+1) - M(t)}{1} = d \quad (\text{constante})$$
+
+  ### Etapas del Modelamiento Lineal
+  1. **Identificación de variables y unidades**:
+     - Variable independiente ($n$ o $t$): Período, mes, día, etapa ordinal.
+     - Magnitud ($a_n$): Dinero, distancia, piezas producidas, asientos.
+  2. **Determinación del estado inicial ($a_1$ o condición base)**:
+     - Distinguir entre el valor inicial en $t=0$ ($C_0$) y el valor tras el primer período $t=1$ ($a_1 = C_0 + d$).
+  3. **Identificación de la diferencia ($d$)**:
+     - Incremento fijo $\implies d > 0$.
+     - Desgaste, consumo o retiro fijo $\implies d < 0$.
+  4. **Resolución y extrapolación**:
+     - Valor en el período $n$: $a_n = a_1 + (n - 1)d$.
+     - Acumulación total en $n$ períodos: $S_n = \frac{n(a_1 + a_n)}{2}$.
 
   ### Síntesis didáctica
-  - Estado individual en etapa $n \implies a_n$.
-  - Acumulado total de todas las etapas $\implies S_n$.
+  - Ecuación de estado: $a_n = a_1 + (n - 1)d$.
+  - Ecuación de acumulación: $S_n = \frac{n(a_1 + a_n)}{2}$.
 definiciones_clave: |
-  - **Cambio lineal discreto**: Variación donde el incremento por período $\Delta y$ permanece constante.
-  - **Tasa de variación constante ($d$)**: Magnitud física o financiera que se suma o resta en cada ciclo.
-  - **Acumulación total ($S_n$)**: Consolidado de todas las cantidades producidas o consumidas a lo largo de $n$ períodos.
+  - **Cambio lineal discreto**: Variación cuantitativa donde la magnitud se modifica en una cantidad aditiva fija en cada intervalo regular.
+  - **Tasa de variación constante ($d$)**: Cantidad fija de magnitud añadida o sustraída por unidad de paso.
+  - **Período de capitalización/aporte**: Intervalo temporal regular en el que se ejecuta la adición o sustracción.
 propiedades_relaciones: |
-  - **Isomorfismo con la función afín**: Las situaciones de cambio lineal discreto ($a_n$) corresponden a la restricción entera del dominio de las funciones afines continuas ($f(x) = mx + c$).
-  - **Previsibilidad de estados**: Permite calcular con exactitud estados futuros sin necesidad de simulación paso a paso.
+  - **Diferenciación con el modelo exponencial**: Si el cambio es una cantidad fija en dinero ($\$5.000$/mes), es PA lineal; si el cambio es un porcentaje fijo ($5\%$/mes), es PG exponencial.
+  - **Planificación financiera**: Las PA permiten predecir metas de ahorro y presupuestos a corto y mediano plazo.
 ejemplo_guiado:
-  enunciado: 'Un deportista decide entrenar corriendo $2.000$ metros el primer día, y aumentar $400$ metros su recorrido en cada uno de los días siguientes. Determina cuántos metros correrá el día 15 y el total acumulado de metros recorridos en los 15 días.'
+  enunciado: 'Un estudiante abre una cuenta de ahorro con $\$15.000$ y decide depositar $\$3.500$ al final de cada mes de forma constante. ¿Cuánto dinero habrá depositado en el mes 12 y cuál será el saldo total acumulado al finalizar el primer año (12 meses)?'
+  imagen: '/static/img/nodos/modelamiento-de-situaciones-de-cambio-lineal-mediante-progresiones-aritmeticas-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos las variables del modelo: $a_1 = 2.000$, $d = 400$ y $n = 15$.'
-    - 'Paso 2: Calculamos los metros del día 15 con el término general: $a_{15} = 2.000 + (15 - 1) \cdot 400 = 2.000 + 14 \cdot 400 = 2.000 + 5.600 = 7.600$ metros.'
-    - 'Paso 3: Calculamos la distancia acumulada en los 15 días con la suma: $S_{15} = \frac{15 \cdot (a_1 + a_{15})}{2} = \frac{15 \cdot (2.000 + 7.600)}{2}$.'
-    - 'Paso 4: Evaluamos: $S_{15} = \frac{15 \cdot 9.600}{2} = 15 \cdot 4.800 = 72.000$ metros. El día 15 correrá **$7.600$ m** y en total habrá recorrido **$72.000$ m**.'
+    - 'Paso 1: Identificamos el saldo al final del primer mes: $a_1 = \$15.000 + \$3.500 = \$18.500$.'
+    - 'Paso 2: La diferencia constante de ahorro mensual es $d = \$3.500$.'
+    - 'Paso 3: Calculamos el saldo al mes 12: $a_{12} = a_1 + (12 - 1) \cdot d = \$18.500 + 11 \cdot \$3.500 = \$18.500 + \$38.500 = \$57.000$.'
+    - 'Paso 4: El saldo total al cabo de 12 meses es **$\$57.000$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'En un problema contextualizado, ¿cuándo se debe utilizar la fórmula de la suma $S_n$ en lugar del término general $a_n$?'
+    question: '¿Qué tipo de situación real se modela correctamente mediante una progresión aritmética?'
     choices:
-      - {text: 'Cuando la pregunta pide la cantidad acumulada o total producida durante todos los $n$ períodos', is_correct: true}
-      - {text: 'Cuando se requiere saber el valor exacto alcanzado únicamente en la etapa $n$', is_correct: false}
-      - {text: 'Cuando la diferencia común $d$ es un número negativo', is_correct: false}
-      - {text: 'Cuando la situación no tiene un valor inicial $a_1$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Cuando la pregunta pide la cantidad acumulada o total producida durante todos los $n$ períodos''. $S_n$ representa el gran total acumulado.'
+      - {text: 'Ahorrar una cantidad fija constante de $\$5.000$ todos los meses', is_correct: true}
+      - {text: 'Un capital bancario que gana un $10\%$ de interés compuesto anual', is_correct: false}
+      - {text: 'La reproducción de una colonia de bacterias que se duplica cada hora', is_correct: false}
+      - {text: 'La desintegración radiactiva donde se reduce a la mitad periódicamente', is_correct: false}
+    explanation: 'La alternativa correcta es ''Ahorrar una cantidad fija constante de $\$5.000$ todos los meses''. Las adiciones de cantidades constantes corresponden a modelos aditivos lineales (PA).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Una alcancía contiene $\$5.000$ inicialmente ($n=1$) y se le agregan $\$1.500$ cada semana ($d = 1.500$). ¿Cuánto dinero habrá en la alcancía en la semana 10?'
+    question: 'Un teatro tiene 25 filas. La primera fila tiene 18 asientos y cada fila sucesiva tiene 2 asientos más que la anterior. ¿Cuántos asientos tiene la última fila ($n=25$)?'
     choices:
-      - {text: '$\$18.500$, calculando $a_{10} = 5.000 + (10 - 1) \cdot 1.500 = 5.000 + 13.500 = 18.500$', is_correct: true}
-      - {text: '$\$20.000$, multiplicando por 10 directamente', is_correct: false}
-      - {text: '$\$15.000$, multiplicando $1.500 \cdot 10$', is_correct: false}
-      - {text: '$\$13.500$, omitiendo el dinero inicial', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\$18.500$, calculando $a_{10} = 5.000 + (10 - 1) \cdot 1.500 = 5.000 + 13.500 = 18.500$''. $5.000 + 9(1.500) = 18.500$.'
+      - {text: '$66$ asientos, calculando $18 + (25 - 1) \cdot 2 = 18 + 48 = 66$', is_correct: true}
+      - {text: '$68$ asientos, multiplicando $18 + 25 \cdot 2$', is_correct: false}
+      - {text: '$50$ asientos', is_correct: false}
+      - {text: '$36$ asientos', is_correct: false}
+    explanation: 'La alternativa correcta es ''$66$ asientos, calculando $18 + (25 - 1) \cdot 2 = 18 + 48 = 66$''. Aplicando el término general $a_{25} = 18 + 24(2) = 66$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Leer atentamente el contexto e identificar si la cantidad inicial representa $a_1$.'
-  - 'Paso 2: Identificar la razón de cambio por período como la diferencia común $d$ (positiva si aumenta, negativa si disminuye).'
-  - 'Paso 3: Determinar si el problema consulta por un estado puntual en la etapa $n$ ($a_n$) o por un acumulado global ($S_n$).'
-  - 'Paso 4: Sustituir los valores en la fórmula correspondiente ($a_n = a_1 + (n-1)d$ o $S_n = \frac{n(a_1+a_n)}{2}$) y redactar la respuesta con sus unidades.'
+  - 'Paso 1: Leer el enunciado e identificar si el cambio es aditivo fijo (PA).'
+  - 'Paso 2: Determinar el valor de la condición inicial $a_1$ y la diferencia común $d$.'
+  - 'Paso 3: Definir la incógnita: si se pide el valor en un período ($a_n$) o la acumulación total ($S_n$).'
+  - 'Paso 4: Resolver la ecuación correspondiente y contextualizar el resultado con sus unidades.'
 errores_correccion: |
-  - **Error 1:** Confundir la solicitud del valor en la etapa $n$ ($a_n$) con el acumulado total ($S_n$). **Cómo corregirlo:** Si la pregunta dice **"cuánto hay en la etapa $n$" es $a_n$**; si dice **"cuánto en TOTAL se reunió en las $n$ etapas" es $S_n$**.
-  - **Error 2:** Multiplicar $d$ por $n$ omitiendo la resta $(n-1)$ al calcular el estado final. **Cómo corregirlo:** La fórmula exige **$(n-1)$ saltos de incremento**: $a_n = a_1 + (n-1)d$.
+  - **Error 1:** Modelar aumentos porcentuales con PA en lugar de progresión geométrica. **Cómo corregirlo:** Los porcentajes representan **crecimiento multiplicativo (PG)**, mientras que las PA requieren **sumas de montos fijos en dinero o unidades**.
+  - **Error 2:** Confundir el valor del término $a_n$ con la suma acumulada $S_n$. **Cómo corregirlo:** $a_n$ es el **monto en ese mes específico**, mientras que $S_n$ es el **total acumulado sumando todos los meses**.
 ejemplos:
-  - titulo: 'Modelo de ahorro semanal'
-    enunciado: 'Para $a_1 = \$10.000$ y ahorro de $\$2.000$/semana, ¿en la semana 5 el monto es $a_5 = 10.000 + 4(2.000) = \$18.000$?'
+  - titulo: 'Plan de entrenamiento progresivo'
+    enunciado: 'Un atleta corre 5 km el día 1 y aumenta 500 m (0,5 km) cada día. ¿Cuántos km corre el día 10?'
     alternativas:
-      - 'Sí, en la semana 5 hay $18.000'
-      - 'No, hay $20.000'
-      - 'No, hay $10.000'
-    respuesta: 'Sí, en la semana 5 hay $18.000'
+      - '$9,5\text{ km}$'
+      - '$10\text{ km}$'
+      - '$9\text{ km}$'
+    respuesta: '$9,5\text{ km}$'
     solucion_pasos:
-      - '1. $a_1 = 10.000, d = 2.000, n = 5$.'
-      - '2. $a_5 = 10.000 + 4(2.000) = 10.000 + 8.000 = \$18.000$.'
-  - titulo: 'Modelo de depreciación'
-    enunciado: 'Un bien de $\$1.000.000$ se deprecia en $\$80.000$ por año. ¿En el año 6 vale $a_6 = 1.000.000 + 5(-80.000) = \$600.000$?'
+      - '1. $a_1 = 5, d = 0,5$.'
+      - '2. $a_{10} = 5 + 9(0,5) = 5 + 4,5 = 9,5\text{ km}$.'
+  - titulo: 'Producción industrial escalonada'
+    enunciado: 'Una fábrica produce 100 piezas el día 1 y suma 10 piezas cada día. ¿Cuántas piezas produce el día 20?'
+    alternativas:
+      - '$290\text{ piezas}$'
+      - '$300\text{ piezas}$'
+      - '$280\text{ piezas}$'
+    respuesta: '$290\text{ piezas}$'
+    solucion_pasos:
+      - '1. $a_{20} = 100 + 19(10) = 100 + 190 = 290$.'
+  - titulo: 'Identificación de modelo lineal'
+    enunciado: '¿Una deuda que se amortiza pagando una cuota de capital fija de $\$25.000$ mensuales sigue un modelo de progresión aritmética?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $1.000.000 - 400.000 = \$600.000$.'
-  - titulo: 'Producción total acumulada'
-    enunciado: 'Una fábrica produce 100 unidades el día 1, y aumenta 10 unidades por día. ¿En 5 días produce en total $S_5 = \frac{5(100 + 140)}{2} = 600$ unidades?'
-    respuesta: 'Sí'
+      - '1. La amortización constante de capital reduce la deuda a una tasa aditiva fija.'
+  - titulo: 'Diferenciación entre PA y PG'
+    enunciado: '¿Un aumento de sueldo del $5\%$ anual corresponde a una progresión aritmética?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí. $a_5 = 100 + 40 = 140 \implies S_5 = 5(240)/2 = 600$.'
-  - titulo: 'Capacidad de asientos en anfiteatro'
-    enunciado: 'Fila 1 tiene 20 asientos, cada fila posterior suma 2 asientos. ¿La fila 15 tiene $20 + 14(2) = 48$ asientos?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $a_{15} = 20 + 28 = 48$.'
+      - '1. Los incrementos porcentuales corresponden a progresiones geométricas multiplicativas.'
 errores_frecuentes:
-  - 'El valor individual alcanzado en la etapa $a_n$ es conceptualmente idéntico a la suma acumulada $S_n$.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Multiplicar la tasa de variación por la cantidad de períodos sin restar 1 al número de etapa.'
-  - 'Considerar que los problemas de depreciación constante deben resolverse con modelos de decremento porcentual.'
+  - 'Los aumentos o variaciones expresados en porcentaje constante se modelan como progresiones aritméticas.'
+  - 'En problemas contextuales de ahorro se confunde el monto ahorrado en un mes determinado con el total acumulado en el tiempo.'
+  - 'Se omite el valor base inicial en el cálculo del estado final del sistema.'
+  - 'Al modelar procesos de desgaste o consumo se asigna signo positivo a la tasa de variación unitaria.'
+  - 'El número de períodos transcurridos se confunde con la suma total de elementos.'
 afirmaciones_verdaderas:
-  - 'Las situaciones del mundo real que involucran incrementos o decrementos aditivos constantes por período se modelan mediante progresiones aritméticas.'
-  - 'La cantidad acumulada total en $n$ períodos de un fenómeno lineal se calcula mediante la fórmula de la serie aritmética $S_n$.'
-al_terminar_debes_poder: 'Modelar y resolver problemas del mundo real de cambio lineal constante mediante progresiones aritméticas ($a_n$ y $S_n$).'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Las situaciones del mundo real con tasas de cambio constante aditivas se modelan mediante progresiones aritméticas lineales.'
+  - 'Las variaciones multiplicativas constantes (porcentajes) no son progresiones aritméticas, sino progresiones geométricas.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/modelamiento-de-situaciones-de-cambio-lineal-mediante-progresiones-aritmeticas-resumen.svg)
+
+  QUÉ: Modelar y resolver situaciones cotidianas y financieras de cambio lineal discreto mediante progresiones aritméticas.
+  CÓMO: Identificar $a_1$ y la tasa fija $d$, formulando $a_n = a_1 + (n - 1)d$ y la suma acumulada $S_n = \frac{n(a_1 + a_n)}{2}$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

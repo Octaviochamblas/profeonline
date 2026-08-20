@@ -1,103 +1,120 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.SUMA_INFINITA
-resumen_inicial: 'El cálculo de la suma de una serie geométrica infinita convergente determina el valor límite escalar $S$ al que se aproxima la suma de sus infinitos términos utilizando la fórmula $S = \frac{a_1}{1 - r}$ para $|r| < 1$.'
+resumen_inicial: 'El cálculo de la suma de una serie geométrica infinita convergente ($|r| < 1$) aplica la fórmula cerrada $S_\infty = \sum_{k=1}^\infty a_1 r^{k-1} = \frac{a_1}{1 - r}$, fundamental en el cálculo de fracciones generatrices y límites continuos.'
 explicacion_simple: |
-  Para calcular el valor exacto de la suma de infinitos números a interés decreciente (cuando $|r| < 1$):
-  1. No necesitas sumar infinitas veces.
-  2. Tomas el **primer término ($a_1$)** y lo divides entre **$(1 - r)$**:
-     $$S = \frac{a_1}{1 - r}$$
-  Por ejemplo, si la serie es $12 + 4 + \frac{4}{3} + \frac{4}{9} + \dots$ ($a_1 = 12, r = 1/3$):
-  $$S = \frac{12}{1 - 1/3} = \frac{12}{2/3} = 12 \cdot \frac{3}{2} = 18$$
-  La suma infinita de todos esos números es exactamente **$18$**.
-explicacion_formal: |
-  ### Definición formal
-  La **suma total $S$** de una serie geométrica infinita convergente $\sum_{k=1}^\infty a_1 r^{k-1}$ con $|r| < 1$ se obtiene haciendo tender $n \to \infty$ en la expresión de las sumas parciales:
-  $$S = \lim_{n \to \infty} S_n = \lim_{n \to \infty} \left[ a_1 \cdot \frac{1 - r^n}{1 - r} \right]$$
-  Como $|r| < 1 \implies \lim_{n \to \infty} r^n = 0$:
-  $$S = a_1 \cdot \frac{1 - 0}{1 - r} = \frac{a_1}{1 - r}$$
+  Cuando una serie geométrica es convergente ($|r| < 1$), ¡calcular la suma de **todos sus infinitos términos** es sorprendentemente fácil!
+  - Usamos la **fórmula de la suma infinita**:
+    $$S_\infty = \frac{a_1}{1 - r}$$
+  - Solo necesitas dos datos:
+    1. El **primer término** ($a_1$) en el numerador.
+    2. En el denominador, restas **$1$ menos la razón**: $(1 - r)$.
+  - Por ejemplo, para sumar $6 + 2 + \frac{2}{3} + \frac{2}{9} + \dots$ ($a_1 = 6, r = \frac{1}{3}$):
+    $$S_\infty = \frac{6}{1 - \frac{1}{3}} = \frac{6}{\frac{2}{3}} = 6 \cdot \frac{3}{2} = 9$$
+  - ¡La suma exacta de los infinitos números es **$9$**!
 
-  ### Casos Especiales de Signo
-  1. **Razón positiva ($0 < r < 1$)**: La serie es monótona creciente en sus sumas parciales hacia $S$.
-  2. **Razón negativa ($-1 < r < 0$)**: Las sumas parciales oscilan amortiguadamente alrededor del valor límite $S$.
+  ![Cálculo de la suma de una serie geométrica infinita](/static/img/nodos/calculo-de-la-suma-de-una-serie-geometrica-infinita-convergente-intro.svg)
+explicacion_formal: |
+  ### Deducción por Paso al Límite
+  A partir de la fórmula de la suma finita de $n$ términos:
+  $$S_n = \frac{a_1(1 - r^n)}{1 - r}$$
+  Bajo la hipótesis de convergencia $|r| < 1$, el límite de la progresión geométrica nula es:
+  $$\lim_{n \to \infty} r^n = 0$$
+  Por consiguiente, aplicando las propiedades de los límites algebraicos:
+  $$S_\infty = \lim_{n \to \infty} S_n = \lim_{n \to \infty} \left[ \frac{a_1(1 - r^n)}{1 - r} \right] = \frac{a_1(1 - 0)}{1 - r} = \frac{a_1}{1 - r}$$
+
+  ### Aplicación en Fracciones Generatrices Periódicas
+  Un número decimal periódico infinito puede descomponerse como una serie geométrica infinita convergente:
+  $$0,\overline{3} = 0,333\dots = \frac{3}{10} + \frac{3}{100} + \frac{3}{1000} + \dots \quad \left(a_1 = \frac{3}{10}, \; r = \frac{1}{10}\right)$$
+  $$S_\infty = \frac{3/10}{1 - 1/10} = \frac{3/10}{9/10} = \frac{3}{9} = \frac{1}{3}$$
 
   ### Síntesis didáctica
-  - Condición previa obligatoria: $|r| < 1$.
-  - Ecuación de la suma infinita: $S = \frac{a_1}{1 - r}$.
+  - Ecuación canónica: $S_\infty = \frac{a_1}{1 - r}$ para $|r| < 1$.
+  - Denominador clave: $1 - r$ (no $r - 1$).
 definiciones_clave: |
-  - **Suma infinita convergente ($S$)**: Límite numérico real de la adición continuada de infinitos términos.
-  - **Denominador de atenuación ($1 - r$)**: Complemento de la razón geométrica que determina la velocidad de concentración de la suma.
-  - **Límite analítico**: Valor fijo al que tiende asintóticamente la secuencia de sumas parciales.
+  - **Suma infinita ($S_\infty$)**: Valor límite exacto al que converge la serie geométrica.
+  - **Fracción generatriz**: Representación racional irreducible de un decimal periódico deducida mediante series geométricas.
+  - **Complemento de la razón ($1 - r$)**: Denominador que representa la proporción restante respecto a la unidad.
 propiedades_relaciones: |
-  - **Sensibilidad al primer término**: La suma infinita $S$ es directamente proporcional al valor del primer término $a_1$.
-  - **Conversión de decimales periódicos**: Constituye el método algebraico para transformar decimales infinitos periódicos (como $0,444\dots$) en fracciones ($4/9$).
+  - **Elegancia matemática**: Transforma una suma no terminable en una simple división de dos números reales.
+  - **Sensibilidad al denominador**: Conforme $r \to 1^-$, el denominador $(1 - r) \to 0$, haciendo que la suma $S_\infty \to +\infty$.
 ejemplo_guiado:
-  enunciado: 'Calcula la suma infinita de la serie geométrica $S = 20 + 5 + 1,25 + 0,3125 + \dots$'
+  enunciado: 'Calcula la suma exacta de la serie geométrica infinita $12 - 6 + 3 - 1,5 + 0,75 - \dots$ y verifica que sea convergente.'
+  imagen: '/static/img/nodos/calculo-de-la-suma-de-una-serie-geometrica-infinita-convergente-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos el primer término $a_1 = 20$ y la razón geométrica $r = \frac{5}{20} = \frac{1}{4} = 0,25$.'
-    - 'Paso 2: Verificamos la convergencia: $|0,25| = 0,25 < 1$, por lo que la serie **es convergente**.'
-    - 'Paso 3: Sustituimos $a_1 = 20$ y $r = 1/4$ en la fórmula $S = \frac{a_1}{1 - r}$: $S = \frac{20}{1 - 1/4} = \frac{20}{3/4}$.'
-    - 'Paso 4: Evaluamos la división de fracciones: $S = 20 \cdot \frac{4}{3} = \frac{80}{3} \approx 26,67$. La suma infinita es **$\frac{80}{3}$**.'
+    - 'Paso 1: Identificamos $a_1 = 12$ y calculamos la razón: $r = \frac{-6}{12} = -\frac{1}{2} = -0,5$.'
+    - 'Paso 2: Verificamos la condición de convergencia: $|r| = |-0,5| = 0,5 < 1$. Converge.'
+    - 'Paso 3: Aplicamos la fórmula $S_\infty = \frac{a_1}{1 - r} = \frac{12}{1 - (-0,5)}$.'
+    - 'Paso 4: Resolvemos el denominador: $1 - (-0,5) = 1 + 0,5 = 1,5 = \frac{3}{2}$.'
+    - 'Paso 5: Dividimos: $S_\infty = \frac{12}{3/2} = 12 \cdot \frac{2}{3} = **8$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la suma de una serie geométrica infinita convergente de primer término $a_1$ y razón $r$?'
+    question: '¿Cuál es la fórmula para calcular la suma de una serie geométrica infinita convergente ($|r| < 1$)?'
     choices:
-      - {text: 'Dividir el primer término entre uno menos la razón ($S = \frac{a_1}{1 - r}$)', is_correct: true}
-      - {text: 'Multiplicar el primer término por la razón y elevar a infinito', is_correct: false}
-      - {text: 'Dividir el primer término entre la razón al cuadrado', is_correct: false}
-      - {text: 'Restar el primer término a la razón geométrica', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir el primer término entre uno menos la razón ($S = \frac{a_1}{1 - r}$)''. Deriva del límite $r^n \to 0$.'
+      - {text: '$S_\infty = \frac{a_1}{1 - r}$', is_correct: true}
+      - {text: '$S_\infty = \frac{a_1}{r - 1}$', is_correct: false}
+      - {text: '$S_\infty = a_1 \cdot (1 - r)$', is_correct: false}
+      - {text: '$S_\infty = \frac{a_1 \cdot r}{1 + r}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$S_\infty = \frac{a_1}{1 - r}$''. El denominador es $(1 - r)$ porque surge de restar $1 - r^n$ cuando $r^n \to 0$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una serie geométrica infinita tiene $a_1 = 15$ y razón $r = \frac{2}{3}$, ¿cuál es su suma infinita total $S$?'
+    question: '¿Cuál es la suma infinita de la serie $8 + 4 + 2 + 1 + \frac{1}{2} + \dots$?'
     choices:
-      - {text: '$S = 45$, calculando $\frac{15}{1 - 2/3} = \frac{15}{1/3} = 15 \cdot 3 = 45$', is_correct: true}
-      - {text: '$S = 30$, multiplicando $15 \cdot 2$', is_correct: false}
-      - {text: '$S = 10$, multiplicando $15 \cdot (2/3)$', is_correct: false}
-      - {text: '$S = 22,5$, calculando la mitad de 45', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S = 45$, calculando $\frac{15}{1 - 2/3} = \frac{15}{1/3} = 15 \cdot 3 = 45$''. $15 / (1/3) = 45$.'
+      - {text: '$16$, calculando $\frac{8}{1 - 1/2} = \frac{8}{1/2} = 16$', is_correct: true}
+      - {text: '$15$', is_correct: false}
+      - {text: '$32$', is_correct: false}
+      - {text: '$8$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$16$, calculando $\frac{8}{1 - 1/2} = \frac{8}{1/2} = 16$''. Con $a_1 = 8$ y $r = 0,5$, la suma límite es 16.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer término $a_1$ y la razón geométrica $r$.'
-  - 'Paso 2: Confirmar que $|r| < 1$ para asegurar la convergencia de la serie.'
-  - 'Paso 3: Calcular el denominador $(1 - r)$.'
-  - 'Paso 4: Dividir $a_1$ entre $(1 - r)$ para obtener el valor límite final $S$.'
+  - 'Paso 1: Identificar el primer término $a_1$ y la razón $r = \frac{a_2}{a_1}$.'
+  - 'Paso 2: Comprobar que $|r| < 1$ para asegurar la convergencia.'
+  - 'Paso 3: Calcular el denominador $1 - r$ (cuidando los signos si $r < 0$).'
+  - 'Paso 4: Dividir $a_1$ entre $(1 - r)$ y expresar el resultado en fracción irreducible o decimal exacto.'
 errores_correccion: |
-  - **Error 1:** Aplicar la fórmula $S = \frac{a_1}{1-r}$ a series divergentes donde $|r| \ge 1$. **Cómo corregirlo:** La fórmula **SÓLO SE PUEDE USAR si $|r| < 1$**; si $|r| \ge 1$, la serie no tiene suma real.
-  - **Error 2:** Restar mal al tener una razón negativa (ej: para $r = -0,5$, hacer $1 - 0,5 = 0,5$ en vez de $1 - (-0,5) = 1,5$). **Cómo corregirlo:** Aplica la regla del doble signo: **$1 - (-r) = 1 + r$**.
+  - **Error 1:** Escribir $(r - 1)$ en el denominador en vez de $(1 - r)$, invirtiendo el signo del resultado. **Cómo corregirlo:** La fórmula de suma infinita **lleva siempre $1 - r$ en el denominador**: $S_\infty = \frac{a_1}{1 - r}$.
+  - **Error 2:** Olvidar que para razones negativas $1 - (-r) = 1 + r$. **Cómo corregirlo:** Al restar un número negativo, **los dos signos menos se convierten en suma**.
 ejemplos:
-  - titulo: 'Suma infinita simple de fracciones'
-    enunciado: 'Para $a_1 = 10$ y $r = 1/2$, ¿la suma infinita es $S = \frac{10}{1 - 1/2} = \frac{10}{1/2} = 20$?'
+  - titulo: 'Suma infinita con razón un tercio'
+    enunciado: 'Para $a_1 = 18$ y $r = \frac{1}{3}$, ¿cuál es el valor de $S_\infty$?'
     alternativas:
-      - 'Sí, $10 \cdot 2 = 20$'
-      - 'No, es 15'
-      - 'No, es 10'
-    respuesta: 'Sí, $10 \cdot 2 = 20$'
+      - '$27$'
+      - '$24$'
+      - '$54$'
+    respuesta: '$27$'
     solucion_pasos:
-      - '1. $a_1 = 10, r = 1/2$.'
-      - '2. $S = 10 / (1 - 1/2) = 10 / (1/2) = 20$.'
-  - titulo: 'Suma infinita con razón negativa'
-    enunciado: 'Para $a_1 = 6$ y $r = -1/2$, ¿$S = \frac{6}{1 - (-1/2)} = \frac{6}{3/2} = 4$?'
+      - '1. $S_\infty = 18 / (1 - 1/3) = 18 / (2/3) = 18 \cdot 3/2 = 27$.'
+  - titulo: 'Suma infinita alternante'
+    enunciado: 'Para $a_1 = 10$ y $r = -\frac{1}{4}$, ¿cuál es el valor de $S_\infty$?'
+    alternativas:
+      - '$8$'
+      - '$40/3$'
+      - '$-8$'
+    respuesta: '$8$'
+    solucion_pasos:
+      - '1. $1 - (-1/4) = 5/4$.'
+      - '2. $S_\infty = 10 / (5/4) = 10 \cdot 4/5 = 8$.'
+  - titulo: 'Fracción generatriz de decimal periódico'
+    enunciado: '¿La serie $0,2 + 0,02 + 0,002 + \dots$ suma exactamente $\frac{2}{9}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $1 - (-1/2) = 3/2 \implies 6 \cdot (2/3) = 4$.'
-  - titulo: 'Convertir 0,666... a fracción'
-    enunciado: 'Para $0,666\dots$ ($a_1 = 0,6 = 6/10, r = 0,1 = 1/10$), ¿la suma es $S = \frac{6/10}{9/10} = \frac{6}{9} = \frac{2}{3}$?'
+      - '1. $a_1 = 2/10, r = 1/10 \implies S_\infty = (2/10) / (9/10) = 2/9$.'
+  - titulo: 'Suma infinita con primer término unitario'
+    enunciado: '¿Para $a_1 = 1$ y $r = \frac{1}{2}$, la suma infinita es igual a $2$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $0,6 / (1 - 0,1) = 0,6 / 0,9 = 6/9 = 2/3$.'
-  - titulo: 'Suma infinita con razón r = 1/4'
-    enunciado: 'Para $a_1 = 9$ y $r = 1/4$, ¿$S = \frac{9}{1 - 1/4} = \frac{9}{3/4} = 12$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $9 \cdot (4/3) = 12$.'
+      - '1. $S_\infty = 1 / (1 - 1/2) = 1 / (1/2) = 2$.'
 errores_frecuentes:
-  - 'Aplicar la fórmula de suma infinita sobre series donde la razón es mayor o igual a 1.'
-  - 'La suma de una serie geométrica infinita siempre entrega un número entero positivo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Al restar una razón negativa en la fórmula $1 - (-r)$, el denominador resulta ser un número menor que 1.'
-  - 'Invertir la fracción del resultado final al dividir por el denominador $(1-r)$.'
+  - 'Utilizar $(r - 1)$ en el denominador de la suma infinita produciendo un signo algebraico incorrecto.'
+  - 'Restar una razón negativa sin convertir la operación en una adición ($1 - (-r)$).'
+  - 'Intentar calcular la suma infinita mediante la fórmula cuando la razón $|r| \ge 1$.'
+  - 'Multiplicar $a_1$ por $(1 - r)$ en lugar de dividirlo.'
+  - 'Asumir que la suma infinita de términos alternantes siempre es igual a cero.'
 afirmaciones_verdaderas:
-  - 'La suma de una serie geométrica infinita convergente de razón $|r| < 1$ se calcula mediante $S = \frac{a_1}{1 - r}$.'
-  - 'Si la razón es negativa e idónea ($-1 < r < 0$), la suma infinita oscila y converge a un valor finito positivo menor que $a_1$.'
-al_terminar_debes_poder: 'Calcular la suma de una serie geométrica infinita convergente utilizando la fórmula $S = \frac{a_1}{1 - r}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La suma de una serie geométrica infinita convergente es $S_\infty = \frac{a_1}{1 - r}$, válida estrictamente para $|r| < 1$.'
+  - 'Todo número decimal periódico puede expresarse como una serie geométrica infinita convergente para deducir su fracción generatriz.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-la-suma-de-una-serie-geometrica-infinita-convergente-resumen.svg)
+
+  QUÉ: Calcular el valor exacto de la suma de una serie geométrica infinita convergente $S_\infty$.
+  CÓMO: Aplicar la fórmula $S_\infty = \frac{a_1}{1 - r}$ validando previamente que $|r| < 1$ y simplificando fracciones algebraicas.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

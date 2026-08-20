@@ -1,103 +1,119 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.SERIE_FINITA
-resumen_inicial: 'El cálculo de una serie geométrica finita evalúa la suma de los $n$ primeros términos de una progresión geométrica mediante la fórmula $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$ para $r \neq 1$.'
+resumen_inicial: 'El cálculo de una serie geométrica finita determina la suma de los primeros $n$ términos de una PG aplicando la fórmula $S_n = \sum_{k=1}^n a_1 r^{k-1} = \frac{a_1(r^n - 1)}{r - 1}$ para $r \neq 1$.'
 explicacion_simple: |
-  Una **serie geométrica finita** es la suma de una cantidad limitada de números donde cada uno se multiplica por una razón fija $r$:
+  Una **serie geométrica finita** es la suma de los primeros $n$ términos de una progresión geométrica:
   $$S_n = a_1 + a_1 r + a_1 r^2 + \dots + a_1 r^{n-1}$$
-  Para calcularla en un solo paso sin sumar término por término:
-  1. Identificas el primer término $a_1$, la razón $r$ y el número de términos $n$.
-  2. Aplicas la fórmula:
-     $$S_n = a_1 \cdot \left[\frac{r^n - 1}{r - 1}\right]$$
-  Por ejemplo, para sumar $5 + 10 + 20 + 40 + 80$ ($a_1=5, r=2, n=5$):
-  $S_5 = 5 \cdot \frac{2^5 - 1}{2 - 1} = 5 \cdot \frac{32 - 1}{1} = 5 \cdot 31 = 155$.
-explicacion_formal: |
-  ### Definición formal
-  La **serie geométrica finita** $S_n$ asociada a la progresión geométrica $(a_1 \cdot r^{k-1})_{k=1}^n$ con $r \neq 1$ viene dada por la expresión cerrada:
-  $$S_n = \sum_{k=1}^n a_1 r^{k-1} = a_1 \cdot \left(\frac{r^n - 1}{r - 1}\right) = a_1 \cdot \left(\frac{1 - r^n}{1 - r}\right)$$
+  - En lugar de sumar uno a uno los términos (que crecen muy rápido), usamos la fórmula cerrada:
+    $$S_n = \frac{a_1 \cdot (r^n - 1)}{r - 1} \quad (\text{si } r > 1) \quad \text{o} \quad S_n = \frac{a_1 \cdot (1 - r^n)}{1 - r} \quad (\text{si } r < 1)$$
+  - Por ejemplo, para sumar $5$ términos con $a_1 = 2$ y $r = 3$:
+    $$S_5 = \frac{2 \cdot (3^5 - 1)}{3 - 1} = \frac{2 \cdot (243 - 1)}{2} = 242$$
 
-  ### Propiedades operacionales según la razón
-  - **Para $r > 1$**: Se prefiere la forma $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$ para mantener numeradores y denominadores positivos.
-  - **Para $0 < r < 1$**: Se prefiere la forma $S_n = a_1 \cdot \frac{1 - r^n}{1 - r}$ para evitar manipular signos negativos.
-  - **Para $r < 0$**: La potencia $r^n$ cambia de signo según la paridad de $n$: $(-r)^n = r^n$ si $n$ es par, y $(-r)^n = -r^n$ si $n$ es impar.
+  ![Cálculo de una serie geométrica finita](/static/img/nodos/calculo-de-una-serie-geometrica-finita-intro.svg)
+explicacion_formal: |
+  ### Demostración formal por Multiplicación Telescópica
+  Sea la serie geométrica finita de orden $n$:
+  $$S_n = a_1 + a_1 r + a_1 r^2 + \dots + a_1 r^{n-1}$$
+  Multiplicando por $r$:
+  $$r S_n = a_1 r + a_1 r^2 + a_1 r^3 + \dots + a_1 r^n$$
+  Restando miembro a miembro ($S_n - r S_n$):
+  $$S_n(1 - r) = a_1 - a_1 r^n = a_1(1 - r^n)$$
+  Para todo $r \neq 1$:
+  $$S_n = \frac{a_1(1 - r^n)}{1 - r} = \frac{a_1(r^n - 1)}{r - 1}$$
+
+  ### Casos según la Razón $r$
+  - Si $r > 1$: Es conveniente usar $S_n = \frac{a_1(r^n - 1)}{r - 1}$ para operar con valores positivos.
+  - Si $0 < r < 1$: Es conveniente usar $S_n = \frac{a_1(1 - r^n)}{1 - r}$.
+  - Si $r = 1$: $S_n = n \cdot a_1$.
 
   ### Síntesis didáctica
-  - Ecuación canónica: $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$.
-  - Condición de aplicabilidad: Válida para cualquier cantidad finita $n$ de términos con $r \neq 1$.
+  - Ecuación general: $S_n = \frac{a_1(r^n - 1)}{r - 1}$.
+  - Costo: Evaluación en un solo paso mediante la potencia $r^n$.
 definiciones_clave: |
-  - **Serie geométrica finita**: Suma de una cantidad acotada de términos geométricos.
-  - **Factor de escala de la serie ($\frac{r^n - 1}{r - 1}$)**: Término que determina la amplificación de la suma respecto a $a_1$.
-  - **Paridad del exponente**: Influencia del número de términos $n$ en el signo de $r^n$ cuando la razón es negativa.
+  - **Serie geométrica finita**: Suma de un número finito $n$ de términos consecutivos de una progresión geométrica.
+  - **Cancelación telescópica**: Propiedad algebraica donde todos los términos intermedios se anulan al restar $S_n - rS_n$.
+  - **Fórmula cerrada**: Expresión que evalúa la suma sin necesidad de iterar sobre los términos individuales.
 propiedades_relaciones: |
-  - **Dominancia del último término**: Cuando $r > 1$, el último término $a_n$ contribuye con la mayor parte del valor total de la suma parcial $S_n$.
-  - **Compatibilidad con interés compuesto**: La acumulación de anualidades y depósitos periódicos se calcula directamente con la serie geométrica finita.
+  - **Crecimiento de la suma**: Para $r > 1$, la serie $S_n$ crece a una tasa exponencial dominada por el término $r^n$.
+  - **Factorización algebraica**: La fórmula equivale a la identidad de polinomios $\frac{r^n - 1}{r - 1} = r^{n-1} + r^{n-2} + \dots + r + 1$.
 ejemplo_guiado:
-  enunciado: 'Calcula el valor de la serie geométrica finita $S_6 = \sum_{k=1}^6 4 \cdot 3^{k-1}$.'
+  enunciado: 'Calcula el valor de la serie geométrica finita $\sum_{k=1}^6 3 \cdot 2^{k-1} = 3 + 6 + 12 + 24 + 48 + 96$.'
+  imagen: '/static/img/nodos/calculo-de-una-serie-geometrica-finita-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los parámetros: $a_1 = 4$, la razón $r = 3$ y el número de términos $n = 6$.'
-    - 'Paso 2: Aplicamos la fórmula canónica de la serie finita: $S_6 = 4 \cdot \left[\frac{3^6 - 1}{3 - 1}\right]$.'
-    - 'Paso 3: Evaluamos las potencias y restas: $3^6 = 729 \implies 729 - 1 = 728$, denominador $3 - 1 = 2$.'
-    - 'Paso 4: Evaluamos: $S_6 = 4 \cdot \frac{728}{2} = 4 \cdot 364 = 1.456$. El valor de la serie es **$1.456$**.'
+    - 'Paso 1: Identificamos los elementos: $a_1 = 3, r = 2, n = 6$.'
+    - 'Paso 2: Aplicamos la fórmula de la serie finita: $S_6 = \frac{3 \cdot (2^6 - 1)}{2 - 1}$.'
+    - 'Paso 3: Calculamos la potencia: $2^6 = 64$.'
+    - 'Paso 4: Operamos: $S_6 = \frac{3 \cdot (64 - 1)}{1} = 3 \cdot 63 = 189$.'
+    - 'Paso 5: El valor exacto de la serie es **$189$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la forma más conveniente de la fórmula de la serie geométrica finita cuando la razón está entre 0 y 1 ($0 < r < 1$)?'
+    question: 'Para calcular la serie geométrica finita $S_5 = 1 + 3 + 9 + 27 + 81$, ¿cuál es la aplicación correcta de la fórmula?'
     choices:
-      - {text: '$S_n = a_1 \cdot \frac{1 - r^n}{1 - r}$, para trabajar con valores positivos en el numerador y denominador', is_correct: true}
-      - {text: '$S_n = a_1 \cdot r^n$, eliminando las restas por completo', is_correct: false}
-      - {text: '$S_n = \frac{n \cdot a_1}{r}$, multiplicando por el número de términos', is_correct: false}
-      - {text: '$S_n = a_1 - r^n$, restando directamente los términos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S_n = a_1 \cdot \frac{1 - r^n}{1 - r}$, para trabajar con valores positivos en el numerador y denominador''. Evita signos negativos.'
+      - {text: '$S_5 = \frac{1 \cdot (3^5 - 1)}{3 - 1} = \frac{243 - 1}{2} = \frac{242}{2} = 121$', is_correct: true}
+      - {text: '$S_5 = \frac{1 \cdot (3^4 - 1)}{3 - 1} = 40$', is_correct: false}
+      - {text: '$S_5 = 1 \cdot 3^5 = 243$', is_correct: false}
+      - {text: '$S_5 = 81 \cdot 5 = 405$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$S_5 = \frac{1 \cdot (3^5 - 1)}{3 - 1} = \frac{243 - 1}{2} = \frac{242}{2} = 121$''. Con $n=5$, el exponente es 5.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si se suman los 3 primeros términos de una P.G. donde $a_1 = 10$ y $r = 2$, ¿cuál es el valor de la serie $S_3$?'
+    question: '¿Cuál es el valor de la serie $\sum_{k=1}^4 16 \cdot \left(\frac{1}{2}\right)^{k-1}$?'
     choices:
-      - {text: '$S_3 = 70$, calculando $10 \cdot \frac{2^3 - 1}{2 - 1} = 10 \cdot \frac{8 - 1}{1} = 10 \cdot 7 = 70$', is_correct: true}
-      - {text: '$S_3 = 80$, multiplicando $10 \cdot 8$', is_correct: false}
-      - {text: '$S_3 = 60$, multiplicando $10 \cdot 2 \cdot 3$', is_correct: false}
-      - {text: '$S_3 = 40$, calculando la suma de $10+10+20$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S_3 = 70$, calculando $10 \cdot \frac{2^3 - 1}{2 - 1} = 10 \cdot \frac{8 - 1}{1} = 10 \cdot 7 = 70$''. $10 + 20 + 40 = 70$.'
+      - {text: '$30$, calculando $16 + 8 + 4 + 2 = 30$', is_correct: true}
+      - {text: '$32$', is_correct: false}
+      - {text: '$15$', is_correct: false}
+      - {text: '$28$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$30$, calculando $16 + 8 + 4 + 2 = 30$''. Aplicando la fórmula: $S_4 = \frac{16(1 - (1/2)^4)}{1 - 1/2} = \frac{16(15/16)}{1/2} = 30$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el valor del primer término $a_1$, la razón geométrica $r$ y el número total de términos $n$.'
+  - 'Paso 1: Identificar el primer término $a_1$, la razón $r$ y la cantidad de términos $n$.'
   - 'Paso 2: Calcular la potencia $r^n$.'
-  - 'Paso 3: Restar $r^n - 1$ y $r - 1$ (o $1 - r^n$ y $1 - r$).'
-  - 'Paso 4: Realizar la división y multiplicar por $a_1$ para obtener el total de la serie finita $S_n$.'
+  - 'Paso 3: Restar 1 a la potencia ($r^n - 1$) y restar 1 a la razón en el denominador ($r - 1$).'
+  - 'Paso 4: Multiplicar por $a_1$ y simplificar la fracción resultante.'
 errores_correccion: |
-  - **Error 1:** Confundir la potencia de la serie $r^n$ con el exponente del término general $r^{n-1}$. **Cómo corregirlo:** En la fórmula de la serie finita $S_n$ **la potencia de la razón es $r^n$ completo**.
-  - **Error 2:** Alterar el signo al evaluar razones negativas elevadas a potencia par (ej: escribir $-2^4 = -16$ en vez de $(-2)^4 = +16$). **Cómo corregirlo:** La razón negativa se debe **elevar entre paréntesis: $(-r)^n$**.
+  - **Error 1:** Confundir el exponente de la suma ($n$) con el del término general ($n-1$). **Cómo corregirlo:** En la suma de serie geométrica **el exponente es $n$**: $S_n = \frac{a_1(r^n - 1)}{r - 1}$.
+  - **Error 2:** Olvidar restar 1 en el denominador al dividir. **Cómo corregirlo:** El divisor **siempre es $(r - 1)$**, no solo $r$.
 ejemplos:
-  - titulo: 'Suma finita de 5 términos con r = 2'
-    enunciado: 'Para $a_1 = 3$ y $r = 2$ a $n=5$ términos, ¿la serie da $S_5 = 3 \cdot \frac{31}{1} = 93$?'
+  - titulo: 'Serie finita con potencias enteras'
+    enunciado: 'Para $a_1 = 5, r = 2, n = 4$, ¿cuál es el valor de la serie $S_4$?'
     alternativas:
-      - 'Sí, pues $3 + 6 + 12 + 24 + 48 = 93$'
-      - 'No, da 96'
-      - 'No, da 90'
-    respuesta: 'Sí, pues $3 + 6 + 12 + 24 + 48 = 93$'
+      - '$75$'
+      - '$80$'
+      - '$70$'
+    respuesta: '$75$'
     solucion_pasos:
-      - '1. $a_1 = 3, r = 2, n = 5$.'
-      - '2. $S_5 = 3(2^5 - 1)/(2 - 1) = 3(31) = 93$.'
-  - titulo: 'Suma finita con razón fraccionaria'
-    enunciado: 'Para $a_1 = 81, r = 1/3, n = 4$, ¿$S_4 = 81 \cdot \frac{1 - (1/81)}{1 - 1/3} = 81 \cdot \frac{80/81}{2/3} = 120$?'
+      - '1. $S_4 = 5(2^4 - 1) / (2 - 1) = 5(16 - 1) = 5(15) = 75$.'
+  - titulo: 'Serie con razón menor que 1'
+    enunciado: 'Para $a_1 = 27, r = \frac{1}{3}, n = 3$, ¿cuál es el valor de $S_3$?'
+    alternativas:
+      - '$39$'
+      - '$36$'
+      - '$40$'
+    respuesta: '$39$'
+    solucion_pasos:
+      - '1. $S_3 = 27 + 9 + 3 = 39$.'
+      - '2. Fórmula: $27(1 - 1/27) / (2/3) = 26 / (2/3) = 39$.'
+  - titulo: 'Serie finita alternante'
+    enunciado: '¿La serie $1 - 2 + 4 - 8 + 16$ tiene valor $S_5 = 11$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $81 + 27 + 9 + 3 = 120$.'
-  - titulo: 'Suma finita con razón negativa'
-    enunciado: 'Para $a_1 = 5, r = -2, n = 4$, ¿$S_4 = 5 \cdot \frac{(-2)^4 - 1}{-2 - 1} = 5 \cdot \frac{16 - 1}{-3} = 5 \cdot (-5) = -25$?'
+      - '1. $S_5 = 1((-2)^5 - 1) / (-2 - 1) = (-32 - 1) / (-3) = -33 / -3 = 11$.'
+  - titulo: 'Suma de términos iguales'
+    enunciado: '¿Si $r = 1$, la serie finita de 10 términos con $a_1 = 4$ es igual a $40$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $5 - 10 + 20 - 40 = -25$.'
-  - titulo: 'Suma finita de 2 términos'
-    enunciado: 'Para $a_1 = 7, r = 10, n = 2$, ¿$S_2 = 7 \cdot \frac{99}{9} = 77$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $7 + 70 = 77$.'
+      - '1. $S_{10} = 10 \cdot 4 = 40$.'
 errores_frecuentes:
-  - 'Usar el exponente $(n-1)$ en lugar de $n$ en la fórmula de la suma de la serie finita.'
-  - 'La suma de una serie geométrica finita siempre entrega un número entero positivo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Evaluar la potencia de una razón negativa sin utilizar paréntesis envolventes.'
-  - 'Invertir el orden de la resta en el denominador respecto al numerador.'
+  - 'En la fórmula de la serie geométrica finita se utiliza exponente $(n - 1)$ en el numerador.'
+  - 'Se divide la expresión por la razón $r$ omitiendo la resta de uno en el denominador.'
+  - 'Una serie geométrica finita con términos alternantes de signos produce una indeterminación matemática.'
+  - 'Al operar con razones fraccionarias se invierte el numerador con el denominador de la fórmula.'
+  - 'Se asume que la fórmula de la serie finita solo funciona para razones enteras mayores que uno.'
 afirmaciones_verdaderas:
-  - 'La suma de los $n$ primeros términos de una serie geométrica finita ($r \neq 1$) es $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$.'
-  - 'Si la razón geométrica es negativa, los términos de la serie finita alternan signos en la suma.'
-al_terminar_debes_poder: 'Calcular el valor de una serie geométrica finita utilizando la fórmula $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La suma finita de los primeros $n$ términos de una serie geométrica con $r \neq 1$ es $S_n = \frac{a_1(r^n - 1)}{r - 1}$.'
+  - 'La fórmula de la serie finita surge de la cancelación telescópica al restar $S_n - rS_n = a_1(1 - r^n)$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-una-serie-geometrica-finita-resumen.svg)
+
+  QUÉ: Calcular el valor exacto de una serie geométrica finita $S_n$ para cualquier cantidad de términos.
+  CÓMO: Evaluar la fórmula analítica $S_n = \frac{a_1(r^n - 1)}{r - 1}$ calculando la potencia $r^n$ y simplificando el cociente algebraico.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

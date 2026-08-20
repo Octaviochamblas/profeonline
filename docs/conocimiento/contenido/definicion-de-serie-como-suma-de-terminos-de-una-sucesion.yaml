@@ -1,105 +1,119 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.CONCEPTO_SERIE
-resumen_inicial: 'Una serie es la suma formal de los términos de una sucesión numérica, denotada mediante el operador de sumatoria $\sum_{k=1}^n a_k = a_1 + a_2 + \dots + a_n$.'
+resumen_inicial: 'Una serie numérica es la suma indicada de los términos de una sucesión $(a_n)$, representada formalmente mediante el operador de sumatoria $\sum_{k=1}^n a_k$ o como el límite de la sucesión de sumas parciales $(S_n)$.'
 explicacion_simple: |
-  Es fundamental distinguir entre una **sucesión** y una **serie**:
-  - Una **sucesión** es la *lista ordenada de números*: $2, 4, 8, 16, 32, \dots$
-  - Una **serie** es el *resultado de sumar los números de esa lista*:
-    $$S_5 = 2 + 4 + 8 + 16 + 32 = 62$$
-  El símbolo matemático de la suma es la letra griega mayúscula Sigma ($\sum$).
+  Es muy importante distinguir entre una **sucesión** y una **serie**:
+  - Una **sucesión** es una lista ordenada de números separados por comas:
+    $$2, 4, 6, 8, 10, \dots$$
+  - Una **serie** es la **suma acumulada** de esos números:
+    $$2 + 4 + 6 + 8 + 10 + \dots$$
+  - Para escribir sumas largas de forma compacta usamos el símbolo griego **sigma** ($\sum$):
+    $$S_4 = \sum_{k=1}^4 (2k) = 2(1) + 2(2) + 2(3) + 2(4) = 2 + 4 + 6 + 8 = 20$$
+  - Las sumas que vas obteniendo paso a paso ($S_1, S_2, S_3, \dots$) se llaman **sumas parciales**.
+
+  ![Definición de serie numérica](/static/img/nodos/definicion-de-serie-como-suma-de-terminos-de-una-sucesion-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dada una sucesión de números reales $(a_k)_{k \in \mathbb{N}}$, la **serie asociada** es la secuencia de sumas parciales $(S_n)_{n \in \mathbb{N}}$ definida por:
+  Dada una sucesión de números reales $(a_n)_{n \in \mathbb{N}}$, se define la **serie formal** asociada como el par ordenado constituido por la sucesión generadora $(a_n)$ y su **sucesión de sumas parciales** $(S_n)_{n \in \mathbb{N}}$, donde:
   $$S_n = \sum_{k=1}^n a_k = a_1 + a_2 + a_3 + \dots + a_n$$
-  donde:
-  - $\sum$: Operador de sumatoria.
-  - $k$: Índice de suma o variable muda que varía desde el límite inferior $k=1$ hasta el límite superior $k=n$.
-  - $a_k$: Término general de la sucesión subordinada.
-  - $S_n$: $n$-ésima suma parcial de la serie.
 
-  ### Distinción estructural
-  - **Sucesión**: Conjunto ordenado o mapa $a: \mathbb{N} \to \mathbb{R}$.
-  - **Serie Finita**: Escalar $S_n \in \mathbb{R}$ obtenido tras adición finita de $n$ términos.
-  - **Serie Infinita**: Objeto analítico $\sum_{k=1}^\infty a_k = \lim_{n \to \infty} S_n$.
+  ### Componentes de la Notación Sigma ($\sum$)
+  $$\sum_{k=m}^n a_k$$
+  - **Índice de suma ($k$)**: Variable muda que recorre correlativamente los enteros desde el límite inferior hasta el superior.
+  - **Límite inferior ($m$)**: Valor inicial de indexación (habitualmente $m=1$).
+  - **Límite superior ($n$)**: Valor final de indexación.
+  - **Término general ($a_k$)**: Expresión algebraica que se evalúa en cada paso.
+
+  ### Relación Recurrente entre Serie y Sucesión
+  $$S_1 = a_1, \quad S_n = S_{n-1} + a_n \quad (n \ge 2) \iff a_n = S_n - S_{n-1}$$
 
   ### Síntesis didáctica
-  - Sucesión $\implies$ Lista $\{a_1, a_2, \dots, a_n\}$.
-  - Serie $\implies$ Suma $a_1 + a_2 + \dots + a_n = \sum_{k=1}^n a_k$.
+  - Concepto: $S_n = \sum_{k=1}^n a_k$.
+  - Dinámica: La serie transforma una lista en una acumulación sumatoria.
 definiciones_clave: |
-  - **Serie numérica**: Operación de adición aplicada a los elementos de una sucesión.
-  - **Operador Sumatoria ($\sum$)**: Notación compacta para expresar la adición consecutiva de términos.
-  - **Suma parcial ($S_n$)**: Resultado numérico de sumar los primeros $n$ términos de una sucesión.
+  - **Serie numérica**: Suma formal de los elementos de una sucesión.
+  - **Suma parcial ($S_n$)**: Resultado obtenido al sumar los primeros $n$ términos de la sucesión.
+  - **Notación Sigma ($\sum$)**: Operador matemático que compacta la escritura de adiciones sucesivas.
 propiedades_relaciones: |
-  - **Relación funcional $S_n - S_{n-1} = a_n$**: La diferencia entre dos sumas parciales consecutivas devuelve el término $a_n$ en esa posición.
-  - **Linearidad del operador $\sum$**: $\sum (c \cdot a_k) = c \cdot \sum a_k$ y $\sum (a_k + b_k) = \sum a_k + \sum b_k$.
+  - **Linealidad del operador suma**: $\sum_{k=1}^n (c \cdot a_k + b_k) = c \sum_{k=1}^n a_k + \sum_{k=1}^n b_k$.
+  - **Descomposición de intervalos**: $\sum_{k=1}^n a_k = \sum_{k=1}^m a_k + \sum_{k=m+1}^n a_k$ para $1 \le m < n$.
 ejemplo_guiado:
-  enunciado: 'Dada la sucesión $a_k = 2^k$, expresa en notación de sumatoria la serie de los primeros $4$ términos y calcula su suma parcial $S_4$.'
+  enunciado: 'Para la sucesión con término general $a_n = 3n - 1$, calcula las tres primeras sumas parciales $S_1, S_2, S_3$ y expresa $S_4$ utilizando la notación sigma.'
+  imagen: '/static/img/nodos/definicion-de-serie-como-suma-de-terminos-de-una-sucesion-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los primeros 4 términos evaluando $k=1, 2, 3, 4$: $a_1 = 2^1 = 2$, $a_2 = 2^2 = 4$, $a_3 = 2^3 = 8$, $a_4 = 2^4 = 16$.'
-    - 'Paso 2: Escribimos la serie en notación de sumatoria: $S_4 = \sum_{k=1}^4 2^k$.'
-    - 'Paso 3: Expandimos la adición: $S_4 = 2 + 4 + 8 + 16$.'
-    - 'Paso 4: Sumamos los valores: $2 + 4 + 8 + 16 = 30$. La suma parcial es **$S_4 = 30$**.'
+    - 'Paso 1: Calculamos los primeros términos de la sucesión: $a_1 = 3(1)-1=2, a_2 = 3(2)-1=5, a_3 = 3(3)-1=8, a_4 = 3(4)-1=11$.'
+    - 'Paso 2: Primera suma parcial: $S_1 = a_1 = **2$**.'
+    - 'Paso 3: Segunda suma parcial: $S_2 = a_1 + a_2 = 2 + 5 = **7$**.'
+    - 'Paso 4: Tercera suma parcial: $S_3 = S_2 + a_3 = 7 + 8 = **15$**.'
+    - 'Paso 5: En notación sigma, la suma de cuatro términos es: **$S_4 = \sum_{k=1}^4 (3k - 1) = 15 + 11 = 26$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la diferencia fundamental entre una sucesión numérica $(a_n)$ y una serie numérica $S_n$?'
+    question: '¿Cuál es la diferencia fundamental entre una sucesión y una serie en matemáticas?'
     choices:
-      - {text: 'Una sucesión es la lista ordenada de elementos, mientras que una serie es la suma acumulada de dichos elementos', is_correct: true}
-      - {text: 'Una sucesión se multiplica y una serie se resta', is_correct: false}
-      - {text: 'Son términos exactamente sinónimos que representan el mismo objeto', is_correct: false}
-      - {text: 'Una serie es siempre un número negativo y una sucesión es siempre positiva', is_correct: false}
-    explanation: 'La alternativa correcta es ''Una sucesión es la lista ordenada de elementos, mientras que una serie es la suma acumulada de dichos elementos''. Lista vs Suma.'
+      - {text: 'La sucesión es una lista ordenada de números $(a_n)$ y la serie es la suma acumulada de esos términos $(\sum a_k)$', is_correct: true}
+      - {text: 'La sucesión es una suma y la serie es una multiplicación', is_correct: false}
+      - {text: 'Son términos exactamente equivalentes que se pueden intercambiar sin distinción', is_correct: false}
+      - {text: 'La serie solo existe para números enteros negativos', is_correct: false}
+    explanation: 'La alternativa correcta es ''La sucesión es una lista ordenada de números $(a_n)$ y la serie es la suma acumulada de esos términos $(\sum a_k)$''. La serie es la operación de adición sobre los términos de la sucesión.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si la suma parcial $S_3 = 12$ y la suma parcial $S_4 = 20$, ¿cuál es el valor del cuarto término $a_4$ de la sucesión?'
+    question: 'Si las sumas parciales de una serie son $S_1 = 3, S_2 = 8, S_3 = 15$, ¿cuál es el valor del tercer término de la sucesión $a_3$?'
     choices:
-      - {text: '$a_4 = 8$, calculando la resta $S_4 - S_3 = 20 - 12 = 8$', is_correct: true}
-      - {text: '$a_4 = 32$, sumando $20 + 12$', is_correct: false}
-      - {text: '$a_4 = 5$, dividiendo $20 / 4$', is_correct: false}
-      - {text: '$a_4 = 240$, multiplicando $20 \cdot 12$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_4 = 8$, calculando la resta $S_4 - S_3 = 20 - 12 = 8$''. Propiedad $S_n - S_{n-1} = a_n$.'
+      - {text: '$a_3 = 7$, calculando $S_3 - S_2 = 15 - 8 = 7$', is_correct: true}
+      - {text: '$a_3 = 15$, confundiéndolo con la suma acumulada', is_correct: false}
+      - {text: '$a_3 = 5$', is_correct: false}
+      - {text: '$a_3 = 23$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_3 = 7$, calculando $S_3 - S_2 = 15 - 8 = 7$''. El término individual es la diferencia entre sumas parciales consecutivas: $a_n = S_n - S_{n-1}$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar los términos de la sucesión $a_k$ que se van a adicionar.'
-  - 'Paso 2: Escribir la expresión en notación de sumatoria $\sum_{k=1}^n a_k$.'
-  - 'Paso 3: Expandir cada uno de los $n$ términos desde $k=1$ hasta $k=n$.'
-  - 'Paso 4: Realizar la adición de los términos para hallar el valor escalar de la suma parcial $S_n$.'
+  - 'Paso 1: Identificar la regla de correspondencia de los términos de la sucesión $a_k$.'
+  - 'Paso 2: Evaluar correlativamente los términos para los índices requeridos.'
+  - 'Paso 3: Calcular las sumas parciales acumulando los valores: $S_n = S_{n-1} + a_n$.'
+  - 'Paso 4: Escribir la expresión compacta mediante el operador sumatoria $\sum_{k=1}^n a_k$.'
 errores_correccion: |
-  - **Error 1:** Tratar a una serie como si fuera una simple lista ordenada sin efectuar las adiciones. **Cómo corregirlo:** La serie **exige efectuar la SUMA** de los elementos de la sucesión.
-  - **Error 2:** Confundir el índice de suma $k$ con el límite superior $n$. **Cómo corregirlo:** La variable $k$ es el **contador móvil** ($1, 2, \dots, n$), mientras que $n$ es el **límite final fijo**.
+  - **Error 1:** Confundir el valor del término $a_n$ con la suma acumulada $S_n$. **Cómo corregirlo:** $a_n$ es **un solo número de la lista**, mientras que $S_n$ es la **suma de todos los números desde el primero hasta el $n$**.
+  - **Error 2:** Interpretar el símbolo sigma $\sum$ como una multiplicación de factores. **Cómo corregirlo:** $\sum$ representa estrictamente **adición (suma)** de términos.
 ejemplos:
-  - titulo: 'Sumatoria de números naturales'
-    enunciado: '¿La serie $\sum_{k=1}^5 k$ representa la suma $1 + 2 + 3 + 4 + 5 = 15$?'
+  - titulo: 'Cálculo de suma parcial sigma'
+    enunciado: '¿Cuál es el valor de $\sum_{k=1}^3 k^2$?'
     alternativas:
-      - 'Sí, sustituyendo $k=1, 2, 3, 4, 5$'
-      - 'No, da 25'
-      - 'No, da 5'
-    respuesta: 'Sí, sustituyendo $k=1, 2, 3, 4, 5$'
+      - '$14$'
+      - '$9$'
+      - '$36$'
+    respuesta: '$14$'
     solucion_pasos:
-      - '1. Expandimos: $1 + 2 + 3 + 4 + 5$.'
-      - '2. Sumamos: $15$.'
-  - titulo: 'Suma parcial S3 de impares'
-    enunciado: 'Para $a_k = 2k - 1$, ¿la suma parcial $S_3 = 1 + 3 + 5 = 9$?'
+      - '1. $\sum_{k=1}^3 k^2 = 1^2 + 2^2 + 3^2 = 1 + 4 + 9 = 14$.'
+  - titulo: 'Obtención de término a partir de sumas'
+    enunciado: 'Si $S_4 = 30$ y $S_5 = 45$, ¿cuál es el valor de $a_5$?'
+    alternativas:
+      - '$15$'
+      - '$75$'
+      - '$30$'
+    respuesta: '$15$'
+    solucion_pasos:
+      - '1. $a_5 = S_5 - S_4 = 45 - 30 = 15$.'
+  - titulo: 'Primera suma parcial'
+    enunciado: '¿En toda serie la primera suma parcial $S_1$ es exactamente igual al primer término $a_1$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_1=1, a_2=3, a_3=5 \implies 1+3+5 = 9$.'
-  - titulo: 'Cálculo de término mediante restas de sumas'
-    enunciado: 'Si $S_5 = 50$ y $S_4 = 35$, ¿el término $a_5 = 50 - 35 = 15$?'
+      - '1. Por definición, $S_1 = \sum_{k=1}^1 a_k = a_1$.'
+  - titulo: 'Linealidad de la suma'
+    enunciado: '¿La expresión $\sum_{k=1}^n (a_k + b_k)$ es igual a $\sum_{k=1}^n a_k + \sum_{k=1}^n b_k$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $a_5 = S_5 - S_4 = 15$.'
-  - titulo: 'Sumatoria de constantes'
-    enunciado: '¿La serie $\sum_{k=1}^4 3$ equivale a $3 + 3 + 3 + 3 = 12$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $4 \cdot 3 = 12$.'
+      - '1. La sumatoria cumple la propiedad distributiva de la adición.'
 errores_frecuentes:
-  - 'Considerar que la notación de serie representa una lista inerte de números sin operar adición.'
-  - 'La resta entre sumas parciales consecutivas $S_n - S_{n-1}$ entrega el promedio de los términos.'
-  - 'Sumar únicamente el primer y el último término ignorando los elementos intermedios de la serie.'
-  - 'Sustituir el límite superior $n$ dentro de la variable muda $k$ antes de efectuar la expansión.'
-  - 'Toda serie finita debe ser calculada evaluando e incorporando individualmente cada uno de sus términos.'
+  - 'El término individual $a_n$ de una sucesión se considera idéntico a la suma parcial $S_n$.'
+  - 'El operador sumatoria sigma se interpreta como una multiplicación iterada de términos.'
+  - 'El índice de suma en la notación sigma puede saltar valores enteros de forma arbitraria.'
+  - 'Al calcular el término $a_n$ a partir de sumas parciales se divide $S_n$ por el número de términos.'
+  - 'Una serie finita no puede tener un valor total negativo.'
 afirmaciones_verdaderas:
-  - 'Una serie es la suma parcial o total de los elementos que componen una sucesión numérica.'
-  - 'La diferencia entre las sumas parciales consecutivas $S_n - S_{n-1}$ es igual al término $a_n$.'
-al_terminar_debes_poder: 'Definir el concepto de serie como la suma de términos de una sucesión y expresarla mediante $\sum_{k=1}^n a_k$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Una serie numérica es la suma acumulada de los términos de una sucesión: $S_n = \sum_{k=1}^n a_k$.'
+  - 'El término individual $a_n$ se recupera a partir de las sumas parciales mediante la resta $a_n = S_n - S_{n-1}$ para todo $n \ge 2$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/definicion-de-serie-como-suma-de-terminos-de-una-sucesion-resumen.svg)
+
+  QUÉ: Definir e interpretar una serie numérica distinguiéndola de una sucesión y operando con sumatorias.
+  CÓMO: Representar la suma de términos mediante la notación sigma $\sum_{k=1}^n a_k$ y calcular la sucesión de sumas parciales $(S_n)$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

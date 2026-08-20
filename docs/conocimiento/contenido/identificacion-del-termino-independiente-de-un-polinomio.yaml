@@ -1,109 +1,124 @@
 semantic_id: MAT.ALG.POLINOMIOS.TERMINO_INDEPENDIENTE
-resumen_inicial: 'La identificación del término independiente de un polinomio consiste en determinar el término numérico constante que no contiene variables literales o cuyo grado relativo respecto a las variables es cero.'
+resumen_inicial: 'El término independiente de un polinomio es el término constante que no contiene variables literales, equivalente al valor numérico del polinomio evaluado en cero.'
 explicacion_simple: |
-  El **término independiente** es el "número suelto" de un polinomio:
-  - Es el único término que **no lleva ninguna letra acompañándolo**.
-  - Ejemplo 1: En el polinomio $P(x) = 3x^2 - 7x + 5$, el término independiente es **$+5$** (o simplemente $5$).
-  - Ejemplo 2: En $Q(y) = 4y^3 - 12$, el término independiente es **$-12$** (incluye su signo negativo).
-  - **¿Y si no hay ningún número suelto?** En polinomios como $R(x) = 2x^3 - 5x$, el término independiente es **$0$** (cero implícito).
-  - En un gráfico de función $y = P(x)$, el término independiente señala el punto exacto donde la curva corta al eje vertical $Y$ (intersección en el origen $x=0$).
+  - El **término independiente (T.I.)** es el número "suelto" que no está multiplicado por ninguna letra (es de grado $0$).
+  - En $P(x) = 4x^3 - 5x^2 + 7x - 9$, el término independiente es **$-9$** (¡siempre con su signo negativo!).
+  - **Método infalible para hallarlo:**
+    - Se reemplazan todas las variables por cero ($x = 0$).
+    - $P(0) = 4(0)^3 - 5(0)^2 + 7(0) - 9 = -9$.
+  - Si todos los términos tienen letras (como en $2x^2 + 3x$), el término independiente es **$0$**.
+
+  ![Término Independiente](/static/img/nodos/identificacion-del-termino-independiente-de-un-polinomio-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dado un polinomio en una variable $P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 \in \mathbb{R}[x]$, el **término independiente** es el coeficiente escalar $a_0 \in \mathbb{R}$ asociado a la potencia de grado cero $x^0 = 1$:
+  Sea $P(x) = \sum_{i=0}^n a_i x^i \in \mathbb{K}[x]$. El **término independiente** de $P$, denotado $\operatorname{TI}(P)$ o $a_0$, es el coeficiente escalar correspondiente al monomio de grado cero ($x^0$):
 
-  $$\operatorname{TermIndep}(P) = a_0 = P(0)$$
+  $$\operatorname{TI}(P) = a_0 = P(0)$$
 
-  ### Evaluación Funcional en el Origen
-  El valor del término independiente coincide numéricamente con evaluar el polinomio en la raíz del origen $x = 0$:
+  ### Propiedad funcional multivariable
+  Para un polinomio en varias variables $P(x_1, \dots, x_n)$, el término independiente es el valor numérico obtenido al anular todas las variables simultáneamente:
+  $$\operatorname{TI}(P) = P(0, 0, \dots, 0)$$
 
-  $$P(0) = a_n(0)^n + \dots + a_1(0) + a_0 = a_0$$
-
-  ### Interpretación Geométrica
-  En la representación cartesiana de la función $y = P(x)$, la pareja ordenada $(0, a_0)$ define las coordenadas del intercepto o intersección de la gráfica con el eje de las ordenadas (eje $Y$).
-
-  ### Síntesis didáctica
-  El término independiente es la constante de desplazamiento vertical del polinomio. Permite determinar el estado inicial en modelos aplicados de física y economía.
+  ### Álgebra de términos independientes
+  1. **T.I. de la suma:** $\operatorname{TI}(P + Q) = \operatorname{TI}(P) + \operatorname{TI}(Q)$.
+  2. **T.I. del producto:** $\operatorname{TI}(P \cdot Q) = \operatorname{TI}(P) \cdot \operatorname{TI}(Q)$.
+  3. **T.I. de potencias:** $\operatorname{TI}(P^k) = [\operatorname{TI}(P)]^k$.
 definiciones_clave: |
-  - **Término independiente**: Término constante escalar $a_0$ de un polinomio que no está acompañado por variables (grado $0$).
-  - **Intercepto en el eje Y**: Punto cartesiano $(0, a_0)$ donde la gráfica de la función polinómica cruza el eje vertical.
-  - **Evaluación en cero ($P(0)$)**: Operación de sustitución $x=0$ que aísla el valor del término independiente.
+  - **Término independiente**: Término constante sin factores variables ($GA = 0$).
+  - **Evaluación en cero**: Propiedad fundamental $\operatorname{TI}(P) = P(0)$.
+  - **Término nulo**: Condición en que $\operatorname{TI}(P) = 0$ debido a que todas las componentes contienen factores literales.
 propiedades_relaciones: |
-  - **Término independiente nulo**: Si $a_0 = 0$, el polinomio no posee término independiente constante explícito y su gráfica pasa exactamente por el origen $(0,0)$.
-  - **Producto de términos independientes**: El término independiente del producto de dos polinomios es igual al producto de sus términos independientes individuales ($\operatorname{TermIndep}(P \cdot Q) = a_0 \cdot b_0$).
+  - **Intersección con el eje Y**: En la gráfica de una función polinomial $y = P(x)$, el punto de corte con el eje vertical es exactamente $(0, \operatorname{TI}(P))$.
+  - **Cálculo directo en expresiones factorizadas**: En $P(x) = (2x - 3)(x + 4)$, el término independiente se obtiene evaluando $P(0) = (-3)(4) = -12$.
 ejemplo_guiado:
-  enunciado: 'Dado el polinomio $P(x) = -5x^4 + 2x^2 - 9$, identifica el término independiente, evalúa $P(0)$ y determina las coordenadas de su intercepto con el eje Y.'
+  enunciado: 'Determina el término independiente del polinomio factorizado $P(x) = (2x - 3)^3 (x + 2) + 5(x - 1) + 8$ sin necesidad de expandir todos los productos.'
+  imagen: '/static/img/nodos/identificacion-del-termino-independiente-de-un-polinomio-ejemplos.svg'
   pasos:
-    - 'Paso 1: Buscamos el término constante sin letra en $P(x)$: Corresponde a **$-9$**.'
-    - 'Paso 2: Evaluamos la función en $x = 0$: $P(0) = -5(0)^4 + 2(0)^2 - 9 = 0 + 0 - 9 = -9$.'
-    - 'Paso 3: Formamos la pareja ordenada del intercepto en el eje Y: $(0, P(0)) = (0, -9)$.'
-    - 'Conclusión: El término independiente es **$-9$**, $P(0) = \mathbf{-9}$ y el intercepto en el eje Y es **$(0, -9)$**.'
+    - 'Paso 1: Aplicamos el teorema del término independiente: evaluamos $P(0)$.'
+    - 'Paso 2: Sustituimos $x = 0$ en el primer bloque: $(2(0) - 3)^3 (0 + 2) = (-3)^3 (2) = (-27)(2) = -54$.'
+    - 'Paso 3: Sustituimos $x = 0$ en el segundo bloque: $5(0 - 1) = 5(-1) = -5$.'
+    - 'Paso 4: Sumamos la constante final: $-54 - 5 + 8 = **-51$**.'
+    - 'Paso 5: Conclusión: El término independiente del polinomio es **$-51$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿A qué equivale numéricamente evaluar un polinomio $P(x)$ en el valor $x = 0$?'
+    question: '¿Cuál es el término independiente del polinomio $P(x) = 7x^4 - 3x^2 + 5x - 14$?'
     choices:
-      - {text: 'Equivale exactamente al valor del término independiente del polinomio ($a_0$)', is_correct: true}
-      - {text: 'Equivale al coeficiente principal $a_n$', is_correct: false}
-      - {text: 'Equivale al grado absoluto del polinomio', is_correct: false}
-      - {text: 'Equivale siempre al valor 1', is_correct: false}
-    explanation: 'La alternativa correcta es ''Equivale exactamente al valor del término independiente del polinomio ($a_0$)''. $P(0) = a_0$.'
+      - text: '$-14$, incluyendo su signo negativo'
+        is_correct: true
+      - text: '$14$, porque los términos independientes son siempre positivos'
+        is_correct: false
+      - text: '$7$, porque es el coeficiente principal'
+        is_correct: false
+      - text: '$0$, porque tiene grado 4'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$-14$, incluyendo su signo negativo''. El término independiente conserva el signo del monomio constante.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'En el polinomio $Q(x) = 7x^3 - 4x^2 + 6x$, ¿cuál es el valor de su término independiente?'
+    question: 'En el polinomio $P(x) = (3x - 2)(2x + 5)$, ¿cuál es el término independiente calculado como $P(0)$?'
     choices:
-      - {text: 'El término independiente es $0$, porque todos los términos contienen la variable $x$', is_correct: true}
-      - {text: 'El término independiente es $6$', is_correct: false}
-      - {text: 'El término independiente es $7$', is_correct: false}
-      - {text: 'El término independiente es $-4$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El término independiente es $0$, porque todos los términos contienen la variable $x$''. Al evaluar $Q(0) = 0$.'
+      - text: '$-10$, porque $(-2) \cdot (5) = -10$'
+        is_correct: true
+      - text: '$10$'
+        is_correct: false
+      - text: '$6$'
+        is_correct: false
+      - text: '$3$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$-10$, porque $(-2) \cdot (5) = -10$''. $P(0) = (3(0) - 2)(2(0) + 5) = (-2)(5) = -10$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Examinar los términos que componen el polinomio.'
-  - 'Paso 2: Localizar aquel término que no contenga variables literales (o evaluar $x=0$).'
-  - 'Paso 3: Extraer la cifra constante incluyendo su signo positivo o negativo.'
-  - 'Paso 4: Si todos los términos contienen letras, declarar que el término independiente es $0$.'
+  - 'Paso 1: Si el polinomio está en forma desarrollada, localizar el término que carece de variables.'
+  - 'Paso 2: Si el polinomio está factorizado o desordenado, sustituir todas las variables por cero ($x = 0$).'
+  - 'Paso 3: Realizar las operaciones aritméticas de constantes resultantes.'
+  - 'Paso 4: Conservar el signo obtenido como el término independiente.'
 errores_correccion: |
-  - **Error 1:** Excluir el signo negativo del término independiente (ej: decir que en $x^2 - 8$ el término independiente es $8$). **Cómo corregirlo:** El signo negativo **forma parte del término independiente** (es $-8$).
-  - **Error 2:** Tomar como término independiente al último término escrito cuando el polinomio está desordenado. **Cómo corregirlo:** El término independiente **es el número constante sin letras**, no importa la posición donde se ubique.
+  - **Error 1:** Omitir el signo negativo del término independiente. **Cómo corregirlo:** En $2x - 7$, el término independiente es **$-7$**, no $7$.
+  - **Error 2:** Desarrollar productos largos innecesariamente para hallar el T.I. **Cómo corregirlo:** Evaluar directamente **$P(0)$** para ahorrar tiempo y evitar errores algebraicos.
 ejemplos:
-  - titulo: 'Identificación directa'
-    enunciado: '¿Cuál es el término independiente del polinomio $P(x) = -2x^3 + 5x^2 - 13$?'
+  - titulo: 'Término independiente en binomio al cubo'
+    enunciado: '¿Cuál es el término independiente del polinomio $P(x) = (2x - 3)^3$?'
     alternativas:
-      - '$-13$'
-      - '$5$'
-      - '$-2$'
-    respuesta: '$-13$'
+      - '$-27$'
+      - '$27$'
+      - '$-9$'
+    respuesta: '$-27$'
     solucion_pasos:
-      - '1. El término constante sin variable es $-13$.'
-      - '2. El término independiente es $-13$.'
-  - titulo: 'Término independiente en polinomio desordenado'
-    enunciado: 'En el polinomio $Q(x) = 15 - 4x^2 + 9x$, ¿cuál es el término independiente?'
+      - '1. Evaluamos $P(0) = (2(0) - 3)^3 = (-3)^3$.'
+      - '2. $(-3)^3 = -27$.'
+      - '3. El término independiente es $-27$.'
+  - titulo: 'Polinomio sin término constante'
+    enunciado: 'En $Q(x) = 4x^3 - 8x^2 + 6x$, ¿cuál es el valor del término independiente?'
     alternativas:
-      - '$15$'
-      - '$9$'
-      - '$-4$'
-    respuesta: '$15$'
+      - '$0$'
+      - '$6$'
+      - '$4$'
+    respuesta: '$0$'
     solucion_pasos:
-      - '1. El número suelto sin letra es $15$.'
-      - '2. Su término independiente es $15$.'
-  - titulo: 'Intersección con el eje Y'
-    enunciado: 'En la función cuadrática $f(x) = x^2 - 6x + 8$, ¿corta la parábola al eje Y en el punto $(0, 8)$?'
+      - '1. $Q(0) = 4(0) - 8(0) + 6(0) = 0$.'
+      - '2. El término independiente es 0.'
+  - titulo: 'Equivalencia funcional en cero'
+    enunciado: '¿Es el término independiente de cualquier polinomio igual al valor de la función evaluada en $x = 0$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, el término independiente $8$ define el intercepto $(0,8)$.'
-  - titulo: 'Término independiente de un producto'
-    enunciado: 'Si multiplicamos $(x + 3)(x - 5)$, ¿el término independiente resultante es $3 \cdot (-5) = -15$?'
-    respuesta: 'Sí'
+      - '1. Todos los términos con $x$ se anulan al multiplicar por 0.'
+      - '2. Solo subsiste el término constante $a_0 = P(0)$.'
+  - titulo: 'Dependencia de variables'
+    enunciado: '¿Cambia el valor del término independiente cuando varía el valor de $x$?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, $(3)(-5) = -15$ es el producto de sus constantes.'
+      - '1. Por definición, el término independiente es constante.'
+      - '2. No depende del valor que adopte la variable $x$.'
 errores_frecuentes:
-  - 'El término independiente de un polinomio es siempre el primer término escrito a la izquierda.'
-  - 'Un polinomio en el que todos sus términos llevan variables no posee término independiente en su evaluación.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El signo negativo del término independiente no debe incluirse al evaluar el intercepto.'
-  - 'El término independiente cambia de valor si se multiplica el polinomio por una variable x.'
+  - 'Olvidar el signo negativo al enunciar el término independiente.'
+  - 'Asumir que el término independiente es siempre el último término de un polinomio desordenado.'
+  - 'Expandir polinomios factorizados complejos en vez de evaluar directamente en cero ($P(0)$).'
+  - 'Creer que un polinomio sin término constante explícito no tiene término independiente (su valor es cero).'
+  - 'Confundir el coeficiente principal con el término independiente.'
 afirmaciones_verdaderas:
-  - 'El término independiente de un polinomio es la constante escalar que no lleva variables acompañantes.'
-  - 'El valor del término independiente coincide numéricamente con evaluar el polinomio en la variable igual a cero ($P(0)$).'
-al_terminar_debes_poder: 'Identificar el término independiente de cualquier polinomio evaluando $P(0)$ y determinando el intercepto de su gráfica con el eje Y.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'El término independiente de un polinomio es el coeficiente constante correspondiente al monomio de grado cero.'
+  - 'Para cualquier polinomio $P(x)$, su término independiente es idéntico al valor numérico $P(0)$.'
+al_terminar_debes_poder: |
+  ![Resumen de Término Independiente](/static/img/nodos/identificacion-del-termino-independiente-de-un-polinomio-resumen.svg)
+
+  QUÉ: Identificar y calcular el término independiente de polinomios desarrollados o factorizados reconociendo su grado cero y evaluando $P(0)$.
+  CÓMO: Aislando la constante no nula con su signo o evaluando la función polinomial en cero ($P(0, \dots, 0) = a_0$).

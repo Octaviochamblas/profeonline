@@ -1,109 +1,154 @@
 semantic_id: MAT.ALG.FRACCIONES_COMPLEJAS.FRACCION_CONTINUA_FINITA
 resumen_inicial: Una fracción continua finita se resuelve progresivamente desde el nivel más profundo (de abajo hacia arriba).
-explicacion_simple: |
-  Una fracción continua finita es una "torre de fracciones" escalonada sucesivamente una debajo de otra.
+explicacion_simple: 'Una fracción continua finita es una "torre de fracciones" escalonada sucesivamente una debajo de otra.
+
 
   Para resolverlas correctamente, la regla fundamental consiste en avanzar SIEMPRE de abajo hacia arriba:
 
+
   1. Resolvemos la suma o resta del nivel inferior más profundo.
+
   2. Invertimos el resultado obtenido en ese nivel.
+
   3. Sumamos o restamos esa expresión con el nivel inmediatamente superior y repetimos el proceso hasta alcanzar la cima.
-explicacion_formal: |
-  ### Definición formal
+
+
+  ![Resolución de fracción continua finita](/static/img/nodos/resolucion-de-fraccion-continua-finita-intro.svg)
+
+  '
+explicacion_formal: '### Definición formal
+
   Una **fracción continua finita** de orden $k$ se representa como:
+
 
   $$F(x) = a_0 + \frac{b_1}{a_1 + \frac{b_2}{a_2 + \frac{\dots}{a_{k-1} + \frac{b_k}{a_k}}}}$$
 
+
   ### Algoritmo de resolución ascendente
+
   1. Iniciar en el nivel inferior $a_{k-1} + \frac{b_k}{a_k} = \frac{a_{k-1} a_k + b_k}{a_k}$.
+
   2. Invertir el recíproco y sustituir progresivamente hacia arriba en $a_{k-2}, \dots, a_0$.
 
+
   ### Síntesis didáctica
-  Resolver torres de fracciones en cascada requiere colapsar los niveles más profundos invirtiendo sucesivamente sus resultados hacia la cúspide.
-definiciones_clave: |
-  - **Fracción continua finita**: Estructura fraccionaria en cascada con un número finito de niveles inferiores.
-  - **Resolución ascendente**: Proceso sistemático de simplificación desde el nivel más profundo hasta la fracción principal superior.
-propiedades_relaciones: |
-  - **Recursividad**: Cada nivel $k$ funciona como una fracción compleja de segundo nivel con respecto al nivel $k-1$.
+
+  Resolver torres de fracciones en cascada requiere colapsar los niveles más profundos invirtiendo sucesivamente sus resultados
+  hacia la cúspide.
+
+  '
+definiciones_clave: '- **Fracción continua finita**: Estructura fraccionaria en cascada con un número finito de niveles inferiores.
+
+  - **Resolución ascendente**: Proceso sistemático de simplificación desde el nivel más profundo hasta la fracción principal
+  superior.
+
+  '
+propiedades_relaciones: '- **Recursividad**: Cada nivel $k$ funciona como una fracción compleja de segundo nivel con respecto
+  al nivel $k-1$.
+
   - **Dominio acumulado**: Requiere que la expresión de cada nivel parcial sea no nula para permitir su inversión.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Resuelve la fracción continua finita $F(x) = 1 + \frac{1}{1 + \frac{1}{x}}$, exprésala como una sola fracción irreducible y evalúa para $x = 4$.'
+  enunciado: Resuelve la fracción continua finita $F(x) = 1 + \frac{1}{1 + \frac{1}{x}}$, exprésala como una sola fracción
+    irreducible y evalúa para $x = 4$.
   pasos:
-    - 'Paso 1: Resolver el nivel inferior más profundo: $1 + \frac{1}{x} = \frac{x + 1}{x}$.'
-    - 'Paso 2: Invertir el resultado en el nivel medio: $\frac{1}{\frac{x + 1}{x}} = \frac{x}{x + 1}$.'
-    - 'Paso 3: Sumar el nivel superior: $1 + \frac{x}{x + 1} = \frac{(x + 1) + x}{x + 1} = \frac{2x + 1}{x + 1}$ para $x \notin \{-1, 0\}$.'
-    - 'Paso 4: Evaluar para $x = 4$: $\frac{2(4) + 1}{4 + 1} = \frac{8 + 1}{5} = \frac{9}{5}$.'
+  - 'Paso 1: Resolver el nivel inferior más profundo: $1 + \frac{1}{x} = \frac{x + 1}{x}$.'
+  - 'Paso 2: Invertir el resultado en el nivel medio: $\frac{1}{\frac{x + 1}{x}} = \frac{x}{x + 1}$.'
+  - 'Paso 3: Sumar el nivel superior: $1 + \frac{x}{x + 1} = \frac{(x + 1) + x}{x + 1} = \frac{2x + 1}{x + 1}$ para $x \notin
+    \{-1, 0\}$.'
+  - 'Paso 4: Evaluar para $x = 4$: $\frac{2(4) + 1}{4 + 1} = \frac{8 + 1}{5} = \frac{9}{5}$.'
+  imagen: /static/img/nodos/resolucion-de-fraccion-continua-finita-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿En qué orden se deben resolver los niveles de una fracción continua finita?'
-    choices:
-      - {text: 'Desde el nivel inferior más profundo hacia arriba (de abajo hacia arriba).', is_correct: true}
-      - {text: 'Desde el término superior principal hacia abajo.', is_correct: false}
-      - {text: 'Se resuelven todos los términos simultáneamente al azar.', is_correct: false}
-      - {text: 'Multiplicando solo los denominadores de los extremos.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Desde el nivel inferior más profundo hacia arriba (de abajo hacia arriba).''.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al simplificar $1 + \frac{1}{1 + \frac{1}{x}}$ y evaluar la expresión para $x = 4$, ¿cuál es el resultado?'
-    choices:
-      - {text: '$\frac{9}{5}$', is_correct: true}
-      - {text: '$\frac{5}{9}$', is_correct: false}
-      - {text: '$\frac{8}{5}$', is_correct: false}
-      - {text: '$\frac{9}{4}$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\frac{9}{5}$''.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿En qué orden se deben resolver los niveles de una fracción continua finita?
+  choices:
+  - text: Desde el nivel inferior más profundo hacia arriba (de abajo hacia arriba).
+    is_correct: true
+  - text: Desde el término superior principal hacia abajo.
+    is_correct: false
+  - text: Se resuelven todos los términos simultáneamente al azar.
+    is_correct: false
+  - text: Multiplicando solo los denominadores de los extremos.
+    is_correct: false
+  explanation: La alternativa correcta es 'Desde el nivel inferior más profundo hacia arriba (de abajo hacia arriba).'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al simplificar $1 + \frac{1}{1 + \frac{1}{x}}$ y evaluar la expresión para $x = 4$, ¿cuál es el resultado?
+  choices:
+  - text: $\frac{9}{5}$
+    is_correct: true
+  - text: $\frac{5}{9}$
+    is_correct: false
+  - text: $\frac{8}{5}$
+    is_correct: false
+  - text: $\frac{9}{4}$
+    is_correct: false
+  explanation: La alternativa correcta es '$\frac{9}{5}$'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el nivel fraccionario situado en el fondo de la torre.'
-  - 'Paso 2: Sumar o restar las expresiones de ese nivel inferior.'
-  - 'Paso 3: Invertir el resultado de ese nivel convirtiéndolo en la fracción del nivel superior.'
-  - 'Paso 4: Repetir la suma e inversión avanzando hacia arriba nivel por nivel.'
-  - 'Paso 5: Escribir la fracción reducida final obtenida en la cima.'
-errores_correccion: |
-  - **Error 1:** Intentar resolver la torre de arriba hacia abajo (operar $a_0 + b_1$ antes de resolver el fondo). **Cómo corregirlo:** La resolución de fracciones continuas es **ESTRICTAMENTE DE ABAJO HACIA ARRIBA; NUNCA DE ARRIBA HACIA ABAJO**.
-  - **Error 2:** Omitir la inversión del resultado parcial antes de sumarlo al nivel superior. **Cómo corregirlo:** Toda fracción en el denominador $\frac{1}{A/B}$ **DEBE INVERTIRSE COMO $\frac{B}{A}$ ANTES DE OPERAR EL SIGUIENTE NIVEL**.
+- 'Paso 1: Identificar el nivel fraccionario situado en el fondo de la torre.'
+- 'Paso 2: Sumar o restar las expresiones de ese nivel inferior.'
+- 'Paso 3: Invertir el resultado de ese nivel convirtiéndolo en la fracción del nivel superior.'
+- 'Paso 4: Repetir la suma e inversión avanzando hacia arriba nivel por nivel.'
+- 'Paso 5: Escribir la fracción reducida final obtenida en la cima.'
+errores_correccion: '- **Error 1:** Intentar resolver la torre de arriba hacia abajo (operar $a_0 + b_1$ antes de resolver
+  el fondo). **Cómo corregirlo:** La resolución de fracciones continuas es **ESTRICTAMENTE DE ABAJO HACIA ARRIBA; NUNCA DE
+  ARRIBA HACIA ABAJO**.
+
+  - **Error 2:** Omitir la inversión del resultado parcial antes de sumarlo al nivel superior. **Cómo corregirlo:** Toda fracción
+  en el denominador $\frac{1}{A/B}$ **DEBE INVERTIRSE COMO $\frac{B}{A}$ ANTES DE OPERAR EL SIGUIENTE NIVEL**.
+
+  '
 ejemplos:
-  - titulo: 'Ejemplo 1'
-    enunciado: '¿Cuál es el valor simplificado de $1 + \frac{1}{1 + \frac{1}{2}}$?'
-    alternativas:
-      - '$\frac{5}{3}$'
-      - '$\frac{3}{5}$'
-      - '$\frac{4}{3}$'
-    respuesta: '$\frac{5}{3}$'
-    solucion_pasos:
-      - '1. Fondo: $1 + \frac{1}{2} = \frac{3}{2}$.'
-      - '2. Invertir: $\frac{1}{3/2} = \frac{2}{3}$.'
-      - '3. Cima: $1 + \frac{2}{3} = \frac{5}{3}$.'
-  - titulo: 'Ejemplo 2'
-    enunciado: 'Al reducir $x + \frac{1}{\frac{1}{x}}$, ¿qué expresión resulta?'
-    alternativas:
-      - '$2x$'
-      - '$x^2$'
-      - '$x + 1$'
-    respuesta: '$2x$'
-    solucion_pasos:
-      - '1. Invertir $\frac{1}{1/x} = x$.'
-      - '2. Sumar: $x + x = 2x$.'
-  - titulo: 'Dirección de resolución'
-    enunciado: '¿Es obligatorio comenzar por el denominador más profundo en una fracción continua finita?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, es la única secuencia que mantiene la consistencia algebraica.'
-  - titulo: 'Inversión recíproca parcial'
-    enunciado: '¿La expresión $\frac{1}{N/D}$ del nivel inferior se convierte en $\frac{D}{N}$ en el nivel superior?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, por propiedad del inverso multiplicativo.'
+- titulo: Ejemplo 1
+  enunciado: ¿Cuál es el valor simplificado de $1 + \frac{1}{1 + \frac{1}{2}}$?
+  alternativas:
+  - $\frac{5}{3}$
+  - $\frac{3}{5}$
+  - $\frac{4}{3}$
+  respuesta: $\frac{5}{3}$
+  solucion_pasos:
+  - '1. Fondo: $1 + \frac{1}{2} = \frac{3}{2}$.'
+  - '2. Invertir: $\frac{1}{3/2} = \frac{2}{3}$.'
+  - '3. Cima: $1 + \frac{2}{3} = \frac{5}{3}$.'
+- titulo: Ejemplo 2
+  enunciado: Al reducir $x + \frac{1}{\frac{1}{x}}$, ¿qué expresión resulta?
+  alternativas:
+  - $2x$
+  - $x^2$
+  - $x + 1$
+  respuesta: $2x$
+  solucion_pasos:
+  - 1. Invertir $\frac{1}{1/x} = x$.
+  - '2. Sumar: $x + x = 2x$.'
+- titulo: Dirección de resolución
+  enunciado: ¿Es obligatorio comenzar por el denominador más profundo en una fracción continua finita?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, es la única secuencia que mantiene la consistencia algebraica.
+- titulo: Inversión recíproca parcial
+  enunciado: ¿La expresión $\frac{1}{N/D}$ del nivel inferior se convierte en $\frac{D}{N}$ en el nivel superior?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, por propiedad del inverso multiplicativo.
 errores_frecuentes:
-  - 'En una fracción continua finita como $1 + \frac{1}{1 + \frac{1}{x}}$, la resolución debe iniciarse desde el nivel superior $1+1=2$.'
-  - 'Al simplificar la sub-fracción $\frac{1}{\frac{x+1}{x}}$, el resultado obtenido tras operar es $\frac{x+1}{x}$.'
-  - 'Las operaciones en una torre de fracciones permiten sumar directamente los numeradores de niveles distintos.'
-  - 'Al colapsar el nivel inferior $1 + \frac{1}{2} = \frac{3}{2}$, la expresión en el nivel superior se mantiene como $\frac{1}{3/2}$ sin invertirse.'
-  - 'Las restricciones de dominio en fracciones continuas consideran únicamente el denominador del último nivel inferior.'
+- En una fracción continua finita como $1 + \frac{1}{1 + \frac{1}{x}}$, intentar resolver desde el nivel superior $1+1=2$.
+- Al simplificar la sub-fracción $\frac{1}{\frac{x+1}{x}}$, mantener el resultado como $\frac{x+1}{x}$ sin invertir.
+- Sumar directamente los numeradores de niveles distintos dentro de una torre de fracciones.
+- Olvidar invertir el resultado parcial antes de sumarlo al término del nivel inmediatamente superior.
+- Considerar en las restricciones de dominio únicamente el denominador del último nivel inferior.
 afirmaciones_verdaderas:
-  - 'Las fracciones continuas finitas requieren un colapso ascendente resolviendo de abajo hacia arriba.'
-  - 'Cada paso intermedio de una fracción continua invierte la fracción del nivel inferior.'
-al_terminar_debes_poder: |
+- Las fracciones continuas finitas requieren un colapso ascendente resolviendo de abajo hacia arriba.
+- Cada paso intermedio de una fracción continua invierte la fracción del nivel inferior.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/resolucion-de-fraccion-continua-finita-resumen.svg)
+
+
   QUÉ: Resolver fracciones continuas finitas.
-  CÓMO: Operar en secuencia ascendente desde el nivel inferior más profundo hasta colapsar la expresión en la fracción superior.
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+
+  CÓMO: Operar en secuencia ascendente desde el nivel inferior más profundo hacia arriba ($a_{k-1} + \frac{b_k}{a_k} \implies
+  \text{invertir} \implies \text{sumar al siguiente nivel}$) hasta colapsar la expresión en la fracción superior.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

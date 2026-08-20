@@ -1,106 +1,123 @@
 semantic_id: MAT.ALG.TERMINO.GRADO_ABSOLUTO_TERMINO
-resumen_inicial: 'El cálculo del grado absoluto de un término algebraico se efectúa sumando los exponentes de todas las variables que forman parte de su parte literal.'
+resumen_inicial: 'El grado absoluto de un término algebraico es la suma de los exponentes de todas las variables que conforman su parte literal.'
 explicacion_simple: |
-  El **grado absoluto** mide la "potencia total" o dimensión combinada de un término algebraico:
-  - Para calcularlo, **sumas todos los exponentes de las letras** que aparecen en el término.
-  - Ejemplo 1: En $5x^3 y^2$, los exponentes son $3$ y $2 \implies$ Grado absoluto = $3 + 2 = 5$ (es de quinto grado).
-  - Ejemplo 2: En $-4a^2 b c^3$, los exponentes son $2$, $1$ (para la $b$) y $3 \implies$ Grado absoluto = $2 + 1 + 3 = 6$ (es de sexto grado).
-  - **Recuerda**: Las letras que no tienen exponente escrito valen $1$ en la suma. El número del coeficiente no se suma jamás.
+  - El **grado absoluto (GA)** mide la potencia total combinada de un término.
+  - **¿Cómo se calcula?** Se suman los exponentes de **todas las letras** que aparecen en el término:
+    - En $7x^4$, el grado absoluto es **$4$** (de 4° grado).
+    - En $-3x^4y^2z$, sumamos los exponentes: $4 + 2 + 1 = **7$** (de 7° grado). Recuerda que $z = z^1$.
+    - En una constante numérica pura como $9$ (sin letras), el grado absoluto es **$0$**.
+
+  ![Grado Absoluto de un Término](/static/img/nodos/calculo-del-grado-absoluto-de-un-termino-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dado un término algebraico no nulo $M(x_1, \dots, x_k) = c \cdot x_1^{\alpha_1} x_2^{\alpha_2} \cdots x_k^{\alpha_k}$ con $c \neq 0$, el **grado absoluto** $\operatorname{grabs}(M)$ (o grado total) es la suma de los exponentes enteros de sus variables literales:
+  Sea $T = c \cdot x_1^{e_1} x_2^{e_2} \cdots x_k^{e_k}$ un monomio no nulo con $c \neq 0$ y $e_i \in \mathbb{N}_0$. El **grado absoluto de $T$**, denotado por $\operatorname{GA}(T)$ o $\operatorname{gr}(T)$, es la suma escalar de los exponentes de todas sus variables:
 
-  $$\operatorname{grabs}(M) = \sum_{i=1}^k \alpha_i = \alpha_1 + \alpha_2 + \dots + \alpha_k$$
+  $$\operatorname{GA}(T) = \sum_{i=1}^k e_i = e_1 + e_2 + \dots + e_k$$
 
-  ### Propiedades del Grado Absoluto
-  1. **Término constante independizado**: Si un término consta únicamente de un número real no nulo $c \in \mathbb{R} \setminus \{0\}$ (sin letras), su parte literal es $x^0$, por lo que su grado absoluto es cero:
-     $$\operatorname{grabs}(c) = 0$$
-  2. **Multiplicación de términos**: El grado absoluto del producto de dos términos es la suma de sus grados absolutos individuales:
-     $$\operatorname{grabs}(M_1 \cdot M_2) = \operatorname{grabs}(M_1) + \operatorname{grabs}(M_2)$$
-
-  ### Síntesis didáctica
-  El grado absoluto indica la dimensión polinómica global del monomio. Es una propiedad clave para ordenar polinomios y verificar homogeneidad en ecuaciones de física y geometría.
+  ### Casos canónicos
+  1. **Término monovariable:** $\operatorname{GA}(ax^n) = n$.
+  2. **Término multivariable:** $\operatorname{GA}(ax^p y^q z^r) = p + q + r$.
+  3. **Término constante independiente ($c \in \mathbb{R} \setminus \{0\}$):** $\operatorname{GA}(c) = 0$ (puesto que $c = c \cdot x^0$).
+  4. **Polinomio nulo ($0$):** Por definición formal, carece de grado o su grado se define como $-\infty$.
 definiciones_clave: |
-  - **Grado absoluto de un término**: Suma aritmética de todos los exponentes de las letras que constituyen su parte literal.
-  - **Grado cero**: Grado asignado a cualquier número constante no nulo sin parte literal.
-  - **Términos homogéneos**: Dos o más términos algebraicos que poseen exactamente el mismo grado absoluto.
+  - **Grado absoluto (GA)**: Suma total de los exponentes de todas las variables de la parte literal.
+  - **Término de grado cero**: Constante numérica no nula que no contiene variables literales ($GA = 0$).
+  - **Monomio homogéneo**: Términos que poseen exactamente el mismo grado absoluto.
 propiedades_relaciones: |
-  - **Grado del producto**: $\operatorname{grabs}(M_1 \cdot M_2) = \operatorname{grabs}(M_1) + \operatorname{grabs}(M_2)$.
-  - **Grado del cociente**: $\operatorname{grabs}(M_1 / M_2) = \operatorname{grabs}(M_1) - \operatorname{grabs}(M_2)$.
+  - **Grado del producto de monomios**: El grado absoluto del producto de dos términos es la suma de sus grados absolutos: $\operatorname{GA}(T_1 \cdot T_2) = \operatorname{GA}(T_1) + \operatorname{GA}(T_2)$.
+  - **Grado del cociente de monomios**: $\operatorname{GA}(T_1 / T_2) = \operatorname{GA}(T_1) - \operatorname{GA}(T_2)$.
 ejemplo_guiado:
-  enunciado: 'Calcula el grado absoluto de los siguientes términos algebraicos: a) $-7x^4 y^3$, b) $3a^2 b c^5$, c) $18$.'
+  enunciado: 'Calcula el grado absoluto del término algebraico $T = -8a^3b^4c^2d$.'
+  imagen: '/static/img/nodos/calculo-del-grado-absoluto-de-un-termino-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para $-7x^4 y^3$, identificamos los exponentes de sus letras ($x \to 4, y \to 3$). Sumamos: $4 + 3 = 7$. El grado absoluto es **$7$**.'
-    - 'Paso 2: Para $3a^2 b c^5$, identificamos los exponentes ($a \to 2, b \to 1, c \to 5$). Sumamos: $2 + 1 + 5 = 8$. El grado absoluto es **$8$**.'
-    - 'Paso 3: Para el número constante $18$, no posee variables en su parte literal ($18x^0$). El grado absoluto es **$0$**.'
-    - 'Conclusión: Los grados absolutos son **$7$, $8$ y $0$** respectivamente.'
+    - 'Paso 1: Identificamos todas las variables presentes en la parte literal: $a, b, c, d$.'
+    - 'Paso 2: Extraemos el exponente de cada variable:'
+    - '  - Exponente de $a$: **$3$**'
+    - '  - Exponente de $b$: **$4$**'
+    - '  - Exponente de $c$: **$2$**'
+    - '  - Exponente de $d$: **$1$** (exponente tácito)'
+    - 'Paso 3: Sumamos todos los exponentes: $\operatorname{GA}(T) = 3 + 4 + 2 + 1 = **10$**.'
+    - 'Paso 4: Conclusión: El término es de **décimo grado ($10^{\circ}$)**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cómo se calcula el grado absoluto de un término algebraico que posee múltiples letras?'
+    question: '¿Cuál es el grado absoluto del término algebraico $-5x^3y^2z$?'
     choices:
-      - {text: 'Sumando los exponentes de todas las variables presentes en su parte literal', is_correct: true}
-      - {text: 'Multiplicando el coeficiente numérico por el exponente mayor', is_correct: false}
-      - {text: 'Restando el menor exponente al mayor exponente', is_correct: false}
-      - {text: 'Tomando únicamente el exponente de la primera letra', is_correct: false}
-    explanation: 'La alternativa correcta es ''Sumando los exponentes de todas las variables presentes en su parte literal''. Definición de grado absoluto.'
+      - text: '$6$, porque la suma de los exponentes es $3 + 2 + 1 = 6$'
+        is_correct: true
+      - text: '$5$, porque solo se suman $3 + 2$'
+        is_correct: false
+      - text: '$3$, porque es el mayor exponente'
+        is_correct: false
+      - text: '$-5$, porque es el coeficiente'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$6$, porque la suma de los exponentes es $3 + 2 + 1 = 6$''. Se debe incluir el exponente 1 de la variable $z$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Cuál es el grado absoluto del término algebraico $-5 u^3 v w^2$?'
+    question: '¿Cuál es el grado absoluto de una constante numérica no nula como el número 12?'
     choices:
-      - {text: 'El grado absoluto es $6$, sumando $3 + 1 + 2 = 6$', is_correct: true}
-      - {text: 'El grado absoluto es $5$, considerando solo $3 + 2$', is_correct: false}
-      - {text: 'El grado absoluto es $-5$, igual a su coeficiente', is_correct: false}
-      - {text: 'El grado absoluto es $3$, por ser el mayor exponente', is_correct: false}
-    explanation: 'La alternativa correcta es ''El grado absoluto es $6$, sumando $3 + 1 + 2 = 6$''. No se debe olvidar sumar el exponente implícito $1$ de la $v$.'
+      - text: '$0$, porque no contiene variables literales ($12 = 12x^0$)'
+        is_correct: true
+      - text: '$12$'
+        is_correct: false
+      - text: '$1$'
+        is_correct: false
+      - text: 'No tiene definición'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$0$, porque no contiene variables literales ($12 = 12x^0$)''. Las constantes numéricas tienen grado absoluto cero.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar todas las variables o letras que componen la parte literal del término.'
-  - 'Paso 2: Anotar el exponente de cada variable (recordando asignar $1$ a las letras sin superíndice escrito).'
-  - 'Paso 3: Sumar numéricamente todos los exponentes obtenidos (ignorando el coeficiente numérico y su signo).'
-  - 'Paso 4: Declarar el resultado de la suma como el grado absoluto del término.'
+  - 'Paso 1: Identificar todas las letras de la parte literal.'
+  - 'Paso 2: Escribir el exponente de cada letra (asignando $1$ si no lleva número visible).'
+  - 'Paso 3: Sumar algebraicamente todos los exponentes obtenidos.'
+  - 'Paso 4: El resultado es el grado absoluto del término (monomio).'
 errores_correccion: |
-  - **Error 1:** Incluir el número del coeficiente o su signo en la suma del grado absoluto (ej: en $4x^2 y^3$ decir que el grado es $4 + 2 + 3 = 9$). **Cómo corregirlo:** El grado absoluto **SÓLO suma los exponentes de las letras**, el coeficiente no se suma.
-  - **Error 2:** Excluir el exponente implícito $1$ de una letra simple al sumar (ej: en $x^2 y$ declarar que el grado es $2$ en vez de $2 + 1 = 3$). **Cómo corregirlo:** Las letras simples **aportan $1$ a la suma del grado absoluto**.
+  - **Error 1:** Olvidar sumar el exponente 1 de las letras sin superíndice escrito. **Cómo corregirlo:** En $x^2y$, el exponente de $y$ es **$1$**, por lo que $\operatorname{GA} = 2 + 1 = 3$.
+  - **Error 2:** Sumar los exponentes de los números coeficientes (ej. en $2^3 x^4$, decir grado $3+4=7$). **Cómo corregirlo:** El grado solo suma **los exponentes de las variables literales** ($GA = 4$).
 ejemplos:
-  - titulo: 'Cálculo de grado absoluto'
-    enunciado: '¿Cuál es el grado absoluto del término $-2x^5 y^4 z$?'
+  - titulo: 'Cálculo de GA con variable implícita'
+    enunciado: '¿Cuál es el grado absoluto del monomio $15m^2np^4$?'
     alternativas:
-      - '$10$'
-      - '$9$'
-      - '$-2$'
-    respuesta: '$10$'
+      - '$7$'
+      - '$6$'
+      - '$15$'
+    respuesta: '$7$'
     solucion_pasos:
-      - '1. Exponentes: $x \to 5, y \to 4, z \to 1$.'
-      - '2. Sumamos: $5 + 4 + 1 = 10$.'
-  - titulo: 'Grado de término constante'
-    enunciado: '¿Cuál es el grado absoluto del número constante $-45$?'
+      - '1. Exponentes: $m \rightarrow 2, n \rightarrow 1, p \rightarrow 4$.'
+      - '2. Suma: $2 + 1 + 4 = 7$.'
+      - '3. El grado absoluto es 7.'
+  - titulo: 'Grado del producto de dos términos'
+    enunciado: 'Si $T_1$ tiene grado 3 y $T_2$ tiene grado 4, ¿cuál es el grado absoluto del producto $T_1 \cdot T_2$?'
     alternativas:
-      - '$0$'
-      - '$-45$'
-      - '$1$'
-    respuesta: '$0$'
+      - '$7$'
+      - '$12$'
+      - '$4$'
+    respuesta: '$7$'
     solucion_pasos:
-      - '1. No posee variables literales ($x^0$).'
-      - '2. El grado absoluto es $0$.'
-  - titulo: 'Comparación de términos homogéneos'
-    enunciado: 'Los términos $4a^3 b^2$ y $-9a^4 b$, ¿tienen ambos el mismo grado absoluto igual a $5$?'
+      - '1. Al multiplicar potencias de igual base se suman los exponentes.'
+      - '2. $\operatorname{GA}(T_1 \cdot T_2) = 3 + 4 = 7$.'
+  - titulo: 'Grado absoluto de monomio de una letra'
+    enunciado: '¿Es el grado absoluto de $-9x^5$ igual a 5?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $3 + 2 = 5$ y $4 + 1 = 5$. Tienen igual grado (homogéneos).'
-  - titulo: 'Grado de un monomio simple'
-    enunciado: 'En el término $7x$, ¿el grado absoluto es igual a $1$?'
-    respuesta: 'Sí'
+      - '1. Solo hay una variable ($x$) con exponente 5.'
+      - '2. El grado absoluto es 5.'
+  - titulo: 'Inclusión de exponentes del coeficiente'
+    enunciado: '¿Es el grado absoluto del término $3^4 x^2$ igual a 6?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, la única variable $x$ tiene exponente $1$.'
+      - '1. $3^4 = 81$ es el coeficiente numérico constante.'
+      - '2. El grado absoluto solo considera el exponente de la variable $x$, que es 2.'
 errores_frecuentes:
-  - 'El coeficiente numérico se suma con los exponentes al calcular el grado absoluto de un término.'
-  - 'Una letra sin exponente escrito no aporta nada (aporta 0) al cálculo del grado absoluto.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El grado absoluto de un término negativo se debe multiplicar por menos uno.'
-  - 'El grado absoluto de un número constante sin letras es igual a uno.'
+  - 'Olvidar sumar el exponente 1 de las letras que no tienen superíndice escrito.'
+  - 'Sumar el exponente del coeficiente numérico ($2^3 x^4$) al grado de las variables literales.'
+  - 'Tomar el mayor exponente individual en lugar de sumar todos los exponentes del término.'
+  - 'Confundir el coeficiente numérico con el grado absoluto del monomio.'
+  - 'Afirmar que una constante numérica como el 7 tiene grado absoluto 1.'
 afirmaciones_verdaderas:
-  - 'El grado absoluto de un término algebraico es la suma de los exponentes de todas las variables de su parte literal.'
-  - 'Toda constante numérica no nula sin parte literal posee un grado absoluto igual a cero.'
-al_terminar_debes_poder: 'Calcular el grado absoluto de cualquier término algebraico sumando los exponentes de sus variables e identificando términos homogéneos.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Nomenclatura.'
-estado: publicado
+  - 'El grado absoluto de un término algebraico es la suma de los exponentes de todas sus variables literales.'
+  - 'Toda constante numérica real no nula posee un grado absoluto igual a cero.'
+al_terminar_debes_poder: |
+  ![Resumen de Grado Absoluto](/static/img/nodos/calculo-del-grado-absoluto-de-un-termino-resumen.svg)
+
+  QUÉ: Calcular el grado absoluto de cualquier término algebraico monovariable o multivariable y comprender el grado de constantes numéricas.
+  CÓMO: Sumando todos los exponentes de las variables literales ($\operatorname{GA} = e_1 + e_2 + \dots + e_k$) en términos como $-3x^4y^2z \implies 4 + 2 + 1 = 7$.

@@ -1,105 +1,118 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.CONDICION_CONVERGENCIA
-resumen_inicial: 'La condición de convergencia de una serie geométrica infinita establece que la suma de sus infinitos términos da un número real finito si y solo si el valor absoluto de su razón geométrica es estrictamente menor que la unidad: $|r| < 1$.'
+resumen_inicial: 'La condición de convergencia de una serie geométrica infinita establece que la serie $\sum_{k=1}^\infty a_1 r^{k-1}$ converge a un valor finito real si y solo si el valor absoluto de la razón es estrictamente menor a uno: $|r| < 1$ ($-1 < r < 1$).'
 explicacion_simple: |
-  Para saber si una serie infinita se puede sumar y dar un resultado fijo, solo debes **mirar la razón $r$**:
-  - **Si $|r| < 1$ (es decir, $-1 < r < 1$)**: La serie **SÍ CONVERGE**. Cada número nuevo es más pequeño que el anterior, haciendo que la cola infinita no agregue nada significativo.
-    - Ejemplo: $r = \frac{1}{2} = 0,5 \implies$ Converge.
-    - Ejemplo: $r = -\frac{1}{3} \approx -0,33 \implies$ Converge.
-  - **Si $|r| \ge 1$ (es decir, $r \ge 1$ o $r \le -1$)**: La serie **DIVERGE**. Los números aumentan o se quedan del mismo tamaño, haciendo que la suma explote a infinito o no se detenga jamás.
-    - Ejemplo: $r = 2 \implies$ Diverge.
-    - Ejemplo: $r = -1 \implies$ Diverge (oscila).
+  Para saber si puedes sumar infinitos términos de una progresión geométrica y obtener un número real exacto:
+  - Solo debes mirar la **razón** ($r$):
+    - **Si $|r| < 1$ (es decir, $-1 < r < 1$)**: La serie **CONVERGE** (los números se van achicando hacia cero y la suma total da un número finito).
+      - Ejemplos: $r = 0,5$, $r = \frac{1}{3}$, $r = -0,2$.
+    - **Si $|r| \ge 1$ (es decir, $r \ge 1$ o $r \le -1$)**: La serie **DIVERGE** (los números crecen o no se achican, y la suma se va al infinito o no existe).
+      - Ejemplos: $r = 2$, $r = 1$, $r = -3$.
+
+  ![Condición de convergencia de una serie geométrica infinita](/static/img/nodos/condicion-de-convergencia-de-una-serie-geometrica-infinita-segun-el-valor-absoluto-de-la-razon-intro.svg)
 explicacion_formal: |
-  ### Definición formal del Criterio de Convergencia
-  Sea la serie geométrica infinita $\sum_{k=1}^\infty a_1 r^{k-1}$ con $a_1 \neq 0$. El comportamiento de la serie se rige por el valor absoluto $|r|$ de la razón geométrica:
+  ### Demostración formal del Teorema de Convergencia
+  La suma parcial de orden $n$ de una serie geométrica es:
+  $$S_n = \frac{a_1(1 - r^n)}{1 - r} = \frac{a_1}{1 - r} - \frac{a_1 r^n}{1 - r} \quad (r \neq 1)$$
+  Tomamos el límite cuando $n \to \infty$:
+  $$S_\infty = \lim_{n \to \infty} S_n = \frac{a_1}{1 - r} - \frac{a_1}{1 - r} \cdot \lim_{n \to \infty} r^n$$
 
-  1. **Región de Convergencia ($|r| < 1 \iff -1 < r < 1$)**:
-     $$\lim_{n \to \infty} r^n = 0 \implies \sum_{k=1}^\infty a_1 r^{k-1} = \frac{a_1}{1 - r} \in \mathbb{R}$$
-  2. **Región de Divergencia ($|r| \ge 1$)**:
-     - **Caso $r \ge 1$**: $\lim_{n \to \infty} S_n = \pm \infty$ (Divergencia a infinito).
-     - **Caso $r \le -1$**: $\lim_{n \to \infty} S_n$ no existe debido a oscilación de amplitud constante o creciente (Divergencia oscilatoria).
+  ### Análisis del Límite de la Potencia $\lim_{n \to \infty} r^n$
+  - **Caso 1 ($|r| < 1$)**: $\lim_{n \to \infty} r^n = 0 \implies S_\infty = \frac{a_1}{1 - r}$ (Convergente).
+  - **Caso 2 ($r > 1$)**: $\lim_{n \to \infty} r^n = +\infty \implies S_n \to \pm \infty$ (Divergente).
+  - **Caso 3 ($r = 1$)**: $S_n = n \cdot a_1 \to \pm \infty$ (Divergente).
+  - **Caso 4 ($r = -1$)**: $S_n$ oscila entre $a_1$ y $0$ (Divergente por oscilación).
+  - **Caso 5 ($r < -1$)**: $r^n$ oscila con amplitud divergente (Divergente).
 
-  ### Análisis por Valor Absoluto
-  El operador valor absoluto $|r| = \sqrt{r^2}$ mide la distancia de la razón al origen 0 en la recta real. Si dicha distancia es menor a 1 unidad, la serie es absolutamente convergente.
+  ### Conclusión Teórica Fundamental
+  $$\sum_{k=1}^\infty a_1 r^{k-1} \text{ converge} \iff |r| < 1 \iff r \in (-1, 1)$$
 
   ### Síntesis didáctica
-  - Condición de convergencia: $-1 < r < 1 \iff |r| < 1$.
-  - Condición de divergencia: $r \le -1 \quad \text{o} \quad r \ge 1 \iff |r| \ge 1$.
+  - Criterio único: $|r| < 1$.
+  - Intervalo de convergencia: $-1 < r < 1$.
 definiciones_clave: |
-  - **Valor absoluto de la razón ($|r|$)**: Magnitud numérica de la razón ignorando su signo positivo o negativo.
-  - **Serie convergente**: Serie cuyo límite de sumas parciales es un valor numérico bien definido $S \in \mathbb{R}$.
-  - **Serie divergente**: Serie cuya suma no tiende a ningún número finito.
+  - **Intervalo de convergencia**: Conjunto abierto $(-1, 1)$ de valores de la razón $r$ para los cuales la serie suma un valor real finito.
+  - **Valor absoluto de la razón ($|r|$)**: Magnitud numérica de la razón sin considerar su signo algebraico.
+  - **Serie oscilante divergente**: Serie como $1 - 1 + 1 - 1 + \dots$ ($r = -1$) cuyas sumas parciales no convergen a ningún valor único.
 propiedades_relaciones: |
-  - **Criterio necesario y suficiente**: Para las series geométricas, la condición $|r| < 1$ es tanto necesaria como suficiente para la convergencia.
-  - **Convergencia absoluta**: Si una serie geométrica satisface $|r| < 1$, no solo converge sino que la serie de sus valores absolutos $\sum |a_k|$ también converge.
+  - **Radio de convergencia**: En el plano complejo, la serie geométrica converge en el disco abierto $|z| < 1$.
+  - **Velocidad de convergencia**: Cuanto más cercano a cero esté el valor $|r|$, más rápidamente las sumas parciales $S_n$ se aproximan a $S_\infty$.
 ejemplo_guiado:
-  enunciado: 'Analiza la convergencia de las siguientes tres series geométricas e indica cuáles poseen una suma infinita finita: A) $r = \frac{3}{4}$, B) $r = -\frac{5}{2}$, C) $r = -0,8$.'
+  enunciado: 'Determina si las siguientes series geométricas infinitas son convergentes o divergentes: a) $10 + 2 + 0,4 + 0,08 + \dots$ y b) $3 - 6 + 12 - 24 + \dots$'
+  imagen: '/static/img/nodos/condicion-de-convergencia-de-una-serie-geometrica-infinita-segun-el-valor-absoluto-de-la-razon-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para la serie A ($r = 3/4$), calculamos el valor absoluto: $|3/4| = 0,75 < 1$. Por lo tanto, la serie A **es convergente**.'
-    - 'Paso 2: Para la serie B ($r = -5/2$), calculamos el valor absoluto: $|-5/2| = 2,5 \ge 1$. Por lo tanto, la serie B **es divergente**.'
-    - 'Paso 3: Para la serie C ($r = -0,8$), calculamos el valor absoluto: $|-0,8| = 0,8 < 1$. Por lo tanto, la serie C **es convergente**.'
-    - 'Paso 4: Conclusión: Las series **A y C convergen**, mientras que la serie **B diverge**.'
+    - 'Paso 1: Para la serie a): calculamos la razón $r = \frac{2}{10} = 0,2$.'
+    - 'Paso 2: Evaluamos el valor absoluto: $|0,2| = 0,2 < 1$. Como $|r| < 1$, la serie a) es **convergente**.'
+    - 'Paso 3: Para la serie b): calculamos la razón $r = \frac{-6}{3} = -2$.'
+    - 'Paso 4: Evaluamos el valor absoluto: $|-2| = 2 \ge 1$. Como $|r| \ge 1$, la serie b) es **divergente**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'Dadas dos series geométricas de razones $r_1 = -0,6$ y $r_2 = 1,2$, ¿cuál de ellas es convergente?'
+    question: '¿Cuál es la condición estricta sobre la razón $r$ para que una serie geométrica infinita converja?'
     choices:
-      - {text: 'La serie de razón $r_1 = -0,6$, porque su valor absoluto $|-0,6| = 0,6$ es menor que 1', is_correct: true}
-      - {text: 'La serie de razón $r_2 = 1,2$, porque es un número positivo', is_correct: false}
-      - {text: 'Ambas series son convergentes por tener razones finitas', is_correct: false}
-      - {text: 'Ninguna de las dos converge porque tienen razones decimales', is_correct: false}
-    explanation: 'La alternativa correcta es ''La serie de razón $r_1 = -0,6$, porque su valor absoluto $|-0,6| = 0,6$ es menor que 1''. $|r|<1$ es la regla.'
+      - {text: '$|r| < 1$, es decir, $-1 < r < 1$', is_correct: true}
+      - {text: '$r > 1$', is_correct: false}
+      - {text: '$|r| \le 1$, incluyendo los extremos $-1$ y $1$', is_correct: false}
+      - {text: '$r = 0$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$|r| < 1$, es decir, $-1 < r < 1$''. Los extremos $r=1$ y $r=-1$ son estrictamente divergentes.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Qué ocurre con la serie geométrica infinita si la razón es $r = -1$?'
+    question: '¿La serie geométrica infinita con razón $r = -\frac{3}{4}$ es convergente o divergente?'
     choices:
-      - {text: 'La serie diverge debido a que oscila indefinidamente entre dos valores y no se aproxima a un único número ($|-1| = 1 \ge 1$)', is_correct: true}
-      - {text: 'La serie converge al número 0 en todos los casos', is_correct: false}
-      - {text: 'La serie converge a la mitad del primer término', is_correct: false}
-      - {text: 'La serie se transforma en una progresión aritmética de diferencia 1', is_correct: false}
-    explanation: 'La alternativa correcta es ''La serie diverge debido a que oscila indefinidamente entre dos valores y no se aproxima a un único número ($|-1| = 1 \ge 1$)''. Para $r=-1$, la serie oscila $a_1 - a_1 + a_1 - a_1$.'
+      - {text: 'Convergente, porque $|-\frac{3}{4}| = 0,75 < 1$', is_correct: true}
+      - {text: 'Divergente, porque la razón es un número negativo', is_correct: false}
+      - {text: 'Divergente, porque es una fracción', is_correct: false}
+      - {text: 'No se puede determinar sin conocer el primer término', is_correct: false}
+    explanation: 'La alternativa correcta es ''Convergente, porque $|-\frac{3}{4}| = 0,75 < 1$''. La condición de convergencia depende exclusivamente de que el valor absoluto de la razón sea menor a 1.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el valor de la razón geométrica $r$ de la serie.'
+  - 'Paso 1: Calcular la razón geométrica $r = \frac{a_2}{a_1}$.'
   - 'Paso 2: Calcular el valor absoluto $|r|$.'
-  - 'Paso 3: Comparar $|r|$ con el número 1.'
-  - 'Paso 4: Si $|r| < 1$, declarar la serie como convergente; si $|r| \ge 1$, declarar la serie como divergente.'
+  - 'Paso 3: Si $|r| < 1$, declarar la serie como convergente y apta para calcular su suma finita $S_\infty$.'
+  - 'Paso 4: Si $|r| \ge 1$, declarar la serie como divergente.'
 errores_correccion: |
-  - **Error 1:** Considerar que las razones negativas no pueden ser convergentes. **Cómo corregirlo:** La convergencia depende del **VALOR ABSOLUTO $|r|$**: si $r = -0,4$, $|-0,4| = 0,4 < 1$, por lo que **SÍ converge**.
-  - **Error 2:** Creer que $r = 1$ o $r = -1$ es convergente. **Cómo corregirlo:** Para que converja debe cumplirse una **desigualdad ESTRICTA: $|r| < 1$** ($r=1$ y $r=-1$ divergen).
+  - **Error 1:** Creer que una razón negativa no puede converger. **Cómo corregirlo:** La condición es sobre el **valor absoluto** ($|r| < 1$): razones como $r = -0,5$ **sí convergen** con signos alternados.
+  - **Error 2:** Incluir $r = 1$ en la convergencia (usar $|r| \le 1$). **Cómo corregirlo:** Para $r = 1$ la serie suma $a_1 + a_1 + \dots = \infty$, por lo que **la desigualdad es estrictamente abierta: $|r| < 1$**.
 ejemplos:
-  - titulo: 'Convergencia de razón 0,2'
-    enunciado: 'Para $r = 0,2$, ¿la serie geométrica infinita converge pues $|0,2| < 1$?'
+  - titulo: 'Convergencia con razón decimal'
+    enunciado: '¿La serie con $r = 0,85$ es convergente?'
     alternativas:
-      - 'Sí, pues 0,2 es menor que 1'
-      - 'No, las razones decimales divergen'
-      - 'No, la razón debe ser mayor que 1'
-    respuesta: 'Sí, pues 0,2 es menor que 1'
+      - 'Sí, porque $|0,85| < 1$'
+      - 'No, porque es mayor a 0,5'
+      - 'No, porque es decimal'
+    respuesta: 'Sí, porque $|0,85| < 1$'
     solucion_pasos:
-      - '1. $|r| = |0,2| = 0,2$.'
-      - '2. Como $0,2 < 1 \implies$ Converge.'
-  - titulo: 'Divergencia de razón 1,5'
-    enunciado: 'Para $r = 1,5$, ¿la serie geométrica infinita diverge pues $|1,5| \ge 1$?'
+      - '1. $|0,85| = 0,85 < 1 \implies$ Converge.'
+  - titulo: 'Divergencia con razón mayor a 1'
+    enunciado: '¿La serie con $r = \frac{5}{3}$ es convergente?'
+    alternativas:
+      - 'No, porque $|5/3| = 1,67 \ge 1$ (diverge)'
+      - 'Sí, porque es una fracción positiva'
+      - 'Sí, converge a 5/3'
+    respuesta: 'No, porque $|5/3| = 1,67 \ge 1$ (diverge)'
+    solucion_pasos:
+      - '1. $5/3 > 1 \implies$ Divergente.'
+  - titulo: 'Convergencia de serie alternada'
+    enunciado: '¿La serie $1 - \frac{1}{2} + \frac{1}{4} - \frac{1}{8} + \dots$ es convergente?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $|1,5| = 1,5 \ge 1 \implies$ Diverge.'
-  - titulo: 'Convergencia con razón fraccionaria negativa'
-    enunciado: 'Para $r = -2/3$, ¿la serie es convergente?'
-    respuesta: 'Sí'
+      - '1. $r = -1/2 \implies |-1/2| = 0,5 < 1$.'
+  - titulo: 'Divergencia de $r = -1$'
+    enunciado: '¿La serie $5 - 5 + 5 - 5 + 5 - \dots$ converge a un valor único?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí. $|-2/3| = 2/3 \approx 0,67 < 1 \implies$ Converge.'
-  - titulo: 'Divergencia por razón r = 1'
-    enunciado: 'Para $r = 1$, ¿la serie $a_1 + a_1 + a_1 + \dots$ es divergente?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. La suma crece linealmente como $n \cdot a_1 \to \infty$, por lo que diverge.'
+      - '1. Las sumas parciales oscilan entre 5 y 0 sin límite único ($r=-1$).'
 errores_frecuentes:
-  - 'Una razón geométrica negativa genera automáticamente la divergencia de la serie.'
-  - 'La suma de una serie geométrica infinita siempre entrega un número entero positivo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'La condición $|r| \le 1$ incluye la razón $r=1$ como convergente.'
-  - 'El concepto de serie convergente es equivalente en su comportamiento a una tasa de crecimiento lineal.'
+  - 'Considerar que las razones negativas nunca pueden converger sin importar su valor absoluto.'
+  - 'Incluir a la razón unitaria $r = 1$ dentro del conjunto de convergencia de la serie geométrica.'
+  - 'Evaluar la convergencia de la serie en función del tamaño del primer término $a_1$ en vez de la razón $r$.'
+  - 'Asumir que una fracción impropia como $\frac{4}{3}$ converge por ser un número fraccionario.'
+  - 'Aplicar la fórmula de suma infinita a una serie con razón $r = 2$.'
 afirmaciones_verdaderas:
-  - 'Una serie geométrica infinita es convergente si y solo si el valor absoluto de la razón cumple $|r| < 1$.'
-  - 'Si la razón de una serie geométrica infinita satisface $|r| \ge 1$, la serie es divergente y no posee una suma real finita.'
-al_terminar_debes_poder: 'Determinar la convergencia o divergencia de una serie geométrica infinita evaluando la condición $|r| < 1$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'Una serie geométrica infinita converge a un valor finito si y solo si el valor absoluto de su razón satisface $|r| < 1$.'
+  - 'Si $|r| \ge 1$, la serie geométrica infinita es divergente y carece de una suma real finita.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/condicion-de-convergencia-de-una-serie-geometrica-infinita-segun-el-valor-absoluto-de-la-razon-resumen.svg)
+
+  QUÉ: Determinar y justificar la convergencia o divergencia de una serie geométrica infinita según su razón $r$.
+  CÓMO: Evaluar el criterio de valor absoluto $|r| < 1$ verificando si $r \in (-1, 1)$ como condición necesaria y suficiente.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

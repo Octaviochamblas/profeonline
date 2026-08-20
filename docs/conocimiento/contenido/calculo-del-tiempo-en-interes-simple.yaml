@@ -4,7 +4,10 @@ explicacion_simple: |
   Si depositaste una suma de dinero $C$ a una tasa fija $i$ y quieres saber **cuánto tiempo (cuántos años o meses) debe estar guardada para ganar un interés determinado $I$**:
   1. Multiplicas el capital inicial por la tasa en decimal ($C \cdot i$). Ese resultado es la ganancia de 1 año (o 1 mes).
   2. Divides el interés total que deseas obtener $I$ entre esa ganancia de 1 período: $t = \frac{I}{C \cdot i}$.
-  Por ejemplo, para ganar $\$30.000$ de interés con $\$100.000$ al $10\%$ anual ($i = 0,10$): la ganancia anual es $\$10.000$. Al dividir $\$30.000 \div \$10.000 = 3$ años.
+
+  Por ejemplo, para ganar $\$30.000$ de interés con $\$100.000$ al $10\%$ anual ($i = 0,10$): la ganancia anual es $\$10.000$. Al dividir $\$30.000 \div $\$10.000$ = 3$ años.
+
+  ![Cálculo del tiempo en interés simple](/static/img/nodos/calculo-del-tiempo-en-interes-simple-intro.svg)
 explicacion_formal: |
   ### Definición formal
   El **período de permanencia o tiempo de la inversión $t$** es la variable independiente que satisface el modelo lineal de interés simple:
@@ -31,6 +34,7 @@ propiedades_relaciones: |
   - **Linealidad directa con la meta de ganancia**: Duplicar la meta de interés deseada $I$ manteniendo el capital y la tasa duplica el tiempo de permanencia requerido.
 ejemplo_guiado:
   enunciado: '¿Cuántos años debe estar depositado un capital de $\$500.000$ a una tasa de interés simple anual del $8\%$ para acumular $\$120.000$ de interés?'
+  imagen: '/static/img/nodos/calculo-del-tiempo-en-interes-simple-ejemplos.svg'
   pasos:
     - 'Paso 1: Identificamos los datos: Interés $I = 120.000$, Capital $C = 500.000$, Tasa anual $r = 8\% \implies i = 0,08$.'
     - 'Paso 2: Calculamos el rendimiento de 1 año: $C \cdot i = 500.000 \cdot 0,08 = 40.000$.'
@@ -44,7 +48,7 @@ checkpoints:
       - {text: 'Multiplicar el interés por el capital y la tasa ($t = I \cdot C \cdot i$)', is_correct: false}
       - {text: 'Restar el capital al interés acumulado', is_correct: false}
       - {text: 'Dividir la tasa entre el capital inicial', is_correct: false}
-    explanation: 'La alternativa correcta es ''Dividir el interés ganado entre el producto del capital por la tasa decimal ($t = \frac{I}{C \cdot i}$)''. Despeja $t$ en $I = C \cdot i \cdot t$.'
+    explanation: 'La alternativa correcta es ''Dividir el interés ganado entre el producto del capital por la tasa decimal ($t = \frac{I}{C \cdot i}$)''. Despeja $t$ en la ecuación lineal $I = C \cdot i \cdot t$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
     question: 'Si inviertes $\$200.000$ al $5\%$ anual de interés simple, ¿en cuántos años ganarás $\$20.000$ de interés?'
@@ -53,7 +57,7 @@ checkpoints:
       - {text: 'En $4$ años, dividiendo por 5.000', is_correct: false}
       - {text: 'En $1$ año, tomando el interés simple directo', is_correct: false}
       - {text: 'En $10$ años, multiplicando $2 \cdot 5$', is_correct: false}
-    explanation: 'La alternativa correcta es ''En $2$ años, pues la ganancia anual es $\$10.000$ ($200.000 \cdot 0,05$), y $20.000 / 10.000 = 2$''. $t = 20.000 / 10.000 = 2$ años.'
+    explanation: 'La alternativa correcta es ''En $2$ años, pues la ganancia anual es $\$10.000$ ($200.000 \cdot 0,05$), y $20.000 / 10.000 = 2$''. El tiempo resulta en $t = 2\text{ años}$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
   - 'Paso 1: Identificar el interés deseado $I$ (o calcularlo como $M - C$), el capital $C$ y la tasa periódica $i$.'
@@ -65,39 +69,56 @@ errores_correccion: |
   - **Error 2:** Multiplicar el interés por el capital en lugar de dividir (ej: $t = I \cdot C / i$). **Cómo corregirlo:** La variable $t$ se aísla **dividiendo el interés entre el producto $C \cdot i$**: $t = \frac{I}{C \cdot i}$.
 ejemplos:
   - titulo: 'Cálculo de tiempo en años'
-    enunciado: 'Si $I = \$40.000$, $C = \$100.000$ e $i = 0,10$ anual, ¿el tiempo es de $4$ años?'
+    enunciado: 'Si $I = $\$40.00$0$, $C = $\$100.00$0$ e $i = 0,10$ anual, ¿cuántos años estuvo depositado el dinero?'
     alternativas:
-      - 'Sí, pues $40.000 / (100.000 \cdot 0,10) = 40.000 / 10.000 = 4$'
-      - 'No, es de 2 años'
-      - 'No, es de 40 meses'
-    respuesta: 'Sí, pues $40.000 / (100.000 \cdot 0,10) = 40.000 / 10.000 = 4$'
+      - '$4$ años'
+      - '$2$ años'
+      - '$40$ meses'
+    respuesta: '$4$ años'
     solucion_pasos:
-      - '1. Ganancia anual $C \cdot i = 100.000 \cdot 0,10 = 10.000$.'
-      - '2. Tiempo $t = 40.000 / 10.000 = 4\text{ años}$.'
+      - '1. Rendimiento anual: $C \cdot i = 100.000 \cdot 0,10 = $\$10.00$0$.'
+      - '2. Tiempo: $t = 40.000 / 10.000 = 4\text{ años}$.'
   - titulo: 'Tiempo para duplicar el capital'
-    enunciado: 'A una tasa del $10\%$ anual de interés simple, ¿se requieren exactamente $10$ años para duplicar el capital ($I = C$)?'
-    respuesta: 'Sí'
+    enunciado: 'A una tasa del $10\%$ anual de interés simple ($0,10$), ¿cuántos años se requieren para duplicar el capital ($I = C$)?'
+    alternativas:
+      - '$10$ años'
+      - '$5$ años'
+      - '$20$ años'
+    respuesta: '$10$ años'
     solucion_pasos:
-      - 'Sí. $t = C / (C \cdot 0,10) = 1 / 0,10 = 10\text{ años}$.'
+      - '1. Igualamos $I = C$ en la fórmula: $t = C / (C \cdot 0,10) = 1 / 0,10 = 10\text{ años}$.'
   - titulo: 'Cálculo de tiempo dado el monto final'
-    enunciado: 'Si $C = \$50.000$, $M = \$65.000$ e $i = 0,10$ anual, ¿el tiempo necesario es $3$ años?'
-    respuesta: 'Sí'
+    enunciado: 'Si $C = $\$50.00$0$, $M = $\$65.00$0$ y la tasa es $10\%$ anual ($0,10$), ¿cuál es el tiempo de inversión?'
+    alternativas:
+      - '$3$ años'
+      - '$5$ años'
+      - '$1,5$ años'
+    respuesta: '$3$ años'
     solucion_pasos:
-      - 'Sí. $I = 65.000 - 50.000 = 15.000 \implies t = 15.000 / (50.000 \cdot 0,10) = 15.000 / 5.000 = 3\text{ años}$.'
+      - '1. Interés devengado: $I = 65.000 - 50.000 = $\$15.00$0$.'
+      - '2. $t = 15.000 / (50.000 \cdot 0,10) = 15.000 / 5.000 = 3\text{ años}$.'
   - titulo: 'Conversión de resultado de años a meses'
-    enunciado: 'Si el cálculo de $t$ entrega $0,5$ años con tasa anual, ¿equivale a $6$ meses?'
-    respuesta: 'Sí'
+    enunciado: 'Si el cálculo de $t$ entrega $0,5$ años con tasa anual, ¿a cuántos meses equivale?'
+    alternativas:
+      - '$6$ meses'
+      - '$5$ meses'
+      - '$12$ meses'
+    respuesta: '$6$ meses'
     solucion_pasos:
-      - 'Sí. $0,5 \text{ años} \cdot 12 = 6\text{ meses}$.'
+      - '1. Multiplicamos la fracción de año por 12 meses: $0,5 \cdot 12 = 6\text{ meses}$.'
 errores_frecuentes:
-  - 'Interpretar el número entero obtenido en $t$ como meses cuando la tasa aplicada era anual.'
-  - 'Multiplicar el interés por el capital en lugar de dividir la ganancia entre el producto $C \cdot i$.'
-  - 'Utilizar la tasa en formato de porcentaje entero sin convertir a decimal en el denominador.'
-  - 'El valor del interés ganado $I$ y el monto final $M$ se ubican de forma intercambiable en la fórmula del tiempo.'
-  - 'Considerar que el tiempo necesario para triplicar un capital a interés simple disminuye exponencialmente.'
+  - 'El número decimal obtenido en la variable $t$ representa meses de manera automática cuando la tasa aplicada es anual.'
+  - 'El tiempo de inversión se despeja multiplicando el interés por el capital inicial ($t = \frac{I \cdot C}{i}$).'
+  - 'La tasa de interés se ingresa como porcentaje entero en el denominador de la fórmula del tiempo sin convertir a decimal.'
+  - 'El valor del monto final $M$ se ubica en el numerador de la fórmula del tiempo en lugar del interés devengado $I$.'
+  - 'El tiempo necesario para duplicar un capital a interés simple disminuye a la mitad si la tasa de interés se reduce a la mitad.'
 afirmaciones_verdaderas:
   - 'El tiempo de una inversión a interés simple se calcula dividiendo el interés acumulado entre el producto del capital y la tasa decimal ($t = \frac{I}{C \cdot i}$).'
   - 'La unidad temporal de la respuesta $t$ coincide siempre con el período de la tasa de interés empleada.'
-al_terminar_debes_poder: 'Calcular el tiempo de una inversión $t = \frac{I}{C \cdot i}$ interpretando adecuadamente la unidad temporal de la tasa.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-del-tiempo-en-interes-simple-resumen.svg)
+
+  QUÉ: Determinar el tiempo de permanencia o plazo $t$ de una inversión o crédito a interés simple.
+  CÓMO: Resolver la razón $t = \frac{I}{C \cdot i} = \frac{M - C}{C \cdot i}$, interpretando adecuadamente la base temporal heredada de la tasa aplicada (años, meses o días).
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
 estado: publicado

@@ -1,110 +1,119 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.CALCULO_MONTO
-resumen_inicial: 'El cálculo del monto final a interés compuesto evalúa la acumulación exponencial $M = C \cdot \left(1 + \frac{r}{k}\right)^{t \cdot k}$, ajustando la tasa anual $r\%$ y los años $t$ según la frecuencia de capitalización $k$.'
+resumen_inicial: 'El cálculo del monto en interés compuesto evalúa la acumulación ajustando la tasa periódica ($i = r / k$) y el exponente ($N = n \cdot k$) según la frecuencia de capitalización $k$: $M = C \cdot (1 + r/k)^{n \cdot k}$.'
 explicacion_simple: |
-  Para calcular el valor futuro $M$ cuando los intereses se capitalizan con cierta frecuencia (mensual, trimestral, semestral):
-  1. Divides la tasa anual $r\%$ entre el número de períodos que hay en un año $k$ (ej: si es semestral, $k=2$; si es mensual, $k=12$).
-  2. Multiplicas los años $t$ por $k$ para tener el número total de capitalizaciones $n = t \cdot k$.
-  3. Calculas $M = C \cdot (1 + i)^n$.
-  Por ejemplo, al $12\%$ anual capitalizable mensualmente durante 1 año: la tasa mensual es $12\% \div 12 = 1\%$ ($i = 0,01$) y hay $n = 12$ meses.
+  Cuando un banco te ofrece una tasa anual pero los intereses se suman cada **mes**, cada **trimestre** o cada **semestre**, debes hacer dos ajustes clave:
+  1. Dividir la tasa anual entre el número de veces que se capitaliza en el año ($k$).
+  2. Multiplicar los años por $k$ para saber cuántos períodos totales ($N$) habrá.
+  Por ejemplo, al $12\%$ anual con capitalización mensual ($k=12$): la tasa mensual es $12\% \div 12 = 1\%$ ($0,01$) y en 1 año hay $12$ períodos.
+
+  ![Cálculo del monto en interés compuesto](/static/img/nodos/calculo-del-monto-en-interes-compuesto-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **monto compuesto con frecuencia de capitalización $k$** es el valor futuro $M$ producido por un principal $C$ en un lapso de $t$ años a una tasa nominal anual $r\%$:
-  $$M = C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{t \cdot k}$$
+  Para un capital inicial $C$ colocado a una tasa nominal anual $r\%$ capitalizable $k$ veces al año durante $n$ años, el **monto final acumulado $M$** viene dado por:
+  $$M = C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{n \cdot k} = C \cdot (1 + i_{\text{per}})^N$$
   donde:
-  - $k$ es el **número de períodos de capitalización por año**:
-    - Anual: $k = 1$.
-    - Semestral: $k = 2$.
-    - Trimestral: $k = 4$.
-    - Mensual: $k = 12$.
-    - Diaria: $k = 360$ (o $365$).
-  - $i = \frac{r}{100 \cdot k}$ es la **tasa efectiva por período de capitalización**.
-  - $n = t \cdot k$ es el **número total de capitalizaciones**.
-
-  ### Propiedad del Límite de Capitalización Continua
-  Cuando la frecuencia de capitalización $k$ tiende a infinito ($k \to \infty$), el monto acumulado converge al modelo de crecimiento continuo:
-  $$\lim_{k \to \infty} C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{t \cdot k} = C \cdot e^{\left(\frac{r}{100}\right) \cdot t}$$
+  - $k$ es la **frecuencia de capitalización anual**: anual ($k=1$), semestral ($k=2$), trimestral ($k=4$), bimestral ($k=6$), mensual ($k=12$), diaria ($k=360$).
+  - $i_{\text{per}} = \frac{r}{100 \cdot k}$ es la **tasa efectiva por período de capitalización**.
+  - $N = n \cdot k$ es el **número total de capitalizaciones**.
 
   ### Síntesis didáctica
-  - Ajuste de tasa periódica: $i = \frac{r}{100 \cdot k}$.
-  - Ajuste de exponente: $n = t \cdot k$.
-  - Fórmula del monto: $M = C \cdot (1 + i)^n$.
+  - Semestral ($k=2$): $M = C(1 + r/200)^{2n}$.
+  - Trimestral ($k=4$): $M = C(1 + r/400)^{4n}$.
+  - Mensual ($k=12$): $M = C(1 + r/1200)^{12n}$.
 definiciones_clave: |
-  - **Frecuencia de capitalización ($k$)**: Número de subperíodos dentro de un año en los que se liquidan los intereses.
-  - **Tasa periódica efectiva ($i$)**: Tasa correspondiente a un solo subperíodo de capitalización ($i = r / k$).
-  - **Capitalización continua**: Límite matemático donde los intereses se componen de manera ininterrumpida ($e^{rt}$).
+  - **Frecuencia de capitalización ($k$)**: Número de veces en un año en que los intereses se liquidan y se incorporan al capital.
+  - **Tasa efectiva periódica ($i_{\text{per}}$)**: Rentabilidad asignada a cada intervalo individual de capitalización ($i_{\text{per}} = i_{\text{anual}} / k$).
+  - **Períodos totales ($N$)**: Exponente efectivo obtenido al multiplicar los años $n$ por la frecuencia $k$.
 propiedades_relaciones: |
-  - **Efecto de la frecuencia $k$**: Para una misma tasa nominal anual $r\%$, a mayor frecuencia $k$, mayor resulta el monto final $M$.
-  - **Invariancia proporcional**: Si el capital inicial $C$ se duplica, el monto final $M$ se duplica exactamente manteniendo la misma tasa y plazo.
+  - **Monotonía respecto a la frecuencia**: Para un mismo capital, plazo y tasa nominal anual, a mayor valor de $k$, mayor es el monto final $M$.
+  - **Límite continuo**: Cuando $k \to \infty$, el monto converge al modelo de capitalización continua $M = C \cdot e^{r \cdot n}$.
 ejemplo_guiado:
-  enunciado: 'Calcula el monto acumulado por un capital de $\$400.000$ al $12\%$ anual con capitalización semestral durante $1,5$ años.'
+  enunciado: 'Se depositan $\$500.000$ a una tasa del $12\%$ anual durante $1$ año con capitalización semestral. Calcula el monto final acumulado.'
+  imagen: '/static/img/nodos/calculo-del-monto-en-interes-compuesto-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $C = 400.000$, tasa anual $r = 12\%$, tiempo $t = 1,5\text{ años}$ y frecuencia semestral $k = 2$.'
-    - 'Paso 2: Calculamos la tasa semestral $i = \frac{12\%}{2} = 6\% \implies 0,06$.'
-    - 'Paso 3: Calculamos los períodos totales $n = 1,5 \cdot 2 = 3\text{ semestres}$.'
-    - 'Paso 4: Evaluamos el monto: $M = 400.000 \cdot (1,06)^3 = 400.000 \cdot 1,191016 = 476.406,4$. El monto final es de **$\$476.406$**.'
+    - 'Paso 1: Identificamos $C = 500.000$, tasa anual $r = 12\%$, frecuencia semestral $k = 2$ y plazo $n = 1\text{ año}$.'
+    - 'Paso 2: Calculamos la tasa semestral: $i_{\text{sem}} = 12\% / 2 = 6\% \implies 0,06$.'
+    - 'Paso 3: Calculamos el número de períodos: $N = 1 \cdot 2 = 2\text{ semestres}$.'
+    - 'Paso 4: Aplicamos $M = 500.000 \cdot (1 + 0,06)^2 = 500.000 \cdot (1,06)^2 = 500.000 \cdot 1,1236 = 561.800$. El monto final es **$\$561.800$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'Si una tasa anual del $12\%$ se capitaliza mensualmente ($k=12$), ¿cuál es la tasa periódica $i$ que se debe ingresar en la fórmula?'
+    question: 'Si una tasa del $8\%$ anual se capitaliza trimestralmente ($k=4$), ¿cuál es la tasa efectiva trimestral y el exponente para $2$ años?'
     choices:
-      - {text: 'La tasa mensual $i = 1\% = 0,01$, dividiendo $12\% / 12$', is_correct: true}
-      - {text: 'La tasa entera $12\% = 0,12$ sin dividir', is_correct: false}
-      - {text: 'La tasa del $144\%$, multiplicando por 12', is_correct: false}
-      - {text: 'La tasa del $0,5\%$, dividiendo por 24', is_correct: false}
-    explanation: 'La alternativa correcta es ''La tasa mensual $i = 1\% = 0,01$, dividiendo $12\% / 12$''. $i = r / k = 12 / 12 = 1\% = 0,01$.'
+      - {text: 'Tasa trimestral $2\%$ ($0,02$) y exponente $N = 8$', is_correct: true}
+      - {text: 'Tasa trimestral $8\%$ y exponente $N = 2$', is_correct: false}
+      - {text: 'Tasa trimestral $4\%$ y exponente $N = 4$', is_correct: false}
+      - {text: 'Tasa trimestral $0,5\%$ y exponente $N = 12$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Tasa trimestral $2\%$ ($0,02$) y exponente $N = 8$''. Se divide $8\% / 4 = 2\%$ y se multiplica $2 \cdot 4 = 8$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: '¿Cuántas capitalizaciones $n$ ocurren en $2$ años si la inversión tiene capitalización trimestral ($k=4$)?'
+    question: 'Un capital de $\$200.000$ al $8\%$ anual capitalizable trimestralmente durante $1$ año ($N=4$, $i=0,02$) rinde un monto final de:'
     choices:
-      - {text: '$8$ capitalizaciones, multiplicando $2 \cdot 4 = 8$', is_correct: true}
-      - {text: '$2$ capitalizaciones, considerando solo los años', is_correct: false}
-      - {text: '$4$ capitalizaciones, tomando $k$', is_correct: false}
-      - {text: '$24$ capitalizaciones, contando meses', is_correct: false}
-    explanation: 'La alternativa correcta es ''$8$ capitalizaciones, multiplicando $2 \cdot 4 = 8$''. $n = t \cdot k = 2 \cdot 4 = 8$.'
+      - {text: '$\$216.486$, calculando $200.000 \cdot (1,02)^4 = 200.000 \cdot 1,082432$', is_correct: true}
+      - {text: '$\$216.000$, usando interés simple', is_correct: false}
+      - {text: '$\$204.000$, calculando un solo trimestre', is_correct: false}
+      - {text: '$\$232.000$, multiplicando por 4', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$216.486$, calculando $200.000 \cdot (1,02)^4 = 200.000 \cdot 1,082432$''. El factor $(1,02)^4 \approx 1,082432$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el capital $C$, la tasa nominal anual $r\%$, el tiempo en años $t$ y la frecuencia de capitalización $k$.'
-  - 'Paso 2: Calcular la tasa periódica $i = \frac{r}{100 \cdot k}$ y el número total de períodos $n = t \cdot k$.'
-  - 'Paso 3: Calcular el factor $(1 + i)^n$.'
-  - 'Paso 4: Multiplicar $C \cdot (1 + i)^n$ para obtener el monto acumulado $M$.'
+  - 'Paso 1: Identificar capital $C$, tasa anual $r\%$, años $n$ y frecuencia $k$.'
+  - 'Paso 2: Calcular tasa periódica $i_{\text{per}} = r / (100 \cdot k)$ y períodos $N = n \cdot k$.'
+  - 'Paso 3: Evaluar la base $(1 + i_{\text{per}})$ y elevarla a la potencia $N$.'
+  - 'Paso 4: Multiplicar por $C$ para determinar el monto final $M$.'
 errores_correccion: |
-  - **Error 1:** Elevar la tasa nominal anual al exponente de años sin dividir por la frecuencia de capitalización $k$. **Cómo corregirlo:** Si la capitalización no es anual, **DEBES adaptar la tasa ($i = r/k$) y el exponente ($n = t \cdot k$)**.
-  - **Error 2:** Multiplicar el capital por la tasa en lugar de aplicar la potencia del factor $(1+i)^n$. **Cómo corregirlo:** La fórmula del monto es **multiplicativa exponencial: $M = C \cdot (1+i)^n$**.
+  - **Error 1:** Elevar a la potencia de años $n$ sin multiplicar por la frecuencia $k$. **Cómo corregirlo:** El exponente debe ser el **número total de capitalizaciones $N = n \cdot k$**.
+  - **Error 2:** No dividir la tasa anual entre $k$. **Cómo corregirlo:** En cada período solo se aplica la fracción correspondiente de la tasa: **$i = r / k$**.
 ejemplos:
-  - titulo: 'Monto con capitalización semestral'
-    enunciado: 'Para $\$100.000$ al $10\%$ anual semestral ($i=0,05, n=2$), ¿el monto final al año es $\$110.250$?'
+  - titulo: 'Capitalización semestral'
+    enunciado: '¿Cuál es el monto final de $\$100.000$ al $10\%$ anual capitalizable semestralmente por 1 año?'
     alternativas:
-      - 'Sí, pues $100.000 \cdot (1,05)^2 = 110.250$'
-      - 'No, es $\$110.000$'
-      - 'No, es $\$120.000$'
-    respuesta: 'Sí, pues $100.000 \cdot (1,05)^2 = 110.250$'
+      - '$\$110.250$'
+      - '$\$110.000$'
+      - '$\$120.000$'
+    respuesta: '$\$110.250$'
     solucion_pasos:
-      - '1. Tasa semestral $i = 10\% / 2 = 5\% \implies 0,05$.'
-      - '2. Períodos en 1 año: $n = 2$.'
-      - '3. Monto: $100.000 \cdot 1,05^2 = \$110.250$.'
-  - titulo: 'Monto con capitalización trimestral'
-    enunciado: 'Para $\$200.000$ al $8\%$ anual trimestral ($i=0,02$) por 1 año ($n=4$), ¿el monto es $\$216.486,4$?'
-    respuesta: 'Sí'
+      - '1. $k = 2 \implies i = 0,05$, $N = 1 \cdot 2 = 2$.'
+      - '2. $M = 100.000 \cdot (1,05)^2 = 100.000 \cdot 1,1025 = $\$110.25$0$.'
+  - titulo: 'Capitalización trimestral'
+    enunciado: 'Para $\$400.000$ al $12\%$ anual capitalizable trimestralmente por medio año ($2$ trimestres), ¿cuál es el monto?'
+    alternativas:
+      - '$\$424.360$'
+      - '$\$424.000$'
+      - '$\$448.000$'
+    respuesta: '$\$424.360$'
     solucion_pasos:
-      - 'Sí. $200.000 \cdot (1,02)^4 = 200.000 \cdot 1,082432 = 216.486,4$.'
-  - titulo: 'Comparación de frecuencias'
-    enunciado: '¿La capitalización mensual produce un monto final mayor que la capitalización anual para una misma tasa nominal?'
-    respuesta: 'Sí'
+      - '1. $i_{\text{trim}} = 12\% / 4 = 3\% = 0,03$.'
+      - '2. $M = 400.000 \cdot (1,03)^2 = 400.000 \cdot 1,0609 = $\$424.36$0$.'
+  - titulo: 'Comparación con capitalización anual'
+    enunciado: '¿La capitalización semestral produce un monto final mayor que la capitalización anual a la misma tasa nominal?'
+    alternativas:
+      - 'Sí, porque los intereses del primer semestre generan intereses en el segundo'
+      - 'No, el monto es exactamente el mismo'
+      - 'No, la capitalización anual siempre rinde más'
+    respuesta: 'Sí, porque los intereses del primer semestre generan intereses en el segundo'
     solucion_pasos:
-      - 'Sí. A mayor frecuencia $k$, mayor es el rendimiento acumulado.'
-  - titulo: 'Monto a 5 años'
-    enunciado: 'Para $\$50.000$ al $6\%$ anual compuesto por 5 años ($i=0,06, n=5$), ¿el monto es $\$66.911,27$?'
-    respuesta: 'Sí'
+      - '1. Mayor frecuencia de capitalización $k$ incrementa el rendimiento efectivo anual.'
+  - titulo: 'Capitalización mensual en 1 año'
+    enunciado: 'Si una tasa del $12\%$ anual se capitaliza mensualmente, ¿cuál es la tasa periódica aplicada cada mes?'
+    alternativas:
+      - '$1\%$ mensual ($0,01$)'
+      - '$12\%$ mensual ($0,12$)'
+      - '$0,1\%$ mensual ($0,001$)'
+    respuesta: '$1\%$ mensual ($0,01$)'
     solucion_pasos:
-      - 'Sí. $50.000 \cdot (1,06)^5 = 50.000 \cdot 1,3382255 = 66.911,27$.'
+      - '1. Dividimos la tasa anual entre 12 meses: $12\% / 12 = 1\%$.'
 errores_frecuentes:
-  - 'Utilizar la tasa nominal anual directa en la fórmula sin dividir por la frecuencia de capitalización.'
-  - 'Mantener el número de años en el exponente sin multiplicar por la frecuencia de capitalización por año.'
-  - 'El monto acumulado con capitalización mensual resulta menor que con capitalización anual.'
-  - 'Elevar el capital inicial al exponente $n$ en lugar de elevar el factor $(1+i)$.'
-  - 'Restar la constante 1 al factor de acumulación al calcular el valor futuro total.'
+  - 'La tasa nominal anual se coloca como base periódica sin dividirla entre la frecuencia anual de capitalización $k$.'
+  - 'El número de años $n$ se ingresa directamente como exponente omitiendo el producto por la frecuencia $k$.'
+  - 'Una mayor frecuencia de capitalizaciones por año disminuye el monto final acumulado de la inversión.'
+  - 'La capitalización semestral divide el plazo en años por dos en lugar de multiplicarlo.'
+  - 'El divisor de la tasa periódica es independiente de la cantidad de liquidaciones de intereses al año.'
 afirmaciones_verdaderas:
-  - 'El monto a interés compuesto se calcula mediante $M = C \cdot (1 + i)^n$, donde $i$ es la tasa periódica y $n$ el número total de períodos.'
-  - 'Para una misma tasa nominal anual, a mayor frecuencia de capitalización $k$, mayor es el monto final acumulado.'
-al_terminar_debes_poder: 'Calcular el monto final $M$ a interés compuesto adaptando la tasa y el número de períodos a la frecuencia de capitalización.'
+  - 'El monto final con capitalización fraccionaria se calcula mediante $M = C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{n \cdot k}$.'
+  - 'Para una misma tasa nominal anual, aumentar la frecuencia de capitalización $k$ incrementa estrictamente el monto final acumulado.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-del-monto-en-interes-compuesto-resumen.svg)
+
+  QUÉ: Calcular el monto final en régimen compuesto adaptando la periodicidad de la tasa y el número de capitalizaciones.
+  CÓMO: Emplear la fórmula $M = C \cdot \left(1 + \frac{r}{100 \cdot k}\right)^{n \cdot k}$, dividiendo la tasa anual entre la frecuencia $k$ y multiplicando los años por $k$ en el exponente.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

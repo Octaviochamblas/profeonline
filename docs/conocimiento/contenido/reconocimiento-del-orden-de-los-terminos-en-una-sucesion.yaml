@@ -1,109 +1,117 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.ORDEN_TERMINOS
-resumen_inicial: 'El reconocimiento del orden de los términos establece la distinción estricta entre la posición ordinal $n$ (índice) y el valor numérico asignado $a_n$ en la secuencia.'
+resumen_inicial: 'El reconocimiento del orden de los términos en una sucesión distingue entre el índice ordinal de posición $n \in \mathbb{N}$ y el valor numérico del término $a_n \in \mathbb{R}$.'
 explicacion_simple: |
-  Es fundamental no confundir **el lugar del término** con **el valor del término**:
-  - En la fila del cine, una persona puede ser la **tercera persona** ($n=3$) y llamarse **Carlos** ($a_3 = \text{Carlos}$).
-  - En la sucesión de números impares $1, 3, 5, 7, 9, \dots$:
-    - La posición $n=1$ tiene el valor $a_1 = 1$.
-    - La posición $n=2$ tiene el valor $a_2 = 3$.
-    - La posición $n=3$ tiene el valor $a_3 = 5$.
-  Aunque el índice $n$ siempre va aumentando de uno en uno ($1, 2, 3, 4, \dots$), los valores $a_n$ pueden subir, bajar, repetirse o cambiar de signo.
+  En una sucesión es fundamental no confundir **el lugar** donde está un número con **el valor** de ese número:
+  - La **posición** ($n$) es el número de turno: $1^{\circ}, 2^{\circ}, 3^{\circ}, 4^{\circ}, \dots$
+  - El **término** ($a_n$) es el valor real que está en esa posición.
+  - Por ejemplo, en la sucesión de números primos $(2, 3, 5, 7, 11)$, el $4^{\circ}$ término ($n=4$) es el número $7$. Aquí $n=4$ es la posición y $a_4=7$ es el valor.
+
+  ![Reconocimiento del orden de los términos](/static/img/nodos/reconocimiento-del-orden-de-los-terminos-en-una-sucesion-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **orden de los términos** en una sucesión $(a_n)_{n \in \mathbb{N}}$ se rige por el mapa biyectivo entre el conjunto ordenado de índices de posición $\mathbb{N}$ y el conjunto de términos del recorrido $\mathbb{R}$:
-  $$\text{Posición Ordinal } (n) \quad \overset{f}{\longmapsto} \quad \text{Valor Real del Término } (a_n)$$
+  Dada una sucesión $(a_n)_{n \ge 1}$, se establece una relación unívoca entre el índice de orden $n$ perteneciente al conjunto bien ordenado $(\mathbb{N}, \le)$ y el elemento imagen $a_n$:
+  $$(n, a_n) \in \mathbb{N} \times \mathbb{R}$$
+  - **Índice ordinal ($n$)**: Representa el orden cronológico o secuencial ($n = 1, 2, 3, \dots$).
+  - **Valor del término ($a_n$)**: Elemento numérico asignado a la posición $n$.
 
-  ### Distinción fundamental entre $n$ y $a_n$
-  - **Índice $n \in \mathbb{N}$**: Variable discreta que indica el lugar o turno ($n = 1$ primero, $n = 2$ segundo, $n = k$ $k$-ésimo).
-  - **Término $a_n \in \mathbb{R}$**: Cifra o magnitud numérica asignada que ocupa la posición $n$.
-
-  ### Notación ordinalizada
-  - $a_1$: Primer término (término inicial).
-  - $a_2$: Segundo término.
-  - $a_k$: $k$-ésimo término.
-  - $a_{n-1}$: Término inmediatamente anterior (antecesor posicional).
-  - $a_{n+1}$: Término inmediatamente posterior (sucesor posicional).
+  ### Distinción fundamental: Posición vs Valor
+  - $n$ siempre es un número entero positivo ($n \in \{1, 2, 3, \dots\}$).
+  - $a_n$ puede ser cualquier número real: negativo ($a_n < 0$), decimal, nulo ($a_n = 0$) o fraccionario.
 
   ### Síntesis didáctica
-  - Posición ordinal: $n \in \{1, 2, 3, \dots\}$.
-  - Valor asignado: $a_n = f(n)$.
+  - Posición ordinal: $n \in \mathbb{N}$.
+  - Valor del término: $a_n \in \mathbb{R}$.
 definiciones_clave: |
-  - **Índice de posición ($n$)**: Número natural ordenado que marca la casilla que ocupa el elemento.
-  - **Antecesor posicional ($a_{n-1}$)**: Término que precede inmediatamente a la posición $n$.
-  - **Sucesor posicional ($a_{n+1}$)**: Término que sigue inmediatamente a la posición $n$.
+  - **Índice ordinal ($n$)**: Número natural que cuantifica el lugar que ocupa un término dentro de la lista.
+  - **Primer término ($a_1$)**: Elemento ubicado en la posición inicial $n=1$.
+  - **Término $k$-ésimo ($a_k$)**: Valor ubicado exactamente en la posición $n=k$.
 propiedades_relaciones: |
-  - **Independencia de magnitud**: El valor del término $a_n$ no tiene por qué guardar una relación de orden mayor o menor con su índice $n$ (ej: $a_n = \frac{1}{n} \implies a_5 = 0,2 < 5$).
-  - **Invariancia posicional del índice**: El índice $n$ siempre avanza de forma estrictamente creciente en pasos de a uno ($\Delta n = +1$).
+  - **Invarianza posicional**: El valor del término $a_n$ no modifica su posición $n$; por ejemplo, $a_1 = 100$ sigue siendo el primer término.
+  - **Sucesiones monótonas**: Si $a_{n+1} > a_n$ para todo $n$, la sucesión es estrictamente creciente.
 ejemplo_guiado:
-  enunciado: 'En la sucesión $a_n = 50 - 4n$, identifica la posición $n$ y el valor del término para el cuarto y el décimo término de la lista.'
+  enunciado: 'En la sucesión $(-4, -1, 2, 5, 8, 11)$, identifica la posición del término $5$, el valor del término en la posición $n=2$ y el primer término.'
+  imagen: '/static/img/nodos/reconocimiento-del-orden-de-los-terminos-en-una-sucesion-ejemplos.svg'
   pasos:
-    - 'Paso 1: Para el cuarto término, la posición ordinal es $n = 4$.'
-    - 'Paso 2: Evaluamos el valor: $a_4 = 50 - 4(4) = 50 - 16 = 34$. Posición $n=4$, valor $a_4 = 34$.'
-    - 'Paso 3: Para el décimo término, la posición ordinal es $n = 10$.'
-    - 'Paso 4: Evaluamos el valor: $a_{10} = 50 - 4(10) = 50 - 40 = 10$. Posición $n=10$, valor $a_{10} = 10$.'
+    - 'Paso 1: Listamos las posiciones ordenadas: $a_1 = -4, a_2 = -1, a_3 = 2, a_4 = 5, a_5 = 8, a_6 = 11$.'
+    - 'Paso 2: El valor $5$ se encuentra en el cuarto lugar, por lo tanto su posición es **$n = 4$**.'
+    - 'Paso 3: El término en la posición $n = 2$ corresponde a **$a_2 = -1$**.'
+    - 'Paso 4: El primer término ($n=1$) es **$a_1 = -4$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'En la expresión de una sucesión $a_n = f(n)$, ¿qué representa la variable $n$?'
+    question: '¿Qué tipo de número representa siempre la posición o índice $n$ de una sucesión?'
     choices:
-      - {text: 'La posición ordinal o índice del término en la lista ($n = 1, 2, 3, \dots$)', is_correct: true}
-      - {text: 'El valor numérico final del resultado de la sucesión', is_correct: false}
-      - {text: 'La suma de todos los términos acumulados', is_correct: false}
-      - {text: 'La cantidad total de términos negativos de la lista', is_correct: false}
-    explanation: 'La alternativa correcta es ''La posición ordinal o índice del término en la lista ($n = 1, 2, 3, \dots$)''. $n$ es el número de lugar.'
+      - {text: 'Un número entero positivo ($n \in \mathbb{N}$)', is_correct: true}
+      - {text: 'Cualquier número real negativo o decimal', is_correct: false}
+      - {text: 'Únicamente números racionales fraccionarios', is_correct: false}
+      - {text: 'Un número irracional', is_correct: false}
+    explanation: 'La alternativa correcta es ''Un número entero positivo ($n \in \mathbb{N}$)''. La posición de un elemento en una lista corresponde a un entero positivo ordinal ($1, 2, 3, \dots$).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Dada la sucesión de números primos $2, 3, 5, 7, 11, 13, \dots$, ¿cuál es el valor del término en la posición $n=4$?'
+    question: 'En la sucesión $(10, 20, 30, 40, 50)$, ¿cuál es el valor del término en la posición $n=4$?'
     choices:
-      - {text: 'El número $7$, que es el cuarto número primo de la secuencia', is_correct: true}
-      - {text: 'El número $4$, por ser la posición', is_correct: false}
-      - {text: 'El número $5$, que ocupa la tercera casilla', is_correct: false}
-      - {text: 'El número $11$, que es el quinto primo', is_correct: false}
-    explanation: 'La alternativa correcta es ''El número $7$, que es el cuarto número primo de la secuencia''. $a_1=2, a_2=3, a_3=5, a_4=7$.'
+      - {text: '$40$, que ocupa el cuarto lugar de la lista', is_correct: true}
+      - {text: '$4$, confundiéndolo con la posición', is_correct: false}
+      - {text: '$50$, por ser el último término', is_correct: false}
+      - {text: '$10$, por ser el término inicial', is_correct: false}
+    explanation: 'La alternativa correcta es ''$40$, que ocupa el cuarto lugar de la lista''. En $n=4$, el elemento correspondiente es $a_4 = 40$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar si se solicita una posición $n$ o un valor $a_n$.'
-  - 'Paso 2: Para hallar el valor de la posición $k$, reemplazar $n=k$ en la fórmula funcional.'
-  - 'Paso 3: Para hallar qué posición ocupa un valor dado $V$, igualar la fórmula $a_n = V$ y despejar $n$.'
-  - 'Paso 4: Verificar que el valor de $n$ resultante sea un número entero positivo ($\mathbb{N}$).'
+  - 'Paso 1: Enumerar correlativamente cada elemento de la secuencia comenzando desde $n=1$.'
+  - 'Paso 2: Asociar a cada posición su valor numérico correspondiente ($a_1, a_2, \dots, a_n$).'
+  - 'Paso 3: Distinguir con claridad si la pregunta solicita el índice $n$ o el valor $a_n$.'
 errores_correccion: |
-  - **Error 1:** Confundir el valor del término $a_n$ con su número de posición $n$ (ej: pensar que en $a_5 = 20$, la posición es $20$). **Cómo corregirlo:** La **posición es el subíndice $n=5$**; la cifra $20$ es el valor que está guardado en esa posición.
-  - **Error 2:** Obtener un valor de posición $n$ decimal o negativo. **Cómo corregirlo:** Las posiciones sólo pueden ser **números enteros positivos** ($n = 1, 2, 3, \dots$).
+  - **Error 1:** Confundir el número de posición $n$ con el valor numérico $a_n$ (ej: creer que en $a_3 = 15$, la posición es 15). **Cómo corregirlo:** Recordar que **$n$ es el lugar ordinal** y **$a_n$ es el número que está en ese lugar**.
+  - **Error 2:** Creer que el primer término $a_1$ siempre debe valer 1. **Cómo corregirlo:** El primer término **puede tomar cualquier valor real** (ej: $a_1 = -20$ o $a_1 = 0,5$).
 ejemplos:
-  - titulo: 'Distinción entre posición y valor'
-    enunciado: 'En la sucesión $10, 20, 30, 40$, ¿el valor $a_3 = 30$ está en la posición $n=3$?'
+  - titulo: 'Identificación de término en posición dada'
+    enunciado: 'En la sucesión $(7, 14, 21, 28, 35)$, ¿cuál es el término en la posición $n=3$?'
     alternativas:
-      - 'Sí, $n=3$ es el lugar y $a_3=30$ es el valor'
-      - 'No, la posición es 30'
-      - 'No, el valor es 3'
-    respuesta: 'Sí, $n=3$ es el lugar y $a_3=30$ es el valor'
+      - '$21$'
+      - '$3$'
+      - '$14$'
+    respuesta: '$21$'
     solucion_pasos:
-      - '1. Primer lugar $n=1 \implies 10$.'
-      - '2. Segundo lugar $n=2 \implies 20$.'
-      - '3. Tercer lugar $n=3 \implies 30$.'
-  - titulo: 'Despeje de posición ordinal'
-    enunciado: 'En $a_n = 4n + 2$, ¿el valor $a_n = 22$ ocupa la posición $n=5$?'
-    respuesta: 'Sí'
+      - '1. $a_1 = 7, a_2 = 14, a_3 = 21$.'
+  - titulo: 'Identificación de posición de un término'
+    enunciado: 'En la sucesión $(100, 90, 80, 70, 60)$, ¿qué posición ocupa el valor $70$?'
+    alternativas:
+      - '$n = 4$'
+      - '$n = 70$'
+      - '$n = 3$'
+    respuesta: '$n = 4$'
     solucion_pasos:
-      - 'Sí. Igualamos $4n + 2 = 22 \implies 4n = 20 \implies n = 5$.'
-  - titulo: 'Término antecesor'
-    enunciado: 'Si $a_n = 15$ en la posición $n=6$, ¿su antecesor posicional es $a_5$?'
-    respuesta: 'Sí'
+      - '1. $a_1=100, a_2=90, a_3=80, a_4=70 \implies n=4$.'
+  - titulo: 'Primer término negativo'
+    enunciado: '¿Una sucesión puede tener como primer término $a_1$ un número negativo como $-15$?'
+    alternativas:
+      - 'Sí, los valores de los términos pueden ser cualquier número real'
+      - 'No, los términos deben ser enteros positivos'
+      - 'No, el primer término siempre es mayor que cero'
+    respuesta: 'Sí, los valores de los términos pueden ser cualquier número real'
     solucion_pasos:
-      - 'Sí. El antecesor directo de la posición 6 es la posición $6-1 = 5$.'
-  - titulo: 'Término sucesor'
-    enunciado: 'En cualquier sucesión, ¿el término que le sigue inmediatamente a $a_n$ se denota $a_{n+1}$?'
-    respuesta: 'Sí'
+      - '1. El codominio de la sucesión es $\mathbb{R}$.'
+  - titulo: 'Distinción entre posición y valor'
+    enunciado: '¿El índice de posición $n=5$ es idéntico al valor del término $a_5$?'
+    alternativas:
+      - 'No, $n=5$ indica la ubicación y $a_5$ indica el valor en dicha ubicación'
+      - 'Sí, siempre representan exactamente el mismo número'
+      - 'Sí, en todas las sucesiones matemáticas'
+    respuesta: 'No, $n=5$ indica la ubicación y $a_5$ indica el valor en dicha ubicación'
     solucion_pasos:
-      - 'Sí. $a_{n+1}$ representa la casilla posicional siguiente.'
+      - '1. La posición $n$ y el valor $a_n$ son entidades matemáticas distintas.'
 errores_frecuentes:
-  - 'Intercambiar el número de posición $n$ con el valor numérico resultante del término $a_n$.'
-  - 'Aceptar valores decimales o fraccionarios como índices de posición ordinales válidos.'
-  - 'El valor numérico de un término debe ser siempre mayor que su número de posición.'
-  - 'Restar 1 al índice de posición pensando que el primer término corresponde a $n=0$.'
-  - 'La notación del antecesor posicional $a_{n-1}$ equivale numéricamente al resultado de restar 1 al valor $a_n - 1$.'
+  - 'El índice de posición $n$ es idéntico al valor numérico $a_n$ del término en esa ubicación.'
+  - 'El primer término $a_1$ de cualquier sucesión debe ser obligatoriamente igual al número uno.'
+  - 'La posición $n$ de un término puede ser un número decimal como dos coma cinco.'
+  - 'Una sucesión no puede contener números negativos ni fracciones como términos.'
+  - 'Alterar el orden de los elementos conserva la misma sucesión numérica.'
 afirmaciones_verdaderas:
-  - 'La variable $n$ representa la posición u orden ordinal ($1, 2, 3, \dots$) y $a_n$ representa el valor del término en esa posición.'
-  - 'El antecesor posicional de $a_n$ es $a_{n-1}$ y el sucesor posicional es $a_{n+1}$.'
-al_terminar_debes_poder: 'Reconocer y diferenciar la posición ordinal $n$ del valor del término $a_n$ en cualquier sucesión numérica.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'El índice $n$ representa la posición ordinal entera positiva de un término en la secuencia ($n \in \mathbb{N}$).'
+  - 'El valor numérico $a_n$ de un término puede ser cualquier número real positivo, negativo, entero o fraccionario.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/reconocimiento-del-orden-de-los-terminos-en-una-sucesion-resumen.svg)
+
+  QUÉ: Reconocer y distinguir la posición ordinal $n$ del valor numérico del término $a_n$ en sucesiones.
+  CÓMO: Indexar ordenadamente cada elemento mediante $(n, a_n)$ determinando el lugar relativo de cada término en la secuencia.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

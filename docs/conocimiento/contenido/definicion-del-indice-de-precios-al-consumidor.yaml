@@ -1,123 +1,121 @@
-resumen_inicial: El Índice de Precios al Consumidor (IPC) es un indicador económico
-  mensual elaborado por el INE que mide la variación porcentual promedio de los precios
-  de una canasta representativa de bienes y servicios en Chile.
-explicacion_simple: El IPC mide la inflación en Chile, es decir, qué tanto han subido
-  o bajado los precios promedio de las cosas que consumen las familias. Si el IPC
-  sube un 0,5% en un mes, significa que la canasta básica de productos se encareció
-  en esa misma proporción.
-explicacion_formal: 'El **Índice de Precios al Consumidor (IPC)** cuantifica la variación
-  del costo de la canasta habitual mediante la fórmula de ponderación de Laspeyres:
+semantic_id: MAT.NUM.FINANZAS.IPC_DEFINICION
+resumen_inicial: 'El Índice de Precios al Consumidor (IPC) mide la evolución ponderada del costo de una canasta representativa de bienes y servicios para cuantificar la inflación y la pérdida de poder adquisitivo: $\text{Inflación} = \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}} \cdot 100\%$.'
+explicacion_simple: |
+  El **IPC** (Índice de Precios al Consumidor) es un termómetro que mide mes a mes cómo suben (o bajan) los precios en el país:
+  - El Instituto Nacional de Estadísticas (INE) arma una "canasta básica" con cientos de productos y servicios que las familias consumen habitualmente (pan, transporte, arriendo, luz, educación).
+  - Si el costo de esa canasta sube de $\$100$ a $\$105$, el IPC subió un $5\%$.
+  - Esa subida de precios se llama **inflación**: hace que con el mismo billete puedas comprar menos cosas (pierdes poder adquisitivo) y hace subir instrumentos reajustables como la **Unidad de Fomento (UF)**.
 
+  ![Definición del IPC](/static/img/nodos/definicion-del-indice-de-precios-al-consumidor-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  El **Índice de Precios al Consumidor (IPC)** en el período $t$ se construye mediante una media ponderada de índices de precios relativos (índice tipo Laspeyres estandarizado):
+  $$\text{IPC}_t = \sum_{i=1}^k w_i \cdot \left(\frac{P_{i,t}}{P_{i,0}}\right) \cdot 100$$
+  donde $w_i$ es el ponderador del bien o servicio $i$ (con $\sum w_i = 1$) y $P_{i,0}$ es el precio en el año base.
 
-  $$\text{Inflación Mensual } (\%) = \left( \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}}
-  \right) \cdot 100\%$$
+  ### Cálculo de la Tasa de Inflación ($\pi$)
+  La tasa de inflación porcentual entre dos períodos continuos se calcula como la variación relativa del índice:
+  $$\pi_t = \left(\frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}}\right) \cdot 100\%$$
 
+  ### Reajustabilidad Monetaria y Poder Adquisitivo Real
+  El valor real $V_{\text{real}}$ de un monto nominal $V_{\text{nominal}}$ sujeto a inflación acumulada $\pi$ es:
+  $$V_{\text{real}} = \frac{V_{\text{nominal}}}{1 + \frac{\pi}{100}}$$
 
-  **Efecto sobre el poder adquisitivo:**
-
-  - Un IPC positivo (inflación) reduce el valor real del dinero no ajustado.'
-definiciones_clave: '- **IPC**: Indicador ponderado del INE que mide la variación
-  porcentual de precios de la canasta familiar.'
-propiedades_relaciones: '- **Medida de la inflación**: Variación porcentual $\Delta\%_{\text{IPC}}$
-  del costo de la canasta.'
+  ### Síntesis didáctica
+  - Ecuación de inflación: $\pi = \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}} \cdot 100\%$.
+  - Mecanismo de la UF: La UF se ajusta diariamente según la variación mensual del IPC.
+definiciones_clave: |
+  - **Canasta Básica de Bienes y Servicios**: Muestra representativa de productos consumidos por los hogares urbanos utilizada para calcular el IPC.
+  - **Inflación**: Incremento generalizado y sostenido en el nivel de precios de una economía en el tiempo.
+  - **Unidad de Fomento (UF)**: Unidad de cuenta financiera reajustable chilena ligada a la variación del IPC.
+propiedades_relaciones: |
+  - **Erosión del ahorro no reajustable**: Un dinero guardado en efectivo bajo el colchón pierde exactamente un porcentaje de compra igual a la inflación acumulada.
+  - **Ajuste salarial por IPC**: Permite restablecer el poder de compra original del trabajador compensando el alza del costo de la vida.
 ejemplo_guiado:
-  enunciado: Si el IPC pasó de $110$ puntos a $112,2$ puntos en un mes, calcule la
-    inflación mensual.
+  enunciado: 'El IPC de diciembre de un año fue de $100$ puntos y en diciembre del año siguiente alcanzó $105$ puntos. Calcula la tasa de inflación anual y el sueldo reajustado de un trabajador que ganaba $\$500.000$.'
+  imagen: '/static/img/nodos/definicion-del-indice-de-precios-al-consumidor-ejemplos.svg'
   pasos:
-  - 'Paso 1: Restar los puntos de IPC: $112,2 - 110 = 2,2$.'
-  - 'Paso 2: Dividir entre el IPC inicial: $\frac{2,2}{110} = 0,02$.'
-  - 'Paso 3: Convertir a porcentaje: $0,02 \cdot 100\% = 2\%$.'
-  - 'Conclusión: La inflación mensual fue del $2\%$.'
+    - 'Paso 1: Evaluamos la variación del IPC: $\pi = \frac{105 - 100}{100} = \frac{5}{100} = 0,05$.'
+    - 'Paso 2: Convertimos a porcentaje: $\pi = 0,05 \cdot 100\% = 5\%$ de inflación anual.'
+    - 'Paso 3: Calculamos el reajuste sobre el sueldo de $\$500.000$: Aumento $= 500.000 \cdot 0,05 = $\$25.00$0$.'
+    - 'Paso 4: Sueldo reajustado: $500.000 + 25.000 = $\$525.00$0$. El sueldo reajustado es de **$\$525.000$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Qué mide principalmente el Índice de Precios al Consumidor (IPC) elaborado
-    por el INE?
-  choices:
-  - text: La variación porcentual promedio del costo de una canasta representativa
-      de bienes y servicios
-    is_correct: true
-  - text: El valor del dólar en el mercado internacional
-    is_correct: false
-  - text: La tasa de desempleo nacional
-    is_correct: false
-  - text: El total de créditos otorgados por los bancos
-    is_correct: false
-  explanation: La alternativa correcta es 'La variación porcentual promedio del costo
-    de una canasta representativa de bienes y servicios'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado donde el IPC subió de 110 a 112,2 puntos, ¿cuál fue
-    la inflación mensual?
-  choices:
-  - text: 2%
-    is_correct: true
-  - text: 2,2%
-    is_correct: false
-  - text: 1,2%
-    is_correct: false
-  - text: 10%
-    is_correct: false
-  explanation: La alternativa correcta es '2%'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de definir el IPC y calcular la tasa
-  de inflación mensual mediante la variación porcentual de su indicador.
-semantic_id: MAT.NUM.FINANZAS_PERSONALES.IPC_DEFINICION
+  - placement: after_explicacion_formal
+    question: '¿Cuál es la fórmula para calcular la tasa de inflación a partir de dos mediciones consecutivas del IPC?'
+    choices:
+      - {text: 'Dividir la diferencia entre el IPC final y el inicial por el IPC inicial y multiplicar por 100 ($\pi = \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}} \cdot 100\%$)', is_correct: true}
+      - {text: 'Restar directamente el sueldo al IPC', is_correct: false}
+      - {text: 'Multiplicar el IPC final por el IPC inicial', is_correct: false}
+      - {text: 'Dividir el IPC inicial entre 100 sin considerar el tiempo', is_correct: false}
+    explanation: 'La alternativa correcta es ''Dividir la diferencia entre el IPC final y el inicial por el IPC inicial y multiplicar por 100 ($\pi = \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}} \cdot 100\%$)''. Es la variación relativa porcentual del índice.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Si la inflación acumulada en un año fue del $4\%$ y una pensión mensual es de $\$300.000$, ¿cuál es el monto reajustado por IPC?'
+    choices:
+      - {text: '$\$312.000$, calculando $300.000 \cdot (1 + 0,04) = 312.000$', is_correct: true}
+      - {text: '$\$304.000$, sumando solo 4.000', is_correct: false}
+      - {text: '$\$340.000$, calculando el 40%', is_correct: false}
+      - {text: '$\$288.000$, restando la inflación', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$312.000$, calculando $300.000 \cdot (1 + 0,04) = 312.000$''. El factor de reajuste es $1,04$.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar las variables financieras de ingresos, gastos, tasas de interés
-  o sueldos imponibles.'
-- 'Paso 2: Aplicar la fórmula financiera correspondiente ($B = I - G$, $R\%$, $r_{real}$
-  o $10\% \text{ AFP}$).'
-- 'Paso 3: Calcular el resultado y evaluar la estabilidad presupuestaria.'
-errores_correccion: '- **Error 1: Confundir la tasa de interés nominal con la tasa
-  real sin restar la inflación del IPC.** **Cómo corregirlo:** La ganancia real de
-  poder adquisitivo exige descontar el IPC ($r_{real} \approx r_{nominal} - \text{IPC}$).
-
-
-  - **Error 2: Calcular la cotización previsional de AFP sobre el sueldo líquido en
-  vez del imponible.** **Cómo corregirlo:** El $10\%$ obligatorio se aplica estrictamente
-  sobre el SUELDO IMPONIBLE (hasta el tope legal).'
+  - 'Paso 1: Identificar el valor del IPC inicial ($	ext{IPC}_{t-1}$) y el valor del IPC final ($	ext{IPC}_t$).'
+  - 'Paso 2: Calcular la variación absoluta del índice $\Delta \text{IPC} = \text{IPC}_t - \text{IPC}_{t-1}$.'
+  - 'Paso 3: Dividir entre el $\text{IPC}_{t-1}$ base y multiplicar por 100 para obtener la inflación porcentual $\pi$.'
+  - 'Paso 4: Aplicar el factor $(1 + \pi / 100)$ al monto monetario a reajustar.'
+errores_correccion: |
+  - **Error 1:** Confundir el nivel de puntos del IPC con la tasa de inflación porcentual (ej: creer que si el IPC es 105 la inflación es 105%). **Cómo corregirlo:** La inflación es la **variación porcentual entre dos mediciones**: $\frac{105 - 100}{100} = 5\%$.
+  - **Error 2:** Creer que un IPC mensual positivo significa que los precios bajaron. **Cómo corregirlo:** Un IPC positivo ($> 0$) indica que **los precios de la canasta aumentaron**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.FINANZAS_PERSONALES.IPC_DEFINICION.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de finanzas personales.
-- titulo: Ejemplo 2
-  enunciado: Verificación de equilibrio financiero.
-  alternativas:
-  - Cumple la regla
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la regla
-  solucion_pasos:
-  - Demostración formal de balance o cotización.
-- titulo: ¿Es el 10% el porcentaje obligatorio de cotización previsional a la AFP?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, sobre el sueldo imponible hasta el tope legal.
-- titulo: ¿Genera un balance B = I - G positivo capacidad de ahorro?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, representa un superávit mensual de caja.
+  - titulo: 'Cálculo de inflación mensual'
+    enunciado: 'Si el IPC pasa de $110$ a $112,2$, ¿cuál fue la inflación del mes?'
+    alternativas:
+      - '$2\%$'
+      - '$2,2\%$'
+      - '$0,2\%$'
+    respuesta: '$2\%$'
+    solucion_pasos:
+      - '1. $\pi = \frac{112,2 - 110}{110} = \frac{2,2}{110} = 0,02 \implies 2\%$.'
+  - titulo: 'Ajuste de contrato de arriendo'
+    enunciado: 'Para un arriendo de $\$400.000$ con reajuste anual por IPC del $6\%$, ¿cuál es el nuevo valor mensual?'
+    alternativas:
+      - '$\$424.000$'
+      - '$\$406.000$'
+      - '$\$460.000$'
+    respuesta: '$\$424.000$'
+    solucion_pasos:
+      - '1. $400.000 \cdot (1 + 0,06) = 400.000 \cdot 1,06 = $\$424.00$0$.'
+  - titulo: 'Poder adquisitivo real'
+    enunciado: 'Si los precios suben un $10\%$ y tu sueldo no cambia, ¿tu poder adquisitivo disminuye?'
+    alternativas:
+      - 'Sí, porque el mismo dinero nominal compra una menor cantidad de bienes reales'
+      - 'No, el poder adquisitivo permanece idéntico'
+      - 'No, el poder adquisitivo aumenta'
+    respuesta: 'Sí, porque el mismo dinero nominal compra una menor cantidad de bienes reales'
+    solucion_pasos:
+      - '1. La inflación erosiona el valor real del dinero no indexado.'
+  - titulo: 'Reajuste de la Unidad de Fomento'
+    enunciado: '¿La Unidad de Fomento (UF) aumenta de valor en pesos cuando la variación mensual del IPC es positiva?'
+    alternativas:
+      - 'Sí, la UF se reajusta diariamente con la inflación del IPC'
+      - 'No, la UF tiene un valor fijo que no cambia'
+      - 'No, la UF disminuye cuando hay inflación'
+    respuesta: 'Sí, la UF se reajusta diariamente con la inflación del IPC'
+    solucion_pasos:
+      - '1. La UF es una unidad monetaria indexada a la variación del IPC.'
 errores_frecuentes:
-- Calcular el porcentaje de cotización previsional a la AFP sobre el sueldo líquido
-  recibido en cuenta corriente.
-- Sumar directamente la tasa de interés nominal y la inflación pretendiendo obtener
-  la rentabilidad real.
-- Considerar los gastos variables como egresos de costo fijo que no se pueden modificar
-  mensualmente.
-- La tasa de inflación del IPC incrementa el poder adquisitivo del dinero depositado
-  a tasa fija.
-- Clasificar el dividendo pagado por acciones como un gasto imprevisto en el presupuesto
-  personal.
+  - 'El valor numérico del índice IPC se interpreta directamente como la tasa porcentual de inflación sin calcular la variación relativa.'
+  - 'Un IPC de variación positiva se asocia incorrectamente con una caída en el nivel de precios del mercado.'
+  - 'El reajuste por inflación se efectúa restando el porcentaje del IPC al salario del trabajador.'
+  - 'La canasta básica del IPC incluye únicamente un bien homogéneo sin ponderación por gasto de los hogares.'
+  - 'La Unidad de Fomento es una moneda física de curso legal que no se ve afectada por el IPC.'
 afirmaciones_verdaderas:
-- 'El balance financiero de caja se calcula restando los egresos totales a los ingresos
-  recibidos: $B_{neto} = I_{total} - G_{total}$.'
-- La cotización previsional obligatoria a la AFP en Chile equivale al 10% del sueldo
-  imponible ajustado al tope legal.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
-estado: publicado
+  - 'La tasa de inflación corresponde a la variación porcentual del IPC entre dos períodos de tiempo ($\pi = \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}} \cdot 100\%$).'
+  - 'El reajuste por IPC permite preservar el poder adquisitivo real de salarios y contratos financieros frente al alza del costo de la vida.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/definicion-del-indice-de-precios-al-consumidor-resumen.svg)
+
+  QUÉ: Definir el IPC y calcular la tasa de inflación y el reajuste de valores monetarios nominales.
+  CÓMO: Evaluar la variación relativa $\pi = \frac{\text{IPC}_t - \text{IPC}_{t-1}}{\text{IPC}_{t-1}} \cdot 100\%$ y aplicar el factor de indexación $(1 + \pi / 100)$ a sueldos, deudas o contratos en UF.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+estado: publicado\n

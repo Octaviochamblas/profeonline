@@ -1,105 +1,123 @@
-semantic_id: MAT.ALG.CLASIFICACION_TECNICA.EXPRESION_ENTERA
-resumen_inicial: 'La identificación de expresión algebraica entera consiste en reconocer aquellas expresiones compuestas por la suma de monomios cuyas variables poseen exponentes enteros no negativos y no figuran en ningún denominador.'
+semantic_id: MAT.ALG.CLASIFICACION.EXPRESION_ENTERA
+resumen_inicial: 'Una expresión algebraica es entera cuando ninguna de sus variables figura en denominadores ni posee exponentes negativos o fraccionarios.'
 explicacion_simple: |
-  Una **expresión algebraica entera** (o polinomio entero) es una expresión limpia y sin denominadores literales:
-  - **Condición clave**: **Ninguna letra está en el denominador** y **ninguna letra tiene exponente negativo o fraccionario**.
-  - Ejemplo: $4x^3 - 7x^2 + \frac{1}{2}x - 9$.
-    - ¡Ojo! Tener un coeficiente numérico fraccionario como $\frac{1}{2}$ **SÍ es permitido**; lo que está estrictamente prohibido para ser entera es tener **letras en el denominador** (como en $\frac{5}{x}$).
-  - Todas las variables tienen exponentes enteros positivos o cero ($1, 2, 3...$).
+  - Una expresión algebraica es **entera** cuando las letras solo tienen **exponentes enteros positivos o cero** ($0, 1, 2, 3, \dots$).
+  - **Condiciones indispensables:**
+    - No puede haber letras en la parte de abajo de una fracción (en el denominador).
+    - No puede haber letras dentro de raíces (como $\sqrt{x}$).
+    - No puede haber letras con potencias negativas (como $x^{-2}$).
+  - **¡Cuidado con los números!** Los números (coeficientes) sí pueden ser fracciones o raíces, por ejemplo:
+    - $\frac{1}{2}x^3 - \frac{3}{4}x + \sqrt{5}$ **es entera**, porque las letras ($x$) solo tienen exponentes enteros $3$, $1$ y $0$.
+
+  ![Expresión Algebraica Entera](/static/img/nodos/identificacion-de-expresion-algebraica-entera-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una expresión algebraica es **entera** respecto a las variables $x_1, \dots, x_k$ si y solo si es un elemento del anillo polinómico $\mathbb{R}[x_1, \dots, x_k]$ de la forma:
+  Una expresión algebraica $E(x_1, \dots, x_n)$ en el cuerpo $\mathbb{K}$ es **entera** si pertenece formalmente al anillo de polinomios $\mathbb{K}[x_1, \dots, x_n]$.
+  Es decir, puede escribirse como una combinación lineal finita de monomios:
 
-  $$E(x_1, \dots, x_k) = \sum_{i=1}^n c_i \cdot x_1^{\alpha_{i,1}} \cdots x_k^{\alpha_{i,k}} \quad (\text{con } \alpha_{i,j} \in \mathbb{N}_0, \quad c_i \in \mathbb{R})$$
+  $$E(x_1, \dots, x_n) = \sum_{j=1}^m c_j x_1^{e_{j,1}} x_2^{e_{j,2}} \cdots x_n^{e_{j,n}}, \quad \text{con } c_j \in \mathbb{K} \quad \text{y} \quad e_{j,i} \in \mathbb{N}_0 = \{0, 1, 2, \dots\}$$
 
-  ### Criterio de Distinción entre Coeficiente y Variable
-  - **Fracción en Coeficiente**: $\frac{3}{4} x^2 \implies$ Expresión Entera (el escalar $\frac{3}{4} \in \mathbb{R}$).
-  - **Fracción en Variable**: $\frac{3}{4x^2} = \frac{3}{4} x^{-2} \implies$ Expresión Fraccionaria (no entera).
-
-  ### Síntesis didáctica
-  Las expresiones enteras son aquellas que se comportan como polinomios puros. Gozan de continuidad en todo $\mathbb{R}$ y no sufren indefiniciones por división por cero.
+  ### Dominio de definición
+  El dominio de cualquier expresión algebraica entera multivariable es todo el espacio cartesiano:
+  $$\operatorname{Dom}(E) = \mathbb{R}^n$$
+  No presenta restricciones de indeterminación por división por cero ni por raíces de índice par.
 definiciones_clave: |
-  - **Expresión algebraica entera**: Expresión formada por sumas de monomios sin variables en el denominador ni bajo radicales.
-  - **Anillo de polinomios ($\mathbb{R}[x]$)**: Dominio algebraico constituido por todas las expresiones enteras de coeficientes reales.
-  - **Coeficiente real arbitrario**: Cifra constante (entera, decimal o fraccionaria) que no afecta la categoría de expresión entera.
+  - **Expresión algebraica entera**: Expresión perteneciente a $\mathbb{K}[x_1, \dots, x_n]$, equivalente a un polinomio.
+  - **Exponente en $\mathbb{N}_0$**: Potencia entera no negativa que afecta a cada variable.
+  - **Dominio irrestricto**: Conjunto $\mathbb{R}^n$ donde la expresión está definida sin puntos singulares.
 propiedades_relaciones: |
-  - **Dominio completo en $\mathbb{R}$**: Toda expresión entera tiene un dominio de definición igual a todos los números reales $\mathbb{R}$.
-  - **Cierre bajo operaciones enteras**: La suma, resta y multiplicación de expresiones algebraicas enteras produce siempre otra expresión algebraica entera.
+  - **Equivalencia con polinomio**: Toda expresión algebraica entera es un polinomio (o monomio), y recíprocamente todo polinomio es una expresión algebraica entera.
+  - **Cierre algebraico**: La suma, resta y multiplicación de expresiones algebraicas enteras produce siempre otra expresión algebraica entera.
 ejemplo_guiado:
-  enunciado: 'Clasifica las siguientes expresiones algebraicas indicando si son enteras o no: a) $5x^4 - 2x^2 + \frac{3}{8}$, b) $\frac{4x + 1}{x - 5}$, c) $-9a^3 b^2 + 11$.'
+  enunciado: 'Determina si la expresión $E(x, y) = \frac{3}{5}x^4y^2 - \frac{\sqrt{7}}{2}xy^3 + 8$ es una expresión algebraica entera justificando tu respuesta.'
+  imagen: '/static/img/nodos/identificacion-de-expresion-algebraica-entera-ejemplos.svg'
   pasos:
-    - 'Paso 1: Analizamos a) $5x^4 - 2x^2 + \frac{3}{8}$: Las letras tienen exponentes enteros ($4, 2$) y no hay letras en denominadores $\implies$ **Es una expresión entera**.'
-    - 'Paso 2: Analizamos b) $\frac{4x + 1}{x - 5}$: Existe la variable $x$ en el denominador ($x - 5$) $\implies$ **No es entera** (es fraccionaria).'
-    - 'Paso 3: Analizamos c) $-9a^3 b^2 + 11$: Las variables $a$ y $b$ tienen exponentes $3$ y $2$ sin denominadores $\implies$ **Es una expresión entera**.'
-    - 'Conclusión: Únicamente **a) y c) son expresiones algebraicas enteras**.'
+    - 'Paso 1: Identificamos los exponentes de las variables en el primer término $\frac{3}{5}x^4y^2$: $x$ tiene exponente 4 e $y$ tiene exponente 2 (ambos en $\mathbb{N}_0$).'
+    - 'Paso 2: Identificamos los exponentes en el segundo término $-\frac{\sqrt{7}}{2}xy^3$: $x$ tiene exponente 1 e $y$ tiene exponente 3 (ambos en $\mathbb{N}_0$).'
+    - 'Paso 3: Analizamos los coeficientes: $\frac{3}{5}$ y $-\frac{\sqrt{7}}{2}$ son números reales escalares válidos.'
+    - 'Paso 4: Verificamos que ninguna variable esté en el denominador ni bajo radicales.'
+    - 'Paso 5: Conclusión: $E(x, y)$ **es una expresión algebraica entera** (polinomio en $\mathbb{R}[x, y]$).'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué condición debe cumplirse respecto a las variables para que una expresión sea clasificada como algebraica entera?'
+    question: '¿Por qué la expresión $\frac{x^3 - 5x + 2}{4}$ es una expresión algebraica entera?'
     choices:
-      - {text: 'Ninguna variable debe figurar en un denominador ni poseer exponentes negativos o fraccionarios', is_correct: true}
-      - {text: 'Todos los coeficientes numéricos deben ser números enteros positivos', is_correct: false}
-      - {text: 'Debe contener un signo de división entre sus variables', is_correct: false}
-      - {text: 'Debe tener exactamente una variable', is_correct: false}
-    explanation: 'La alternativa correcta es ''Ninguna variable debe figurar en un denominador ni poseer exponentes negativos o fraccionarios''. Criterio de expresión entera.'
+      - text: 'Porque el denominador es un número constante ($4$) y todas las potencias de la variable $x$ son enteras no negativas'
+        is_correct: true
+      - text: 'Porque tiene una fracción'
+        is_correct: false
+      - text: 'Porque tiene 3 términos'
+        is_correct: false
+      - text: 'Porque su grado es 3'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque el denominador es un número constante ($4$) y todas las potencias de la variable $x$ son enteras no negativas''. Dividir por una constante equivale a multiplicar por el coeficiente escalar $\frac{1}{4}$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'La expresión algebraica $\frac{2}{5} x^3 - 7x$, ¿se clasifica como una expresión entera?'
+    question: '¿Cuál de las siguientes expresiones NO es una expresión algebraica entera?'
     choices:
-      - {text: 'Sí, porque el denominador 5 es una constante numérica y la variable $x^3$ está en el numerador', is_correct: true}
-      - {text: 'No, porque tiene la fracción $\frac{2}{5}$', is_correct: false}
-      - {text: 'No, porque el término $-7x$ es negativo', is_correct: false}
-      - {text: 'Se clasifica como expresión irracional', is_correct: false}
-    explanation: 'La alternativa correcta es ''Sí, porque el denominador 5 es una constante numérica y la variable $x^3$ está en el numerador''. Las constantes fraccionarias no impiden ser entera.'
+      - text: '$3x^2 + 5x^{-1} - 7$'
+        is_correct: true
+      - text: '$\frac{2}{3}x^4 - x + 9$'
+        is_correct: false
+      - text: '$\sqrt{2}x^3 + 4x^2$'
+        is_correct: false
+      - text: '$5x^2y - 2xy + 1$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$3x^2 + 5x^{-1} - 7$''. El exponente negativo $-1$ indica una variable en el denominador ($5/x$), haciéndola fraccionaria.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Examinar los denominadores de todas las fracciones que aparezcan en la expresión.'
-  - 'Paso 2: Comprobar que en ningún denominador figure una letra o variable.'
-  - 'Paso 3: Verificar que los exponentes de todas las variables literales sean números enteros no negativos ($0, 1, 2, 3...$).'
-  - 'Paso 4: Confirmar la ausencia de variables bajo signos radicales para clasificar como expresión entera.'
+  - 'Paso 1: Examinar cada término de la expresión algebraica de forma individual.'
+  - 'Paso 2: Comprobar que todas las variables tengan exponentes pertenecientes a $\mathbb{N}_0 = \{0, 1, 2, \dots\}$.'
+  - 'Paso 3: Asegurarse de que ninguna variable figure en denominadores ni bajo signos de raíz.'
+  - 'Paso 4: Confirmar la clasificación como expresión entera (polinomial).'
 errores_correccion: |
-  - **Error 1:** Descartar como entera a una expresión por tener un coeficiente fraccionario como $\frac{1}{3}x^2$. **Cómo corregirlo:** La condición de entera se refiere **a las VARIABLES**, las constantes sí pueden ser fraccionarias.
-  - **Error 2:** Considerar que $\frac{5}{x}$ es una expresión entera por tener el número $5$ arriba. **Cómo corregirlo:** Si la variable $x$ está en el denominador, **la expresión NO es entera** (es fraccionaria).
+  - **Error 1:** Confundir coeficientes fraccionarios con expresiones fraccionarias. **Cómo corregirlo:** $\frac{x}{3} = \frac{1}{3}x$ es **entera** porque el 3 es un número; si la $x$ estuviera abajo ($\frac{3}{x}$), sería fraccionaria.
+  - **Error 2:** Creer que la presencia de $\sqrt{2}$ hace irracional a la expresión. **Cómo corregirlo:** La raíz solo afecta al número escalar constante; la variable tiene **potencia entera**, por lo que es entera.
 ejemplos:
-  - titulo: 'Expresión entera con fracciones escalares'
-    enunciado: '¿Es $\frac{3}{7}a^2 b - 4b + 1$ una expresión algebraica entera?'
+  - titulo: 'Expresión con coeficiente fraccionario'
+    enunciado: '¿Es la expresión $P(x) = \frac{1}{4}x^3 - \frac{2}{5}x^2 + 7$ una expresión algebraica entera?'
     alternativas:
-      - 'Sí, las variables $a$ y $b$ no están en denominadores'
-      - 'No, por el coeficiente $\frac{3}{7}$'
-      - 'No, es fraccionaria'
-    respuesta: 'Sí, las variables $a$ y $b$ no están en denominadores'
+      - 'Sí, porque las variables solo tienen exponentes enteros no negativos'
+      - 'No, porque tiene fracciones numéricas'
+      - 'Es una expresión fraccionaria'
+    respuesta: 'Sí, porque las variables solo tienen exponentes enteros no negativos'
     solucion_pasos:
-      - '1. Denominador $7$ es constante numérica.'
-      - '2. Variables en numerador con exponentes enteros.'
+      - '1. Los coeficientes son $\frac{1}{4}, -\frac{2}{5}, 7$.'
+      - '2. Los exponentes de $x$ son 3, 2, 0 $\in \mathbb{N}_0$.'
       - '3. Es una expresión entera.'
-  - titulo: 'Descarte de expresión no entera'
-    enunciado: '¿Es $x^2 + \frac{4}{x}$ una expresión algebraica entera?'
+  - titulo: 'Presencia de variable en denominador'
+    enunciado: '¿Es la expresión $4x^2 + \frac{3}{x}$ entera?'
     alternativas:
-      - 'No, la variable $x$ está en el denominador'
-      - 'Sí, porque $x^2$ es entero'
-      - 'Sí, es un trinomio'
-    respuesta: 'No, la variable $x$ está en el denominador'
+      - 'No, porque la variable $x$ divide en el segundo término'
+      - 'Sí, porque el primer término tiene grado 2'
+      - 'Sí, porque los coeficientes son enteros'
+    respuesta: 'No, porque la variable $x$ divide en el segundo término'
     solucion_pasos:
-      - '1. Contiene $\frac{4}{x} = 4x^{-1}$.'
-      - '2. La variable en el denominador impide ser entera.'
-  - titulo: 'Monomio entero'
-    enunciado: '¿Es el monomio $-18m^5 n^2$ una expresión algebraica entera?'
+      - '1. $\frac{3}{x} = 3x^{-1}$.'
+      - '2. El exponente $-1 \notin \mathbb{N}_0$.'
+      - '3. No es entera (es fraccionaria).'
+  - titulo: 'Dominio irrestricto'
+    enunciado: '¿Está una expresión algebraica entera definida para todos los números reales $\mathbb{R}$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, es un monomio con exponentes enteros en el numerador.'
-  - titulo: 'Dominio de definición'
-    enunciado: '¿Tiene la expresión entera $x^3 - 6x + 2$ un dominio de definición válido para todo $\mathbb{R}$?'
-    respuesta: 'Sí'
+      - '1. No hay denominadores con variables que puedan anularse.'
+      - '2. Su dominio es $\mathbb{R}$.'
+  - titulo: 'Exponente negativo en variable'
+    enunciado: '¿Puede una expresión algebraica entera contener el término $2x^{-3}$?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, las expresiones enteras están definidas para cualquier valor de $\mathbb{R}$.'
+      - '1. Los exponentes de las variables deben ser $\ge 0$.'
+      - '2. $-3 < 0$, lo que viola la definición de expresión entera.'
 errores_frecuentes:
-  - 'Una expresión algebraica con coeficientes numéricos fraccionarios deja de ser clasificada como expresión entera.'
-  - 'Las expresiones con variables en el denominador son expresiones enteras si su numerador es constante.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Las expresiones enteras tienen exponentes negativos en sus variables principales.'
-  - 'Una expresión entera tiene restricciones de dominio por división por cero.'
+  - 'Clasificar una expresión como fraccionaria solo porque contiene coeficientes escalares en fracción.'
+  - 'Confundir una raíz que afecta a una constante numérica (ej: $\sqrt{3}$) con una expresión irracional.'
+  - 'Olvidar que los exponentes negativos en las variables convierten a la expresión en fraccionaria.'
+  - 'Creer que un monomio simple no es una expresión algebraica entera.'
+  - 'Suponer que una expresión entera tiene restricciones en su dominio real.'
 afirmaciones_verdaderas:
-  - 'Una expresión algebraica es entera si sus variables no figuran en denominadores ni poseen exponentes negativos o fraccionarios.'
-  - 'La presencia de coeficientes constantes fraccionarios no altera la condición de expresión entera.'
-al_terminar_debes_poder: 'Identificar expresiones algebraicas enteras verificando la ausencia de variables en denominadores o exponentes negativos.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Clasificación.'
-estado: publicado
+  - 'Una expresión algebraica es entera si y solo si todas sus variables tienen exponentes enteros no negativos.'
+  - 'El conjunto de expresiones algebraicas enteras en $n$ variables coincide con el anillo de polinomios $\mathbb{R}[x_1, \dots, x_n]$.'
+al_terminar_debes_poder: |
+  ![Resumen de Expresión Entera](/static/img/nodos/identificacion-de-expresion-algebraica-entera-resumen.svg)
+
+  QUÉ: Identificar expresiones algebraicas enteras distinguiendo rigurosamente entre coeficientes numéricos fraccionarios y variables en denominadores.
+  CÓMO: Comprobando que todas las potencias literales pertenezcan a $\mathbb{N}_0$ ($e_i \ge 0$) y que no existan variables en divisores ni bajo radicales.

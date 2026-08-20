@@ -1,100 +1,119 @@
 semantic_id: MAT.NUM.SERIE_GEOMETRICA.INTERPRETACION_LIMITE
-resumen_inicial: 'La interpretación de la suma infinita como valor límite establece que el resultado $S = \frac{a_1}{1 - r}$ representa la cota matemática a la que se aproxima arbitrariamente la suma acumulada cuando el número de términos tiende a infinito: $S = \lim_{n \to \infty} S_n$.'
+resumen_inicial: 'La interpretación de la suma infinita como valor límite explica que $S_\infty$ representa el valor exacto al que convergen asintóticamente las sumas parciales cuando $n \to \infty$, modelando fenómenos continuos acumulados como rebotes o fractales.'
 explicacion_simple: |
-  En el lenguaje cotidiano, decir "sumar infinitos números" puede sonar a que nunca terminarás de calcular:
-  - Sin embargo, en matemáticas, el valor $S$ de una serie infinita es su **LÍMITE**.
-  - Significa que a medida que sumas más y más términos ($n = 10, 100, 1.000, 1.000.000, \dots$), la suma de tus números se **acerca infinitesimalmente** al número $S$.
-  - La distancia entre tu suma parcial y el valor límite $S$ se vuelve **tan pequeña como desees**, aunque con una cantidad finita de pasos nunca toques el límite de forma exacta.
-explicacion_formal: |
-  ### Definición formal mediante Límite de Cauchy / Weierstrass
-  Sea $(S_n)_{n \in \mathbb{N}}$ la sucesión de sumas parciales de la serie geométrica $\sum_{k=1}^\infty a_1 r^{k-1}$ con $|r| < 1$.
-  Decir que la suma infinita es $S \in \mathbb{R}$ equivale formalmente a afirmar que:
-  $$\forall \varepsilon > 0, \quad \exists N \in \mathbb{N} \quad \text{tal que} \quad \forall n > N \implies |S_n - S| < \varepsilon$$
+  La suma infinita **no significa sumar durante un tiempo infinito**:
+  - Significa encontrar el **límite exacto** hacia el cual viajan las sumas parciales:
+    - Si una pelota se deja caer desde $10\text{ metros}$ y en cada rebote alcanza el $50\%$ de la altura anterior:
+      - Cae $10\text{ m}$.
+      - Sube $5\text{ m}$ y baja $5\text{ m}$ ($10\text{ m}$).
+      - Sube $2,5\text{ m}$ y baja $2,5\text{ m}$ ($5\text{ m}$).
+      - Sube $1,25\text{ m}$ y baja $1,25\text{ m}$ ($2,5\text{ m}$).
+    - La distancia total recorrida en los infinitos rebotes no es infinita: ¡es exactamente **$30\text{ metros}$**!
+  - El límite convierte un proceso infinito en una **medida real finita y exacta**.
 
-  ### Error de Truncamiento ($E_n$)
-  Si se aproxima la suma infinita $S$ usando únicamente los primeros $n$ términos (suma parcial $S_n$), la magnitud del error cometido viene dada por:
-  $$E_n = |S - S_n| = \left| \frac{a_1}{1 - r} - a_1 \cdot \frac{1 - r^n}{1 - r} \right| = \left| \frac{a_1 r^n}{1 - r} \right|$$
-  Como $|r| < 1$, el error $E_n \to 0$ exponencialmente a medida que $n \to \infty$.
+  ![Interpretación de la suma infinita como valor límite](/static/img/nodos/interpretacion-de-la-suma-infinita-como-valor-limite-intro.svg)
+explicacion_formal: |
+  ### Definición Topológica del Límite de una Serie
+  Decir que $\sum_{k=1}^\infty a_k = S_\infty$ equivale formalmente a la definición de límite en el espacio métrico $(\mathbb{R}, |\cdot|)$:
+  $$\forall \varepsilon > 0, \; \exists N \in \mathbb{N} \quad \text{tal que} \quad n > N \implies |S_n - S_\infty| < \varepsilon$$
+  donde el error de aproximación o resto $R_n$ satisface:
+  $$|R_n| = |S_\infty - S_n| = \left| \frac{a_1 r^n}{1 - r} \right| = \frac{|a_1| \cdot |r|^n}{|1 - r|} \xrightarrow[n \to \infty]{} 0$$
+
+  ### Aplicaciones Físicas y Geométricas
+  1. **Cinemática del Rebote Físico**:
+     $$\text{Distancia Total} = h_0 + 2 \sum_{k=1}^\infty h_0 r^k = h_0 + 2 h_0 \left(\frac{r}{1 - r}\right) = h_0 \left( \frac{1 + r}{1 - r} \right)$$
+  2. **Geometría Fractal (Copo de Koch / Triángulo de Sierpinski)**:
+     - El perímetro puede tender a infinito mientras que el área encerrada converge a un valor finito mediante una serie geométrica.
 
   ### Síntesis didáctica
-  - Significado de $S$: Límite al que se aproximan las sumas parciales $S = \lim_{n \to \infty} S_n$.
-  - Error de truncamiento: $E_n = |S - S_n| = \frac{|a_1| \cdot |r|^n}{1 - r} \to 0$.
+  - Concepción: Límite analítico exacto $\lim S_n = S_\infty$.
+  - Error residual: $R_n = S_\infty - S_n \to 0$.
 definiciones_clave: |
-  - **Valor límite ($S$)**: Cota matemática asintótica a la que convergen las sumas parciales.
-  - **Suma parcial ($S_n$)**: Aproximación finita de la serie verdadera usando los $n$ primeros elementos.
-  - **Error de truncamiento ($E_n$)**: Diferencia absoluta entre la suma infinita verdadera $S$ y la aproximación $S_n$.
+  - **Valor límite**: Número real hacia el cual converge una sucesión infinita con error infinitesimal arbitrario.
+  - **Resto de orden $n$ ($R_n$)**: Diferencia cuantitativa entre la suma infinita exacta y la suma parcial finita de orden $n$.
+  - **Modelo de rebote**: Fenómeno de amortiguación elástica modelado mediante series geométricas infinitas.
 propiedades_relaciones: |
-  - **Monotonía y cota superior**: Para $a_1 > 0$ y $0 < r < 1$, las sumas parciales $S_n$ son estrictamente crecientes y están acotadas superiormente por el valor límite $S$ ($S_n < S, \forall n$).
-  - **Aplicaciones físicas**: En la física, describe procesos de amortiguamiento, trayectorias de rebote de pelotas y modelos de difusión térmica.
+  - **Exactitud matemática**: $S_\infty$ no es una cota superior inalcanzable, sino el valor matemático estricto de la serie.
+  - **Fundamento del cálculo infinitesimal**: La teoría de series geométricas infinitas constituye el puente histórico entre el álgebra discreta y el análisis matemático continuo.
 ejemplo_guiado:
-  enunciado: 'Para la serie geométrica infinita de distancias $S = 10 + 5 + 2,5 + 1,25 + \dots$ (metros), calcula su valor límite $S$ y el error de truncamiento al aproximar usando sólo $n=3$ términos.'
+  enunciado: 'Una pelota se suelta desde una altura inicial de $h_0 = 12\text{ metros}$. Cada vez que rebota, sube a $\frac{2}{3}$ de la altura anterior ($r = \frac{2}{3}$). Modela e interpreta la distancia vertical total que recorre la pelota hasta detenerse teóricamente.'
+  imagen: '/static/img/nodos/interpretacion-de-la-suma-infinita-como-valor-limite-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $a_1 = 10$ m y la razón $r = 0,5$. Verificamos $|0,5| < 1 \implies$ Converge.'
-    - 'Paso 2: Calculamos el valor límite exacto: $S = \frac{10}{1 - 0,5} = \frac{10}{0,5} = 20$ metros.'
-    - 'Paso 3: Calculamos la suma parcial con $n=3$ términos: $S_3 = 10 + 5 + 2,5 = 17,5$ metros.'
-    - 'Paso 4: Calculamos el error de truncamiento: $E_3 = |S - S_3| = |20 - 17,5| = 2,5$ metros. El valor límite es **$20$ m** y el error con 3 términos es **$2,5$ m**.'
+    - 'Paso 1: La pelota realiza una caída inicial de $12\text{ m}$.'
+    - 'Paso 2: En cada rebote $k \ge 1$, sube y baja la misma altura: $2 \cdot h_k = 2 \cdot 12 \cdot \left(\frac{2}{3}\right)^k = 24 \cdot \left(\frac{2}{3}\right)^k$.'
+    - 'Paso 3: La suma de todos los rebotes es una serie geométrica infinita con primer término $a_1 = 24 \cdot \frac{2}{3} = 16\text{ m}$ y razón $r = \frac{2}{3}$.'
+    - 'Paso 4: Calculamos la suma de los rebotes: $S_\infty = \frac{a_1}{1 - r} = \frac{16}{1 - 2/3} = \frac{16}{1/3} = 48\text{ metros}$.'
+    - 'Paso 5: Sumamos la caída inicial: $\text{Distancia Total} = 12 + 48 = **60\text{ metros}$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué representa formalmente el valor $S = \frac{a_1}{1 - r}$ en una serie geométrica infinita convergente?'
+    question: '¿Qué representa formalmente el valor de la suma infinita $S_\infty$ en el análisis matemático?'
     choices:
-      - {text: 'El límite matemático al que se aproxima infinitesimalmente la secuencia de sumas parciales cuando $n \to \infty$', is_correct: true}
-      - {text: 'El valor exacto alcanzado al sumar los primeros 100 términos', is_correct: false}
-      - {text: 'El promedio de los dos primeros términos de la serie', is_correct: false}
-      - {text: 'El mayor término presente en la sucesión', is_correct: false}
-    explanation: 'La alternativa correcta es ''El límite matemático al que se aproxima infinitesimalmente la secuencia de sumas parciales cuando $n \to \infty$''. Definición de límite.'
+      - {text: 'El valor límite exacto al que tienden las sumas parciales finitas cuando el número de términos crece indefinidamente', is_correct: true}
+      - {text: 'Una estimación aproximada con un margen de error inevitable', is_correct: false}
+      - {text: 'El valor del último término sumado', is_correct: false}
+      - {text: 'El promedio aritmético de todos los términos', is_correct: false}
+    explanation: 'La alternativa correcta es ''El valor límite exacto al que tienden las sumas parciales finitas cuando el número de términos crece indefinidamente''. Es la definición topológica rigurosa de serie.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Una pelota rebota alcanzando en cada salto la mitad de la altura anterior ($r = 0,5$). Si cae inicialmente desde $8$ metros ($a_1 = 8$), ¿cuál es el límite de la suma de todas sus alturas de rebote?'
+    question: 'Si una pelota cae de $8\text{ m}$ y rebota a la mitad de su altura ($r=0,5$), ¿cuál es la distancia total recorrida según la fórmula de rebote $D = h_0 \left(\frac{1+r}{1-r}\right)$?'
     choices:
-      - {text: '$S = 16$ metros, calculando $\frac{8}{1 - 0,5} = \frac{8}{0,5} = 16$ metros', is_correct: true}
-      - {text: '$S = 8$ metros, igual a la altura inicial', is_correct: false}
-      - {text: '$S = 32$ metros, multiplicando $8 \cdot 4$', is_correct: false}
-      - {text: '$S = 12$ metros, sumando $8 + 4$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S = 16$ metros, calculando $\frac{8}{1 - 0,5} = \frac{8}{0,5} = 16$ metros''. $8 / 0,5 = 16$.'
+      - {text: '$24\text{ metros}$, calculando $8 \cdot \left(\frac{1 + 0,5}{1 - 0,5}\right) = 8 \cdot \frac{1,5}{0,5} = 8 \cdot 3 = 24$', is_correct: true}
+      - {text: '$16\text{ metros}$', is_correct: false}
+      - {text: '$32\text{ metros}$', is_correct: false}
+      - {text: '$8\text{ metros}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$24\text{ metros}$, calculando $8 \cdot \left(\frac{1 + 0,5}{1 - 0,5}\right) = 8 \cdot \frac{1,5}{0,5} = 8 \cdot 3 = 24$''. La caída inicial es 8 y los rebotes suman 16.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar la magnitud física o abstracta $a_1$ y la razón de atenuación $r$.'
-  - 'Paso 2: Calcular el valor límite exacto mediante $S = \frac{a_1}{1 - r}$.'
-  - 'Paso 3: Si se requiere una aproximación finita de $n$ pasos, calcular $S_n = a_1 \cdot \frac{1 - r^n}{1 - r}$.'
-  - 'Paso 4: Calcular el error de truncamiento $E_n = |S - S_n|$ e interpretar el resultado en las unidades del problema.'
+  - 'Paso 1: Identificar la magnitud inicial que no se repite (ej: caída inicial).'
+  - 'Paso 2: Formular la serie de las fases repetitivas bidireccionales (subida y bajada: factor 2).'
+  - 'Paso 3: Calcular la suma infinita de la fase periódica mediante $S_\infty = \frac{a_1}{1 - r}$.'
+  - 'Paso 4: Sumar la condición inicial y contextualizar el valor límite con sus unidades físicas correspondientes.'
 errores_correccion: |
-  - **Error 1:** Afirmar que el valor límite $S$ se alcanza de forma exacta en un término finito $n$. **Cómo corregirlo:** Las sumas parciales **se aproximan asintóticamente a $S$**, alcanzándolo de manera exacta únicamente en el **LÍMITE cuando $n \to \infty$**.
-  - **Error 2:** Olvidar indicar las unidades de medida en problemas aplicados de física o finanzas. **Cómo corregirlo:** La suma infinita conserva las **mismas unidades de medida que el término inicial $a_1$** (metros, segundos, pesos).
+  - **Error 1:** Duplicar la primera caída al modelar rebotes (olvidar que la primera caída ocurre una sola vez). **Cómo corregirlo:** La caída inicial **ocurre una sola vez**, mientras que los rebotes posteriores **suben y bajan (se duplican)**.
+  - **Error 2:** Creer que la suma infinita es un valor inalcanzable o aproximado. **Cómo corregirlo:** En matemáticas la suma infinita **es el valor real exacto** del límite funcional.
 ejemplos:
-  - titulo: 'Límite de rebote de pelota'
-    enunciado: 'Si $a_1 = 4$ m y $r = 1/2$, ¿el límite acumulado de rebotes es $S = \frac{4}{1 - 1/2} = 8$ m?'
+  - titulo: 'Distancia límite de oscilación amortiguada'
+    enunciado: 'Un péndulo recorre $20\text{ cm}$ en su primera oscilación y cada oscilación posterior recorre el $80\%$ ($r=0,8$). ¿Qué distancia total recorre hasta detenerse?'
     alternativas:
-      - 'Sí, el límite es 8 metros'
-      - 'No, el límite es 4 metros'
-      - 'No, el límite es infinito'
-    respuesta: 'Sí, el límite es 8 metros'
+      - '$100\text{ cm}$'
+      - '$80\text{ cm}$'
+      - '$200\text{ cm}$'
+    respuesta: '$100\text{ cm}$'
     solucion_pasos:
-      - '1. $a_1 = 4, r = 1/2$.'
-      - '2. $S = 4 / (1/2) = 8$ m.'
-  - titulo: 'Error de truncamiento en n=2'
-    enunciado: 'Para $a_1 = 10, r = 0,5$, si $S = 20$ y $S_2 = 15$, ¿el error de truncamiento es $E_2 = 20 - 15 = 5$?'
+      - '1. $a_1 = 20, r = 0,8$.'
+      - '2. $S_\infty = 20 / (1 - 0,8) = 20 / 0,2 = 100\text{ cm}$.'
+  - titulo: 'Error residual de aproximación'
+    enunciado: '¿La diferencia entre la suma parcial $S_n$ y la suma infinita $S_\infty$ tiende a cero cuando $n \to \infty$?'
+    alternativas:
+      - 'Sí, el resto $R_n \to 0$ asintóticamente'
+      - 'No, el error se mantiene constante'
+      - 'No, el error aumenta'
+    respuesta: 'Sí, el resto $R_n \to 0$ asintóticamente'
+    solucion_pasos:
+      - '1. $|S_\infty - S_n| = |a_1 r^n / (1-r)| \to 0$ porque $|r| < 1$.'
+  - titulo: 'Finitud de fenómenos infinitos'
+    enunciado: '¿Un proceso con infinitas etapas decrecientes puede completarse en una distancia o tiempo finito?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $E_2 = |20 - 15| = 5$.'
-  - titulo: 'Límite de consumo de agua'
-    enunciado: 'Si un pozo pierde el 20% de su extracción por mes ($a_1 = 100$ L, $r = 0,80$), ¿el límite total extraído es $S = \frac{100}{1 - 0,80} = 500$ L?'
+      - '1. La convergencia de series geométricas demuestra la finitud de procesos acumulativos infinitos.'
+  - titulo: 'Límite de términos vs límite de serie'
+    enunciado: '¿El límite de los términos individuales $\lim a_n = 0$ es diferente al límite de la suma $\lim S_n = S_\infty$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $100 / 0,20 = 500$ litros.'
-  - titulo: 'Reducción del error a cero'
-    enunciado: '¿El error $E_n = |S - S_n|$ se aproxima a cero cuando $n$ se vuelve infinitamente grande?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Como $|r| < 1$, $\lim_{n \to \infty} E_n = 0$.'
+      - '1. $\lim a_n$ mide el tamaño del paso final, mientras que $\lim S_n$ mide la acumulación total.'
 errores_frecuentes:
-  - 'El valor límite de la suma infinita se alcanza exactamente en algún término finito de la suma.'
-  - 'La suma de una serie geométrica infinita siempre entrega un número entero positivo.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Ignorar las unidades de medida asociadas al término inicial en la interpretación del límite.'
-  - 'El error de truncamiento $E_n$ es numéricamente igual a la razón geométrica $r$ de la serie.'
+  - 'Considerar que la suma infinita es solo una aproximación empírica y no un valor límite exacto.'
+  - 'En problemas de rebotes se duplica la altura de la caída inicial que se efectúa en un solo sentido.'
+  - 'Confundir el límite de los términos individuales con el límite de la suma acumulada.'
+  - 'Asumir que un proceso físico que involucra infinitas etapas requiere un tiempo infinito para completarse.'
+  - 'Omitir las unidades de medida físicas en la interpretación contextual de la suma límite.'
 afirmaciones_verdaderas:
-  - 'La suma infinita de una serie geométrica convergente $S = \frac{a_1}{1 - r}$ es el valor límite al que tienden sus sumas parciales $S_n$.'
-  - 'El error de truncamiento $E_n = |S - S_n|$ disminuye exponencialmente hacia cero a medida que el número de términos $n$ aumenta.'
-al_terminar_debes_poder: 'Interpretar la suma infinita de una serie geométrica como un valor límite y calcular su error de truncamiento.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La suma infinita de una serie convergente representa el valor límite exacto al que tienden las sumas parciales ($S_\infty = \lim_{n \to \infty} S_n$).'
+  - 'Fenómenos físicos amortiguados con infinitos rebotes o pasos decrecientes recorren una distancia total finita modelada mediante series geométricas.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/interpretacion-de-la-suma-infinita-como-valor-limite-resumen.svg)
+
+  QUÉ: Interpretar y aplicar la suma infinita como valor límite exacto en problemas geométricos y físicos.
+  CÓMO: Modelar fenómenos amortiguados (rebotes, oscilaciones) mediante $S_\infty = \lim_{n \to \infty} S_n$ distinguiendo condiciones iniciales de factores de retorno.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

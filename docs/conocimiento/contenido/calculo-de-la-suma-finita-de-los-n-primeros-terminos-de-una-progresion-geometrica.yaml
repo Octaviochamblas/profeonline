@@ -1,112 +1,121 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.SUMA_FINITA
-resumen_inicial: 'El cálculo de la suma finita de los $n$ primeros términos de una progresión geométrica $S_n$ (con $r \neq 1$) se obtiene mediante la fórmula $S_n = a_1 \cdot \frac{r^n - 1}{r - 1} = a_1 \cdot \frac{1 - r^n}{1 - r}$.'
+resumen_inicial: 'El cálculo de la suma finita de los $n$ primeros términos de una PG con razón $r \neq 1$ utiliza la fórmula cerrada $S_n = \frac{a_1(r^n - 1)}{r - 1} = \frac{a_1(1 - r^n)}{1 - r}$.'
 explicacion_simple: |
-  Para sumar rápidamente los primeros números de una progresión geométrica (por ejemplo, $3 + 6 + 12 + 24 + 48 + 96$):
-  - No necesitas sumarlos uno por uno.
-  - Usas la **fórmula de la suma geométrica finita**:
-    $$S_n = a_1 \cdot \left[\frac{r^n - 1}{r - 1}\right]$$
-  Para la suma anterior ($a_1 = 3, r = 2, n = 6$):
-  $$S_6 = 3 \cdot \left[\frac{2^6 - 1}{2 - 1}\right] = 3 \cdot \left[\frac{64 - 1}{1}\right] = 3 \cdot 63 = 189$$
-  La suma de los 6 números da exactamente $189$.
+  Para sumar los primeros $n$ términos de una progresión geométrica (por ejemplo, $3 + 6 + 12 + 24 + 48 + 96$):
+  - Usamos la **fórmula de la suma finita**:
+    $$S_n = \frac{a_1 \cdot (r^n - 1)}{r - 1}$$
+  - ¿Cómo se aplica?
+    1. Elevas la razón a la cantidad total de términos ($r^n$).
+    2. Le restas $1$ al resultado: $(r^n - 1)$.
+    3. Multiplicas por el primer término $a_1$.
+    4. Divides todo entre $(r - 1)$.
+  - Por ejemplo, para sumar $6$ términos con $a_1 = 3$ y $r = 2$:
+    $$S_6 = \frac{3 \cdot (2^6 - 1)}{2 - 1} = \frac{3 \cdot (64 - 1)}{1} = 3 \cdot 63 = 189$$
+
+  ![Cálculo de la suma finita de los n primeros términos de una PG](/static/img/nodos/calculo-de-la-suma-finita-de-los-n-primeros-terminos-de-una-progresion-geometrica-intro.svg)
 explicacion_formal: |
-  ### Definición formal y demostración por telescópico multiplicativo
-  La **suma finita $S_n$** de los $n$ primeros términos de una progresión geométrica de razón $r \neq 1$ es:
+  ### Deducción formal por el Método de Multiplicación Telescópica
+  Sea la suma finita de los $n$ primeros términos:
   $$S_n = a_1 + a_1 r + a_1 r^2 + \dots + a_1 r^{n-1}$$
-  Multiplicando toda la ecuación por la razón $r$:
+  Multiplicamos la ecuación completa por la razón $r$:
   $$r S_n = a_1 r + a_1 r^2 + a_1 r^3 + \dots + a_1 r^n$$
-  Restando la segunda ecuación menos la primera:
-  $$r S_n - S_n = a_1 r^n - a_1 \implies S_n(r - 1) = a_1(r^n - 1) \implies S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$$
+  Restamos la primera ecuación de la segunda ($r S_n - S_n$):
+  $$S_n(r - 1) = a_1 r^n - a_1 = a_1(r^n - 1)$$
+  Para $r \neq 1$, despejamos $S_n$:
+  $$S_n = \frac{a_1(r^n - 1)}{r - 1} = \frac{a_1(1 - r^n)}{1 - r}$$
 
-  ### Formas algebraicas equivalentes
-  1. **Para $r > 1$**:
-     $$S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$$
-  2. **Para $0 < r < 1$**:
-     $$S_n = a_1 \cdot \frac{1 - r^n}{1 - r}$$
-  3. **Con el último término $a_n$**:
-     $$S_n = \frac{a_n \cdot r - a_1}{r - 1}$$
-
-  ### Caso especial $r = 1$
-  Si $r = 1 \implies S_n = a_1 + a_1 + \dots + a_1 = n \cdot a_1$.
+  ### Caso Especial: Razón Unitaria ($r = 1$)
+  Si $r = 1$, la progresión es constante ($a_k = a_1$) y la suma directa es:
+  $$S_n = n \cdot a_1$$
 
   ### Síntesis didáctica
-  - Ecuación general ($r \neq 1$): $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$.
-  - Ecuación con último término: $S_n = \frac{a_n \cdot r - a_1}{r - 1}$.
+  - Caso general ($r \neq 1$): $S_n = \frac{a_1(r^n - 1)}{r - 1}$.
+  - Caso unitario ($r = 1$): $S_n = n \cdot a_1$.
 definiciones_clave: |
-  - **Serie geométrica finita ($S_n$)**: Acumulación o suma de los $n$ primeros términos de una P.G.
-  - **Factor de amplificación de serie ($\frac{r^n - 1}{r - 1}$)**: Coeficiente multiplicativo que escala el primer término.
-  - **Diferencia telescópica**: Técnica algebraica empleada para cancelar términos intermedios en la deducción de $S_n$.
+  - **Suma finita geométrica ($S_n$)**: Acumulación total de los primeros $n$ términos de una PG.
+  - **Factor de amplificación telescópica ($(r^n - 1)$)**: Expresión algebraica resultante de la simplificación de términos intermedios.
+  - **Razón no unitaria ($r \neq 1$)**: Condición indispensable para evitar la división por cero en la fórmula general.
 propiedades_relaciones: |
-  - **Crecimiento explosivo**: Para $r > 1$, la suma $S_n$ crece a un ritmo exponencial dominado por la potencia $r^n$.
-  - **Límite de suma infinita**: Si $0 < |r| < 1$, cuando $n \to \infty$ la potencia $r^n \to 0$, por lo que la suma infinita converge a $S_\infty = \frac{a_1}{1 - r}$.
+  - **Dominancia del último término**: Cuando $r > 1$, la suma $S_n$ es del mismo orden de magnitud que su término final $a_n$.
+  - **Serie geométrica infinita**: Si $|r| < 1$, cuando $n \to \infty$, $r^n \to 0$, convergiendo la suma a $S_\infty = \frac{a_1}{1 - r}$.
 ejemplo_guiado:
-  enunciado: 'Calcula la suma de los primeros $8$ términos de la progresión geométrica $2, 6, 18, 54, \dots$'
+  enunciado: 'Calcula la suma de los primeros 6 términos de la progresión geométrica $(4, 12, 36, 108, \dots)$.'
+  imagen: '/static/img/nodos/calculo-de-la-suma-finita-de-los-n-primeros-terminos-de-una-progresion-geometrica-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los parámetros: $n = 8$, primer término $a_1 = 2$ y razón $r = \frac{6}{2} = 3$.'
-    - 'Paso 2: Escribimos la fórmula de la suma finita: $S_8 = 2 \cdot \left[\frac{3^8 - 1}{3 - 1}\right]$.'
-    - 'Paso 3: Evaluamos la potencia y el denominador: $3^8 = 6.561$, denominador $3 - 1 = 2$.'
-    - 'Paso 4: Sustituimos y simplificamos: $S_8 = 2 \cdot \left[\frac{6.561 - 1}{2}\right] = 6.560$. La suma de los 8 primeros términos es **$6.560$**.'
+    - 'Paso 1: Identificamos los datos: $a_1 = 4, r = \frac{12}{4} = 3, n = 6$.'
+    - 'Paso 2: Aplicamos la fórmula de la suma finita: $S_6 = \frac{4 \cdot (3^6 - 1)}{3 - 1}$.'
+    - 'Paso 3: Calculamos la potencia: $3^6 = 729$.'
+    - 'Paso 4: Operamos el numerador y denominador: $S_6 = \frac{4 \cdot (729 - 1)}{2} = \frac{4 \cdot 728}{2} = 2 \cdot 728$.'
+    - 'Paso 5: Resultado final: $S_6 = **1.456$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la suma de los $n$ primeros términos de una P.G. de primer término $a_1$ y razón $r \neq 1$?'
+    question: '¿Cuál es la fórmula para calcular la suma de los primeros $n$ términos de una PG con razón $r \neq 1$?'
     choices:
-      - {text: 'Multiplicar el primer término por el cociente entre $(r^n - 1)$ y $(r - 1)$: $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$', is_correct: true}
-      - {text: 'Multiplicar el primer término por la razón y elevar a $n$', is_correct: false}
-      - {text: 'Restar la razón al primer término y multiplicar por $n$', is_correct: false}
-      - {text: 'Dividir el último término entre el número de posición $n$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Multiplicar el primer término por el cociente entre $(r^n - 1)$ y $(r - 1)$: $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$''. Deducción telescópica.'
+      - {text: '$S_n = \frac{a_1(r^n - 1)}{r - 1}$', is_correct: true}
+      - {text: '$S_n = \frac{n(a_1 + a_n)}{2}$ (fórmula de Gauss para PA)', is_correct: false}
+      - {text: '$S_n = a_1 \cdot r^n$', is_correct: false}
+      - {text: '$S_n = \frac{a_1 \cdot r}{n}$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$S_n = \frac{a_1(r^n - 1)}{r - 1}$''. Es la fórmula telescópica para la suma finita de una progresión geométrica.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una P.G. de 4 términos $a_1 = 5$ y la razón es $r = 2$, ¿cuál es la suma total $S_4$?'
+    question: 'Si una PG tiene $a_1 = 5$ y $r = 2$, ¿cuál es la suma de los primeros 4 términos $S_4$?'
     choices:
-      - {text: '$S_4 = 75$, calculando $5 \cdot \frac{2^4 - 1}{2 - 1} = 5 \cdot \frac{16 - 1}{1} = 5 \cdot 15 = 75$', is_correct: true}
-      - {text: '$S_4 = 80$, calculando $5 \cdot 16$', is_correct: false}
-      - {text: '$S_4 = 40$, multiplicando $5 \cdot 2 \cdot 4$', is_correct: false}
-      - {text: '$S_4 = 30$, sumando $5 + 10 + 15$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S_4 = 75$, calculando $5 \cdot \frac{2^4 - 1}{2 - 1} = 5 \cdot \frac{16 - 1}{1} = 5 \cdot 15 = 75$''. $5 \cdot 15 = 75$.'
+      - {text: '$75$, calculando $\frac{5 \cdot (2^4 - 1)}{2 - 1} = 5 \cdot (16 - 1) = 5 \cdot 15 = 75$', is_correct: true}
+      - {text: '$80$, multiplicando $5 \cdot 16$', is_correct: false}
+      - {text: '$40$', is_correct: false}
+      - {text: '$35$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$75$, calculando $\frac{5 \cdot (2^4 - 1)}{2 - 1} = 5 \cdot (16 - 1) = 5 \cdot 15 = 75$''. La suma directa es $5 + 10 + 20 + 40 = 75$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el primer término $a_1$, la razón geométrica $r$ y la cantidad de términos $n$.'
-  - 'Paso 2: Calcular la potencia $r^n$ y el numerador $(r^n - 1)$.'
-  - 'Paso 3: Calcular el denominador $(r - 1)$.'
-  - 'Paso 4: Dividir el numerador entre el denominador y multiplicar el resultado por $a_1$ para obtener $S_n$.'
+  - 'Paso 1: Identificar el primer término $a_1$, la razón $r$ y la cantidad de términos $n$.'
+  - 'Paso 2: Calcular la potencia $r^n$ (con exponente $n$).'
+  - 'Paso 3: Restar 1 al resultado de la potencia: $r^n - 1$.'
+  - 'Paso 4: Multiplicar por $a_1$ y dividir entre $(r - 1)$: $S_n = \frac{a_1(r^n - 1)}{r - 1}$.'
 errores_correccion: |
-  - **Error 1:** Confundir la potencia $r^n$ en la suma con $r^{n-1}$ del término general. **Cómo corregirlo:** La fórmula de la suma $S_n$ lleva la **POTENCIA COMPLETA $r^n$** en el numerador: $a_1 \cdot \frac{r^n - 1}{r - 1}$.
-  - **Error 2:** Restar $1$ a la razón antes de elevar a la potencia (calcular $(r-1)^n$). **Cómo corregirlo:** Primero se debe **elevar $r^n$** y a ese resultado restarle 1.
+  - **Error 1:** Usar exponente $(n - 1)$ en la fórmula de la suma (confundirla con el término general). **Cómo corregirlo:** En la fórmula de la suma el exponente **es exactamente $n$**: $S_n = \frac{a_1(r^n - 1)}{r - 1}$.
+  - **Error 2:** Olvidar restar 1 en el denominador (dividir solo por $r$). **Cómo corregirlo:** El denominador **es siempre $(r - 1)$** o $(1 - r)$.
 ejemplos:
   - titulo: 'Suma de potencias de 2'
-    enunciado: 'Para $1, 2, 4, 8, 16$ ($a_1=1, r=2, n=5$), ¿la suma es $S_5 = 1 \cdot \frac{2^5 - 1}{2 - 1} = 31$?'
+    enunciado: 'Para $a_1 = 1, r = 2, n = 5$, ¿cuál es la suma $S_5$ de la progresión $(1, 2, 4, 8, 16)$?'
     alternativas:
-      - 'Sí, $32 - 1 = 31$'
-      - 'No, es 32'
-      - 'No, es 30'
-    respuesta: 'Sí, $32 - 1 = 31$'
+      - '$31$'
+      - '$32$'
+      - '$30$'
+    respuesta: '$31$'
     solucion_pasos:
-      - '1. $a_1 = 1, r = 2, n = 5$.'
-      - '2. $S_5 = (2^5 - 1) / 1 = 32 - 1 = 31$.'
+      - '1. $S_5 = 1 \cdot (2^5 - 1) / (2 - 1) = 32 - 1 = 31$.'
   - titulo: 'Suma con razón fraccionaria'
-    enunciado: 'Para $a_1 = 16, r = 1/2, n = 4$, ¿$S_4 = 16 \cdot \frac{1 - (1/2)^4}{1 - 1/2} = 16 \cdot \frac{15/16}{1/2} = 30$?'
+    enunciado: 'Para $a_1 = 16, r = \frac{1}{2}, n = 4$, ¿cuál es el valor de $S_4$?'
+    alternativas:
+      - '$30$'
+      - '$31$'
+      - '$15$'
+    respuesta: '$30$'
+    solucion_pasos:
+      - '1. $S_4 = 16(1 - (1/2)^4) / (1 - 1/2) = 16(1 - 1/16) / (1/2) = 15 / (1/2) = 30$.'
+  - titulo: 'Suma directa vs fórmula'
+    enunciado: '¿La suma $2 + 6 + 18 + 54$ calculada con fórmula $S_4 = \frac{2(3^4-1)}{3-1}$ coincide con $80$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $16 + 8 + 4 + 2 = 30$.'
-  - titulo: 'Suma de 3 términos'
-    enunciado: 'Para $a_1 = 4, r = 3, n = 3$, ¿$S_3 = 4 \cdot \frac{3^3 - 1}{3 - 1} = 4 \cdot \frac{26}{2} = 52$?'
+      - '1. $S_4 = 2(81 - 1) / 2 = 80$.'
+  - titulo: 'Caso de razón unitaria'
+    enunciado: '¿Para $a_1 = 7$ y $r = 1$, la suma de 10 términos es $S_{10} = 10 \cdot 7 = 70$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $4 + 12 + 36 = 52$.'
-  - titulo: 'Suma con razón 1'
-    enunciado: 'Para $a_1 = 7, r = 1, n = 5$, ¿$S_5 = 5 \cdot 7 = 35$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Al ser $r=1$, $S_5 = 5 \cdot 7 = 35$.'
+      - '1. Cuando $r=1$, $S_n = n \cdot a_1 = 10 \cdot 7 = 70$.'
 errores_frecuentes:
-  - 'Elevar la resta $(r-1)$ a la potencia $n$ en lugar de elevar únicamente la razón $r^n$.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Usar el exponente $(n-1)$ en lugar de $n$ al aplicar la fórmula de la suma finita.'
-  - 'Cuando la razón $r < 1$, el numerador de la fórmula de la suma finita es siempre un número negativo.'
+  - 'En la fórmula de la suma finita de una PG se utiliza exponente $(n - 1)$ en lugar de exponente $n$.'
+  - 'Se omite la resta de uno en el denominador dividiendo únicamente por el valor de la razón $r$.'
+  - 'Aplicar la fórmula de Gauss de progresiones aritméticas para sumar los términos de una progresión geométrica.'
+  - 'La suma de los primeros $n$ términos de una PG con razón mayor a uno es menor que el último término.'
+  - 'Intentar aplicar la fórmula con $r = 1$ sin utilizar la simplificación $S_n = n \cdot a_1$.'
 afirmaciones_verdaderas:
-  - 'La suma de los $n$ primeros términos de una P.G. de razón $r \neq 1$ es $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$.'
-  - 'Si la razón geométrica es igual a 1, la suma finita de $n$ términos es $S_n = n \cdot a_1$.'
-al_terminar_debes_poder: 'Calcular la suma finita de los $n$ primeros términos de una progresión geométrica mediante $S_n = a_1 \cdot \frac{r^n - 1}{r - 1}$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La suma finita de los primeros $n$ términos de una PG con $r \neq 1$ es $S_n = \frac{a_1(r^n - 1)}{r - 1}$.'
+  - 'Si la razón geométrica es $r = 1$, la suma de los primeros $n$ términos equivale directamente al producto $n \cdot a_1$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-la-suma-finita-de-los-n-primeros-terminos-de-una-progresion-geometrica-resumen.svg)
+
+  QUÉ: Calcular la suma finita $S_n$ de los $n$ primeros términos de una progresión geométrica.
+  CÓMO: Aplicar la fórmula cerrada $S_n = \frac{a_1(r^n - 1)}{r - 1}$ evaluando la potencia $r^n$ y simplificando el cociente algebraico.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

@@ -1,110 +1,121 @@
-semantic_id: MAT.ALG.POLINOMIOS.ORDENAMIENTO
-resumen_inicial: 'El ordenamiento de un polinomio consiste en disponer sus términos algebraicos en secuencia creciente (ascendente) o decreciente (descendente) según los exponentes de una variable elegida como referencia.'
+semantic_id: MAT.ALG.POLINOMIOS.ORDENAMIENTO_POLINOMIO
+resumen_inicial: 'Ordenar un polinomio consiste en disponer sus términos de modo que los exponentes de una variable guía crezcan (orden ascendente) o decrezcan (orden descendente).'
 explicacion_simple: |
-  Para trabajar con polinomios de forma limpia y ordenada, los organizamos siguiendo una **secuencia según sus exponentes**:
-  - **Orden Decreciente (de mayor a menor)**: Es el estándar más usado en álgebra. Colocas primero el término con la mayor potencia y vas bajando hasta el término independiente.
-    - Ejemplo: $5x^4 - 2x^3 + 7x^2 - x + 9$.
-  - **Orden Creciente (de menor a mayor)**: Colocas primero el número constante o la menor potencia y vas subiendo los exponentes.
-    - Ejemplo: $9 - x + 7x^2 - 2x^3 + 5x^4$.
-  - **¡Regla de oro!** Al mover un término para reordenarlo, **su signo ($+$ o $-$) debe viajar SIEMPRE pegado con él**.
+  - Para ordenar un polinomio elegimos una letra como guía y miramos sus exponentes:
+    - **Orden descendente (decreciente):** Se colocan los términos desde el exponente **más grande al más chico** (es la forma estándar canónica).
+      - Ejemplo: $5x^4 - 3x^3 + 2x^2 + 8x - 1$.
+    - **Orden ascendente (creciente):** Se colocan los términos desde el exponente **más chico al más grande** (empezando por el término independiente).
+      - Ejemplo: $-1 + 8x + 2x^2 - 3x^3 + 5x^4$.
+  - Al mover cada término de lugar, **siempre debemos trasladarlo junto con su propio signo ($+$ o $-$)**.
+
+  ![Ordenamiento de un Polinomio](/static/img/nodos/ordenamiento-de-un-polinomio-ascendente-o-descendente-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Sea $P(x) = \sum_{i=0}^n a_i x^i \in \mathbb{R}[x]$ un polinomio en una variable.
+  Sea $P(x) = \sum_{i=0}^n a_i x^i \in \mathbb{K}[x]$ con $a_n \neq 0$.
+  1. **Forma canónica descendente (estándar):**
+     $$P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0$$
+     Donde la sucesión de exponentes satisface $n > n-1 > \dots > 1 > 0$.
+  2. **Forma canónica ascendente:**
+     $$P(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n$$
+     Donde la sucesión de exponentes satisface $0 < 1 < 2 < \dots < n$.
 
-  1. **Ordenamiento Decreciente Canónico**: Disposición de la suma donde los exponentes satisfacen una relación estricta de orden descendente:
-     $$P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 \quad \text{con } n > n-1 > \dots > 1 > 0$$
-  2. **Ordenamiento Creciente**: Disposición de la suma donde los exponentes satisfacen una relación estricta de orden ascendente:
-     $$P(x) = a_0 + a_1 x + \dots + a_{n-1} x^{n-1} + a_n x^n \quad \text{con } 0 < 1 < \dots < n-1 < n$$
-
-  ### Ordenamiento en Polinomios Multivariables
-  En polinomios con más de una letra como $P(x,y)$, el ordenamiento se especifica **respecto a una variable principal**:
-  - Decreciente respecto a $x$: $x^3 y + x^2 y^4 - x y^7 + y^9$.
-
-  ### Síntesis didáctica
-  El ordenamiento es el paso previo indispensable para ejecutar los algoritmos de suma por columnas, resta, multiplicación y división polinómica sintética.
+  ### Ordenamiento en varias variables
+  En polinomios multivariables $P(x, y)$, se selecciona una variable ordenadora principal (por ejemplo $x$). Los términos se disponen según las potencias de $x$, y en caso de empate en grado relativo, se ordenan respecto a la variable secundaria $y$.
 definiciones_clave: |
-  - **Ordenamiento decreciente**: Disposición de términos algebraicos desde la potencia más alta a la más baja.
-  - **Ordenamiento creciente**: Disposición de términos algebraicos desde la potencia más baja a la más alta.
-  - **Variable de ordenamiento**: Letra seleccionada cuyos exponentes rigen la secuencia de orden del polinomio.
+  - **Orden descendente**: Disposición de mayor a menor exponente (forma canónica para algoritmos de división).
+  - **Orden ascendente**: Disposición de menor a mayor exponente (común en series de potencias y aproximaciones).
+  - **Variable ordenadora**: Letra de referencia elegida para estructurar la jerarquía de los monomios.
 propiedades_relaciones: |
-  - **Invarianza aditiva**: Por la propiedad conmutativa de la suma en $\mathbb{R}$, reordenar los términos de un polinomio no altera su valor numérico ni su grado absoluto.
-  - **Estandarización polinómica**: El orden decreciente facilita identificar al instante el grado del polinomio (primer término) y el término independiente (último término).
+  - **Prerrequisito para la división polinomial**: El algoritmo de división euclídea de polinomios ($D(x) = d(x)q(x) + r(x)$) y la regla de Ruffini exigen que dividendo y divisor estén estrictamente ordenados de forma descendente.
+  - **Invarianza algebraica**: Ordenar un polinomio no altera su valor numérico ni sus propiedades intrínsecas (conmutatividad de la adición).
 ejemplo_guiado:
-  enunciado: 'Dado el polinomio desordenado $P(x) = 6x - 4 + 2x^4 - 5x^2$, ordénalo en forma decreciente respecto a $x$ conservando los signos intactos.'
+  enunciado: 'Dado el polinomio desordenado $P(x) = 7 - 4x^3 + 2x - 5x^4 + x^2$, ordénalo en forma: a) descendente y b) ascendente.'
+  imagen: '/static/img/nodos/ordenamiento-de-un-polinomio-ascendente-o-descendente-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los exponentes de cada término: $2x^4 \to 4$, $-5x^2 \to 2$, $+6x \to 1$, $-4 \to 0$.'
-    - 'Paso 2: Ubicamos en 1.er lugar la potencia mayor con su signo: $+2x^4$ (o $2x^4$).'
-    - 'Paso 3: Ubicamos la siguiente potencia decreciente: $-5x^2$.'
-    - 'Paso 4: Ubicamos el término de primer grado: $+6x$.'
-    - 'Paso 5: Ubicamos al final el término independiente constante: $-4$.'
-    - 'Conclusión: El polinomio ordenado en forma decreciente es **$2x^4 - 5x^2 + 6x - 4$**.'
+    - 'Paso 1: Identificamos cada término con su signo y su exponente: $+7 (x^0)$, $-4x^3 (x^3)$, $+2x (x^1)$, $-5x^4 (x^4)$, $+x^2 (x^2)$.'
+    - 'Paso 2: Para el **orden descendente**, ordenamos los exponentes de mayor a menor ($4, 3, 2, 1, 0$):'
+    - '  - **$P(x) = -5x^4 - 4x^3 + x^2 + 2x + 7$**.'
+    - 'Paso 3: Para el **orden ascendente**, ordenamos los exponentes de menor a mayor ($0, 1, 2, 3, 4$):'
+    - '  - **$P(x) = 7 + 2x + x^2 - 4x^3 - 5x^4$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿En qué consiste el ordenamiento decreciente canónico de un polinomio en una variable?'
+    question: '¿Cuál de las siguientes opciones representa al polinomio $P(x) = 3 - 2x^2 + 5x^4 - x$ ordenado de forma descendente?'
     choices:
-      - {text: 'En escribir los términos ordenados desde la potencia de mayor exponente hasta el término de menor exponente o constante', is_correct: true}
-      - {text: 'En ordenar los coeficientes numéricos de menor a mayor sin importar los exponentes', is_correct: false}
-      - {text: 'En eliminar todos los términos de grado impar', is_correct: false}
-      - {text: 'En escribir primero el término independiente y al final la potencia mayor', is_correct: false}
-    explanation: 'La alternativa correcta es ''En escribir los términos ordenados desde la potencia de mayor exponente hasta el término de menor exponente o constante''. Forma canónica decreciente.'
+      - text: '$5x^4 - 2x^2 - x + 3$'
+        is_correct: true
+      - text: '$3 - x - 2x^2 + 5x^4$'
+        is_correct: false
+      - text: '$5x^4 - 2x^2 + 3 - x$'
+        is_correct: false
+      - text: '$-2x^2 + 5x^4 - x + 3$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$5x^4 - 2x^2 - x + 3$''. Los exponentes decrecen estrictamente: $4 > 2 > 1 > 0$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si reordenamos el polinomio desordenado $3 - 7x^3 + x$ en forma creciente respecto a $x$, ¿cuál es el resultado correcto?'
+    question: 'Al ordenar un polinomio, ¿qué precaución fundamental se debe mantener con cada término?'
     choices:
-      - {text: 'El polinomio ordenado en forma creciente es $3 + x - 7x^3$', is_correct: true}
-      - {text: 'El polinomio ordenado en forma creciente es $-7x^3 + x + 3$', is_correct: false}
-      - {text: 'El polinomio ordenado en forma creciente es $7x^3 - x - 3$', is_correct: false}
-      - {text: 'El polinomio ordenado en forma creciente es $x - 7x^3 + 3$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El polinomio ordenado en forma creciente es $3 + x - 7x^3$''. Va desde el exponente $0$ ($3$), $1$ ($x$) hasta el $3$ ($-7x^3$).'
+      - text: 'Mover cada monomio junto con su respectivo signo positivo o negativo'
+        is_correct: true
+      - text: 'Cambiar los signos negativos por positivos'
+        is_correct: false
+      - text: 'Sumar 1 a todos los exponentes'
+        is_correct: false
+      - text: 'Eliminar el término independiente'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Mover cada monomio junto con su respectivo signo positivo o negativo''. El signo pertenece de manera inseparable al coeficiente.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Elegir la variable de referencia respecto a la cual se va a ordenar el polinomio.'
-  - 'Paso 2: Identificar el exponente que posee dicha variable en cada uno de los términos.'
-  - 'Paso 3: Para orden decreciente, escribir los términos de mayor a menor exponente. Para creciente, de menor a mayor.'
-  - 'Paso 4: Asegurarse de que cada término conserve el signo escrito a su izquierda al ser trasladado.'
+  - 'Paso 1: Elegir la variable ordenadora si el polinomio tiene varias letras.'
+  - 'Paso 2: Listar los exponentes que dicha variable tiene en cada uno de los monomios.'
+  - 'Paso 3: Reordenar los términos de mayor a menor (descendente) o de menor a mayor (ascendente).'
+  - 'Paso 4: Conservar el signo propio de cada monomio en su nueva posición.'
 errores_correccion: |
-  - **Error 1:** Alterar o perder el signo de un término al cambiar su posición (ej: transformar $-5x^2 + 3x$ en $3x + 5x^2$). **Cómo corregirlo:** Cada término **traslada obligatoriamente su propio signo** (queda $3x - 5x^2$).
-  - **Error 2:** Ordenar los términos basándose en los coeficientes numéricos en lugar de los exponentes. **Cómo corregirlo:** El ordenamiento se rige **exclusivamente por los exponentes de las letras**.
+  - **Error 1:** Separar el signo negativo al cambiar la posición de un término (ej. mover $-5x^3$ y escribir $+5x^3$). **Cómo corregirlo:** El signo menos **viaja con su monomio**.
+  - **Error 2:** Mezclar criterios ordenando por una letra en unos términos y por otra letra en otros. **Cómo corregirlo:** Seleccionar **una única variable de referencia principal**.
 ejemplos:
-  - titulo: 'Ordenamiento decreciente'
-    enunciado: '¿Cuál es el polinomio $4x^2 - 9 + x^5 - 2x$ ordenado en forma decreciente?'
+  - titulo: 'Orden descendente multivariable'
+    enunciado: '¿Cómo se ordena el polinomio $x^2y^3 - 3x^4y + 2xy^4 - 5$ en forma descendente respecto a $x$?'
     alternativas:
-      - '$x^5 + 4x^2 - 2x - 9$'
-      - '$-9 - 2x + 4x^2 + x^5$'
-      - '$x^5 - 9 + 4x^2 - 2x$'
-    respuesta: '$x^5 + 4x^2 - 2x - 9$'
+      - '$-3x^4y + x^2y^3 + 2xy^4 - 5$'
+      - '$2xy^4 + x^2y^3 - 3x^4y - 5$'
+      - '$-5 + 2xy^4 + x^2y^3 - 3x^4y$'
+    respuesta: '$-3x^4y + x^2y^3 + 2xy^4 - 5$'
     solucion_pasos:
-      - '1. Secuencia de exponentes: $5, 2, 1, 0$.'
-      - '2. Polinomio decreciente: $x^5 + 4x^2 - 2x - 9$.'
-  - titulo: 'Ordenamiento creciente'
-    enunciado: '¿Cuál es el polinomio $8x^3 - 5 + 3x$ ordenado en forma creciente?'
+      - '1. Exponentes de $x$: $-3x^4y (4)$, $x^2y^3 (2)$, $2xy^4 (1)$, $-5 (0)$.'
+      - '2. Orden decreciente de $x$: $-3x^4y + x^2y^3 + 2xy^4 - 5$.'
+  - titulo: 'Orden ascendente canónico'
+    enunciado: '¿Cuál es la forma ascendente del polinomio $4x^3 - 7 + 2x^2$?'
     alternativas:
-      - '$-5 + 3x + 8x^3$'
-      - '$8x^3 + 3x - 5$'
-      - '$3x - 5 + 8x^3$'
-    respuesta: '$-5 + 3x + 8x^3$'
+      - '$-7 + 2x^2 + 4x^3$'
+      - '$4x^3 + 2x^2 - 7$'
+      - '$7 - 2x^2 - 4x^3$'
+    respuesta: '$-7 + 2x^2 + 4x^3$'
     solucion_pasos:
-      - '1. Secuencia de exponentes: $0, 1, 3$.'
-      - '2. Polinomio creciente: $-5 + 3x + 8x^3$.'
-  - titulo: 'Conservación del valor'
-    enunciado: '¿Mantiene un polinomio exactamente el mismo valor numérico al reordenar sus términos?'
+      - '1. Exponentes: $-7 (0)$, $2x^2 (2)$, $4x^3 (3)$.'
+      - '2. Orden creciente: $-7 + 2x^2 + 4x^3$.'
+  - titulo: 'Invarianza del valor numérico'
+    enunciado: '¿Cambia el valor numérico de un polinomio al ser ordenado de forma descendente?'
+    respuesta: 'No'
+    solucion_pasos:
+      - '1. La adición es conmutativa ($a + b = b + a$).'
+      - '2. El ordenamiento es puramente estético y operacional.'
+  - titulo: 'Necesidad de orden en división'
+    enunciado: '¿Es obligatorio ordenar los polinomios en forma descendente para aplicar la división clásica y la regla de Ruffini?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, por la propiedad conmutativa de la adición real.'
-  - titulo: 'Orden decreciente con término independiente'
-    enunciado: 'En un polinomio ordenado en forma decreciente, ¿el término independiente se ubica al final?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, al ser de exponente cero $x^0$, queda posicionado al final.'
+      - '1. El algoritmo euclídeo compara los términos de mayor grado paso a paso.'
+      - '2. Requiere orden descendente estricto.'
 errores_frecuentes:
-  - 'Reordenar los términos de un polinomio invierte automáticamente los signos positivos y negativos de sus coeficientes.'
-  - 'El ordenamiento de un polinomio se realiza ordenando el valor absoluto de sus coeficientes numéricos.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Un polinomio ordenado en forma creciente cambia su grado absoluto respecto al desordenado.'
-  - 'Los términos independientes no pueden incluirse en la secuencia de ordenamiento por carecer de letras.'
+  - 'Dejar atrás los signos negativos al cambiar de posición los monomios.'
+  - 'Confundir el orden de los coeficientes con el orden de los exponentes de la variable.'
+  - 'Mezclar variables ordenadoras en un polinomio de dos letras sin fijar una jerarquía.'
+  - 'Olvidar colocar el término independiente al final en el orden descendente.'
+  - 'Creer que un polinomio ordenado debe tener obligatoriamente todos los grados intermedios.'
 afirmaciones_verdaderas:
-  - 'El ordenamiento decreciente de un polinomio dispone los términos desde el mayor exponente al menor.'
-  - 'Reordenar los términos de un polinomio no altera su grado absoluto ni su valor numérico por la conmutatividad aditiva.'
-al_terminar_debes_poder: 'Ordenar cualquier polinomio en forma ascendente o descendente según los exponentes de una variable conservando los signos de sus términos.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'Ordenar un polinomio consiste en disponer sus monomios según potencias crecientes o decrecientes de una variable guía.'
+  - 'La disposición descendente es la forma canónica estándar empleada en la división de polinomios y el método de Ruffini.'
+al_terminar_debes_poder: |
+  ![Resumen de Ordenamiento](/static/img/nodos/ordenamiento-de-un-polinomio-ascendente-o-descendente-resumen.svg)
+
+  QUÉ: Ordenar polinomios en una o más variables en forma ascendente o descendente conservando la integridad de signos y coeficientes.
+  CÓMO: Jerarquizando monomios según los exponentes de la variable de referencia ($n > n-1 > \dots > 0$) para aplicar algoritmos algebraicos estándar.

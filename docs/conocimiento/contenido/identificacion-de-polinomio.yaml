@@ -1,111 +1,124 @@
-semantic_id: MAT.ALG.EXPRESIONES.IDENTIFICACION_POLINOMIO
-resumen_inicial: 'La identificación de polinomio consiste en reconocer expresiones algebraicas formadas por la suma finita de monomios con coeficientes reales y exponentes enteros no negativos en sus variables.'
+semantic_id: MAT.ALG.POLINOMIOS.IDENTIFICACION_POLINOMIO
+resumen_inicial: 'Un polinomio es una expresión algebraica entera formada por la suma finita de dos o más monomios no semejantes.'
 explicacion_simple: |
-  Un **polinomio** es la familia general que agrupa a todas estas expresiones:
-  - La palabra "poli" significa "muchos" y "nomio" significa "término".
-  - Incluye a los monomios (1 término), binomios (2 términos), trinomios (3 términos) y expresiones de 4 o más términos (como $x^3 - 4x^2 + 5x - 9$).
-  - **Regla sagrada para que SÍ sea un polinomio**:
-    1. Las variables sólo pueden tener **exponentes enteros positivos o cero** ($0, 1, 2, 3...$).
-    2. **¡Prohibido!** No se permiten variables en el denominador (como $\frac{1}{x}$) ni dentro de raíces (como $\sqrt{x}$).
-  - El **grado del polinomio** es simplemente el exponente más alto que tenga la variable (en $5x^4 - 2x^2 + 1$, el grado es $4$).
+  - Un **polinomio** es una cadena de monomios sumados o restados entre sí.
+  - Por ejemplo: $P(x) = 5x^3 - 4x^2 + 7x - 9$.
+  - **Condiciones para ser polinomio:**
+    1. Está formado por monomios (todos los exponentes de las letras son enteros $\ge 0$).
+    2. No tiene letras dividiendo ni letras dentro de raíces.
+  - **Grado del polinomio:** es el **grado más alto** entre todos sus términos. En $5x^3 - 4x^2 + 7x - 9$, el grado es **$3$** (polinomio de 3° grado).
+
+  ![Identificación de Polinomio](/static/img/nodos/identificacion-de-polinomio-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Un **polinomio en una variable** $x$ sobre el cuerpo $\mathbb{R}$ es una expresión formal de la forma:
+  Sea $\mathbb{K}$ un cuerpo. Un **polinomio en una variable** $P(x) \in \mathbb{K}[x]$ es una combinación lineal formal:
 
-  $$P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 = \sum_{k=0}^n a_k x^k$$
+  $$P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0, \quad a_i \in \mathbb{K}, \; a_n \neq 0$$
 
-  donde $n \in \mathbb{N}_0$ es el grado del polinomio (si $a_n \neq 0$), $a_k \in \mathbb{R}$ son los coeficientes reales y los exponentes $k$ son enteros no negativos.
+  Donde:
+  - $n = \operatorname{gr}(P) \in \mathbb{N}_0$ es el **grado del polinomio**.
+  - $a_n$ es el **coeficiente principal**.
+  - $a_0$ es el **término independiente**.
 
-  ### Dominio y Propiedades Algebraicas
-  1. **Dominio de Definición**: El dominio de cualquier polinomio $P(x)$ es todo el conjunto de los números reales:
-     $$\operatorname{Dom}(P) = \mathbb{R}$$
-  2. **Estructura de Anillo**: El conjunto de polinomios $\mathbb{R}[x]$ con la suma y el producto forma un anillo conmutativo con unidad.
-
-  ### Síntesis didáctica
-  El polinomio es la función matemática continua y suave por excelencia. Modela trayectorias, curvas de costos e interpolaciones numéricas en ciencias e ingeniería.
+  ### Polinomios multivariables
+  En varias variables, $P(x_1, \dots, x_k) = \sum_{j=1}^m M_j$, donde cada $M_j$ es un monomio en $\mathbb{K}[x_1, \dots, x_k]$. El grado absoluto del polinomio es el máximo grado absoluto de sus monomios componentes:
+  $$\operatorname{GA}(P) = \max_{1 \le j \le m} \operatorname{GA}(M_j)$$
 definiciones_clave: |
-  - **Polinomio**: Expresión algebraica compuesta por la suma finita de monomios con exponentes enteros no negativos en sus variables.
-  - **Coeficiente principal ($a_n$)**: Coeficiente numérico del término que posee el mayor grado en el polinomio.
-  - **Término independiente ($a_0$)**: Término numérico de grado cero que no contiene variables.
+  - **Polinomio**: Suma algebraica finita de monomios con coeficientes reales y exponentes en $\mathbb{N}_0$.
+  - **Grado de un polinomio**: Mayor exponente o grado absoluto presente entre sus términos no nulos.
+  - **Coeficiente principal**: Coeficiente numérico del término que posee el grado más alto del polinomio.
 propiedades_relaciones: |
-  - **Grado del polinomio**: El grado de un polinomio es el mayor grado absoluto entre todos sus términos no nulos.
-  - **Polinomio ordenado y completo**: Polinomio escrito con sus potencias en orden decreciente ($x^n, x^{n-1}, \dots, x^0$) conteniendo todos los términos de grado intermedio.
+  - **Estructura de anillo**: El conjunto de polinomios $\mathbb{R}[x]$ forma un anillo conmutativo con unidad bajo adición y multiplicación estándar.
+  - **Grado de operaciones**: $\operatorname{gr}(P + Q) \le \max(\operatorname{gr}(P), \operatorname{gr}(Q))$ y $\operatorname{gr}(P \cdot Q) = \operatorname{gr}(P) + \operatorname{gr}(Q)$.
 ejemplo_guiado:
-  enunciado: 'Dado el polinomio $P(x) = 4 - 2x^5 + 7x^2 - x^3$, ordénalo en forma decreciente, identifica su grado, su coeficiente principal y su término independiente.'
+  enunciado: 'En el polinomio $P(x) = 4x^5 - 7x^3 + 2x^2 - 8$, determina el número de términos, el grado del polinomio, el coeficiente principal y el término independiente.'
+  imagen: '/static/img/nodos/identificacion-de-polinomio-ejemplos.svg'
   pasos:
-    - 'Paso 1: Reordenamos los términos desde la mayor potencia a la menor: $P(x) = -2x^5 - x^3 + 7x^2 + 4$.'
-    - 'Paso 2: El mayor exponente es $5 \implies$ El **grado del polinomio es $5$**.'
-    - 'Paso 3: El coeficiente que acompaña a la mayor potencia $-2x^5$ es **$-2$** (coeficiente principal).'
-    - 'Paso 4: El término constante sin letra es **$4$** (término independiente).'
-    - 'Conclusión: Polinomio ordenado: **$-2x^5 - x^3 + 7x^2 + 4$**, grado **$5$**, coef. principal **$-2$**, término indep. **$4$**.'
+    - 'Paso 1: Identificamos los términos: $4x^5, -7x^3, 2x^2, -8$. Tiene **4 términos**.'
+    - 'Paso 2: Evaluamos el mayor exponente de $x$: es $5$. Por lo tanto, el grado es **$5$ ($5^{\circ}$ grado)**.'
+    - 'Paso 3: El coeficiente del término de mayor grado ($4x^5$) es el coeficiente principal: **$4$**.'
+    - 'Paso 4: El término constante sin variable es el término independiente: **$-8$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es el dominio de definición de cualquier función o expresión polinómica $P(x)$ en el conjunto de los números reales?'
+    question: '¿Cuál es el grado del polinomio $P(x) = 3x^2 - 8x^6 + 5x^4 + 1$?'
     choices:
-      - {text: 'Todo el conjunto de los números reales ($\mathbb{R}$), sin ninguna restricción', is_correct: true}
-      - {text: 'Únicamente los números reales positivos excluyendo el cero', is_correct: false}
-      - {text: 'Únicamente los números enteros impares', is_correct: false}
-      - {text: 'El conjunto vacío', is_correct: false}
-    explanation: 'La alternativa correcta es ''Todo el conjunto de los números reales ($\mathbb{R}$), sin ninguna restricción''. Los polinomios no sufren restricciones de dominio.'
+      - text: '$6$, porque es el mayor exponente de la variable'
+        is_correct: true
+      - text: '$2$, porque es el exponente del primer término'
+        is_correct: false
+      - text: '$12$, porque es la suma de todos los exponentes'
+        is_correct: false
+      - text: '$4$, porque tiene 4 términos'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$6$, porque es el mayor exponente de la variable''. El grado de un polinomio lo determina su término de mayor grado ($-8x^6$).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'En el polinomio $Q(x) = -6x^4 + 3x^2 - 8$, ¿cuál es el coeficiente principal y cuál es el grado del polinomio?'
+    question: '¿Por qué la expresión $3x^2 + \frac{5}{x} - 4$ NO es un polinomio?'
     choices:
-      - {text: 'El coeficiente principal es $-6$ y el grado del polinomio es 4', is_correct: true}
-      - {text: 'El coeficiente principal es 3 y el grado es 2', is_correct: false}
-      - {text: 'El coeficiente principal es $-8$ y el grado es 0', is_correct: false}
-      - {text: 'El coeficiente principal es 4 y el grado es $-6$', is_correct: false}
-    explanation: 'La alternativa correcta es ''El coeficiente principal es $-6$ y el grado del polinomio es 4''. $-6$ acompaña a la potencia mayor $x^4$.'
+      - text: 'Porque contiene el término $\frac{5}{x} = 5x^{-1}$ con exponente negativo, violando la definición de monomio'
+        is_correct: true
+      - text: 'Porque tiene 3 términos'
+        is_correct: false
+      - text: 'Porque el término independiente es negativo'
+        is_correct: false
+      - text: 'Porque el grado es 2'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque contiene el término $\frac{5}{x} = 5x^{-1}$ con exponente negativo, violando la definición de monomio''. Todos los términos de un polinomio deben ser monomios enteros.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Reducir los términos semejantes de la expresión.'
-  - 'Paso 2: Comprobar que todas las variables tengan exponentes enteros no negativos ($0, 1, 2, 3...$) sin estar en denominadores o raíces.'
-  - 'Paso 3: Ordenar los términos en forma decreciente según sus exponentes.'
-  - 'Paso 4: Determinar el grado (mayor exponente), el coeficiente principal y el término independiente.'
+  - 'Paso 1: Verificar que cada término individual sea un monomio entero (exponentes en $\mathbb{N}_0$).'
+  - 'Paso 2: Reducir los términos semejantes si existieran.'
+  - 'Paso 3: Calcular el grado de cada término componente.'
+  - 'Paso 4: Seleccionar el grado máximo como el grado global del polinomio.'
 errores_correccion: |
-  - **Error 1:** Afirmar que $\frac{2}{x^2} + 5$ es un polinomio. **Cómo corregirlo:** Las expresiones con variables en el denominador **NO son polinomios** (poseen exponentes negativos $x^{-2}$).
-  - **Error 2:** Tomar como coeficiente principal al primer número escrito cuando el polinomio está desordenado. **Cómo corregirlo:** El coeficiente principal **es el que acompaña a la mayor potencia del polinomio**, no necesariamente el primero que está escrito.
+  - **Error 1:** Sumar los exponentes de los diferentes términos para hallar el grado del polinomio. **Cómo corregirlo:** El grado del polinomio es el **máximo exponente individual**, no la suma de todos.
+  - **Error 2:** Creer que el grado es siempre el exponente del primer término escrito. **Cómo corregirlo:** Buscar el **término de mayor exponente**, ya que el polinomio puede estar desordenado.
 ejemplos:
-  - titulo: 'Identificación de polinomio válido'
-    enunciado: '¿Es $7x^4 - \frac{1}{2}x^3 + 9$ un polinomio válido sobre los reales?'
+  - titulo: 'Grado de polinomio multivariable'
+    enunciado: '¿Cuál es el grado del polinomio $Q(x, y) = 3x^3y^2 - 5x^2y^4 + 7xy$?'
     alternativas:
-      - 'Sí, es un polinomio de grado 4 con coeficientes reales'
-      - 'No, porque tiene una fracción como coeficiente'
-      - 'No, es una ecuación racional'
-    respuesta: 'Sí, es un polinomio de grado 4 con coeficientes reales'
+      - '$6$, correspondiente al término $-5x^2y^4$ ($2 + 4 = 6$)'
+      - '$5$, correspondiente al término $3x^3y^2$ ($3 + 2 = 5$)'
+      - '$13$, sumando todos los exponentes'
+    respuesta: '$6$, correspondiente al término $-5x^2y^4$ ($2 + 4 = 6$)'
     solucion_pasos:
-      - '1. Los exponentes ($4, 3, 0$) son enteros no negativos.'
-      - '2. El coeficiente fraccionario $-\frac{1}{2}$ es un número real válido.'
-      - '3. Es un polinomio.'
-  - titulo: 'Grado de polinomio incompleto'
-    enunciado: 'En el polinomio $P(x) = 10x^6 - 5$, ¿cuál es su grado?'
+      - '1. Grado de $T_1 = 3 + 2 = 5$.'
+      - '2. Grado de $T_2 = 2 + 4 = 6$.'
+      - '3. Grado de $T_3 = 1 + 1 = 2$.'
+      - '4. El grado del polinomio es $\max(5, 6, 2) = 6$.'
+  - titulo: 'Coeficiente principal desordenado'
+    enunciado: 'En el polinomio $P(x) = 7 - 2x + 9x^4 - x^3$, ¿cuál es el coeficiente principal?'
     alternativas:
-      - 'Grado 6'
-      - 'Grado 10'
-      - 'Grado 0'
-    respuesta: 'Grado 6'
+      - '$9$'
+      - '$7$'
+      - '$-1$'
+    respuesta: '$9$'
     solucion_pasos:
-      - '1. La mayor potencia de $x$ es $x^6$.'
-      - '2. El grado del polinomio es 6.'
-  - titulo: 'Polinomio nulo'
-    enunciado: '¿Tiene el polinomio nulo $P(x) = 0$ todos sus coeficientes iguales a cero?'
+      - '1. El término de mayor grado es $+9x^4$.'
+      - '2. El coeficiente que lo acompaña es $9$.'
+  - titulo: 'Polinomio de una variable'
+    enunciado: '¿Es la función cuadrática $f(x) = ax^2 + bx + c$ un polinomio de segundo grado si $a \neq 0$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, en el polinomio nulo todos sus coeficientes son cero.'
-  - titulo: 'Polinomio constante'
-    enunciado: '¿El número real $12$ es un polinomio constante de grado cero?'
-    respuesta: 'Sí'
+      - '1. Es la suma de monomios con exponentes $2, 1, 0 \in \mathbb{N}_0$.'
+      - '2. Su grado principal es 2.'
+  - titulo: 'Expresión con radical en la variable'
+    enunciado: '¿Es la expresión $2x^3 - 4\sqrt{x} + 1$ un polinomio?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, $12 = 12x^0$ es un polinomio constante.'
+      - '1. $\sqrt{x} = x^{1/2}$ tiene exponente fraccionario.'
+      - '2. No es un monomio entero, por lo que la expresión no es un polinomio.'
 errores_frecuentes:
-  - 'Una expresión con variables en el denominador se clasifica como un polinomio continuo.'
-  - 'El coeficiente principal es siempre el primer número escrito a la izquierda aunque el polinomio esté desordenado.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'El grado de un polinomio se obtiene sumando los coeficientes numéricos de todos sus términos.'
-  - 'Un polinomio con coeficientes fraccionarios deja de pertenecer al conjunto de polinomios reales.'
+  - 'Sumar los grados de todos los términos de un polinomio en lugar de tomar el mayor de ellos.'
+  - 'Asumir que el coeficiente principal es siempre el primer número que aparece en la expresión no ordenada.'
+  - 'Clasificar como polinomios a expresiones que contienen variables en denominadores o bajo radicales.'
+  - 'Olvidar reducir términos semejantes antes de determinar el número de términos del polinomio.'
+  - 'Ignorar el signo negativo al identificar coeficientes o el término independiente.'
 afirmaciones_verdaderas:
-  - 'Un polinomio es una expresión formada por la suma finita de monomios con exponentes enteros no negativos.'
-  - 'El coeficiente principal es el coeficiente numérico que multiplica a la variable de mayor exponente en el polinomio.'
-al_terminar_debes_poder: 'Identificar polinomios verificando exponentes enteros no negativos en sus variables y determinar su grado, coeficiente principal y término independiente.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Nomenclatura.'
-estado: publicado
+  - 'Un polinomio es una combinación lineal finita de monomios enteros con coeficientes reales.'
+  - 'El grado de un polinomio es el mayor grado absoluto entre todos sus términos componentes.'
+al_terminar_debes_poder: |
+  ![Resumen de Polinomio](/static/img/nodos/identificacion-de-polinomio-resumen.svg)
+
+  QUÉ: Identificar, caracterizar y determinar el grado, coeficiente principal y término independiente de polinomios en una o más variables.
+  CÓMO: Verificando la estructura de suma de monomios ($P(x) = \sum a_i x^i$) y hallando el grado máximo $\operatorname{gr}(P) = \max(\operatorname{gr} T_j)$.

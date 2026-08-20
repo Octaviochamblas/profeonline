@@ -1,111 +1,162 @@
 semantic_id: MAT.ALG.CUADRADO_BINOMIO.OMISION_DOBLE_PRODUCTO
-resumen_inicial: 'La detección de error por omisión del doble producto consiste en auditar la elevación al cuadrado de binomios identificando la falsa distribución del exponente que omite el término central $2ab$.'
-explicacion_simple: |
-  Uno de los errores más extendidos en toda la matemática escolar es la **omisión del doble producto**:
-  - **En qué consiste el error**: El estudiante intenta "distribuir" el exponente 2 sobre la suma o resta, escribiendo **$(a + b)^2 = a^2 + b^2$** o **$(a - b)^2 = a^2 - b^2$**.
-  - **Por qué es un error grave**:
-    - Las potencias NO son distributivas respecto a la suma ni a la resta.
-    - $(a + b)^2$ es una multiplicación: $(a + b)(a + b) = a^2 + ab + ba + b^2 = \mathbf{a^2 + 2ab + b^2}$.
-  - **Demostración numérica rápida de la falla**:
-    - Si $a = 3$ y $b = 4$:
-      - Lado izquierdo: $(3 + 4)^2 = 7^2 = \mathbf{49}$.
-      - Lado derecho sin doble producto: $3^2 + 4^2 = 9 + 16 = \mathbf{25}$.
-      - ¡$49 \neq 25$! Falta el doble producto $2 \cdot 3 \cdot 4 = 24$, ya que $25 + 24 = 49$.
-explicacion_formal: |
-  ### Definición formal
-  Sea el anillo de polinomios $\mathbb{R}[x, y]$. Se define la **falla de omisión del doble producto** como el pseudo-homomorfismo ilícito $\mathcal{H}_{\text{falso}}: \mathbb{R}[x,y] \to \mathbb{R}[x,y]$ que asume falsamente la distributividad de la potencia sobre la adición binaria:
+resumen_inicial: La detección de error por omisión del doble producto consiste en auditar la elevación al cuadrado de binomios
+  identificando la falsa distribución del exponente que omite el término central $2ab$.
+explicacion_simple: "Uno de los errores más extendidos en toda la matemática escolar es la **omisión del doble producto**:\n\
+  - **En qué consiste el error**: El estudiante intenta \"distribuir\" el exponente 2 sobre la suma o resta, escribiendo **$(a\
+  \ + b)^2 = a^2 + b^2$** o **$(a - b)^2 = a^2 - b^2$**.\n- **Por qué es un error grave**:\n  - Las potencias NO son distributivas\
+  \ respecto a la suma ni a la resta.\n  - $(a + b)^2$ es una multiplicación: $(a + b)(a + b) = a^2 + ab + ba + b^2 = \\mathbf{a^2\
+  \ + 2ab + b^2}$.\n- **Demostración numérica rápida de la falla**:\n  - Si $a = 3$ y $b = 4$:\n    - Lado izquierdo: $(3\
+  \ + 4)^2 = 7^2 = \\mathbf{49}$.\n    - Lado derecho sin doble producto: $3^2 + 4^2 = 9 + 16 = \\mathbf{25}$.\n    - ¡$49\
+  \ \\neq 25$! Falta el doble producto $2 \\cdot 3 \\cdot 4 = 24$, ya que $25 + 24 = 49$.\n\n![Detección de error por omisión\
+  \ del doble producto](/static/img/nodos/deteccion-de-error-por-omision-del-doble-producto-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
+  Sea el anillo de polinomios $\mathbb{R}[x, y]$. Se define la **falla de omisión del doble producto** como el pseudo-homomorfismo
+  ilícito $\mathcal{H}_{\text{falso}}: \mathbb{R}[x,y] \to \mathbb{R}[x,y]$ que asume falsamente la distributividad de la
+  potencia sobre la adición binaria:
+
 
   $$\mathcal{H}_{\text{falso}}(a + b) = a^2 + b^2 \quad \neq \quad (a + b)^2$$
 
+
   ### Cuantificación de la Discrepancia Numérica
-  La diferencia cuantitativa de auditoría entre la verdadera expansión cuadrática y la pseudo-distribución equivale exactamente al valor del término cruzado suprimido:
+
+  La diferencia cuantitativa de auditoría entre la verdadera expansión cuadrática y la pseudo-distribución equivale exactamente
+  al valor del término cruzado suprimido:
+
 
   $$\Delta = (a + b)^2 - \mathcal{H}_{\text{falso}}(a + b) = (a^2 + 2ab + b^2) - (a^2 + b^2) = 2ab \neq 0$$
 
+
   Para todo $a, b \neq 0$, la discrepancia $\Delta = 2ab$ evidencia la invalidez formal del pseudo-homomorfismo.
 
+
   ### Síntesis didáctica
-  La comprobación numérica por sustitución de valores constantes es el recurso de auditoría más efectivo para demostrar la falsedad de la distribución del exponente cuadrático.
-definiciones_clave: |
-  - **Omisión del doble producto**: Error algebraico fundamental consistente en expandir $(a+b)^2$ como $a^2+b^2$ suprimiendo el término central $2ab$.
-  - **Pseudo-distributividad del exponente**: Falacia conceptual que pretende aplicar la propiedad distributiva de la potencia sobre operaciones de suma o resta.
-  - **Discrepancia de auditoría ($\Delta = 2ab$)**: Diferencia numérica cuantitativa producida por la ausencia del término central en la expansión.
-propiedades_relaciones: |
-  - **Condición de nulidad de discrepancia**: $(a+b)^2 = a^2 + b^2$ se cumple si y sólo si $ab = 0$ (es decir, cuando al menos uno de los términos es nulo).
-  - **Diferencia entre suma y producto**: $(a \cdot b)^2 = a^2 \cdot b^2$ es una propiedad válida para la multiplicación, pero $(a + b)^2 \neq a^2 + b^2$ es falsa para la adición.
+
+  La comprobación numérica por sustitución de valores constantes es el recurso de auditoría más efectivo para demostrar la
+  falsedad de la distribución del exponente cuadrático.
+
+  '
+definiciones_clave: '- **Omisión del doble producto**: Error algebraico fundamental consistente en expandir $(a+b)^2$ como
+  $a^2+b^2$ suprimiendo el término central $2ab$.
+
+  - **Pseudo-distributividad del exponente**: Falacia conceptual que pretende aplicar la propiedad distributiva de la potencia
+  sobre operaciones de suma o resta.
+
+  - **Discrepancia de auditoría ($\Delta = 2ab$)**: Diferencia numérica cuantitativa producida por la ausencia del término
+  central en la expansión.
+
+  '
+propiedades_relaciones: '- **Condición de nulidad de discrepancia**: $(a+b)^2 = a^2 + b^2$ se cumple si y sólo si $ab = 0$
+  (es decir, cuando al menos uno de los términos es nulo).
+
+  - **Diferencia entre suma y producto**: $(a \cdot b)^2 = a^2 \cdot b^2$ es una propiedad válida para la multiplicación,
+  pero $(a + b)^2 \neq a^2 + b^2$ es falsa para la adición.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita la respuesta dada por un estudiante e identifica la falla cometida:
-  Problema: Desarrollar $(2x + 3)^2$.
-  Respuesta del estudiante: $4x^2 + 9$.'
+  enunciado: 'Audita la respuesta dada por un estudiante e identifica la falla cometida: Problema: Desarrollar $(2x + 3)^2$.
+    Respuesta del estudiante: $4x^2 + 9$.'
   pasos:
-    - 'Paso 1: Analizamos el desarrollo del estudiante: Elevó el primer término al cuadrado $(2x)^2 = 4x^2$ y el segundo $3^2 = 9$.'
-    - 'Paso 2: Observamos la estructura resultante: Escribió un binomio de 2 términos ($4x^2 + 9$).'
-    - 'Paso 3: Diagnosticamos la falla: El estudiante incurrió en la **omisión del doble producto** al asumir la distributividad del exponente sobre la suma.'
-    - 'Paso 4: Calculamos el término faltante $2ab$: $2 \cdot (2x) \cdot (3) = \mathbf{+12x}$.'
-    - 'Paso 5: Escribimos la expansión correcta integrando el término central suprimido: $4x^2 + 12x + 9$.'
-    - 'Conclusión: La respuesta del estudiante era incorrecta por omitir el doble producto. El resultado correcto es **$4x^2 + 12x + 9$**.'
+  - 'Paso 1: Analizamos el desarrollo del estudiante: Elevó el primer término al cuadrado $(2x)^2 = 4x^2$ y el segundo $3^2
+    = 9$.'
+  - 'Paso 2: Observamos la estructura resultante: Escribió un binomio de 2 términos ($4x^2 + 9$).'
+  - 'Paso 3: Diagnosticamos la falla: El estudiante incurrió en la **omisión del doble producto** al asumir la distributividad
+    del exponente sobre la suma.'
+  - 'Paso 4: Calculamos el término faltante $2ab$: $2 \cdot (2x) \cdot (3) = \mathbf{+12x}$.'
+  - 'Paso 5: Escribimos la expansión correcta integrando el término central suprimido: $4x^2 + 12x + 9$.'
+  - 'Conclusión: La respuesta del estudiante era incorrecta por omitir el doble producto. El resultado correcto es **$4x^2
+    + 12x + 9$**.'
+  imagen: /static/img/nodos/deteccion-de-error-por-omision-del-doble-producto-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué la igualdad $(x + 3)^2 = x^2 + 9$ representa un error algebraico?'
-    choices:
-      - {text: 'Porque el exponente cuadrático no es distributivo sobre la suma, omitiendo el término central del doble producto $2 \cdot x \cdot 3 = 6x$', is_correct: true}
-      - {text: 'Porque $3^2$ es igual a 6 y no a 9', is_correct: false}
-      - {text: 'Porque la variable $x$ debe eliminarse al elevar al cuadrado', is_correct: false}
-      - {text: 'Porque el resultado debió llevar un signo negativo', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque el exponente cuadrático no es distributivo sobre la suma, omitiendo el término central del doble producto $2 \cdot x \cdot 3 = 6x$''. Omisión del término central del doble producto.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al evaluar en $x=1$, ¿qué discrepancia demuestra que $(x + 2)^2 \neq x^2 + 4$?'
-    choices:
-      - {text: 'Para $x=1$, el lado izquierdo vale $(1+2)^2 = 9$ mientras que el lado derecho vale $1^2 + 4 = 5$, evidenciando una discrepancia de $9 - 5 = 4$ correspondiente al doble producto $2(1)(2) = 4$', is_correct: true}
-      - {text: 'Ambos lados valen 5', is_correct: false}
-      - {text: 'El lado izquierdo vale 6 y el derecho vale 5', is_correct: false}
-      - {text: 'Para $x=1$ la igualdad si se cumple', is_correct: false}
-    explanation: 'La alternativa correcta es ''Para $x=1$, el lado izquierdo vale $(1+2)^2 = 9$ mientras que el lado derecho vale $1^2 + 4 = 5$, evidenciando una discrepancia de $9 - 5 = 4$ correspondiente al doble producto $2(1)(2) = 4$''. Discrepancia cuantitativa por sustitución.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué la igualdad $(x + 3)^2 = x^2 + 9$ representa un error algebraico?
+  choices:
+  - text: Porque el exponente cuadrático no es distributivo sobre la suma, omitiendo el término central del doble producto
+      $2 \cdot x \cdot 3 = 6x$
+    is_correct: true
+  - text: Porque $3^2$ es igual a 6 y no a 9
+    is_correct: false
+  - text: Porque la variable $x$ debe eliminarse al elevar al cuadrado
+    is_correct: false
+  - text: Porque el resultado debió llevar un signo negativo
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque el exponente cuadrático no es distributivo sobre la suma, omitiendo el término
+    central del doble producto $2 \cdot x \cdot 3 = 6x$'. Omisión del término central del doble producto.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al evaluar en $x=1$, ¿qué discrepancia demuestra que $(x + 2)^2 \neq x^2 + 4$?
+  choices:
+  - text: Para $x=1$, el lado izquierdo vale $(1+2)^2 = 9$ mientras que el lado derecho vale $1^2 + 4 = 5$, evidenciando una
+      discrepancia de $9 - 5 = 4$ correspondiente al doble producto $2(1)(2) = 4$
+    is_correct: true
+  - text: Ambos lados valen 5
+    is_correct: false
+  - text: El lado izquierdo vale 6 y el derecho vale 5
+    is_correct: false
+  - text: Para $x=1$ la igualdad si se cumple
+    is_correct: false
+  explanation: La alternativa correcta es 'Para $x=1$, el lado izquierdo vale $(1+2)^2 = 9$ mientras que el lado derecho vale
+    $1^2 + 4 = 5$, evidenciando una discrepancia de $9 - 5 = 4$ correspondiente al doble producto $2(1)(2) = 4$'. Discrepancia
+    cuantitativa por sustitución.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Examinar la expresión expandida resultante y contar la cantidad de términos.'
-  - 'Paso 2: Verificar si la respuesta consta únicamente de 2 términos ($a^2 + b^2$) en lugar del trinomio de 3 términos.'
-  - 'Paso 3: Calcular la discrepancia del doble producto faltante: $2 \cdot a \cdot b$.'
-  - 'Paso 4: Corregir el desarrollo incorporando el doble producto central en el trinomio cuadrado perfecto.'
-errores_correccion: |
-  - **Error 1:** Afirmar que las potencias son distributivas sobre la suma o resta (escribir $(a+b)^n = a^n + b^n$). **Cómo corregirlo:** La potencia sobre la suma **EXIGE LA EXPANSION POLINÓMICA COMPLETA CON TÉRMINOS CRUZADOS**.
-  - **Error 2:** Intercambiar la distributividad de la potencia sobre el producto ($(ab)^2 = a^2 b^2$) con la adición. **Cómo corregirlo:** La potencia **SÓLO SE DISTRIBUYE EN MULTIPLICACIÓN Y DIVISIÓN, NO EN SUMA Y RESTA**.
+- 'Paso 1: Examinar la expresión expandida resultante y contar la cantidad de términos.'
+- 'Paso 2: Verificar si la respuesta consta únicamente de 2 términos ($a^2 + b^2$) en lugar del trinomio de 3 términos.'
+- 'Paso 3: Calcular la discrepancia del doble producto faltante: $2 \cdot a \cdot b$.'
+- 'Paso 4: Corregir el desarrollo incorporando el doble producto central en el trinomio cuadrado perfecto.'
+errores_correccion: '- **Error 1:** Afirmar que las potencias son distributivas sobre la suma o resta (escribir $(a+b)^n =
+  a^n + b^n$). **Cómo corregirlo:** La potencia sobre la suma **EXIGE LA EXPANSION POLINÓMICA COMPLETA CON TÉRMINOS CRUZADOS**.
+
+  - **Error 2:** Intercambiar la distributividad de la potencia sobre el producto ($(ab)^2 = a^2 b^2$) con la adición. **Cómo
+  corregirlo:** La potencia **SÓLO SE DISTRIBUYE EN MULTIPLICACIÓN Y DIVISIÓN, NO EN SUMA Y RESTA**.
+
+  '
 ejemplos:
-  - titulo: 'Detección en binomio suma simple'
-    enunciado: '¿Es erróneo afirnar que $(x + 4)^2 = x^2 + 16$?'
-    alternativas:
-      - 'Sí, falta el término medio $+8x$'
-      - 'No, es correcto'
-      - 'El error está en el 16'
-    respuesta: 'Sí, falta el término medio $+8x$'
-    solucion_pasos:
-      - '1. $(x+4)^2 = x^2 + 8x + 16$.'
-      - '2. La ausencia de $+8x$ es un error por omisión del doble producto.'
-  - titulo: 'Comprobación numérica con x=2'
-    enunciado: 'Para $x=2$, ¿demuestra $(2+3)^2 = 25 \neq 13$ que $(x+3)^2 = x^2 + 9$ es falso?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $25 \neq 13$ demuestra la falsedad.'
-  - titulo: 'Diferenciación con producto'
-    enunciado: 'Mientras $(2x)^2 = 4x^2$ es una distributividad válida en producto, ¿es $(2+x)^2 = 4+x^2$ una omisión errónea del doble producto?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, la suma exige el término central $+4x$.'
-  - titulo: 'Término medio suprimido'
-    enunciado: 'En la respuesta $(m - 5)^2 = m^2 + 25$, ¿corresponde la falla a la supresión del término $-10m$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, omitió $-2 \cdot m \cdot 5 = -10m$.'
+- titulo: Detección en binomio suma simple
+  enunciado: ¿Es erróneo afirnar que $(x + 4)^2 = x^2 + 16$?
+  alternativas:
+  - Sí, falta el término medio $+8x$
+  - No, es correcto
+  - El error está en el 16
+  respuesta: Sí, falta el término medio $+8x$
+  solucion_pasos:
+  - 1. $(x+4)^2 = x^2 + 8x + 16$.
+  - 2. La ausencia de $+8x$ es un error por omisión del doble producto.
+- titulo: Comprobación numérica con x=2
+  enunciado: Para $x=2$, ¿demuestra $(2+3)^2 = 25 \neq 13$ que $(x+3)^2 = x^2 + 9$ es falso?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $25 \neq 13$ demuestra la falsedad.
+- titulo: Diferenciación con producto
+  enunciado: Mientras $(2x)^2 = 4x^2$ es una distributividad válida en producto, ¿es $(2+x)^2 = 4+x^2$ una omisión errónea
+    del doble producto?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, la suma exige el término central $+4x$.
+- titulo: Término medio suprimido
+  enunciado: En la respuesta $(m - 5)^2 = m^2 + 25$, ¿corresponde la falla a la supresión del término $-10m$?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, omitió $-2 \cdot m \cdot 5 = -10m$.
 errores_frecuentes:
-  - 'Expandir el cuadrado de un binomio distribuyendo el exponente sobre la suma o la resta.'
-  - 'Declarar que la expresión (a+b)^2 es equivalente a a^2 + b^2.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Intercambiar la propiedad distributiva de la potencia en multiplicaciones con la adición de términos.'
-  - 'La verificación por valorización numérica no es realizada al revisar expansiones de productos notables.'
+- Expandir el cuadrado de un binomio distribuyendo el exponente sobre la suma o la resta.
+- Declarar que la expresión (a+b)^2 es equivalente a a^2 + b^2.
+- Intercambiar la propiedad distributiva de la potencia en multiplicaciones con la adición de términos.
+- La verificación por valorización numérica no es realizada al revisar expansiones de productos notables.
+- Creer que la verificación con 0 valida una fórmula que omite el doble producto.
 afirmaciones_verdaderas:
-  - 'El exponente cuadrático no es distributivo sobre la suma ni sobre la resta.'
-  - 'La omisión del doble producto en la expansión de $(a+b)^2$ genera una discrepancia cuantitativa de $2ab$.'
-al_terminar_debes_poder: 'Detectar y corregir errores por omisión del doble producto en la expansión de cuadrados de binomio.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- El exponente cuadrático no es distributivo sobre la suma ni sobre la resta.
+- La omisión del doble producto en la expansión de $(a+b)^2$ genera una discrepancia cuantitativa de $2ab$.
+al_terminar_debes_poder: '![Resumen visual](/static/img/nodos/deteccion-de-error-por-omision-del-doble-producto-resumen.svg)
+
+
+  QUÉ: Detectar, diagnosticar y corregir errores por omisión del término central doble producto en el desarrollo de binomios
+  al cuadrado.
+
+  CÓMO: Auditar que el desarrollo contenga los 3 términos del trinomio cuadrado perfecto o evaluar por sustitución numérica
+  demostrando la discrepancia $\Delta = 2ab$.
+
+  '
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

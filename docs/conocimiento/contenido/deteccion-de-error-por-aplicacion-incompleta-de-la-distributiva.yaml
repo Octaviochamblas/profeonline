@@ -1,108 +1,127 @@
 semantic_id: MAT.ALG.MULT_POLINOMIOS.DISTRIBUTIVA_INCOMPLETA_ERROR
-resumen_inicial: 'La detección de error por aplicación incompleta de la distributiva consiste en auditar el producto de polinomios identificando la omisión de multiplicar los términos secundarios del primer polinomio por los del segundo.'
-explicacion_simple: |
-  En la multiplicación de dos polinomios $(A + B) \cdot (C + D)$, un error conceptual común es la **aplicación incompleta de la distributiva**:
-  - **En qué consiste el error**: Multiplicar únicamente los "primeros con los primeros" y los "últimos con los últimos", **olvidando las multiplicaciones cruzadas (extremos y medios)**.
-  - **Ejemplo del error**:
-    - Se pide multiplicar: $(x + 3) \cdot (x + 4)$.
-    - Paso ERÓNEO: $x \cdot x + 3 \cdot 4 = x^2 + 12$ (¡FALTA MULTIPLICAR $x \cdot 4$ y $3 \cdot x$!).
-    - Paso CORRECTO: **$x \cdot x + x \cdot 4 + 3 \cdot x + 3 \cdot 4 = x^2 + 4x + 3x + 12 = \mathbf{x^2 + 7x + 12}$**.
-  - **Regla de auditoría**: Si multiplicas un polinomio de $m$ términos por uno de $n$ términos, **DEBEN APARECER $m \cdot n$ PRODUCTOS PARCIALES ANTES DE REDUCIR**.
-explicacion_formal: |
-  ### Definición formal
+resumen_inicial: La detección de error por aplicación incompleta de la distributiva consiste en auditar el producto de polinomios identificando la omisión de multiplicar los términos secundarios del primer polinomio por los del segundo.
+explicacion_simple: "En la multiplicación de dos polinomios $(A + B) \\cdot (C + D)$, un error conceptual común es la **aplicación incompleta de la distributiva**:\n- **En qué consiste el error**: Multiplicar únicamente los \"primeros con los primeros\" y los \"últimos con los últimos\", **olvidando las multiplicaciones cruzadas (extremos y medios)**.\n- **Ejemplo del error**:\n  - Se pide multiplicar: $(x + 3) \\cdot (x + 4)$.\n  - Paso ERÓNEO: $x \\cdot x + 3 \\cdot 4 = x^2 + 12$ (¡FALTA MULTIPLICAR $x \\cdot 4$ y $3 \\cdot x$!).\n  - Paso CORRECTO: **$x \\cdot x + x \\cdot 4 + 3 \\cdot x + 3 \\cdot 4 = x^2 + 4x + 3x + 12 = \\mathbf{x^2 + 7x + 12}$**.\n- **Regla de auditoría**: Si multiplicas un polinomio de $m$ términos por uno de $n$ términos, **DEBEN APARECER $m \\cdot n$ PRODUCTOS PARCIALES ANTES DE REDUCIR**.\n\n![Error por Aplicación Incompleta de la Distributiva](/static/img/nodos/deteccion-de-error-por-aplicacion-incompleta-de-la-distributiva-intro.svg)\n"
+explicacion_formal: '### Definición formal
+
   Sea la multiplicación $A(x) \cdot B(x)$ con $A(x) = \sum_{i=1}^m a_i x^{\alpha_i}$ y $B(x) = \sum_{j=1}^n b_j x^{\beta_j}$ ($m, n \ge 2$). Se define la **falla de distributividad cartesiana incompleta** como la transformación defectuosa $\mathcal{D}_{\text{diag}}$ que restringe los productos parciales a una diagonal parcial de índices $\mathcal{K} \subset \{1, \dots, m\} \times \{1, \dots, n\}$ con $|\mathcal{K}| < m \cdot n$:
+
 
   $$\mathcal{D}_{\text{diag}}(A \cdot B) = \sum_{(i,j) \in \mathcal{K}} (a_i b_j) x^{\alpha_i + \beta_j} \quad \neq \quad A(x) \cdot B(x)$$
 
+
   ### Discrepancia por Omisión de Términos Cruzados
+
   La diferencia cuantitativa de auditoría generada al omitir el complemento de productos parciales $\mathcal{K}^c$ es:
+
 
   $$\Delta = (A \cdot B)_{\text{correcto}} - \mathcal{D}_{\text{diag}}(A \cdot B) = \sum_{(i,j) \notin \mathcal{K}} (a_i b_j) x^{\alpha_i + \beta_j} \neq 0$$
 
+
   ### Síntesis didáctica
+
   Auditar que el número inicial de sumandos sea exactamente $m \cdot n$ es el control formal definitivo para descartar aplicaciones incompletas de la distributiva.
-definiciones_clave: |
-  - **Aplicación incompleta de la distributiva**: Error de expansión cartesiana donde se omiten subproductos entre los sumandos de ambos polinomios.
+
+  '
+definiciones_clave: '- **Aplicación incompleta de la distributiva**: Error de expansión cartesiana donde se omiten subproductos entre los sumandos de ambos polinomios.
+
   - **Omisión de términos cruzados**: Falla específica de no multiplicar los términos extremos y medios en el producto de binomios.
+
   - **Control de cardinalidad cartesiana ($m \cdot n$)**: Verificación auditada del número de sumandos generados en la fase inicial de desarrollo.
-propiedades_relaciones: |
-  - **Diferencia con productos notables**: En la suma por su diferencia $(x-a)(x+a) = x^2 - a^2$, los términos cruzados se anulan aditivamente $+ax - ax = 0$, pero no fueron omitidos en el proceso.
+
+  '
+propiedades_relaciones: '- **Diferencia con productos notables**: En la suma por su diferencia $(x-a)(x+a) = x^2 - a^2$, los términos cruzados se anulan aditivamente $+ax - ax = 0$, pero no fueron omitidos en el proceso.
+
   - **Prueba por valorización constante**: Evaluar en $x=1$ confirma inmediatamente la discrepancia numérica de la distribución incompleta.
+
+  '
 ejemplo_guiado:
-  enunciado: 'Audita el siguiente desarrollo e identifica la falla cometida:
-  Problema: Multiplicar $(2x - 3) \cdot (x^2 + 4x - 1)$.
-  Paso escrito por el estudiante: $2x \cdot x^2 - 3 \cdot (-1) = 2x^3 + 3$.'
+  enunciado: 'Audita el siguiente desarrollo e identifica la falla cometida: Problema: Multiplicar $(2x - 3) \cdot (x^2 + 4x - 1)$. Paso escrito por el estudiante: $2x \cdot x^2 - 3 \cdot (-1) = 2x^3 + 3$.'
   pasos:
-    - 'Paso 1: Contamos los términos de los factores: $m = 2$ y $n = 3 \implies$ Deben generarse $2 \cdot 3 = 6$ productos parciales.'
-    - 'Paso 2: Observamos la respuesta del estudiante: Sólo escribió 2 productos parciales ($2x^3$ y $+3$).'
-    - 'Paso 3: Diagnosticamos la falla: Se cometió una **aplicación incompleta de la distributiva**, omitiendo multiplicar $2x$ por $(+4x - 1)$ y $-3$ por $(x^2 + 4x)$.'
-    - 'Paso 4: Formulamos el desarrollo correcto generando los 6 productos parciales:
-       - Con $2x$: $2x^3 + 8x^2 - 2x$.
-       - Con $-3$: $-3x^2 - 12x + 3$.'
-    - 'Paso 5: Reducimos los semejantes: $2x^3 + (8x^2 - 3x^2) + (-2x - 12x) + 3 = \mathbf{2x^3 + 5x^2 - 14x + 3}$.'
-    - 'Conclusión: El desarrollo del estudiante era erróneo por distribución incompleta. El resultado correcto es **$2x^3 + 5x^2 - 14x + 3$**.'
+  - 'Paso 1: Contamos los términos de los factores: $m = 2$ y $n = 3 \implies$ Deben generarse $2 \cdot 3 = 6$ productos parciales.'
+  - 'Paso 2: Observamos la respuesta del estudiante: Sólo escribió 2 productos parciales ($2x^3$ y $+3$).'
+  - 'Paso 3: Diagnosticamos la falla: Se cometió una **aplicación incompleta de la distributiva**, omitiendo multiplicar $2x$ por $(+4x - 1)$ y $-3$ por $(x^2 + 4x)$.'
+  - 'Paso 4: Formulamos el desarrollo correcto generando los 6 productos parciales: - Con $2x$: $2x^3 + 8x^2 - 2x$. - Con $-3$: $-3x^2 - 12x + 3$.'
+  - 'Paso 5: Reducimos los semejantes: $2x^3 + (8x^2 - 3x^2) + (-2x - 12x) + 3 = \mathbf{2x^3 + 5x^2 - 14x + 3}$.'
+  - 'Conclusión: El desarrollo del estudiante era erróneo por distribución incompleta. El resultado correcto es **$2x^3 + 5x^2 - 14x + 3$**.'
+  imagen: /static/img/nodos/deteccion-de-error-por-aplicacion-incompleta-de-la-distributiva-ejemplos.svg
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué afirmar que $(x + 5)(x + 2) = x^2 + 10$ representa una falla por aplicación incompleta de la propiedad distributiva?'
-    choices:
-      - {text: 'Porque se omitieron las multiplicaciones cruzadas de los términos medios ($2x$ y $5x$), cuya suma da el término lineal $+7x$', is_correct: true}
-      - {text: 'Porque $5 \cdot 2$ no es 10', is_correct: false}
-      - {text: 'Porque el grado resultante debió ser 3', is_correct: false}
-      - {text: 'Porque los signos debieron ser negativos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque se omitieron las multiplicaciones cruzadas de los términos medios ($2x$ y $5x$), cuya suma da el término lineal $+7x$''. Omisión de términos cruzados.'
-    reinforcement_section: 'Explicación formal'
-  - placement: after_ejemplo_guiado
-    question: 'Al resolver $(a - 4)(a - 2)$, un estudiante escribe $a^2 + 8$. ¿Qué términos faltan en su respuesta?'
-    choices:
-      - {text: 'Falta el término lineal $-6a$, resultante de sumar las multiplicaciones cruzadas $-2a - 4a = -6a$', is_correct: true}
-      - {text: 'Falta el término $a^3$', is_correct: false}
-      - {text: 'No falta ningún término, es correcto', is_correct: false}
-      - {text: 'Falta la constante $+16$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Falta el término lineal $-6a$, resultante de sumar las multiplicaciones cruzadas $-2a - 4a = -6a$''. Término lineal $-6a$ omitido.'
-    reinforcement_section: 'Ejemplo guiado'
+- placement: after_explicacion_formal
+  question: ¿Por qué afirmar que $(x + 5)(x + 2) = x^2 + 10$ representa una falla por aplicación incompleta de la propiedad distributiva?
+  choices:
+  - text: Porque se omitieron las multiplicaciones cruzadas de los términos medios ($2x$ y $5x$), cuya suma da el término lineal $+7x$
+    is_correct: true
+  - text: Porque $5 \cdot 2$ no es 10
+    is_correct: false
+  - text: Porque el grado resultante debió ser 3
+    is_correct: false
+  - text: Porque los signos debieron ser negativos
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque se omitieron las multiplicaciones cruzadas de los términos medios ($2x$ y $5x$), cuya suma da el término lineal $+7x$'. Omisión de términos cruzados.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al resolver $(a - 4)(a - 2)$, un estudiante escribe $a^2 + 8$. ¿Qué términos faltan en su respuesta?
+  choices:
+  - text: Falta el término lineal $-6a$, resultante de sumar las multiplicaciones cruzadas $-2a - 4a = -6a$
+    is_correct: true
+  - text: Falta el término $a^3$
+    is_correct: false
+  - text: No falta ningún término, es correcto
+    is_correct: false
+  - text: Falta la constante $+16$
+    is_correct: false
+  explanation: La alternativa correcta es 'Falta el término lineal $-6a$, resultante de sumar las multiplicaciones cruzadas $-2a - 4a = -6a$'. Término lineal $-6a$ omitido.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Contar los sumandos de cada polinomio y verificar que se generen $m \cdot n$ productos parciales.'
-  - 'Paso 2: Comprobar que cada término del primer polinomio haya sido multiplicado por todos y cada uno de los términos del segundo.'
-  - 'Paso 3: Señalar la falla de distribución incompleta si faltan términos cruzados o intermedios.'
-  - 'Paso 4: Reescribir la expansión completa y reducir términos semejantes correctamente.'
-errores_correccion: |
-  - **Error 1:** Considerar que multiplicar los primeros y los últimos términos da la respuesta completa (escribir $(x+a)(x+b) = x^2 + ab$). **Cómo corregirlo:** Se deben **MULTIPLICAR Y SUMAR LOS TÉRMINOS CRUZADOS ($x^2 + (a+b)x + ab$)**.
+- 'Paso 1: Contar los sumandos de cada polinomio y verificar que se generen $m \cdot n$ productos parciales.'
+- 'Paso 2: Comprobar que cada término del primer polinomio haya sido multiplicado por todos y cada uno de los términos del segundo.'
+- 'Paso 3: Señalar la falla de distribución incompleta si faltan términos cruzados o intermedios.'
+- 'Paso 4: Reescribir la expansión completa y reducir términos semejantes correctamente.'
+errores_correccion: '- **Error 1:** Considerar que multiplicar los primeros y los últimos términos da la respuesta completa (escribir $(x+a)(x+b) = x^2 + ab$). **Cómo corregirlo:** Se deben **MULTIPLICAR Y SUMAR LOS TÉRMINOS CRUZADOS ($x^2 + (a+b)x + ab$)**.
+
   - **Error 2:** Intercambiar la anulación de términos en la suma por diferencia con una omisión distributiva. **Cómo corregirlo:** En suma por diferencia **LOS TÉRMINOS SE MULTIPLICAN Y LUEGO SE CANCELAN ($+ax - ax = 0$)**.
+
+  '
 ejemplos:
-  - titulo: 'Detección en binomio al cuadrado falso'
-    enunciado: '¿Es erróneo afirmar que $(x + 3)^2 = x^2 + 9$?'
-    alternativas:
-      - 'Sí, falta el término doble del producto $+6x$'
-      - 'No, es totalmente correcto'
-      - 'El error está en el 9'
-    respuesta: 'Sí, falta el término doble del producto $+6x$'
-    solucion_pasos:
-      - '1. $(x+3)(x+3) = x^2 + 3x + 3x + 9 = x^2 + 6x + 9$.'
-      - '2. La omisión de $6x$ es una distributiva incompleta.'
-  - titulo: 'Prueba de valorización'
-    enunciado: 'Para $x=2$, ¿demuestra $(2+1)(2+3) = 15 \neq 7$ que escribir $(x+1)(x+3) = x^2 + 3$ es erróneo?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $15 \neq 7$ confirma la falla.'
-  - titulo: 'Control por conteo $m \cdot n$'
-    enunciado: 'En la multiplicación de 2 términos por 3 términos, ¿indica tener solo 3 productos que la distributiva está incompleta?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, debieron generarse $2 \cdot 3 = 6$ productos.'
-  - titulo: 'Diferencia con producto notable'
-    enunciado: 'En $(x-2)(x+2) = x^2 - 4$, ¿se generaron los 4 productos parciales antes de dar cero el término medio?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí, $+2x - 2x = 0$ es cancelación aditiva, no omisión.'
+- titulo: Detección en binomio al cuadrado falso
+  enunciado: ¿Es erróneo afirmar que $(x + 3)^2 = x^2 + 9$?
+  alternativas:
+  - Sí, falta el término doble del producto $+6x$
+  - No, es totalmente correcto
+  - El error está en el 9
+  respuesta: Sí, falta el término doble del producto $+6x$
+  solucion_pasos:
+  - 1. $(x+3)(x+3) = x^2 + 3x + 3x + 9 = x^2 + 6x + 9$.
+  - 2. La omisión de $6x$ es una distributiva incompleta.
+- titulo: Prueba de valorización
+  enunciado: Para $x=2$, ¿demuestra $(2+1)(2+3) = 15 \neq 7$ que escribir $(x+1)(x+3) = x^2 + 3$ es erróneo?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $15 \neq 7$ confirma la falla.
+- titulo: Control por conteo $m \cdot n$
+  enunciado: En la multiplicación de 2 términos por 3 términos, ¿indica tener solo 3 productos que la distributiva está incompleta?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, debieron generarse $2 \cdot 3 = 6$ productos.
+- titulo: Diferencia con producto notable
+  enunciado: En $(x-2)(x+2) = x^2 - 4$, ¿se generaron los 4 productos parciales antes de dar cero el término medio?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $+2x - 2x = 0$ es cancelación aditiva, no omisión.
 errores_frecuentes:
-  - 'Multiplicar únicamente los términos en la misma posición dentro de ambos polinomios omitiendo los productos cruzados.'
-  - 'Declarar que $(a + b)^2 = a^2 + b^2$ por aplicación incompleta de la distributiva.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Descartar los términos lineales al multiplicar dos binomios.'
-  - 'Intercambiar la cancelación aditiva de términos cruzados con su omisión distributiva.'
+- Multiplicar únicamente los términos en la misma posición dentro de ambos polinomios omitiendo los productos cruzados.
+- Declarar que $(a + b)^2 = a^2 + b^2$ por aplicación incompleta de la distributiva.
+- La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.
+- Descartar los términos lineales al multiplicar dos binomios.
+- Intercambiar la cancelación aditiva de términos cruzados con su omisión distributiva.
 afirmaciones_verdaderas:
-  - 'La aplicación incompleta de la distributiva ocurre al no multiplicar todos los términos del primer polinomio por todos los del segundo.'
-  - 'Multiplicar dos binomios requiere generar 4 productos parciales antes de consolidar los términos semejantes.'
-al_terminar_debes_poder: 'Detectar errores por aplicación incompleta de la distributiva y corregir la expansión cartesiana de polinomios.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.'
+- La aplicación incompleta de la distributiva ocurre al no multiplicar todos los términos del primer polinomio por todos los del segundo.
+- Multiplicar dos binomios requiere generar 4 productos parciales antes de consolidar los términos semejantes.
+al_terminar_debes_poder: '![Resumen de error por distributiva incompleta](/static/img/nodos/deteccion-de-error-por-aplicacion-incompleta-de-la-distributiva-resumen.svg)
+
+
+  QUÉ: Detectar y corregir la omisión de términos cruzados al multiplicar polinomios.
+
+
+  CÓMO: Aplicar estrictamente la doble distributiva $(A+B)(C+D) = AC + AD + BC + BD$, verificando que el conteo inicial de términos coincida con el producto de las longitudes de los factores.'
+fuente: Texto escolar MINEDUC — Álgebra 8° Básico / Operaciones Algebraicas.
 estado: publicado

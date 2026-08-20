@@ -1,112 +1,125 @@
-semantic_id: MAT.ALG.POLINOMIOS.IGUALDAD_COEFICIENTES
-resumen_inicial: 'La determinación de coeficientes correspondientes en polinomios idénticos es la técnica algebraica que permite hallar parámetros desconocidos igualando término a término los coeficientes de las potencias de igual grado.'
+semantic_id: MAT.ALG.POLINOMIOS.COEFICIENTES_POLINOMIOS_IDENTICOS
+resumen_inicial: 'La determinación de coeficientes en polinomios idénticos consiste en calcular parámetros desconocidos igualando término a término los coeficientes de igual grado o evaluando en valores estratégicos.'
 explicacion_simple: |
-  Cuando dos polinomios son idénticos y contienen **letras desconocidas en sus números (parámetros $A, B, C$)**, puedes descubrirlos usando el **Método de Igualación de Coeficientes**:
-  - Si sabes que $Ax^2 + Bx + C \equiv 4x^2 - 9x + 2$:
-    1. Comparas el número delante de $x^2 \implies A = 4$.
-    2. Comparas el número delante de $x \implies B = -9$.
-    3. Comparas el número suelto $\implies C = 2$.
-  - Si la expresión está desordenada o agrupada (como en $A(x + 1) + B(x - 2) \equiv 5x - 1$), primero expandes y agrupas los términos con $x$ para armar un sistema de ecuaciones y despejar las letras.
+  - Cuando sabemos que dos polinomios son idénticos ($P(x) \equiv Q(x)$), podemos hallar números desconocidos (como $A, B, C$) usando dos métodos muy sencillos:
+    1. **Método de coeficientes:** Se igualan los coeficientes de las mismas potencias de $x$:
+       - El número que acompaña a $x^2$ en la izquierda debe ser igual al que acompaña a $x^2$ en la derecha.
+       - El que acompaña a $x$ se iguala con el de $x$.
+       - El término independiente se iguala con el término independiente.
+    2. **Método de evaluación:** Se sustituyen valores convenientes de $x$ (como $x = 0, x = 1, x = -2$) para anular paréntesis y despejar directamente las letras.
+
+  ![Coeficientes en Polinomios Idénticos](/static/img/nodos/determinacion-de-coeficientes-correspondientes-en-polinomios-identicos-intro.svg)
 explicacion_formal: |
-  ### Definición formal
-  Dada la relación de identidad entre dos polinomios $P(x) = \sum_{k=0}^n a_k(\lambda) x^k$ y $Q(x) = \sum_{k=0}^n b_k x^k \in \mathbb{R}[x]$ que contienen un vector de parámetros desconocidos $\mathbf{\lambda} = (\lambda_1, \dots, \lambda_m)$, el **Método de Coeficientes Indeterminados** establece el sistema determinista de ecuaciones algebraicas:
+  ### Fundamento formal del método
+  Dado el principio de identidad de polinomios en $\mathbb{K}[x]$:
 
-  $$P(x) \equiv Q(x) \iff \begin{cases} a_n(\mathbf{\lambda}) = b_n \\ a_{n-1}(\mathbf{\lambda}) = b_{n-1} \\ \vdots \\ a_0(\mathbf{\lambda}) = b_0 \end{cases}$$
+  $$\sum_{i=0}^n a_i x^i \equiv \sum_{i=0}^n b_i x^i \iff a_i = b_i, \quad \forall i \in \{0, 1, \dots, n\}$$
 
-  ### Algoritmo de Resolución
-  1. **Expansión y Reducción**: Desarrollar todas las operaciones algebraicas en ambos miembros hasta obtener términos monómicos ordenados.
-  2. **Factorización por Potencias**: Agrupar los parámetros según las potencias de la variable principal $x^k$.
-  3. **Planteo del Sistema de Ecuaciones**: Igualar el coeficiente agrupado de $x^k$ en el lado izquierdo con el coeficiente numérico de $x^k$ en el lado derecho.
-  4. **Resolución del Sistema**: Resolver el sistema lineal o no lineal resultante para hallar los valores numéricos de los parámetros.
-
-  ### Síntesis didáctica
-  Este principio permite descomponer fracciones racionales complejas en fracciones parciales y determinar constantes en modelos físicos de ajuste polinómico.
+  ### Métodos de resolución
+  1. **Método de igualación de coeficientes:**
+     Genera un sistema lineal de $n + 1$ ecuaciones independientes:
+     $$\begin{cases} a_n = b_n \\ a_{n-1} = b_{n-1} \\ \dots \\ a_0 = b_0 \end{cases}$$
+  2. **Método de asignación de valores particulares (interpolación):**
+     Se eligen $n+1$ valores reales $\{x_0, x_1, \dots, x_n\}$ que anulen factores del tipo $(x - r)$, simplificando el cálculo sin necesidad de desarrollar productos algebraicos extensos.
 definiciones_clave: |
-  - **Método de coeficientes indeterminados**: Algoritmo para calcular parámetros desconocidos igualando coeficientes de potencias homologas en polinomios idénticos.
-  - **Coeficientes homologos / correspondientes**: Coeficientes numéricos asociados a la misma potencia de variable ($x^k$) en dos polinomios distintos.
-  - **Sistema de ecuaciones de identidad**: Conjunto de ecuaciones lineales derivado de la igualdad término a término.
+  - **Coeficientes correspondientes**: Factores constantes asociados a una misma potencia de la variable en ambos miembros.
+  - **Método de coeficientes**: Técnica que iguala potencias idénticas para formar un sistema de ecuaciones.
+  - **Método de valores numéricos**: Técnica que evalúa en raíces estratégicas para despejar incógnitas de forma directa.
 propiedades_relaciones: |
-  - **Unicidad de solución**: Si el número de ecuaciones independientes iguala al número de parámetros desconocidos, existe una única combinación de coeficientes que satisface la identidad.
-  - **Método alternativo de evaluación de puntos**: Dado que la identidad se cumple para todo $x$, se pueden asignar valores convenientes a la variable (como las raíces de los binomios) para calcular directamente los parámetros sin armar el sistema completo.
+  - **Fracciones parciales**: La determinación de coeficientes en identidades polinomiales es el pilar del método de descomposición en fracciones parciales en cálculo integral.
+  - **Unicidad de solución**: Si los polinomios son de grado $n$, el sistema lineal de $n+1$ ecuaciones tiene solución única.
 ejemplo_guiado:
-  enunciado: 'Determina los valores de los parámetros $A$ y $B$ para que se cumpla la identidad polinómica $A(x - 3) + B(x + 1) \equiv 7x - 5$.'
+  enunciado: 'Determina los valores de $A$ y $B$ para que se cumpla la identidad: $A(x - 2) + B(x + 3) \equiv 5x + 5$.'
+  imagen: '/static/img/nodos/determinacion-de-coeficientes-correspondientes-en-polinomios-identicos-ejemplos.svg'
   pasos:
-    - 'Paso 1: Expandimos el lado izquierdo distribuyendo $A$ y $B$: $Ax - 3A + Bx + B \equiv 7x - 5$.'
-    - 'Paso 2: Agrupamos los términos con $x$ y los términos constantes: $(A + B)x + (-3A + B) \equiv 7x - 5$.'
-    - 'Paso 3: Igualamos coeficientes correspondientes:
-       - Términos en $x$: $A + B = 7 \implies B = 7 - A$
-       - Términos independientes: $-3A + B = -5$'
-    - 'Paso 4: Sustituimos $B = 7 - A$ en la segunda ecuación: $-3A + (7 - A) = -5 \implies -4A + 7 = -5 \implies -4A = -12 \implies \mathbf{A = 3}$.'
-    - 'Paso 5: Calculamos $B$: $B = 7 - 3 \implies \mathbf{B = 4}$.'
-    - 'Conclusión: Los parámetros son **$A = 3$ y $B = 4$**.'
+    - 'Paso 1 (Método de evaluación): Elegimos un valor que anule el primer paréntesis: sustituimos **$x = 2$**:'
+    - '  - $A(2 - 2) + B(2 + 3) = 5(2) + 5$'
+    - '  - $0 + 5B = 10 + 5 = 15 \implies **B = 3$**.'
+    - 'Paso 2: Elegimos un valor que anule el segundo paréntesis: sustituimos **$x = -3$**:'
+    - '  - $A(-3 - 2) + B(-3 + 3) = 5(-3) + 5$'
+    - '  - $-5A + 0 = -15 + 5 = -10 \implies **A = 2$**.'
+    - 'Paso 3: Verificamos por igualación de coeficientes: $2(x - 2) + 3(x + 3) = 2x - 4 + 3x + 9 = 5x + 5$ (Coincide).'
+    - 'Paso 4: Conclusión: Los valores buscados son **$A = 2$** y **$B = 3$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: 'En el método de coeficientes indeterminados, ¿qué sistema de ecuaciones se plantea para hallar las constantes desconocidas de dos polinomios idénticos?'
+    question: 'Si $(A - 1)x^2 + (B + 2)x + C \equiv 4x^2 - 5x + 8$, ¿cuáles son los valores de $A, B, C$?'
     choices:
-      - {text: 'Se iguala el coeficiente de cada potencia de la variable en el primer miembro con el coeficiente de la misma potencia en el segundo miembro', is_correct: true}
-      - {text: 'Se suman todos los coeficientes del primer miembro y se igualan a cero', is_correct: false}
-      - {text: 'Se multiplican las variables por el grado absoluto del polinomio', is_correct: false}
-      - {text: 'Se igualan las variables principales cancelando los coeficientes numéricos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Se iguala el coeficiente de cada potencia de la variable en el primer miembro con el coeficiente de la misma potencia en el segundo miembro''. Igualación término a término.'
+      - text: '$A = 5, B = -7, C = 8$'
+        is_correct: true
+      - text: '$A = 3, B = -3, C = 8$'
+        is_correct: false
+      - text: '$A = 4, B = -5, C = 8$'
+        is_correct: false
+      - text: '$A = 5, B = 7, C = -8$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$A = 5, B = -7, C = 8$''. $A - 1 = 4 \implies A = 5$; $B + 2 = -5 \implies B = -7$; $C = 8$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Dada la identidad $a x^2 + b x + c \equiv 3 x^2 - 8$, ¿cuáles son los valores de los parámetros $a, b$ y $c$?'
+    question: 'En la identidad $A(x + 1) + B(x - 1) \equiv 6x$, ¿cuál es el valor de $A$ evaluando convenientemente en $x = 1$?'
     choices:
-      - {text: '$a = 3$, $b = 0$ y $c = -8$', is_correct: true}
-      - {text: '$a = 3$, $b = -8$ y $c = 0$', is_correct: false}
-      - {text: '$a = 0$, $b = 3$ y $c = 8$', is_correct: false}
-      - {text: '$a = 3$, $b = 1$ y $c = -8$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a = 3$, $b = 0$ y $c = -8$''. Coeficiente de $x^2 \to 3$, término en $x$ ausente $\to 0$, constante $\to -8$.'
+      - text: '$A = 3$, porque $A(1 + 1) + 0 = 6(1) \implies 2A = 6 \implies A = 3$'
+        is_correct: true
+      - text: '$A = 6$'
+        is_correct: false
+      - text: '$A = 2$'
+        is_correct: false
+      - text: '$A = 1$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$A = 3$, porque $A(1 + 1) + 0 = 6(1) \implies 2A = 6 \implies A = 3$''. Sustituir $x=1$ anula el término con $B$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Desarrollar completamente los productos y potencias en ambos miembros de la identidad.'
-  - 'Paso 2: Agrupar los términos de igual grado factorizando la variable común ($x^k$).'
-  - 'Paso 3: Formular un sistema de ecuaciones igualando los coeficientes de las potencias homólogas.'
-  - 'Paso 4: Resolver el sistema de ecuaciones para determinar el valor numérico exacto de cada parámetro.'
+  - 'Paso 1: Desarrollar y agrupar los términos de cada potencia de $x$ en ambos miembros.'
+  - 'Paso 2: Igualar los coeficientes de las mismas potencias de $x$ ($x^2$ con $x^2$, $x$ con $x$, constantes con constantes).'
+  - 'Paso 3: Alternativamente, evaluar en valores de $x$ que anulen factores para despejar directamente.'
+  - 'Paso 4: Resolver el sistema de ecuaciones y comprobar la solución en la identidad original.'
 errores_correccion: |
-  - **Error 1:** Asignar coeficientes de potencias distintas entre sí (ej: igualar el término con $x^2$ al término con $x$). **Cómo corregirlo:** Se debe igualar **ESTRICTAMENTE el coeficiente de $x^k$ con el coeficiente de $x^k$**.
-  - **Error 2:** Asignar coeficiente 1 a las potencias ausentes en un polinomio (ej: en $3x^2 - 5$ decir que el coeficiente de $x$ es $1$ en vez de $0$). **Cómo corregirlo:** Si una potencia no aparece en un lado, **su coeficiente es $0$**.
+  - **Error 1:** Igualar coeficientes de diferentes potencias de $x$. **Cómo corregirlo:** La correspondencia es **estrictamente de potencias iguales** ($x^k$ con $x^k$).
+  - **Error 2:** Olvidar agrupar todos los términos de una misma potencia antes de igualar. **Cómo corregirlo:** Agrupar en la forma $(A + B)x$ antes de igualar con el coeficiente de $x$.
 ejemplos:
-  - titulo: 'Igualación de coeficientes directa'
-    enunciado: 'Si $(P + 1)x^2 + Q x \equiv 6x^2 - 4x$, ¿cuáles son los valores de $P$ y $Q$?'
+  - titulo: 'Igualación de coeficientes lineales'
+    enunciado: 'Si $(a + b)x + (a - b) \equiv 8x + 2$, ¿cuáles son los valores de $a$ y $b$?'
     alternativas:
-      - '$P = 5$ y $Q = -4$'
-      - '$P = 6$ y $Q = 4$'
-      - '$P = 1$ y $Q = -4$'
-    respuesta: '$P = 5$ y $Q = -4$'
+      - '$a = 5$ y $b = 3$'
+      - '$a = 8$ y $b = 2$'
+      - '$a = 4$ y $b = 4$'
+    respuesta: '$a = 5$ y $b = 3$'
     solucion_pasos:
-      - '1. Igualamos en $x^2$: $P + 1 = 6 \implies P = 5$.'
-      - '2. Igualamos en $x$: $Q = -4$.'
-      - '3. Valores: $P = 5, Q = -4$.'
-  - titulo: 'Método de evaluación de puntos convenientes'
-    enunciado: 'Para hallar $A$ en $A(x - 2) \equiv 3x - 6$, si evaluamos $x = 3$, ¿obtenemos $A(1) = 3(3) - 6 \implies A = 3$?'
+      - '1. $a + b = 8$ y $a - b = 2$.'
+      - '2. Sumando: $2a = 10 \implies a = 5$.'
+      - '3. Restando: $2b = 6 \implies b = 3$.'
+  - titulo: 'Método por evaluación de raíces'
+    enunciado: 'En la identidad $M(x - 3) + N(x + 1) \equiv 4x$, ¿cuánto vale $N$ evaluando en $x = 3$?'
     alternativas:
-      - 'Sí, evaluar puntos convenientes es válido'
-      - 'No, sólo se puede usar sistemas de ecuaciones'
-      - 'No, $A=0$'
-    respuesta: 'Sí, evaluar puntos convenientes es válido'
+      - '$N = 3$'
+      - '$N = 4$'
+      - '$N = 12$'
+    respuesta: '$N = 3$'
     solucion_pasos:
-      - '1. Evaluamos $x=3 \implies A(1) = 9 - 6 = 3$.'
-      - '2. $A = 3$.'
-  - titulo: 'Coeficiente ausente'
-    enunciado: 'En la identidad $m x^2 + n x + p \equiv x^2 - 9$, ¿el parámetro $n$ es igual a $0$?'
+      - '1. Para $x = 3$: $M(0) + N(3 + 1) = 4(3)$.'
+      - '2. $4N = 12 \implies N = 3$.'
+  - titulo: 'Unicidad del sistema'
+    enunciado: '¿Garantiza la identidad entre dos polinomios de igual grado un sistema con solución única para sus coeficientes lineales?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, al no figurar término en $x$ en el lado derecho, $n = 0$.'
-  - titulo: 'Identidad de términos independientes'
-    enunciado: 'En la identidad $2x - k \equiv 2x + 7$, ¿el parámetro $k$ es igual a $-7$?'
-    respuesta: 'Sí'
+      - '1. Los monomios $\{1, x, x^2, \dots\}$ forman una base linealmente independiente.'
+      - '2. La correspondencia de coeficientes es única.'
+  - titulo: 'Igualación con grados distintos'
+    enunciado: '¿Es correcto igualar el coeficiente de $x^2$ con el término independiente?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, $-k = 7 \implies k = -7$.'
+      - '1. Solo se igualan coeficientes de términos semejantes de igual grado.'
+      - '2. $x^2$ solo se iguala con $x^2$.'
 errores_frecuentes:
-  - 'Igualar coeficientes asociados a potencias de diferentes exponentes durante el método.'
-  - 'Asignar coeficiente 1 a los términos ausentes en lugar del coeficiente escalar cero.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Evaluar un solo punto particular en una identidad demuestra la validez de los parámetros sin resolver el sistema.'
-  - 'Los signos negativos de los coeficientes se descartan al armar el sistema de ecuaciones.'
+  - 'Igualar coeficientes de potencias distintas de la variable.'
+  - 'Olvidar agrupar términos semejantes en un miembro antes de proceder a la igualación.'
+  - 'Cometer errores de signos al resolver el sistema de ecuaciones simultáneas.'
+  - 'Elegir valores de evaluación que no simplifiquen la expresión en el método de sustitución.'
+  - 'No verificar los valores obtenidos en la identidad completa original.'
 afirmaciones_verdaderas:
-  - 'La determinación de coeficientes en polinomios idénticos exige igualar los coeficientes asociados a potencias de igual grado.'
-  - 'Si una potencia de la variable no figura en uno de los polinomios idénticos, su coeficiente asociado es igual a cero.'
-al_terminar_debes_poder: 'Determinar coeficientes correspondientes en polinomios idénticos planteando y resolviendo el sistema de ecuaciones por igualación de potencias homólogas.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'En dos polinomios idénticos, los coeficientes de las mismas potencias de la variable son respectivamente iguales.'
+  - 'El método de asignación de valores particulares permite despejar parámetros evaluando en las raíces de los factores.'
+al_terminar_debes_poder: |
+  ![Resumen de Coeficientes en Polinomios Idénticos](/static/img/nodos/determinacion-de-coeficientes-correspondientes-en-polinomios-identicos-resumen.svg)
+
+  QUÉ: Calcular parámetros y coeficientes desconocidos en identidades polinomiales mediante igualación término a término o evaluación estratégica de valores numéricos.
+  CÓMO: Formulando el sistema $a_k = b_k$ para cada potencia $x^k$ o evaluando en raíces particulares ($x = r_i$) en identidades como $A(x-2) + B(x+3) \equiv 5x + 5$.

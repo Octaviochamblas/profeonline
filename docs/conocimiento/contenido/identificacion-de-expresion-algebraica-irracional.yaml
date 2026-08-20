@@ -1,107 +1,120 @@
-semantic_id: MAT.ALG.CLASIFICACION_TECNICA.EXPRESION_IRRACIONAL
-resumen_inicial: 'La identificación de expresión algebraica irracional consiste en reconocer aquellas expresiones en las cuales al menos una variable o letra se encuentra dentro de un signo radical o posee un exponente fraccionario.'
+semantic_id: MAT.ALG.CLASIFICACION.EXPRESION_IRRACIONAL
+resumen_inicial: 'Una expresión algebraica es irracional cuando al menos una de sus variables se encuentra bajo el signo de radicación o posee un exponente fraccionario irreductible.'
 explicacion_simple: |
-  Una **expresión algebraica irracional** es una expresión en la que **hay letras dentro de una raíz**:
-  - **Condición clave**: Al menos una variable o letra debe estar encerrada por un radical (como $\sqrt{x}$, $\sqrt[3]{y}$) o elevada a una fracción (como $x^{1/2}, y^{3/4}$).
-  - Ejemplos de expresiones irracionales: $\sqrt{x} + 5$, $3x\sqrt{y - 1}$, $x^{2/3} - 4$.
-  - **¡Cuidado con la trampa!** Si ves $\sqrt{9} \cdot x$ o $\sqrt{5} \cdot x$, esas expresiones **NO son irracionales**, porque la raíz está sobre un número ($9$ o $5$), no sobre la letra $x$.
-  - Para eliminar una raíz en una ecuación irracional se suele elevar ambos miembros a la potencia del índice del radical.
+  - Una expresión algebraica es **irracional** cuando tiene **al menos una letra dentro de una raíz** o con un **exponente en fracción**.
+  - Ejemplos típicos:
+    - $3\sqrt{x} + 5y$ (la letra $x$ está dentro de la raíz cuadrada).
+    - $4x^{2/3} - 7$ (el exponente de $x$ es la fracción $\frac{2}{3}$).
+    - $\sqrt{x^2 + y^2}$ (las variables están bajo el radical).
+  - **¡Cuidado con la trampa!** Si la raíz es solo de un número (como $\sqrt{3} \cdot x^2$), la expresión **NO es irracional**, porque la letra $x$ no está dentro de la raíz.
+
+  ![Expresión Algebraica Irracional](/static/img/nodos/identificacion-de-expresion-algebraica-irracional-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una expresión algebraica $E(x_1, \dots, x_k)$ es **irracional** respecto a la variable $x_i$ si la variable se encuentra en la base de una potencia cuyo exponente es un número racional no entero:
+  Una expresión algebraica $E(x_1, \dots, x_n)$ es **irracional** si no puede representarse como el cociente de dos polinomios en $\mathbb{K}[x_1, \dots, x_n]$.
+  Formalmente, contiene al menos una variable $x_k$ sometida a un operador de radicación irreducible o con exponente fraccionario:
 
-  $$E(x_1, \dots, x_k) \notin \mathbb{R}(x_1, \dots, x_k) \iff \exists x_i, \quad \operatorname{exp}(x_i) = \frac{p}{q} \in \mathbb{Q} \setminus \mathbb{Z} \quad (q \ge 2)$$
+  $$\exists x_k, \quad x_k^{m/n} \quad \text{con } m, n \in \mathbb{Z}, \; n \ge 2, \; \gcd(m, n) = 1$$
 
-  lo que equivale sintácticamente a la presencia del operador radical $\sqrt[q]{x_i^p}$ actuando sobre la variable.
-
-  ### Restricción de Dominio por Radicación Par
-  Si el índice del radical $q$ es un número par ($q = 2, 4, 6\dots$), la cantidad subradical que contiene a la variable exige la condición de no negatividad en $\mathbb{R}$:
-
-  $$\sqrt[2n]{U(x_1, \dots, x_k)} \implies \operatorname{Dom}(E) = \{(x_1, \dots, x_k) \in \mathbb{R}^k \mid U(x_1, \dots, x_k) \ge 0\}$$
-
-  ### Síntesis didáctica
-  La irracionalidad algebraica requiere el uso de propiedades de radicación y potencia fraccionaria ($x^{p/q} = \sqrt[q]{x^p}$). Sus ecuaciones pueden generar raíces extrañas al elevar al cuadrado.
+  ### Dominio y restricciones de radicación
+  Para expresiones con radicales de índice par ($n = 2k$), el radicando que contiene variables debe satisfacer la condición de no negatividad en el cuerpo real:
+  $$\sqrt[2k]{R(x)} \implies \operatorname{Dom}(E) = \{x \in \mathbb{R} : R(x) \ge 0\}$$
 definiciones_clave: |
-  - **Expresión algebraica irracional**: Expresión que contiene al menos una variable sometida a radicación o exponente fraccionario.
-  - **Cantidad subradical**: Expresión contenida en el interior de un signo radical.
-  - **Índice del radical**: Número entero $q \ge 2$ que define el orden de la raíz ($\sqrt[q]{}$).
+  - **Expresión algebraica irracional**: Expresión con variables afectadas por radicación o exponentes no enteros.
+  - **Radicando variable**: Subexpresión algebraica con literales ubicada en el interior de un signo radical.
+  - **Restricción de paridad**: Condición $R(x) \ge 0$ para raíces de índice par en $\mathbb{R}$.
 propiedades_relaciones: |
-  - **Racionalización**: Procedimiento algebraico que elimina los radicales del denominador o numerador mediante la multiplicación por un factor conjugado adecuado.
-  - **Transformación a potencia**: Todo radical con variable se puede reescribir como una potencia de exponente fraccionario: $\sqrt[q]{x^p} = x^{p/q}$.
+  - **Radicales aparentes (simplificación)**: Si una raíz se simplifica exactamente para todo el dominio (ej. $\sqrt{x^2} = |x|$), la expresión es racional a trozos.
+  - **Racionalización**: Proceso algebraico mediante el cual se transforman expresiones irracionales en expresiones con denominadores racionales.
 ejemplo_guiado:
-  enunciado: 'Dado el objeto algebraico $E(x) = \sqrt{x - 3} + 4x$, justifica por qué es una expresión irracional y calcula su dominio de definición real.'
+  enunciado: 'Determina si las siguientes expresiones son algebraicas irracionales justificando en cada caso: a) $P(x) = 5\sqrt{x^3} - 2x + 1$, b) $Q(x) = \sqrt{7}x^2 - 4x + 3$, c) $R(x, y) = 3x^{3/4}y^2 + 8$.'
+  imagen: '/static/img/nodos/identificacion-de-expresion-algebraica-irracional-ejemplos.svg'
   pasos:
-    - 'Paso 1: Observamos que la variable $x$ se encuentra contenida dentro del radical de índice par $2$ ($\sqrt{x - 3}$) $\implies$ **Es una expresión irracional**.'
-    - 'Paso 2: Como es una raíz cuadrada real, exigimos que la cantidad subradical sea mayor o igual a cero: $x - 3 \ge 0$.'
-    - 'Paso 3: Despejamos la desigualdad: $x \ge 3$.'
-    - 'Conclusión: Es una **expresión irracional** cuyo dominio real es el intervalo **$[3, +\infty[$** (es decir, la variable $x$ debe ser mayor o igual a $3$).'
+    - 'Paso 1: Analizamos $P(x) = 5\sqrt{x^3} - 2x + 1$: la variable $x$ está bajo la raíz cuadrada ($x^{3/2}$) $\implies$ **Es expresión algebraica irracional**.'
+    - 'Paso 2: Analizamos $Q(x) = \sqrt{7}x^2 - 4x + 3$: la raíz cuadrada solo afecta al número 7; la variable $x$ tiene exponentes 2 y 1 (enteros) $\implies$ **NO es irracional (es Racional Entera)**.'
+    - 'Paso 3: Analizamos $R(x, y) = 3x^{3/4}y^2 + 8$: la variable $x$ tiene exponente fraccionario no entero $\frac{3}{4}$ $\implies$ **Es expresión algebraica irracional**.'
+    - 'Paso 4: Conclusión: $P(x)$ y $R(x, y)$ son irracionales; $Q(x)$ es racional entera.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué característica define indispensablemente a una expresión algebraica como irracional?'
+    question: '¿Cuál de las siguientes expresiones algebraicas es irracional?'
     choices:
-      - {text: 'Tener al menos una variable o letra dentro de una raíz o elevada a un exponente fraccionario', is_correct: true}
-      - {text: 'Tener coeficientes numéricos que son números irracionales como pi ($\pi$)', is_correct: false}
-      - {text: 'Tener un denominador con números enteros impares', is_correct: false}
-      - {text: 'Estar formada por más de cuatro términos algebraicos', is_correct: false}
-    explanation: 'La alternativa correcta es ''Tener al menos una variable o letra dentro de una raíz o elevada a un exponente fraccionario''. Definición de expresión irracional.'
+      - text: '$4\sqrt{x} - 5x^2 + 1$'
+        is_correct: true
+      - text: '$\sqrt{5}x^3 - 2x + 7$'
+        is_correct: false
+      - text: '$\frac{3x + 1}{x^2 - 4}$'
+        is_correct: false
+      - text: '$2x^4 - 7x^2 + 9$'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''$4\sqrt{x} - 5x^2 + 1$''. La variable $x$ se encuentra bajo el signo de raíz cuadrada ($x^{1/2}$).'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'En la expresión irracional con raíz cuadrada real $\sqrt{2x - 8}$, ¿cuál es el dominio de valores reales permisibles para la variable $x$?'
+    question: '¿Por qué la expresión $E(x) = \sqrt{2}x^3 + \pi x$ NO es una expresión irracional?'
     choices:
-      - {text: 'El intervalo $x \ge 4$, para asegurar que la cantidad subradical sea no negativa ($2x - 8 \ge 0$)', is_correct: true}
-      - {text: 'Todo el conjunto de los números reales sin ninguna restricción', is_correct: false}
-      - {text: 'Únicamente el valor $x = 0$', is_correct: false}
-      - {text: 'Únicamente los números negativos', is_correct: false}
-    explanation: 'La alternativa correcta es ''El intervalo $x \ge 4$, para asegurar que la cantidad subradical sea no negativa ($2x - 8 \ge 0$)''. $2x \ge 8 \implies x \ge 4$.'
+      - text: 'Porque las raíces y constantes irracionales afectan solo a los números escalares, mientras que la variable $x$ tiene exponentes enteros ($3$ y $1$)'
+        is_correct: true
+      - text: 'Porque tiene dos términos'
+        is_correct: false
+      - text: 'Porque es una fracción'
+        is_correct: false
+      - text: 'Porque no tiene término independiente'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Porque las raíces y constantes irracionales afectan solo a los números escalares, mientras que la variable $x$ tiene exponentes enteros ($3$ y $1$)''. La clasificación técnica depende exclusivamente de las variables.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Buscar en la expresión la presencia de signos radicales ($\sqrt{}$) o exponentes fraccionarios.'
-  - 'Paso 2: Comprobar que dentro de la raíz o en la base del exponente fraccionario figure una variable o letra.'
-  - 'Paso 3: Si al menos una letra está bajo raíz o en exponente fraccionario, clasificar como **Irracional**.'
-  - 'Paso 4: Para raíces de índice par, calcular el dominio imponiendo que la cantidad subradical sea mayor o igual a cero ($\ge 0$).'
+  - 'Paso 1: Localizar todos los signos de raíz y exponentes de las variables.'
+  - 'Paso 2: Comprobar si alguna variable figura en el radicando o tiene exponente fraccionario irreductible.'
+  - 'Paso 3: Si al menos una variable está bajo radical o con exponente fraccionario, clasificar como expresión irracional.'
+  - 'Paso 4: Establecer las restricciones de no negatividad para radicandos de índice par.'
 errores_correccion: |
-  - **Error 1:** Clasificar como irracional a expresiones como $\sqrt{5} \cdot x$ donde la raíz sólo afecta al número $5$. **Cómo corregirlo:** Para ser irracional **la RAÍZ DEBE AFECTAR A LA VARIABLE**, no al coeficiente constante.
-  - **Error 2:** Declarar que una expresión con exponente fraccionario como $x^{1/3}$ es racional por tener una fracción como exponente. **Cómo corregirlo:** El exponente fraccionario en la letra equivale a una raíz ($\sqrt[3]{x}$), por lo que **es IRRACIONAL**.
+  - **Error 1:** Clasificar como irracional una expresión con números irracionales en los coeficientes (ej. $\sqrt{3}x^2$). **Cómo corregirlo:** La radicación debe afectar a **las variables literales**, no solo a los coeficientes.
+  - **Error 2:** No convertir exponentes fraccionarios a raíces. **Cómo corregirlo:** Reconocer que $x^{m/n} = \sqrt[n]{x^m}$ es **estrictamente una expresión irracional**.
 ejemplos:
-  - titulo: 'Identificación de expresión irracional'
-    enunciado: '¿Cuál de las siguientes expresiones es irracional?'
+  - titulo: 'Exponente fraccionario en variable'
+    enunciado: '¿Es la expresión $P(x) = 2x^{1/3} + 5x - 1$ irracional?'
     alternativas:
-      - '$5\sqrt{x} + 2$'
-      - '$\sqrt{5} \cdot x + 2$'
-      - '$\frac{x}{5} + 2$'
-    respuesta: '$5\sqrt{x} + 2$'
+      - 'Sí, porque $x^{1/3} = \sqrt[3]{x}$'
+      - 'No, porque 5 y 1 son enteros'
+      - 'Es una expresión fraccionaria'
+    respuesta: 'Sí, porque $x^{1/3} = \sqrt[3]{x}$'
     solucion_pasos:
-      - '1. En $5\sqrt{x} + 2$, la variable $x$ está dentro de la raíz.'
-      - '2. Es una expresión irracional.'
-  - titulo: 'Exponente fraccionario como irracional'
-    enunciado: 'La expresión $y^{3/5} - 1$, ¿es una expresión irracional?'
+      - '1. El exponente $\frac{1}{3}$ no es entero.'
+      - '2. Equivale a la raíz cúbica $\sqrt[3]{x}$.'
+      - '3. Es una expresión irracional.'
+  - titulo: 'Raíz numérica escalar'
+    enunciado: '¿Es la expresión $\sqrt{5}x^2 + \sqrt{2}x$ irracional?'
     alternativas:
-      - 'Sí, equivale a la raíz $\sqrt[5]{y^3} - 1$'
-      - 'No, es una expresión racional fraccionaria'
-      - 'No, es un monomio entero'
-    respuesta: 'Sí, equivale a la raíz $\sqrt[5]{y^3} - 1$'
+      - 'No, es una expresión racional entera porque las raíces son constantes numéricas'
+      - 'Sí, tiene dos raíces'
+      - 'Es fraccionaria'
+    respuesta: 'No, es una expresión racional entera porque las raíces son constantes numéricas'
     solucion_pasos:
-      - '1. El exponente de $y$ es la fracción $3/5$.'
-      - '2. Equivale a $\sqrt[5]{y^3} \implies$ Es irracional.'
-  - titulo: 'Raíz impar en irracional'
-    enunciado: 'En la expresión $\sqrt[3]{x}$, ¿está el dominio definido para todos los reales $\mathbb{R}$ por ser de índice impar 3?'
+      - '1. Las raíces afectan a 5 y 2 (escalares).'
+      - '2. La variable $x$ tiene potencias enteras 2 y 1.'
+      - '3. Es racional entera.'
+  - titulo: 'Presencia de radical en dos variables'
+    enunciado: '¿Es $\sqrt{x} + \sqrt{y}$ una expresión algebraica irracional?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, las raíces de índice impar admiten cantidades subradicales negativas.'
-  - titulo: 'Simplificación a expresión racional'
-    enunciado: 'Si tenemos $\sqrt{x^2}$ para $x > 0$, ¿se simplifica a la variable $x$, transformándose en racional?'
-    respuesta: 'Sí'
+      - '1. Ambas variables se encuentran dentro de radicales.'
+      - '2. Es irracional.'
+  - titulo: 'Exponente entero negativo vs irracional'
+    enunciado: '¿Es la expresión $x^{-2}$ una expresión irracional?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, $\sqrt{x^2} = x$ para $x > 0$, eliminando la irracionalidad.'
+      - '1. El exponente $-2$ es un número entero en $\mathbb{Z}$.'
+      - '2. Es una expresión racional fraccionaria ($\frac{1}{x^2}$), no irracional.'
 errores_frecuentes:
-  - 'Una expresión con la raíz de un número constante como raíz de 2 que multiplica a x es una expresión irracional.'
-  - 'Las expresiones irracionales con raíces impares requieren que su cantidad subradical sea estrictamente positiva.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Elevar una expresión irracional a una potencia entera elimina la variable de la expresión.'
-  - 'Las expresiones algebraicas irracionales son numéricamente idénticas a los números reales trascendentes.'
+  - 'Confundir raíces que afectan a constantes numéricas (ej: $\sqrt{2}$) con expresiones irracionales.'
+  - 'No identificar los exponentes fraccionarios como operadores de radicación.'
+  - 'Creer que una expresión con potencias enteras negativas es irracional (es racional fraccionaria).'
+  - 'Olvidar imponer la condición de no negatividad en el radicando para raíces de índice par.'
+  - 'Suponer que una expresión irracional no puede combinarse con términos polinomiales enteros.'
 afirmaciones_verdaderas:
-  - 'Una expresión algebraica es irracional si al menos una de sus variables se encuentra dentro de una raíz o con exponente fraccionario.'
-  - 'Para raíces cuadradas reales de expresiones irracionales, la cantidad subradical con variables debe ser mayor o igual a cero.'
-al_terminar_debes_poder: 'Identificar expresiones algebraicas irracionales verificando la existencia de letras bajo signos radicales o con exponentes fraccionarios.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Clasificación.'
-estado: publicado
+  - 'Una expresión algebraica es irracional si al menos una de sus variables figura bajo un signo de radicación o con exponente fraccionario.'
+  - 'La presencia de constantes irracionales en los coeficientes no altera el carácter racional de las variables.'
+al_terminar_debes_poder: |
+  ![Resumen de Expresión Irracional](/static/img/nodos/identificacion-de-expresion-algebraica-irracional-resumen.svg)
+
+  QUÉ: Identificar y justificar la condición de irracionalidad en expresiones algebraicas evaluando variables bajo radicales y exponentes fraccionarios.
+  CÓMO: Constatando la presencia de exponentes no enteros ($x^{m/n}$) o literales bajo raíces ($\sqrt[n]{R(x)}$) distinguiéndolos de coeficientes irracionales escalares.

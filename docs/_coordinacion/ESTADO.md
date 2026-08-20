@@ -8,7 +8,9 @@
 
 | Agente | Rama | Tomado (fecha/hora) | Estado |
 | --- | --- | --- | --- |
-| 🧩 Codex | fix/nav-menu-y-login-htmx | 2026-07-12 06:35 | 🟢 03.13.02.07-.10, 03.13.04.10-.13, 03.13.05.09, 03.10.09.08-.10 y lotes 1-4 verborreicos Antigravity en 02.04/02.05/03.04 reformulados; 03.15.02, 03.15.03 y 03.15.04 cerrados; sin APIs externas de IA |
+| 🔨 Antigravity | main | 2026-08-19 08:20 | 🟢 Culminación integral de los subtemas Variaciones Porcentuales (9 nodos) y Finanzas Personales (10 nodos) con 57 infografías SVG, 12 secciones, QUE/COMO, migración 0132 y 587 tests pasando |
+
+- **Variaciones Porcentuales y Finanzas Personales — CERRADO por 🔨 Antigravity 🟢 (2026-08-19):** Actualizados al 100% los 19 nodos correspondientes a `MAT.NUM.VARIACION_PORCENTUAL` (9) y `MAT.NUM.FINANZAS` (10). Se diseñaron 57 infografías vectoriales SVG (*Zero-Overflow*, *Zero-Collision*, fracciones apiladas verticales), redacción de *Al terminar debes poder* con etiquetas `QUÉ:` y `CÓMO:`, ejemplos 100% interactivos y migración de datos `0132_load_variaciones_porcentuales_finanzas_update.py`. Suite completa (`587 tests`) pasando sin errores. Detalle en `docs/reportes-sesion/2026-08-19.md`.
   Básica 31/31, `05.05` Probabilidad Condicional y Regla de Bayes 41/41, `05.06`
   Técnicas de Conteo y Distribución Binomial 44/44, `05.07` Distribución Normal 41/41.
   Redacción manual (sin API externa de IA) en todos los recursos. Reporte de cierre en

@@ -1,102 +1,118 @@
 semantic_id: MAT.NUM.PROG_ARITMETICA.DEFINICION
-resumen_inicial: 'Una progresión aritmética (P.A.) es una sucesión numérica en la que cada término, a partir del segundo, se obtiene sumando al anterior una constante fija denominada diferencia común $d$: $a_n = a_{n-1} + d$.'
+resumen_inicial: 'Una progresión aritmética (PA) es una sucesión de números reales donde la diferencia entre cualquier término y su predecesor es constante: $a_{n+1} - a_n = d$.'
 explicacion_simple: |
-  Una **progresión aritmética** es una secuencia de números donde el salto o paso entre un número y el siguiente **siempre es exactamente la misma cantidad**:
-  - Si empiezas en $5$ y sumas $3$ cada vez: $5, 8, 11, 14, 17, \dots$
-  - Esa cantidad fija ($+3$) se llama **diferencia común ($d$)**.
-  - Si la diferencia es positiva ($d > 0$), la sucesión es creciente.
-  - Si la diferencia es negativa ($d < 0$), por ejemplo restar $4$: $20, 16, 12, 8, \dots$, la sucesión es decreciente.
+  Una **progresión aritmética** es una secuencia donde siempre das "pasos" del mismo tamaño sumando (o restando) un número fijo llamado **diferencia común** ($d$):
+  - Si empiezas en $2$ y sumas $3$ en cada paso:
+    $$2, 5, 8, 11, 14, 17, \dots \quad (d = +3, \text{creciente})$$
+  - Si empiezas en $20$ y restas $4$ en cada paso:
+    $$20, 16, 12, 8, 4, 0, \dots \quad (d = -4, \text{decreciente})$$
+  - La clave es que el cambio entre término y término es **siempre constante**.
+
+  ![Definición de progresión aritmética](/static/img/nodos/definicion-de-progresion-aritmetica-mediante-diferencia-constante-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Una sucesión de números reales $(a_n)_{n \ge 1}$ es una **progresión aritmética** si existe un número real constante $d \in \mathbb{R}$ tal que:
-  $$a_n - a_{n-1} = d \quad (\forall n \ge 2)$$
-  o equivalentemente mediante la relación por recurrencia de primer orden:
-  $$a_n = a_{n-1} + d$$
+  Una sucesión $(a_n)_{n \in \mathbb{N}}$ es una **progresión aritmética (PA)** si y solo si existe una constante real $d \in \mathbb{R}$, denominada **diferencia común**, tal que:
+  $$a_{n+1} = a_n + d \quad \forall n \ge 1 \iff a_{n+1} - a_n = d$$
 
-  ### Clasificación según el signo de la diferencia común ($d$)
-  - **Progresión Aritmética Creciente**: $d > 0 \implies a_1 < a_2 < a_3 < \dots < a_n$.
-  - **Progresión Aritmética Decreciente**: $d < 0 \implies a_1 > a_2 > a_3 > \dots > a_n$.
-  - **Progresión Aritmética Constante o Trivial**: $d = 0 \implies a_1 = a_2 = a_3 = \dots = a_n$.
+  ### Clasificación según la Diferencia Común ($d$)
+  - **PA estrictamente creciente**: $d > 0 \implies a_1 < a_2 < a_3 < \dots$
+  - **PA constante**: $d = 0 \implies a_1 = a_2 = a_3 = \dots$
+  - **PA estrictamente decreciente**: $d < 0 \implies a_1 > a_2 > a_3 > \dots$
+
+  ### Término General
+  A partir de la definición inductiva, el término general explícito de la progresión es:
+  $$a_n = a_1 + (n - 1)d = d \cdot n + (a_1 - d)$$
 
   ### Síntesis didáctica
-  - Ecuación recurrente básica: $a_n = a_{n-1} + d$.
-  - Condición suficiente: La resta entre dos términos consecutivos cualesquiera debe arrojar siempre la constante $d$.
+  - Ecuación de recurrencia: $a_{n+1} = a_n + d$.
+  - Comportamiento: Modelo de crecimiento o decrecimiento lineal discreto.
 definiciones_clave: |
-  - **Progresión Aritmética (P.A.)**: Sucesión numérica construida mediante la adición sucesiva de un valor constante.
-  - **Diferencia común ($d$)**: Constante aditiva fija definida por $d = a_{n+1} - a_n$.
-  - **Primer término ($a_1$)**: Valor inicial que establece el origen numérico de la progresión.
+  - **Progresión Aritmética (PA)**: Sucesión donde cada término se obtiene sumando una constante $d$ al término anterior.
+  - **Diferencia común ($d$)**: Constante aditiva que representa la resta entre dos términos consecutivos ($a_{n+1} - a_n$).
+  - **Primer término ($a_1$)**: Valor inicial que ancla la progresión en $n=1$.
 propiedades_relaciones: |
-  - **Modelo aditivo constante**: A diferencia de las sucesiones geométricas (que se multiplican), la progresión aritmética avanza únicamente por adición o sustracción de una constante.
-  - **Crecimiento de pendiente fija**: Al graficar los puntos $(n, a_n)$ en el plano cartesiano, se alinean sobre una recta de pendiente $m = d$.
+  - **Isomorfismo con la función lineal**: Una PA es la restricción a $\mathbb{N}$ de una función afín $f(x) = dx + c$, donde la pendiente es exactamente la diferencia común $d$.
+  - **Equidistancia de términos**: Para cualquier trío consecutivo, el término central es la media aritmética de los extremos: $a_k = \frac{a_{k-1} + a_{k+1}}{2}$.
 ejemplo_guiado:
-  enunciado: 'Verifica si la sucesión $7, 12, 17, 22, 27, \dots$ es una progresión aritmética, identifica su primer término $a_1$ y el valor de la diferencia común $d$.'
+  enunciado: 'Dada la progresión aritmética con primer término $a_1 = 7$ y diferencia común $d = 4$, escribe los primeros cinco términos y determina si es creciente o decreciente.'
+  imagen: '/static/img/nodos/definicion-de-progresion-aritmetica-mediante-diferencia-constante-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos el primer término de la secuencia: $a_1 = 7$.'
-    - 'Paso 2: Restamos el segundo término menos el primero: $12 - 7 = 5$.'
-    - 'Paso 3: Restamos el tercer término menos el segundo: $17 - 12 = 5$, y el cuarto menos el tercero: $22 - 17 = 5$.'
-    - 'Paso 4: Como la diferencia entre términos consecutivos es constante e igual a $5$, la sucesión **es una progresión aritmética con $a_1 = 7$ y $d = 5$**.'
+    - 'Paso 1: Identificamos el término inicial: $a_1 = 7$.'
+    - 'Paso 2: Sumamos la diferencia $d = 4$ sucesivamente:'
+    - '  - $a_2 = 7 + 4 = 11$'
+    - '  - $a_3 = 11 + 4 = 15$'
+    - '  - $a_4 = 15 + 4 = 19$'
+    - '  - $a_5 = 19 + 4 = 23$'
+    - 'Paso 3: Como $d = 4 > 0$, la progresión es **estrictamente creciente**.'
+    - 'Conclusión: Los cinco primeros términos son **$7, 11, 15, 19, 23$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué condición debe cumplirse para que una sucesión numérica se clasifique como progresión aritmética?'
+    question: '¿Cuál es la condición necesaria y suficiente para que una sucesión sea una progresión aritmética?'
     choices:
-      - {text: 'La diferencia entre cualquier término y su antecesor inmediato debe ser siempre una constante fija $d$', is_correct: true}
-      - {text: 'El cociente entre términos consecutivos debe ser una constante multiplicativa', is_correct: false}
-      - {text: 'Todos los términos deben ser números primos positivos', is_correct: false}
-      - {text: 'Cada término debe ser el cuadrado perfecto del término anterior', is_correct: false}
-    explanation: 'La alternativa correcta es ''La diferencia entre cualquier término y su antecesor inmediato debe ser siempre una constante fija $d$''. Es la definición formal de P.A.'
+      - {text: 'Que la diferencia entre cualquier término y su predecesor sea constante ($a_{n+1} - a_n = d$)', is_correct: true}
+      - {text: 'Que el cociente entre términos consecutivos sea constante ($a_{n+1} / a_n = r$)', is_correct: false}
+      - {text: 'Que todos los términos sean números primos', is_correct: false}
+      - {text: 'Que la suma de los términos sea igual a cero', is_correct: false}
+    explanation: 'La alternativa correcta es ''Que la diferencia entre cualquier término y su predecesor sea constante ($a_{n+1} - a_n = d$)''. Es la propiedad definitoria de las progresiones aritméticas.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Dada la sucesión $15, 11, 7, 3, -1, \dots$, ¿cuál es el valor del primer término $a_1$ y de la diferencia común $d$?'
+    question: 'Si una progresión aritmética tiene $a_1 = 15$ y diferencia $d = -3$, ¿cuál es el valor de $a_3$?'
     choices:
-      - {text: 'Primer término $a_1 = 15$ y diferencia común $d = -4$', is_correct: true}
-      - {text: 'Primer término $a_1 = 15$ y diferencia común $d = +4$', is_correct: false}
-      - {text: 'Primer término $a_1 = -1$ y diferencia común $d = 4$', is_correct: false}
-      - {text: 'Primer término $a_1 = 11$ y diferencia común $d = -15$', is_correct: false}
-    explanation: 'La alternativa correcta es ''Primer término $a_1 = 15$ y diferencia común $d = -4$''. $a_1 = 15$ y $11 - 15 = -4$.'
+      - {text: '$9$, calculando $a_2 = 12$ y $a_3 = 9$', is_correct: true}
+      - {text: '$21$, sumando 3 en lugar de restar', is_correct: false}
+      - {text: '$12$, calculando solo el segundo término', is_correct: false}
+      - {text: '$6$, restando 3 tres veces', is_correct: false}
+    explanation: 'La alternativa correcta es ''$9$, calculando $a_2 = 12$ y $a_3 = 9$''. Partiendo de 15: $15 - 3 = 12$, luego $12 - 3 = 9$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar el valor del primer elemento de la secuencia como $a_1$.'
-  - 'Paso 2: Restar cada término menos el término inmediatamente anterior ($a_2 - a_1, a_3 - a_2, a_4 - a_3$).'
-  - 'Paso 3: Verificar que los resultados de las restas arrojen el mismo valor numérico constante $d$.'
-  - 'Paso 4: Concluir que es una P.A. de diferencia $d$ e indicar si es creciente ($d>0$) o decreciente ($d<0$).'
+  - 'Paso 1: Identificar el primer término $a_1$ y el valor de la diferencia común $d$.'
+  - 'Paso 2: Sumar la diferencia $d$ al término anterior para obtener cada nuevo término ($a_{n+1} = a_n + d$).'
+  - 'Paso 3: Analizar el signo de $d$ para clasificar la progresión como creciente ($d > 0$), decreciente ($d < 0$) o constante ($d = 0$).'
 errores_correccion: |
-  - **Error 1:** Restar al revés al calcular la diferencia (hacer $a_1 - a_2$ en lugar de $a_2 - a_1$). **Cómo corregirlo:** La diferencia siempre se calcula restando el **término posterior menos el anterior: $d = a_{n+1} - a_n$**.
-  - **Error 2:** Creer que una progresión con números negativos no puede ser aritmética. **Cómo corregirlo:** La diferencia $d$ puede ser **positiva, negativa o cero**, perteneciendo a cualquier número real $\mathbb{R}$.
+  - **Error 1:** Confundir la progresión aritmética con una progresión geométrica (multiplicar en vez de sumar). **Cómo corregirlo:** En la PA **se suma una cantidad constante $d$**, no se multiplica.
+  - **Error 2:** Restar en orden invertido al verificar la diferencia ($a_n - a_{n+1}$). **Cómo corregirlo:** La diferencia es siempre **término posterior menos término anterior**: $d = a_{n+1} - a_n$.
 ejemplos:
-  - titulo: 'P.A. creciente simple'
-    enunciado: 'Para la sucesión $3, 7, 11, 15, \dots$, ¿el primer término es $a_1 = 3$ y la diferencia $d = 4$?'
+  - titulo: 'PA con diferencia positiva'
+    enunciado: 'Para $a_1 = 3$ y $d = 5$, ¿cuáles son los tres primeros términos?'
     alternativas:
-      - 'Sí, pues $7 - 3 = 4$ y $11 - 7 = 4$'
-      - 'No, la diferencia es 3'
-      - 'No, el primer término es 4'
-    respuesta: 'Sí, pues $7 - 3 = 4$ y $11 - 7 = 4$'
+      - '$3, 8, 13$'
+      - '$3, 15, 75$'
+      - '$3, 6, 9$'
+    respuesta: '$3, 8, 13$'
     solucion_pasos:
-      - '1. Primer término: $a_1 = 3$.'
-      - '2. Diferencia: $7 - 3 = 4$.'
-  - titulo: 'P.A. decreciente'
-    enunciado: 'Para $10, 6, 2, -2, -6, \dots$, ¿la diferencia es $d = -4$?'
+      - '1. $a_1 = 3, a_2 = 3 + 5 = 8, a_3 = 8 + 5 = 13$.'
+  - titulo: 'PA decreciente'
+    enunciado: 'Para $a_1 = 10$ y $d = -2$, ¿cuál es el cuarto término $a_4$?'
+    alternativas:
+      - '$4$'
+      - '$2$'
+      - '$6$'
+    respuesta: '$4$'
+    solucion_pasos:
+      - '1. $a_1 = 10, a_2 = 8, a_3 = 6, a_4 = 4$.'
+  - titulo: 'Monotonía de la PA'
+    enunciado: '¿Una progresión aritmética con diferencia $d = -5$ es estrictamente decreciente?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $6 - 10 = -4$, $2 - 6 = -4$. Es una P.A. decreciente.'
-  - titulo: 'P.A. con números fraccionarios'
-    enunciado: 'Para $\frac{1}{2}, 1, \frac{3}{2}, 2, \dots$, ¿la diferencia es $d = \frac{1}{2}$?'
+      - '1. Toda PA con $d < 0$ es estrictamente decreciente.'
+  - titulo: 'Diferencia nula'
+    enunciado: '¿La sucesión constante $8, 8, 8, 8, \dots$ es una progresión aritmética con $d = 0$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $1 - 1/2 = 1/2$.'
-  - titulo: 'P.A. constante'
-    enunciado: 'Para la sucesión $8, 8, 8, 8, \dots$, ¿es una P.A. de diferencia $d = 0$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $8 - 8 = 0$. Es una progresión constante.'
+      - '1. $8 - 8 = 0$ en todos los pasos.'
 errores_frecuentes:
-  - 'Restar el término anterior menos el posterior al calcular la diferencia común $d$.'
-  - 'Una progresión con diferencia negativa es siempre inválida para el cálculo de índices.'
-  - 'La posición ordinal $n$ y el valor numérico del término $a_n$ son numéricamente idénticos en la ecuación.'
-  - 'Considerar que las progresiones aritméticas se construyen mediante multiplicación constante.'
-  - 'Evaluar únicamente la diferencia del primer par de términos para declarar que toda la sucesión es aritmética.'
+  - 'En una progresión aritmética cada término se obtiene multiplicando el término anterior por una constante fija.'
+  - 'La diferencia común $d$ de una PA se calcula restando el primer término al término general sin importar la posición.'
+  - 'Una progresión aritmética con diferencia común negativa genera términos estrictamente crecientes.'
+  - 'El valor de la diferencia común $d$ debe ser obligatoriamente un número entero positivo.'
+  - 'Una sucesión constante no constituye una progresión aritmética.'
 afirmaciones_verdaderas:
-  - 'En una progresión aritmética, la diferencia $d = a_{n+1} - a_n$ permanece constante para todo $n \ge 1$.'
-  - 'Si la diferencia común es positiva ($d > 0$), la progresión aritmética es estrictamente creciente.'
-al_terminar_debes_poder: 'Definir una progresión aritmética $a_n = a_{n-1} + d$ e identificar su primer término $a_1$ y diferencia común $d$.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'En una progresión aritmética la diferencia entre cualquier término y su predecesor inmediato es constante ($a_{n+1} - a_n = d$).'
+  - 'Una progresión aritmética es estrictamente creciente si y solo si su diferencia común es estrictamente positiva ($d > 0$).'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/definicion-de-progresion-aritmetica-mediante-diferencia-constante-resumen.svg)
+
+  QUÉ: Definir, clasificar y construir progresiones aritméticas mediante el uso de la diferencia común.
+  CÓMO: Aplicar la relación de recurrencia aditiva $a_{n+1} = a_n + d$ evaluando la monotonía según el signo de $d \in \mathbb{R}$.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

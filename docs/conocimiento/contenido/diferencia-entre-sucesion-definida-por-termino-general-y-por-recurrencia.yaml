@@ -1,106 +1,115 @@
 semantic_id: MAT.NUM.SUCESIONES_BASE.COMPARACION_EXPLICITA_RECURSIVA
-resumen_inicial: 'La diferencia entre la definición por término general y por recurrencia radica en que el término general ($a_n = f(n)$) calcula cualquier elemento de forma directa sin requerir valores previos, mientras que la recurrencia ($a_n = g(a_{n-1})$) lo calcula de forma enlazada dependiente.'
+resumen_inicial: 'La distinción entre término general y recurrencia compara la evaluación directa independiente $a_n = f(n)$ frente a la evaluación secuencial encadenada $a_n = g(a_{n-1})$.'
 explicacion_simple: |
-  Existen dos formas principales de definir una misma sucesión numérica:
-  - **Fórmula Explícita (Término General)**: $a_n = 3n + 1$.
-    - Para saber el término $100$, sólo haces $a_{100} = 3(100) + 1 = 301$. ¡Es un **acceso directo**!
-  - **Fórmula de Recurrencia**: $a_1 = 4$, $a_n = a_{n-1} + 3$.
-    - Para saber el término $100$, necesitas saber el término $99$, para el cual necesitas el $98$, y así en **cadena** hasta llegar a $a_1$.
-  Ambas formas generan exactamente la misma lista de números ($4, 7, 10, 13, \dots$), pero se calculan de manera completamente distinta.
+  Una misma sucesión de números se puede describir de dos formas distintas:
+  1. **Fórmula Explícita (Término General)**:
+     - Te dice el valor directamente mirando la posición: **$a_n = 2n + 1$**.
+     - Para el término 100: $a_{100} = 2(100) + 1 = 201$ (en 1 solo paso).
+  2. **Fórmula Recurrente**:
+     - Te dice cómo pasar de un número al siguiente: **$a_1 = 3, a_n = a_{n-1} + 2$**.
+     - Para el término 100 tendrías que calcular $a_2, a_3, a_4, \dots$ hasta $a_{99}$ y luego sumar 2 (requiere 99 pasos).
+  Ambas formas generan exactamente la misma lista de números, pero la explícita es mucho más directa para posiciones lejanas.
+
+  ![Diferencia entre término general y recurrencia](/static/img/nodos/diferencia-entre-sucesion-definida-por-termino-general-y-por-recurrencia-intro.svg)
 explicacion_formal: |
-  ### Definición formal y comparación analítica
-  Dada una sucesión $(a_n)_{n \in \mathbb{N}}$, se comparan sus dos representaciones fundamentales:
+  ### Definición formal y Comparación Estructural
+  Una sucesión numérica $(a_n)_{n \in \mathbb{N}}$ admite dos representaciones funcionales fundamentales:
 
-  | Criterio | Formulación Explícita (Término General) | Formulación por Recurrencia |
-  | :--- | :--- | :--- |
-  | **Estructura** | $a_n = f(n)$ | $a_n = g(a_{n-1}, \dots, a_1)$ con $a_1 = C$ |
-  | **Dependencia** | Depende exclusivamente de la **posición $n$** | Depende del **término o términos anteriores** |
-  | **Complejidad de cálculo** | Directa $\mathcal{O}(1)$ para cualquier $n$ | Secuencial $\mathcal{O}(n)$ paso a paso |
-  | **Uso principal** | Evaluación instantánea de términos lejanos | Modelamiento paso a paso (ej: algoritmos, crecimiento poblacional) |
+  $$\begin{array}{|l|c|c|} \hline \textbf{Criterio} & \textbf{Forma Explícita (Término General)} & \textbf{Forma Recurrente} \\ \hline \text{Ecuación} & a_n = f(n) & a_n = g(a_{n-1}), \; a_1 = c \\ \text{Variable de entrada} & n \in \mathbb{N} \text{ (Posición ordinal)} & a_{n-1} \in \mathbb{R} \text{ (Valor previo)} \\ \text{Complejidad para } a_k & O(1) \text{ (1 evaluación algebraica)} & O(k) \text{ (} k-1 \text{ evaluaciones encadenadas)} \\ \text{Independencia} & \text{Cálculo directo e independiente} & \text{Dependencia secuencial estricta} \\ \hline \end{array}$$
 
-  ### Conversión entre representaciones
-  - **De recurrencia a explícita**: Resolver la ecuación en diferencias (ej: $a_n = a_{n-1} + d \implies a_n = a_1 + (n-1)d$).
-  - **De explícita a recurrencia**: Expresar $a_n$ en términos de $a_{n-1}$ mediante manipulación algebraica (ej: $a_n = 2^n \implies a_n = 2 \cdot 2^{n-1} = 2 a_{n-1}$ con $a_1 = 2$).
+  ### Equivalencia de Representaciones
+  Dada una relación lineal de primer orden $a_n = a_{n-1} + d$ con $a_1 = c$, su solución analítica única en forma explícita es:
+  $$a_n = c + (n - 1)d = d \cdot n + (c - d)$$
 
   ### Síntesis didáctica
-  - Explícita: $a_n = f(n) \implies$ Acceso directo a $a_n$ sin calcular $a_{n-1}$.
-  - Recurrencia: $a_n = g(a_{n-1}) \implies$ Cadena encadenada desde la semilla $a_1$.
+  - Explícita: $a_n = f(n) \implies$ Acceso directo.
+  - Recurrente: $a_n = g(a_{n-1}) \implies$ Acceso secuencial.
 definiciones_clave: |
-  - **Fórmula explícita**: Función $a_n = f(n)$ que relaciona directamente la posición ordinal $n$ con el valor $a_n$.
-  - **Fórmula por recurrencia**: Ecuación $a_n = g(a_{n-1})$ que conecta un término con su antecesor inmediato.
-  - **Equivalencia de representación**: Propiedad por la cual dos expresiones distintas (una explícita y una recursiva) generan exactamente la misma secuencia de términos.
+  - **Forma explícita**: Expresión analítica cerrada donde la variable independiente es el índice de posición $n$.
+  - **Forma recurrente**: Expresión inductiva donde la variable de entrada es el valor del término anterior $a_{n-1}$.
+  - **Complejidad computacional**: Cantidad de operaciones necesarias para evaluar el término de una posición determinada.
 propiedades_relaciones: |
-  - **Eficiencia computacional**: Para $n$ muy grande (ej: $n = 1.000.000$), la fórmula explícita requiere 1 sola operación, mientras que la recurrencia requiere $1.000.000$ de iteraciones.
-  - **Complementariedad**: Ciertas sucesiones (como la secuencia de Fibonacci) son más fáciles de definir por recurrencia que mediante su fórmula explícita (Fórmula de Binet).
+  - **Dualidad de descripción**: Toda sucesión definida por recurrencia lineal admite una representación cerrada explícita equivalente.
+  - **Modelamiento dinámico**: La forma recurrente es ideal para describir procesos paso a paso en el tiempo, mientras que la explícita es ideal para proyecciones a largo plazo.
 ejemplo_guiado:
-  enunciado: 'Dada la sucesión descrita de forma explícita por $a_n = 5n - 2$, halla su equivalente por recurrencia expresando $a_1$ y la relación entre $a_n$ y $a_{n-1}$. Comprueba que ambos métodos entregan $a_3 = 13$.'
+  enunciado: 'Dada la sucesión $(5, 8, 11, 14, 17, \dots)$, escribe su definición por recurrencia, su término general explícito y compara el cálculo de $a_{50}$ en ambas formas.'
+  imagen: '/static/img/nodos/diferencia-entre-sucesion-definida-por-termino-general-y-por-recurrencia-ejemplos.svg'
   pasos:
-    - 'Paso 1: Evaluamos el término inicial con la explícita: $a_1 = 5(1) - 2 = 3$. La condición inicial es $a_1 = 3$.'
-    - 'Paso 2: Hallamos la diferencia consecutiva: $a_n - a_{n-1} = (5n - 2) - (5(n-1) - 2) = 5n - 2 - (5n - 7) = 5$.'
-    - 'Paso 3: Escribimos la forma por recurrencia: $a_1 = 3$, $a_n = a_{n-1} + 5$.'
-    - 'Paso 4: Evaluamos $a_3$ por ambos caminos: Explícita $a_3 = 5(3) - 2 = 13$. Recurrencia $a_1 = 3 \implies a_2 = 8 \implies a_3 = 13$. Ambas son **idénticas ($a_3 = 13$)**.'
+    - 'Paso 1: Identificamos $a_1 = 5$ y la diferencia constante $d = 8 - 5 = 3$.'
+    - 'Paso 2: Escribimos la definición por recurrencia: **$a_1 = 5$ y $a_n = a_{n-1} + 3$ para $n \ge 2$**.'
+    - 'Paso 3: Deducimos la fórmula explícita: $a_n = 5 + (n-1) \cdot 3 = 5 + 3n - 3 = **3n + 2$**.'
+    - 'Paso 4: Comparamos el cálculo de $a_{50}$:'
+    - '  - Explícita: $a_{50} = 3(50) + 2 = 150 + 2 = **152$** (1 sola operación).'
+    - '  - Recurrente: Se requeriría calcular 49 sumas consecutivas de $+3$ a partir de $a_1$.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Por qué la fórmula explícita $a_n = f(n)$ es más eficiente que una fórmula por recurrencia para calcular el término de la posición $n=1.000$?'
+    question: '¿Por qué la fórmula explícita $a_n = f(n)$ es más eficiente que la fórmula recurrente para calcular $a_{1000}$?'
     choices:
-      - {text: 'Porque permite calcular el valor de $a_{1000}$ en un solo paso sustituyendo $n=1000$, sin calcular los 999 términos anteriores', is_correct: true}
-      - {text: 'Porque la fórmula por recurrencia sólo sirve para calcular los primeros 5 términos', is_correct: false}
-      - {text: 'Porque la fórmula explícita entrega números enteros mientras que la recurrencia entrega decimales', is_correct: false}
-      - {text: 'Porque la recurrencia requiere resolver ecuaciones cuadráticas obligatoriamente', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque permite calcular el valor de $a_{1000}$ en un solo paso sustituyendo $n=1000$, sin calcular los 999 términos anteriores''. Acceso directo vs en cadena.'
+      - {text: 'Porque permite calcular el resultado en una sola sustitución ($n=1000$) sin calcular los 999 términos previos', is_correct: true}
+      - {text: 'Porque la fórmula explícita solo funciona para números pares', is_correct: false}
+      - {text: 'Porque la recurrencia produce errores en números grandes', is_correct: false}
+      - {text: 'Porque la fórmula explícita no utiliza operaciones matemáticas', is_correct: false}
+    explanation: 'La alternativa correcta es ''Porque permite calcular el resultado en una sola sustitución ($n=1000$) sin calcular los 999 términos previos''. La fórmula explícita tiene complejidad temporal constante e independiente.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si una sucesión está definida por $a_1 = 5$ y $a_n = 3 a_{n-1}$, ¿cuál es su expresión explícita equivalente?'
+    question: '¿Cuál es el término general explícito equivalente a la recurrencia $a_1 = 7, a_n = a_{n-1} + 4$?'
     choices:
-      - {text: '$a_n = 5 \cdot 3^{n-1}$, pues es una progresión geométrica de primer término 5 y razón 3', is_correct: true}
-      - {text: '$a_n = 3n + 5$, sumando 3 veces n', is_correct: false}
-      - {text: '$a_n = 5^n$, elevando 5 a la n', is_correct: false}
-      - {text: '$a_n = 15n$, multiplicando ambos números', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a_n = 5 \cdot 3^{n-1}$, pues es una progresión geométrica de primer término 5 y razón 3''. $a_1=5, a_2=15, a_3=45 \implies 5 \cdot 3^{n-1}$.'
+      - {text: '$a_n = 4n + 3$, evaluando $4(1) + 3 = 7$', is_correct: true}
+      - {text: '$a_n = 7n + 4$', is_correct: false}
+      - {text: '$a_n = 4n + 7$', is_correct: false}
+      - {text: '$a_n = 7n - 4$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$a_n = 4n + 3$, evaluando $4(1) + 3 = 7$''. Con diferencia $d=4$, $a_n = 7 + (n-1)4 = 4n + 3$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar si la definición dada utiliza la posición $n$ (explícita) o el término anterior $a_{n-1}$ (recurrencia).'
-  - 'Paso 2: Para calcular términos con la explícita, reemplazar $n$ directamente por la posición deseada.'
-  - 'Paso 3: Para calcular términos con la recurrencia, arrancar con $a_1$ e iterar secuencialmente paso a paso.'
-  - 'Paso 4: Para convertir de una forma a otra, identificar si se trata de un patrón aditivo (suma constante) o multiplicativo (razón constante).'
+  - 'Paso 1: Identificar si la expresión dada depende de la posición $n$ (explícita) o del término previo $a_{n-1}$ (recurrente).'
+  - 'Paso 2: Para pasar de recurrencia lineal a explícita, identificar el primer término $a_1$ y la diferencia $d$ (o razón $r$).'
+  - 'Paso 3: Construir $a_n = a_1 + (n-1)d$ y reducir algebraicamente.'
+  - 'Paso 4: Verificar que ambas representaciones generen los mismos valores iniciales $\{a_1, a_2, a_3\}$.'
 errores_correccion: |
-  - **Error 1:** Creer que una formulación por recurrencia y una explícita no pueden representar la misma sucesión. **Cómo corregirlo:** Una misma sucesión numérica **puede representarse perfectamente mediante ambas formas**.
-  - **Error 2:** Usar la fórmula de recurrencia como si fuera un acceso directo sin tener la semilla $a_1$. **Cómo corregirlo:** La recurrencia **exige siempre la semilla $a_1$** para poder encadenar los cálculos.
+  - **Error 1:** Creer que una sucesión definida por recurrencia no puede tener fórmula explícita. **Cómo corregirlo:** Las sucesiones regulares **pueden convertirse a su fórmula explícita equivalente** mediante álgebra.
+  - **Error 2:** Usar la posición $n$ como argumento en la regla recurrente (escribir $a_{n-1} + n$ en vez de $a_{n-1} + d$). **Cómo corregirlo:** En la recurrencia simple aritmética se suma la **constante fija $d$**, no la variable $n$.
 ejemplos:
-  - titulo: 'Formas equivalentes para pares'
-    enunciado: '¿La explícita $a_n = 2n$ y la recurrencia ($a_1=2, a_n = a_{n-1}+2$) generan la misma lista $2, 4, 6, 8, \dots$?'
+  - titulo: 'Identificación de tipo de fórmula'
+    enunciado: '¿La ecuación $a_n = 3n^2 - 1$ es una fórmula explícita o recurrente?'
     alternativas:
-      - 'Sí, representan la misma sucesión'
-      - 'No, la recurrencia da otros números'
-      - 'No, la explícita empieza en 0'
-    respuesta: 'Sí, representan la misma sucesión'
+      - 'Es una fórmula explícita porque depende directamente de la posición n'
+      - 'Es una fórmula recurrente porque calcula términos'
+      - 'Es mixta'
+    respuesta: 'Es una fórmula explícita porque depende directamente de la posición n'
     solucion_pasos:
-      - '1. Explícita: $a_1=2, a_2=4, a_3=6$.'
-      - '2. Recurrencia: $a_1=2, a_2=2+2=4, a_3=4+2=6$. Coinciden.'
-  - titulo: 'Formas equivalentes para potencias de 2'
-    enunciado: '¿La explícita $a_n = 2^n$ equivale a $a_1=2, a_n = 2a_{n-1}$?'
+      - '1. La entrada es el índice posicional $n$, sin requerir términos previos.'
+  - titulo: 'Conversión de recurrencia a explícita'
+    enunciado: 'Para $a_1 = 10, a_n = a_{n-1} + 5$, ¿el término general explícito es $a_n = 5n + 5$?'
+    alternativas:
+      - 'Sí, evaluando $a_1 = 5(1) + 5 = 10$ y diferencia 5'
+      - 'No, es $10n + 5$'
+      - 'No, es $5n + 10$'
+    respuesta: 'Sí, evaluando $a_1 = 5(1) + 5 = 10$ y diferencia 5'
+    solucion_pasos:
+      - '1. $a_n = 10 + (n-1)5 = 10 + 5n - 5 = 5n + 5$.'
+  - titulo: 'Equivalencia de listas de números'
+    enunciado: '¿Tanto $a_n = 2^n$ como ($a_1 = 2, a_n = 2a_{n-1}$) generan la misma sucesión $(2, 4, 8, 16, \dots)$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. Ambas generan la secuencia $2, 4, 8, 16, 32, \dots$.'
-  - titulo: 'Cálculo de a100'
-    enunciado: 'Para hallar $a_{100}$, ¿es más rápido usar la explícita que la recurrencia?'
+      - '1. Ambas fórmulas definen la misma progresión geométrica.'
+  - titulo: 'Eficiencia computacional'
+    enunciado: '¿Calcular $a_{100}$ mediante fórmula explícita requiere menos operaciones que mediante fórmula recurrente?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. La explícita realiza 1 sola operación direct de sustitución.'
-  - titulo: 'Generación de impares'
-    enunciado: '¿$a_n = 2n - 1$ es equivalente a $a_1 = 1, a_n = a_{n-1} + 2$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. Ambas generan $1, 3, 5, 7, 9, \dots$.'
+      - '1. La fórmula explícita opera en 1 paso frente a 99 pasos de la recurrencia.'
 errores_frecuentes:
-  - 'Considerar que las expresiones por recurrencia y explícitas son mutuamente excluyentes y no pueden describir la misma sucesión.'
-  - 'Intentar calcular la recurrencia sustituyendo directamente el subíndice $n$ sin pasar por el término anterior $a_{n-1}$.'
-  - 'La velocidad de cálculo del término $a_{1.000}$ es idéntica en el modelo explícito y en el recursivo.'
-  - 'Una relación de recurrencia define unívocamente una sucesión sin necesidad de especificar el valor inicial $a_1$.'
-  - 'Evaluar los términos de una relación de recurrencia lineal requiere conocimientos de cálculo avanzado.'
+  - 'Una sucesión numérica definida por recurrencia no puede expresarse mediante un término general explícito.'
+  - 'La fórmula explícita requiere calcular todos los términos previos para obtener el valor de una posición dada.'
+  - 'La variable independiente de entrada en una fórmula explícita es el término anterior $a_{n-1}$.'
+  - 'Una relación de recurrencia calcula cualquier término en una sola operación algebraica.'
+  - 'La fórmula recurrente y la explícita de una misma sucesión producen secuencias numéricas con valores distintos.'
 afirmaciones_verdaderas:
-  - 'La fórmula explícita $a_n = f(n)$ calcula cualquier término en función de su posición $n$, mientras que la recurrencia $a_n = g(a_{n-1})$ depende del término anterior.'
-  - 'Una misma sucesión numérica puede definirse tanto mediante una fórmula explícita como por una relación de recurrencia con condición inicial.'
-al_terminar_debes_poder: 'Diferenciar entre las representaciones explícita ($a_n = f(n)$) y por recurrencia ($a_n = g(a_{n-1})$) de una sucesión numérica.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La fórmula explícita $a_n = f(n)$ evalúa directamente cualquier posición $n$ sin necesidad de conocer los términos precedentes.'
+  - 'La fórmula recurrente $a_n = g(a_{n-1})$ describe la dinámica de transición secuencial entre términos consecutivos.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/diferencia-entre-sucesion-definida-por-termino-general-y-por-recurrencia-resumen.svg)
+
+  QUÉ: Distinguir, comparar y convertir entre la representación explícita (término general) y la representación por recurrencia de una sucesión.
+  CÓMO: Contrastar el cálculo directo $a_n = f(n)$ frente al cálculo inductivo $a_n = g(a_{n-1})$ evaluando ventajas de eficiencia y deduciendo la forma cerrada analítica.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

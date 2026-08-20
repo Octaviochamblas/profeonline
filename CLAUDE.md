@@ -65,6 +65,8 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
   las dos etiquetas explícitas `QUÉ:` (acción o capacidad matemática) y `CÓMO:` (mecanismo o
   algoritmo técnico de resolución en $LaTeX$). Prohibido redactar párrafos de texto corrido
   sin estas etiquetas (pauta en `docs/conocimiento/pauta-contenido.md`).
+- **Fórmulas y Matemáticas en YAML (KaTeX):** Toda expresión matemática, fracción o número decimal con barra periódica ($0,\overline{3}$, $2,45\overline{8}$) en enunciados, alternativas, explicaciones o títulos de `ejemplos` y `checkpoints` DEBE estar estrictamente delimitada con signos de dólar (`$...$` o `$$...$$`). Prohibido dejar comandos LaTeX como `\overline` en texto plano.
+- **Signos de Moneda / Dinero en YAML (KaTeX):** Todo monto monetario con signo peso (ej: $\$500.000$) DEBE estar estrictamente delimitado dentro de un bloque LaTeX como `$\$500.000$` o `$\$500.000\text{ pesos}$`. Está **estrictamente prohibido escribir `\$500.000` o `$500.000` suelto en texto plano sin cerrar**, ya que Markdown consume la barra invertida (`\`) y el renderizador de KaTeX en el cliente toma el signo `$` como apertura de fórmula matemática, devorando todo el texto en español siguiente (eliminando espacios, volviendo cursivas las palabras y convirtiendo guiones bajos en subíndices).
 - **Infografías y Diagramas SVG:** Todo SVG (`static/img/nodos/`) debe respetar el estándar
   *Zero-Overflow*: textos derechos anclados con `text-anchor="end"`, padding seguro $\ge 15\text{px}$,
   y control estricto de longitud de caracteres por caja contenedora y subcaja interna

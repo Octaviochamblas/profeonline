@@ -1,116 +1,130 @@
 semantic_id: MAT.ALG.POLINOMIOS.POLINOMIOS_IDENTICOS
-resumen_inicial: 'La identificación de polinomios idénticos consiste en verificar que dos expresiones polinómicas toman exactamente los mismos valores numéricos para cualquier asignación de sus variables, lo que exige que sus coeficientes de términos semejantes sean estrictamente iguales.'
+resumen_inicial: 'Dos polinomios son idénticos si tienen el mismo grado y los coeficientes de sus términos de igual grado son respectivamente iguales.'
 explicacion_simple: |
-  Dos polinomios son **idénticos o equivalentes** ($P(x) \equiv Q(x)$) si son en realidad la **misma expresión escrita de forma equivalente**:
-  - Para que dos polinomios sean idénticos deben cumplir **dos condiciones**:
-    1. Tienen el **mismo grado**.
-    2. Los **coeficientes numéricos de los términos que tienen las mismas letras deben ser idénticos**.
-  - Ejemplo: Si te dicen que $Ax^2 + Bx + C \equiv 5x^2 - 3x + 8$:
-    - Para que sean idénticos se debe cumplir que $A = 5$, $B = -3$ y $C = 8$.
-  - Si restas dos polinomios idénticos ($P(x) - Q(x)$), el resultado da siempre el **polinomio nulo ($0$)**.
+  - Dos polinomios son **idénticos** ($P(x) \equiv Q(x)$) si son **exactamente la misma expresión matemática**, aunque estén escritos de forma distinta.
+  - Por ejemplo: $(x + 3)^2$ y $x^2 + 6x + 9$ son polinomios idénticos:
+    - Si reemplazamos $x = 2$: $(2+3)^2 = 25$ y $2^2 + 6(2) + 9 = 25$.
+    - ¡Dan el mismo resultado para **cualquier número** que elijamos!
+  - **Diferencia con una ecuación normal:**
+    - Una ecuación (como $2x + 1 = 7$) solo es verdadera para un valor ($x = 3$).
+    - Una identidad ($2(x + 1) \equiv 2x + 2$) es verdadera para **todos los números reales**.
+
+  ![Polinomios Idénticos](/static/img/nodos/identificacion-de-polinomios-identicos-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  Dos polinomios $P(x) = \sum_{k=0}^n a_k x^k$ y $Q(x) = \sum_{k=0}^m b_k x^k \in \mathbb{R}[x]$ son **idénticos** (denotado $P(x) \equiv Q(x)$) si y solo si sus grados son iguales ($n = m$) y los coeficientes numéricos de sus respectivos términos de igual grado son idénticos término a término:
+  Sean $P(x) = \sum_{i=0}^n a_i x^i$ y $Q(x) = \sum_{i=0}^n b_i x^i$ dos polinomios en $\mathbb{K}[x]$.
+  $P$ y $Q$ son **polinomios idénticos** (denotado $P(x) \equiv Q(x)$) si y solo si todos sus coeficientes homólogos son iguales:
 
-  $$P(x) \equiv Q(x) \iff \forall k \in \{0, 1, \dots, n\}, \quad a_k = b_k$$
+  $$P(x) \equiv Q(x) \iff \forall i \in \{0, 1, \dots, n\}, \quad a_i = b_i$$
 
-  ### Teorema de la Evaluación idéntica
-  $P(x) \equiv Q(x)$ si y solo si para todo valor real $r \in \mathbb{R}$ las funciones polinómicas asociadas producen la misma imagen:
+  ### Teorema de equivalencia funcional
+  En cuerpos infinitos ($\mathbb{R}$ o $\mathbb{C}$), dos polinomios de grado a lo sumo $n$ son idénticos si y solo si coinciden en su valor numérico en al menos $n + 1$ puntos distintos:
 
-  $$\forall r \in \mathbb{R}, \quad P(r) = Q(r)$$
+  $$P(x_k) = Q(x_k) \quad \text{para } k = 1, 2, \dots, n+1 \implies P(x) \equiv Q(x)$$
 
-  ### Equivalencia al Polinomio Nulo
-  Dos polinomios son idénticos si y solo si su diferencia es el polinomio nulo:
-
-  $$P(x) \equiv Q(x) \iff P(x) - Q(x) = \mathbf{0}$$
-
-  ### Síntesis didáctica
-  La identidad polinómica establece una equivalencia estructural completa. Es la herramienta clave para resolver ecuaciones paramétricas e integrar por fracciones parciales.
+  ### Criterio de la diferencia nula
+  $$P(x) \equiv Q(x) \iff P(x) - Q(x) \equiv \mathbf{0} \quad (\text{Polinomio nulo})$$
 definiciones_clave: |
-  - **Polinomios idénticos ($P \equiv Q$)**: Polinomios que poseen el mismo grado y cuyos coeficientes correspondientes a potencias iguales son estrictamente idénticos.
-  - **Igualdad formal de polinomios**: Criterio de coincidencia término a término sobre el anillo $\mathbb{R}[x]$.
-  - **Identidad algebraica**: Igualdad que se verifica para cualquier valor asignado a las variables del dominio.
+  - **Polinomios idénticos**: Polinomios con idénticos coeficientes en términos del mismo grado ($P \equiv Q$).
+  - **Identidad polinomial**: Igualdad algebraica que se cumple universalmente para todo $x \in \mathbb{R}$.
+  - **Coeficientes homólogos**: Coeficientes que acompañan a la misma potencia de la variable en ambos polinomios.
 propiedades_relaciones: |
-  - **Propiedad reflexiva, simétrica y transitiva**: La relación de identidad polinómica es una relación de equivalencia sobre $\mathbb{R}[x]$.
-  - **Unicidad de la representación**: Un polinomio en forma reducida posee una única secuencia de coeficientes reales.
+  - **Relación de equivalencia**: La identidad polinomial es reflexiva ($P \equiv P$), simétrica ($P \equiv Q \iff Q \equiv P$) y transitiva ($P \equiv Q \land Q \equiv R \implies P \equiv R$).
+  - **Base de productos notables**: Todas las fórmulas de productos notables y factorizaciones son identidades polinomiales.
 ejemplo_guiado:
-  enunciado: 'Verifica si los polinomios $P(x) = (x + 2)^2$ y $Q(x) = x^2 + 4x + 4$ son idénticos mediante desarrollo formal y evaluación en $x = 3$.'
+  enunciado: 'Demuestra si los polinomios $P(x) = (x - 2)(x + 2) + 5$ y $Q(x) = x^2 + 1$ son idénticos.'
+  imagen: '/static/img/nodos/identificacion-de-polinomios-identicos-ejemplos.svg'
   pasos:
-    - 'Paso 1: Desarrollamos el binomio al cuadrado de $P(x)$: $P(x) = (x + 2)^2 = x^2 + 2(2)x + 2^2 = x^2 + 4x + 4$.'
-    - 'Paso 2: Comparamos coeficientes término a término con $Q(x) = x^2 + 4x + 4$:
-       - Coeficiente de $x^2$: $1 = 1$
-       - Coeficiente de $x$: $4 = 4$
-       - Término independiente: $4 = 4$'
-    - 'Paso 3: Evaluamos $P(3) = (3+2)^2 = 5^2 = 25$.'
-    - 'Paso 4: Evaluamos $Q(3) = 3^2 + 4(3) + 4 = 9 + 12 + 4 = 25$.'
-    - 'Conclusión: Sus coeficientes son idénticos y $P(3) = Q(3) = 25 \implies \mathbf{P(x) \equiv Q(x)}$.'
+    - 'Paso 1: Desarrollamos y reducimos el polinomio $P(x)$:'
+    - '  - $(x - 2)(x + 2) = x^2 - 4$ (Diferencia de cuadrados).'
+    - '  - $P(x) = x^2 - 4 + 5 = **x^2 + 1$**.'
+    - 'Paso 2: Escribimos el polinomio $Q(x)$: **$Q(x) = x^2 + 1$**.'
+    - 'Paso 3: Comparamos los coeficientes homólogos:'
+    - '  - Coeficiente de $x^2$: $1 = 1$.'
+    - '  - Coeficiente de $x$: $0 = 0$.'
+    - '  - Término independiente: $1 = 1$.'
+    - 'Paso 4: Conclusión: Como todos los coeficientes correspondientes son iguales, **$P(x) \equiv Q(x)$ son polinomios idénticos**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué condición debe cumplirse término a término para que dos polinomios reducidos del mismo grado sean idénticos ($P \equiv Q$)?'
+    question: '¿Qué condición garantiza formalmente que dos polinomios reducidos sean idénticos?'
     choices:
-      - {text: 'Los coeficientes numéricos de los términos de igual grado deben ser estrictamente iguales', is_correct: true}
-      - {text: 'La suma de sus términos independientes debe dar cero', is_correct: false}
-      - {text: 'Los coeficientes deben ser todos números primos', is_correct: false}
-      - {text: 'Basta con que tengan el mismo término independiente', is_correct: false}
-    explanation: 'La alternativa correcta es ''Los coeficientes numéricos de los términos de igual grado deben ser estrictamente iguales''. Coincidencia coeficiente a coeficiente.'
+      - text: 'Que tengan el mismo grado y los coeficientes de sus términos de igual grado sean respectivamente iguales'
+        is_correct: true
+      - text: 'Que den el mismo resultado al evaluarse en $x = 0$ únicamente'
+        is_correct: false
+      - text: 'Que tengan la misma cantidad de letras'
+        is_correct: false
+      - text: 'Que ambos tengan grado par'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Que tengan el mismo grado y los coeficientes de sus términos de igual grado sean respectivamente iguales''. Es la definición canónica de polinomios idénticos.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si la diferencia entre dos polinomios $P(x) - Q(x)$ resulta en el polinomio nulo ($0$), ¿qué relación existe entre $P(x)$ y $Q(x)$?'
+    question: 'Si dos polinomios de segundo grado coinciden en 3 puntos distintos, ¿qué se concluye?'
     choices:
-      - {text: 'Los polinomios $P(x)$ y $Q(x)$ son polinomios idénticos ($P(x) \equiv Q(x)$)', is_correct: true}
-      - {text: 'Los polinomios tienen grados diferentes', is_correct: false}
-      - {text: 'Los polinomios son inversos multiplicativos', is_correct: false}
-      - {text: 'Uno de los polinomios es nulo y el otro no', is_correct: false}
-    explanation: 'La alternativa correcta es ''Los polinomios $P(x)$ y $Q(x)$ son polinomios idénticos ($P(x) \equiv Q(x)$)''. $P(x) - Q(x) = 0 \iff P \equiv Q$.'
+      - text: 'Son polinomios idénticos para todo número real'
+        is_correct: true
+      - text: 'Solo son iguales en esos 3 puntos'
+        is_correct: false
+      - text: 'Uno es el doble del otro'
+        is_correct: false
+      - text: 'No se puede concluir nada'
+        is_correct: false
+    explanation: 'La alternativa correcta es ''Son polinomios idénticos para todo número real''. Por el teorema fundamental, dos polinomios de grado $n$ que coinciden en $n+1$ puntos son idénticos.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Desarrollar y reducir completamente ambos polinomios.'
-  - 'Paso 2: Ordenar ambos polinomios en forma decreciente respecto a la misma variable.'
-  - 'Paso 3: Comprobar que ambos tengan el mismo grado absoluto.'
-  - 'Paso 4: Comparar uno a uno los coeficientes que acompañan a cada potencia de igual grado. Si todos coinciden, son idénticos.'
+  - 'Paso 1: Desarrollar productos y reducir términos semejantes en ambos polinomios.'
+  - 'Paso 2: Escribir ambos polinomios en forma ordenada canónica (descendente).'
+  - 'Paso 3: Comparar término a término los coeficientes de cada potencia de $x$.'
+  - 'Paso 4: Si todos los coeficientes homólogos coinciden, confirmar la identidad $P(x) \equiv Q(x)$.'
 errores_correccion: |
-  - **Error 1:** Afirmar que dos polinomios son idénticos sólo porque coinciden en su término independiente. **Cómo corregirlo:** Para ser idénticos **TODOS los coeficientes de igual grado deben coincidir**.
-  - **Error 2:** Evaluar los polinomios en un solo número (ej: $x=0$) y declarar que son idénticos. **Cómo corregirlo:** La identidad **debe cumplirse para TODOS los números de $\mathbb{R}$** comprobando sus coeficientes.
+  - **Error 1:** Afirmar que dos polinomios son idénticos probando solo un valor (ej. $x=1$). **Cómo corregirlo:** Deben coincidir **todos los coeficientes homólogos** o verificarse en $n+1$ puntos.
+  - **Error 2:** Confundir igualdad condicional (ecuación) con identidad formal. **Cómo corregirlo:** La identidad lleva el símbolo **$\equiv$** y es válida para todo $\mathbb{R}$.
 ejemplos:
-  - titulo: 'Comprobación de identidad'
-    enunciado: '¿Son idénticos los polinomios $P(x) = 2x^2 + 6x$ y $Q(x) = 2x(x + 3)$?'
+  - titulo: 'Identidad de binomio al cuadrado'
+    enunciado: '¿Son $(x + 5)^2$ y $x^2 + 10x + 25$ polinomios idénticos?'
     alternativas:
-      - 'Sí, al distribuir $2x(x+3)$ se obtiene $2x^2 + 6x$'
-      - 'No, uno es producto y el otro suma'
-      - 'No, tienen distinto grado'
-    respuesta: 'Sí, al distribuir $2x(x+3)$ se obtiene $2x^2 + 6x$'
+      - 'Sí, porque el desarrollo algebraico produce los mismos coeficientes'
+      - 'No, porque uno está factorizado y el otro no'
+      - 'Solo cuando $x = 0$'
+    respuesta: 'Sí, porque el desarrollo algebraico produce los mismos coeficientes'
     solucion_pasos:
-      - '1. Distribuimos $Q(x) = 2x^2 + 6x$.'
-      - '2. Mismos coeficientes $\implies P(x) \equiv Q(x)$.'
+      - '1. $(x+5)^2 = x^2 + 2(5)x + 25 = x^2 + 10x + 25$.'
+      - '2. Los coeficientes homólogos coinciden: (1, 10, 25).'
+      - '3. Son idénticos.'
   - titulo: 'Diferencia no nula'
-    enunciado: 'Si $P(x) = 5x + 3$ y $Q(x) = 5x - 3$, ¿son polinomios idénticos?'
+    enunciado: '¿Son $x^2 + 4$ y $(x + 2)^2$ polinomios idénticos?'
     alternativas:
-      - 'No, porque sus términos independientes son distintos ($3 \neq -3$)'
-      - 'Sí, porque tienen la misma variable $5x$'
-      - 'Sí, porque sus coeficientes principales coinciden'
-    respuesta: 'No, porque sus términos independientes son distintos ($3 \neq -3$)'
+      - 'No, porque $(x+2)^2 = x^2 + 4x + 4$, que tiene el término $+4x$'
+      - 'Sí, son iguales'
+      - 'Solo si $x = 2$'
+    respuesta: 'No, porque $(x+2)^2 = x^2 + 4x + 4$, que tiene el término $+4x$'
     solucion_pasos:
-      - '1. Términos independientes: $3 \neq -3$.'
-      - '2. No son idénticos.'
-  - titulo: 'Evaluación en cualquier real'
-    enunciado: 'Si $P(x) \equiv Q(x)$, ¿se cumple que $P(100) = Q(100)$?'
+      - '1. $(x+2)^2 = x^2 + 4x + 4$.'
+      - '2. El coeficiente de $x$ en el primero es 0 y en el segundo es 4 ($0 \neq 4$).'
+      - '3. No son idénticos.'
+  - titulo: 'Identidad en todo el dominio'
+    enunciado: '¿Se cumple una identidad polinomial $P(x) \equiv Q(x)$ para cualquier número real que tome la variable $x$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí, la identidad se verifica para cualquier asignación en los reales.'
-  - titulo: 'Identidad de trinomios cuadrados'
-    enunciado: '¿Es el polinomio $(x-4)^2$ idéntico al trinomio $x^2 - 8x + 16$?'
-    respuesta: 'Sí'
+      - '1. Por definición de identidad formal en $\mathbb{R}[x]$.'
+      - '2. Es válida para todo $x \in \mathbb{R}$.'
+  - titulo: 'Ecuación vs Identidad'
+    enunciado: '¿Es la igualdad $3x - 6 = 0$ una identidad polinomial?'
+    respuesta: 'No'
     solucion_pasos:
-      - 'Sí, su desarrollo expandido genera exactamente $x^2 - 8x + 16$.'
+      - '1. Solo es verdadera cuando $x = 2$.'
+      - '2. Es una ecuación condicional, no una identidad.'
 errores_frecuentes:
-  - 'Dos polinomios son idénticos si sus coeficientes principales coinciden independientemente de los otros términos.'
-  - 'La coincidencia de valores al evaluar dos polinomios en un único número demuestra que son idénticos.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Restar dos polinomios idénticos produce un polinomio constante igual a uno.'
-  - 'Dos polinomios idénticos pueden tener grados absolutos diferentes si uno está incompleto.'
+  - 'Concluir que dos polinomios son idénticos evaluando en un solo valor numérico.'
+  - 'Confundir una ecuación condicional que se satisface para pocos valores con una identidad.'
+  - 'Comparar polinomios antes de desarrollar todos los paréntesis y productos notables.'
+  - 'Ignorar diferencias en términos intermedios cuando los extremos coinciden (ej: $(x+y)^2$ vs $x^2+y^2$).'
+  - 'Suponer que dos polinomios de distinto grado pueden ser idénticos.'
 afirmaciones_verdaderas:
-  - 'Dos polinomios son idénticos si sus coeficientes de términos semejantes son estrictamente iguales.'
-  - 'Si dos polinomios son idénticos, producen el mismo resultado numérico al evaluarse en cualquier número real.'
-al_terminar_debes_poder: 'Identificar polinomios idénticos comparando término a término sus coeficientes de igual grado.'
-fuente: 'Texto escolar MINEDUC — Álgebra 8° Básico / Polinomios.'
-estado: publicado
+  - 'Dos polinomios son idénticos si y solo si los coeficientes de sus términos de igual grado son respectivamente iguales.'
+  - 'Toda identidad polinomial $P(x) \equiv Q(x)$ es válida para cualquier número real del dominio.'
+al_terminar_debes_poder: |
+  ![Resumen de Polinomios Idénticos](/static/img/nodos/identificacion-de-polinomios-identicos-resumen.svg)
+
+  QUÉ: Identificar y verificar identidades polinomiales ($P(x) \equiv Q(x)$), diferenciándolas de ecuaciones condicionales.
+  CÓMO: Desarrollando productos, reduciendo términos semejantes y constatando la igualdad de todos los coeficientes homólogos ($a_i = b_i$).

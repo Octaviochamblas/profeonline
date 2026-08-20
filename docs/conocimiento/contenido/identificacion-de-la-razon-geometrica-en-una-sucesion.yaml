@@ -1,108 +1,113 @@
 semantic_id: MAT.NUM.PROG_GEOMETRICA.RAZON_GEOMETRICA
-resumen_inicial: 'La identificación de la razón geométrica $r$ en una progresión geométrica calcula el factor multiplicativo mediante la división de términos consecutivos ($r = \frac{a_{n+1}}{a_n}$) o aplicando la raíz del intervalo entre dos términos distantes: $r = \sqrt[k-m]{\frac{a_k}{a_m}}$.'
+resumen_inicial: 'La identificación de la razón geométrica $r$ calcula el factor multiplicativo constante mediante la división de términos consecutivos $r = \frac{a_{n+1}}{a_n}$ o la raíz $r = \sqrt[q-p]{\frac{a_q}{a_p}}$ para términos distantes.'
 explicacion_simple: |
-  Para averiguar **por cuánto se multiplica** (la razón $r$) en una progresión geométrica:
-  - Si tienes términos seguidos (por ejemplo, el término 2 vale $12$ y el término 3 vale $36$):
-    Divides el término posterior entre el anterior: $r = \frac{36}{12} = 3$.
-  - Si los términos **no están seguidos** (por ejemplo, sabes que el término $a_2 = 5$ y el término $a_4 = 45$):
-    1. Divides los valores: $\frac{45}{5} = 9$.
-    2. Como pasaron $2$ saltos de posición ($4 - 2 = 2$), le sacas la raíz cuadrada a $9$: $\sqrt{9} = 3$.
-    La razón geométrica es $r = 3$.
+  Para descubrir cuál es la **razón geométrica** ($r$) de una progresión:
+  - Si tienes términos seguidos: **divides** el término de la derecha entre el de la izquierda:
+    $$r = \frac{a_2}{a_1} \quad \text{o} \quad r = \frac{a_3}{a_2}$$
+  - Si tienes términos separados (por ejemplo, $a_2$ y $a_5$): divides sus valores y extraes la raíz correspondiente a la distancia entre posiciones:
+    $$r^{5-2} = \frac{a_5}{a_2} \implies r^3 = \frac{a_5}{a_2} \implies r = \sqrt[3]{\frac{a_5}{a_2}}$$
+  - La razón $r$ es el número por el que se multiplica en cada paso.
+
+  ![Identificación de la razón geométrica](/static/img/nodos/identificacion-de-la-razon-geometrica-en-una-sucesion-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  La **razón geométrica $r$** es la constante multiplicativa de cambio en una progresión geométrica.
+  En una progresión geométrica $(a_n)_{n \ge 1}$, la **razón geométrica ($r$)** es el invariante multiplicativo definido por:
+  $$r = \frac{a_{k+1}}{a_k} \quad \forall k \in \mathbb{N}$$
 
-  ### Métodos de Cálculo
-  1. **A partir de términos consecutivos**:
-     $$r = \frac{a_{n+1}}{a_n} \quad (\forall n \ge 1)$$
-  2. **A partir de dos términos arbitrarios $a_m$ y $a_k$ (con $k > m$)**:
-     Dado que $a_k = a_1 \cdot r^{k-1}$ y $a_m = a_1 \cdot r^{m-1}$:
-     $$\frac{a_k}{a_m} = r^{k-m} \implies r = \sqrt[k-m]{\frac{a_k}{a_m}} = \left(\frac{a_k}{a_m}\right)^{\frac{1}{k-m}}$$
+  ### Fórmula General para Términos No Consecutivos
+  Dados dos términos no consecutivos $a_p$ y $a_q$ ($q > p$):
+  $$a_q = a_p \cdot r^{q-p} \implies r^{q-p} = \frac{a_q}{a_p} \implies r = \sqrt[q-p]{\frac{a_q}{a_p}}$$
 
-  ### Interpretación según la magnitud de $r$
-  - Si $r > 1 \implies$ Factor de amplificación o crecimiento.
-  - Si $0 < r < 1 \implies$ Factor de reducción o atenuación.
-  - Si $r < 0 \implies$ Factor con inversión de polaridad o signo.
+  ### Consideraciones sobre Raíces de Índice Par
+  Si $(q - p)$ es un número par y $\frac{a_q}{a_p} > 0$, existen dos soluciones algebraicas $r = \pm \sqrt[q-p]{\frac{a_q}{a_p}}$. La elección del signo dependerá de si la sucesión presenta términos de signo constante ($r > 0$) o alternantes ($r < 0$).
 
   ### Síntesis didáctica
-  - Términos consecutivos: $r = \frac{a_{n+1}}{a_n}$.
-  - Términos distantes: $r = \left(\frac{a_k}{a_m}\right)^{\frac{1}{k-m}}$.
+  - Términos adyacentes: $r = \frac{a_2}{a_1}$.
+  - Términos distantes: $r = \sqrt[q-p]{\frac{a_q}{a_p}}$.
 definiciones_clave: |
-  - **Razón geométrica ($r$)**: Cociente constante entre dos términos consecutivos cualesquiera de una P.G.
-  - **Exponente de distancia ($k - m$)**: Diferencia de posiciones ordinales que determina el orden de la raíz.
-  - **Cociente de amplitudes ($\frac{a_k}{a_m}$)**: Razón global acumulada entre el término distante y el término inicial dado.
+  - **Razón geométrica ($r$)**: Cociente constante obtenido al dividir cualquier término por su antecesor.
+  - **Factor de amplificación**: Valor de $r$ cuando $|r| > 1$, que amplifica la magnitud de los términos.
+  - **Factor de atenuación**: Valor de $r$ cuando $0 < |r| < 1$, que reduce progresivamente la magnitud.
 propiedades_relaciones: |
-  - **Multiplicación en $N$ pasos**: Para avanzar $N$ casillas en la progresión, el término actual se multiplica por $r^N$: $a_{m+N} = a_m \cdot r^N$.
-  - **Independencia del par elegido**: El cociente $\frac{a_{n+1}}{a_n}$ entrega exactamente la misma constante $r$ para cualquier índice $n$.
+  - **Invarianza de cocientes**: La división entre dos términos congruentes separados por $k$ posiciones siempre produce $r^k$.
+  - **Independencia posicional**: La razón calculada entre $a_1$ y $a_2$ es estrictamente idéntica a la calculada entre $a_{100}$ y $a_{101}$.
 ejemplo_guiado:
-  enunciado: 'En una progresión geométrica de términos positivos se sabe que el segundo término es $a_2 = 12$ y el quinto término es $a_5 = 324$. Determina la razón geométrica $r$.'
+  enunciado: 'En una progresión geométrica de términos positivos, el segundo término es $a_2 = 6$ y el quinto término es $a_5 = 48$. Determina el valor de la razón geométrica $r$.'
+  imagen: '/static/img/nodos/identificacion-de-la-razon-geometrica-en-una-sucesion-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos los datos: $m=2, a_2=12$ y $k=5, a_5=324$.'
-    - 'Paso 2: Calculamos el intervalo de posiciones: $k - m = 5 - 2 = 3$ saltos.'
-    - 'Paso 3: Calculamos el cociente de los términos: $\frac{a_5}{a_2} = \frac{324}{12} = 27$.'
-    - 'Paso 4: Extraemos la raíz cúbica: $r = \sqrt[3]{27} = 3$. La razón geométrica es **$r = 3$**.'
+    - 'Paso 1: Identificamos los datos: $p = 2, a_2 = 6, q = 5, a_5 = 48$.'
+    - 'Paso 2: Calculamos la distancia entre posiciones: $q - p = 5 - 2 = 3$.'
+    - 'Paso 3: Planteamos la ecuación: $r^3 = \frac{a_5}{a_2} = \frac{48}{6} = 8$.'
+    - 'Paso 4: Extraemos la raíz cúbica: $r = \sqrt[3]{8} = 2$. La razón geométrica es **$r = 2$**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Cuál es la fórmula para calcular la razón geométrica $r$ dados dos términos no consecutivos $a_m$ y $a_k$ (con $k > m$)?'
+    question: 'Si en una PG se conoce que $a_3 = 12$ y $a_4 = 36$, ¿cuál es el valor de la razón geométrica $r$?'
     choices:
-      - {text: 'Extraer la raíz $(k-m)$-ésima al cociente de los valores ($r = \sqrt[k-m]{\frac{a_k}{a_m}}$)', is_correct: true}
-      - {text: 'Restar las posiciones y multiplicar por el cociente', is_correct: false}
-      - {text: 'Dividir los valores y restar la diferencia de posiciones', is_correct: false}
-      - {text: 'Multiplicar ambos términos y elevar al cuadrado', is_correct: false}
-    explanation: 'La alternativa correcta es ''Extraer la raíz $(k-m)$-ésima al cociente de los valores ($r = \sqrt[k-m]{\frac{a_k}{a_m}}$)''. Sale de aislarl $r$ en $a_k / a_m = r^{k-m}$.'
+      - {text: '$r = 3$, calculando $\frac{36}{12} = 3$', is_correct: true}
+      - {text: '$r = 24$, restando $36 - 12$', is_correct: false}
+      - {text: '$r = \frac{1}{3}$', is_correct: false}
+      - {text: '$r = 4$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$r = 3$, calculando $\frac{36}{12} = 3$''. La razón geométrica es la división del término posterior entre el anterior.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si en una progresión geométrica $a_1 = 3$ y $a_3 = 48$, ¿cuál es el valor positivo de la razón geométrica $r$?'
+    question: 'En una PG de términos positivos con $a_1 = 5$ y $a_3 = 45$, ¿cuál es la razón $r$?'
     choices:
-      - {text: '$r = 4$, calculando $\sqrt{\frac{48}{3}} = \sqrt{16} = 4$', is_correct: true}
-      - {text: '$r = 16$, dividiendo únicamente $48 / 3$', is_correct: false}
-      - {text: '$r = 8$, calculando la mitad de 16', is_correct: false}
-      - {text: '$r = 2$, extrayendo raíz cuarta', is_correct: false}
-    explanation: 'La alternativa correcta es ''$r = 4$, calculando $\sqrt{\frac{48}{3}} = \sqrt{16} = 4$''. $\sqrt{16} = 4$.'
+      - {text: '$r = 3$, calculando $r^2 = \frac{45}{5} = 9 \implies r = \sqrt{9} = 3$', is_correct: true}
+      - {text: '$r = 9$, olvidando sacar la raíz cuadrada', is_correct: false}
+      - {text: '$r = 20$', is_correct: false}
+      - {text: '$r = 40$', is_correct: false}
+    explanation: 'La alternativa correcta es ''$r = 3$, calculando $r^2 = \frac{45}{5} = 9 \implies r = \sqrt{9} = 3$''. La distancia entre posiciones es $3-1=2$, por lo que se extrae raíz cuadrada.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Identificar los términos disponibles (consecutivos o distantes).'
-  - 'Paso 2: Si son consecutivos, dividir $r = \frac{a_{n+1}}{a_n}$.'
-  - 'Paso 3: Si son distantes $a_m$ y $a_k$, dividir el término mayor entre el menor: $\frac{a_k}{a_m}$.'
-  - 'Paso 4: Calcular la diferencia de posiciones $(k - m)$ y extraer la raíz $(k-m)$-ésima para obtener $r$.'
+  - 'Paso 1: Identificar dos términos conocidos y sus posiciones $(p, a_p)$ y $(q, a_q)$.'
+  - 'Paso 2: Calcular el cociente $\frac{a_q}{a_p}$.'
+  - 'Paso 3: Calcular la diferencia entre posiciones $\Delta n = q - p$.'
+  - 'Paso 4: Extraer la raíz de índice $(q - p)$: $r = \sqrt[q-p]{\frac{a_q}{a_p}}$.'
 errores_correccion: |
-  - **Error 1:** Dividir al revés al calcular la razón (hacer $\frac{a_n}{a_{n+1}}$ en lugar de $\frac{a_{n+1}}{a_n}$). **Cómo corregirlo:** La razón se obtiene siempre dividiendo el **término posterior entre el anterior: $r = \frac{a_{n+1}}{a_n}$**.
-  - **Error 2:** Restar las posiciones en lugar de usarlas como índice de la raíz al trabajar con términos distantes. **Cómo corregirlo:** La diferencia de posiciones $(k-m)$ **es el ÍNDICE DE LA RAÍZ: $r = \sqrt[k-m]{a_k / a_m}$**.
+  - **Error 1:** Restar los términos ($a_2 - a_1$) en vez de dividirlos al buscar la razón geométrica. **Cómo corregirlo:** En la PG **la razón se obtiene dividiendo**, no restando.
+  - **Error 2:** Olvidar extraer la raíz $(q-p)$ al calcular la razón entre términos no consecutivos. **Cómo corregirlo:** La razón al cuadrado ($r^2$) o al cubo ($r^3$) **requiere extraer la raíz correspondiente**.
 ejemplos:
-  - titulo: 'Razón con consecutivos'
-    enunciado: 'Si $a_3 = 20$ y $a_4 = 100$, ¿la razón es $r = \frac{100}{20} = 5$?'
+  - titulo: 'Razón con términos consecutivos'
+    enunciado: 'Para la PG $(6, 18, 54, 162)$, ¿cuál es la razón geométrica?'
     alternativas:
-      - 'Sí, dividiendo el término 4 entre el término 3'
-      - 'No, la razón es 80'
-      - 'No, la razón es 0,2'
-    respuesta: 'Sí, dividiendo el término 4 entre el término 3'
+      - '$r = 3$'
+      - '$r = 12$'
+      - '$r = 6$'
+    respuesta: '$r = 3$'
     solucion_pasos:
-      - '1. Aplicamos $r = a_4 / a_3$.'
-      - '2. $r = 100 / 20 = 5$.'
-  - titulo: 'Razón con 2 saltos'
-    enunciado: 'Si $a_2 = 8$ y $a_4 = 72$, ¿la razón positiva es $r = \sqrt{\frac{72}{8}} = \sqrt{9} = 3$?'
-    respuesta: 'Sí'
-    solucion_pasos:
-      - 'Sí. $r^2 = 72/8 = 9 \implies r = 3$.'
+      - '1. $r = 18 / 6 = 3$.'
   - titulo: 'Razón fraccionaria'
-    enunciado: 'Si $a_1 = 80$ y $a_2 = 20$, ¿la razón es $r = \frac{20}{80} = \frac{1}{4} = 0,25$?'
+    enunciado: 'Para la PG $(100, 50, 25, 12,5)$, ¿cuál es la razón geométrica?'
+    alternativas:
+      - '$r = 0,5 = \frac{1}{2}$'
+      - '$r = -50$'
+      - '$r = 2$'
+    respuesta: '$r = 0,5 = \frac{1}{2}$'
+    solucion_pasos:
+      - '1. $r = 50 / 100 = 1/2 = 0,5$.'
+  - titulo: 'Razón entre términos distantes'
+    enunciado: 'Si $a_1 = 4$ y $a_4 = 108$, ¿la razón geométrica es $r = 3$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $20 / 80 = 0,25$.'
-  - titulo: 'Razón igual a 1'
-    enunciado: 'Si $a_5 = 15$ y $a_8 = 15$, ¿la razón es $r = \sqrt[3]{15/15} = 1$?'
+      - '1. $r^3 = 108 / 4 = 27 \implies r = \sqrt[3]{27} = 3$.'
+  - titulo: 'Razón negativa'
+    enunciado: '¿La sucesión $5, -15, 45, -135$ tiene razón geométrica $r = -3$?'
     respuesta: 'Sí'
     solucion_pasos:
-      - 'Sí. $\sqrt[3]{1} = 1$.'
+      - '1. $-15 / 5 = -3$ y $45 / (-15) = -3$.'
 errores_frecuentes:
-  - 'Dividir el término anterior entre el posterior invirtiendo el valor de la razón geométrica.'
-  - 'Una razón geométrica menor que 1 genera términos negativos en la secuencia.'
-  - 'La razón porcentual P% equivale numéricamente al factor multiplicativo r en la ecuación.'
-  - 'Restar el valor de la diferencia de posiciones en lugar de extraer la raíz correspondiente.'
-  - 'La razón geométrica de una sucesión debe ser siempre un número entero mayor que 1.'
+  - 'La razón geométrica se calcula restando el término anterior al término posterior.'
+  - 'Al calcular la razón entre términos separados por dos posiciones se omite la extracción de la raíz cuadrada.'
+  - 'Dividir el primer término entre el segundo ($a_1 / a_2$) para determinar la razón geométrica.'
+  - 'La razón geométrica no puede ser un número decimal ni menor que uno.'
+  - 'Una sucesión con signos alternados tiene una razón geométrica positiva.'
 afirmaciones_verdaderas:
-  - 'La razón geométrica $r$ dados dos términos distantes $a_m$ y $a_k$ es $r = \sqrt[k-m]{\frac{a_k}{a_m}}$.'
-  - 'El cociente entre cualquier término $a_{n+1}$ y su antecesor $a_n$ en una P.G. entrega la constante $r$.'
-al_terminar_debes_poder: 'Calcular la razón geométrica $r$ de una progresión geométrica utilizando términos consecutivos o distantes.'
-fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+  - 'La razón geométrica se determina dividiendo cualquier término por su término predecesor inmediato ($r = \frac{a_{n+1}}{a_n}$).'
+  - 'Entre dos términos distantes $a_p$ y $a_q$, la razón satisface la relación $r^{q-p} = \frac{a_q}{a_p}$.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/identificacion-de-la-razon-geometrica-en-una-sucesion-resumen.svg)
+
+  QUÉ: Identificar y calcular la razón geométrica $r$ a partir de términos adyacentes o distantes en una sucesión.
+  CÓMO: Resolver la ecuación $r = \frac{a_{n+1}}{a_n}$ o despejar la raíz $r = \sqrt[q-p]{\frac{a_q}{a_p}}$ respetando las reglas de signos.
+fuente: 'Texto escolar MINEDUC — Números y Álgebra / PAES Matemática.'
 estado: publicado

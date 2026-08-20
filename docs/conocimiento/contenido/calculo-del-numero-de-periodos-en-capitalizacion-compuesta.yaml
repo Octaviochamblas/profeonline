@@ -1,101 +1,117 @@
 semantic_id: MAT.NUM.INTERES_COMPUESTO.NUMERO_PERIODOS
-resumen_inicial: 'El cálculo del número de períodos $n$ en capitalización compuesta despeja el tiempo aplicando logaritmos a la razón entre el monto final y el capital inicial: $n = \frac{\ln(M/C)}{\ln(1 + i)}$.'
+resumen_inicial: 'El cálculo del número de períodos $n$ en capitalización compuesta determina el plazo de inversión resolviendo la ecuación exponencial mediante logaritmos: $n = \frac{\log(M / C)}{\log(1 + i)}$.'
 explicacion_simple: |
-  Si depositaste un dinero $C$ a una tasa fija $i$ y quieres saber **cuántos años o meses debes esperar para alcanzar una meta de dinero $M$**:
-  1. Divides el dinero final que quieres entre el dinero inicial: $\frac{M}{C}$.
-  2. Aplicas logaritmo a ese resultado: $\ln\left(\frac{M}{C}\right)$.
-  3. Divides ese número entre el logaritmo de $(1 + i)$: $n = \frac{\ln(M/C)}{\ln(1 + i)}$.
-  Por ejemplo, al $10\%$ anual ($i = 0,10$), para duplicar tu dinero ($\frac{M}{C} = 2$), calculas $\frac{\ln(2)}{\ln(1,10)} = \frac{0,6931}{0,0953} \approx 7,27$ años.
+  Si quieres saber **cuántos años o períodos tardará un dinero $C$ en convertirse en una meta $M$** a una tasa compuesta $i$, debes resolver una ecuación donde la incógnita está en el exponente.
+  Para bajar el exponente se usan los **logaritmos**:
+  1. Divides el monto final entre el capital ($M / C$) y calculas su logaritmo: $\log(M / C)$.
+  2. Calculas el logaritmo del factor de crecimiento: $\log(1 + i)$.
+  3. Divides ambos logaritmos: $n = \frac{\log(M / C)}{\log(1 + i)}$.
+
+  ![Cálculo del número de períodos en capitalización compuesta](/static/img/nodos/calculo-del-numero-de-periodos-en-capitalizacion-compuesta-intro.svg)
 explicacion_formal: |
   ### Definición formal
-  El **número de períodos de capitalización $n$** requeridos para transformar un principal $C$ en un valor futuro $M$ a una tasa periódica $i$ se obtiene aislando el exponente mediante las propiedades de la función logaritmo:
+  El **número de períodos de capitalización $n$** es la variable temporal discreta que satisface la ecuación exponencial del monto compuesto:
   $$M = C \cdot (1 + i)^n \implies (1 + i)^n = \frac{M}{C}$$
-  Aplicando logaritmo natural ($\ln$) en ambos miembros:
-  $$\ln\left((1 + i)^n\right) = \ln\left(\frac{M}{C}\right) \implies n \cdot \ln(1 + i) = \ln\left(\frac{M}{C}\right) \implies n = \frac{\ln(M/C)}{\ln(1 + i)}$$
-
-  ### Propiedad de cambio de base logarítmica
-  Cualquier base logarítmica (en particular base 10, $\log$) produce idéntico cociente numérico:
-  $$n = \frac{\log_{10}(M/C)}{\log_{10}(1 + i)} = \log_{(1+i)}\left(\frac{M}{C}\right)$$
+  Aplicando logaritmo decimal o natural a ambos miembros:
+  $$\log\left[(1 + i)^n\right] = \log\left(\frac{M}{C}\right) \implies n \cdot \log(1 + i) = \log\left(\frac{M}{C}\right)$$
+  Despejando la variable $n$:
+  $$n = \frac{\log\left(\frac{M}{C}\right)}{\log(1 + i)} = \frac{\log M - \log C}{\log(1 + i)}$$
 
   ### Síntesis didáctica
-  - Ecuación del número de períodos: $n = \frac{\ln(M/C)}{\ln(1 + i)}$.
-  - Propiedad clave: La herramienta algebraica indispensable para despejar exponentes es el **logaritmo**.
+  - Ecuación logarítmica: $n = \frac{\log(M / C)}{\log(1 + i)}$.
+  - Propiedad empleada: $\log(x^k) = k \cdot \log(x)$.
 definiciones_clave: |
-  - **Número de períodos ($n$)**: Exponente discreto o continuo que indica la cantidad de ciclos de capitalización.
-  - **Logaritmo natural ($\ln$)**: Función matemática inversa de la función exponencial de base $e$.
-  - **Tiempo de duplicación ($T_2$)**: Número de períodos necesarios para que $M = 2C \implies T_2 = \frac{\ln 2}{\ln(1+i)}$.
+  - **Ecuación exponencial financiera**: Ecuación de la forma $a^n = b$ donde la incógnita es el número de períodos $n$.
+  - **Cociente de logaritmos**: Operación que divide dos valores escalares reales para determinar el exponente exacto.
 propiedades_relaciones: |
-  - **Monotonía logarítmica**: A mayor meta de acumulación $M$, mayor resulta ser el número de períodos $n$ necesarios.
-  - **Sensibilidad a la tasa**: A mayor tasa de interés periódica $i$, menor número de períodos $n$ se necesitan para alcanzar la misma meta $M$.
+  - **Invariancia de base logarítmica**: El resultado de $n$ es idéntico utilizando logaritmos en base 10 ($\log$) o logaritmos naturales ($\ln$).
+  - **Sensibilidad temporal**: Duplicar la tasa de interés $i$ reduce el tiempo necesario $n$ en más del $50\%$ debido a la curvatura exponencial.
 ejemplo_guiado:
-  enunciado: 'Calcula cuántos años se necesitan para que un depósito de $\$100.000$ se transforme en $\$146.410$ a una tasa del $10\%$ anual de interés compuesto. Datos: $\ln(1,4641) \approx 0,3812$ y $\ln(1,10) \approx 0,0953$.'
+  enunciado: '¿Cuántos años debe permanecer depositado un capital de $\$100.000$ colocado al $10\%$ anual de interés compuesto para alcanzar un monto final de $\$133.100$?'
+  imagen: '/static/img/nodos/calculo-del-numero-de-periodos-en-capitalizacion-compuesta-ejemplos.svg'
   pasos:
-    - 'Paso 1: Identificamos $C = 100.000$, $M = 146.410$ y tasa decimal $i = 0,10$.'
-    - 'Paso 2: Calculamos la razón de crecimiento: $\frac{M}{C} = \frac{146.410}{100.000} = 1,4641$.'
-    - 'Paso 3: Aplicamos la fórmula del tiempo por logaritmos: $n = \frac{\ln(1,4641)}{\ln(1,10)}$.'
-    - 'Paso 4: Evaluamos el cociente: $n = \frac{0,3812}{0,0953} = 4$. Se necesitan exactamente **$4$ años**.'
+    - 'Paso 1: Identificamos $C = 100.000$, $M = 133.100$ e $i = 0,10 \implies 1 + i = 1,10$.'
+    - 'Paso 2: Evaluamos la razón de acumulación: $\frac{M}{C} = \frac{133.100}{100.000} = 1,331$.'
+    - 'Paso 3: Planteamos la ecuación exponencial: $(1,10)^n = 1,331$.'
+    - 'Paso 4: Como $1,331 = (1,10)^3$, o aplicando $n = \frac{\log(1,331)}{\log(1,10)} = 3$. El tiempo requerido es de **$3$ años**.'
 checkpoints:
   - placement: after_explicacion_formal
-    question: '¿Qué herramienta algebraica permite despejar el número de períodos $n$ cuando se encuentra en el exponente de la fórmula de interés compuesto?'
+    question: '¿Cuál es la fórmula correcta para calcular el número de períodos $n$ en régimen de interés compuesto?'
     choices:
-      - {text: 'El logaritmo, aplicando la fórmula $n = \frac{\ln(M/C)}{\ln(1 + i)}$', is_correct: true}
-      - {text: 'La regla de tres simple directa', is_correct: false}
-      - {text: 'La derivada primera de la función lineal', is_correct: false}
-      - {text: 'La suma simple de los intereses devengados', is_correct: false}
-    explanation: 'La alternativa correcta es ''El logaritmo, aplicando la fórmula $n = \frac{\ln(M/C)}{\ln(1 + i)}$''. Se aplica la propiedad $\ln(a^b) = b \cdot \ln(a)$.'
+      - {text: 'Dividir el logaritmo de la razón $M/C$ entre el logaritmo de $(1+i)$ ($n = \frac{\log(M/C)}{\log(1+i)}$)', is_correct: true}
+      - {text: 'Dividir el monto entre el producto de capital por tasa ($n = \frac{M}{C \cdot i}$)', is_correct: false}
+      - {text: 'Restar los logaritmos $\log(M/C) - \log(1+i)$', is_correct: false}
+      - {text: 'Multiplicar la razón $M/C$ por la tasa $i$', is_correct: false}
+    explanation: 'La alternativa correcta es ''Dividir el logaritmo de la razón $M/C$ entre el logaritmo de $(1+i)$ ($n = \frac{\log(M/C)}{\log(1+i)}$)''. Aplicando logaritmos se despeja el exponente $n$.'
     reinforcement_section: 'Explicación formal'
   - placement: after_ejemplo_guiado
-    question: 'Si $\ln(M/C) = 0,6931$ y $\ln(1+i) = 0,06931$, ¿cuántos períodos $n$ se requieren para alcanzar el monto?'
+    question: 'Si se busca duplicar un capital ($M/C = 2$) al $10\%$ anual compuesto con $\log 2 \approx 0,3010$ y $\log 1,10 \approx 0,0414$, ¿cuántos años se requieren?'
     choices:
-      - {text: '$10$ períodos, dividiendo $0,6931 / 0,06931 = 10$', is_correct: true}
-      - {text: '$1$ período, restando las dos cifras', is_correct: false}
-      - {text: '$100$ períodos, multiplicando por 100', is_correct: false}
-      - {text: '$5$ períodos, calculando la mitad', is_correct: false}
-    explanation: 'La alternativa correcta es ''$10$ períodos, dividiendo $0,6931 / 0,06931 = 10$''. $n = 0,6931 / 0,06931 = 10$.'
+      - {text: 'Aproximadamente $7,27$ años ($0,3010 / 0,0414 \approx 7,27$)', is_correct: true}
+      - {text: '$10$ años exactos', is_correct: false}
+      - {text: '$20$ años', is_correct: false}
+      - {text: '$2$ años', is_correct: false}
+    explanation: 'La alternativa correcta es ''Aproximadamente $7,27$ años ($0,3010 / 0,0414 \approx 7,27$)''. $n = 0,3010 / 0,0414 \approx 7,27\text{ años}$.'
     reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-  - 'Paso 1: Dividir el monto final $M$ entre el capital inicial $C$ para hallar la razón $\frac{M}{C}$.'
-  - 'Paso 2: Calcular el logaritmo de la razón: $\ln\left(\frac{M}{C}\right)$.'
-  - 'Paso 3: Calcular el logaritmo del factor de crecimiento: $\ln(1 + i)$.'
-  - 'Paso 4: Dividir $\ln(M/C)$ entre $\ln(1 + i)$ para obtener el número de períodos $n$.'
+  - 'Paso 1: Identificar capital inicial $C$, monto deseado $M$ y tasa periódica $i$.'
+  - 'Paso 2: Calcular la razón de crecimiento $\frac{M}{C}$ y la base $(1 + i)$.'
+  - 'Paso 3: Aplicar logaritmos a ambos términos: $\log(M/C)$ y $\log(1+i)$.'
+  - 'Paso 4: Dividir los valores logarítmicos para obtener $n = \frac{\log(M/C)}{\log(1+i)}$.'
 errores_correccion: |
-  - **Error 1:** Dividir el cociente $\frac{M}{C}$ entre el factor $1+i$ sin aplicar logaritmos. **Cómo corregirlo:** Para bajar una incógnita que está en el exponente **es obligatorio usar la propiedad de LOGARITMOS**: $n = \frac{\ln(M/C)}{\ln(1+i)}$.
-  - **Error 2:** Restar los logaritmos en lugar de dividirlos (ej: $\ln(M/C) - \ln(1+i)$). **Cómo corregirlo:** El despeje despeja la multiplicación por división: **debes DIVIDIR los dos valores logarítmicos**.
+  - **Error 1:** Restar los logaritmos creyendo que $\frac{\log A}{\log B} = \log A - \log B$. **Cómo corregirlo:** La resta de logaritmos equivale al logaritmo del cociente $\log(A/B)$; **la división $\frac{\log A}{\log B}$ es una división escalar normal**.
+  - **Error 2:** Despejar $n$ mediante la fórmula de interés simple $n = \frac{M-C}{C \cdot i}$. **Cómo corregirlo:** La incógnita $n$ se encuentra en el exponente y **requiere obligatoriamente logaritmos**.
 ejemplos:
-  - titulo: 'Cálculo de períodos para cuadruplicar el dinero'
-    enunciado: 'Si $M/C = 4$ e $i = 100\%$ ($1+i=2$), ¿el número de períodos es $n = \frac{\ln 4}{\ln 2} = 2$?'
+  - titulo: 'Plazo con potencia entera'
+    enunciado: '¿Cuántos años toma transformar $\$50.000$ en $\$60.500$ al $10\%$ anual compuesto?'
     alternativas:
-      - 'Sí, pues $2^2 = 4$'
-      - 'No, es 4'
-      - 'No, es 1'
-    respuesta: 'Sí, pues $2^2 = 4$'
+      - '$2$ años'
+      - '$3$ años'
+      - '$1$ año'
+    respuesta: '$2$ años'
     solucion_pasos:
-      - '1. Aplicamos $n = \ln(4) / \ln(2)$.'
-      - '2. Como $4 = 2^2 \implies \ln(4) = 2 \ln(2) \implies n = 2$.'
+      - '1. $60.500 / 50.000 = 1,21$.'
+      - '2. $(1,10)^n = 1,21 = (1,10)^2 \implies n = 2\text{ años}$.'
   - titulo: 'Tiempo para duplicar al 10%'
-    enunciado: 'Con $\ln(2) \approx 0,693$ y $\ln(1,10) \approx 0,0953$, ¿el tiempo es $\approx 7.27$ años?'
-    respuesta: 'Sí'
+    enunciado: 'Para duplicar un capital al $10\%$ compuesto, ¿se requieren aproximadamente $7,3$ años?'
+    alternativas:
+      - 'Sí, pues $n = \log 2 / \log 1,10 \approx 0,3010 / 0,0414 \approx 7,27\text{ años}$'
+      - 'No, se requieren exactamente 10 años'
+      - 'No, se requieren 5 años'
+    respuesta: 'Sí, pues $n = \log 2 / \log 1,10 \approx 0,3010 / 0,0414 \approx 7,27\text{ años}$'
     solucion_pasos:
-      - 'Sí. $0,693 / 0,0953 \approx 7,27\text{ años}$.'
-  - titulo: 'Uso de logaritmo decimal'
-    enunciado: '¿El cálculo $n = \frac{\log_{10}(M/C)}{\log_{10}(1+i)}$ entrega exactamente el mismo resultado que con logaritmo natural?'
-    respuesta: 'Sí'
+      - '1. $n = \log 2 / \log 1,10 \approx 7,27\text{ años}$.'
+  - titulo: 'Invarianza de base logarítmica'
+    enunciado: '¿El cálculo de $n$ entrega el mismo valor exacto utilizando logaritmo natural $\ln$ o logaritmo decimal $\log$?'
+    alternativas:
+      - 'Sí, debido a la propiedad de cambio de base logarítmica'
+      - 'No, el logaritmo natural entrega un valor mayor'
+      - 'No, el logaritmo decimal solo aplica a números enteros'
+    respuesta: 'Sí, debido a la propiedad de cambio de base logarítmica'
     solucion_pasos:
-      - 'Sí. Por el teorema de cambio de base de logaritmos.'
-  - titulo: 'Caso nulo'
-    enunciado: 'Si $M = C \implies M/C = 1$, ¿el número de períodos resulta $n = \ln(1)/\ln(1+i) = 0$?'
-    respuesta: 'Sí'
+      - '1. $\frac{\ln(M/C)}{\ln(1+i)} = \frac{\log(M/C)}{\log(1+i)} = \log_{1+i}(M/C)$.'
+  - titulo: 'Tiempo para triplicar'
+    enunciado: 'Si $\log 3 \approx 0,4771$ y la tasa es $10\%$ ($\log 1,10 \approx 0,0414$), ¿triplicar el capital toma $\approx 11,5$ años?'
+    alternativas:
+      - 'Sí, pues $0,4771 / 0,0414 \approx 11,52\text{ años}$'
+      - 'No, toma 30 años'
+      - 'No, toma 3 años'
+    respuesta: 'Sí, pues $0,4771 / 0,0414 \approx 11,52\text{ años}$'
     solucion_pasos:
-      - 'Sí. $\ln(1) = 0 \implies n = 0$.'
+      - '1. $n = 0,4771 / 0,0414 \approx 11,52\text{ años}$.'
 errores_frecuentes:
-  - 'Dividir el cociente $M/C$ directamente por la tasa decimal $i$ omitiendo la función logaritmo.'
-  - 'Restar los logaritmos en lugar de calcular su cociente en la fórmula final.'
-  - 'El número de períodos obtenido es directamente proporcional al inverso del capital inicial.'
-  - 'Utilizar la tasa en formato porcentual dentro del logaritmo sin sumar la constante 1.'
-  - 'El tiempo necesario para triplicar un capital equivale exactamente al triple del tiempo para duplicarlo.'
+  - 'El cociente de logaritmos $\frac{\log(M/C)}{\log(1+i)}$ se resuelve de forma incorrecta como la resta $\log(M/C) - \log(1+i)$.'
+  - 'El tiempo $n$ a interés compuesto se despeja dividiendo directamente el monto por el producto del capital y la tasa.'
+  - 'El tiempo de duplicación a interés compuesto es numéricamente igual a $100$ dividido por la tasa porcentual.'
+  - 'La aplicación de logaritmos a ambos lados de la ecuación altera el orden de magnitud de la solución.'
+  - 'El cálculo del número de períodos omite la división entre el logaritmo de la base $(1+i)$.'
 afirmaciones_verdaderas:
-  - 'El número de períodos en capitalización compuesta se calcula dividiendo $n = \frac{\ln(M/C)}{\ln(1 + i)}$.'
-  - 'La herramienta algebraica adecuada para despejar el exponente $n$ es la propiedad logarítmica $\ln(a^n) = n \cdot \ln(a)$.'
-al_terminar_debes_poder: 'Calcular el número de períodos $n$ en operaciones compuestas mediante la fórmula de logaritmos $n = \frac{\ln(M/C)}{\ln(1 + i)}$.'
+  - 'El número de períodos a interés compuesto se calcula mediante el cociente logarítmico $n = \frac{\log(M / C)}{\log(1 + i)}$.'
+  - 'La propiedad logarítmica $\log[(1+i)^n] = n \cdot \log(1+i)$ permite transformar la ecuación exponencial en una ecuación lineal.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-del-numero-de-periodos-en-capitalizacion-compuesta-resumen.svg)
+
+  QUÉ: Calcular el número de períodos o plazo de inversión requerido para alcanzar una meta en régimen compuesto.
+  CÓMO: Resolver la ecuación exponencial aplicando logaritmos y evaluando el cociente $n = \frac{\log(M / C)}{\log(1 + i)}$.
 fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
-estado: publicado
+estado: publicado\n

@@ -1,120 +1,120 @@
-resumen_inicial: La cotización previsional obligatoria a la AFP en Chile es del $10\%$
-  sobre el sueldo imponible del trabajador (hasta el tope imponible legal), destinada
-  a su cuenta de capitalización individual.
-explicacion_simple: En Chile, a todos los trabajadores dependientes se les descuenta
-  obligatoriamente un 10% de su sueldo imponible para guardarlo en su cuenta de ahorro
-  para la jubilación en una AFP, más una pequeña comisión para la administradora.
-explicacion_formal: 'Dado un Sueldo Imponible $S_{imp}$ (limitado al Tope Imponible
-  $T_{imp}$ en UF), la **Cotización Obligatoria a la AFP ($C_{AFP}$)** se calcula
-  como:
+semantic_id: MAT.NUM.FINANZAS.COTIZACION_PREVISIONAL
+resumen_inicial: 'El cálculo de la cotización previsional cuantifica los descuentos legales obligatorios sobre el sueldo imponible (10% fondo AFP + comisión de administración + 7% salud): $\text{Descuentos} = (0,10 + c_{\text{AFP}} + 0,07) \cdot S_{\text{imponible}}$.'
+explicacion_simple: |
+  Cuando recibes una liquidación de sueldo en Chile, del **sueldo bruto imponible** se descuentan por ley tres ítems principales:
+  1. **$10\%$ Obligatorio para tu Fondo de Pensión**: Va directo a tu cuenta individual de ahorro para tu futura jubilación.
+  2. **Comisión de la AFP**: Un porcentaje adicional (entre $0,49\%$ y $1,45\%$) que cobra la AFP por administrar tu dinero.
+  3. **$7\%$ para Salud**: Va a Fonasa o a tu Isapre para tu cobertura médica.
 
+  ![Cotización previsional sobre sueldo imponible](/static/img/nodos/calculo-de-cotizacion-previsional-sobre-sueldo-imponible-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $S_{\text{bruto}}$ el sueldo imponible del trabajador sujeto al **tope imponible legal vigente** $T_{\text{legal}}$ ($S_{\text{imp}} = \min(S_{\text{bruto}}, T_{\text{legal}})$). Los descuentos legales obligatorios de seguridad social $D_{\text{SS}}$ se calculan mediante:
+  $$D_{\text{SS}} = D_{\text{AFP}} + D_{\text{Salud}} + D_{\text{Cesantía}}$$
+  donde:
+  - **Cotización AFP ($D_{\text{AFP}}$)**: $D_{\text{AFP}} = S_{\text{imp}} \cdot (0,10 + c_{\text{AFP}})$, siendo $c_{\text{AFP}}$ la comisión porcentual de la administradora.
+  - **Cotización Salud ($D_{\text{Salud}}$)**: $D_{\text{Salud}} = S_{\text{imp}} \cdot 0,07$ (7% legal).
+  - **Seguro de Cesantía ($D_{\text{SC}}$)**: $D_{\text{SC}} = S_{\text{imp}} \cdot 0,006$ (0,6% para contratos indefinidos).
 
-  $$S_{base} = \min(S_{imp}, T_{imp})$$
+  ### Cálculo del Sueldo Líquido
+  $$S_{\text{líquido}} = S_{\text{bruto}} - D_{\text{SS}} - \text{Impuesto Único de Segunda Categoría}$$
 
-
-  $$C_{obligatoria} = S_{base} \cdot 0,10 = 10\% \text{ de } S_{base}$$
-
-
-  $$\text{Descuento Total Previsional} = S_{base} \cdot (0,10 + \text{Comisión}_{AFP})$$'
-definiciones_clave: '- **Cotización obligatoria AFP**: Descuento del 10% sobre el
-  sueldo imponible destinado a la jubilación.'
-propiedades_relaciones: '- **Tope imponible**: Límite máximo en UF sobre el cual se
-  calcula el 10% obligatorio.'
+  ### Síntesis didáctica
+  - Ecuación previsional: $D_{\text{AFP}} = S_{\text{imp}} \cdot (10\% + \text{comisión})$.
+  - Ecuación de salud: $D_{\text{Salud}} = S_{\text{imp}} \cdot 7\%$.
+definiciones_clave: |
+  - **Sueldo Imponible**: Total de remuneraciones sobre las cuales la ley obliga a realizar descuentos de seguridad social.
+  - **Haberes No Imponibles**: Asignaciones destinadas a compensar gastos de trabajo (movilización, colación, viáticos) no afectas a cotizaciones.
+  - **Tope Imponible**: Monto máximo fijado anualmente en UF sobre el cual se aplican los porcentajes legales de cotización.
+propiedades_relaciones: |
+  - **Capitalización individual**: El $10\%$ aportado al fondo de pensión permanece en propiedad exclusiva del trabajador generando rentabilidad compuesta en los multifondos.
+  - **Efecto de la comisión de la AFP**: Elegir una AFP con menor comisión aumenta directamente el sueldo líquido mensual manteniendo el mismo $10\%$ de ahorro previsional.
 ejemplo_guiado:
-  enunciado: Un trabajador tiene un sueldo imponible de \$700.000. Calcule el descuento
-    del $10\%$ obligatorio para su AFP.
+  enunciado: 'Un trabajador dependiente tiene un sueldo imponible de $\$800.000$ (sin haberes no imponibles). Su AFP cobra un $1,44\%$ de comisión ($11,44\%$ total) y cotiza el $7\%$ en salud. Calcula el descuento total por leyes sociales y su sueldo líquido.'
+  imagen: '/static/img/nodos/calculo-de-cotizacion-previsional-sobre-sueldo-imponible-ejemplos.svg'
   pasos:
-  - 'Paso 1: Verificar que el sueldo imponible esté bajo el tope legal.'
-  - 'Paso 2: Aplicar el $10\%$ sobre el sueldo imponible: $700.000 \cdot 0,10 = 70.000$.'
-  - 'Conclusión: El descuento obligatorio para su fondo previsional es \$70.000.'
+    - 'Paso 1: Calculamos descuento de AFP: $800.000 \cdot 0,1144 = $\$91.52$0$.'
+    - 'Paso 2: Calculamos descuento de Salud ($7\%$): $800.000 \cdot 0,07 = $\$56.00$0$.'
+    - 'Paso 3: Sumamos los descuentos de seguridad social: $91.520 + 56.000 = $\$147.52$0$.'
+    - 'Paso 4: Calculamos el sueldo líquido: $S_{\text{líquido}} = 800.000 - 147.520 = $\$652.48$0$. El sueldo líquido es de **$\$652.480$**.'
 checkpoints:
-- placement: after_explicacion_formal
-  question: ¿Qué porcentaje del sueldo imponible se descuenta obligatoriamente para
-    la cuenta individual de AFP en Chile?
-  choices:
-  - text: El 10% obligatorio sobre el sueldo imponible
-    is_correct: true
-  - text: El 19%
-    is_correct: false
-  - text: El 7%
-    is_correct: false
-  - text: El 20%
-    is_correct: false
-  explanation: La alternativa correcta es 'El 10% obligatorio sobre el sueldo imponible'.
-  reinforcement_section: Explicación formal
-- placement: after_ejemplo_guiado
-  question: En el ejemplo guiado para un sueldo imponible de $700.000, ¿cuál fue el
-    descuento del 10%?
-  choices:
-  - text: 70.000 $
-    is_correct: true
-  - text: 133.000 $
-    is_correct: false
-  - text: 49.000 $
-    is_correct: false
-  - text: 700 $
-    is_correct: false
-  explanation: La alternativa correcta es '70.000 $'.
-  reinforcement_section: Ejemplo guiado
-al_terminar_debes_poder: Al terminar serás capaz de calcular el descuento previsional
-  obligatorio del $10\%$ sobre el sueldo imponible.
-semantic_id: MAT.NUM.FINANZAS_PERSONALES.COTIZACION_AFP
+  - placement: after_explicacion_formal
+    question: '¿Qué porcentaje legal obligatorio se descuenta del sueldo imponible para la cobertura de salud (Fonasa o Isapre)?'
+    choices:
+      - {text: 'El $7\%$ del sueldo imponible', is_correct: true}
+      - {text: 'El $10\%$ del sueldo imponible', is_correct: false}
+      - {text: 'El $19\%$ del sueldo imponible', is_correct: false}
+      - {text: 'El $1,44\%$ del sueldo imponible', is_correct: false}
+    explanation: 'La alternativa correcta es ''El $7\%$ del sueldo imponible''. Es la cotización legal obligatoria de salud fijada por la legislación chilena.'
+    reinforcement_section: 'Explicación formal'
+  - placement: after_ejemplo_guiado
+    question: 'Para un sueldo imponible de $\$1.000.000$ en una AFP con comisión del $1\%$ ($11\%$ total), ¿cuánto se descuenta para el fondo de pensión y comisión?'
+    choices:
+      - {text: '$\$110.000$, calculando $1.000.000 \cdot 0,11 = 110.000$', is_correct: true}
+      - {text: '$\$100.000$, omitiendo la comisión', is_correct: false}
+      - {text: '$\$10.000$, calculando solo la comisión', is_correct: false}
+      - {text: '$\$70.000$, calculando salud', is_correct: false}
+    explanation: 'La alternativa correcta es ''$\$110.000$, calculando $1.000.000 \cdot 0,11 = 110.000$''. Consolida el $10\%$ de capitalización y el $1\%$ de comisión.'
+    reinforcement_section: 'Ejemplo guiado'
 procedimiento:
-- 'Paso 1: Identificar las variables financieras de ingresos, gastos, tasas de interés
-  o sueldos imponibles.'
-- 'Paso 2: Aplicar la fórmula financiera correspondiente ($B = I - G$, $R\%$, $r_{real}$
-  o $10\% \text{ AFP}$).'
-- 'Paso 3: Calcular el resultado y evaluar la estabilidad presupuestaria.'
-errores_correccion: '- **Error 1: Confundir la tasa de interés nominal con la tasa
-  real sin restar la inflación del IPC.** **Cómo corregirlo:** La ganancia real de
-  poder adquisitivo exige descontar el IPC ($r_{real} \approx r_{nominal} - \text{IPC}$).
-
-
-  - **Error 2: Calcular la cotización previsional de AFP sobre el sueldo líquido en
-  vez del imponible.** **Cómo corregirlo:** El $10\%$ obligatorio se aplica estrictamente
-  sobre el SUELDO IMPONIBLE (hasta el tope legal).'
+  - 'Paso 1: Identificar el sueldo imponible $S_{\text{imp}}$ verificando que no supere el tope imponible legal.'
+  - 'Paso 2: Sumar el $10\%$ obligatorio de pensión más la comisión porcentual de la AFP ($10\% + c_{\text{AFP}}$).'
+  - 'Paso 3: Calcular el descuento de AFP y el descuento de salud ($7\%$).'
+  - 'Paso 4: Restar los descuentos legales al sueldo imponible para obtener el sueldo líquido disponible.'
+errores_correccion: |
+  - **Error 1:** Aplicar los descuentos previsionales sobre asignaciones no imponibles como colación o movilización. **Cómo corregirlo:** Las cotizaciones se calculan **únicamente sobre los haberes imponibles**.
+  - **Error 2:** Olvidar sumar la comisión de la AFP al $10\%$ obligatorio del fondo de pensión. **Cómo corregirlo:** La tasa total de descuento de AFP es **$10\% + \text{comisión}$**.
 ejemplos:
-- titulo: Ejemplo 1
-  enunciado: Ejemplo de MAT.NUM.FINANZAS_PERSONALES.COTIZACION_AFP.
-  alternativas:
-  - Resultado correcto
-  - Incorrecto A
-  - Incorrecto B
-  respuesta: Resultado correcto
-  solucion_pasos:
-  - Aplicación directa de las fórmulas de finanzas personales.
-- titulo: Ejemplo 2
-  enunciado: Verificación de equilibrio financiero.
-  alternativas:
-  - Cumple la regla
-  - No cumple
-  - Indeterminado
-  respuesta: Cumple la regla
-  solucion_pasos:
-  - Demostración formal de balance o cotización.
-- titulo: ¿Es el 10% el porcentaje obligatorio de cotización previsional a la AFP?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, sobre el sueldo imponible hasta el tope legal.
-- titulo: ¿Genera un balance B = I - G positivo capacidad de ahorro?
-  respuesta: Sí
-  solucion_pasos:
-  - Sí, representa un superávit mensual de caja.
+  - titulo: 'Descuento de Salud del 7%'
+    enunciado: 'Para un sueldo imponible de $\$600.000$, ¿cuál es el descuento legal de salud ($7\%$)?'
+    alternativas:
+      - '$\$42.000$'
+      - '$\$60.000$'
+      - '$\$7.000$'
+    respuesta: '$\$42.000$'
+    solucion_pasos:
+      - '1. $600.000 \cdot 0,07 = $\$42.00$0$.'
+  - titulo: 'Descuento total de leyes sociales'
+    enunciado: 'Si AFP es $11,5\%$ y salud es $7\%$ sobre $\$1.000.000$, ¿cuál es el descuento previsional total?'
+    alternativas:
+      - '$\$185.000$'
+      - '$\$115.000$'
+      - '$\$70.000$'
+    respuesta: '$\$185.000$'
+    solucion_pasos:
+      - '1. Tasa total: $11,5\% + 7\% = 18,5\%$.'
+      - '2. Descuento: $1.000.000 \cdot 0,185 = $\$185.00$0$.'
+  - titulo: 'Destino del 10% obligatorio'
+    enunciado: '¿El $10\%$ obligatorio descontado de la remuneración pasa a ser de propiedad individual del trabajador en su cuenta de capitalización?'
+    alternativas:
+      - 'Sí, se deposita en la cuenta individual para rentabilizar en los multifondos'
+      - 'No, se destina como impuesto fiscal al Estado'
+      - 'No, pasa a ser ganancia de la empresa empleadora'
+    respuesta: 'Sí, se deposita en la cuenta individual para rentabilizar en los multifondos'
+    solucion_pasos:
+      - '1. El 10% legal es un ahorro individual propio del cotizante.'
+  - titulo: 'Impacto de la comisión en el sueldo líquido'
+    enunciado: '¿Cambiarse a una AFP con una comisión $0,5\%$ menor aumenta directamente el sueldo líquido mensual del trabajador?'
+    alternativas:
+      - 'Sí, porque disminuye el monto total descontado por leyes sociales'
+      - 'No, el sueldo líquido no cambia'
+      - 'No, disminuye el ahorro para pensión'
+    respuesta: 'Sí, porque disminuye el monto total descontado por leyes sociales'
+    solucion_pasos:
+      - '1. Menor comisión reduce el descuento y eleva el monto líquido a pagar.'
 errores_frecuentes:
-- Calcular el porcentaje de cotización previsional a la AFP sobre el sueldo líquido
-  recibido en cuenta corriente.
-- Sumar directamente la tasa de interés nominal y la inflación pretendiendo obtener
-  la rentabilidad real.
-- Considerar los gastos variables como egresos de costo fijo que no se pueden modificar
-  mensualmente.
-- La tasa de inflación del IPC incrementa el poder adquisitivo del dinero depositado
-  a tasa fija.
-- Clasificar el dividendo pagado por acciones como un gasto imprevisto en el presupuesto
-  personal.
+  - 'Los descuentos legales de AFP y salud se calculan sobre las asignaciones no imponibles de colación y movilización.'
+  - 'La cotización para el fondo de pensión obligatorio equivale al diecinueve por ciento del sueldo imponible.'
+  - 'El descuento de salud del siete por ciento se adiciona al sueldo líquido en lugar de descontarse del sueldo bruto.'
+  - 'La comisión cobrada por la AFP se descuenta de los fondos del empleador y no del sueldo del trabajador.'
+  - 'El sueldo líquido se obtiene sumando los descuentos previsionales al sueldo imponible.'
 afirmaciones_verdaderas:
-- 'El balance financiero de caja se calcula restando los egresos totales a los ingresos
-  recibidos: $B_{neto} = I_{total} - G_{total}$.'
-- La cotización previsional obligatoria a la AFP en Chile equivale al 10% del sueldo
-  imponible ajustado al tope legal.
-fuente: Texto escolar MINEDUC — Números 1° Medio / PAES.
-estado: publicado
+  - 'Los descuentos legales obligatorios se calculan sobre el sueldo imponible considerando el $10\%$ de pensión, la comisión de la AFP y el $7\%$ de salud.'
+  - 'El $10\%$ de cotización previsional se destina a la cuenta de capitalización individual del trabajador para su futura pensión.'
+al_terminar_debes_poder: |
+  ![Resumen visual](/static/img/nodos/calculo-de-cotizacion-previsional-sobre-sueldo-imponible-resumen.svg)
+
+  QUÉ: Calcular las cotizaciones previsionales obligatorias y determinar el sueldo líquido disponible.
+  CÓMO: Aplicar los porcentajes legales sobre el sueldo imponible mediante $D_{\text{SS}} = S_{\text{imp}} \cdot (0,10 + c_{\text{AFP}} + 0,07)$ y deducir del total de haberes.
+fuente: 'Currículum Nacional MINEDUC y elaboración pedagógica ProfeOnline.'
+estado: publicado\n
