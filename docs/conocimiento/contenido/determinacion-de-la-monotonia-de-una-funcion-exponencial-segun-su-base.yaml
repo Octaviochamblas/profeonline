@@ -1,88 +1,150 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_GRAFICA.MONOTONIA
-resumen_inicial: La determinación de la monotonía clasifica la variación estricta de la función exponencial comparando su base $b$ con el valor crítico $1$.
-explicacion_simple: |
-  La **monotonía** es la propiedad que nos dice si una función **SIEMPRE SUBE** (creciente) o **SIEMPRE BAJA** (decreciente) sin cambiar de rumbo:
+resumen_inicial: 'La determinación de la monotonía de una función exponencial $f(x) = a \cdot b^x$ combina el valor de la base $b$ con el signo del coeficiente $a$: si $a > 0$, la función es creciente para $b > 1$ y decreciente para $0 < b < 1$; mientras que si $a < 0$, la reflexión invierte la monotonía.'
+explicacion_simple: "![La determinación de la monotonía de una función exponencial $f(x) = a \\cdot b^x$ combina el valor de la base $b$ con el signo del coeficiente $a$: si $a > 0$, la función es creciente para $b > 1$ y decreciente para $0 < b < 1$; mientras que si $a < 0$, la reflexión invierte la monotonía](/static/img/nodos/determinacion-de-la-monotonia-de-una-funcion-exponencial-segun-su-base-intro.svg)\n\n\nLa **monotonía** te dice si la curva sube o baja a lo largo de todo el camino. Para saberlo, solo mira dos cosas:\n\n- **1. La base $b$ (La regla base):**\n  - $b > 1 \\implies$ Quiere **subir** (creciente).\n  - $0 < b < 1 \\implies$ Quiere **bajar** (decreciente).\n- **2. El signo del coeficiente $a$ (El interruptor que da vuelta todo):**\n  - Si $a > 0$ (positivo): Mantiene la regla normal.\n  - Si $a < 0$ (negativo): **¡Invierte la dirección!**\n    - Un crecimiento ($b > 1$) con $a < 0$ se vuelve **DECRECIENTE** (ej: $-3 \\cdot 2^x$).\n    - Un decaimiento ($0 < b < 1$) con\
+  \ $a < 0$ se vuelve **CRECIENTE** (ej: $-2 \\cdot (0,5)^x$)."
+explicacion_formal: 'Sea $f(x) = a \cdot b^x$ con $a \in \mathbb{R} \setminus \{0\}$ y $b \in \mathbb{R}^+ \setminus \{1\}$. El signo de la primera derivada determina la monotonía global:
 
-  - Para la función exponencial canónica $f(x) = b^x$:
-    - **Si la base es $b > 1$**: La función es **estrictamente creciente** en todo $\mathbb{R}$.
-    - **Si la base es $0 < b < 1$**: La función es **estrictamente decreciente** en todo $\mathbb{R}$.
-  - **A diferencia de las parábolas cuadráticas**, las funciones exponenciales **NO TIENEN VÉRTICE NI CAMBIAN DE SENTIDO**: mantienen el mismo tipo de monotonía a lo largo de todo el dominio real.
-explicacion_formal: |
-  Sea la función exponencial $f: \mathbb{R} \to \mathbb{R}^+$ definida por $f(x) = a \cdot b^x$ con $a > 0$ y $b \in \mathbb{R}^+ \setminus \{1\}$. El estudio de su **monotonía global** se formaliza mediante el análisis del signo de su primera derivada:
+  $$f''(x) = a \cdot \ln(b) \cdot b^x$$
 
-  $$f'(x) = \frac{d}{dx}\left(a \cdot b^x\right) = a \cdot \ln(b) \cdot b^x$$
+  Como $b^x > 0$ para todo $x \in \mathbb{R}$, $\operatorname{sgn}(f''(x)) = \operatorname{sgn}(a) \cdot \operatorname{sgn}(\ln(b))$.
 
-  Dado que $a > 0$ y $b^x > 0$ para todo $x \in \mathbb{R}$, el signo de $f'(x)$ depende exclusivamente de $\ln(b)$:
-  1. **Si $b > 1 \implies \ln(b) > 0 \implies f'(x) > 0, \, \forall x \in \mathbb{R}$:** La función es **estrictamente creciente en $\mathbb{R}$**. Es una inyección donde $x_1 < x_2 \iff f(x_1) < f(x_2)$.
-  2. **Si $0 < b < 1 \implies \ln(b) < 0 \implies f'(x) < 0, \, \forall x \in \mathbb{R}$:** La función es **estrictamente decreciente en $\mathbb{R}$**. Es una inyección donde $x_1 < x_2 \iff f(x_1) > f(x_2)$.
-definiciones_clave: |
-  - **Monotonía exponencial**: Condición analítica global que establece que la función exponencial es estrictamente creciente ($b > 1$) o estrictamente decreciente ($0 < b < 1$) en la totalidad de $\mathbb{R}$.
-propiedades_relaciones: |
-  - **Inyectividad y biyectividad**: Debido a su monotonía estricta sin puntos críticos ni extremos locales, la función exponencial $f: \mathbb{R} \to \mathbb{R}^+$ es biyectiva y por ende invertible.
+
+  **Tabla de Monotonía Cuadrante Analítico**:
+
+  1. **$a > 0 \land b > 1$**: $\operatorname{sgn}(f'') = (+) \cdot (+) = + \implies$ **Estrictamente Creciente**.
+
+  2. **$a > 0 \land 0 < b < 1$**: $\operatorname{sgn}(f'') = (+) \cdot (-) = - \implies$ **Estrictamente Decreciente**.
+
+  3. **$a < 0 \land b > 1$**: $\operatorname{sgn}(f'') = (-) \cdot (+) = - \implies$ **Estrictamente Decreciente**.
+
+  4. **$a < 0 \land 0 < b < 1$**: $\operatorname{sgn}(f'') = (-) \cdot (-) = + \implies$ **Estrictamente Creciente**.'
+definiciones_clave: '- **Monotonía global**: Sentido de variación constante de una función en todo su dominio sin puntos críticos ni cambios de concavidad.
+
+  - **Inversión por reflexión vertical**: Cambio del signo de la derivada al multiplicar por un escalar negativo.'
+propiedades_relaciones: '- **Ausencia de extremos locales**: Como $f''(x) \neq 0$ en todo $\mathbb{R}$, las funciones exponenciales nunca tienen máximos ni mínimos relativos.
+
+  - **Inyectividad universal**: Toda función exponencial de la forma $a \cdot b^x$ es estrictamente inyectiva en $\mathbb{R}$.'
 ejemplo_guiado:
-  enunciado: 'Determina la monotonía de la función $f(x) = (3/5)^x$ comprobando la relación de orden entre las imágenes $f(1)$ y $f(2)$.'
+  enunciado: '![Ejemplo La determinación de la monotonía de una función exponencial $f(x) = a \cdot b^x$ combina el valor de la base $b$ con el signo del coeficiente $a$: si $a > 0$, la función es creciente para $b > 1$ y decreciente para $0 < b < 1$; mientras que si $a < 0$, la reflexión invierte la monotonía](/static/img/nodos/determinacion-de-la-monotonia-de-una-funcion-exponencial-segun-su-base-ejemplos.svg)
+
+
+
+    Determina la monotonía justificando analíticamente para:
+
+    1) $f(x) = 5 \cdot (1{,}4)^x$
+
+    2) $g(x) = -2 \cdot 3^x$
+
+    3) $h(x) = -4 \cdot (0{,}6)^x$'
   pasos:
-    - 'Paso 1: Identificar la base del modelo: $b = 3/5 = 0.6$.'
-    - 'Paso 2: Comparar la base con 1: como $0 < 0.6 < 1$, la función debe ser estrictamente decreciente.'
-    - 'Paso 3: Evaluar las imágenes: $f(1) = (3/5)^1 = 0.6$ y $f(2) = (3/5)^2 = 9/25 = 0.36$.'
-    - 'Paso 4: Comprobar la definición: $1 < 2$, pero $f(1) = 0.6 > 0.36 = f(2)$. Se confirma que la función es **estrictamente decreciente**.'
+  - 'Paso 1: Para $f(x) = 5 \cdot (1{,}4)^x$:
+
+    - $a = 5 > 0$ y $b = 1{,}4 > 1 \implies f''(x) > 0$.
+
+    - **Estrictamente creciente**.'
+  - 'Paso 2: Para $g(x) = -2 \cdot 3^x$:
+
+    - $a = -2 < 0$ y $b = 3 > 1$.
+
+    - El signo negativo de $a$ invierte el crecimiento $\implies f''(x) < 0$.
+
+    - **Estrictamente decreciente**.'
+  - 'Paso 3: Para $h(x) = -4 \cdot (0{,}6)^x$:
+
+    - $a = -4 < 0$ y $b = 0{,}6 < 1$.
+
+    - Como $\ln(0{,}6) < 0$ y $a < 0$, $(-)(-) = + \implies f''(x) > 0$.
+
+    - **Estrictamente creciente** (se acerca a cero desde valores negativos).'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si para una función exponencial $f(x) = b^x$ se cumple que la primera derivada $f''(x) > 0$ para todo $x \in \mathbb{R}$, ¿qué condición satisface su base $b$?'
-    choices:
-      - {text: 'La base es estrictamente mayor que uno ($b > 1$)', is_correct: true}
-      - {text: 'La base se encuentra entre cero y uno ($0 < b < 1$).', is_correct: false}
-      - {text: 'La base es exactamente igual a uno ($b = 1$).', is_correct: false}
-      - {text: 'La base es un número negativo.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La base es estrictamente mayor que uno ($b > 1$)''. $f''(x) > 0 \iff \ln(b) > 0 \iff b > 1$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Dada la función $g(x) = (1.02)^x$, si $x_1 = 5$ y $x_2 = 10$, ¿cuál es la relación de orden correcta entre sus imágenes $g(5)$ y $g(10)$?'
-    choices:
-      - {text: '$g(5) < g(10)$ porque la base es mayor que uno ($b = 1.02 > 1$)', is_correct: true}
-      - {text: '$g(5) > g(10)$ porque la función decrece con el tiempo.', is_correct: false}
-      - {text: '$g(5) = g(10)$ porque es una función constante.', is_correct: false}
-      - {text: 'No es posible comparar las imágenes.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$g(5) < g(10)$ porque la base es mayor que uno ($b = 1.02 > 1$)''. Al ser creciente, a mayor $x$, mayor $y$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuál es la monotonía de la función f(x) = -5 · 2ˣ?
+  choices:
+  - text: Estrictamente decreciente (porque el coeficiente negativo a = -5 invierte la base b = 2)
+    is_correct: true
+  - text: Estrictamente creciente
+    is_correct: false
+  - text: Constante
+    is_correct: false
+  - text: Tiene un máximo en x = 0
+    is_correct: false
+  explanation: La alternativa correcta es 'Estrictamente decreciente (porque el coeficiente negativo a = -5 invierte la base b = 2)'. Para $x = 0 \implies -5$; para $x = 1 \implies -10 < -5$, la curva baja hacia $-\infty$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En f(x) = -3 · (0,2)ˣ, al aumentar x, ¿qué ocurre con los valores de la función?
+  choices:
+  - text: Aumentan haciéndose menos negativos (función estrictamente creciente hacia 0)
+    is_correct: true
+  - text: Disminuyen haciéndose más negativos
+    is_correct: false
+  - text: Se mantienen constantes
+    is_correct: false
+  - text: Oscilan
+    is_correct: false
+  explanation: La alternativa correcta es 'Aumentan haciéndose menos negativos (función estrictamente creciente hacia 0)'. Para $x = 0 \implies -3$; para $x = 1 \implies -0,6 > -3$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Aislar la base $b$ en la función de la forma $f(x) = a \cdot b^x$.'
-  - 'Paso 2: Comparar $b$ con el valor crítico 1.'
-  - 'Paso 3: Declarar monotonía estrictamente creciente si $b > 1$.'
-  - 'Paso 4: Declarar monotonía strictly decreciente si $0 < b < 1$.'
-errores_correccion: |
-  - **Error común:** Buscar máximos o mínimos locales (vértices) en la función exponencial como si fuera una parábola.
-  - **Cómo corregirlo:** La función exponencial **NO TIENE MÁXIMOS NI MÍNIMOS LOCALES**: su monotonía es uniforme y estricta en todo el dominio.
+- 'Paso 1: Identificar el valor y signo del coeficiente multiplicativo $a$.'
+- 'Paso 2: Identificar si la base cumple $b > 1$ o $0 < b < 1$.'
+- 'Paso 3: Calcular el signo conjunto de $a \cdot \ln(b)$.'
+- 'Paso 4: Concluir formalmente si la función es estrictamente creciente o estrictamente decreciente.'
+errores_correccion: '- **Error común:** Concluir que toda función con $b = 2$ es creciente, olvidando revisar el signo de $a$.
+
+  - **Cómo corregirlo:** Si hay un signo negativo delante (ej: $-2^x$), **la gráfica se invierte y pasa a ser DECRECIENTE**.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Monotonía de base e (2.718...).
-    alternativas:
-      - 'Estrictamente creciente en todo \mathbb{R} (e > 1)'
-      - 'Decreciente en los reales negativos'
-      - 'Posee un mínimo en el origen'
-    respuesta: 'Estrictamente creciente en todo \mathbb{R} (e > 1)'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Monotonía de base fraccionaria 2/3.
-    alternativas:
-      - 'Estrictamente decreciente en todo \mathbb{R} (0 < 2/3 < 1)'
-      - 'Creciente para x > 0'
-      - 'Constante'
-    respuesta: 'Estrictamente decreciente en todo \mathbb{R} (0 < 2/3 < 1)'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Base mayor a 1 positiva'
+  enunciado: ¿Cómo es la monotonía de $f(x) = 8 \cdot 4^x$?
+  alternativas:
+  - Estrictamente creciente
+  - Estrictamente decreciente
+  - Constante
+  - Parabólica
+  respuesta: Estrictamente creciente
+  solucion_pasos:
+  - 'Paso 1: $a = 8 > 0, b = 4 > 1 \implies$ creciente.'
+- titulo: 'Ejemplo 2: Inversión por escala negativa'
+  enunciado: En $g(x) = -7 \cdot (1{,}5)^x$, ¿cuál es la monotonía?
+  alternativas:
+  - Estrictamente decreciente
+  - Estrictamente creciente
+  - Oscilante
+  - No tiene monotonía
+  respuesta: Estrictamente decreciente
+  solucion_pasos:
+  - 'Paso 1: $a = -7 < 0, b = 1{,}5 > 1 \implies$ decreciente.'
+- titulo: 'Ejemplo 3: Doble negativo creciente'
+  enunciado: En $h(x) = -10 \cdot (0{,}3)^x$, ¿cuál es la monotonía?
+  alternativas:
+  - Estrictamente creciente
+  - Estrictamente decreciente
+  - Constante
+  - Tiene un mínimo
+  respuesta: Estrictamente creciente
+  solucion_pasos:
+  - 'Paso 1: $a = -10 < 0, b = 0{,}3 < 1 \implies$ creciente.'
+- titulo: 'Ejemplo 4: Detección de extremos'
+  enunciado: ¿Puede una función exponencial $f(x) = a \cdot b^x$ tener un valor máximo local en $\mathbb{R}$?
+  alternativas:
+  - No, porque su monotonía es estricta en todo ℝ sin puntos críticos
+  - Sí, en el vértice
+  - Sí, en x = 0
+  - Solo si b < 1
+  respuesta: No, porque su monotonía es estricta en todo ℝ sin puntos críticos
+  solucion_pasos:
+  - 'Paso 1: $f''(x) \neq 0$ para todo $x \implies$ no existen máximos ni mínimos.'
 errores_frecuentes:
-  - 'Dada la función $f(x) = 8^x$, la afirmación de que presenta un punto máximo en el intervalo $[-5, 5]$.'
-  - 'La afirmación errónea de que una función exponencial decreciente en un tramo pasa a ser creciente en otro tramo.'
-  - 'La afirmación de que el signo de $x$ altera la monotonía global de la función básica.'
-  - 'La afirmación de que la función es constante en las cercanías de su asíntota horizontal.'
-  - 'Equiparar la monotonía de la función exponencial con la de una función cuadrática.'
+- Ignorar el signo del parámetro a al clasificar la monotonía.
+- Pensar que las funciones que se acercan a cero son siempre decrecientes (si son negativas y suben a cero, son crecientes).
+- Buscar vértices o extremos en funciones exponenciales.
 afirmaciones_verdaderas:
-  - 'La función exponencial $f(x) = b^x$ posee monotonía estricta y uniforme en la totalidad del conjunto de los números reales $\mathbb{R}$.'
-  - 'La primera derivada de la función exponencial canónica no se anula jamás en $\mathbb{R}$, descartando la existencia de puntos críticos o extremos locales.'
-al_terminar_debes_poder: |
-  QUÉ: Determinar y clasificar la monotonía de cualquier función exponencial $f(x) = a \cdot b^x$.
-  CÓMO: Comparar la base $b$ con $1$, evaluar el signo de la derivada $a \cdot \ln(b) \cdot b^x$ y declarar el tipo de variación en $\mathbb{R}$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- La monotonía de f(x) = a · bˣ depende del producto del signo de a por el signo de ln(b).
+- Una función exponencial elemental nunca cambia de sentido de crecimiento en su dominio real.
+al_terminar_debes_poder: '**QUÉ:** Determinar con precisión la monotonía de una función exponencial.
+
+
+  **CÓMO:** Evaluando conjuntamente el valor de la base b y el signo del coeficiente multiplicativo a.
+
+
+  ![Resumen La determinación de la monotonía de una función exponencial $f(x) = a \cdot b^x$ combina el valor de la base $b$ con el signo del coeficiente $a$: si $a > 0$, la función es creciente para $b > 1$ y decreciente para $0 < b < 1$; mientras que si $a < 0$, la reflexión invierte la monotonía](/static/img/nodos/determinacion-de-la-monotonia-de-una-funcion-exponencial-segun-su-base-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Análisis Gráfico y Modelamiento Exponencial
 estado: publicado

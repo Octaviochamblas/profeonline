@@ -1,0 +1,144 @@
+semantic_id: MAT.ALG.RELACION_EXP_LOG.COMPOSICION_LOG_EXP
+resumen_inicial: La aplicación de la composición dual $b^{\log_b(x)} = x$ establece la propiedad cancelativa para todo $x > 0$, donde la base exponencial elevada a su propio logaritmo anula el operador trascendente y recupera idénticamente el argumento positivo original.
+explicacion_simple: "![La aplicación de la composición dual $b^{\\log_b(x)} = x$ establece la propiedad cancelativa para todo $x > 0$, donde la base exponencial elevada a su propio logaritmo anula el operador trascendente y recupera idénticamente el argumento positivo original](/static/img/nodos/aplicacion-de-la-composicion-blog_b-x-para-recuperar-x-intro.svg)\n\n\nEsta es la propiedad inversa de la anterior: **elevar una base a su propio logaritmo**:\n\n$$\\mathbf{b}^{\\log_{\\mathbf{b}}(\\mathbf{x})} = \\mathbf{x} \\quad (\\text{Válido para todo } x > 0)$$\n\n- **¿Cómo se lee?**\n  - \"Si elevamos la base $b$ al exponente que se necesita para dar $x$... ¡el resultado obviamente es $x$!\".\n- **Ejemplos súper directos:**\n  - $2^{\\log_2(\\mathbf{8})} = \\mathbf{8}$.\n  - $10^{\\log(\\mathbf{45})} = \\mathbf{45}$.\n  - $e^{\\ln(\\mathbf{x})} = \\mathbf{x}$.\n- **¡Cuidado con la trampa!** No debe haber números multiplicando en medio. Si tienes $3^{2\\log_3(x)}$, primero subes el 2 como exponente:\
+  \ $3^{\\log_3(x^2)} = \\mathbf{x^2}$."
+explicacion_formal: 'Sea $b \in \mathbb{R}^+ \setminus \{1\}$ y sea $x \in \mathbb{R}^+ = ]0, +\infty[$. Por definición de la composición de la aplicación directa con su inversa $(\exp_b \circ \exp_b^{-1}): \mathbb{R}^+ \to \mathbb{R}^+$:
+
+  $$(\exp_b \circ \log_b)(x) = b^{\log_b(x)}$$
+
+  Sea $u = \log_b(x)$. Por la definición fundamental del logaritmo:
+
+  $$u = \log_b(x) \Longleftrightarrow b^u = x$$
+
+  Sustituyendo $u$ por su definición $\log_b(x)$ en el primer miembro:
+
+  $$b^{\log_b(x)} = x$$
+
+
+  **Dominio de validez estricto**:
+
+  La identidad está restringida estrictamente a $x \in \operatorname{Dom}(\log_b) = ]0, +\infty[$, careciendo de existencia para $x \le 0$.'
+definiciones_clave: '- **Propiedad de composición exponencial inversa**: Identidad $b^{\log_b(x)} = x$ para $x > 0$.
+
+  - **Potenciación cancelativa**: Operación que elimina un logaritmo elevando la base correspondiente.'
+propiedades_relaciones: '- **Potenciación con coeficientes**: $b^{k \log_b(x)} = b^{\log_b(x^k)} = x^k$.
+
+  - **Cancelación en base natural**: $e^{\ln(x)} = x$ para todo $x > 0$.'
+ejemplo_guiado:
+  enunciado: '![Ejemplo La aplicación de la composición dual $b^{\log_b(x)} = x$ establece la propiedad cancelativa para todo $x > 0$, donde la base exponencial elevada a su propio logaritmo anula el operador trascendente y recupera idénticamente el argumento positivo original](/static/img/nodos/aplicacion-de-la-composicion-blog_b-x-para-recuperar-x-ejemplos.svg)
+
+
+
+    Aplica la propiedad cancelativa dual para simplificar y resolver:
+
+    1) $5^{\log_5(37)}$
+
+    2) $e^{3\ln(2)}$
+
+    3) Resuelve aplicando la base $2$: $\log_2(x + 3) = 5$'
+  pasos:
+  - 'Paso 1: Para $5^{\log_5(37)}$:
+
+    - Cancelación directa de base 5 $\implies \mathbf{37}$.'
+  - 'Paso 2: Para $e^{3\ln(2)}$:
+
+    - Subir el coeficiente 3 como exponente: $e^{\ln(2^3)} = e^{\ln(8)}$.
+
+    - Cancelar base $e$ $\implies \mathbf{8}$.'
+  - 'Paso 3: Para $\log_2(x + 3) = 5$:
+
+    - Elevar la base 2 a ambos lados: $2^{\log_2(x + 3)} = 2^5$.
+
+    - Cancelar base izquierda: $x + 3 = 32 \implies \mathbf{x = 29}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor de $10^{\log(84)}$?
+  choices:
+  - text: 84 (la base 10 y log se cancelan)
+    is_correct: true
+  - text: '840'
+    is_correct: false
+  - text: '10'
+    is_correct: false
+  - text: '1'
+    is_correct: false
+  explanation: La alternativa correcta es '84 (la base 10 y log se cancelan)'. Por la identidad $10^{\log(x)} = x$, el resultado es 84.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿A qué equivale $2^{2\log_2(5)}$?
+  choices:
+  - text: 25 (porque 2^(log₂(5²)) = 5² = 25)
+    is_correct: true
+  - text: '10'
+    is_correct: false
+  - text: '5'
+    is_correct: false
+  - text: '20'
+    is_correct: false
+  explanation: 'La alternativa correcta es ''25 (porque 2^(log₂(5²)) = 5² = 25)''. Primero se sube el coeficiente: $2^{\log_2(5^2)} = 5^2 = 25$.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Asegurarse de que el argumento del logaritmo sea estrictamente positivo ($x > 0$).'
+- 'Paso 2: Si hay coeficientes multiplicando al logaritmo, subirlos como exponentes del argumento.'
+- 'Paso 3: Aplicar la identidad cancelativa $b^{\log_b(A)} = A$.'
+- 'Paso 4: Simplificar el valor numérico o algebraico resultante.'
+errores_correccion: '- **Error común:** Cancelar directamente si hay un número multiplicando (ej: $3^{2\log_3(x)} = 2x$).
+
+  - **Cómo corregirlo:** **Primero sube el número como exponente**: $3^{2\log_3(x)} = 3^{\log_3(x^2)} = \mathbf{x^2}$.'
+ejemplos:
+- titulo: 'Ejemplo 1: Base entera simple'
+  enunciado: 'Calcula el valor de $6^{\log_6(19)}$:'
+  alternativas:
+  - '19'
+  - '114'
+  - '6'
+  - '1'
+  respuesta: '19'
+  solucion_pasos:
+  - 'Paso 1: $6^{\log_6(19)} = 19$.'
+- titulo: 'Ejemplo 2: Exponencial natural'
+  enunciado: 'Simplifica $e^{\ln(4x)}$ para $x > 0$:'
+  alternativas:
+  - 4x
+  - '4'
+  - x
+  - e⁴
+  respuesta: 4x
+  solucion_pasos:
+  - 'Paso 1: $e^{\ln(4x)} = 4x$.'
+- titulo: 'Ejemplo 3: Coeficiente negativo'
+  enunciado: ¿Cuánto vale $2^{-\log_2(5)}$?
+  alternativas:
+  - 1/5 (o 0,2)
+  - '-5'
+  - '-2'
+  - '5'
+  respuesta: 1/5 (o 0,2)
+  solucion_pasos:
+  - 'Paso 1: $2^{\log_2(5^{-1})} = 5^{-1} = 1/5$.'
+- titulo: 'Ejemplo 4: Coeficiente fraccionario (raíz)'
+  enunciado: 'Calcula $10^{\frac{1}{2}\log(49)}$:'
+  alternativas:
+  - '7'
+  - 49/2
+  - 4,9
+  - '14'
+  respuesta: '7'
+  solucion_pasos:
+  - 'Paso 1: $10^{\log(\sqrt{49})} = \sqrt{49} = 7$.'
+errores_frecuentes:
+- No subir los coeficientes como exponentes antes de cancelar la base.
+- Aplicar la fórmula para argumentos negativos donde el logaritmo no existe.
+- Confundir b^(log_b(x)) con log_b(bˣ).
+afirmaciones_verdaderas:
+- La identidad b^(log_b(x)) = x es válida para todo número real estrictamente positivo x > 0.
+- Elevar una base al logaritmo en esa misma base elimina el operador logarítmico.
+al_terminar_debes_poder: '**QUÉ:** Aplicar la composición cancelativa b^(log_b(x)) = x para simplificar y despejar expresiones.
+
+
+  **CÓMO:** Subiendo coeficientes como exponentes y aplicando la anulación exponencial para argumentos positivos.
+
+
+  ![Resumen La aplicación de la composición dual $b^{\log_b(x)} = x$ establece la propiedad cancelativa para todo $x > 0$, donde la base exponencial elevada a su propio logaritmo anula el operador trascendente y recupera idénticamente el argumento positivo original](/static/img/nodos/aplicacion-de-la-composicion-blog_b-x-para-recuperar-x-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Relación de Funciones Inversas
+estado: publicado

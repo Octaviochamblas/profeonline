@@ -1,88 +1,146 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARTE_ENTERA_DEFINICION
-resumen_inicial: La función parte entera (o suelo) asigna a cada número real el mayor entero menor o igual que dicho número, denotado por $f(x) = \lfloor x \rfloor$.
-explicacion_simple: |
-  La **función parte entera $\lfloor x \rfloor$** (o piso):
+resumen_inicial: 'La función parte entera (o función piso) asigna a cada número real $x$ el mayor número entero menor o igual que $x$: $f(x) = \lfloor x \rfloor = \max\{k \in \mathbb{Z} \mid k \le x\}$.'
+explicacion_simple: '![La función parte entera (o función piso) asigna a cada número real $x$ el mayor número entero menor o igual que $x$: $f(x) = \lfloor x \rfloor = \max\{k \in \mathbb{Z} \mid k \le x\}$](/static/img/nodos/definicion-de-funcion-parte-entera-intro.svg)
 
-  - "Redondea siempre hacia abajo" al número entero más cercano.
-  - Para positivos: $\lfloor 3{,}7 \rfloor = 3$ (la parte decimal se elimina).
-  - Para enteros puros: $\lfloor 5 \rfloor = 5$.
-  - Para negativos: $\lfloor -2{,}3 \rfloor = -3$ (¡ojo! hacia abajo en la recta numérica $-3 < -2{,}3$).
-explicacion_formal: |
-  Sea $x \in \mathbb{R}$. La **función parte entera** $f: \mathbb{R} \to \mathbb{Z}$ dada por $f(x) = \lfloor x \rfloor$ (o $[x]$) asigna el único número entero $n \in \mathbb{Z}$ que satisface la doble inecuación:
 
-  $$n \le x < n + 1 \implies \lfloor x \rfloor = n$$
 
-  **Propiedades fundamentales de acotamiento:**
-  - $x - 1 < \lfloor x \rfloor \le x \quad \forall x \in \mathbb{R}$
-  - $\lfloor x + k \rfloor = \lfloor x \rfloor + k \quad \forall k \in \mathbb{Z}$
-definiciones_clave: |
-  - **Función parte entera ($\lfloor x \rfloor$)**: Función escalonada que mapea cada número real $x$ al mayor entero $n \le x$.
-propiedades_relaciones: |
-  - **Dominio y recorrido**: $\text{Dom}(f) = \mathbb{R}$ y $\text{Rec}(f) = \mathbb{Z}$ (el conjunto de los números enteros).
+  La función **parte entera** (que se anota como $\lfloor x \rfloor$ o $[x]$) es como una máquina de truncar números hacia la izquierda en la recta numérica:
+
+  - Para **números positivos**, simplemente le quitas los decimales: $\lfloor 3,8 \rfloor = 3$, $\lfloor 7,1 \rfloor = 7$.
+
+  - Para **números enteros**, se queda igual: $\lfloor 5 \rfloor = 5$, $\lfloor -4 \rfloor = -4$.
+
+  - **¡Mucho cuidado con los negativos!** Busca el entero que está a la izquierda: $\lfloor -2,3 \rfloor = -3$ (porque $-3 \le -2,3 < -2$).'
+explicacion_formal: 'La **función parte entera** (función piso / *floor function*) $f: \mathbb{R} \to \mathbb{Z}$ se define formalmente como:
+
+  $$\lfloor x \rfloor = k \Longleftrightarrow k \le x < k + 1, \quad k \in \mathbb{Z}$$
+
+
+  **Propiedades fundamentales:**
+
+  - **Dominio y Recorrido**: $\text{Dom}(\lfloor \cdot \rfloor) = \mathbb{R}$, $\text{Rec}(\lfloor \cdot \rfloor) = \mathbb{Z}$.
+
+  - **Identidad en enteros**: $\lfloor x \rfloor = x \Longleftrightarrow x \in \mathbb{Z}$.
+
+  - **Acotación**: $\lfloor x \rfloor \le x < \lfloor x \rfloor + 1$ y $x - 1 < \lfloor x \rfloor \le x$.
+
+  - **Aditividad con enteros**: $\lfloor x + n \rfloor = \lfloor x \rfloor + n, \quad \forall n \in \mathbb{Z}$.
+
+  - **Parte fraccionaria (mantisa)**: $\{x\} = x - \lfloor x \rfloor \in [0, 1[$.'
+definiciones_clave: '- **Función parte entera / piso $\lfloor x \rfloor$**: Mayor entero menor o igual que $x$.
+
+  - **Parte fraccionaria $\{x\}$**: Diferencia $x - \lfloor x \rfloor$, acotada en el intervalo semiabierto $[0, 1[$.'
+propiedades_relaciones: '- **Monotonía no decreciente**: $x_1 \le x_2 \implies \lfloor x_1 \rfloor \le \lfloor x_2 \rfloor$.
+
+  - **No inyectiva ni sobreyectiva en $\mathbb{R}$**: Es sobreyectiva sobre $\mathbb{Z}$, pero no sobre $\mathbb{R}$.'
 ejemplo_guiado:
-  enunciado: 'Calcula el valor numérico de la función parte entera para: a) $x = 4{,}8$, b) $x = 7$, c) $x = -1{,}4$.'
+  enunciado: '![Ejemplo La función parte entera (o función piso) asigna a cada número real $x$ el mayor número entero menor o igual que $x$: $f(x) = \lfloor x \rfloor = \max\{k \in \mathbb{Z} \mid k \le x\}$](/static/img/nodos/definicion-de-funcion-parte-entera-ejemplos.svg)
+
+
+
+    Calcula el valor de la función parte entera para los siguientes valores de $x$:
+
+    1) $x = 5.82$
+
+    2) $x = 0.45$
+
+    3) $x = -1.3$
+
+    4) $x = -4.0$'
   pasos:
-    - 'Paso 1: Para $x = 4{,}8$, buscar el entero $n$ tal que $n \le 4{,}8 < n+1 \implies n = 4 \implies \lfloor 4{,}8 \rfloor = 4$.'
-    - 'Paso 2: Para $x = 7$, como es entero, $7 \le 7 < 8 \implies \lfloor 7 \rfloor = 7$.'
-    - 'Paso 3: Para $x = -1{,}4$, buscar el entero $n \le -1{,}4$: el entero a la izquierda es $-2 \implies \lfloor -1{,}4 \rfloor = -2$.'
-    - 'Paso 4: Concluir que los resultados son $4$, $7$ y $-2$ respectivamente.'
+  - 'Paso 1: Para $x = 5.82$: $5 \le 5.82 < 6 \implies \lfloor 5.82 \rfloor = 5$.'
+  - 'Paso 2: Para $x = 0.45$: $0 \le 0.45 < 1 \implies \lfloor 0.45 \rfloor = 0$.'
+  - 'Paso 3: Para $x = -1.3$: $-2 \le -1.3 < -1 \implies \lfloor -1.3 \rfloor = -2$ (el entero menor inmediato).'
+  - 'Paso 4: Para $x = -4.0$: como es entero exacto, $\lfloor -4.0 \rfloor = -4$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Cuál es el valor de la función parte entera para el número negativo $x = -2{,}3$?'
-    choices:
-      - {text: '$\\lfloor -2{,}3 \\rfloor = -3$', is_correct: true}
-      - {text: '$\\lfloor -2{,}3 \\rfloor = -2$', is_correct: false}
-      - {text: '$\\lfloor -2{,}3 \\rfloor = 2$', is_correct: false}
-      - {text: '$\\lfloor -2{,}3 \\rfloor = 0$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$\\lfloor -2{,}3 \\rfloor = -3$''. En la recta numérica, el mayor entero menor o igual a $-2{,}3$ es $-3$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál es el conjunto recorrido de la función parte entera $f(x) = \\lfloor x \\rfloor$?'
-    choices:
-      - {text: 'El conjunto de los números enteros $\\mathbb{Z}$.', is_correct: true}
-      - {text: 'El conjunto de los números reales $\\mathbb{R}$.', is_correct: false}
-      - {text: 'Solo los números reales positivos.', is_correct: false}
-      - {text: 'El conjunto vacío.', is_correct: false}
-    explanation: 'La alternativa correcta es ''El conjunto de los números enteros $\\mathbb{Z}$.''.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor de $\lfloor -3.7 \rfloor$ según la definición de función parte entera?
+  choices:
+  - text: '-4'
+    is_correct: true
+  - text: '-3'
+    is_correct: false
+  - text: '-3.7'
+    is_correct: false
+  - text: '3'
+    is_correct: false
+  explanation: La alternativa correcta es '-4'. El mayor entero menor o igual que $-3.7$ es $-4$, ya que $-4 \le -3.7 < -3$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el recorrido de la función parte entera $f(x) = \lfloor x \rfloor$?
+  choices:
+  - text: El conjunto de todos los numeros enteros Z.
+    is_correct: true
+  - text: El conjunto de todos los numeros reales R.
+    is_correct: false
+  - text: Los numeros reales positivos.
+    is_correct: false
+  - text: '[0, 1['
+    is_correct: false
+  explanation: La alternativa correcta es 'El conjunto de todos los numeros enteros Z.'. La salida es siempre un número entero.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Ubicar el número real $x$ en la recta numérica.'
-  - 'Paso 2: Identificar los dos números enteros consecutivos entre los cuales se encuentra $x$ ($n \le x < n + 1$).'
-  - 'Paso 3: Seleccionar el número entero situado inmediatamente a la izquierda (o sobre el número si es entero).'
-  - 'Paso 4: Asignar el entero $n$ como resultado de $\lfloor x \rfloor$.'
-errores_correccion: |
-  - **Error común:** Pensar que $\lfloor -2{,}3 \rfloor = -2$ recortando simplemente los decimales sin considerar la dirección hacia abajo.
-  - **Cómo corregirlo:** En los números negativos, **"IR HACIA ABAJO" SIGNIFICA ALEJARSE DE CERO** (ej. $\lfloor -2{,}3 \rfloor = -3$).
+- 'Paso 1: Ubicar el número real $x$ en la recta numérica.'
+- 'Paso 2: Identificar los dos números enteros consecutivos $k$ y $k+1$ tales que $k \le x < k+1$.'
+- 'Paso 3: Tomar el entero inferior $k$ como el valor de $\lfloor x \rfloor$.'
+- 'Paso 4: Si $x$ es entero exacto, el resultado es el mismo número $x$.'
+errores_correccion: '- **Error común:** Decir que $\lfloor -2.8 \rfloor = -2$ simplemente borrando los decimales.
+
+  - **Cómo corregirlo:** Para números negativos, truncar hacia abajo significa ir hacia la **izquierda en la recta numérica** ($-3 \le -2.8 < -2$, luego el resultado es $-3$).'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de funciones especiales.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de funciones especiales.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Decimal positivo'
+  enunciado: Calcula $\lfloor 7.99 \rfloor$.
+  alternativas:
+  - '7'
+  - '8'
+  - '7.9'
+  - '0'
+  respuesta: '7'
+  solucion_pasos:
+  - 'Paso 1: $7 \le 7.99 < 8 \implies \lfloor 7.99 \rfloor = 7$.'
+- titulo: 'Ejemplo 2: Decimal negativo entre 0 y -1'
+  enunciado: ¿Cuánto vale $\lfloor -0.25 \rfloor$?
+  alternativas:
+  - '-1'
+  - '0'
+  - '-0.2'
+  - '1'
+  respuesta: '-1'
+  solucion_pasos:
+  - 'Paso 1: $-1 \le -0.25 < 0 \implies \lfloor -0.25 \rfloor = -1$.'
+- titulo: 'Ejemplo 3: Propiedad con enteros sumados'
+  enunciado: Si $\lfloor x \rfloor = 4$, ¿cuánto vale $\lfloor x + 3 \rfloor$?
+  alternativas:
+  - '7'
+  - '4'
+  - '12'
+  - Depende de x
+  respuesta: '7'
+  solucion_pasos:
+  - 'Paso 1: $\lfloor x + 3 \rfloor = \lfloor x \rfloor + 3 = 4 + 3 = 7$.'
+- titulo: 'Ejemplo 4: Parte fraccionaria'
+  enunciado: ¿Cuál es la parte fraccionaria $\{4.68\}$?
+  alternativas:
+  - '0.68'
+  - '4'
+  - '0.32'
+  - '-0.68'
+  respuesta: '0.68'
+  solucion_pasos:
+  - 'Paso 1: $\{4.68\} = 4.68 - \lfloor 4.68 \rfloor = 4.68 - 4 = 0.68$.'
 errores_frecuentes:
-  - 'La función parte entera evaluada en $x = -1{,}2$ da como resultado el número $-1$.'
-  - 'El recorrido de la función parte entera $f(x) = \lfloor x \rfloor$ contiene todos los números decimales reales.'
-  - 'La función parte entera es una curva continua sin saltos ni interrupciones.'
-  - 'Evaluar $\lfloor x \rfloor$ en un número entero $x = 5$ da como resultado $4$.'
-  - 'Sumar un número entero $k$ dentro de $\lfloor x + k \rfloor$ multiplica el valor por $k$.'
+- Truncar números negativos hacia cero en vez de hacia -infinito.
+- Confundir parte entera con la regla del redondeo.
+- Asumir que el recorrido contiene números decimales.
 afirmaciones_verdaderas:
-  - 'La función parte entera $f(x) = \lfloor x \rfloor$ asigna a cada número real el mayor entero menor o igual a $x$, cumpliendo $n \le x < n + 1 \implies \lfloor x \rfloor = n$.'
-  - 'El recorrido de la función parte entera está formado exclusivamente por el conjunto de los números enteros $\mathbb{Z}$.'
-al_terminar_debes_poder: |
-  QUÉ: Definir y calcular el valor de la función parte entera en el conjunto de los números reales.
-  CÓMO: Ubicar $x$ en la recta numérica e identificar el entero $n \le x$, aplicando la regla a valores positivos, enteros y negativos.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
+- La función parte entera asigna a cada real el mayor entero menor o igual a él.
+- El dominio de la función parte entera son los reales R y su recorrido son los enteros Z.
+al_terminar_debes_poder: '**QUÉ:** Comprender, definir y evaluar la función parte entera en números reales positivos, negativos y nulos.
+
+
+  **CÓMO:** Aplicando la condición k ≤ x < k + 1 para identificar el mayor entero k = ⌊x⌋.
+
+
+  ![Resumen La función parte entera (o función piso) asigna a cada número real $x$ el mayor número entero menor o igual que $x$: $f(x) = \lfloor x \rfloor = \max\{k \in \mathbb{Z} \mid k \le x\}$](/static/img/nodos/definicion-de-funcion-parte-entera-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Simetrías y Funciones Especiales
 estado: publicado

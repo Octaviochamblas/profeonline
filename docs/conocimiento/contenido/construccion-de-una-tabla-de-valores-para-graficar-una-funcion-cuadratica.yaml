@@ -1,99 +1,137 @@
 semantic_id: MAT.ALG.FUNC_CUADR_GRAFICA.TABLA_VALORES
-resumen_inicial: La construcción de una tabla de valores organiza de manera sistemática pares ordenados $(x, f(x))$ para graficar la parábola.
-explicacion_simple: |
-  Una **tabla de valores** es una herramienta para calcular puntos clave antes de hacer el dibujo de la parábola:
+resumen_inicial: La construcción de una tabla de valores organiza sistemáticamente preimágenes $x$ e imágenes calculadas $y = f(x)$ alrededor del vértice $x_v = -\frac{b}{2a}$, aprovechando la simetría de la función cuadrática.
+explicacion_simple: "![La construcción de una tabla de valores organiza sistemáticamente preimágenes $x$ e imágenes calculadas $y = f(x)$ alrededor del vértice $x_v = -\\frac{b}{2a}$, aprovechando la simetría de la función cuadrática](/static/img/nodos/construccion-de-una-tabla-de-valores-para-graficar-una-funcion-cuadratica-intro.svg)\n\n\nPara graficar una parábola construyendo una tabla de valores de forma rápida e inteligente:\n\n1. **Calcula primero el centro (la $x$ del vértice):**\n   $$x_v = -\\frac{b}{2a}$$\n2. **Coloca ese valor en el centro de tu tabla.**\n3. **Elige valores simétricos a la izquierda y a la derecha:**\n   - Por ejemplo, si el centro es $x = 2$, toma a la izquierda $x = 1, 0$ y a la derecha $x = 3, 4$.\n4. **¡Magia de la simetría!** Las imágenes a la misma distancia del centro darán exactamente el mismo resultado ($f(1) = f(3)$ y $f(0) = f(4)$), ¡ahorrándote la mitad de los cálculos!"
+explicacion_formal: 'Dada $f(x) = ax^2 + bx + c$, la **tabla de tabulación simétrica** se construye evaluando el operador $f$ sobre una partición uniforme centrada en $x_v$:
 
-  1. Eliges varios números para la entrada $x$ (es ideal incluir el valor del **vértice** y números a su izquierda y derecha).
-  2. Calculas la salida $y = f(x)$ reemplazando cada $x$ en la fórmula.
-  3. Escribes los pares de coordenadas $(x, y)$.
+  $$\mathcal{P} = \{x_v - 2h, \; x_v - h, \; x_v, \; x_v + h, \; x_v + 2h\}, \quad h > 0$$
 
-  **Ejemplo**: Para $f(x) = x^2 - 2x$:
-  | $x$ | $f(x) = x^2 - 2x$ | Punto $(x, y)$ |
-  | :---: | :---: | :---: |
-  | $-1$ | $(-1)^2 - 2(-1) = 3$ | $(-1, 3)$ |
-  | $0$ | $0^2 - 2(0) = 0$ | $(0, 0)$ |
-  | $1$ | $1^2 - 2(1) = -1$ | $(1, -1)$ |
-  | $2$ | $2^2 - 2(2) = 0$ | $(2, 0)$ |
-  | $3$ | $3^2 - 2(3) = 3$ | $(3, 3)$ |
 
-  ¡Observa cómo los valores de $y$ se repiten simétricamente alrededor del vértice $x = 1$!
-explicacion_formal: |
-  Sea la función $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = ax^2 + bx + c$. La **matriz de evaluación o tabla de valores** es un subconjunto finito del grafo de la función $\mathcal{T} \subset G(f)$:
+  **Propiedad de invarianza par centrada**:
 
-  $$\mathcal{T} = \{(x_k, f(x_k)) \in \mathbb{R}^2 \mid k \in \{1, 2, \dots, n\}\}$$
+  $$f(x_v + k) = f(x_v - k) = a k^2 + f(x_v)$$
 
-  **Estrategia óptima de selección de nodos de entrada $x_k$:**
-  Para reflejar fielmente la simetría de la curva, el conjunto de abscisas $\{x_k\}$ se centra en la abscisa del vértice $x_v = -\frac{b}{2a}$, seleccionando valores equidistantes:
+  Esta propiedad demuestra formalmente que las ordenadas calculadas a distancia $k$ del vértice coinciden idénticamente, optimizando el cálculo de pares ordenados $(x_i, y_i)$.'
+definiciones_clave: '- **Tabla de valores**: Disposición tabular de pares ordenados $(x, y)$ generados mediante la regla de correspondencia de la función.
 
-  $$x_v - 2h, \quad x_v - h, \quad x_v, \quad x_v + h, \quad x_v + 2h$$
-definiciones_clave: |
-  - **Tabla de valores**: Estructura de filas y columnas que tabula parejas de datos $(x, f(x))$ para la construcción cartesiana de la parábola.
-propiedades_relaciones: |
-  - **Simetría numérica tabular**: En una tabla construida con abscisas centradas en el vértice $x_v$, los valores de salida $y$ a igual distancia del vértice son exactamente idénticos: $f(x_v - h) = f(x_v + h)$.
+  - **Partición centrada en el vértice**: Selección equilibrada de puntos que asegura graficar ambas ramas de la parábola.'
+propiedades_relaciones: '- **Reducción de complejidad**: Solo se requiere evaluar formalmente $(n+1)/2$ valores debido a la simetría especular.
+
+  - **Detección del vértice en la tabla**: El valor de $y$ que no se repite y representa el extremo de la columna corresponde al vértice.'
 ejemplo_guiado:
-  enunciado: 'Construye la tabla de valores de la función $f(x) = x^2 + 1$ para $x \in \{-2, -1, 0, 1, 2\}$.'
+  enunciado: '![Ejemplo La construcción de una tabla de valores organiza sistemáticamente preimágenes $x$ e imágenes calculadas $y = f(x)$ alrededor del vértice $x_v = -\frac{b}{2a}$, aprovechando la simetría de la función cuadrática](/static/img/nodos/construccion-de-una-tabla-de-valores-para-graficar-una-funcion-cuadratica-ejemplos.svg)
+
+
+
+    Construye una tabla de valores centrada en el vértice para la función $f(x) = x^2 - 4x + 3$ usando 5 puntos clave.'
   pasos:
-    - 'Paso 1: Evaluar $x = -2 \implies f(-2) = (-2)^2 + 1 = 5 \implies (-2, 5)$.'
-    - 'Paso 2: Evaluar $x = -1 \implies f(-1) = (-1)^2 + 1 = 2 \implies (-1, 2)$.'
-    - 'Paso 3: Evaluar $x = 0 \implies f(0) = 0^2 + 1 = 1 \implies (0, 1)$.'
-    - 'Paso 4: Evaluar $x = 1 \implies (1, 2)$ y $x = 2 \implies (2, 5)$. Constatar la simetría.'
+  - 'Paso 1: Calcular la abscisa del vértice: $x_v = -\frac{-4}{2(1)} = 2$.'
+  - 'Paso 2: Seleccionar las preimágenes alrededor de $x = 2$: $x \in \{0, 1, 2, 3, 4\}$.'
+  - 'Paso 3: Evaluar el vértice: $f(2) = 2^2 - 4(2) + 3 = 4 - 8 + 3 = -1 \implies (2, -1)$.'
+  - 'Paso 4: Evaluar los puntos a 1 unidad ($x = 1$ y $x = 3$):
+
+    $f(1) = 1 - 4 + 3 = 0 \implies (1, 0)$
+
+    $f(3) = 9 - 12 + 3 = 0 \implies (3, 0)$.'
+  - 'Paso 5: Evaluar los puntos a 2 unidades ($x = 0$ y $x = 4$):
+
+    $f(0) = 0 - 0 + 3 = 3 \implies (0, 3)$
+
+    $f(4) = 16 - 16 + 3 = 3 \implies (4, 3)$.'
+  - 'Paso 6: Tabla resultante:
+
+    | $x$ | 0 | 1 | 2 (V) | 3 | 4 |
+
+    | $y$ | 3 | 0 | -1 | 0 | 3 |'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Alrededor de qué valor de $x$ conviene centrar los valores de una tabla para apreciar la simetría de la parábola?'
-    choices:
-      - {text: 'Alrededor de la abscisa del vértice $x_v = -b/(2a)$', is_correct: true}
-      - {text: 'Alrededor del número 10.', is_correct: false}
-      - {text: 'Alrededor del término independiente $c$.', is_correct: false}
-      - {text: 'Únicamente alrededor de números impares.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Alrededor de la abscisa del vértice $x_v = -b/(2a)$''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'En la tabla de $f(x) = x^2 - 4x$, el vértice está en $x = 2$ con $f(2) = -4$. Si $f(1) = -3$, ¿cuánto vale $f(3)$ por propiedad de simetría?'
-    choices:
-      - {text: '$f(3) = -3$', is_correct: true}
-      - {text: '$f(3) = 0$', is_correct: false}
-      - {text: '$f(3) = 3$', is_correct: false}
-      - {text: '$f(3) = -4$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$f(3) = -3$''. Al estar $x=1$ y $x=3$ a la misma distancia de $x=2$, sus imágenes son iguales.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Por qué es altamente recomendable centrar la tabla de valores en el vértice x_v = -b/(2a)?
+  choices:
+  - text: Porque permite visualizar el punto de giro y aprovechar que los puntos simétricos tienen la misma imagen.
+    is_correct: true
+  - text: Porque si no se hace así la función deja de ser cuadrática.
+    is_correct: false
+  - text: Porque el discriminante solo se puede calcular en el vértice.
+    is_correct: false
+  - text: Para evitar los números negativos.
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque permite visualizar el punto de giro y aprovechar que los puntos simétricos tienen la misma imagen.'. Centrar la tabla en el vértice garantiza ver ambas ramas de la parábola.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En una tabla de valores de una parábola con vértice en x = 3, se tiene que f(1) = 7. ¿Cuánto vale f(5)?
+  choices:
+  - text: f(5) = 7 (por encontrarse a la misma distancia de 2 unidades del vértice)
+    is_correct: true
+  - text: f(5) = -7
+    is_correct: false
+  - text: f(5) = 0
+    is_correct: false
+  - text: f(5) = 14
+    is_correct: false
+  explanation: La alternativa correcta es 'f(5) = 7 (por encontrarse a la misma distancia de 2 unidades del vértice)'. La distancia de 1 a 3 es 2, y de 3 a 5 es 2; por simetría $f(5) = f(1) = 7$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Calcular la abscisa del vértice $x_v = -\frac{b}{2a}$.'
-  - 'Paso 2: Seleccionar al menos 2 valores a la izquierda y 2 valores a la derecha de $x_v$.'
-  - 'Paso 3: Sustituir cada $x$ en la función calculando cuidadosamente los resultados $y$.'
-  - 'Paso 4: Organizar las respuestas en pares ordenados $(x, y)$ dentro de la tabla.'
-errores_correccion: |
-  - **Error común:** Escoger valores de $x$ muy alejados del vértice (ej. $x = 10, 20$) perdiendo la vista del vértice y la curva.
-  - **Cómo corregirlo:** Calcula **PRIMERO EL VÉRTICE $x_v$** y elige valores cercanos a su alrededor.
+- 'Paso 1: Calcular la abscisa del vértice $x_v = -\frac{b}{2a}$.'
+- 'Paso 2: Definir preimágenes simétricas consecutivas a la izquierda y derecha de $x_v$.'
+- 'Paso 3: Evaluar $f(x_v)$ para registrar las coordenadas del vértice.'
+- 'Paso 4: Evaluar las preimágenes equidistantes verificando la igualdad de sus ordenadas.'
+- 'Paso 5: Registrar los pares $(x_i, y_i)$ en la tabla.'
+errores_correccion: '- **Error común:** Tabular solo valores positivos ($x = 1, 2, 3, 4, 5$) cuando el vértice está en $x = -3$, graficando solo un trozo de una rama.
+
+  - **Cómo corregirlo:** **Calcula siempre primero $x_v$** y toma puntos alrededor de dicho centro.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Tabla simétrica en el origen.
-    alternativas:
-      - '(-1, 3), (0, 0), (1, 3)'
-      - '(-1, -3), (0, 0), (1, 3)'
-      - '(-1, 1), (0, 0), (1, 2)'
-    respuesta: '(-1, 3), (0, 0), (1, 3)'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Tabla con traslación.
-    alternativas:
-      - '(1, 1), (2, 0), (3, 1)'
-      - '(1, 0), (2, 1), (3, 2)'
-      - '(1, 2), (2, 2), (3, 2)'
-    respuesta: '(1, 1), (2, 0), (3, 1)'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Tabla con vértice en x = 0'
+  enunciado: Para $f(x) = 2x^2 - 1$, ¿cuánto vale $f(-2)$ y $f(2)$?
+  alternativas:
+  - f(-2) = 7 y f(2) = 7
+  - f(-2) = -9 y f(2) = 7
+  - f(-2) = 7 y f(2) = -7
+  - f(-2) = 3 y f(2) = 3
+  respuesta: f(-2) = 7 y f(2) = 7
+  solucion_pasos:
+  - 'Paso 1: $f(2) = 2(4) - 1 = 7$; por simetría par $f(-2) = 7$.'
+- titulo: 'Ejemplo 2: Identificación del vértice desde la tabla'
+  enunciado: 'Una tabla muestra: $x: -1, 0, 1, 2, 3$ con $y: 5, 0, -3, 0, 5$. ¿Dónde está el vértice?'
+  alternativas:
+  - (1, -3)
+  - (0, 0)
+  - (2, 0)
+  - (-1, 5)
+  respuesta: (1, -3)
+  solucion_pasos:
+  - 'Paso 1: El centro de simetría ocurre en $x = 1$ donde $y = -3$ es el valor mínimo no repetido.'
+- titulo: 'Ejemplo 3: Cálculo rápido de imagen simétrica'
+  enunciado: Si $x_v = 4$ y $f(6) = 11$, ¿cuál es el valor de $f(2)$?
+  alternativas:
+  - '11'
+  - '-11'
+  - '0'
+  - '22'
+  respuesta: '11'
+  solucion_pasos:
+  - 'Paso 1: $4 - 2 = 2$ y $6 - 4 = 2$ (equidistantes) $\implies f(2) = 11$.'
+- titulo: 'Ejemplo 4: Tabla con coeficiente negativo'
+  enunciado: En $g(x) = -x^2 + 4$, ¿cuánto vale $g(1)$ y $g(-1)$?
+  alternativas:
+  - '3'
+  - '-3'
+  - '5'
+  - '-5'
+  respuesta: '3'
+  solucion_pasos:
+  - 'Paso 1: $g(1) = -(1)^2 + 4 = 3$; $g(-1) = -(-1)^2 + 4 = 3$.'
 errores_frecuentes:
-  - 'Cometer errores de signo en la potencia de números negativos dentro de la tabla.'
-  - 'Elegir únicamente valores de $x$ positivos impidiendo observar la curvatura completa de la parábola.'
-  - 'La falta de aprovechamiento de la simetría de las salidas $y$ para verificar la corrección de los cálculos tabulares.'
-  - 'El intercambio entre las columnas de entrada $x$ y salida $y$ al traspasar los puntos al plano cartesiano.'
-  - 'La suposición de que la diferencia entre valores consecutivos de $y$ en la tabla debe ser una constante fija.'
+- Elegir un rango de x que no contiene al vértice.
+- Olvidar usar la propiedad de simetría para auto-verificar los cálculos.
+- Cometer errores de signos en potencias con base negativa.
 afirmaciones_verdaderas:
-  - 'Construir una tabla de valores centrada en el vértice $x_v$ permite verificar visualmente la simetría de la parábola.'
-  - 'Los valores de salida $y$ situados a la misma distancia a la izquierda y derecha del vértice son idénticos.'
-al_terminar_debes_poder: |
-  QUÉ: Construir y organizar tablas de valores para graficar funciones cuadráticas.
-  CÓMO: Calcular $x_v$, elegir valores simétricos de entrada, evaluar $f(x)$ y formar la matriz de puntos ordenados $(x, y)$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
+- Centrar la tabla en el vértice x_v garantiza visualizar ambas ramas de la parábola.
+- Puntos situados a la misma distancia horizontal del vértice poseen idéntica coordenada y.
+al_terminar_debes_poder: '**QUÉ:** Construir tablas de valores optimizadas para graficar funciones cuadráticas.
+
+
+  **CÓMO:** Calculando el vértice central y evaluando pares simétricos equidistantes f(x_v ± k).
+
+
+  ![Resumen La construcción de una tabla de valores organiza sistemáticamente preimágenes $x$ e imágenes calculadas $y = f(x)$ alrededor del vértice $x_v = -\frac{b}{2a}$, aprovechando la simetría de la función cuadrática](/static/img/nodos/construccion-de-una-tabla-de-valores-para-graficar-una-funcion-cuadratica-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Análisis Gráfico de la Función Cuadrática
 estado: publicado

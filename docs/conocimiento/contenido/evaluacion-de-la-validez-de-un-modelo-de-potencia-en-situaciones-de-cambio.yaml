@@ -1,0 +1,133 @@
+semantic_id: MAT.ALG.FUNC_POTENCIA_MODELO.VALIDEZ_MODELO
+resumen_inicial: La evaluación de la validez de un modelo de potencia en situaciones de cambio delimita el dominio contextual de aplicabilidad $[x_{\min}, x_{\max}]$, analizando las restricciones físicas reales, la saturación de materiales, los límites biológicos y la prevención de extrapolaciones indebidas.
+explicacion_simple: "![La evaluación de la validez de un modelo de potencia en situaciones de cambio delimita el dominio contextual de aplicabilidad $[x_{\\min}, x_{\\max}]$, analizando las restricciones físicas reales, la saturación de materiales, los límites biológicos y la prevención de extrapolaciones indebidas](/static/img/nodos/evaluacion-de-la-validez-de-un-modelo-de-potencia-en-situaciones-de-cambio-intro.svg)\n\n\nAunque una fórmula matemática $y = k x^n$ pueda calcularse para cualquier número desde $-\\infty$ hasta $+\\infty$, **en el mundo real ningún modelo dura para siempre**:\n\n- **Límites de corte en ingeniería:**\n  - En un aerogenerador ($P = k v^3$), la fórmula solo sirve entre $3{,}5\\text{ m/s}$ y $25\\text{ m/s}$. Si el viento supera los $25\\text{ m/s}$ ($90\\text{ km/h}$), el molino **se frena automáticamente por seguridad para no destruirse** ($P = 0$).\n- **Límites biológicos y biomecánicos:**\n  - Si un perro creciera hasta medir $10\\text{ metros}$ de largo, su\
+  \ peso $W = c L^3$ aumentaría $1.000$ veces pero el grosor de sus huesos $A = k L^2$ solo $100$ veces: **¡sus patas se fracturarían bajo su propio peso!**\n- **Regla del modelador:** Todo modelo matemático debe acompañarse de su **rango de validez físico $[x_{\\min}, x_{\\max}]$**."
+explicacion_formal: 'Sea un modelo formal $f: D \to \mathbb{R}$ con $f(x) = kx^n$. El **dominio contextual o experimental** $D_{\text{físico}} \subset \operatorname{Dom}(f)$ se define como el intervalo cerrado y acotado:
+
+  $$D_{\text{físico}} = [x_{\min}, x_{\max}]$$
+
+  en el cual se satisfacen simultáneamente las hipótesis constitutivas del fenómeno.
+
+
+  **Criterios de ruptura del modelo**:
+
+  1. **Saturación y no linealidad de segundo orden**: A valores extremos de $x$, aparecen fenómenos no modelados (ej: resistencia del aire, turbulencias, efectos relativistas).
+
+  2. **Singularidades físicas no realizables**: En modelos con $n < 0$, cuando $x \to 0$, $f(x) \to \infty$, lo cual viola el principio de conservación de energía (fuerzas de contacto cuánticas impiden $d = 0$).
+
+  3. **Fallas estructurales por escala**: Discrepancia entre la tasa de crecimiento del volumen ($L^3$) y el área resistente ($L^2$).'
+definiciones_clave: '- **Dominio contextual de validez**: Intervalo $[x_{\min}, x_{\max}]$ donde las predicciones del modelo se corresponden con la realidad experimental.
+
+  - **Límite de corte (Cut-out limit)**: Umbral físico a partir del cual el sistema colapsa o se apaga.'
+propiedades_relaciones: '- **Peligro de extrapolación**: Usar el modelo fuera de $[x_{\min}, x_{\max}]$ conduce a errores catastróficos.
+
+  - **Inclusión estricta**: $D_{\text{físico}} \subsetneq \operatorname{Dom}_{\text{matemático}}$.'
+ejemplo_guiado:
+  enunciado: '![Ejemplo La evaluación de la validez de un modelo de potencia en situaciones de cambio delimita el dominio contextual de aplicabilidad $[x_{\min}, x_{\max}]$, analizando las restricciones físicas reales, la saturación de materiales, los límites biológicos y la prevención de extrapolaciones indebidas](/static/img/nodos/evaluacion-de-la-validez-de-un-modelo-de-potencia-en-situaciones-de-cambio-ejemplos.svg)
+
+
+
+    Evalúa el rango de validez y analiza las restricciones para:
+
+    1) La velocidad de caída de un paracaidista $v(t) = g t$. ¿Es válida para $t = 100\text{ s}$?
+
+    2) Un aerogenerador genera según $P(v) = 0{,}5 v^3$ en el intervalo $[4\text{ m/s}, 20\text{ m/s}]$. Calcula la potencia para $v = 10\text{ m/s}$ y explica qué ocurre para $v = 30\text{ m/s}$.'
+  pasos:
+  - 'Paso 1: Para la caída libre $v(t) = gt$: No es válida para $t = 100\text{ s}$ porque la fricción del aire genera una fuerza de arrastre $F \propto v^2$ que frena la aceleración, alcanzando una **velocidad terminal constante de $\approx 55\text{ m/s}$**.'
+  - 'Paso 2: Para el aerogenerador:
+
+    - En $v = 10\text{ m/s} \in [4, 20]$: $P(10) = 0{,}5(10^3) = \mathbf{500\text{ kW}}$ (Modelo válido).
+
+    - En $v = 30\text{ m/s} > 20\text{ m/s}$: Fuera del rango de validez; las aspas se colocan en bandera y se activa el freno mecánico para evitar daños estructurales ($P = 0$).'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Por qué un modelo de gravitación $F(d) = k / d²$ no puede aplicarse para una distancia d = 0 en el mundo real?
+  choices:
+  - text: Porque implicaría una fuerza infinita físicamente imposible y la materia tiene volumen finito
+    is_correct: true
+  - text: Porque la fuerza se vuelve negativa
+    is_correct: false
+  - text: Porque el exponente es 2
+    is_correct: false
+  - text: Porque k vale cero
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque implicaría una fuerza infinita físicamente imposible y la materia tiene volumen finito'. En la realidad, las partículas tienen radio no nulo y fuerzas repulsivas.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Qué término describe el error de calcular valores usando un modelo matemático fuera de su rango experimental comprobado?
+  choices:
+  - text: Extrapolación indebida
+    is_correct: true
+  - text: Interpolación lineal
+    is_correct: false
+  - text: Factorización
+    is_correct: false
+  - text: Traslación
+    is_correct: false
+  explanation: La alternativa correcta es 'Extrapolación indebida'. Aplicar fórmulas fuera del intervalo de validez $[x_{\min}, x_{\max}]$ produce resultados erróneos.
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Identificar las condiciones físicas reales del problema (materiales, fricción, límites operativos).'
+- 'Paso 2: Determinar los valores extremos mínimo ($x_{\min}$) y máximo ($x_{\max}$) admisibles.'
+- 'Paso 3: Definir el dominio contextual de validez como $D_{\text{físico}} = [x_{\min}, x_{\max}]$.'
+- 'Paso 4: Validar si los valores a predecir se encuentran dentro del rango antes de aplicar la fórmula.'
+errores_correccion: '- **Error común:** Extrapolar fórmulas matemáticas a valores absurdos del mundo real (ej: calcular peso de animales gigantes o potencia a vientos de huracán).
+
+  - **Cómo corregirlo:** Todo modelo tiene **LÍMITES DE APLICABILIDAD $[x_{\min}, x_{\max}]$**: no se debe extrapolar fuera de su rango experimental.'
+ejemplos:
+- titulo: 'Ejemplo 1: Dominio de validez eólico'
+  enunciado: 'Un molino opera entre 3 m/s y 25 m/s. Su dominio físico de validez es:'
+  alternativas:
+  - '[3, 25] m/s'
+  - '[0, +inf['
+  - R
+  - '[0, 25] m/s'
+  respuesta: '[3, 25] m/s'
+  solucion_pasos:
+  - 'Paso 1: Rango operativo acotado $[3, 25]$.'
+- titulo: 'Ejemplo 2: Saturación por velocidad terminal'
+  enunciado: 'En la caída de un objeto con aire, la velocidad deja de crecer según $v = gt$ debido a:'
+  alternativas:
+  - La fuerza de arrastre aerodinámica que frena la aceleración
+  - La pérdida de masa
+  - La disminución de la gravedad
+  - El aumento de temperatura
+  respuesta: La fuerza de arrastre aerodinámica que frena la aceleración
+  solucion_pasos:
+  - 'Paso 1: La resistencia del aire impone una velocidad límite terminal.'
+- titulo: 'Ejemplo 3: Límite alométrico de escala'
+  enunciado: 'Los animales terrestres gigantes no pueden existir porque:'
+  alternativas:
+  - El volumen (peso) crece con L³ mientras que el área ósea solo con L²
+  - La gravedad aumenta con el tamaño
+  - El área crece más rápido que el volumen
+  - No tendrían suficiente aire
+  respuesta: El volumen (peso) crece con L³ mientras que el área ósea solo con L²
+  solucion_pasos:
+  - 'Paso 1: Paradoja de escala de Galileo: el peso ($L^3$) colapsa la resistencia ósea ($L^2$).'
+- titulo: 'Ejemplo 4: Prevención de extrapolación'
+  enunciado: 'Si un modelo de resistencia de materiales fue probado para $T \in [0, 50]°\text{C}$, predecir su comportamiento a $500°\text{C}$ es:'
+  alternativas:
+  - Una extrapolación inválida (el material puede fundirse)
+  - Completamente confiable
+  - Una interpolación
+  - Una traslación
+  respuesta: Una extrapolación inválida (el material puede fundirse)
+  solucion_pasos:
+  - 'Paso 1: Fuera del rango de prueba, el modelo pierde toda validez.'
+errores_frecuentes:
+- Asumir que un modelo matemático es válido para todo número real positivo.
+- Ignorar los factores de saturación, corte y fractura en ingeniería.
+- Confundir el dominio algebraico con el dominio físico real.
+afirmaciones_verdaderas:
+- Todo modelo matemático de potencia posee un rango de validez contextual [xmin, xmax] acotado por leyes físicas.
+- La extrapolación fuera del rango de validez genera predicciones erróneas e inconsistentes con la realidad.
+al_terminar_debes_poder: '**QUÉ:** Evaluar críticamente la validez y límites de un modelo de potencia en situaciones reales.
+
+
+  **CÓMO:** Determinando el dominio físico [xmin, xmax], identificando restricciones de saturación y previniendo extrapolaciones indebidas.
+
+
+  ![Resumen La evaluación de la validez de un modelo de potencia en situaciones de cambio delimita el dominio contextual de aplicabilidad $[x_{\min}, x_{\max}]$, analizando las restricciones físicas reales, la saturación de materiales, los límites biológicos y la prevención de extrapolaciones indebidas](/static/img/nodos/evaluacion-de-la-validez-de-un-modelo-de-potencia-en-situaciones-de-cambio-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Modelamiento de Funciones Potencia
+estado: publicado

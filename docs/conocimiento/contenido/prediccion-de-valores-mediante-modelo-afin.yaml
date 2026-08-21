@@ -1,88 +1,140 @@
 semantic_id: MAT.ALG.MODELAMIENTO_AFIN.PREDICCION_MODELO_AFIN
-resumen_inicial: La predicción de valores mediante un modelo afín utiliza la fórmula $f(x) = mx + b$ para calcular estados futuros o resolver condiciones inversas.
-explicacion_simple: |
-  Una vez que tienes la fórmula afín $f(x) = mx + b$ de un problema, puedes hacer dos tipos de **predicciones**:
+resumen_inicial: La predicción de valores mediante un modelo afín consiste en sustituir valores futuros en la variable independiente para estimar resultados o despejar la entrada necesaria para alcanzar una meta.
+explicacion_simple: '![La predicción de valores mediante un modelo afín consiste en sustituir valores futuros en la variable independiente para estimar resultados o despejar la entrada necesaria para alcanzar una meta](/static/img/nodos/prediccion-de-valores-mediante-modelo-afin-intro.svg)
 
-  1. **Calcular la salida dada la entrada**: Reemplazas el valor $x$ en la fórmula y calculas $y$.
-     - Ejemplo: ¿Cuánto pagaré por $12$ km? $\implies$ evalúas $f(12)$.
-  2. **Calcular la entrada dada la salida**: Igualas la fórmula a una meta $y$ y despejas $x$.
-     - Ejemplo: Si pagué $\$10.000$, ¿cuántos km viajé? $\implies$ resuelves $mx + b = 10.000$.
-explicacion_formal: |
-  Dada la función afín $f: D \subseteq \mathbb{R} \to \mathbb{R}$ con $f(x) = mx + b$ ($m \neq 0$), el proceso de **predicción analítica** abarca dos tipos de problemas:
 
-  1. **Interpolación / Extrapolación directa (evaluación)**:
-     $$y_{\text{predicho}} = f(x_{\text{dado}}) = m \cdot x_{\text{dado}} + b$$
 
-  2. **Inversión contextual (resolución de ecuación)**:
-     $$x_{\text{necesario}} = f^{-1}(y_{\text{meta}}) = \frac{y_{\text{meta}} - b}{m}$$
-definiciones_clave: |
-  - **Predicción mediante modelo afín**: Estimación cuantitativa de estados no observados del sistema mediante la evaluación directa o inversión de la función afín.
-propiedades_relaciones: |
-  - **Validez de la extrapolación**: Las predicciones para valores de $x$ muy alejados del rango de datos originales deben interpretarse con cautela respetando el dominio del fenómeno real.
+  Una vez que tienes la fórmula del modelo afín $f(x) = mx + n$, puedes usarla para responder dos tipos de preguntas cruciales:
+
+
+  1. **Predicción hacia adelante (evaluar):** *Si el consumo es $x = 20$, ¿cuánto pagaré?* $\implies$ Reemplazas $x$ en la fórmula y calculas $y$.
+
+  2. **Planificación hacia atrás (despejar):** *Si mi presupuesto es de $\$15.000$, ¿cuánto puedo consumir?* $\implies$ Igualas $f(x) = 15.000$ y despejas la incógnita $x = \frac{15.000 - n}{m}$.'
+explicacion_formal: 'Dado un modelo afín calibrado $f(x) = mx + n$ ($m \neq 0$) válido en un dominio físico $D \subseteq \mathbb{R}$:
+
+  1. **Inferencia directa (Predicción / Interpolación / Extrapolación)**:
+
+  $$y^* = f(x^*) = mx^* + n, \quad x^* \in D$$
+
+  2. **Inferencia inversa (Control / Meta / Planificación)**:
+
+  $$f(x) = y_{\text{meta}} \Longleftrightarrow x = f^{-1}(y_{\text{meta}}) = \frac{y_{\text{meta}} - n}{m}$$
+
+
+  **Límites de validez del modelo:**
+
+  - **Extrapolación prudente**: Las predicciones para valores de $x$ muy alejados del rango de calibración pierden precisión si las condiciones del entorno cambian.'
+definiciones_clave: '- **Inferencia directa**: Estimación del valor de salida evaluando una entrada dada en el modelo.
+
+  - **Inferencia inversa**: Cálculo de la preimagen requerida para obtener una imagen predeterminada.'
+propiedades_relaciones: '- **Exactitud del modelo**: La precisión de la predicción depende de la estabilidad de la tasa constante $m$.
+
+  - **Restricción de soluciones reales**: La solución $x$ debe tener sentido físico (ej: tiempo $t \ge 0$, cantidades enteras no negativas).'
 ejemplo_guiado:
-  enunciado: 'El saldo restante en una tarjeta de transporte tras $n$ viajes es $S(n) = 20.000 - 800n$ pesos. a) Predice el saldo tras $15$ viajes. b) Determina cuántos viajes se realizaron si el saldo es $\$5.600$.'
+  enunciado: '![Ejemplo La predicción de valores mediante un modelo afín consiste en sustituir valores futuros en la variable independiente para estimar resultados o despejar la entrada necesaria para alcanzar una meta](/static/img/nodos/prediccion-de-valores-mediante-modelo-afin-ejemplos.svg)
+
+
+
+    Un plan de internet móvil cuesta $C(x) = 350x + 4.990$, donde $x$ son los gigas adicionales consumidos.
+
+    1) Predice el costo total si se consumen $14\text{ gigas}$ extras.
+
+    2) Si un usuario dispone de $\$11.990$, ¿cuántos gigas adicionales como máximo puede consumir?'
   pasos:
-    - 'Paso 1: Para a), evaluar en $n = 15$: $S(15) = 20.000 - 800(15) = 20.000 - 12.000 = 8.000$ pesos.'
-    - 'Paso 2: Para b), igualar $S(n) = 5.600$: $20.000 - 800n = 5.600$.'
-    - 'Paso 3: Despejar $n$: $800n = 20.000 - 5.600 = 14.400 \implies n = \frac{14.400}{800} = 18$ viajes.'
-    - 'Paso 4: Concluir que tras $15$ viajes quedan $\$8.000$ y que $\$5.600$ de saldo corresponden a $18$ viajes.'
+  - 'Paso 1: Predicción directa: evaluar en $x = 14$: $C(14) = 350(14) + 4.990 = 4.900 + 4.990 = \$9.890$.'
+  - 'Paso 2: Planificación inversa: igualar el costo a $\$11.990$: $350x + 4.990 = 11.990$.'
+  - 'Paso 3: Restar el cargo fijo: $350x = 11.990 - 4.990 = 7.000$.'
+  - 'Paso 4: Despejar la cantidad de gigas: $x = \frac{7.000}{350} = 20\text{ gigas}$.'
+  - 'Paso 5: Concluir que con $\$11.990$ puede consumir exactamente $20\text{ gigas}$ adicionales.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En el saldo $S(n) = 20.000 - 800n$, ¿cuál es el saldo restante tras 15 viajes?'
-    choices:
-      - {text: '$8.000 pesos', is_correct: true}
-      - {text: '$12.000 pesos', is_correct: false}
-      - {text: '$5.600 pesos', is_correct: false}
-      - {text: '$10.000 pesos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$8.000 pesos''. $S(15) = 20.000 - 800(15) = 20.000 - 12.000 = 8.000$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'En el mismo saldo $S(n) = 20.000 - 800n$, si quedan $5.600 pesos de saldo, ¿cuántos viajes se realizaron?'
-    choices:
-      - {text: '18 viajes', is_correct: true}
-      - {text: '15 viajes', is_correct: false}
-      - {text: '20 viajes', is_correct: false}
-      - {text: '25 viajes', is_correct: false}
-    explanation: 'La alternativa correcta es ''18 viajes''. $20.000 - 800n = 5.600 \implies 800n = 14.400 \implies n = 18$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: En el modelo de vaciado de una piscina $V(t) = 8000 - 400t$ ($t$ en horas), ¿en cuántas horas se vaciará completamente (V = 0)?
+  choices:
+  - text: 20 horas
+    is_correct: true
+  - text: 80 horas
+    is_correct: false
+  - text: 40 horas
+    is_correct: false
+  - text: 10 horas
+    is_correct: false
+  explanation: La alternativa correcta es '20 horas'. $8000 - 400t = 0 \implies 400t = 8000 \implies t = 20$ horas.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Para $f(x) = 150x + 1200$, ¿cuál es la predicción del valor de salida cuando la entrada es $x = 30$?
+  choices:
+  - text: '5700'
+    is_correct: true
+  - text: '4500'
+    is_correct: false
+  - text: '4650'
+    is_correct: false
+  - text: '5850'
+    is_correct: false
+  explanation: La alternativa correcta es '5700'. $f(30) = 150(30) + 1200 = 4500 + 1200 = 5700$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Asegurar que la fórmula del modelo afín $f(x) = mx + b$ esté correctamente construida.'
-  - 'Paso 2: Identificar si se pide evaluar una entrada $x$ o despejar una salida $y$.'
-  - 'Paso 3: Si se pide salida, sustituir $x$ en la fórmula y operar; si se pide entrada, resolver $mx + b = y$.'
-  - 'Paso 4: Redactar la conclusión expresando las unidades del problema.'
-errores_correccion: |
-  - **Error común:** Confundir la variable de entrada con la de salida al realizar la sustitución en la fórmula.
-  - **Cómo corregirlo:** Lee atentamente qué magnitud representa $x$ (ej. viajes) y cuál representa $y$ (ej. pesos) antes de reemplazar.
+- 'Paso 1: Determinar el tipo de pregunta (predicción directa de salida o cálculo inverso de entrada).'
+- 'Paso 2: Si se pide predecir el resultado, sustituir el valor de $x$ en la fórmula y operar.'
+- 'Paso 3: Si se pide calcular la meta o recurso, igualar la función al valor objetivo y despejar $x$.'
+- 'Paso 4: Comprobar la coherencia física y contextual del resultado obtenido.'
+errores_correccion: '- **Error común:** Confundir evaluar la función con resolver una ecuación cuando se da un presupuesto o meta.
+
+  - **Cómo corregirlo:** Si te dan la **entrada** (horas, km, unidades), **evalúas** $f(x)$; si te dan la **salida** (dinero total, volumen final), **igualas y despejas** $x$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de modelamiento afín.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de modelamiento afín.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Estimación de costo'
+  enunciado: Si $C(x) = 750x + 3.000$, ¿cuál es el costo estimado para $x = 8$ unidades?
+  alternativas:
+  - $9.000
+  - $6.000
+  - $8.500
+  - $10.000
+  respuesta: $9.000
+  solucion_pasos:
+  - 'Paso 1: $C(8) = 750(8) + 3000 = 6000 + 3000 = \$9.000$.'
+- titulo: 'Ejemplo 2: Meta de ahorro'
+  enunciado: Un fondo de ahorro tiene $A(m) = 40.000m + 200.000$. ¿En cuántos meses se alcanzará $\$1.000.000$?
+  alternativas:
+  - 20 meses
+  - 25 meses
+  - 15 meses
+  - 18 meses
+  respuesta: 20 meses
+  solucion_pasos:
+  - 'Paso 1: $40000m + 200000 = 1000000 \implies 40000m = 800000 \implies m = 20$ meses.'
+- titulo: 'Ejemplo 3: Extrapolación de temperatura'
+  enunciado: Si $T(t) = 3t + 18$, ¿cuál será la temperatura a los 12 minutos?
+  alternativas:
+  - 54 °C
+  - 36 °C
+  - 48 °C
+  - 60 °C
+  respuesta: 54 °C
+  solucion_pasos:
+  - 'Paso 1: $T(12) = 3(12) + 18 = 36 + 18 = 54^\circ\text{C}$.'
+- titulo: 'Ejemplo 4: Límite de presupuesto'
+  enunciado: Con $C(x) = 250x + 1000$ y un presupuesto de $\$4.500$, ¿cuál es el número máximo de unidades?
+  alternativas:
+  - 14 unidades
+  - 18 unidades
+  - 12 unidades
+  - 16 unidades
+  respuesta: 14 unidades
+  solucion_pasos:
+  - 'Paso 1: $250x + 1000 = 4500 \implies 250x = 3500 \implies x = 14$ unidades.'
 errores_frecuentes:
-  - 'Para predecir el valor de salida en un modelo afín $f(x) = mx + b$ se debe igualar la pendiente a cero.'
-  - 'Reemplazar una entrada $x = 10$ en el modelo $S(n) = 20.000 - 800n$ exige restar $20.000$ antes de multiplicar.'
-  - 'Calcular la variable de entrada dada una salida $y$ en un modelo afín genera siempre dos soluciones numéricas distintas.'
-  - 'Las predicciones realizadas con un modelo afín son siempre infinitamente válidas para cualquier valor de $x$ real.'
-  - 'Evaluar $f(x) = mx + b$ en un valor futuro equivale a calcular la ordenada al origen de la función cuadrática.'
+- Sustituir el valor de la meta en la variable x en lugar de igualar la función.
+- Olvidar restar el intercepto al despejar la incógnita x.
+- Obtener cantidades negativas en contextos donde solo se admiten valores positivos.
 afirmaciones_verdaderas:
-  - 'Predicciones en un modelo afín $f(x) = mx + b$ involucran evaluar $f(x_{\text{dado}})$ para hallar salidas o resolver $mx + b = y_{\text{meta}}$ para determinar la entrada requerida.'
-  - 'La validez de las predicciones obtenidas por extrapolación depende de las restricciones contextuales del dominio del problema.'
-al_terminar_debes_poder: |
-  QUÉ: Realizar predicciones e interpretaciones inversas a partir de un modelo afín dado.
-  CÓMO: Evaluar $f(x)$ para datos de entrada o despejar $x$ en la ecuación $mx + b = y$ según la consulta planteada.
-fuente: 'Texto escolar MINEDUC — Álgebra / Modelamiento Afín y Lineal'
+- La predicción directa consiste en evaluar preimágenes en el modelo afín para estimar valores futuros de salida.
+- La resolución de metas requiere resolver una ecuación de primer grado despejando la variable independiente.
+al_terminar_debes_poder: '**QUÉ:** Realizar predicciones directas y cálculos inversos de planificación utilizando modelos afines.
+
+
+  **CÓMO:** Evaluando el modelo f(x) = mx + n para proyecciones y despejando x = (y - n)/m para la consecución de objetivos.
+
+
+  ![Resumen La predicción de valores mediante un modelo afín consiste en sustituir valores futuros en la variable independiente para estimar resultados o despejar la entrada necesaria para alcanzar una meta](/static/img/nodos/prediccion-de-valores-mediante-modelo-afin-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Modelamiento Lineal y Afín
 estado: publicado

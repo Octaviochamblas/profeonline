@@ -1,92 +1,143 @@
 semantic_id: MAT.ALG.FUNCION_REPRESENTACION.PARES_ORDENADOS
-resumen_inicial: La representación por pares ordenados expresa una función como un conjunto de parejas $(x, y)$ donde cada entrada $x$ posee una única salida $y$.
-explicacion_simple: |
-  Un **par ordenado** se escribe como $(x, y)$:
-  - El primer número $x$ es la entrada (preimagen).
-  - El segundo número $y$ es la salida (imagen).
+resumen_inicial: Representar una función mediante pares ordenados consiste en expresarla como un conjunto de tuplas $(x, y)$ donde cada primera componente tiene una única segunda componente.
+explicacion_simple: '![Representar una función mediante pares ordenados consiste en expresarla como un conjunto de tuplas $(x, y)$ donde cada primera componente tiene una única segunda componente](/static/img/nodos/representacion-de-una-funcion-mediante-pares-ordenados-intro.svg)
 
-  Para que un conjunto de pares sea una función:
-  - **No puede repetirse el primer número con una salida distinta**. Por ejemplo, el conjunto $\{(1, 2), (1, 5)\}$ **NO es una función** porque el 1 se ramifica en dos respuestas.
-explicacion_formal: |
-  Sea $f \subseteq A \times B$ una relación entre los conjuntos $A$ y $B$. $f$ es una función expresada por pares ordenados si y solo si:
+
+
+  Una función puede escribirse directamente como una lista o conjunto de **pares ordenados** $(x, y)$.
+
+
+  Por ejemplo: $f = \{(1, 2), (2, 4), (3, 6)\}$.
+
+  - El primer número es siempre la entrada $x$ (preimagen).
+
+  - El segundo número es siempre la salida $y$ (imagen).
+
+
+  Para que sea una función válida, **ningún primer número puede repetirse con una salida distinta**.'
+explicacion_formal: 'Una función $f: A \to B$ se formaliza en teoría de conjuntos como un subconjunto del producto cartesiano $A \times B$:
 
   $$f = \{(x, y) \in A \times B \mid y = f(x)\}$$
 
-  satisface la propiedad de unicidad:
+
+  **Condición de validez funcional:**
 
   $$(x, y_1) \in f \ \land \ (x, y_2) \in f \implies y_1 = y_2$$
 
-  **Desglose de la notación:**
-  - $\text{Dom}(f) = \{x \in A \mid \exists y \in B, (x, y) \in f\}$
-  - $\text{Rec}(f) = \{y \in B \mid \exists x \in A, (x, y) \in f\}$
-definiciones_clave: |
-  - **Par ordenado $(x, y)$**: Estructura de dos elementos donde el orden importa ($x$ es entrada e $y$ es salida).
-propiedades_relaciones: |
-  - **Unicidad de la primera componente**: Un conjunto de pares ordenados es función si todas las primeras componentes son distintas entre sí o se asocian al mismo valor idéntico.
+
+  - $\text{Dom}(f) = \{x \in A \mid \exists y \in B, \ (x, y) \in f\}$
+
+  - $\text{Rec}(f) = \{y \in B \mid \exists x \in A, \ (x, y) \in f\}$'
+definiciones_clave: '- **Par ordenado $(x, y)$**: Tupla matemática donde el orden importa: $x$ es la preimagen e $y$ es la imagen.
+
+  - **Conjunto relacional**: Colección de pares que define explícitamente las asignaciones de la función.'
+propiedades_relaciones: '- **Unicidad de asignación**: Primeras componentes idénticas deben tener segundas componentes idénticas.
+
+  - **Extracción de conjuntos**: Las primeras coordenadas forman el dominio y las segundas forman el recorrido.'
 ejemplo_guiado:
-  enunciado: "Analiza los siguientes conjuntos de pares ordenados y determina cuál es una función: $F = \\{(1, 3), (2, 4), (3, 4)\\}$ y $G = \\{(1, 3), (2, 4), (1, 5)\\}$."
+  enunciado: '![Ejemplo Representar una función mediante pares ordenados consiste en expresarla como un conjunto de tuplas $(x, y)$ donde cada primera componente tiene una única segunda componente](/static/img/nodos/representacion-de-una-funcion-mediante-pares-ordenados-ejemplos.svg)
+
+
+
+    Determina si el conjunto $S = \{(1, 5), (2, 8), (3, 8), (4, 11)\}$ representa una función. Si es así, escribe su dominio y su recorrido.'
   pasos:
-    - 'Paso 1: Examinar $F$: las primeras componentes son $1, 2, 3$ (todas distintas). Que $(2,4)$ y $(3,4)$ compartan la salida $4$ es totalmente válido.'
-    - 'Paso 2: Concluir que $F$ SÍ es una función.'
-    - 'Paso 3: Examinar $G$: la primera componente $1$ aparece en $(1, 3)$ y en $(1, 5)$ con salidas distintas ($3$ y $5$).'
-    - 'Paso 4: Concluir que $G$ NO es una función.'
+  - 'Paso 1: Revisar las primeras componentes: $1, 2, 3, 4$. Ninguna se repite con diferente salida.'
+  - 'Paso 2: Observar que la imagen $8$ se repita para $x = 2$ y $x = 3$ es completamente válido.'
+  - 'Paso 3: Concluir que $S$ SÍ es una función.'
+  - 'Paso 4: Dominio: $\text{Dom}(f) = \{1, 2, 3, 4\}$.'
+  - 'Paso 5: Recorrido: $\text{Rec}(f) = \{5, 8, 11\}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Por qué el conjunto de pares $G = \\{(1, 3), (2, 4), (1, 5)\\}$ no es una función?"
-    choices:
-      - {text: "Porque la primera componente 1 tiene dos imágenes distintas (3 y 5)", is_correct: true}
-      - {text: "Porque el número 4 es par", is_correct: false}
-      - {text: "Porque no incluye al cero", is_correct: false}
-      - {text: "Porque tiene tres pares ordenados", is_correct: false}
-    explanation: "La alternativa correcta es 'Porque la primera componente 1 tiene dos imágenes distintas (3 y 5)'."
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: "En el conjunto de pares ordenados de una función $F$, ¿cómo se obtiene el conjunto recorrido?"
-    choices:
-      - {text: "Reuniendo todas las segundas componentes de los pares sin repetir", is_correct: true}
-      - {text: "Reuniendo todas las primeras componentes de los pares", is_correct: false}
-      - {text: "Sumando las dos componentes de cada par", is_correct: false}
-      - {text: "Multiplicando las componentes entre sí", is_correct: false}
-    explanation: "La alternativa correcta es 'Reuniendo todas las segundas componentes de los pares sin repetir'."
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuál de los siguientes conjuntos de pares ordenados NO representa una función?
+  choices:
+  - text: '{(2, 3), (2, 5), (4, 7)}'
+    is_correct: true
+  - text: '{(1, 4), (2, 4), (3, 4)}'
+    is_correct: false
+  - text: '{(0, 0), (1, 1), (-1, 1)}'
+    is_correct: false
+  - text: '{(5, 2), (6, 3), (7, 4)}'
+    is_correct: false
+  explanation: La alternativa correcta es '{(2, 3), (2, 5), (4, 7)}'. El elemento 2 tiene dos imágenes distintas (3 y 5).
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Para el conjunto de pares $f = \{(a, 1), (b, 2), (c, 3)\}$, ¿cuál es el dominio?
+  choices:
+  - text: '{a, b, c}'
+    is_correct: true
+  - text: '{1, 2, 3}'
+    is_correct: false
+  - text: '{a, 1, b, 2, c, 3}'
+    is_correct: false
+  - text: '{1, 3}'
+    is_correct: false
+  explanation: La alternativa correcta es '{a, b, c}'. El dominio está formado por todas las primeras componentes.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Extraer la lista de todas las primeras componentes de los pares ordenados.'
-  - 'Paso 2: Verificar si alguna primera componente se repite asociada a diferentes segundas componentes.'
-  - 'Paso 3: Si no hay repeticiones ambiguas, declarar que el conjunto representa una función.'
-  - 'Paso 4: Determinar el dominio (primeras componentes) y el recorrido (segundas componentes).'
-errores_correccion: |
-  - **Error común:** Pensar que si dos pares tienen la misma segunda componente (como $(2, 4)$ y $(3, 4)$), no es función.
-  - **Cómo corregirlo:** La repetición de la SEGUNDA componente SÍ está permitida; lo que invalida la función es que se repita la PRIMERA componente con distinta salida.
+- 'Paso 1: Examinar la lista de pares ordenados $(x, y)$.'
+- 'Paso 2: Comprobar que no existan dos pares con la misma primera componente $x$ y distinta segunda componente $y$.'
+- 'Paso 3: Reunir todas las primeras componentes para escribir el dominio.'
+- 'Paso 4: Reunir todas las segundas componentes sin duplicados para escribir el recorrido.'
+errores_correccion: '- **Error común:** Creer que un conjunto no es función porque se repite un número en la segunda posición (ej: $(1, 4)$ y $(2, 4)$).
+
+  - **Cómo corregirlo:** La condición de función prohíbe repetir la **primera componente** con distinta salida; la segunda componente sí puede repetirse.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de representación de funciones.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de representación de funciones.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Función discreta'
+  enunciado: Dada $f = \{(-2, 4), (0, 0), (2, 4)\}$, ¿cuál es su recorrido?
+  alternativas:
+  - '{0, 4}'
+  - '{-2, 0, 2}'
+  - '{4, 0, 4}'
+  - '{-2, 4}'
+  respuesta: '{0, 4}'
+  solucion_pasos:
+  - 'Paso 1: Extraer las segundas componentes: $4, 0, 4$.'
+  - 'Paso 2: En notación de conjuntos no se repiten elementos: $\text{Rec}(f) = \{0, 4\}$.'
+- titulo: 'Ejemplo 2: Falla de unicidad'
+  enunciado: ¿Por qué el conjunto $R = \{(3, 1), (4, 2), (3, 9)\}$ no es función?
+  alternativas:
+  - 'Porque la entrada 3 tiene dos salidas: 1 y 9'
+  - Porque tiene solo 3 pares
+  - Porque el 9 es mayor que 4
+  - Porque no incluye el cero
+  respuesta: 'Porque la entrada 3 tiene dos salidas: 1 y 9'
+  solucion_pasos:
+  - 'Paso 1: $(3, 1) \in R$ y $(3, 9) \in R$ con $1 \neq 9$.'
+  - 'Paso 2: Viola la unicidad funcional.'
+- titulo: 'Ejemplo 3: Pares de función constante'
+  enunciado: Si $f(x) = 5$ para $x \in \{1, 2, 3\}$, ¿cómo se escribe como conjunto de pares?
+  alternativas:
+  - '{(1, 5), (2, 5), (3, 5)}'
+  - '{(5, 1), (5, 2), (5, 3)}'
+  - '{(1, 2, 3), (5)}'
+  - '{(1, 5), (2, 10), (3, 15)}'
+  respuesta: '{(1, 5), (2, 5), (3, 5)}'
+  solucion_pasos:
+  - 'Paso 1: Cada entrada $x$ se empareja con la imagen fija $5$.'
+- titulo: 'Ejemplo 4: Intersección con los ejes en pares'
+  enunciado: En la función $f = \{(0, -3), (1, -1), (2, 1)\}$, ¿cuál es el punto de corte con el eje Y?
+  alternativas:
+  - (0, -3)
+  - (1, -1)
+  - (2, 1)
+  - (-3, 0)
+  respuesta: (0, -3)
+  solucion_pasos:
+  - 'Paso 1: El corte con el eje Y ocurre cuando la primera componente es cero ($x = 0$).'
+  - 'Paso 2: El par correspondiente es $(0, -3)$.'
 errores_frecuentes:
-  - 'El conjunto de pares ordenados $\{(1, 2), (1, 3), (2, 4)\}$ representa una función real válida.'
-  - 'En el par ordenado $(a, b)$, el primer componente $a$ representa la imagen $f(b)$ calculada.'
-  - 'Un conjunto de pares ordenados puede ser función aunque existan elementos del dominio sin par asignado.'
-  - 'El orden de las componentes en el par ordenado $(x, y)$ se puede invertir libremente como $(y, x)$ sin alterar la función.'
-  - 'Dos pares ordenados con igual primera componente y distinta segunda componente garantizan la existencia de una función inyectiva.'
+- Invertir el orden de las componentes en el par ordenado.
+- Descalificar funciones cuando varias preimágenes comparten la misma imagen.
+- Duplicar elementos al listar el recorrido en notación de conjuntos.
 afirmaciones_verdaderas:
-  - 'Una función representada por pares ordenados $f = \{(x_1, y_1), (x_2, y_2), \dots\}$ exige que no existan dos pares con la misma primera componente y distinta segunda componente.'
-  - 'En cada par ordenado $(x, y)$, el elemento $x$ pertenece al dominio y el elemento $y = f(x)$ pertenece al recorrido.'
-al_terminar_debes_poder: |
-  QUÉ: Representar y analizar funciones mediante conjuntos de pares ordenados.
-  CÓMO: Formar las parejas $(x, f(x))$ a partir del dominio y verificar que ninguna primera componente aparezca repetida con diferente segunda componente.
-fuente: 'Texto escolar MINEDUC — Álgebra / Representación de Funciones'
+- Una función puede representarse formalmente como un conjunto de pares ordenados (x, y).
+- El dominio y el recorrido se extraen de las primeras y segundas componentes del conjunto de pares respectivamente.
+al_terminar_debes_poder: '**QUÉ:** Representar e interpretar funciones mediante conjuntos de pares ordenados.
+
+
+  **CÓMO:** Verificando la unicidad de las primeras componentes y extrayendo formalmente el dominio y recorrido.
+
+
+  ![Resumen Representar una función mediante pares ordenados consiste en expresarla como un conjunto de tuplas $(x, y)$ donde cada primera componente tiene una única segunda componente](/static/img/nodos/representacion-de-una-funcion-mediante-pares-ordenados-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Representación de Funciones
 estado: publicado

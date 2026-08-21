@@ -1,93 +1,154 @@
 semantic_id: MAT.ALG.EC_CUADR_METODOS.EC_REDUCIBLES
-resumen_inicial: La resolución de ecuaciones reducibles a segundo grado efectúa la sustitución $u = g(x)$, resuelve $au^2 + bu + c = 0$ y restituye $g(x) = u$.
-explicacion_simple: |
-  Para resolver ecuaciones complejas (como ecuaciones bicuadradas $x^4 - 13x^2 + 36 = 0$):
+resumen_inicial: 'La resolución completa de ecuaciones reducibles a segundo grado mediante sustitución auxiliar consta de tres fases: 1) cambiar la variable $u = g(x)$; 2) resolver la ecuación cuadrática en $u$; y 3) deshacer la sustitución resolviendo $g(x) = u_i$ para hallar todas las raíces reales de $x$.'
+explicacion_simple: "![La resolución completa de ecuaciones reducibles a segundo grado mediante sustitución auxiliar consta de tres fases: 1) cambiar la variable $u = g(x)$; 2) resolver la ecuación cuadrática en $u$; y 3) deshacer la sustitución resolviendo $g(x) = u_i$ para hallar todas las raíces reales de $x$](/static/img/nodos/resolucion-de-ecuaciones-reducibles-a-segundo-grado-mediante-sustitucion-auxiliar-intro.svg)\n\n\nPara resolver una ecuación completa con cambio de variable (como una bicuadrada $x^4 - 13x^2 + 36 = 0$):\n\n**Las 3 etapas obligatorias:**\n1. **Fase 1 (Disfrazar):** Cambias $u = x^2 \\implies u^2 - 13u + 36 = 0$.\n2. **Fase 2 (Resolver en u):** Factorizas $(u - 4)(u - 9) = 0 \\implies u_1 = 4, u_2 = 9$.\n3. **Fase 3 (¡Deshacer el disfraz!):**\n   - Si $u = 4 \\implies x^2 = 4 \\implies x = \\pm 2$.\n   - Si $u = 9 \\implies x^2 = 9 \\implies x = \\pm 3$.\n4. **Resultado final:** La ecuación original tiene **cuatro soluciones reales:** $x \\in \\{-3, -2, 2, 3\\}$.\n\
+  - *¡Cuidado!* Si algún $u$ da negativo (ej: $u = -5$), al plantear $x^2 = -5$ no genera soluciones reales."
+explicacion_formal: 'Sea la ecuación $a[g(x)]^2 + b[g(x)] + c = 0$. El **algoritmo de resolución completa por reducción cuadrática** se estructura en tres etapas secuenciales:
 
-  1. **Haces el cambio de variable**: Defines $u = x^2$.
-  2. **Escribes la ecuación cuadrática auxiliar**: $u^2 - 13u + 36 = 0$.
-  3. **Resuelves para $u$**: $(u - 9)(u - 4) = 0 \implies u_1 = 9$ y $u_2 = 4$.
-  4. **Restituyes la variable original $x$**:
-     - Para $u_1 = 9 \implies x^2 = 9 \implies x = \pm 3$.
-     - Para $u_2 = 4 \implies x^2 = 4 \implies x = \pm 2$.
-  - **Resultado final**: La ecuación original de grado 4 tiene cuatro soluciones en los reales: $S = \{-3, -2, 2, 3\}$.
-explicacion_formal: |
-  Sea una ecuación algebraica de estructura compuesta $a[g(x)]^2 + b[g(x)] + c = 0$ donde $g: D \subseteq \mathbb{R} \to \mathbb{R}$ es una función sobreyectiva en su imagen. El algoritmo de resolución comprende dos etapas analíticas:
 
-  **Etapa 1 (Ecuación Auxiliar en $u$):**
-  Definiendo $u = g(x)$, se resuelve $au^2 + bu + c = 0$ obteniendo el conjunto solución auxiliar $S_u = \{u_1, u_2\}$.
+  **Fase 1: Reducción formal**
 
-  **Etapa 2 (Ecuaciones Secundarias en $x$):**
-  Para cada $u_i \in S_u$, se resuelve la ecuación $g(x) = u_i$. El conjunto solución total $S_x$ es la unión de los conjuntos solución de las ecuaciones secundarias:
+  $$u = g(x) \implies au^2 + bu + c = 0$$
 
-  $$S_x = \{x \in D \mid g(x) = u_1\} \cup \{x \in D \mid g(x) = u_2\}$$
-definiciones_clave: |
-  - **Ecuaciones reducibles a cuadráticas**: Ecuaciones de grado superior, exponenciales o racionales que adoptan la forma $au^2 + bu + c = 0$ mediante una transformación $u = g(x)$.
-propiedades_relaciones: |
-  - **Descarte de raíces extrañas o imposibles**: Si al resolver $u = x^2$ se obtiene un valor $u = -4$, la ecuación $x^2 = -4$ no aporta soluciones en el conjunto de los números reales $\mathbb{R}$.
+
+  **Fase 2: Resolución en el espacio auxiliar**
+
+  $$u_{1, 2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+
+  **Fase 3: Restitución y resolución de ecuaciones desacopladas**
+
+  $$\mathcal{S}_x = \left\{ x \in \text{Dom}(g) \mid g(x) = u_1 \right\} \cup \left\{ x \in \text{Dom}(g) \mid g(x) = u_2 \right\}$$
+
+
+  **Filtrado de soluciones incompatibles**:
+
+  - Si $g(x) = x^2$ y $u_i < 0$, la ecuación $x^2 = u_i$ produce $\mathcal{S}_i = \emptyset$ en $\mathbb{R}$.
+
+  - Si $g(x) = \sqrt{x}$ y $u_i < 0$, no existen preimágenes reales ya que el rango de la raíz principal es $[0, +\infty[$.'
+definiciones_clave: '- **Restitución de variable**: Proceso de resolver $g(x) = u_i$ para retornar a las soluciones de la variable original $x$.
+
+  - **Raíces bicuadradas**: Conjunto de hasta 4 soluciones simétricas $\{\pm \sqrt{u_1}, \pm \sqrt{u_2}\}$.'
+propiedades_relaciones: '- **Teorema fundamental en grado 4**: Una ecuación bicuadrada posee a lo sumo 4 soluciones en $\mathbb{R}$.
+
+  - **Simetría de soluciones bicuadradas**: Las soluciones reales de una ecuación bicuadrada siempre se presentan en pares opuestos $\pm k$.'
 ejemplo_guiado:
-  enunciado: 'Resuelve la ecuación bicuadrada de cuarto grado $x^4 - 5x^2 - 36 = 0$ en el conjunto de los números reales.'
+  enunciado: '![Ejemplo La resolución completa de ecuaciones reducibles a segundo grado mediante sustitución auxiliar consta de tres fases: 1) cambiar la variable $u = g(x)$; 2) resolver la ecuación cuadrática en $u$; y 3) deshacer la sustitución resolviendo $g(x) = u_i$ para hallar todas las raíces reales de $x$](/static/img/nodos/resolucion-de-ecuaciones-reducibles-a-segundo-grado-mediante-sustitucion-auxiliar-ejemplos.svg)
+
+
+
+    Resuelve completamente en el conjunto de los números reales $\mathbb{R}$ la ecuación bicuadrada $x^4 - 29x^2 + 100 = 0$.'
   pasos:
-    - 'Paso 1: Aplicar el cambio de variable $u = x^2$: $u^2 - 5u - 36 = 0$.'
-    - 'Paso 2: Resolver para $u$ factorizando: $(u - 9)(u + 4) = 0 \implies u_1 = 9$ y $u_2 = -4$.'
-    - 'Paso 3: Restituir $x^2 = u$: para $u_1 = 9 \implies x^2 = 9 \implies x = \pm 3$.'
-    - 'Paso 4: Para $u_2 = -4 \implies x^2 = -4$ (sin soluciones reales). Conjunto solución real final $S = \{-3, 3\}$.'
+  - 'Paso 1: Aplicar la sustitución $u = x^2$ (con $u \ge 0$):
+
+    $u^2 - 29u + 100 = 0$.'
+  - 'Paso 2: Factorizar el trinomio en $u$:
+
+    Dos números que multiplicados den 100 y sumados den $-29$: $-25$ y $-4$.
+
+    $(u - 25)(u - 4) = 0 \implies u_1 = 25, \; u_2 = 4$.'
+  - 'Paso 3: Deshacer la sustitución para $u_1 = 25$:
+
+    $x^2 = 25 \implies x = \pm \sqrt{25} = \pm 5$.'
+  - 'Paso 4: Deshacer la sustitución para $u_2 = 4$:
+
+    $x^2 = 4 \implies x = \pm \sqrt{4} = \pm 2$.'
+  - 'Paso 5: Reunir todas las soluciones reales:
+
+    $\mathcal{S} = \{-5, -2, 2, 5\}$ (cuatro soluciones reales distintas).'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué paso es indispensable realizar después de encontrar las soluciones auxiliares $u_1$ y $u_2$ en una ecuación reducible?'
-    choices:
-      - {text: 'Restituir la variable original resolviendo las ecuaciones $g(x) = u_1$ y $g(x) = u_2$.', is_correct: true}
-      - {text: 'Multiplicar $u_1$ por $u_2$ e igualar a cero.', is_correct: false}
-      - {text: 'Declarar que las soluciones finales de la ecuación son $u_1$ y $u_2$.', is_correct: false}
-      - {text: 'Descartar automáticamente ambas soluciones.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Restituir la variable original resolviendo las ecuaciones $g(x) = u_1$ y $g(x) = u_2$.''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Cuáles son las soluciones reales de la ecuación bicuadrada $x^4 - 10x^2 + 9 = 0$?'
-    choices:
-      - {text: '$S = \{-3, -1, 1, 3\}$', is_correct: true}
-      - {text: '$S = \{1, 9\}$', is_correct: false}
-      - {text: '$S = \{-9, -1, 1, 9\}$', is_correct: false}
-      - {text: '$S = \{0\}$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$S = \{-3, -1, 1, 3\}$''. Las soluciones en $u$ son $9$ y $1$; al despejar $x^2=9 \implies \pm 3$ y $x^2=1 \implies \pm 1$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Al resolver $x^4 - 5x^2 - 36 = 0$ mediante $u = x^2$, se obtienen $u = 9$ y $u = -4$. ¿Cuáles son las soluciones reales de x?
+  choices:
+  - text: x = 3 y x = -3 (u = -4 no produce soluciones reales)
+    is_correct: true
+  - text: x = 3, x = -3, x = 2 y x = -2
+    is_correct: false
+  - text: x = 9 y x = -4
+    is_correct: false
+  - text: No tiene soluciones reales.
+    is_correct: false
+  explanation: La alternativa correcta es 'x = 3 y x = -3 (u = -4 no produce soluciones reales)'. $x^2 = 9 \implies x = \pm 3$, mientras que $x^2 = -4$ no tiene solución en $\mathbb{R}$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Por qué no se debe dar u = 4 y u = 9 como la respuesta final de una ecuación en x?
+  choices:
+  - text: Porque u es solo una variable auxiliar y la pregunta pide los valores de x.
+    is_correct: true
+  - text: Porque 4 y 9 son numeros compuestos.
+    is_correct: false
+  - text: Porque siempre se debe multiplicar por 2.
+    is_correct: false
+  - text: Porque falta calcular el discriminante.
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque u es solo una variable auxiliar y la pregunta pide los valores de x.'. La resolución exige siempre restituir la variable original.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el cambio de variable conveniente $u = g(x)$ que transforma la ecuación en $au^2 + bu + c = 0$.'
-  - 'Paso 2: Resolver la ecuación cuadrática auxiliar para hallar sus soluciones $u_1$ y $u_2$.'
-  - 'Paso 3: Plantear y resolver las ecuaciones secundarias $g(x) = u_1$ y $g(x) = u_2$.'
-  - 'Paso 4: Descartar soluciones secundarias que no cumplan el dominio real y formar el conjunto solución $S_x$.'
-errores_correccion: |
-  - **Error común:** Aceptar valores negativos de $u$ en $u = x^2$ para calcular raíces reales (ej. decir $x = \pm \sqrt{-4} = \pm 2$).
-  - **Cómo corregirlo:** Si $u < 0$ en la sustitución $x^2 = u$, esa rama **NO TIENE SOLUCIONES REALES** ($x \notin \mathbb{R}$).
+- 'Paso 1: Definir la variable auxiliar $u = g(x)$ y plantear la ecuación cuadrática en $u$.'
+- 'Paso 2: Resolver la ecuación cuadrática obteniendo las soluciones auxiliares $u_1$ y $u_2$.'
+- 'Paso 3: Plantear las ecuaciones de restitución $g(x) = u_1$ y $g(x) = u_2$.'
+- 'Paso 4: Resolver cada una de las ecuaciones en la variable original $x$, descartando aquellas sin solución real.'
+- 'Paso 5: Escribir el conjunto solución uniendo todas las raíces válidas de $x$.'
+errores_correccion: '- **Error común:** Detenerse al hallar los valores de $u$ creyendo que la ecuación ya está resuelta.
+
+  - **Cómo corregirlo:** **La incógnita pedida es $x$**, por lo que debes **deshacer siempre el cambio** planteando $g(x) = u$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Ecuación bicuadrada con 4 raíces reales.
-    alternativas:
-      - '$S = \{-2, -1, 1, 2\}$'
-      - '$S = \{1, 4\}$'
-      - '$S = \{-4, 4\}$'
-    respuesta: '$S = \{-2, -1, 1, 2\}$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Bicuadrada con 2 raíces reales.
-    alternativas:
-      - '$S = \{-3, 3\}$'
-      - '$S = \{-3, -2, 2, 3\}$'
-      - '$\emptyset$'
-    respuesta: '$S = \{-3, 3\}$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Bicuadrada con cuatro raíces enteras'
+  enunciado: Resuelve $x^4 - 10x^2 + 9 = 0$.
+  alternativas:
+  - x ∈ {-3, -1, 1, 3}
+  - x ∈ {1, 9}
+  - x ∈ {-9, -1, 1, 9}
+  - x ∈ {-3, 3}
+  respuesta: x ∈ {-3, -1, 1, 3}
+  solucion_pasos:
+  - 'Paso 1: $u^2 - 10u + 9 = 0 \implies u \in \{1, 9\}$.'
+  - 'Paso 2: $x^2 = 1 \implies x = \pm 1$; $x^2 = 9 \implies x = \pm 3$.'
+- titulo: 'Ejemplo 2: Bicuadrada con dos raíces reales y dos no reales'
+  enunciado: Resuelve $x^4 - 8x^2 - 9 = 0$ en los números reales.
+  alternativas:
+  - x = 3 y x = -3
+  - x = 3, x = -3, x = 1, x = -1
+  - x = 9 y x = -1
+  - Sin solución real
+  respuesta: x = 3 y x = -3
+  solucion_pasos:
+  - 'Paso 1: $u^2 - 8u - 9 = 0 \implies u = 9 \lor u = -1$.'
+  - 'Paso 2: $x^2 = 9 \implies x = \pm 3$; $x^2 = -1$ (no real).'
+- titulo: 'Ejemplo 3: Ecuación con radical'
+  enunciado: Resuelve $x - 5\sqrt{x} + 6 = 0$.
+  alternativas:
+  - x = 4 y x = 9
+  - x = 2 y x = 3
+  - x = 16 y x = 81
+  - x = -2 y x = -3
+  respuesta: x = 4 y x = 9
+  solucion_pasos:
+  - 'Paso 1: $u = \sqrt{x} \implies u^2 - 5u + 6 = 0 \implies u = 2 \lor u = 3$.'
+  - 'Paso 2: $\sqrt{x} = 2 \implies x = 4$; $\sqrt{x} = 3 \implies x = 9$.'
+- titulo: 'Ejemplo 4: Paréntesis compuesto'
+  enunciado: Resuelve $(x - 1)^2 - 4(x - 1) - 5 = 0$.
+  alternativas:
+  - x = 6 y x = 0
+  - x = 5 y x = -1
+  - x = 4 y x = -2
+  - x = 6 y x = -4
+  respuesta: x = 6 y x = 0
+  solucion_pasos:
+  - 'Paso 1: $u = x - 1 \implies u^2 - 4u - 5 = 0 \implies u = 5 \lor u = -1$.'
+  - 'Paso 2: $x - 1 = 5 \implies x = 6$; $x - 1 = -1 \implies x = 0$.'
 errores_frecuentes:
-  - 'Entregar las respuestas de la variable auxiliar $u$ como las soluciones finales de la incógnita $x$.'
-  - 'Extraer raíz cuadrada a un valor negativo $u = -16$ en $x^2 = u$ obteniendo el número real $x = -4$.'
-  - 'La sustitución de variable en ecuaciones de grado 4 produce siempre cuatro soluciones reales distintas.'
-  - 'No verificar el dominio de validez de la función interna $g(x)$ en ecuaciones exponenciales o radicales.'
-  - 'La técnica de sustitución auxiliar invalida el uso de la fórmula general en la etapa secundaria.'
+- Olvidar restituir la variable original x tras resolver en u.
+- Intentar resolver potencias cuadráticas iguales a números negativos en los reales.
+- Omitir las soluciones negativas al despejar x² = k.
 afirmaciones_verdaderas:
-  - 'Resolver ecuaciones reducibles a cuadráticas requiere resolver la ecuación cuadrática auxiliar $au^2 + bu + c = 0$ y posteriormente despejar la variable original $g(x) = u$.'
-  - 'Si la sustitución es $u = x^2$ y una raíz auxiliar es negativa ($u_i < 0$), dicha raíz no aporta soluciones en el conjunto de los números reales.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver ecuaciones de grado superior o compuestas reducibles a segundo grado mediante cambio de variable.
-  CÓMO: Definir $u = g(x)$, resolver $au^2 + bu + c = 0$, despejar $g(x) = u$ y filtrar las soluciones reales válidas.
-fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
+- La resolución por sustitución auxiliar requiere obligatoriamente despejar la variable original x en la etapa final.
+- Si u = x² resulta negativo, dicha rama no aporta soluciones reales a la ecuación original.
+al_terminar_debes_poder: '**QUÉ:** Resolver completamente ecuaciones reducibles a segundo grado mediante sustitución auxiliar.
+
+
+  **CÓMO:** Ejecutando las tres fases de cambio de variable, resolución cuadrática auxiliar y restitución final de la incógnita original.
+
+
+  ![Resumen La resolución completa de ecuaciones reducibles a segundo grado mediante sustitución auxiliar consta de tres fases: 1) cambiar la variable $u = g(x)$; 2) resolver la ecuación cuadrática en $u$; y 3) deshacer la sustitución resolviendo $g(x) = u_i$ para hallar todas las raíces reales de $x$](/static/img/nodos/resolucion-de-ecuaciones-reducibles-a-segundo-grado-mediante-sustitucion-auxiliar-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra / Métodos Algebraicos de Resolución de Ecuaciones Cuadráticas
 estado: publicado

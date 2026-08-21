@@ -1,0 +1,128 @@
+semantic_id: MAT.ALG.RELACION_EXP_LOG.ELECCION_MODELO
+resumen_inicial: 'La elección entre un modelo exponencial y uno logarítmico según el contexto determina la herramienta matemática adecuada según la variable dependiente: predecir una cantidad física $y$ en función del tiempo $t$ requiere un modelo exponencial $y = y_0 b^t$, mientras que determinar el tiempo o esfuerzo $t$ necesario para alcanzar una meta o modelar saturación requiere un modelo logarítmico $t = \log_b(y / y_0)$.'
+explicacion_simple: "![La elección entre un modelo exponencial y uno logarítmico según el contexto determina la herramienta matemática adecuada según la variable dependiente: predecir una cantidad física $y$ en función del tiempo $t$ requiere un modelo exponencial $y = y_0 b^t$, mientras que determinar el tiempo o esfuerzo $t$ necesario para alcanzar una meta o modelar saturación requiere un modelo logarítmico $t = \\log_b(y / y_0)$](/static/img/nodos/eleccion-entre-modelo-exponencial-y-logaritmico-segun-el-contexto-intro.svg)\n\n\n¿Cómo saber si un problema de la vida real se resuelve con un **modelo exponencial** o con un **modelo logarítmico**?\n\n- **Usa MODELO EXPONENCIAL ($y = y_0 \\cdot b^t$) cuando:**\n  - Te dan el **tiempo $t$** y te preguntan **\"¿Cuánto habrá?\"**.\n  - Crecimiento acelerado: bacterias que se multiplican, capital con interés compuesto, propagación de un virus.\n  - Decaimiento: depreciación de un auto, enfriamiento, desintegración radiactiva.\n- **Usa MODELO\
+  \ LOGARÍTMICO ($t = \\log_b(y / y_0)$) cuando:**\n  - Te dan la **cantidad o meta $y$** y te preguntan **\"¿Cuánto tiempo tardará?\"**.\n  - Fenómenos con saturación o rendimientos decrecientes (curvas de aprendizaje, escalas sensoriales)."
+explicacion_formal: "Sea un proceso dinámico continuo caracterizado por una tasa de variación proporcional $\\frac{dy}{dt} = k y$.\n1. **Formulación Exponencial Directa**:\n   Si la variable de salida es la cantidad de estado $y(t)$ dado el parámetro temporal $t$:\n   $$y(t) = y_0 e^{kt} \\quad (k > 0 \\text{ Crecimiento}, \\; k < 0 \\text{ Decaimiento})$$\n2. **Formulación Logarítmica Inversa (Tiempo de Tránsito / Meta)**:\n   Si la variable objetivo es el tiempo requerido $T(y)$ para alcanzar un nivel crítico de estado $y > 0$:\n   $$T(y) = \\frac{1}{k} \\ln\\left(\\frac{y}{y_0}\\right)$$\n3. **Criterio de Selección Estructural**:\n   - Si la derivada crece con la variable ($y' \\propto y$) $\\implies$ Modelo Exponencial.\n   - Si la derivada decrece con la variable ($y' \\propto 1/x$) $\\implies$ Modelo Logarítmico."
+definiciones_clave: '- **Modelo directo exponencial**: Función que proyecta magnitudes futuras bajo crecimiento proporcional.
+
+  - **Modelo inverso logarítmico**: Función que calcula tiempos de espera o comprime estímulos físicos.'
+propiedades_relaciones: '- **Inversión temporal**: Despejar el tiempo en cualquier ley exponencial genera inmediatamente un modelo logarítmico.
+
+  - **Vida media y duplicación**: $T_{\text{dup}} = \frac{\ln(2)}{k}$ y $T_{1/2} = \frac{\ln(2)}{\lambda}$.'
+ejemplo_guiado:
+  enunciado: '![Ejemplo La elección entre un modelo exponencial y uno logarítmico según el contexto determina la herramienta matemática adecuada según la variable dependiente: predecir una cantidad física $y$ en función del tiempo $t$ requiere un modelo exponencial $y = y_0 b^t$, mientras que determinar el tiempo o esfuerzo $t$ necesario para alcanzar una meta o modelar saturación requiere un modelo logarítmico $t = \log_b(y / y_0)$](/static/img/nodos/eleccion-entre-modelo-exponencial-y-logaritmico-segun-el-contexto-ejemplos.svg)
+
+
+
+    Determina el modelo apropiado y resuelve en cada caso:
+
+    1) Una inversión de $\$1.000.000\text{ pesos}$ crece al 8% anual compuesto. ¿Cuánto dinero habrá en 5 años?
+
+    2) En la misma inversión, ¿cuántos años deben transcurrir para duplicar el capital a $\$2.000.000\text{ pesos}$?'
+  pasos:
+  - 'Paso 1: Para la pregunta 1:
+
+    - Pregunta por el capital final $C(t)$ dado el tiempo $t = 5$.
+
+    - **Modelo Exponencial**: $C(t) = 1.000.000 \cdot (1{,}08)^t$.
+
+    - Cálculo: $C(5) = 1.000.000 \cdot (1{,}08)^5 \approx \mathbf{\$1.469.328\text{ pesos}}$.'
+  - 'Paso 2: Para la pregunta 2:
+
+    - Pregunta por el tiempo $t$ necesario para alcanzar la meta $C = 2.000.000$.
+
+    - **Modelo Logarítmico**: $1.000.000 \cdot (1{,}08)^t = 2.000.000 \implies (1{,}08)^t = 2$.
+
+    - Aplicar logaritmos: $t = \frac{\ln(2)}{\ln(1{,}08)} \approx \frac{0{,}6931}{0{,}07696} \approx \mathbf{9{,}01\text{ años}}$ (aproximadamente 9 años).'
+checkpoints:
+- placement: after_explicacion_formal
+  question: Si un problema pregunta '¿En cuántos años se triplicará la población de una ciudad?', ¿qué modelo se debe utilizar para despejar la respuesta?
+  choices:
+  - text: Modelo logarítmico (despeja el tiempo t a partir de la razón de crecimiento)
+    is_correct: true
+  - text: Modelo lineal directo
+    is_correct: false
+  - text: Modelo cuadrático
+    is_correct: false
+  - text: No se puede calcular
+    is_correct: false
+  explanation: La alternativa correcta es 'Modelo logarítmico (despeja el tiempo t a partir de la razón de crecimiento)'. Al buscar el tiempo donde $P(t) = 3P_0$, se aplica logaritmo para despejar el exponente.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es la diferencia fundamental entre el crecimiento exponencial y el logarítmico?
+  choices:
+  - text: El exponencial crece cada vez más rápido, mientras que el logarítmico crece cada vez más lento
+    is_correct: true
+  - text: El exponencial es decreciente y el logarítmico creciente
+    is_correct: false
+  - text: Son funciones idénticas con distinto nombre
+    is_correct: false
+  - text: El logarítmico está acotado superiormente
+    is_correct: false
+  explanation: La alternativa correcta es 'El exponencial crece cada vez más rápido, mientras que el logarítmico crece cada vez más lento'. El exponencial tiene aceleración positiva y el logaritmo es cóncavo hacia abajo con tasa decreciente.
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Identificar cuál es la variable de entrada dada y cuál es la incógnita pedida en el enunciado.'
+- 'Paso 2: Si se busca la cantidad final tras un tiempo $t$, formular el modelo exponencial $y = y_0 b^t$.'
+- 'Paso 3: Si se busca el tiempo para alcanzar una cantidad o meta $y$, formular el modelo logarítmico $t = \frac{\ln(y / y_0)}{\ln(b)}$.'
+- 'Paso 4: Evaluar numéricamente e interpretar las unidades en el contexto del problema.'
+errores_correccion: '- **Error común:** Intentar responder preguntas sobre tiempo usando tanteo en la calculadora en lugar de formular el modelo logarítmico exacto.
+
+  - **Cómo corregirlo:** Plantea la ecuación $b^t = \text{meta}$ y **despeja el tiempo directamente con logaritmos**: $t = \mathbf{\frac{\ln(\text{meta})}{\ln(b)}}$.'
+ejemplos:
+- titulo: 'Ejemplo 1: Selección de modelo para cantidad'
+  enunciado: Un cultivo bacteriano inicia con 200 bacterias y se duplica cada hora. ¿Qué modelo da la población tras $t$ horas?
+  alternativas:
+  - P(t) = 200 · 2ᵗ (Modelo Exponencial)
+  - P(t) = log₂(200t)
+  - P(t) = 200 + 2t
+  - P(t) = 200 · t²
+  respuesta: P(t) = 200 · 2ᵗ (Modelo Exponencial)
+  solucion_pasos:
+  - 'Paso 1: La cantidad crece exponencialmente: $P(t) = 200 \cdot 2^t$.'
+- titulo: 'Ejemplo 2: Selección de modelo para tiempo'
+  enunciado: En el mismo cultivo ($P(t) = 200 \cdot 2^t$), ¿cuántas horas tardará en llegar a 6.400 bacterias?
+  alternativas:
+  - t = 5 horas (log₂(32) = 5)
+  - t = 32 horas
+  - t = 16 horas
+  - t = 6,4 horas
+  respuesta: t = 5 horas (log₂(32) = 5)
+  solucion_pasos:
+  - 'Paso 1: $200 \cdot 2^t = 6.400 \implies 2^t = 32 \implies t = \log_2(32) = 5\text{ h}$.'
+- titulo: 'Ejemplo 3: Tiempo de duplicación financiera'
+  enunciado: Si una tasa de interés tiene factor $1{,}10$ anual, ¿cuántos años tarda en duplicar el dinero?
+  alternativas:
+  - t = ln(2) / ln(1,10) ≈ 7,27 años
+  - t = 20 años
+  - t = 10 años
+  - t = 2 / 1,10 ≈ 1,81 años
+  respuesta: t = ln(2) / ln(1,10) ≈ 7,27 años
+  solucion_pasos:
+  - 'Paso 1: $(1{,}10)^t = 2 \implies t = \frac{\ln(2)}{\ln(1{,}10)} \approx 7{,}27\text{ años}$.'
+- titulo: 'Ejemplo 4: Modelo de vida media'
+  enunciado: 'Una sustancia radiactiva decae según $N(t) = N_0 \cdot (0{,}5)^{t / 10}$. El tiempo para reducirse al 25% es:'
+  alternativas:
+  - t = 20 años (dos periodos de semidesintegración)
+  - t = 10 años
+  - t = 5 años
+  - t = 40 años
+  respuesta: t = 20 años (dos periodos de semidesintegración)
+  solucion_pasos:
+  - 'Paso 1: $(0{,}5)^{t/10} = 0{,}25 = (0{,}5)^2 \implies t/10 = 2 \implies t = 20\text{ años}$.'
+errores_frecuentes:
+- Usar modelos exponenciales cuando se solicita calcular tiempo sin despejar con logaritmos.
+- Confundir la base del crecimiento con el tiempo transcurrido.
+- Asumir que las metas financieras se alcanzan dividiendo por la tasa porcentual.
+afirmaciones_verdaderas:
+- El modelo exponencial predice cantidades futuras en función del tiempo transcurrido.
+- El modelo logarítmico determina el tiempo requerido para que una magnitud alcance un umbral preestablecido.
+al_terminar_debes_poder: '**QUÉ:** Elegir y aplicar el modelo exponencial o logarítmico según los requerimientos del contexto.
+
+
+  **CÓMO:** Formulando y = y₀ bᵗ para calcular cantidades y t = log_b(y / y₀) para despejar tiempos de evolución.
+
+
+  ![Resumen La elección entre un modelo exponencial y uno logarítmico según el contexto determina la herramienta matemática adecuada según la variable dependiente: predecir una cantidad física $y$ en función del tiempo $t$ requiere un modelo exponencial $y = y_0 b^t$, mientras que determinar el tiempo o esfuerzo $t$ necesario para alcanzar una meta o modelar saturación requiere un modelo logarítmico $t = \log_b(y / y_0)$](/static/img/nodos/eleccion-entre-modelo-exponencial-y-logaritmico-segun-el-contexto-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Relación de Funciones Inversas
+estado: publicado

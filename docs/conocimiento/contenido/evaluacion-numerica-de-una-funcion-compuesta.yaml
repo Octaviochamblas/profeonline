@@ -1,88 +1,148 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.EVALUACION_NUMERICA
-resumen_inicial: La evaluación numérica de una función compuesta calcula el valor final $f(g(a))$ sustituyendo secuencialmente el número dado.
-explicacion_simple: |
-  Para **evaluar $(f \circ g)(3)$ con un número específico $x = 3$**:
+resumen_inicial: La evaluación numérica de una función compuesta consiste en calcular primero la imagen bajo la función interna $u = g(x_0)$ y luego evaluar ese número en la función externa $f(u)$.
+explicacion_simple: '![La evaluación numérica de una función compuesta consiste en calcular primero la imagen bajo la función interna $u = g(x_0)$ y luego evaluar ese número en la función externa $f(u)$](/static/img/nodos/evaluacion-numerica-de-una-funcion-compuesta-intro.svg)
 
-  - **Camino de dos pasos**:
-    1. Reemplazas $3$ en la función interna $g$ y calculas el número resultado (por ejemplo, $g(3) = 7$).
-    2. Tomas ese resultado $7$ y lo reemplazas en la función externa $f$ (por ejemplo, $f(7) = 2 \cdot 7 = 14$).
-  - **Camino directo**: Encuentras la fórmula completa de $(f \circ g)(x)$ y reemplazas $x = 3$ directo al final. Ambos caminos entregan exactamente el mismo resultado.
-explicacion_formal: |
-  Sea el valor numérico $a \in \text{Dom}(f \circ g)$. El proceso de **evaluación numérica directa** de la composición $(f \circ g)(a)$ se realiza según el algoritmo secuencial de dos etapas:
 
-  $$\text{Etapa 1: } u = g(a) \in \text{Dom}(f)$$
-  $$\text{Etapa 2: } y = f(u) = f\big(g(a)\big)$$
 
-  **Propiedad de consistencia:**
-  Sustituir $x = a$ en la expresión algebraica compuesta reducida $H(x) = (f \circ g)(x)$ produce el mismo escalar resultado $H(a) = f(g(a))$.
-definiciones_clave: |
-  - **Evaluación numérica compuesta**: Sustitución de un valor constante numérico en la secuencia de reglas funcionales enlazadas.
-propiedades_relaciones: |
-  - **Preservación de indeterminación**: Si en la Etapa 1 el cálculo $g(a)$ no está definido, o el valor $u = g(a)$ no pertenece al dominio de $f$, la evaluación compuesta no existe en $\mathbb{R}$.
+  Para calcular el valor numérico de $(f \circ g)(k)$ en dos pasos fáciles:
+
+  1. **Paso 1:** Tomas el número $k$ y lo reemplazas en la función interna $g$ $\implies$ obtienes un número resultado $u = g(k)$.
+
+  2. **Paso 2:** Tomas ese número $u$ y lo reemplazas en la función externa $f$ $\implies$ calculas $f(u)$.
+
+
+  ¡Listo! No necesitas hacer álgebra complicada con las fórmulas generales.'
+explicacion_formal: 'Dadas dos funciones $f$ y $g$ y un valor $x_0 \in \text{Dom}(f \circ g)$, la evaluación numérica sigue el **algoritmo de dos etapas**:
+
+  1. **Etapa 1 (Evaluación interna)**: Calcular el escalar intermedio $u_0 = g(x_0)$.
+
+  2. **Etapa 2 (Evaluación externa)**: Calcular el valor final $y_0 = f(u_0)$.
+
+
+  $$(f \circ g)(x_0) = f(g(x_0)) = f(u_0) = y_0$$
+
+
+  **Evaluación mediante tablas o gráficos:**
+
+  - Ubicar $x_0$ en la entrada de $g$ para leer la salida $u_0$.
+
+  - Ubicar $u_0$ en el eje de entrada de $f$ para leer la salida final $y_0$.'
+definiciones_clave: '- **Evaluación en dos etapas**: Procedimiento aritmético secuencial que evita la sustitución simbólica previa.
+
+  - **Valor intermedio**: Imagen generada por la función interna que sirve de argumento a la externa.'
+propiedades_relaciones: '- **Eficiencia computacional**: Evaluar números directamente reduce el riesgo de errores algebraicos.
+
+  - **Prueba de existencia**: Si $x_0 \notin \text{Dom}(g)$ o $g(x_0) \notin \text{Dom}(f)$, la evaluación no existe.'
 ejemplo_guiado:
-  enunciado: 'Dadas $f(x) = x^2 - 1$ y $g(x) = 3x + 2$, evalúa el valor numérico de $(f \circ g)(2)$ por el método secuencial y directo.'
+  enunciado: '![Ejemplo La evaluación numérica de una función compuesta consiste en calcular primero la imagen bajo la función interna $u = g(x_0)$ y luego evaluar ese número en la función externa $f(u)$](/static/img/nodos/evaluacion-numerica-de-una-funcion-compuesta-ejemplos.svg)
+
+
+
+    Sean $f(x) = 2x^2 - 3$ y $g(x) = 3x - 1$. Calcula el valor numérico de $(f \circ g)(2)$ y de $(g \circ f)(2)$.'
   pasos:
-    - 'Paso 1: Método secuencial: evaluar primero la función interna en $x = 2$: $g(2) = 3(2) + 2 = 6 + 2 = 8$.'
-    - 'Paso 2: Evaluar la función externa en la salida intermedia $8$: $f(8) = 8^2 - 1 = 64 - 1 = 63$.'
-    - 'Paso 3: Método directo: hallar $(f \circ g)(x) = f(3x + 2) = (3x + 2)^2 - 1$.'
-    - 'Paso 4: Sustituir $x = 2$: $(3(2) + 2)^2 - 1 = 8^2 - 1 = 64 - 1 = 63$, comprobando que $(f \circ g)(2) = 63$.'
+  - 'Paso 1: Para $(f \circ g)(2) = f(g(2))$:
+
+    - Evaluar la interna: $g(2) = 3(2) - 1 = 6 - 1 = 5$.
+
+    - Evaluar la externa con el resultado: $f(5) = 2(5)^2 - 3 = 2(25) - 3 = 50 - 3 = 47$.'
+  - 'Paso 2: Para $(g \circ f)(2) = g(f(2))$:
+
+    - Evaluar la interna: $f(2) = 2(2)^2 - 3 = 2(4) - 3 = 8 - 3 = 5$.
+
+    - Evaluar la externa con el resultado: $g(5) = 3(5) - 1 = 15 - 1 = 14$.'
+  - 'Paso 3: Constatar que $(f \circ g)(2) = 47 \neq 14 = (g \circ f)(2)$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Dadas $f(x) = x^2 - 1$ y $g(x) = 3x + 2$, ¿cuál es el valor de $(f \circ g)(2)$?'
-    choices:
-      - {text: '63', is_correct: true}
-      - {text: '25', is_correct: false}
-      - {text: '15', is_correct: false}
-      - {text: '48', is_correct: false}
-    explanation: 'La alternativa correcta es ''63''. $g(2) = 8 \implies f(8) = 8^2 - 1 = 63$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Para las mismas funciones $f(x) = x^2 - 1$ y $g(x) = 3x + 2$, ¿cuál es el valor de $(g \circ f)(2)$?'
-    choices:
-      - {text: '11', is_correct: true}
-      - {text: '63', is_correct: false}
-      - {text: '20', is_correct: false}
-      - {text: '8', is_correct: false}
-    explanation: 'La alternativa correcta es ''11''. $f(2) = 2^2 - 1 = 3 \implies g(3) = 3(3) + 2 = 11$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si $g(x) = x + 4$ y $f(x) = 5x$, ¿cuál es el valor de $(f \circ g)(3)$?
+  choices:
+  - text: '35'
+    is_correct: true
+  - text: '19'
+    is_correct: false
+  - text: '15'
+    is_correct: false
+  - text: '7'
+    is_correct: false
+  explanation: La alternativa correcta es '35'. $g(3) = 3 + 4 = 7 \implies f(7) = 5(7) = 35$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Con las mismas funciones $g(x) = x + 4$ y $f(x) = 5x$, ¿cuánto vale $(g \circ f)(3)$?
+  choices:
+  - text: '19'
+    is_correct: true
+  - text: '35'
+    is_correct: false
+  - text: '15'
+    is_correct: false
+  - text: '39'
+    is_correct: false
+  explanation: La alternativa correcta es '19'. $f(3) = 5(3) = 15 \implies g(15) = 15 + 4 = 19$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Reemplazar el número dado $a$ en la fórmula de la función interna $g(x)$ y calcular el resultado $b = g(a)$.'
-  - 'Paso 2: Reemplazar el número $b$ obtenido en la fórmula de la función externa $f(x)$.'
-  - 'Paso 3: Operar y calcular el resultado final $f(b)$.'
-  - 'Paso 4: Declarar $(f \circ g)(a) = f(b)$.'
-errores_correccion: |
-  - **Error común:** Evaluar ambas funciones por separado con la entrada $a$ y luego multiplicar o sumar los números resultantes.
-  - **Cómo corregirlo:** La evaluación es **SECUENCIAL**: el resultado numérico de la primera función es la **ENTRADA** de la segunda.
+- 'Paso 1: Identificar la preimagen numérica $x_0$ dada en el problema.'
+- 'Paso 2: Evaluar $x_0$ en la función interna $g$, resolviendo todas las operaciones aritméticas para obtener $u_0$.'
+- 'Paso 3: Sustituir el valor $u_0$ en la función externa $f$.'
+- 'Paso 4: Calcular el valor final $f(u_0)$ respetando la jerarquía de las operaciones.'
+errores_correccion: '- **Error común:** Calcular $f(x_0)$ y $g(x_0)$ por separado y multiplicar ambos resultados.
+
+  - **Cómo corregirlo:** La composición **no es multiplicación**; el resultado de $g(x_0)$ debe introducirse **como entrada de $f$** ($f(g(x_0))$).'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de composición de funciones.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de composición de funciones.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Evaluación con función afín'
+  enunciado: Si $f(x) = 4x - 1$ y $g(x) = 2x + 3$, halla $(f \circ g)(1)$.
+  alternativas:
+  - '19'
+  - '15'
+  - '9'
+  - '21'
+  respuesta: '19'
+  solucion_pasos:
+  - 'Paso 1: $g(1) = 2(1) + 3 = 5$.'
+  - 'Paso 2: $f(5) = 4(5) - 1 = 19$.'
+- titulo: 'Ejemplo 2: Con función valor absoluto'
+  enunciado: Si $f(x) = |x - 8|$ y $g(x) = 3x$, calcula $(f \circ g)(2)$.
+  alternativas:
+  - '2'
+  - '-2'
+  - '6'
+  - '8'
+  respuesta: '2'
+  solucion_pasos:
+  - 'Paso 1: $g(2) = 3(2) = 6$.'
+  - 'Paso 2: $f(6) = |6 - 8| = |-2| = 2$.'
+- titulo: 'Ejemplo 3: Con raíz cuadrada'
+  enunciado: Si $f(x) = \sqrt{x}$ y $g(x) = 5x + 9$, calcula $(f \circ g)(3)$.
+  alternativas:
+  - 24^(1/2)
+  - 2sqrt(6)
+  - 3sqrt(2)
+  - 2sqrt(6)
+  respuesta: 2sqrt(6)
+  solucion_pasos:
+  - 'Paso 1: $g(3) = 5(3) + 9 = 24$.'
+  - 'Paso 2: $f(24) = \sqrt{24} = 2\sqrt{6}$.'
+- titulo: 'Ejemplo 4: Desde tabla de valores'
+  enunciado: Si una tabla indica $g(0) = 4$ y $f(4) = -7$, ¿cuánto vale $(f \circ g)(0)$?
+  alternativas:
+  - '-7'
+  - '4'
+  - '0'
+  - '-28'
+  respuesta: '-7'
+  solucion_pasos:
+  - 'Paso 1: $(f \circ g)(0) = f(g(0)) = f(4) = -7$.'
 errores_frecuentes:
-  - 'Evaluar $(f \circ g)(2)$ equivale a calcular $f(2) \cdot g(2)$ y multiplicar los dos números obtenidos.'
-  - 'El valor numérico de $(f \circ g)(a)$ es siempre igual al valor numérico de $(g \circ f)(a)$ para cualquier entrada $a$.'
-  - 'Si la función interna produce un valor numérico negativo $g(a) = -5$, no se puede evaluar en $f(x) = x^3$.'
-  - 'Para evaluar una composición con un número es obligatorio calcular primero la derivada de la función.'
-  - 'Sustituir el número de entrada en la función externa antes de evaluar la interna genera el mismo valor final.'
+- Multiplicar los valores numéricos f(x) * g(x).
+- Invertir el orden evaluando primero la externa.
+- Cometer errores de signos en la segunda evaluación.
 afirmaciones_verdaderas:
-  - 'La evaluación numérica de $(f \circ g)(a)$ se realiza obteniendo primero la constante $b = g(a)$ y evaluando posteriormente $f(b)$.'
-  - 'Si $a \in \text{Dom}(f \circ g)$, la evaluación secuencial $f(g(a))$ y la sustitución directa en la regla reducida producen exactamente el mismo valor escalar.'
-al_terminar_debes_poder: |
-  QUÉ: Evaluar numéricamente una función compuesta para entradas constantes dadas.
-  CÓMO: Calcular $u = g(a)$, sustituir $u$ en la función externa $f(u)$ y determinar el resultado final.
-fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
+- Para evaluar numéricamente (f o g)(x0) se calcula primero g(x0) y luego se evalúa f en ese valor.
+- En general, (f o g)(x0) y (g o f)(x0) entregan valores numéricos diferentes.
+al_terminar_debes_poder: '**QUÉ:** Evaluar numéricamente funciones compuestas en preimágenes particulares.
+
+
+  **CÓMO:** Aplicando el algoritmo en dos etapas de adentro hacia afuera: calculando u = g(x0) y posteriormente f(u).
+
+
+  ![Resumen La evaluación numérica de una función compuesta consiste en calcular primero la imagen bajo la función interna $u = g(x_0)$ y luego evaluar ese número en la función externa $f(u)$](/static/img/nodos/evaluacion-numerica-de-una-funcion-compuesta-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Composición de Funciones
 estado: publicado

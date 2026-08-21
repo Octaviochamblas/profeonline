@@ -1,96 +1,135 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_GRAFICA.MODELO_DECRECIMIENTO
-resumen_inicial: El modelamiento de decaimiento representa procesos de pérdida continua (desintegración radiactiva, depreciación) con $N(t) = N_0 \cdot (1 - d)^t$.
-explicacion_simple: |
-  Cuando un fenómeno físico o económico **pierde una fracción constante $d$** en cada unidad de tiempo $t$:
+resumen_inicial: El modelamiento de fenómenos de decaimiento mediante funciones exponenciales proyecta la desintegración radiactiva, la absorción de fármacos o la depreciación de activos mediante la ley $N(t) = N_0 \cdot (1 - d)^t = N_0 \cdot \left(\frac{1}{2}\right)^{t/t_{1/2}}$ ($0 < b < 1$).
+explicacion_simple: "![El modelamiento de fenómenos de decaimiento mediante funciones exponenciales proyecta la desintegración radiactiva, la absorción de fármacos o la depreciación de activos mediante la ley $N(t) = N_0 \\cdot (1 - d)^t = N_0 \\cdot \\left(\\frac{1}{2}\\right)^{t/t_{1/2}}$ ($0 < b < 1$)](/static/img/nodos/modelamiento-de-fenomenos-de-decaimiento-mediante-funciones-exponenciales-intro.svg)\n\n\nCuando algo pierde una fracción fija de su valor con el paso del tiempo (radiactividad, el valor de un auto, la cafeína en tu cuerpo), sigue una **fórmula de decaimiento exponencial**:\n\n- **1. Pérdida porcentual periódica (Depreciación):**\n  - Si un auto nuevo de $\\$10.000.000\\text{ pesos}$ pierde el 15% de su valor cada año:\n    - Su base es lo que **le queda**: $b = 1 - 0,15 = \\mathbf{0,85}$.\n    - Fórmula: $V(t) = 10.000.000 \\cdot (0,85)^t$.\n- **2. Vida Media o Semivida ($t_{1/2}$ en Física):**\n  - Es el tiempo que tarda una sustancia en reducirse a la **mitad exacta**\
+  \ ($1/2$):\n    $$N(t) = N_0 \\cdot \\left(\\frac{1}{2}\\right)^{t/t_{1/2}}$$\n  - Cada período que pasa, queda la mitad de lo que había."
+explicacion_formal: 'Sea $N(t)$ la cantidad de sustancia presente en el instante $t \ge 0$. La **ley de decaimiento natural de Rutherford-Soddy** establece:
 
-  - Usamos el **modelo de decaimiento o decrecimiento exponencial**:
+  $$\frac{dN}{dt} = -\lambda N(t), \quad \lambda > 0, \; N(0) = N_0$$
 
-  $$N(t) = N_0 \cdot (1 - d)^t$$
 
-  - **$N_0$ es la cantidad inicial**: Masa o valor presente en $t = 0$.
-  - **$d$ es la tasa de pérdida o depreciación**: En decimal (ej. $10\% \implies d = 0.10$).
-  - **$b = 1 - d$ es la base de retención**: Como $d > 0$, la base cumple $0 < b < 1$, por lo que la cantidad **disminuye hacia cero**.
-  - **Vida media ($T_{1/2}$)**: Tiempo en que la cantidad se reduce exactamente a la mitad: $N(t) = N_0 \cdot (1/2)^{t / T_{1/2}}$.
-explicacion_formal: |
-  Sea $N: \mathbb{R}^+ \cup \{0\} \to \mathbb{R}^+$ la variable de estado de un sistema con desintegración o devaluación continua. El **modelo de decaimiento exponencial** satisface la ecuación diferencial autónoma:
+  **Solución diferencial y semivida**:
 
-  $$\frac{dN}{dt} = -\lambda \cdot N \quad \text{con } \lambda > 0$$
+  $$N(t) = N_0 e^{-\lambda t} = N_0 \left(\frac{1}{2}\right)^{t/t_{1/2}}, \quad \text{donde } t_{1/2} = \frac{\ln(2)}{\lambda}$$
 
-  **Formulaciones analíticas de decaimiento:**
-  1. **Forma Continua (Constante de Desintegración $\lambda$):**
-     $$N(t) = N_0 \cdot e^{-\lambda \cdot t}$$
-  2. **Forma Discreta por Tasa Periódica $d$:**
-     $$N(t) = N_0 \cdot (1 - d)^t \quad \text{con base } b = 1 - d \in ]0, 1[$$
-  3. **Forma de Vida Media / Semidesintegración ($T_{1/2}$):**
-     $$N(t) = N_0 \cdot \left(\frac{1}{2}\right)^{\frac{t}{T_{1/2}}}$$
-definiciones_clave: |
-  - **Decaimiento exponencial**: Proceso dinámico modelado por $N(t) = N_0 \cdot b^t$ con $0 < b < 1$ donde una magnitud física o económica se reduce de forma desacelerada hacia cero.
-propiedades_relaciones: |
-  - **Vida media ($T_{1/2}$)**: Período de tiempo constante requerido para que cualquier cantidad inicial $N_0$ se reduzca a la mitad $N_0/2$, dado por $T_{1/2} = \frac{\ln(2)}{\lambda}$.
+
+  **Propiedades asintóticas**:
+
+  1. **Asíntota horizontal**: $\lim_{t \to +\infty} N(t) = 0 \implies$ la sustancia nunca desaparece formalmente en tiempo finito.
+
+  2. **Conservación de tasa de pérdida relativa**: $\frac{N(t) - N(t+\Delta t)}{N(t)} = 1 - b^{\Delta t} = \text{Constante}$.'
+definiciones_clave: '- **Vida media (Semivida $t_{1/2}$)**: Período característico en el que la cantidad remanente se reduce al 50% de su valor.
+
+  - **Factor de retención ($1 - d$)**: Porcentaje complementario que permanece tras la depreciación periódica.'
+propiedades_relaciones: '- **Escala de potencias de $1/2$**: Tras $k$ vidas medias ($t = k \cdot t_{1/2}$), la cantidad remanente es $N(k \cdot t_{1/2}) = N_0 \left(\frac{1}{2}\right)^k = \frac{N_0}{2^k}$.
+
+  - **Invarianza de semivida**: La vida media no depende de la masa inicial de la muestra.'
 ejemplo_guiado:
-  enunciado: 'Un automóvil nuevo cuesta $\$12.000.000$ y su valor se deprecia un $10\%$ cada año. Escribe la función $V(t)$ y calcula su valor a los $2$ años.'
+  enunciado: '![Ejemplo El modelamiento de fenómenos de decaimiento mediante funciones exponenciales proyecta la desintegración radiactiva, la absorción de fármacos o la depreciación de activos mediante la ley $N(t) = N_0 \cdot (1 - d)^t = N_0 \cdot \left(\frac{1}{2}\right)^{t/t_{1/2}}$ ($0 < b < 1$)](/static/img/nodos/modelamiento-de-fenomenos-de-decaimiento-mediante-funciones-exponenciales-ejemplos.svg)
+
+
+
+    Un isótopo radiactivo tiene una masa inicial de 160 gramos y una vida media de 4 horas. Modela la función de masa remanente $M(t)$ y calcula cuántos gramos quedarán tras 12 horas.'
   pasos:
-    - 'Paso 1: Identificar el valor inicial $V_0 = 12.000.000$ y la tasa de depreciación $d = 10\% = 0.10$.'
-    - 'Paso 2: Calcular la base del modelo: $b = 1 - d = 1 - 0.10 = 0.90$.'
-    - 'Paso 3: Formular la función exponencial: $V(t) = 12.000.000 \cdot (0.9)^t$.'
-    - 'Paso 4: Evaluar para $t = 2 \implies V(2) = 12.000.000 \cdot (0.9)^2 = 12.000.000 \cdot 0.81 = $\$9.720.00$0$.'
+  - 'Paso 1: Identificar datos: $N_0 = 160\text{ g}$, vida media $t_{1/2} = 4\text{ horas}$.'
+  - 'Paso 2: Formular la función de decaimiento exponencial:
+
+    $M(t) = 160 \cdot \left(\frac{1}{2}\right)^{t/4}$.'
+  - 'Paso 3: Calcular el número de vidas medias para $t = 12\text{ horas}$:
+
+    $k = \frac{12}{4} = 3\text{ vidas medias transcurridas}$.'
+  - 'Paso 4: Evaluar la masa remanente:
+
+    $M(12) = 160 \cdot \left(\frac{1}{2}\right)^3 = 160 \cdot \frac{1}{8} = 20\text{ gramos}$.'
+  - 'Paso 5: Conclusión: Tras 12 horas quedarán **20 gramos** de isótopo radiactivo.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'La masa de una sustancia radiactiva de $800$ gramos tiene una vida media de $10$ horas. ¿Qué cantidad de sustancia queda al cabo de $30$ horas?'
-    choices:
-      - {text: 'Quedan $100$ gramos de sustancia', is_correct: true}
-      - {text: 'Quedan $400$ gramos de sustancia.', is_correct: false}
-      - {text: 'Quedan $200$ gramos de sustancia.', is_correct: false}
-      - {text: 'Quedan $0$ gramos de sustancia.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Quedan $100$ gramos de sustancia''. $N(30) = 800 \cdot (1/2)^{30/10} = 800 \cdot (1/2)^3 = 800 / 8 = 100$ g.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'En el modelo de depreciación de una maquinaria $V(t) = 50000 \cdot (0.85)^t$, ¿cuál es el porcentaje de desvalorización por año?'
-    choices:
-      - {text: 'La desvalorización es del 15% anual', is_correct: true}
-      - {text: 'La desvalorización es del 85% anual.', is_correct: false}
-      - {text: 'La desvalorización es del 8.5% anual.', is_correct: false}
-      - {text: 'La desvalorización es del 50% anual.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La desvalorización es del 15% anual''. $b = 1 - d = 0.85 \implies d = 0.15 = 15\%$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si una máquina de $6.000.000 se deprecia un 20% anual, ¿cuál es la base b de su modelo exponencial?
+  choices:
+  - text: b = 0,80 (1 - 0,20 = 0,80)
+    is_correct: true
+  - text: b = 0,20
+    is_correct: false
+  - text: b = 1,20
+    is_correct: false
+  - text: b = -0,20
+    is_correct: false
+  explanation: La alternativa correcta es 'b = 0,80 (1 - 0,20 = 0,80)'. Si pierde el 20%, conserva el 80% de su valor cada año.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si una sustancia con masa inicial de 80 g tiene una vida media de 5 días, ¿cuánta masa queda tras 10 días (2 vidas medias)?
+  choices:
+  - text: 20 gramos (80 / 4)
+    is_correct: true
+  - text: 40 gramos
+    is_correct: false
+  - text: 0 gramos
+    is_correct: false
+  - text: 10 gramos
+    is_correct: false
+  explanation: La alternativa correcta es '20 gramos (80 / 4)'. Tras la primera vida media quedan 40 g; tras la segunda vida media quedan 20 g ($80 / 2^2 = 20\text{ g}$).
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Extraer del enunciado la cantidad o valor inicial $N_0 = N(0)$.'
-  - 'Paso 2: Convertir la tasa porcentual de pérdida $d\%$ a su forma decimal $d = \text{porcentaje}/100$.'
-  - 'Paso 3: Calcular la base de retención $b = 1 - d$ o armar $(1/2)^{t/T_{1/2}}$ si involucra vida media.'
-  - 'Paso 4: Sustituir el tiempo $t$ y calcular la cantidad remanente $N(t)$.'
-errores_correccion: |
-  - **Error común:** Confundir la tasa de pérdida $d$ con la base retenida $b$ (ej. poner $b = 0.10$ en lugar de $b = 0.90$ para un $10\%$ de caída).
-  - **Cómo corregirlo:** La base que retenemos es **$b = 1 - d$** ($1 - 0.10 = 0.90$). Si usaras $0.10$, estarías diciendo que la sustancia pierde el $90\%$ en un paso.
+- 'Paso 1: Identificar la cantidad inicial $N_0$ en el instante $t = 0$.'
+- 'Paso 2: Si el problema da una tasa de pérdida $d$, calcular la base de retención $b = 1 - d$.'
+- 'Paso 3: Si da una vida media $t_{1/2}$, formular la base como $\left(\frac{1}{2}\right)^{t/t_{1/2}}$.'
+- 'Paso 4: Evaluar la función para el tiempo dado y expresar la respuesta con sus unidades físicas.'
+errores_correccion: '- **Error común:** Usar la pérdida $d$ en lugar de lo que queda ($1 - d$) como base.
+
+  - **Cómo corregirlo:** La función modela lo que **permanece**: si pierde 10%, la base es **$1 - 0,10 = 0,90$**.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Depreciación anual del 20%.
-    alternativas:
-      - 'V(t) = 1.000.000 \cdot (0.8)^t, V(1) = $800.000'
-      - 'V(t) = 1.000.000 \cdot (0.2)^t'
-      - 'V(t) = $200.000'
-    respuesta: 'V(t) = 1.000.000 \cdot (0.8)^t, V(1) = $800.000'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Vida media de 5 días.
-    alternativas:
-      - 'N(t) = 64 \cdot (1/2)^{t/5}, N(15) = 8'
-      - 'N(15) = 32'
-      - 'N(15) = 0'
-    respuesta: 'N(t) = 64 \cdot (1/2)^{t/5}, N(15) = 8'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Semivida de fármaco'
+  enunciado: 'Un fármaco con 200 mg iniciales y vida media de 2 horas ($D(t) = 200 \cdot (0,5)^{t/2}$): ¿cuánto queda en 6 horas?'
+  alternativas:
+  - 25 mg
+  - 50 mg
+  - 100 mg
+  - 12,5 mg
+  respuesta: 25 mg
+  solucion_pasos:
+  - 'Paso 1: $t/2 = 6/2 = 3 \implies D(6) = 200 \cdot (0{,}5)^3 = 200/8 = 25\text{ mg}$.'
+- titulo: 'Ejemplo 2: Depreciación de maquinaria'
+  enunciado: 'Un equipo de $\$5.000.000\text{ pesos}$ pierde 10% anual ($b = 0,90$). En 2 años vale:'
+  alternativas:
+  - $\$4.050.000\text{ pesos}$
+  - $\$4.000.000\text{ pesos}$
+  - $\$4.500.000\text{ pesos}$
+  - $\$3.500.000\text{ pesos}$
+  respuesta: $\$4.050.000\text{ pesos}$
+  solucion_pasos:
+  - 'Paso 1: $V(2) = 5.000.000 \cdot (0{,}9)^2 = 5.000.000 \cdot 0{,}81 = \$4.050.000$.'
+- titulo: 'Ejemplo 3: Fracción remanente'
+  enunciado: ¿Qué porcentaje de masa radiactiva queda tras 4 vidas medias?
+  alternativas:
+  - 6,25% (1/16)
+  - 12,5%
+  - 25%
+  - 0%
+  respuesta: 6,25% (1/16)
+  solucion_pasos:
+  - 'Paso 1: $(1/2)^4 = 1/16 = 0{,}0625 = 6{,}25\%$.'
+- titulo: 'Ejemplo 4: Límite a largo plazo'
+  enunciado: En un modelo de decaimiento radiactivo, ¿a qué valor tiende la masa remanente cuando $t \to +\infty$?
+  alternativas:
+  - 0 gramos (asíntota horizontal y = 0)
+  - -infinito
+  - 1 gramo
+  - La mitad
+  respuesta: 0 gramos (asíntota horizontal y = 0)
+  solucion_pasos:
+  - 'Paso 1: $\lim_{t \to +\infty} N_0 \cdot b^t = 0$ para $0 < b < 1$.'
 errores_frecuentes:
-  - 'Dada una tasa de pérdida del $25\%$, la afirmación de que la base del modelo es $0.25$ en vez del complemento $0.75$.'
-  - 'La confusión entre la reducción continua por decaimiento exponencial y la pérdida lineal constante.'
-  - 'La afirmación de que tras un número finito de vidas medias la cantidad radiactiva se anula a cero exacto.'
-  - 'La omisión del exponente de periodo $t/T_{1/2}$ en problemas de vida media.'
-  - 'La afirmación de que la constante de decaimiento hace que las ordenadas resultantes sean números negativos.'
+- Asumir que tras dos vidas medias la sustancia se extingue al 100% (queda el 25%).
+- Restar la pérdida de forma lineal fija año a año.
+- Olvidar elevar la fracción de vida media a la potencia t/t₁/₂.
 afirmaciones_verdaderas:
-  - 'En los modelos de decaimiento exponencial $N(t) = N_0 \cdot (1 - d)^t$, la base satisface estrictamente $0 < 1 - d < 1$.'
-  - 'El concepto de vida media $T_{1/2}$ representa el lapso constante en el que cualquier masa inicial disminuye a su 50%.'
-al_terminar_debes_poder: |
-  QUÉ: Modelar y resolver problemas de decaimiento exponencial y vida media mediante $N(t) = N_0 \cdot (1 - d)^t$.
-  CÓMO: Identificar $N_0$, calcular la base de retención $b = 1 - d$ o $(1/2)^{t/T_{1/2}}$ y evaluar la cantidad remanente $N(t)$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- Los modelos de decaimiento exponencial utilizan bases que satisfacen 0 < b < 1.
+- Tras k vidas medias, la cantidad remanente de sustancia es exactamente N₀ / 2ᵏ.
+al_terminar_debes_poder: '**QUÉ:** Modelar y resolver problemas de decaimiento exponencial y semivida.
+
+
+  **CÓMO:** Formulando N(t) = N₀ · (1 - d)ᵗ o N(t) = N₀ · (1/2)^(t/t₁/₂) para predecir cantidades remanentes.
+
+
+  ![Resumen El modelamiento de fenómenos de decaimiento mediante funciones exponenciales proyecta la desintegración radiactiva, la absorción de fármacos o la depreciación de activos mediante la ley $N(t) = N_0 \cdot (1 - d)^t = N_0 \cdot \left(\frac{1}{2}\right)^{t/t_{1/2}}$ ($0 < b < 1$)](/static/img/nodos/modelamiento-de-fenomenos-de-decaimiento-mediante-funciones-exponenciales-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Análisis Gráfico y Modelamiento Exponencial
 estado: publicado

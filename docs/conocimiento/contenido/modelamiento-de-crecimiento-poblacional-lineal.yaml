@@ -1,89 +1,137 @@
 semantic_id: MAT.ALG.MODELAMIENTO_AFIN.CRECIMIENTO_POBLACIONAL_LINEAL
-resumen_inicial: El modelamiento del crecimiento poblacional lineal representa la evolución de una población que incrementa o disminuye en una cantidad fija por unidad de tiempo.
-explicacion_simple: |
-  En un **crecimiento poblacional lineal**:
+resumen_inicial: 'El modelamiento de crecimiento poblacional lineal describe la evolución de una población sumando o restando una cantidad neta constante de individuos por período: $P(t) = P_0 + rt$.'
+explicacion_simple: '![El modelamiento de crecimiento poblacional lineal describe la evolución de una población sumando o restando una cantidad neta constante de individuos por período: $P(t) = P_0 + rt$](/static/img/nodos/modelamiento-de-crecimiento-poblacional-lineal-intro.svg)
 
-  - La población no se multiplica por un porcentaje, sino que se le **suma o resta un número fijo de habitantes cada año/mes**.
-  - Si una ciudad tiene $50.000$ habitantes y crece $1.500$ personas por año, la función es:
-    $$P(t) = 1.500t + 50.000$$
-  - $50.000$ es la población inicial ($t = 0$).
-  - $1.500$ es el número fijo de nuevos pobladores por año.
-explicacion_formal: |
-  Sea $P(t)$ la población total en el tiempo $t \ge 0$. El modelo de **crecimiento poblacional lineal** asume una tasa de variación absoluta constante $k = \frac{dP}{dt}$:
 
-  $$P(t) = k \cdot t + P_0$$
 
-  **Parámetros del modelo:**
-  - $P_0 = P(0)$: Población inicial en el instante de referencia $t = 0$.
-  - $k$: Tasa de variación poblacional anual, mensual o diaria ($k > 0$ para crecimiento, $k < 0$ para decrecimiento).
-definiciones_clave: |
-  - **Modelo poblacional lineal**: Función afín $P(t) = kt + P_0$ que describe una dinámica demográfica de adición o sustracción constante de individuos por unidad de tiempo.
-propiedades_relaciones: |
-  - **Diferencia con modelo exponencial**: En el modelo lineal la población crece por adición fija $\Delta P = k \cdot \Delta t$, a diferencia del modelo exponencial donde crece por factor multiplicativo porcentual.
+  Cuando una ciudad o colonia de animales crece o decrece sumando **la misma cantidad de habitantes cada año**:
+
+  - Se tiene una **población inicial ($P_0$)** en el año cero ($t = 0$).
+
+  - Cada año que pasa, se agregan $r$ habitantes: $P(t) = P_0 + rt$.
+
+  - Si la población pierde habitantes por emigración, $r$ es negativo ($P(t) = P_0 - |r|t$).'
+explicacion_formal: 'El **modelo lineal de dinámica poblacional** asume una tasa neta de cambio demográfico constante $r = \frac{dP}{dt}$:
+
+  $$P(t) = rt + P_0, \quad t \ge 0$$
+
+
+  **Parámetros demográficos:**
+
+  - **Población base $P_0 = P(0)$**: Censo o conteo en el instante de referencia inicial.
+
+  - **Tasa neta anual $r = B - D + I - E$**: Balance constante entre nacimientos ($B$), defunciones ($D$), inmigración ($I$) y emigración ($E$).
+
+  - **Validez temporal**: Modelo aplicable a corto plazo donde no intervienen limitaciones de capacidad de carga ni efectos geométricos.'
+definiciones_clave: '- **Crecimiento lineal poblacional**: Incremento en progresión aritmética con cantidad fija de individuos por año.
+
+  - **Población inicial $P_0$**: Valor de la población en $t = 0$.'
+propiedades_relaciones: '- **Tasa de cambio $r$**: Si $r > 0$ es crecimiento; si $r < 0$ es despoblamiento o extinción.
+
+  - **Tiempo de duplicación variable**: A diferencia del modelo exponencial, en el modelo lineal el tiempo para duplicar la población no es constante.'
 ejemplo_guiado:
-  enunciado: "Una colonia de aves tiene inicialmente $120$ individuos y su población aumenta a razón constante de $15$ aves por año. Escribe la función $P(t)$ y calcula cuántas aves habrá al cabo de $8$ años."
+  enunciado: '![Ejemplo El modelamiento de crecimiento poblacional lineal describe la evolución de una población sumando o restando una cantidad neta constante de individuos por período: $P(t) = P_0 + rt$](/static/img/nodos/modelamiento-de-crecimiento-poblacional-lineal-ejemplos.svg)
+
+
+
+    Una comuna rural tiene $8.500\text{ habitantes}$ en el año 2020 y gana un promedio constante de $320\text{ personas al año}$. Escribe la función $P(t)$ donde $t$ es el número de años desde 2020 y estima la población en 2035.'
   pasos:
-    - 'Paso 1: Identificar la población inicial: $P_0 = 120$.'
-    - 'Paso 2: Identificar la tasa de crecimiento constante: $k = 15$ aves/año.'
-    - 'Paso 3: Redactar la función poblacional: $P(t) = 15t + 120$.'
-    - 'Paso 4: Evaluar para $t = 8$: $P(8) = 15(8) + 120 = 120 + 120 = 240$ aves.'
+  - 'Paso 1: Definir la variable temporal: $t = \text{años transcurridos desde 2020}$ ($t = 0$ en 2020).'
+  - 'Paso 2: Identificar los parámetros: $P_0 = 8.500$ y $r = 320\text{ hab/año}$.'
+  - 'Paso 3: Formular el modelo: $P(t) = 320t + 8.500$.'
+  - 'Paso 4: Calcular $t$ para el año 2035: $t = 2035 - 2020 = 15\text{ años}$.'
+  - 'Paso 5: Evaluar: $P(15) = 320(15) + 8.500 = 4.800 + 8.500 = 13.300\text{ habitantes}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "Si una población inicia con 120 aves y crece a razón de 15 aves por año, ¿cuántas aves habrá en 8 años?"
-    choices:
-      - {text: "240 aves", is_correct: true}
-      - {text: "135 aves", is_correct: false}
-      - {text: "300 aves", is_correct: false}
-      - {text: "200 aves", is_correct: false}
-    explanation: "La alternativa correcta es '240 aves'. $P(8) = 15(8) + 120 = 120 + 120 = 240$."
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: "¿Qué representa el parámetro $k$ en el modelo de población lineal $P(t) = kt + P_0$?"
-    choices:
-      - {text: "El número constante de personas en que aumenta o disminuye la población cada año.", is_correct: true}
-      - {text: "La población inicial registrada al comenzar el estudio.", is_correct: false}
-      - {text: "El porcentaje fijo de nacimientos.", is_correct: false}
-      - {text: "El número total de años transcurridos.", is_correct: false}
-    explanation: "La alternativa correcta es 'El número constante de personas en que aumenta o disminuye la población cada año.'."
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Un pueblo tiene 4.000 habitantes y pierde 75 habitantes por año. ¿Cuál es la función de su población P(t)?
+  choices:
+  - text: P(t) = -75t + 4000
+    is_correct: true
+  - text: P(t) = 75t + 4000
+    is_correct: false
+  - text: P(t) = 4000(0.75)^t
+    is_correct: false
+  - text: P(t) = -75t
+    is_correct: false
+  explanation: La alternativa correcta es 'P(t) = -75t + 4000'. Al perder habitantes la tasa es $r = -75$, con base $P_0 = 4000$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si $P(t) = 500t + 10000$, ¿cuántos años deben pasar para que la población alcance los 14.000 habitantes?
+  choices:
+  - text: 8 anos
+    is_correct: true
+  - text: 5 anos
+    is_correct: false
+  - text: 10 anos
+    is_correct: false
+  - text: 28 anos
+    is_correct: false
+  explanation: La alternativa correcta es '8 anos'. $500t + 10000 = 14000 \implies 500t = 4000 \implies t = 8$ años.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Extraer la población inicial $P_0$ asociada al instante $t = 0$.'
-  - 'Paso 2: Extraer la variación constante de personas por periodo $k$.'
-  - 'Paso 3: Construir la fórmula de la función afín $P(t) = kt + P_0$.'
-  - 'Paso 4: Evaluar la función en el tiempo $t$ solicitado para realizar la proyección.'
-errores_correccion: |
-  - **Error común:** Aplicar una fórmula con porcentaje multiplicativo (interés compuesto o exponencial) cuando el enunciado indica explícitamente un aumento en una **CANTIDAD FIJA DE PERSONAS**.
-  - **Cómo corregirlo:** Si se suma un número fijo de personas, el modelo es **LINEAL/AFÍN** ($P(t) = kt + P_0$).
+- 'Paso 1: Definir el año base de referencia como $t = 0$ y registrar la población inicial $P_0$.'
+- 'Paso 2: Identificar el cambio neto anual de individuos $r$ (positivo o negativo).'
+- 'Paso 3: Construir la función afín $P(t) = rt + P_0$.'
+- 'Paso 4: Evaluar para el período solicitado $t = \text{año objetivo} - \text{año base}$.'
+errores_correccion: '- **Error común:** Usar el año cronológico completo (ej: $t = 2035$) dentro de la fórmula en lugar de los años transcurridos ($t = 15$).
+
+  - **Cómo corregirlo:** Define siempre $t$ como el número de años transcurridos **desde el año base** ($t = \text{año} - \text{año}_0$).'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de modelamiento afín.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de modelamiento afín.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Proyección demográfica'
+  enunciado: Una ciudad con $50.000\text{ hab}$ en 2022 crece a razón de $1.200\text{ hab/año}$. ¿Cuál será su población en 2030?
+  alternativas:
+  - 59.600 habitantes
+  - 62.000 habitantes
+  - 58.400 habitantes
+  - 51.200 habitantes
+  respuesta: 59.600 habitantes
+  solucion_pasos:
+  - 'Paso 1: $t = 2030 - 2022 = 8\text{ años}$.'
+  - 'Paso 2: $P(8) = 1.200(8) + 50.000 = 9.600 + 50.000 = 59.600$ hab.'
+- titulo: 'Ejemplo 2: Estimación de año meta'
+  enunciado: Con $P(t) = 250t + 6.000$ (desde 2020), ¿en qué año la población llegará a $8.500\text{ habitantes}$?
+  alternativas:
+  - Ano 2030
+  - Ano 2028
+  - Ano 2035
+  - Ano 2025
+  respuesta: Ano 2030
+  solucion_pasos:
+  - 'Paso 1: $250t + 6000 = 8500 \implies 250t = 2500 \implies t = 10\text{ años}$.'
+  - 'Paso 2: $\text{Año} = 2020 + 10 = 2030$.'
+- titulo: 'Ejemplo 3: Extinción o despoblamiento'
+  enunciado: Una colonia de 600 aves pierde 40 aves por año. ¿En cuántos años no quedará ninguna si se mantiene la tasa?
+  alternativas:
+  - 15 anos
+  - 12 anos
+  - 20 anos
+  - 10 anos
+  respuesta: 15 anos
+  solucion_pasos:
+  - 'Paso 1: $600 - 40t = 0 \implies 40t = 600 \implies t = 15$ años.'
+- titulo: 'Ejemplo 4: Tasa desde dos censos'
+  enunciado: En 2010 la población era $20.000$ y en 2020 fue $26.000$. Suponiendo crecimiento lineal, ¿cuál fue la tasa anual?
+  alternativas:
+  - 600 hab/ano
+  - 6000 hab/ano
+  - 300 hab/ano
+  - 2600 hab/ano
+  respuesta: 600 hab/ano
+  solucion_pasos:
+  - 'Paso 1: $r = \frac{26000 - 20000}{2020 - 2010} = \frac{6000}{10} = 600\text{ hab/año}$.'
 errores_frecuentes:
-  - 'En un modelo de crecimiento poblacional lineal $P(t) = kt + P_0$, la población se triplica a intervalos regulares de tiempo.'
-  - 'La población inicial $P_0$ en un problema demográfico se calcula dividiendo la tasa $k$ entre el tiempo $t$.'
-  - 'Si la tasa $k$ de un modelo demográfico lineal es negativa, la población tiende a crecer infinitamente hacia el futuro.'
-  - 'Un modelo poblacional lineal requiere calcular logaritmos naturales para determinar el total de habitantes.'
-  - 'La variable $t$ en la función de población $P(t) = 15t + 120$ representa la masa en kilogramos de los habitantes.'
+- 'Sustituir el año calendario completo (ej: t = 2030) en vez del tiempo transcurrido.'
+- Confundir crecimiento lineal con crecimiento porcentual.
+- No verificar si la población llega a cero en modelos decrecientes.
 afirmaciones_verdaderas:
-  - 'El crecimiento poblacional lineal $P(t) = kt + P_0$ asume una tasa de cambio demográfica constante $k = \frac{\Delta P}{\Delta t}$ por unidad de tiempo.'
-  - 'En este modelo, $P_0$ fija la población inicial al instante $t = 0$ y el signo de $k$ indica crecimiento ($k > 0$) o decrecimiento demográfico ($k < 0$).'
-al_terminar_debes_poder: |
-  QUÉ: Formular y resolver modelos afines de crecimiento o decrecimiento poblacional lineal.
-  CÓMO: Identificar $P_0$ y $k$, escribir la función $P(t) = kt + P_0$ y evaluar proyectando a tiempos futuros.
-fuente: 'Texto escolar MINEDUC — Álgebra / Modelamiento Afín y Lineal'
+- El modelo poblacional lineal asume que la población varía sumando o restando un número fijo de individuos por período.
+- La tasa anual r corresponde a la pendiente de la función afín P(t) = rt + P0.
+al_terminar_debes_poder: '**QUÉ:** Modelar y proyectar la dinámica poblacional mediante funciones afines de crecimiento lineal.
+
+
+  **CÓMO:** Ajustando los parámetros de población base P0 y tasa neta anual r en la fórmula P(t) = rt + P0.
+
+
+  ![Resumen El modelamiento de crecimiento poblacional lineal describe la evolución de una población sumando o restando una cantidad neta constante de individuos por período: $P(t) = P_0 + rt$](/static/img/nodos/modelamiento-de-crecimiento-poblacional-lineal-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Modelamiento Lineal y Afín
 estado: publicado

@@ -1,0 +1,137 @@
+semantic_id: MAT.ALG.FUNC_POTENCIA_MODELO.ENERGIA_EOLICA
+resumen_inicial: El modelamiento de potencia de aerogeneradores mediante funciones cúbicas $P(v) = \frac{1}{2}\rho A C_p \cdot v^3 = k \cdot v^3$ fundamenta la relación cúbica entre la velocidad del viento y la energía cinética del flujo de aire, explicando por qué duplicar la velocidad del viento genera un incremento de 8 veces en la potencia eléctrica.
+explicacion_simple: "![El modelamiento de potencia de aerogeneradores mediante funciones cúbicas $P(v) = \\frac{1}{2}\\rho A C_p \\cdot v^3 = k \\cdot v^3$ fundamenta la relación cúbica entre la velocidad del viento y la energía cinética del flujo de aire, explicando por qué duplicar la velocidad del viento genera un incremento de 8 veces en la potencia eléctrica](/static/img/nodos/modelamiento-de-potencia-de-aerogeneradores-mediante-funciones-cubicas-intro.svg)\n\n\nLa energía eólica es uno de los ejemplos más impresionantes del poder de una **función cúbica ($P = k \\cdot v^3$)**:\n\n- **¿Por qué la potencia depende del CUBO de la velocidad ($v^3$)?**\n  1. Porque a mayor velocidad, **pasa más cantidad de aire por segundo** (flujo de masa proporcional a $v$).\n  2. Porque cada kilogramo de aire lleva **energía cinética proporcional a $v^2$**.\n  3. Al multiplicar ambas cosas: $\\text{Masa}(v) \\times \\text{Energía}(v^2) = \\mathbf{v^3}$ (¡velocidad al cubo!).\n- **La regla del 800%:**\n\
+  \  - Si el viento sopla a $5\\text{ m/s}$ y sube a $10\\text{ m/s}$ (el doble), la potencia se multiplica por $2^3 = \\mathbf{8}$ (¡$800\\%$ de potencia!)."
+explicacion_formal: 'Sea un aerogenerador con área de barrido de aspas $A = \pi R^2$, inmerso en una masa de aire con densidad $\rho \approx 1{,}225 \text{ kg/m}^3$ a velocidad $v$.
+
+  La masa de aire que atraviesa el rotor por unidad de tiempo es el flujo másico:
+
+  $$\dot{m} = \frac{dm}{dt} = \rho \cdot A \cdot v$$
+
+  La energía cinética por unidad de masa del viento es $e_k = \frac{1}{2}v^2$.
+
+  Por lo tanto, la potencia eólica teórica total del flujo es:
+
+  $$P_{\text{viento}} = \dot{m} \cdot e_k = (\rho A v) \left(\frac{1}{2}v^2\right) = \frac{1}{2}\rho A v^3$$
+
+  Considerando el coeficiente aerodinámico de potencia del rotor $C_p \le \frac{16}{27} \approx 0{,}593$ (Límite de Betz), la potencia eléctrica útil generada es:
+
+  $$P(v) = k \cdot v^3, \quad \text{con } k = \frac{1}{2}\rho A C_p$$
+
+
+  **Régimen de amplificación cúbica**:
+
+  $$\frac{P(v_2)}{P(v_1)} = \left(\frac{v_2}{v_1}\right)^3$$'
+definiciones_clave: '- **Límite de Betz**: Cota teórica máxima $C_p = 16/27 \approx 59{,}3\%$ de eficiencia de extracción eólica.
+
+  - **Flujo cinético cúbico**: Producto del flujo másico lineal y la energía cinética cuadrática.'
+propiedades_relaciones: '- **Sensibilidad extrema**: Un incremento de solo $10\%$ en la velocidad del viento ($v \times 1{,}10$) produce un aumento del $33{,}1\%$ en la potencia ($1{,}10^3 = 1{,}331$).'
+ejemplo_guiado:
+  enunciado: '![Ejemplo El modelamiento de potencia de aerogeneradores mediante funciones cúbicas $P(v) = \frac{1}{2}\rho A C_p \cdot v^3 = k \cdot v^3$ fundamenta la relación cúbica entre la velocidad del viento y la energía cinética del flujo de aire, explicando por qué duplicar la velocidad del viento genera un incremento de 8 veces en la potencia eléctrica](/static/img/nodos/modelamiento-de-potencia-de-aerogeneradores-mediante-funciones-cubicas-ejemplos.svg)
+
+
+
+    Un aerogenerador tiene una constante $k = 0{,}8\text{ kW}/(\text{m/s})^3$ y opera según $P(v) = 0{,}8 v^3$:
+
+    1) Calcula la potencia generada para un viento de $v = 5\text{ m/s}$ y para $v = 10\text{ m/s}$.
+
+    2) Comprueba la razón de aumento de potencia.'
+  pasos:
+  - 'Paso 1: Evaluaciones de potencia:
+
+    - Para $v = 5\text{ m/s}$: $P(5) = 0{,}8(5^3) = 0{,}8(125) = \mathbf{100\text{ kW}}$.
+
+    - Para $v = 10\text{ m/s}$: $P(10) = 0{,}8(10^3) = 0{,}8(1.000) = \mathbf{800\text{ kW}}$.'
+  - 'Paso 2: Razón de aumento: $\frac{P(10)}{P(5)} = \frac{800}{100} = \mathbf{8} = 2^3$. Se confirma exactamente la relación cúbica.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: Si la velocidad del viento en un parque eólico se triplica (pasa de 4 m/s a 12 m/s), ¿cuántas veces se incrementa la potencia teórica disponible?
+  choices:
+  - text: 27 veces (porque 3³ = 27)
+    is_correct: true
+  - text: 3 veces
+    is_correct: false
+  - text: 9 veces
+    is_correct: false
+  - text: 81 veces
+    is_correct: false
+  explanation: La alternativa correcta es '27 veces (porque 3³ = 27)'. Como $P \propto v^3$, triplicar la velocidad eleva la potencia en $3^3 = 27$ veces.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Qué dos magnitudes físicas se combinan para originar el exponente cúbico v³ en la energía eólica?
+  choices:
+  - text: El flujo másico de aire (proporcional a v) y la energía cinética (proporcional a v²)
+    is_correct: true
+  - text: La velocidad del viento y la aceleración
+    is_correct: false
+  - text: La presión atmosférica y la temperatura
+    is_correct: false
+  - text: La altura de la torre y el radio
+    is_correct: false
+  explanation: La alternativa correcta es 'El flujo másico de aire (proporcional a v) y la energía cinética (proporcional a v²)'. Su producto $(\rho A v) \times (\frac{1}{2}v^2)$ genera el término cúbico $v^3$.
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Identificar la fórmula cúbica de potencia eólica $P(v) = k \cdot v^3$.'
+- 'Paso 2: Sustituir la velocidad del viento $v$ en $\text{m/s}$.'
+- 'Paso 3: Elevar la velocidad al cubo: $v^3$.'
+- 'Paso 4: Multiplicar por la constante aerodinámica $k$ para obtener la potencia en Watts o Kilowatts.'
+errores_correccion: '- **Error común:** Pensar que si el viento sopla al doble de velocidad, el molino genera el doble de electricidad.
+
+  - **Cómo corregirlo:** La potencia es **CÚBICA ($v^3$)**: al duplicar el viento, la potencia **se multiplica por 8 ($2^3 = 8$)**.'
+ejemplos:
+- titulo: 'Ejemplo 1: Cálculo con viento de 6 m/s'
+  enunciado: 'Si $P(v) = 1{,}5 v^3$, la potencia a $v = 6\text{ m/s}$ es:'
+  alternativas:
+  - 324 kW
+  - 54 kW
+  - 216 kW
+  - 18 kW
+  respuesta: 324 kW
+  solucion_pasos:
+  - 'Paso 1: $P(6) = 1{,}5(6^3) = 1{,}5(216) = 324\text{ kW}$.'
+- titulo: 'Ejemplo 2: Comparación de factor cúbico'
+  enunciado: 'Si la velocidad sube de 5 m/s a 15 m/s ($c = 3$), la potencia se multiplica por:'
+  alternativas:
+  - '27'
+  - '3'
+  - '9'
+  - '6'
+  respuesta: '27'
+  solucion_pasos:
+  - 'Paso 1: $c^3 = 3^3 = 27$.'
+- titulo: 'Ejemplo 3: Razón de potencia para c = 1,5'
+  enunciado: 'Si el viento sube un 50% ($v_2 = 1{,}5 v_1$), la potencia se multiplica por:'
+  alternativas:
+  - 3,375
+  - 1,5
+  - 2,25
+  - 4,5
+  respuesta: 3,375
+  solucion_pasos:
+  - 'Paso 1: $(1{,}5)^3 = 3{,}375$.'
+- titulo: 'Ejemplo 4: Límite de Betz'
+  enunciado: 'El coeficiente máximo teórico $C_p$ de extracción de potencia es aproximadamente:'
+  alternativas:
+  - 59,3%
+  - 100%
+  - 50%
+  - 75%
+  respuesta: 59,3%
+  solucion_pasos:
+  - 'Paso 1: Límite de Betz $= 16/27 \approx 0{,}593 = 59{,}3\%$.'
+errores_frecuentes:
+- Asumir proporcionalidad cuadrática o lineal en lugar de cúbica.
+- No respetar las unidades de velocidad en metros por segundo.
+- Ignorar que existe un límite de corte a vientos extremos.
+afirmaciones_verdaderas:
+- 'La potencia eólica es directamente proporcional al cubo de la velocidad del viento: P = k · v³.'
+- Duplicar la velocidad del viento multiplica la generación de potencia por un factor de 8.
+al_terminar_debes_poder: '**QUÉ:** Modelar y calcular la potencia de aerogeneradores mediante funciones potencia cúbicas.
+
+
+  **CÓMO:** Aplicando P(v) = k · v³ y deduciendo la amplificación de potencia mediante la razón cúbica (v₂/v₁)³.
+
+
+  ![Resumen El modelamiento de potencia de aerogeneradores mediante funciones cúbicas $P(v) = \frac{1}{2}\rho A C_p \cdot v^3 = k \cdot v^3$ fundamenta la relación cúbica entre la velocidad del viento y la energía cinética del flujo de aire, explicando por qué duplicar la velocidad del viento genera un incremento de 8 veces en la potencia eléctrica](/static/img/nodos/modelamiento-de-potencia-de-aerogeneradores-mediante-funciones-cubicas-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Modelamiento de Funciones Potencia
+estado: publicado

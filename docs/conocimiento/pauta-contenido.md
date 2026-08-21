@@ -249,6 +249,8 @@ estado: publicado    # o borrador
 
 > **Nota — signos de moneda y montos en dinero en YAML (KaTeX):** Todo monto monetario con signo peso (ej: $\$500.000$) DEBE estar estrictamente delimitado dentro de un bloque LaTeX como `$\$500.000$` o `$\$500.000\text{ pesos}$`. Está **estrictamente prohibido escribir `\$500.000` o `$500.000` suelto en texto plano sin cerrar**, ya que Markdown consume la barra invertida (`\`) y el renderizador de KaTeX en el cliente toma el signo `$` como apertura de fórmula matemática, devorando todo el texto en español siguiente (eliminando espacios, volviendo cursivas las palabras y convirtiendo guiones bajos en subíndices).
 
+> **Nota — estándar LaTeX vectorial en diagramas e infografías SVG:** Toda fórmula matemática, ley de correspondencia, fracción apilada ($\frac{a}{b}$), radical ($\sqrt[n]{x}$), exponente o ejemplo algebraico dentro de las tarjetas ❶ y ❷ de los diagramas SVG (`card1_latex`, `card2_latex`) DEBE renderizarse obligatoriamente como fragmento vectorial $\LaTeX$ con tipografía Computer Modern (`render_latex_data_uri` vía `scratch/svg_latex_helper.py`). Está **estrictamente prohibido escribir fórmulas matemáticas en texto plano o con barras/radicales ASCII/Unicode (`5 / x³`, `2 · ³√x`, `a / x^k`, `a · x^-k`, `ⁿ√x`) dentro de las tarjetas o descripciones**. Los títulos de alerta y tarjetas deben redactarse exclusivamente en lenguaje natural en español formal.
+
 ---
 
 ## 3. Archivo JSONL — banco de ejercicios

@@ -1,92 +1,121 @@
 semantic_id: MAT.ALG.FUNC_CUADR_MODELO.PLANTEO_FUNCION
-resumen_inicial: El planteamiento de la función traduce un enunciado verbal o geométrico en una expresión algebraica cuadrática del tipo $f(x) = ax^2 + bx + c$.
-explicacion_simple: |
-  Para **plantear una función cuadrática** desde un problema escrito:
+resumen_inicial: El planteamiento de una función cuadrática a partir de un problema contextualizado traduce restricciones y relaciones verbales en una función objetivo $f(x) = ax^2 + bx + c$, despejando variables ligadas para operar con una sola incógnita.
+explicacion_simple: "![El planteamiento de una función cuadrática a partir de un problema contextualizado traduce restricciones y relaciones verbales en una función objetivo $f(x) = ax^2 + bx + c$, despejando variables ligadas para operar con una sola incógnita](/static/img/nodos/planteamiento-de-una-funcion-cuadratica-a-partir-de-un-problema-contextualizado-intro.svg)\n\n\nPlantear una función cuadrática es como traducir un acertijo al lenguaje de las matemáticas:\n\n**Los 3 pasos infalibles:**\n1. **Paso 1: Elige a tu protagonista ($x$).** (Ej: $x = \\text{ancho del terreno}$).\\n2. **Paso 2: Escribe la otra dimensión con la pista que te dan.** (Ej: Si el perímetro es 50, el largo es $25 - x$).\n3. **Paso 3: Construye la función objetivo multiplicando.**\n   $$\\mathcal{A}(x) = \\text{Ancho} \\times \\text{Largo} = x(25 - x) = -x^2 + 25x$$\n- ¡Listo! Tienes tu función cuadrática lista para calcular el área máxima o el costo mínimo."
+explicacion_formal: "Dado un problema de optimización o modelación con función objetivo $\\Phi(x, y)$ y restricción de ligadura afín $\\Psi(x, y) = 0$:\n\n$$\\begin{cases} \\Phi(x, y) = x \\cdot y \\\\ \\Psi(x, y) = \\alpha x + \\beta y - K = 0 \\quad (\\beta \\neq 0) \\end{cases}$$\n\n**Algoritmo de reducción analítica**:\n1. **Despeje de la ligadura**: $y = \\frac{K - \\alpha x}{\\beta}$.\n2. **Incrustación en la función objetivo**:\n   $$f(x) = \\Phi\\left(x, \\frac{K - \\alpha x}{\\beta}\\right) = x \\left(\\frac{K - \\alpha x}{\\beta}\\right) = -\\frac{\\alpha}{\\beta}x^2 + \\frac{K}{\\beta}x$$\n3. **Forma canónica de segundo orden**: $f(x) = ax^2 + bx + c$ con $a = -\\frac{\\alpha}{\\beta} \\neq 0$."
+definiciones_clave: '- **Función objetivo**: Magnitud que se desea modelar o maximizar/minimizar.
 
-  1. **Define la variable independiente $x$**: ¿Qué es la cantidad que puedes cambiar o controlar? (ej. el ancho de un terreno, el aumento de precio).
-  2. **Expresa las otras cantidades en términos de $x$**:
-     - Si el largo de un terreno debe sumar $40 \text{ m}$ con el ancho $x$, el largo será $(40 - x)$.
-  3. **Escribe la función multiplicando o combinando las expresiones**:
-     - ÁREA $= \text{largo} \times \text{ancho} = (40 - x) \cdot x = 40x - x^2$.
-  4. **Identifica los coeficientes cuadráticos**: En $A(x) = -x^2 + 40x$, $a = -1$, $b = 40$ y $c = 0$.
-explicacion_formal: |
-  Sea un problema verbal que involucra dos magnitudes interdependientes $x$ e $y$. El **algoritmo de planteamiento del modelo cuadrático** construye el mapa funcional $f: D_{ctx} \to \mathbb{R}$:
+  - **Ecuación de ligadura / restricción**: Relación que vincula las variables secundarias con la variable independiente.'
+propiedades_relaciones: '- **Reducción de dimensión**: Elimina los grados de libertad extras pasando de $\mathbb{R}^2$ a una función escalar en $\mathbb{R}$.
 
-  $$f(x) = a x^2 + b x + c$$
-
-  **Pasos de formalización matemática:**
-  1. **Asignación de variables:** Declarar explícitamente $x \in \mathbb{R}$ (variable independiente) e $y = f(x)$ (variable dependiente de salida).
-  2. **Traducción de restricciones:** Convertir ecuaciones de ligadura lineales en la forma $y_{lig} = p x + q$.
-  3. **Sustitución en la función objetivo:** Multiplicar la expresión objetivo $O(x, y_{lig}) = x \cdot (p x + q) = p x^2 + q x$.
-  4. **Delimitación del dominio:** Restringir $D_{ctx} = \{x \in \mathbb{R} \mid x > 0 \land y_{lig} > 0\}$.
-definiciones_clave: |
-  - **Ecuación de ligadura**: Restricción matemática inicial que relaciona las variables del problema permitiendo reducirlas a una sola variable $x$.
-propiedades_relaciones: |
-  - **Invariancia de los coeficientes del modelo**: Una vez planteada la función objetivo $f(x) = ax^2 + bx + c$, todos los métodos algebraicos (vértice, ceros, discriminante) aplican con total validez.
+  - **Signo de $a$ predecible**: Si la ligadura tiene coeficientes positivos en ambas dimensiones, el producto genera $a < 0$ (parábola con máximo).'
 ejemplo_guiado:
-  enunciado: 'Un agricultor tiene 100 metros de malla para cercar un terreno rectangular aprovechando un muro existente. Plantea la función del área $A(x)$ en términos del ancho $x$.'
+  enunciado: '![Ejemplo El planteamiento de una función cuadrática a partir de un problema contextualizado traduce restricciones y relaciones verbales en una función objetivo $f(x) = ax^2 + bx + c$, despejando variables ligadas para operar con una sola incógnita](/static/img/nodos/planteamiento-de-una-funcion-cuadratica-a-partir-de-un-problema-contextualizado-ejemplos.svg)
+
+
+
+    Un granjero tiene 120 metros de malla para cercar un terreno rectangular aprovechando el muro de una bodega como uno de los lados. Plantea la función del área $\mathcal{A}(x)$ en función del ancho $x$.'
   pasos:
-    - 'Paso 1: Definir la variable: $x$ es el ancho de los dos lados perpendiculares al muro.'
-    - 'Paso 2: Calcular el largo con la malla disponible: como el muro cubre un lado, $\text{largo} = 100 - 2x$.'
-    - 'Paso 3: Plantear la función del área multiplicando ancho por largo: $A(x) = x(100 - 2x) = 100x - 2x^2$.'
-    - 'Paso 4: Ordenar en forma estándar: $A(x) = -2x^2 + 100x$ con $a = -2, b = 100, c = 0$.'
+  - 'Paso 1: Definir variables:
+
+    - $x$: longitud de cada uno de los 2 lados perpendiculares al muro.
+
+    - $y$: longitud del lado paralelo al muro.'
+  - 'Paso 2: Formular la ecuación de ligadura con los 120 m de malla:
+
+    $2x + y = 120 \implies y = 120 - 2x$.'
+  - 'Paso 3: Construir la función objetivo del área rectangular:
+
+    $\mathcal{A}(x) = x \cdot y = x(120 - 2x) = -2x^2 + 120x$.'
+  - 'Paso 4: Conclusión: La función cuadrática es $\mathcal{A}(x) = -2x^2 + 120x$ ($a = -2, b = 120, c = 0$).'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si se dispone de un perímetro constante de 60 metros para cercar un rectángulo de ancho $x$, ¿cuál es la función cuadrática del área $A(x)$?'
-    choices:
-      - {text: '$A(x) = -x^2 + 30x$', is_correct: true}
-      - {text: '$A(x) = -x^2 + 60x$.', is_correct: false}
-      - {text: '$A(x) = 60x - x$.', is_correct: false}
-      - {text: '$A(x) = 30x^2$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$A(x) = -x^2 + 30x$''. El semiperímetro es 30, luego el largo es $30 - x$, y el área $x(30 - x) = -x^2 + 30x$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'En un problema donde la ganancia se expresa como $G(x) = (x - 10)(200 - 5x)$, ¿cuál es el coeficiente cuadrático $a$ al expandir la función?'
-    choices:
-      - {text: '$a = -5$', is_correct: true}
-      - {text: '$a = 5$.', is_correct: false}
-      - {text: '$a = -10$.', is_correct: false}
-      - {text: '$a = 200$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a = -5$''. Multiplicando $x \cdot (-5x) = -5x^2$, de donde el coeficiente cuadrático es $a = -5$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si dos números suman 30, ¿cuál es la función cuadrática P(x) que modela su producto en términos de uno de ellos x?
+  choices:
+  - text: P(x) = -x² + 30x
+    is_correct: true
+  - text: P(x) = x² + 30x
+    is_correct: false
+  - text: P(x) = 30 - x²
+    is_correct: false
+  - text: P(x) = -x² - 30x
+    is_correct: false
+  explanation: La alternativa correcta es 'P(x) = -x² + 30x'. Como $y = 30 - x$, el producto es $P(x) = x(30 - x) = -x^2 + 30x$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En un problema de ingresos, si el precio es p y la cantidad demandada es q = 500 - 10p, ¿cuál es la función de ingreso I(p)?
+  choices:
+  - text: I(p) = -10p² + 500p
+    is_correct: true
+  - text: I(p) = 500 - 10p²
+    is_correct: false
+  - text: I(p) = 10p² - 500p
+    is_correct: false
+  - text: I(p) = -10p + 500
+    is_correct: false
+  explanation: La alternativa correcta es 'I(p) = -10p² + 500p'. $\text{Ingreso} = p \cdot q = p(500 - 10p) = -10p^2 + 500p$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Leer el problema verbal e identificar claramente qué magnitud se desea maximizar o evaluar.'
-  - 'Paso 2: Asignar la letra $x$ a la variable independiente desconocida.'
-  - 'Paso 3: Utilizar la restricción del enunciado para escribir las demás dimensiones en función de $x$.'
-  - 'Paso 4: Multiplicar las expresiones resultantes, desarrollar algebraicamente y ordenar en la forma $f(x) = ax^2 + bx + c$.'
-errores_correccion: |
-  - **Error común:** Confundir el perímetro con el semiperímetro al despejar las dimensiones de un rectángulo.
-  - **Cómo corregirlo:** Si la suma de los 4 lados es $P$, la suma de solo 1 largo y 1 ancho es **EL SEMIPERÍMETRO ($P/2$)**.
+- 'Paso 1: Declarar la variable independiente principal $x$ y sus unidades de medida.'
+- 'Paso 2: Escribir la relación de ligadura que conecta a las otras variables con $x$.'
+- 'Paso 3: Sustituir la variable despejada en la fórmula objetivo.'
+- 'Paso 4: Expandir algebraicamente y ordenar en la forma canónica $ax^2 + bx + c$.'
+errores_correccion: '- **Error común:** Escribir la función con dos variables (ej: $A = x \cdot y$) sin despejar $y$.
+
+  - **Cómo corregirlo:** La función debe quedar **estrictamente en términos de una sola variable $x$** usando la ligadura.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Planteamiento de área con 4 lados.
-    alternativas:
-      - 'A(x) = -x^2 + 40x'
-      - 'A(x) = -2x^2 + 80x'
-      - 'A(x) = 80x - x'
-    respuesta: 'A(x) = -x^2 + 40x'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Planteamiento de ingreso de ventas.
-    alternativas:
-      - 'I(x) = -2x^2 + 80x + 1000'
-      - 'I(x) = -2x^2 + 1000'
-      - 'I(x) = 80x - 2'
-    respuesta: 'I(x) = -2x^2 + 80x + 1000'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Cerco completo de 4 lados'
+  enunciado: Con 100 m de alambre para 4 lados, ¿cuál es el área A(x)?
+  alternativas:
+  - A(x) = -x^2 + 50x
+  - A(x) = -x^2 + 100x
+  - A(x) = -2x^2 + 50x
+  - A(x) = x^2 - 50x
+  respuesta: A(x) = -x^2 + 50x
+  solucion_pasos:
+  - 'Paso 1: $2x + 2y = 100 \implies y = 50 - x \implies \mathcal{A}(x) = x(50 - x) = -x^2 + 50x$.'
+- titulo: 'Ejemplo 2: Dos corrales contiguos'
+  enunciado: 'Con 90 m de cerco y una división intermedia ($3x + 2y = 90$):'
+  alternativas:
+  - A(x) = -1,5x^2 + 45x
+  - A(x) = -3x^2 + 90x
+  - A(x) = -x^2 + 45x
+  - A(x) = -1,5x^2 + 90x
+  respuesta: A(x) = -1,5x^2 + 45x
+  solucion_pasos:
+  - 'Paso 1: $y = 45 - 1{,}5x \implies \mathcal{A}(x) = x(45 - 1{,}5x) = -1{,}5x^2 + 45x$.'
+- titulo: 'Ejemplo 3: Ganancia con costo fijo y variable'
+  enunciado: Si $I(x) = -2x^2 + 80x$ y $C(x) = 20x + 100$, ¿cuál es la ganancia $G(x) = I(x) - C(x)$?
+  alternativas:
+  - G(x) = -2x^2 + 60x - 100
+  - G(x) = -2x^2 + 100x + 100
+  - G(x) = -2x^2 + 60x + 100
+  - G(x) = -2x^2 - 60x - 100
+  respuesta: G(x) = -2x^2 + 60x - 100
+  solucion_pasos:
+  - 'Paso 1: $(-2x^2 + 80x) - (20x + 100) = -2x^2 + 60x - 100$.'
+- titulo: 'Ejemplo 4: Diferencia de números fija'
+  enunciado: Si la diferencia de dos números es 8 ($y = x + 8$), ¿cuál es su producto?
+  alternativas:
+  - P(x) = x^2 + 8x
+  - P(x) = -x^2 + 8x
+  - P(x) = x^2 - 8x
+  - P(x) = 8x^2
+  respuesta: P(x) = x^2 + 8x
+  solucion_pasos:
+  - 'Paso 1: $P(x) = x(x + 8) = x^2 + 8x$.'
 errores_frecuentes:
-  - 'La adición errónea del perímetro total en lugar del semiperímetro al despejar la longitud de uno de los lados.'
-  - 'La ausencia de distribución del producto al multiplicar expresiones compuestas como $x(50 - 2x)$.'
-  - 'Cometer errores de signo al expandir binomios que contienen coeficientes negativos.'
-  - 'La falta de definición explícita de las unidades de medida de la variable de entrada $x$.'
-  - 'La suposición de que el término independiente $c$ siempre debe ser un número distinto de cero en funciones de área.'
+- No restar correctamente expresiones compuestas al calcular ganancias (I - C).
+- Olvidar multiplicar todos los términos por x al expandir el área.
+- Confundir la longitud del semiperímetro con el perímetro total.
 afirmaciones_verdaderas:
-  - 'Plantear una función cuadrática requiere expresar la variable de salida a través de relaciones algebraicas de segundo grado $f(x) = ax^2 + bx + c$.'
-  - 'En problemas de áreas rectangulares con perímetro fijo $P$, la función de área resulta ser una cuadrática cóncava hacia abajo $A(x) = x(P/2 - x) = -x^2 + (P/2)x$.'
-al_terminar_debes_poder: |
-  QUÉ: Traducir enunciados verbales o problemas geométricos en funciones cuadráticas bien planteadas.
-  CÓMO: Asignar la variable $x$, aplicar ecuaciones de ligadura, multiplicar las dimensiones, expandir algebraicamente y aislar $a, b, c$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
+- El planteamiento funcional reduce un problema contextual a una sola variable independiente.
+- La combinación de una ligadura lineal con un objetivo de producto genera siempre una función cuadrática.
+al_terminar_debes_poder: '**QUÉ:** Plantear y formular algebraicamente una función cuadrática a partir de un contexto real.
+
+
+  **CÓMO:** Estableciendo la ecuación de ligadura, sustituyendo en la función objetivo y ordenando en ax² + bx + c.
+
+
+  ![Resumen El planteamiento de una función cuadrática a partir de un problema contextualizado traduce restricciones y relaciones verbales en una función objetivo $f(x) = ax^2 + bx + c$, despejando variables ligadas para operar con una sola incógnita](/static/img/nodos/planteamiento-de-una-funcion-cuadratica-a-partir-de-un-problema-contextualizado-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Modelamiento y Aplicaciones
 estado: publicado

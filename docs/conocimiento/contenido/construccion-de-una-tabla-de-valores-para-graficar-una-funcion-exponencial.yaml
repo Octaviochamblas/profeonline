@@ -1,92 +1,127 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_GRAFICA.TABLA_VALORES
-resumen_inicial: La construcción de una tabla de valores permite tabular pares ordenados $(x, f(x))$ evaluando exponentes negativos, nulos y positivos para trazar la curva.
-explicacion_simple: |
-  Para dibujar la curva de una **función exponencial $f(x) = b^x$**, construimos una **tabla de valores** eligiendo números sencillos para $x$:
+resumen_inicial: La construcción de una tabla de valores para graficar una función exponencial evalúa valores enteros estratégicos alrededor de cero (como $x \in \{-2, -1, 0, 1, 2\}$), revelando tanto la aproximación asintótica fraccionaria como el crecimiento acelerado de la curva.
+explicacion_simple: "![La construcción de una tabla de valores para graficar una función exponencial evalúa valores enteros estratégicos alrededor de cero (como $x \\in \\{-2, -1, 0, 1, 2\\}$), revelando tanto la aproximación asintótica fraccionaria como el crecimiento acelerado de la curva](/static/img/nodos/construccion-de-una-tabla-de-valores-para-graficar-una-funcion-exponencial-intro.svg)\n\n\nPara dibujar una función exponencial (ej: $f(x) = 2^x$) con total precisión en el plano cartesiano, lo mejor es crear una **tabla con 5 puntos clave**:\n\n- **1. Evalúa los negativos ($x = -2, -1$):**\n  - $f(-2) = 2^{-2} = \\frac{1}{2^2} = \\frac{1}{4} = 0,25$.\n  - $f(-1) = 2^{-1} = \\frac{1}{2} = 0,5$.\n  - Te muestran cómo la curva se pega al piso ($y = 0$).\n- **2. Evalúa el origen ($x = 0$):**\n  - $f(0) = 2^0 = 1 \\implies$ marca el punto clave **$(0, 1)$**.\n- **3. Evalúa los positivos ($x = 1, 2$):**\n  - $f(1) = 2^1 = 2$.\n  - $f(2) = 2^2 = 4$.\n  - Te muestran cómo la curva sube como\
+  \ un cohete hacia arriba."
+explicacion_formal: 'Dada $f: \mathbb{R} \to \mathbb{R}^+$ con $f(x) = b^x$, la discretización sobre el retículo $\mathbb{Z} \cap [-n, n]$ genera el conjunto finito de pares ordenados:
 
-  - **Para $x = -2$**: $f(-2) = b^{-2} = \frac{1}{b^2}$.
-  - **Para $x = -1$**: $f(-1) = b^{-1} = \frac{1}{b}$.
-  - **Para $x = 0$**: $f(0) = b^0 = 1$ (corte con eje Y).
-  - **Para $x = 1$**: $f(1) = b^1 = b$.
-  - **Para $x = 2$**: $f(2) = b^2$.
+  $$\mathcal{T}_n = \left\{ \left(k, b^k\right) \in \mathbb{Z} \times \mathbb{R}^+ \; \middle| \; k \in \{-n, \dots, 0, \dots, n\} \right\}$$
 
-  Al ubicar estos pares en el plano cartesiano y unirlos con una curva suave, observamos cómo la función crece muy rápido por un lado y se pega al eje X por el otro.
-explicacion_formal: |
-  Sea la función exponencial $f(x) = a \cdot b^x$ definida sobre $\mathbb{R}$ con $b > 0, b \neq 1$. El procedimiento de **tabulación cartesiana** genera un subconjunto finito de puntos pertenecientes al gráfico de la función:
 
-  $$\text{Graf}(f) = \{(x, f(x)) \in \mathbb{R}^2 \mid x \in D \subset \mathbb{R}\}$$
+  **Propiedad de progresión geométrica bidireccional**:
 
-  **Evaluación sistemática de puntos cardinales:**
-  1. **Región de asíntota ($x < 0$):** Involucra el uso de exponentes negativos $b^{-n} = \frac{1}{b^n}$, generando ordenadas $0 < y < 1$ para la base canónica.
-  2. **Origen de ordenadas ($x = 0$):** Evalúa la propiedad fundamental $f(0) = a \cdot 1 = a$.
-  3. **Región de aceleración ($x > 0$):** Potenciación entera $b^n$, produciendo un crecimiento geométrico multiplicativo paso a paso.
-definiciones_clave: |
-  - **Tabla de valores exponencial**: Matriz de datos de dos columnas $(x, y)$ donde cada ordenada $y$ se obtiene calculando la potencia $a \cdot b^x$.
-propiedades_relaciones: |
-  - **Factor de cambio constante**: En la tabla de valores, si la variable $x$ avanza en pasos de $1$ en $1$, los valores sucesivos de $y$ forman una progresión geométrica de razón $b$.
+  1. **Para $k \ge 0$**: $y_k = b^k$ crece a razón $y_{k+1} = b \cdot y_k$.
+
+  2. **Para $k < 0$**: $y_{-k} = \frac{1}{b^k}$ converge al límite asintótico $\lim_{k \to \infty} y_{-k} = 0$.
+
+  La unión suave de estos nodos mediante una curva $\mathcal{C}^\infty$ define el gráfico canónico de la función exponencial.'
+definiciones_clave: '- **Tabla de tabulación**: Registro ordenado de pares $(x, f(x))$ para la representación gráfica.
+
+  - **Inversión de base por signo**: Regla $b^{-k} = \frac{1}{b^k}$ que transforma potencias negativas en fracciones positivas.'
+propiedades_relaciones: '- **Monotonía de pares ordenados**: Si $b > 1$, las ordenadas son estrictamente crecientes: $y_{-2} < y_{-1} < y_0 < y_1 < y_2$.
+
+  - **Curva suave no poligonal**: Los puntos deben unirse mediante una curva convexa continua, no mediante segmentos rectos quebrados.'
 ejemplo_guiado:
-  enunciado: 'Construye la tabla de valores para la función $f(x) = 2^x$ usando los abscisas $x \in \{-2, -1, 0, 1, 2, 3\}$.'
+  enunciado: '![Ejemplo La construcción de una tabla de valores para graficar una función exponencial evalúa valores enteros estratégicos alrededor de cero (como $x \in \{-2, -1, 0, 1, 2\}$), revelando tanto la aproximación asintótica fraccionaria como el crecimiento acelerado de la curva](/static/img/nodos/construccion-de-una-tabla-de-valores-para-graficar-una-funcion-exponencial-ejemplos.svg)
+
+
+
+    Construye la tabla de valores para la función $f(x) = 3^x$ evaluando en $x \in \{-2, -1, 0, 1, 2\}$ y enuncia las coordenadas resultantes.'
   pasos:
-    - 'Paso 1: Evaluar $x = -2 \implies f(-2) = 2^{-2} = \frac{1}{4} = 0.25$. Par: $(-2, 0.25)$.'
-    - 'Paso 2: Evaluar $x = -1 \implies f(-1) = 2^{-1} = \frac{1}{2} = 0.5$. Par: $(-1, 0.5)$.'
-    - 'Paso 3: Evaluar $x = 0 \implies f(0) = 2^0 = 1$. Par: $(0, 1)$.'
-    - 'Paso 4: Evaluar $x = 1, 2, 3 \implies f(1) = 2$, $f(2) = 4$, $f(3) = 8$. Pares: $(1, 2)$, $(2, 4)$, $(3, 8)$.'
+  - 'Paso 1: Evaluar $x = -2$: $f(-2) = 3^{-2} = \frac{1}{3^2} = \frac{1}{9} \approx 0{,}11 \implies \left(-2, \frac{1}{9}\right)$.'
+  - 'Paso 2: Evaluar $x = -1$: $f(-1) = 3^{-1} = \frac{1}{3} \approx 0{,}33 \implies \left(-1, \frac{1}{3}\right)$.'
+  - 'Paso 3: Evaluar $x = 0$: $f(0) = 3^0 = 1 \implies (0, 1)$.'
+  - 'Paso 4: Evaluar $x = 1$: $f(1) = 3^1 = 3 \implies (1, 3)$.'
+  - 'Paso 5: Evaluar $x = 2$: $f(2) = 3^2 = 9 \implies (2, 9)$.'
+  - 'Paso 6: Conclusión: Los 5 puntos clave son $\{(-2, 1/9), (-1, 1/3), (0, 1), (1, 3), (2, 9)\}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En la tabla de valores de la función $f(x) = 3^x$, ¿cuál es el par ordenado correspondiente al valor de entrada $x = -1$?'
-    choices:
-      - {text: 'El par ordenado $(-1, 1/3)$', is_correct: true}
-      - {text: 'El par ordenado $(-1, -3)$.', is_correct: false}
-      - {text: 'El par ordenado $(-1, -1/3)$.', is_correct: false}
-      - {text: 'El par ordenado $(-1, 3)$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''El par ordenado $(-1, 1/3)$''. $f(-1) = 3^{-1} = 1/3$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Si en una tabla de valores con pasos $\Delta x = 1$ las ordenadas consecutivas son $y_1 = 5$, $y_2 = 20$ y $y_3 = 80$, ¿cuál es la base $b$ del modelo $f(x) = a \cdot b^x$?'
-    choices:
-      - {text: 'La base es $b = 4$', is_correct: true}
-      - {text: 'La base es $b = 15$.', is_correct: false}
-      - {text: 'La base es $b = 5$.', is_correct: false}
-      - {text: 'La base es $b = 2$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La base es $b = 4$''. Se obtiene dividiendo $y_2 / y_1 = 20 / 5 = 4$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuál es el valor de f(-2) para la función exponencial f(x) = 4ˣ?
+  choices:
+  - text: 1/16 (o 0,0625)
+    is_correct: true
+  - text: '-8'
+    is_correct: false
+  - text: '-16'
+    is_correct: false
+  - text: 1/8
+    is_correct: false
+  explanation: La alternativa correcta es '1/16 (o 0,0625)'. $4^{-2} = \frac{1}{4^2} = \frac{1}{16}$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En la tabla de f(x) = (1/2)ˣ, ¿qué punto se obtiene al evaluar en x = -3?
+  choices:
+  - text: (-3, 8)
+    is_correct: true
+  - text: (-3, -8)
+    is_correct: false
+  - text: (-3, 1/8)
+    is_correct: false
+  - text: (-3, -1/8)
+    is_correct: false
+  explanation: La alternativa correcta es '(-3, 8)'. $(1/2)^{-3} = 2^3 = 8 \implies (-3, 8)$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Seleccionar un conjunto simétrico de valores de entrada $x$ (ej. $-2, -1, 0, 1, 2$).'
-  - 'Paso 2: Calcular las potencias $b^x$ aplicando exponente negativo ($1/b^n$), cero ($1$) y positivo.'
-  - 'Paso 3: Multiplicar el resultado por el coeficiente de escala $a$ para obtener $y$.'
-  - 'Paso 4: Registrar los pares cartesiano $(x, y)$ en la tabla e identificarlos en el plano.'
-errores_correccion: |
-  - **Error común:** Escribir valores negativos en las ordenadas $y$ cuando $x$ es negativo (ej. decir que $2^{-2} = -4$).
-  - **Cómo corregirlo:** El exponente negativo **INVIERTE LA BASE**, no cambia el signo del resultado: $2^{-2} = \frac{1}{2^2} = \frac{1}{4} > 0$.
+- 'Paso 1: Seleccionar valores enteros simétricos para $x$ ($-2, -1, 0, 1, 2$).'
+- 'Paso 2: Aplicar la ley de exponente negativo $b^{-n} = 1/b^n$ para valores menores que cero.'
+- 'Paso 3: Evaluar $f(0) = 1$ para fijar el intercepto con el eje $Y$.'
+- 'Paso 4: Calcular las potencias directas para $x > 0$ y tabular los pares cartesianos $(x, y)$.'
+errores_correccion: '- **Error común:** Escribir que $3^{-2} = -9$ o $-6$.
+
+  - **Cómo corregirlo:** Un exponente negativo **invierte la base como fracción positiva**: $3^{-2} = \frac{1}{3^2} = \frac{1}{9} > 0$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Tabulación en base 4.
-    alternativas:
-      - 'f(-1) = 1/4, f(0) = 1, f(1) = 4, f(2) = 16'
-      - 'f(-1) = -4, f(0) = 0, f(1) = 4, f(2) = 8'
-      - 'f(-1) = 4, f(0) = 1, f(1) = 0, f(2) = -16'
-    respuesta: 'f(-1) = 1/4, f(0) = 1, f(1) = 4, f(2) = 16'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Tabulación en base fraccionaria 1/2.
-    alternativas:
-      - 'f(-2) = 4, f(-1) = 2, f(0) = 1, f(1) = 0.5'
-      - 'f(-2) = -1/4, f(-1) = -1/2, f(0) = 1'
-      - 'f(-2) = 0, f(-1) = 1, f(0) = 2'
-    respuesta: 'f(-2) = 4, f(-1) = 2, f(0) = 1, f(1) = 0.5'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Tabulación para base 2'
+  enunciado: ¿Qué par ordenado corresponde a x = -1 en f(x) = 2ˣ?
+  alternativas:
+  - (-1, 0,5)
+  - (-1, -2)
+  - (-1, -0,5)
+  - (-1, 2)
+  respuesta: (-1, 0,5)
+  solucion_pasos:
+  - 'Paso 1: $f(-1) = 2^{-1} = 1/2 = 0{,}5 \implies (-1, 0{,}5)$.'
+- titulo: 'Ejemplo 2: Tabulación de función con escala'
+  enunciado: En $g(x) = 5 \cdot 2^x$, ¿cuál es el valor para $x = 2$?
+  alternativas:
+  - '20'
+  - '100'
+  - '10'
+  - '25'
+  respuesta: '20'
+  solucion_pasos:
+  - 'Paso 1: $g(2) = 5 \cdot 2^2 = 5 \cdot 4 = 20$.'
+- titulo: 'Ejemplo 3: Tabulación con base fraccionaria'
+  enunciado: En $h(x) = (1/5)^x$, ¿cuánto vale $h(-2)$?
+  alternativas:
+  - '25'
+  - 1/25
+  - '-25'
+  - '-10'
+  respuesta: '25'
+  solucion_pasos:
+  - 'Paso 1: $(1/5)^{-2} = 5^2 = 25$.'
+- titulo: 'Ejemplo 4: Punto medio en origen'
+  enunciado: Para cualquier función exponencial básica $f(x) = b^x$, ¿qué punto está siempre en la tabla?
+  alternativas:
+  - (0, 1)
+  - (0, 0)
+  - (1, 0)
+  - (1, 1)
+  respuesta: (0, 1)
+  solucion_pasos:
+  - 'Paso 1: $f(0) = b^0 = 1 \implies (0, 1)$.'
 errores_frecuentes:
-  - 'Dada la evaluación en $x = -3$ de $f(x) = 2^x$, la afirmación de que la coordenada $y$ resultante es $-8$.'
-  - 'La confusión entre el incremento aditivo constante de las funciones lineales y la razón multiplicativa de la tabla exponencial.'
-  - 'La afirmación de que la evaluación en $x = 0$ genera una vacante o punto indeterminado en la tabla.'
-  - 'La omisión del cambio de base al trabajar con exponentes fraccionarios en la tabla.'
-  - 'La consideración de que evaluar exponentes negativos produce valores fuera del dominio real.'
+- Cambiar el signo del resultado al evaluar exponentes negativos en vez de invertir la fracción.
+- Multiplicar la base por el exponente en lugar de potenciar.
+- Unir los puntos tabulados con líneas poligonales rectas.
 afirmaciones_verdaderas:
-  - 'En la tabla de valores de una función exponencial con pasos unitarios en $x$, el cociente entre ordenadas consecutivas $y_{n+1}/y_n$ es igual a la base $b$.'
-  - 'Los exponentes negativos en la tabla de valores producen ordenadas fraccionarias positivas $y = 1/b^n > 0$.'
-al_terminar_debes_poder: |
-  QUÉ: Construir e interpretar tablas de valores para funciones exponenciales $f(x) = a \cdot b^x$.
-  CÓMO: Evaluar exponentes negativos, nulos y positivos, calcular pares ordenados $(x, y)$ y verificar la razón constante $b$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- La tabla de valores de f(x) = bˣ contiene pares con ordenadas estrictamente positivas para todo x real.
+- Los exponentes negativos generan fracciones que muestran la aproximación a la asíntota y = 0.
+al_terminar_debes_poder: '**QUÉ:** Construir y tabular valores para graficar con precisión una función exponencial.
+
+
+  **CÓMO:** Evaluando enteros simétricos x ∈ {-2, -1, 0, 1, 2} y aplicando propiedades de potencias fraccionarias e inversas.
+
+
+  ![Resumen La construcción de una tabla de valores para graficar una función exponencial evalúa valores enteros estratégicos alrededor de cero (como $x \in \{-2, -1, 0, 1, 2\}$), revelando tanto la aproximación asintótica fraccionaria como el crecimiento acelerado de la curva](/static/img/nodos/construccion-de-una-tabla-de-valores-para-graficar-una-funcion-exponencial-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Análisis Gráfico y Modelamiento Exponencial
 estado: publicado

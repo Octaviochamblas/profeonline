@@ -1,88 +1,141 @@
 semantic_id: MAT.ALG.FUNCION_TIPOS_INVERSA.VERIFICACION_COMPOSICION_IDENTIDAD
-resumen_inicial: La verificación de la función inversa mediante composición exige comprobar formalmente que $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$.
-explicacion_simple: |
-  Para **demostrar que dos funciones $f(x)$ y $g(x)$ son inversas la una de la otra**:
+resumen_inicial: 'La verificación algebraica de una función inversa se demuestra comprobando que la composición en ambos sentidos produce la función identidad: $(f \circ f^{-1})(x) = x$ y $(f^{-1} \circ f)(x) = x$.'
+explicacion_simple: '![La verificación algebraica de una función inversa se demuestra comprobando que la composición en ambos sentidos produce la función identidad: $(f \circ f^{-1})(x) = x$ y $(f^{-1} \circ f)(x) = x$](/static/img/nodos/verificacion-de-inversa-mediante-composicion-identidad-intro.svg)
 
-  1. Tomas la fórmula de $g(x)$ y la metes dentro de $f$: calculas $f(g(x))$.
-  2. Simplificas el álgebra: si todo se cancela y te queda solo la **$x$**, vas por buen camino.
-  3. Ahora lo haces al revés: metes $f(x)$ dentro de $g$ para calcular $g(f(x))$.
-  4. Si en ambos sentidos el resultado da exactamente **$x$** (la identidad), **¡queda verificado que son funciones inversas!**
-explicacion_formal: |
-  Sean $f: A \to B$ y $g: B \to A$ dos funciones. $g$ es la **función inversa de $f$** ($g = f^{-1}$) si y solo si se verifican ambas ecuaciones de composición idéntica:
 
-  1. $(f \circ g)(x) = f(g(x)) = x \quad \forall x \in B$
-  2. $(g \circ f)(x) = g(f(x)) = x \quad \forall x \in A$
 
-  **Criterio de unicidad:**
-  Si una función admite inversa en ambos sentidos de composición, dicha inversa $f^{-1}$ es única.
-definiciones_clave: |
-  - **Verificación por composición**: Prueba formal que demuestra la relación de inversitud entre dos funciones comprobando $(f \circ f^{-1})(x) = x$.
-propiedades_relaciones: |
-  - **Identidad neutra**: La composición de una función con su inversa da como resultado la función identidad $I(x) = x$.
+  Para estar $100\%$ seguro de que una fórmula $g(x)$ es la verdadera inversa de $f(x)$:
+
+  1. Metes la fórmula de $g$ dentro de $f$ (calculas $f(g(x))$). Al simplificar todo, debe dar exactamente **$x$**.
+
+  2. Metes la fórmula de $f$ dentro de $g$ (calculas $g(f(x))$). Al simplificar todo, también debe dar exactamente **$x$**.
+
+
+  Si en ambos casos el resultado es la letra **$x$ suelta**, queda matemáticamente demostrado que son funciones inversas.'
+explicacion_formal: '**Criterio Algebraico de Composición Identidad:**
+
+  Sean $f: A \to B$ y $g: B \to A$ dos funciones. Se verifica que $g = f^{-1}$ si y solo si se satisfacen simultáneamente las dos identidades funcionales:
+
+  1. $(f \circ g)(x) = f(g(x)) = x, \quad \forall x \in B \quad (\text{Identidad en } B: \text{id}_B)$
+
+  2. $(g \circ f)(x) = g(f(x)) = x, \quad \forall x \in A \quad (\text{Identidad en } A: \text{id}_A)$
+
+
+  **Propiedades algebraicas:**
+
+  - **Cancelación mutua**: La aplicación sucesiva de ambas funciones deja a cualquier elemento en su estado original.
+
+  - **Condición bidireccional**: En estructuras generales es indispensable comprobar ambos sentidos de composición.'
+definiciones_clave: '- **Función identidad $\text{id}(x) = x$**: Función que devuelve inalterado el mismo elemento de entrada.
+
+  - **Verificación por composición**: Prueba formal que garantiza la corrección del cálculo de la inversa.'
+propiedades_relaciones: '- **Elemento neutro de la composición**: La función identidad actúa como el elemento neutro en el monoide de funciones ($f \circ \text{id} = \text{id} \circ f = f$).
+
+  - **Prueba infalible en evaluaciones**: Permite comprobar rápidamente si un cálculo de inversa fue correcto.'
 ejemplo_guiado:
-  enunciado: "Verifica formalmente por composición que las funciones $f(x) = 2x - 6$ y $g(x) = \frac{x + 6}{2}$ son mutuamente inversas."
+  enunciado: '![Ejemplo La verificación algebraica de una función inversa se demuestra comprobando que la composición en ambos sentidos produce la función identidad: $(f \circ f^{-1})(x) = x$ y $(f^{-1} \circ f)(x) = x$](/static/img/nodos/verificacion-de-inversa-mediante-composicion-identidad-ejemplos.svg)
+
+
+
+    Dadas $f(x) = 4x - 7$ y $g(x) = \frac{x + 7}{4}$, verifica mediante composición que $g$ es la función inversa de $f$.'
   pasos:
-    - 'Paso 1: Evaluar $f(g(x))$: $f\left(\frac{x + 6}{2}\right) = 2\left(\frac{x + 6}{2}\right) - 6$.'
-    - 'Paso 2: Simplificar $f(g(x))$: $(x + 6) - 6 = x$.'
-    - 'Paso 3: Evaluar $g(f(x))$: $g(2x - 6) = \frac{(2x - 6) + 6}{2} = \frac{2x}{2} = x$.'
-    - 'Paso 4: Como ambos sentidos resultaron en $x$, queda verificado que $g(x) = f^{-1}(x)$.'
+  - 'Paso 1: Calcular la composición directa $(f \circ g)(x) = f(g(x))$.'
+  - 'Paso 2: Sustituir $g(x)$ en $f$: $f\left(\frac{x + 7}{4}\right) = 4\left(\frac{x + 7}{4}\right) - 7$.'
+  - 'Paso 3: Simplificar: $(x + 7) - 7 = x$ (cumple la identidad directa).'
+  - 'Paso 4: Calcular la composición inversa $(g \circ f)(x) = g(f(x))$.'
+  - 'Paso 5: Sustituir $f(x)$ en $g$: $g(4x - 7) = \frac{(4x - 7) + 7}{4} = \frac{4x}{4} = x$ (cumple la identidad inversa).'
+  - 'Paso 6: Concluir que queda verificado formalmente que $g = f^{-1}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Qué resultado debe obtenerse en la composición $f(g(x))$ para demostrar que $g$ es la inversa de $f$?"
-    choices:
-      - {text: "Debe dar exactamente la variable de entrada $x$.", is_correct: true}
-      - {text: "Debe dar cero.", is_correct: false}
-      - {text: "Debe dar 1.", is_correct: false}
-      - {text: "Debe dar el producto de las pendientes.", is_correct: false}
-    explanation: "La alternativa correcta es 'Debe dar exactamente la variable de entrada $x$.'."
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: "Si $f(g(x)) = x$, ¿basta únicamente ese sentido para garantizar completamente que $g = f^{-1}$?"
-    choices:
-      - {text: "Se deben verificar idealmente ambos sentidos ($f(g(x)) = x$ y $g(f(x)) = x$).", is_correct: true}
-      - {text: "Sí, con un solo sentido es suficiente en todos los universos matemáticos.", is_correct: false}
-      - {text: "No, la composición no sirve para probar inversas.", is_correct: false}
-      - {text: "Solo si $x$ es un número entero positivo.", is_correct: false}
-    explanation: "La alternativa correcta es 'Se deben verificar idealmente ambos sentidos ($f(g(x)) = x$ y $g(f(x)) = x$).'."
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Qué resultado debe obtenerse obligatoriamente al componer una función con su inversa (f ∘ f^(-1))(x)?
+  choices:
+  - text: La funcion identidad x.
+    is_correct: true
+  - text: El numero 1.
+    is_correct: false
+  - text: El numero 0.
+    is_correct: false
+  - text: La derivada f'(x).
+    is_correct: false
+  explanation: La alternativa correcta es 'La funcion identidad x.'. Deshace la transformación retornando a la entrada original.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si $f(x) = 3x$ y $g(x) = \frac{x}{3}$, ¿cuánto es $(f \circ g)(15)$?
+  choices:
+  - text: '15'
+    is_correct: true
+  - text: '5'
+    is_correct: false
+  - text: '45'
+    is_correct: false
+  - text: '1'
+    is_correct: false
+  explanation: La alternativa correcta es '15'. Al ser inversas, $(f \circ g)(15) = 15$ directamente.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Sustituir la expresión de $g(x)$ en cada lugar donde aparece $x$ en la fórmula de $f(x)$.'
-  - 'Paso 2: Realizar las simplificaciones algebraicas correspondientes hasta obtener $x$.'
-  - 'Paso 3: Sustituir la expresión de $f(x)$ en la fórmula de $g(x)$ y simplificar.'
-  - 'Paso 4: Si en ambos procesos se obtiene la función identidad $x$, declarar verificado el par como inversas.'
-errores_correccion: |
-  - **Error común:** Comprobar únicamente la multiplicación de funciones $f(x) \cdot g(x) = 1$ en lugar de la composición $f(g(x)) = x$.
-  - **Cómo corregirlo:** La inversa de funciones requiere **COMPOSICIÓN DE REGLAS** ($f(g(x)) = x$), no producto de expresiones algebraicas.
+- 'Paso 1: Escribir la expresión de la composición directa $f(g(x))$ sustituyendo la fórmula de $g(x)$ en cada aparición de $x$ dentro de $f$.'
+- 'Paso 2: Desarrollar y simplificar términos semejantes hasta obtener $x$.'
+- 'Paso 3: Escribir la expresión de la composición inversa $g(f(x))$ sustituyendo la fórmula de $f(x)$ dentro de $g$.'
+- 'Paso 4: Desarrollar y simplificar hasta obtener $x$.'
+- 'Paso 5: Declarar la verificación como completa y válida.'
+errores_correccion: '- **Error común:** Verificar la composición en un solo sentido y dar por concluida la prueba.
+
+  - **Cómo corregirlo:** La verificación formal **requiere comprobar ambos sentidos**: $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de función inversa.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de función inversa.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Verificación de función afín'
+  enunciado: ¿Son inversas $f(x) = 2x - 8$ y $g(x) = \frac{x + 8}{2}$?
+  alternativas:
+  - Sí, porque f(g(x)) = x y g(f(x)) = x
+  - No, porque dan 0
+  - Solo para números positivos
+  - No, porque tienen signos distintos
+  respuesta: Sí, porque f(g(x)) = x y g(f(x)) = x
+  solucion_pasos:
+  - 'Paso 1: $f(g(x)) = 2\left(\frac{x+8}{2}\right) - 8 = x + 8 - 8 = x$.'
+  - 'Paso 2: $g(f(x)) = \frac{(2x-8)+8}{2} = \frac{2x}{2} = x$.'
+- titulo: 'Ejemplo 2: Detección de error'
+  enunciado: Si $f(x) = 3x + 6$ y un estudiante propone $g(x) = \frac{x - 3}{6}$, ¿qué da $(f \circ g)(x)$?
+  alternativas:
+  - (x + 9)/2 (no son inversas)
+  - x (son inversas)
+  - '1'
+  - '0'
+  respuesta: (x + 9)/2 (no son inversas)
+  solucion_pasos:
+  - 'Paso 1: $f(g(x)) = 3\left(\frac{x-3}{6}\right) + 6 = \frac{x-3}{2} + 6 = \frac{x + 9}{2} \neq x$.'
+- titulo: 'Ejemplo 3: Potencia y raíz'
+  enunciado: En $[0, +\infty[$, ¿cuánto es $(\sqrt{x})^2$ y $\sqrt{x^2}$?
+  alternativas:
+  - Ambas dan x
+  - Dan |x| y -x
+  - Dan 1
+  - Dan x^2
+  respuesta: Ambas dan x
+  solucion_pasos:
+  - 'Paso 1: En los reales no negativos, ambas composiciones dan exactamente $x$.'
+- titulo: 'Ejemplo 4: Autoinversa'
+  enunciado: Para $f(x) = \frac{1}{x}$ con $x \neq 0$, ¿cuánto es $(f \circ f)(x)$?
+  alternativas:
+  - x
+  - 1/x^2
+  - '1'
+  - x^2
+  respuesta: x
+  solucion_pasos:
+  - 'Paso 1: $f(f(x)) = \frac{1}{1/x} = x$, luego $f$ es su propia inversa.'
 errores_frecuentes:
-  - 'Comprobar que dos funciones son inversas requiere multiplicar sus expresiones algebraicas resultando en 1.'
-  - 'Si la composición de dos funciones entrega el resultado $f(g(x)) = 0$, las funciones son mutuamente inversas.'
-  - 'Verificar la inversa mediante composición exige derivar ambas expresiones antes de evaluar.'
-  - 'La composición de dos funciones afines inversas genera siempre una parábola cuadrática.'
-  - 'Evaluar la composición $f(g(x))$ en un punto particular como $x = 2$ demuestra rigurosamente la inversitud para todo el dominio.'
+- Comprobar solo un sentido de la composición.
+- Cometer errores algebraicos en la distributiva o en la cancelación de fracciones.
+- Confundir la identidad x con el número 1.
 afirmaciones_verdaderas:
-  - 'Dos funciones $f$ y $g$ son mutuamente inversas si y solo si sus composiciones satisfacen $(f \circ g)(x) = x$ y $(g \circ f)(x) = x$ para todo elemento de sus dominios.'
-  - 'La verificación por composición demuestra que la aplicación sucesiva de $f$ y $f^{-1}$ equivale a aplicar la función identidad.'
-al_terminar_debes_poder: |
-  QUÉ: Verificar rigurosamente si dos funciones dadas son mutuamente inversas mediante composición.
-  CÓMO: Calcular $f(g(x))$ y $g(f(x))$, simplificar algebraicamente y comprobar la reducción a la función identidad $x$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa'
+- Dos funciones son inversas si y solo si su composición mutua en ambos sentidos produce la función identidad x.
+- La composición f(f^(-1)(x)) = x es válida para todo x en el dominio de f^(-1).
+al_terminar_debes_poder: '**QUÉ:** Verificar rigurosamente si dos funciones son mutuamente inversas mediante composición.
+
+
+  **CÓMO:** Demostrando algebraicamente que (f ∘ g)(x) = x y (g ∘ f)(x) = x para todo elemento de sus respectivos dominios.
+
+
+  ![Resumen La verificación algebraica de una función inversa se demuestra comprobando que la composición en ambos sentidos produce la función identidad: $(f \circ f^{-1})(x) = x$ y $(f^{-1} \circ f)(x) = x$](/static/img/nodos/verificacion-de-inversa-mediante-composicion-identidad-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Tipos de Funciones y Función Inversa
 estado: publicado

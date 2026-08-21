@@ -1,91 +1,143 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARIDAD_DESDE_FORMULA
-resumen_inicial: La determinación de paridad desde la fórmula analiza la respuesta algebraica al evaluar $f(-x)$ para clasificar la función como par, impar o sin paridad.
-explicacion_simple: |
-  Para determinar la paridad de una función desde su fórmula:
+resumen_inicial: 'La determinación algebraica de la paridad de una función consiste en calcular $f(-x)$ y simplificar: si $f(-x) = f(x)$ es par; si $f(-x) = -f(x)$ es impar; y si no se cumple ninguna, la función no tiene paridad.'
+explicacion_simple: "![La determinación algebraica de la paridad de una función consiste en calcular $f(-x)$ y simplificar: si $f(-x) = f(x)$ es par; si $f(-x) = -f(x)$ es impar; y si no se cumple ninguna, la función no tiene paridad](/static/img/nodos/determinacion-de-paridad-de-una-funcion-desde-su-formula-intro.svg)\n\n\nPara saber si cualquier fórmula matemática es par, impar o ninguna:\n1. **Paso 1:** Reemplazas cada $x$ por $(-x)$ en la fórmula.\n2. **Paso 2:** Simplificas todos los signos y potencias con cuidado.\n3. **Paso 3:** Comparas el resultado:\n   - ¿Quedó **idéntica** a la original? $\\implies$ **Es PAR**.\n   - ¿Quedó con **todos los signos cambiados** ($-f(x)$)? $\\implies$ **Es IMPAR**.\n   - ¿No coincide con ninguna de las dos? $\\implies$ **NO TIENE PARIDAD (ni par ni impar)**."
+explicacion_formal: 'Dada una función $f: D \to \mathbb{R}$ con dominio simétrico, el **algoritmo de clasificación de paridad** evalúa la relación funcional entre $f(-x)$ y $f(x)$:
 
-  1. Reemplazas cada $x$ por $(-x)$.
-  2. Simplificas la expresión.
-  3. Comparas la nueva expresión con la fórmula original $f(x)$:
-     - **Si queda IDÉNTICA a $f(x)$** $\implies$ la función es **PAR**.
-     - **Si queda EXACTAMENTE OPUESTA $-f(x)$** (con todos los signos cambiados) $\implies$ la función es **IMPAR**.
-     - **Si no queda ni idéntica ni opuesta** $\implies$ la función **NO TIENE PARIDAD** (ni par ni impar).
-explicacion_formal: |
-  Dada la función $f(x)$ con dominio simétrico $D$, el algoritmo analítico de **determinación de paridad** evalúa la transformación $x \mapsto -x$:
 
-  $$\text{Resultado de } f(-x) = \begin{cases} f(x) & \implies f \text{ es Par} \\ -f(x) & \implies f \text{ es Impar} \\ \text{otro} & \implies f \text{ no posee paridad} \end{cases}$$
+  $$\text{Clasificación} = \begin{cases} \text{Par} & \text{si } f(-x) - f(x) = 0 \\ \text{Impar} & \text{si } f(-x) + f(x) = 0 \\ \text{Sin paridad} & \text{en cualquier otro caso} \end{cases}$$
 
-  **Criterio polinómico rápido:**
-  - Si un polinomio contiene **únicamente exponentes pares** en sus términos (incluyendo constantes $x^0$), es **Par**.
-  - Si contiene **únicamente exponentes impares** sin término independiente constante, es **Impar**.
-  - Si combina exponentes pares e impares, **no posee paridad**.
-definiciones_clave: |
-  - **Determinación analítica de paridad**: Clasificación de la simetría algebraica de una función mediante la sustitución $f(-x)$.
-propiedades_relaciones: |
-  - **Función nula**: La función constante $f(x) = 0$ es la única función matemática que es simultáneamente par e impar.
+
+  **Reglas operacionales de álgebra de paridad:**
+
+  - $\text{Par} \pm \text{Par} = \text{Par}$
+
+  - $\text{Impar} \pm \text{Impar} = \text{Impar}$
+
+  - $\text{Par} \times \text{Par} = \text{Par}$
+
+  - $\text{Impar} \times \text{Impar} = \text{Par}$
+
+  - $\text{Par} \times \text{Impar} = \text{Impar}$
+
+  - $\text{Par} / \text{Impar} = \text{Impar}$'
+definiciones_clave: '- **Clasificación tricotómica**: Categorización de funciones en pares, impares o sin paridad.
+
+  - **Descomposición canónica**: Toda función real se puede escribir de forma única como suma de una parte par y una parte impar: $f(x) = f_{\text{par}}(x) + f_{\text{impar}}(x)$ donde $f_{\text{par}}(x) = \frac{f(x) + f(-x)}{2}$ y $f_{\text{impar}}(x) = \frac{f(x) - f(-x)}{2}$.'
+propiedades_relaciones: '- **Función nula**: La única función que es simultáneamente par e impar es la función constante $f(x) = 0$.
+
+  - **Mayoría sin paridad**: La gran mayoría de funciones matemáticas no son ni pares ni impares.'
 ejemplo_guiado:
-  enunciado: 'Determina la paridad de las funciones: a) $f(x) = 5x^3 - x$, b) $g(x) = x^2 + 3x + 1$.'
+  enunciado: '![Ejemplo La determinación algebraica de la paridad de una función consiste en calcular $f(-x)$ y simplificar: si $f(-x) = f(x)$ es par; si $f(-x) = -f(x)$ es impar; y si no se cumple ninguna, la función no tiene paridad](/static/img/nodos/determinacion-de-paridad-de-una-funcion-desde-su-formula-ejemplos.svg)
+
+
+
+    Determina algebraicamente la paridad de las siguientes tres funciones:
+
+    1) $f(x) = \frac{x^3}{x^2 + 4}$
+
+    2) $g(x) = 2x^4 - x^2 + 3$
+
+    3) $h(x) = x^2 + 5x - 6$'
   pasos:
-    - 'Paso 1: Para $f(x)$, evaluar $f(-x) = 5(-x)^3 - (-x) = -5x^3 + x = -(5x^3 - x) = -f(x) \implies f$ es IMPAR.'
-    - 'Paso 2: Para $g(x)$, evaluar $g(-x) = (-x)^2 + 3(-x) + 1 = x^2 - 3x + 1$.'
-    - 'Paso 3: Comparar $g(-x)$ con $g(x) = x^2 + 3x + 1$ y $-g(x) = -x^2 - 3x - 1$.'
-    - 'Paso 4: Como $g(-x) \neq g(x)$ y $g(-x) \neq -g(x)$, se concluye que $g(x)$ NO POSEE PARIDAD.'
+  - 'Paso 1: Para $f(x)$: $f(-x) = \frac{(-x)^3}{(-x)^2 + 4} = \frac{-x^3}{x^2 + 4} = -\left(\frac{x^3}{x^2 + 4}\right) = -f(x) \implies$ $f$ es **IMPAR**.'
+  - 'Paso 2: Para $g(x)$: $g(-x) = 2(-x)^4 - (-x)^2 + 3 = 2x^4 - x^2 + 3 = g(x) \implies$ $g$ es **PAR**.'
+  - 'Paso 3: Para $h(x)$: $h(-x) = (-x)^2 + 5(-x) - 6 = x^2 - 5x - 6$.
+
+    - Comparar con $h(x)$: $x^2 - 5x - 6 \neq x^2 + 5x - 6$ (no es par).
+
+    - Comparar con $-h(x)$: $x^2 - 5x - 6 \neq -x^2 - 5x + 6$ (no es impar).
+
+    - Concluir que $h$ **NO TIENE PARIDAD**.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si al evaluar $f(-x)$ se obtiene una expresión distinta a $f(x)$ y distinta a $-f(x)$, ¿cuál es la conclusión?'
-    choices:
-      - {text: 'La función no posee paridad (ni par ni impar).', is_correct: true}
-      - {text: 'La función es obligatoriamente par e impar a la vez.', is_correct: false}
-      - {text: 'La función es una función constante.', is_correct: false}
-      - {text: 'La función no está definida en los reales.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La función no posee paridad (ni par ni impar).''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Qué paridad presenta la función polinómica $g(x) = x^2 + 3x + 1$?'
-    choices:
-      - {text: 'No posee paridad.', is_correct: true}
-      - {text: 'Es una función par.', is_correct: false}
-      - {text: 'Es una función impar.', is_correct: false}
-      - {text: 'Es una función lineal pura.', is_correct: false}
-    explanation: 'La alternativa correcta es ''No posee paridad.''. Al evaluar $g(-x) = x^2 - 3x + 1$, no equivale a $g(x)$ ni a $-g(x)$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Al evaluar $f(-x)$ para $f(x) = 3x^3 + 2x$, ¿qué resultado se obtiene?
+  choices:
+  - text: -f(x) (la funcion es impar).
+    is_correct: true
+  - text: f(x) (la funcion es par).
+    is_correct: false
+  - text: '0.'
+    is_correct: false
+  - text: No se puede determinar.
+    is_correct: false
+  explanation: La alternativa correcta es '-f(x) (la funcion es impar).'. $3(-x)^3 + 2(-x) = -3x^3 - 2x = -(3x^3 + 2x) = -f(x)$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Qué paridad tiene la función $f(x) = x^3 + x^2$?
+  choices:
+  - text: No tiene paridad (ni par ni impar).
+    is_correct: true
+  - text: Es par.
+    is_correct: false
+  - text: Es impar.
+    is_correct: false
+  - text: Es par e impar a la vez.
+    is_correct: false
+  explanation: La alternativa correcta es 'No tiene paridad (ni par ni impar).'. Combina exponentes pares e impares, $f(-x) = -x^3 + x^2 \neq \pm f(x)$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Escribir la expresión original de la función $f(x)$.'
-  - 'Paso 2: Calcular $f(-x)$ sustituyendo cada $x$ por $(-x)$ y simplificando.'
-  - 'Paso 3: Comparar la expresión simplificada con $f(x)$ y con $-f(x)$.'
-  - 'Paso 4: Clasificar el resultado en: Par, Impar o Sin paridad.'
-errores_correccion: |
-  - **Error común:** Creer que toda función matemática debe ser obligatoriamente Par o Impar (falsa dicotomía).
-  - **Cómo corregirlo:** La gran mayoría de las funciones arbitrarias **NO TIENEN PARIDAD** (no son ni pares ni impares).
+- 'Paso 1: Escribir la expresión $f(-x)$ sustituyendo cada $x$ por $(-x)$.'
+- 'Paso 2: Desarrollar las potencias y productos respetando la regla de signos.'
+- 'Paso 3: Comparar la expresión reducida con $f(x)$ original.'
+- 'Paso 4: Factorizar un signo negativo y comparar con $-f(x)$.'
+- 'Paso 5: Clasificar como par, impar o sin paridad.'
+errores_correccion: '- **Error común:** Concluir que si una función no es par, entonces obligatoriamente debe ser impar.
+
+  - **Cómo corregirlo:** La gran mayoría de funciones **no son ni pares ni impares** (sin paridad); debes comprobar ambas condiciones.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de funciones especiales.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de funciones especiales.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Cociente par / impar'
+  enunciado: Determina la paridad de $f(x) = \frac{x^4 + 1}{x}$.
+  alternativas:
+  - Es impar
+  - Es par
+  - No tiene paridad
+  - Es constante
+  respuesta: Es impar
+  solucion_pasos:
+  - 'Paso 1: $f(-x) = \frac{(-x)^4 + 1}{-x} = \frac{x^4 + 1}{-x} = -\frac{x^4 + 1}{x} = -f(x)$.'
+- titulo: 'Ejemplo 2: Función afín no lineal'
+  enunciado: ¿Qué paridad tiene $g(x) = 4x - 8$?
+  alternativas:
+  - No tiene paridad
+  - Es impar
+  - Es par
+  - Es periódica
+  respuesta: No tiene paridad
+  solucion_pasos:
+  - 'Paso 1: $g(-x) = -4x - 8 \neq g(x) \ \land \ \neq -g(x) = -4x + 8$.'
+- titulo: 'Ejemplo 3: Producto de potencias pares e impares'
+  enunciado: Si $h(x) = x^2 \cdot |x|$, ¿es par o impar?
+  alternativas:
+  - Es par
+  - Es impar
+  - No tiene paridad
+  - Solo para positivos
+  respuesta: Es par
+  solucion_pasos:
+  - 'Paso 1: $h(-x) = (-x)^2 |-x| = x^2 |x| = h(x)$ (par).'
+- titulo: 'Ejemplo 4: Raíz par de potencia par'
+  enunciado: Determina la paridad de $f(x) = \sqrt{x^2 + 9}$.
+  alternativas:
+  - Es par
+  - Es impar
+  - No tiene paridad
+  - No es real
+  respuesta: Es par
+  solucion_pasos:
+  - 'Paso 1: $f(-x) = \sqrt{(-x)^2 + 9} = \sqrt{x^2 + 9} = f(x)$.'
 errores_frecuentes:
-  - 'Toda función matemática real debe ser obligatoriamente clasificada como par o como impar.'
-  - 'Un polinomio que combina términos de grado 2 y grado 1 es una función par.'
-  - 'Si una función tiene un término constante $b = 5$, entonces es una función impar.'
-  - 'Evaluar $f(-x)$ equivale a multiplicar la función completa por el número $-1$.'
-  - 'La paridad de una función cambia según el valor numérico $x$ que se elija para evaluar.'
+- Asumir binarismo par/impar olvidando la opción sin paridad.
+- Cometer errores al evaluar potencias pares de números negativos.
+- No verificar si el signo cambia en todos los términos al buscar imparidad.
 afirmaciones_verdaderas:
-  - 'La paridad analítica de una función se determina comparando $f(-x)$ con $f(x)$ (para paridad) y con $-f(x)$ (para imparidad).'
-  - 'Existen funciones algebraicas que no satisfacen $f(-x) = f(x)$ ni $f(-x) = -f(x)$, perteneciendo a la categoría sin paridad.'
-al_terminar_debes_poder: |
-  QUÉ: Determinar analíticamente la paridad de una función a partir de su regla algebraica.
-  CÓMO: Evaluar $f(-x)$, simplificar signos, comparar con $f(x)$ y $-f(x)$ y clasificar en Par, Impar o Sin paridad.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
+- Para determinar la paridad algebraica se compara f(-x) con f(x) y con -f(x).
+- La mayoría de las funciones reales no poseen paridad par ni impar.
+al_terminar_debes_poder: '**QUÉ:** Determinar y clasificar algebraicamente la paridad de cualquier función real.
+
+
+  **CÓMO:** Evaluando f(-x), simplificando rigurosamente signos y potencias y contrastando con f(x) y -f(x).
+
+
+  ![Resumen La determinación algebraica de la paridad de una función consiste en calcular $f(-x)$ y simplificar: si $f(-x) = f(x)$ es par; si $f(-x) = -f(x)$ es impar; y si no se cumple ninguna, la función no tiene paridad](/static/img/nodos/determinacion-de-paridad-de-una-funcion-desde-su-formula-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Simetrías y Funciones Especiales
 estado: publicado

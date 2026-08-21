@@ -1,86 +1,144 @@
 semantic_id: MAT.ALG.FUNCION_CONCEPTOS.RELACION_NO_FUNCION
-resumen_inicial: Identificar una relación que no es función consiste en detectar violaciones a las reglas de existencia o unicidad de imagen.
-explicacion_simple: |
-  Una relación entre dos conjuntos **NO es una función** si ocurre alguna de estas dos fallas:
+resumen_inicial: Identificar una relación que no es función consiste en detectar fallas de existencia o de unicidad en la asignación de elementos.
+explicacion_simple: '![Identificar una relación que no es función consiste en detectar fallas de existencia o de unicidad en la asignación de elementos](/static/img/nodos/identificacion-de-una-relacion-que-no-es-funcion-intro.svg)
 
-  1. **Falla de unicidad**: Un elemento del conjunto de partida se conecta con dos o más elementos del conjunto de llegada (en una gráfica, una línea vertical corta al dibujo en 2 o más puntos).
-  2. **Falla de existencia**: Un elemento del conjunto de partida se queda solo y sin ninguna conexión asignada.
-explicacion_formal: |
-  Una relación $R \subseteq A \times B$ **no es una función** si y solo si se verifica la negación del axioma de función:
 
-  $$\exists x_0 \in A \mid (\nexists y \in B, (x_0, y) \in R) \quad \lor \quad (\exists y_1, y_2 \in B, y_1 \neq y_2 \land (x_0, y_1) \in R \land (x_0, y_2) \in R)$$
 
-  **Desglose de la fórmula:**
-  - Caso 1: $x_0$ no tiene imagen en $B$.
-  - Caso 2: $x_0$ tiene dos imágenes distintas $y_1$ e $y_2$ en $B$.
-definiciones_clave: |
-  - **Prueba de la recta vertical**: Método gráfico según el cual si existe al menos una recta vertical que corta a la gráfica en más de un punto, dicha gráfica no representa una función.
-propiedades_relaciones: |
-  - **Relaciones no funcionales comunes**: Las circunferencias $x^2 + y^2 = r^2$ o parábolas horizontales $y^2 = x$ no son funciones en $\mathbb{R}$.
+  Una relación entre dos conjuntos deja de ser una función cuando ocurre cualquiera de estos dos problemas:
+
+
+  1. **Falta de unicidad (Bifurcación)**: Un elemento del conjunto de partida tiene **dos o más flechas** que apuntan a salidas distintas.
+
+  2. **Falta de existencia (Elemento huérfano)**: Un elemento del conjunto de partida se queda **sin ninguna flecha**, es decir, no tiene ninguna imagen asignada.
+
+
+  Si detectas cualquiera de estos dos casos, la relación **NO es una función**.'
+explicacion_formal: 'Sea $R \subseteq A \times B$ una relación binaria del conjunto $A$ en el conjunto $B$. La relación $R$ **no es una función** de $A$ en $B$ si se cumple al menos una de las siguientes proposiciones:
+
+
+  1. **Incumplimiento de existencia**: $\exists x \in A \mid \forall y \in B, \ (x, y) \notin R$
+
+  2. **Incumplimiento de unicidad**: $\exists x \in A, \ \exists y_1, y_2 \in B \mid (x, y_1) \in R \ \land \ (x, y_2) \in R \ \land \ y_1 \neq y_2$
+
+
+  **Representaciones comunes de no-funciones:**
+
+  - **Diagramas de Venn/Sagitales**: Elementos de partida con múltiples flechas o sin flecha.
+
+  - **Gráficas en el plano**: Curvas cerradas (círculos, elipses), lazos o curvas con retrocesos horizontales.'
+definiciones_clave: '- **Relación no funcional**: Relación binaria que viola la existencia de imagen en todo el dominio o la unicidad de asignación.
+
+  - **Elemento huérfano**: Elemento del conjunto de partida que carece de imagen asignada.'
+propiedades_relaciones: '- **Toda función es una relación, pero no toda relación es una función**.
+
+  - **Subconjunto de $A \times B$**: Cualquier conjunto de pares ordenados es una relación, pero solo los que cumplen unicidad y existencia total son funciones.'
 ejemplo_guiado:
-  enunciado: Considera el gráfico de la circunferencia $x^2 + y^2 = 25$. Determina si corresponde a una función de $x$ en $y$.
+  enunciado: '![Ejemplo Identificar una relación que no es función consiste en detectar fallas de existencia o de unicidad en la asignación de elementos](/static/img/nodos/identificacion-de-una-relacion-que-no-es-funcion-ejemplos.svg)
+
+
+
+    Sean $A = \{1, 2, 3\}$ y $B = \{a, b, c\}$. Analiza si las siguientes relaciones de $A$ en $B$ son funciones:
+
+    1) $R_1 = \{(1, a), (2, b)\}$
+
+    2) $R_2 = \{(1, a), (2, b), (2, c), (3, a)\}$'
   pasos:
-    - 'Paso 1: Aplicar la prueba de la recta vertical trazando la recta $x = 0$.'
-    - 'Paso 2: Observar las intersecciones: la recta corta a la gráfica en $(0, 5)$ y en $(0, -5)$.'
-    - 'Paso 3: Evaluar la unicidad: a la preimagen $x = 0$ le corresponden dos imágenes distintas ($y = 5$ e $y = -5$).'
-    - 'Paso 4: Concluir que la relación $x^2 + y^2 = 25$ NO es una función.'
+  - 'Paso 1: Analizar $R_1$: El elemento $3 \in A$ no aparece como primera componente (no tiene imagen). Falla la condición de existencia. $R_1$ NO es función de $A$ en $B$.'
+  - 'Paso 2: Analizar $R_2$: El elemento $2 \in A$ está asociado a dos imágenes distintas: $(2, b)$ y $(2, c)$. Falla la unicidad. $R_2$ NO es función.'
+  - 'Paso 3: Concluir que ninguna de las dos relaciones es una función de $A$ en $B$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: ¿Por qué la ecuación de la circunferencia $x^2 + y^2 = 25$ no representa una función $y = f(x)$?
-    choices:
-      - {text: Porque existen valores de $x$ que poseen dos imágenes distintas $y$., is_correct: true}
-      - {text: Porque es una figura cerrada., is_correct: false}
-      - {text: Porque incluye números negativos., is_correct: false}
-      - {text: Porque su dominio es finito., is_correct: false}
-    explanation: La alternativa correcta es 'Porque existen valores de $x$ que poseen dos imágenes distintas $y$.'.
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: ¿En qué consiste la prueba de la recta vertical para identificar gráficas que no son funciones?
-    choices:
-      - {text: Si una recta vertical corta a la gráfica en más de un punto, la gráfica no es función., is_correct: true}
-      - {text: Si una recta vertical no corta a la gráfica, siempre es función., is_correct: false}
-      - {text: Si las rectas horizontales cortan en un punto, no es función., is_correct: false}
-      - {text: Si la gráfica pasa por el origen $(0,0)$, es función., is_correct: false}
-    explanation: La alternativa correcta es 'Si una recta vertical corta a la gráfica en más de un punto, la gráfica no es función.'.
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuáles son las dos causas por las que una relación de A en B puede NO ser función?
+  choices:
+  - text: Que sobren elementos en A sin imagen o que un elemento de A tenga más de una imagen.
+    is_correct: true
+  - text: Que sobren elementos en B o que dos elementos de A tengan la misma imagen.
+    is_correct: false
+  - text: Que los conjuntos A y B tengan diferente cantidad de elementos.
+    is_correct: false
+  - text: Que todos los pares ordenados sean positivos.
+    is_correct: false
+  explanation: La alternativa correcta es 'Que sobren elementos en A sin imagen o que un elemento de A tenga más de una imagen.'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: 'En el conjunto $A = \{10, 20\}$, la relación $R = \{(10, 1), (10, 2), (20, 3)\}$ no es función porque:'
+  choices:
+  - text: El 10 tiene dos imágenes distintas (1 y 2).
+    is_correct: true
+  - text: El 20 tiene solo una imagen.
+    is_correct: false
+  - text: Los números de salida son consecutivos.
+    is_correct: false
+  - text: Falta el par (20, 1).
+    is_correct: false
+  explanation: La alternativa correcta es 'El 10 tiene dos imágenes distintas (1 y 2).'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Examinar la relación en diagrama sagital, tabla o plano cartesiano.'
-  - 'Paso 2: Verificar si algún elemento de entrada posee múltiples flechas/puntos verticales.'
-  - 'Paso 3: Verificar si algún elemento del conjunto de partida carece de salida.'
-  - 'Paso 4: Declarar que la relación NO es una función argumentando la falla encontrada.'
-errores_correccion: |
-  - **Error común:** Confundir la prueba de la recta vertical (para ser función) con la prueba de la recta horizontal (para inyectividad).
-  - **Cómo corregirlo:** Para saber si una gráfica ES FUNCIÓN, se usan siempre RECTAS VERTICALES.
+- 'Paso 1: Verificar que cada elemento del conjunto de partida $A$ tenga asignada al menos una imagen.'
+- 'Paso 2: Verificar que ningún elemento del conjunto de partida tenga dos o más imágenes distintas.'
+- 'Paso 3: Si alguna de las dos condiciones falla, clasificar la relación como NO función e indicar la causa exacta.'
+- 'Paso 4: Si ambas se cumplen, confirmar que es una función válida.'
+errores_correccion: '- **Error común:** Descalificar una relación como función porque sobran elementos en el conjunto de llegada $B$.
+
+  - **Cómo corregirlo:** En el conjunto de llegada $B$ pueden sobrar elementos sin recibir flechas sin que la función pierda validez. Donde no pueden sobrar elementos es en el conjunto de partida $A$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de funciones.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de funciones.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Detección en diagrama sagital'
+  enunciado: Si de un conjunto $A = \{p, q, r\}$ a $B = \{1, 2\}$, la relación asigna $p \to 1$ y $q \to 2$, dejando a $r$ sin flecha, ¿es función?
+  alternativas:
+  - No, porque r pertenece al dominio y no tiene imagen asignada
+  - Sí, porque p y q tienen imágenes únicas
+  - Sí, porque se usaron todos los elementos de B
+  - Solo si se define el codominio como {1, 2}
+  respuesta: No, porque r pertenece al dominio y no tiene imagen asignada
+  solucion_pasos:
+  - 'Paso 1: El elemento $r \in A$ no tiene imagen.'
+  - 'Paso 2: Falla la condición de existencia en el conjunto de partida, luego no es función.'
+- titulo: 'Ejemplo 2: Pares con duplicidad'
+  enunciado: ¿Por qué $R = \{(1, 2), (3, 4), (1, 5), (6, 7)\}$ no es una función?
+  alternativas:
+  - 'Porque la preimagen 1 tiene dos imágenes distintas: 2 y 5'
+  - Porque tiene 4 pares ordenados
+  - Porque los números no son consecutivos
+  - Porque el 6 y el 7 son pares e impares
+  respuesta: 'Porque la preimagen 1 tiene dos imágenes distintas: 2 y 5'
+  solucion_pasos:
+  - 'Paso 1: El número $1$ aparece con $y = 2$ y con $y = 5$.'
+  - 'Paso 2: Viola la condición de unicidad.'
+- titulo: 'Ejemplo 3: Gráfica de elipse'
+  enunciado: ¿Es una elipse en el plano cartesiano una función $y = f(x)$?
+  alternativas:
+  - No, porque una recta vertical corta a la elipse en dos puntos
+  - Sí, porque es una curva cerrada continua
+  - Sí, porque tiene centro y ejes de simetría
+  - Depende de la excentricidad
+  respuesta: No, porque una recta vertical corta a la elipse en dos puntos
+  solucion_pasos:
+  - 'Paso 1: Al trazar una recta vertical por el interior de la elipse, corta en dos puntos (arriba y abajo).'
+  - 'Paso 2: No cumple la prueba de la recta vertical, no es función.'
+- titulo: 'Ejemplo 4: Distinción con función constante'
+  enunciado: ¿Es $R = \{(1, 9), (2, 9), (3, 9)\}$ de $A=\{1, 2, 3\}$ en $B=\{9\}$ una función?
+  alternativas:
+  - Sí, es una función constante válida
+  - No, porque el 9 se repite tres veces
+  - No, porque B solo tiene un elemento
+  - Solo si 9 es divisible por 1, 2 y 3
+  respuesta: Sí, es una función constante válida
+  solucion_pasos:
+  - 'Paso 1: Cada elemento de $A$ tiene una sola imagen ($9$).'
+  - 'Paso 2: Es una función constante perfectamente válida.'
 errores_frecuentes:
-  - 'Una recta vertical en el plano cartesiano representa el gráfico de una función lineal bien definida.'
-  - 'Si un elemento del dominio tiene dos imágenes distintas en el codominio, la relación sigue siendo una función.'
-  - 'Una prueba de la recta vertical que interseca a una gráfica en dos puntos demuestra que la gráfica es una función.'
-  - 'Toda relación entre dos conjuntos es automáticamente una función matemática.'
-  - 'Un diagrama sagital donde un elemento de partida no tiene flecha asignada representa una función completa.'
+- Creer que si dos elementos de partida apuntan al mismo elemento de llegada no es función.
+- Confundir elementos sobrantes en el codominio B con elementos sobrantes en el dominio A.
+- Aceptar como función curvas cerradas como circunferencias o elipses.
 afirmaciones_verdaderas:
-  - 'Una relación entre dos conjuntos no es función si existe al menos un elemento del dominio con dos o más imágenes, o sin imagen asignada.'
-  - 'En el plano cartesiano, si una recta vertical corta al gráfico en dos o más puntos, la gráfica no corresponde a una función.'
-al_terminar_debes_poder: |
-  QUÉ: Reconocer e identificar relaciones que no cumplen con el concepto de función.
-  CÓMO: Aplicar la prueba de la recta vertical en gráficas o verificar la existencia de múltiple imagen/ausencia de imagen en diagramas.
-fuente: 'Texto escolar MINEDUC — Álgebra / Conceptos Base de Función'
+- Una relación no es función si algún elemento del conjunto de partida carece de imagen o posee más de una imagen.
+- Toda función es una relación, pero solo las relaciones que cumplen existencia y unicidad son funciones.
+al_terminar_debes_poder: '**QUÉ:** Identificar y justificar cuándo una relación matemática no califica como función.
+
+
+  **CÓMO:** Detectando elementos del dominio sin imagen o preimágenes con múltiples imágenes en diagramas, pares ordenados y curvas en el plano.
+
+
+  ![Resumen Identificar una relación que no es función consiste en detectar fallas de existencia o de unicidad en la asignación de elementos](/static/img/nodos/identificacion-de-una-relacion-que-no-es-funcion-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Conceptos Fundamentales de Funciones
 estado: publicado

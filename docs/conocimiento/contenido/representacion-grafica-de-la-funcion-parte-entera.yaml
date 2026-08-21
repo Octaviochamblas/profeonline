@@ -1,89 +1,125 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARTE_ENTERA_GRAFICO
-resumen_inicial: La representación gráfica de la función parte entera se compone de una serie infinita de escalones horizontales discontinuos.
-explicacion_simple: |
-  La gráfica de la **función parte entera $f(x) = \lfloor x \rfloor$** se parece a una **escalera**:
+resumen_inicial: La representación gráfica de la función parte entera es una función escalonada formada por segmentos horizontales de longitud 1, con extremo izquierdo cerrado $\bullet$ en $(k, k)$ y derecho abierto $\circ$ en $(k+1, k)$.
+explicacion_simple: '![La representación gráfica de la función parte entera es una función escalonada formada por segmentos horizontales de longitud 1, con extremo izquierdo cerrado $\bullet$ en $(k, k)$ y derecho abierto $\circ$ en $(k+1, k)$](/static/img/nodos/representacion-grafica-de-la-funcion-parte-entera-intro.svg)
 
-  - En cada tramo entre dos enteros (por ejemplo entre $x = 0$ y $x = 1$), la gráfica es una **línea horizontal plana** a la altura $y = 0$.
-  - **Puntos extremos**: En el extremo izquierdo del tramo ($x = 0$) la línea tiene un **círculo lleno $\bullet$** (incluye el punto), y en el extremo derecho ($x = 1$) tiene un **círculo vacío $\circ$** (no incluye el punto).
-  - Al pasar a $x = 1$, la gráfica da un "salto" vertical al siguiente escalón a la altura $y = 1$.
-explicacion_formal: |
-  Sea $f(x) = \lfloor x \rfloor$. La gráfica $G_f = \bigcup_{n \in \mathbb{Z}} S_n$ se compone de la unión disjunta de segmentos horizontales semiabiertos $S_n$:
 
-  $$S_n = \{(x, n) \in \mathbb{R}^2 \mid n \le x < n + 1\}$$
 
-  **Características geométricas:**
-  - **Extremo izquierdo:** Cierre mediante punto sólido $(n, n)$.
-  - **Extremo derecho:** Apertura mediante círculo hueco o frontera no incluida $(n+1, n)$.
-  - **Longitud del escalón:** $\Delta x = 1$ para la función parte entera canónica.
-  - **Discontinuidades:** Saltos finitos de altura $\Delta y = 1$ en cada $x \in \mathbb{Z}$.
-definiciones_clave: |
-  - **Gráfica escalonada**: Representación en el plano compuesta por tramos horizontales paralelos discontinuos.
-propiedades_relaciones: |
-  - **Transformaciones de escala y traslación**: La función $f(x) = a \lfloor bx + c \rfloor + d$ modifica la altura del escalón con $a$, la longitud del tramo con $\frac{1}{|b|}$ y desplaza la posición con $c$ y $d$.
+  El dibujo de la función parte entera $y = \lfloor x \rfloor$ parece una **escalera infinita**:
+
+  - Cada escalón mide $1\text{ unidad}$ de largo y está a una altura entera constante $y = k$.
+
+  - **El extremo izquierdo está CERRADO (punto relleno $\bullet$):** porque en $x = k$, el valor es exactamente $k$.
+
+  - **El extremo derecho está ABIERTO (círculo vacío $\circ$):** porque justo al llegar a $k+1$, la función da un salto al siguiente escalón de arriba.'
+explicacion_formal: "La gráfica cartesiana $\\text{Graf}(\\lfloor \\cdot \\rfloor)$ es la unión numerable disjunta de segmentos horizontales semiabiertos:\n$$\\text{Graf}(\\lfloor \\cdot \\rfloor) = \\bigcup_{k \\in \\mathbb{Z}} \\left( [k, k+1[ \\times \\{k\\} \\right)$$\n\n**Características topológicas y analíticas:**\n- **Discontinuidades de salto**: Presenta discontinuidad esencial de salto finito de magnitud $\\Delta y = 1$ en cada punto entero $x \\in \\mathbb{Z}$:\n  $$\\lim_{x \\to k^+} \\lfloor x \\rfloor = k, \\quad \\lim_{x \\to k^-} \\lfloor x \\rfloor = k - 1$$\n- **Continuidad lateral**: Es continua por la derecha en todo $\\mathbb{R}$ ($f(k^+) = f(k)$), pero discontinua por la izquierda en $\\mathbb{Z}$.\n- **Derivada nula casi en todas partes**: $f'(x) = 0$ para todo $x \\in \\mathbb{R} \\setminus \\mathbb{Z}$."
+definiciones_clave: '- **Función escalonada**: Función constante por tramos en intervalos contiguos.
+
+  - **Punto de salto**: Valor de la abscisa donde la función experimenta una discontinuidad no evitable.'
+propiedades_relaciones: '- **Orientación de extremos**: Siempre cerrado a la izquierda $(k, k)$ y abierto a la derecha $(k+1, k)$.
+
+  - **Modificaciones de escala**: En $y = a\lfloor bx \rfloor$, la longitud de cada escalón es $\frac{1}{|b|}$ y la altura del salto es $|a|$.'
 ejemplo_guiado:
-  enunciado: "Describe los puntos extremos del escalón de la gráfica $f(x) = \\lfloor x \\rfloor$ correspondiente al intervalo $2 \\le x < 3$."
+  enunciado: '![Ejemplo La representación gráfica de la función parte entera es una función escalonada formada por segmentos horizontales de longitud 1, con extremo izquierdo cerrado $\bullet$ en $(k, k)$ y derecho abierto $\circ$ en $(k+1, k)$](/static/img/nodos/representacion-grafica-de-la-funcion-parte-entera-ejemplos.svg)
+
+
+
+    Describe y grafica los escalones de la función $f(x) = \lfloor x \rfloor$ en el intervalo $[-2, 2[$.'
   pasos:
-    - 'Paso 1: Identificar el número entero base $n = 2$.'
-    - 'Paso 2: La altura del escalón en todo ese tramo es $y = 2$.'
-    - 'Paso 3: Determinar el punto de inicio en el extremo izquierdo $x = 2$: es el punto cerrado $(2, 2)$.'
-    - 'Paso 4: Determinar el punto final en el extremo derecho $x = 3$: es el punto abierto o círculo hueco $(3, 2)$.'
+  - 'Paso 1: Para $x \in [-2, -1[$: segmento a altura $y = -2$, con punto cerrado en $(-2, -2)$ y abierto en $(-1, -2)$.'
+  - 'Paso 2: Para $x \in [-1, 0[$: segmento a altura $y = -1$, con punto cerrado en $(-1, -1)$ y abierto en $(0, -1)$.'
+  - 'Paso 3: Para $x \in [0, 1[$: segmento sobre el eje X ($y = 0$), con punto cerrado en $(0, 0)$ y abierto en $(1, 0)$.'
+  - 'Paso 4: Para $x \in [1, 2[$: segmento a altura $y = 1$, con punto cerrado en $(1, 1)$ y abierto en $(2, 1)$.'
+  - 'Paso 5: Constatar la estructura de escalera con saltos unitarios en cada entero.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Cómo se representan los extremos izquierdo y derecho de cada escalón en la gráfica de la función parte entera?"
-    choices:
-      - {text: "Extremo izquierdo con punto cerrado y extremo derecho con punto abierto.", is_correct: true}
-      - {text: "Ambos extremos con puntos cerrados.", is_correct: false}
-      - {text: "Ambos extremos con puntos abiertos.", is_correct: false}
-      - {text: "Extremo izquierdo con punto abierto y derecho con punto cerrado.", is_correct: false}
-    explanation: "La alternativa correcta es 'Extremo izquierdo con punto cerrado y extremo derecho con punto abierto.'."
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: "En el intervalo $2 \\le x < 3$, ¿a qué altura constante $y$ se ubica el escalón de $f(x) = \\lfloor x \\rfloor$?"
-    choices:
-      - {text: "$y = 2$", is_correct: true}
-      - {text: "$y = 3$", is_correct: false}
-      - {text: "$y = 2{,}5$", is_correct: false}
-      - {text: "$y = 0$", is_correct: false}
-    explanation: "La alternativa correcta es '$y = 2$'. Para todo $x \\in [2, 3[$, la parte entera es 2."
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cómo son los extremos de cada escalón en la gráfica de la función parte entera $y = \lfloor x \rfloor$?
+  choices:
+  - text: Cerrado (relleno) a la izquierda y abierto (vacio) a la derecha.
+    is_correct: true
+  - text: Abierto a la izquierda y cerrado a la derecha.
+    is_correct: false
+  - text: Ambos extremos cerrados.
+    is_correct: false
+  - text: Ambos extremos abiertos.
+    is_correct: false
+  explanation: La alternativa correcta es 'Cerrado (relleno) a la izquierda y abierto (vacio) a la derecha.'. En $[k, k+1[$ el valor en $k$ es $k$ y en $k+1$ salta.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿En qué puntos presenta discontinuidades la gráfica de $f(x) = \lfloor x \rfloor$?
+  choices:
+  - text: En todos los numeros enteros x ∈ Z.
+    is_correct: true
+  - text: Solo en el origen x = 0.
+    is_correct: false
+  - text: En ningun punto (es continua).
+    is_correct: false
+  - text: Solo en los numeros negativos.
+    is_correct: false
+  explanation: La alternativa correcta es 'En todos los numeros enteros x ∈ Z.'. En cada entero salta al escalón siguiente.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Dibujar los ejes cartesianos e identificar las marcas enteras en los ejes $X$ e $Y$.'
-  - 'Paso 2: Para cada intervalo entero $[n, n+1[$, trazar un segmento horizontal a la altura $y = n$.'
-  - 'Paso 3: Colocar un círculo sólido en el punto $(n, n)$ y un círculo hueco en el punto $(n+1, n)$.'
-  - 'Paso 4: Repetir el patrón para valores positivos y negativos obteniendo la gráfica en escalera.'
-errores_correccion: |
-  - **Error común:** Dibujar la función parte entera uniendo los escalones con líneas verticales continuas.
-  - **Cómo corregirlo:** La gráfica es **DISCONTINUA**; NO se deben trazar líneas verticales conectando los escalones, solo círculos abiertos y cerrados.
+- 'Paso 1: Dividir el eje $X$ en intervalos unitarios semiabiertos $[k, k+1[$.'
+- 'Paso 2: Trazar un segmento horizontal a la altura entera $y = k$ para cada tramo.'
+- 'Paso 3: Marcar un punto relleno $\bullet$ en el extremo izquierdo $(k, k)$.'
+- 'Paso 4: Marcar un círculo vacío $\circ$ en el extremo derecho $(k+1, k)$.'
+- 'Paso 5: No unir los escalones con líneas verticales.'
+errores_correccion: '- **Error común:** Dibujar líneas verticales continuas conectando los escalones.
+
+  - **Cómo corregirlo:** La función es **discontinua**; no debe dibujarse ninguna línea vertical entre los escalones.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de funciones especiales.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de funciones especiales.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Identificación de intervalo'
+  enunciado: En la gráfica de $y = \lfloor x \rfloor$, ¿a qué altura se encuentra el escalón para $x \in [3, 4[$?
+  alternativas:
+  - y = 3
+  - y = 4
+  - y = 3.5
+  - y = 0
+  respuesta: y = 3
+  solucion_pasos:
+  - 'Paso 1: Para todo $x \in [3, 4[$, $\lfloor x \rfloor = 3$.'
+- titulo: 'Ejemplo 2: Corte con el eje Y'
+  enunciado: ¿En qué punto corta al eje Y la gráfica de $y = \lfloor x \rfloor$?
+  alternativas:
+  - (0, 0)
+  - (0, 1)
+  - (0, -1)
+  - No corta al eje Y
+  respuesta: (0, 0)
+  solucion_pasos:
+  - 'Paso 1: Para $x = 0$, $\lfloor 0 \rfloor = 0 \implies (0, 0)$.'
+- titulo: 'Ejemplo 3: Longitud con escala'
+  enunciado: En $f(x) = \lfloor 2x \rfloor$, ¿cuánto mide la longitud de cada escalón horizontal?
+  alternativas:
+  - 0.5 unidades (1/2)
+  - 2 unidades
+  - 1 unidad
+  - 4 unidades
+  respuesta: 0.5 unidades (1/2)
+  solucion_pasos:
+  - 'Paso 1: $k \le 2x < k+1 \implies \frac{k}{2} \le x < \frac{k+1}{2}$, longitud $\frac{1}{2} = 0.5$.'
+- titulo: 'Ejemplo 4: Altura negativa'
+  enunciado: ¿Qué intervalo en el eje X corresponde al escalón a altura $y = -3$?
+  alternativas:
+  - '[-3, -2['
+  - '[-2, -3['
+  - '[-3, -4['
+  - ']-3, -2]'
+  respuesta: '[-3, -2['
+  solucion_pasos:
+  - 'Paso 1: $\lfloor x \rfloor = -3 \iff x \in [-3, -2[$.'
 errores_frecuentes:
-  - 'La gráfica de la función parte entera es una curva parabólica suave que pasa por el origen.'
-  - 'Los escalones de la gráfica de $f(x) = \lfloor x \rfloor$ se conectan mediante segmentos verticales continuos.'
-  - 'El extremo derecho de cada escalón de la función parte entera incluye un punto sólido relleno.'
-  - 'La altura del escalón para el intervalo $-2 \le x < -1$ se ubica a la altura $y = -1$.'
-  - 'La longitud horizontal de los escalones de la función parte entera canónica depende del valor de $y$.'
+- Dibujar los círculos vacíos a la izquierda y los rellenos a la derecha.
+- Unir los escalones con líneas verticales continuas.
+- Olvidar la escala del intervalo al modificar el argumento interno.
 afirmaciones_verdaderas:
-  - 'La representación gráfica de la función parte entera $f(x) = \lfloor x \rfloor$ consta de segmentos horizontales semirrectos de longitud 1 con saltos de discontinuidad en cada valor entero.'
-  - 'Cada escalón de la gráfica parte entera posee un extremo izquierdo cerrado $(n, n)$ y un extremo derecho abierto $(n+1, n)$.'
-al_terminar_debes_poder: |
-  QUÉ: Representar e interpretar la gráfica escalonada de la función parte entera.
-  CÓMO: Trazar segmentos horizontales en los intervalos $[n, n+1[$ a la altura $y = n$ marcando extremos cerrados y abiertos.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
+- La gráfica de la función parte entera está formada por segmentos horizontales de longitud 1.
+- Cada escalón posee extremo izquierdo cerrado [k, k) y extremo derecho abierto (k+1, k).
+al_terminar_debes_poder: '**QUÉ:** Representar e interpretar gráficamente la función parte entera y sus transformaciones escalonadas.
+
+
+  **CÓMO:** Trazando segmentos horizontales en intervalos [k, k+1[ con extremo izquierdo cerrado y derecho abierto.
+
+
+  ![Resumen La representación gráfica de la función parte entera es una función escalonada formada por segmentos horizontales de longitud 1, con extremo izquierdo cerrado $\bullet$ en $(k, k)$ y derecho abierto $\circ$ en $(k+1, k)$](/static/img/nodos/representacion-grafica-de-la-funcion-parte-entera-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Simetrías y Funciones Especiales
 estado: publicado

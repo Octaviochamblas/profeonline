@@ -1,86 +1,130 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_BASE.CONDICION_BASE
-resumen_inicial: La condición de la base exige que $b > 0$ y $b \neq 1$ para asegurar que la función exponencial esté bien definida en todos los números reales.
-explicacion_simple: |
-  Para que una función sea considerada **exponencial válida $f(x) = b^x$**, la base $b$ debe cumplir **DOS CONDICIONES RIGUROSAS**:
+resumen_inicial: La condición de base positiva y distinta de uno ($b > 0, b \neq 1$) en una función exponencial garantiza su continuidad y existencia en todo $\mathbb{R}$ evitando números complejos y funciones constantes degeneradas.
+explicacion_simple: "![La condición de base positiva y distinta de uno ($b > 0, b \\neq 1$) en una función exponencial garantiza su continuidad y existencia en todo $\\mathbb{R}$ evitando números complejos y funciones constantes degeneradas](/static/img/nodos/condicion-de-base-positiva-y-distinta-de-uno-en-una-funcion-exponencial-intro.svg)\n\n\n¿Por qué la base $b$ tiene que ser estrictamente positiva y no puede ser 1?\n\n- **1. ¿Por qué $b$ no puede ser negativa ($b < 0$)?**\n  - Si tuvieras $f(x) = (-4)^x$ y quieres evaluar en $x = \\frac{1}{2}$:\n    $$(-4)^{1/2} = \\sqrt{-4} = 2i \\notin \\mathbb{R}$$\n  - ¡Te saldrían números imaginarios! La gráfica se rompería en pedacitos y no se podría dibujar en el plano real.\n- **2. ¿Por qué $b$ no puede ser cero ($b = 0$)?**\n  - $0^x = 0$ para todo $x > 0$, pero para $x < 0$ daría $0^{-2} = \\frac{1}{0}$ (indefinido).\n- **3. ¿Por qué $b$ no puede ser uno ($b = 1$)?**\n  - $1^x = 1$ para todo $x$. Es una recta horizontal fija, no una curva\
+  \ exponencial."
+explicacion_formal: "Sea la exponencial general $f(x) = b^x = e^{x \\ln(b)}$. Para que $f$ sea un morfismo continuo y diferenciable $f: \\mathbb{R} \\to \\mathbb{R}^+$ sobre el cuerpo ordenado conexo $\\mathbb{R}$, se requiere:\n\n1. **Condición de existencia en $\\mathbb{R}$ ($b > 0$)**:\n   El logaritmo natural $\\ln(b)$ está definido en $\\mathbb{R}$ si y solo si $b \\in \\mathbb{R}^+ = ]0, +\\infty[$. Para $b \\le 0$, la función multivaluada compleja $z \\mapsto b^z$ no posee una rama real continua sobre $\\mathbb{R}$.\n2. **Condición de no degeneración ($b \\neq 1$)**:\n   Si $b = 1 \\implies \\ln(1) = 0 \\implies f'(x) = 0 \\cdot 1^x = 0$, la función degenera en la constante trivial $f(x) = 1$, perdiendo la inyectividad y la invertibilidad logarítmica."
+definiciones_clave: '- **Base admisible**: Elemento $b \in ]0, 1[ \cup ]1, +\infty[$.
 
-  1. **La base debe ser estrictamente positiva ($b > 0$)**:
-     - Si fuera negativa (ej. $b = -4$), al evaluar $x = 1/2$ tendríamos $\sqrt{-4}$, ¡un número no real!
-  2. **La base no puede ser igual a uno ($b \neq 1$)**:
-     - Si $b = 1$, tendríamos $f(x) = 1^x = 1$ para todo $x$, lo cual es una **función constante aburrida (línea horizontal)** y no una curva exponencial.
-explicacion_formal: |
-  Sea el conjunto de bases exponenciales admisibles $\mathcal{B} = \mathbb{R}^+ \setminus \{1\} = ]0, 1[ \, \cup \, ]1, +\infty[$. La restricción $b \in \mathcal{B}$ se fundamenta en dos demostraciones de invalidez funcional:
+  - **Función degenerada**: Función que colapsa a una constante $y = 1$ al anularse la tasa de cambio.'
+propiedades_relaciones: '- **Bifurcación de comportamiento en $b = 1$**: El valor $b = 1$ separa el régimen de decaimiento ($0 < b < 1$) del régimen de crecimiento ($b > 1$).
 
-  **Demostración de restricciones:**
-  1. **Si $b \le 0$ (Invalidez de Dominio Real):** Para $b < 0$, la función $f(x) = b^x$ no está definida de forma continua sobre $\mathbb{R}$, produciendo indeterminaciones en números fraccionarios con denominador par (ej. $(-2)^{1/2} \notin \mathbb{R}$). Si $b = 0$, $0^x$ se indetermina en $x \le 0$.
-  2. **Si $b = 1$ (Degeneración en Función Constante):** $f(x) = 1^x = 1, \, \forall x \in \mathbb{R}$. Pierde el comportamiento asintótico, la inyectividad y la relación de inversa con los logaritmos.
-definiciones_clave: |
-  - **Dominio de bases exponenciales ($\mathcal{B}$)**: Conjunto $\mathbb{R}^+ \setminus \{1\}$ de reales estrictamente positivos distintos de uno que garantizan la existencia de la función exponencial.
-propiedades_relaciones: |
-  - **Continuidad y biyectividad**: La restricción $b \in \mathbb{R}^+ \setminus \{1\}$ es la condición mínima necesaria para que $f(x) = b^x$ sea una función continua y biyectiva de $\mathbb{R}$ en $\mathbb{R}^+$.
+  - **Invertibilidad asegurada**: $b > 0, b \neq 1$ garantiza la existencia unívoca de la función logaritmo $\log_b(x)$.'
 ejemplo_guiado:
-  enunciado: 'Evalúa si las bases $b_1 = 4$, $b_2 = -3$ y $b_3 = 1$ definen funciones exponenciales reales válidas.'
+  enunciado: '![Ejemplo La condición de base positiva y distinta de uno ($b > 0, b \neq 1$) en una función exponencial garantiza su continuidad y existencia en todo $\mathbb{R}$ evitando números complejos y funciones constantes degeneradas](/static/img/nodos/condicion-de-base-positiva-y-distinta-de-uno-en-una-funcion-exponencial-ejemplos.svg)
+
+
+
+    Analiza la validez como función exponencial en los números reales para las siguientes bases:
+
+    1) $b = \frac{2}{3}$
+
+    2) $b = -5$
+
+    3) $b = 1$
+
+    4) $b = 0$'
   pasos:
-    - 'Paso 1: Analizar $b_1 = 4$: cumple $4 > 0$ y $4 \neq 1$. Es una **base exponencial válida**.'
-    - 'Paso 2: Analizar $b_2 = -3$: viola la positividad (es menor que cero). **No es una base exponencial válida**.'
-    - 'Paso 3: Analizar $b_3 = 1$: viola la restricción $b \neq 1$ (degenera en función constante). **No es una base exponencial válida**.'
-    - 'Paso 4: Concluir que solo $b_1 = 4$ define una función exponencial continua.'
+  - 'Paso 1: Para $b = 2/3$:
+
+    - $2/3 > 0$ y $2/3 \neq 1$. **Es una base válida** (función decreciente en $\mathbb{R}$).'
+  - 'Paso 2: Para $b = -5$:
+
+    - $-5 < 0$. **No es válida** porque genera números complejos para exponentes no enteros.'
+  - 'Paso 3: Para $b = 1$:
+
+    - $b = 1$. **No es válida** porque genera la función constante $y = 1$.'
+  - 'Paso 4: Para $b = 0$:
+
+    - $b = 0$. **No es válida** porque no está definida para exponentes negativos ($0^{-1} = 1/0$).'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Por qué la expresión $f(x) = (-5)^x$ NO constituye una función exponencial válida sobre los números reales?'
-    choices:
-      - {text: 'Porque la base es negativa ($b = -5 < 0$), generando valores no reales para exponentes fraccionarios', is_correct: true}
-      - {text: 'Porque el exponente es una variable independiente.', is_correct: false}
-      - {text: 'Porque las potencias negativas siempre dan como resultado cero.', is_correct: false}
-      - {text: 'Porque se convierte en una función lineal creciente.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque la base es negativa ($b = -5 < 0$), generando valores no reales para exponentes fraccionarios''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Cuál de los siguientes valores de base $b$ define correctamente una función exponencial real?'
-    choices:
-      - {text: '$b = 0.5$', is_correct: true}
-      - {text: '$b = 1$.', is_correct: false}
-      - {text: '$b = -2$.', is_correct: false}
-      - {text: '$b = 0$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$b = 0.5$''. Cumple $0.5 > 0$ y $0.5 \neq 1$ (base de decrecimiento exponencial).'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuál es el conjunto exacto de valores permitidos para la base b de una función exponencial real?
+  choices:
+  - text: ']0, 1[ ∪ ]1, +∞[ (todos los reales positivos excepto el 1)'
+    is_correct: true
+  - text: '[0, +∞['
+    is_correct: false
+  - text: ℝ (todos los reales)
+    is_correct: false
+  - text: ']1, +∞[ únicamente'
+    is_correct: false
+  explanation: La alternativa correcta es ']0, 1[ ∪ ]1, +∞[ (todos los reales positivos excepto el 1)'. La base debe ser positiva ($b > 0$) y excluir al uno ($b \neq 1$).
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Por qué la función f(x) = (-2)ˣ no está definida en todo ℝ?
+  choices:
+  - text: Porque para exponentes como x = 1/2 produce √(-2), que no es un número real
+    is_correct: true
+  - text: Porque el número 2 es par
+    is_correct: false
+  - text: Porque no se puede elevar a potencias positivas
+    is_correct: false
+  - text: Porque es una función constante
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque para exponentes como x = 1/2 produce √(-2), que no es un número real'. Las raíces de radicando negativo pertenecen a los complejos $\mathbb{C}$, no a $\mathbb{R}$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la constante que actúa como base de la variable exponencial.'
-  - 'Paso 2: Verificar la condición de positividad estricta $b > 0$.'
-  - 'Paso 3: Verificar que la base no sea neutra multiplicativa $b \neq 1$.'
-  - 'Paso 4: Declarar la validez de la función si satisface $b \in ]0, 1[ \cup ]1, +\infty[$.'
-errores_correccion: |
-  - **Error común:** Pensar que $b = 1$ es una base exponencial porque se puede elevar a cualquier potencia.
-  - **Cómo corregirlo:** Si $b = 1$, la función es $f(x) = 1$, una **LÍNEA RECTA CONSTANTE**, por lo que se excluye de las funciones exponenciales.
+- 'Paso 1: Identificar el valor numérico de la base $b$ de la función.'
+- 'Paso 2: Comprobar la desigualdad de positividad estricta $b > 0$.'
+- 'Paso 3: Comprobar la condición de no degeneración $b \neq 1$.'
+- 'Paso 4: Concluir si la función exponencial está bien definida sobre el cuerpo real $\mathbb{R}$.'
+errores_correccion: '- **Error común:** Pensar que las fracciones como $b = 0,5$ no están permitidas.
+
+  - **Cómo corregirlo:** Las bases entre 0 y 1 ($0 < b < 1$) **son totalmente válidas** y corresponden a **decaimiento exponencial**.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Base fraccionaria válida.
-    alternativas:
-      - 'Base válida b = 1/3 (0 < 1/3 < 1)'
-      - 'Base inválida por ser fracción'
-      - 'Función lineal de pendiente 1/3'
-    respuesta: 'Base válida b = 1/3 (0 < 1/3 < 1)'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Invalidez de base nula.
-    alternativas:
-      - 'Base inválida (b = 0 no cumple b > 0)'
-      - 'Base válida de crecimiento'
-      - 'Base válida de decrecimiento'
-    respuesta: 'Base inválida (b = 0 no cumple b > 0)'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Base decimal admisible'
+  enunciado: ¿Es válida la base en $f(x) = (0{,}75)^x$?
+  alternativas:
+  - Sí, porque 0,75 > 0 y 0,75 ≠ 1
+  - No, porque es menor que 1
+  - No, porque es decimal
+  - Solo para x enteros
+  respuesta: Sí, porque 0,75 > 0 y 0,75 ≠ 1
+  solucion_pasos:
+  - 'Paso 1: $0{,}75 \in ]0, 1[ \implies$ base exponencial válida.'
+- titulo: 'Ejemplo 2: Base negativa rechazada'
+  enunciado: ¿Por qué se rechaza $g(x) = (-9)^x$?
+  alternativas:
+  - Porque su base es negativa (b < 0)
+  - Porque 9 es un cuadrado perfecto
+  - Porque es creciente
+  - Porque no tiene asíntota
+  respuesta: Porque su base es negativa (b < 0)
+  solucion_pasos:
+  - 'Paso 1: $b = -9 < 0 \implies$ no es una función exponencial real.'
+- titulo: 'Ejemplo 3: Base cero rechazada'
+  enunciado: ¿Qué problema presenta $h(x) = 0^x$?
+  alternativas:
+  - No está definida para x negativos (0⁻¹ = 1/0 indefinido)
+  - Da siempre 1
+  - Es una parábola
+  - Es continua
+  respuesta: No está definida para x negativos (0⁻¹ = 1/0 indefinido)
+  solucion_pasos:
+  - 'Paso 1: $0^{-1} = 1/0$ produce división por cero.'
+- titulo: 'Ejemplo 4: Base irracional'
+  enunciado: ¿Es válida la función $f(x) = \pi^x$?
+  alternativas:
+  - Sí, porque π ≈ 3,1416 > 0 y π ≠ 1
+  - No, π es irracional
+  - Solo para x racionales
+  - No tiene dominio real
+  respuesta: Sí, porque π ≈ 3,1416 > 0 y π ≠ 1
+  solucion_pasos:
+  - 'Paso 1: $\pi > 0$ y $\pi \neq 1 \implies$ exponencial válida.'
 errores_frecuentes:
-  - 'Dada la expresión $f(x) = 1^x$, es correcto afirmar que constituye una función exponencial creciente.'
-  - 'La afirmación errónea de que bases negativas $b < 0$ están bien definidas para todo exponente $x \in \mathbb{R}$.'
-  - 'La afirmación de que la base de una función exponencial puede tomar el valor cero sin generar indeterminaciones.'
-  - 'La consideración de que bases fraccionarias como $b = \frac{1}{2}$ son inválidas por ser menores que 1.'
-  - 'Afirmar que la restricción de la base $b > 0$ exige que el exponente $x$ sea también estrictamente positivo.'
+- Excluir bases fraccionarias pensando erróneamente que solo se permiten números enteros.
+- Aceptar bases negativas justificando que para exponentes enteros sí existen.
+- Olvidar que b = 1 degenera la función exponencial en una constante.
 afirmaciones_verdaderas:
-  - 'La base de una función exponencial debe pertenecer al conjunto $\mathbb{R}^+ \setminus \{1\}$, descartando bases negativas, nulas o iguales a uno.'
-  - 'La base $b = 1$ se excluye de la definición exponencial porque $1^x = 1$ produce una función constante sin comportamiento curvo.'
-al_terminar_debes_poder: |
-  QUÉ: Verificar la validez de la base $b$ en una función exponencial $f(x) = b^x$.
-  CÓMO: Comprobar las dos desigualdades fundamentales $b > 0$ y $b \neq 1$, justificando la exclusión de bases negativas, nulas o unitarias.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- La base b de una función exponencial real debe pertenecer estrictamente a ]0, 1[ ∪ ]1, +∞[.
+- Una base negativa no puede generar una función continua sobre todo el dominio ℝ.
+al_terminar_debes_poder: '**QUÉ:** Justificar y verificar la condición de base b > 0 y b ≠ 1 en la función exponencial.
+
+
+  **CÓMO:** Explicando por qué las bases negativas generan números complejos y la base 1 colapsa a una función constante.
+
+
+  ![Resumen La condición de base positiva y distinta de uno ($b > 0, b \neq 1$) en una función exponencial garantiza su continuidad y existencia en todo $\mathbb{R}$ evitando números complejos y funciones constantes degeneradas](/static/img/nodos/condicion-de-base-positiva-y-distinta-de-uno-en-una-funcion-exponencial-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Conceptos de la Función Exponencial
 estado: publicado

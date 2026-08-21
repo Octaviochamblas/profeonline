@@ -1,90 +1,135 @@
 semantic_id: MAT.ALG.EC_CUADR_MODELO.PROBLEMAS_NUMEROS
-resumen_inicial: La resolución de problemas numéricos plantea ecuaciones cuadráticas a partir de relaciones entre enteros, cuadrados, números consecutivos y cocientes.
-explicacion_simple: |
-  En los problemas numéricos de acertijos o enunciados algebraicos:
-
-  - **Ejemplo**: "Busca un número entero positivo cuyo cuadrado más su doble sea igual a 35".
-  - **Paso 1**: Defase la incógnita: sea $x$ el número buscado.
-  - **Paso 2**: Traduces el enunciado:
-    $$x^2 + 2x = 35 \implies x^2 + 2x - 35 = 0$$
-  - **Paso 3**: Resuelves la ecuación cuadrática:
-    $$(x + 7)(x - 5) = 0 \implies x_1 = -7 \quad \text{y} \quad x_2 = 5$$
-  - **Paso 4**: Como el problema pedía específicamente un **entero positivo**, seleccionas $x = 5$ y descartas el $-7$.
-explicacion_formal: |
-  Sea el problema de encontrar uno o más números en un subconjunto numérico $\mathbb{Z}, \mathbb{N}$ o $\mathbb{Q}$ que satisfacen un operador no lineal. La **reducción a ecuación de segundo grado** plantea la forma canónica:
+resumen_inicial: La resolución de problemas numéricos mediante ecuaciones cuadráticas analiza relaciones aritméticas sobre números enteros o racionales (como productos de consecutivos, sumas de cuadrados o recíprocos), evaluando la validez de las soluciones según el conjunto numérico pedido ($\mathbb{N}, \mathbb{Z}, \mathbb{Q}, \mathbb{R}$).
+explicacion_simple: "![La resolución de problemas numéricos mediante ecuaciones cuadráticas analiza relaciones aritméticas sobre números enteros o racionales (como productos de consecutivos, sumas de cuadrados o recíprocos), evaluando la validez de las soluciones según el conjunto numérico pedido ($\\mathbb{N}, \\mathbb{Z}, \\mathbb{Q}, \\mathbb{R}$)](/static/img/nodos/resolucion-de-problemas-numericos-que-conducen-a-ecuaciones-cuadraticas-intro.svg)\n\n\nEn los problemas de números puros (sin geometría ni física), **las respuestas negativas SÍ pueden ser válidas si el enunciado habla de números enteros ($\\mathbb{Z}$)**.\n\n*Ejemplo clásico:* \"Encuentra dos números enteros consecutivos cuyo producto sea 56\".\n1. Los números son $x$ y $x + 1$.\n2. $x(x + 1) = 56 \\implies x^2 + x - 56 = 0 \\implies (x + 8)(x - 7) = 0$.\n3. Obtenemos dos soluciones matemáticas: $x_1 = 7$ y $x_2 = -8$.\n4. **¡Ambas son válidas!** Existen dos parejas de números que cumplen el problema:\n   - Pareja 1 (positiva):\
+  \ **$7$ y $8$** ($7 \\times 8 = 56$).\n   - Pareja 2 (negativa): **$-8$ y $-7$** ($(-8) \\times (-7) = 56$).\n- **Regla:** Solo descartas la negativa si el problema dice explícitamente \"enteros positivos\" o \"números naturales\"."
+explicacion_formal: 'Sea un problema formulado sobre el álgebra de números $\mathbb{K} \in \{\mathbb{N}, \mathbb{Z}, \mathbb{Q}, \mathbb{R}\}$. La formulación polinómica genera ecuaciones de la forma:
 
   $$P(x) = ax^2 + bx + c = 0$$
 
-  **Criterio de pertenencia al conjunto numérico:**
-  Las raíces $x_1, x_2$ obtenidas de la resolución formal deben ser evaluadas contra las restricciones numéricas impuestas en la premisa (ej. $x \in \mathbb{Z}^+$, $x \in \mathbb{N}$ o números impares consecutivos $2k+1$).
-definiciones_clave: |
-  - **Problemas numéricos cuadráticos**: Situaciones algebraicas abstractas centradas en propiedades puras de los números (cuadrados, productos, inversos aditivos/multiplicativos).
-propiedades_relaciones: |
-  - **Consecutivos de distinta paridad**: Dos enteros consecutivos cualesquiera se representan por $n$ y $n+1$; dos pares consecutivos por $2n$ y $2n+2$; dos impares consecutivos por $2n+1$ y $2n+3$.
+
+  **Condición de validez numérica**:
+
+  $$\mathcal{S}_{\text{val}} = \mathcal{S} \cap \mathbb{K}$$
+
+  - Si $\mathbb{K} = \mathbb{Z}$, las raíces negativas son válidas si satisfacen la paridad o consecutividad.
+
+  - Si $\mathbb{K} = \mathbb{N} = \mathbb{Z}^+$, se descartan las soluciones no positivas.'
+definiciones_clave: '- **Enteros consecutivos**: Par de números $x$ y $x + 1$ con diferencia unitaria.
+
+  - **Conjunto numérico referencial**: Universo numérico $\mathbb{N}, \mathbb{Z}, \mathbb{Q}$ o $\mathbb{R}$ que delimita la validez de las soluciones.'
+propiedades_relaciones: '- **Dualidad de signos en productos**: El producto de dos negativos es positivo ($(-a)(-b) = ab$), generando casi siempre pares simétricos de soluciones enteras.
+
+  - **Suma de cuadrados**: $x^2 + (x+1)^2 = K$ siempre genera discriminante positivo si $K > 0$.'
 ejemplo_guiado:
-  enunciado: 'Halla dos números enteros consecutivos cuyo producto sea igual a 132.'
+  enunciado: '![Ejemplo La resolución de problemas numéricos mediante ecuaciones cuadráticas analiza relaciones aritméticas sobre números enteros o racionales (como productos de consecutivos, sumas de cuadrados o recíprocos), evaluando la validez de las soluciones según el conjunto numérico pedido ($\mathbb{N}, \mathbb{Z}, \mathbb{Q}, \mathbb{R}$)](/static/img/nodos/resolucion-de-problemas-numericos-que-conducen-a-ecuaciones-cuadraticas-ejemplos.svg)
+
+
+
+    La suma de los cuadrados de dos números enteros consecutivos es 85. Encuentra todas las parejas de números que cumplen esta condición.'
   pasos:
-    - 'Paso 1: Plantear los números como $x$ y $x + 1$.'
-    - 'Paso 2: Formular el producto: $x(x + 1) = 132 \implies x^2 + x - 132 = 0$.'
-    - 'Paso 3: Factorizar: $(x + 12)(x - 11) = 0 \implies x_1 = -12$ y $x_2 = 11$.'
-    - 'Paso 4: Dar las dos parejas de soluciones válidas en los enteros: los pares $(-12, -11)$ o $(11, 12)$.'
+  - 'Paso 1: Definir los números: $x$ y $x + 1$ con $x \in \mathbb{Z}$.'
+  - 'Paso 2: Plantear la suma de sus cuadrados: $x^2 + (x + 1)^2 = 85$.'
+  - 'Paso 3: Desarrollar el binomio al cuadrado: $x^2 + x^2 + 2x + 1 = 85 \implies 2x^2 + 2x + 1 = 85$.'
+  - 'Paso 4: Llevar a la forma general: $2x^2 + 2x - 84 = 0$.'
+  - 'Paso 5: Dividir por 2: $x^2 + x - 42 = 0$.'
+  - 'Paso 6: Factorizar: $(x + 7)(x - 6) = 0 \implies x_1 = 6, \; x_2 = -7$.'
+  - 'Paso 7: Formar las parejas enteras:
+
+    - Si $x = 6 \implies$ pareja $(6, 7)$ (pues $36 + 49 = 85$).
+
+    - Si $x = -7 \implies$ pareja $(-7, -6)$ (pues $49 + 36 = 85$).
+
+    - Conclusión: Existen dos parejas válidas: $(6, 7)$ y $(-7, -6)$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué pareja de números enteros impares positivos consecutivos cumple que su producto es 63?'
-    choices:
-      - {text: 'Los números 7 y 9.', is_correct: true}
-      - {text: 'Los números 3 y 21.', is_correct: false}
-      - {text: 'Los números -7 y -9.', is_correct: false}
-      - {text: 'Los números 1 y 63.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Los números 7 y 9.''. Se plantea $x(x+2) = 63 \implies x^2+2x-63=0 \implies (x+9)(x-7)=0 \implies x=7$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'La suma de un número con su inverso multiplicativo es $10/3$. ¿Cuál es la ecuación cuadrática reducida que determina dicho número $x$?'
-    choices:
-      - {text: '$3x^2 - 10x + 3 = 0$', is_correct: true}
-      - {text: '$x^2 + x - 10 = 0$', is_correct: false}
-      - {text: '$3x^2 + 10x - 3 = 0$', is_correct: false}
-      - {text: '$x^2 - 10x + 3 = 0$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$3x^2 - 10x + 3 = 0$''. Se plantea $x + \frac{1}{x} = \frac{10}{3} \implies \frac{x^2+1}{x} = \frac{10}{3} \implies 3x^2 - 10x + 3 = 0$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si un problema pide "dos enteros positivos cuyo producto es 42", ¿cuántas parejas válidas existen si x = 6 y x = -7?
+  choices:
+  - text: 'Una sola pareja: (6, 7), porque se descartan los negativos al pedir ''positivos''.'
+    is_correct: true
+  - text: 'Dos parejas: (6, 7) y (-7, -6).'
+    is_correct: false
+  - text: Ninguna pareja.
+    is_correct: false
+  - text: Cuatro parejas.
+    is_correct: false
+  explanation: 'La alternativa correcta es ''Una sola pareja: (6, 7), porque se descartan los negativos al pedir ''positivos''.''. La restricción ''positivos'' descarta la solución negativa.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál es el número positivo que sumado con su cuadrado da 30?
+  choices:
+  - text: '5'
+    is_correct: true
+  - text: '-6'
+    is_correct: false
+  - text: '6'
+    is_correct: false
+  - text: '25'
+    is_correct: false
+  explanation: La alternativa correcta es '5'. $x^2 + x = 30 \implies x^2 + x - 30 = (x + 6)(x - 5) = 0 \implies x = 5$ (positivo).
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Definir la variable $x$ y representar los números involucrados según sus propiedades (consecutivos, pares, etc.).'
-  - 'Paso 2: Formular la igualdad según la relación dada en el problema y desarrollar los productos o fracciones.'
-  - 'Paso 3: Transponer todos los términos obteniendo la forma estándar $ax^2 + bx + c = 0$.'
-  - 'Paso 4: Resolver la cuadrática y validar las raíces según la restricción del conjunto numérico ($\mathbb{Z}^+, \mathbb{N}, \mathbb{Q}$).'
-errores_correccion: |
-  - **Error común:** Asumir que "enteros consecutivos" solo pueden ser positivos y descartar la pareja de enteros negativos.
-  - **Cómo corregirlo:** El conjunto de los números enteros $\mathbb{Z}$ **INCLUYE VALORES NEGATIVOS**; si el problema pide "enteros" sin especificar positivos, ambas parejas son respuestas válidas.
+- 'Paso 1: Identificar el conjunto numérico especificado en el problema ($\mathbb{N}, \mathbb{Z}, \mathbb{Q}, \mathbb{R}$).'
+- 'Paso 2: Traducir las relaciones aritméticas a una ecuación cuadrática.'
+- 'Paso 3: Resolver algebraicamente la ecuación.'
+- 'Paso 4: Validar cuáles raíces pertenecen al conjunto numérico exigido.'
+- 'Paso 5: Formar y presentar todas las soluciones numéricas válidas.'
+errores_correccion: '- **Error común:** Descartar una solución negativa cuando el problema pide simplemente "números enteros".
+
+  - **Cómo corregirlo:** En los enteros $\mathbb{Z}$, **los números negativos son totalmente válidos**; solo se descartan si el texto dice "enteros positivos" o "naturales".'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Producto de enteros consecutivos.
-    alternativas:
-      - '$(-10, -9)$ y $(9, 10)$'
-      - 'Solo $(9, 10)$'
-      - '$(-9, 10)$'
-    respuesta: '$(-10, -9)$ y $(9, 10)$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Inverso multiplicativo.
-    alternativas:
-      - '$x = 2$ o $x = 1/2$'
-      - '$x = 5$'
-      - '$x = -2$'
-    respuesta: '$x = 2$ o $x = 1/2$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Diferencia de cuadrados'
+  enunciado: La diferencia entre el cuadrado de un número positivo y el triple de dicho número es 18. ¿Cuál es el número?
+  alternativas:
+  - '6'
+  - '-3'
+  - '9'
+  - '3'
+  respuesta: '6'
+  solucion_pasos:
+  - 'Paso 1: $x^2 - 3x = 18 \implies x^2 - 3x - 18 = (x - 6)(x + 3) = 0 \implies x = 6$ (positivo).'
+- titulo: 'Ejemplo 2: Dos enteros impares consecutivos'
+  enunciado: El producto de dos enteros impares positivos consecutivos es 35. ¿Cuáles son?
+  alternativas:
+  - 5 y 7
+  - -7 y -5
+  - 3 y 5
+  - 7 y 9
+  respuesta: 5 y 7
+  solucion_pasos:
+  - 'Paso 1: $x(x + 2) = 35 \implies x^2 + 2x - 35 = (x + 7)(x - 5) = 0 \implies x = 5 \implies 5\text{ y } 7$.'
+- titulo: 'Ejemplo 3: Número y su inverso'
+  enunciado: Un número sumado con su inverso multiplicativo da $2$. ¿Cuál es el número?
+  alternativas:
+  - 1 (raíz doble)
+  - '2'
+  - '-1'
+  - '0'
+  respuesta: 1 (raíz doble)
+  solucion_pasos:
+  - 'Paso 1: $x + 1/x = 2 \implies x^2 - 2x + 1 = 0 \implies (x - 1)^2 = 0 \implies x = 1$.'
+- titulo: 'Ejemplo 4: Suma y producto simultáneo'
+  enunciado: Dos números suman 11 y su producto es 24. ¿Cuáles son?
+  alternativas:
+  - 3 y 8
+  - 4 y 6
+  - 2 y 12
+  - 1 y 24
+  respuesta: 3 y 8
+  solucion_pasos:
+  - 'Paso 1: $x^2 - 11x + 24 = (x - 3)(x - 8) = 0 \implies 3\text{ y } 8$.'
 errores_frecuentes:
-  - 'Descartar arbitrariamente soluciones enteras negativas cuando el problema pide "enteros" en general sin restringir a positivos.'
-  - 'Expresar impares consecutivos como $x$ y $x+1$ en lugar de utilizar un salto de dos unidades $x$ y $x+2$.'
-  - 'La falta de multiplicación por la variable $x$ al trabajar con inversos multiplicativos $1/x$.'
-  - 'La equiparación del inverso aditivo de un número $-x$ con su inverso multiplicativo $1/x$.'
-  - 'Aceptar soluciones decimales cuando el problema exige estrictamente números enteros.'
+- Descartar soluciones negativas en problemas de enteros donde sí son válidas.
+- Desarrollar erróneamente cuadrados de sumas.
+- No verificar si el número obtenido cumple la condición de paridad o imparidad.
 afirmaciones_verdaderas:
-  - 'Los problemas numéricos en los enteros $\mathbb{Z}$ aceptan parejas de soluciones negativas si la restricción no exige positividad estricta.'
-  - 'Planteamientos con el inverso multiplicativo $1/x$ conducen a ecuaciones cuadráticas multiplicando por $x \neq 0$.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver problemas numéricos sobre números enteros, consecutivos e inversos mediante ecuaciones cuadráticas.
-  CÓMO: Representar las propiedades numéricas en $x$, construir $ax^2 + bx + c = 0$, resolver y filtrar según el conjunto numérico.
-fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
+- En problemas con números enteros relativos Z, las soluciones negativas son perfectamente válidas.
+- La ecuación x² - Sx + P = 0 determina directamente los dos números que suman S y multiplican P.
+al_terminar_debes_poder: '**QUÉ:** Resolver problemas numéricos y aritméticos modelados por ecuaciones cuadráticas.
+
+
+  **CÓMO:** Formulando ecuaciones de segundo grado y evaluando la pertinencia de las soluciones en N, Z o R.
+
+
+  ![Resumen La resolución de problemas numéricos mediante ecuaciones cuadráticas analiza relaciones aritméticas sobre números enteros o racionales (como productos de consecutivos, sumas de cuadrados o recíprocos), evaluando la validez de las soluciones según el conjunto numérico pedido ($\mathbb{N}, \mathbb{Z}, \mathbb{Q}, \mathbb{R}$)](/static/img/nodos/resolucion-de-problemas-numericos-que-conducen-a-ecuaciones-cuadraticas-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra / Modelamiento y Resolución de Problemas Cuadráticos
 estado: publicado

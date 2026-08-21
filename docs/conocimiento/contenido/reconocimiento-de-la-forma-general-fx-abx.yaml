@@ -1,89 +1,143 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_BASE.FORMA_GENERAL
-resumen_inicial: El reconocimiento de la forma general $f(x) = a \cdot b^x$ identifica el factor de escala inicial $a$ y la tasa de crecimiento o decrecimiento $b$.
-explicacion_simple: |
-  En la práctica y en los problemas aplicados, la función exponencial suele incluir un **número multiplicativo $a$ al principio**:
+resumen_inicial: La forma general de la función exponencial $f(x) = a \cdot b^x$ ($a \neq 0, b > 0, b \neq 1$) parametriza el modelo mediante el coeficiente de escala $a$ (valor inicial $f(0) = a$) y la base multiplicativa $b$ (factor de cambio constante).
+explicacion_simple: "![La forma general de la función exponencial $f(x) = a \\cdot b^x$ ($a \\neq 0, b > 0, b \\neq 1$) parametriza el modelo mediante el coeficiente de escala $a$ (valor inicial $f(0) = a$) y la base multiplicativa $b$ (factor de cambio constante)](/static/img/nodos/reconocimiento-de-la-forma-general-fx-abx-intro.svg)\n\n\nLa **forma general** $f(x) = a \\cdot b^x$ es la fórmula que usan los científicos para modelar bacterias, intereses bancarios o enfriamiento de objetos:\n\n- **El número $a$ (El punto de partida):**\n  - Es el valor inicial cuando $x = 0$.\n  - Como $b^0 = 1$, entonces $f(0) = a \\cdot 1 = \\mathbf{a}$.\n  - Indica el corte con el eje vertical $Y$: **$(0, a)$**.\n- **El número $b$ (El multiplicador):**\n  - Te dice por cuánto se multiplica el resultado cada vez que $x$ avanza 1 paso.\n  - Si $b = 2$, se **duplica** en cada paso.\n  - Si $b = 3$, se **triplica** en cada paso.\n  - Si $b = 0,5$, se **reduce a la mitad** en cada paso."
+explicacion_formal: 'Sea el espacio de funciones semilineales multiplicativas. La **forma general ponderada** $f: \mathbb{R} \to \mathbb{R}$ está dada por:
 
-  $$f(x) = a \cdot b^x$$
+  $$f(x) = a \cdot b^x, \quad a \in \mathbb{R} \setminus \{0\}, \; b \in \mathbb{R}^+ \setminus \{1\}$$
 
-  - **$a$ es el valor inicial**: Representa la cantidad que tienes al comienzo cuando $x = 0$, porque $f(0) = a \cdot b^0 = a \cdot 1 = a$.
-  - **$b$ es el factor de cambio**: Indica por cuánto se multiplica la cantidad en cada paso de $x$.
-  - **Ejemplo**: Si tienes $\$5.000$ ahorrados y se duplican cada año: $f(x) = 5000 \cdot 2^x$.
-explicacion_formal: |
-  Dada la función $f: \mathbb{R} \to \mathbb{R}$, se define la **forma general de la función exponencial** mediante la expresión:
 
-  $$f(x) = a \cdot b^x \quad \text{con } a \in \mathbb{R} \setminus \{0\}, \, b \in \mathbb{R}^+ \setminus \{1\}$$
+  **Ecuación funcional diferencial**:
 
-  **Análisis de componentes parámetros:**
-  1. **Parámetro $a$ (Valor inicial / Escala vertical):** Determina la intersección con el eje Y en $(0, a)$. Si $a > 0$, el recorrido es $]0, +\infty[$; si $a < 0$, invierte la gráfica situándola en $]-\infty, 0[$.
-  2. **Parámetro $b$ (Base / Factor multiplicativo):** Dicta la tasa de variación. Si $b > 1$, es una función de crecimiento; si $0 < b < 1$, es de decrecimiento.
-definiciones_clave: |
-  - **Forma general exponencial**: Estructura algebraica $f(x) = a \cdot b^x$ donde $a$ es la escala inicial y $b$ es la base exponencial.
-propiedades_relaciones: |
-  - **Corte con el eje Y**: En la función general $f(x) = a \cdot b^x$, el punto de intersección con el eje vertical coincide exactamente con la constante multiplicativa $a$.
+  Es la única solución a la ecuación diferencial ordinaria lineal de primer orden de crecimiento natural:
+
+  $$\frac{df}{dx} = \ln(b) \cdot f(x), \quad f(0) = a$$
+
+
+  **Razón de recurrencia discreta**:
+
+  Para cualquier incremento unitario $\Delta x = 1$:
+
+  $$\frac{f(x + 1)}{f(x)} = \frac{a \cdot b^{x+1}}{a \cdot b^x} = b = \text{Constante}$$
+
+  Demuestra que las sucesiones exponenciales $\{f(n)\}_{n \in \mathbb{N}}$ forman una progresión geométrica estricta de razón $b$.'
+definiciones_clave: '- **Coeficiente de escala $a$**: Valor inicial $f(0)$ que fija la posición del intercepto con el eje $Y$.
+
+  - **Factor multiplicador $b$**: Razón geométrica constante entre valores funcionales consecutivos.'
+propiedades_relaciones: '- **Jerarquía de operaciones**: $a \cdot b^x \neq (a \cdot b)^x$. Primero se evalúa la potencia $b^x$ y luego se multiplica por $a$.
+
+  - **Reflexión por signo de $a$**: Si $a > 0$, la gráfica se ubica en el semiplano superior ($y > 0$); si $a < 0$, se refleja al semiplano inferior ($y < 0$).'
 ejemplo_guiado:
-  enunciado: 'Para la función exponencial $f(x) = 250 \cdot (1.05)^x$, identifica el valor inicial $a$, la base $b$ y calcula la intersección con el eje Y.'
+  enunciado: '![Ejemplo La forma general de la función exponencial $f(x) = a \cdot b^x$ ($a \neq 0, b > 0, b \neq 1$) parametriza el modelo mediante el coeficiente de escala $a$ (valor inicial $f(0) = a$) y la base multiplicativa $b$ (factor de cambio constante)](/static/img/nodos/reconocimiento-de-la-forma-general-fx-abx-ejemplos.svg)
+
+
+
+    Dada la función $f(x) = 6 \cdot 2^x$, calcula $f(0), f(1), f(2)$ y demuestra que la razón entre términos consecutivos es constante igual a $b = 2$.'
   pasos:
-    - 'Paso 1: Identificar el coeficiente multiplicativo $a = 250$.'
-    - 'Paso 2: Identificar la base del exponente $b = 1.05$.'
-    - 'Paso 3: Calcular el valor en $x = 0$: $f(0) = 250 \cdot (1.05)^0 = 250 \cdot 1 = 250$.'
-    - 'Paso 4: Concluir que la intersección con el eje Y es el punto cartesiano $(0, 250)$.'
+  - 'Paso 1: Calcular $f(0)$ (valor inicial):
+
+    $f(0) = 6 \cdot 2^0 = 6 \cdot 1 = 6$.'
+  - 'Paso 2: Calcular $f(1)$:
+
+    $f(1) = 6 \cdot 2^1 = 6 \cdot 2 = 12$.'
+  - 'Paso 3: Calcular $f(2)$:
+
+    $f(2) = 6 \cdot 2^2 = 6 \cdot 4 = 24$.'
+  - 'Paso 4: Calcular las razones consecutivas:
+
+    - $\frac{f(1)}{f(0)} = \frac{12}{6} = 2$.
+
+    - $\frac{f(2)}{f(1)} = \frac{24}{12} = 2$.
+
+    - Se verifica que la razón es constante e igual a la base $b = 2$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En la función exponencial general $f(x) = 80 \cdot 3^x$, ¿cuál es el valor del parámetro inicial $a$ y en qué punto corta al eje Y?'
-    choices:
-      - {text: '$a = 80$ y corta al eje Y en $(0, 80)$', is_correct: true}
-      - {text: '$a = 3$ y corta al eje Y en $(0, 3)$.', is_correct: false}
-      - {text: '$a = 240$ y corta al eje Y en $(0, 240)$.', is_correct: false}
-      - {text: '$a = 1$ y corta al eje Y en $(0, 1)$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$a = 80$ y corta al eje Y en $(0, 80)$''. $f(0) = 80 \cdot 3^0 = 80$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Dada la función $g(x) = -4 \cdot 2^x$, ¿cuál es la ordenada del punto de corte con el eje Y?'
-    choices:
-      - {text: 'La ordenada es $y = -4$', is_correct: true}
-      - {text: 'La ordenada es $y = 2$.', is_correct: false}
-      - {text: 'La ordenada es $y = -8$.', is_correct: false}
-      - {text: 'La ordenada es $y = 0$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La ordenada es $y = -4$''. $g(0) = -4 \cdot 2^0 = -4 \cdot 1 = -4$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: En la función $f(x) = 4 \cdot 3^x$, ¿cuál es el valor de $f(0)$ y qué representa?
+  choices:
+  - text: f(0) = 4, representa el valor inicial y el intercepto con el eje Y en (0, 4)
+    is_correct: true
+  - text: f(0) = 12
+    is_correct: false
+  - text: f(0) = 0
+    is_correct: false
+  - text: f(0) = 3
+    is_correct: false
+  explanation: La alternativa correcta es 'f(0) = 4, representa el valor inicial y el intercepto con el eje Y en (0, 4)'. $f(0) = 4 \cdot 3^0 = 4 \cdot 1 = 4$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Es equivalente la expresión $5 \cdot 2^x$ a $10^x$?
+  choices:
+  - text: No, porque por jerarquía de operaciones primero se calcula 2ˣ y luego se multiplica por 5
+    is_correct: true
+  - text: Sí, porque 5 · 2 = 10
+    is_correct: false
+  - text: Solo si x = 1
+    is_correct: false
+  - text: Solo si x = 0
+    is_correct: false
+  explanation: La alternativa correcta es 'No, porque por jerarquía de operaciones primero se calcula 2ˣ y luego se multiplica por 5'. Para $x = 2$, $5 \cdot 2^2 = 20$, mientras que $10^2 = 100$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Comparar la función dada con la estructura $f(x) = a \cdot b^x$.'
-  - 'Paso 2: Aislar el coeficiente constante $a$ fuera de la potencia.'
-  - 'Paso 3: Aislar la base $b$ que sostiene a la variable variable $x$.'
-  - 'Paso 4: Comprobar que $f(0) = a$ e interpretar $a$ como el valor inicial.'
-errores_correccion: |
-  - **Error común:** Multiplicar $a \cdot b$ antes de evaluar el exponente $x$ (ej. decir que $3 \cdot 2^x = 6^x$).
-  - **Cómo corregirlo:** La potencia se resuelve **ANTES QUE LA MULTIPLICACIÓN por $a$**. Nunca multipliques $a$ por $b$ si $b$ tiene exponente $x$.
+- 'Paso 1: Identificar la estructura $f(x) = a \cdot b^x$.'
+- 'Paso 2: Extraer el coeficiente multiplicativo $a$ evaluando $f(0) = a$.'
+- 'Paso 3: Extraer la base $b$ dividiendo dos valores consecutivos $b = \frac{f(x+1)}{f(x)}$.'
+- 'Paso 4: Respetar estrictamente la jerarquía de operaciones calculando primero la potencia $b^x$.'
+errores_correccion: '- **Error común:** Multiplicar la base por el coeficiente exterior antes del exponente (ej: $3 \cdot 4^x = 12^x$).
+
+  - **Cómo corregirlo:** La **potencia tiene prioridad sobre la multiplicación**: $3 \cdot 4^x \neq 12^x$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Identificación de parámetros.
-    alternativas:
-      - 'a = 100, b = 2, corte Y en (0, 100)'
-      - 'a = 2, b = 100, corte Y en (0, 2)'
-      - 'a = 200, corte Y en (0, 200)'
-    respuesta: 'a = 100, b = 2, corte Y en (0, 100)'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Parámetro inicial negativo.
-    alternativas:
-      - 'a = -15, b = 4, corte Y en (0, -15)'
-      - 'a = 4, b = -15'
-      - 'corte Y en (0, 0)'
-    respuesta: 'a = -15, b = 4, corte Y en (0, -15)'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Extracción de parámetros'
+  enunciado: En $f(x) = 15 \cdot (0{,}6)^x$, ¿cuáles son los parámetros a y b?
+  alternativas:
+  - a = 15, b = 0,6
+  - a = 0,6, b = 15
+  - a = 9, b = 0,6
+  - a = 15, b = 1
+  respuesta: a = 15, b = 0,6
+  solucion_pasos:
+  - 'Paso 1: $a = 15$ (coeficiente) y $b = 0{,}6$ (base).'
+- titulo: 'Ejemplo 2: Evaluación con exponente negativo'
+  enunciado: Si $g(x) = 8 \cdot 2^x$, ¿cuánto vale $g(-2)$?
+  alternativas:
+  - '2'
+  - 1/2
+  - '-32'
+  - '-2'
+  respuesta: '2'
+  solucion_pasos:
+  - 'Paso 1: $g(-2) = 8 \cdot 2^{-2} = 8 \cdot \frac{1}{4} = 2$.'
+- titulo: 'Ejemplo 3: Razón geométrica'
+  enunciado: Si $f(0) = 10$ y $f(1) = 30$, ¿cuál es la fórmula de $f(x) = a \cdot b^x$?
+  alternativas:
+  - f(x) = 10 · 3ˣ
+  - f(x) = 30 · 10ˣ
+  - f(x) = 3 · 10ˣ
+  - f(x) = 10 · 2ˣ
+  respuesta: f(x) = 10 · 3ˣ
+  solucion_pasos:
+  - 'Paso 1: $a = 10, b = 30/10 = 3 \implies f(x) = 10 \cdot 3^x$.'
+- titulo: 'Ejemplo 4: Intercepto con el eje Y'
+  enunciado: ¿En qué punto corta al eje Y la gráfica de $h(x) = -7 \cdot 5^x$?
+  alternativas:
+  - (0, -7)
+  - (0, 7)
+  - (0, 5)
+  - (0, -35)
+  respuesta: (0, -7)
+  solucion_pasos:
+  - 'Paso 1: $h(0) = -7 \cdot 1 = -7 \implies (0, -7)$.'
 errores_frecuentes:
-  - 'Dada la expresión $f(x) = 5 \cdot 2^x$, la equivalencia afirmada de que es igual a la función $10^x$.'
-  - 'La afirmación errónea de que el punto de intersección con el eje Y en la forma general es siempre el punto $(0, 1)$.'
-  - 'La adición del coeficiente $a$ al exponente en lugar de mantenerlo como factor multiplicativo exterior.'
-  - 'Afirmar que la presencia de un parámetro $a$ negativo cambia el valor de la base $b$ a un número negativo.'
-  - 'La falta de distinción entre el valor inicial $a = f(0)$ y la tasa de variación constante $b$.'
+- Multiplicar el coeficiente a por la base b antes de elevar a la x.
+- Asumir que f(0) = 0 porque b⁰ suele confundirse con 0.
+- Invertir los roles de a y b en la formulación del modelo.
 afirmaciones_verdaderas:
-  - 'En la forma general $f(x) = a \cdot b^x$, el parámetro $a$ representa la imagen en el origen $f(0) = a$.'
-  - 'La operación de potenciación $b^x$ tiene prioridad algebraica estricta sobre el producto por la constante $a$.'
-al_terminar_debes_poder: |
-  QUÉ: Reconocer e interpretar los parámetros $a$ y $b$ de la forma general exponencial $f(x) = a \cdot b^x$.
-  CÓMO: Aislar la constante $a$, identificar la base $b$, calcular la intersección $(0, a)$ y evitar la multiplicación no permitida $a \cdot b$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- En f(x) = a · bˣ, el parámetro a es exactamente el intercepto con el eje Y en (0, a).
+- La base b representa el factor multiplicativo constante entre valores consecutivos f(x+1)/f(x).
+al_terminar_debes_poder: '**QUÉ:** Reconocer e interpretar la forma general f(x) = a · bˣ de la función exponencial.
+
+
+  **CÓMO:** Identificando el valor inicial a y la base multiplicativa b para evaluar y graficar el modelo.
+
+
+  ![Resumen La forma general de la función exponencial $f(x) = a \cdot b^x$ ($a \neq 0, b > 0, b \neq 1$) parametriza el modelo mediante el coeficiente de escala $a$ (valor inicial $f(0) = a$) y la base multiplicativa $b$ (factor de cambio constante)](/static/img/nodos/reconocimiento-de-la-forma-general-fx-abx-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Conceptos de la Función Exponencial
 estado: publicado

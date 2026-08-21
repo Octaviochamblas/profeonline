@@ -1,89 +1,123 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.RESTRICCION_FUNCION_EXTERNA
-resumen_inicial: El análisis de la restricción del dominio de la función externa exige que las imágenes intermedias pertenezcan al dominio de dicha función.
-explicacion_simple: |
-  En una **composición $(f \circ g)(x) = f(g(x))$**:
+resumen_inicial: 'El análisis de restricción de la función externa exige que la imagen intermedia generada por la función interna pertenezca al dominio admisible de la función externa: $g(x) \in \text{Dom}(f)$.'
+explicacion_simple: '![El análisis de restricción de la función externa exige que la imagen intermedia generada por la función interna pertenezca al dominio admisible de la función externa: $g(x) \in \text{Dom}(f)$](/static/img/nodos/analisis-de-restriccion-de-dominio-de-la-funcion-externa-sobre-la-imagen-intermedia-intro.svg)
 
-  1. La función de adentro $g(x)$ toma la entrada $x$ y calcula una salida intermedia.
-  2. Esa salida intermedia $g(x)$ entra a la máquina de afuera $f$.
-  3. Para que la máquina externa $f$ funcione, la salida intermedia **debe ser un valor válido para $f$** ($g(x) \in \text{Dom}(f)$).
-  4. Si $f(u) = \sqrt{u}$, la salida intermedia $g(x)$ debe ser un número mayor o igual a cero ($g(x) \ge 0$).
-explicacion_formal: |
-  Dadas las funciones $g: D_g \subseteq \mathbb{R} \to \mathbb{R}$ y $f: D_f \subseteq \mathbb{R} \to \mathbb{R}$, la condición de existencia para la evaluación compuesta $(f \circ g)(x) = f(g(x))$ requiere:
 
-  $$x \in \text{Dom}(f \circ g) \iff x \in \text{Dom}(g) \quad \land \quad g(x) \in \text{Dom}(f)$$
 
-  **Análisis de la restricción externa:**
-  Si $D_f \subset \mathbb{R}$ posee restricciones (por ejemplo divisiones por cero o raíces de índice par), se debe resolver la inecuación o ecuación de condición:
+  La función externa $f$ es la **segunda aduana** del proceso:
 
-  $$g(x) \in D_f \implies \text{restricción sobre las imágenes } g(x)$$
-definiciones_clave: |
-  - **Restricción de la función externa**: Condición algebraica que impone el dominio de $f$ sobre el conjunto de valores $g(x)$ producidos por la función interna.
-propiedades_relaciones: |
-  - **Filtrado en dos etapas**: El dominio de $(f \circ g)$ es un subconjunto estricto del dominio de $g$, filtrando aquellos valores de $x$ cuya salida $g(x)$ cae fuera del dominio de $f$.
+  - Aunque un número $x$ pueda entrar a $g$ sin problemas, el resultado intermedio $g(x)$ que sale de allí **debe ser aceptable para $f$**.
+
+  - Por ejemplo, si $f(u) = \sqrt{u}$ (solo acepta números no negativos) y $g(x) = x - 10$, entonces obligatoriamente necesitamos que el resultado $x - 10$ sea mayor o igual a cero ($x - 10 \ge 0 \implies x \ge 10$).'
+explicacion_formal: "Dadas $g: \\text{Dom}(g) \\to \\mathbb{R}$ y $f: \\text{Dom}(f) \\to \\mathbb{R}$, la condición de existencia de la etapa externa impone:\n$$u = g(x) \\in \\text{Dom}(f)$$\n\n**Metodología de resolución por tipos de restricción externa:**\n1. **Restricción de radical par en $f$** ($f(u) = \\sqrt{u}$):\n   $$\\text{Dom}(f) = [0, +\\infty[ \\implies g(x) \\ge 0$$\n2. **Restricción de denominador en $f$** ($f(u) = \\frac{1}{u - k}$):\n   $$\\text{Dom}(f) = \\mathbb{R} \\setminus \\{k\\} \\implies g(x) \\neq k$$\n3. **Restricción de argumento logarítmico en $f$** ($f(u) = \\ln(u)$):\n   $$\\text{Dom}(f) = ]0, +\\infty[ \\implies g(x) > 0$$"
+definiciones_clave: '- **Condición de acople**: Requisito algebraico $g(x) \in \text{Dom}(f)$ que conecta las dos funciones.
+
+  - **Restricción inducida sobre $x$**: Acotación o exclusión sobre la variable de entrada original generada por las exigencias de $f$.'
+propiedades_relaciones: '- **Intersección final**: El dominio definitivo se obtiene intersectando la condición inducida con $\text{Dom}(g)$.
+
+  - **Dominio vacío**: Si la imagen de $g$ no tiene intersección con el dominio de $f$ ($\text{Rec}(g) \cap \text{Dom}(f) = \emptyset$), la composición no existe ($\text{Dom} = \emptyset$).'
 ejemplo_guiado:
-  enunciado: 'Sean $g(x) = x - 4$ y $f(u) = \sqrt{u}$. Determina la restricción sobre $g(x)$ para que $(f \circ g)(x)$ esté bien definida.'
+  enunciado: '![Ejemplo El análisis de restricción de la función externa exige que la imagen intermedia generada por la función interna pertenezca al dominio admisible de la función externa: $g(x) \in \text{Dom}(f)$](/static/img/nodos/analisis-de-restriccion-de-dominio-de-la-funcion-externa-sobre-la-imagen-intermedia-ejemplos.svg)
+
+
+
+    Determina el dominio de $(f \circ g)(x)$ para $f(u) = \frac{1}{\sqrt{u}}$ y $g(x) = 2x - 8$.'
   pasos:
-    - 'Paso 1: Identificar el dominio de la función externa $f(u) = \sqrt{u}$: se requiere $u \ge 0 \implies \text{Dom}(f) = [0, +\infty[$.'
-    - 'Paso 2: Exigir que la salida intermedia $g(x)$ pertenezca a $\text{Dom}(f)$: $g(x) \ge 0$.'
-    - 'Paso 3: Sustituir la expresión de $g(x)$: $x - 4 \ge 0$.'
-    - 'Paso 4: Despejar $x$: $x \ge 4 \implies \text{Dom}(f \circ g) = [4, +\infty[$.'
+  - 'Paso 1: Analizar la función interna: $g(x) = 2x - 8$ es afín, $\text{Dom}(g) = \mathbb{R}$.'
+  - 'Paso 2: Analizar la función externa: $f(u) = \frac{1}{\sqrt{u}}$ exige argumento estrictamente positivo ($u > 0$).'
+  - 'Paso 3: Plantear la condición de acople sobre $g(x)$: $g(x) > 0 \implies 2x - 8 > 0$.'
+  - 'Paso 4: Resolver la inecuación: $2x > 8 \implies x > 4$.'
+  - 'Paso 5: Intersectar con el dominio interno: $]4, +\infty[ \cap \mathbb{R} = ]4, +\infty[$.'
+  - 'Paso 6: Concluir que $\text{Dom}(f \circ g) = ]4, +\infty[$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En la composición $(f \circ g)(x) = f(g(x))$, ¿qué condición debe cumplir la salida intermedia $g(x)$?'
-    choices:
-      - {text: 'Debe pertenecer al dominio de la función externa f.', is_correct: true}
-      - {text: 'Debe ser siempre igual a cero.', is_correct: false}
-      - {text: 'Debe pertenecer al conjunto codominio de g sin restricciones.', is_correct: false}
-      - {text: 'Debe ser un número entero negativo.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Debe pertenecer al dominio de la función externa f.''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Si $g(x) = x - 4$ y $f(u) = \sqrt{u}$, ¿cuál es el dominio resultante de $(f \circ g)(x)$?'
-    choices:
-      - {text: '$[4, +\infty[$', is_correct: true}
-      - {text: '$\\mathbb{R}$', is_correct: false}
-      - {text: '$]0, 4]$', is_correct: false}
-      - {text: '$]-\\infty, 4]$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$[4, +\infty[$''. Se requiere $g(x) \ge 0 \implies x - 4 \ge 0 \implies x \ge 4$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si $f(u) = \sqrt{u}$ y $g(x) = 12 - 4x$, ¿qué inecuación se debe resolver para cumplir la restricción de f?
+  choices:
+  - text: 12 - 4x >= 0
+    is_correct: true
+  - text: x >= 0
+    is_correct: false
+  - text: 12 - 4x != 0
+    is_correct: false
+  - text: sqrt(12 - 4x) >= 0
+    is_correct: false
+  explanation: La alternativa correcta es '12 - 4x >= 0'. Se exige que la imagen intermedia $g(x)$ sea no negativa.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Para $f(u) = \frac{1}{u - 5}$ y $g(x) = x^2 + 1$, ¿cuáles son los valores de $x$ excluidos por la función externa?
+  choices:
+  - text: x = 2 y x = -2
+    is_correct: true
+  - text: Solo x = 5
+    is_correct: false
+  - text: x = 4 y x = -4
+    is_correct: false
+  - text: Ninguno
+    is_correct: false
+  explanation: La alternativa correcta es 'x = 2 y x = -2'. $g(x) = 5 \implies x^2 + 1 = 5 \implies x^2 = 4 \implies x = \pm 2$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar las condiciones de validez del dominio de la función externa $f$ ($D_f$).'
-  - 'Paso 2: Plantear la condición algebraica $g(x) \in D_f$.'
-  - 'Paso 3: Resolver la inecuación o restricción resultante para la variable $x$.'
-  - 'Paso 4: Intersectar el conjunto solución con el dominio inicial de $g$.'
-errores_correccion: |
-  - **Error común:** Analizar solo el dominio de la función $f$ reemplazada directamente en la fórmula sin verificar la salida de $g(x)$.
-  - **Cómo corregirlo:** La restricción externa se debe aplicar a las **IMÁGENES INTERMEDIAS $g(x)$**, no solo a la variable $x$.
+- 'Paso 1: Determinar las condiciones de existencia de la función externa $f$ identificando su dominio $\text{Dom}(f)$.'
+- 'Paso 2: Plantear la condición sustituyendo la expresión de $g(x)$ en el lugar de la variable de $f$ ($g(x) \in \text{Dom}(f)$).'
+- 'Paso 3: Resolver la inecuación o ecuación resultante para la variable $x$.'
+- 'Paso 4: Intersectar la solución con el dominio de la función interna $\text{Dom}(g)$.'
+errores_correccion: '- **Error común:** Exigir $x \in \text{Dom}(f)$ en lugar de $g(x) \in \text{Dom}(f)$.
+
+  - **Cómo corregirlo:** La función externa $f$ recibe como entrada **la salida de $g$** ($g(x)$), por lo que la restricción debe aplicarse **sobre la expresión completa $g(x)$**.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de composición de funciones.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de composición de funciones.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Raíz cuadrada de función cuadrática'
+  enunciado: Si $f(u) = \sqrt{u}$ y $g(x) = x^2 - 9$, ¿cuál es el dominio de $f \circ g$?
+  alternativas:
+  - ']-inf, -3] U [3, +inf['
+  - '[-3, 3]'
+  - '[3, +inf['
+  - R \ {-3, 3}
+  respuesta: ']-inf, -3] U [3, +inf['
+  solucion_pasos:
+  - 'Paso 1: $x^2 - 9 \ge 0 \implies (x - 3)(x + 3) \ge 0 \implies ]-\infty, -3] \cup [3, +\infty[$.'
+- titulo: 'Ejemplo 2: Denominador externo con lineal'
+  enunciado: Para $f(u) = \frac{1}{u + 6}$ y $g(x) = 2x$, ¿qué valor de $x$ está prohibido?
+  alternativas:
+  - x = -3
+  - x = -6
+  - x = 3
+  - x = 0
+  respuesta: x = -3
+  solucion_pasos:
+  - 'Paso 1: $g(x) \neq -6 \implies 2x \neq -6 \implies x \neq -3$.'
+- titulo: 'Ejemplo 3: Raíz en el denominador'
+  enunciado: Para $f(u) = \frac{1}{\sqrt{u}}$ y $g(x) = 10 - x$, ¿cuál es el dominio?
+  alternativas:
+  - ']-inf, 10['
+  - ']-inf, 10]'
+  - '[10, +inf['
+  - R \ {10}
+  respuesta: ']-inf, 10['
+  solucion_pasos:
+  - 'Paso 1: $g(x) > 0 \implies 10 - x > 0 \implies x < 10 \implies ]-\infty, 10[$.'
+- titulo: 'Ejemplo 4: Composición imposible'
+  enunciado: Si $f(u) = \sqrt{u}$ y $g(x) = -x^2 - 4$, ¿cuál es el dominio de $f \circ g$?
+  alternativas:
+  - El conjunto vacío (no existe para ningún real)
+  - Todos los reales R
+  - '[-2, 2]'
+  - '[4, +inf['
+  respuesta: El conjunto vacío (no existe para ningún real)
+  solucion_pasos:
+  - 'Paso 1: $-x^2 - 4 \le -4 < 0$ para todo $x \in \mathbb{R}$, nunca es $\ge 0$, luego $\text{Dom} = \emptyset$.'
 errores_frecuentes:
-  - 'En la composición $(f \circ g)(x)$, la función externa $f$ acepta cualquier número real como entrada independientemente de la salida de $g$.'
-  - 'La restricción del dominio de $f$ se aplica directamente sustituyendo el número cero en lugar de la función $g(x)$.'
-  - 'Si $f(u) = \frac{1}{u}$, la condición sobre $g(x)$ exige que la función interna sea estrictamente igual a cero.'
-  - 'El dominio de la composición $(f \circ g)$ se calcula simplemente uniendo los dominios individuales de ambas funciones.'
-  - 'La imagen intermedia $g(x)$ en una composición de funciones puede tomar valores fuera del dominio de $f$ sin afectar la evaluación.'
+- Aplicar la restricción de f directamente a x en vez de a g(x).
+- Olvidar resolver la inecuación resultante.
+- No intersectar la solución con el dominio de g.
 afirmaciones_verdaderas:
-  - 'Para que la composición $(f \circ g)(x) = f(g(x))$ esté definida, las imágenes generadas por la función interna deben pertenecer al dominio de la función externa ($g(x) \in \text{Dom}(f)$).'
-  - 'El dominio de $(f \circ g)$ se obtiene resolviendo la restricción $g(x) \in \text{Dom}(f)$ e intersectando con el dominio de $g$.'
-al_terminar_debes_poder: |
-  QUÉ: Analizar la restricción que impone la función externa sobre las imágenes intermedias en una composición.
-  CÓMO: Plantear la inecuación $g(x) \in \text{Dom}(f)$, despejar $x$ e intersectar con $\text{Dom}(g)$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
+- La función externa impone que toda imagen intermedia satisfaga g(x) ∈ Dom(f).
+- Si la imagen de la función interna no intersecta al dominio de la externa, la función compuesta no existe.
+al_terminar_debes_poder: '**QUÉ:** Formular y resolver las restricciones inducidas por la función externa sobre la imagen intermedia.
+
+
+  **CÓMO:** Planteando la condición de acople g(x) ∈ Dom(f), resolviendo la inecuación/ecuación resultante e intersectando con Dom(g).
+
+
+  ![Resumen El análisis de restricción de la función externa exige que la imagen intermedia generada por la función interna pertenezca al dominio admisible de la función externa: $g(x) \in \text{Dom}(f)$](/static/img/nodos/analisis-de-restriccion-de-dominio-de-la-funcion-externa-sobre-la-imagen-intermedia-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Composición de Funciones
 estado: publicado

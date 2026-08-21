@@ -1,85 +1,138 @@
 semantic_id: MAT.ALG.COMPOSICION_FUNCIONES.CONCEPTO
-resumen_inicial: El concepto de composición de funciones representa la aplicación consecutiva de dos o más transformaciones funcionales en cadena.
-explicacion_simple: |
-  La **composición de funciones** es un proceso en cadena o de "dos máquinas conectadas":
+resumen_inicial: 'La composición de funciones es la operación que consiste en aplicar sucesivamente dos funciones, alimentando la función externa con el resultado de la función interna: $(f \circ g)(x) = f(g(x))$.'
+explicacion_simple: '![La composición de funciones es la operación que consiste en aplicar sucesivamente dos funciones, alimentando la función externa con el resultado de la función interna: $(f \circ g)(x) = f(g(x))$](/static/img/nodos/concepto-de-composicion-de-funciones-intro.svg)
 
-  - La **primera máquina $g$** recibe una materia prima $x$ y produce un resultado intermedio $g(x)$.
-  - La **segunda máquina $f$** toma ese resultado intermedio $g(x)$ como su nueva materia prima y produce la respuesta final $f(g(x))$.
-  - La función compuesta **$(f \circ g)$** conecta ambas máquinas en un solo paso directo desde $x$ hasta el resultado final.
-explicacion_formal: |
-  Sean $g: A \to B$ y $f: C \to D$ dos funciones tales que el recorrido de $g$ intersecta al dominio de $f$ ($\text{Rec}(g) \cap C \neq \emptyset$). La **composición de funciones** $f \circ g$ (leída "$f$ compuesta con $g$") es la función definida por:
 
-  $$(f \circ g): D_{f \circ g} \subseteq A \to D, \quad (f \circ g)(x) = f\big(g(x)\big)$$
 
-  donde $D_{f \circ g} = \{x \in A \mid g(x) \in C\}$.
-definiciones_clave: |
-  - **Composición de funciones**: Operación binaria entre funciones que encadena la salida de una función como la entrada de la siguiente.
-propiedades_relaciones: |
-  - **Asociatividad**: La composición de funciones es asociativa: $h \circ (g \circ f) = (h \circ g) \circ f$.
+  Imagina dos máquinas conectadas en serie en una fábrica:
+
+  1. Metes la materia prima $x$ en la primera máquina $g$. La máquina $g$ hace su trabajo y entrega un producto intermedio $g(x)$.
+
+  2. Tomas ese producto $g(x)$ y lo metes directamente en la segunda máquina $f$.
+
+  3. La máquina $f$ entrega el producto terminado: **$f(g(x))$**.
+
+
+  Esto es la **composición de funciones**: aplicar una función tras otra en cadena.'
+explicacion_formal: 'Dadas dos funciones $g: A \to B$ y $f: B \to C$, la **función compuesta** $f \circ g: A \to C$ es la aplicación definida formalmente por:
+
+  $$(f \circ g)(x) = f(g(x)), \quad \forall x \in A$$
+
+
+  **Estructura del proceso:**
+
+  - **Función interna (previa)**: $g(x)$ actúa en primer lugar sobre el dominio original.
+
+  - **Función externa (posterior)**: $f(u)$ actúa en segundo lugar sobre la imagen intermedia $u = g(x)$.
+
+  - **Cadena de asignación**: $x \in A \xrightarrow{\quad g \quad} g(x) \in B \xrightarrow{\quad f \quad} f(g(x)) \in C$.'
+definiciones_clave: '- **Función compuesta $(f \circ g)$**: Encadenamiento secuencial de dos reglas de correspondencia.
+
+  - **Función interna / externa**: Jerarquía operativa donde la función interna se evalúa antes que la externa.'
+propiedades_relaciones: '- **Asociatividad**: La composición es asociativa: $f \circ (g \circ h) = (f \circ g) \circ h$.
+
+  - **No conmutatividad**: En general, $f \circ g \neq g \circ f$.'
 ejemplo_guiado:
-  enunciado: 'Explica intuitivamente el proceso de composición de $g(x) = x + 3$ y $f(y) = 2y$ para la entrada $x = 5$.'
+  enunciado: '![Ejemplo La composición de funciones es la operación que consiste en aplicar sucesivamente dos funciones, alimentando la función externa con el resultado de la función interna: $(f \circ g)(x) = f(g(x))$](/static/img/nodos/concepto-de-composicion-de-funciones-ejemplos.svg)
+
+
+
+    Sean $g(x) = 2x + 1$ y $f(u) = u^2$. Explica el proceso de composición para calcular $(f \circ g)(3)$.'
   pasos:
-    - 'Paso 1: Entrar $x = 5$ a la primera máquina $g$: $g(5) = 5 + 3 = 8$.'
-    - 'Paso 2: Entrar la salida intermedia $y = 8$ a la segunda máquina $f$: $f(8) = 2(8) = 16$.'
-    - 'Paso 3: Construir la máquina directa de composición: $(f \circ g)(x) = f(g(x)) = 2(x + 3) = 2x + 6$.'
-    - 'Paso 4: Evaluar directamente en la función compuesta: $(f \circ g)(5) = 2(5) + 6 = 10 + 6 = 16$, obteniendo el mismo resultado final.'
+  - 'Paso 1: Identificar la función interna: $g$ se aplica primero a la entrada $x = 3$.'
+  - 'Paso 2: Calcular el valor intermedio: $g(3) = 2(3) + 1 = 6 + 1 = 7$.'
+  - 'Paso 3: Identificar la función externa: $f$ procesa el valor intermedio $u = 7$.'
+  - 'Paso 4: Evaluar la función externa: $f(7) = 7^2 = 49$.'
+  - 'Paso 5: Concluir que $(f \circ g)(3) = f(g(3)) = 49$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En la notación $(f \circ g)(x) = f(g(x))$, ¿cuál de las dos funciones actúa primero sobre la variable $x$?'
-    choices:
-      - {text: 'La función interna g.', is_correct: true}
-      - {text: 'La función externa f.', is_correct: false}
-      - {text: 'Ambas actúan al mismo tiempo en paralelo.', is_correct: false}
-      - {text: 'Ninguna, primero se evalúa el resultado cero.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La función interna g.''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Si la primera máquina suma 3 ($g(x) = x + 3$) y la segunda multiplica por 2 ($f(y) = 2y$), ¿cuál es el resultado final para $x = 5$?'
-    choices:
-      - {text: '16', is_correct: true}
-      - {text: '13', is_correct: false}
-      - {text: '30', is_correct: false}
-      - {text: '8', is_correct: false}
-    explanation: 'La alternativa correcta es ''16''. $g(5) = 8 \implies f(8) = 16$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: En la composición $(f \circ g)(x) = f(g(x))$, ¿cuál función actúa en primer lugar sobre la entrada $x$?
+  choices:
+  - text: La funcion interna g(x).
+    is_correct: true
+  - text: La funcion externa f(x).
+    is_correct: false
+  - text: Ambas actuan exactamente al mismo tiempo.
+    is_correct: false
+  - text: La derivada de f.
+    is_correct: false
+  explanation: La alternativa correcta es 'La funcion interna g(x).'. Se evalúa de adentro hacia afuera.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si $g(4) = 10$ y $f(10) = 3$, ¿cuál es el valor de $(f \circ g)(4)$?
+  choices:
+  - text: '3'
+    is_correct: true
+  - text: '10'
+    is_correct: false
+  - text: '30'
+    is_correct: false
+  - text: '4'
+    is_correct: false
+  explanation: La alternativa correcta es '3'. $(f \circ g)(4) = f(g(4)) = f(10) = 3$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Comprender que la función escrita a la derecha actúa primero.'
-  - 'Paso 2: Evaluar la entrada $x$ en la función interna $g(x)$.'
-  - 'Paso 3: Tomar el resultado obtenido $g(x)$ y evaluar la función externa $f(g(x))$.'
-  - 'Paso 4: Expresar el resultado final del encadenamiento funcional.'
-errores_correccion: |
-  - **Error común:** Pensar que en $(f \circ g)(x)$ la primera función en aplicarse es $f$ por estar escrita a la izquierda.
-  - **Cómo corregirlo:** La notación funcional evalúa de **ADENTRO HACIA AFUERA** (o de derecha a izquierda): primero $g(x)$, luego $f(\cdot)$.
+- 'Paso 1: Identificar claramente la función interna (la más cercana a la variable $x$).'
+- 'Paso 2: Evaluar la preimagen en la función interna para obtener el resultado intermedio.'
+- 'Paso 3: Tomar dicho resultado intermedio e introducirlo como entrada de la función externa.'
+- 'Paso 4: Operar la función externa para obtener la salida final.'
+errores_correccion: '- **Error común:** Multiplicar las funciones pensando que $(f \circ g)(x) = f(x) \cdot g(x)$.
+
+  - **Cómo corregirlo:** El símbolo $\circ$ representa **composición (anidación)**, no multiplicación; debes evaluar una función **dentro** de la otra.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de composición de funciones.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de composición de funciones.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Evaluación encadenada'
+  enunciado: Si $g(2) = 5$ y $f(5) = -1$, ¿cuánto vale $(f \circ g)(2)$?
+  alternativas:
+  - '-1'
+  - '5'
+  - '-5'
+  - '2'
+  respuesta: '-1'
+  solucion_pasos:
+  - 'Paso 1: $(f \circ g)(2) = f(g(2)) = f(5) = -1$.'
+- titulo: 'Ejemplo 2: Diagrama de flechas'
+  enunciado: Si $1 \xrightarrow{\ g\ } 4 \xrightarrow{\ f\ } 9$, ¿qué valor tiene $(f \circ g)(1)$?
+  alternativas:
+  - '9'
+  - '4'
+  - '36'
+  - '1'
+  respuesta: '9'
+  solucion_pasos:
+  - 'Paso 1: La cadena completa lleva $1$ hasta $9$, luego $(f \circ g)(1) = 9$.'
+- titulo: 'Ejemplo 3: Auto-composición'
+  enunciado: Si $f(x) = 2x$, ¿qué representa $(f \circ f)(x)$?
+  alternativas:
+  - f(f(x)) = 2(2x) = 4x
+  - f(x) * f(x) = 4x^2
+  - 2x + 2x = 4x
+  - f(2x)
+  respuesta: f(f(x)) = 2(2x) = 4x
+  solucion_pasos:
+  - 'Paso 1: Componer una función consigo misma: $f(f(x)) = 2(2x) = 4x$.'
+- titulo: 'Ejemplo 4: Distinción de operaciones'
+  enunciado: ¿Qué diferencia a $(f \circ g)(x)$ de $(f + g)(x)$?
+  alternativas:
+  - En f o g se anidan las funciones, mientras que en f + g se suman sus salidas
+  - Son idénticas
+  - f o g es solo para polinomios
+  - f + g no es una función
+  respuesta: En f o g se anidan las funciones, mientras que en f + g se suman sus salidas
+  solucion_pasos:
+  - 'Paso 1: Composición es evaluación anidada; suma es operación algebraica directa.'
 errores_frecuentes:
-  - 'La notación $(f \circ g)(x)$ indica que se debe aplicar primero la función $f$ y posteriormente la función $g$.'
-  - 'La composición de funciones consiste en sumar las imágenes de ambas funciones para una misma entrada $x$.'
-  - 'En una composición de funciones, las unidades del resultado intermedio son irrelevantes para la función externa.'
-  - 'La operación de composición de funciones cumple con la propiedad conmutativa universal $f \circ g = g \circ f$.'
-  - 'Una composición de funciones solo se puede realizar entre funciones que compartan exactamente la misma fórmula.'
+- Confundir composición con producto de funciones.
+- Evaluar primero la función externa.
+- Olvidar que la salida de la primera es la entrada de la segunda.
 afirmaciones_verdaderas:
-  - 'La composición de funciones $(f \circ g)(x) = f(g(x))$ representa la aplicación en cadena donde la salida de la función interna $g$ se convierte en la entrada de la función externa $f$.'
-  - 'La operación de composición entre funciones es asociativa pero en general no conmutativa.'
-al_terminar_debes_poder: |
-  QUÉ: Definir y explicar el concepto fundamental de composición de funciones.
-  CÓMO: Describir el proceso secuencial en cadena $(f \circ g)(x) = f(g(x))$ e identificar la función interna y externa.
-fuente: 'Texto escolar MINEDUC — Álgebra / Composición de Funciones'
+- 'La composición de funciones consiste en aplicar la función externa al resultado de la interna: (f o g)(x) = f(g(x)).'
+- La composición de funciones es una operación asociativa pero generalmente no conmutativa.
+al_terminar_debes_poder: '**QUÉ:** Comprender e interpretar el concepto de composición de funciones como encadenamiento secuencial.
+
+
+  **CÓMO:** Identificando las funciones interna y externa y describiendo el flujo de transformación x ⟼ g(x) ⟼ f(g(x)).
+
+
+  ![Resumen La composición de funciones es la operación que consiste en aplicar sucesivamente dos funciones, alimentando la función externa con el resultado de la función interna: $(f \circ g)(x) = f(g(x))$](/static/img/nodos/concepto-de-composicion-de-funciones-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Composición de Funciones
 estado: publicado

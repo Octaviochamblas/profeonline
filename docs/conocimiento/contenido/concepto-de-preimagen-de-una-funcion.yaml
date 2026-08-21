@@ -1,87 +1,138 @@
 semantic_id: MAT.ALG.FUNCION_CONCEPTOS.PREIMAGEN
-resumen_inicial: La preimagen de un valor $y$ es el elemento del dominio $x$ que al ser procesado por la regla de correspondencia produce $y$ como imagen.
-explicacion_simple: |
-  Buscar una **preimagen** es hacer el camino inverso.
+resumen_inicial: La preimagen de un valor $y$ es cualquier elemento $x$ del dominio que al evaluarse en la función produce dicho valor $y$.
+explicacion_simple: '![La preimagen de un valor $y$ es cualquier elemento $x$ del dominio que al evaluarse en la función produce dicho valor $y$](/static/img/nodos/concepto-de-preimagen-de-una-funcion-intro.svg)
 
-  Si nos dicen que la salida de la función fue $y = 11$ en $f(x) = 2x + 3$, nos preguntamos: "¿Qué valor de $x$ introduje para obtener 11?".
 
-  Resolvemos $2x + 3 = 11 \implies 2x = 8 \implies x = 4$. Por lo tanto, **4 es la preimagen de 11**.
-explicacion_formal: |
-  Dado un elemento $y_0 \in \text{Rec}(f)$, la **preimagen** (o conjunto de preimágenes) de $y_0$ se define como el conjunto de elementos $x \in \text{Dom}(f)$ tales que:
 
-  $$f(x) = y_0$$
+  Si la función es una máquina que transforma entradas en salidas:
 
-  **Desglose de la fórmula:**
-  - $y_0$: Valor conocido en el recorrido (salida).
-  - $x$: Valor incógnita en el dominio (entrada) obtenido al resolver la ecuación $f(x) = y_0$.
-definiciones_clave: |
-  - **Preimagen**: Elemento del conjunto de partida que genera una imagen determinada al ser evaluado en la función.
-propiedades_relaciones: |
-  - **No necesidad de unicidad de la preimagen**: Un mismo valor de imagen $y_0$ puede tener múltiples preimágenes distintas (por ejemplo $y = 9$ en $f(x) = x^2$ tiene preimágenes $x = 3$ y $x = -3$).
+  - La **salida** es la imagen.
+
+  - La **entrada original** que produjo esa salida es la **preimagen**.
+
+
+  Para hallar la preimagen de un número conocido $y_0$, no evaluamos la función en $y_0$, sino que **resolvemos la ecuación $f(x) = y_0$** para despejar el valor de $x$.'
+explicacion_formal: 'Sea $f: A \to B$ y sea $b \in B$. Se dice que $a \in A$ es una **preimagen** de $b$ bajo $f$ si y solo si:
+
+  $$f(a) = b$$
+
+
+  **Propiedades de las preimágenes:**
+
+  - El conjunto de todas las preimágenes de un valor $b$ se denota $f^{-1}(\{b\}) = \{x \in A \mid f(x) = b\}$.
+
+  - Un elemento del codominio puede tener exactamente una preimagen (función inyectiva), múltiples preimágenes (ej: $f(x) = x^2$ para $y = 9$ tiene preimágenes $3$ y $-3$), o ninguna preimagen si $b \notin \text{Rec}(f)$.'
+definiciones_clave: '- **Preimagen**: Elemento del dominio que origina una imagen determinada.
+
+  - **Ecuación de preimagen**: Igualdad $f(x) = b$ cuya resolución permite encontrar los valores de $x$.'
+propiedades_relaciones: '- **Ubicación**: Las preimágenes pertenecen siempre al dominio (eje $X$).
+
+  - **Multiplicidad**: Una imagen puede tener varias preimágenes, pero cada preimagen solo puede tener una imagen.'
 ejemplo_guiado:
-  enunciado: Dada la función $f(x) = 4x - 7$, encuentra la preimagen de $y = 13$.
+  enunciado: '![Ejemplo La preimagen de un valor $y$ es cualquier elemento $x$ del dominio que al evaluarse en la función produce dicho valor $y$](/static/img/nodos/concepto-de-preimagen-de-una-funcion-ejemplos.svg)
+
+
+
+    Dada la función cuadrática $f(x) = x^2 - 4$, determina las preimágenes de $12$.'
   pasos:
-    - 'Paso 1: Igualar la regla de correspondencia al valor dado de la imagen: $4x - 7 = 13$.'
-    - 'Paso 2: Sumar 7 en ambos miembros: $4x = 13 + 7 \implies 4x = 20$.'
-    - 'Paso 3: Dividir entre 4: $x = \frac{20}{4} = 5$.'
-    - 'Paso 4: Concluir que la preimagen de $13$ es $x = 5$.'
+  - 'Paso 1: Plantear la ecuación $f(x) = 12$.'
+  - 'Paso 2: Sustituir la fórmula de la función: $x^2 - 4 = 12$.'
+  - 'Paso 3: Sumar 4 a ambos lados: $x^2 = 16$.'
+  - 'Paso 4: Extraer raíz cuadrada recordando considerar ambas soluciones: $x = \pm \sqrt{16} = \pm 4$.'
+  - 'Paso 5: Concluir que $12$ tiene dos preimágenes: $4$ y $-4$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: ¿Cuál es la preimagen de $y = 13$ bajo la función $f(x) = 4x - 7$?
-    choices:
-      - {text: '$x = 5$', is_correct: true}
-      - {text: '$x = 45$', is_correct: false}
-      - {text: '$x = 3/2$', is_correct: false}
-      - {text: '$x = 20$', is_correct: false}
-    explanation: La alternativa correcta es '$x = 5$'. $4(5) - 7 = 13$.
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: Dada la función $f(x) = x^2$, ¿cuáles son las preimágenes del valor $y = 16$?
-    choices:
-      - {text: '$x = 4$ y $x = -4$', is_correct: true}
-      - {text: 'Solo $x = 4$', is_correct: false}
-      - {text: '$x = 256$', is_correct: false}
-      - {text: 'No tiene preimágenes.', is_correct: false}
-    explanation: La alternativa correcta es '$x = 4$ y $x = -4$'. Ambos al cuadrado resultan en 16.
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si $f(x) = 5x - 3$, ¿cuál es la preimagen de 17?
+  choices:
+  - text: '4'
+    is_correct: true
+  - text: '82'
+    is_correct: false
+  - text: '14'
+    is_correct: false
+  - text: '3.5'
+    is_correct: false
+  explanation: La alternativa correcta es '4'. Se resuelve $5x - 3 = 17 \implies 5x = 20 \implies x = 4$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En la función $g(x) = x^2$, ¿cuántas preimágenes reales tiene el número -9?
+  choices:
+  - text: Ninguna, porque ningún número real al cuadrado da un resultado negativo.
+    is_correct: true
+  - text: 'Dos preimágenes: 3 y -3.'
+    is_correct: false
+  - text: 'Una preimagen: -3.'
+    is_correct: false
+  - text: Infinitas preimágenes.
+    is_correct: false
+  explanation: La alternativa correcta es 'Ninguna, porque ningún número real al cuadrado da un resultado negativo.'. La ecuación $x^2 = -9$ no tiene solución en $\mathbb{R}$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar el valor de la imagen $y = b$.'
-  - 'Paso 2: Plantear la ecuación $f(x) = b$.'
-  - 'Paso 3: Despejar la variable $x$ mediante operaciones algebraicas equivalentes.'
-  - 'Paso 4: Declarar las soluciones obtenidas como las preimágenes de $b$.'
-errores_correccion: |
-  - **Error común:** Reemplazar el valor $y$ en la variable $x$ de la función para "evaluar la preimagen".
-  - **Cómo corregirlo:** Para hallar la preimagen no se evalúa $x$; se IGUALA toda la función al valor $y$ y se despeja $x$.
+- 'Paso 1: Identificar el valor de la imagen $y_0$ dada en el enunciado.'
+- 'Paso 2: Igualar la regla de asignación a dicho valor: $f(x) = y_0$.'
+- 'Paso 3: Resolver la ecuación resultante despejando la incógnita $x$.'
+- 'Paso 4: Verificar que las soluciones encontradas pertenezcan al dominio de la función.'
+errores_correccion: '- **Error común:** Calcular $f(y_0)$ en vez de resolver $f(x) = y_0$.
+
+  - **Cómo corregirlo:** Si piden ''la preimagen de $10$'', el $10$ es el resultado ($y$), por lo que debes resolver $f(x) = 10$, no sustituir $x$ por $10$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de funciones.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de funciones.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Función lineal'
+  enunciado: Halla la preimagen de $-1$ en la función $f(x) = 2x + 7$.
+  alternativas:
+  - '-4'
+  - '5'
+  - '-3'
+  - '3'
+  respuesta: '-4'
+  solucion_pasos:
+  - 'Paso 1: Plantear $2x + 7 = -1$.'
+  - 'Paso 2: Despejar $x$: $2x = -8 \implies x = -4$.'
+- titulo: 'Ejemplo 2: Raíz cuadrada'
+  enunciado: ¿Cuál es la preimagen de $5$ en $g(x) = \sqrt{x + 9}$?
+  alternativas:
+  - '16'
+  - '4'
+  - '25'
+  - '34'
+  respuesta: '16'
+  solucion_pasos:
+  - 'Paso 1: Plantear $\sqrt{x + 9} = 5$.'
+  - 'Paso 2: Elevar al cuadrado: $x + 9 = 25 \implies x = 16$.'
+- titulo: 'Ejemplo 3: Preimágenes múltiples'
+  enunciado: Determina todas las preimágenes de $0$ en $f(x) = x^2 - 25$.
+  alternativas:
+  - 5 y -5
+  - Solo 5
+  - Solo -5
+  - 0 y 25
+  respuesta: 5 y -5
+  solucion_pasos:
+  - 'Paso 1: Resolver $x^2 - 25 = 0 \implies x^2 = 25$.'
+  - 'Paso 2: Las preimágenes son $x = 5$ y $x = -5$.'
+- titulo: 'Ejemplo 4: Sin preimagen real'
+  enunciado: Si $f(x) = |x| + 3$, ¿cuál es la preimagen de $1$?
+  alternativas:
+  - No existe preimagen real
+  - -2 y 2
+  - '-4'
+  - '4'
+  respuesta: No existe preimagen real
+  solucion_pasos:
+  - 'Paso 1: Plantear $|x| + 3 = 1 \implies |x| = -2$.'
+  - 'Paso 2: El valor absoluto no puede ser negativo, por lo que no existe preimagen real.'
 errores_frecuentes:
-  - 'La preimagen de $y = 7$ en $f(x) = 2x + 1$ es el resultado $f(7) = 15$.'
-  - 'Una preimagen es el valor de salida obtenido al evaluar la función en el codominio.'
-  - 'Todo elemento del codominio posee exactamente una única preimagen en el dominio.'
-  - 'Determinar la preimagen de $b$ exige calcular $f(b)$ mediante sustitución directa.'
-  - 'La preimagen de un valor no puede ser un número negativo o nulo.'
+- Evaluar f(k) creyendo que se está calculando la preimagen de k.
+- Omitir la raíz negativa al despejar ecuaciones cuadráticas de preimagen.
+- Asumir que todo valor del codominio debe tener obligatoriamente una preimagen.
 afirmaciones_verdaderas:
-  - 'La preimagen de un valor $y$ en el recorrido es aquel elemento $x$ del dominio tal que $f(x) = y$.'
-  - 'Determinar la preimagen de un valor exige resolver la ecuación $f(x) = y$ para despejar $x$.'
-al_terminar_debes_poder: |
-  QUÉ: Identificar y calcular la preimagen de un valor dado en el recorrido de una función.
-  CÓMO: Igualar la regla de asignación al valor de la imagen $f(x) = y$, despejar la variable $x$ y verificar su pertenencia al dominio.
-fuente: 'Texto escolar MINEDUC — Álgebra / Conceptos Base de Función'
+- Calcular la preimagen de un valor y consiste en resolver la ecuación f(x) = y para hallar x.
+- Un valor de salida puede tener más de una preimagen en el dominio.
+al_terminar_debes_poder: '**QUÉ:** Comprender y calcular preimágenes de funciones algebraicas.
+
+
+  **CÓMO:** Planteando y resolviendo la ecuación $f(x) = y$ para determinar los valores de entrada correspondientes en el dominio.
+
+
+  ![Resumen La preimagen de un valor $y$ es cualquier elemento $x$ del dominio que al evaluarse en la función produce dicho valor $y$](/static/img/nodos/concepto-de-preimagen-de-una-funcion-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Conceptos Fundamentales de Funciones
 estado: publicado

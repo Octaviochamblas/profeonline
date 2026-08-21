@@ -1,93 +1,118 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_GRAFICA.MODELO_CRECIMIENTO
-resumen_inicial: El modelamiento de crecimiento poblacional utiliza la estructura $P(t) = P_0 \cdot (1 + r)^t$ para representar la proliferación de especies en el tiempo.
-explicacion_simple: |
-  Cuando una población de bacterias, animales o personas **crece a un porcentaje constante $r$** en cada periodo de tiempo $t$:
+resumen_inicial: El modelamiento de crecimiento poblacional mediante funciones exponenciales aplica la ley de Malthus $P(t) = P_0 \cdot (1 + r)^t = P_0 \cdot b^t$ ($b > 1$), donde la población futura se proyecta a partir de un censo inicial $P_0$ y una tasa porcentual constante $r > 0$.
+explicacion_simple: "![El modelamiento de crecimiento poblacional mediante funciones exponenciales aplica la ley de Malthus $P(t) = P_0 \\cdot (1 + r)^t = P_0 \\cdot b^t$ ($b > 1$), donde la población futura se proyecta a partir de un censo inicial $P_0$ y una tasa porcentual constante $r > 0$](/static/img/nodos/modelamiento-de-crecimiento-poblacional-mediante-funciones-exponenciales-intro.svg)\n\n\nCuando una población de bacterias, peces o personas crece a un ritmo porcentual constante sin frenos de comida ni espacio, sigue la **fórmula exponencial de Malthus**:\n$$P(t) = P_0 \\cdot (1 + r)^t$$\n\n- **¿Cómo armar la fórmula paso a paso?**\n  - **$P_0$ (Población inicial):** La cantidad de individuos que había al inicio ($t = 0$).\n  - **$r$ (Tasa de crecimiento):** El porcentaje de aumento expresado en decimal (ej: $8\\% = 0,08$).\n  - **$b = 1 + r$ (La base):** Sumas $1 + 0,08 = 1,08$.\n  - **$t$ (Tiempo):** Horas, días o años transcurridos en el exponente.\n- **Ejemplo rápido:** Si 1.000\
+  \ bacterias crecen al 20% por hora: $B(t) = 1000 \\cdot (1,20)^t$."
+explicacion_formal: "Sea $P(t)$ una variable de estado poblacional diferenciable. La hipótesis biológica malthusiana establece que la tasa de variación instantánea es proporcional al tamaño poblacional:\n$$\\frac{dP}{dt} = k P(t), \\quad k > 0, \\; P(0) = P_0$$\n\n**Solución continua y discreta**:\n1. **Modelo continuo**: $P(t) = P_0 e^{kt}$.\n2. **Modelo discreto periódico (tasa neta $r$)**:\n   $$P(t) = P_0 (1 + r)^t = P_0 b^t, \\quad \\text{donde } b = 1 + r > 1$$\n\n**Tiempo de duplicación ($t_d$)**:\nInstante donde la población alcanza $2P_0$:\n$$P_0 b^{t_d} = 2P_0 \\implies b^{t_d} = 2 \\implies t_d = \\frac{\\ln(2)}{\\ln(b)} = \\log_b(2)$$"
+definiciones_clave: '- **Ley de Malthus**: Modelo de crecimiento exponencial sin saturación para recursos ilimitados.
 
-  - Usamos el **modelo de crecimiento exponencial**:
+  - **Tiempo de duplicación**: Intervalo de tiempo necesario para duplicar el censo poblacional inicial.'
+propiedades_relaciones: '- **Invarianza de la tasa relativa**: $\frac{P(t+1) - P(t)}{P(t)} = r = \text{Constante}$ para todo período temporal.
 
-  $$P(t) = P_0 \cdot (1 + r)^t$$
-
-  - **$P_0$ es la población inicial**: Cantidad de individuos en $t = 0$.
-  - **$r$ es la tasa de crecimiento porcentual**: Expresada en decimal (ej. $5\% \implies r = 0.05$).
-  - **$b = 1 + r$ es el factor de crecimiento**: Como $r > 0$, la base $b = 1 + r > 1$, lo que genera un **crecimiento acelerado**.
-explicacion_formal: |
-  Sea $P: \mathbb{R}^+ \cup \{0\} \to \mathbb{R}^+$ el modelo dinámico continuo o discreto de la abundancia de una población. El **modelo de crecimiento exponencial malthusiano** viene dado por la ecuación diferencial lineal homogénea:
-
-  $$\frac{dP}{dt} = k \cdot P \quad \text{con } k > 0$$
-
-  **Solución y reformulación algebraica:**
-  1. **Solución Continua:** $P(t) = P_0 \cdot e^{kt}$, donde $k$ es la tasa intrínseca de incremento instantáneo.
-  2. **Forma Discreta por Periodo de Tasa $r$:**
-     $$P(t) = P_0 \cdot (1 + r)^t \quad \text{donde base } b = 1 + r > 1$$
-  3. **Multiplicación Periódica (Duplicación):** Si la población se duplica cada $T$ periodos, $P(t) = P_0 \cdot 2^{t/T}$.
-definiciones_clave: |
-  - **Modelo de crecimiento poblacional**: Función exponencial $P(t) = P_0 \cdot b^t$ que describe la evolución de la cantidad de miembros de una población en el tiempo $t$.
-propiedades_relaciones: |
-  - **Tiempo de duplicación ($T_d$)**: Intervalo de tiempo constante requerido para que la población inicial $P_0$ se multiplique por dos, dado por $T_d = \frac{\ln(2)}{\ln(1+r)}$.
+  - **Crecimiento geométrico de generaciones**: Genera una progresión geométrica estricta de razón $b = 1 + r$.'
 ejemplo_guiado:
-  enunciado: 'Una colonia de bacterias inicia con 500 individuos y crece a una tasa del 20% cada hora. Determina la función modelo $P(t)$ y calcula la población a las 3 horas.'
+  enunciado: '![Ejemplo El modelamiento de crecimiento poblacional mediante funciones exponenciales aplica la ley de Malthus $P(t) = P_0 \cdot (1 + r)^t = P_0 \cdot b^t$ ($b > 1$), donde la población futura se proyecta a partir de un censo inicial $P_0$ y una tasa porcentual constante $r > 0$](/static/img/nodos/modelamiento-de-crecimiento-poblacional-mediante-funciones-exponenciales-ejemplos.svg)
+
+
+
+    Un cultivo de laboratorio inicia con 800 bacterias y se duplica cada 3 horas. Modela la función de población $B(t)$ y calcula cuántas bacterias habrá al cabo de 12 horas.'
   pasos:
-    - 'Paso 1: Identificar la población inicial $P_0 = 500$ y la tasa $r = 20\% = 0.20$.'
-    - 'Paso 2: Construir la base de crecimiento $b = 1 + r = 1 + 0.20 = 1.20$.'
-    - 'Paso 3: Formular la función modelo: $P(t) = 500 \cdot (1.2)^t$.'
-    - 'Paso 4: Evaluar para $t = 3 \implies P(3) = 500 \cdot (1.2)^3 = 500 \cdot 1.728 = 864$ bacterias.'
+  - 'Paso 1: Identificar datos iniciales: $P_0 = 800$, factor de duplicación $b = 2$, período de duplicación $\tau = 3\text{ horas}$.'
+  - 'Paso 2: Formular la función exponencial:
+
+    $B(t) = 800 \cdot 2^{t/3}$.'
+  - 'Paso 3: Calcular para $t = 12\text{ horas}$:
+
+    $B(12) = 800 \cdot 2^{12/3} = 800 \cdot 2^4 = 800 \cdot 16 = 12.800\text{ bacterias}$.'
+  - 'Paso 4: Conclusión: Al cabo de 12 horas habrá **12.800 bacterias** en el cultivo.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si una población de aves de $1.200$ ejemplares se duplica cada 4 años, ¿cuál es la función exponencial que modela la población $P(t)$ en función de los años $t$?'
-    choices:
-      - {text: '$P(t) = 1200 \cdot 2^{t/4}$', is_correct: true}
-      - {text: '$P(t) = 1200 \cdot 4^t$.', is_correct: false}
-      - {text: '$P(t) = 2400 \cdot 2^t$.', is_correct: false}
-      - {text: '$P(t) = 1200 \cdot (1.2)^t$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$P(t) = 1200 \cdot 2^{t/4}$''. La base es 2 y el exponente escala el periodo $t/4$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'En el modelo poblacional $P(t) = 3000 \cdot (1.08)^t$, ¿cuál es la tasa porcentual de crecimiento por periodo?'
-    choices:
-      - {text: 'La tasa de crecimiento es del 8% por periodo', is_correct: true}
-      - {text: 'La tasa de crecimiento es del 80% por periodo.', is_correct: false}
-      - {text: 'La tasa de crecimiento es del 1.08% por periodo.', is_correct: false}
-      - {text: 'La tasa de crecimiento es del 3000% por periodo.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La tasa de crecimiento es del 8% por periodo''. $b = 1 + r = 1.08 \implies r = 0.08 = 8\%$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si una ciudad tiene 50.000 habitantes y crece a una tasa del 4% anual, ¿cuál es su modelo exponencial?
+  choices:
+  - text: P(t) = 50.000 · (1,04)ᵗ
+    is_correct: true
+  - text: P(t) = 50.000 · (0,04)ᵗ
+    is_correct: false
+  - text: P(t) = 50.000 + 1,04t
+    is_correct: false
+  - text: P(t) = 50.000 · (4)ᵗ
+    is_correct: false
+  explanation: La alternativa correcta es 'P(t) = 50.000 · (1,04)ᵗ'. La base es $b = 1 + r = 1 + 0,04 = 1,04$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si un cultivo de 200 bacterias se triplica cada hora ($B(t) = 200 \cdot 3^t$), ¿cuántas bacterias hay a las 3 horas?
+  choices:
+  - text: 5.400 bacterias (200 · 27)
+    is_correct: true
+  - text: 1.800 bacterias
+    is_correct: false
+  - text: 600 bacterias
+    is_correct: false
+  - text: 800 bacterias
+    is_correct: false
+  explanation: La alternativa correcta es '5.400 bacterias (200 · 27)'. $B(3) = 200 \cdot 3^3 = 200 \cdot 27 = 5.400$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Extraer la cantidad inicial $P_0 = P(0)$ del enunciado del problema.'
-  - 'Paso 2: Convertir la tasa porcentual $r\%$ a su equivalente decimal $r = \text{porcentaje}/100$.'
-  - 'Paso 3: Armar la base multiplicativa de incremento $b = 1 + r$.'
-  - 'Paso 4: Escribir la función $P(t) = P_0 \cdot (1 + r)^t$ y sustituir el tiempo $t$ solicitado.'
-errores_correccion: |
-  - **Error común:** Usar el porcentaje directo en la base (ej. poner $b = 20$ en lugar de $b = 1.20$ para el 20%).
-  - **Cómo corregirlo:** La base es siempre **$1 + r$**, donde $r$ es la fracción decimal de la tasa ($20\% = 0.20 \implies b = 1.20$).
+- 'Paso 1: Identificar la población inicial $P_0$ en el tiempo $t = 0$.'
+- 'Paso 2: Calcular la base $b = 1 + r$ (para tasa porcentual) o $b = 2$ (para duplicación).'
+- 'Paso 3: Formular la función $P(t) = P_0 \cdot b^{t/\tau}$ con la escala temporal correspondiente.'
+- 'Paso 4: Evaluar la función en el instante requerido y enunciar la respuesta con unidades.'
+errores_correccion: '- **Error común:** Usar la tasa como base directa (ej: para 6% poner $0,06^t$).
+
+  - **Cómo corregirlo:** Para crecimiento se debe **sumar 1 a la tasa**: $b = 1 + 0,06 = \mathbf{1,06}$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Crecimiento bacteriano del 50%.
-    alternativas:
-      - 'P(t) = 100 \cdot (1.5)^t, P(2) = 225'
-      - 'P(t) = 100 \cdot (50)^t'
-      - 'P(t) = 150 \cdot 2^t'
-    respuesta: 'P(t) = 100 \cdot (1.5)^t, P(2) = 225'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Duplicación cada 6 horas.
-    alternativas:
-      - 'P(t) = 80 \cdot 2^{t/6}'
-      - 'P(t) = 80 \cdot 6^t'
-      - 'P(t) = 160 \cdot t/6'
-    respuesta: 'P(t) = 80 \cdot 2^{t/6}'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Duplicación simple'
+  enunciado: Si $B(t) = 300 \cdot 2^t$, ¿cuál es la población a las 5 horas?
+  alternativas:
+  - 9.600 bacterias
+  - 3.000 bacterias
+  - 1.500 bacterias
+  - 19.200 bacterias
+  respuesta: 9.600 bacterias
+  solucion_pasos:
+  - 'Paso 1: $B(5) = 300 \cdot 2^5 = 300 \cdot 32 = 9.600$.'
+- titulo: 'Ejemplo 2: Crecimiento con tasa porcentual'
+  enunciado: 'Una colonia de 10.000 abejas crece al 10% mensual ($b = 1,10$). En 2 meses:'
+  alternativas:
+  - 12.100 abejas
+  - 12.000 abejas
+  - 11.000 abejas
+  - 10.200 abejas
+  respuesta: 12.100 abejas
+  solucion_pasos:
+  - 'Paso 1: $P(2) = 10.000 \cdot (1{,}1)^2 = 10.000 \cdot 1{,}21 = 12.100$.'
+- titulo: 'Ejemplo 3: Identificación de tasa'
+  enunciado: En el modelo $P(t) = 4500 \cdot (1{,}07)^t$, ¿cuál es la tasa anual de crecimiento?
+  alternativas:
+  - 7%
+  - 107%
+  - 0,07%
+  - 1,07%
+  respuesta: 7%
+  solucion_pasos:
+  - 'Paso 1: $b = 1 + r = 1{,}07 \implies r = 0{,}07 = 7\%$.'
+- titulo: 'Ejemplo 4: Período fraccionario de duplicación'
+  enunciado: Si se duplica cada 6 horas, ¿cómo se escribe el exponente de 2 para t en horas?
+  alternativas:
+  - t/6
+  - 6t
+  - t - 6
+  - 6/t
+  respuesta: t/6
+  solucion_pasos:
+  - 'Paso 1: El número de ciclos de 6 horas transcurridos es $t/6$.'
 errores_frecuentes:
-  - 'Dada una tasa de incremento del $15\%$, la afirmación de que la base del modelo exponencial es $0.15$ en lugar de $1.15$.'
-  - 'La confusión entre agregar la tasa $r$ de forma aditiva directa y aplicar el factor $(1 + r)$.'
-  - 'La afirmación de que el crecimiento poblacional ilimitado se mantiene indefinidamente en ecosistemas reales con recursos finitos.'
-  - 'La omisión de dividir el tiempo $t$ por el periodo de duplicación $T$ al usar bases de multiplicación fija.'
-  - 'La afirmación de que la población inicial $P_0$ varía a medida que cambia la tasa $r$.'
+- Olvidar sumar 1 a la tasa porcentual al armar la base b = 1 + r.
+- Multiplicar la población inicial por la tasa de crecimiento antes de potenciar.
+- Confundir horas con días en las unidades de la variable t.
 afirmaciones_verdaderas:
-  - 'En el modelo de crecimiento poblacional $P(t) = P_0 \cdot (1 + r)^t$, la base es estrictamente mayor que uno ($1 + r > 1$).'
-  - 'El valor inicial $P_0$ representa la cantidad exacta de la población en el instante cero $t = 0$.'
-al_terminar_debes_poder: |
-  QUÉ: Modelar y resolver problemas de crecimiento poblacional mediante funciones exponenciales $P(t) = P_0 \cdot (1 + r)^t$.
-  CÓMO: Identificar $P_0$, calcular la base $b = 1 + r$, evaluar para el tiempo $t$ y justificar la tasa de incremento.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- El modelo de crecimiento poblacional exponencial libre utiliza una base b > 1.
+- La base b = 1 + r representa el factor multiplicativo por cada unidad de tiempo transcurrida.
+al_terminar_debes_poder: '**QUÉ:** Modelar y resolver problemas de crecimiento poblacional mediante funciones exponenciales.
+
+
+  **CÓMO:** Formulando P(t) = P₀ · (1 + r)ᵗ y evaluando potencias para proyectar poblaciones futuras.
+
+
+  ![Resumen El modelamiento de crecimiento poblacional mediante funciones exponenciales aplica la ley de Malthus $P(t) = P_0 \cdot (1 + r)^t = P_0 \cdot b^t$ ($b > 1$), donde la población futura se proyecta a partir de un censo inicial $P_0$ y una tasa porcentual constante $r > 0$](/static/img/nodos/modelamiento-de-crecimiento-poblacional-mediante-funciones-exponenciales-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Análisis Gráfico y Modelamiento Exponencial
 estado: publicado

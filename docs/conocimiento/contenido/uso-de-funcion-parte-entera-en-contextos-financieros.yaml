@@ -1,90 +1,119 @@
 semantic_id: MAT.ALG.FUNCIONES_ESPECIALES.PARTE_ENTERA_CONTEXTO_FINANCIERO
-resumen_inicial: El uso de la función parte entera en contextos financieros modela decisiones discretas como el cálculo de comisiones, intereses periódicos o unidades vendidas.
-explicacion_simple: |
-  En el **mundo financiero y de los negocios**, las operaciones no siempre son continuas:
+resumen_inicial: En contextos financieros y económicos, la función parte entera se utiliza para modelar cantidades discretas indivisibles, compras máximas bajo presupuesto y devengo periódico de intereses.
+explicacion_simple: "![En contextos financieros y económicos, la función parte entera se utiliza para modelar cantidades discretas indivisibles, compras máximas bajo presupuesto y devengo periódico de intereses](/static/img/nodos/uso-de-funcion-parte-entera-en-contextos-financieros-intro.svg)\n\n\nEn el mundo real del dinero, muchas cosas **no se pueden fraccionar**:\n- No puedes comprar $3,7$ pasajes de avión ni $15,8$ acciones de una empresa: compras $3$ o $15$ unidades completas.\n- **Capacidad máxima de compra:** Divides tu presupuesto total entre el precio unitario y aplicas la parte entera:\n  $$N_{\\text{máx}} = \\left\\lfloor \\frac{\\text{Presupuesto}}{\\text{Precio}} \\right\\rfloor$$\n- **Intereses:** Si el banco paga intereses cada año cumplido, al año y medio solo te ha pagado el interés de $1$ año."
+explicacion_formal: "En optimización y análisis financiero, la función parte entera formaliza la **restricción de integralidad** sobre magnitudes discretas:\n\n1. **Capacidad de compra de activos indivisibles**:\n   $$N(P) = \\left\\lfloor \\frac{P}{p_u} \\right\\rfloor, \\quad P = \\text{Presupuesto disponible}, \\, p_u = \\text{Precio unitario}$$\n   El sobrante no utilizado (dinero residual) es $R = P - p_u \\cdot N(P) = p_u \\cdot \\left\\{ \\frac{P}{p_u} \\right\\}$.\n2. **Capitalización discreta en períodos cerrados**:\n   $$M(t) = C_0 \\cdot (1 + r)^{\\lfloor t/k \\rfloor}$$\n   Donde $k$ es el período de capitalización (los intereses no se abonan de forma continua)."
+definiciones_clave: '- **Restricción de integralidad**: Condición económica donde la cantidad adquirible debe pertenecer al conjunto de los enteros no negativos $\mathbb{N}_0$.
 
-  - **Intereses bancarios**: Un depósito paga intereses solo por **meses completos acumulados**. Si dejas el dinero $5{,}8$ meses, te pagan solo por $5$ meses enteros ($\lfloor 5{,}8 \rfloor = 5$).
-  - **Empaques de venta**: Si produces $147$ huevos y los vendes en cajas de $12$, puedes formar exactamente $\lfloor 147 / 12 \rfloor = \lfloor 12{,}25 \rfloor = 12$ cajas completas.
-  - La función parte entera permite calcular la **cantidad exacta de periodos o productos enteros**.
-explicacion_formal: |
-  Sea $V$ una variable económica continua (tiempo transcurrido, monto acumulado, unidades producidas) y $B$ la base de capitalización o empaque. La función de beneficio o unidades discretas $N(V)$ se modela mediante:
+  - **Dinero residual**: Saldo que queda sin gastar debido a la imposibilidad de fraccionar el bien.'
+propiedades_relaciones: '- **No redondeo comercial**: No se puede aplicar redondeo clásico (si alcanza para $9.9$ unidades, solo se pueden comprar $9$).
 
-  $$N(V) = K \cdot \left\lfloor \frac{V}{B} \right\rfloor$$
-
-  donde $K$ es la ganancia o tasa fija asignada a cada bloque completo $B$.
-
-  **Aplicación a intereses por periodos enteros:**
-  El capital acumulado $C(t)$ tras $t$ periodos con tasa de interés simple $r$ abonada al final de cada periodo $T$ viene dado por:
-
-  $$C(t) = C_0 \cdot \left(1 + r \cdot \left\lfloor \frac{t}{T} \right\rfloor \right)$$
-definiciones_clave: |
-  - **Modelamiento financiero discreto**: Aplicación de la función parte entera para representar pagos de intereses, comisiones o unidades completas en economía.
-propiedades_relaciones: |
-  - **Ausencia de prorrateo**: En contratos donde no existe prorrateo diario, las fracciones de tiempo no generan intereses hasta completar el ciclo entero.
+  - **Invarianza de tramo**: El número de unidades no cambia mientras el presupuesto permanezca en el intervalo $[N p_u, (N+1)p_u[$.'
 ejemplo_guiado:
-  enunciado: 'Un depósito a plazo rinde $\$15.000$ por cada mes completo transcurrido. Si el dinero permanece depositado durante $7{,}8$ meses, calcula los intereses totales cobrados.'
+  enunciado: '![Ejemplo En contextos financieros y económicos, la función parte entera se utiliza para modelar cantidades discretas indivisibles, compras máximas bajo presupuesto y devengo periódico de intereses](/static/img/nodos/uso-de-funcion-parte-entera-en-contextos-financieros-ejemplos.svg)
+
+
+
+    Un inversionista dispone de un capital de $\$250.000$ para comprar acciones de una empresa que cotizan a $\$7.400$ cada una.
+
+    1) Determina la cantidad máxima de acciones que puede comprar.
+
+    2) Calcula el dinero sobrante que no se utilizó.'
   pasos:
-    - 'Paso 1: Aplicar la función parte entera a la cantidad de meses: $\lfloor 7{,}8 \rfloor = 7$ meses enteros.'
-    - 'Paso 2: Identificar la ganancia fija por mes completo: $K = 15.000$.'
-    - 'Paso 3: Calcular el beneficio acumulado: $I = 15.000 \cdot 7$.'
-    - 'Paso 4: Multiplicar: $15.000 \cdot 7 = 105.000$ pesos.'
+  - 'Paso 1: Plantear la fórmula de capacidad entera: $N = \left\lfloor \frac{250.000}{7.400} \right\rfloor$.'
+  - 'Paso 2: Calcular el cociente decimal: $\frac{250.000}{7.400} \approx 33.7837$.'
+  - 'Paso 3: Aplicar la parte entera: $\lfloor 33.7837 \rfloor = 33\text{ acciones}$.'
+  - 'Paso 4: Calcular el dinero efectivamente invertido: $33 \times 7.400 = \$244.200$.'
+  - 'Paso 5: Calcular el dinero sobrante: $250.000 - 244.200 = \$5.800$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si una inversión rinde $15.000 por cada mes completo y el dinero permanece 7,8 meses, ¿cuánto dinero se recibe por concepto de intereses?'
-    choices:
-      - {text: '$105.000 pesos', is_correct: true}
-      - {text: '$117.000 pesos', is_correct: false}
-      - {text: '$120.000 pesos', is_correct: false}
-      - {text: '$100.000 pesos', is_correct: false}
-    explanation: 'La alternativa correcta es ''$105.000 pesos''. Solo se pagan 7 meses completos: $15.000 \cdot \lfloor 7{,}8 \rfloor = 15.000 \cdot 7 = 105.000$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Por qué se utiliza la función parte entera en contratos financieros sin prorrateo diario?'
-    choices:
-      - {text: 'Porque las fracciones de periodo no generan ganancias hasta completar el ciclo entero.', is_correct: true}
-      - {text: 'Porque la tasa de interés se vuelve negativa con los decimales.', is_correct: false}
-      - {text: 'Porque el banco cobra una multa por usar números decimales.', is_correct: false}
-      - {text: 'Porque el capital inicial se reduce a cero.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Porque las fracciones de periodo no generan ganancias hasta completar el ciclo entero.''.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Con un presupuesto de $\$50.000$ y un precio de $\$6.000$ por artículo indivisible, ¿cuántos artículos se pueden comprar?
+  choices:
+  - text: 8 articulos
+    is_correct: true
+  - text: 9 articulos (redondeando 8.33 hacia arriba)
+    is_correct: false
+  - text: 8.33 articulos
+    is_correct: false
+  - text: 7 articulos
+    is_correct: false
+  explanation: La alternativa correcta es '8 articulos'. $\lfloor 50000/6000 \rfloor = \lfloor 8.33 \rfloor = 8$. No se puede redondear hacia arriba sin exceder el presupuesto.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si una inversión paga un bono de $\$100.000$ por cada año completo cumplido ($B(t) = 100.000 \lfloor t \rfloor$), ¿cuánto bono se recibe a los 2 años y 11 meses ($t = 2.92$)?
+  choices:
+  - text: $200.000
+    is_correct: true
+  - text: $300.000
+    is_correct: false
+  - text: $292.000
+    is_correct: false
+  - text: $100.000
+    is_correct: false
+  explanation: La alternativa correcta es '$200.000'. $\lfloor 2.92 \rfloor = 2 \implies 100.000 \times 2 = \$200.000$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la unidad o periodo base $B$ y la ganancia/costo por periodo $K$.'
-  - 'Paso 2: Dividir la variable continua dada $V$ entre la base $B$.'
-  - 'Paso 3: Aplicar el operador parte entera $\lfloor V / B \rfloor$ para obtener los bloques enteros completos.'
-  - 'Paso 4: Multiplicar el número de bloques por $K$ para determinar el resultado financiero final.'
-errores_correccion: |
-  - **Error común:** Prorratear decimalmente los intereses cuando las cláusulas financieras exigen periodos enteros cumplidos.
-  - **Cómo corregirlo:** Si el contrato exige **PERIODOS ENTEROS COMPLETOS**, debes aplicar la función parte entera $\lfloor t / T \rfloor$.
+- 'Paso 1: Identificar el capital total disponible y el costo unitario del bien o la tasa periódica.'
+- 'Paso 2: Calcular el cociente directo entre presupuesto y costo unitario.'
+- 'Paso 3: Aplicar la función parte entera $\lfloor \cdot \rfloor$ para obtener la cantidad máxima entera de unidades.'
+- 'Paso 4: Multiplicar la cantidad entera por el precio para obtener el gasto real y restar del capital para hallar el saldo residual.'
+errores_correccion: '- **Error común:** Redondear al entero más cercano (ej: considerar $8.8$ como $9$ artículos).
+
+  - **Cómo corregirlo:** En compras bajo presupuesto, **el dinero no alcanza para la unidad adicional**; se debe aplicar **estrictamente la parte entera (truncar hacia abajo)**.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de funciones especiales.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de funciones especiales.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Compra de mercadería'
+  enunciado: Un comerciante tiene $\$180.000$ y cada caja cuesta $\$14.500$. ¿Cuántas cajas compra y cuánto le sobra?
+  alternativas:
+  - 12 cajas y sobran $6.000
+  - 13 cajas y sobran $1.500
+  - 12.41 cajas
+  - 12 cajas y sobran $14.500
+  respuesta: 12 cajas y sobran $6.000
+  solucion_pasos:
+  - 'Paso 1: $\frac{180.000}{14.500} \approx 12.41 \implies \lfloor 12.41 \rfloor = 12$ cajas.'
+  - 'Paso 2: $12 \times 14.500 = 174.000 \implies 180.000 - 174.000 = \$6.000$.'
+- titulo: 'Ejemplo 2: Interés anual diferido'
+  enunciado: Un depósito rinde $\$40.000$ de interés cada fin de año. ¿Cuánto interés se ha pagado a los 4.5 años?
+  alternativas:
+  - $160.000
+  - $180.000
+  - $200.000
+  - $120.000
+  respuesta: $160.000
+  solucion_pasos:
+  - 'Paso 1: $I(4.5) = 40.000 \lfloor 4.5 \rfloor = 40.000(4) = \$160.000$.'
+- titulo: 'Ejemplo 3: Producción en lotes'
+  enunciado: Se requieren $12\text{ metros}$ de tela por cortina. Con un rollo de $100\text{ metros}$, ¿cuántas cortinas completas se fabrican?
+  alternativas:
+  - 8 cortinas (sobran 4 m)
+  - 9 cortinas (faltan 8 m)
+  - 8.33 cortinas
+  - 7 cortinas
+  respuesta: 8 cortinas (sobran 4 m)
+  solucion_pasos:
+  - 'Paso 1: $\lfloor 100/12 \rfloor = \lfloor 8.33 \rfloor = 8$ cortinas ($8 \times 12 = 96\text{ m}$, sobran $4\text{ m}$).'
+- titulo: 'Ejemplo 4: Tasa por semestres completos'
+  enunciado: Si $t$ está en meses y los intereses se abonan cada semestre ($6\text{ meses}$), ¿cómo se modela el número de liquidaciones?
+  alternativas:
+  - N = floor(t/6)
+  - N = 6 * floor(t)
+  - N = t/6
+  - N = ceil(t/6)
+  respuesta: N = floor(t/6)
+  solucion_pasos:
+  - 'Paso 1: Cada 6 meses cumplidos se suma una liquidación: $N = \lfloor t/6 \rfloor$.'
 errores_frecuentes:
-  - 'En un contrato bancario sin prorrateo, permanecer 7,9 meses equivale a cobrar intereses por 8 meses enteros.'
-  - 'La función parte entera en contextos financieros multiplica el capital inicial por un exponente cuadrático.'
-  - 'Vender productos en cajas cerradas de 12 unidades permite vender fracciones decimales de cajas al mismo precio.'
-  - 'Aplicar la función parte entera a un saldo bancario negativo devuelve un saldo positivo de mayor valor.'
-  - 'Los intereses liquidados por periodos enteros cambian continuamente a cada segundo sin saltos.'
+- Redondear hacia arriba excediendo el capital disponible.
+- Asumir que el dinero sobrante permite comprar fracciones de productos indivisibles.
+- No identificar el período discreto de liquidación financiera.
 afirmaciones_verdaderas:
-  - 'La función parte entera se utiliza en finanzas para modelar liquidaciones de intereses, comisiones o ventas donde las fracciones no generan derechos hasta completar el ciclo entero.'
-  - 'El modelo $N = K \cdot \lfloor V / B \rfloor$ asigna beneficios exclusivamente a la cantidad de bloques enteros cumplidos.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver problemas financieros y comerciales mediante el uso de la función parte entera.
-  CÓMO: Determinar el número de periodos enteros completos $\lfloor V / B \rfloor$ y calcular el rendimiento o beneficio económico discreto.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Especiales y Simetría'
+- La capacidad máxima de compra de bienes indivisibles se modela como N = ⌊Presupuesto / Precio⌋.
+- En modelos financieros discretos, los intereses solo se generan al cumplirse los períodos enteros estipulados.
+al_terminar_debes_poder: '**QUÉ:** Aplicar la función parte entera en la resolución de problemas financieros y de asignación discreta de recursos.
+
+
+  **CÓMO:** Calculando capacidades máximas enteras N = ⌊P/pu⌋ y determinando los saldos residuales no utilizados.
+
+
+  ![Resumen En contextos financieros y económicos, la función parte entera se utiliza para modelar cantidades discretas indivisibles, compras máximas bajo presupuesto y devengo periódico de intereses](/static/img/nodos/uso-de-funcion-parte-entera-en-contextos-financieros-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Simetrías y Funciones Especiales
 estado: publicado

@@ -1,90 +1,130 @@
 semantic_id: MAT.ALG.EC_CUADR_PROPIEDADES.USO_VIETA_PARAMETROS
-resumen_inicial: El uso de relaciones de Vieta para determinar parámetros calcula constantes desconocidas $k$ imponiendo condiciones sobre la suma o producto de raíces.
-explicacion_simple: |
-  En muchos ejercicios del colegio o de la PAES te dan una ecuación con una **incógnita secundaria $k$** y te piden hallarla mediante una condición:
+resumen_inicial: El uso de las relaciones de Vieta para determinar parámetros desconocidos consiste en traducir condiciones algebraicas sobre las raíces (como raíces simétricas $x_1 = -x_2$, raíces recíprocas $x_1 \cdot x_2 = 1$ o valores prescritos) en ecuaciones directas sobre los coeficientes.
+explicacion_simple: "![El uso de las relaciones de Vieta para determinar parámetros desconocidos consiste en traducir condiciones algebraicas sobre las raíces (como raíces simétricas $x_1 = -x_2$, raíces recíprocas $x_1 \\cdot x_2 = 1$ o valores prescritos) en ecuaciones directas sobre los coeficientes](/static/img/nodos/uso-de-relaciones-de-vieta-para-determinar-parametros-desconocidos-intro.svg)\n\n\nLas relaciones de Vieta son un atajo genial para despejar incógnitas $k$ en problemas con enunciados especiales:\n\n1. **Si te dicen \"las raíces son simétricas u opuestas\" ($x_1 = -x_2$):**\n   - Su suma es cero: $x_1 + x_2 = 0 \\implies -\\frac{b}{a} = 0 \\implies$ **$b = 0$** (¡el coeficiente lineal se anula!).\n2. **Si te dicen \"las raíces son recíprocas o inversas\" ($x_2 = 1/x_1$):**\n   - Su producto es uno: $x_1 \\cdot x_2 = 1 \\implies \\frac{c}{a} = 1 \\implies$ **$a = c$** (¡los coeficientes de los extremos son iguales!).\n3. **Si te dan una raíz conocida (ej: $x_1 = 3$ y $S =\
+  \ 7$):**\n   - Despejas la otra raíz al instante: $x_2 = 7 - 3 = 4$."
+explicacion_formal: 'Sea $a(k)x^2 + b(k)x + c(k) = 0$ con parámetro $k \in \mathbb{R}$. La aplicación de las propiedades de Vieta define sistemas de ecuaciones paramétricas según el requerimiento estructural:
 
-  - **Ejemplo**: En $x^2 - kx + 12 = 0$, te dicen que **una raíz es $x_1 = 3$**. ¿Cuánto vale $k$?
-  - Usas la relación del producto de Vieta:
-    $$x_1 \cdot x_2 = \frac{c}{a} \implies 3 \cdot x_2 = \frac{12}{1} = 12 \implies x_2 = 4$$
-  - Ya tienes las dos raíces ($x_1 = 3$ y $x_2 = 4$).
-  - Ahora usas la relación de la suma de Vieta:
-    $$x_1 + x_2 = -\frac{b}{a} \implies 3 + 4 = -\left(\frac{-k}{1}\right) \implies 7 = k$$
-  - **Resultado**: El parámetro es $k = 7$.
-explicacion_formal: |
-  Sea la ecuación cuadrática $a(k)x^2 + b(k)x + c(k) = 0$ dependiente del parámetro $k \in \mathbb{R}$. La **determinación paramétrica por relaciones de Vieta** plantea un sistema de ecuaciones algebraicas combinando las condiciones sobre las raíces $x_1, x_2$ con las identidades:
 
-  $$\begin{cases} x_1 + x_2 = -\frac{b(k)}{a(k)} \\ x_1 \cdot x_2 = \frac{c(k)}{a(k)} \end{cases}$$
+  **Tipologías canónicas de condiciones de raíces**:
 
-  **Resolución de sistemas mixtos:**
-  Se acopla la condición restricta dada en el enunciado (ej. $x_1 = 2x_2$, $x_1 - x_2 = d$ o $x_1 = 1/x_2$) con las relaciones de Vieta para eliminar las raíces auxiliares y despejar el valor exacto de $k$.
-definiciones_clave: |
-  - **Determinación paramétrica por Vieta**: Técnica analítica que despeja constantes o coeficientes desconocidos $k$ utilizando las relaciones fundamentales de suma y producto de soluciones.
-propiedades_relaciones: |
-  - **Raíces recíprocas en parámetros**: Si las raíces son inversas ($x_1 \cdot x_2 = 1$), la condición paramétrica directa es $c(k) = a(k)$.
+  1. **Raíces Simétricas / Opuestas**: $x_1 + x_2 = 0 \Longleftrightarrow -\frac{b(k)}{a(k)} = 0 \Longleftrightarrow b(k) = 0$.
+
+  2. **Raíces Recíprocas / Inversas**: $x_1 \cdot x_2 = 1 \Longleftrightarrow \frac{c(k)}{a(k)} = 1 \Longleftrightarrow c(k) = a(k)$.
+
+  3. **Raíz nula**: $x_1 = 0 \Longleftrightarrow x_1 \cdot x_2 = 0 \Longleftrightarrow c(k) = 0$.
+
+  4. **Razón entre raíces**: $\frac{x_1}{x_2} = r \implies x_1 = r x_2 \implies (r+1)x_2 = -\frac{b}{a} \land r x_2^2 = \frac{c}{a}$.'
+definiciones_clave: '- **Raíces simétricas**: Par de soluciones tales que $x_1 + x_2 = 0$, implicando anulación del coeficiente lineal $b = 0$.
+
+  - **Raíces recíprocas**: Par de soluciones tales que $x_1 \cdot x_2 = 1$, implicando igualdad entre coeficientes $a = c$.'
+propiedades_relaciones: '- **Eficiencia analítica**: Evita sustituir la fórmula cuadrática compleja y reduce el problema a ecuaciones lineales o cuadráticas simples en $k$.
+
+  - **Consistencia de existencia**: El valor hallado para $k$ debe garantizar $\Delta(k) \ge 0$ si se exige que las raíces sean reales.'
 ejemplo_guiado:
-  enunciado: 'En la ecuación $x^2 - 8x + k = 0$, determina el valor de $k$ sabiendo que una de sus soluciones es el triple de la otra ($x_1 = 3x_2$).'
+  enunciado: '![Ejemplo El uso de las relaciones de Vieta para determinar parámetros desconocidos consiste en traducir condiciones algebraicas sobre las raíces (como raíces simétricas $x_1 = -x_2$, raíces recíprocas $x_1 \cdot x_2 = 1$ o valores prescritos) en ecuaciones directas sobre los coeficientes](/static/img/nodos/uso-de-relaciones-de-vieta-para-determinar-parametros-desconocidos-ejemplos.svg)
+
+
+
+    Encuentra el valor del parámetro $k$ para que la ecuación $(3k - 2)x^2 - 12x + (k + 6) = 0$ tenga raíces recíprocas (es decir, una raíz sea el inverso multiplicativo de la otra).'
   pasos:
-    - 'Paso 1: Aplicar la suma de Vieta: $x_1 + x_2 = -(-8)/1 = 8$.'
-    - 'Paso 2: Sustituir la condición $x_1 = 3x_2$ en la suma: $3x_2 + x_2 = 8 \implies 4x_2 = 8 \implies x_2 = 2$.'
-    - 'Paso 3: Obtener la primera raíz: $x_1 = 3(2) = 6$.'
-    - 'Paso 4: Aplicar el producto de Vieta para hallar $k$: $x_1 \cdot x_2 = k/1 \implies 6 \cdot 2 = k \implies k = 12$.'
+  - 'Paso 1: Identificar la condición algebraica: Raíces recíprocas significa $x_1 \cdot x_2 = 1$.'
+  - 'Paso 2: Aplicar la relación de Vieta para el producto: $P = \frac{c}{a} = \frac{k + 6}{3k - 2} = 1$.'
+  - 'Paso 3: Multiplicar ambos lados por el denominador $(3k - 2)$:
+
+    $k + 6 = 3k - 2$.'
+  - 'Paso 4: Despejar $k$:
+
+    $6 + 2 = 3k - k \implies 8 = 2k \implies k = 4$.'
+  - 'Paso 5: Verificar que $a = 3(4) - 2 = 10 \neq 0$ y $c = 4 + 6 = 10$, cumpliendo $a = c$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En la ecuación $2x^2 + kx + 8 = 0$, las raíces son inversas recíprocas ($x_1 \cdot x_2 = 1$). ¿Qué relación debe cumplir $k$?'
-    choices:
-      - {text: 'El parámetro $k$ no afecta al producto, ya que $c/a = 8/2 = 4 \neq 1$, haciendo imposible esta condición.', is_correct: true}
-      - {text: 'El parámetro $k$ debe ser igual a cero.', is_correct: false}
-      - {text: 'El parámetro $k$ debe ser igual a 4.', is_correct: false}
-      - {text: 'El parámetro $k$ debe ser igual a $-8$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''El parámetro $k$ no afecta al producto, ya que $c/a = 8/2 = 4 \neq 1$, haciendo imposible esta condición.''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'En la ecuación $x^2 - 5x + c = 0$, una de las raíces es $x_1 = 2$. ¿Cuánto valen la otra raíz $x_2$ y la constante $c$?'
-    choices:
-      - {text: '$x_2 = 3$ y $c = 6$', is_correct: true}
-      - {text: '$x_2 = -3$ y $c = -6$', is_correct: false}
-      - {text: '$x_2 = 5$ y $c = 10$', is_correct: false}
-      - {text: '$x_2 = 2$ y $c = 4$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$x_2 = 3$ y $c = 6$''. Por la suma $2 + x_2 = 5 \implies x_2 = 3$. Por el producto $c = 2 \cdot 3 = 6$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Qué condición debe cumplir una ecuación cuadrática para tener raíces simétricas (opuestas)?
+  choices:
+  - text: b = 0 (la suma de las raices es 0)
+    is_correct: true
+  - text: a = c (el producto es 1)
+    is_correct: false
+  - text: c = 0
+    is_correct: false
+  - text: Δ = 0
+    is_correct: false
+  explanation: La alternativa correcta es 'b = 0 (la suma de las raices es 0)'. Raíces simétricas implican $x_1 + x_2 = -b/a = 0 \implies b = 0$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En la ecuación $2x^2 + (k - 7)x - 10 = 0$, ¿qué valor de k hace que las raíces sumen cero?
+  choices:
+  - text: k = 7
+    is_correct: true
+  - text: k = -7
+    is_correct: false
+  - text: k = 5
+    is_correct: false
+  - text: k = 0
+    is_correct: false
+  explanation: La alternativa correcta es 'k = 7'. $S = -(k - 7)/2 = 0 \implies k - 7 = 0 \implies k = 7$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar las expresiones de $a(k)$, $b(k)$ y $c(k)$ en la ecuación dada.'
-  - 'Paso 2: Escribir las dos ecuaciones de Vieta: $x_1 + x_2 = -b/a$ y $x_1 \cdot x_2 = c/a$.'
-  - 'Paso 3: Incorporar la relación dada entre las raíces en el problema para formar un sistema de ecuaciones.'
-  - 'Paso 4: Resolver el sistema para despejar el parámetro $k$.'
-errores_correccion: |
-  - **Error común:** Intentar despejar $k$ sustituyendo la raíz dada en una sola fórmula de Vieta errónea sin formar el sistema.
-  - **Cómo corregirlo:** Combina **AMBAS FÓRMULAS DE VIETA (SUMA Y PRODUCTO)** para eliminar las variables auxiliares $x_1, x_2$.
+- 'Paso 1: Identificar la propiedad exigida sobre las raíces (suma dada, producto dado, simétricas o recíprocas).'
+- 'Paso 2: Escribir la relación de Vieta correspondiente en términos del parámetro.'
+- 'Paso 3: Plantear y resolver la ecuación resultante para despejar el parámetro $k$.'
+- 'Paso 4: Comprobar que el valor obtenido no anula el coeficiente principal $a \neq 0$.'
+errores_correccion: '- **Error común:** Confundir raíces opuestas ($b = 0$) con raíces recíprocas ($a = c$).
+
+  - **Cómo corregirlo:** **Opuestas = suma 0 $\implies b = 0$**; **Recíprocas = producto 1 $\implies a = c$**.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Determinación de c con raíz dada.
-    alternativas:
-      - '$c = 12$'
-      - '$c = -12$'
-      - '$c = 7$'
-    respuesta: '$c = 12$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Determinación de k con raíces simétricas.
-    alternativas:
-      - '$k = 0$'
-      - '$k = 5$'
-      - '$k = -5$'
-    respuesta: '$k = 0$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Raíces simétricas'
+  enunciado: ¿Para qué valor de p la ecuación $3x^2 + (2p - 8)x - 5 = 0$ tiene raíces simétricas?
+  alternativas:
+  - p = 4
+  - p = -4
+  - p = 8
+  - p = 0
+  respuesta: p = 4
+  solucion_pasos:
+  - 'Paso 1: $b = 0 \implies 2p - 8 = 0 \implies p = 4$.'
+- titulo: 'Ejemplo 2: Raíces recíprocas'
+  enunciado: En $(m - 1)x^2 + 5x + 3 = 0$, ¿qué valor de m hace que el producto de raíces sea 1?
+  alternativas:
+  - m = 4
+  - m = 3
+  - m = -2
+  - m = 1
+  respuesta: m = 4
+  solucion_pasos:
+  - 'Paso 1: $c = a \implies 3 = m - 1 \implies m = 4$.'
+- titulo: 'Ejemplo 3: Una raíz conocida'
+  enunciado: Si $x_1 = 2$ es raíz de $x^2 - 7x + k = 0$, ¿cuánto vale k?
+  alternativas:
+  - '10'
+  - '-10'
+  - '14'
+  - '5'
+  respuesta: '10'
+  solucion_pasos:
+  - 'Paso 1: $S = 7 \implies x_2 = 7 - 2 = 5 \implies k = P = 2 \times 5 = 10$.'
+- titulo: 'Ejemplo 4: Suma prescrita'
+  enunciado: ¿Qué valor de k hace que la suma de raíces en $2x^2 + kx - 8 = 0$ sea igual a 6?
+  alternativas:
+  - k = -12
+  - k = 12
+  - k = 6
+  - k = -6
+  respuesta: k = -12
+  solucion_pasos:
+  - 'Paso 1: $-k/2 = 6 \implies k = -12$.'
 errores_frecuentes:
-  - 'El despeje del parámetro $k$ sin utilizar las relaciones de Vieta planteando ecuaciones de alto grado incompletas.'
-  - 'La confusión entre la condición de raíces opuestas ($x_1 + x_2 = 0$) y la de raíces recíprocas ($x_1 \cdot x_2 = 1$).'
-  - 'La falta de aplicación de la ley de signos al reemplazar el coeficiente lineal $b(k)$ en la relación de la suma $-b/a$.'
-  - 'Reemplazar el valor de una raíz $x_1$ en el coeficiente cuadrático $a$ en lugar de utilizar el sistema de Vieta.'
-  - 'La suposición de que toda relación paramétrica entrega un único valor real para $k$.'
+- Confundir condiciones de simetría con condiciones de reciprocidad.
+- Olvidar verificar la condición de no anulación de a.
+- Despejar coeficientes usando métodos largos innecesarios.
 afirmaciones_verdaderas:
-  - 'El uso conjunto de las ecuaciones de Vieta ($x_1 + x_2 = -b/a$ y $x_1 \cdot x_2 = c/a$) permite determinar coeficientes o parámetros desconocidos $k$ ante restricciones de las raíces.'
-  - 'Si el problema especifica que las raíces son simétricas u opuestas, la condición paramétrica directa es $b(k) = 0$.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver problemas paramétricos determinando coeficientes desconocidos $k$ mediante las relaciones de Vieta.
-  CÓMO: Plantear $x_1 + x_2 = -b/a$ y $x_1 \cdot x_2 = c/a$, integrar las condiciones sobre las raíces y despejar $k$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
+- Las raíces simétricas opuestas anulan el coeficiente lineal de la ecuación (b = 0).
+- Las raíces recíprocas implican que el coeficiente cuadrático es idéntico al término independiente (a = c).
+al_terminar_debes_poder: '**QUÉ:** Utilizar las relaciones de Vieta para hallar parámetros desconocidos en ecuaciones cuadráticas.
+
+
+  **CÓMO:** Traduciendo condiciones sobre raíces en ecuaciones directas b = 0, a = c o sistemas S y P.
+
+
+  ![Resumen El uso de las relaciones de Vieta para determinar parámetros desconocidos consiste en traducir condiciones algebraicas sobre las raíces (como raíces simétricas $x_1 = -x_2$, raíces recíprocas $x_1 \cdot x_2 = 1$ o valores prescritos) en ecuaciones directas sobre los coeficientes](/static/img/nodos/uso-de-relaciones-de-vieta-para-determinar-parametros-desconocidos-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra / Propiedades de las Raíces y Relaciones de Vieta
 estado: publicado

@@ -1,0 +1,152 @@
+semantic_id: MAT.ALG.LOGARITMOS_PROPIEDADES.PRODUCTO
+resumen_inicial: 'La propiedad del logaritmo de un producto establece que el logaritmo de una multiplicación es igual a la suma de los logaritmos de los factores: $\log_b(x \cdot y) = \log_b(x) + \log_b(y)$ ($x > 0, y > 0$).'
+explicacion_simple: "![La propiedad del logaritmo de un producto establece que el logaritmo de una multiplicación es igual a la suma de los logaritmos de los factores: $\\log_b(x \\cdot y) = \\log_b(x) + \\log_b(y)$ ($x > 0, y > 0$)](/static/img/nodos/aplicacion-de-la-propiedad-del-logaritmo-de-un-producto-intro.svg)\n\n\nEsta es la propiedad más famosa de los logaritmos: **convierte multiplicaciones difíciles en sumas fáciles**:\n\n$$\\log_b(x \\cdot y) = \\log_b(x) + \\log_b(y)$$\n\n- **¿De dónde viene esta magia?**\n  - De la ley de potencias: al multiplicar potencias de igual base, **se suman los exponentes** ($b^u \\cdot b^v = b^{u+v}$).\n- **Funciona en ambos sentidos:**\n  - **Para separar:** $\\log_2(4 \\cdot 8) = \\log_2(4) + \\log_2(8) = 2 + 3 = \\mathbf{5}$.\n  - **Para unir (condensar):** $\\log(2) + \\log(5) = \\log(2 \\cdot 5) = \\log(10) = \\mathbf{1}$.\n- **¡Cuidado con la trampa mortal!** El logaritmo de una suma **NO SE PUEDE SEPARAR**: $\\log(x + y) \\neq \\log(x) + \\\
+  log(y)$."
+explicacion_formal: 'Sean $x, y \in \mathbb{R}^+$ y $b \in \mathbb{R}^+ \setminus \{1\}$. Sean $u = \log_b(x)$ y $v = \log_b(y) \iff x = b^u, y = b^v$.
+
+  Por las leyes algebraicas de los exponentes sobre $(\mathbb{R}^+, \cdot)$:
+
+  $$x \cdot y = b^u \cdot b^v = b^{u + v}$$
+
+  Aplicando el operador $\log_b$ a ambos miembros:
+
+  $$\log_b(x \cdot y) = \log_b\left(b^{u + v}\right) = u + v$$
+
+  Sustituyendo los valores originales de $u$ y $v$:
+
+  $$\log_b(x \cdot y) = \log_b(x) + \log_b(y)$$
+
+
+  **Generalización a $n$ factores**:
+
+  $$\log_b\left(\prod_{i=1}^n x_i\right) = \sum_{i=1}^n \log_b(x_i), \quad \forall x_i > 0$$'
+definiciones_clave: '- **Logaritmo de un producto**: Teorema aditivo que transforma un producto de argumentos en suma de logaritmos individuales.
+
+  - **Linealización multiplicativa**: Conversión de operadores no lineales en sumas escalares.'
+propiedades_relaciones: '- **Condición de positividad individual**: Tanto $x$ como $y$ deben ser estrictamente positivos para separar el logaritmo en reales.
+
+  - **Falso teorema de la suma**: $\log_b(x + y) \neq \log_b(x) + \log_b(y)$ y $\log_b(x \cdot y) \neq \log_b(x) \cdot \log_b(y)$.'
+ejemplo_guiado:
+  enunciado: '![Ejemplo La propiedad del logaritmo de un producto establece que el logaritmo de una multiplicación es igual a la suma de los logaritmos de los factores: $\log_b(x \cdot y) = \log_b(x) + \log_b(y)$ ($x > 0, y > 0$)](/static/img/nodos/aplicacion-de-la-propiedad-del-logaritmo-de-un-producto-ejemplos.svg)
+
+
+
+    Si se sabe que $\log(2) \approx 0{,}301$ y $\log(3) \approx 0{,}477$, calcula el valor aproximado de:
+
+    1) $\log(6)$
+
+    2) $\log(18)$
+
+    3) $\log(20)$'
+  pasos:
+  - 'Paso 1: Para $\log(6)$:
+
+    - Descomponer en factores primos: $6 = 2 \cdot 3$.
+
+    - Aplicar propiedad del producto: $\log(6) = \log(2) + \log(3)$.
+
+    - Calcular: $\log(6) \approx 0{,}301 + 0{,}477 = \mathbf{0{,}778}$.'
+  - 'Paso 2: Para $\log(18)$:
+
+    - Descomponer: $18 = 2 \cdot 3 \cdot 3$.
+
+    - Aplicar propiedad: $\log(18) = \log(2) + \log(3) + \log(3)$.
+
+    - Calcular: $\log(18) \approx 0{,}301 + 0{,}477 + 0{,}477 = \mathbf{1{,}255}$.'
+  - 'Paso 3: Para $\log(20)$:
+
+    - Descomponer: $20 = 2 \cdot 10$.
+
+    - Aplicar propiedad: $\log(20) = \log(2) + \log(10) \approx 0{,}301 + 1 = \mathbf{1{,}301}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿A qué es igual la suma $\log_6(2) + \log_6(3)$?
+  choices:
+  - text: 1 (porque log₆(2 · 3) = log₆(6) = 1)
+    is_correct: true
+  - text: log₆(5)
+    is_correct: false
+  - text: log₆(6) · log₆(6)
+    is_correct: false
+  - text: '6'
+    is_correct: false
+  explanation: La alternativa correcta es '1 (porque log₆(2 · 3) = log₆(6) = 1)'. La suma de logaritmos de igual base se une multiplicando los argumentos.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Es correcta la igualdad $\log(x + y) = \log(x) + \log(y)$?
+  choices:
+  - text: 'No, es un error grave: el logaritmo de una suma no se separa'
+    is_correct: true
+  - text: Sí, siempre
+    is_correct: false
+  - text: Solo si x = y
+    is_correct: false
+  - text: Solo para números enteros
+    is_correct: false
+  explanation: 'La alternativa correcta es ''No, es un error grave: el logaritmo de una suma no se separa''. La propiedad aplica únicamente al producto de argumentos: $\log(x \cdot y) = \log(x) + \log(y)$.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Verificar que los términos tengan la misma base $b$.'
+- 'Paso 2: Para expandir, descomponer el argumento en factores y escribir la suma $\log_b(x) + \log_b(y)$.'
+- 'Paso 3: Para condensar, fusionar los argumentos multiplicándolos bajo un solo logaritmo $\log_b(x \cdot y)$.'
+- 'Paso 4: Evaluar y simplificar las expresiones numéricas resultantes.'
+errores_correccion: '- **Error común:** Escribir $\log(x + y) = \log(x) + \log(y)$ o $\log(x \cdot y) = \log(x) \cdot \log(y)$.
+
+  - **Cómo corregirlo:** La regla es: **Multiplicación adentro $\Longleftrightarrow$ Suma afuera**: $\log_b(x \cdot y) = \log_b(x) + \log_b(y)$.'
+ejemplos:
+- titulo: 'Ejemplo 1: Condensación de suma'
+  enunciado: 'Calcula $\log_2(4) + \log_2(8)$:'
+  alternativas:
+  - '5'
+  - '6'
+  - '12'
+  - '32'
+  respuesta: '5'
+  solucion_pasos:
+  - 'Paso 1: $\log_2(4 \cdot 8) = \log_2(32) = 5$.'
+- titulo: 'Ejemplo 2: Expansión algebraica'
+  enunciado: 'Expande $\log_b(a \cdot c)$:'
+  alternativas:
+  - log_b(a) + log_b(c)
+  - log_b(a) · log_b(c)
+  - log_b(a + c)
+  - a · log_b(c)
+  respuesta: log_b(a) + log_b(c)
+  solucion_pasos:
+  - 'Paso 1: $\log_b(a \cdot c) = \log_b(a) + \log_b(c)$.'
+- titulo: 'Ejemplo 3: Producto decimal base 10'
+  enunciado: 'Calcula $\log(25) + \log(4)$:'
+  alternativas:
+  - '2'
+  - '100'
+  - '29'
+  - '1'
+  respuesta: '2'
+  solucion_pasos:
+  - 'Paso 1: $\log(25 \cdot 4) = \log(100) = 2$.'
+- titulo: 'Ejemplo 4: Tres factores'
+  enunciado: 'Simplifica $\log_3(2) + \log_3(5) + \log_3(9)$:'
+  alternativas:
+  - log₃(90)
+  - log₃(16)
+  - log₃(2) · log₃(5) · 2
+  - '90'
+  respuesta: log₃(90)
+  solucion_pasos:
+  - 'Paso 1: $\log_3(2 \cdot 5 \cdot 9) = \log_3(90)$.'
+errores_frecuentes:
+- Distribuir el logaritmo sobre una suma como si fuera una multiplicación distributiva.
+- Multiplicar los logaritmos en vez de sumarlos al expandir productos.
+- Sumar logaritmos que tienen bases diferentes sin cambiar de base previamente.
+afirmaciones_verdaderas:
+- El logaritmo de un producto es igual a la suma de los logaritmos de los factores.
+- La suma de logaritmos de igual base se condensa en el logaritmo del producto de sus argumentos.
+al_terminar_debes_poder: '**QUÉ:** Aplicar la propiedad del logaritmo de un producto para expandir y condensar expresiones.
+
+
+  **CÓMO:** Utilizando la identidad log_b(x · y) = log_b(x) + log_b(y) en cálculos analíticos y numéricos.
+
+
+  ![Resumen La propiedad del logaritmo de un producto establece que el logaritmo de una multiplicación es igual a la suma de los logaritmos de los factores: $\log_b(x \cdot y) = \log_b(x) + \log_b(y)$ ($x > 0, y > 0$)](/static/img/nodos/aplicacion-de-la-propiedad-del-logaritmo-de-un-producto-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Logaritmos y sus Propiedades
+estado: publicado

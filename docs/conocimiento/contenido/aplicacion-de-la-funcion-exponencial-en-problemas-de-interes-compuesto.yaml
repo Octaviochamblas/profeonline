@@ -1,92 +1,134 @@
 semantic_id: MAT.ALG.FUNC_EXPONENCIAL_GRAFICA.INTERES_COMPUESTO
-resumen_inicial: La aplicación en interés compuesto calcula el capital acumulado mediante la fórmula exponencial $C(t) = C_0 \cdot (1 + i)^t$.
-explicacion_simple: |
-  El **interés compuesto** es el mecanismo financiero donde los intereses ganados en cada periodo **se reinvierten** y pasan a generar más intereses (interés sobre interés):
+resumen_inicial: La aplicación de la función exponencial en problemas de interés compuesto modela la evolución del capital acumulado $C_f(t) = C_i \cdot \left(1 + \frac{r}{n}\right)^{n \cdot t}$, donde los intereses devengados se capitalizan periódicamente generando un crecimiento exponencial sobre el capital principal.
+explicacion_simple: "![La aplicación de la función exponencial en problemas de interés compuesto modela la evolución del capital acumulado $C_f(t) = C_i \\cdot \\left(1 + \\frac{r}{n}\\right)^{n \\cdot t}$, donde los intereses devengados se capitalizan periódicamente generando un crecimiento exponencial sobre el capital principal](/static/img/nodos/aplicacion-de-la-funcion-exponencial-en-problemas-de-interes-compuesto-intro.svg)\n\n\nEl **interés compuesto** es la fuerza financiera más poderosa: es ganar **intereses sobre los intereses que ya ganaste** (efecto bola de nieve):\n\n- **La fórmula maestra:**\n  $$C_f(t) = C_i \\cdot (1 + i)^t$$\n- **¿Qué significa cada letra?**\n  - **$C_i$ (Capital inicial):** La cantidad de dinero depositada al comienzo ($t = 0$).\n  - **$i$ (Tasa de interés por período):** La tasa en decimal (ej: $5\\% = 0,05$).\n  - **$b = 1 + i$ (Factor de capitalización):** Sumas $1 + 0,05 = 1,05$.\n  - **$t$ (Tiempo):** Años o meses que dura la inversión.\n- **Ejemplo:**\
+  \ Si depositas $\\$1.000.000\\text{ pesos}$ al 10% anual durante 3 años:\n  $$C_f(3) = 1.000.000 \\cdot (1,10)^3 = 1.000.000 \\cdot 1,331 = \\mathbf{\\$1.331.000\\text{ pesos}}$$"
+explicacion_formal: 'Sea un contrato financiero con capital principal $C_i$, tasa nominal anual $r$ y frecuencia de capitalización $n$ veces por año. El **capital final acumulado** tras $t$ años es:
 
-  - La fórmula del monto acumulado $C(t)$ tras $t$ periodos es:
+  $$C_f(t) = C_i \left(1 + \frac{r}{n}\right)^{nt}$$
 
-  $$C(t) = C_0 \cdot (1 + i)^t$$
 
-  - **$C_0$ es el capital inicial**: Dinero invertido o prestado al principio ($t = 0$).
-  - **$i$ es la tasa de interés por periodo**: Expresada en forma decimal (ej. $6\% \text{ anual} \implies i = 0.06$).
-  - **$t$ es el número de periodos de capitalización** (años, meses, trimestres).
-explicacion_formal: |
-  Sea el capital inicial $C_0 > 0$ colocado a una tasa de interés nominal anual $r$ capitalizable $n$ veces al año durante un tiempo $t$ en años. El **monto acumulado financiero** $C(t)$ se rige por la función exponencial discreta o continua:
+  **Comportamiento en el límite continuo ($n \to \infty$)**:
 
-  **Formulaciones del interés compuesto:**
-  1. **Capitalización Periódica ($n$ veces al año):**
-     $$C(t) = C_0 \cdot \left(1 + \frac{r}{n}\right)^{n \cdot t}$$
-     Donde $i = r/n$ es la tasa efectiva por periodo de capitalización y $N = n \cdot t$ es el número total de periodos.
-  2. **Capitalización Continua ($n \to \infty$):**
-     $$C(t) = \lim_{n \to \infty} C_0 \cdot \left(1 + \frac{r}{n}\right)^{nt} = C_0 \cdot e^{r \cdot t}$$
-definiciones_clave: |
-  - **Interés compuesto**: Sistema de capitalización exponencial donde los intereses producidos en cada periodo se suman al capital para generar nuevos intereses.
-propiedades_relaciones: |
-  - **Regla de los 72**: Estimación matemática del tiempo de duplicación del capital $t \approx 72 / (r \cdot 100)$, derivada del logaritmo natural $\ln(2) \approx 0.693$.
+  Por la definición fundamental del número de Euler $e = \lim_{m \to \infty} \left(1 + \frac{1}{m}\right)^m$:
+
+  $$\lim_{n \to \infty} C_i \left(1 + \frac{r}{n}\right)^{nt} = C_i e^{rt}$$
+
+
+  **Comparación con el interés simple**:
+
+  - **Interés simple (lineal)**: $C_s(t) = C_i (1 + rt)$.
+
+  - **Interés compuesto (exponencial)**: $C_f(t) = C_i (1 + r)^t > C_i (1 + rt)$ para todo $t > 1$.'
+definiciones_clave: '- **Capitalización de intereses**: Proceso de agregar los intereses generados al capital para calcular los siguientes intereses.
+
+  - **Tasa periódica efectiva**: Cociente $i = r/n$ aplicado en cada subperíodo.'
+propiedades_relaciones: '- **Crecimiento estrictamente superlineal**: La brecha de ganancias entre el interés compuesto y el simple se amplifica exponencialmente con el tiempo.
+
+  - **Regla del 72**: El tiempo estimado para duplicar una inversión al interés compuesto es $t_{\text{duplicación}} \approx \frac{72}{r\%}$.'
 ejemplo_guiado:
-  enunciado: 'Se depositan $\$200.000$ a una tasa de interés compuesto anual del $5\%$. Calcula el monto acumulado al cabo de $3$ años.'
+  enunciado: '![Ejemplo La aplicación de la función exponencial en problemas de interés compuesto modela la evolución del capital acumulado $C_f(t) = C_i \cdot \left(1 + \frac{r}{n}\right)^{n \cdot t}$, donde los intereses devengados se capitalizan periódicamente generando un crecimiento exponencial sobre el capital principal](/static/img/nodos/aplicacion-de-la-funcion-exponencial-en-problemas-de-interes-compuesto-ejemplos.svg)
+
+
+
+    Se invierte un capital de $\$2.000.000\text{ pesos}$ a una tasa de interés compuesto del 5% anual durante 4 años con capitalización anual. Modela la función y calcula el monto total obtenido al finalizar el plazo.'
   pasos:
-    - 'Paso 1: Identificar el capital inicial $C_0 = 200.000$ y la tasa $i = 5\% = 0.05$.'
-    - 'Paso 2: Calcular el factor de capitalización $b = 1 + i = 1 + 0.05 = 1.05$.'
-    - 'Paso 3: Construir la función modelo: $C(t) = 200.000 \cdot (1.05)^t$.'
-    - 'Paso 4: Evaluar para $t = 3 \implies C(3) = 200.000 \cdot (1.05)^3 = 200.000 \cdot 1.157625 = $\$231.52$5$.'
+  - 'Paso 1: Identificar datos: $C_i = 2.000.000\text{ pesos}$, tasa $r = 0{,}05$, $n = 1$, $t = 4\text{ años}$.'
+  - 'Paso 2: Formular la función exponencial:
+
+    $C_f(t) = 2.000.000 \cdot (1 + 0{,}05)^t = 2.000.000 \cdot (1{,}05)^t$.'
+  - 'Paso 3: Evaluar para $t = 4$ años:
+
+    $C_f(4) = 2.000.000 \cdot (1{,}05)^4 = 2.000.000 \cdot 1{,}21550625 = 2.431.012{,}5\text{ pesos}$.'
+  - 'Paso 4: Conclusión: El monto final acumulado es de **$\$2.431.013\text{ pesos}$**, habiendo generado $\$431.013\text{ pesos}$ en intereses.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si se invierte un capital $C_0$ al $4\%$ de interés compuesto anual durante $t$ años, ¿cuál es la expresión del monto acumulado $C(t)$?'
-    choices:
-      - {text: '$C(t) = C_0 \cdot (1.04)^t$', is_correct: true}
-      - {text: '$C(t) = C_0 \cdot (0.04)^t$.', is_correct: false}
-      - {text: '$C(t) = C_0 \cdot (1.4)^t$.', is_correct: false}
-      - {text: '$C(t) = C_0 + 0.04 \cdot t$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''$C(t) = C_0 \cdot (1.04)^t$''. La base de capitalización es $1 + 0.04 = 1.04$.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿En qué se diferencia el interés compuesto del interés simple desde el punto de vista del crecimiento?'
-    choices:
-      - {text: 'El interés compuesto genera un crecimiento exponencial ($b^t$), mientras que el interés simple genera un crecimiento lineal ($m \cdot t$)', is_correct: true}
-      - {text: 'El interés compuesto es decreciente y el simple es creciente.', is_correct: false}
-      - {text: 'El interés compuesto no utiliza capital inicial.', is_correct: false}
-      - {text: 'Ambos generan exactamente la misma curva exponencial.', is_correct: false}
-    explanation: 'La alternativa correcta es ''El interés compuesto genera un crecimiento exponencial ($b^t$), mientras que el interés simple genera un crecimiento lineal ($m \cdot t$)''.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Por qué el interés compuesto genera más dinero que el interés simple para plazos mayores a 1 año?
+  choices:
+  - text: Porque los intereses se reinvierten y generan nuevos intereses (crecimiento exponencial)
+    is_correct: true
+  - text: Porque el banco cobra comisiones
+    is_correct: false
+  - text: Porque la tasa cambia cada mes
+    is_correct: false
+  - text: Porque es una función lineal
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque los intereses se reinvierten y generan nuevos intereses (crecimiento exponencial)'. La capitalización recurrente multiplica el factor $(1 + r)$ en cada período.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si depositas $\$100.000\text{ pesos}$ al 10% anual compuesto durante 2 años, ¿cuál es el capital final?
+  choices:
+  - text: $\$121.000\text{ pesos}$ (100.000 · 1,10²)
+    is_correct: true
+  - text: $\$120.000\text{ pesos}$
+    is_correct: false
+  - text: $\$110.000\text{ pesos}$
+    is_correct: false
+  - text: $\$200.000\text{ pesos}$
+    is_correct: false
+  explanation: La alternativa correcta es '$\$121.000\text{ pesos}$ (100.000 · 1,10²)'. $C_f = 100.000 \cdot 1{,}21 = \$121.000\text{ pesos}$ (en simple habría sido $\$120.000$).
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Extraer del problema el capital inicial $C_0$ y la tasa nominal $r\%$.'
-  - 'Paso 2: Convertir la tasa al periodo de capitalización adecuado $i = r/n$ en formato decimal.'
-  - 'Paso 3: Armar la base de la potencia $b = 1 + i$.'
-  - 'Paso 4: Elevar al número total de periodos $N = n \cdot t$ y multiplicar por $C_0$.'
-errores_correccion: |
-  - **Error común:** Aplicar la fórmula de interés simple $C(t) = C_0 \cdot (1 + i \cdot t)$ en problemas de interés compuesto.
-  - **Cómo corregirlo:** En el interés **COMPUESTO**, el tiempo $t$ va en el **EXPONENTE**: $C(t) = C_0 \cdot (1 + i)^t$.
+- 'Paso 1: Identificar el capital inicial $C_i$ y la tasa de interés anual $r$.'
+- 'Paso 2: Determinar la frecuencia de capitalización $n$ y calcular la base $b = 1 + \frac{r}{n}$.'
+- 'Paso 3: Formular la función exponencial $C_f(t) = C_i \cdot b^{nt}$.'
+- 'Paso 4: Evaluar la potencia para el tiempo solicitado y calcular los intereses generados ($I = C_f - C_i$).'
+errores_correccion: '- **Error común:** Utilizar la fórmula lineal de interés simple ($C_f = C_i + C_i \cdot r \cdot t$) en problemas de interés compuesto.
+
+  - **Cómo corregirlo:** En interés compuesto **el tiempo $t$ va como EXPONENTE en la potencia**: $C_f = C_i \cdot (1 + r)^t$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Inversión a 2 años al 10% anual.
-    alternativas:
-      - 'C(2) = 500.000 \cdot (1.10)^2 = $605.000'
-      - 'C(2) = 500.000 \cdot 1.20 = $600.000'
-      - 'C(2) = $550.000'
-    respuesta: 'C(2) = 500.000 \cdot (1.10)^2 = $605.000'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Capitalización semestral.
-    alternativas:
-      - 'Tasa semestral 3%, base 1.03 para t periodos'
-      - 'Tasa semestral 6%'
-      - 'Base 0.97'
-    respuesta: 'Tasa semestral 3%, base 1.03 para t periodos'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Capitalización anual'
+  enunciado: 'Con $\$500.000\text{ pesos}$ al 6% anual compuesto en 3 años:'
+  alternativas:
+  - $\$595.508\text{ pesos}$
+  - $\$590.000\text{ pesos}$
+  - $\$530.000\text{ pesos}$
+  - $\$600.000\text{ pesos}$
+  respuesta: $\$595.508\text{ pesos}$
+  solucion_pasos:
+  - 'Paso 1: $C_f = 500.000 \cdot (1{,}06)^3 = 500.000 \cdot 1{,}191016 = \$595.508$.'
+- titulo: 'Ejemplo 2: Cálculo de intereses generados'
+  enunciado: En la inversión anterior ($C_i = \$500.000$, $C_f = \$595.508$), ¿cuánto dinero se ganó en intereses?
+  alternativas:
+  - $\$95.508\text{ pesos}$
+  - $\$595.508\text{ pesos}$
+  - $\$90.000\text{ pesos}$
+  - $\$30.000\text{ pesos}$
+  respuesta: $\$95.508\text{ pesos}$
+  solucion_pasos:
+  - 'Paso 1: $\text{Interés} = C_f - C_i = 595.508 - 500.000 = \$95.508$.'
+- titulo: 'Ejemplo 3: Capitalización semestral'
+  enunciado: Si la tasa es 8% anual con capitalización semestral ($n = 2$), ¿cuál es la base semestral?
+  alternativas:
+  - 1,04 (1 + 0,08/2)
+  - 1,08
+  - 1,16
+  - 1,02
+  respuesta: 1,04 (1 + 0,08/2)
+  solucion_pasos:
+  - 'Paso 1: $b = 1 + 0{,}08/2 = 1{,}04$.'
+- titulo: 'Ejemplo 4: Identificación de parámetros'
+  enunciado: En $C_f(t) = \$3.500.000 \cdot (1{,}035)^t$, ¿cuál es el capital inicial?
+  alternativas:
+  - $\$3.500.000\text{ pesos}$
+  - $\$1.035\text{ pesos}$
+  - $\$35.000\text{ pesos}$
+  - $\$3.622.500\text{ pesos}$
+  respuesta: $\$3.500.000\text{ pesos}$
+  solucion_pasos:
+  - 'Paso 1: $C_i = C_f(0) = \$3.500.000$.'
 errores_frecuentes:
-  - 'Dada una tasa de interés del $6\%$ anual, la afirmación de que el factor de capitalización es $0.06$.'
-  - 'La confusión entre el modelo lineal del interés simple y el modelo exponencial del interés compuesto.'
-  - 'La omisión de ajustar el número de periodos $t$ cuando la capitalización es mensual, trimestral o semestral.'
-  - 'La afirmación de que el capital inicial $C_0$ cambia si se modifica el tiempo de inversión.'
-  - 'La afirmación de que el interés compuesto genera pérdidas o decrecimiento para tasas positivas.'
+- Confundir la fórmula de interés compuesto con la de interés simple.
+- Olvidar dividir la tasa nominal entre los períodos de capitalización n.
+- Multiplicar el capital por la tasa antes de elevar al exponente temporal.
 afirmaciones_verdaderas:
-  - 'El interés compuesto se rige por un modelo exponencial de la forma $C(t) = C_0 \cdot (1 + i)^t$ donde los intereses se capitalizan periódicamente.'
-  - 'La base de capitalización $(1 + i)$ en el interés compuesto con tasa positiva $i > 0$ es estrictamente mayor que uno.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver problemas financieros de interés compuesto mediante la función exponencial $C(t) = C_0 \cdot (1 + i)^t$.
-  CÓMO: Identificar $C_0$, calcular la tasa efectiva $i$, elevar a los periodos $t$ y justificar la acumulación exponencial.
-fuente: 'Texto escolar MINEDUC — Álgebra / Funciones Exponenciales'
+- El interés compuesto es una aplicación directa de la función exponencial con base b = 1 + r/n > 1.
+- El monto acumulado crece superlinealmente gracias a la capitalización continua de rendimientos.
+al_terminar_debes_poder: '**QUÉ:** Modelar y resolver problemas financieros de interés compuesto mediante funciones exponenciales.
+
+
+  **CÓMO:** Aplicando la fórmula C_f = C_i · (1 + r/n)^(nt) para calcular montos finales e intereses acumulados.
+
+
+  ![Resumen La aplicación de la función exponencial en problemas de interés compuesto modela la evolución del capital acumulado $C_f(t) = C_i \cdot \left(1 + \frac{r}{n}\right)^{n \cdot t}$, donde los intereses devengados se capitalizan periódicamente generando un crecimiento exponencial sobre el capital principal](/static/img/nodos/aplicacion-de-la-funcion-exponencial-en-problemas-de-interes-compuesto-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Análisis Gráfico y Modelamiento Exponencial
 estado: publicado

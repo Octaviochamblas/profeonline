@@ -1,87 +1,143 @@
 semantic_id: MAT.ALG.FUNCION_EVALUACION.EVALUACION_DESDE_FORMULA
-resumen_inicial: Evaluar una función dada por fórmula consiste en reemplazar la variable independiente por un valor o expresión dada y simplificar algebraicamente.
-explicacion_simple: |
-  Evaluar una función $f(x)$ significa tomar el valor que nos entregan y colocarlo exactamente en cada lugar donde aparezca la letra $x$.
+resumen_inicial: Evaluar una función con argumentos algebraicos o literales consiste en aplicar el molde de la regla funcional al bloque de entrada completo.
+explicacion_simple: '![Evaluar una función con argumentos algebraicos o literales consiste en aplicar el molde de la regla funcional al bloque de entrada completo](/static/img/nodos/evaluacion-de-una-funcion-dada-por-formula-intro.svg)
 
-  Si $f(x) = x^2 - 3x$, para evaluar en $x = -2$:
-  $$f(-2) = (-2)^2 - 3(-2) = 4 + 6 = 10$$
 
-  Es indispensable usar paréntesis para evitar errores de signos en números negativos o potencias.
-explicacion_formal: |
-  Dada la función $f(x)$ definida por una fórmula explícita en $x$, la **evaluación funcional** en el argumento $a$ se denota por $f(a)$ y representa la imagen calculada mediante la sustitución directa:
 
-  $$f(a) = \text{Regla}(x) \Big|_{x = a}$$
+  Una función funciona como un **molde estructural**.
 
-  **Desglose de la fórmula:**
-  - $a$: Puede ser una constante numérica ($a \in \mathbb{R}$) o una expresión algebraica (ejemplo $a = x + h$).
-definiciones_clave: |
-  - **Sustitución directa**: Acción de reemplazar cada presencia de la variable independiente por la expresión de entrada.
-propiedades_relaciones: |
-  - **Uso de paréntesis en bases negativas**: $(-a)^2 = a^2$, mientras que $-a^2 = -(a^2)$.
+
+  Todo lo que colocas dentro del paréntesis de $f(\dots)$ entra exactamente en cada posición donde aparecía la $x$.
+
+
+  Por ejemplo, si $f(x) = 2x + 1$, entonces para evaluar $f(a + 3)$ reemplazas toda la $x$ por el binomio $(a + 3)$:
+
+  $$f(a + 3) = 2(a + 3) + 1 = 2a + 6 + 1 = 2a + 7$$
+
+
+  No debes confundir $f(x + 3)$ con $f(x) + 3$.'
+explicacion_formal: 'Dada una función $f(x)$, la evaluación en un argumento algebraico $E$ (donde $E$ puede ser un monomio, binomio o expresión literal) se rige por la regla de sustitución uniforme:
+
+  $$f(E) = \text{Regla}(x \mapsto E)$$
+
+
+  **Propiedades algebraicas:**
+
+  - **No linealidad general**: En general $f(a + b) \neq f(a) + f(b)$ (salvo funciones lineales homogéneas $f(x) = mx$).
+
+  - **Expansión de binomios**: Si la regla contiene $x^2$, evaluar $f(x + h)$ requiere expandir el cuadrado de binomio $(x + h)^2 = x^2 + 2xh + h^2$.'
+definiciones_clave: '- **Argumento compuesto**: Expresión algebraica que se introduce como entrada de una función.
+
+  - **Molde funcional**: Estructura de operadores matemáticos que define a la función independiente del nombre de la variable.'
+propiedades_relaciones: '- **Cociente de diferencias**: La expresión $\frac{f(x + h) - f(x)}{h}$ se basa directamente en la evaluación con argumentos compuestos.
+
+  - **Composición implícita**: Evaluar $f(g(x))$ es evaluar la función externa $f$ en el bloque $g(x)$.'
 ejemplo_guiado:
-  enunciado: "Dada la función $f(x) = -2x^2 + 5x - 3$, evalúa la función en $x = -3$."
+  enunciado: '![Ejemplo Evaluar una función con argumentos algebraicos o literales consiste en aplicar el molde de la regla funcional al bloque de entrada completo](/static/img/nodos/evaluacion-de-una-funcion-dada-por-formula-ejemplos.svg)
+
+
+
+    Dada la función cuadrática $f(x) = x^2 - 3x$, determina la expresión simplificada de $f(x + 2)$.'
   pasos:
-    - 'Paso 1: Sustituir $x$ por $(-3)$ utilizando paréntesis: $f(-3) = -2(-3)^2 + 5(-3) - 3$.'
-    - 'Paso 2: Desarrollar la potencia primero: $(-3)^2 = 9$.'
-    - 'Paso 3: Realizar las multiplicaciones: $-2(9) = -18$ y $5(-3) = -15$.'
-    - 'Paso 4: Operar las sumas: $f(-3) = -18 - 15 - 3 = -36$.'
+  - 'Paso 1: Identificar el molde funcional: $f(\square) = (\square)^2 - 3(\square)$.'
+  - 'Paso 2: Introducir el argumento $(x + 2)$: $f(x + 2) = (x + 2)^2 - 3(x + 2)$.'
+  - 'Paso 3: Desarrollar el cuadrado de binomio: $(x + 2)^2 = x^2 + 4x + 4$.'
+  - 'Paso 4: Distribuir el producto: $-3(x + 2) = -3x - 6$.'
+  - 'Paso 5: Reducir términos semejantes: $x^2 + (4x - 3x) + (4 - 6) = x^2 + x - 2$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "Dada $f(x) = -2x^2 + 5x - 3$, ¿cuál es el resultado de evaluar $f(-3)$?"
-    choices:
-      - {text: "$-36$", is_correct: true}
-      - {text: "$0$", is_correct: false}
-      - {text: "$30$", is_correct: false}
-      - {text: "$-18$", is_correct: false}
-    explanation: "La alternativa correcta es '$-36$'. $-2(-3)^2 + 5(-3) - 3 = -2(9) - 15 - 3 = -18 - 15 - 3 = -36$."
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: "Si $f(x) = 3x^2$, ¿cuál es el resultado de evaluar $f(2a)$?"
-    choices:
-      - {text: "$12a^2$", is_correct: true}
-      - {text: "$6a^2$", is_correct: false}
-      - {text: "$6a$", is_correct: false}
-      - {text: "$3a^2$", is_correct: false}
-    explanation: "La alternativa correcta es '$12a^2$'. $f(2a) = 3(2a)^2 = 3(4a^2) = 12a^2$."
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si $f(x) = 3x - 2$, ¿a qué es igual $f(2a)$?
+  choices:
+  - text: 6a - 2
+    is_correct: true
+  - text: 6a - 4
+    is_correct: false
+  - text: 3a - 2
+    is_correct: false
+  - text: 5a - 2
+    is_correct: false
+  explanation: 'La alternativa correcta es ''6a - 2''. Se sustituye $x$ por $2a$: $f(2a) = 3(2a) - 2 = 6a - 2$.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si $g(x) = 5 - 2x$, ¿cuál es la diferencia $g(x + 1) - g(x)$?
+  choices:
+  - text: '-2'
+    is_correct: true
+  - text: '2'
+    is_correct: false
+  - text: -2x - 2
+    is_correct: false
+  - text: '3'
+    is_correct: false
+  explanation: 'La alternativa correcta es ''-2''. Evaluando: $g(x + 1) = 5 - 2(x + 1) = 3 - 2x$. Luego, $(3 - 2x) - (5 - 2x) = 3 - 5 = -2$.'
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar la regla o fórmula explícita de $f(x)$.'
-  - 'Paso 2: Escribir el nuevo argumento encerrado entre paréntesis.'
-  - 'Paso 3: Sustituir cada $x$ en la fórmula por dicho paréntesis.'
-  - 'Paso 4: Operar respetando jerarquía de operaciones y reducir términos semejantes.'
-errores_correccion: |
-  - **Error común:** Escribir $-3^2 = 9$ sin paréntesis en lugar de $(-3)^2 = 9$.
-  - **Cómo corregirlo:** Toda base negativa sustituida en una potencia DEBE llevar paréntesis obligatorio.
+- 'Paso 1: Escribir la fórmula de la función sustituyendo cada variable $x$ por un paréntesis vacío $(\quad)$.'
+- 'Paso 2: Insertar la expresión literal o binomio dentro de cada paréntesis.'
+- 'Paso 3: Aplicar productos notables, propiedades distributivas y leyes de potencias.'
+- 'Paso 4: Reducir los términos semejantes para presentar el resultado en su forma canónica más simple.'
+errores_correccion: '- **Error común:** Confundir $f(x + k)$ con $f(x) + k$.
+
+  - **Cómo corregirlo:** En $f(x + k)$, la constante $k$ entra en el argumento de $x$ antes de aplicar la regla; en $f(x) + k$, la constante se suma al resultado final de la función.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de evaluación funcional.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de evaluación funcional.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Evaluación con monomio'
+  enunciado: Si $f(x) = 2x^2 + 1$, ¿a qué es igual $f(3a)$?
+  alternativas:
+  - 18a^2 + 1
+  - 6a^2 + 1
+  - 12a^2 + 1
+  - 9a^2 + 1
+  respuesta: 18a^2 + 1
+  solucion_pasos:
+  - 'Paso 1: Reemplazar $x$ por $(3a)$: $f(3a) = 2(3a)^2 + 1$.'
+  - 'Paso 2: Elevar al cuadrado: $(3a)^2 = 9a^2$.'
+  - 'Paso 3: Multiplicar: $2(9a^2) + 1 = 18a^2 + 1$.'
+- titulo: 'Ejemplo 2: Evaluación con binomio lineal'
+  enunciado: Para $g(x) = 4x - 5$, halla $g(x - 3)$.
+  alternativas:
+  - 4x - 17
+  - 4x - 8
+  - 4x - 12
+  - x - 8
+  respuesta: 4x - 17
+  solucion_pasos:
+  - 'Paso 1: Sustituir $x$ por $(x - 3)$: $g(x - 3) = 4(x - 3) - 5$.'
+  - 'Paso 2: Distribuir: $4x - 12 - 5 = 4x - 17$.'
+- titulo: 'Ejemplo 3: Argumento fraccionario'
+  enunciado: Dada $h(x) = 6x + 2$, ¿cuál es el valor de $h\left(\frac{x}{3}\right)$?
+  alternativas:
+  - 2x + 2
+  - 2x + 6
+  - 6x + 2/3
+  - 18x + 2
+  respuesta: 2x + 2
+  solucion_pasos:
+  - 'Paso 1: Sustituir: $h\left(\frac{x}{3}\right) = 6\left(\frac{x}{3}\right) + 2$.'
+  - 'Paso 2: Simplificar: $2x + 2$.'
+- titulo: 'Ejemplo 4: Cuadrática con binomio'
+  enunciado: Si $f(x) = x^2 - 1$, ¿a qué equivale $f(x + 1)$?
+  alternativas:
+  - x^2 + 2x
+  - x^2
+  - x^2 + 2x + 2
+  - x^2 + 1
+  respuesta: x^2 + 2x
+  solucion_pasos:
+  - 'Paso 1: $f(x + 1) = (x + 1)^2 - 1$.'
+  - 'Paso 2: Expandir: $x^2 + 2x + 1 - 1 = x^2 + 2x$.'
 errores_frecuentes:
-  - 'Al evaluar $f(x) = -x^2$ en $x = -3$, la potencia se calcula como $(-3)^2 = 9$ sin aplicar el signo negativo exterior.'
-  - 'Evaluar $f(x + h)$ en $f(x) = x^2$ equivale a la expresión no simplificada $x^2 + h$.'
-  - 'En la fórmula $f(x) = 2x - 8$, la evaluación en $x = 0$ devuelve el resultado $x = 4$.'
-  - 'Sustituir una variable negativa exige omitir los paréntesis en la base de la potencia.'
-  - 'La evaluación funcional modifica la regla de correspondencia original del problema.'
+- 'Distribuir la función como si fuera un factor algebraico: escribir f(a + b) = f(a) + f(b).'
+- 'Elevar al cuadrado solo la variable y olvidar el coeficiente: escribir (3a)² = 3a².'
+- Olvidar los términos cruzados al expandir binomios al cuadrado.
 afirmaciones_verdaderas:
-  - 'Evaluar una función dada por fórmula consiste en reemplazar la variable independiente por la constante o expresión asignada respetando las reglas algebraicas.'
-  - 'El uso de paréntesis al sustituir bases negativas o expresiones compuestas previene errores de signo y distribución.'
-al_terminar_debes_poder: |
-  QUÉ: Evaluar funciones definidas mediante expresiones algebraicas o fórmulas simbólicas.
-  CÓMO: Sustituir la incógnita por el valor o expresión dada empleando paréntesis, efectuar las operaciones respetando la jerarquía y simplificar.
-fuente: 'Texto escolar MINEDUC — Álgebra / Evaluación de Funciones'
+- Evaluar una función en una expresión compuesta requiere sustituir la variable por el argumento completo protegido con paréntesis.
+- En una función cuadrática, evaluar f(x + h) produce términos con productos notables que deben expandirse y reducirse.
+al_terminar_debes_poder: '**QUÉ:** Evaluar funciones algebraicas con argumentos literales y expresiones compuestas.
+
+
+  **CÓMO:** Aplicando el molde estructural de la regla, desarrollando productos notables y reduciendo términos semejantes.
+
+
+  ![Resumen Evaluar una función con argumentos algebraicos o literales consiste en aplicar el molde de la regla funcional al bloque de entrada completo](/static/img/nodos/evaluacion-de-una-funcion-dada-por-formula-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Evaluación de Funciones
 estado: publicado

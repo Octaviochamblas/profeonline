@@ -1,90 +1,139 @@
 semantic_id: MAT.ALG.FUNCION_EVALUACION.RESTRICCION_DOMINIO
-resumen_inicial: Verificar la pertenencia al dominio antes de evaluar previene la ejecución de operaciones matemáticamente indefinidas en el conjunto de los números reales.
-explicacion_simple: |
-  Antes de reemplazar un valor de $x$ en una función, debes asegurarte de que la máquina pueda procesarlo:
+resumen_inicial: Verificar la pertenencia de un valor al dominio antes de evaluar asegura que la función esté matemáticamente definida y evita indeterminaciones.
+explicacion_simple: '![Verificar la pertenencia de un valor al dominio antes de evaluar asegura que la función esté matemáticamente definida y evita indeterminaciones](/static/img/nodos/verificacion-de-pertenencia-de-un-valor-al-dominio-antes-de-evaluar-intro.svg)
 
-  1. En una fracción $\frac{A}{B}$, el denominador $B$ **NO puede ser cero**.
-  2. En una raíz cuadrada $\sqrt{A}$, el radicando $A$ **NO puede ser negativo**.
 
-  Si intentas evaluar un valor no permitido (como $x = 3$ en $f(x) = \frac{1}{x - 3}$), la evaluación **no existe en los números reales**.
-explicacion_formal: |
-  Sea $f: \text{Dom}(f) \to \mathbb{R}$ una función real. La expresión $f(x_0)$ es admisible y produce un número real si y solo si:
 
-  $$x_0 \in \text{Dom}(f)$$
+  Antes de evaluar una función en un número $x = a$, debes verificar si ese número está **permitido** en el dominio.
 
-  Si $x_0 \notin \text{Dom}(f)$, entonces $f(x_0)$ **no está definida en $\mathbb{R}$** ($\nexists f(x_0) \in \mathbb{R}$).
 
-  **Restricciones principales:**
-  - Divisiones: $\frac{P(x)}{Q(x)} \implies Q(x_0) \neq 0$
-  - Raíces pares: $\sqrt[2n]{P(x)} \implies P(x_0) \ge 0$
-definiciones_clave: |
-  - **Dominio de definición**: Conjunto de todos los números reales para los cuales la regla operacional entrega un valor real bien definido.
-propiedades_relaciones: |
-  - **Indeterminación matemática**: La división entre cero no genera un número real; la raíz de un negativo da números complejos.
+  En los números reales, hay dos alertas rojas principales:
+
+  1. **Denominadores iguales a cero**: Producen una división imposible (indefinición).
+
+  2. **Cantidades negativas bajo raíces cuadradas**: No existen en los números reales $\mathbb{R}$.
+
+
+  Si el número cae en alguna de estas trampas, **no se puede evaluar** y se concluye que $f(a)$ no existe.'
+explicacion_formal: 'Sea $f: \text{Dom}(f) \to \mathbb{R}$ una función real. Para cualquier $a \in \mathbb{R}$, la evaluación $f(a)$ está bien definida en $\mathbb{R}$ si y solo si $a \in \text{Dom}(f)$:
+
+  $$a \in \text{Dom}(f) \Longleftrightarrow f(a) \in \mathbb{R}$$
+
+
+  **Condiciones de exclusión obligatoria:**
+
+  - **Fracciones**: Si $f(x) = \frac{P(x)}{Q(x)}$ y $Q(a) = 0$, entonces $a \notin \text{Dom}(f)$ ($f(a)$ no está definido).
+
+  - **Radicales de orden par**: Si $f(x) = \sqrt[2k]{g(x)}$ y $g(a) < 0$, entonces $a \notin \text{Dom}(f)$ ($f(a) \notin \mathbb{R}$).'
+definiciones_clave: '- **Pertenencia al dominio**: Condición lógica que garantiza la existencia real de la imagen evaluada.
+
+  - **Punto de indeterminación**: Valor de $x$ donde la regla funcional produce operaciones no permitidas en $\mathbb{R}$.'
+propiedades_relaciones: '- **Asíntotas y huecos**: Los puntos excluidos del dominio en funciones racionales suelen generar asíntotas verticales o discontinuidades.
+
+  - **Dominio natural**: Conjunto maximal de números reales donde la fórmula es computable.'
 ejemplo_guiado:
-  enunciado: "Determina si es posible evaluar la función $f(x) = \\frac{\\sqrt{x - 2}}{x - 7}$ en los puntos $x = 1$, $x = 7$ y $x = 11$."
+  enunciado: '![Ejemplo Verificar la pertenencia de un valor al dominio antes de evaluar asegura que la función esté matemáticamente definida y evita indeterminaciones](/static/img/nodos/verificacion-de-pertenencia-de-un-valor-al-dominio-antes-de-evaluar-ejemplos.svg)
+
+
+
+    Dada la función $f(x) = \frac{\sqrt{x - 3}}{x - 7}$, determina si es posible evaluar $f(2)$, $f(7)$ y $f(4)$.'
   pasos:
-    - 'Paso 1: Plantear restricciones: $x - 2 \ge 0 \implies x \ge 2$ y $x - 7 \neq 0 \implies x \neq 7$.'
-    - 'Paso 2: Evaluar $x = 1$: viola la restricción de la raíz ($1 - 2 = -1 < 0$). No pertenece al dominio (evaluación no definida).'
-    - 'Paso 3: Evaluar $x = 7$: viola la restricción del denominador ($7 - 7 = 0$). No pertenece al dominio (evaluación no definida).'
-    - 'Paso 4: Evaluar $x = 11$: cumple $11 \ge 2$ y $11 \neq 7$. Sí pertenece al dominio y $f(11) = \frac{\sqrt{9}}{4} = \frac{3}{4}$.'
+  - 'Paso 1: Analizar $x = 2$: Dentro de la raíz tenemos $2 - 3 = -1 < 0$. No existe raíz real de número negativo, luego $2 \notin \text{Dom}(f)$ y $f(2)$ no existe en $\mathbb{R}$.'
+  - 'Paso 2: Analizar $x = 7$: El denominador es $7 - 7 = 0$. La división por cero es indefinida, luego $7 \notin \text{Dom}(f)$ y $f(7)$ no está definido.'
+  - 'Paso 3: Analizar $x = 4$: El radicando es $4 - 3 = 1 \ge 0$ y el denominador es $4 - 7 = -3 \neq 0$. Por tanto, $4 \in \text{Dom}(f)$ y $f(4) = \frac{\sqrt{1}}{-3} = -\frac{1}{3}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: "¿Es posible evaluar en los reales la función $f(x) = \\frac{\\sqrt{x - 2}}{x - 7}$ en $x = 1$?"
-    choices:
-      - {text: "No, porque produce una raíz cuadrada de un número negativo ($\\sqrt{-1}$).", is_correct: true}
-      - {text: "Sí, la evaluación resulta en $1/6$.", is_correct: false}
-      - {text: "Sí, resulta en $0$.", is_correct: false}
-      - {text: "No, porque divide por cero.", is_correct: false}
-    explanation: "La alternativa correcta es 'No, porque produce una raíz cuadrada de un número negativo ($\\sqrt{-1}$).'."
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: "¿Por qué el valor $x = 7$ no puede ser evaluado en $f(x) = \\frac{\\sqrt{x - 2}}{x - 7}$?"
-    choices:
-      - {text: "Porque anula el denominador produciendo una división por cero.", is_correct: true}
-      - {text: "Porque $7$ es un número primo.", is_correct: false}
-      - {text: "Porque la raíz cuadrada no existe en $7$.", is_correct: false}
-      - {text: "Sí se puede evaluar y da como resultado $0$.", is_correct: false}
-    explanation: "La alternativa correcta es 'Porque anula el denominador produciendo una división por cero.'."
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Es posible evaluar la función $f(x) = \frac{x + 5}{x^2 - 4}$ en $x = 2$?
+  choices:
+  - text: No, porque el denominador se anula en x = 2 produciendo división por cero.
+    is_correct: true
+  - text: Sí, el resultado es 7/4.
+    is_correct: false
+  - text: Sí, el resultado es 0.
+    is_correct: false
+  - text: Solo si se simplifica primero.
+    is_correct: false
+  explanation: La alternativa correcta es 'No, porque el denominador se anula en x = 2 produciendo división por cero.'. $2^2 - 4 = 0$, lo que invalida la evaluación.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Para $g(x) = \sqrt{10 - 2x}$, ¿cuál de los siguientes valores NO pertenece al dominio?
+  choices:
+  - text: x = 6
+    is_correct: true
+  - text: x = 5
+    is_correct: false
+  - text: x = 0
+    is_correct: false
+  - text: x = -3
+    is_correct: false
+  explanation: La alternativa correcta es 'x = 6'. Para $x = 6$, $10 - 2(6) = 10 - 12 = -2 < 0$, generando una raíz cuadrada no real.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar las restricciones algebraicas de la fórmula de $f(x)$.'
-  - 'Paso 2: Sustituir el valor de prueba $x = x_0$ únicamente en las expresiones de restricción (denominadores y radicandos).'
-  - 'Paso 3: Verificar si el denominador es cero o el radicando de índice par es negativo.'
-  - 'Paso 4: Si se viola alguna restricción, declarar que el valor no pertenece al dominio y detener la evaluación.'
-errores_correccion: |
-  - **Error común:** Escribir $f(2) = \frac{5}{0} = 0$ o $f(2) = \infty$.
-  - **Cómo corregirlo:** En $\mathbb{R}$, la división por cero NO es cero ni infinito; simplemente NO está definida.
+- 'Paso 1: Identificar las posibles restricciones algebraicas de la función (denominadores, raíces pares).'
+- 'Paso 2: Sustituir el valor de prueba $x = a$ en las expresiones que imponen condiciones.'
+- 'Paso 3: Comprobar que ningún denominador sea igual a cero y que ningún radicando par sea estrictamente menor que cero.'
+- 'Paso 4: Si se cumplen todas las condiciones, proceder con la evaluación; de lo contrario, declarar que $f(a)$ no está definido en $\mathbb{R}$.'
+errores_correccion: '- **Error común:** Intentar calcular mecánicamente el valor de la función sin verificar previamente si el valor anula el denominador o genera números imaginarios.
+
+  - **Cómo corregirlo:** Siempre haz un chequeo de seguridad mental: ¿anula algún divisor?, ¿hace negativa alguna raíz par? Si la respuesta es sí, el valor no pertenece al dominio.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de evaluación funcional.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de evaluación funcional.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Denominador nulo'
+  enunciado: Determina si $x = 5$ pertenece al dominio de $f(x) = \frac{2x - 1}{x - 5}$.
+  alternativas:
+  - No, porque anula el denominador
+  - Sí, f(5) = 9
+  - Sí, f(5) = 0
+  - Sí, f(5) = 9/5
+  respuesta: No, porque anula el denominador
+  solucion_pasos:
+  - 'Paso 1: En $x = 5$, el denominador es $5 - 5 = 0$.'
+  - 'Paso 2: La división por cero es indefinida; $5 \notin \text{Dom}(f)$.'
+- titulo: 'Ejemplo 2: Radicando negativo'
+  enunciado: ¿Pertenece $x = -2$ al dominio de $g(x) = \sqrt{x + 1}$ en los reales?
+  alternativas:
+  - No, porque genera raíz de -1 que no es real
+  - Sí, g(-2) = 1
+  - Sí, g(-2) = -1
+  - Sí, g(-2) = 0
+  respuesta: No, porque genera raíz de -1 que no es real
+  solucion_pasos:
+  - 'Paso 1: Para $x = -2$, $x + 1 = -2 + 1 = -1$.'
+  - 'Paso 2: $\sqrt{-1} \notin \mathbb{R}$, luego $-2 \notin \text{Dom}(g)$.'
+- titulo: 'Ejemplo 3: Pertenencia válida'
+  enunciado: ¿Pertenece $x = 0$ al dominio de $h(x) = \frac{1}{x + 3}$?
+  alternativas:
+  - Sí, y h(0) = 1/3
+  - No, porque x no puede ser cero
+  - No, porque 0 anula la fracción
+  - Solo si x es positivo
+  respuesta: Sí, y h(0) = 1/3
+  solucion_pasos:
+  - 'Paso 1: Denominador en $x = 0$ es $0 + 3 = 3 \neq 0$.'
+  - 'Paso 2: Está perfectamente definido y $h(0) = 1/3$.'
+- titulo: 'Ejemplo 4: Raíz en el denominador'
+  enunciado: ¿Se puede evaluar $x = 4$ en $f(x) = \frac{1}{\sqrt{x - 4}}$?
+  alternativas:
+  - No, porque aunque la raíz es real (cero), el denominador queda nulo
+  - Sí, f(4) = 1
+  - Sí, f(4) = 0
+  - Sí, f(4) = 1/2
+  respuesta: No, porque aunque la raíz es real (cero), el denominador queda nulo
+  solucion_pasos:
+  - 'Paso 1: $\sqrt{4 - 4} = \sqrt{0} = 0$.'
+  - 'Paso 2: Provoca división por cero: $\frac{1}{0}$, indefinida.'
 errores_frecuentes:
-  - 'Evaluar $f(x) = \frac{10}{x - 2}$ en $x = 2$ devuelve la imagen válida $y = 0$.'
-  - 'La función $f(x) = \sqrt{x - 5}$ admite evaluación real en el punto $x = 1$ dando $y = -2$.'
-  - 'Verificar la pertenencia al dominio es un paso optativo que se puede omitir al calcular imágenes numéricas.'
-  - 'Si un valor $x_0$ produce una división por cero en la fórmula, la función está definida y vale infinito.'
-  - 'Cualquier número real $x \in \mathbb{R}$ puede ser evaluado en cualquier función real sin restricción alguna.'
+- Confundir que el numerador sea cero con que el denominador sea cero.
+- Creer que el número cero (x = 0) nunca puede pertenecer al dominio de ninguna función.
+- Olvidar que las raíces cúbicas o de índice impar sí admiten radicandos negativos en los reales.
 afirmaciones_verdaderas:
-  - 'Antes de evaluar $f(x_0)$, se debe verificar que $x_0 \in \text{Dom}(f)$ para evitar operaciones indefinidas en $\mathbb{R}$ (como división por cero o raíces de índice par negativas).'
-  - 'Si $x_0 \notin \text{Dom}(f)$, la expresión $f(x_0)$ no está definida en el conjunto de los números reales.'
-al_terminar_debes_poder: |
-  QUÉ: Verificar si un valor pertenece al dominio de una función antes de efectuar su evaluación.
-  CÓMO: Analizar las restricciones algebraicas de la función, comprobar si el valor $x_0$ las satisface y decidir si la evaluación es válida en $\mathbb{R}$.
-fuente: 'Texto escolar MINEDUC — Álgebra / Evaluación de Funciones'
+- Un valor pertenece al dominio de una función real si y solo si su evaluación produce un número real bien definido.
+- Los valores que provocan división por cero o cantidades negativas bajo raíces pares deben ser excluidos del dominio.
+al_terminar_debes_poder: '**QUÉ:** Verificar y validar la pertenencia de valores al dominio antes de ejecutar evaluaciones funcionales.
+
+
+  **CÓMO:** Comprobando que los valores de prueba no anulen denominadores ni generen raíces pares negativas en los reales.
+
+
+  ![Resumen Verificar la pertenencia de un valor al dominio antes de evaluar asegura que la función esté matemáticamente definida y evita indeterminaciones](/static/img/nodos/verificacion-de-pertenencia-de-un-valor-al-dominio-antes-de-evaluar-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Evaluación de Funciones
 estado: publicado

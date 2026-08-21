@@ -1,93 +1,122 @@
 semantic_id: MAT.ALG.FUNC_CUADR_FORMAS.ELECCION_FORMA
-resumen_inicial: La elección de la forma más conveniente selecciona entre general, canónica o factorizada optimizando el trabajo según los datos disponibles.
-explicacion_simple: |
-  Dependiendo de los datos que te entregue un problema o de lo que te pidan calcular, conviene elegir la presentación estratégica de la función:
+resumen_inicial: La elección de la forma más conveniente de la función cuadrática selecciona estratégicamente entre la forma canónica $a(x - h)^2 + k$ (si se conoce el vértice), la forma factorizada $a(x - x_1)(x - x_2)$ (si se conocen los ceros) o la forma general $ax^2 + bx + c$ (si se conocen 3 puntos o el corte $Y$), optimizando la resolución.
+explicacion_simple: "![La elección de la forma más conveniente de la función cuadrática selecciona estratégicamente entre la forma canónica $a(x - h)^2 + k$ (si se conoce el vértice), la forma factorizada $a(x - x_1)(x - x_2)$ (si se conocen los ceros) o la forma general $ax^2 + bx + c$ (si se conocen 3 puntos o el corte $Y$), optimizando la resolución](/static/img/nodos/eleccion-de-la-forma-mas-conveniente-de-la-funcion-segun-la-informacion-disponible-intro.svg)\n\n\nPara encontrar la fórmula de una parábola según los datos que te da un problema, elige el camino más inteligente:\n\n1. **¿Te dan el Vértice $V(h, k)$?**\n   - **Usa la Forma Canónica:** $f(x) = a(x - h)^2 + k$.\n   - Reemplazas $h$ y $k$ de inmediato y solo usas el otro punto para hallar $a$.\n2. **¿Te dan los Ceros / Cortes con el Eje $X$ $(x_1, 0)$ y $(x_2, 0)$?**\n   - **Usa la Forma Factorizada:** $f(x) = a(x - x_1)(x - x_2)$.\n   - Reemplazas $x_1$ y $x_2$ de inmediato y usas el otro punto para hallar $a$.\n3. **¿Te dan\
+  \ 3 puntos cualesquiera o el corte con el eje $Y$ $(0, c)$?**\n   - **Usa la Forma General:** $f(x) = ax^2 + bx + c$.\n   - Planteas el sistema de ecuaciones para $a, b$ y $c$."
+explicacion_formal: "Sea un problema inverso de reconstrucción de la variedad cuadrática a partir de un conjunto de datos $\\mathcal{D}$. El **criterio de selección de representación mínima** opera según el tipo de datos:\n\n1. **Datos de Extremo Focal $\\mathcal{D} = \\{V(h, k), P(x_0, y_0)\\}$**:\n   - Modelo óptimo: $f(x) = a(x - h)^2 + k$.\n   - Grados de libertad restantes: $1$ ($a = \\frac{y_0 - k}{(x_0 - h)^2}$).\n2. **Datos de Ceros Reales $\\mathcal{D} = \\{(x_1, 0), (x_2, 0), P(x_0, y_0)\\}$**:\n   - Modelo óptimo: $f(x) = a(x - x_1)(x - x_2)$.\n   - Grados de libertad restantes: $1$ ($a = \\frac{y_0}{(x_0 - x_1)(x_0 - x_2)}$).\n3. **Datos de Muestreo Genérico $\\mathcal{D} = \\{P_1, P_2, P_3\\}$**:\n   - Modelo óptimo: $f(x) = ax^2 + bx + c$.\n   - Sistema lineal de Vandermonde $3 \\times 3$ regular."
+definiciones_clave: '- **Representación mínima**: Forma algebraica que fija la mayor cantidad de parámetros directamente a partir de los datos dados.
 
-  1. **Usas la FORMA CANÓNICA $f(x) = a(x - h)^2 + k$ si**:
-     - Te dan el **vértice $V(h, k)$** o el **máximo/mínimo**.
-     - Quieres hallar la altura máxima/mínima o el eje de simetría de inmediato.
-  2. **Usas la FORMA FACTORIZADA $f(x) = a(x - x_1)(x - x_2)$ si**:
-     - Te dan las **raíces o cortes con el eje X ($x_1, x_2$)**.
-     - Quieres encontrar los ceros de la función directamente.
-  3. **Usas la FORMA GENERAL $f(x) = ax^2 + bx + c$ si**:
-     - Conoces el **corte con el eje Y $(0, c)$** o tres puntos genéricos del plano.
-explicacion_formal: |
-  Sea el problema de modelamiento o análisis de una función cuadrática $f$. El **criterio de elección óptima de la forma funcional** selecciona la representación isomórfica que minimiza la complejidad operacional según la estructura de los datos iniciales $D$:
+  - **Problema inverso cuadrático**: Determinación de la función a partir de sus propiedades geométricas.'
+propiedades_relaciones: '- **Reducción de complejidad**: Usar la forma canónica o factorizada reduce un sistema de 3 ecuaciones con 3 incógnitas a una única ecuación lineal para $a$.
 
-  $$\text{Forma Óptima}(D) = \begin{cases} \text{Forma Canónica } a(x - h)^2 + k & \text{si } V(h, k) \in D \\ \text{Forma Factorizada } a(x - x_1)(x - x_2) & \text{si } Z(f) = \{x_1, x_2\} \subset D \\ \text{Forma General } ax^2 + bx + c & \text{si } (0, c) \in D \lor |D| = 3 \text{ puntos cartesiano} \end{cases}$$
-
-  **Matriz de conveniencia operativa:**
-  - Canónica $\implies$ Optimización, trayectorias máximas, transformaciones geométricas.
-  - Factorizada $\implies$ Estudio de ceros, intervalos de signo, intersecciones con el eje horizontal.
-  - General $\implies$ Sistemas de ecuaciones lineales $3 \times 3$, derivación e integración polinómica.
-definiciones_clave: |
-  - **Elección estratégica de la forma**: Selección consciente de la presentación matemática de la función cuadrática que reduce los pasos algebraicos según el contexto.
-propiedades_relaciones: |
-  - **Equivalencia tripartita completa**: Toda función cuadrática con $\Delta \ge 0$ puede transitar libremente entre sus tres representaciones (General, Canónica y Factorizada) mediante transformaciones equivalentes.
+  - **Unicidad de la parábola**: Tres condiciones geométricas independientes determinan de forma única a una parábola.'
 ejemplo_guiado:
-  enunciado: 'Un problema te informa que una parábola tiene su vértice en $V(3, -4)$ y pasa por el punto $(1, 0)$. ¿Qué forma conviene usar para hallar la ecuación de la función?'
+  enunciado: '![Ejemplo La elección de la forma más conveniente de la función cuadrática selecciona estratégicamente entre la forma canónica $a(x - h)^2 + k$ (si se conoce el vértice), la forma factorizada $a(x - x_1)(x - x_2)$ (si se conocen los ceros) o la forma general $ax^2 + bx + c$ (si se conocen 3 puntos o el corte $Y$), optimizando la resolución](/static/img/nodos/eleccion-de-la-forma-mas-conveniente-de-la-funcion-segun-la-informacion-disponible-ejemplos.svg)
+
+
+
+    Encuentra la ecuación de la parábola que tiene vértice en $V(3, -2)$ y pasa por el punto $(5, 6)$.'
   pasos:
-    - 'Paso 1: Analizar la información dada: el dato principal es el vértice $V(3, -4)$.'
-    - 'Paso 2: Elegir la forma conveniente: la **Forma Canónica** $f(x) = a(x - h)^2 + k$.'
-    - 'Paso 3: Reemplazar $h = 3$ y $k = -4$: $f(x) = a(x - 3)^2 - 4$.'
-    - 'Paso 4: Sustituir el punto $(1, 0)$ para despejar el parámetro $a$: $0 = a(1 - 3)^2 - 4 \implies 4a = 4 \implies a = 1$.'
+  - 'Paso 1: Seleccionar la forma más conveniente: Como conocemos el vértice $V(3, -2)$, la mejor opción es la **forma canónica** $f(x) = a(x - h)^2 + k$.'
+  - 'Paso 2: Sustituir las coordenadas del vértice ($h = 3, k = -2$):
+
+    $f(x) = a(x - 3)^2 - 2$.'
+  - 'Paso 3: Usar el punto de paso $(5, 6)$ para despejar el parámetro $a$:
+
+    $6 = a(5 - 3)^2 - 2 \implies 6 = a(2)^2 - 2 \implies 6 = 4a - 2$.'
+  - 'Paso 4: Despejar $a$:
+
+    $4a = 8 \implies a = 2$.'
+  - 'Paso 5: Conclusión: La ecuación de la función es $f(x) = 2(x - 3)^2 - 2$ (o en forma general $f(x) = 2x^2 - 12x + 16$).'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'Si un problema de física indica que un proyectil se lanza desde el suelo y toca tierra nuevamente en los segundos $t = 0$ y $t = 6$, ¿qué forma de la función cuadrática conviene utilizar?'
-    choices:
-      - {text: 'La forma factorizada $h(t) = a(t - 0)(t - 6)$', is_correct: true}
-      - {text: 'La forma general $h(t) = at^2 + bt + c$.', is_correct: false}
-      - {text: 'La forma canónica $h(t) = a(t - 3)^2 + 9$.', is_correct: false}
-      - {text: 'Una forma lineal $h(t) = mt + b$.', is_correct: false}
-    explanation: 'La alternativa correcta es ''La forma factorizada $h(t) = a(t - 0)(t - 6)$''. Al conocer las raíces (instantes de impacto en el suelo), la forma factorizada es la más directa.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Qué información específica permite escribir de forma directa la forma canónica de una función cuadrática?'
-    choices:
-      - {text: 'Las coordenadas del vértice $V(h, k)$ y un punto adicional', is_correct: true}
-      - {text: 'El corte con el eje Y únicamente.', is_correct: false}
-      - {text: 'El valor del discriminante únicamente.', is_correct: false}
-      - {text: 'El grado máximo de la variable.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Las coordenadas del vértice $V(h, k)$ y un punto adicional''. Con el vértice se arman $h$ y $k$, y con el punto se despeja $a$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: Si un problema te da los cortes con el eje X en x = -1 y x = 4, y el corte con el eje Y en (0, -8), ¿cuál forma es la más conveniente para empezar?
+  choices:
+  - text: La forma factorizada f(x) = a(x + 1)(x - 4)
+    is_correct: true
+  - text: La forma canónica f(x) = a(x - h)² + k
+    is_correct: false
+  - text: Un sistema 3x3 en forma general
+    is_correct: false
+  - text: Una ecuación lineal
+    is_correct: false
+  explanation: La alternativa correcta es 'La forma factorizada f(x) = a(x + 1)(x - 4)'. Al conocer los ceros, la forma factorizada fija las raíces de inmediato y solo requiere hallar $a$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuántos puntos no colineales se necesitan como mínimo para determinar de forma única una función cuadrática?
+  choices:
+  - text: 3 puntos (o el vértice y 1 punto adicional)
+    is_correct: true
+  - text: 2 puntos cualesquiera
+    is_correct: false
+  - text: 1 solo punto
+    is_correct: false
+  - text: 4 puntos
+    is_correct: false
+  explanation: La alternativa correcta es '3 puntos (o el vértice y 1 punto adicional)'. Una parábola vertical tiene 3 grados de libertad (a, b, c).
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Identificar los datos iniciales conocidos del problema (vértice, raíces, punto de corte en Y o puntos cartesiano).'
-  - 'Paso 2: Si el dato clave es el vértice $V(h, k)$, seleccionar la forma canónica $f(x) = a(x - h)^2 + k$.'
-  - 'Paso 3: Si los datos clave son las raíces $x_1, x_2$, seleccionar la forma factorizada $f(x) = a(x - x_1)(x - x_2)$.'
-  - 'Paso 4: Sustituir los valores conocidos y utilizar un punto adicional para calcular el valor del coeficiente $a$.'
-errores_correccion: |
-  - **Error común:** Forzar el uso de la forma general en problemas donde se entrega el vértice, generando sistemas de ecuaciones largos e innecesarios.
-  - **Cómo corregirlo:** Si tienes el vértice **USA LA FORMA CANÓNICA DE INMEDIATO**; te ahorrarás resolver sistemas algebraicos complejos.
+- 'Paso 1: Analizar los datos provistos en el enunciado (vértice, ceros o puntos genéricos).'
+- 'Paso 2: Si dan el vértice $V(h, k)$, seleccionar la forma canónica $f(x) = a(x - h)^2 + k$.'
+- 'Paso 3: Si dan los ceros $x_1, x_2$, seleccionar la forma factorizada $f(x) = a(x - x_1)(x - x_2)$.'
+- 'Paso 4: Si dan 3 puntos arbitrarios, plantear el sistema en la forma general $f(x) = ax^2 + bx + c$.'
+- 'Paso 5: Sustituir el punto adicional para despejar el valor del coeficiente $a$ y formular la ecuación final.'
+errores_correccion: '- **Error común:** Usar la forma general $ax^2 + bx + c$ cuando te dan el vértice, armando un sistema de 3 ecuaciones innecesario.
+
+  - **Cómo corregirlo:** Si tienes el vértice, **usa siempre la forma canónica $a(x - h)^2 + k$**, ¡se resuelve en un solo paso!'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Elección por datos de raíces.
-    alternativas:
-      - 'Forma factorizada f(x) = a(x + 1)(x - 4)'
-      - 'Forma general con c = 0'
-      - 'Forma canónica con V(0,0)'
-    respuesta: 'Forma factorizada f(x) = a(x + 1)(x - 4)'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Elección por datos de vértice.
-    alternativas:
-      - 'Forma canónica f(x) = a(x - 2)^2 + 5'
-      - 'Forma factorizada'
-      - 'Forma general directamente'
-    respuesta: 'Forma canónica f(x) = a(x - 2)^2 + 5'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Parábola a partir de ceros y punto'
+  enunciado: Halla la función con ceros en $x = 2$ y $x = 6$ que pasa por $(0, 24)$.
+  alternativas:
+  - f(x) = 2(x - 2)(x - 6)
+  - f(x) = (x - 2)(x - 6)
+  - f(x) = -2(x - 2)(x - 6)
+  - f(x) = 2(x + 2)(x + 6)
+  respuesta: f(x) = 2(x - 2)(x - 6)
+  solucion_pasos:
+  - 'Paso 1: $f(0) = a(-2)(-6) = 12a = 24 \implies a = 2 \implies f(x) = 2(x - 2)(x - 6)$.'
+- titulo: 'Ejemplo 2: Parábola a partir de vértice y origen'
+  enunciado: Una parábola tiene vértice en $(2, 8)$ y pasa por el origen $(0, 0)$. ¿Cuál es su fórmula?
+  alternativas:
+  - f(x) = -2(x - 2)^2 + 8
+  - f(x) = 2(x - 2)^2 + 8
+  - f(x) = -(x - 2)^2 + 8
+  - f(x) = -2(x + 2)^2 + 8
+  respuesta: f(x) = -2(x - 2)^2 + 8
+  solucion_pasos:
+  - 'Paso 1: $0 = a(-2)^2 + 8 \implies 4a = -8 \implies a = -2 \implies f(x) = -2(x - 2)^2 + 8$.'
+- titulo: 'Ejemplo 3: Elección de forma adecuada'
+  enunciado: Si un problema dice "la altura máxima es de 45 m a los 3 segundos", ¿qué forma conviene usar?
+  alternativas:
+  - Forma canónica h(t) = a(t - 3)^2 + 45
+  - Forma factorizada
+  - Forma general
+  - Forma lineal
+  respuesta: Forma canónica h(t) = a(t - 3)^2 + 45
+  solucion_pasos:
+  - 'Paso 1: La altura máxima y su tiempo corresponden directamente al vértice $V(3, 45)$.'
+- titulo: 'Ejemplo 4: Tres puntos simétricos'
+  enunciado: Si pasa por $(-1, 0)$, $(3, 0)$ y $(1, -8)$, ¿cuál es su ecuación factorizada?
+  alternativas:
+  - f(x) = 2(x + 1)(x - 3)
+  - f(x) = (x + 1)(x - 3)
+  - f(x) = -2(x + 1)(x - 3)
+  - f(x) = 2(x - 1)(x + 3)
+  respuesta: f(x) = 2(x + 1)(x - 3)
+  solucion_pasos:
+  - 'Paso 1: $-8 = a(1 + 1)(1 - 3) = a(2)(-2) = -4a \implies a = 2 \implies 2(x + 1)(x - 3)$.'
 errores_frecuentes:
-  - 'Usar la forma general planteando un sistema $3 \times 3$ en problemas donde el vértice ya está explícitamente dado.'
-  - 'El uso de la forma factorizada en funciones con discriminante negativo que no cortan al eje X en los reales.'
-  - 'La creencia de que las tres formas de la función cuadrática entregan resultados numéricos distintos al ser evaluadas en el mismo punto.'
-  - 'La falta de aprovechamiento del corte con el eje Y para fijar el valor de $c$ de forma instantánea en la forma general.'
-  - 'La falta de despeje del parámetro $a$ con un punto adicional tras reemplazar el vértice o las raíces.'
+- Elegir la forma general cuando se tienen datos directos de vértice o raíces.
+- Olvidar despejar el valor del parámetro a con el punto auxiliar.
+- Confundir la abscisa con la ordenada al sustituir puntos de paso.
 afirmaciones_verdaderas:
-  - 'La elección de la forma funcional depende de los datos conocidos: la canónica requiere el vértice $V(h, k)$, la factorizada requiere los ceros $x_1, x_2$ y la general usa tres puntos o el corte en Y.'
-  - 'Las tres formas de una misma función cuadrática (general, canónica y factorizada) son algebraicamente equivalentes y producen la misma gráfica cartesiana.'
-al_terminar_debes_poder: |
-  QUÉ: Elegir la forma funcional (canónica, factorizada o general) más eficiente según la información disponible.
-  CÓMO: Evaluar si se cuenta con vértice, raíces o puntos de corte, seleccionar la forma idónea y despejar $a$ con un punto adicional.
-fuente: 'Texto escolar MINEDUC — Álgebra / Función Cuadrática'
+- La forma canónica es óptima cuando se conoce el vértice V(h, k).
+- La forma factorizada es óptima cuando se conocen los ceros reales x₁ y x₂.
+al_terminar_debes_poder: '**QUÉ:** Elegir y formular la representación más conveniente de una función cuadrática.
+
+
+  **CÓMO:** Seleccionando la forma canónica, factorizada o general según los datos dados para minimizar el esfuerzo algebraico.
+
+
+  ![Resumen La elección de la forma más conveniente de la función cuadrática selecciona estratégicamente entre la forma canónica $a(x - h)^2 + k$ (si se conoce el vértice), la forma factorizada $a(x - x_1)(x - x_2)$ (si se conocen los ceros) o la forma general $ax^2 + bx + c$ (si se conocen 3 puntos o el corte $Y$), optimizando la resolución](/static/img/nodos/eleccion-de-la-forma-mas-conveniente-de-la-funcion-segun-la-informacion-disponible-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Formas de la Función Cuadrática
 estado: publicado

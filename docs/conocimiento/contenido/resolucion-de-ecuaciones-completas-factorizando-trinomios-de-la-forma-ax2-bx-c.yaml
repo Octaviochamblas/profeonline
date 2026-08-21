@@ -1,91 +1,134 @@
 semantic_id: MAT.ALG.EC_CUADR_RESOL_FACTOR.TRINOMIO_GENERAL
-resumen_inicial: La resolución por trinomio general $ax^2 + bx + c = 0$ (con $a \neq 1$) aplica el método de agrupación multiplicando y dividiendo por el coeficiente principal $a$.
-explicacion_simple: |
-  Cuando la ecuación cuadrática tiene un coeficiente $a \neq 1$ delante de $x^2$ (ejemplo $2x^2 + 7x + 3 = 0$):
+resumen_inicial: La resolución de trinomios cuadráticos generales $ax^2 + bx + c = 0$ ($a \neq 1$) mediante el método $ac$ consiste en descomponer el término lineal $bx = ux + vx$ tal que $u + v = b$ y $u \cdot v = a \cdot c$, factorizando luego por agrupación de términos.
+explicacion_simple: "![La resolución de trinomios cuadráticos generales $ax^2 + bx + c = 0$ ($a \\neq 1$) mediante el método $ac$ consiste en descomponer el término lineal $bx = ux + vx$ tal que $u + v = b$ y $u \\cdot v = a \\cdot c$, factorizando luego por agrupación de términos](/static/img/nodos/resolucion-de-ecuaciones-completas-factorizando-trinomios-de-la-forma-ax2-bx-c-intro.svg)\n\n\nCuando el término $x^2$ tiene un número adelante distinto de 1 (por ejemplo, **$2x^2 + 7x + 3 = 0$**):\n\n**El método \"ac\" en 4 pasos:**\n1. **Multiplica los extremos:** $a \\cdot c = 2 \\cdot 3 = 6$.\n2. **Busca dos números:** que multiplicados den $6$ y sumados den el número del medio ($7$). ¡Son el $6$ y el $1$!\n3. **Descompón el término del medio:** cambia $7x$ por $6x + 1x$:\n   $$2x^2 + 6x + 1x + 3 = 0$$\n4. **Factoriza por grupos:**\n   $$2x(x + 3) + 1(x + 3) = (2x + 1)(x + 3) = 0$$\n5. **Despejas cada paréntesis:** $x_1 = -\\frac{1}{2}$ y $x_2 = -3$."
+explicacion_formal: "Dada la ecuación cuadrática general $ax^2 + bx + c = 0$ con $a, b, c \\in \\mathbb{Z}$ y $a \\neq 1$:\n\n**Algoritmo de descomposición y agrupación (Método $ac$)**:\n1. Calcular el producto de los coeficientes extremos: $M = a \\cdot c$.\n2. Encontrar dos enteros $u, v \\in \\mathbb{Z}$ tales que:\n   $$\\begin{cases} u + v = b \\\\ u \\cdot v = a \\cdot c \\end{cases}$$\n3. Sustituir el término lineal $bx = ux + vx$ transformando el trinomio en un cuadrinomio:\n   $$ax^2 + ux + vx + c = 0$$\n4. Agrupar por pares y extraer factores comunes:\n   $$x(ax + u) + \\dots = (px + q)(rx + s) = 0$$\n5. Despejar las raíces lineales:\n   $$x_1 = -\\frac{q}{p}, \\quad x_2 = -\\frac{s}{r}$$"
+definiciones_clave: '- **Método ac**: Técnica de factorización para trinomios cuadráticos generales que reduce el problema a factor común por agrupación.
 
-  1. Multiplicas el coeficiente $a$ por la constante $c$: $a \cdot c = 2 \cdot 3 = 6$.
-  2. Buscas dos números que multiplicados den $6$ ($a \cdot c$) y sumados den $7$ ($b$): son $6$ y $1$.
-  3. Descompones el término del medio $7x$ como $6x + 1x$:
-     $$2x^2 + 6x + 1x + 3 = 0$$
-  4. Factorizas por agrupación:
-     $$2x(x + 3) + 1(x + 3) = 0 \implies (2x + 1)(x + 3) = 0$$
-  5. Despejas las soluciones igualando cada factor a cero: $x_1 = -\frac{1}{2}$ y $x_2 = -3$.
-explicacion_formal: |
-  Sea el polinomio cuadrático no mónico $P(x) = ax^2 + bx + c$ con $a \neq 1$ y $a \neq 0$. El **método de factorización por agrupación (o método $a \cdot c$)** descompone el coeficiente lineal $b = m + n$ mediante un par de enteros $(m, n)$ que satisfacen:
+  - **Cuadrinomio cuadrático equivalente**: Expresión $ax^2 + ux + vx + c$ generada tras desglosar el término central.'
+propiedades_relaciones: '- **Existencia de enteros**: El método $ac$ funciona con coeficientes enteros si y solo si el discriminante $\Delta = b^2 - 4ac$ es un cuadrado perfecto en $\mathbb{Z}$.
 
-  $$\begin{cases} m \cdot n = a \cdot c \\ m + n = b \end{cases}$$
-
-  **Reestructuración del trinomio:**
-  $$ax^2 + bx + c = ax^2 + mx + nx + c = 0$$
-  Aplicando factorización por agrupación en pares de términos se obtiene el producto $(px + q)(rx + s) = 0$, cuyas raíces reales se determinan por $x = -\frac{q}{p}$ y $x = -\frac{s}{r}$.
-definiciones_clave: |
-  - **Trinomio general no mónico**: Polinomio de segundo grado cuyo coeficiente principal cuadrático es distinto de 1 ($a \neq 1$).
-propiedades_relaciones: |
-  - **Método de la Tijera o Aspa Simple**: Técnica gráfica equivalente para descomponer el término cuadrático $ax^2 = (a_1 x)(a_2 x)$ y el constante $c = (c_1)(c_2)$ de modo que la suma cruzada $a_1 c_2 + a_2 c_1 = b$.
+  - **Equivalencia con aspa simple**: Equivale geométricamente y algebraicamente al método del aspa simple escolar.'
 ejemplo_guiado:
-  enunciado: 'Resuelve la ecuación cuadrática no mónica $3x^2 - 5x - 2 = 0$ utilizando el método de agrupación $a \cdot c$.'
+  enunciado: '![Ejemplo La resolución de trinomios cuadráticos generales $ax^2 + bx + c = 0$ ($a \neq 1$) mediante el método $ac$ consiste en descomponer el término lineal $bx = ux + vx$ tal que $u + v = b$ y $u \cdot v = a \cdot c$, factorizando luego por agrupación de términos](/static/img/nodos/resolucion-de-ecuaciones-completas-factorizando-trinomios-de-la-forma-ax2-bx-c-ejemplos.svg)
+
+
+
+    Resuelve la ecuación cuadrática $3x^2 - 11x - 4 = 0$ aplicando el método de descomposición $ac$.'
   pasos:
-    - 'Paso 1: Multiplicar $a \cdot c = 3 \cdot (-2) = -6$.'
-    - 'Paso 2: Buscar dos números que multiplicados den $-6$ y sumados den $-5$: los números son $-6$ y $+1$.'
-    - 'Paso 3: Reescribir el término lineal $-5x$ como $-6x + 1x$: $3x^2 - 6x + 1x - 2 = 0$.'
-    - 'Paso 4: Factorizar por agrupación: $3x(x - 2) + 1(x - 2) = (3x + 1)(x - 2) = 0$. Soluciones: $x_1 = -\frac{1}{3}$ y $x_2 = 2$.'
+  - 'Paso 1: Calcular el producto de los extremos: $a \cdot c = 3 \cdot (-4) = -12$.'
+  - 'Paso 2: Buscar dos números $u$ y $v$ tales que $u \cdot v = -12$ y $u + v = -11$.
+
+    - Los números son $-12$ y $+1$, pues $(-12)(1) = -12$ y $-12 + 1 = -11$.'
+  - 'Paso 3: Descomponer el término central $-11x$ en $-12x + 1x$:
+
+    $3x^2 - 12x + x - 4 = 0$.'
+  - 'Paso 4: Factorizar por pares:
+
+    $3x(x - 4) + 1(x - 4) = 0$.'
+  - 'Paso 5: Extraer el binomio común $(x - 4)$:
+
+    $(3x + 1)(x - 4) = 0$.'
+  - 'Paso 6: Igualar a cero cada factor:
+
+    $3x + 1 = 0 \implies x_1 = -\frac{1}{3}$, y $x - 4 = 0 \implies x_2 = 4$.
+
+    - Conjunto solución: $\mathcal{S} = \left\{ -\frac{1}{3}, 4 \right\}$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: 'En el método $a \cdot c$ para factorizar $ax^2 + bx + c = 0$, ¿qué producto deben tener los dos números que descomponen a $b$?'
-    choices:
-      - {text: 'Su producto debe ser igual al resultado de $a \cdot c$.', is_correct: true}
-      - {text: 'Su producto debe ser igual al coeficiente lineal $b$.', is_correct: false}
-      - {text: 'Su producto debe ser igual a 1.', is_correct: false}
-      - {text: 'Su producto debe ser siempre negativo.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Su producto debe ser igual al resultado de $a \cdot c$.''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: '¿Cuáles son las soluciones reales de la ecuación $2x^2 + 5x + 3 = 0$?'
-    choices:
-      - {text: '$x_1 = -1$ y $x_2 = -\frac{3}{2}$', is_correct: true}
-      - {text: '$x_1 = 1$ y $x_2 = \frac{3}{2}$', is_correct: false}
-      - {text: '$x_1 = -2$ y $x_2 = -3$', is_correct: false}
-      - {text: '$x_1 = 0$ y $x_2 = 5$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$x_1 = -1$ y $x_2 = -\frac{3}{2}$''. Al factorizar $(x+1)(2x+3)=0$, se obtienen $-1$ y $-3/2$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: En la ecuación $2x^2 + 7x + 3 = 0$, ¿cuál es el producto a · c y qué pareja de números descompone al término lineal 7x?
+  choices:
+  - text: a · c = 6, y los numeros son 6 y 1.
+    is_correct: true
+  - text: a · c = 3, y los numeros son 2 y 1.
+    is_correct: false
+  - text: a · c = 6, y los numeros son 2 y 3.
+    is_correct: false
+  - text: a · c = 7, y los numeros son 4 y 3.
+    is_correct: false
+  explanation: La alternativa correcta es 'a · c = 6, y los numeros son 6 y 1.'. $2 \cdot 3 = 6$, y $6 + 1 = 7$, permitiendo desglosar $7x = 6x + 1x$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Al resolver $(5x - 2)(x + 3) = 0$, ¿cuáles son las dos soluciones de la ecuación?
+  choices:
+  - text: x = 2/5 y x = -3
+    is_correct: true
+  - text: x = -2/5 y x = 3
+    is_correct: false
+  - text: x = 5/2 y x = -3
+    is_correct: false
+  - text: x = 2 y x = -3
+    is_correct: false
+  explanation: La alternativa correcta es 'x = 2/5 y x = -3'. $5x - 2 = 0 \implies x = 2/5$ y $x + 3 = 0 \implies x = -3$.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Calcular el producto del coeficiente cuadrático por el término independiente ($a \cdot c$).'
-  - 'Paso 2: Encontrar dos números $m$ y $n$ que multiplicados resulten $a \cdot c$ y sumados resulten $b$.'
-  - 'Paso 3: Descomponer el término lineal $bx$ en $mx + nx$ y agrupar de a dos términos.'
-  - 'Paso 4: Factorizar el factor común binomial $(px + q)(rx + s) = 0$ e igualar a cero cada paréntesis.'
-errores_correccion: |
-  - **Error común:** Buscar dos números que multiplicados den solo $c$ (en vez de $a \cdot c$) cuando el coeficiente $a \neq 1$.
-  - **Cómo corregirlo:** Si $a \neq 1$, **SIEMPRE MULTIPLICA $a \cdot c$** para hallar los números que descomponen el término lineal.
+- 'Paso 1: Multiplicar el coeficiente principal $a$ por el término independiente $c$ para obtener el producto objetivo $ac$.'
+- 'Paso 2: Buscar dos números $u$ y $v$ tales que $u \cdot v = ac$ y $u + v = b$.'
+- 'Paso 3: Reescribir la ecuación sustituyendo $bx$ por $ux + vx$.'
+- 'Paso 4: Factorizar por agrupación de términos para obtener la forma $(px + q)(rx + s) = 0$.'
+- 'Paso 5: Despejar cada factor lineal para hallar las dos raíces $x_1 = -q/p$ y $x_2 = -s/r$.'
+errores_correccion: '- **Error común:** Buscar dos números que multipliquen solo a $c$ en vez de al producto $a \cdot c$.
+
+  - **Cómo corregirlo:** Cuando $a \neq 1$, los dos números deben **multiplicar obligatoriamente a $a \cdot c$**, no solamente a $c$.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Trinomio no mónico positivo.
-    alternativas:
-      - '$S = \{-2, -1/3\}$'
-      - '$S = \{2, 1/3\}$'
-      - '$S = \{-1, -2/3\}$'
-    respuesta: '$S = \{-2, -1/3\}$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Trinomio con signos mixtos.
-    alternativas:
-      - '$S = \{3, -1/2\}$'
-      - '$S = \{-3, 1/2\}$'
-      - '$S = \{0, 3\}$'
-    respuesta: '$S = \{3, -1/2\}$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Coeficiente principal a = 2'
+  enunciado: Resuelve $2x^2 + 5x + 2 = 0$.
+  alternativas:
+  - x = -1/2 y x = -2
+  - x = 1/2 y x = 2
+  - x = -2 y x = -1
+  - x = -1/2 y x = 2
+  respuesta: x = -1/2 y x = -2
+  solucion_pasos:
+  - 'Paso 1: $ac = 4, b = 5 \implies 4$ y $1$.'
+  - 'Paso 2: $2x^2 + 4x + x + 2 = 2x(x + 2) + 1(x + 2) = (2x + 1)(x + 2) = 0$.'
+  - 'Paso 3: $x = -1/2 \lor x = -2$.'
+- titulo: 'Ejemplo 2: Coeficiente con signo negativo en c'
+  enunciado: Resuelve $3x^2 - 2x - 5 = 0$.
+  alternativas:
+  - x = 5/3 y x = -1
+  - x = -5/3 y x = 1
+  - x = 5/3 y x = 1
+  - x = -5/3 y x = -1
+  respuesta: x = 5/3 y x = -1
+  solucion_pasos:
+  - 'Paso 1: $ac = -15, b = -2 \implies -5$ y $3$.'
+  - 'Paso 2: $3x^2 - 5x + 3x - 5 = x(3x - 5) + 1(3x - 5) = (3x - 5)(x + 1) = 0$.'
+  - 'Paso 3: $x = 5/3 \lor x = -1$.'
+- titulo: 'Ejemplo 3: Aspa con coeficientes mayores'
+  enunciado: Resuelve $6x^2 - 7x + 2 = 0$.
+  alternativas:
+  - x = 1/2 y x = 2/3
+  - x = -1/2 y x = -2/3
+  - x = 1/3 y x = 1/2
+  - x = 2 y x = 3
+  respuesta: x = 1/2 y x = 2/3
+  solucion_pasos:
+  - 'Paso 1: $ac = 12, b = -7 \implies -3$ y $-4$.'
+  - 'Paso 2: $6x^2 - 3x - 4x + 2 = 3x(2x - 1) - 2(2x - 1) = (3x - 2)(2x - 1) = 0$.'
+  - 'Paso 3: $x = 2/3 \lor x = 1/2$.'
+- titulo: 'Ejemplo 4: Trinomio simplificable previo'
+  enunciado: Resuelve $4x^2 + 14x + 6 = 0$ simplificando por 2 primero.
+  alternativas:
+  - x = -1/2 y x = -3
+  - x = 1/2 y x = 3
+  - x = -1 y x = -3
+  - x = -2 y x = -3/2
+  respuesta: x = -1/2 y x = -3
+  solucion_pasos:
+  - 'Paso 1: Dividir por 2: $2x^2 + 7x + 3 = 0 \implies (2x + 1)(x + 3) = 0 \implies x = -1/2 \lor x = -3$.'
 errores_frecuentes:
-  - 'Para factorizar el trinomio no mónico $2x^2 + 7x + 3 = 0$, basta con buscar dos números que multiplicados den $3$ y sumados den $7$.'
-  - 'El método de agrupación $a \cdot c$ no es aplicable cuando el término independiente $c$ es un número negativo.'
-  - 'En la ecuación $(2x + 3)(x - 4) = 0$, la solución correspondiente al primer paréntesis es el número $x = 3$.'
-  - 'Dividir el coeficiente cuadrático $a$ por 2 es un requisito indispensable antes de iniciar la técnica del aspa simple.'
-  - 'Toda ecuación cuadrática no mónica de coeficientes enteros admite raíces enteras o fraccionarias racionales.'
+- Olvidar multiplicar a por c al buscar la pareja de números.
+- Cometer errores de signos en la factorización por agrupación.
+- Despejar incorrectamente la raíz fraccionaria px + q = 0.
 afirmaciones_verdaderas:
-  - 'El método $a \cdot c$ para trinomios no mónicos $ax^2 + bx + c = 0$ encuentra dos números cuyo producto sea $a \cdot c$ y cuya suma sea $b$ para descomponer $bx$ por agrupación.'
-  - 'Al igualar a cero el factor binomial $(px + q) = 0$, la solución correspondiente es la fracción $x = -\frac{q}{p}$.'
-al_terminar_debes_poder: |
-  QUÉ: Resolver ecuaciones cuadráticas no mónicas $ax^2 + bx + c = 0$ mediante el método de agrupación $a \cdot c$ o aspa simple.
-  CÓMO: Calcular $a \cdot c$, descomponer $bx = mx + nx$, agrupar términos, extraer binomio común e igualar factores a cero.
-fuente: 'Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado'
+- El método ac descompone el término central bx en dos sumandos cuyo producto es a · c.
+- La factorización por agrupación transforma el trinomio general en el producto de dos binomios lineales.
+al_terminar_debes_poder: '**QUÉ:** Resolver ecuaciones cuadráticas completas generales ax² + bx + c = 0 mediante el método ac.
+
+
+  **CÓMO:** Desglosando el término central bx = ux + vx con u · v = ac y factorizando por agrupación de términos.
+
+
+  ![Resumen La resolución de trinomios cuadráticos generales $ax^2 + bx + c = 0$ ($a \neq 1$) mediante el método $ac$ consiste en descomponer el término lineal $bx = ux + vx$ tal que $u + v = b$ y $u \cdot v = a \cdot c$, factorizando luego por agrupación de términos](/static/img/nodos/resolucion-de-ecuaciones-completas-factorizando-trinomios-de-la-forma-ax2-bx-c-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra / Ecuaciones de Segundo Grado por Factorización
 estado: publicado

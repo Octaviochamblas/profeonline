@@ -1,87 +1,135 @@
 semantic_id: MAT.ALG.FUNCION_TIPOS_INVERSA.CONDICION_INVERTIBILIDAD
-resumen_inicial: El reconocimiento de la condición de invertibilidad establece que una función admite inversa si y solo si es biyectiva en los conjuntos considerados.
-explicacion_simple: |
-  Para saber si una función **TIENE INVERSA** (es invertible):
+resumen_inicial: La condición necesaria y suficiente para que una función admita función inversa es que sea biyectiva (inyectiva y sobreyectiva).
+explicacion_simple: '![La condición necesaria y suficiente para que una función admita función inversa es que sea biyectiva (inyectiva y sobreyectiva)](/static/img/nodos/reconocimiento-de-condicion-de-invertibilidad-de-una-funcion-intro.svg)
 
-  1. Debe ser **inyectiva**: No puede haber dos entradas distintas con la misma salida (supera la prueba de la línea horizontal).
-  2. Debe ser **sobreyectiva**: Su recorrido debe cubrir todo el codominio.
-  3. Si no es biyectiva originalmente (como $f(x) = x^2$), puedes **acotar el dominio** (por ejemplo a $x \ge 0$) para forzar a que sea invertible.
-explicacion_formal: |
-  Sea $f: A \to B$ una función real de variable real.
 
-  **Teorema fundamental de invertibilidad:**
-  $$f \text{ admite función inversa } f^{-1}: B \to A \iff f \text{ es biyectiva}$$
 
-  **Estrategia de acotamiento de dominio (Restricción):**
-  Si $f: D \to \mathbb{R}$ no es inyectiva en $D$, se selecciona un subconjunto $A \subset D$ donde $f|_A$ sea estrictamente mónotona (creciente o decreciente), garantizando la existencia de $(f|_A)^{-1}: \text{Rec}(f|_A) \to A$.
-definiciones_clave: |
-  - **Invertibilidad de una función**: Propiedad algebraica y geométrica que permite definir la función inversa $f^{-1}$ en todo el recorrido.
-propiedades_relaciones: |
-  - **Prueba de la línea horizontal**: Una función es invertible si y solo si toda línea horizontal intersecta a su gráfica en exactamente un punto.
+  Para que una función tenga inversa $f^{-1}$:
+
+  1. **Debe ser inyectiva (uno a uno):** Si dos entradas tuvieran la misma salida (como en $x^2$), al intentar regresar, ¡la máquina no sabría a cuál de los dos números volver!
+
+  2. **Debe ser sobreyectiva (sobre todo $B$):** Si sobrara algún número en la salida, no tendría de dónde regresar.
+
+
+  Por eso, la regla de oro es: **Una función es invertible si y solo si es BIYECTIVA**.'
+explicacion_formal: '**Teorema Fundamental de Invertibilidad:**
+
+  Una función $f: A \to B$ admite una función inversa $f^{-1}: B \to A$ si y solo si $f$ es **biyectiva**:
+
+  $$\exists f^{-1}: B \to A \Longleftrightarrow f \text{ es inyectiva } \land \text{ sobreyectiva}$$
+
+
+  **Justificación lógica de las condiciones:**
+
+  - **Inyectividad $\implies$ Buena definición de $f^{-1}$**: Asegura que a cada $y \in B$ le corresponda **a lo más una** preimagen $x$ (evita la multivaluación).
+
+  - **Sobreyectividad $\implies$ Dominio completo de $f^{-1}$**: Asegura que a cada $y \in B$ le corresponda **al menos una** preimagen $x$ (evita preimágenes inexistentes en $B$).'
+definiciones_clave: '- **Invertibilidad**: Capacidad de una función de poseer una inversa bien definida.
+
+  - **Buena definición funcional**: Exigencia de que cada elemento del dominio tenga exactamente una imagen.'
+propiedades_relaciones: '- **Invertibilidad por tramos / restricción**: Funciones no invertibles en $\mathbb{R}$ (como $x^2$, $\sin(x)$) se vuelven invertibles al restringir su dominio a un intervalo monótono.
+
+  - **Unicidad de la inversa**: Si una función es invertible, su función inversa $f^{-1}$ es única.'
 ejemplo_guiado:
-  enunciado: 'Explica por qué $f(x) = x^2$ definida de $\mathbb{R} \to \mathbb{R}$ no es invertible y propone una restricción de dominio para hacerla invertible.'
+  enunciado: '![Ejemplo La condición necesaria y suficiente para que una función admita función inversa es que sea biyectiva (inyectiva y sobreyectiva)](/static/img/nodos/reconocimiento-de-condicion-de-invertibilidad-de-una-funcion-ejemplos.svg)
+
+
+
+    Determina si la función $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = x^2 - 6x + 8$ es invertible en $\mathbb{R}$, y en caso negativo indica cómo restringir su dominio para hacerla invertible.'
   pasos:
-    - 'Paso 1: $f(x) = x^2$ en $\mathbb{R}$ no es inyectiva porque $f(2) = 4$ y $f(-2) = 4$. Tampoco es sobreyectiva porque su recorrido $[0, +\infty[$ no cubre $\mathbb{R}$.'
-    - 'Paso 2: Acotar el dominio a los reales no negativos: $A = [0, +\infty[$.'
-    - 'Paso 3: Redefinir el codominio al recorrido real: $B = [0, +\infty[$.'
-    - 'Paso 4: Concluir que $g: [0, +\infty[ \to [0, +\infty[$ con $g(x) = x^2$ es biyectiva e invertible con $g^{-1}(x) = \sqrt{x}$.'
+  - 'Paso 1: Analizar la inyectividad: es una parábola con vértice en $x_v = -\frac{-6}{2(1)} = 3$.'
+  - 'Paso 2: Como es simétrica respecto a $x = 3$, por ejemplo $f(2) = 0$ y $f(4) = 0$ ($2 \neq 4$), no es inyectiva en $\mathbb{R}$.'
+  - 'Paso 3: Como no es inyectiva, no es biyectiva en $\mathbb{R}$ y por ende NO es invertible en $\mathbb{R}$.'
+  - 'Paso 4: Para hacerla invertible, se restringe el dominio a $[3, +\infty[$ (o $]-\infty, 3]$) y el codominio a su recorrido $[-1, +\infty[$.'
 checkpoints:
-  - placement: after_explicacion_formal
-    question: '¿Qué condición necesaria y suficiente garantiza que una función sea invertible?'
-    choices:
-      - {text: 'Que la función sea biyectiva en sus conjuntos de definición.', is_correct: true}
-      - {text: 'Que la función sea siempre positiva.', is_correct: false}
-      - {text: 'Que su gráfica pase por el punto $(0,0)$.', is_correct: false}
-      - {text: 'Que sea una función polinómica de grado 3.', is_correct: false}
-    explanation: 'La alternativa correcta es ''Que la función sea biyectiva en sus conjuntos de definición.''.'
-    reinforcement_section: Explicación formal
-  - placement: after_ejemplo_guiado
-    question: 'Al acotar el dominio de $f(x) = x^2$ a $[0, +\infty[$, ¿cuál es su función inversa resultante?'
-    choices:
-      - {text: '$f^{-1}(x) = \sqrt{x}$', is_correct: true}
-      - {text: '$f^{-1}(x) = -\sqrt{x}$', is_correct: false}
-      - {text: '$f^{-1}(x) = 1/x^2$', is_correct: false}
-      - {text: '$f^{-1}(x) = x^2$', is_correct: false}
-    explanation: 'La alternativa correcta es ''$f^{-1}(x) = \sqrt{x}$''. Para $x \ge 0$, la inversa de $y = x^2$ es $x = \sqrt{y}$.'
-    reinforcement_section: Ejemplo guiado
+- placement: after_explicacion_formal
+  question: ¿Cuál es la condición necesaria y suficiente para que una función sea invertible?
+  choices:
+  - text: Que sea biyectiva (inyectiva y sobreyectiva simultaneamente).
+    is_correct: true
+  - text: Que sea continua en todo su dominio.
+    is_correct: false
+  - text: Que pase por el origen de coordenadas.
+    is_correct: false
+  - text: Que su derivada sea positiva.
+    is_correct: false
+  explanation: La alternativa correcta es 'Que sea biyectiva (inyectiva y sobreyectiva simultaneamente).'.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Por qué la función constante $f(x) = 8$ NO es invertible?
+  choices:
+  - text: Porque todas las preimagenes tienen la misma imagen y = 8 (falla inyectividad y sobreyectividad).
+    is_correct: true
+  - text: Porque es una linea recta.
+    is_correct: false
+  - text: Porque no tiene pendiente.
+    is_correct: false
+  - text: Porque no corta al eje X.
+    is_correct: false
+  explanation: La alternativa correcta es 'Porque todas las preimagenes tienen la misma imagen y = 8 (falla inyectividad y sobreyectividad).'.
+  reinforcement_section: Ejemplo guiado
 procedimiento:
-  - 'Paso 1: Evaluar la inyectividad de la función mediante la prueba de la línea horizontal o monotonía.'
-  - 'Paso 2: Evaluar la sobreyectividad verificando que el recorrido sea igual al codominio.'
-  - 'Paso 3: Si no es biyectiva, restringir el dominio a un intervalo monótono y el codominio al recorrido.'
-  - 'Paso 4: Declarar la condición de invertibilidad y calcular la función inversa en el dominio acotado.'
-errores_correccion: |
-  - **Error común:** Afirmar que las funciones cuadráticas como $f(x) = x^2$ "no tienen inversa nunca".
-  - **Cómo corregirlo:** SÍ tienen inversa cuando se **RESTRINGE EL DOMINIO** (por ejemplo a $x \ge 0$, dando $f^{-1}(x) = \sqrt{x}$).
+- 'Paso 1: Evaluar la inyectividad de la función en su dominio mediante álgebra o la prueba de la recta horizontal.'
+- 'Paso 2: Evaluar la sobreyectividad verificando que $\text{Rec}(f) = B$.'
+- 'Paso 3: Si cumple ambas, la función es invertible.'
+- 'Paso 4: Si no cumple alguna, proponer restricciones de dominio y codominio para lograr la biyectividad e invertibilidad.'
+errores_correccion: '- **Error común:** Intentar calcular la inversa algebraica de una función no inyectiva sin restringir su dominio.
+
+  - **Cómo corregirlo:** Antes de despejar, **verifica siempre la biyectividad**; si no es biyectiva, la fórmula resultante no será una función válida.'
 ejemplos:
-  - titulo: Ejemplo 1
-    enunciado: Demostración básica de función inversa.
-    alternativas:
-      - '$1$'
-      - '$0$'
-      - '$-1$'
-    respuesta: '$1$'
-    solucion_pasos:
-      - Pasos de solución.
-  - titulo: Ejemplo 2
-    enunciado: Demostración algebraica de función inversa.
-    alternativas:
-      - '$x$'
-      - '$x^2$'
-      - '$1$'
-    respuesta: '$x$'
-    solucion_pasos:
-      - Pasos de solución.
+- titulo: 'Ejemplo 1: Función afín'
+  enunciado: '¿Es invertible $f: \mathbb{R} \to \mathbb{R}$ con $f(x) = 7x - 2$?'
+  alternativas:
+  - Sí, porque toda función afín con m != 0 es biyectiva en R
+  - No, porque tiene intercepto negativo
+  - Solo para números positivos
+  - Solo en el origen
+  respuesta: Sí, porque toda función afín con m != 0 es biyectiva en R
+  solucion_pasos:
+  - 'Paso 1: $m = 7 \neq 0 \implies$ es biyectiva en $\mathbb{R} \implies$ es invertible.'
+- titulo: 'Ejemplo 2: Función valor absoluto'
+  enunciado: '¿Es invertible $g: \mathbb{R} \to \mathbb{R}$ con $g(x) = |x|$?'
+  alternativas:
+  - No, porque no es inyectiva en R
+  - Sí, porque es positiva
+  - Sí, porque su inversa es -x
+  - Solo para pares
+  respuesta: No, porque no es inyectiva en R
+  solucion_pasos:
+  - 'Paso 1: $g(-3) = g(3) = 3$, al fallar la inyectividad no es invertible en $\mathbb{R}$.'
+- titulo: 'Ejemplo 3: Restricción para raíz cuadrada'
+  enunciado: Para que $f(x) = x^2$ sea invertible con inversa $f^{-1}(x) = \sqrt{x}$, ¿cómo debe definirse?
+  alternativas:
+  - 'f: [0, +inf[ -> [0, +inf['
+  - 'f: R -> R'
+  - 'f: R -> [0, +inf['
+  - 'f: ]-inf, 0] -> R'
+  respuesta: 'f: [0, +inf[ -> [0, +inf['
+  solucion_pasos:
+  - 'Paso 1: Restringiendo dominio y codominio a $[0, +\infty[$ se vuelve biyectiva.'
+- titulo: 'Ejemplo 4: Función cúbica'
+  enunciado: '¿Es invertible $h: \mathbb{R} \to \mathbb{R}$ con $h(x) = x^3 + 1$?'
+  alternativas:
+  - Sí, es biyectiva en R y su inversa es cuberoot(x - 1)
+  - No, porque es de grado 3
+  - No, porque está trasladada
+  - Solo en [0, 1]
+  respuesta: Sí, es biyectiva en R y su inversa es cuberoot(x - 1)
+  solucion_pasos:
+  - 'Paso 1: Las funciones cúbicas puras son biyectivas en $\mathbb{R}$ y por ende invertibles.'
 errores_frecuentes:
-  - 'Una función real es siempre invertible sin importar si es inyectiva o sobreyectiva.'
-  - 'La función cuadrática $f(x) = x^2$ definida en todo $\mathbb{R}$ es una función invertible sin restricciones.'
-  - 'Restringir el dominio de una función altera la fórmula funcional convirtiéndola en una recta horizontal.'
-  - 'El criterio de la línea vertical permite evaluar si una función es invertible.'
-  - 'Una función afín constante $f(x) = 5$ posee una función inversa lineal bien definida.'
+- Intentar invertir funciones que no son inyectivas.
+- Olvidar restringir el codominio al recorrido.
+- Asumir que todas las funciones con fórmula tienen inversa.
 afirmaciones_verdaderas:
-  - 'Una función $f$ admite función inversa si y solo si es biyectiva (inyectiva y sobreyectiva a la vez).'
-  - 'Si una función no es invertible en su dominio original, se puede restringir dicho dominio a un intervalo monótono para garantizar su invertibilidad.'
-al_terminar_debes_poder: |
-  QUÉ: Reconocer las condiciones requeridas para que una función sea invertible y acotar dominios cuando sea necesario.
-  CÓMO: Verificar biyectividad, aplicar la prueba de la línea horizontal y restringir dominios a tramos monótonos.
-fuente: 'Texto escolar MINEDUC — Álgebra / Tipos de Funciones y Función Inversa'
+- Una función posee inversa si y solo si es biyectiva en los conjuntos considerados.
+- Restringir el dominio a un intervalo estrictamente monótono permite construir la inversa local de una función.
+al_terminar_debes_poder: '**QUÉ:** Reconocer y justificar las condiciones de invertibilidad de funciones reales.
+
+
+  **CÓMO:** Verificando la biyectividad (inyectividad y sobreyectividad) o determinando las restricciones de dominio requeridas.
+
+
+  ![Resumen La condición necesaria y suficiente para que una función admita función inversa es que sea biyectiva (inyectiva y sobreyectiva)](/static/img/nodos/reconocimiento-de-condicion-de-invertibilidad-de-una-funcion-resumen.svg)'
+fuente: Texto escolar MINEDUC — Álgebra y Funciones / Tipos de Funciones y Función Inversa
 estado: publicado
