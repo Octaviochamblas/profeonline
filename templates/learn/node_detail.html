@@ -138,6 +138,53 @@
   line-height: 1.55;
 }
 
+/* ── Complemento didáctico / Callout destacado ─────────────────────── */
+.resource-view__content blockquote {
+  position: relative;
+  margin: 1.5rem 0 1rem;
+  padding: 1.15rem 1.45rem;
+  background: linear-gradient(135deg, #fffdfa 0%, #fef3c7 40%, #fffbeb 100%);
+  border: 1.5px solid #fde68a;
+  border-left: 5px solid #d97706;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.08);
+  font-style: normal;
+  color: #451a03;
+  line-height: 1.65;
+  font-size: 0.96rem;
+}
+
+.resource-view__content blockquote p {
+  margin: 0;
+  color: #451a03;
+}
+
+.resource-view__content blockquote p + p {
+  margin-top: 0.55rem;
+}
+
+.resource-view__content blockquote strong:first-of-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #78350f;
+  font-weight: 800;
+  font-size: 0.88rem;
+  background: #fde68a;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+  margin-right: 0.45rem;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 3px rgba(180, 83, 9, 0.15);
+  vertical-align: middle;
+}
+
+.resource-view__content blockquote strong:first-of-type::before {
+  content: "💡";
+  font-size: 0.95rem;
+}
+
 /* ── Objetivo / Introducción ──────────────────────────────────────── */
 .learn-objetivo-card__label,
 .learn-resumen-card__label {
@@ -727,7 +774,7 @@
         <section class="learn-section learn-text-card node-rail-item__card">
             <h2 class="learn-section__title">Procedimiento</h2>
             <ul class="learn-procedure">
-                {% for paso in content.procedimiento %}
+                {% for paso in content.procedimiento|to_steps %}
                 <li class="learn-procedure__step">{{ paso|bold_step }}</li>
                 {% endfor %}
             </ul>
@@ -773,6 +820,9 @@
                                 {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
                             </ol>
                             {% endif %}
+                            {% if ej.explicacion %}
+                            <div class="learn-exercise__explanation" style="margin-top:.5rem">{{ ej.explicacion|markdown_inline }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -787,7 +837,7 @@
                     <div class="learn-ejemplo-card__body">
                         <ul class="learn-exercise__mc">
                             {% for alt in ej.alternativas %}
-                            <li><button type="button" class="ex-choice" data-value="{{ alt }}">{{ alt|markdown_inline }}</button></li>
+                            <li><button type="button" class="ex-choice" data-value="{{ alt.text|default:alt }}">{{ alt.text|default:alt|markdown_inline }}</button></li>
                             {% endfor %}
                         </ul>
                         <div class="learn-exercise__feedback" hidden>
@@ -796,6 +846,9 @@
                             <ol class="learn-procedure" style="margin-top:.5rem">
                                 {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
                             </ol>
+                            {% endif %}
+                            {% if ej.explicacion %}
+                            <div class="learn-exercise__explanation" style="margin-top:.5rem">{{ ej.explicacion|markdown_inline }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -816,6 +869,9 @@
                             <ol class="learn-procedure" style="margin-top:.5rem">
                                 {% for paso in ej.solucion_pasos %}<li class="learn-procedure__step">{{ paso|markdown_inline }}</li>{% endfor %}
                             </ol>
+                            {% endif %}
+                            {% if ej.explicacion %}
+                            <div class="learn-exercise__explanation" style="margin-top:.5rem">{{ ej.explicacion|markdown_inline }}</div>
                             {% endif %}
                         </div>
                     </div>

@@ -1,0 +1,108 @@
+semantic_id: MAT.GEO.POLIGONOS_METRICA.DIAGONAL_CONCEPTO
+resumen_inicial: Una diagonal es un segmento de recta que une dos vértices no consecutivos de un polígono.
+explicacion_simple: |
+  En cualquier figura poligonal, los vértices están conectados por los lados del polígono. Cuando trazamos un segmento de recta directo entre dos esquinas (vértices) que **no son vecinas inmediatas**, formamos una **diagonal**.
+
+  Por ejemplo, en un cuadrilátero podemos unir dos esquinas opuestas cruzando por el interior, logrando dos diagonales en total. En cambio, en un triángulo todas las esquinas son vecinas inmediatas (consecutivas), por lo que es imposible trazar una diagonal: el triángulo es el único polígono con cero diagonales.
+
+  ![Concepto de diagonal en un polígono](/static/img/nodos/concepto-de-diagonal-como-segmento-que-une-vertices-no-consecutivos-de-un-poligono-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $\mathcal{P} = (V_1, V_2, \dots, V_n)$ un polígono simple en el plano con conjunto ordenado cíclicamente de vértices $\mathcal{V} = \{V_1, V_2, \dots, V_n\}$, donde $n \geq 3$. Un segmento de recta $\overline{V_i V_j}$ es una **diagonal** de $\mathcal{P}$ si y solo si:
+  $$V_i, V_j \in \mathcal{V} \quad \wedge \quad j \not\equiv i \pm 1 \pmod{n} \quad \wedge \quad i \neq j$$
+
+  ### Desglose simbólico
+  - $V_i, V_j$: Vértices de la frontera poligonal.
+  - $j \equiv i \pm 1 \pmod{n}$: Condición de adyacencia o vecindad consecutiva. Si se cumple, $\overline{V_i V_j}$ es un **lado** del polígono, no una diagonal.
+  - $j \not\equiv i \pm 1 \pmod{n}$: Condición de no consecutividad que define formalmente a la diagonal.
+  - Caso $n = 3$ (triángulo): Como para todo par de vértices se cumple $j \equiv i \pm 1 \pmod{3}$, no existen vértices no consecutivos, por lo que el conjunto de diagonales es vacío ($\mathcal{D} = \emptyset$).
+
+  > **Complemento didáctico:** Para saber si un segmento interior es diagonal basta preguntarse: ¿conecta dos esquinas del polígono? y ¿esas esquinas NO comparten un lado del borde? Si ambas respuestas son afirmativas, el segmento es una diagonal válida.
+definiciones_clave: |
+  - **Diagonal**: Segmento cuyos extremos son dos vértices no adyacentes de un polígono.
+  - **Vértices consecutivos**: Par de vértices que constituyen los extremos de un mismo lado del polígono.
+  - **Vértices no consecutivos**: Vértices separados por al menos dos lados en la frontera poligonal.
+  - **Lado del polígono**: Segmento de la frontera que une dos vértices inmediatamente consecutivos.
+propiedades_relaciones: |
+  - **Existencia según el número de lados**: Un polígono posee diagonales si y solo si $n \geq 4$.
+  - **Intersección en cuadriláteros convexos**: En todo cuadrilátero convexo, sus dos diagonales se cortan en un único punto estrictamente interior.
+  - **Diagonales en polígonos cóncavos**: En un polígono cóncavo, al menos una diagonal queda ubicada en la región exterior del polígono.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplos guiados de diagonales](/static/img/nodos/concepto-de-diagonal-como-segmento-que-une-vertices-no-consecutivos-de-un-poligono-ejemplos.svg)
+
+    En un pentágono convexo de vértices $A, B, C, D, E$, se trazan todos los segmentos posibles que unen el vértice $A$ con los demás vértices. Determina cuáles de ellos son lados y cuáles son diagonales.
+  pasos:
+    - 'Paso 1: Identificar los vértices adyacentes al vértice $A$: En el orden cíclico $(A, B, C, D, E)$, los vértices vecinos inmediatos de $A$ son $B$ y $E$.'
+    - 'Paso 2: Clasificar los segmentos hacia los vértices vecinos: Los segmentos $\overline{AB}$ y $\overline{AE}$ unen vértices consecutivos, por lo tanto son lados del pentágono.'
+    - 'Paso 3: Clasificar los segmentos hacia vértices no consecutivos: Los vértices restantes son $C$ y $D$, que no son adyacentes a $A$. Por tanto, los segmentos $\overline{AC}$ y $\overline{AD}$ son diagonales del pentágono.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuál de las siguientes afirmaciones describe de forma exacta el concepto de diagonal en un polígono?"
+    choices:
+      - text: "Es un segmento que une dos vértices no consecutivos del polígono."
+        is_correct: true
+      - text: "Es cualquier segmento que une los puntos medios de dos lados opuestos."
+        is_correct: false
+      - text: "Es la línea recta que une dos vértices inmediatamente contiguos en el borde."
+        is_correct: false
+      - text: "Es un rayo que parte del centro geométrico y corta perpendicularmente a un lado."
+        is_correct: false
+    explanation: "La alternativa correcta es 'Es un segmento que une dos vértices no consecutivos del polígono.' Por definición geométrica formal, una diagonal conecta dos vértices que no comparten un lado común."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Por qué un triángulo no tiene ninguna diagonal?"
+    choices:
+      - text: "Porque todos sus vértices son consecutivos entre sí y cualquier segmento entre ellos es un lado."
+        is_correct: true
+      - text: "Porque sus ángulos interiores suman 180 grados en lugar de 360 grados."
+        is_correct: false
+      - text: "Porque las diagonales solo existen en figuras con un número par de lados."
+        is_correct: false
+      - text: "Porque los lados de un triángulo no se intersecan en el plano euclidiano."
+        is_correct: false
+    explanation: "La alternativa correcta es 'Porque todos sus vértices son consecutivos entre sí y cualquier segmento entre ellos es un lado.' Al tener solo 3 vértices, cada vértice es vecino inmediato de los otros dos, imposibilitando la existencia de vértices no consecutivos."
+    reinforcement_section: "Ejemplo guiado"
+procedimiento: |
+  1. Identificar todos los vértices del polígono ordenados a lo largo de su frontera perimetral.
+  2. Seleccionar un vértice emisor $V_i$.
+  3. Descartar el propio vértice $V_i$ y sus dos vecinos inmediatos $V_{i-1}$ y $V_{i+1}$ (estos forman lados).
+  4. Conectar $V_i$ con cualquiera de los vértices restantes no consecutivos; cada segmento resultante es una diagonal válida.
+errores_correccion: |
+  - **Error común 1:** Considerar que un lado del polígono es una diagonal. **Corrección:** Un lado une vértices consecutivos; una diagonal exige obligatoriamente vértices no consecutivos.
+  - **Error común 2:** Afirmar que los triángulos tienen 3 diagonales. **Corrección:** En el triángulo $n = 3$, todos los pares de vértices son lados; posee exactamente 0 diagonales.
+ejemplos:
+  - tipo: "A"
+    titulo: "Identificación de diagonales en un cuadrilátero"
+    enunciado: "En un cuadrilátero convexo $ABCD$, ¿cuáles son sus diagonales?"
+    alternativas:
+      - text: "Los segmentos $\\overline{AC}$ y $\\overline{BD}$."
+        is_correct: true
+      - text: "Los segmentos $\\overline{AB}$ y $\\overline{CD}$."
+        is_correct: false
+      - text: "Los segmentos $\\overline{BC}$ y $\\overline{DA}$."
+        is_correct: false
+      - text: "El segmento trazado desde el centro hasta el vértice $A$."
+        is_correct: false
+    explicacion: "En el orden $A, B, C, D$, los vértices opuestos (no consecutivos) son $A$ con $C$, y $B$ con $D$. Por ende, las únicas diagonales son $\\overline{AC}$ y $\\overline{BD}$."
+  - tipo: "B"
+    titulo: "Existencia de diagonales en un hexágono"
+    enunciado: "¿Es posible trazar diagonales en un hexágono convexo?"
+    respuesta: "Sí"
+    explicacion: "Sí. Todo polígono con $n \\geq 4$ lados posee diagonales. Un hexágono tiene $n = 6$ lados y cuenta con vértices no consecutivos."
+errores_frecuentes:
+  - 'Creer que unir dos esquinas contiguas de un polígono forma una diagonal en lugar de un lado.'
+  - 'Suponer erróneamente que un triángulo equilátero tiene tres diagonales interiores.'
+  - 'Confundir las diagonales con los segmentos que unen el centro geométrico con los vértices (radios).'
+afirmaciones_verdaderas:
+  - 'Una diagonal conecta exclusivamente dos vértices no adyacentes de una figura poligonal.'
+  - 'El triángulo es el único polígono convexo que carece de diagonales ($D = 0$).'
+  - 'En cualquier cuadrilátero convexo existen exactamente dos diagonales que se cruzan en su interior.'
+al_terminar_debes_poder: |
+  **QUÉ:** Identificar y distinguir rigurosamente las diagonales de los lados en cualquier polígono convexo o cóncavo.
+
+  **CÓMO:** Verificando que los extremos del segmento pertenezcan al conjunto de vértices del polígono $\mathcal{V}$ y satisfagan la condición de no adyacencia $j \not\equiv i \pm 1 \pmod{n}$.
+
+  ![Síntesis visual de concepto de diagonal](/static/img/nodos/concepto-de-diagonal-como-segmento-que-une-vertices-no-consecutivos-de-un-poligono-resumen.svg)
+fuente: "Texto escolar oficial de Matemáticas y estándares curriculares PAES"
+estado: publicado

@@ -55,7 +55,8 @@ explicacion_formal: |
      (derivadas, derivadas parciales, integrales, límites) salvo que el tema lo
      exija expresamente (ej. tasa de cambio instantánea en física/cálculo).
   2. **Desglose simbólico**: Explicación de qué significa cada elemento, variable o notación (ej. $\prod$, $\min$, $\operatorname{gcd}$).
-  3. **Complemento didáctico**: Una síntesis al final que explique en lenguaje accesible qué asegura esa fórmula en la práctica.
+  3. **Complemento didáctico (OBLIGATORIO)**: Una síntesis al final en bloque de cita markdown que explique en lenguaje accesible y didáctico qué asegura esa fórmula en la práctica o una mnemotecnia/intuición geométrica. Formato estricto:
+     `> **Complemento didáctico:** <texto explicativo en LaTeX>`
 definiciones_clave: |
   Términos nuevos del recurso, en **negrita**, con su definición precisa.
 propiedades_relaciones: |
@@ -106,13 +107,14 @@ ejemplo_guiado:
 #   coincidiendo exactamente con la opción correcta.
 # - En ejercicios Sí/No (Tipo B): `respuesta:` DEBE ser exactamente "Sí" o "No" (o definir `alternativas:`).
 #
-# ⚠️ QUINTA REGLA DURA (agregada 2026-08-17): Estructura obligatoria QUÉ y CÓMO en "Al terminar debes poder"
+# ⚠️ QUINTA REGLA DURA (agregada 2026-08-17, actualizada 2026-09-02): Estructura obligatoria QUÉ y CÓMO en "Al terminar debes poder"
 # El campo `al_terminar_debes_poder` DEBE estructurarse obligatoriamente con las dos etiquetas explícitas:
 # 1. `QUÉ:` — Acción o capacidad matemática concreta lograda por el estudiante.
-# 2. `CÓMO:` — Mecanismo, algoritmo o criterio técnico específico de resolución en $LaTeX$.
+# 2. `CÓMO:` — Mecanismo, algoritmo o criterio técnico específico de resolución delimitado en $LaTeX$.
 # Si el nodo cuenta con infografía de síntesis, la etiqueta `![...](/static/img/nodos/...)` se ubica al inicio.
-# Queda ESTRICTAMENTE PROHIBIDO redactar párrafos de texto corrido sin estas dos etiquetas, ya que la plataforma
-# las utiliza para construir y enmarcar automáticamente las dos tarjetas visuales independientes (`🎯 QUÉ` y `⚙️ CÓMO`).
+# Queda ESTRICTAMENTE PROHIBIDO:
+# - Redactar párrafos de texto corrido sin estas dos etiquetas.
+# - Escribir frases literales como `"en LaTeX"`, `"en $LaTeX$"` o `"en $\LaTeX$"` al final de las oraciones.
 #
 # ⚠️ SEXTA REGLA DURA (agregada 2026-08-17, actualizada 2026-08-18): Estándar Zero-Overflow y Períodos en SVG
 # Todo archivo SVG generado para los nodos (`static/img/nodos/*.svg`) DEBE cumplir estrictamente con:
@@ -156,6 +158,24 @@ ejemplo_guiado:
 # Queda ESTRICTAMENTE PROHIBIDO usar notación plana de programador como `3√(x)`, `4x^(2/3)`, `ⁿ√(xᵐ)`, `x^(m/n)`.
 # Al generar los fragmentos con el motor de Python (`matplotlib.mathtext`), se DEBE asegurar apagar totalmente los
 # ejes (`ax.set_axis_off()`) para evitar la aparición accidental de marcas de graduación o números en el origen `(0, 0)`.
+#
+# ⚠️ OCTAVA REGLA DURA (agregada 2026-09-02): Formato de Lista Obligatorio en Procedimiento (`list[str]`)
+# El campo `procedimiento` DEBE estructurarse estrictamente como una lista de cadenas (`- "1. ..."` o `- "Paso 1: ..."`).
+# Queda ESTRICTAMENTE PROHIBIDO guardarlo como un bloque de texto plano multilínea (`str`), ya que Django
+# iteraría sobre cada carácter individual produciendo cientos de etiquetas `<li>` con padding que generan
+# miles de píxeles de espacio vacío en la página.
+#
+# ⚠️ NOVENA REGLA DURA (agregada 2026-09-02): Separación Total entre Cuadros de Texto y Geometría (Zero-Overlap)
+# En los gráficos vectoriales generados con Matplotlib, las figuras geométricas (circunferencias, polígonos, centros $O$,
+# radios, cuerdas) DEBEN ubicarse en la mitad superior del canvas ($c_y \approx 1.30$, $r \approx 0.72$), y los cuadros
+# de texto o badges explicativos (`bbox=dict(...)`) DEBEN ubicarse estrictamente en la franja inferior ($y \approx 0.18$).
+# Queda ESTRICTAMENTE PROHIBIDO superponer cuadros de texto sobre el centro o el cuerpo de las figuras geométricas.
+#
+# ⚠️ DÉCIMA REGLA DURA (agregada 2026-09-02): Notación de Arcos en LaTeX (KaTeX)
+# Para representar arcos geométricos ($\overset{\frown}{AB}$, $\overset{\frown}{TA}$), se DEBE usar obligatoriamente
+# `\overset{\frown}{AB}` (o lenguaje natural "arco $AB$").
+# Queda ESTRICTAMENTE PROHIBIDO usar comandos LaTeX no estándar como `\wideparen{...}` o `\overarc{...}`, ya que KaTeX
+# no los interpreta nativamente y los dibuja como texto de error en color marrón/rojo.
 #
 checkpoints:                       # Exactamente 2, validados por node_checkpoint_service
   - placement: after_explicacion_formal

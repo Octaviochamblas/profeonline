@@ -1,0 +1,111 @@
+semantic_id: MAT.GEO.POLIGONOS_METRICA.DIAGONALES_VERTICE
+resumen_inicial: Desde un solo vértice de un polígono de n lados se pueden trazar exactamente n - 3 diagonales.
+explicacion_simple: |
+  Si te paras en una esquina (vértice) de un polígono de $n$ lados y quieres tirar cuerdas directas (diagonales) a todas las demás esquinas, debes descartar tres puntos a los que no puedes trazar una diagonal:
+  1. A la misma esquina donde estás parado (no se puede trazar una diagonal de un punto a sí mismo).
+  2. A la esquina vecina de la izquierda (unirla formaría un lado del polígono).
+  3. A la esquina vecina de la derecha (unirla formaría el otro lado del polígono).
+
+  Por esta razón, restamos siempre 3 al total de esquinas: **$d_v = n - 3$**. Además, esas diagonales que salen del vértice cortan al polígono como rebanadas de pizza, dividiéndolo exactamente en **$n - 2$ triángulos**.
+
+  ![Diagonales trazadas desde un solo vértice](/static/img/nodos/calculo-de-diagonales-trazadas-desde-un-solo-vertice-mediante-n-3-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $\mathcal{P}$ un polígono simple de $n$ lados y $n$ vértices $\mathcal{V} = \{V_1, V_2, \dots, V_n\}$, con $n \geq 3$. Fijado un vértice arbitrario $V_i \in \mathcal{V}$, el número de diagonales $d_v$ que inciden en $V_i$ viene determinado por:
+  $$d_v = n - 3$$
+
+  ### Desglose simbólico
+  - $n$: Cardinalidad del conjunto de vértices ($|\mathcal{V}| = n$).
+  - $1$ vértice excluido: El propio vértice emisor $V_i$ (un lazo no constituye diagonal).
+  - $2$ vértices excluidos: Los dos vértices inmediatamente adyacentes $V_{i-1}$ y $V_{i+1}$, cuyas conexiones determinan las aristas o lados $\overline{V_i V_{i-1}}$ y $\overline{V_i V_{i+1}}$.
+  - Conjunto de destinos válidos: $\mathcal{V} \setminus \{V_i, V_{i-1}, V_{i+1}\}$, cuya cardinalidad es $n - (1 + 2) = n - 3$.
+  - Triangulación desde un vértice: Las $n - 3$ diagonales concurrentes en $V_i$ particionan la región interior del polígono en exactamente $T = n - 2$ triángulos convexos disjuntos.
+
+  > **Complemento didáctico:** Para recordar la fórmula $d_v = n - 3$, recuerda la "regla de los 3 prohibidos": descuentas el vértice donde estás parado más sus 2 vecinos inmediatos. Todo lo demás es una diagonal directa.
+definiciones_clave: |
+  - **Diagonales desde un vértice ($d_v$)**: Cantidad de segmentos diagonales que tienen como origen un vértice común determinado.
+  - **Vértices prohibidos**: El propio vértice emisor y sus dos vértices consecutivos inmediatos.
+  - **Triangulación interior**: Descomposición de un polígono en triángulos que comparten un único vértice común.
+propiedades_relaciones: |
+  - **Valores canónicos de $d_v$**: Triángulo ($n=3 \implies d_v = 0$); Cuadrilátero ($n=4 \implies d_v = 1$); Pentágono ($n=5 \implies d_v = 2$); Hexágono ($n=6 \implies d_v = 3$).
+  - **Relación con la suma de ángulos interiores**: Como cada uno de los $n - 2$ triángulos interiores suma $180^\circ$, la suma total de ángulos del polígono es $S_i = (n - 2) \cdot 180^\circ$.
+  - **Invarianza**: El valor de $d_v = n - 3$ es exactamente el mismo para cualquier vértice elegido dentro de un polígono convexo.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplos de diagonales desde un vértice](/static/img/nodos/calculo-de-diagonales-trazadas-desde-un-solo-vertice-mediante-n-3-ejemplos.svg)
+
+    En un octágono ($n = 8$), calcula cuántas diagonales se pueden trazar desde uno de sus vértices y en cuántos triángulos queda dividido el polígono.
+  pasos:
+    - 'Paso 1: Identificar el número de lados del polígono: Se trata de un octágono, por lo que $n = 8$.'
+    - 'Paso 2: Aplicar la fórmula de diagonales desde un vértice: $d_v = n - 3 = 8 - 3 = 5$ diagonales.'
+    - 'Paso 3: Calcular la cantidad de triángulos generados: $T = n - 2 = 8 - 2 = 6$ triángulos interiores.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Por qué en un polígono de n lados la cantidad de diagonales desde un solo vértice es n - 3 y no n - 1?"
+    choices:
+      - text: "Porque se descuenta el propio vértice emisor y los 2 vértices vecinos contiguos que forman lados."
+        is_correct: true
+      - text: "Porque los polígonos pierden 3 lados debido a la curvatura del plano euclidiano."
+        is_correct: false
+      - text: "Porque 3 es el número de diagonales que siempre tiene cualquier figura regular."
+        is_correct: false
+      - text: "Porque se debe dividir el perímetro entre los 3 vértices iniciales."
+        is_correct: false
+    explanation: "La alternativa correcta es 'Porque se descuenta el propio vértice emisor y los 2 vértices vecinos contiguos que forman lados.' De los $n$ vértices, no se puede trazar diagonal a sí mismo (1) ni a los dos contiguos (2), quedando $n - 3$ posibles."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Si desde un solo vértice de un polígono se pueden trazar exactamente 7 diagonales, ¿cuántos lados tiene el polígono?"
+    choices:
+      - text: "10 lados (un decágono)."
+        is_correct: true
+      - text: "4 lados (un cuadrilátero)."
+        is_correct: false
+      - text: "14 lados (un tetradecágono)."
+        is_correct: false
+      - text: "7 lados (un heptágono)."
+        is_correct: false
+    explanation: "La alternativa correcta es '10 lados (un decágono).' Despejando de la fórmula $d_v = n - 3$: $7 = n - 3 \\implies n = 7 + 3 = 10$."
+    reinforcement_section: "Ejemplo guiado"
+procedimiento: |
+  1. Determinar el número de lados o vértices $n$ del polígono.
+  2. Aplicar la relación $d_v = n - 3$ para calcular las diagonales emitidas desde un vértice.
+  3. Si se solicita la cantidad de triángulos formados por dicha triangulación, calcular $T = n - 2$.
+  4. Si se conoce $d_v$ y se busca $n$, despejar mediante $n = d_v + 3$.
+errores_correccion: |
+  - **Error común 1:** Confundir la cantidad de diagonales desde un vértice ($n - 3$) con la cantidad de triángulos formados ($n - 2$). **Corrección:** Las diagonales descuentan 3 vértices prohibidos; los triángulos siempre son uno más que las diagonales ($T = d_v + 1$).
+  - **Error común 2:** Confundir las diagonales desde un solo vértice con el total de diagonales de toda la figura. **Corrección:** $d_v = n - 3$ es desde un solo vértice; el total es $D = \frac{n(n - 3)}{2}$.
+ejemplos:
+  - tipo: "A"
+    titulo: "Cálculo directo en un hexágono"
+    enunciado: "¿Cuántas diagonales se pueden trazar desde un único vértice en un hexágono ($n = 6$)?"
+    alternativas:
+      - text: "$3$ diagonales."
+        is_correct: true
+      - text: "$4$ diagonales."
+        is_correct: false
+      - text: "$6$ diagonales."
+        is_correct: false
+      - text: "$9$ diagonales."
+        is_correct: false
+    explicacion: "Aplicando la fórmula: $d_v = n - 3 = 6 - 3 = 3$ diagonales."
+  - tipo: "B"
+    titulo: "Diagonales en un triángulo"
+    enunciado: "¿Se puede trazar al menos 1 diagonal desde un vértice de un triángulo?"
+    respuesta: "No"
+    explicacion: "No. En el triángulo $n = 3$, por lo que $d_v = 3 - 3 = 0$ diagonales."
+errores_frecuentes:
+  - 'Usar la expresión $n - 2$ creyendo que representa las diagonales desde un vértice en lugar de los triángulos.'
+  - 'Creer que en polígonos irregulares la cantidad de diagonales desde un vértice depende de la medida de los lados.'
+  - 'Olvidar sumar 3 al despejar el número de lados $n$ conociendo $d_v$.'
+afirmaciones_verdaderas:
+  - 'Desde un solo vértice de un polígono de $n$ lados se trazan exactamente $n - 3$ diagonales.'
+  - 'Las diagonales trazadas desde un mismo vértice dividen al polígono en $n - 2$ triángulos interiores.'
+  - 'En un decágono ($n = 10$), cada vértice emite exactamente $10 - 3 = 7$ diagonales.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular y justificar la cantidad de diagonales trazadas desde un solo vértice y la cantidad de triángulos interiores resultantes.
+
+  **CÓMO:** Aplicando la relación algebraica $d_v = n - 3$ y $T = n - 2$ mediante la deducción geométrica de vértices no adyacentes.
+
+  ![Síntesis de diagonales desde un vértice](/static/img/nodos/calculo-de-diagonales-trazadas-desde-un-solo-vertice-mediante-n-3-resumen.svg)
+fuente: "Texto escolar oficial de Matemáticas y estándares curriculares PAES"
+estado: publicado

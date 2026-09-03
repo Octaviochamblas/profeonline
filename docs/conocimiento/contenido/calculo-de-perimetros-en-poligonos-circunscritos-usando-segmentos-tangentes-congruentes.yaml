@@ -1,0 +1,153 @@
+semantic_id: MAT.GEO.CIRCULO_RECTAS.POLIGONOS_CIRCUNSCRITOS_TANGENTES
+resumen_inicial: En polígonos circunscritos a una circunferencia, los lados se descomponen en pares de segmentos tangentes congruentes, cumpliéndose el Teorema de Pitot en cuadriláteros.
+explicacion_simple: 'Un polígono está **circunscrito** a una circunferencia cuando está apretado alrededor de ella y **todos sus lados son tangentes** al círculo interior (la circunferencia está inscrita adentro).
+
+
+  Para calcular su perímetro, solo tienes que usar el Teorema del Sombrero en cada una de sus esquinas: cada vértice exterior manda dos brazos tangentes que miden lo mismo hacia los dos lados que lo forman. Así, si desde el vértice $A$ salen dos trozos de 3 cm, desde $B$ dos de 4 cm y desde $C$ dos de 5 cm, el perímetro total es simplemente el doble de la suma de esos trozos: **$P = 2(3 + 4 + 5) = 24\text{ cm}$**.
+
+
+  Y en los cuadriláteros circunscritos ocurre una magia matemática llamada **Teorema de Pitot**: **la suma de los lados de arriba y abajo es exactamente igual a la suma de los lados de izquierda y derecha**: **$AB + CD = BC + DA$**.
+
+
+  ![Polígonos circunscritos](/static/img/nodos/calculo-de-perimetros-en-poligonos-circunscritos-usando-segmentos-tangentes-congruentes-intro.svg)
+
+  '
+explicacion_formal: '### Definición de polígono circunscrito
+
+  Un polígono convexo $\mathcal{P} = (V_1, V_2, \dots, V_n)$ está **circunscrito** a una circunferencia $\mathcal{C}(O, r)$ si y solo si todas sus aristas o lados son tangentes a $\mathcal{C}$:
+
+  $$\forall i \in \{1, \dots, n\}, \quad \overline{V_i V_{i+1}} \text{ es tangente a } \mathcal{C}$$
+
+
+  ### Descomposición perimetral por vértices tangentes
+
+  Sea $T_i$ el punto de tangencia sobre el lado $\overline{V_i V_{i+1}}$. Por el teorema de las tangentes desde un punto exterior, cada vértice $V_i$ determina dos segmentos congruentes de longitud $x_i$ hacia los puntos de contacto adyacentes:
+
+  $$\text{long}(V_i T_{i-1}) = \text{long}(V_i T_i) = x_i$$
+
+  El perímetro total del polígono circunscrito es la suma de todos los segmentos pares:
+
+  $$P = 2\sum_{i=1}^n x_i = 2(x_1 + x_2 + \dots + x_n)$$
+
+
+  ### Teorema de Pitot (Cuadriláteros circunscritos)
+
+  En todo cuadrilátero convexo $ABCD$ circunscrito a una circunferencia, la suma de las longitudes de un par de lados opuestos es estrictamente igual a la suma del otro par de lados opuestos:
+
+  $$AB + CD = BC + DA$$
+
+  *Demostración:* Expresando cada lado como suma de segmentos tangentes:
+
+  $$AB = a + b, \quad CD = c + d, \quad BC = b + c, \quad DA = d + a$$
+
+  $$AB + CD = (a + b) + (c + d) = a + b + c + d = (b + c) + (d + a) = BC + DA$$
+
+  Como corolario, el perímetro total es el doble de la suma de cualquier par de lados opuestos: $P = 2(AB + CD) = 2(BC + DA)$.
+
+
+  > **Complemento didáctico:** El Teorema de Pitot es un ''salvavidas'' en cuadriláteros con círculos adentro: ''arriba + abajo = izquierda + derecha''. Si te dan 3 lados de un cuadrilátero circunscrito, despejas el cuarto de inmediato en un solo paso.
+
+  '
+definiciones_clave: '- **Polígono circunscrito**: Polígono cuyos lados son todos tangentes a una circunferencia inscrita.
+
+  - **Teorema de Pitot**: Igualdad de sumas de lados opuestos en cuadriláteros tangenciales ($AB + CD = BC + DA$).
+
+  - **Segmentos tangentes por vértice**: Pares de segmentos congruentes que se extienden desde cada vértice hasta los puntos de contacto.
+
+  '
+propiedades_relaciones: '- **Área del polígono circunscrito**: $A = s_{\text{semi}} \cdot r = \frac{P \cdot r}{2}$, donde $r$ es el inradio de la circunferencia inscrita.
+
+  - **Condición necesaria y suficiente para cuadriláteros**: Un cuadrilátero convexo admite circunferencia inscrita si y solo si cumple la condición de Pitot $AB + CD = BC + DA$.
+
+  - **Aplicación en trapecios circunscritos**: En un trapecio circunscrito de bases $B$ y $b$ y lados laterales $c_1$ y $c_2$, se verifica $B + b = c_1 + c_2$, por lo que $P = 2(B + b) = 4M$.
+
+  '
+ejemplo_guiado:
+  enunciado: '![Ejemplos de polígonos circunscritos](/static/img/nodos/calculo-de-perimetros-en-poligonos-circunscritos-usando-segmentos-tangentes-congruentes-ejemplos.svg)
+
+
+    Un cuadrilátero $ABCD$ está circunscrito a una circunferencia. Tres de sus lados miden $AB = 9\text{ cm}$, $BC = 7\text{ cm}$ y $CD = 11\text{ cm}$. Calcula la longitud del cuarto lado $DA$ y el perímetro total del cuadrilátero.'
+  pasos:
+  - 'Paso 1: Aplicar el Teorema de Pitot: La suma de lados opuestos es igual: $AB + CD = BC + DA$.'
+  - 'Paso 2: Sustituir las medidas conocidas: $9 + 11 = 7 + DA$.'
+  - 'Paso 3: Despejar la longitud del lado $DA$: $20 = 7 + DA \implies DA = 20 - 7 = 13\text{ cm}$.'
+  - 'Paso 4: Calcular el perímetro total sumando los cuatro lados: $P = AB + BC + CD + DA = 9 + 7 + 11 + 13 = 40\text{ cm}$ (o $P = 2(20) = 40\text{ cm}$).'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Qué establece el Teorema de Pitot para un cuadrilátero circunscrito a una circunferencia?
+  choices:
+  - text: La suma de las longitudes de dos lados opuestos es igual a la suma de los otros dos lados opuestos.
+    is_correct: true
+  - text: La suma de los cuatro ángulos interiores es igual a 180°.
+    is_correct: false
+  - text: Las dos diagonales son congruentes y perpendiculares.
+    is_correct: false
+  - text: El perímetro es igual a cuatro veces el radio de la circunferencia.
+    is_correct: false
+  explanation: La alternativa correcta es 'La suma de las longitudes de dos lados opuestos es igual a la suma de los otros dos lados opuestos.' $AB + CD = BC + DA$.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En un triángulo circunscrito a una circunferencia, los segmentos tangentes medidos desde cada vértice hasta los puntos de contacto miden 2 cm, 3 cm y 6 cm. ¿Cuál es su perímetro total?
+  choices:
+  - text: 22 cm.
+    is_correct: true
+  - text: 11 cm.
+    is_correct: false
+  - text: 33 cm.
+    is_correct: false
+  - text: 44 cm.
+    is_correct: false
+  explanation: 'La alternativa correcta es ''22 cm.'' Cada segmento se repite dos veces: $P = 2(2 + 3 + 6) = 2(11) = 22$ cm.'
+  reinforcement_section: Ejemplo guiado
+procedimiento: '1. Identificar si el polígono está circunscrito (sus lados son tangentes a la circunferencia inscrita).
+
+  2. En triángulos, descomponer los lados en pares de segmentos tangentes congruentes desde cada vértice.
+
+  3. En cuadriláteros, aplicar el Teorema de Pitot: $AB + CD = BC + DA$.
+
+  4. Calcular el perímetro sumando los lados o duplicando la suma de los lados opuestos: $P = 2(AB + CD)$.
+
+  '
+errores_correccion: '- **Error común 1:** Aplicar el Teorema de Pitot a polígonos inscritos. **Corrección:** Pitot es exclusivo de cuadriláteros CIRCUNSCRITOS (lados tangentes a la circunferencia).
+
+  - **Error común 2:** Olvidar duplicar la suma de los segmentos tangentes de cada vértice al calcular el perímetro. **Corrección:** Cada vértice aporta dos segmentos de igual medida, luego $P = 2\sum x_i$.
+
+  '
+ejemplos:
+- tipo: A
+  titulo: Trapecio circunscrito
+  enunciado: Un trapecio circunscrito a una circunferencia tiene bases de $14\text{ cm}$ y $6\text{ cm}$. ¿Cuál es su perímetro total?
+  alternativas:
+  - text: $40\text{ cm}$.
+    is_correct: true
+  - text: $20\text{ cm}$.
+    is_correct: false
+  - text: $28\text{ cm}$.
+    is_correct: false
+  - text: $60\text{ cm}$.
+    is_correct: false
+  explicacion: Por Pitot, la suma de las bases opuestas ($14 + 6 = 20$) es igual a la suma de los lados laterales. Luego $P = 20 + 20 = 40\text{ cm}$.
+- tipo: B
+  titulo: Circunscrito vs Inscrito
+  enunciado: ¿Tienen los polígonos circunscritos a una circunferencia todos sus lados tangentes a ella?
+  respuesta: Sí
+  explicacion: Sí. Por definición de polígono circunscrito, cada una de sus aristas es tangente a la circunferencia inscrita interior.
+errores_frecuentes:
+- '''Confundir polígono circunscrito (lados tangentes) con polígono inscrito (vértices en la circunferencia).'''
+- '''Aplicar el Teorema de Pitot sumando lados adyacentes en lugar de lados opuestos.'''
+- '''Olvidar que en cuadriláteros circunscritos el perímetro es $P = 2(\text{suma opuestos})$.'''
+afirmaciones_verdaderas:
+- '''En un polígono circunscrito, cada vértice determina dos segmentos tangentes congruentes.'''
+- '''En todo cuadrilátero circunscrito, la suma de lados opuestos es constante ($AB + CD = BC + DA$).'''
+- '''El perímetro de un cuadrilátero circunscrito equivale al doble de la suma de dos de sus lados opuestos ($P = 2(AB + CD)$).'''
+al_terminar_debes_poder: '**QUÉ:** Calcular perímetros de polígonos circunscritos y resolver problemas aplicando el Teorema de Pitot.
+
+
+  **CÓMO:** Empleando $P = 2\sum x_i$ y $AB + CD = BC + DA$.
+
+
+  ![Síntesis de polígonos circunscritos](/static/img/nodos/calculo-de-perimetros-en-poligonos-circunscritos-usando-segmentos-tangentes-congruentes-resumen.svg)
+
+  '
+fuente: Texto escolar oficial de Matemáticas y estándares curriculares PAES
+estado: publicado

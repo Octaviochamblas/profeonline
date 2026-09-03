@@ -1,0 +1,142 @@
+semantic_id: MAT.GEO.TRIANGULOS_METRICA.EXISTENCIA_TRIANGULO
+resumen_inicial: La verificación de existencia de un triángulo a partir de tres medidas
+  consiste en ordenar los lados de menor a mayor (a <= b <= c) y comprobar únicamente
+  si la suma de los dos menores supera al mayor (a + b > c).
+explicacion_simple: '![Verificación de Existencia](/static/img/nodos/verificacion-de-existencia-de-un-triangulo-a-partir-de-tres-medidas-de-lados-intro.svg)
+
+
+  Para saber rápidamente si tres números pueden formar un triángulo sin tener que
+  probar todas las combinaciones, sigue este truco de 2 pasos: **1) Pon los números
+  en fila de menor a mayor**; **2) Suma los dos primeros**. Si esa suma le gana al
+  número más grande, ¡el triángulo sí existe! Si la suma es igual o menor, es imposible
+  construirlo.'
+explicacion_formal: "### Algoritmo de verificación\nDada una terna de longitudes $\\\
+  {l_1, l_2, l_3\\}$ con orden $l_1 \\le l_2 \\le l_3$, la terna forma un triángulo\
+  \ viable si y solo si se satisface la desigualdad simplificada:\n\n$$l_3 < l_1 +\
+  \ l_2 \\iff l_1 + l_2 - l_3 > 0$$\n\n### Desglose simbólico y geométrico\n- $l_3\
+  \ = \\max(l_1, l_2, l_3)$: Lado de máxima longitud.\n- $l_1, l_2$: Los dos lados\
+  \ menores.\n- Decisión binaria:\n  - Si $l_3 < l_1 + l_2 \\implies$ **Existe triángulo\
+  \ no degenerado**.\n  - Si $l_3 \\ge l_1 + l_2 \\implies$ **No existe triángulo**.\n\
+  \n### Síntesis didáctica\nOrdenar los lados de menor a mayor reduce el chequeo de\
+  \ tres desigualdades a una sola prueba rápida y concluyente."
+definiciones_clave: '- **Algoritmo de existencia**: Procedimiento simplificado para
+  validar ternas métricas en un solo paso de cálculo.
+
+  - **Terna geométrica admisible**: Conjunto de 3 números que satisfacen $a + b >
+  c$.
+
+  - **Criterio de ordenación**: Ordenar $a \le b \le c$ para aislar la única desigualdad
+  no trivial. '
+propiedades_relaciones: '- **Construcción con regla y compás**: El teorema equivale
+  a que dos circunferencias centradas en los extremos del segmento base $c$ con radios
+  $a$ y $b$ se corten en exactamente dos puntos en el semiplano superior e inferior.
+
+  - **Invarianza de escala**: Si $\{a, b, c\}$ forma un triángulo, la terna escalada
+  $\{ka, kb, kc\}$ con $k > 0$ también forma un triángulo semejante. '
+ejemplo_guiado:
+  enunciado: '![Ejemplo de Verificación](/static/img/nodos/verificacion-de-existencia-de-un-triangulo-a-partir-de-tres-medidas-de-lados-ejemplos.svg)
+
+
+    Verifica si las siguientes dos ternas de segmentos pueden formar un triángulo:
+    Terna 1: $(14\text{ cm}, 6\text{ cm}, 9\text{ cm})$; Terna 2: $(3\text{ cm}, 11\text{
+    cm}, 7\text{ cm})$.'
+  pasos:
+  - 'Paso 1: Analizar la Terna 1: ordenar de menor a mayor: $6 \le 9 \le 14$.'
+  - 'Paso 2: Sumar los dos menores: $6 + 9 = 15$. Comparar con el mayor: $15 > 14$.
+    La Terna 1 **SÍ forma un triángulo**.'
+  - 'Paso 3: Analizar la Terna 2: ordenar de menor a mayor: $3 \le 7 \le 11$.'
+  - 'Paso 4: Sumar los dos menores: $3 + 7 = 10$. Comparar con el mayor: $10 < 11$.
+    La Terna 2 **NO forma un triángulo**.'
+  - 'Paso 5: Concluir que solo la Terna 1 permite construir un triángulo.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: Al ordenar tres medidas como a <= b <= c, ¿cuál es la única desigualdad
+    que se debe verificar?
+  choices:
+  - text: a + b > c (la suma de los dos menores debe ser mayor que el mayor)
+    is_correct: true
+  - text: a + c > b
+    is_correct: false
+  - text: b + c > a
+    is_correct: false
+  - text: a + b + c = 180
+    is_correct: false
+  explanation: Al ordenar de menor a mayor, basta comprobar a + b > c (la suma de
+    los dos menores debe ser mayor que el mayor).
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: ¿Cuál de las siguientes ternas NO forma un triángulo?
+  choices:
+  - text: 5 cm, 6 cm, 12 cm (porque 5 + 6 = 11 < 12)
+    is_correct: true
+  - text: 5 cm, 6 cm, 7 cm
+    is_correct: false
+  - text: 8 cm, 8 cm, 8 cm
+    is_correct: false
+  - text: 6 cm, 8 cm, 10 cm
+    is_correct: false
+  explanation: En la primera terna 5 + 6 = 11 < 12, por lo que 5 cm, 6 cm, 12 cm (porque
+    5 + 6 = 11 < 12).
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Escribir las 3 longitudes en orden ascendente: $a \le b \le c$.'
+- 'Paso 2: Calcular la suma de los dos primeros valores: $S = a + b$.'
+- 'Paso 3: Comparar $S$ con $c$. Si $S > c$, responder que sí existe el triángulo.'
+- 'Paso 4: Si $S \le c$, responder que no es posible construir el triángulo.'
+errores_correccion: 'Asegúrate de ordenar los números primero: si sumas el número
+  más grande con uno chico siempre te dará mayor, engañando el resultado.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: ¿Se puede construir un triángulo con varillas de $8\text{ cm}, 15\text{
+    cm}$ y $6\text{ cm}$?
+  alternativas:
+  - No, porque 6 + 8 = 14 < 15
+  - Sí, porque 8 + 15 > 6
+  - Sí, porque 15 es divisible por 3
+  respuesta: No, porque 6 + 8 = 14 < 15
+  solucion_pasos:
+  - Ordenando: $6, 8, 15$. La suma de los dos menores es $6 + 8 = 14$, que es menor
+      que 15.
+- titulo: Ejemplo 2
+  enunciado: Si un triángulo tiene lados de $9\text{ cm}, 12\text{ cm}$ y $15\text{
+    cm}$, ¿existe?
+  alternativas:
+  - Sí, porque 9 + 12 = 21 > 15
+  - No, porque suman 36
+  - No, porque son múltiplos de 3
+  respuesta: Sí, porque 9 + 12 = 21 > 15
+  solucion_pasos:
+  - 'Ordenando: $9, 12, 15$. Suma: $9 + 12 = 21 > 15$. Existe (además es rectángulo
+    porque $9^2 + 12^2 = 15^2$).'
+- titulo: ¿Una terna con lados 10 cm, 10 cm y 19 cm forma un triángulo?
+  respuesta: Sí
+  solucion_pasos:
+  - Sí, $10 + 10 = 20 > 19$.
+- titulo: ¿Una terna con lados 2 cm, 5 cm y 8 cm forma un triángulo?
+  respuesta: 'No'
+  solucion_pasos:
+  - No, $2 + 5 = 7 < 8$.
+errores_frecuentes:
+- Sumar dos números cualesquiera sin verificar si son los dos menores.
+- Mezclar unidades de medida ($5\text{ cm}$ con $50\text{ mm}$ o $0.5\text{ m}$).
+- Asumir que tres medidas enteras consecutivas siempre forman un triángulo (falla
+  en $1, 2, 3$).
+- Creer que la verificación requiere calcular ángulos.
+- Concluir que no existe si el triángulo es muy alargado u obtuso pero cumple $a +
+  b > c$.
+afirmaciones_verdaderas:
+- Para verificar la existencia de un triángulo basta ordenar los lados y comprobar
+  que $a + b > c$.
+- Si la suma de los dos lados menores es menor o igual al lado mayor, los segmentos
+  no pueden unirse para cerrar la figura.
+al_terminar_debes_poder: '**QUÉ:** Validar de manera rápida y rigurosa la existencia
+  de triángulos a partir de tres medidas dadas.
+
+
+  **CÓMO:** Ordenando las medidas ($a \le b \le c$) y evaluando la condición única
+  $a + b > c$.
+
+
+  ![Resumen de Verificación de Existencia](/static/img/nodos/verificacion-de-existencia-de-un-triangulo-a-partir-de-tres-medidas-de-lados-resumen.svg)'
+fuente: Texto escolar MINEDUC — Geometría 7° Básico / Geometría Euclidiana.
+estado: publicado

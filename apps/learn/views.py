@@ -173,12 +173,27 @@ def _shuffled_ejemplos(content):
     if content is None:
         return []
     ejemplos = []
-    for ej in content.ejemplos:
-        ej = dict(ej)
+    for raw_ej in content.ejemplos:
+        if not isinstance(raw_ej, dict):
+            continue
+        ej = dict(raw_ej)
         if ej.get("alternativas"):
-            alternativas = list(ej["alternativas"])
-            random.shuffle(alternativas)
-            ej["alternativas"] = alternativas
+            raw_alts = list(ej["alternativas"])
+            random.shuffle(raw_alts)
+
+            correct_answer = ej.get("respuesta", "")
+            cleaned_alts = []
+            for alt in raw_alts:
+                if isinstance(alt, dict):
+                    alt_text = alt.get("text", "")
+                    if alt.get("is_correct"):
+                        correct_answer = alt_text
+                    cleaned_alts.append(alt_text)
+                else:
+                    cleaned_alts.append(str(alt))
+
+            ej["alternativas"] = cleaned_alts
+            ej["respuesta"] = correct_answer
         ejemplos.append(ej)
     return ejemplos
 

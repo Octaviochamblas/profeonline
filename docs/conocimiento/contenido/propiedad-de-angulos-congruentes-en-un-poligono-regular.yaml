@@ -1,0 +1,115 @@
+semantic_id: MAT.GEO.POLIGONOS_METRICA.REGULAR_ANGULOS_CONGRUENTES
+resumen_inicial: En todo polígono regular, todos los ángulos interiores son congruentes y cada ángulo exterior mide 360° / n.
+explicacion_simple: |
+  La segunda condición obligatoria para que un polígono sea **regular** es que sea **equiángulo**: todas sus esquinas deben tener exactamente la misma apertura angular.
+
+  Esto se cumple tanto por dentro como por fuera: todos los ángulos interiores miden lo mismo ($\alpha$) y todos los ángulos exteriores miden lo mismo ($\beta$). Como la suma de todos los ángulos exteriores de cualquier polígono convexo es siempre $360^\circ$, en un polígono regular de $n$ lados cada ángulo exterior se calcula de forma inmediata dividiendo $360^\circ$ entre $n$: **$\beta = \frac{360^\circ}{n}$**. Y como en cada esquina el ángulo interior y el exterior forman una línea recta ($180^\circ$), basta restar: **$\alpha = 180^\circ - \beta$**.
+
+  ![Propiedad de ángulos congruentes en un polígono regular](/static/img/nodos/propiedad-de-angulos-congruentes-en-un-poligono-regular-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $\mathcal{P}$ un polígono simple convexo de $n$ vértices. La propiedad de **ángulos congruentes** (equiangularidad) establece que:
+  $$\forall i, j \in \{1, 2, \dots, n\}, \quad \angle V_i \cong \angle V_j \iff \alpha_i = \alpha_j = \alpha \in ]0^\circ, 180^\circ[$$
+  Asimismo, para los ángulos exteriores conjugados suplementarios $\beta_i = 180^\circ - \alpha_i$:
+  $$\beta_1 = \beta_2 = \dots = \beta_n = \beta = \frac{360^\circ}{n}$$
+
+  ### Desglose simbólico
+  - $\alpha$: Medida compartida de cada ángulo interior.
+  - $\beta$: Medida compartida de cada ángulo exterior.
+  - $\alpha + \beta = 180^\circ$: Relación fundamental de suplementariedad en cada vértice del polígono.
+  - $\sum_{i=1}^n \beta_i = n \cdot \left(\frac{360^\circ}{n}\right) = 360^\circ$: Consistencia estricta con el Teorema de la Suma de Ángulos Exteriores.
+  - Condición de no suficiencia: El equiangularismo por sí solo no garantiza regularidad. El rectángulo posee 4 ángulos rectos ($\alpha = 90^\circ$) pero no es regular salvo si sus lados adyacentes son iguales (cuadrado).
+
+  > **Complemento didáctico:** La forma más inteligente y rápida de trabajar con ángulos en polígonos regulares es empezar siempre por el exterior: divides $360^\circ$ entre $n$ y obtienes $\beta$. Luego, su suplemento a $180^\circ$ te da directamente el ángulo interior $\alpha$.
+definiciones_clave: |
+  - **Polígono equiángulo**: Polígono que posee todos sus ángulos interiores con la misma medida.
+  - **Ángulo exterior regular ($\beta$)**: Ángulo formado por un lado y la prolongación de un lado contiguo, con valor constante $\beta = \frac{360^\circ}{n}$.
+  - **Suplementariedad angular**: Propiedad por la cual un ángulo interior y su exterior adyacente suman exactamente $180^\circ$.
+propiedades_relaciones: |
+  - **Valores canónicos del ángulo exterior $\beta = \frac{360^\circ}{n}$**:
+    - Triángulo equilátero ($n = 3$): $\beta = \frac{360^\circ}{3} = 120^\circ$.
+    - Cuadrado ($n = 4$): $\beta = \frac{360^\circ}{4} = 90^\circ$.
+    - Pentágono regular ($n = 5$): $\beta = \frac{360^\circ}{5} = 72^\circ$.
+    - Hexágono regular ($n = 6$): $\beta = \frac{360^\circ}{6} = 60^\circ$.
+    - Octágono regular ($n = 8$): $\beta = \frac{360^\circ}{8} = 45^\circ$.
+    - Decágono regular ($n = 10$): $\beta = \frac{360^\circ}{10} = 36^\circ$.
+    - Dodecágono regular ($n = 12$): $\beta = \frac{360^\circ}{12} = 30^\circ$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplos de ángulos congruentes](/static/img/nodos/propiedad-de-angulos-congruentes-en-un-poligono-regular-ejemplos.svg)
+
+    En un hexágono regular, calcula la medida de cada ángulo exterior y la medida de cada ángulo interior.
+  pasos:
+    - 'Paso 1: Identificar el número de lados del polígono regular: Hexágono $\implies n = 6$.'
+    - 'Paso 2: Calcular el ángulo exterior dividiendo $360^\circ$ entre $n$: $\beta = \frac{360^\circ}{6} = 60^\circ$.'
+    - 'Paso 3: Calcular el ángulo interior usando la suplementariedad: $\alpha = 180^\circ - \beta = 180^\circ - 60^\circ = 120^\circ$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuánto mide cada ángulo exterior en un octágono regular (polígono de 8 lados)?"
+    choices:
+      - text: "$45^\\circ$."
+        is_correct: true
+      - text: "$135^\\circ$."
+        is_correct: false
+      - text: "$60^\\circ$."
+        is_correct: false
+      - text: "$40^\\circ$."
+        is_correct: false
+    explanation: "La alternativa correcta es '$45^\\circ$.' En un polígono regular $\\beta = \\frac{360^\\circ}{n}$. Para $n = 8$: $\\beta = \\frac{360^\\circ}{8} = 45^\\circ$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Si en un polígono regular cada ángulo exterior mide 30°, ¿cuántos lados tiene el polígono?"
+    choices:
+      - text: "$12$ lados (un dodecágono)."
+        is_correct: true
+      - text: "$10$ lados (un decágono)."
+        is_correct: false
+      - text: "$15$ lados (un pentadecágono)."
+        is_correct: false
+      - text: "$8$ lados (un octágono)."
+        is_correct: false
+    explanation: "La alternativa correcta es '$12$ lados (un dodecágono).' Despejando $n$ de la fórmula: $\\beta = \\frac{360^\\circ}{n} \\implies n = \\frac{360^\\circ}{30^\\circ} = 12$."
+    reinforcement_section: "Ejemplo guiado"
+procedimiento: |
+  1. Identificar el número de lados $n$ del polígono regular.
+  2. Calcular la medida del ángulo exterior: $\beta = \frac{360^\circ}{n}$.
+  3. Determinar el ángulo interior como su suplementario: $\alpha = 180^\circ - \beta$.
+  4. Para despejar el número de lados conociendo el ángulo exterior, aplicar $n = \frac{360^\circ}{\beta}$.
+errores_correccion: |
+  - **Error común 1:** Confundir la medida del ángulo exterior ($\frac{360^\circ}{n}$) con el interior ($180^\circ - \frac{360^\circ}{n}$). **Corrección:** El exterior es siempre menor en polígonos con $n \geq 5$; el interior y el exterior suman $180^\circ$.
+  - **Error común 2:** Afirmar que el rectángulo es un polígono regular. **Corrección:** El rectángulo es equiángulo pero sus lados adyacentes no son congruentes; no es regular.
+ejemplos:
+  - tipo: "A"
+    titulo: "Ángulo exterior de un pentágono regular"
+    enunciado: "¿Cuál es la medida de cada ángulo exterior en un pentágono regular?"
+    alternativas:
+      - text: "$72^\\circ$."
+        is_correct: true
+      - text: "$108^\\circ$."
+        is_correct: false
+      - text: "$60^\\circ$."
+        is_correct: false
+      - text: "$90^\\circ$."
+        is_correct: false
+    explicacion: "En un pentágono $n = 5$: $\\beta = \\frac{360^\\circ}{5} = 72^\\circ$."
+  - tipo: "B"
+    titulo: "Equiangularidad del rectángulo"
+    enunciado: "¿Un rectángulo no cuadrado es un polígono regular?"
+    respuesta: "No"
+    explicacion: "No. Aunque es equiángulo (cuatro ángulos de $90^\\circ$), sus lados no son congruentes, por lo que no cumple la definición de regular."
+errores_frecuentes:
+  - 'Creer que un polígono equiángulo es automáticamente regular sin verificar la congruencia de sus lados.'
+  - 'Multiplicar $360^\circ$ por $n$ en lugar de dividir para obtener el ángulo exterior.'
+  - 'Olvidar la relación de suplementariedad $\alpha + \beta = 180^\circ$.'
+afirmaciones_verdaderas:
+  - 'En todo polígono regular de $n$ lados, cada ángulo exterior mide estrictamente $\beta = \frac{360^\circ}{n}$.'
+  - 'En cada vértice de un polígono regular, el ángulo interior y el exterior suman exactamente $180^\circ$.'
+  - 'El hexágono regular posee ángulos exteriores de $60^\circ$ e interiores de $120^\circ$.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular y fundamentar las medidas de los ángulos interiores y exteriores de cualquier polígono regular.
+
+  **CÓMO:** Utilizando las relaciones $\beta = \frac{360^\circ}{n}$ y $\alpha = 180^\circ - \beta$ demostrando la suplementariedad angular en cada vértice.
+
+  ![Síntesis de ángulos congruentes](/static/img/nodos/propiedad-de-angulos-congruentes-en-un-poligono-regular-resumen.svg)
+fuente: "Texto escolar oficial de Matemáticas y estándares curriculares PAES"
+estado: publicado

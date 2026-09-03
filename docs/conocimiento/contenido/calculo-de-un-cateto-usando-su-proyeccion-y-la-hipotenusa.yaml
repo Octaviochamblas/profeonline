@@ -1,0 +1,125 @@
+semantic_id: MAT.GEO.RELACIONES_TR.CALCULO_CATETO_PROYECCION
+resumen_inicial: 'El cálculo de un cateto a partir de su proyección y la hipotenusa se realiza mediante las fórmulas $a = \sqrt{c \cdot q}$ y $b = \sqrt{c \cdot p}$, o inversamente para hallar proyecciones como $p = \frac{b^2}{c}$ y $q = \frac{a^2}{c}$.'
+explicacion_simple: |
+  ![Cálculo de Catetos con Euclides](/static/img/nodos/calculo-de-un-cateto-usando-su-proyeccion-y-la-hipotenusa-intro.svg)
+
+  Para calcular la medida exacta de un cateto cuando te dan las proyecciones:
+
+  - **Paso 1**: Si te dan las dos sombras ($p$ y $q$), súmalas para tener la hipotenusa completa: $c = p + q$.
+  - **Paso 2**: Multiplica esa hipotenusa total por la sombra del cateto que buscas ($c \times p$ o $c \times q$).
+  - **Paso 3**: Sácale la raíz cuadrada al resultado.
+explicacion_formal: |
+  ### Algoritmo formal de resolución
+  Dado un triángulo rectángulo $\Delta ABC$ ($\gamma = 90^\circ$), las longitudes de los catetos y sus proyecciones se determinan mediante los despejes algebraicos unívocos del Teorema de Euclides:
+
+  $$\begin{cases} b = \sqrt{c \cdot p} = \sqrt{(p + q)p} \\ a = \sqrt{c \cdot q} = \sqrt{(p + q)q} \end{cases}$$
+
+  Despeje inverso de proyecciones conocidos los catetos y la hipotenusa:
+
+  $$p = \frac{b^2}{c} = \frac{b^2}{\sqrt{a^2 + b^2}} \quad \land \quad q = \frac{a^2}{c} = \frac{a^2}{\sqrt{a^2 + b^2}}$$
+
+  ### Desglose simbólico y geométrico
+  - $a, b$: Longitudes de los catetos en $\mathbb{R}^+$.
+  - $p, q$: Proyecciones ortogonales sobre la hipotenusa.
+  - $c = p + q$: Longitud total de la hipotenusa.
+  - Consistencia métrica: $p + q = \frac{b^2}{c} + \frac{a^2}{c} = \frac{a^2 + b^2}{c} = \frac{c^2}{c} = c$.
+
+  ### Síntesis didáctica
+  Este algoritmo permite transitar bidireccionalmente entre los catetos y sus proyecciones sobre la hipotenusa sin necesidad de calcular ángulos intermedios.
+definiciones_clave: |
+  - **Fórmula directa del cateto**: $a = \sqrt{c \cdot q}$ y $b = \sqrt{c \cdot p}$.
+  - **Fórmula de la proyección**: $p = \frac{b^2}{c}$ y $q = \frac{a^2}{c}$.
+  - **Cálculo con proyecciones dadas**: Sustitución $c = p + q$ previa al cálculo del cateto.
+propiedades_relaciones: |
+  - **Razón de proyecciones**: $\frac{p}{q} = \frac{b^2}{a^2}$.
+  - **Proyecciones en el isósceles**: $a = b \implies p = q = \frac{c}{2}$.
+  - **Conservación de Pitágoras**: $\sqrt{c \cdot p}^2 + \sqrt{c \cdot q}^2 = c(p+q) = c^2$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Cálculo de Catetos](/static/img/nodos/calculo-de-un-cateto-usando-su-proyeccion-y-la-hipotenusa-ejemplos.svg)
+
+    En un triángulo rectángulo, las proyecciones de los catetos sobre la hipotenusa miden $p = 3\text{ cm}$ y $q = 9\text{ cm}$. Calcula la longitud de ambos catetos $b$ y $a$.
+  pasos:
+  - 'Paso 1: Calcular la hipotenusa total sumando las proyecciones: $c = p + q = 3 + 9 = 12\text{ cm}$.'
+  - 'Paso 2: Aplicar la fórmula para el cateto $b$: $b = \sqrt{c \cdot p} = \sqrt{12 \times 3} = \sqrt{36} = 6\text{ cm}$.'
+  - 'Paso 3: Aplicar la fórmula para el cateto $a$: $a = \sqrt{c \cdot q} = \sqrt{12 \times 9} = \sqrt{108} = \sqrt{36 \times 3} = 6\sqrt{3}\text{ cm}$.'
+  - 'Paso 4: Verificar por Pitágoras: $b^2 + a^2 = 6^2 + (6\sqrt{3})^2 = 36 + 108 = 144 = 12^2 = c^2$.'
+  - 'Paso 5: Concluir que $b = 6\text{ cm}$ y $a = 6\sqrt{3}\text{ cm}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: Si se conocen las proyecciones p = 2 cm y q = 6 cm, ¿cuánto mide la hipotenusa c?
+  choices:
+  - text: $8\text{ cm}$
+    is_correct: true
+  - text: $12\text{ cm}$
+    is_correct: false
+  - text: $4\text{ cm}$
+    is_correct: false
+  - text: $\sqrt{12}\text{ cm}$
+    is_correct: false
+  explanation: 'La hipotenusa mide $8\text{ cm}$, ya que $c = p + q = 2 + 6 = 8\text{ cm}$.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: En un triángulo rectángulo con hipotenusa c = 16 cm y proyección p = 4 cm, ¿cuánto mide el cateto b?
+  choices:
+  - text: $8\text{ cm}$
+    is_correct: true
+  - text: $64\text{ cm}$
+    is_correct: false
+  - text: $4\text{ cm}$
+    is_correct: false
+  - text: $12\text{ cm}$
+    is_correct: false
+  explanation: 'Mide $8\text{ cm}$, ya que $b = \sqrt{c \cdot p} = \sqrt{16 \times 4} = \sqrt{64} = 8\text{ cm}$.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Si se dan $p$ y $q$, calcular primero la hipotenusa $c = p + q$.'
+- 'Paso 2: Para hallar el cateto $b$, evaluar $b = \sqrt{c \cdot p}$.'
+- 'Paso 3: Para hallar el cateto $a$, evaluar $a = \sqrt{c \cdot q}$.'
+- 'Paso 4: Para hallar una proyección $p$ conociendo $b$ y $c$, despejar $p = b^2 / c$.'
+- 'Paso 5: Simplificar radicales y verificar que $a^2 + b^2 = c^2$.'
+errores_correccion: 'No olvides sumar $p + q$ para obtener $c$ antes de multiplicar. Multiplicar $p \times q$ te daría $h_c^2$, no el cateto.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Si $p = 1\text{ cm}$ y $q = 3\text{ cm}$, ¿cuánto mide el cateto $b$?
+  alternativas:
+  - $2\text{ cm}$
+  - $\sqrt{3}\text{ cm}$
+  - $4\text{ cm}$
+  respuesta: $2\text{ cm}$
+  solucion_pasos:
+  - '$c = p + q = 1 + 3 = 4\text{ cm}$. Luego $b = \sqrt{c \cdot p} = \sqrt{4 \times 1} = 2\text{ cm}$.'
+- titulo: Ejemplo 2
+  enunciado: Si el cateto $b = 10\text{ cm}$ y la hipotenusa $c = 20\text{ cm}$, ¿cuánto mide su proyección $p$?
+  alternativas:
+  - $5\text{ cm}$
+  - $10\text{ cm}$
+  - $2\text{ cm}$
+  respuesta: $5\text{ cm}$
+  solucion_pasos:
+  - '$p = \frac{b^2}{c} = \frac{10^2}{20} = \frac{100}{20} = 5\text{ cm}$.'
+- titulo: ¿La fórmula para calcular el cateto a es a = √(c · q)?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, $a = \sqrt{c \cdot q}$ es la fórmula canónica de Euclides para el cateto $a$.'
+- titulo: ¿La proyección p se calcula como p = b / c sin elevar al cuadrado?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, la proyección requiere elevar el cateto al cuadrado: $p = b^2 / c$.'
+errores_frecuentes:
+- 'Olvidar sumar $p+q$ para hallar $c$ cuando solo se entregan las proyecciones.'
+- 'No elevar al cuadrado el cateto al despejar la proyección ($p = b/c$ en vez de $b^2/c$).'
+- 'Calcular $\sqrt{p \cdot q}$ creyendo que es un cateto (es la altura $h_c$).'
+- 'Confundir las unidades lineales con cuadradas.'
+- 'Olvidar simplificar radicales como $\sqrt{108} = 6\sqrt{3}$.'
+afirmaciones_verdaderas:
+- 'Un cateto se calcula multiplicando la hipotenusa total por su proyección y extrayendo la raíz cuadrada ($b = \sqrt{c \cdot p}$).'
+- 'La proyección de un cateto sobre la hipotenusa es igual al cuadrado del cateto dividido por la hipotenusa ($p = b^2 / c$).'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular catetos y proyecciones en un triángulo rectángulo aplicando el teorema de Euclides.
+
+  **CÓMO:** Usando los algoritmos $a = \sqrt{c \cdot q}$, $b = \sqrt{c \cdot p}$, $p = b^2/c$ y $q = a^2/c$.
+
+  ![Resumen de Cálculo de Catetos](/static/img/nodos/calculo-de-un-cateto-usando-su-proyeccion-y-la-hipotenusa-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 2° Medio / Teorema de Euclides.
+estado: publicado

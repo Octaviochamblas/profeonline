@@ -1,0 +1,133 @@
+semantic_id: MAT.GEO.POLIGONOS_BASE.SUMA_ANGULOS_EXTERIORES
+resumen_inicial: 'La suma de las medidas de los ángulos exteriores de cualquier polígono convexo es siempre una constante universal igual a 360°, independientemente del número de lados n.'
+explicacion_simple: |
+  ![Suma de Ángulos Exteriores de un Polígono](/static/img/nodos/teorema-de-la-suma-de-angulos-exteriores-de-un-poligono-convexo-igual-a-360-intro.svg)
+
+  No importa si el polígono tiene 3, 4, 10 o 100 lados: sus ángulos exteriores siempre suman exactamente 360°, porque al recorrer el borde se da una vuelta completa.
+explicacion_formal: |
+  ### Teorema de la suma de ángulos exteriores
+  Sea $P_n$ un polígono convexo de $n \geq 3$ lados en $\mathbb{R}^2$, y sea $\beta_i$ la medida del ángulo exterior en el vértice $V_i$ (considerando exactamente un ángulo exterior por vértice). Entonces:
+
+  $$S_{\text{ext}} = \sum_{i=1}^n \beta_i = 360^\circ$$
+
+  ### Demostración algebraica
+  1. En cada uno de los $n$ vértices, el ángulo interior $\alpha_i$ y el exterior $\beta_i$ forman un par lineal suplementario:
+
+  $$\alpha_i + \beta_i = 180^\circ \quad (\forall i \in \{1, \dots, n\})$$
+
+  2. Sumando sobre los $n$ vértices:
+
+  $$\sum_{i=1}^n (\alpha_i + \beta_i) = \sum_{i=1}^n 180^\circ = 180^\circ \cdot n$$
+
+  3. Descomponiendo en suma interior y exterior:
+
+  $$S_{\text{int}} + S_{\text{ext}} = 180^\circ \cdot n$$
+
+  4. Sustituyendo el teorema de ángulos interiores $S_{\text{int}} = 180^\circ(n - 2) = 180^\circ n - 360^\circ$:
+
+  $$(180^\circ n - 360^\circ) + S_{\text{ext}} = 180^\circ n$$
+
+  5. Cancelando $180^\circ n$ en ambos miembros:
+
+  $$S_{\text{ext}} = 360^\circ$$
+
+  ### Ángulo exterior en polígonos regulares
+  Si el polígono es regular, los $n$ ángulos exteriores son congruentes:
+
+  $$\beta = \frac{360^\circ}{n}$$
+
+  > **Complemento didáctico:** Que la suma de ángulos exteriores sea siempre $360^\circ$ e independiente de $n$ se comprende visualmente imaginando una caminata sobre el borde del polígono: al girar en cada vértice y retornar a la posición inicial, el cuerpo completa exactamente un giro entero sobre sí mismo de $360^\circ$.
+definiciones_clave: |
+  - **Ángulo exterior ($\beta_i$)**: Ángulo suplementario adyacente formado por un lado del polígono y la prolongación del lado contiguo.
+  - **Par lineal de vértice**: Relación suplementaria $\alpha_i + \beta_i = 180^\circ$.
+  - **Invariante geométrica**: Propiedad que permanece constante sin importar el parámetro $n$ ($S_{\text{ext}} = 360^\circ$).
+  - **Ángulo exterior en regular**: Medida angular homogénea calculada como $\beta = \frac{360^\circ}{n}$.
+propiedades_relaciones: |
+  - **Constancia universal**: $S_{\text{ext}} = 360^\circ \quad \forall n \geq 3$.
+  - **Cálculo de $n$ desde el ángulo exterior regular**: $n = \frac{360^\circ}{\beta}$. Es la forma más rápida y directa de hallar el número de lados de un polígono regular.
+  - **Relación con el ángulo central**: En todo polígono regular, el ángulo exterior mide exactamente lo mismo que el ángulo central subtendido por un lado: $\beta = \theta_c = \frac{360^\circ}{n}$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Suma de Ángulos Exteriores](/static/img/nodos/teorema-de-la-suma-de-angulos-exteriores-de-un-poligono-convexo-igual-a-360-ejemplos.svg)
+
+    Si un polígono regular tiene un ángulo exterior que mide $\beta = 40^\circ$, determina cuántos lados tiene el polígono y cuánto mide cada ángulo interior.
+  pasos:
+  - 'Paso 1: Aplicar la relación de polígonos regulares para el ángulo exterior: $\beta = \frac{360^\circ}{n}$.'
+  - 'Paso 2: Despejar el número de lados: $n = \frac{360^\circ}{40^\circ} = 9$ lados (eneágono).'
+  - 'Paso 3: Calcular el ángulo interior usando el suplemento: $\alpha = 180^\circ - \beta = 180^\circ - 40^\circ = 140^\circ$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: '¿Por qué la suma de ángulos exteriores de un polígono convexo es SIEMPRE 360°, sin importar cuántos lados tenga?'
+  choices:
+  - text: 'Porque al restar la suma interior 180°(n - 2) a los 180°n de los pares suplementarios, los términos con n se cancelan dejando exactamente 360°'
+    is_correct: true
+  - text: 'Porque todos los polígonos convexos caben exactamente dentro de un círculo de 360 grados'
+    is_correct: false
+  - text: 'Porque cada vértice siempre tiene un ángulo exterior fijo que mide 90 grados'
+    is_correct: false
+  - text: 'Porque solo se consideran polígonos que tengan 4 vértices congruentes'
+    is_correct: false
+  explanation: 'Porque al restar la suma interior 180°(n - 2) a los 180°n de los pares suplementarios, los términos con n se cancelan dejando exactamente 360°.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: '¿Cuánto mide cada ángulo exterior de un hexágono regular (n = 6)?'
+  choices:
+  - text: '60°, calculado como 360° / 6 = 60°'
+    is_correct: true
+  - text: '120°, confundiendo el ángulo exterior con el ángulo interior'
+    is_correct: false
+  - text: '72°, dividiendo 360° entre 5 en lugar de 6'
+    is_correct: false
+  - text: '360°, porque es la suma total'
+    is_correct: false
+  explanation: '60°, calculado como 360° / 6 = 60°.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Recordar que la suma total de ángulos exteriores siempre es $S_{\text{ext}} = 360^\circ$.'
+- 'Paso 2: Si el polígono es regular, calcular el ángulo exterior dividiendo $\beta = \frac{360^\circ}{n}$.'
+- 'Paso 3: Si se conoce el ángulo interior $\alpha$, calcular el exterior mediante el suplemento: $\beta = 180^\circ - \alpha$.'
+- 'Paso 4: Para hallar el número de lados $n$ de un polígono regular conocido su ángulo exterior, despejar $n = \frac{360^\circ}{\beta}$.'
+errores_correccion: 'No multipliques $360^\circ \cdot n$: a diferencia de los ángulos interiores, los ángulos exteriores NO crecen con el número de lados; su suma es siempre una constante fija de $360^\circ$.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: ¿Cuánto suman los ángulos exteriores de un polígono convexo de 20 lados?
+  alternativas:
+  - '360° (constante universal)'
+  - '7200° ($20 \cdot 360^\circ$)'
+  - '3240°'
+  respuesta: '360° (constante universal)'
+  solucion_pasos:
+  - 'La suma de los ángulos exteriores de cualquier polígono convexo es siempre $360^\circ$, sin importar que tenga 20 lados.'
+- titulo: Ejemplo 2
+  enunciado: Si el ángulo exterior de un polígono regular mide 30°, ¿cuántos lados tiene?
+  alternativas:
+  - '12 lados (dodecágono)'
+  - '10 lados'
+  - '15 lados'
+  respuesta: '12 lados (dodecágono)'
+  solucion_pasos:
+  - 'Aplicamos $n = \frac{360^\circ}{\beta} = \frac{360^\circ}{30^\circ} = 12$ lados.'
+- titulo: ¿Un ángulo interior y su correspondiente ángulo exterior en el mismo vértice siempre suman 180°?
+  respuesta: 'Sí'
+  solucion_pasos:
+  - 'Sí, por definición forman un par lineal sobre la recta prolongada del lado, por lo que son estrictamente suplementarios: $\alpha_i + \beta_i = 180^\circ$.'
+- titulo: ¿La suma de los ángulos exteriores de un octágono es el doble que la de un cuadrilátero?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, ambos polígonos tienen exactamente la misma suma exterior de $360^\circ$.'
+errores_frecuentes:
+- 'Multiplicar 360° por n creyendo que la suma exterior aumenta con el número de lados.'
+- 'Tomar dos ángulos exteriores por vértice en lugar de uno solo al calcular la suma total.'
+- 'Confundir el ángulo exterior ($\beta = 360^\circ/n$) con el ángulo interior ($\alpha = 180^\circ(n-2)/n$).'
+afirmaciones_verdaderas:
+- 'La suma de los ángulos exteriores de todo polígono convexo es siempre $360^\circ$.'
+- 'En un polígono regular de $n$ lados, cada ángulo exterior mide $\frac{360^\circ}{n}$.'
+- 'El ángulo interior y el exterior en un mismo vértice siempre son suplementarios ($\alpha_i + \beta_i = 180^\circ$).'
+al_terminar_debes_poder: |
+  **QUÉ:** Comprender y aplicar el teorema de la suma de ángulos exteriores ($360^\circ$) y calcular medidas angulares exteriores e interiores en polígonos regulares y convexos.
+
+  **CÓMO:** Utilizando la invariante $S_{\text{ext}} = 360^\circ$, la fórmula de ángulo regular $\beta = \frac{360^\circ}{n}$ y la relación suplementaria $\alpha_i + \beta_i = 180^\circ$.
+
+  ![Resumen de Suma de Ángulos Exteriores](/static/img/nodos/teorema-de-la-suma-de-angulos-exteriores-de-un-poligono-convexo-igual-a-360-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 1° Medio / Ángulos Exteriores de Polígonos.
+estado: publicado

@@ -30,6 +30,11 @@
     ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"],
     // No romper la página entera si una fórmula está mal escrita.
     throwOnError: false,
+    macros: {
+      "\\wideparen": "\\overset{\\frown}{#1}",
+      "\\overarc": "\\overset{\\frown}{#1}",
+      "\\overgroup": "\\overset{\\frown}{#1}",
+    },
   };
 
   // KaTeX agrega "struts" internos para alinear sub/superíndices que

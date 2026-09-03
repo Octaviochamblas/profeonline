@@ -1,0 +1,115 @@
+semantic_id: MAT.GEO.POLIGONOS_METRICA.DIAGONALES_TOTAL
+resumen_inicial: El número total de diagonales de un polígono de n lados es D = n(n - 3) / 2.
+explicacion_simple: |
+  Si un polígono tiene $n$ esquinas (vértices) y sabemos que desde cada una de ellas salen $n - 3$ diagonales, parece tentador multiplicar simplemente $n \cdot (n - 3)$.
+
+  Sin embargo, si calculamos así, estaremos contando cada diagonal dos veces: una vez desde la esquina de inicio y otra vez desde la esquina de llegada (la diagonal que va de $A$ a $C$ es exactamente la misma que va de $C$ a $A$). Para corregir este conteo doble, dividimos obligatoriamente por 2, obteniendo la fórmula universal: **$D = \frac{n(n - 3)}{2}$**.
+
+  ![Cantidad total de diagonales de un polígono](/static/img/nodos/calculo-de-la-cantidad-total-de-diagonales-de-un-poligono-mediante-nn-3-2-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $\mathcal{P}$ un polígono simple convexo de $n$ vértices. El cardinal del conjunto total de diagonales $\mathcal{D}$, denotado por $D$, viene dado por la expresión combinatoria:
+  $$D = \binom{n}{2} - n = \frac{n(n - 1)}{2} - n = \frac{n^2 - n - 2n}{2} = \frac{n(n - 3)}{2}$$
+
+  ### Desglose simbólico
+  - $n$: Número de lados o vértices del polígono ($n \geq 3$).
+  - $\binom{n}{2} = \frac{n(n - 1)}{2}$: Total de pares no ordenados $\{V_i, V_j\}$ posibles entre los $n$ vértices (total de segmentos unibles).
+  - $- n$: Resta de los $n$ pares consecutivos que representan los lados de la frontera poligonal.
+  - Factor $\frac{1}{2}$: Corrección de simetría axial, ya que el segmento no dirigido $\overline{V_i V_j}$ coincide idénticamente con $\overline{V_j V_i}$.
+  - Caso notable $n = 5$: $D = \frac{5(5-3)}{2} = \frac{10}{2} = 5$. El pentágono es el único polígono donde el número de lados es idéntico a su número total de diagonales ($n = D$).
+
+  > **Complemento didáctico:** ¿Por qué se divide entre 2 en $D = \frac{n(n-3)}{2}$? Porque cada cuerda tiene dos extremos. Si multiplicas $n(n-3)$, estás contando cada diagonal una vez por cada punta. Al dividir por 2, dejas el conteo real y limpio.
+definiciones_clave: |
+  - **Total de diagonales ($D$)**: Cantidad de todos los segmentos diagonales distintos que pueden trazarse dentro de un polígono.
+  - **Conteo combinatorio $\binom{n}{2}$**: Número de combinaciones de $n$ elementos tomados de a 2.
+  - **Grado de un vértice respecto a diagonales**: Cantidad de diagonales que concurren en un vértice ($d_v = n - 3$).
+propiedades_relaciones: |
+  - **Tabla de valores canónicos**:
+    - Triángulo ($n = 3$): $D = \frac{3(0)}{2} = 0$.
+    - Cuadrilátero ($n = 4$): $D = \frac{4(1)}{2} = 2$.
+    - Pentágono ($n = 5$): $D = \frac{5(2)}{2} = 5$.
+    - Hexágono ($n = 6$): $D = \frac{6(3)}{2} = 9$.
+    - Octágono ($n = 8$): $D = \frac{8(5)}{2} = 20$.
+    - Decágono ($n = 10$): $D = \frac{10(7)}{2} = 35$.
+    - Dodecágono ($n = 12$): $D = \frac{12(9)}{2} = 54$.
+  - **Crecimiento cuadrático**: Al crecer $n$, $D$ crece con orden de magnitud $O(n^2)$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplos de total de diagonales](/static/img/nodos/calculo-de-la-cantidad-total-de-diagonales-de-un-poligono-mediante-nn-3-2-ejemplos.svg)
+
+    Calcula la cantidad total de diagonales de un heptágono ($n = 7$) y de un decágono ($n = 10$).
+  pasos:
+    - 'Paso 1: Para el heptágono ($n = 7$): Calcular $n - 3 = 7 - 3 = 4$.'
+    - 'Paso 2: Aplicar la fórmula: $D = \frac{7 \cdot 4}{2} = \frac{28}{2} = 14$ diagonales.'
+    - 'Paso 3: Para el decágono ($n = 10$): Calcular $n - 3 = 10 - 3 = 7$.'
+    - 'Paso 4: Aplicar la fórmula: $D = \frac{10 \cdot 7}{2} = \frac{70}{2} = 35$ diagonales.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuántas diagonales totales tiene un hexágono (polígono de 6 lados)?"
+    choices:
+      - text: "$9$ diagonales."
+        is_correct: true
+      - text: "$18$ diagonales."
+        is_correct: false
+      - text: "$3$ diagonales."
+        is_correct: false
+      - text: "$12$ diagonales."
+        is_correct: false
+    explanation: "La alternativa correcta es '$9$ diagonales.' Aplicando la fórmula $D = \\frac{n(n - 3)}{2}$ con $n = 6$: $D = \\frac{6(6 - 3)}{2} = \\frac{6 \\cdot 3}{2} = 9$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Si un polígono tiene en total 20 diagonales, ¿cuántos lados tiene la figura?"
+    choices:
+      - text: "$8$ lados (un octágono)."
+        is_correct: true
+      - text: "$10$ lados (un decágono)."
+        is_correct: false
+      - text: "$6$ lados (un hexágono)."
+        is_correct: false
+      - text: "$5$ lados (un pentágono)."
+        is_correct: false
+    explanation: "La alternativa correcta es '$8$ lados (un octágono).' Planteando la ecuación: $\\frac{n(n - 3)}{2} = 20 \\implies n(n - 3) = 40$. Evaluando factores: $8 \\cdot (8 - 3) = 8 \\cdot 5 = 40$, luego $n = 8$."
+    reinforcement_section: "Ejemplo guiado"
+procedimiento: |
+  1. Identificar el número de lados o vértices $n$ del polígono.
+  2. Calcular el número de diagonales por vértice: $d_v = n - 3$.
+  3. Multiplicar por el número de vértices: $n \cdot (n - 3)$.
+  4. Dividir el producto entre 2 para descontar duplicados: $D = \frac{n(n - 3)}{2}$.
+errores_correccion: |
+  - **Error común 1:** Olvidar dividir por 2 y responder $n(n - 3)$. **Corrección:** Cada diagonal tiene dos extremos y se cuenta dos veces si no se divide entre 2.
+  - **Error común 2:** Usar $n(n - 2) / 2$. **Corrección:** El término correcto es $n - 3$, ya que un vértice no puede trazar diagonales ni a sí mismo ni a sus dos adyacentes.
+ejemplos:
+  - tipo: "A"
+    titulo: "Polígono con igual número de lados y diagonales"
+    enunciado: "¿En cuál de los siguientes polígonos el número de lados es igual al total de diagonales?"
+    alternativas:
+      - text: "Pentágono ($n = 5$)."
+        is_correct: true
+      - text: "Cuadrilátero ($n = 4$)."
+        is_correct: false
+      - text: "Hexágono ($n = 6$)."
+        is_correct: false
+      - text: "Octágono ($n = 8$)."
+        is_correct: false
+    explicacion: "En el pentágono $n = 5$: $D = \\frac{5(5 - 3)}{2} = \\frac{5 \\cdot 2}{2} = 5$. Lados = Diagonales = 5."
+  - tipo: "B"
+    titulo: "Diagonales de un polígono de 20 lados"
+    enunciado: "¿Un icoságono ($n = 20$) tiene más de 150 diagonales?"
+    respuesta: "Sí"
+    explicacion: "Sí. Para $n = 20$, $D = \\frac{20(17)}{2} = 10 \\cdot 17 = 170$ diagonales, lo cual es estrictamente mayor que 150."
+errores_frecuentes:
+  - 'Omitir la división por 2 y calcular el doble de diagonales ($n(n - 3)$).'
+  - 'Confundir el total de diagonales $D = \\frac{n(n - 3)}{2}$ con las de un solo vértice $d_v = n - 3$.'
+  - 'Cometer errores algebraicos al resolver la ecuación cuadrática $n^2 - 3n - 2D = 0$.'
+afirmaciones_verdaderas:
+  - 'El total de diagonales de un polígono de $n$ lados se obtiene mediante $D = \\frac{n(n - 3)}{2}$.'
+  - 'El pentágono es el único polígono donde el número de lados coincide con el total de diagonales ($n = D = 5$).'
+  - 'Un decágono ($n = 10$) posee exactamente $35$ diagonales en total.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular y deducir la cantidad total de diagonales de cualquier polígono convexo y despejar el número de lados correspondiente.
+
+  **CÓMO:** Empleando la fórmula combinatoria $D = \frac{n(n - 3)}{2}$ y resolviendo ecuaciones asociadas a pares no adyacentes de vértices.
+
+  ![Síntesis de total de diagonales](/static/img/nodos/calculo-de-la-cantidad-total-de-diagonales-de-un-poligono-mediante-nn-3-2-resumen.svg)
+fuente: "Texto escolar oficial de Matemáticas y estándares curriculares PAES"
+estado: publicado

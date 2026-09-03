@@ -1,0 +1,140 @@
+semantic_id: MAT.GEO.CIRCULO_METRICA.AREA_CIRCULO
+resumen_inicial: El área del círculo mide la superficie bidimensional interior encerrada por la circunferencia, calculándose mediante la fórmula A = πr² o en función del diámetro como A = (πd²) / 4.
+explicacion_simple: 'Mientras que la circunferencia es solo la orilla o contorno, el **círculo es todo el relleno de adentro**: la superficie sobre la que puedes pintar, poner césped o comer (como una pizza).
+
+
+  Para medir cuánto espacio bidimensional ocupa esa superficie, usamos la fórmula **$A = \pi r^2$**. Fíjate bien en el exponente $2$: primero debes multiplicar el radio por sí mismo ($r \times r$), y luego multiplicar ese resultado por $\pi$. Como es un área, el resultado siempre se expresa en **unidades cuadradas** como centímetros cuadrados ($\text{cm}^2$) o metros cuadrados ($\text{m}^2$). Y si te dan el diámetro en vez del radio, ¡recuerda partirlo por la mitad antes de elevarlo al cuadrado!
+
+
+  ![Área del círculo con πr²](/static/img/nodos/calculo-del-area-del-circulo-usando-r2-intro.svg)
+
+  '
+explicacion_formal: '### Definición del área mediante cálculo integral
+
+  Sea $\mathcal{D} = \{(x, y) \in \mathbb{R}^2 : x^2 + y^2 \le r^2\}$ el disco circular cerrado de radio $r > 0$. El área $A$ de $\mathcal{D}$ se obtiene mediante la integral doble en coordenadas polares ($x = \rho\cos\theta, y = \rho\sin\theta$, con jacobiano $J = \rho$):
+
+  $$A = \iint_{\mathcal{D}} dx\, dy = \int_0^{2\pi} d\theta \int_0^r \rho\, d\rho = 2\pi \left[\frac{\rho^2}{2}\right]_0^r = \pi r^2$$
+
+
+  ### Fórmula en función del diámetro
+
+  Sustituyendo $r = \frac{d}{2}$ en la ecuación principal:
+
+  $$A = \pi \left(\frac{d}{2}\right)^2 = \frac{\pi d^2}{4}$$
+
+
+  ### Comportamiento cuadrático de escala y despeje radial
+
+  - Si el radio se escala por $k$ ($r'' = k \cdot r$), el área se multiplica por el cuadrado del factor de escala: $A'' = k^2 \cdot A$.
+
+  - Para despejar el radio a partir del área conocida $A$:
+
+  $$r = \sqrt{\frac{A}{\pi}}$$
+
+
+  > **Complemento didáctico:** ¡Cuidado mortal con el diámetro en el área! Un error muy frecuente en la PAES es escribir $A = \pi d^2$. Eso está mal porque te da 4 veces el área verdadera. Siempre divide el diámetro por 2 primero: si $d = 10$, entonces $r = 5$ y $A = \pi(5^2) = 25\pi\text{ cm}^2$.
+
+  '
+definiciones_clave: '- **Área del círculo ($A$)**: Extensión superficial bidimensional del disco delimitado por la circunferencia.
+
+  - **Factor cuadrático ($r^2$)**: Crecimiento de segundo orden de la superficie respecto a la dimensión lineal del radio.
+
+  - **Fórmula diametral ($A = \frac{\pi d^2}{4}$)**: Cálculo del área empleando directamente el diámetro.
+
+  '
+propiedades_relaciones: '- **Unidades de superficie**: Dimensión $[L^2]$ ($\text{mm}^2$, $\text{cm}^2$, $\text{m}^2$).
+
+  - **Razón isoperimétrica**: El círculo es la figura plana que encierra la mayor área posible para un perímetro dado ($A = \frac{P^2}{4\pi}$).
+
+  - **Efecto de duplicar el radio**: Si el radio se duplica, el perímetro se duplica ($2\times$), pero el área se cuadruplica ($4\times$).
+
+  '
+ejemplo_guiado:
+  enunciado: '![Ejemplos de área del círculo](/static/img/nodos/calculo-del-area-del-circulo-usando-r2-ejemplos.svg)
+
+
+    Un aspersor de agua riega en un radio circular de $r = 8\text{ m}$. Calcula el área exacta del césped regado. Además, determina el radio de una piscina circular cuya superficie es de $100\pi\text{ m}^2$.'
+  pasos:
+  - 'Paso 1: Elevar el radio del aspersor al cuadrado: $r^2 = 8^2 = 64\text{ m}^2$.'
+  - 'Paso 2: Multiplicar por $\pi$: $A = 64\pi\text{ m}^2$ (aproximadamente $201,06\text{ m}^2$).'
+  - 'Paso 3: Plantear la ecuación del área para la piscina: $\pi r^2 = 100\pi$.'
+  - 'Paso 4: Cancelar $\pi$ y extraer la raíz cuadrada: $r^2 = 100 \implies r = \sqrt{100} = 10\text{ m}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es la fórmula para calcular el área de un círculo en función de su radio r?
+  choices:
+  - text: A = πr².
+    is_correct: true
+  - text: A = 2πr.
+    is_correct: false
+  - text: A = πd².
+    is_correct: false
+  - text: A = 2πr².
+    is_correct: false
+  explanation: La alternativa correcta es 'A = πr².' La superficie del círculo es el producto de pi por el radio elevado al cuadrado.
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si el radio de un círculo se duplica (se multiplica por 2), ¿qué ocurre con su área?
+  choices:
+  - text: Se cuadruplica (se multiplica por 4).
+    is_correct: true
+  - text: Se duplica (se multiplica por 2).
+    is_correct: false
+  - text: Permanece igual.
+    is_correct: false
+  - text: Se multiplica por 8.
+    is_correct: false
+  explanation: La alternativa correcta es 'Se cuadruplica (se multiplica por 4).' Como el área depende de $r^2$, $(2r)^2 = 4r^2$, por lo que el área se multiplica por 4.
+  reinforcement_section: Ejemplo guiado
+procedimiento: '1. Obtener la medida del radio $r$ (si dan el diámetro $d$, calcular $r = d / 2$).
+
+  2. Elevar el radio al cuadrado ($r^2 = r \cdot r$).
+
+  3. Multiplicar el valor por la constante $\pi$ ($A = \pi r^2$).
+
+  4. Para despejar el radio dado el área $A$, calcular $r = \sqrt{A / \pi}$.
+
+  '
+errores_correccion: '- **Error común 1:** Elevar al cuadrado el diámetro en lugar del radio y no dividir por 4. **Corrección:** Con el diámetro, la fórmula es $A = \frac{\pi d^2}{4}$.
+
+  - **Error común 2:** Confundir unidades lineales con cuadradas. **Corrección:** El área siempre lleva unidades elevadas al cuadrado ($\text{cm}^2$, $\text{m}^2$).
+
+  '
+ejemplos:
+- tipo: A
+  titulo: Área a partir del diámetro
+  enunciado: Una mesa redonda tiene un diámetro de $14\text{ dm}$. ¿Cuál es su área exacta?
+  alternativas:
+  - text: $49\pi\text{ dm}^2$.
+    is_correct: true
+  - text: $196\pi\text{ dm}^2$.
+    is_correct: false
+  - text: $28\pi\text{ dm}^2$.
+    is_correct: false
+  - text: $14\pi\text{ dm}^2$.
+    is_correct: false
+  explicacion: El radio es $r = 14 / 2 = 7\text{ dm}$. Luego $A = \pi(7^2) = 49\pi\text{ dm}^2$.
+- tipo: B
+  titulo: Área y unidades cuadradas
+  enunciado: ¿Debe expresarse el área de un círculo en unidades cuadradas como centímetros cuadrados?
+  respuesta: Sí
+  explicacion: Sí. El área es una medida de superficie bidimensional, por lo que siempre se expresa en unidades cuadradas.
+errores_frecuentes:
+- '''Calcular el área con el diámetro directo sin dividirlo entre 2 ($A = \pi d^2$).'''
+- '''Confundir la fórmula del área $A = \pi r^2$ con la del perímetro $P = 2\pi r$.'''
+- '''Olvidar extraer la raíz cuadrada al despejar el radio a partir del área.'''
+afirmaciones_verdaderas:
+- '''El área de un círculo de radio $r$ es $A = \pi r^2$.'''
+- '''En función del diámetro $d$, el área del círculo se expresa como $A = \frac{\pi d^2}{4}$.'''
+- '''Si el radio de un círculo se triplica, su área se multiplica por 9 ($3^2 = 9$).'''
+al_terminar_debes_poder: '**QUÉ:** Calcular el área del círculo a partir del radio o diámetro y despejar el radio conocida la superficie.
+
+
+  **CÓMO:** Empleando las relaciones $A = \pi r^2$, $A = \frac{\pi d^2}{4}$ y $r = \sqrt{\frac{A}{\pi}}$.
+
+
+  ![Síntesis de área πr²](/static/img/nodos/calculo-del-area-del-circulo-usando-r2-resumen.svg)
+
+  '
+fuente: Texto escolar oficial de Matemáticas y estándares curriculares PAES
+estado: publicado

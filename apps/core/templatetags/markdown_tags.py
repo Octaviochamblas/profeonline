@@ -70,7 +70,7 @@ def to_json_filter(value):
     return _json.dumps(value, ensure_ascii=False)
 
 
-_PASO_RE = re.compile(r"^(Paso\s*\d+\s*:)\s*", re.UNICODE)
+_PASO_RE = re.compile(r"^(Paso\s*\d+\s*:|\d+\.\s*)", re.UNICODE)
 
 
 @register.filter(name="procedure_summary")
@@ -82,8 +82,9 @@ def procedure_summary(value):
     """
     if not value:
         return ""
+    steps = to_steps_filter(value)
     parts = []
-    for step in value:
+    for step in steps:
         text = _PASO_RE.sub("", str(step)).strip()
         words = text.split()
         snippet = " ".join(words[:6])
@@ -93,14 +94,30 @@ def procedure_summary(value):
     return " → ".join(parts)
 
 
+@register.filter(name="to_steps")
+def to_steps_filter(value):
+    """Asegura que un procedimiento (sea lista o texto multilínea) se convierta
+    en una lista de pasos limpia, evitando que un string se itere carácter por
+    carácter en los templates.
+    """
+    if not value:
+        return []
+    if isinstance(value, list):
+        return [str(s).strip() for s in value if str(s).strip()]
+    if isinstance(value, str):
+        lines = [line.strip() for line in value.splitlines() if line.strip()]
+        return lines
+    return [str(value)]
+
+
 @register.filter(name="bold_step")
 def bold_step(value):
-    """Si el texto empieza con 'Paso N:', lo envuelve en <strong>."""
+    """Si el texto empieza con 'Paso N:' o 'N.', lo envuelve en <strong>."""
     if not value:
         return ""
     text = escape(str(value))
     result = _PASO_RE.sub(
-        lambda m: '<strong class="learn-procedure__step-label">' + m.group(1) + "</strong> ",
+        lambda m: '<strong class="learn-procedure__step-label">' + m.group(1).strip() + "</strong> ",
         text,
     )
     return mark_safe(result)

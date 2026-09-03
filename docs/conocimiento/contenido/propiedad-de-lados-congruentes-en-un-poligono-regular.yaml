@@ -1,0 +1,110 @@
+semantic_id: MAT.GEO.POLIGONOS_METRICA.REGULAR_LADOS_CONGRUENTES
+resumen_inicial: En todo polígono regular, todos los lados son congruentes entre sí y su perímetro es P = n · s.
+explicacion_simple: |
+  Para que un polígono sea llamado **regular**, debe ser perfectamente simétrico. La primera condición fundamental es que sea **equilátero**: todos y cada uno de sus bordes (lados) deben medir exactamente lo mismo.
+
+  Si un lado mide $s$, entonces los $n$ lados medirán todos $s$. Gracias a esto, calcular el perímetro es sumamente sencillo: en lugar de sumar lado por lado, simplemente multiplicamos el número de lados por la longitud de uno de ellos: **$P = n \cdot s$**. Sin embargo, ¡cuidado!: tener todos los lados iguales no garantiza por sí solo que la figura sea regular (por ejemplo, un rombo tiene 4 lados iguales pero no es regular porque sus ángulos están deformados).
+
+  ![Propiedad de lados congruentes en un polígono regular](/static/img/nodos/propiedad-de-lados-congruentes-en-un-poligono-regular-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $\mathcal{P}$ un polígono de $n$ lados con conjunto de aristas $\mathcal{L} = \{L_1, L_2, \dots, L_n\}$. La propiedad de **lados congruentes** (equilaterismo) establece que:
+  $$\forall i, j \in \{1, 2, \dots, n\}, \quad L_i \cong L_j \iff \text{long}(L_i) = s \in \mathbb{R}^+$$
+  En consecuencia, la función perímetro $P: \mathcal{P} \to \mathbb{R}^+$ se reduce a:
+  $$P = \sum_{i=1}^n \text{long}(L_i) = \sum_{i=1}^n s = n \cdot s$$
+
+  ### Desglose simbólico
+  - $L_i \cong L_j$: Congruencia geométrica entre los segmentos de borde.
+  - $s$: Longitud escalar compartida de cada lado.
+  - $P = n \cdot s$: Perímetro como función lineal directa del número de lados $n$ y la longitud $s$.
+  - Condición necesaria pero no suficiente: El equilaterismo ($\forall i, L_i \cong L_j$) es una condición necesaria para la regularidad, pero no suficiente. Se requiere adicionalmente la equiangularidad ($\forall i, \alpha_i \cong \alpha_j$).
+
+  > **Complemento didáctico:** Acuérdate del rombo: tiene los 4 lados idénticos, pero no es un cuadrado porque tiene dos ángulos agudos y dos obtusos. Por eso, "lados iguales" es solo la mitad del boleto para ser un polígono regular.
+definiciones_clave: |
+  - **Polígono equilátero**: Polígono cuyos lados tienen todos exactamente la misma longitud métrica.
+  - **Polígono regular**: Polígono convexo que es simultáneamente equilátero y equiángulo.
+  - **Perímetro ($P$)**: Suma total de las longitudes de todos los lados que delimitan la figura plana.
+  - **Apotema ($a_p$)**: Segmento perpendicular trazado desde el centro del polígono regular hasta el punto medio de cualquiera de sus lados.
+propiedades_relaciones: |
+  - **Fórmula de perímetro**: $P = n \cdot s$. Si se conoce el perímetro $P$ y el número de lados $n$, la medida de cada lado es $s = \frac{P}{n}$.
+  - **Simetría radial**: En un polígono regular, cada lado subtiende un ángulo central idéntico $\theta_c = \frac{360^\circ}{n}$.
+  - **Área en función del lado y apotema**: El área de un polígono regular es $A = \frac{P \cdot a_p}{2} = \frac{n \cdot s \cdot a_p}{2}$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplos de lados congruentes](/static/img/nodos/propiedad-de-lados-congruentes-en-un-poligono-regular-ejemplos.svg)
+
+    Un octágono regular tiene lados de longitud $s = 6\text{ cm}$. Calcula su perímetro y determina la longitud del lado de un decágono regular que tenga exactamente el mismo perímetro.
+  pasos:
+    - 'Paso 1: Calcular el perímetro del octágono regular ($n = 8$): $P = n \cdot s = 8 \cdot 6\text{ cm} = 48\text{ cm}$.'
+    - 'Paso 2: Igualar al perímetro del decágono regular ($n = 10$): $P = 10 \cdot s_{\text{dec}} = 48\text{ cm}$.'
+    - 'Paso 3: Despejar la longitud del lado del decágono: $s_{\text{dec}} = \frac{48\text{ cm}}{10} = 4{,}8\text{ cm}$.'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "Si un polígono regular de 12 lados (dodecágono) tiene un perímetro de 84 cm, ¿cuánto mide cada uno de sus lados?"
+    choices:
+      - text: "$7\\text{ cm}$."
+        is_correct: true
+      - text: "$8{,}4\\text{ cm}$."
+        is_correct: false
+      - text: "$14\\text{ cm}$."
+        is_correct: false
+      - text: "$6\\text{ cm}$."
+        is_correct: false
+    explanation: "La alternativa correcta es '$7\\text{ cm}$.' En un polígono regular $P = n \\cdot s$. Despejando: $s = \\frac{P}{n} = \\frac{84\\text{ cm}}{12} = 7\\text{ cm}$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "¿Es suficiente que un polígono tenga todos sus lados congruentes para clasificarlo como polígono regular?"
+    choices:
+      - text: "No, porque también se exige obligatoriamente que todos sus ángulos interiores sean congruentes."
+        is_correct: true
+      - text: "Sí, la igualdad de lados implica automáticamente la igualdad de todos sus ángulos."
+        is_correct: false
+      - text: "Sí, siempre que el número de lados sea un número par."
+        is_correct: false
+      - text: "No, a menos que el polígono tenga menos de 4 lados."
+        is_correct: false
+    explanation: "La alternativa correcta es 'No, porque también se exige obligatoriamente que todos sus ángulos interiores sean congruentes.' Un rombo tiene todos sus lados iguales pero sus ángulos no son iguales, por lo que no es regular."
+    reinforcement_section: "Ejemplo guiado"
+procedimiento: |
+  1. Verificar si el polígono está catalogado formalmente como regular o equilátero.
+  2. Identificar el número de lados $n$ de la figura.
+  3. Para hallar el perímetro conocida la longitud $s$, aplicar $P = n \cdot s$.
+  4. Para hallar la longitud del lado conocido el perímetro $P$, aplicar $s = \frac{P}{n}$.
+errores_correccion: |
+  - **Error común 1:** Asumir que todo polígono equilátero es regular. **Corrección:** El rombo es equilátero pero no regular; la regularidad exige equilátero Y equiángulo simultáneamente.
+  - **Error común 2:** Confundir el perímetro $P = n \cdot s$ con el área $A = \frac{P \cdot a_p}{2}$. **Corrección:** El perímetro mide la frontera lineal; el área requiere incorporar la apotema.
+ejemplos:
+  - tipo: "A"
+    titulo: "Cálculo de perímetro en un hexágono regular"
+    enunciado: "Si cada lado de un hexágono regular mide $s = 5{,}5\\text{ cm}$, ¿cuál es su perímetro?"
+    alternativas:
+      - text: "$33\\text{ cm}$."
+        is_correct: true
+      - text: "$30\\text{ cm}$."
+        is_correct: false
+      - text: "$27{,}5\\text{ cm}$."
+        is_correct: false
+      - text: "$38{,}5\\text{ cm}$."
+        is_correct: false
+    explicacion: "Aplicando $P = n \\cdot s = 6 \\cdot 5{,}5\\text{ cm} = 33\\text{ cm}$."
+  - tipo: "B"
+    titulo: "Regularidad del rombo"
+    enunciado: "¿Un rombo con lados de $4\\text{ cm}$ y ángulos de $60^\\circ$ y $120^\\circ$ es un polígono regular?"
+    respuesta: "No"
+    explicacion: "No. Aunque es equilátero ($s = 4\\text{ cm}$), sus ángulos interiores no son congruentes ($60^\\circ \\neq 120^\\circ$)."
+errores_frecuentes:
+  - 'Creer erróneamente que tener lados congruentes garantiza automáticamente la regularidad de la figura.'
+  - 'Sumar los lados con factores incorrectos en polígonos regulares en vez de multiplicar directamente por $n$.'
+  - 'Olvidar verificar la congruencia angular al clasificar polígonos en ejercicios teóricos.'
+afirmaciones_verdaderas:
+  - 'En todo polígono regular de $n$ lados, el perímetro equivale estrictamente a $P = n \\cdot s$.'
+  - 'El cuadrado es el único cuadrilátero que es simultáneamente equilátero y equiángulo (regular).'
+  - 'Un polígono puede tener todos sus lados congruentes y sin embargo no ser regular (por ejemplo, el rombo).'
+al_terminar_debes_poder: |
+  **QUÉ:** Identificar, fundamentar y aplicar la propiedad de lados congruentes y calcular el perímetro de cualquier polígono regular.
+
+  **CÓMO:** Utilizando la relación $P = n \cdot s$ y contrastando la noción de figura equilátera frente a la condición integral de regularidad geométrica.
+
+  ![Síntesis de lados congruentes](/static/img/nodos/propiedad-de-lados-congruentes-en-un-poligono-regular-resumen.svg)
+fuente: "Texto escolar oficial de Matemáticas y estándares curriculares PAES"
+estado: publicado

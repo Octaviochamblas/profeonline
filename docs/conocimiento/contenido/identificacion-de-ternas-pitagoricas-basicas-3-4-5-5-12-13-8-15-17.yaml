@@ -1,0 +1,129 @@
+semantic_id: MAT.GEO.PITAGORAS.TERNAS
+resumen_inicial: 'Una terna pitagórica es un conjunto de tres números enteros positivos $(a, b, c)$ que satisfacen exactamente la ecuación de Pitágoras $a^2 + b^2 = c^2$. Las más fundamentales son $(3, 4, 5)$, $(5, 12, 13)$, $(8, 15, 17)$ y $(7, 24, 25)$, junto con todos sus múltiplos enteros.'
+explicacion_simple: |
+  ![Ternas Pitagóricas](/static/img/nodos/identificacion-de-ternas-pitagoricas-basicas-3-4-5-5-12-13-8-15-17-intro.svg)
+
+  Las ternas pitagóricas son combinaciones "mágicas" de números enteros que forman triángulos rectángulos perfectos sin decimales:
+
+  - **La terna reina $(3, 4, 5)$**: $3^2 + 4^2 = 9 + 16 = 25 = 5^2$.
+  - **Otras ternas clásicas**: $(5, 12, 13)$ y $(8, 15, 17)$.
+  - **La regla de multiplicar**: Si multiplicas una terna por cualquier número, ¡sigue funcionando!
+    - Doble de $(3, 4, 5) \to (6, 8, 10)$.
+    - Triple de $(3, 4, 5) \to (9, 12, 15)$.
+    - Diez veces $(3, 4, 5) \to (30, 40, 50)$.
+explicacion_formal: |
+  ### Definición formal
+  Una **terna pitagórica** es una tupla ordenada de tres números enteros positivos $(a, b, c) \in (\mathbb{Z}^+)^3$ que satisface la ecuación diofántica cuadrática:
+
+  $$a^2 + b^2 = c^2$$
+
+  Una terna es **primitiva** si $\operatorname{mcd}(a, b, c) = 1$. Por la fórmula generatriz de Euclides, para cualesquiera enteros coprimos $u > v > 0$ de distinta paridad:
+
+  $$a = u^2 - v^2, \quad b = 2uv, \quad c = u^2 + v^2$$
+
+  ### Desglose simbólico y geométrico
+  - Ternas primitivas fundamentales:
+    - Para $u=2, v=1 \implies (3, 4, 5)$ con $3^2 + 4^2 = 5^2$.
+    - Para $u=3, v=2 \implies (5, 12, 13)$ con $5^2 + 12^2 = 13^2$.
+    - Para $u=4, v=1 \implies (15, 8, 17)$ con $8^2 + 15^2 = 17^2$.
+    - Para $u=4, v=3 \implies (7, 24, 25)$ con $7^2 + 24^2 = 25^2$.
+  - Familia derivada por factor de escala $k \in \mathbb{Z}^+$: $(ka, kb, kc)$ satisface $(ka)^2 + (kb)^2 = (kc)^2$.
+
+  ### Síntesis didáctica
+  Memorizar las ternas pitagóricas primitivas y sus múltiplos agiliza drásticamente la resolución de ejercicios de geometría y pruebas de admisión al evitar cálculos aritméticos largos.
+definiciones_clave: |
+  - **Terna pitagórica**: Trío de enteros positivos que satisfacen $a^2 + b^2 = c^2$.
+  - **Terna primitiva**: Terna pitagórica cuyos elementos son primos relativos entre sí ($\operatorname{mcd}(a,b,c)=1$).
+  - **Múltiplo escalar ($k$)**: Factor constante que escala proporcionalmente los tres lados de un triángulo semejante.
+propiedades_relaciones: |
+  - **Semejanza**: Todo triángulo de lados $(ka, kb, kc)$ es semejante al triángulo primitivo $(a, b, c)$.
+  - **Paridad**: En toda terna primitiva, exactamente uno de los catetos es par y el otro es impar, mientras que la hipotenusa es siempre impar.
+  - **Unicidad de consecutivos**: La terna $(3, 4, 5)$ es la única terna pitagórica formada por tres números enteros consecutivos.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Ternas Pitagóricas](/static/img/nodos/identificacion-de-ternas-pitagoricas-basicas-3-4-5-5-12-13-8-15-17-ejemplos.svg)
+
+    Un triángulo rectángulo tiene un cateto de $15\text{ cm}$ y una hipotenusa de $25\text{ cm}$. Identifica a qué terna pitagórica pertenece, determina el factor de escala $k$ y calcula mentalmente el valor del otro cateto.
+  pasos:
+  - 'Paso 1: Simplificar los lados conocidos dividiéndolos por su máximo común divisor: $\operatorname{mcd}(15, 25) = 5$.'
+  - 'Paso 2: Obtener los valores base: $\frac{15}{5} = 3$ y $\frac{25}{5} = 5$.'
+  - 'Paso 3: Reconocer la terna primitiva fundamental $(3, 4, 5)$ con factor de escala $k = 5$.'
+  - 'Paso 4: Calcular el cateto restante multiplicando el elemento base $4$ por el factor $k = 5$: $4 \times 5 = 20\text{ cm}$.'
+  - 'Paso 5: Comprobar: $15^2 + 20^2 = 225 + 400 = 625 = 25^2$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál de los siguientes tríos de números NO corresponde a una terna pitagórica?
+  choices:
+  - text: $(6, 8, 12)$
+    is_correct: true
+  - text: $(3, 4, 5)$
+    is_correct: false
+  - text: $(5, 12, 13)$
+    is_correct: false
+  - text: $(8, 15, 17)$
+    is_correct: false
+  explanation: 'El trío $(6, 8, 12)$ no es una terna pitagórica porque $6^2 + 8^2 = 36 + 64 = 100 \neq 12^2 = 144$ (la terna correcta es $(6, 8, 10)$).'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si un triángulo rectángulo tiene catetos de 30 cm y 40 cm, ¿cuánto mide su hipotenusa basándose en la terna (3, 4, 5)?
+  choices:
+  - text: $50\text{ cm}$
+    is_correct: true
+  - text: $70\text{ cm}$
+    is_correct: false
+  - text: $45\text{ cm}$
+    is_correct: false
+  - text: $60\text{ cm}$
+    is_correct: false
+  explanation: 'Mide $50\text{ cm}$, ya que corresponde a la terna $(3, 4, 5)$ escalada por $k = 10$ ($3 \times 10, 4 \times 10, 5 \times 10 = 50\text{ cm}$).'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Examinar los números dados y buscar si corresponden directamente a $(3, 4, 5)$, $(5, 12, 13)$ u $(8, 15, 17)$.'
+- 'Paso 2: Si los números son mayores, calcular el $\operatorname{mcd}$ de los datos para hallar el factor de escala $k$.'
+- 'Paso 3: Identificar el elemento faltante en la terna primitiva.'
+- 'Paso 4: Multiplicar el elemento base por $k$ para obtener el resultado final directamente.'
+errores_correccion: 'Verifica siempre que el número mayor de la terna corresponda a la HIPOTENUSA y no a uno de los catetos.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Si los catetos de un triángulo rectángulo miden $10\text{ cm}$ y $24\text{ cm}$, ¿cuánto mide la hipotenusa usando ternas pitagóricas?
+  alternativas:
+  - $26\text{ cm}$
+  - $34\text{ cm}$
+  - $28\text{ cm}$
+  respuesta: $26\text{ cm}$
+  solucion_pasos:
+  - 'Corresponde a la terna $(5, 12, 13)$ multiplicada por $k = 2$: $13 \times 2 = 26\text{ cm}$.'
+- titulo: Ejemplo 2
+  enunciado: ¿Cuál es la única terna pitagórica formada por tres números enteros consecutivos?
+  alternativas:
+  - $(3, 4, 5)$
+  - $(1, 2, 3)$
+  - $(4, 5, 6)$
+  respuesta: $(3, 4, 5)$
+  solucion_pasos:
+  - 'La terna $(3, 4, 5)$ es la única solución entera consecutiva a la ecuación $x^2 + (x+1)^2 = (x+2)^2$.'
+- titulo: ¿(5, 12, 13) es una terna pitagórica válida?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, porque $5^2 + 12^2 = 25 + 144 = 169 = 13^2$.'
+- titulo: ¿(4, 5, 6) es una terna pitagórica?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, porque $4^2 + 5^2 = 16 + 25 = 41 \neq 6^2 = 36$.'
+errores_frecuentes:
+- 'Confundir el orden de la hipotenusa en la terna.'
+- 'Asumir que $(1, 2, 3)$ es una terna pitagórica ($1+4 \neq 9$).'
+- 'Olvidar multiplicar el elemento base por el factor de escala $k$.'
+- 'Dividir incorrectamente al buscar el factor común.'
+- 'No reconocer ternas con decimales proporcionales (ej: 0.6, 0.8, 1.0).'
+afirmaciones_verdaderas:
+- 'Una terna pitagórica es un trío de enteros positivos que satisfacen $a^2 + b^2 = c^2$.'
+- 'Al multiplicar una terna pitagórica por un número entero positivo se obtiene otra terna pitagórica semejante.'
+al_terminar_debes_poder: |
+  **QUÉ:** Identificar y aplicar ternas pitagóricas básicas y sus múltiplos en la resolución de problemas.
+
+  **CÓMO:** Reconociendo las familias primitivas $(3, 4, 5)$, $(5, 12, 13)$, $(8, 15, 17)$ y escalándolas por el factor común $k$.
+
+  ![Resumen de Ternas Pitagóricas](/static/img/nodos/identificacion-de-ternas-pitagoricas-basicas-3-4-5-5-12-13-8-15-17-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 8° Básico / Geometría Euclidiana.
+estado: publicado

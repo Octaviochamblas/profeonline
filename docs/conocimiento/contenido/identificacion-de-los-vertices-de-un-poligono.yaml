@@ -1,0 +1,119 @@
+semantic_id: MAT.GEO.POLIGONOS_BASE.VERTICES
+resumen_inicial: 'Los vértices de un polígono son los puntos de intersección entre cada par de lados consecutivos; en todo polígono el número de vértices es estrictamente igual al número de lados.'
+explicacion_simple: |
+  ![Identificación de Vértices](/static/img/nodos/identificacion-de-los-vertices-de-un-poligono-intro.svg)
+
+  Los vértices son las 'esquinas' del polígono donde se juntan dos lados rectos. Si un polígono tiene 5 lados, tendrá exactamente 5 vértices.
+explicacion_formal: |
+  ### Definición de vértice
+  En un polígono de lados $\overline{V_1 V_2}, \overline{V_2 V_3}, \dots, \overline{V_n V_1}$, cada punto $V_i$ se denomina **vértice**. Matemáticamente:
+
+  $$V_i = \overline{V_{i-1} V_i} \cap \overline{V_i V_{i+1}}$$
+
+  Para todo polígono plano simple de $n$ lados se cumple la identidad de Euler unidimensional:
+
+  $$\text{Número de Vértices } (V) = \text{Número de Lados } (L) = \text{Número de Ángulos Interiores } (A) = n$$
+
+  ### Diagonales desde un vértice
+  Una **diagonal** es un segmento que une dos vértices no consecutivos. Para un vértice cualquiera $V_i$:
+  - No puede conectarse consigo mismo (1 vértice descartado).
+  - No puede conectarse con sus dos vértices adyacentes $V_{i-1}$ y $V_{i+1}$, pues esos segmentos son lados del polígono (2 vértices descartados).
+  - Por lo tanto, el número de diagonales que parten desde un solo vértice es:
+
+  $$d_v = n - 3$$
+
+  > **Complemento didáctico:** Al trazar todas las $d_v = n - 3$ diagonales posibles desde un único vértice, el polígono queda descompuesto exactamente en $(n - 2)$ triángulos disjuntos, lo que constituye la base geométrica para demostrar la suma de los ángulos interiores.
+definiciones_clave: |
+  - **Vértice ($V_i$)**: Punto de corte de dos segmentos consecutivos que componen el polígono.
+  - **Vértices adyacentes o consecutivos**: Vértices unidos por un mismo lado del polígono.
+  - **Vértices no consecutivos**: Vértices que no comparten un lado común; al unirlos se forma una diagonal.
+  - **Diagonales desde un vértice**: Cantidad de segmentos interiores que parten de un vértice determinado ($d_v = n - 3$).
+propiedades_relaciones: |
+  - **Identidad de conteo**: $V = n \quad \forall n \geq 3$.
+  - **Diagonales totales**: Al haber $n$ vértices con $n - 3$ diagonales cada uno y dividiendo por 2 (cada diagonal tiene 2 extremos): $D = \frac{n(n - 3)}{2}$.
+  - **Triangulación**: Trazar las $n - 3$ diagonales desde un vértice divide el polígono en $n - 2$ triángulos interiores disjuntos.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Identificación de Vértices](/static/img/nodos/identificacion-de-los-vertices-de-un-poligono-ejemplos.svg)
+
+    En un hexágono convexo ($n = 6$), determina el número total de vértices y cuántas diagonales se pueden trazar partiendo desde uno solo de sus vértices.
+  pasos:
+  - 'Paso 1: Identificar el número de lados del hexágono: $n = 6$.'
+  - 'Paso 2: Aplicar la identidad estructural de vértices: $V = n = 6$ vértices.'
+  - 'Paso 3: Calcular las diagonales desde un vértice con la fórmula $d_v = n - 3$: $d_v = 6 - 3 = 3$ diagonales.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: '¿Cuántas diagonales se pueden trazar desde un único vértice en un octágono (n = 8)?'
+  choices:
+  - text: '5 diagonales, porque se descuentan el propio vértice y sus dos vecinos adyacentes (8 - 3 = 5)'
+    is_correct: true
+  - text: '8 diagonales, una hacia cada vértice de la figura'
+    is_correct: false
+  - text: '20 diagonales, aplicando la fórmula de diagonales totales'
+    is_correct: false
+  - text: '2 diagonales, porque solo se divide en dos cuadriláteros'
+    is_correct: false
+  explanation: '5 diagonales, porque se descuentan el propio vértice y sus dos vecinos adyacentes (8 - 3 = 5).'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: 'Si un polígono tiene 12 vértices, ¿cuántos lados y cuántos ángulos interiores tiene?'
+  choices:
+  - text: 'Tiene exactamente 12 lados y 12 ángulos interiores, ya que en todo polígono V = L = A = n'
+    is_correct: true
+  - text: 'Tiene 24 lados y 6 ángulos interiores'
+    is_correct: false
+  - text: 'Tiene 10 lados y 14 ángulos interiores'
+    is_correct: false
+  - text: 'Tiene 9 lados porque se le restan las 3 diagonales'
+    is_correct: false
+  explanation: 'Tiene exactamente 12 lados y 12 ángulos interiores, ya que en todo polígono V = L = A = n.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Ubicar los puntos angulares de cambio de dirección en la frontera del polígono.'
+- 'Paso 2: Enumerar los vértices consecutivamente en sentido horario o antihorario ($V_1, V_2, \dots, V_n$).'
+- 'Paso 3: Verificar que ningún punto medio de un lado sea contabilizado erróneamente como vértice.'
+- 'Paso 4: Para calcular diagonales desde un vértice, aplicar $d_v = n - 3$.'
+errores_correccion: 'Cuidado con considerar los puntos interiores del polígono o los puntos sobre una arista recta como vértices: solo los extremos de los lados donde se produce un quiebre angular son vértices.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: ¿Cuántos vértices tiene un decágono?
+  alternativas:
+  - '10 vértices'
+  - '8 vértices'
+  - '20 vértices'
+  respuesta: '10 vértices'
+  solucion_pasos:
+  - 'Un decágono tiene $n = 10$ lados, por lo que posee exactamente $V = 10$ vértices.'
+- titulo: Ejemplo 2
+  enunciado: ¿Cuántas diagonales parten de un mismo vértice en un pentágono (n = 5)?
+  alternativas:
+  - '2 diagonales ($5 - 3 = 2$)'
+  - '5 diagonales'
+  - '3 diagonales'
+  respuesta: '2 diagonales ($5 - 3 = 2$)'
+  solucion_pasos:
+  - 'Aplicando $d_v = n - 3$, para $n = 5$ tenemos $d_v = 5 - 3 = 2$ diagonales.'
+- titulo: ¿Un triángulo tiene diagonales que partan de sus vértices?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, porque para $n = 3$, $d_v = 3 - 3 = 0$. Todos sus vértices son adyacentes entre sí.'
+- titulo: ¿El número de vértices de cualquier polígono siempre coincide con su número de lados?
+  respuesta: 'Sí'
+  solucion_pasos:
+  - 'Sí, en todo polígono cerrado simple la cantidad de vértices es idéntica a la cantidad de lados: $V = L = n$.'
+errores_frecuentes:
+- 'Contar los lados en lugar de los vértices o creer que pueden tener cantidades distintas en una misma figura.'
+- 'Olvidar restar 3 al calcular las diagonales desde un vértice ($d_v = n - 3$).'
+- 'Confundir las diagonales desde un vértice ($n - 3$) con las diagonales totales del polígono ($\frac{n(n - 3)}{2}$).'
+afirmaciones_verdaderas:
+- 'En todo polígono de $n$ lados existen exactamente $n$ vértices.'
+- 'Desde un vértice cualquiera de un polígono de $n$ lados se pueden trazar $n - 3$ diagonales.'
+- 'Un triángulo no posee diagonales ($3 - 3 = 0$).'
+al_terminar_debes_poder: |
+  **QUÉ:** Identificar, contar y relacionar los vértices de cualquier polígono plano, determinando el número de lados y las diagonales que emergen desde un vértice.
+
+  **CÓMO:** Aplicando la identidad geométrica $V = n$ y la fórmula combinatoria de diagonales por vértice $d_v = n - 3$.
+
+  ![Resumen de Vértices de un Polígono](/static/img/nodos/identificacion-de-los-vertices-de-un-poligono-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 1° Medio / Elementos de los Polígonos.
+estado: publicado

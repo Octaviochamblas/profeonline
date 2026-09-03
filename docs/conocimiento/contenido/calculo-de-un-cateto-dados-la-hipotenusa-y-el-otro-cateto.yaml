@@ -1,0 +1,125 @@
+semantic_id: MAT.GEO.PITAGORAS.CALCULO_CATETO
+resumen_inicial: 'Para calcular la longitud de un cateto desconocido conociendo la hipotenusa $c$ y el otro cateto $b$, se extrae la raíz cuadrada de la diferencia de sus cuadrados: $a = \sqrt{c^2 - b^2}$.'
+explicacion_simple: |
+  ![Cálculo de un Cateto](/static/img/nodos/calculo-de-un-cateto-dados-la-hipotenusa-y-el-otro-cateto-intro.svg)
+
+  Cuando ya conoces la hipotenusa (el lado más largo) y quieres descubrir cuánto mide uno de los catetos:
+
+  - **Paso 1**: Elevas al cuadrado la hipotenusa ($c^2$) y el cateto conocido ($b^2$).
+  - **Paso 2**: ¡Aquí se **RESTA**! Al cuadrado grande le quitas el cuadrado chico ($c^2 - b^2$).
+  - **Paso 3**: Le sacas la raíz cuadrada al resultado ($\sqrt{c^2 - b^2}$).
+explicacion_formal: |
+  ### Algoritmo formal
+  Dado un triángulo rectángulo $\Delta ABC$ con hipotenusa $c$ y un cateto conocido $b$ tales que $c > b > 0$, la longitud del cateto restante $a$ es la solución positiva única obtenida por despeje algebraico:
+
+  $$a^2 + b^2 = c^2 \implies a^2 = c^2 - b^2 \implies a = \sqrt{c^2 - b^2}$$
+
+  De manera análoga, para despejar el cateto $b$ dado el cateto $a$:
+
+  $$b = \sqrt{c^2 - a^2}$$
+
+  ### Desglose simbólico y geométrico
+  - $c$: Longitud de la hipotenusa (actúa obligatoriamente como minuendo $c^2$).
+  - $b$: Longitud del cateto conocido (actúa como sustraendo $b^2$).
+  - Condición de positividad del radicando: Como $c > b \implies c^2 > b^2 \implies c^2 - b^2 > 0$, la raíz real está siempre bien definida en $\mathbb{R}^+$.
+  - Factorización por diferencia de cuadrados: $a = \sqrt{(c - b)(c + b)}$.
+
+  ### Síntesis didáctica
+  El cálculo de un cateto exige una resta de cuadrados bajo el radical, garantizando que el cateto obtenido sea estrictamente menor que la hipotenusa original.
+definiciones_clave: |
+  - **Fórmula del cateto**: Expresión algebraica $a = \sqrt{c^2 - b^2}$.
+  - **Diferencia de cuadrados pitagórica**: Operación $c^2 - b^2 = (c-b)(c+b)$.
+  - **Minuendo cuadrático**: El término $c^2$, correspondiente a la hipotenusa mayor.
+propiedades_relaciones: |
+  - **Resta obligatoria**: Siempre se resta el cuadrado del cateto al cuadrado de la hipotenusa.
+  - **Acotamiento**: $0 < a < c$.
+  - **Uso de diferencia de cuadrados**: Permite calcular $a$ mentalmente cuando los números son grandes: ej. $\sqrt{25^2 - 24^2} = \sqrt{(25-24)(25+24)} = \sqrt{1 \times 49} = 7$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Cálculo de Cateto](/static/img/nodos/calculo-de-un-cateto-dados-la-hipotenusa-y-el-otro-cateto-ejemplos.svg)
+
+    En un triángulo rectángulo, la hipotenusa mide $c = 10\text{ cm}$ y uno de los catetos mide $b = 8\text{ cm}$. Calcula la longitud del cateto desconocido $a$.
+  pasos:
+  - 'Paso 1: Identificar la hipotenusa $c = 10\text{ cm}$ y el cateto conocido $b = 8\text{ cm}$.'
+  - 'Paso 2: Plantear la fórmula del cateto: $a = \sqrt{c^2 - b^2}$.'
+  - 'Paso 3: Elevar al cuadrado: $c^2 = 10^2 = 100$ y $b^2 = 8^2 = 64$.'
+  - 'Paso 4: Restar los cuadrados: $c^2 - b^2 = 100 - 64 = 36$.'
+  - 'Paso 5: Extraer la raíz cuadrada: $a = \sqrt{36} = 6\text{ cm}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuál es la fórmula para calcular el cateto a a partir de la hipotenusa c y el cateto b?
+  choices:
+  - text: $a = \sqrt{c^2 - b^2}$
+    is_correct: true
+  - text: $a = \sqrt{c^2 + b^2}$
+    is_correct: false
+  - text: $a = c - b$
+    is_correct: false
+  - text: $a = \sqrt{b^2 - c^2}$
+    is_correct: false
+  explanation: 'El cateto se calcula extrayendo la raíz cuadrada de la diferencia entre el cuadrado de la hipotenusa y el cuadrado del cateto conocido ($a = \sqrt{c^2 - b^2}$).'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si la hipotenusa de un triángulo rectángulo mide 15 cm y un cateto mide 9 cm, ¿cuánto mide el otro cateto?
+  choices:
+  - text: $12\text{ cm}$
+    is_correct: true
+  - text: $6\text{ cm}$
+    is_correct: false
+  - text: $24\text{ cm}$
+    is_correct: false
+  - text: $\sqrt{306}\text{ cm}$
+    is_correct: false
+  explanation: 'El otro cateto mide $12\text{ cm}$, ya que $a = \sqrt{15^2 - 9^2} = \sqrt{225 - 81} = \sqrt{144} = 12\text{ cm}$.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Identificar la hipotenusa $c$ y el cateto conocido $b$.'
+- 'Paso 2: Calcular $c^2$ y $b^2$.'
+- 'Paso 3: Restar: $D = c^2 - b^2$.'
+- 'Paso 4: Extraer la raíz cuadrada: $a = \sqrt{D}$.'
+- 'Paso 5: Verificar que $a < c$ y registrar las unidades.'
+errores_correccion: 'Asegúrate de colocar siempre la hipotenusa $c^2$ primero en la resta para no obtener números negativos bajo la raíz.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Una escalera de $5\text{ m}$ de longitud está apoyada en una pared. Si la base de la escalera está a $3\text{ m}$ de la pared, ¿a qué altura llega en la pared?
+  alternativas:
+  - $4\text{ m}$
+  - $2\text{ m}$
+  - $\sqrt{34}\text{ m}$
+  respuesta: $4\text{ m}$
+  solucion_pasos:
+  - '$h = \sqrt{5^2 - 3^2} = \sqrt{25 - 9} = \sqrt{16} = 4\text{ m}$.'
+- titulo: Ejemplo 2
+  enunciado: En un triángulo rectángulo la hipotenusa mide $26\text{ cm}$ y un cateto mide $10\text{ cm}$. ¿Cuánto mide el otro cateto?
+  alternativas:
+  - $24\text{ cm}$
+  - $16\text{ cm}$
+  - $36\text{ cm}$
+  respuesta: $24\text{ cm}$
+  solucion_pasos:
+  - '$a = \sqrt{26^2 - 10^2} = \sqrt{676 - 100} = \sqrt{576} = 24\text{ cm}$.'
+- titulo: ¿Para calcular un cateto se resta el cuadrado del cateto conocido al de la hipotenusa?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, la fórmula es $a = \sqrt{c^2 - b^2}$.'
+- titulo: ¿Un cateto puede medir más que la hipotenusa en un triángulo rectángulo?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, la hipotenusa es siempre estrictamente el lado de mayor longitud ($c > a, c > b$).'
+errores_frecuentes:
+- 'Sumar los cuadrados en vez de restarlos ($c^2 + b^2$).'
+- 'Restar en orden invertido ($b^2 - c^2$), obteniendo una raíz con radicando negativo.'
+- 'Restar linealmente sin elevar al cuadrado: $c - b$.'
+- 'Confundir cuál de los datos es la hipotenusa.'
+- 'Olvidar sacar la raíz cuadrada de la diferencia.'
+afirmaciones_verdaderas:
+- 'La longitud de un cateto se obtiene mediante la fórmula $a = \sqrt{c^2 - b^2}$.'
+- 'La longitud de cualquier cateto es siempre estrictamente menor que la longitud de la hipotenusa.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular la medida de un cateto en un triángulo rectángulo conociendo la hipotenusa y el otro cateto.
+
+  **CÓMO:** Aplicando la fórmula $a = \sqrt{c^2 - b^2}$ mediante la resta de cuadrados y extracción de la raíz cuadrada.
+
+  ![Resumen de Cálculo de Cateto](/static/img/nodos/calculo-de-un-cateto-dados-la-hipotenusa-y-el-otro-cateto-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 8° Básico / Geometría Euclidiana.
+estado: publicado

@@ -1,0 +1,118 @@
+semantic_id: MAT.GEO.POLIGONOS_METRICA.ANGULO_INTERIOR_REGULAR
+resumen_inicial: En un polígono regular de n lados, cada ángulo interior mide (n - 2) · 180° / n = 180° - 360° / n.
+explicacion_simple: |
+  Para calcular cuánto mide cada esquina interior de un polígono regular, aprovechamos que todos sus ángulos son exactamente iguales.
+
+  Sabemos que la suma total de los ángulos interiores de cualquier polígono convexo es $(n - 2) \cdot 180^\circ$. Al ser regular, esa suma se reparte en partes iguales entre sus $n$ esquinas: **$\alpha = \frac{(n - 2) \cdot 180^\circ}{n}$**. Una manera aún más rápida de calcularlo mentalmente es mediante su ángulo exterior: **$\alpha = 180^\circ - \frac{360^\circ}{n}$**. Por ejemplo, en un hexágono ($n=6$): $180^\circ - \frac{360^\circ}{6} = 180^\circ - 60^\circ = 120^\circ$.
+
+  ![Cálculo de la medida de cada ángulo interior en un polígono regular](/static/img/nodos/calculo-de-la-medida-de-cada-angulo-interior-en-un-poligono-regular-intro.svg)
+explicacion_formal: |
+  ### Definición formal
+  Sea $\mathcal{P}$ un polígono regular de $n$ vértices. Si $S_i$ es la suma de sus ángulos interiores y todos los ángulos $\alpha_i$ son congruentes, la medida en grados sexagesimales de cada ángulo interior $\alpha$ es:
+  $$\alpha = \frac{S_i}{n} = \frac{(n - 2) \cdot 180^\circ}{n} = \frac{n \cdot 180^\circ - 360^\circ}{n} = 180^\circ - \frac{360^\circ}{n}$$
+
+  ### Desglose simbólico
+  - $n$: Número de lados o vértices del polígono regular ($n \geq 3$).
+  - $S_i = (n - 2) \cdot 180^\circ$: Suma total de los ángulos interiores.
+  - $\frac{360^\circ}{n} = \beta$: Medida del ángulo exterior regular complementario/suplementario.
+  - Comportamiento asintótico: $\lim_{n \to \infty} \alpha = \lim_{n \to \infty} \left(180^\circ - \frac{360^\circ}{n}\right) = 180^\circ$. A medida que $n$ crece, los ángulos interiores son cada vez más llanos y la figura aproxima geométricamente una circunferencia.
+  - Despeje del número de lados $n$: Si se conoce la medida de $\alpha$, se deduce inmediatamente mediante:
+    $$n = \frac{360^\circ}{180^\circ - \alpha} = \frac{360^\circ}{\beta}$$
+
+  > **Complemento didáctico:** Para evitar multiplicar números grandes como $(n - 2) \cdot 180^\circ$ y luego tener que dividir, usa siempre la fórmula equivalente $\alpha = 180^\circ - \frac{360^\circ}{n}$. Calcular $\frac{360^\circ}{n}$ y restárselo a $180^\circ$ toma solo 5 segundos y evita errores de cálculo.
+definiciones_clave: |
+  - **Ángulo interior regular ($\alpha$)**: Ángulo interior compartido por todos los vértices de un polígono regular, dado por $\alpha = 180^\circ - \frac{360^\circ}{n}$.
+  - **Suma de ángulos interiores ($S_i$)**: Total acumulado de las medidas angulares interiores, $S_i = (n - 2) \cdot 180^\circ$.
+  - **Límite poligonal**: Propiedad por la cual al aumentar $n \to \infty$, los ángulos interiores se aproximan asintóticamente a $180^\circ$.
+propiedades_relaciones: |
+  - **Valores canónicos de $\alpha$**:
+    - Triángulo equilátero ($n = 3$): $\alpha = 180^\circ - 120^\circ = 60^\circ$.
+    - Cuadrado ($n = 4$): $\alpha = 180^\circ - 90^\circ = 90^\circ$.
+    - Pentágono regular ($n = 5$): $\alpha = 180^\circ - 72^\circ = 108^\circ$.
+    - Hexágono regular ($n = 6$): $\alpha = 180^\circ - 60^\circ = 120^\circ$.
+    - Octágono regular ($n = 8$): $\alpha = 180^\circ - 45^\circ = 135^\circ$.
+    - Eneágono regular ($n = 9$): $\alpha = 180^\circ - 40^\circ = 140^\circ$.
+    - Decágono regular ($n = 10$): $\alpha = 180^\circ - 36^\circ = 144^\circ$.
+    - Dodecágono regular ($n = 12$): $\alpha = 180^\circ - 30^\circ = 150^\circ$.
+    - Icoságono regular ($n = 20$): $\alpha = 180^\circ - 18^\circ = 162^\circ$.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplos de cálculo de ángulo interior](/static/img/nodos/calculo-de-la-medida-de-cada-angulo-interior-en-un-poligono-regular-ejemplos.svg)
+
+    1) Calcula la medida de cada ángulo interior de un octágono regular.
+    2) Si un polígono regular tiene ángulos interiores que miden $144^\circ$, determina cuántos lados tiene la figura.
+  pasos:
+    - 'Paso 1: Para el octágono regular ($n = 8$): Calcular el ángulo exterior $\beta = \frac{360^\circ}{8} = 45^\circ$.'
+    - 'Paso 2: Calcular el ángulo interior: $\alpha = 180^\circ - 45^\circ = 135^\circ$.'
+    - 'Paso 3: Para el polígono con $\alpha = 144^\circ$: Hallar el ángulo exterior suplementario $\beta = 180^\circ - 144^\circ = 36^\circ$.'
+    - 'Paso 4: Despejar $n$ mediante el cociente de $360^\circ$: $n = \frac{360^\circ}{\beta} = \frac{360^\circ}{36^\circ} = 10$ lados (un decágono regular).'
+checkpoints:
+  - placement: after_explicacion_formal
+    question: "¿Cuánto mide cada ángulo interior de un dodecágono regular (polígono de 12 lados)?"
+    choices:
+      - text: "$150^\\circ$."
+        is_correct: true
+      - text: "$140^\\circ$."
+        is_correct: false
+      - text: "$160^\\circ$."
+        is_correct: false
+      - text: "$135^\\circ$."
+        is_correct: false
+    explanation: "La alternativa correcta es '$150^\\circ$.' Calculando vía el exterior: $\\beta = \\frac{360^\\circ}{12} = 30^\\circ \\implies \\alpha = 180^\\circ - 30^\\circ = 150^\\circ$."
+    reinforcement_section: "Explicación formal"
+  - placement: after_ejemplo_guiado
+    question: "Si cada ángulo interior de un polígono regular mide 140°, ¿cuántas diagonales en total tiene dicho polígono?"
+    choices:
+      - text: "$27$ diagonales (un eneágono de 9 lados)."
+        is_correct: true
+      - text: "$35$ diagonales (un decágono de 10 lados)."
+        is_correct: false
+      - text: "$20$ diagonales (un octágono de 8 lados)."
+        is_correct: false
+      - text: "$14$ diagonales (un heptágono de 7 lados)."
+        is_correct: false
+    explanation: "La alternativa correcta es '$27$ diagonales (un eneágono de 9 lados).' Primero hallamos $n$: $\\beta = 180^\\circ - 140^\\circ = 40^\\circ \\implies n = \\frac{360^\\circ}{40^\\circ} = 9$. Luego su total de diagonales: $D = \\frac{9(9-3)}{2} = \\frac{9 \\cdot 6}{2} = 27$."
+    reinforcement_section: "Ejemplo guiado"
+procedimiento: |
+  1. Identificar el número de lados $n$ del polígono regular.
+  2. Calcular el ángulo exterior: $\beta = \frac{360^\circ}{n}$.
+  3. Restar del ángulo llano para obtener el interior: $\alpha = 180^\circ - \beta$.
+  4. Para despejar $n$ a partir de $\alpha$, calcular primero $\beta = 180^\circ - \alpha$ y luego $n = \frac{360^\circ}{\beta}$.
+errores_correccion: |
+  - **Error común 1:** Omitir el paréntesis o el $-2$ y calcular $\frac{n \cdot 180^\circ}{n} = 180^\circ$. **Corrección:** La suma interior es $(n - 2) \cdot 180^\circ$; un polígono jamás tiene ángulos interiores de $180^\circ$.
+  - **Error común 2:** Intentar aplicar la fórmula a polígonos irregulares. **Corrección:** En polígonos irregulares los ángulos no son congruentes; la fórmula representa el promedio, no la medida individual de cada ángulo.
+ejemplos:
+  - tipo: "A"
+    titulo: "Ángulo interior de un pentágono regular"
+    enunciado: "¿Cuál es la medida de cada ángulo interior en un pentágono regular?"
+    alternativas:
+      - text: "$108^\\circ$."
+        is_correct: true
+      - text: "$120^\\circ$."
+        is_correct: false
+      - text: "$90^\\circ$."
+        is_correct: false
+      - text: "$72^\\circ$."
+        is_correct: false
+    explicacion: "En un pentágono $n = 5$: $\\alpha = 180^\\circ - \\frac{360^\\circ}{5} = 180^\\circ - 72^\\circ = 108^\\circ$."
+  - tipo: "B"
+    titulo: "Ángulo interior de 90°"
+    enunciado: "¿El cuadrado es el único polígono regular con ángulos interiores de $90^\\circ$?"
+    respuesta: "Sí"
+    explicacion: "Sí. Para $\\alpha = 90^\\circ$, $\\beta = 90^\\circ \\implies n = \\frac{360^\\circ}{90^\\circ} = 4$. El único polígono regular de 4 lados es el cuadrado."
+errores_frecuentes:
+  - 'Calcular la suma interior total $(n - 2) \\cdot 180^\\circ$ y olvidar dividirla entre $n$.'
+  - 'Confundir la medida del ángulo interior $\\alpha$ con la del exterior $\\beta$.'
+  - 'Intentar despejar $n$ directamente con la fórmula fraccionaria compleja en lugar de usar el suplemento exterior.'
+afirmaciones_verdaderas:
+  - 'En todo polígono regular de $n$ lados, cada ángulo interior mide $\\alpha = \\frac{(n - 2) \\cdot 180^\\circ}{n} = 180^\\circ - \\frac{360^\\circ}{n}$.'
+  - 'El ángulo interior de un hexágono regular mide exactamente $120^\\circ$.'
+  - 'Para cualquier polígono regular con $n \\geq 3$, la medida de cada ángulo interior satisface $60^\\circ \\leq \\alpha < 180^\\circ$.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular con destreza la medida de cada ángulo interior en polígonos regulares y determinar el número de lados conocida dicha medida.
+
+  **CÓMO:** Empleando las fórmulas equivalentes $\alpha = \frac{(n - 2) \cdot 180^\circ}{n}$ y $\alpha = 180^\circ - \frac{360^\circ}{n}$ y relacionándolas con el ángulo exterior suplementario.
+
+  ![Síntesis de cálculo de ángulo interior](/static/img/nodos/calculo-de-la-medida-de-cada-angulo-interior-en-un-poligono-regular-resumen.svg)
+fuente: "Texto escolar oficial de Matemáticas y estándares curriculares PAES"
+estado: publicado

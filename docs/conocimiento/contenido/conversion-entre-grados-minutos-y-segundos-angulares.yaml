@@ -1,107 +1,138 @@
 semantic_id: MAT.GEO.MEDICION_ANGULAR.CONVERSION_GRADOS_MINUTOS_SEGUNDOS
-resumen_inicial: Los minutos y segundos angulares permiten medir aberturas fraccionarias
-  muy pequeñas con exactitud en coordenadas geográficas y mapas.
-explicacion_simple: Al igual que una hora se divide en 60 minutos y cada minuto en
-  60 segundos, un grado de ángulo se divide en 60 minutos de arco (') y cada minuto
-  en 60 segundos de arco ('') para medir aberturas pequeñísimas.
-explicacion_formal: El **sistema sexagesimal** divide la circunferencia en $360^\circ$.
-  Cada grado se subdivide en $60$ minutos de arco ($1^\circ = 60'$) y cada minuto
-  en $60$ segundos de arco ($1' = 60''$), permitiendo alta precisión en coordenadas
-  astronómicas y geográficas.
-definiciones_clave: '- **Conversión entre grados, minutos y segundos angulares**:
-  Elemento o relación angular clave en geometría plana.
+resumen_inicial: La conversión entre grados decimales y el formato grados-minutos-segundos
+  (DMS) se realiza multiplicando o dividiendo las partes fraccionarias por 60 sucesivamente.
+explicacion_simple: '![Conversión DMS](/static/img/nodos/conversion-entre-grados-minutos-y-segundos-angulares-intro.svg)
 
-  - **Propiedad angular**: Regla matemática que relaciona las medidas de los ángulos
-  involucrados.'
-propiedades_relaciones: '- **Constancia matemática**: La suma o relación planteada
-  en conversión entre grados, minutos y segundos angulares se mantiene invariante.
 
-  - **Aplicación en paralelas y triángulos**: Permite calcular medidas desconocidas
-  mediante ecuaciones de primer grado.'
+  $0{,}5$ grados no significa $5$ minutos, sino la mitad de un grado, es decir, $30$
+  minutos ($0{,}5 \times 60'' = 30''$). Para pasar de decimal a minutos siempre multiplicas
+  la parte decimal por 60.'
+explicacion_formal: '### Algoritmo formal
+
+  La conversión entre la forma compuesta $D^\circ \, M'' \, S''''$ y la forma decimal
+  $D_{\text{dec}}^\circ$ se define mediante las transformaciones directas e inversas:
+
+
+  $$D_{\text{dec}} = D + \frac{M}{60} + \frac{S}{3600}$$
+
+
+  $$\begin{cases} D = \lfloor D_{\text{dec}} \rfloor \\ M = \lfloor (D_{\text{dec}}
+  - D) \times 60 \rfloor \\ S = ((D_{\text{dec}} - D) \times 60 - M) \times 60 \end{cases}$$
+
+
+  ### Desglose simbólico y geométrico
+
+  - $\lfloor x \rfloor$: Función parte entera o piso de un número real.
+
+  - Multiplicación por 60: Conversión sucesiva de residuos decimales a minutos y segundos.
+
+
+  ### Síntesis didáctica
+
+  Este algoritmo garantiza la equivalencia exacta entre lecturas analógicas con minutos/segundos
+  y cálculos algebraicos en formato decimal continuo.'
+definiciones_clave: '- **Formato DMS**: Notación $G^\circ M'' S''''$ que descompone
+  el ángulo en unidades enteras sexagesimales.
+
+  - **Grados decimales**: Representación numérica continua en base 10 del ángulo. '
+propiedades_relaciones: '- **No equivalencia visual directa**: Los decimales de grado
+  no coinciden con los minutos ($0{,}5^\circ = 30''$, $0{,}25^\circ = 15''$, $0{,}75^\circ
+  = 45''$).
+
+  - **Suma y resta en DMS**: Se opera columna por columna reagrupando de a 60 unidades. '
 ejemplo_guiado:
-  enunciado: Convierte el ángulo decimal $24{,}25^\circ$ a la notación sexagesimal
-    completa en grados y minutos ($^\circ\ '$).
+  enunciado: '![Ejemplo de Conversión DMS](/static/img/nodos/conversion-entre-grados-minutos-y-segundos-angulares-ejemplos.svg)
+
+
+    Convierte el ángulo $\theta = 42{,}35^\circ$ a formato grados, minutos y segundos
+    (DMS).'
   pasos:
-  - 'Paso 1: Separar la parte entera $24^\circ$ de la parte decimal $0{,}25^\circ$.'
-  - 'Paso 2: Multiplicar la fracción decimal por 60 minutos: $0{,}25 \cdot 60 = 15''$.'
-  - 'Paso 3: Concluir que la medida equivalente es $24^\circ 15''$.'
+  - 'Paso 1: La parte entera de grados es $42^\circ$.'
+  - 'Paso 2: Multiplicar la parte decimal por 60 para obtener minutos: $0{,}35 \times
+    60 = 21{,}0''$.'
+  - 'Paso 3: La parte entera de minutos es $21''$ y no queda resto decimal de segundos
+    ($0''''$).'
+  - 'Paso 4: Escribir el resultado final en formato DMS: $42^\circ 21'' 00''''$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el principio geométrico central de conversión entre grados, minutos
-    y segundos angulares?
+  question: ¿Cómo se convierte la parte decimal de un grado a minutos angulares?
   choices:
-  - text: Relacionar las medidas angulares mediante ecuaciones numéricas exactas
+  - text: Multiplicando la parte decimal por 60
     is_correct: true
-  - text: Considerar que todos los ángulos miden siempre 90 grados
+  - text: Multiplicando la parte decimal por 100
     is_correct: false
-  - text: Ignorar la suma de los ángulos en las figuras planas
+  - text: Dividiendo la parte decimal por 60
     is_correct: false
-  - text: Asumir que las rectas paralelas se cortan en varios puntos
+  - text: Copiando el número decimal directamente
     is_correct: false
-  explanation: La alternativa correcta es 'Relacionar las medidas angulares mediante
-    ecuaciones numéricas exactas'.
+  explanation: Por definición de base 60, se convierte multiplicando la parte decimal
+    por 60.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: ¿A qué notación sexagesimal equivale 24.25°?
+  question: ¿A qué medida en formato DMS equivale exactamente 12,5°?
   choices:
-  - text: 24° 15'
+  - text: 12° 30' (porque 0,5 × 60 = 30)
     is_correct: true
-  - text: 24° 25'
+  - text: 12° 50'
     is_correct: false
-  - text: 24° 30'
+  - text: 12° 05'
     is_correct: false
-  - text: 24° 05'
+  - text: 12° 5'
     is_correct: false
-  explanation: La alternativa correcta es '24° 15'', pues $0.25 \cdot 60' = 15'$.
+  explanation: Como 0,5 × 60 = 30, equivale a 12° 30' (porque 0,5 × 60 = 30).
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar los datos dados en conversión entre grados, minutos y segundos
-  angulares.'
-- 'Paso 2: Plantear la ecuación algebraica o propiedad geométrica correspondiente.'
-- 'Paso 3: Despejar la incógnita y verificar el resultado.'
-errores_correccion: Recuerda revisar siempre que los resultados en conversión entre
-  grados, minutos y segundos angulares sean coherentes y tengan sentido geométrico.
+- 'Paso 1: Separar la parte entera de grados del número decimal.'
+- 'Paso 2: Multiplicar la parte decimal por 60 para obtener los minutos.'
+- 'Paso 3: Si queda un residuo decimal en los minutos, multiplicarlo por 60 para obtener
+  los segundos.'
+- 'Paso 4: Escribir en formato $G^\circ M'' S''''$.'
+errores_correccion: 'No confundas el decimal directo con minutos: 0,3° no son 3 minutos,
+  son 0,3 × 60 = 18 minutos.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Si $x + 34^\circ = 180^\circ$, ¿cuál es el valor de $x$?
+  enunciado: ¿A cuántos grados decimales equivale $30^\circ 15'$?
   alternativas:
-  - 146°
-  - 34°
-  - 90°
-  respuesta: 146°
+  - $30{,}25^\circ$
+  - $30{,}15^\circ$
+  - $30{,}5^\circ$
+  respuesta: $30{,}25^\circ$
   solucion_pasos:
-  - Despejando $x = 180 - 34 = 146^\circ$.
+  - $30 + \frac{15}{60} = 30 + 0{,}25 = 30{,}25^\circ$.
 - titulo: Ejemplo 2
-  enunciado: En conversión entre grados, minutos y segundos angulares, si dos ángulos
-    son suplementarios y uno mide 34°, ¿cuánto mide el otro?
+  enunciado: ¿A qué formato DMS equivale $18{,}75^\circ$?
   alternativas:
-  - 146°
-  - 56°
-  - 360°
-  respuesta: 146°
+  - $18^\circ 45'$
+  - $18^\circ 75'$
+  - $18^\circ 30'$
+  respuesta: $18^\circ 45'$
   solucion_pasos:
-  - Los ángulos suplementarios suman 180°, luego $180 - 34 = 146^\circ$.
-- titulo: ¿Se aplican ecuaciones algebraicas para calcular ángulos en conversión entre
-    grados, minutos y segundos angulares?
+  - $0{,}75 \times 60 = 45'$. Resultado: $18^\circ 45'$.
+- titulo: ¿0,5° equivale exactamente a 30 minutos angulares?
   respuesta: Sí
   solucion_pasos:
-  - Sí, el álgebra permite despejar incógnitas angulares.
-- titulo: ¿La suma de los ángulos suplementarios en conversión entre grados, minutos
-    y segundos angulares es igual a 90°?
+  - Sí, porque medio grado son $0{,}5 \times 60 = 30'$.
+- titulo: ¿0,20° equivale a 20 minutos angulares?
   respuesta: 'No'
   solucion_pasos:
-  - No, los suplementarios suman 180° (90° corresponden a complementarios).
+  - No, $0{,}20 \times 60 = 12'$ (doce minutos angulares).
 errores_frecuentes:
-- Declarar ángulos complementarios (suman 90°) con suplementarios (suman 180°).
-- Omitir restar correctamente al despejar la incógnita en una ecuación angular.
-- Declarar que dos ángulos son iguales sin que exista un teorema que lo justifique.
-- Mezclar unidades de grados sexagesimales con radianes sin convertir.
-- Afirmar que la orientación de la figura altera las relaciones angulares.
+- Confundir los decimales de grado con minutos ($0{,}4^\circ \neq 4'$ sino $24'$).
+- Olvidar multiplicar por 60.
+- No saber cómo regresar de minutos a decimales (dividir por 60).
+- Confundir la posición de minutos y segundos.
+- Redondear prematuramente los segundos.
 afirmaciones_verdaderas:
-- Los ángulos suplementarios suman exactamente 180°.
-- Los ángulos complementarios suman exactamente 90°.
-al_terminar_debes_poder: Al finalizar este recurso podrás plantear y resolver ecuaciones
-  angulares aplicando las propiedades de conversión entre grados, minutos y segundos
-  angulares.
+- Para pasar de decimal a DMS se multiplica por 60 sucesivamente.
+- Para pasar de DMS a decimal se suma $\frac{M}{60} + \frac{S}{3600}$.
+al_terminar_debes_poder: '**QUÉ:** Convertir medidas angulares entre el formato decimal
+  y el formato sexagesimal DMS.
+
+
+  **CÓMO:** Aplicando multiplicaciones y divisiones por 60 sobre las partes decimales
+  y fraccionarias.
+
+
+  ![Resumen de Conversión DMS](/static/img/nodos/conversion-entre-grados-minutos-y-segundos-angulares-resumen.svg)'
 fuente: Texto escolar MINEDUC — Geometría 7° Básico.
 estado: publicado

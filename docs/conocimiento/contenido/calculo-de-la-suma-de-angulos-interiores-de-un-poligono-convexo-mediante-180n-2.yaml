@@ -1,0 +1,130 @@
+semantic_id: MAT.GEO.POLIGONOS_BASE.SUMA_ANGULOS_INTERIORES
+resumen_inicial: 'La suma de las medidas de los ángulos interiores de cualquier polígono convexo de n lados es igual a 180° · (n - 2), producto de la triangulación desde uno de sus vértices.'
+explicacion_simple: |
+  ![Suma de Ángulos Interiores de un Polígono](/static/img/nodos/calculo-de-la-suma-de-angulos-interiores-de-un-poligono-convexo-mediante-180n-2-intro.svg)
+
+  Para saber cuánto suman los ángulos de adentro de cualquier polígono, réstale 2 a su número de lados y multiplica por 180°. Esto se debe a que cualquier polígono se puede dividir exactamente en (n - 2) triángulos.
+explicacion_formal: |
+  ### Teorema de la suma de ángulos interiores
+  Sea $P_n$ un polígono convexo simple de $n \geq 3$ lados en $\mathbb{R}^2$, y sean $\alpha_1, \alpha_2, \dots, \alpha_n$ sus ángulos interiores. Entonces:
+
+  $$S_{\text{int}} = \sum_{i=1}^n \alpha_i = 180^\circ \cdot (n - 2)$$
+
+  ### Demostración por triangulación
+  1. Elegimos un vértice arbitrario $V_1$.
+  2. Trazamos todas las diagonales posibles desde $V_1$ hacia los vértices no adyacentes: $V_3, V_4, \dots, V_{n-1}$.
+  3. Se trazan exactamente $n - 3$ diagonales disjuntas que no se intersecan entre sí.
+  4. Estas diagonales dividen el polígono en exactamente $n - 2$ triángulos convexos.
+  5. La suma de los ángulos interiores de los $n - 2$ triángulos cubre exactamente todos los ángulos interiores del polígono sin superposiciones ni huecos.
+  6. Dado que cada triángulo euclidiano suma $180^\circ$:
+
+  $$S_{\text{int}} = (n - 2) \cdot 180^\circ$$
+
+  ### Ángulo interior en polígonos regulares
+  Si el polígono es regular (equiángulo), los $n$ ángulos son congruentes ($\alpha_1 = \alpha_2 = \dots = \alpha_n = \alpha$):
+
+  $$\alpha = \frac{S_{\text{int}}}{n} = \frac{180^\circ(n - 2)}{n}$$
+
+  > **Complemento didáctico:** Cada vez que agregamos un lado más a un polígono (pasando de $n$ a $n + 1$), la suma de sus ángulos interiores aumenta exactamente en $180^\circ$. Por ello: triángulo ($180^\circ$), cuadrilátero ($360^\circ$), pentágono ($540^\circ$), hexágono ($720^\circ$).
+definiciones_clave: |
+  - **Ángulo interior ($\alpha_i$)**: Ángulo formado por dos lados consecutivos en el interior del polígono.
+  - **Suma de ángulos interiores ($S_{\text{int}}$)**: Total de grados angulares al sumar todos los ángulos interiores de la figura ($180^\circ(n - 2)$).
+  - **Triangulación**: Método de descomposición de una región poligonal en un conjunto de triángulos no solapados.
+  - **Ángulo de polígono regular**: Medida angular homogénea calculada dividiendo la suma total por el número de vértices: $\frac{180^\circ(n - 2)}{n}$.
+propiedades_relaciones: |
+  - **Valores canónicos de $S_{\text{int}}$**:
+    - Triángulo ($n = 3$): $180^\circ(3 - 2) = 180^\circ$
+    - Cuadrilátero ($n = 4$): $180^\circ(4 - 2) = 360^\circ$
+    - Pentágono ($n = 5$): $180^\circ(5 - 2) = 540^\circ$
+    - Hexágono ($n = 6$): $180^\circ(6 - 2) = 720^\circ$
+    - Octágono ($n = 8$): $180^\circ(8 - 2) = 1080^\circ$
+    - Decágono ($n = 10$): $180^\circ(10 - 2) = 1440^\circ$
+  - **Independencia de la regularidad**: La fórmula $S_{\text{int}} = 180^\circ(n - 2)$ es válida para TODO polígono convexo, sea regular o irregular.
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Suma de Ángulos Interiores](/static/img/nodos/calculo-de-la-suma-de-angulos-interiores-de-un-poligono-convexo-mediante-180n-2-ejemplos.svg)
+
+    Calcula la suma de los ángulos interiores de un hexágono ($n = 6$) y determina cuánto mide cada ángulo interior si el hexágono es regular.
+  pasos:
+  - 'Paso 1: Identificar el número de lados: $n = 6$.'
+  - 'Paso 2: Calcular la cantidad de triángulos en la triangulación: $n - 2 = 6 - 2 = 4$ triángulos.'
+  - 'Paso 3: Calcular la suma total multiplicando por $180^\circ$: $S_{\text{int}} = 4 \cdot 180^\circ = 720^\circ$.'
+  - 'Paso 4: Para el hexágono regular, dividir entre $n = 6$: $\alpha = \frac{720^\circ}{6} = 120^\circ$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: '¿Por qué la fórmula de la suma de ángulos interiores contiene el término (n - 2)?'
+  choices:
+  - text: 'Porque al trazar todas las diagonales desde un vértice, el polígono queda descompuesto exactamente en n - 2 triángulos disjuntos'
+    is_correct: true
+  - text: 'Porque se descuentan los dos lados exteriores que son paralelos a la base'
+    is_correct: false
+  - text: 'Porque el ángulo central y el ángulo exterior restan 2 grados a la suma total'
+    is_correct: false
+  - text: 'Porque un polígono regular tiene 2 vértices fijos que no suman grados'
+    is_correct: false
+  explanation: 'Porque al trazar todas las diagonales desde un vértice, el polígono queda descompuesto exactamente en n - 2 triángulos disjuntos.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: '¿Cuánto mide cada ángulo interior de un pentágono regular (n = 5)?'
+  choices:
+  - text: '108°, calculado como 180° · (5 - 2) / 5 = 540° / 5 = 108°'
+    is_correct: true
+  - text: '120°, porque todos los polígonos regulares tienen ángulos de 120°'
+    is_correct: false
+  - text: '72°, confundiendo el ángulo interior con el ángulo exterior'
+    is_correct: false
+  - text: '90°, asumiendo que los ángulos son perpendiculares'
+    is_correct: false
+  explanation: '108°, calculado como 180° · (5 - 2) / 5 = 540° / 5 = 108°.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Contar el número de lados $n$ del polígono.'
+- 'Paso 2: Restar 2 para obtener el número de triángulos: $n - 2$.'
+- 'Paso 3: Multiplicar por $180^\circ$ para hallar la suma de ángulos interiores: $S_{\text{int}} = 180^\circ(n - 2)$.'
+- 'Paso 4: Si el polígono es regular y se pide un ángulo individual, dividir $S_{\text{int}}$ entre $n$.'
+- 'Paso 5: Si el polígono es irregular y se busca un ángulo desconocido, restar los ángulos conocidos a $S_{\text{int}}$.'
+errores_correccion: 'No multipliques $180^\circ \cdot n$: la fórmula exige obligatoriamente restar 2 ($n - 2$) porque los dos lados adyacentes al vértice de partida no forman triángulos con diagonales.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: ¿Cuánto suman los ángulos interiores de un heptágono (n = 7)?
+  alternativas:
+  - '900° ($180^\circ \cdot 5 = 900^\circ$)'
+  - '1260° ($180^\circ \cdot 7$)'
+  - '720°'
+  respuesta: '900° ($180^\circ \cdot 5 = 900^\circ$)'
+  solucion_pasos:
+  - 'Para $n = 7$, aplicamos $S_{\text{int}} = 180^\circ(7 - 2) = 180^\circ \cdot 5 = 900^\circ$.'
+- titulo: Ejemplo 2
+  enunciado: Si la suma de los ángulos interiores de un polígono es 1440°, ¿cuántos lados tiene?
+  alternativas:
+  - '10 lados (decágono)'
+  - '8 lados (octágono)'
+  - '12 lados (dodecágono)'
+  respuesta: '10 lados (decágono)'
+  solucion_pasos:
+  - 'Planteamos $180^\circ(n - 2) = 1440^\circ \implies n - 2 = \frac{1440^\circ}{180^\circ} = 8 \implies n = 8 + 2 = 10$ lados.'
+- titulo: ¿La suma de los ángulos interiores de un cuadrilátero irregular siempre es 360°?
+  respuesta: 'Sí'
+  solucion_pasos:
+  - 'Sí, porque para $n = 4$ la fórmula $180^\circ(4 - 2) = 360^\circ$ es independiente de si el cuadrilátero es regular o irregular.'
+- titulo: ¿Un ángulo interior de un polígono regular puede medir más de 180°?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, en los polígonos convexos regulares todos los ángulos interiores son estrictamente menores a $180^\circ$.'
+errores_frecuentes:
+- 'Multiplicar directamente $180^\circ \cdot n$ sin restar 2.'
+- 'Olvidar sumar 2 al despejar $n$ a partir de la suma interior ($n = \frac{S}{180} + 2$).'
+- 'Dividir entre $n - 2$ en lugar de dividir entre $n$ al calcular un ángulo interior de un polígono regular.'
+- 'Confundir la fórmula de ángulos interiores $180^\circ(n - 2)$ con la suma de ángulos exteriores ($360^\circ$).'
+afirmaciones_verdaderas:
+- 'La suma de los ángulos interiores de cualquier polígono convexo de $n$ lados es $180^\circ(n - 2)$.'
+- 'En un polígono regular de $n$ lados, cada ángulo interior mide $\frac{180^\circ(n - 2)}{n}$.'
+- 'En todo cuadrilátero convexo, los ángulos interiores suman exactamente $360^\circ$.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular la suma de ángulos interiores de polígonos convexos y determinar la medida de ángulos individuales en polígonos regulares e irregulares.
+
+  **CÓMO:** Aplicando el teorema de triangulación $S_{\text{int}} = 180^\circ(n - 2)$ y resolviendo ecuaciones lineales para despejar $n$ o ángulos incógnitas.
+
+  ![Resumen de Suma de Ángulos Interiores](/static/img/nodos/calculo-de-la-suma-de-angulos-interiores-de-un-poligono-convexo-mediante-180n-2-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 1° Medio / Suma de Ángulos Interiores en Polígonos.
+estado: publicado

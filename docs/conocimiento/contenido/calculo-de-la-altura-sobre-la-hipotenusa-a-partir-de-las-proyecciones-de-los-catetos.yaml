@@ -1,0 +1,131 @@
+semantic_id: MAT.GEO.RELACIONES_TR.CALCULO_ALTURA
+resumen_inicial: 'La altura relativa a la hipotenusa $h_c$ se calcula a partir de las proyecciones mediante $h_c = \sqrt{p \cdot q}$, o a partir de los lados del triángulo mediante $h_c = \frac{a \cdot b}{c}$.'
+explicacion_simple: |
+  ![Cálculo de la Altura](/static/img/nodos/calculo-de-la-altura-sobre-la-hipotenusa-a-partir-de-las-proyecciones-de-los-catetos-intro.svg)
+
+  Existen dos caminos directos para calcular la altura sobre la hipotenusa:
+
+  - **Camino 1 (con las dos sombras)**: Multiplicas las dos sombras y sacas raíz: $h_c = \sqrt{p \times q}$.
+  - **Camino 2 (con los tres lados)**: Multiplicas los dos catetos y divides por la hipotenusa: $h_c = \frac{a \times b}{c}$.
+  - ¡Ambos caminos dan exactamente el mismo resultado!
+explicacion_formal: |
+  ### Algoritmo y fórmulas formales
+  En un triángulo rectángulo $\Delta ABC$ con $\gamma = 90^\circ$, la altura relativa a la hipotenusa $h_c$ se calcula analíticamente mediante dos métodos equivalentes:
+
+  1. **Método de las proyecciones (Teorema de Euclides)**:
+     $$h_c = \sqrt{p \cdot q}$$
+
+  2. **Método del producto de catetos (Igualdad de áreas)**:
+     $$h_c = \frac{a \cdot b}{c} = \frac{a \cdot b}{\sqrt{a^2 + b^2}}$$
+
+  Despejes de proyecciones incógnitas conocida la altura $h_c$:
+
+  $$q = \frac{h_c^2}{p} \quad \land \quad p = \frac{h_c^2}{q}$$
+
+  ### Desglose simbólico y geométrico
+  - $h_c$: Altura ortogonal relativa a la hipotenusa ($h_c > 0$).
+  - $p, q$: Proyecciones ortogonales de los catetos ($p + q = c$).
+  - $a, b, c$: Longitudes de los catetos y de la hipotenusa.
+  - Demostración de equivalencia entre ambos métodos:
+    - Sustituyendo $p = b^2/c$ y $q = a^2/c$ en la fórmula de Euclides:
+
+    $$h_c = \sqrt{p \cdot q} = \sqrt{\left(\frac{b^2}{c}\right)\left(\frac{a^2}{c}\right)} = \sqrt{\frac{a^2 b^2}{c^2}} = \frac{a \cdot b}{c}$$
+
+  ### Síntesis didáctica
+  La dualidad $h_c = \sqrt{p \cdot q} = \frac{ab}{c}$ conecta la teoría de semejanza de triángulos con el principio de conservación del área poligonal.
+definiciones_clave: |
+  - **Fórmula de Euclides para la altura**: $h_c = \sqrt{p \cdot q}$.
+  - **Fórmula de área para la altura**: $h_c = \frac{a \cdot b}{c}$.
+  - **Despeje de proyección inversa**: $q = \frac{h_c^2}{p}$.
+propiedades_relaciones: |
+  - **Equivalencia de métodos**: $\sqrt{p \cdot q} \equiv \frac{ab}{c}$.
+  - **Cota superior**: $h_c \le \frac{c}{2}$ (la altura máxima sobre la hipotenusa es el radio circunscrito $R = c/2$, alcanzado en el triángulo isósceles).
+ejemplo_guiado:
+  enunciado: |
+    ![Ejemplo de Cálculo de Altura](/static/img/nodos/calculo-de-la-altura-sobre-la-hipotenusa-a-partir-de-las-proyecciones-de-los-catetos-ejemplos.svg)
+
+    En un triángulo rectángulo, la hipotenusa mide $c = 25\text{ cm}$ y la proyección del cateto menor es $p = 9\text{ cm}$. Calcula la proyección $q$ y la longitud exacta de la altura $h_c$.
+  pasos:
+  - 'Paso 1: Calcular la proyección $q$ restando $p$ de la hipotenusa: $q = c - p = 25 - 9 = 16\text{ cm}$.'
+  - 'Paso 2: Aplicar la fórmula de Euclides para la altura: $h_c = \sqrt{p \cdot q}$.'
+  - 'Paso 3: Sustituir los valores: $h_c = \sqrt{9 \times 16}$.'
+  - 'Paso 4: Multiplicar o extraer raíces individuales: $h_c = \sqrt{144} = 3 \times 4 = 12\text{ cm}$.'
+  - 'Paso 5: Concluir que la proyección $q = 16\text{ cm}$ y la altura $h_c = 12\text{ cm}$.'
+checkpoints:
+- placement: after_explicacion_formal
+  question: ¿Cuáles son las dos fórmulas equivalentes para calcular la altura hc sobre la hipotenusa?
+  choices:
+  - text: $h_c = \sqrt{p \cdot q}$ y $h_c = \frac{a \cdot b}{c}$
+    is_correct: true
+  - text: $h_c = p + q$ y $h_c = a + b$
+    is_correct: false
+  - text: $h_c = \sqrt{c \cdot p}$ y $h_c = \sqrt{c \cdot q}$
+    is_correct: false
+  - text: $h_c = \frac{c}{2}$ siempre
+    is_correct: false
+  explanation: 'Las dos fórmulas equivalentes son $h_c = \sqrt{p \cdot q}$ y $h_c = \frac{a \cdot b}{c}$, la primera por el teorema de Euclides y la segunda por conservación del área.'
+  reinforcement_section: Explicación formal
+- placement: after_ejemplo_guiado
+  question: Si las proyecciones de un triángulo rectángulo son p = 1 cm y q = 16 cm, ¿cuánto mide la altura hc?
+  choices:
+  - text: $4\text{ cm}$
+    is_correct: true
+  - text: $17\text{ cm}$
+    is_correct: false
+  - text: $8\text{ cm}$
+    is_correct: false
+  - text: $16\text{ cm}$
+    is_correct: false
+  explanation: 'Mide $4\text{ cm}$, ya que $h_c = \sqrt{1 \times 16} = \sqrt{16} = 4\text{ cm}$.'
+  reinforcement_section: Ejemplo guiado
+procedimiento:
+- 'Paso 1: Determinar los datos disponibles (las proyecciones $p, q$ o los lados $a, b, c$).'
+- 'Paso 2: Si se dan las proyecciones, calcular $h_c = \sqrt{p \cdot q}$.'
+- 'Paso 3: Si se dan los catetos e hipotenusa, calcular $h_c = \frac{a \cdot b}{c}$.'
+- 'Paso 4: Si se conocen $h_c$ y una proyección $p$, despejar la otra mediante $q = h_c^2 / p$.'
+- 'Paso 5: Simplificar el resultado y expresar con sus unidades métricas correspondientes.'
+errores_correccion: 'Si calculas raíces de productos grandes como $\sqrt{9 \times 16}$, puedes sacar la raíz de cada factor por separado: $\sqrt{9} \times \sqrt{16} = 3 \times 4 = 12$.'
+ejemplos:
+- titulo: Ejemplo 1
+  enunciado: Si $p = 5\text{ cm}$ y $q = 20\text{ cm}$, ¿cuánto mide la altura sobre la hipotenusa?
+  alternativas:
+  - $10\text{ cm}$
+  - $25\text{ cm}$
+  - $100\text{ cm}$
+  respuesta: $10\text{ cm}$
+  solucion_pasos:
+  - '$h_c = \sqrt{p \cdot q} = \sqrt{5 \times 20} = \sqrt{100} = 10\text{ cm}$.'
+- titulo: Ejemplo 2
+  enunciado: En un triángulo rectángulo de catetos $9\text{ cm}$ y $12\text{ cm}$ con hipotenusa $15\text{ cm}$, ¿cuál es el valor de $h_c$?
+  alternativas:
+  - $7{,}2\text{ cm}$
+  - $6\text{ cm}$
+  - $8\text{ cm}$
+  respuesta: $7{,}2\text{ cm}$
+  solucion_pasos:
+  - '$h_c = \frac{a \cdot b}{c} = \frac{9 \times 12}{15} = \frac{108}{15} = 7{,}2\text{ cm}$.'
+- titulo: ¿La altura hc se puede calcular tanto con proyecciones como con catetos?
+  respuesta: Sí
+  solucion_pasos:
+  - 'Sí, mediante $h_c = \sqrt{p \cdot q}$ y mediante $h_c = (a \cdot b)/c$.'
+- titulo: ¿La altura sobre la hipotenusa puede ser mayor que la mitad de la hipotenusa (hc > c/2)?
+  respuesta: 'No'
+  solucion_pasos:
+  - 'No, la altura máxima posible sobre la hipotenusa es el radio circunscrito $R = c/2$, que se alcanza cuando el triángulo es isósceles ($45^\circ-45^\circ-90^\circ$).'
+errores_frecuentes:
+- 'Sumar las proyecciones $p+q$ creyendo que dan $h_c$.'
+- 'Dividir el producto de catetos por 2 en vez de dividirlo por la hipotenusa $c$.'
+- 'Olvidar extraer la raíz cuadrada del producto $p \cdot q$.'
+- 'Confundir el valor de $h_c^2$ con el valor final de $h_c$.'
+- 'No reconocer que $q = h_c^2 / p$ para despejar proyecciones incógnitas.'
+afirmaciones_verdaderas:
+- 'La altura sobre la hipotenusa se calcula mediante $h_c = \sqrt{p \cdot q}$ y mediante $h_c = \frac{a \cdot b}{c}$.'
+- 'El valor de la altura relativa a la hipotenusa satisface siempre $h_c \le \frac{c}{2}$.'
+al_terminar_debes_poder: |
+  **QUÉ:** Calcular la altura relativa a la hipotenusa y despejar proyecciones desconocidas.
+
+  **CÓMO:** Aplicando los algoritmos $h_c = \sqrt{p \cdot q}$, $h_c = \frac{ab}{c}$ y $q = \frac{h_c^2}{p}$.
+
+  ![Resumen de Cálculo de Altura](/static/img/nodos/calculo-de-la-altura-sobre-la-hipotenusa-a-partir-de-las-proyecciones-de-los-catetos-resumen.svg)
+fuente: Texto escolar MINEDUC — Geometría 2° Medio / Teorema de Euclides.
+estado: publicado

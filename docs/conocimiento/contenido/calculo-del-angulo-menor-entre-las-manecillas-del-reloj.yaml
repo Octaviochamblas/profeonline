@@ -1,110 +1,154 @@
 semantic_id: MAT.GEO.ANGULOS_APLICACIONES.MANECILLAS_ANGULO_MENOR
-resumen_inicial: La manecilla minutera de un reloj gira a una velocidad angular constante
-  de 6° por cada minuto, permitiendo calcular giros en función del tiempo.
-explicacion_simple: Al trabajar con cálculo del ángulo menor entre las manecillas
-  del reloj, analizamos la relación entre aberturas angulares y cómo se aplican las
-  reglas geométricas para encontrar valores desconocidos.
-explicacion_formal: En la teoría geométrica de cálculo del ángulo menor entre las
-  manecillas del reloj, se aplican teoremas y relaciones algebraicas sobre rectas
-  y vértices para estructurar demostraciones e igualdades angulares precisas.
-definiciones_clave: '- **Cálculo del ángulo menor entre las manecillas del reloj**:
-  Elemento o relación angular clave en geometría plana.
+resumen_inicial: El cálculo del ángulo menor formado por las manecillas del reloj
+  a las H:M se obtiene mediante la fórmula universal |30°H - (11/2)°M|, considerando
+  siempre el ángulo menor o igual a 180°.
+explicacion_simple: '![Ángulo entre Manecillas](/static/img/nodos/calculo-del-angulo-menor-entre-las-manecillas-del-reloj-intro.svg)
 
-  - **Propiedad angular**: Regla matemática que relaciona las medidas de los ángulos
-  involucrados.'
-propiedades_relaciones: '- **Constancia matemática**: La suma o relación planteada
-  en cálculo del ángulo menor entre las manecillas del reloj se mantiene invariante.
 
-  - **Aplicación en paralelas y triángulos**: Permite calcular medidas desconocidas
-  mediante ecuaciones de primer grado.'
+  A las 3:30 muchas personas creen que el ángulo es de $90^\circ$ porque el minutero
+  está en el 6 y piensan que el horario sigue en el 3. Pero como el minutero avanzó
+  media hora, el horario ya se movió la mitad hacia el 4 ($15^\circ$), por lo que
+  el ángulo real es $90^\circ - 15^\circ = 75^\circ$.'
+explicacion_formal: '### Algoritmo formal
+
+  A una hora determinada de $H$ horas y $M$ minutos ($H \in \{1, \dots, 12\}, M \in
+  [0, 60)$), las posiciones angulares de las manecillas respecto a las 12:00 son $\theta_h
+  = 30H + 0{,}5M$ y $\theta_m = 6M$. El **ángulo menor** $\alpha$ entre ambas manecillas
+  es:
+
+
+  $$\Delta \theta = |\theta_h - \theta_m| = |30H - 5{,}5M| = \left| 30H - \frac{11}{2}
+  M \right|$$
+
+
+  $$\alpha = \min(\Delta \theta, \, 360^\circ - \Delta \theta)$$
+
+
+  ### Desglose simbólico y geométrico
+
+  - $|30H - 5{,}5M|$: Diferencia angular bruta entre las posiciones de ambas agujas.
+
+  - Función $\min(\Delta \theta, 360^\circ - \Delta \theta)$: Asegura la selección
+  del ángulo convexo menor ($\le 180^\circ$).
+
+
+  ### Síntesis didáctica
+
+  Esta fórmula algebraica unificada resuelve con absoluta precisión cualquier problema
+  de ángulos en relojes sin necesidad de trazados manuales o deducciones por aproximación.'
+definiciones_clave: '- **Fórmula angular entre manecillas**: $\theta = \left|30^\circ
+  H - \frac{11}{2}^\circ M\right|$.
+
+  - **Ángulo menor**: Medida angular convexa $\le 180^\circ$.
+
+  - **Coeficiente relativo de aproximación**: $6^\circ - 0{,}5^\circ = 5{,}5^\circ/\text{min}$
+  (rapidez con que el minutero recorta distancia al horario). '
+propiedades_relaciones: '- **Superposición de manecillas**: Ocurre cuando $\theta
+  = 0^\circ \iff 30^\circ H = \frac{11}{2}^\circ M \iff M = \frac{60}{11} H$.
+
+  - **Manecillas opuestas (180°)**: Ocurre cuando $|30^\circ H - 5{,}5^\circ M| =
+  180^\circ$. '
 ejemplo_guiado:
-  enunciado: Calcula el ángulo menor formado por las agujas de un reloj análogo exactamente
-    a las 3:00 en punto.
+  enunciado: '![Ejemplo de Cálculo de Ángulo entre Manecillas](/static/img/nodos/calculo-del-angulo-menor-entre-las-manecillas-del-reloj-ejemplos.svg)
+
+
+    Calcula la medida del ángulo menor que forman las manecillas de un reloj cuando
+    marca exactamente las 7:20.'
   pasos:
-  - 'Paso 1: A las 3:00, la aguja minutera apunta a las 12 (0°) y la horaria apunta
-    a las 3.'
-  - 'Paso 2: Cada hora del reloj equivale a $\frac{360^\circ}{12} = 30^\circ$ de separación.'
-  - 'Paso 3: Multiplicar 3 horas por $30^\circ$: el ángulo menor formado es de $90^\circ$
-    (un ángulo recto).'
+  - 'Paso 1: Identificar $H = 7$ y $M = 20$.'
+  - 'Paso 2: Aplicar la fórmula: $\theta = \left|30^\circ(7) - \frac{11}{2}^\circ(20)\right|$.'
+  - 'Paso 3: Calcular cada término: $30 \times 7 = 210^\circ$ y $\frac{11}{2} \times
+    20 = 110^\circ$.'
+  - 'Paso 4: Restar en valor absoluto: $|210^\circ - 110^\circ| = 100^\circ$.'
+  - 'Paso 5: Como $100^\circ \le 180^\circ$, concluir que el ángulo menor mide exactamente
+    $100^\circ$.'
 checkpoints:
 - placement: after_explicacion_formal
-  question: ¿Cuál es el principio geométrico central de cálculo del ángulo menor entre
-    las manecillas del reloj?
+  question: ¿Cuál es la fórmula general para calcular el ángulo entre las manecillas
+    a las H horas y M minutos?
   choices:
-  - text: Relacionar las medidas angulares mediante ecuaciones numéricas exactas
+  - text: θ = |30°H - (11/2)°M|
     is_correct: true
-  - text: Considerar que todos los ángulos miden siempre 90 grados
+  - text: θ = |30°H - 6°M|
     is_correct: false
-  - text: Ignorar la suma de los ángulos en las figuras planas
+  - text: θ = 30° × (H - M)
     is_correct: false
-  - text: Asumir que las rectas paralelas se cortan en varios puntos
+  - text: θ = 6° × (H + M)
     is_correct: false
-  explanation: La alternativa correcta es 'Relacionar las medidas angulares mediante
-    ecuaciones numéricas exactas'.
+  explanation: Restando las posiciones angulares se obtiene la fórmula general θ =
+    |30°H - (11/2)°M|.
   reinforcement_section: Explicación formal
 - placement: after_ejemplo_guiado
-  question: ¿Cuál es el ángulo menor entre las manecillas de un reloj exactamente
-    a las 4:00?
+  question: ¿Cuánto mide el ángulo menor entre las manecillas a las 3:30?
   choices:
-  - text: 120°
+  - text: 75° (porque |30(3) - 5,5(30)| = |90 - 165| = 75°)
     is_correct: true
   - text: 90°
     is_correct: false
-  - text: 150°
-    is_correct: false
   - text: 60°
     is_correct: false
-  explanation: La alternativa correcta es '120°', calculada como $4 \cdot 30^\circ
-    = 120^\circ$.
+  - text: 105°
+    is_correct: false
+  explanation: Aplicando la fórmula se obtiene 75° (porque |30(3) - 5,5(30)| = |90
+    - 165| = 75°).
   reinforcement_section: Ejemplo guiado
 procedimiento:
-- 'Paso 1: Identificar los datos dados en cálculo del ángulo menor entre las manecillas
-  del reloj.'
-- 'Paso 2: Plantear la ecuación algebraica o propiedad geométrica correspondiente.'
-- 'Paso 3: Despejar la incógnita y verificar el resultado.'
-errores_correccion: Recuerda revisar siempre que los resultados en cálculo del ángulo
-  menor entre las manecillas del reloj sean coherentes y tengan sentido geométrico.
+- 'Paso 1: Identificar las horas $H$ y los minutos $M$ del reloj.'
+- 'Paso 2: Evaluar la fórmula $\theta = \left|30^\circ H - 5{,}5^\circ M\right|$.'
+- 'Paso 3: Si el resultado $\theta > 180^\circ$, restar el valor de $360^\circ$ para
+  obtener el ángulo menor.'
+- 'Paso 4: Expresar el resultado final en grados sexagesimales.'
+errores_correccion: 'No caigas en la trampa de calcular el ángulo con la aguja horaria
+  clavada en el número: a las 3:30 no son 90°, son 75°.'
 ejemplos:
 - titulo: Ejemplo 1
-  enunciado: Si $x + 104^\circ = 180^\circ$, ¿cuál es el valor de $x$?
+  enunciado: ¿Qué ángulo menor forman las manecillas a las 3:00 en punto?
   alternativas:
-  - 76°
-  - 104°
-  - 90°
-  respuesta: 76°
+  - $90^\circ$
+  - $180^\circ$
+  - $45^\circ$
+  respuesta: $90^\circ$
   solucion_pasos:
-  - Despejando $x = 180 - 104 = 76^\circ$.
+  - $|30(3) - 5{,}5(0)| = 90^\circ$.
 - titulo: Ejemplo 2
-  enunciado: En cálculo del ángulo menor entre las manecillas del reloj, si dos ángulos
-    son suplementarios y uno mide 104°, ¿cuánto mide el otro?
+  enunciado: ¿Qué ángulo menor forman las manecillas a las 4:20?
   alternativas:
-  - 76°
-  - 66°
-  - 360°
-  respuesta: 76°
+  - $10^\circ$
+  - $0^\circ$
+  - $20^\circ$
+  respuesta: $10^\circ$
   solucion_pasos:
-  - Los ángulos suplementarios suman 180°, luego $180 - 104 = 76^\circ$.
-- titulo: ¿Se aplican ecuaciones algebraicas para calcular ángulos en cálculo del
-    ángulo menor entre las manecillas del reloj?
+  - $|30(4) - 5{,}5(20)| = |120 - 110| = 10^\circ$.
+- titulo: ¿A las 3:30 el ángulo menor entre las manecillas es de 75°?
   respuesta: Sí
   solucion_pasos:
-  - Sí, el álgebra permite despejar incógnitas angulares.
-- titulo: ¿La suma de los ángulos suplementarios en cálculo del ángulo menor entre
-    las manecillas del reloj es igual a 90°?
+  - Sí, el horario ha avanzado $15^\circ$ hacia el 4, reduciendo los $90^\circ$ a
+    $75^\circ$.
+- titulo: ¿A las 4:20 las manecillas están perfectamente superpuestas formando un
+    ángulo de 0°?
   respuesta: 'No'
   solucion_pasos:
-  - No, los suplementarios suman 180° (90° corresponden a complementarios).
+  - No, forman un ángulo de $10^\circ$ porque el horario se encuentra en $130^\circ$
+    y el minutero en $120^\circ$.
 errores_frecuentes:
-- Declarar ángulos complementarios (suman 90°) con suplementarios (suman 180°).
-- Omitir restar correctamente al despejar la incógnita en una ecuación angular.
-- Declarar que dos ángulos son iguales sin que exista un teorema que lo justifique.
-- Mezclar unidades de grados sexagesimales con radianes sin convertir.
-- Afirmar que la orientación de la figura altera las relaciones angulares.
+- Creer que a las $H:M$ el horario no se ha movido del número $H$.
+- Suponer que a las 4:20 hay superposición ($0^\circ$) cuando en realidad hay $10^\circ$.
+- No calcular el ángulo menor ($360^\circ - \theta$) cuando la fórmula entrega más
+  de $180^\circ$.
+- Confundir la fórmula usando $6M$ en lugar de $\frac{11}{2}M$.
+- Equivocarse en la resta del valor absoluto.
 afirmaciones_verdaderas:
-- Los ángulos suplementarios suman exactamente 180°.
-- Los ángulos complementarios suman exactamente 90°.
-al_terminar_debes_poder: Al finalizar este recurso podrás plantear y resolver ecuaciones
-  angulares aplicando las propiedades de cálculo del ángulo menor entre las manecillas
-  del reloj.
-fuente: Texto escolar MINEDUC — Geometría 7° Básico.
+- El ángulo entre las manecillas a las $H:M$ se calcula con $\left|30^\circ H - \frac{11}{2}^\circ
+  M\right|$.
+- El ángulo menor entre dos rayos nunca puede superar los $180^\circ$.
+al_terminar_debes_poder: '**QUÉ:** Calcular con exactitud el ángulo menor entre las
+  manecillas de un reloj para cualquier hora dada.
+
+
+  **CÓMO:** Aplicando la fórmula analítica $\theta = \left|30^\circ H - \frac{11}{2}^\circ
+  M\right|$ y ajustando si supera $180^\circ$.
+
+
+  ![Resumen del Ángulo entre Manecillas](/static/img/nodos/calculo-del-angulo-menor-entre-las-manecillas-del-reloj-resumen.svg)'
+fuente: Texto escolar MINEDUC — Geometría 8° Básico / PSU Matemáticas.
 estado: publicado
