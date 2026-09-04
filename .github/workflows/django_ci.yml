@@ -3,8 +3,14 @@ name: Django CI
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'docs/**'
+      - 'static/img/nodos/**'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'docs/**'
+      - 'static/img/nodos/**'
 
 jobs:
   test:
@@ -57,8 +63,8 @@ jobs:
         DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,testserver"
         DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost,http://127.0.0.1,http://testserver"
       run: |
-        pip install coverage
-        coverage run manage.py test
+        pip install coverage tblib
+        coverage run manage.py test --parallel auto
         coverage report
 
   # Lint (ruff) en modo REPORTE: no bloquea el merge todavía. Ver ruff.toml.

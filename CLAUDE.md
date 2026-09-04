@@ -52,6 +52,15 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
      no insistir con él.
 - **Despliegue:** push a `main` → Railway despliega. El *Custom Start Command*
   corre `migrate && ensure_admin && ensure_site && seed_math_resources && gunicorn`.
+  El `preDeployCommand` de `railway.json` corre `import_knowledge_tree`,
+  `load_node_content`, `load_exercise_bank` y `publish_knowledge_nodes` en cada deploy
+  (idempotentes, sincronizan `docs/conocimiento/` con la BD sin bloquear el puerto).
+- **Subir contenido = solo YAML + SVG, SIN migración.** El `preDeployCommand` (arriba)
+  sincroniza `docs/conocimiento/` en cada deploy. **Prohibido** agregar migraciones
+  `apps/content/migrations/0XXX_load_*` / `0XXX_sync_*`: son datos, no esquema, y cada
+  una infla el build de la BD de test en CI para siempre. Las 96 históricas (`0052`–`0147`)
+  quedaron colapsadas en `0052_squash_content_loads.py` (no-op con `replaces`). Un push
+  que solo toca `docs/**` o `static/img/nodos/**` no dispara CI (`paths-ignore`).
 - **Email:** API HTTP de Brevo (`BREVO_API_KEY`); Railway bloquea puertos SMTP.
 - **Errores:** Sentry (`SENTRY_DSN`) — proyecto `python-django` en org `particular-lw`.
 - **Login con Google:** allauth, credenciales en `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
