@@ -21,14 +21,18 @@
   `static/img/nodos/**` + `test --parallel auto`. **Nueva regla:** subir contenido = YAML +
   SVG + push, SIN migración (en `CLAUDE.md`). Job `test` de CI bajó de ~replay-96-migraciones
   a ~3 min. Commits `688a7862`, `115f50c4`, `2483f4cf`. Reporte: `docs/reportes-sesion/2026-09-04.md`.
-- **Desfase `semantic_id` contenido ↔ árbol atómico — DETECTADO por 🏛️ Claude 🟡 (2026-09-04):**
-  `load_node_content` loggea `semantic_id no encontrado: 95` en cada deploy: 95 YAML de
-  `docs/conocimiento/contenido/` usan ids viejos (`MAT.NUM.RAZONES_PROPORCIONES.*`,
+- **Desfase `semantic_id` contenido ↔ árbol atómico — CERRADO por 🏛️ Claude 🟢 (2026-09-05):**
+  `load_node_content` loggeaba `semantic_id no encontrado: 95` en cada deploy: 95 YAML de
+  `docs/conocimiento/contenido/` usaban ids viejos (`MAT.NUM.RAZONES_PROPORCIONES.*`,
   `MAT.NUM.FINANZAS.*`, `MAT.NUM.NUMEROS_COMPLEJOS.*`, `MAT.ALG.CLASIFICACION.*`, …) que el
-  árbol atómico renombró; ese contenido de 12 secciones **no llega a la BD** y las páginas
-  quedan con fallback genérico. Preexistente (no lo causó el squash). Diagnóstico
-  reproducible: `scripts/audit_content_semantic_ids.py` (35 rename directo · 1 revisar ·
-  59 sin destino). Tarjeta: `docs/backlog/1-por-iniciar/reparar-desfase-semantic-id-contenido.md`.
+  árbol atómico renombró; ese contenido de 12 secciones no llegaba a la BD. Preexistente
+  (no lo causó el squash). Resuelto: **93 renames** de `semantic_id` (35 por bloque
+  renombrado + 58 matcheando por `name` del nodo, el título humano que el refactor
+  conservó) + **2 borrados** (duplicados legacy de `MAT.ALG.FRACCIONES_RESTA` ya cubiertos
+  por otro archivo). Verificado: `scripts/audit_content_semantic_ids.py` → 0 orphans;
+  `load_node_content` → `semantic_id no encontrado: 0` (1902 nodos actualizados); suite
+  completa OK. Commits `23d664e0` (35) + commit del 2026-09-05 (58 + 2). Tarjeta en `backlog/6-finalizados/`.
+  **Pendiente derivado:** ~10 YAML loggean `checkpoints inválidos` (bug de datos aparte).
 - **Geometría (Eje 04): Estándar Canónico de Gráficos e Infografías SVG y Checkpoints — ACTUALIZADO por 🔨 Antigravity 🟢 (2026-09-02):**
   - Reconstrucción y generación de 375 SVGs vectoriales con Matplotlib + $\LaTeX$: `04.05.01: Congruencia` (27), `04.05.02: Tales` (21), `04.05.03: Semejanza` (48), `04.05.04: Homotecia` (42), `04.06.01: Polígonos: conceptos y ángulos` (15), `04.06.02: Diagonales y polígonos regulares` (18), `04.06.03: Paralelogramos: propiedades y métricas` (33), `04.06.04: Trapecios y trapezoides` (36), `04.07.01: Definición y elementos lineales` (30), `04.07.02: Posiciones relativas de rectas` (21), `04.07.03: Perímetro y área del círculo` (27), `04.07.04: Ángulos y arcos en la circunferencia` (33) y `04.07.05: Teoremas de proporcionalidad métrica` (24).
   - Los 5 subtemas de `04.07: Circunferencia y círculo` (45 nodos y 135 SVGs) fueron auditados y actualizados con el estándar *Zero-Overlap* (geometría elevada $c_y \ge 1.25$ y badges en $y = 0.18$), eliminación de frases literales `"en LaTeX"`, normalización de alternativas diccionario a texto limpio y procedimientos como `list[str]`.
