@@ -77,6 +77,48 @@ class NormalizeNodeCheckpointsTests(SimpleTestCase):
         with self.assertRaisesRegex(ValueError, "debe mencionar la alternativa correcta"):
             normalize_node_checkpoints(checkpoints)
 
+    def test_accepts_answer_mentioned_with_different_katex_delimiters(self):
+        checkpoints = _checkpoints()
+        checkpoints[0]["choices"][0]["text"] = "$-7^\\circ\\text{C}$"
+        checkpoints[0]["choices"][1]["text"] = "$7^\\circ\\text{C}$"
+        checkpoints[0]["explanation"] = (
+            "$\\Delta T = T_f - T_i = 18 - 25 = -7^\\circ\\text{C}$."
+        )
+
+        normalize_node_checkpoints(checkpoints)  # no raise
+
+    def test_accepts_answer_with_trailing_parenthetical_gloss(self):
+        checkpoints = _checkpoints()
+        checkpoints[0]["choices"][0]["text"] = (
+            "$k = \\frac{T}{\\sum c_i}$ (Total dividido por la suma de los índices)"
+        )
+        checkpoints[0]["choices"][1]["text"] = "$k = T \\cdot \\sum c_i$"
+        checkpoints[0]["explanation"] = (
+            "La alternativa correcta es '$k = \\frac{T}{\\sum c_i}$'."
+        )
+
+        normalize_node_checkpoints(checkpoints)  # no raise
+
+    def test_accepts_coordinate_pair_answer_without_math_delimiters(self):
+        checkpoints = _checkpoints()
+        checkpoints[0]["choices"][0]["text"] = "(0, 7)"
+        checkpoints[0]["choices"][1]["text"] = "(7, 0)"
+        checkpoints[0]["explanation"] = (
+            "La alternativa correcta es '(0, 7)'. Toda función $f(x) = c$ corta al eje Y en $(0, c)$."
+        )
+
+        normalize_node_checkpoints(checkpoints)  # no raise
+
+    def test_accepts_prose_choice_whose_math_span_is_in_the_explanation(self):
+        checkpoints = _checkpoints()
+        checkpoints[0]["choices"][0]["text"] = "Dividir el valor final por $1,15$"
+        checkpoints[0]["choices"][1]["text"] = "Multiplicar el valor final por $1,15$"
+        checkpoints[0]["explanation"] = (
+            "El cálculo inverso exige dividir por el factor: $V_i = \\frac{V_f}{1,15}$."
+        )
+
+        normalize_node_checkpoints(checkpoints)  # no raise
+
 
 class CorrectChoiceTextTests(SimpleTestCase):
     def test_returns_text_of_correct_choice(self):

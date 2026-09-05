@@ -7,6 +7,8 @@ docs/backlog/2-arquitectura/nodos-estructura-editorial-12-secciones.md.
 
 from __future__ import annotations
 
+from apps.content.services.checkpoint_matching import explanation_mentions_answer
+
 CHECKPOINT_PLACEMENTS = (
     "after_explicacion_formal",
     "after_ejemplo_guiado",
@@ -62,7 +64,7 @@ def normalize_node_checkpoints(value) -> list[dict]:
 
         if correct_count != 1:
             raise ValueError(f"Comprobación {index}: debe tener exactamente una alternativa correcta.")
-        if correct_text.casefold() not in explanation.casefold():
+        if not explanation_mentions_answer(correct_text, explanation):
             raise ValueError(
                 f"Comprobación {index}: la explicación debe mencionar la alternativa correcta."
             )

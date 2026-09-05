@@ -63,8 +63,10 @@ class Command(BaseCommand):
                 try:
                     checkpoints = normalize_node_checkpoints(checkpoints)
                 except ValueError as exc:
-                    self.stderr.write(f"{path.name}: checkpoints inválidos — {exc}")
-                    continue
+                    self.stderr.write(
+                        f"{path.name}: checkpoints inválidos, se carga sin ellos — {exc}"
+                    )
+                    checkpoints = []
 
             defaults = {
                 "objetivo": data.get("objetivo", ""),

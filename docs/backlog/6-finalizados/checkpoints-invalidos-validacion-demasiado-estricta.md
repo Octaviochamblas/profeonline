@@ -1,6 +1,6 @@
 # Checkpoints inválidos: la validación exige el texto literal de la alternativa correcta
 
-- **Estado:** Por iniciar
+- **Estado:** ✅ Cerrado (2026-09-05, 🏛️ Claude)
 - **Creado:** 2026-09-05
 - **Prioridad:** P1  ·  **Cartera:** educativa
 - **Tipo:** infraestructura + pedagogía
@@ -112,5 +112,24 @@ El mismo check literal está duplicado en
 
 ---
 
-## Qué se hizo
-_(Completar al cerrar, antes de mover a `backlog/6-finalizados/`.)_
+## Qué se hizo (2026-09-05)
+- **Helper compartido** `apps/content/services/checkpoint_matching.py` —
+  `explanation_mentions_answer(correct_text, explanation)`:
+  - Si la alternativa trae spans `$...$`: cada span (sin ruido KaTeX: `$ {} \` y
+    espacios) debe aparecer en la explicación normalizada. Cubre delimitadores
+    distintos (`$1,25$` vs `... = 1,25$.`), prosa envolviendo la fórmula
+    (`Dividir el valor final por $1,15$` vs `$V_i = V_f/1,15$`) y `\$` (peso
+    dentro de KaTeX).
+  - Si no trae `$`: substring de la cadena normalizada completa, conservando el
+    paréntesis final si **es** toda la respuesta (par ordenado `(0, 7)`).
+- `node_checkpoint_service.py` y `reading_checkpoint_service.py` usan el helper en
+  vez del `correct_text.casefold() not in explanation.casefold()`.
+- `load_node_content.py`: un checkpoint inválido ya **no descarta el NodeContent
+  entero** — carga con `checkpoints = []` y deja el warning.
+- Tests: 4 casos nuevos en `test_node_checkpoint_service.py` (KaTeX distinto,
+  gloss entre paréntesis, par ordenado, prosa + span). `test_reading_checkpoints`
+  sigue verde.
+- **Verificado:** `load_node_content` → **0** `checkpoints inválidos` (antes 15
+  saltaban el archivo completo; `Actualizados: 1917`). Suite completa OK.
+- **No hizo falta** editar ningún YAML de contenido: todas las explicaciones sí
+  referenciaban la respuesta, era el validador el estricto.

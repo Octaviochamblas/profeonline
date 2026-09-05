@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 
+from apps.content.services.checkpoint_matching import explanation_mentions_answer
 
 CHECKPOINT_PLACEMENTS = (
     "after_concept_image",
@@ -72,7 +73,7 @@ def normalize_reading_checkpoints(value) -> list[dict]:
 
         if correct_count != 1:
             raise ValueError(f"Comprobación {index}: debe tener exactamente una alternativa correcta.")
-        if correct_text.casefold() not in explanation.casefold():
+        if not explanation_mentions_answer(correct_text, explanation):
             raise ValueError(
                 f"Comprobación {index}: la explicación debe mencionar la alternativa correcta."
             )
