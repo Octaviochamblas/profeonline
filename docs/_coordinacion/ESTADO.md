@@ -31,7 +31,9 @@
   conservó) + **2 borrados** (duplicados legacy de `MAT.ALG.FRACCIONES_RESTA` ya cubiertos
   por otro archivo). Verificado: `scripts/audit_content_semantic_ids.py` → 0 orphans;
   `load_node_content` → `semantic_id no encontrado: 0` (1902 nodos actualizados); suite
-  completa OK. Commits `23d664e0` (35) + commit del 2026-09-05 (58 + 2). Tarjeta en `backlog/6-finalizados/`.
+  completa OK. Commits `23d664e0` (35) + `c98728a0` (58 + 2). **Verificado en prod** (deploy
+  del 2026-09-05): páginas de Razones/Proporciones, Porcentajes, Finanzas, Complejos,
+  Imaginarios y Álgebra muestran las 12 secciones, ya no el fallback. Tarjeta en `backlog/6-finalizados/`.
 - **Checkpoints inválidos: validación demasiado estricta — CERRADO por 🏛️ Claude 🟢 (2026-09-05):**
   `load_node_content` saltaba el archivo **completo** (12 secciones) cuando un checkpoint fallaba
   con *"la explicación debe mencionar la alternativa correcta"* — 15 nodos con fallback genérico.
@@ -41,8 +43,10 @@
   si es toda la respuesta, ej. par ordenado). Usado por `node_checkpoint_service` y
   `reading_checkpoint_service`. `load_node_content` ahora carga con `checkpoints = []` en vez de
   saltar el nodo. +4 tests. `load_node_content` → **0** inválidos (1917 nodos). No hizo falta
-  tocar YAML: el contenido estaba bien, el validador era el estricto. Tarjeta en
-  `backlog/6-finalizados/`.
+  tocar YAML: el contenido estaba bien, el validador era el estricto. Commits `e47c11fb` (fix)
+  + `33c5f40c` (ajuste de `test_knowledge_f2` al nuevo comportamiento del loader; `e47c11fb`
+  dejó CI en rojo por ese test). **Verificado en prod** (deploy 2026-09-05): las 15 páginas
+  muestran las 12 secciones + los 2 checkpoints renderizados. Tarjeta en `backlog/6-finalizados/`.
 - **Geometría (Eje 04): Estándar Canónico de Gráficos e Infografías SVG y Checkpoints — ACTUALIZADO por 🔨 Antigravity 🟢 (2026-09-02):**
   - Reconstrucción y generación de 375 SVGs vectoriales con Matplotlib + $\LaTeX$: `04.05.01: Congruencia` (27), `04.05.02: Tales` (21), `04.05.03: Semejanza` (48), `04.05.04: Homotecia` (42), `04.06.01: Polígonos: conceptos y ángulos` (15), `04.06.02: Diagonales y polígonos regulares` (18), `04.06.03: Paralelogramos: propiedades y métricas` (33), `04.06.04: Trapecios y trapezoides` (36), `04.07.01: Definición y elementos lineales` (30), `04.07.02: Posiciones relativas de rectas` (21), `04.07.03: Perímetro y área del círculo` (27), `04.07.04: Ángulos y arcos en la circunferencia` (33) y `04.07.05: Teoremas de proporcionalidad métrica` (24).
   - Los 5 subtemas de `04.07: Circunferencia y círculo` (45 nodos y 135 SVGs) fueron auditados y actualizados con el estándar *Zero-Overlap* (geometría elevada $c_y \ge 1.25$ y badges en $y = 0.18$), eliminación de frases literales `"en LaTeX"`, normalización de alternativas diccionario a texto limpio y procedimientos como `list[str]`.
