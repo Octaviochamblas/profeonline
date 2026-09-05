@@ -186,7 +186,7 @@ checkpoints:
         self.assertEqual(len(content.checkpoints), 2)
         self.assertEqual(content.checkpoints[0]["placement"], "after_explicacion_formal")
 
-    def test_rejects_invalid_checkpoints(self):
+    def test_invalid_checkpoints_load_content_without_them(self):
         _make_node()
         yaml_with_bad_checkpoints = SAMPLE_YAML + """
 checkpoints:
@@ -217,8 +217,12 @@ checkpoints:
             buf = io.StringIO()
             call_command("load_node_content", dir=d, verbosity=0, stderr=buf)
 
-        self.assertEqual(NodeContent.objects.count(), 0)
+        # Un checkpoint inválido ya no descarta el NodeContent entero: se carga
+        # sin checkpoints y se deja el warning.
+        self.assertEqual(NodeContent.objects.count(), 1)
+        self.assertEqual(NodeContent.objects.get().checkpoints, [])
         self.assertIn("exactamente una alternativa correcta", buf.getvalue())
+        self.assertIn("se carga sin ellos", buf.getvalue())
 
 
 class NodeContentTimestampTests(TestCase):
