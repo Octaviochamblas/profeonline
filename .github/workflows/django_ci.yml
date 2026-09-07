@@ -27,18 +27,12 @@ jobs:
       uses: actions/setup-python@v7
       with:
         python-version: ${{ matrix.python-version }}
+        cache: pip
 
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip install -r requirements.txt
-
-    - name: Audit Dependencies (pip-audit)
-      run: |
-        python -m pip install pip-audit
-        # Falla si hay vulnerabilidades conocidas. Para aceptar un riesgo concreto
-        # sin fix disponible, usar: pip-audit -r requirements.txt --ignore-vuln <ID>
-        pip-audit -r requirements.txt --desc
+        python -m pip install -r requirements.txt tblib
 
     - name: Run Django System Check
       run: |
@@ -57,15 +51,29 @@ jobs:
       run: |
         python manage.py check --deploy --fail-level ERROR --settings=config.settings.production
 
-    - name: Run Tests (con cobertura, reporte)
+    - name: Run Tests
       env:
         DJANGO_SECRET_KEY: "ci-test-secret-key-must-be-long-and-secure-in-production-check"
         DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,testserver"
         DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost,http://127.0.0.1,http://testserver"
       run: |
-        pip install coverage tblib
-        coverage run manage.py test --parallel auto
-        coverage report
+        python manage.py test --parallel auto
+
+  # Escaneo de vulnerabilidades: job aparte para no alargar el camino crítico de
+  # `test`. Corre en paralelo; si falla, la corrida queda en rojo igual.
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Audit Dependencies (pip-audit)
+        run: |
+          python -m pip install pip-audit
+          # Para aceptar un riesgo concreto sin fix: pip-audit -r requirements.txt --ignore-vuln <ID>
+          pip-audit -r requirements.txt --desc
 
   # Lint (ruff) en modo REPORTE: no bloquea el merge todavía. Ver ruff.toml.
   lint:
@@ -75,6 +83,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+          cache: pip
       - name: Ruff (reporte, no bloquea)
         run: |
           pip install ruff

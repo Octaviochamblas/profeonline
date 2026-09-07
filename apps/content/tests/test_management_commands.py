@@ -456,3 +456,42 @@ class SeedMathResourcesCommandTests(TestCase):
         self.assertEqual(resource.description, initial_seo_desc)
         self.assertEqual(resource.content, initial_seo_content)
         self.assertIn("Se crearon 0 recursos y se actualizaron 27", stdout_third.getvalue())
+
+
+class SyncKnowledgeContentCommandTests(TestCase):
+    """El comando corre los loaders solo si docs/conocimiento/ cambió."""
+
+    CC = "apps.content.management.commands.sync_knowledge_content.call_command"
+
+    def test_runs_loaders_first_time_then_skips_when_unchanged(self):
+        from apps.content.models import ContentSyncState
+
+        with patch(self.CC) as mock_cc:
+            call_command("sync_knowledge_content", stdout=StringIO())
+        self.assertEqual(mock_cc.call_count, 4)
+        state = ContentSyncState.objects.get(key="knowledge")
+        self.assertTrue(state.content_hash)
+
+        with patch(self.CC) as mock_cc:
+            out = StringIO()
+            call_command("sync_knowledge_content", stdout=out)
+        mock_cc.assert_not_called()
+        self.assertIn("sin cambios", out.getvalue())
+
+    def test_force_runs_even_when_unchanged(self):
+        with patch(self.CC):
+            call_command("sync_knowledge_content", stdout=StringIO())
+        with patch(self.CC) as mock_cc:
+            call_command("sync_knowledge_content", "--force", stdout=StringIO())
+        self.assertEqual(mock_cc.call_count, 4)
+
+    def test_resyncs_when_hash_differs(self):
+        from apps.content.models import ContentSyncState
+
+        ContentSyncState.objects.create(key="knowledge", content_hash="stale")
+        with patch(self.CC) as mock_cc:
+            call_command("sync_knowledge_content", stdout=StringIO())
+        self.assertEqual(mock_cc.call_count, 4)
+        self.assertNotEqual(
+            ContentSyncState.objects.get(key="knowledge").content_hash, "stale"
+        )

@@ -53,11 +53,12 @@ la IA dueña mueve la tarjeta con `git mv` al pasar su gate):
 - **Despliegue:** push a `main` → Railway despliega. El *Custom Start Command*
   (dashboard de Railway) corre `migrate && ensure_admin && ensure_site && gunicorn ... --timeout 120`.
   El *Pre-Deploy Command* (también dashboard, **no** hay archivo de config: el dashboard
-  gana sobre `railway.json`/`nixpacks`) corre `import_knowledge_tree && load_node_content
-  && load_exercise_bank && publish_knowledge_nodes` — idempotentes, sincronizan
-  `docs/conocimiento/` con la BD en una fase aparte que no bloquea el puerto.
+  gana sobre `railway.json`/`nixpacks`) corre `python manage.py sync_knowledge_content`:
+  hashea `docs/conocimiento/` y, si cambió desde el deploy anterior (`ContentSyncState`
+  en la BD), corre `import_knowledge_tree && load_node_content && load_exercise_bank &&
+  publish_knowledge_nodes`; si no cambió, sale en ~10 s. Con `--force` corre igual.
 - **Subir contenido = solo YAML + SVG, SIN migración.** El *Pre-Deploy Command* (arriba)
-  sincroniza `docs/conocimiento/` en cada deploy. **Prohibido** agregar migraciones
+  sincroniza `docs/conocimiento/` cuando cambia. **Prohibido** agregar migraciones
   `apps/content/migrations/0XXX_load_*` / `0XXX_sync_*`: son datos, no esquema, y cada
   una infla el build de la BD de test en CI para siempre. Las 96 históricas (`0052`–`0147`)
   quedaron colapsadas en `0052_squash_content_loads.py` (no-op con `replaces`). Un push

@@ -32,3 +32,4 @@ from .knowledge import (
     NodeAssessmentAnswer,
 )
 from .node_bank import ItemGroup, NodeExercise
+from .sync_state import ContentSyncState
